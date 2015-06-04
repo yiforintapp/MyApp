@@ -419,8 +419,8 @@ public class QuickSwitchManager {
 
     public synchronized List<BaseInfo> getSwitchList(int switchNum) {
         if (mSwitcherLoaded) {
-            if (mSaveList.size() > 13) {
-                return mSaveList.subList(0, 13);
+            if (mSaveList.size() > 11) {
+                return mSaveList.subList(0, 11);
             } else {
                 return mSaveList;
             }
@@ -578,7 +578,7 @@ public class QuickSwitchManager {
                         R.drawable.switch_flightmode);
                 mSaveList.add(flyModeInfo);
                 String saveToSp = QuickSwitchManager.getInstance(mContext).listToString(
-                        mSaveList.subList(0, 13),
+                        mSaveList.subList(0, 11),
                         switchNum, false);
                 apf.setSwitchList(saveToSp);
                 apf.setLoadedSwitchList(true);
@@ -589,8 +589,8 @@ public class QuickSwitchManager {
             }
 
         }
-        if (mSaveList.size() > 13) {
-            return mSaveList.subList(0, 13);
+        if (mSaveList.size() > 11) {
+            return mSaveList.subList(0, 11);
         } else {
             return mSaveList;
         }
@@ -1233,7 +1233,7 @@ public class QuickSwitchManager {
     }
 
     public void init() {
-        getSwitchList(13);
+        getSwitchList(11);
     }
 
     public void unInit() {

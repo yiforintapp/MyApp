@@ -10,8 +10,12 @@ import java.util.Vector;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ActivityManager.RecentTaskInfo;
+import android.app.Notification;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -36,11 +40,15 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.tools.ColorMatcher;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
@@ -150,7 +158,7 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mMessages != null) {
                 List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
                 for (MessageBean message : messages) {
-                    if (dynamicList.size() > 12)
+                    if (dynamicList.size() > 11)
                         break;
                     message.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_message);
@@ -174,7 +182,7 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
                 List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
                 for (ContactCallLog baseInfo : baseInfos) {
-                    if (dynamicList.size() > 12)
+                    if (dynamicList.size() > 11)
                         break;
                     baseInfo.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_call);
@@ -193,10 +201,10 @@ public class QuickGestureManager {
                 }
             }
         }
-        // no privacy contact
+        // privacy contact
         if (isShowPrivacyContactTip) {
             if (isShowPrivacyCallLog || isShowPrivacyMsm) {
-                if (dynamicList.size() <= 12) {
+                if (dynamicList.size() <= 10) {
                     QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
                     item.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_system);
@@ -220,7 +228,7 @@ public class QuickGestureManager {
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         List<String> pkgs = new ArrayList<String>();
         for (RecentTaskInfo recentTaskInfo : recentTasks) {
-            if (dynamicList.size() > 12)
+            if (dynamicList.size() > 11)
                 break;
             pkg = recentTaskInfo.baseIntent.getComponent().getPackageName();
             if (!pkgs.contains(pkg)) {
@@ -241,7 +249,7 @@ public class QuickGestureManager {
 
     private void preloadEmptyIcon() {
         Resources res = mContext.getResources();
-        mEmptyIcon = new Drawable[12];
+        mEmptyIcon = new Drawable[11];
         mEmptyIcon[0] = res.getDrawable(R.drawable.switch_orange);
         mEmptyIcon[1] = res.getDrawable(R.drawable.switch_green);
         mEmptyIcon[2] = res.getDrawable(R.drawable.seitch_purple);
@@ -253,7 +261,6 @@ public class QuickGestureManager {
         mEmptyIcon[8] = res.getDrawable(R.drawable.switch_orange_2);
         mEmptyIcon[9] = res.getDrawable(R.drawable.switch_purple_2);
         mEmptyIcon[10] = res.getDrawable(R.drawable.switch_red_2);
-        mEmptyIcon[11] = res.getDrawable(R.drawable.switch_red_3);
     }
 
     public void stopFloatWindow() {
@@ -358,7 +365,7 @@ public class QuickGestureManager {
                 info = engin.getAppInfo(recorderAppInfo.pkg);
                 if (info == null)
                     continue;
-                if (i >= 13) {
+                if (i >= 11) {
                     break;
                 } else {
                     temp = new QuickGsturebAppInfo();
@@ -399,7 +406,7 @@ public class QuickGestureManager {
 
             AppItemInfo info;
             for (QuickGsturebAppInfo appItemInfo : packageNames) {
-                if (resault.size() >= 13) {
+                if (resault.size() >= 11) {
                     break;
                 }
                 info = engin.getAppInfo(appItemInfo.packageName);
@@ -418,7 +425,7 @@ public class QuickGestureManager {
 
     public List<BaseInfo> getSwitcherList() {
         // QuickSwitchManager.getInstance(mContext).getAllList();
-        return QuickSwitchManager.getInstance(mContext).getSwitchList(13);
+        return QuickSwitchManager.getInstance(mContext).getSwitchList(11);
     }
 
     public void updateSwitcherData(List<BaseInfo> infos) {
@@ -530,7 +537,7 @@ public class QuickGestureManager {
 
     public Drawable applyEmptyIcon() {
         Drawable icon = null;
-        int index = (int) (Math.random() * 12);
+        int index = (int) (Math.random() * 10);
         icon = mEmptyIcon[index];
         return icon;
     }
@@ -578,7 +585,7 @@ public class QuickGestureManager {
                             }
                             comList.remove(tempList);
 
-                            int[] position = new int[13];
+                            int[] position = new int[11];
                             int i;
                             for (i = 0; i < comList.size(); i++) {
                                 position[comList.get(i).gesturePosition] = 1;
@@ -752,7 +759,7 @@ public class QuickGestureManager {
                                     }
 
                                     int k = 0;
-                                    for (int i = 0; i < 13; i++) {
+                                    for (int i = 0; i < 11; i++) {
                                         boolean isHasIcon = false;
                                         for (int j = 0; j < mDefineList.size(); j++) {
                                             if (i == mDefineList.get(j).gesturePosition) {
@@ -829,4 +836,30 @@ public class QuickGestureManager {
         mSlidAreaSize = value;
     }
 
+    public void sendPermissionOpenNotification(Context context) {
+        NotificationManager notificationManager = (NotificationManager)
+                context
+                        .getSystemService(Context.NOTIFICATION_SERVICE);
+        Notification notification = new Notification();
+        Intent intentPending = new Intent(context,
+                QuickGestureActivity.class);
+        intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intentPending,
+                PendingIntent.FLAG_UPDATE_CURRENT);
+        notification.icon = R.drawable.ic_launcher_notification;
+        notification.tickerText = context
+                .getString(R.string.permission_open_tip_notification_title);
+        notification.flags = Notification.FLAG_AUTO_CANCEL;
+        notification
+                .setLatestEventInfo(
+                        context,
+                        context.getString(R.string.permission_open_tip_notification_title),
+                        context.getString(R.string.permission_open_tip_notification_content),
+                        contentIntent);
+        NotificationUtil.setBigIcon(notification,
+                R.drawable.ic_launcher_notification_big);
+        notification.when = System.currentTimeMillis();
+        notificationManager.notify(20150603, notification);
+        AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
+    }
 }
