@@ -323,11 +323,12 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 mDisturbList.add(appInfo);
             }
         }
-        Collections.sort(mDisturbList, new NameComparator());
         if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
-//            Collections.sort(mFreeDisturbApp, new NameComparator());
+            Collections.sort(mFreeDisturbApp, new NameComparator());
+            Collections.sort(mDisturbList, new NameComparator());
             mFreeDisturbApp.addAll(mDisturbList);
         } else {
+            Collections.sort(mDisturbList, new NameComparator());
             mFreeDisturbApp = mDisturbList;
         }
         mGridView.setDatas(mFreeDisturbApp, 4, 4);
