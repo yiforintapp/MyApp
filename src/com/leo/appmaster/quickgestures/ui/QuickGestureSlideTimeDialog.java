@@ -208,7 +208,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             mUpdateFilterApp.updateFilterAppClickListener();
         }
     }
-
     @Override
     protected void onStop() {
         super.onStop();

@@ -575,8 +575,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             }
                         }
                     });
-                    showSlideShowTimeSettingDialog();
                     freeDisturbApp.dismiss();
+                    showSlideShowTimeSettingDialog();
                 }
             }
         });
