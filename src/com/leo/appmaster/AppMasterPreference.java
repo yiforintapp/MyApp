@@ -1655,7 +1655,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getLastTimeLayout() {
-        return mPref.getInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT, 1);
+        return mPref.getInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT, 3);
     }
 
     public void setLastTimeLayout(int mLayoutNum) {
