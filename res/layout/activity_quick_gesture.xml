@@ -23,6 +23,7 @@
         android:visibility="gone" />
 
     <!-- 设置UI  START -->
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -33,68 +34,76 @@
         android:orientation="vertical" >
 
         <!-- 开启快捷手势 -->
-        <RelativeLayout
-            android:id="@+id/open_quick"
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bg" >
-
-            <ImageView
-                android:id="@+id/open_quick_option_IV"
-                android:layout_width="@dimen/privacy_contact_icon_size"
-                android:layout_height="@dimen/privacy_contact_icon_size"
-                android:layout_centerVertical="true"
-                android:src="@drawable/default_user_avatar"
-                android:visibility="gone" />
+            android:background="@drawable/bg"
+            android:orientation="vertical" >
 
             <RelativeLayout
-                android:id="@+id/open_quick_itemLT"
+                android:id="@+id/open_quick"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:layout_marginLeft="16dp"
-                android:layout_toRightOf="@id/contactIV" >
-
-                <LinearLayout
-                    android:id="@+id/open_quick_linear"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="40dp"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/open_quick_gesture_item_nameTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:text="@string/pg_appmanager_quick_gesture_option_open_quick_gesture"
-                        android:textColor="#414141"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/open_quick_gesture_item_cotentTV"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
-                        android:ellipsize="end"
-                        android:singleLine="true"
-                        android:textColor="#999999"
-                        android:textSize="10dp"
-                        android:visibility="gone" />
-                </LinearLayout>
+                android:layout_height="wrap_content"
+                android:background="@drawable/manager_backup_list_selecter" >
 
                 <ImageView
-                    android:id="@+id/open_quick_gesture_check"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
+                    android:id="@+id/open_quick_option_IV"
+                    android:layout_width="@dimen/privacy_contact_icon_size"
+                    android:layout_height="@dimen/privacy_contact_icon_size"
                     android:layout_centerVertical="true"
-                    android:paddingRight="16dp"
-                    android:src="@drawable/switch_off" />
+                    android:src="@drawable/default_user_avatar"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/open_quick_itemLT"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toRightOf="@id/contactIV" >
+
+                    <LinearLayout
+                        android:id="@+id/open_quick_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/open_quick_gesture_item_nameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/pg_appmanager_quick_gesture_option_open_quick_gesture"
+                            android:textColor="#414141"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/open_quick_gesture_item_cotentTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textColor="#999999"
+                            android:textSize="10dp"
+                            android:visibility="gone" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/open_quick_gesture_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="16dp"
+                        android:src="@drawable/switch_off" />
+                </RelativeLayout>
             </RelativeLayout>
-        </RelativeLayout>
+        </LinearLayout>
         <!-- 划出区域位置 -->
 
         <LinearLayout
@@ -107,7 +116,8 @@
             <RelativeLayout
                 android:id="@+id/slid_area"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/manager_backup_list_selecter" >
 
                 <ImageView
                     android:id="@+id/slid_area_option_IV"
@@ -175,7 +185,8 @@
             <RelativeLayout
                 android:id="@+id/allow_slid_time"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/manager_backup_list_selecter" >
 
                 <ImageView
                     android:id="@+id/allow_slid_time_option_IV"
@@ -219,7 +230,7 @@
                             android:ellipsize="end"
                             android:singleLine="true"
                             android:textColor="#999999"
-                            android:textSize="10dp"/>
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <ImageView
@@ -245,7 +256,8 @@
             <RelativeLayout
                 android:id="@+id/no_read_message_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/manager_backup_list_selecter" >
 
                 <ImageView
                     android:id="@+id/no_read_message_option_IV"
@@ -313,7 +325,8 @@
             <RelativeLayout
                 android:id="@+id/recently_contact_content"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:background="@drawable/manager_backup_list_selecter" >
 
                 <ImageView
                     android:id="@+id/recently_contact_option_IV"
@@ -382,7 +395,7 @@
                 android:id="@+id/privacy_contact_content"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg" >
+                android:background="@drawable/manager_backup_list_selecter" >
 
                 <ImageView
                     android:id="@+id/privacy_contact_option_IV"

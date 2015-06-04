@@ -19,7 +19,6 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -31,8 +30,7 @@ import android.view.animation.DecelerateInterpolator;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.appmanage.AppListActivity;
+import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
@@ -784,7 +782,7 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (type == GType.MostUsedLayout) {
             // TODO
             if (!(hitView.getTag() instanceof GestureEmptyItemInfo)) {
-                AppItemInfo info = (AppItemInfo) hitView.getTag();
+                AppInfo info = (AppInfo) hitView.getTag();
                 boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
