@@ -43,6 +43,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.utils.AppUtil;
@@ -434,7 +435,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
 
             LayoutParams params = (LayoutParams) child.getLayoutParams();
-            halfItemSize = child.getWidth() / 2;
+            halfItemSize = child.getMeasuredWidth() / 2;
             if (params.position < 0)
                 continue;
             if (params.position == 0) {
@@ -597,7 +598,9 @@ public class AppleWatchLayout extends ViewGroup {
         int position = ((LayoutParams) item.getLayoutParams()).position;
         BaseInfo info = (BaseInfo) view.getTag();
         info.gesturePosition = position;
+        LeoLog.d("TestLayout", "info.label" + info.label);
         if (info instanceof BusinessItemInfo) {// 运营app
+            LeoLog.d("TestLayout", "BusinessItemInfo");
             BusinessItemInfo bif = (BusinessItemInfo) info;
             if (bif.gpPriority == 1) {
                 if (AppUtil.appInstalled(getContext(),
@@ -618,6 +621,7 @@ public class AppleWatchLayout extends ViewGroup {
                         bif.appDownloadUrl);
             }
         } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
+            LeoLog.d("TestLayout", "QuickSwitcherInfo");
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
             // 蓝牙
             if (sInfo.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
@@ -654,6 +658,7 @@ public class AppleWatchLayout extends ViewGroup {
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
         } else if (info instanceof AppItemInfo) {
+            LeoLog.d("TestLayout", "AppItemInfo");
             AppItemInfo appInfo = (AppItemInfo) info;
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -703,7 +708,14 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             } catch (Exception e) {
             }
-
+        } else if(info instanceof QuickGsturebAppInfo){
+            LeoLog.d("TestLayout", "QuickGsturebAppInfo");
+            QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setComponent(new ComponentName(appInfo.packageName,
+                    appInfo.activityName));
+            getContext().startActivity(intent);
         }
     }
 
