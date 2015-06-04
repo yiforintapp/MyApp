@@ -9,6 +9,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -119,6 +120,7 @@ public class TaskChangeHandler {
 
             // remocde app launch recoder
             QuickGestureManager.getInstance(mContext).recordAppLaunch(mLastRunningPkg);
+            AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg, System.currentTimeMillis());
 
             // For android 5.0, download package changed
             if (pkg.equals(DOWNLAOD_PKG_21)) {

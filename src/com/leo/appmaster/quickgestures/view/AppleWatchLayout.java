@@ -71,7 +71,6 @@ public class AppleWatchLayout extends ViewGroup {
     private boolean mSnapping;
     public GType mMyType;
     public boolean mHasFillExtraItems;
-    private boolean mFingerDirection;
 
     public static enum Direction {
         Right, Left, None;
@@ -158,7 +157,7 @@ public class AppleWatchLayout extends ViewGroup {
                 } else {
                     gestureItem.cancelShowReadTip();
                 }
-                gestureItem.setDecorateAction(new EventAction(getContext(),0));
+                gestureItem.setDecorateAction(new EventAction(getContext(), 0));
             } else if (info instanceof ContactCallLog) {
                 if (((ContactCallLog) info).isShowReadTip) {
                     gestureItem.showReadTip();
@@ -1486,9 +1485,16 @@ public class AppleWatchLayout extends ViewGroup {
 
                     if (i == 3 || i == 7) {
                         if (adjustMoveX <= offset / 2) {
-                            targetScale = (offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
+                            targetScale = (offset / 2 - adjustMoveX) /
+                                    (offset / 2) * rawScale1;
+                            // targetScale = rawScale1 - adjustMoveX *
+                            // (rawScale1 / offset);
                         } else {
-                            targetScale = (adjustMoveX - offset / 2) / (offset / 2) * rawScale1;
+                            targetScale = (adjustMoveX - offset / 2) /
+                                    (offset / 2) * rawScale1;
+                            // targetScale = rawScale1 - (offset - adjustMoveX)
+                            // * (rawScale1 / offset);
+
                         }
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
@@ -1521,9 +1527,15 @@ public class AppleWatchLayout extends ViewGroup {
 
                     if (i == 2 || i == 5) {
                         if (adjustMoveX <= offset / 2) {
-                            targetScale = (offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
+                            targetScale = (offset / 2 - adjustMoveX) /
+                                    (offset / 2) * rawScale1;
+                            // targetScale = rawScale1 - adjustMoveX *
+                            // (rawScale1 / offset);
                         } else {
-                            targetScale = (adjustMoveX - offset / 2) / (offset / 2) * rawScale1;
+                            targetScale = (adjustMoveX - offset / 2) /
+                                    (offset / 2) * rawScale1;
+                            // targetScale = rawScale1 - (offset - adjustMoveX)
+                            // * (rawScale1 / offset);
                         }
                     } else {
                         targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);

@@ -25,6 +25,8 @@ public class AppItemInfo extends AppInfo {
 	public boolean detailLoaded = false;
 	
 	public String sourceDir;
+	
+	public long lastLaunchTime;
 
 
 	public AppItemInfo() {
