@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -108,13 +109,13 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                     if (mFlag == 1) {
                         mRemoveFreePackageName.add(selectInfl);
                     }
-                    
+
                     if (mFlag == 2) {
                         ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                        .setDefaultRecommendApp(selectInfl,false);
-                    }else {
+                                .setDefaultRecommendApp(selectInfl, false);
+                    } else {
                         ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                        .setDefaultRecommendApp(false);
+                                .setDefaultRecommendApp(false);
                     }
 
                     mSwitchListSize -= 1;
@@ -137,13 +138,13 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                             if (mRemoveFreePackageName != null && mRemoveFreePackageName.size() > 0) {
                                 mRemoveFreePackageName.remove(selectInfl);
                             }
-                            
+
                             if (mFlag == 2) {
                                 ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                                .setDefaultRecommendApp(selectInfl,true);
-                            }else {
+                                        .setDefaultRecommendApp(selectInfl, true);
+                            } else {
                                 ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
-                                .setDefaultRecommendApp(true);
+                                        .setDefaultRecommendApp(true);
                             }
                             mSwitchListSize += 1;
                         }
@@ -184,7 +185,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
     }
 
     protected void makeOtherIcon(QuickGsturebAppInfo selectInfl, boolean b) {
-        
+
     }
 
     protected boolean getFirstStatusFromName(List<? extends BaseInfo> mSaveList, String label) {
@@ -283,7 +284,9 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 mDisturbList.add(appInfo);
             }
         }
+        Collections.sort(mDisturbList, new NameComparator());
         if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+//            Collections.sort(mFreeDisturbApp, new NameComparator());
             mFreeDisturbApp.addAll(mDisturbList);
         } else {
             mFreeDisturbApp = mDisturbList;
