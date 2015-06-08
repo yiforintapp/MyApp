@@ -26,6 +26,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.view.animation.ScaleAnimation;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -430,7 +431,6 @@ public class AppleWatchLayout extends ViewGroup {
             if (child.getVisibility() == GONE) {
                 continue;
             }
-
             LayoutParams params = (LayoutParams) child.getLayoutParams();
             halfItemSize = child.getMeasuredWidth() / 2;
             if (params.position < 0)
@@ -1876,101 +1876,55 @@ public class AppleWatchLayout extends ViewGroup {
         return item;
     }
 
+    private Animator iconAnimator(final View targetView){
+        AnimatorSet set = new AnimatorSet();
+        float scale = targetView.getScaleX();
+        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(targetView, "alpha", 0f,0f,1.0f);
+        ObjectAnimator scaleXAnimator =  ObjectAnimator.ofFloat(targetView, "scaleX",0f,1.1f*scale,scale);
+        ObjectAnimator scaleYAnimator =  ObjectAnimator.ofFloat(targetView, "scaleY",0f,1.1f*scale,scale);
+        set.playTogether(alphaAnimator,scaleXAnimator,scaleYAnimator);
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                targetView.setVisibility(View.VISIBLE);
+            }
+        });
+        return set;
+    }
+    
     public AnimatorSet makeIconShowAnimator(int direction) {
         Animator[] iconAnimators = new Animator[13];
-        AnimatorSet iconSet;
-        ObjectAnimator tranAnimaX, tranAnimaY;
+        AnimatorSet set = new AnimatorSet();
+        AnimatorSet partOneSet = new AnimatorSet();
+        AnimatorSet partTwoSet = new AnimatorSet();
+        AnimatorSet partThreeSet = new AnimatorSet();
+        
         GestureItemView targetItem;
         for (int i = 0; i < 11; i++) {
             if (i < 4) {
-                if (direction == 0) {// show from left-center
                     targetItem = mHoriChildren[0][i + 4];
-                    tranAnimaX = ObjectAnimator
-                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    iconAnimators[i] = tranAnimaX;
-                } else if (direction == 1) {// show from left-bottom
-                    iconSet = new AnimatorSet();
-                    targetItem = mHoriChildren[0][i + 4];
-                    tranAnimaX = ObjectAnimator
-                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator
-                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
-                    iconSet.playTogether(tranAnimaX, tranAnimaY);
-                    iconAnimators[i] = iconSet;
-                } else if (direction == 2) {// show from right-center
-                    targetItem = mHoriChildren[0][i + 4];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    iconAnimators[i] = tranAnimaX;
-                } else if (direction == 3) {// show from right-bottom
-                    iconSet = new AnimatorSet();
-                    targetItem = mHoriChildren[0][i + 4];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator
-                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
-                    iconSet.playTogether(tranAnimaX, tranAnimaY);
-                    iconAnimators[i] = tranAnimaX;
-                }
             } else if (i < 7) {
-                if (direction == 0) {// show from left-center
                     targetItem = mHoriChildren[1][i - 1];
-                    tranAnimaX = ObjectAnimator
-                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    iconAnimators[i] = tranAnimaX;
-                } else if (direction == 1) {// show from left-bottom
-                    iconSet = new AnimatorSet();
-                    targetItem = mHoriChildren[1][i - 1];
-                    tranAnimaX = ObjectAnimator
-                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator
-                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
-                    iconSet.playTogether(tranAnimaX, tranAnimaY);
-                    iconAnimators[i] = iconSet;
-                } else if (direction == 2) {// show from right-center
-                    targetItem = mHoriChildren[1][i - 1];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    iconAnimators[i] = tranAnimaX;
-                } else if (direction == 3) {// show from right-bottom
-                    iconSet = new AnimatorSet();
-                    targetItem = mHoriChildren[1][i - 1];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator
-                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
-                    iconSet.playTogether(tranAnimaX, tranAnimaY);
-                    iconAnimators[i] = iconSet;
-                }
             } else {
-                if (direction == 0) {
                     targetItem = mHoriChildren[2][i - 3];
-                    tranAnimaX = ObjectAnimator
-                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    iconAnimators[i] = tranAnimaX;
-                } else if (direction == 1) {// show from left-bottom
-                    iconSet = new AnimatorSet();
-                    targetItem = mHoriChildren[2][i - 3];
-                    tranAnimaX = ObjectAnimator
-                            .ofFloat(targetItem, "translationX", -mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator
-                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
-                    iconSet.playTogether(tranAnimaX, tranAnimaY);
-                    iconAnimators[i] = iconSet;
-                } else if (direction == 2) {// show from right-center
-                    targetItem = mHoriChildren[2][i - 3];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    iconAnimators[i] = tranAnimaX;
-                } else if (direction == 3) {// show from right-bottom
-                    iconSet = new AnimatorSet();
-                    targetItem = mHoriChildren[2][i - 3];
-                    tranAnimaX = ObjectAnimator.ofFloat(targetItem, "translationX", mTotalWidth, 0);
-                    tranAnimaY = ObjectAnimator
-                            .ofFloat(targetItem, "translationY", mTotalHeight, 0);
-                    iconSet.playTogether(tranAnimaX, tranAnimaY);
-                    iconAnimators[i] = iconSet;
-                }
             }
+            iconAnimators[i] = iconAnimator(targetItem);
         }
-
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(iconAnimators);
+     /*   partOneSet.setStartDelay(100);
+        partTwoSet.setStartDelay(200);
+        partThreeSet.setStartDelay(300);*/
+        if (direction == 0) {// show from left-center
+            partOneSet.playTogether(iconAnimators[0],iconAnimators[4],iconAnimators[8]);
+            partTwoSet.playTogether(iconAnimators[1],iconAnimators[5],iconAnimators[9]);
+            partThreeSet.playTogether(iconAnimators[2],iconAnimators[6],iconAnimators[10]);
+            set.playSequentially(iconAnimators[7],partOneSet,partTwoSet,partThreeSet,iconAnimators[3]);
+        } else if (direction == 1) {// show from left-bottom
+            partOneSet.playTogether(iconAnimators[0],iconAnimators[4],iconAnimators[8]);
+            partTwoSet.playTogether(iconAnimators[1],iconAnimators[5],iconAnimators[9]);
+            partThreeSet.playTogether(iconAnimators[2],iconAnimators[6],iconAnimators[10]);
+            set.playTogether(iconAnimators[7],partOneSet,partTwoSet,partThreeSet,iconAnimators[3]);
+        }
         return set;
     }
 

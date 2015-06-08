@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
@@ -38,7 +37,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -1254,19 +1252,17 @@ public class AppleWatchContainer extends FrameLayout {
         } else {
             targetLayout = mSwitcherLayout;
         }
-        // AnimatorSet iconAnimatorSet =
-        // targetLayout.makeIconShowAnimator(direction);
+        AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(300);
+        set.setDuration(500);
         set.setInterpolator(new DecelerateInterpolator());
-        set.playTogether(tabAnimator, titleAnimator/* , iconAnimatorSet */);
+        set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
-
             @Override
             public void onAnimationStart(Animator animation) {
                 mStartShowingTime = System.currentTimeMillis();
                 isAnimating = true;
-                targetLayout.setVisibility(View.VISIBLE);
+                //targetLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -1281,13 +1277,11 @@ public class AppleWatchContainer extends FrameLayout {
                     layout = mSwitcherLayout;
                 }
                 layout.post(new Runnable() {
-
                     @Override
                     public void run() {
                         layout.fillExtraChildren();
                     }
                 });
-
                 run.run();
             }
         });

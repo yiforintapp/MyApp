@@ -9,6 +9,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -574,8 +575,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             }
                         }
                     });
-                    showSlideShowTimeSettingDialog();
                     freeDisturbApp.dismiss();
+                    showSlideShowTimeSettingDialog();
                 }
             }
         });

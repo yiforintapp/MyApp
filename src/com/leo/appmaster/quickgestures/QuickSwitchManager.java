@@ -34,6 +34,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.utils.LeoLog;
@@ -1189,7 +1190,7 @@ public class QuickSwitchManager {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
             BaseInfo switchInfo = (BaseInfo) mSwitchList.get(i);
-            // String name = switchInfo.label;
+//             String name = switchInfo.label;
             String name = switchInfo.swtichIdentiName;
             int position = switchInfo.gesturePosition;
             LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
@@ -1209,6 +1210,42 @@ public class QuickSwitchManager {
 
         return ListString;
     }
+    
+    public String listToPackString(List<BaseInfo> mSwitchList, int mNum) {
+        String ListString = "";
+        for (int i = 0; i < mNum; i++) {
+            QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
+            String name = switchInfo.packageName;
+            int position = switchInfo.gesturePosition;
+            LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
+            if (i == 0) {
+                ListString = name + ":" + position;
+            } else {
+                ListString = ListString + ";" + name + ":" + position;
+            }
+        }
+
+
+        return ListString;
+    }
+    
+    public String testlistToString(List<BaseInfo> mSwitchList, int mNum, boolean isFromDialog) {
+        String ListString = "";
+        for (int i = 0; i < mNum; i++) {
+            QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
+             String name = switchInfo.label;
+            int position = switchInfo.gesturePosition;
+            LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
+            if (i == 0) {
+                ListString = name + ":" + position;
+            } else {
+                ListString = ListString + "," + name + ":" + position;
+            }
+        }
+
+        return ListString;
+    }
+    
 
     public List<BaseInfo> StringToList(String mSwitchListFromSp) {
         List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();

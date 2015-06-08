@@ -636,6 +636,8 @@ public class QuickGestureManager {
                         List<BaseInfo> addCommonApp = commonApp.getAddFreePackageName();
                         // 移除的应用包名
                         List<BaseInfo> removeCommonApp = commonApp.getRemoveFreePackageName();
+                        List<BaseInfo> mDefineList = new ArrayList<BaseInfo>();
+
                         // 是否选择使用习惯自动填充
                         boolean flag = commonApp.getCheckValue();
                         if (!flag) {
@@ -643,50 +645,108 @@ public class QuickGestureManager {
                             List<BaseInfo> tempList = new ArrayList<BaseInfo>();
 
                             if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                                for (BaseInfo info : removeCommonApp) {
-                                    for (BaseInfo baseInfo : comList) {
+                                boolean isHasSameName = false;
+                                for (BaseInfo info : comList) {
+                                    for (BaseInfo baseInfo : removeCommonApp) {
                                         if (baseInfo.label.equals(info.label)) {
-                                            tempList.add(baseInfo);
-                                            break;
+                                            isHasSameName = true;
                                         }
                                     }
-                                }
-                            }
-                            comList.remove(tempList);
-
-                            int[] position = new int[11];
-                            int i;
-                            for (i = 0; i < comList.size(); i++) {
-                                position[comList.get(i).gesturePosition] = 1;
-                            }
-                            List<Integer> levelPosition = new ArrayList<Integer>();
-                            for (i = 0; i < position.length; i++) {
-                                if (position[i] == 0) {
-                                    levelPosition.add(i);
+                                    if (!isHasSameName) {
+                                        mDefineList.add(info);
+                                    }
+                                    isHasSameName = false;
                                 }
                             }
 
-                            String resault = "";
-                            for (BaseInfo info : comList) {
-                                QuickGsturebAppInfo appItemInfo = (QuickGsturebAppInfo) info;
-                                resault += appItemInfo.packageName + ":"
-                                        + appItemInfo.gesturePosition + ";";
-                            }
+                            if (removeCommonApp != null && addCommonApp.size() > 0) {
+                                if (removeCommonApp.size() == 0) {
+                                    mDefineList = comList;
+                                }
 
-                            i = 0;
-                            String addResault = "";
-                            for (BaseInfo info : addCommonApp) {
-                                if (i <= levelPosition.size()) {
-                                    QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
-                                    addResault += appInfo.packageName + ":" + levelPosition.get(i)
-                                            + ";";
-                                    i++;
-                                } else {
-                                    break;
+                                // 记录现有的Icon位置
+                                LeoLog.d("QuickGestureManager", "有货要加");
+                                List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
+                                List<Integer> sPosition = new ArrayList<Integer>();
+                                for (int i = 0; i < mDefineList.size(); i++) {
+                                    sPosition.add(mDefineList.get(i).gesturePosition);
+                                    LeoLog.d("QuickGestureManager",
+                                            "已有货的位置 :" + mDefineList.get(i).gesturePosition);
+                                }
+
+                                int k = 0;
+                                for (int i = 0; i < 11; i++) {
+                                    boolean isHasIcon = false;
+                                    for (int j = 0; j < mDefineList.size(); j++) {
+                                        if (i == mDefineList.get(j).gesturePosition) {
+                                            isHasIcon = true;
+                                        }
+                                    }
+                                    if (!isHasIcon && addCommonApp.size() > k) {
+                                        LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
+                                        BaseInfo mInfo = addCommonApp.get(k);
+                                        mInfo.gesturePosition = i;
+                                        mfixPostionList.add(mInfo);
+                                        k++;
+                                    }
+                                }
+
+                                LeoLog.d("QuickGestureManager",
+                                        "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
+                                for (int i = 0; i < mfixPostionList.size(); i++) {
+                                    BaseInfo mInfo = mfixPostionList.get(i);
+                                    mDefineList.add(mInfo);
+                                    LeoLog.d("QuickGestureManager", "霸占了 "
+                                            + mInfo.gesturePosition + "号位");
                                 }
                             }
-                            resault += addResault;
-                            pref.setCommonAppPackageName(resault);
+
+                            if (addCommonApp.size() == 0 && removeCommonApp.size() == 0) {
+                                mDefineList = comList;
+                            }
+
+                            String mChangeList = QuickSwitchManager.getInstance(mContext)
+                                    .listToPackString(mDefineList, mDefineList.size());
+                            LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
+                            pref.setCommonAppPackageName(mChangeList);
+
+                            // int[] position = new int[11];
+                            // int i;
+                            // for (i = 0; i < comList.size(); i++) {
+                            // position[comList.get(i).gesturePosition] = 1;
+                            // }
+                            // List<Integer> levelPosition = new
+                            // ArrayList<Integer>();
+                            // for (i = 0; i < position.length; i++) {
+                            // if (position[i] == 0) {
+                            // levelPosition.add(i);
+                            // }
+                            // }
+                            //
+                            // String resault = "";
+                            // for (BaseInfo info : comList) {
+                            // QuickGsturebAppInfo appItemInfo =
+                            // (QuickGsturebAppInfo) info;
+                            // resault += appItemInfo.packageName + ":"
+                            // + appItemInfo.gesturePosition + ";";
+                            // }
+                            //
+                            // i = 0;
+                            // String addResault = "";
+                            // for (BaseInfo info : addCommonApp) {
+                            // if (i <= levelPosition.size()) {
+                            // QuickGsturebAppInfo appInfo =
+                            // (QuickGsturebAppInfo) info;
+                            // addResault += appInfo.packageName + ":" +
+                            // levelPosition.get(i)
+                            // + ";";
+                            // i++;
+                            // } else {
+                            // break;
+                            // }
+                            // }
+                            // resault += addResault;
+                            // pref.setCommonAppPackageName(resault);
 
                         } else {
                             List<AppLauncherRecorder> removeList = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
