@@ -2,6 +2,7 @@ package com.leo.appmaster.home;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.AppUtil;
 
@@ -17,6 +18,7 @@ import android.widget.TextView;
 public class GradeTipActivity extends BaseActivity implements OnClickListener {
 
 	private TextView mTvMakeSure;
+	private TextView mFeedbackSure;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +26,9 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.layout_show_googleplay_tip);
 		mTvMakeSure = (TextView) findViewById(R.id.tv_make);
+		mFeedbackSure=(TextView) findViewById(R.id.tv_feedback);
 		mTvMakeSure.setOnClickListener(this);
+		mFeedbackSure.setOnClickListener(this);
 	}
 
 	@Override
@@ -69,6 +73,10 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
 		if (v == mTvMakeSure) {
 			openShowGoogleGuide();
 			finish();
+		}else if(v==mFeedbackSure){
+		    Intent intent=new Intent(GradeTipActivity.this,FeedbackActivity.class);
+		    startActivity(intent);
 		}
+		
 	}
 }

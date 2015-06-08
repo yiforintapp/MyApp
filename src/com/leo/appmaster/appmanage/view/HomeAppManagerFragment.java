@@ -45,6 +45,8 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
+import com.leo.appmaster.home.GradeTipActivity;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
@@ -369,7 +371,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 }
                 break;
             case R.id.bg_show_quick_gesture:
-                startQuickGestureActivity();
+                 startQuickGestureActivity();
+//                Intent intent1= new Intent(mActivity,
+//                        GradeTipActivity.class);
+//                startActivity(intent1);
                 break;
         }
     }
