@@ -15,18 +15,38 @@
         android:background="@drawable/dialog_box_install"
         android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/tv_make"
+        <LinearLayout
+            android:id="@+id/grade_bt"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/dlg_right_button_selector"
-            android:gravity="center"
-            android:textSize="16dp"
-            android:text="@string/grade"
-            android:textColor="#ffffff" />
-        
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tv_feedback"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/manager_left_contact_button_selecter"
+                android:gravity="center"
+                android:text="@string/feedback"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_make"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/manager_right_contact_button_selecter"
+                android:gravity="center"
+                android:text="@string/grade"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
         
         <TextView
             android:id="@+id/textView2"
@@ -35,7 +55,7 @@
             android:paddingLeft="34dp"
             android:paddingRight="34dp"
             android:paddingBottom="24dp"
-            android:layout_above="@id/tv_make"
+            android:layout_above="@id/grade_bt"
             android:layout_centerHorizontal="true"
             android:gravity="center"
             android:text="@string/grade_tip"

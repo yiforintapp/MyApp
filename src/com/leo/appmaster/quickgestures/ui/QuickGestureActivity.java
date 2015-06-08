@@ -89,7 +89,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mPre = AppMasterPreference.getInstance(this);
         initUi();
         // LeoEventBus.getDefaultBus().register(this);
-
     }
 
     @Override
