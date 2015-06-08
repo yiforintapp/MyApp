@@ -40,7 +40,6 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -68,15 +67,12 @@ import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
-import com.leo.imageloader.cache.Md5FileNameGenerator;
-import com.leo.imageloader.core.QueueProcessingType;
 
 @SuppressLint({
         "NewApi", "SimpleDateFormat"
@@ -829,7 +825,11 @@ public class AppMasterApplication extends Application {
                                     }
                                 };
                                 Timer timer = new Timer();
-                                timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
+                                long delay = pref.getSplashCurrentStrategy();
+                                if(delay < 0) {
+                                    delay =  AppMasterConfig.TIME_12_HOUR;
+                                }
+                                timer.schedule(recheckTask, delay);
                             }
                         }, new ErrorListener() {
                             @Override
@@ -856,7 +856,11 @@ public class AppMasterApplication extends Application {
                                     }
                                 };
                                 Timer timer = new Timer();
-                                timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
+                                long delay = pref.getSplashCurrentStrategy();
+                                if(delay < 0) {
+                                    delay =  AppMasterConfig.TIME_12_HOUR;
+                                }
+                                timer.schedule(recheckTask, delay);
                             }
                         });
             }
@@ -871,6 +875,9 @@ public class AppMasterApplication extends Application {
             };
             Timer timer = new Timer();
             long delay = pref.getSplashCurrentStrategy() - (curTime - lastLoadTime);
+            if(delay < 0) {
+                delay =  AppMasterConfig.TIME_12_HOUR;
+            }
             timer.schedule(recheckTask, delay);
         }
     }

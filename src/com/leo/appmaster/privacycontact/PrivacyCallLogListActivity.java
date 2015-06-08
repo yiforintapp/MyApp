@@ -331,17 +331,21 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                 // 同一天只显示一次
                 Date time = new Date(date);
                 SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd");
-                String showDateTemp = sd.format(time);
-                if (showDate == null || showDate.size() == 0) {
-                    showDate.add(showDateTemp);
-                    callLog.setShowDate(showDateTemp);
-                } else {
-                    if (!showDate.contains(showDateTemp)) {
+                try {
+                    String showDateTemp = sd.format(time);
+                    if (showDate == null || showDate.size() == 0) {
                         showDate.add(showDateTemp);
                         callLog.setShowDate(showDateTemp);
+                    } else {
+                        if (!showDate.contains(showDateTemp)) {
+                            showDate.add(showDateTemp);
+                            callLog.setShowDate(showDateTemp);
+                        }
                     }
+                    mContactCallLogs.add(callLog);
+                } catch (Exception e) {
+                    
                 }
-                mContactCallLogs.add(callLog);
             }
             cursor.close();
         }
