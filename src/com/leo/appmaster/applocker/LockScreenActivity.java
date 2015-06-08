@@ -578,6 +578,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
 
                 pref.setUnlockCount(pref.getUnlockCount() + 1);
+                //quick gesture unlock count 
+                pref.setNewUserUnlockCount(pref.getNewUserUnlockCount() + 1);
             } else if (mLockMode == LockManager.LOCK_MODE_PURE) {
             }
             pref.setUnlocked(true);

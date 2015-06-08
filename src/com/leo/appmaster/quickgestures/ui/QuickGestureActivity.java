@@ -92,6 +92,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     }
 
+    @Override
+    protected void onStop() {
+        // TODO Auto-generated method stub
+        super.onStop();
+    }
+
     private void initUi() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
         mTitleBar.openBackView();
@@ -394,8 +400,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(int progress) {
-                FloatWindowHelper.mEditQuickAreaFlag = false;
-                mAlarmDialogFlag = false;
                 boolean mLeftBottom = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftBottom;
                 boolean mRightBottm = QuickGestureManager.getInstance(AppMasterApplication
@@ -419,6 +423,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     setSlidingAreaSetting();
                     if (mAlarmDialog != null) {
                         mAlarmDialog.dismiss();
+                        FloatWindowHelper.mEditQuickAreaFlag = false;
+                        mAlarmDialogFlag = false;
+                        updateFloatWindowBackGroudColor();
                     }
                 } else {
                     Toast.makeText(
@@ -427,7 +434,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                     .getResources()
                                     .getString(
                                             R.string.pg_appmanager_quick_gesture_option_dialog_radio_toast_text),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });

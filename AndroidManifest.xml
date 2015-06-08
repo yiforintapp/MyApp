@@ -504,12 +504,6 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureFirstTipAcitvity"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent" >
-        </activity>
-        <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
