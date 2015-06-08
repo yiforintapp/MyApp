@@ -433,15 +433,6 @@ public class QuickGestureManager {
                         if (appInfo != null) {
                             resault.add(appInfo);
                         }
-                        // icon = engine.getAppIcon(pkg);
-                        // if (icon != null) {
-                        // appInfo = new AppItemInfo();
-                        // appInfo.packageName = pkg;
-                        // appInfo.activityName = engine.getActivityName(pkg);
-                        // appInfo.icon = icon;
-                        // appInfo.label = engine.getAppName(pkg);
-                        // dynamicList.add(appInfo);
-                        // }
                     }
                 }
             }
@@ -987,11 +978,4 @@ public class QuickGestureManager {
         AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
     }
 
-    public void removeItemFromAppLaunchRecoder(String packageName) {
-        for (int i = 0; i < mAppLaunchRecorders.size(); i++) {
-            if (mAppLaunchRecorders.get(i).pkg.equals(packageName)) {
-                mAppLaunchRecorders.remove(i);
-            }
-        }
-    }
 }
