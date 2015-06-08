@@ -372,7 +372,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 qgInfo.icon = info.icon;
                 qgInfo.packageName = info.packageName;
                 qgInfo.activityName = info.activityName;
-                if (packagePosition.get(qgInfo.packageName) != null) {
+                if (packagePosition.get(qgInfo.packageName) != null ) {
                     qgInfo.gesturePosition = packagePosition.get(qgInfo.packageName);
                     qgInfo.isFreeDisturb = true;
                     isCheckList.add(qgInfo);
