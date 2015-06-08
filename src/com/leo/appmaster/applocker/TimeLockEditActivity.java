@@ -42,7 +42,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
-import com.leo.appmaster.ui.dialog.LeoSingleLinesInputDialog;
 
 public class TimeLockEditActivity extends BaseActivity implements
         OnClickListener, OnValueChangeListener, Formatter, OnItemClickListener {

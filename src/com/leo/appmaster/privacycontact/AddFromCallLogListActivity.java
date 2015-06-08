@@ -337,7 +337,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         }
                     }
                     mLogFlag = true;// 子线程之前赋值
-                    Message messge = new Message();
+                    Message messge =Message.obtain();
                     count = count + 1;
                     messge.what = count;
                     mHandler.sendMessage(messge);
@@ -372,7 +372,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
                                 AddFromCallLogListActivity.this);
                         if (callLogFlag != null) {
-                            Message messge = new Message();
+                            Message messge = Message.obtain();
                             count = count + 1;
                             messge.what = count;
                             mHandler.sendMessage(messge);
@@ -408,7 +408,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                                     number
                                 }, AddFromCallLogListActivity.this);
                         if (messageFlag != null) {
-                            Message messge = new Message();
+                            Message messge = Message.obtain();
                             count = count + 1;
                             messge.what = count;
                             mHandler.sendMessage(messge);

@@ -1245,7 +1245,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(500);
+        set.setDuration(600);
         set.setInterpolator(new DecelerateInterpolator());
         set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {

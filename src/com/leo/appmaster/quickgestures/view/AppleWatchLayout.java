@@ -132,7 +132,7 @@ public class AppleWatchLayout extends ViewGroup {
         removeAllViews();
         GestureItemView gestureItem = null;
         AppleWatchLayout.LayoutParams lp = null;
-        if(mContainer == null){
+        if(null == mContainer){
             mContainer = (AppleWatchContainer) getParent();
         }
         for (int i = 0; i < infos.size(); i++) {
@@ -176,7 +176,6 @@ public class AppleWatchLayout extends ViewGroup {
             if (info instanceof GestureEmptyItemInfo) {
                 info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
             }
-
             if (info instanceof GestureEmptyItemInfo || info instanceof QuickSwitcherInfo) {
                 gestureItem.setItemIcon(info.icon, false);
             } else {
@@ -184,6 +183,11 @@ public class AppleWatchLayout extends ViewGroup {
             }
             if (info.eventNumber > 0) {
                 gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+            }
+            
+            if(isCurrentLayout()){
+                gestureItem.setVisibility(View.INVISIBLE);
+                Log.i("tag", "invisible");
             }
             gestureItem.setTag(info);
             if(isCurrentLayout()){
@@ -196,12 +200,12 @@ public class AppleWatchLayout extends ViewGroup {
         requestLayout();
 
         if (loadExtra) {
-            postDelayed(new Runnable() {
-                @Override
-                public void run() {
+//            postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
                     fillExtraChildren();
-                }
-            }, 500);
+//                }
+//            }, 800);
         }
 
     }
@@ -1887,8 +1891,8 @@ public class AppleWatchLayout extends ViewGroup {
     private Animator iconAnimator(final View targetView){
         float scale = targetView.getScaleX();
         PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 0f,1.0f);
-        PropertyValuesHolder pvScaleX = PropertyValuesHolder.ofFloat("scaleX", 0f,1.1f*scale,scale);
-        PropertyValuesHolder pvScaleY = PropertyValuesHolder.ofFloat("scaleY", 0f,1.1f*scale,scale);
+        PropertyValuesHolder pvScaleX = PropertyValuesHolder.ofFloat("scaleX", 0f,1.2f*scale,scale);
+        PropertyValuesHolder pvScaleY = PropertyValuesHolder.ofFloat("scaleY", 0f,1.2f*scale,scale);
         
         ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(targetView, pvAlpha,pvScaleX,pvScaleY);
         anim.addListener(new AnimatorListenerAdapter() {
@@ -1907,6 +1911,7 @@ public class AppleWatchLayout extends ViewGroup {
         AnimatorSet partOneSet = new AnimatorSet();
         AnimatorSet partTwoSet = new AnimatorSet();
         AnimatorSet partThreeSet = new AnimatorSet();
+        Animator firstAnim = null,lastAnim = null;
         
         GestureItemView targetItem;
         for (int i = 0; i < 11; i++) {
@@ -1919,20 +1924,26 @@ public class AppleWatchLayout extends ViewGroup {
             }
             iconAnimators[i] = iconAnimator(targetItem);
         }
-     /*   partOneSet.setStartDelay(100);
-        partTwoSet.setStartDelay(200);
-        partThreeSet.setStartDelay(300);*/
+        
         if (direction == 0) {// show from left-center
             partOneSet.playTogether(iconAnimators[0],iconAnimators[4],iconAnimators[8]);
             partTwoSet.playTogether(iconAnimators[1],iconAnimators[5],iconAnimators[9]);
             partThreeSet.playTogether(iconAnimators[2],iconAnimators[6],iconAnimators[10]);
-            set.playSequentially(iconAnimators[7],partOneSet,partTwoSet,partThreeSet,iconAnimators[3]);
+            firstAnim = iconAnimators[7];
+            lastAnim = iconAnimators[3];
         } else if (direction == 1) {// show from left-bottom
             partOneSet.playTogether(iconAnimators[0],iconAnimators[4],iconAnimators[8]);
             partTwoSet.playTogether(iconAnimators[1],iconAnimators[5],iconAnimators[9]);
             partThreeSet.playTogether(iconAnimators[2],iconAnimators[6],iconAnimators[10]);
-            set.playTogether(iconAnimators[7],partOneSet,partTwoSet,partThreeSet,iconAnimators[3]);
+            firstAnim = iconAnimators[7];
+            lastAnim = iconAnimators[3];
         }
+        firstAnim.setDuration(500);
+        partOneSet.setDuration(500).setStartDelay(100);
+        partTwoSet.setDuration(500).setStartDelay(200);
+        partThreeSet.setDuration(500).setStartDelay(300);
+        lastAnim.setDuration(500).setStartDelay(400);
+        set.playTogether(firstAnim,partOneSet,partTwoSet,partThreeSet,lastAnim);
         return set;
     }
 
