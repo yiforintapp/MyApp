@@ -1256,18 +1256,17 @@ public class AppleWatchContainer extends FrameLayout {
         } else {
             targetLayout = mSwitcherLayout;
         }
-//        AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
+        AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(300);
+        set.setDuration(500);
         set.setInterpolator(new DecelerateInterpolator());
-        set.playTogether(tabAnimator, titleAnimator/*, iconAnimatorSet*/);
+        set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
-
             @Override
             public void onAnimationStart(Animator animation) {
                 mStartShowingTime = System.currentTimeMillis();
                 isAnimating = true;
-                targetLayout.setVisibility(View.VISIBLE);
+                //targetLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -1282,13 +1281,11 @@ public class AppleWatchContainer extends FrameLayout {
                     layout = mSwitcherLayout;
                 }
                 layout.post(new Runnable() {
-
                     @Override
                     public void run() {
                         layout.fillExtraChildren();
                     }
                 });
-
                 run.run();
             }
         });
