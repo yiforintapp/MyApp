@@ -712,22 +712,23 @@ public class QuickGestureManager {
                             pref.setCommonAppPackageName(mChangeList);
 
                         } else {
-                            
-//                            if (removeCommonApp != null && removeCommonApp.size() > 0) {
-//                                boolean isHasSameName = false;
-//                                for (BaseInfo info : comList) {
-//                                    for (BaseInfo baseInfo : removeCommonApp) {
-//                                        if (baseInfo.label.equals(info.label)) {
-//                                            isHasSameName = true;
-//                                        }
-//                                    }
-//                                    if (!isHasSameName) {
-//                                        mDefineList.add(info);
-//                                    }
-//                                    isHasSameName = false;
-//                                }
-//                            }
-                            
+
+                            // if (removeCommonApp != null &&
+                            // removeCommonApp.size() > 0) {
+                            // boolean isHasSameName = false;
+                            // for (BaseInfo info : comList) {
+                            // for (BaseInfo baseInfo : removeCommonApp) {
+                            // if (baseInfo.label.equals(info.label)) {
+                            // isHasSameName = true;
+                            // }
+                            // }
+                            // if (!isHasSameName) {
+                            // mDefineList.add(info);
+                            // }
+                            // isHasSameName = false;
+                            // }
+                            // }
+
                             List<AppLauncherRecorder> removeList = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
                             ArrayList<AppLauncherRecorder> record = QuickGestureManager
                                     .getInstance(mContext).mAppLaunchRecorders;
@@ -969,5 +970,13 @@ public class QuickGestureManager {
         notification.when = System.currentTimeMillis();
         notificationManager.notify(20150603, notification);
         AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
+    }
+
+    public void removeItemFromAppLaunchRecoder(String packageName) {
+        for (int i = 0; i < mAppLaunchRecorders.size(); i++) {
+            if (mAppLaunchRecorders.get(i).pkg.equals(packageName)) {
+                mAppLaunchRecorders.remove(i);
+            }
+        }
     }
 }
