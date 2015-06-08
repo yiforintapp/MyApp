@@ -1243,11 +1243,16 @@ public class AppleWatchContainer extends FrameLayout {
         }
         
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",mCornerTabs.getHeight(), 0);
-        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1);
+        tabAnimator.setDuration(500);
+        tabAnimator.addListener(new AnimatorListenerAdapter() {
+            public void onAnimationStart(Animator animation) {
+                mCornerTabs.setVisibility(View.VISIBLE);
+            };
+        });
+        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1).setDuration(880);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
+        
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(640);
-        set.setInterpolator(new DecelerateInterpolator());
         set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -1273,6 +1278,8 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void showCloseAnimation() {
+        final long a = System.currentTimeMillis();
+        
         int direction = mShowOrientation == Orientation.Left ? 0 : 2;
         AppleWatchLayout targetLayout;
         if (mCurrentGestureType == GType.DymicLayout) {
@@ -1291,11 +1298,10 @@ public class AppleWatchContainer extends FrameLayout {
         
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 0, mCornerTabs.getHeight());
-        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0);
+        tabAnimator.setDuration(600);
+        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0).setDuration(500);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
         AnimatorSet set = new AnimatorSet();
-        set.setDuration(640);
-        set.setInterpolator(new DecelerateInterpolator());
         set.playTogether(tabAnimator, titleAnimator , iconAnimatorSet );
         set.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -1309,6 +1315,7 @@ public class AppleWatchContainer extends FrameLayout {
                 activity.finish();
                 isAnimating = false;
                 super.onAnimationEnd(animation);
+                Log.i("close time", System.currentTimeMillis() - a+" ");
             }
         });
         set.start();
