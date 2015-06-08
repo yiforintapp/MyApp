@@ -115,10 +115,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         boolean isFirstSlidingOpenQuick = pre.getFristSlidingTip();
         if (!isFirstSlidingOpenQuick) {
             boolean setMiuiFist = pre.getQuickGestureMiuiSettingFirstDialogTip();
-            boolean flag = BuildProperties.isMIUI();
+            boolean isMiui = BuildProperties.isMIUI();
             boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(this);
             boolean dialogShow = pre.getQGSettingFirstDialogTip();
-            if ((flag && setMiuiFist && !dialogShow && isOpenWindow && !isFirstSlidingOpenQuick) ||( !setMiuiFist && isOpenWindow)) {
+            if ((isMiui && setMiuiFist && !dialogShow && isOpenWindow && !isFirstSlidingOpenQuick) ||(isMiui &&  !setMiuiFist && isOpenWindow)) {
                 showQuickGestureSettingDialog();
             }
         }

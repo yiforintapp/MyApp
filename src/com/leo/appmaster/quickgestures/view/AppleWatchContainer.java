@@ -28,7 +28,6 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
@@ -38,7 +37,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -53,7 +51,7 @@ public class AppleWatchContainer extends FrameLayout {
     public static final int mLastTimeMost = 2;
     public static final int mLastTimeSwitch = 3;
     private AppMasterPreference mPref;
-    private int mCurrentLayout = 1;
+    private int mCurrentLayout = 3;
     private List<QuickSwitcherInfo> mSwitchList;
 
     public static enum Orientation {
@@ -67,7 +65,7 @@ public class AppleWatchContainer extends FrameLayout {
     private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private AppleWatchTabs mCornerTabs;
     private TextView mTvCurName;
-    private GType mCurrentGestureType = GType.DymicLayout;
+    private GType mCurrentGestureType = GType.SwitcherLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
     private Orientation mShowOrientation = Orientation.Left;
@@ -127,7 +125,6 @@ public class AppleWatchContainer extends FrameLayout {
         } else if (mCurrentLayout == mLastTimeMost) {
             mCurrentGestureType = GType.MostUsedLayout;
         } else {
-            // Switch
             mCurrentGestureType = GType.SwitcherLayout;
         }
     }
@@ -1234,7 +1231,6 @@ public class AppleWatchContainer extends FrameLayout {
 
     }
 
-
     public GType getCurrentGestureType() {
         return mCurrentGestureType;
     }
@@ -1311,11 +1307,12 @@ public class AppleWatchContainer extends FrameLayout {
             LeoLog.d("AppleWatchContainer", "关闭是 : mLastTimeSwitch");
             mPref.setLastTimeLayout(mLastTimeSwitch);
         }
-//        AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
+        // AnimatorSet iconAnimatorSet =
+        // targetLayout.makeIconCloseAnimator(direction);
         AnimatorSet set = new AnimatorSet();
         set.setDuration(300);
         set.setInterpolator(new DecelerateInterpolator());
-        set.playTogether(tabAnimator, titleAnimator/*, iconAnimatorSet*/);
+        set.playTogether(tabAnimator, titleAnimator/* , iconAnimatorSet */);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -1573,7 +1570,7 @@ public class AppleWatchContainer extends FrameLayout {
         int iconSize = mSwitcherLayout.getIconSize();
         if (info.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
             tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-//            info.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+            // info.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
             tv.setItemIcon(info.switchIcon[0], false);
         }
         isAnimating = false;

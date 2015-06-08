@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -24,7 +23,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -40,13 +38,12 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
-import com.leo.appmaster.privacycontact.PrivacyContactActivity;
-import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
+import com.leo.appmaster.quickgestures.view.EventAction;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -66,7 +63,8 @@ public class QuickGestureManager {
     public List<ContactCallLog> mCallLogs;
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
-    private Drawable[] mEmptyIcon;
+    private Drawable[] mColorBgIcon;
+    private Drawable mEmptyIcon;
     public int mSlidAreaSize;
     public boolean isShowPrivacyMsm = false;
     public boolean isShowPrivacyCallLog = false;
@@ -92,38 +90,42 @@ public class QuickGestureManager {
     }
 
     public void init() {
-        mDynamicList = new ArrayList<BaseInfo>();
-        mMostUsedList = new ArrayList<BaseInfo>();
-        loadAppLaunchReorder();
-        preloadEmptyIcon();
-        mMatcher = new ColorMatcher();
-        Bitmap bmp;
-        for (Drawable drawable : mEmptyIcon) {
-            bmp = ((BitmapDrawable) drawable).getBitmap();
-            mMatcher.addBitmapSample(bmp);
-        }
-        mDrawableColors = new HashMap<Drawable, Bitmap>();
+        if (!mInited) {
+            mDynamicList = new ArrayList<BaseInfo>();
+            mMostUsedList = new ArrayList<BaseInfo>();
+            loadAppLaunchReorder();
+            preloadEmptyIcon();
+            mMatcher = new ColorMatcher();
+            Bitmap bmp;
+            for (Drawable drawable : mColorBgIcon) {
+                bmp = ((BitmapDrawable) drawable).getBitmap();
+                mMatcher.addBitmapSample(bmp);
+            }
+            mDrawableColors = new HashMap<Drawable, Bitmap>();
 
-        // TODO switcher init
-        QuickSwitchManager.getInstance(mContext).init();
-        mInited = true;
+            // TODO switcher init
+            QuickSwitchManager.getInstance(mContext).init();
+            mInited = true;
+        }
     }
 
     public void unInit() {
-        mDynamicList.clear();
-        mMostUsedList.clear();
-        mDynamicList = null;
-        mMostUsedList = null;
-        mAppLaunchRecorders.clear();
-        mAppLaunchRecorders = null;
-        mEmptyIcon = null;
-        mMatcher.clearItem();
-        mMatcher = null;
-        mDrawableColors.clear();
-        mDrawableColors = null;
-        // TODO Switcher uninit
-        QuickSwitchManager.getInstance(mContext).unInit();
-        mInited = false;
+        if (mInited) {
+            mDynamicList.clear();
+            mMostUsedList.clear();
+            mDynamicList = null;
+            mMostUsedList = null;
+            mAppLaunchRecorders.clear();
+            mAppLaunchRecorders = null;
+            mColorBgIcon = null;
+            mMatcher.clearItem();
+            mMatcher = null;
+            mDrawableColors.clear();
+            mDrawableColors = null;
+            // TODO Switcher uninit
+            QuickSwitchManager.getInstance(mContext).unInit();
+            mInited = false;
+        }
     }
 
     public Bitmap getMatchedColor(Drawable drawable) {
@@ -219,48 +221,71 @@ public class QuickGestureManager {
                 }
             }
         }
-        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        List<RecentTaskInfo> recentTasks = am.getRecentTasks(50,
-                ActivityManager.RECENT_WITH_EXCLUDED);
-        String pkg;
+
+        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
+        ArrayList<AppItemInfo> datas = engine.getLaunchTimeSortedApps();
         Drawable icon;
         AppItemInfo appInfo;
-        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
+        String pkg;
         List<String> pkgs = new ArrayList<String>();
-        for (RecentTaskInfo recentTaskInfo : recentTasks) {
-            if (dynamicList.size() > 11)
-                break;
-            pkg = recentTaskInfo.baseIntent.getComponent().getPackageName();
-            if (!pkgs.contains(pkg)) {
-                pkgs.add(pkg);
-                icon = engine.getAppIcon(pkg);
-                if (icon != null) {
-                    appInfo = new AppItemInfo();
-                    appInfo.packageName = pkg;
-                    appInfo.activityName = engine.getActivityName(pkg);
-                    appInfo.icon = icon;
-                    appInfo.label = engine.getAppName(pkg);
-                    dynamicList.add(appInfo);
+        if (datas.size() > 0) {
+            for (AppItemInfo appItemInfo : datas) {
+                if (dynamicList.size() > 11)
+                    break;
+                if (!pkgs.contains(appItemInfo.packageName)) {
+                    pkgs.add(appItemInfo.packageName);
+                    icon = appItemInfo.icon;
+                    if (icon != null) {
+                        appInfo = new AppItemInfo();
+                        appInfo.packageName = appItemInfo.packageName;
+                        appInfo.activityName = appItemInfo.activityName;
+                        appInfo.icon = icon;
+                        appInfo.label = appItemInfo.label;
+                        dynamicList.add(appInfo);
+                    }
+                }
+            }
+        } else {
+            ActivityManager am = (ActivityManager) mContext
+                    .getSystemService(Context.ACTIVITY_SERVICE);
+            List<RecentTaskInfo> recentTasks = am.getRecentTasks(20,
+                    ActivityManager.RECENT_WITH_EXCLUDED);
+            for (RecentTaskInfo recentTaskInfo : recentTasks) {
+                if (dynamicList.size() > 11)
+                    break;
+                pkg = recentTaskInfo.baseIntent.getComponent().getPackageName();
+                if (!pkgs.contains(pkg)) {
+                    pkgs.add(pkg);
+                    icon = engine.getAppIcon(pkg);
+                    if (icon != null) {
+                        appInfo = new AppItemInfo();
+                        appInfo.packageName = pkg;
+                        appInfo.activityName = engine.getActivityName(pkg);
+                        appInfo.icon = icon;
+                        appInfo.label = engine.getAppName(pkg);
+                        dynamicList.add(appInfo);
+                    }
                 }
             }
         }
+
         return dynamicList;
     }
 
     private void preloadEmptyIcon() {
         Resources res = mContext.getResources();
-        mEmptyIcon = new Drawable[11];
-        mEmptyIcon[0] = res.getDrawable(R.drawable.switch_orange);
-        mEmptyIcon[1] = res.getDrawable(R.drawable.switch_green);
-        mEmptyIcon[2] = res.getDrawable(R.drawable.seitch_purple);
-        mEmptyIcon[3] = res.getDrawable(R.drawable.switch_red);
-        mEmptyIcon[4] = res.getDrawable(R.drawable.switch_blue);
-        mEmptyIcon[5] = res.getDrawable(R.drawable.switch_blue_2);
-        mEmptyIcon[6] = res.getDrawable(R.drawable.switch_blue_3);
-        mEmptyIcon[7] = res.getDrawable(R.drawable.switch_green_2);
-        mEmptyIcon[8] = res.getDrawable(R.drawable.switch_orange_2);
-        mEmptyIcon[9] = res.getDrawable(R.drawable.switch_purple_2);
-        mEmptyIcon[10] = res.getDrawable(R.drawable.switch_red_2);
+        mColorBgIcon = new Drawable[11];
+        mColorBgIcon[0] = res.getDrawable(R.drawable.switch_orange);
+        mColorBgIcon[1] = res.getDrawable(R.drawable.switch_green);
+        mColorBgIcon[2] = res.getDrawable(R.drawable.seitch_purple);
+        mColorBgIcon[3] = res.getDrawable(R.drawable.switch_red);
+        mColorBgIcon[4] = res.getDrawable(R.drawable.switch_blue);
+        mColorBgIcon[5] = res.getDrawable(R.drawable.switch_blue_2);
+        mColorBgIcon[6] = res.getDrawable(R.drawable.switch_blue_3);
+        mColorBgIcon[7] = res.getDrawable(R.drawable.switch_green_2);
+        mColorBgIcon[8] = res.getDrawable(R.drawable.switch_orange_2);
+        mColorBgIcon[9] = res.getDrawable(R.drawable.switch_purple_2);
+        mColorBgIcon[10] = res.getDrawable(R.drawable.switch_red_2);
     }
 
     public void stopFloatWindow() {
@@ -354,32 +379,72 @@ public class QuickGestureManager {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = QuickGestureManager
                 .getInstance(mContext).mAppLaunchRecorders;
-        AppLoadEngine engin = AppLoadEngine.getInstance(mContext);
-        Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
-        int i = 0;
-        AppItemInfo info;
-        QuickGsturebAppInfo temp = null;
-        while (recorder.hasNext()) {
-            AppLauncherRecorder recorderAppInfo = recorder.next();
-            if (recorderAppInfo.launchCount > 0) {
-                info = engin.getAppInfo(recorderAppInfo.pkg);
-                if (info == null)
-                    continue;
-                if (i >= 11) {
-                    break;
-                } else {
-                    temp = new QuickGsturebAppInfo();
-                    temp.packageName = info.packageName;
-                    temp.activityName = info.activityName;
-                    temp.label = info.label;
-                    temp.icon = info.icon;
-                    temp.gesturePosition = i;
-                    resault.add(temp);
-                    i++;
+        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
+        if (recorderApp.size() > 0) {
+            Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
+            int i = 0;
+            AppItemInfo info;
+            QuickGsturebAppInfo temp = null;
+            while (recorder.hasNext()) {
+                AppLauncherRecorder recorderAppInfo = recorder.next();
+                if (recorderAppInfo.launchCount > 0) {
+                    info = engine.getAppInfo(recorderAppInfo.pkg);
+                    if (info == null)
+                        continue;
+                    if (i >= 11) {
+                        break;
+                    } else {
+                        temp = new QuickGsturebAppInfo();
+                        temp.packageName = info.packageName;
+                        temp.activityName = info.activityName;
+                        temp.label = info.label;
+                        temp.icon = info.icon;
+                        temp.gesturePosition = i;
+                        resault.add(temp);
+                        i++;
+                    }
+                }
+            }
+        } else {
+            ArrayList<AppItemInfo> datas = engine.getLaunchTimeSortedApps();
+            if (datas.size() > 0) {
+                for (AppItemInfo appItemInfo : datas) {
+                    if (resault.size() > 11)
+                        break;
+                    else
+                        resault.add(appItemInfo);
+                }
+            } else {
+                ActivityManager am = (ActivityManager) mContext
+                        .getSystemService(Context.ACTIVITY_SERVICE);
+                List<RecentTaskInfo> recentTasks = am.getRecentTasks(50,
+                        ActivityManager.RECENT_WITH_EXCLUDED);
+                String pkg;
+                AppItemInfo appInfo;
+                List<String> pkgs = new ArrayList<String>();
+                for (RecentTaskInfo recentTaskInfo : recentTasks) {
+                    if (resault.size() > 11)
+                        break;
+                    pkg = recentTaskInfo.baseIntent.getComponent().getPackageName();
+                    if (!pkgs.contains(pkg)) {
+                        pkgs.add(pkg);
+                        appInfo = engine.getAppInfo(pkg);
+                        if (appInfo != null) {
+                            resault.add(appInfo);
+                        }
+                        // icon = engine.getAppIcon(pkg);
+                        // if (icon != null) {
+                        // appInfo = new AppItemInfo();
+                        // appInfo.packageName = pkg;
+                        // appInfo.activityName = engine.getActivityName(pkg);
+                        // appInfo.icon = icon;
+                        // appInfo.label = engine.getAppName(pkg);
+                        // dynamicList.add(appInfo);
+                        // }
+                    }
                 }
             }
         }
-
         return resault;
     }
 
@@ -536,10 +601,14 @@ public class QuickGestureManager {
     }
 
     public Drawable applyEmptyIcon() {
-        Drawable icon = null;
-        int index = (int) (Math.random() * 10);
-        icon = mEmptyIcon[index];
-        return icon;
+        if (mEmptyIcon == null) {
+            mEmptyIcon = mContext.getResources().getDrawable(R.drawable.gesture_empty);
+        }
+        return mEmptyIcon;
+        // Drawable icon = null;
+        // int index = (int) (Math.random() * 10);
+        // icon = mColorBgIcon[index];
+        // return icon;
     }
 
     /**
@@ -567,6 +636,8 @@ public class QuickGestureManager {
                         List<BaseInfo> addCommonApp = commonApp.getAddFreePackageName();
                         // 移除的应用包名
                         List<BaseInfo> removeCommonApp = commonApp.getRemoveFreePackageName();
+                        List<BaseInfo> mDefineList = new ArrayList<BaseInfo>();
+
                         // 是否选择使用习惯自动填充
                         boolean flag = commonApp.getCheckValue();
                         if (!flag) {
@@ -574,50 +645,108 @@ public class QuickGestureManager {
                             List<BaseInfo> tempList = new ArrayList<BaseInfo>();
 
                             if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                                for (BaseInfo info : removeCommonApp) {
-                                    for (BaseInfo baseInfo : comList) {
+                                boolean isHasSameName = false;
+                                for (BaseInfo info : comList) {
+                                    for (BaseInfo baseInfo : removeCommonApp) {
                                         if (baseInfo.label.equals(info.label)) {
-                                            tempList.add(baseInfo);
-                                            break;
+                                            isHasSameName = true;
                                         }
                                     }
-                                }
-                            }
-                            comList.remove(tempList);
-
-                            int[] position = new int[11];
-                            int i;
-                            for (i = 0; i < comList.size(); i++) {
-                                position[comList.get(i).gesturePosition] = 1;
-                            }
-                            List<Integer> levelPosition = new ArrayList<Integer>();
-                            for (i = 0; i < position.length; i++) {
-                                if (position[i] == 0) {
-                                    levelPosition.add(i);
+                                    if (!isHasSameName) {
+                                        mDefineList.add(info);
+                                    }
+                                    isHasSameName = false;
                                 }
                             }
 
-                            String resault = "";
-                            for (BaseInfo info : comList) {
-                                QuickGsturebAppInfo appItemInfo = (QuickGsturebAppInfo) info;
-                                resault += appItemInfo.packageName + ":"
-                                        + appItemInfo.gesturePosition + ";";
-                            }
+                            if (removeCommonApp != null && addCommonApp.size() > 0) {
+                                if (removeCommonApp.size() == 0) {
+                                    mDefineList = comList;
+                                }
 
-                            i = 0;
-                            String addResault = "";
-                            for (BaseInfo info : addCommonApp) {
-                                if (i <= levelPosition.size()) {
-                                    QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
-                                    addResault += appInfo.packageName + ":" + levelPosition.get(i)
-                                            + ";";
-                                    i++;
-                                } else {
-                                    break;
+                                // 记录现有的Icon位置
+                                LeoLog.d("QuickGestureManager", "有货要加");
+                                List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
+                                List<Integer> sPosition = new ArrayList<Integer>();
+                                for (int i = 0; i < mDefineList.size(); i++) {
+                                    sPosition.add(mDefineList.get(i).gesturePosition);
+                                    LeoLog.d("QuickGestureManager",
+                                            "已有货的位置 :" + mDefineList.get(i).gesturePosition);
+                                }
+
+                                int k = 0;
+                                for (int i = 0; i < 11; i++) {
+                                    boolean isHasIcon = false;
+                                    for (int j = 0; j < mDefineList.size(); j++) {
+                                        if (i == mDefineList.get(j).gesturePosition) {
+                                            isHasIcon = true;
+                                        }
+                                    }
+                                    if (!isHasIcon && addCommonApp.size() > k) {
+                                        LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
+                                        BaseInfo mInfo = addCommonApp.get(k);
+                                        mInfo.gesturePosition = i;
+                                        mfixPostionList.add(mInfo);
+                                        k++;
+                                    }
+                                }
+
+                                LeoLog.d("QuickGestureManager",
+                                        "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
+                                for (int i = 0; i < mfixPostionList.size(); i++) {
+                                    BaseInfo mInfo = mfixPostionList.get(i);
+                                    mDefineList.add(mInfo);
+                                    LeoLog.d("QuickGestureManager", "霸占了 "
+                                            + mInfo.gesturePosition + "号位");
                                 }
                             }
-                            resault += addResault;
-                            pref.setCommonAppPackageName(resault);
+
+                            if (addCommonApp.size() == 0 && removeCommonApp.size() == 0) {
+                                mDefineList = comList;
+                            }
+
+                            String mChangeList = QuickSwitchManager.getInstance(mContext)
+                                    .listToPackString(mDefineList, mDefineList.size());
+                            LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
+                            pref.setCommonAppPackageName(mChangeList);
+
+                            // int[] position = new int[11];
+                            // int i;
+                            // for (i = 0; i < comList.size(); i++) {
+                            // position[comList.get(i).gesturePosition] = 1;
+                            // }
+                            // List<Integer> levelPosition = new
+                            // ArrayList<Integer>();
+                            // for (i = 0; i < position.length; i++) {
+                            // if (position[i] == 0) {
+                            // levelPosition.add(i);
+                            // }
+                            // }
+                            //
+                            // String resault = "";
+                            // for (BaseInfo info : comList) {
+                            // QuickGsturebAppInfo appItemInfo =
+                            // (QuickGsturebAppInfo) info;
+                            // resault += appItemInfo.packageName + ":"
+                            // + appItemInfo.gesturePosition + ";";
+                            // }
+                            //
+                            // i = 0;
+                            // String addResault = "";
+                            // for (BaseInfo info : addCommonApp) {
+                            // if (i <= levelPosition.size()) {
+                            // QuickGsturebAppInfo appInfo =
+                            // (QuickGsturebAppInfo) info;
+                            // addResault += appInfo.packageName + ":" +
+                            // levelPosition.get(i)
+                            // + ";";
+                            // i++;
+                            // } else {
+                            // break;
+                            // }
+                            // }
+                            // resault += addResault;
+                            // pref.setCommonAppPackageName(resault);
 
                         } else {
                             List<AppLauncherRecorder> removeList = new ArrayList<QuickGestureManager.AppLauncherRecorder>();

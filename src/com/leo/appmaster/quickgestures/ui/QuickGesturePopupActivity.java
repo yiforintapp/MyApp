@@ -21,7 +21,6 @@ import com.leo.appmaster.utils.LeoLog;
 public class QuickGesturePopupActivity extends BaseActivity {
 
     private AppleWatchContainer mContainer;
-    private AppMasterPreference mPref;
     private int mNowLayout;
 
     @Override
@@ -34,13 +33,12 @@ public class QuickGesturePopupActivity extends BaseActivity {
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
-        mPref = AppMasterPreference.getInstance(this);
         mNowLayout = mContainer.getNowLayout();
-        LeoLog.d("AppleWatchContainer", "刚来Activity！show 出的是：" + mNowLayout);
 
         fillWhichLayoutFitst(mNowLayout);
         fillTwoLayout(mNowLayout);
         overridePendingTransition(-1, -1);
+
     }
 
     private void fillWhichLayoutFitst(int mNowLayout) {
@@ -66,7 +64,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 mContainer.showOpenAnimation(new Runnable() {
                     @Override
                     public void run() {
-//                        fillTwoLayout(mNowLayout);
+                        // fillTwoLayout(mNowLayout);
                     }
 
                 });

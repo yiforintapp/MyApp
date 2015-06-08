@@ -146,8 +146,7 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
-                                // 去除系统短信未读提示
-                                Log.e("#######", ""+isShowTip);
+                                // cancel system no read message tip
                                 if (isShowTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
@@ -336,7 +335,7 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
-                                // 去除系统短信未读提示
+                                // cancel system no read message tip
                                 if (isShowTip && mLeftBottomView == null) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
@@ -543,7 +542,7 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
-                                // 去除系统短信未读提示
+                             // cancel system no read message tip
                                 if (isShowTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
@@ -729,7 +728,7 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
-                                // 去除系统短信未读提示
+                             // cancel system no read message tip
                                 if (isShowTip && mRightBottomView == null) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
