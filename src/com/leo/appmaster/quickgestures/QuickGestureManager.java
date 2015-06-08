@@ -21,6 +21,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 import android.view.View;
@@ -228,24 +229,7 @@ public class QuickGestureManager {
         AppItemInfo appInfo;
         String pkg;
         List<String> pkgs = new ArrayList<String>();
-        if (datas.size() > 0) {
-            for (AppItemInfo appItemInfo : datas) {
-                if (dynamicList.size() > 11)
-                    break;
-                if (!pkgs.contains(appItemInfo.packageName)) {
-                    pkgs.add(appItemInfo.packageName);
-                    icon = appItemInfo.icon;
-                    if (icon != null) {
-                        appInfo = new AppItemInfo();
-                        appInfo.packageName = appItemInfo.packageName;
-                        appInfo.activityName = appItemInfo.activityName;
-                        appInfo.icon = icon;
-                        appInfo.label = appItemInfo.label;
-                        dynamicList.add(appInfo);
-                    }
-                }
-            }
-        } else {
+        if (Build.VERSION.SDK_INT <= 19 || datas.size() < 0) {
             ActivityManager am = (ActivityManager) mContext
                     .getSystemService(Context.ACTIVITY_SERVICE);
             List<RecentTaskInfo> recentTasks = am.getRecentTasks(20,
@@ -263,6 +247,23 @@ public class QuickGestureManager {
                         appInfo.activityName = engine.getActivityName(pkg);
                         appInfo.icon = icon;
                         appInfo.label = engine.getAppName(pkg);
+                        dynamicList.add(appInfo);
+                    }
+                }
+            }
+        } else {
+            for (AppItemInfo appItemInfo : datas) {
+                if (dynamicList.size() > 11)
+                    break;
+                if (!pkgs.contains(appItemInfo.packageName)) {
+                    pkgs.add(appItemInfo.packageName);
+                    icon = appItemInfo.icon;
+                    if (icon != null) {
+                        appInfo = new AppItemInfo();
+                        appInfo.packageName = appItemInfo.packageName;
+                        appInfo.activityName = appItemInfo.activityName;
+                        appInfo.icon = icon;
+                        appInfo.label = appItemInfo.label;
                         dynamicList.add(appInfo);
                     }
                 }

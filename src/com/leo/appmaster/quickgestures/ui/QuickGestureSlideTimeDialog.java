@@ -5,6 +5,8 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -87,7 +89,9 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             }
         });
         setContentView(dlgView);
+
         setCanceledOnTouchOutside(true);
+        
     }
 
     public boolean getJustHometCheckStatus() {
@@ -204,7 +208,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             mUpdateFilterApp.updateFilterAppClickListener();
         }
     }
-
     @Override
     protected void onStop() {
         super.onStop();

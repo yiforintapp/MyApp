@@ -970,7 +970,7 @@ public class AppLoadEngine extends BroadcastReceiver {
         public int compare(AppItemInfo lhs, AppItemInfo rhs) {
             Long a = lhs.lastLaunchTime;
             Long b = rhs.lastLaunchTime;
-            return b.compareTo(a);
+            return a.compareTo(b);
         }
     }
 

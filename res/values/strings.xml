@@ -671,7 +671,7 @@
     <string name="quick_gesture_dialog_tip_contniue_left_bt">继续</string>
     <string name="quick_gesture_dialog_tip_contniue_right_bt">稍后设置</string>
     <string name="quick_gesture_miui_tip_button_text">知道了</string>
-    <string name="quick_gesture_dynamic">动态</string>
+    <string name="quick_gesture_dynamic">最近使用</string>
     <string name="quick_gesture_switcher">快捷开关</string>
     <string name="quick_gesture_most_used">最常使用</string>
     <string name="quick_gesture_first_open_sliding_toast">开启快捷之旅</string>
@@ -693,7 +693,8 @@
     <string name="quick_guesture_lockscreen">锁屏</string>
     <string name="pass_gesture_change">切换密码方式</string>
     <string name="permission_open_tip_notification_title">设置快捷手势</string>
-      <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
+    <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">开启快捷手势，只要轻松一划，想要的应用/开关尽在眼前</string>
     <!-- version 2.3 end -->
 
 </resources>

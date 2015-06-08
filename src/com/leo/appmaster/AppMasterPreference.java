@@ -41,6 +41,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LAST_ALARM_SET_TIME = "last_alarm_set_time";
     public static final String PREF_RECOMMEND_LOCK_PERCENT = "recommend_lock_percent";
     public static final String PREF_UNLOCK_COUNT = "unlock_count";
+    public static final String PREF_NEW_USER_UNLOCK_COUNT = "new_user_unlock_count";
     public static final String PREF_GUIDE_TIP_SHOW = "google_play_guide_tip_show";
     public static final String PREF_HIDE_THEME_PKGS = "hide_theme_packages";
     public static final String PREF_HAVE_EVER_LOAD_APPS = "have_ever_load_apps";
@@ -176,6 +177,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_LAST_TIME_LAYOUT = "quick_gesture_last_time_layout";
     public static final String PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION = "quick_permisson_open";
     public static final String PREF_QUICK_GESTURE_FIRST_OPEN_QUICK_POPUP = "quick_gesture_first_open_popu";
+    public static final String PREF_UPDATE_QUICK_GESTURE_USER = "update_quick_gesture_user";
+    public static final String PREF_CURRENT_APP_VERSION_CODE = "app_version_code";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -230,7 +233,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mUsedTraffic = -1;
     private long mItselfMonthTraffic = -1;
     private int mPretendLock = -1;
-
+    private long mNewUserUnlockCount = -1;
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
 
@@ -602,6 +605,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             mUnlockCount = mPref.getLong(PREF_UNLOCK_COUNT, 0);
         }
         return mUnlockCount;
+    }
+
+    // TODO
+    public void setNewUserUnlockCount(long count) {
+        mNewUserUnlockCount = count;
+        mPref.edit().putLong(PREF_NEW_USER_UNLOCK_COUNT, count).commit();
+    }
+
+    public long getNewUserUnlockCount() {
+        if (mNewUserUnlockCount < 0) {
+            mNewUserUnlockCount = mPref.getLong(PREF_NEW_USER_UNLOCK_COUNT, 0);
+        }
+        return mNewUserUnlockCount;
     }
 
     public void setRecommendLockPercent(float percent) {
@@ -1710,13 +1726,21 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getQuickPermissonOpenFirstNotificatioin() {
         return mPref.getBoolean(PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION, false);
     }
-    // public void setQuickGestureOpenFirstPopu(boolean flag) {
-    // mPref.edit().putBoolean(PREF_QUICK_GESTURE_FIRST_OPEN_QUICK_POPUP,
-    // flag).commit();
-    // }
-    //
-    // public boolean getQuickGestureOpenFirstPopu(boolean flag) {
-    // return mPref.getBoolean(PREF_QUICK_GESTURE_FIRST_OPEN_QUICK_POPUP,
-    // false);
-    // }
+
+    public void setIsUpdateQuickGestureUser(boolean flag) {
+        mPref.edit().putBoolean(PREF_UPDATE_QUICK_GESTURE_USER,
+                flag).commit();
+    }
+
+    public boolean getIsUpdateQuickGestureUser() {
+        return mPref.getBoolean(PREF_UPDATE_QUICK_GESTURE_USER, false);
+    }
+
+    public void setCurrentAppVersionCode(int versionCode) {
+        mPref.edit().putInt(PREF_CURRENT_APP_VERSION_CODE, versionCode).commit();
+    }
+
+    public int getCurrentAppVersionCode() {
+        return mPref.getInt(PREF_CURRENT_APP_VERSION_CODE, -1);
+    }
 }

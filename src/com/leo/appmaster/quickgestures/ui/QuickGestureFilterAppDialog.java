@@ -25,6 +25,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -121,6 +122,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                         }
                     } else if (mFlag == 1) {
                         mRemoveFreePackageName.add(selectInfl);
+                        
                     }
 
                     if (mFlag == 2) {
@@ -149,7 +151,6 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
 
                             ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
                                     .setDefaultRecommendApp(selectInfl, true);
-
                             mSwitchListSize += 1;
                         }
                     } else if (mFlag == 3) {
@@ -321,8 +322,11 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             }
         }
         if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+            Collections.sort(mFreeDisturbApp, new NameComparator());
+            Collections.sort(mDisturbList, new NameComparator());
             mFreeDisturbApp.addAll(mDisturbList);
         } else {
+            Collections.sort(mDisturbList, new NameComparator());
             mFreeDisturbApp = mDisturbList;
         }
         mGridView.setDatas(mFreeDisturbApp, 4, 4);

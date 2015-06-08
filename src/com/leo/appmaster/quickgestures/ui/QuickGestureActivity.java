@@ -9,6 +9,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -89,6 +90,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         initUi();
         // LeoEventBus.getDefaultBus().register(this);
 
+    }
+
+    @Override
+    protected void onStop() {
+        // TODO Auto-generated method stub
+        super.onStop();
     }
 
     private void initUi() {
@@ -393,8 +400,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(int progress) {
-                FloatWindowHelper.mEditQuickAreaFlag = false;
-                mAlarmDialogFlag = false;
                 boolean mLeftBottom = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftBottom;
                 boolean mRightBottm = QuickGestureManager.getInstance(AppMasterApplication
@@ -418,6 +423,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     setSlidingAreaSetting();
                     if (mAlarmDialog != null) {
                         mAlarmDialog.dismiss();
+                        FloatWindowHelper.mEditQuickAreaFlag = false;
+                        mAlarmDialogFlag = false;
+                        updateFloatWindowBackGroudColor();
                     }
                 } else {
                     Toast.makeText(
@@ -426,7 +434,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                     .getResources()
                                     .getString(
                                             R.string.pg_appmanager_quick_gesture_option_dialog_radio_toast_text),
-                            Toast.LENGTH_LONG).show();
+                            Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -453,7 +461,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mSlideTimeDialog
                 .setFreeDisturbText(R.string.pg_appmanager_quick_gesture_slide_time_no_disturb_text);
         mSlideTimeDialog.setTitle(R.string.pg_appmanager_quick_gesture_option_able_sliding_time);
+        if (mFreeApps != null) {
+            mFreeApps.clear();
+        }
         mFreeApps = getFreeDisturbApps();
+        for (QuickGsturebAppInfo i : mFreeApps) {
+            Log.e("#####", "" + i.label);
+
+        }
         mSlideTimeAdapter = new FreeDisturbSlideTimeAdapter(this,
                 mFreeApps);
         mSlideTimeDialog.setUpdateFilterAppClickListener(this);
@@ -554,29 +569,23 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     final List<BaseInfo> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
 
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            if (addFreeAppNames != null && addFreeAppNames.size() > 0) {
-                                for (BaseInfo object : addFreeAppNames) {
-                                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
-                                    AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                            .setFreeDisturbAppPackageNameAdd(string.packageName);
-                                }
-                            }
-                            if (removeFreeAppNames != null && removeFreeAppNames.size() > 0) {
-                                for (Object object : removeFreeAppNames) {
-                                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
-                                    AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                            .setFreeDisturbAppPackageNameRemove(string.packageName);
-                                }
-                            }
+                    if (addFreeAppNames != null && addFreeAppNames.size() > 0) {
+                        for (BaseInfo object : addFreeAppNames) {
+                            QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
+                            AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                    .setFreeDisturbAppPackageNameAdd(string.packageName);
                         }
-                    });
-                    showSlideShowTimeSettingDialog();
+                    }
+                    if (removeFreeAppNames != null && removeFreeAppNames.size() > 0) {
+                        for (Object object : removeFreeAppNames) {
+                            QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
+                            AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                    .setFreeDisturbAppPackageNameRemove(string.packageName);
+                        }
+                    }
                     freeDisturbApp.dismiss();
                 }
+                showSlideShowTimeSettingDialog();
             }
         });
         freeDisturbApp.setLeftBt(new OnClickListener() {

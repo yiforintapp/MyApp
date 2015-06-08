@@ -23,26 +23,26 @@
             android:background="@drawable/gesture_title_bar"
             android:gravity="center"
             android:padding="3dp"
-            android:text="Dynamic"
             android:textSize="16sp" />
 
         <com.leo.appmaster.quickgestures.view.AppleWatchTabs
             android:id="@+id/applewatchtab"
             android:layout_width="145dp"
             android:layout_height="70dp"
-            android:layout_gravity="center|bottom" />
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/gesture_select_circle" />
 
         <com.leo.appmaster.quickgestures.view.AppleWatchLayout
             android:id="@+id/qg_dymic_layout"
             android:layout_width="match_parent"
             android:layout_height="235dp"
             android:layout_gravity="bottom"
-            android:visibility="invisible" 
             android:layout_marginBottom=" 75dp"
             android:layout_marginTop="40dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:layerType="hardware" />
+            android:layerType="hardware"
+            android:visibility="invisible" />
 
         <com.leo.appmaster.quickgestures.view.AppleWatchLayout
             android:id="@+id/qg_mostused_layout"
