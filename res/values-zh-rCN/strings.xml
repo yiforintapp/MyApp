@@ -679,7 +679,7 @@
     <string name="quick_gesture_dialog_tip_contniue_left_bt">继续</string>
     <string name="quick_gesture_dialog_tip_contniue_right_bt">稍后设置</string>
     <string name="quick_gesture_miui_tip_button_text">知道了</string>
-    <string name="quick_gesture_dynamic">动态</string>
+    <string name="quick_gesture_dynamic">最近使用</string>
     <string name="quick_gesture_switcher">快捷开关</string>
     <string name="quick_gesture_most_used">最常使用</string>
     <string name="quick_gesture_first_open_sliding_toast">开启便捷之旅</string>
