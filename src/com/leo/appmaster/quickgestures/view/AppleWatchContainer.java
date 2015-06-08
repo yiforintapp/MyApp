@@ -438,17 +438,6 @@ public class AppleWatchContainer extends FrameLayout {
         mDymicLayout.setVisibility(View.VISIBLE);
         mMostUsedLayout.setVisibility(View.VISIBLE);
         mSwitcherLayout.setVisibility(View.VISIBLE);
-
-        // if (!mHasRelayout) {
-        // if (mDymicLayout.mHasFillExtraItems &&
-        // mMostUsedLayout.mHasFillExtraItems
-        // && mSwitcherLayout.mHasFillExtraItems) {
-        // mDymicLayout.relayoutExtraChildren();
-        // mMostUsedLayout.relayoutExtraChildren();
-        // mSwitcherLayout.relayoutExtraChildren();
-        // // mHasRelayout = true;
-        // }
-        // }
     }
 
     private void onTouchMoveRotate(float moveX, float moveY) {
@@ -1264,8 +1253,8 @@ public class AppleWatchContainer extends FrameLayout {
             public void onAnimationStart(Animator animation) {
                 mStartShowingTime = System.currentTimeMillis();
                 isAnimating = true;
-                Log.i("tag", "showOpenAnimationm = "+showOpenAnimationm);
-                //targetLayout.setVisibility(View.VISIBLE);
+                Log.i("tag", "showOpenAnimationm = " + showOpenAnimationm);
+                // targetLayout.setVisibility(View.VISIBLE);
             }
 
             @Override

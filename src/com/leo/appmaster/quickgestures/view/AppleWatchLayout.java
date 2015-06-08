@@ -490,11 +490,11 @@ public class AppleWatchLayout extends ViewGroup {
         /*
          * now set pivot
          */
-        if (mContainer == null) {
+//        if (mContainer == null) {
             setPivotX(mTotalWidth / 2);
             setPivotY(mTotalHeight * 3);
-            mContainer = (AppleWatchContainer) getParent();
-        }
+//            mContainer = (AppleWatchContainer) getParent();
+//        }
     }
 
     private void inflateItem(GestureItemView item, BaseInfo info) {
@@ -510,7 +510,6 @@ public class AppleWatchLayout extends ViewGroup {
         if (info.eventNumber > 0) {
             item.setDecorateAction(new EventAction(getContext(), info.eventNumber));
         }
-        // TODO
         if (info instanceof QuickGestureContactTipInfo) {
             if (((QuickGestureContactTipInfo) info).isShowReadTip) {
                 item.showReadTip();
