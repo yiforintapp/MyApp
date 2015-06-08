@@ -28,6 +28,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mobstat.m;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -126,7 +127,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         super.onResume();
         if (sp_homeAppManager.getQuickGestureRedTip()) {
             mQuickGestureRedTip.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             mQuickGestureRedTip.setVisibility(View.GONE);
         }
     }
@@ -368,77 +369,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 }
                 break;
             case R.id.bg_show_quick_gesture:
-                if (sp_homeAppManager.getQuickGestureRedTip()) {
-                    sp_homeAppManager.setQuickGestureRedTip(false);
-                    mQuickGestureRedTip.setVisibility(View.GONE);
-                }
-
-                boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(getActivity());
-                boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(getActivity());
-                boolean checkMiui = BuildProperties.isMIUI();
-                boolean isOpenWindow =
-                        BuildProperties.isFloatWindowOpAllowed(getActivity());
-                if (checkMiui && !isOpenWindow) {
-                    // MIUI
-                    Intent intentv6 = new
-                            Intent("miui.intent.action.APP_PERM_EDITOR");
-                    intentv6.setClassName("com.miui.securitycenter",
-                            "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-                    intentv6.putExtra("extra_pkgname", getActivity().getPackageName());
-                    intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    try {
-                        LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
-                                false);
-                        startActivity(intentv6);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        Intent intentv5 = new Intent(
-                                Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                        Uri uri = Uri
-                                .fromParts("package", getActivity().getPackageName(), null);
-                        intentv5.setData(uri);
-                        intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                        try {
-                            LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
-                                    false);
-                            startActivity(intentv5);
-                            getActivity().finish();
-                        } catch (Exception e1) {
-                            e1.printStackTrace();
-                        }
-                    }
-                    Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    try {
-                        LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-                        startActivity(quickIntent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else if (checkHuaWei && !checkFloatWindow) {
-                    BuildProperties.isToHuaWeiSystemManager(getActivity());
-                    Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-                    quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    quickIntent.putExtra("sys_name", "huawei");
-                    try {
-                        LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-                        startActivity(quickIntent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } else {
-                    Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
-                    quickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(quickIntent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
+                startQuickGestureActivity();
                 break;
         }
     }
@@ -680,6 +611,75 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onScrolling() {
 
+    }
+
+    private void startQuickGestureActivity() {
+        if (sp_homeAppManager.getQuickGestureRedTip()) {
+            sp_homeAppManager.setQuickGestureRedTip(false);
+            mQuickGestureRedTip.setVisibility(View.GONE);
+        }
+
+        boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(getActivity());
+        boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(getActivity());
+        boolean checkMiui = BuildProperties.isMIUI();
+        boolean isOpenWindow =
+                BuildProperties.isFloatWindowOpAllowed(getActivity());
+        if (checkMiui && !isOpenWindow) {
+            // MIUI
+            Intent intentv6 = new
+                    Intent("miui.intent.action.APP_PERM_EDITOR");
+            intentv6.setClassName("com.miui.securitycenter",
+                    "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+            intentv6.putExtra("extra_pkgname", getActivity().getPackageName());
+            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            try {
+                LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
+                        false);
+                startActivity(intentv6);
+            } catch (Exception e) {
+                e.printStackTrace();
+                Intent intentv5 = new Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri
+                        .fromParts("package", getActivity().getPackageName(), null);
+                intentv5.setData(uri);
+                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                try {
+                    LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
+                            false);
+                    startActivity(intentv5);
+                    getActivity().finish();
+                } catch (Exception e1) {
+                    e1.printStackTrace();
+                }
+            }
+            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            try {
+                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+                startActivity(quickIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (checkHuaWei && !checkFloatWindow) {
+            BuildProperties.isToHuaWeiSystemManager(getActivity());
+            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.putExtra("sys_name", "huawei");
+            try {
+                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+                startActivity(quickIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
+            mActivity.startActivity(quickIntent);
+        }
     }
 
 }
