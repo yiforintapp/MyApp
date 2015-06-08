@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockModeActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
@@ -944,6 +945,7 @@ public class QuickSwitchManager {
     }
 
     public void switchSet() {
+        LockManager.getInstatnce().timeFilterSelf();
         Intent intent = new Intent(mContext, QuickGestureActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);

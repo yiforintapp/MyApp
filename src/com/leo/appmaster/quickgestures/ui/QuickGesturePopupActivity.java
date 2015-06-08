@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.os.Bundle;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -16,7 +15,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
 
