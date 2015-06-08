@@ -9,6 +9,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
@@ -189,6 +190,10 @@ public class AppleWatchLayout extends ViewGroup {
                 Log.i("tag", "invisible");
             }
             gestureItem.setTag(info);
+            if(isCurrentLayout()){
+                Log.i("tag", "showOpenAnimationm = "+mContainer.showOpenAnimationm);
+                gestureItem.setVisibility(View.INVISIBLE);
+            }
             addView(gestureItem);
             computeCenterItem(gestureItem, lp.position, false);
         }
@@ -489,11 +494,11 @@ public class AppleWatchLayout extends ViewGroup {
         /*
          * now set pivot
          */
-        if (mContainer == null) {
+//        if (mContainer == null) {
             setPivotX(mTotalWidth / 2);
             setPivotY(mTotalHeight * 3);
-            mContainer = (AppleWatchContainer) getParent();
-        }
+//            mContainer = (AppleWatchContainer) getParent();
+//        }
     }
 
     private void inflateItem(GestureItemView item, BaseInfo info) {
@@ -509,7 +514,6 @@ public class AppleWatchLayout extends ViewGroup {
         if (info.eventNumber > 0) {
             item.setDecorateAction(new EventAction(getContext(), info.eventNumber));
         }
-        // TODO
         if (info instanceof QuickGestureContactTipInfo) {
             if (((QuickGestureContactTipInfo) info).isShowReadTip) {
                 item.showReadTip();
@@ -1885,20 +1889,20 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private Animator iconAnimator(final View targetView){
-        AnimatorSet set = new AnimatorSet();
         float scale = targetView.getScaleX();
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(targetView, "alpha", 0f,0f,1.0f);
-        ObjectAnimator scaleXAnimator =  ObjectAnimator.ofFloat(targetView, "scaleX",0f,1.1f*scale,scale);
-        ObjectAnimator scaleYAnimator =  ObjectAnimator.ofFloat(targetView, "scaleY",0f,1.1f*scale,scale);
-        set.playTogether(alphaAnimator,scaleXAnimator,scaleYAnimator);
-        set.addListener(new AnimatorListenerAdapter() {
+        PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 0f,1.0f);
+        PropertyValuesHolder pvScaleX = PropertyValuesHolder.ofFloat("scaleX", 0f,1.2f*scale,scale);
+        PropertyValuesHolder pvScaleY = PropertyValuesHolder.ofFloat("scaleY", 0f,1.2f*scale,scale);
+        
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(targetView, pvAlpha,pvScaleX,pvScaleY);
+        anim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 targetView.setVisibility(View.VISIBLE);
             }
         });
-        return set;
+        return anim;
     }
     
     public AnimatorSet makeIconShowAnimator(int direction) {
@@ -1934,11 +1938,11 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[7];
             lastAnim = iconAnimators[3];
         }
-        firstAnim.setDuration(100);
-        partOneSet.setDuration(100).setStartDelay(50);
-        partTwoSet.setDuration(100).setStartDelay(100);
-        partThreeSet.setDuration(100).setStartDelay(150);
-        lastAnim.setDuration(100).setStartDelay(200);
+        firstAnim.setDuration(500);
+        partOneSet.setDuration(500).setStartDelay(100);
+        partTwoSet.setDuration(500).setStartDelay(200);
+        partThreeSet.setDuration(500).setStartDelay(300);
+        lastAnim.setDuration(500).setStartDelay(400);
         set.playTogether(firstAnim,partOneSet,partTwoSet,partThreeSet,lastAnim);
         return set;
     }

@@ -454,7 +454,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mSlideTimeDialog
                 .setFreeDisturbText(R.string.pg_appmanager_quick_gesture_slide_time_no_disturb_text);
         mSlideTimeDialog.setTitle(R.string.pg_appmanager_quick_gesture_option_able_sliding_time);
+        if (mFreeApps != null) {
+            mFreeApps.clear();
+        }
         mFreeApps = getFreeDisturbApps();
+        for (QuickGsturebAppInfo i : mFreeApps) {
+            Log.e("#####", "" + i.label);
+
+        }
         mSlideTimeAdapter = new FreeDisturbSlideTimeAdapter(this,
                 mFreeApps);
         mSlideTimeDialog.setUpdateFilterAppClickListener(this);
@@ -555,29 +562,23 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     final List<BaseInfo> removeFreeAppNames = freeDisturbApp
                             .getRemoveFreePackageName();
 
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            if (addFreeAppNames != null && addFreeAppNames.size() > 0) {
-                                for (BaseInfo object : addFreeAppNames) {
-                                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
-                                    AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                            .setFreeDisturbAppPackageNameAdd(string.packageName);
-                                }
-                            }
-                            if (removeFreeAppNames != null && removeFreeAppNames.size() > 0) {
-                                for (Object object : removeFreeAppNames) {
-                                    QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
-                                    AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                            .setFreeDisturbAppPackageNameRemove(string.packageName);
-                                }
-                            }
+                    if (addFreeAppNames != null && addFreeAppNames.size() > 0) {
+                        for (BaseInfo object : addFreeAppNames) {
+                            QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
+                            AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                    .setFreeDisturbAppPackageNameAdd(string.packageName);
                         }
-                    });
+                    }
+                    if (removeFreeAppNames != null && removeFreeAppNames.size() > 0) {
+                        for (Object object : removeFreeAppNames) {
+                            QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
+                            AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                    .setFreeDisturbAppPackageNameRemove(string.packageName);
+                        }
+                    }
                     freeDisturbApp.dismiss();
-                    showSlideShowTimeSettingDialog();
                 }
+                showSlideShowTimeSettingDialog();
             }
         });
         freeDisturbApp.setLeftBt(new OnClickListener() {
