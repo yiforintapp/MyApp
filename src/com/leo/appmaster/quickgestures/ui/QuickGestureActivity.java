@@ -68,7 +68,6 @@ import com.leo.appmaster.ui.CommonTitleBar;
 public class QuickGestureActivity extends BaseActivity implements OnTouchListener, OnClickListener,
         UpdateFilterAppClickListener {
     private CommonTitleBar mTitleBar;
-    private List<QuickGestureSettingBean> mQuickGestureSettingOption;
     private AppMasterPreference mPre;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
     private QuickGestureSlideTimeDialog mSlideTimeDialog;
@@ -90,13 +89,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         setContentView(R.layout.activity_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
         initUi();
-        // LeoEventBus.getDefaultBus().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        // TODO Auto-generated method stub
-        super.onStop();
     }
 
     private void initUi() {
@@ -281,11 +273,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-    }
-
     class DialogRadioBean {
         String name;
         boolean isCheck;
@@ -302,23 +289,18 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mAlarmDialog.setSeekBarTextVisibility(false);
         mAlarmDialog.setSeekbarTextProgressVisibility(false);
         mAlarmDialog.setSeekBarProgressValue(mPre.getQuickGestureDialogSeekBarValue());
-        Drawable selectIcon = this.getResources().getDrawable(R.drawable.select);
-        Drawable unselectIcon = this.getResources().getDrawable(R.drawable.unselect);
         mAlarmDialog.setLeftBottomOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
                 // left bottom
-                // boolean leftBottomStatus = mPre.getDialogRadioLeftBottom();
                 boolean leftBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftBottom;
                 if (leftBottomStatus) {
-                    // mPre.setDialogRadioLeftBottom(false);
                     mAlarmDialog.setLeftBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = false;
                 } else {
-                    // mPre.setDialogRadioLeftBottom(true);
                     mAlarmDialog.setLeftBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = true;
@@ -332,16 +314,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // right bottom
-                // boolean rightBottomStatus = mPre.getDialogRadioRightBottom();
                 boolean rightBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isRightBottom;
                 if (rightBottomStatus) {
-                    // mPre.setDialogRadioRightBottom(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = false;
                     mAlarmDialog.setRightBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    // mPre.setDialogRadioRightBottom(true);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = true;
                     mAlarmDialog.setRightBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
@@ -355,16 +334,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // left center
-                // boolean leftCenterStatus = mPre.getDialogRadioLeftCenter();
                 boolean leftCenterStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftCenter;
                 if (leftCenterStatus) {
-                    // mPre.setDialogRadioLeftCenter(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = false;
                     mAlarmDialog.setLeftCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    // mPre.setDialogRadioLeftCenter(true);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = true;
                     mAlarmDialog.setLeftCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
@@ -378,16 +354,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             @Override
             public void onClick(View arg0) {
                 // right center
-                // boolean rightCenterStatus = mPre.getDialogRadioRightCenter();
                 boolean rightCenterStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isRightCenter;
                 if (rightCenterStatus) {
-                    // mPre.setDialogRadioRightCenter(false);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = false;
                     mAlarmDialog.setRightCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
-                    // mPre.setDialogRadioRightCenter(true);
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = true;
                     mAlarmDialog.setRightCenterBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
