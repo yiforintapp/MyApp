@@ -2,6 +2,7 @@
 package com.leo.appmaster.quickgestures.ui;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.animation.AnimatorSet;
@@ -42,6 +43,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -464,10 +466,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mFreeApps.clear();
         }
         mFreeApps = getFreeDisturbApps();
-        for (QuickGsturebAppInfo i : mFreeApps) {
-            Log.e("#####", "" + i.label);
-
-        }
+        Collections.sort(mFreeApps, new NameComparator());
         mSlideTimeAdapter = new FreeDisturbSlideTimeAdapter(this,
                 mFreeApps);
         mSlideTimeDialog.setUpdateFilterAppClickListener(this);
