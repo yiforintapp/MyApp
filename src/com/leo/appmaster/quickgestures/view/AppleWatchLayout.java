@@ -1034,26 +1034,31 @@ public class AppleWatchLayout extends ViewGroup {
                 // TODO update dynamic list
 
             } else if (gType == GType.MostUsedLayout) {
-                // TODO update most used list
-                int mNum = getChildCount();
-                LayoutParams params = null;
-                // List<QuickGsturebAppInfo> mostUseApp = new
-                // ArrayList<QuickGsturebAppInfo>();
-                for (int i = 0; i < mNum; i++) {
-                    params = (LayoutParams) getChildAt(i).getLayoutParams();
-                    int position = params.position;
-                    if (position > -1) {
-                        if (getChildAt(i).getTag() instanceof AppItemInfo) {
-                            AppItemInfo sInfo = (AppItemInfo) getChildAt(i).getTag();
-                            if (sInfo != null && !sInfo.label.isEmpty()) {
-                                sInfo.gesturePosition = position;
-                                AppMasterPreference.getInstance(mContext)
-                                        .setCommonAppPackageNameAdd(
-                                                sInfo.packageName + ":" + sInfo.gesturePosition);
-                            }
-                        }
-                    }
-                }
+                // boolean isCheck = AppMasterPreference.getInstance(mContext)
+                // .getQuickGestureCommonAppDialogCheckboxValue();
+                // int mNum = getChildCount();
+                // LayoutParams params = null;
+                // //更新自动填充列表
+                // if(isCheck){
+                //
+                // }else {//更新非自动填充列表
+                // for (int i = 0; i < mNum; i++) {
+                // params = (LayoutParams) getChildAt(i).getLayoutParams();
+                // int position = params.position;
+                // if (position > -1) {
+                // if (getChildAt(i).getTag() instanceof AppItemInfo) {
+                // AppItemInfo sInfo = (AppItemInfo) getChildAt(i).getTag();
+                // if (sInfo != null && !sInfo.label.isEmpty()) {
+                // sInfo.gesturePosition = position;
+                // AppMasterPreference.getInstance(mContext)
+                // .setCommonAppPackageNameAdd(
+                // sInfo.packageName + ":" + sInfo.gesturePosition);
+                // }
+                // }
+                // }
+                // }
+                // }
+
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;

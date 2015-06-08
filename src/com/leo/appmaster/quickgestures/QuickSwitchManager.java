@@ -1222,8 +1222,6 @@ public class QuickSwitchManager {
                 ListString = ListString + ";" + name + ":" + position;
             }
         }
-
-
         return ListString;
     }
     

@@ -710,45 +710,23 @@ public class QuickGestureManager {
                             LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
                             pref.setCommonAppPackageName(mChangeList);
 
-                            // int[] position = new int[11];
-                            // int i;
-                            // for (i = 0; i < comList.size(); i++) {
-                            // position[comList.get(i).gesturePosition] = 1;
-                            // }
-                            // List<Integer> levelPosition = new
-                            // ArrayList<Integer>();
-                            // for (i = 0; i < position.length; i++) {
-                            // if (position[i] == 0) {
-                            // levelPosition.add(i);
-                            // }
-                            // }
-                            //
-                            // String resault = "";
-                            // for (BaseInfo info : comList) {
-                            // QuickGsturebAppInfo appItemInfo =
-                            // (QuickGsturebAppInfo) info;
-                            // resault += appItemInfo.packageName + ":"
-                            // + appItemInfo.gesturePosition + ";";
-                            // }
-                            //
-                            // i = 0;
-                            // String addResault = "";
-                            // for (BaseInfo info : addCommonApp) {
-                            // if (i <= levelPosition.size()) {
-                            // QuickGsturebAppInfo appInfo =
-                            // (QuickGsturebAppInfo) info;
-                            // addResault += appInfo.packageName + ":" +
-                            // levelPosition.get(i)
-                            // + ";";
-                            // i++;
-                            // } else {
-                            // break;
-                            // }
-                            // }
-                            // resault += addResault;
-                            // pref.setCommonAppPackageName(resault);
-
                         } else {
+                            
+//                            if (removeCommonApp != null && removeCommonApp.size() > 0) {
+//                                boolean isHasSameName = false;
+//                                for (BaseInfo info : comList) {
+//                                    for (BaseInfo baseInfo : removeCommonApp) {
+//                                        if (baseInfo.label.equals(info.label)) {
+//                                            isHasSameName = true;
+//                                        }
+//                                    }
+//                                    if (!isHasSameName) {
+//                                        mDefineList.add(info);
+//                                    }
+//                                    isHasSameName = false;
+//                                }
+//                            }
+                            
                             List<AppLauncherRecorder> removeList = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
                             ArrayList<AppLauncherRecorder> record = QuickGestureManager
                                     .getInstance(mContext).mAppLaunchRecorders;
@@ -777,7 +755,7 @@ public class QuickGestureManager {
                                 addRecord = new AppLauncherRecorder();
                                 QuickGsturebAppInfo info = (QuickGsturebAppInfo) removeInfo;
                                 addRecord.pkg = info.packageName;
-                                LeoLog.e("xxxx", addRecord.pkg + ":"
+                                LeoLog.e("QuickGestureManager", addRecord.pkg + ":"
                                         + info.gesturePosition);
                                 if (record.size() > 0) {
                                     addRecord.launchCount = maxCount + 1;
@@ -787,9 +765,9 @@ public class QuickGestureManager {
                                 record.add(addRecord);
                             }
 
-                            LeoLog.e("xxxx", "record size = " + record.size());
+                            LeoLog.e("QuickGestureManager", "record size = " + record.size());
                             for (AppLauncherRecorder appLauncherRecorder : record) {
-                                LeoLog.e("xxxx", appLauncherRecorder.pkg + ":"
+                                LeoLog.e("QuickGestureManager", appLauncherRecorder.pkg + ":"
                                         + appLauncherRecorder.launchCount);
                             }
                             saveAppLaunchRecoder();
