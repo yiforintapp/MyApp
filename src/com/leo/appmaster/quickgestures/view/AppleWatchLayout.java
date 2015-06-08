@@ -346,8 +346,8 @@ public class AppleWatchLayout extends ViewGroup {
         mIconSize = res.getDimensionPixelSize(R.dimen.apple_watch_item_icon_size);
         mInnerRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_inner_radius);
         mOuterRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_outer_radius);
-        mInnerScale = 0.73f;
-        mOuterScale = 0.6f;
+        mInnerScale = 0.69f;
+        mOuterScale = 0.49f;
         mHoriChildren[0] = new GestureItemView[12];
         mHoriChildren[1] = new GestureItemView[9];
         mHoriChildren[2] = new GestureItemView[12];
@@ -1483,7 +1483,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
         }
 
-        if ((Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset)) >= 0) {
+        if ((moveX - mAdjustCount * mMinuOffset) >= 0) {
             direction = Direction.Left;
             mMinuOffset = mHoriChildren[0][5].getLeft()
                     - mHoriChildren[0][4].getLeft();
