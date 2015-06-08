@@ -124,6 +124,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onResume() {
         super.onResume();
+        if (sp_homeAppManager.getQuickGestureRedTip()) {
+            mQuickGestureRedTip.setVisibility(View.VISIBLE);
+        }else{
+            mQuickGestureRedTip.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -138,9 +143,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         LeoEventBus.getDefaultBus().register(this);
         // 快捷手势红点
         mQuickGestureRedTip = (ImageView) findViewById(R.id.quick_gesture_tip_icon);
-        if (sp_homeAppManager.getQuickGestureRedTip()) {
-            mQuickGestureRedTip.setVisibility(View.VISIBLE);
-        }
         DeleteDataList = new ArrayList<AppItemInfo>();
         homeAppManagerTask = new HomeAppAsyncTask();
         homeAppManagerTask.execute();

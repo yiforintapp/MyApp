@@ -262,6 +262,8 @@ public class AppMasterApplication extends Application {
                 checkUpdateFinish();
                 // judgeLockService();
                 // judgeStatictiUnlockCount();
+                quickGestureTipInit();
+                checkIsUpdateUser();
                 mAppsEngine.preloadAllBaseInfo();
                 mBackupManager.getBackupList();
                 PrivacyContactManager.getInstance(ctx).getPrivateContacts();
@@ -273,6 +275,13 @@ public class AppMasterApplication extends Application {
 
             }
         });
+    }
+
+    private void quickGestureTipInit() {
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(this))) {
+            pref.setNewUserUnlockCount(0);
+        }
     }
 
     public void tryRemoveUnlockAllShortcut(Context ctx) {
@@ -327,7 +336,21 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(this))) {
             pref.setUnlockCount(0);
+            pref.setNewUserUnlockCount(0);
         }
+    }
+
+    private void checkIsUpdateUser() {
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        int lastVercode = pref.getCurrentAppVersionCode();
+        if (lastVercode<0) {
+            pref.setIsUpdateQuickGestureUser(false);
+        } else {
+            if (lastVercode >= 36 && !pref.getIsUpdateQuickGestureUser()) {
+                pref.setIsUpdateQuickGestureUser(true);
+            }
+        }
+        
     }
 
     private void initImageLoader() {

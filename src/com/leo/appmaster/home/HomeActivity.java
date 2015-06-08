@@ -26,6 +26,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,6 +46,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
@@ -118,7 +121,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             boolean isMiui = BuildProperties.isMIUI();
             boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(this);
             boolean dialogShow = pre.getQGSettingFirstDialogTip();
-            if ((isMiui && setMiuiFist && !dialogShow && isOpenWindow && !isFirstSlidingOpenQuick) ||(isMiui &&  !setMiuiFist && isOpenWindow)) {
+            if ((isMiui && setMiuiFist && !dialogShow && isOpenWindow && !isFirstSlidingOpenQuick)
+                    || (isMiui && !setMiuiFist && isOpenWindow)) {
                 showQuickGestureSettingDialog();
             }
         }
@@ -560,6 +564,37 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 GradeTipActivity.class);
                         HomeActivity.this.startActivity(intent);
                     }
+                    // TODO quick gesture tip
+                    // new user 50 tip
+                    boolean switchQuickGesture = AppMasterPreference.getInstance(HomeActivity.this)
+                            .getSwitchOpenQuickGesture();
+                    if (!switchQuickGesture) {
+                        long newUserCount = AppMasterPreference.getInstance(
+                                HomeActivity.this).getNewUserUnlockCount();
+                        boolean firstSlidingTip = AppMasterPreference
+                                .getInstance(HomeActivity.this)
+                                .getFristSlidingTip();
+                        // String lastVercode =
+                        // AppMasterPreference.getInstance(getApplicationContext()).getLastVersion();
+                        // int lastVersion=Integer.valueOf(lastVercode);
+                        boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
+                                .getIsUpdateQuickGestureUser();
+//                        Log.e("######", "是否为升级用户：" + updateUser);
+                        if (!updateUser) {
+                            // new user
+                            if (newUserCount >= 2 && !firstSlidingTip) {
+//                                Log.e("######", "新用户提示！");
+                                showFirstOpenQuickGestureTipDialog();
+                            }
+                        } else {
+                            // update user
+                            if (!firstSlidingTip) {
+//                                Log.e("######", "升级用户提示！");
+                                showFirstOpenQuickGestureTipDialog();
+                            }
+
+                        }
+                    }
                 }
             }
         }, 5000);
@@ -895,6 +930,41 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     } catch (Exception e) {
                     }
                 }
+            }
+        });
+        mQuickGestureSettingDialog.show();
+    }
+
+    private void showFirstOpenQuickGestureTipDialog() {
+        if (mQuickGestureSettingDialog == null) {
+            mQuickGestureSettingDialog = new LEOAlarmDialog(this);
+        }
+        mQuickGestureSettingDialog.setDialogIconVisibility(false);
+        mQuickGestureSettingDialog.setCanceledOnTouchOutside(false);
+        mQuickGestureSettingDialog.setTitle(this.getResources().getString(
+                R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
+        mQuickGestureSettingDialog.setContent(this.getResources().getString(
+                R.string.first_open_quick_gesture_dialog_tip_cotent));
+        mQuickGestureSettingDialog.setLeftBtnStr(this.getResources().getString(
+                R.string.cancel));
+        mQuickGestureSettingDialog.setRightBtnStr(this.getResources().getString(
+                R.string.makesure));
+        mQuickGestureSettingDialog.setOnClickListener(new OnDiaogClickListener() {
+
+            @Override
+            public void onClick(int which) {
+                if (which == 0) {
+                    if (mQuickGestureSettingDialog != null) {
+                        mQuickGestureSettingDialog.dismiss();
+                    }
+                } else if (which == 1) {
+                    AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
+                    Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
+                    startActivity(inten);
+                }
+                AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
+                AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
+                        Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
             }
         });
         mQuickGestureSettingDialog.show();

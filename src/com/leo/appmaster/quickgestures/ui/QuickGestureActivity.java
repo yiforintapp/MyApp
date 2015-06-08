@@ -91,7 +91,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         // LeoEventBus.getDefaultBus().register(this);
 
     }
-
+@Override
+protected void onStop() {
+    // TODO Auto-generated method stub
+    super.onStop();
+}
     private void initUi() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
         mTitleBar.openBackView();
