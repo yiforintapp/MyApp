@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -130,6 +131,9 @@ public class AppleWatchLayout extends ViewGroup {
         removeAllViews();
         GestureItemView gestureItem = null;
         AppleWatchLayout.LayoutParams lp = null;
+        if(null == mContainer){
+            mContainer = (AppleWatchContainer) getParent();
+        }
         for (int i = 0; i < infos.size(); i++) {
             info = (BaseInfo) infos.get(i);
             gestureItem = makeGestureItem();
@@ -171,7 +175,6 @@ public class AppleWatchLayout extends ViewGroup {
             if (info instanceof GestureEmptyItemInfo) {
                 info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
             }
-
             if (info instanceof GestureEmptyItemInfo || info instanceof QuickSwitcherInfo) {
                 gestureItem.setItemIcon(info.icon, false);
             } else {
@@ -179,6 +182,11 @@ public class AppleWatchLayout extends ViewGroup {
             }
             if (info.eventNumber > 0) {
                 gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
+            }
+            
+            if(isCurrentLayout()){
+                gestureItem.setVisibility(View.INVISIBLE);
+                Log.i("tag", "invisible");
             }
             gestureItem.setTag(info);
             addView(gestureItem);
@@ -1894,11 +1902,12 @@ public class AppleWatchLayout extends ViewGroup {
     }
     
     public AnimatorSet makeIconShowAnimator(int direction) {
-        Animator[] iconAnimators = new Animator[13];
+        Animator[] iconAnimators = new Animator[11];
         AnimatorSet set = new AnimatorSet();
         AnimatorSet partOneSet = new AnimatorSet();
         AnimatorSet partTwoSet = new AnimatorSet();
         AnimatorSet partThreeSet = new AnimatorSet();
+        Animator firstAnim = null,lastAnim = null;
         
         GestureItemView targetItem;
         for (int i = 0; i < 11; i++) {
@@ -1911,20 +1920,26 @@ public class AppleWatchLayout extends ViewGroup {
             }
             iconAnimators[i] = iconAnimator(targetItem);
         }
-     /*   partOneSet.setStartDelay(100);
-        partTwoSet.setStartDelay(200);
-        partThreeSet.setStartDelay(300);*/
+        
         if (direction == 0) {// show from left-center
             partOneSet.playTogether(iconAnimators[0],iconAnimators[4],iconAnimators[8]);
             partTwoSet.playTogether(iconAnimators[1],iconAnimators[5],iconAnimators[9]);
             partThreeSet.playTogether(iconAnimators[2],iconAnimators[6],iconAnimators[10]);
-            set.playSequentially(iconAnimators[7],partOneSet,partTwoSet,partThreeSet,iconAnimators[3]);
+            firstAnim = iconAnimators[7];
+            lastAnim = iconAnimators[3];
         } else if (direction == 1) {// show from left-bottom
             partOneSet.playTogether(iconAnimators[0],iconAnimators[4],iconAnimators[8]);
             partTwoSet.playTogether(iconAnimators[1],iconAnimators[5],iconAnimators[9]);
             partThreeSet.playTogether(iconAnimators[2],iconAnimators[6],iconAnimators[10]);
-            set.playTogether(iconAnimators[7],partOneSet,partTwoSet,partThreeSet,iconAnimators[3]);
+            firstAnim = iconAnimators[7];
+            lastAnim = iconAnimators[3];
         }
+        firstAnim.setDuration(100);
+        partOneSet.setDuration(100).setStartDelay(50);
+        partTwoSet.setDuration(100).setStartDelay(100);
+        partThreeSet.setDuration(100).setStartDelay(150);
+        lastAnim.setDuration(100).setStartDelay(200);
+        set.playTogether(firstAnim,partOneSet,partTwoSet,partThreeSet,lastAnim);
         return set;
     }
 
