@@ -2020,7 +2020,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     private Animator iconDisappearAnimator(final View targetView) {
         float scale = targetView.getScaleX();
-        float maxScale = 1.1f * scale;
+        float maxScale = 1.2f * scale;
         PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0f);
         PropertyValuesHolder pvScaleX = PropertyValuesHolder.ofFloat("scaleX", scale, maxScale, 0f);
         PropertyValuesHolder pvScaleY = PropertyValuesHolder.ofFloat("scaleY", scale, maxScale, 0f);

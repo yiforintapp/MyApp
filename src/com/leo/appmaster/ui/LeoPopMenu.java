@@ -85,9 +85,11 @@ public class LeoPopMenu {
                 }
                 popWidth = newSmallWidth;
             } else {
+                if(isShowIcon){
+                    newLongWidth +=DipPixelUtil.dip2px(activity, 12f);
+                }
                 popWidth = newLongWidth;
             }
-            
                 Log.i("tag","popWidth="+popWidth);
             
             LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth);
