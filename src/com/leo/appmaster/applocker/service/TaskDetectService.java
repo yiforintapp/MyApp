@@ -581,21 +581,24 @@ public class TaskDetectService extends Service {
     private void sendQuickPermissionOpenNotification(Context context) {
         boolean flag = AppMasterPreference.getInstance(context)
                 .getQuickPermissonOpenFirstNotificatioin();
-//        if(!flag){
-//        Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"进去执行");
-//        }else{
-//            Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"不去下面执行");
-//        }
+        // if(!flag){
+        // Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"进去执行");
+        // }else{
+        // Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"不去下面执行");
+        // }
         if (!flag) {
             boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(context);
             boolean checkMiui = BuildProperties.isMIUI();
             boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(context);
-//            Log.e("#######", "是否为MIUI：" + checkMiui);
-//            Log.e("######", "是否为HUAWEI：" + checkHuaWei);
-//            Log.e("####", "悬浮窗权限是否打开：" + checkFloatWindow);
-            if ((checkHuaWei || checkMiui) && checkFloatWindow) {
-                QuickGestureManager.getInstance(context)
-                        .sendPermissionOpenNotification(context);
+            // Log.e("#######", "是否为MIUI：" + checkMiui);
+            // Log.e("######", "是否为HUAWEI：" + checkHuaWei);
+            // Log.e("####", "悬浮窗权限是否打开：" + checkFloatWindow);
+            if ((checkHuaWei || checkMiui)
+                    && checkFloatWindow) {
+                if (AppMasterPreference.getInstance(context).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                    QuickGestureManager.getInstance(context)
+                            .sendPermissionOpenNotification(context);
+                }
             }
         }
     }

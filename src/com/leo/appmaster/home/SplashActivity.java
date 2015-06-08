@@ -265,6 +265,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             Intent intent = new Intent(this, LockSettingActivity.class);
             startActivity(intent);
             finish();
+        
         }
     }
 

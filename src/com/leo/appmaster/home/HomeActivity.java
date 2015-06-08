@@ -114,18 +114,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
-        AppMasterPreference pre = AppMasterPreference.getInstance(this);
-        boolean isFirstSlidingOpenQuick = pre.getFristSlidingTip();
-        if (!isFirstSlidingOpenQuick) {
-            boolean setMiuiFist = pre.getQuickGestureMiuiSettingFirstDialogTip();
-            boolean isMiui = BuildProperties.isMIUI();
-            boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(this);
-            boolean dialogShow = pre.getQGSettingFirstDialogTip();
-            if ((isMiui && setMiuiFist && !dialogShow && isOpenWindow && !isFirstSlidingOpenQuick)
-                    || (isMiui && !setMiuiFist && isOpenWindow)) {
-                showQuickGestureSettingDialog();
-            }
-        }
     }
 
     private void initUI() {
@@ -288,7 +276,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         } else {
             app_hot_tip_icon.setVisibility(View.GONE);
         }
-
+        showQuickGestureContinue();
         super.onResume();
     }
 
@@ -564,7 +552,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 GradeTipActivity.class);
                         HomeActivity.this.startActivity(intent);
                     }
-                    // TODO quick gesture tip
+                    // quick gesture tip
                     // new user 50 tip
                     boolean switchQuickGesture = AppMasterPreference.getInstance(HomeActivity.this)
                             .getSwitchOpenQuickGesture();
@@ -574,22 +562,19 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         boolean firstSlidingTip = AppMasterPreference
                                 .getInstance(HomeActivity.this)
                                 .getFristSlidingTip();
-                        // String lastVercode =
-                        // AppMasterPreference.getInstance(getApplicationContext()).getLastVersion();
-                        // int lastVersion=Integer.valueOf(lastVercode);
                         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getIsUpdateQuickGestureUser();
-//                        Log.e("######", "是否为升级用户：" + updateUser);
+                        // Log.e("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
                             // new user
                             if (newUserCount >= 50 && !firstSlidingTip) {
-//                                Log.e("######", "新用户提示！");
+                                // Log.e("######", "新用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
                         } else {
                             // update user
                             if (!firstSlidingTip) {
-//                                Log.e("######", "升级用户提示！");
+                                // Log.e("######", "升级用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
 
@@ -968,5 +953,22 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             }
         });
         mQuickGestureSettingDialog.show();
+    }
+
+    private void showQuickGestureContinue() {
+        AppMasterPreference pre = AppMasterPreference.getInstance(this);
+        boolean isFirstSlidingOpenQuick = pre.getFristSlidingTip();
+        if (!isFirstSlidingOpenQuick) {
+            boolean setMiuiFist = pre.getQuickGestureMiuiSettingFirstDialogTip();
+            boolean isMiui = BuildProperties.isMIUI();
+            boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(this);
+            boolean dialogShow = pre.getQGSettingFirstDialogTip();
+            if ((isMiui && setMiuiFist && !dialogShow && isOpenWindow && !isFirstSlidingOpenQuick)
+                    || (isMiui && !setMiuiFist && isOpenWindow) ) {
+                if(pre.getLockType() != AppMasterPreference.LOCK_TYPE_NONE){
+                showQuickGestureSettingDialog();
+            }
+            }
+        }
     }
 }
