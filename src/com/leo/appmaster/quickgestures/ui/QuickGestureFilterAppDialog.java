@@ -122,9 +122,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                         }
                     } else if (mFlag == 1) {
                         mRemoveFreePackageName.add(selectInfl);
-                    }
-                    if (mFlag == 1) {
-                        mRemoveFreePackageName.add(selectInfl);
+                        
                     }
 
                     if (mFlag == 2) {
