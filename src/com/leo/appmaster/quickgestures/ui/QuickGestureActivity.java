@@ -812,7 +812,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
                         @Override
                         public void run() {
-                            // TODO Auto-generated method stub
                             QuickGestureManager.getInstance(getApplicationContext()).init();
                         }
                     });
@@ -867,7 +866,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     @Override
     public void updateFilterAppClickListener() {
-        // TODO Auto-generated method stub
         getEditFreeDisturbAppInfo(false);
         mSlideTimeAdapter.notifyDataSetChanged();
     }

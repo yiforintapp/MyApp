@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import android.R.animator;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -345,8 +346,8 @@ public class AppleWatchLayout extends ViewGroup {
         mIconSize = res.getDimensionPixelSize(R.dimen.apple_watch_item_icon_size);
         mInnerRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_inner_radius);
         mOuterRadius = res.getDimensionPixelSize(R.dimen.apple_watch_layout_outer_radius);
-        mInnerScale = 0.73f;
-        mOuterScale = 0.6f;
+        mInnerScale = 0.69f;
+        mOuterScale = 0.49f;
         mHoriChildren[0] = new GestureItemView[12];
         mHoriChildren[1] = new GestureItemView[9];
         mHoriChildren[2] = new GestureItemView[12];
@@ -1482,7 +1483,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
         }
 
-        if ((Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset)) >= 0) {
+        if ((moveX - mAdjustCount * mMinuOffset) >= 0) {
             direction = Direction.Left;
             mMinuOffset = mHoriChildren[0][5].getLeft()
                     - mHoriChildren[0][4].getLeft();
@@ -1970,6 +1971,7 @@ public class AppleWatchLayout extends ViewGroup {
         AnimatorSet partTwoSet = new AnimatorSet();
         AnimatorSet partThreeSet = new AnimatorSet();
         Animator firstAnim = null, lastAnim = null;
+        
         GestureItemView targetItem;
         for (int i = 0; i < 11; i++) {
             if (i < 4) {
@@ -2007,12 +2009,12 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[10];
             lastAnim = iconAnimators[0];
         }
-        firstAnim.setDuration(320);
-        partOneSet.setDuration(320).setStartDelay(80);
-        partTwoSet.setDuration(320).setStartDelay(160);
-        partThreeSet.setDuration(320).setStartDelay(240);
-        lastAnim.setDuration(320).setStartDelay(320);
-        set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
+        firstAnim.setDuration(400);
+        partOneSet.setDuration(400).setStartDelay(120);
+        partTwoSet.setDuration(400).setStartDelay(240);
+        partThreeSet.setDuration(400).setStartDelay(360);
+        lastAnim.setDuration(400).setStartDelay(480);
+        set.playTogether(firstAnim,partOneSet,partTwoSet,partThreeSet,lastAnim);
         return set;
     }
 
@@ -2072,12 +2074,12 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[0];
             lastAnim = iconAnimators[10];
         }
-        firstAnim.setDuration(100);
-        partOneSet.setDuration(100).setStartDelay(135);
-        partTwoSet.setDuration(100).setStartDelay(270);
-        partThreeSet.setDuration(100).setStartDelay(405);
-        lastAnim.setDuration(100).setStartDelay(540);
-        set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
+        firstAnim.setDuration(400);
+        partOneSet.setDuration(400).setStartDelay(100);
+        partTwoSet.setDuration(400).setStartDelay(200);
+        partThreeSet.setDuration(400).setStartDelay(300);
+        lastAnim.setDuration(400).setStartDelay(400);
+        set.playTogether(firstAnim,partOneSet,partTwoSet,partThreeSet,lastAnim);
         return set;
     }
 }
