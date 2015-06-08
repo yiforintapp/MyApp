@@ -334,19 +334,22 @@ public class AppMasterApplication extends Application {
             pref.setUnlockCount(0);
             pref.setNewUserUnlockCount(0);
         }
+        if (pref.getCurrentAppVersionCode() != Integer.valueOf(PhoneInfo.getVersionCode(this))) {
+            pref.setNewUserUnlockCount(0);
+        }
     }
 
     private void checkIsUpdateUser() {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         int lastVercode = pref.getCurrentAppVersionCode();
-        if (lastVercode<0) {
+        if (lastVercode < 0) {
             pref.setIsUpdateQuickGestureUser(false);
         } else {
             if (lastVercode >= 36 && !pref.getIsUpdateQuickGestureUser()) {
                 pref.setIsUpdateQuickGestureUser(true);
             }
         }
-        
+
     }
 
     private void initImageLoader() {
@@ -849,8 +852,8 @@ public class AppMasterApplication extends Application {
                                 };
                                 Timer timer = new Timer();
                                 long delay = pref.getSplashCurrentStrategy();
-                                if(delay < 0) {
-                                    delay =  AppMasterConfig.TIME_12_HOUR;
+                                if (delay < 0) {
+                                    delay = AppMasterConfig.TIME_12_HOUR;
                                 }
                                 timer.schedule(recheckTask, delay);
                             }
@@ -880,8 +883,8 @@ public class AppMasterApplication extends Application {
                                 };
                                 Timer timer = new Timer();
                                 long delay = pref.getSplashCurrentStrategy();
-                                if(delay < 0) {
-                                    delay =  AppMasterConfig.TIME_12_HOUR;
+                                if (delay < 0) {
+                                    delay = AppMasterConfig.TIME_12_HOUR;
                                 }
                                 timer.schedule(recheckTask, delay);
                             }
@@ -898,8 +901,8 @@ public class AppMasterApplication extends Application {
             };
             Timer timer = new Timer();
             long delay = pref.getSplashCurrentStrategy() - (curTime - lastLoadTime);
-            if(delay < 0) {
-                delay =  AppMasterConfig.TIME_12_HOUR;
+            if (delay < 0) {
+                delay = AppMasterConfig.TIME_12_HOUR;
             }
             timer.schedule(recheckTask, delay);
         }

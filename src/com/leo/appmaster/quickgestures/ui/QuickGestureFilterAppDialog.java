@@ -122,7 +122,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                         }
                     } else if (mFlag == 1) {
                         mRemoveFreePackageName.add(selectInfl);
-                        
+
                     }
 
                     if (mFlag == 2) {
@@ -345,6 +345,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         int i = 0;
 
         HashMap<String, Integer> packagePosition = new HashMap<String, Integer>();
+        HashMap<String, String> packagePakPosition = new HashMap<String, String>();
         boolean isCheck = AppMasterPreference.getInstance(mContext)
                 .getQuickGestureCommonAppDialogCheckboxValue();
         isAutoFillIcon = isCheck;
@@ -361,7 +362,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 if (i > 13)
                     break;
                 record = iterator.next();
-                packagePosition.put(record.pkg, i);
+                packagePakPosition.put(record.pkg, i + ":" + record.launchCount);
                 mSwitchListSize++;
                 i++;
             }
@@ -372,8 +373,19 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 qgInfo.icon = info.icon;
                 qgInfo.packageName = info.packageName;
                 qgInfo.activityName = info.activityName;
-                if (packagePosition.get(qgInfo.packageName) != null) {
-                    qgInfo.gesturePosition = packagePosition.get(qgInfo.packageName);
+
+                String mString = packagePakPosition.get(qgInfo.packageName);
+                int mPosition = 0;
+                int mOpenCount = 0;
+                if (mString != null) {
+                    String[] mPositionAndCount = mString.split(":");
+                    mPosition = Integer.parseInt(mPositionAndCount[0]);
+                    mOpenCount = Integer.parseInt(mPositionAndCount[1]);
+                } 
+
+                // if (packagePosition.get(qgInfo.packageName) != null ) {
+                if (mOpenCount > 0) {
+                    qgInfo.gesturePosition = mPosition;
                     qgInfo.isFreeDisturb = true;
                     isCheckList.add(qgInfo);
                 }
