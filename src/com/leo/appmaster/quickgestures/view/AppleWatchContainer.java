@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -86,6 +87,7 @@ public class AppleWatchContainer extends FrameLayout {
     private boolean mHasRelayout;
     private boolean mMoving;
     protected long mStartShowingTime;
+    public boolean showOpenAnimationm = true;
 
     public AppleWatchContainer(Context context) {
         super(context);
@@ -1262,6 +1264,7 @@ public class AppleWatchContainer extends FrameLayout {
             public void onAnimationStart(Animator animation) {
                 mStartShowingTime = System.currentTimeMillis();
                 isAnimating = true;
+                Log.i("tag", "showOpenAnimationm = "+showOpenAnimationm);
                 //targetLayout.setVisibility(View.VISIBLE);
             }
 
@@ -1283,6 +1286,7 @@ public class AppleWatchContainer extends FrameLayout {
                     }
                 });
                 run.run();
+                showOpenAnimationm = false;
             }
         });
         set.start();
