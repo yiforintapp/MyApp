@@ -9,6 +9,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
@@ -19,6 +20,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -130,6 +132,9 @@ public class AppleWatchLayout extends ViewGroup {
         removeAllViews();
         GestureItemView gestureItem = null;
         AppleWatchLayout.LayoutParams lp = null;
+        if(mContainer == null){
+            mContainer = (AppleWatchContainer) getParent();
+        }
         for (int i = 0; i < infos.size(); i++) {
             info = (BaseInfo) infos.get(i);
             gestureItem = makeGestureItem();
@@ -181,6 +186,10 @@ public class AppleWatchLayout extends ViewGroup {
                 gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
             }
             gestureItem.setTag(info);
+            if(isCurrentLayout()){
+                Log.i("tag", "showOpenAnimationm = "+mContainer.showOpenAnimationm);
+                gestureItem.setVisibility(View.INVISIBLE);
+            }
             addView(gestureItem);
             computeCenterItem(gestureItem, lp.position, false);
         }
@@ -481,11 +490,11 @@ public class AppleWatchLayout extends ViewGroup {
         /*
          * now set pivot
          */
-        if (mContainer == null) {
+//        if (mContainer == null) {
             setPivotX(mTotalWidth / 2);
             setPivotY(mTotalHeight * 3);
-            mContainer = (AppleWatchContainer) getParent();
-        }
+//            mContainer = (AppleWatchContainer) getParent();
+//        }
     }
 
     private void inflateItem(GestureItemView item, BaseInfo info) {
@@ -501,7 +510,6 @@ public class AppleWatchLayout extends ViewGroup {
         if (info.eventNumber > 0) {
             item.setDecorateAction(new EventAction(getContext(), info.eventNumber));
         }
-        // TODO
         if (info instanceof QuickGestureContactTipInfo) {
             if (((QuickGestureContactTipInfo) info).isShowReadTip) {
                 item.showReadTip();
@@ -1877,24 +1885,24 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private Animator iconAnimator(final View targetView){
-        AnimatorSet set = new AnimatorSet();
         float scale = targetView.getScaleX();
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(targetView, "alpha", 0f,0f,1.0f);
-        ObjectAnimator scaleXAnimator =  ObjectAnimator.ofFloat(targetView, "scaleX",0f,1.1f*scale,scale);
-        ObjectAnimator scaleYAnimator =  ObjectAnimator.ofFloat(targetView, "scaleY",0f,1.1f*scale,scale);
-        set.playTogether(alphaAnimator,scaleXAnimator,scaleYAnimator);
-        set.addListener(new AnimatorListenerAdapter() {
+        PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 0f,1.0f);
+        PropertyValuesHolder pvScaleX = PropertyValuesHolder.ofFloat("scaleX", 0f,1.1f*scale,scale);
+        PropertyValuesHolder pvScaleY = PropertyValuesHolder.ofFloat("scaleY", 0f,1.1f*scale,scale);
+        
+        ObjectAnimator anim = ObjectAnimator.ofPropertyValuesHolder(targetView, pvAlpha,pvScaleX,pvScaleY);
+        anim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
                 targetView.setVisibility(View.VISIBLE);
             }
         });
-        return set;
+        return anim;
     }
     
     public AnimatorSet makeIconShowAnimator(int direction) {
-        Animator[] iconAnimators = new Animator[13];
+        Animator[] iconAnimators = new Animator[11];
         AnimatorSet set = new AnimatorSet();
         AnimatorSet partOneSet = new AnimatorSet();
         AnimatorSet partTwoSet = new AnimatorSet();

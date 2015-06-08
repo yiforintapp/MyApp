@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -86,6 +87,7 @@ public class AppleWatchContainer extends FrameLayout {
     private boolean mHasRelayout;
     private boolean mMoving;
     protected long mStartShowingTime;
+    public boolean showOpenAnimationm = true;
 
     public AppleWatchContainer(Context context) {
         super(context);
@@ -436,17 +438,6 @@ public class AppleWatchContainer extends FrameLayout {
         mDymicLayout.setVisibility(View.VISIBLE);
         mMostUsedLayout.setVisibility(View.VISIBLE);
         mSwitcherLayout.setVisibility(View.VISIBLE);
-
-        // if (!mHasRelayout) {
-        // if (mDymicLayout.mHasFillExtraItems &&
-        // mMostUsedLayout.mHasFillExtraItems
-        // && mSwitcherLayout.mHasFillExtraItems) {
-        // mDymicLayout.relayoutExtraChildren();
-        // mMostUsedLayout.relayoutExtraChildren();
-        // mSwitcherLayout.relayoutExtraChildren();
-        // // mHasRelayout = true;
-        // }
-        // }
     }
 
     private void onTouchMoveRotate(float moveX, float moveY) {
@@ -1262,7 +1253,8 @@ public class AppleWatchContainer extends FrameLayout {
             public void onAnimationStart(Animator animation) {
                 mStartShowingTime = System.currentTimeMillis();
                 isAnimating = true;
-                //targetLayout.setVisibility(View.VISIBLE);
+                Log.i("tag", "showOpenAnimationm = " + showOpenAnimationm);
+                // targetLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
@@ -1283,6 +1275,7 @@ public class AppleWatchContainer extends FrameLayout {
                     }
                 });
                 run.run();
+                showOpenAnimationm = false;
             }
         });
         set.start();
