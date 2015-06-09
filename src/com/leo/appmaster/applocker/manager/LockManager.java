@@ -165,8 +165,6 @@ public class LockManager {
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     public HashMap<Drawable, Bitmap> mDrawableColors;
     public ColorMatcher mMatcher;
-    public List<BaseInfo> mDynamicList;
-    public List<BaseInfo> mMostUsedList;
 
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
@@ -198,8 +196,6 @@ public class LockManager {
         mDrawableColors = new HashMap<Drawable, Bitmap>();
         loadAppLaunchReorder();
         mMatcher = new ColorMatcher();
-        mDynamicList = new ArrayList<BaseInfo>();
-        mMostUsedList = new ArrayList<BaseInfo>();
     }
 
     public void recordOutcountTask(String pkg) {

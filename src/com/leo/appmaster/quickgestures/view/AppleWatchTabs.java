@@ -415,21 +415,27 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-        if (mContainer.isEditing()) {
-            return;
-        }
         LeoLog.d(TAG, "onClick");
         GType type = mContainer.getCurrentGestureType();
         if (v == mIvDynamic) {
             if (type != GType.DymicLayout) {
+                if (mContainer.isEditing()) {
+                    mContainer.leaveEditMode();
+                }
                 mContainer.snapToDynamic();
             }
         } else if (v == mIvMostUsed) {
             if (type != GType.MostUsedLayout) {
+                if (mContainer.isEditing()) {
+                    mContainer.leaveEditMode();
+                }
                 mContainer.snapToMostUsed();
             }
         } else if (v == mIvSwitcher) {
             if (type != GType.SwitcherLayout) {
+                if (mContainer.isEditing()) {
+                    mContainer.leaveEditMode();
+                }
                 mContainer.snapToSwitcher();
             }
         }

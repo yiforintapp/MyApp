@@ -850,7 +850,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
     }
 
-    public void checkActionDownInEditing(float x, float y) {
+    public boolean checkActionDownInEditing(float x, float y) {
         View hitView = null, tempView = null;
         for (int i = 0; i < getChildCount(); i++) {
             tempView = getChildAt(i);
@@ -870,9 +870,11 @@ public class AppleWatchLayout extends ViewGroup {
                     hitView.startDrag(null, new GestureDragShadowBuilder(hitView, 2.0f),
                             hitView, 0);
                     hitView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+                    return true;
                 }
             }
         }
+        return false;
     }
 
     public void setCurrentRotateDegree(float degree) {

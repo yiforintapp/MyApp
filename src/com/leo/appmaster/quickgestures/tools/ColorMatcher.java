@@ -52,7 +52,7 @@ public class ColorMatcher {
         if (item != null) {
             return item.getBitmap();
         }
-        targetBmp.recycle();
+//        targetBmp.recycle();
         return null;
 
     }
