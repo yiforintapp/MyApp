@@ -94,6 +94,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private void initUi() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
         mTitleBar.openBackView();
+//        mTitleBar.setTitle(R.string.pg_appmanager_quick_gesture_name);
         mTipRL = (RelativeLayout) findViewById(R.id.quick_tipRL);
         mLeftTopView = (TextView) findViewById(R.id.gesture_left_tips_top_tv);
         mLeftBottomView = (TextView) findViewById(R.id.gesture_left_tips_bottom);
