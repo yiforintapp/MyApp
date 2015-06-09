@@ -30,7 +30,7 @@
                 android:layout_weight="1"
                 android:background="@drawable/manager_left_contact_button_selecter"
                 android:gravity="center"
-                android:text="@string/feedback"
+                android:text="@string/grade_tip_feedback"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 android:textStyle="bold" />
