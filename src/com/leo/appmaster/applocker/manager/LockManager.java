@@ -20,15 +20,12 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.Intent.ShortcutIconResource;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
-import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
@@ -46,7 +43,6 @@ import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.model.TimeLock.RepeatTime;
 import com.leo.appmaster.applocker.model.TimeLock.TimePoint;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.applocker.service.TaskDetectService.TaskDetectBinder;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -1348,7 +1344,7 @@ public class LockManager {
             mFilterPgks.put(filterPackage, persistent);
         }
     }
-    
+
     public void filterAllOneTime() {
         mFilterAll = true;
     }
@@ -1493,11 +1489,11 @@ public class LockManager {
     public boolean applyLock(int lockMode, String lockedPkg, boolean restart,
             OnUnlockedListener listener) {
 
-        if(mFilterAll) {
+        if (mFilterAll) {
             mFilterAll = false;
             return false;
         }
-        
+
         if (TextUtils.equals(mContext.getPackageName(), lockedPkg)) {
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
             long filterTime = amp.getLastFilterSelfTime();
