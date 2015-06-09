@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.locks.Lock;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -26,6 +27,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -354,7 +356,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
 
         if (isCheck) {
             List<QuickGsturebAppInfo> isCheckList = new ArrayList<QuickGsturebAppInfo>();
-            ArrayList<AppLauncherRecorder> records = QuickGestureManager.getInstance(mContext).mAppLaunchRecorders;
+            ArrayList<AppLauncherRecorder> records = LockManager.getInstatnce().mAppLaunchRecorders;
             Iterator<AppLauncherRecorder> iterator = records.iterator();
             AppLauncherRecorder record;
             i = 0;

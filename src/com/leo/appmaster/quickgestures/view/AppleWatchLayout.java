@@ -34,6 +34,7 @@ import android.view.animation.ScaleAnimation;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -797,15 +798,14 @@ public class AppleWatchLayout extends ViewGroup {
                 boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
-                    ArrayList<AppLauncherRecorder> mRecorderApp = QuickGestureManager
-                            .getInstance(mContext).mAppLaunchRecorders;
+                    ArrayList<AppLauncherRecorder> mRecorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
                     Iterator<AppLauncherRecorder> recorder = mRecorderApp.iterator();
                     while (recorder.hasNext()) {
                         AppLauncherRecorder recorderAppInfo = recorder.next();
                         if (info != null) {
                             if (info.packageName.equals(recorderAppInfo.pkg)) {
                                 recorderAppInfo.launchCount = 0;
-                                QuickGestureManager.getInstance(mContext).saveAppLaunchRecoder();
+                                LockManager.getInstatnce().saveAppLaunchRecoder();
                             }
                         }
                     }
