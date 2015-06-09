@@ -804,9 +804,6 @@ public class AppleWatchLayout extends ViewGroup {
                         if (info != null) {
                             if (info.packageName.equals(recorderAppInfo.pkg)) {
                                 recorderAppInfo.launchCount = 0;
-                                // recorderAppInfo.pkg = "";
-                                // remove
-                                // QuickGestureManager.getInstance(mContext).removeItemFromAppLaunchRecoder(info.packageName);
                                 QuickGestureManager.getInstance(mContext).saveAppLaunchRecoder();
                             }
                         }
@@ -1048,31 +1045,36 @@ public class AppleWatchLayout extends ViewGroup {
                 // TODO update dynamic list
 
             } else if (gType == GType.MostUsedLayout) {
-                // boolean isCheck = AppMasterPreference.getInstance(mContext)
-                // .getQuickGestureCommonAppDialogCheckboxValue();
-                // int mNum = getChildCount();
-                // LayoutParams params = null;
-                // //更新自动填充列表
-                // if(isCheck){
-                //
-                // }else {//更新非自动填充列表
-                // for (int i = 0; i < mNum; i++) {
-                // params = (LayoutParams) getChildAt(i).getLayoutParams();
-                // int position = params.position;
-                // if (position > -1) {
-                // if (getChildAt(i).getTag() instanceof AppItemInfo) {
-                // AppItemInfo sInfo = (AppItemInfo) getChildAt(i).getTag();
-                // if (sInfo != null && !sInfo.label.isEmpty()) {
-                // sInfo.gesturePosition = position;
-                // AppMasterPreference.getInstance(mContext)
-                // .setCommonAppPackageNameAdd(
-                // sInfo.packageName + ":" + sInfo.gesturePosition);
-                // }
-                // }
-                // }
-                // }
-                // }
+                LeoLog.d("testSp", "移动啦！");
+                // TODO update most used list
+                int mNum = getChildCount();
+                LeoLog.d("testSp", "ChildNum : " + mNum);
+                LayoutParams params = null;
+                List<BaseInfo> mostUseApp = new ArrayList<BaseInfo>();
+                for (int i = 0; i < mNum; i++) {
+                    params = (LayoutParams) getChildAt(i).getLayoutParams();
+                    int position = params.position;
+                    if (position > -1) {
+                        LeoLog.d("testSp", "child[" + i + "] position is : " + position);
+                        if (getChildAt(i).getTag() instanceof AppInfo) {
+                            LeoLog.d("testSp", "instanceof AppItemInfo");
+                            AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+                            if (sInfo != null && !sInfo.label.isEmpty()) {
+                                sInfo.gesturePosition = position;
+                                // AppMasterPreference.getInstance(mContext)
+                                // .setCommonAppPackageNameAdd(
+                                // sInfo.packageName + ":" +
+                                // sInfo.gesturePosition);
+                                mostUseApp.add(sInfo);
+                            }
+                        }
+                    }
+                }
 
+                String NeedSave = QuickSwitchManager.getInstance(getContext()).listToPackString(mostUseApp,mostUseApp.size());
+                LeoLog.d("testSp", "NeedSave : " + NeedSave);
+                mPref.setCommonAppPackageName(NeedSave);
+                
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;
@@ -1971,7 +1973,7 @@ public class AppleWatchLayout extends ViewGroup {
         AnimatorSet partTwoSet = new AnimatorSet();
         AnimatorSet partThreeSet = new AnimatorSet();
         Animator firstAnim = null, lastAnim = null;
-        
+
         GestureItemView targetItem;
         for (int i = 0; i < 11; i++) {
             if (i < 4) {
@@ -2014,13 +2016,13 @@ public class AppleWatchLayout extends ViewGroup {
         partTwoSet.setDuration(400).setStartDelay(240);
         partThreeSet.setDuration(400).setStartDelay(360);
         lastAnim.setDuration(400).setStartDelay(480);
-        set.playTogether(firstAnim,partOneSet,partTwoSet,partThreeSet,lastAnim);
+        set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }
 
     private Animator iconDisappearAnimator(final View targetView) {
         float scale = targetView.getScaleX();
-        float maxScale = 1.1f * scale;
+        float maxScale = 1.2f * scale;
         PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0f);
         PropertyValuesHolder pvScaleX = PropertyValuesHolder.ofFloat("scaleX", scale, maxScale, 0f);
         PropertyValuesHolder pvScaleY = PropertyValuesHolder.ofFloat("scaleY", scale, maxScale, 0f);
@@ -2079,7 +2081,7 @@ public class AppleWatchLayout extends ViewGroup {
         partTwoSet.setDuration(400).setStartDelay(200);
         partThreeSet.setDuration(400).setStartDelay(300);
         lastAnim.setDuration(400).setStartDelay(400);
-        set.playTogether(firstAnim,partOneSet,partTwoSet,partThreeSet,lastAnim);
+        set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }
 }

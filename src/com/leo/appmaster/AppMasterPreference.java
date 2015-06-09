@@ -1631,6 +1631,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         } else {
             packageNames = name + ";";
         }
+         LeoLog.d("testSp", "packageNames : " + packageNames);
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, packageNames)
                 .commit();
     }
