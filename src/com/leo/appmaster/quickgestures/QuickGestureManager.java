@@ -55,8 +55,6 @@ public class QuickGestureManager {
     protected static final String AppLauncherRecorder = null;
     private static QuickGestureManager mInstance;
     private Context mContext;
-    private ColorMatcher mMatcher;
-    private HashMap<Drawable, Bitmap> mDrawableColors;
     private boolean mInited = false;
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
@@ -95,14 +93,11 @@ public class QuickGestureManager {
             mMostUsedList = new ArrayList<BaseInfo>();
             LockManager.getInstatnce().loadAppLaunchReorder();
             preloadEmptyIcon();
-            mMatcher = new ColorMatcher();
             Bitmap bmp;
             for (Drawable drawable : mColorBgIcon) {
                 bmp = ((BitmapDrawable) drawable).getBitmap();
-                mMatcher.addBitmapSample(bmp);
+                LockManager.getInstatnce().mMatcher.addBitmapSample(bmp);
             }
-            mDrawableColors = new HashMap<Drawable, Bitmap>();
-
             // TODO switcher init
             QuickSwitchManager.getInstance(mContext).init();
             mInited = true;
@@ -118,10 +113,10 @@ public class QuickGestureManager {
             LockManager.getInstatnce().mAppLaunchRecorders.clear();
             LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
-            mMatcher.clearItem();
-            mMatcher = null;
-            mDrawableColors.clear();
-            mDrawableColors = null;
+            LockManager.getInstatnce().mMatcher.clearItem();
+            LockManager.getInstatnce().mMatcher = null;
+            LockManager.getInstatnce().mDrawableColors.clear();
+            LockManager.getInstatnce().mDrawableColors = null;
             // TODO Switcher uninit
             QuickSwitchManager.getInstance(mContext).unInit();
             mInited = false;
@@ -130,11 +125,11 @@ public class QuickGestureManager {
 
     public Bitmap getMatchedColor(Drawable drawable) {
         Bitmap target = null;
-        target = mDrawableColors.get(drawable);
+        target = LockManager.getInstatnce().mDrawableColors.get(drawable);
         if (target == null) {
-            target = mMatcher.getMatchedBitmap(drawable);
+            target = LockManager.getInstatnce().mMatcher.getMatchedBitmap(drawable);
             if (target != null) {
-                mDrawableColors.put(drawable, target);
+                LockManager.getInstatnce().mDrawableColors.put(drawable, target);
             }
         }
         return target;
@@ -970,6 +965,7 @@ public class QuickGestureManager {
                 context
                         .getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new Notification();
+        LockManager.getInstatnce().timeFilterSelf();
         Intent intentPending = new Intent(context,
                 QuickGestureActivity.class);
         intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

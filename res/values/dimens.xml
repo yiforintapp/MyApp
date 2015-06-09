@@ -224,8 +224,8 @@
     <dimen name="quick_gesture_setting_item_height">56dp</dimen>
     <dimen name="quick_seek_bar_width">250dp</dimen>
     <!-- quick gesutre end -->
-    
-   <dimen name="privacy_contact_red_tip_x">94dp</dimen>
+
+    <dimen name="privacy_contact_red_tip_x">94dp</dimen>
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="gesture_item_imageview_padding">10dp</dimen>
 
