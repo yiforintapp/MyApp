@@ -916,24 +916,24 @@ public class AppleWatchLayout extends ViewGroup {
         if (type == GType.DymicLayout) {
             return;
         } else if (type == GType.MostUsedLayout) {
-            boolean isCheck = AppMasterPreference.getInstance(mContext)
-                    .getQuickGestureCommonAppDialogCheckboxValue();
-            int mNum = getChildCount();
-            LeoLog.d("testSp", "AllChildNum : " + mNum);
-            mRecordMostList = new ArrayList<BaseInfo>();
-
-            if (isCheck) {
-                mRecordMostList =
-                        QuickGestureManager.getInstance(mContext).loadRecorderAppInfo();
-                for (int i = 0; i < mRecordMostList.size(); i++) {
-                    // AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
-                    AppInfo sInfo = (AppInfo) mRecordMostList.get(i);
-                    LeoLog.d("testSp", "sInfo.childName : " + sInfo.packageName
-                            + " - sInfo.childPosition : "
-                            + sInfo.gesturePosition);
-                }
-                isSqueez = true;
-            }
+            // boolean isCheck = AppMasterPreference.getInstance(mContext)
+            // .getQuickGestureCommonAppDialogCheckboxValue();
+            // int mNum = getChildCount();
+            // LeoLog.d("testSp", "AllChildNum : " + mNum);
+            // mRecordMostList = new ArrayList<BaseInfo>();
+            //
+            // if (isCheck) {
+            // mRecordMostList =
+            // QuickGestureManager.getInstance(mContext).loadRecorderAppInfo();
+            // for (int i = 0; i < mRecordMostList.size(); i++) {
+            // // AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+            // AppInfo sInfo = (AppInfo) mRecordMostList.get(i);
+            // LeoLog.d("testSp", "sInfo.childName : " + sInfo.packageName
+            // + " - sInfo.childPosition : "
+            // + sInfo.gesturePosition);
+            // }
+            // isSqueez = true;
+            // }
 
         }
 
@@ -1077,58 +1077,58 @@ public class AppleWatchLayout extends ViewGroup {
                 List<BaseInfo> mostUseApp = new ArrayList<BaseInfo>();
 
                 if (isCheck) {
-                    for (int i = 0; i < mNum; i++) {
-                        LayoutParams mParams = null;
-                        mParams = (LayoutParams) getChildAt(i).getLayoutParams();
-                        int position = mParams.position;
-                        if (position > -1) {
-                            if (getChildAt(i).getTag() instanceof AppInfo) {
-                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
-                                LeoLog.d("testSp", "childName : " + sInfo.packageName
-                                        + " - childPosition : "
-                                        + position);
-                                if (sInfo != null && !sInfo.label.isEmpty()) {
-                                    sInfo.gesturePosition = position;
-                                    mostUseApp.add(sInfo);
-                                }
-                            }
-                        }
-                    }
-
-                    HashMap<String, Integer> packagePosition = new
-                            HashMap<String, Integer>();
-                    ArrayList<AppLauncherRecorder> records =
-                            LockManager.getInstatnce().mAppLaunchRecorders;
-                    Iterator<AppLauncherRecorder> iterator =
-                            records.iterator();
-                    AppLauncherRecorder record;
-                    int i = 0;
-                    while (iterator.hasNext()) {
-                        if (i > 13)
-                            break;
-                        record = iterator.next();
-                        packagePosition.put(record.pkg, record.launchCount);
-                        i++;
-                    }
-
-                    if(isSqueez){
-                        // 计算原位的position:launchercount
-                        if (mRecordMostList.size() > 0) {
-                            for (int j = 0; j < mRecordMostList.size(); j++) {
-                                AppInfo sInfo = (AppInfo) mRecordMostList.get(j);
-                                int position = sInfo.gesturePosition;
-                                int launcherCount = packagePosition.get(sInfo.packageName);
-                                LeoLog.d("testSp", "position : " + position
-                                        + " - launcherCount : "
-                                        + launcherCount);
-                            }
-
-                            mRecordMostList.clear();
-                            mRecordMostList = null;
-                        }
-                        isSqueez = false;
-                    }
-
+                    // for (int i = 0; i < mNum; i++) {
+                    // LayoutParams mParams = null;
+                    // mParams = (LayoutParams) getChildAt(i).getLayoutParams();
+                    // int position = mParams.position;
+                    // if (position > -1) {
+                    // if (getChildAt(i).getTag() instanceof AppInfo) {
+                    // AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+                    // LeoLog.d("testSp", "childName : " + sInfo.packageName
+                    // + " - childPosition : "
+                    // + position);
+                    // if (sInfo != null && !sInfo.label.isEmpty()) {
+                    // sInfo.gesturePosition = position;
+                    // mostUseApp.add(sInfo);
+                    // }
+                    // }
+                    // }
+                    // }
+                    //
+                    // HashMap<String, Integer> packagePosition = new
+                    // HashMap<String, Integer>();
+                    // ArrayList<AppLauncherRecorder> records =
+                    // LockManager.getInstatnce().mAppLaunchRecorders;
+                    // Iterator<AppLauncherRecorder> iterator =
+                    // records.iterator();
+                    // AppLauncherRecorder record;
+                    // int i = 0;
+                    // while (iterator.hasNext()) {
+                    // if (i > 13)
+                    // break;
+                    // record = iterator.next();
+                    // packagePosition.put(record.pkg, record.launchCount);
+                    // i++;
+                    // }
+                    //
+                    // if(isSqueez){
+                    // // 计算原位的position:launchercount
+                    // if (mRecordMostList.size() > 0) {
+                    // for (int j = 0; j < mRecordMostList.size(); j++) {
+                    // AppInfo sInfo = (AppInfo) mRecordMostList.get(j);
+                    // int position = sInfo.gesturePosition;
+                    // int launcherCount =
+                    // packagePosition.get(sInfo.packageName);
+                    // LeoLog.d("testSp", "position : " + position
+                    // + " - launcherCount : "
+                    // + launcherCount);
+                    // }
+                    //
+                    // mRecordMostList.clear();
+                    // mRecordMostList = null;
+                    // }
+                    // isSqueez = false;
+                    // }
 
                 } else {
                     for (int i = 0; i < mNum; i++) {
