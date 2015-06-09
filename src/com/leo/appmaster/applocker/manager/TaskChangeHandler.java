@@ -119,7 +119,7 @@ public class TaskChangeHandler {
             mLastRuningActivity = activity;
 
             // remocde app launch recoder
-            QuickGestureManager.getInstance(mContext).recordAppLaunch(mLastRunningPkg);
+            LockManager.getInstatnce().recordAppLaunch(mLastRunningPkg);
             AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg, System.currentTimeMillis());
 
             // For android 5.0, download package changed
