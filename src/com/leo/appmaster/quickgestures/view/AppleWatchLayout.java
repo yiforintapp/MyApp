@@ -2,6 +2,7 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -81,6 +82,8 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private boolean mNeedRelayoutExtraItem;
+
+    private List<BaseInfo> mRecordMostList;
 
     public AppleWatchLayout(Context context) {
         this(context, null);
@@ -910,6 +913,43 @@ public class AppleWatchLayout extends ViewGroup {
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
             return;
+        } else if (type == GType.MostUsedLayout) {
+            boolean isCheck = AppMasterPreference.getInstance(mContext)
+                    .getQuickGestureCommonAppDialogCheckboxValue();
+            int mNum = getChildCount();
+            LeoLog.d("testSp", "ChildNum : " + mNum);
+            LayoutParams params = null;
+            mRecordMostList = new ArrayList<BaseInfo>();
+
+            // if (isCheck) {
+            // mRecordMostList =
+            // QuickGestureManager.getInstance(mContext).loadRecorderAppInfo();
+            // for (int i = 0; i < mRecordMostList.size(); i++) {
+            // AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+            // LeoLog.d("testSp", "childName : " + sInfo.packageName
+            // + " - childPosition : "
+            // + sInfo.gesturePosition);
+            // }
+
+            // for (int i = 0; i < mNum; i++) {
+            // LayoutParams mParams = null;
+            // mParams = (LayoutParams) getChildAt(i).getLayoutParams();
+            // int position = mParams.position;
+            // if (position > -1) {
+            // if (getChildAt(i).getTag() instanceof AppInfo) {
+            // AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+            // LeoLog.d("testSp", "childName : " + sInfo.packageName
+            // + " - childPosition : "
+            // + position);
+            // if (sInfo != null && !sInfo.label.isEmpty()) {
+            // sInfo.gesturePosition = position;
+            // mRecordMostList.add(sInfo);
+            // }
+            // }
+            // }
+            // }
+            // }
+
         }
 
         if (mReorderAnimator != null && mReorderAnimator.isRunning()) {
@@ -1045,36 +1085,67 @@ public class AppleWatchLayout extends ViewGroup {
                 // TODO update dynamic list
 
             } else if (gType == GType.MostUsedLayout) {
-                LeoLog.d("testSp", "移动啦！");
-                // TODO update most used list
+                boolean isCheck = AppMasterPreference.getInstance(mContext)
+                        .getQuickGestureCommonAppDialogCheckboxValue();
                 int mNum = getChildCount();
                 LeoLog.d("testSp", "ChildNum : " + mNum);
                 LayoutParams params = null;
                 List<BaseInfo> mostUseApp = new ArrayList<BaseInfo>();
-                for (int i = 0; i < mNum; i++) {
-                    params = (LayoutParams) getChildAt(i).getLayoutParams();
-                    int position = params.position;
-                    if (position > -1) {
-                        LeoLog.d("testSp", "child[" + i + "] position is : " + position);
-                        if (getChildAt(i).getTag() instanceof AppInfo) {
-                            LeoLog.d("testSp", "instanceof AppItemInfo");
-                            AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
-                            if (sInfo != null && !sInfo.label.isEmpty()) {
-                                sInfo.gesturePosition = position;
-                                // AppMasterPreference.getInstance(mContext)
-                                // .setCommonAppPackageNameAdd(
-                                // sInfo.packageName + ":" +
-                                // sInfo.gesturePosition);
-                                mostUseApp.add(sInfo);
+
+                if (isCheck) {
+                    for (int i = 0; i < mNum; i++) {
+                        LayoutParams mParams = null;
+                        mParams = (LayoutParams) getChildAt(i).getLayoutParams();
+                        int position = mParams.position;
+                        if (position > -1) {
+                            if (getChildAt(i).getTag() instanceof AppInfo) {
+                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+                                LeoLog.d("testSp", "childName : " + sInfo.packageName
+                                        + " - childPosition : "
+                                        + position);
+                                if (sInfo != null && !sInfo.label.isEmpty()) {
+                                    sInfo.gesturePosition = position;
+                                    mostUseApp.add(sInfo);
+                                }
                             }
                         }
                     }
+
+                    HashMap<String, Integer> packagePosition = new HashMap<String, Integer>();
+                    ArrayList<AppLauncherRecorder> records = QuickGestureManager
+                            .getInstance(mContext).mAppLaunchRecorders;
+                    Iterator<AppLauncherRecorder> iterator = records.iterator();
+                    AppLauncherRecorder record;
+                    int i = 0;
+                    while (iterator.hasNext()) {
+                        if (i > 13)
+                            break;
+                        record = iterator.next();
+                        packagePosition.put(record.pkg, record.launchCount);
+                        i++;
+                    }
+
+                } else {
+                    for (int i = 0; i < mNum; i++) {
+                        params = (LayoutParams) getChildAt(i).getLayoutParams();
+                        int position = params.position;
+                        if (position > -1) {
+                            LeoLog.d("testSp", "child[" + i + "] position is : " + position);
+                            if (getChildAt(i).getTag() instanceof AppInfo) {
+                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+                                if (sInfo != null && !sInfo.label.isEmpty()) {
+                                    sInfo.gesturePosition = position;
+                                    mostUseApp.add(sInfo);
+                                }
+                            }
+                        }
+                    }
+                    String NeedSave = QuickSwitchManager.getInstance(getContext())
+                            .listToPackString(mostUseApp, mostUseApp.size());
+                    LeoLog.d("testSp", "NeedSave : " + NeedSave);
+                    mPref.setCommonAppPackageName(NeedSave);
                 }
 
-                String NeedSave = QuickSwitchManager.getInstance(getContext()).listToPackString(mostUseApp,mostUseApp.size());
-                LeoLog.d("testSp", "NeedSave : " + NeedSave);
-                mPref.setCommonAppPackageName(NeedSave);
-                
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;

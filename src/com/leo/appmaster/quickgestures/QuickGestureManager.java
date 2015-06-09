@@ -376,7 +376,7 @@ public class QuickGestureManager {
     }
 
     // Recorder App
-    private List<BaseInfo> loadRecorderAppInfo() {
+    public List<BaseInfo> loadRecorderAppInfo() {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = QuickGestureManager
                 .getInstance(mContext).mAppLaunchRecorders;
@@ -733,7 +733,9 @@ public class QuickGestureManager {
                             }
 
                             if (addCommonApp != null && addCommonApp.size() > 0) {
-                                addCommonApp = hasSameName(addCommonApp,true);
+                                if(record != null && record.size() >0){
+                                    addCommonApp = hasSameName(addCommonApp,true);
+                                }
                             }
                             
                             for (BaseInfo removeInfo : addCommonApp) {
