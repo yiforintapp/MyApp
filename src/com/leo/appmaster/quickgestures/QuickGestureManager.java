@@ -373,10 +373,16 @@ public class QuickGestureManager {
 
     // Recorder App
     public List<BaseInfo> loadRecorderAppInfo() {
+
+        // load前看看已经选定的应用有啥，并且排列在最前面
+        List<BaseInfo> mHaveList = loadCommonAppInfo();
+        LeoLog.d("testSp", "mHaveList.size : " + mHaveList.size());
+        List<BaseInfo> newresault = new ArrayList<BaseInfo>();
+
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
-        if (recorderApp.size() > 1) {
+        if (recorderApp.size() > 1 && mHaveList.size() > 0) {
             LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
@@ -442,7 +448,59 @@ public class QuickGestureManager {
                 }
             }
         }
-        return resault;
+
+        if (mHaveList.size() > 0) {
+            int[] mPositions = new int[mHaveList.size()];
+            for (int i = 0; i < mHaveList.size(); i++) {
+                BaseInfo mInfo = mHaveList.get(i);
+                mPositions[i] = mInfo.gesturePosition;
+            }
+            // LeoLog.d("testSp", "未排序前的数组");
+            // for(int i = 0;i<mPositions.length;i++){
+            // LeoLog.d("testSp", "mm : " + mPositions[i]);
+            // }
+            sortList(mPositions);
+            // LeoLog.d("testSp", "排序后的数组");
+            // for(int i = 0;i<mPositions.length;i++){
+            // LeoLog.d("testSp", "mm : " + mPositions[i]);
+            // }
+
+            for (int i = 0; i < 11; i++) {
+                LeoLog.d("testSp", "i  is : " + i);
+                int j = 0;
+                int k = 0;
+                QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(k);
+                QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
+                if (mInfo.gesturePosition == i) {
+                    LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
+                    newresault.add(mInfo);
+                    k++;
+                } else {
+                    LeoLog.d("testSp", "mInfoCount.gesturePosition : " + mInfoCount.gesturePosition);
+                    mInfoCount.gesturePosition = i;
+                    newresault.add(mInfoCount);
+                    j++;
+                }
+            }
+            LeoLog.d("testSp", "newresault.size : " + newresault.size());
+            return newresault;
+        } else {
+            return resault;
+        }
+        
+//        return resault;
+    }
+
+    private void sortList(int[] mPositions) {
+        for (int i = 0; i < mPositions.length; i++) {
+            for (int j = i + 1; j < mPositions.length; j++) {
+                if (mPositions[i] > mPositions[j]) {
+                    int temp = mPositions[i];
+                    mPositions[i] = mPositions[j];
+                    mPositions[j] = temp;
+                }
+            }
+        }
     }
 
     // Customize common app
