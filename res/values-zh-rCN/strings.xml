@@ -705,5 +705,6 @@
     <string name="permission_open_tip_notification_title">设置快捷手势</string>
     <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">开启快捷手势，只要轻松一划，想要的应用/开关尽在眼前</string>
+    <string name="grade_tip_feedback">我要吐槽</string>
 
 </resources>
