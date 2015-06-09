@@ -59,8 +59,8 @@ public class QuickGestureManager {
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
-//    public List<BaseInfo> mDynamicList;
-//    public List<BaseInfo> mMostUsedList;
+    public List<BaseInfo> mDynamicList;
+    public List<BaseInfo> mMostUsedList;
     private Drawable[] mColorBgIcon;
     private Drawable mEmptyIcon;
     public int mSlidAreaSize;
@@ -89,6 +89,8 @@ public class QuickGestureManager {
 
     public void init() {
         if (!mInited) {
+            mDynamicList = new ArrayList<BaseInfo>();
+            mMostUsedList = new ArrayList<BaseInfo>();
             LockManager.getInstatnce().loadAppLaunchReorder();
             preloadEmptyIcon();
             Bitmap bmp;
@@ -104,10 +106,10 @@ public class QuickGestureManager {
 
     public void unInit() {
         if (mInited) {
-            LockManager.getInstatnce().mDynamicList.clear();
-            LockManager.getInstatnce().mMostUsedList.clear();
-            LockManager.getInstatnce().mDynamicList = null;
-            LockManager.getInstatnce().mMostUsedList = null;
+            mDynamicList.clear();
+            mMostUsedList.clear();
+            mDynamicList = null;
+            mMostUsedList = null;
             LockManager.getInstatnce().mAppLaunchRecorders.clear();
             LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
@@ -371,12 +373,10 @@ public class QuickGestureManager {
 
     // Recorder App
     public List<BaseInfo> loadRecorderAppInfo() {
-        LeoLog.d("testSp", "loadRecorderAppInfo！");
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         if (recorderApp.size() > 0) {
-            LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
             AppItemInfo info;
@@ -411,7 +411,6 @@ public class QuickGestureManager {
                         resault.add(appItemInfo);
                 }
             } else {
-                LeoLog.d("testSp", "自动填充，没数据！");
                 ActivityManager am = (ActivityManager) mContext
                         .getSystemService(Context.ACTIVITY_SERVICE);
                 List<RecentTaskInfo> recentTasks = am.getRecentTasks(50,
@@ -428,7 +427,6 @@ public class QuickGestureManager {
                         appInfo = engine.getAppInfo(pkg);
                         if (appInfo != null) {
                             resault.add(appInfo);
-                            LeoLog.d("testSp", "add");
                         }
                         // icon = engine.getAppIcon(pkg);
                         // if (icon != null) {
