@@ -39,6 +39,7 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.tools.ColorMatcher;
@@ -57,8 +58,6 @@ public class QuickGestureManager {
     private ColorMatcher mMatcher;
     private HashMap<Drawable, Bitmap> mDrawableColors;
     private boolean mInited = false;
-
-    public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
@@ -94,7 +93,7 @@ public class QuickGestureManager {
         if (!mInited) {
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
-            loadAppLaunchReorder();
+            LockManager.getInstatnce().loadAppLaunchReorder();
             preloadEmptyIcon();
             mMatcher = new ColorMatcher();
             Bitmap bmp;
@@ -116,8 +115,8 @@ public class QuickGestureManager {
             mMostUsedList.clear();
             mDynamicList = null;
             mMostUsedList = null;
-            mAppLaunchRecorders.clear();
-            mAppLaunchRecorders = null;
+            LockManager.getInstatnce().mAppLaunchRecorders.clear();
+            LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
             mMatcher.clearItem();
             mMatcher = null;
@@ -297,75 +296,77 @@ public class QuickGestureManager {
         LockManager.getInstatnce().startFloatWindowService();
     }
 
-    public void loadAppLaunchReorder() {
-        mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
-        String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
-        AppLauncherRecorder temp = null;
-        int sIndex = -1;
-        if (!TextUtils.isEmpty(recoders)) {
-            recoders = recoders.substring(0, recoders.length() - 1);
-            String[] recoderList = recoders.split(";");
-            for (String recoder : recoderList) {
-                sIndex = recoder.indexOf(':');
-                if (sIndex != -1) {
-                    temp = new AppLauncherRecorder();
-                    temp.pkg = recoder.substring(0, sIndex);
-                    temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
-                    mAppLaunchRecorders.add(temp);
-                }
-            }
-        }
-    }
+    // public void loadAppLaunchReorder() {
+    // mAppLaunchRecorders = new
+    // ArrayList<QuickGestureManager.AppLauncherRecorder>();
+    // String recoders =
+    // AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
+    // AppLauncherRecorder temp = null;
+    // int sIndex = -1;
+    // if (!TextUtils.isEmpty(recoders)) {
+    // recoders = recoders.substring(0, recoders.length() - 1);
+    // String[] recoderList = recoders.split(";");
+    // for (String recoder : recoderList) {
+    // sIndex = recoder.indexOf(':');
+    // if (sIndex != -1) {
+    // temp = new AppLauncherRecorder();
+    // temp.pkg = recoder.substring(0, sIndex);
+    // temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
+    // mAppLaunchRecorders.add(temp);
+    // }
+    // }
+    // }
+    // }
 
-    public void recordAppLaunch(String pkg) {
-        if (TextUtils.isEmpty(pkg)) {
-            return;
-        }
-        boolean hit = false;
-        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
-            if (recorder.pkg.equals(pkg)) {
-                recorder.launchCount++;
-                hit = true;
-                break;
-            }
-        }
-        if (!hit) {
-            AppLauncherRecorder recoder = new AppLauncherRecorder();
-            recoder.pkg = pkg;
-            recoder.launchCount = 1;
-            mAppLaunchRecorders.add(recoder);
-        }
-        saveAppLaunchRecoder();
-    }
+    // public void recordAppLaunch(String pkg) {
+    // if (TextUtils.isEmpty(pkg)) {
+    // return;
+    // }
+    // boolean hit = false;
+    // for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
+    // if (recorder.pkg.equals(pkg)) {
+    // recorder.launchCount++;
+    // hit = true;
+    // break;
+    // }
+    // }
+    // if (!hit) {
+    // AppLauncherRecorder recoder = new AppLauncherRecorder();
+    // recoder.pkg = pkg;
+    // recoder.launchCount = 1;
+    // mAppLaunchRecorders.add(recoder);
+    // }
+    // saveAppLaunchRecoder();
+    // }
 
-    public void saveAppLaunchRecoder() {
-        StringBuilder resault = new StringBuilder();
-        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
-            resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
-        }
-        AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
-    }
+    // public void saveAppLaunchRecoder() {
+    // StringBuilder resault = new StringBuilder();
+    // for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
+    // resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
+    // }
+    // AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
+    // }
 
-    public void removeAppLaunchRecoder(String pkg) {
-        if (TextUtils.isEmpty(pkg)) {
-            return;
-        }
-        AppLauncherRecorder hitRecoder = null;
-        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
-            if (recorder.pkg.equals(pkg)) {
-                hitRecoder = recorder;
-                break;
-            }
-        }
-        if (hitRecoder != null) {
-            mAppLaunchRecorders.remove(hitRecoder);
-            StringBuilder resault = new StringBuilder();
-            for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
-                resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
-            }
-            AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
-        }
-    }
+    // public void removeAppLaunchRecoder(String pkg) {
+    // if (TextUtils.isEmpty(pkg)) {
+    // return;
+    // }
+    // AppLauncherRecorder hitRecoder = null;
+    // for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
+    // if (recorder.pkg.equals(pkg)) {
+    // hitRecoder = recorder;
+    // break;
+    // }
+    // }
+    // if (hitRecoder != null) {
+    // mAppLaunchRecorders.remove(hitRecoder);
+    // StringBuilder resault = new StringBuilder();
+    // for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
+    // resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
+    // }
+    // AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
+    // }
+    // }
 
     public List<BaseInfo> getMostUsedList() {
         if (mSpSwitch.getQuickGestureCommonAppDialogCheckboxValue()) {
@@ -378,8 +379,7 @@ public class QuickGestureManager {
     // Recorder App
     public List<BaseInfo> loadRecorderAppInfo() {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
-        ArrayList<AppLauncherRecorder> recorderApp = QuickGestureManager
-                .getInstance(mContext).mAppLaunchRecorders;
+        ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         if (recorderApp.size() > 0) {
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
@@ -433,6 +433,15 @@ public class QuickGestureManager {
                         if (appInfo != null) {
                             resault.add(appInfo);
                         }
+                        // icon = engine.getAppIcon(pkg);
+                        // if (icon != null) {
+                        // appInfo = new AppItemInfo();
+                        // appInfo.packageName = pkg;
+                        // appInfo.activityName = engine.getActivityName(pkg);
+                        // appInfo.icon = icon;
+                        // appInfo.label = engine.getAppName(pkg);
+                        // dynamicList.add(appInfo);
+                        // }
                     }
                 }
             }
@@ -651,14 +660,13 @@ public class QuickGestureManager {
                                 }
                             }
 
-                            if (addCommonApp != null && addCommonApp.size() > 0) {
+                            if (removeCommonApp != null && addCommonApp.size() > 0) {
                                 if (removeCommonApp.size() == 0) {
                                     mDefineList = comList;
                                 }
-                                
-                                //判断要加入的是否已存在，已存在的不加入
-                                addCommonApp = hasSameName(addCommonApp,false);
-                                
+
+                                // 判断要加入的是否已存在，已存在的不加入
+                                addCommonApp = hasSameName(addCommonApp, false);
 
                                 // 记录现有的Icon位置
                                 LeoLog.d("QuickGestureManager", "有货要加");
@@ -709,8 +717,7 @@ public class QuickGestureManager {
                         } else {
 
                             List<AppLauncherRecorder> removeList = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
-                            ArrayList<AppLauncherRecorder> record = QuickGestureManager
-                                    .getInstance(mContext).mAppLaunchRecorders;
+                            ArrayList<AppLauncherRecorder> record = LockManager.getInstatnce().mAppLaunchRecorders;
                             for (AppLauncherRecorder appLauncherRecorder : record) {
                                 for (BaseInfo removeInfo : removeCommonApp) {
                                     QuickGsturebAppInfo info = (QuickGsturebAppInfo) removeInfo;
@@ -733,11 +740,11 @@ public class QuickGestureManager {
                             }
 
                             if (addCommonApp != null && addCommonApp.size() > 0) {
-                                if(record != null && record.size() >0){
-                                    addCommonApp = hasSameName(addCommonApp,true);
+                                if (record != null && record.size() > 0) {
+                                    addCommonApp = hasSameName(addCommonApp, true);
                                 }
                             }
-                            
+
                             for (BaseInfo removeInfo : addCommonApp) {
                                 addRecord = new AppLauncherRecorder();
                                 QuickGsturebAppInfo info = (QuickGsturebAppInfo) removeInfo;
@@ -757,7 +764,7 @@ public class QuickGestureManager {
                                 LeoLog.e("QuickGestureManager", appLauncherRecorder.pkg + ":"
                                         + appLauncherRecorder.launchCount);
                             }
-                            saveAppLaunchRecoder();
+                            LockManager.getInstatnce().saveAppLaunchRecoder();
                         }
 
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
@@ -767,20 +774,20 @@ public class QuickGestureManager {
 
                     private List<BaseInfo> hasSameName(List<BaseInfo> addCommonApp2, boolean isCheck) {
                         List<BaseInfo> items;
-                        if(isCheck){
+                        if (isCheck) {
                             items = loadRecorderAppInfo();
-                        }else {
+                        } else {
                             items = loadCommonAppInfo();
                         }
                         List<BaseInfo> AddCommonApps = new ArrayList<BaseInfo>();
-                        for(BaseInfo addInfo : addCommonApp2){
+                        for (BaseInfo addInfo : addCommonApp2) {
                             boolean isHasSameName = false;
-                            for(BaseInfo item : items){
-                                if(item.label.equals(addInfo.label)){
+                            for (BaseInfo item : items) {
+                                if (item.label.equals(addInfo.label)) {
                                     isHasSameName = true;
                                 }
                             }
-                            if(!isHasSameName){
+                            if (!isHasSameName) {
                                 AddCommonApps.add(addInfo);
                             }
                             isHasSameName = false;
@@ -788,6 +795,7 @@ public class QuickGestureManager {
                         return AddCommonApps;
                     }
                 }).start();
+
                 commonApp.dismiss();
             }
         });
@@ -980,4 +988,16 @@ public class QuickGestureManager {
         AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
     }
 
+    // public void removeItemFromAppLaunchRecoder(String packageName) {
+    // for (int i = 0; i < mAppLaunchRecorders.size(); i++) {
+    // if (mAppLaunchRecorders.get(i).pkg.equals(packageName)) {
+    // mAppLaunchRecorders.remove(i);
+    // }
+    // }
+    // }
+
+    public static AppLauncherRecorder AppLauncherRecorder() {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

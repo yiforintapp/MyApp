@@ -4,6 +4,7 @@ package com.leo.appmaster.applocker.manager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -19,16 +20,15 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import android.app.ActivityManager;
+import android.app.ActivityManager.RecentTaskInfo;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.Intent.ShortcutIconResource;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
-import android.os.IBinder;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
@@ -46,7 +46,6 @@ import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.model.TimeLock.RepeatTime;
 import com.leo.appmaster.applocker.model.TimeLock.TimePoint;
 import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.applocker.service.TaskDetectService.TaskDetectBinder;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -54,7 +53,12 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
+import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -155,7 +159,7 @@ public class LockManager {
      */
     private ExecutorService mTaskExecutor = Executors.newSingleThreadExecutor();
     private Future<Boolean> mLoadDefaultDataFuture;
-
+    public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
         mLockPolicy = new TimeoutRelockPolicy(mContext);
@@ -169,7 +173,7 @@ public class LockManager {
         mTLMap = new HashMap<TimeLock, List<ScheduledFuture<?>>>();
         mHandler = new Handler();
         mTimeChangeReceiver = new TimeChangeReceive();
-
+        mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
         initFilterList();
     }
 
@@ -1348,7 +1352,7 @@ public class LockManager {
             mFilterPgks.put(filterPackage, persistent);
         }
     }
-    
+
     public void filterAllOneTime() {
         mFilterAll = true;
     }
@@ -1493,11 +1497,11 @@ public class LockManager {
     public boolean applyLock(int lockMode, String lockedPkg, boolean restart,
             OnUnlockedListener listener) {
 
-        if(mFilterAll) {
+        if (mFilterAll) {
             mFilterAll = false;
             return false;
         }
-        
+
         if (TextUtils.equals(mContext.getPackageName(), lockedPkg)) {
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
             long filterTime = amp.getLastFilterSelfTime();
@@ -1764,4 +1768,73 @@ public class LockManager {
         }
     }
 
+    public void loadAppLaunchReorder() {
+//        mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
+        String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
+        AppLauncherRecorder temp = null;
+        int sIndex = -1;
+        if (!TextUtils.isEmpty(recoders)) {
+            recoders = recoders.substring(0, recoders.length() - 1);
+            String[] recoderList = recoders.split(";");
+            for (String recoder : recoderList) {
+                sIndex = recoder.indexOf(':');
+                if (sIndex != -1) {
+                    temp =  QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
+                    temp.pkg = recoder.substring(0, sIndex);
+                    temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
+                    mAppLaunchRecorders.add(temp);
+                }
+            }
+        }
+    }
+    public void recordAppLaunch(String pkg) {
+        if (TextUtils.isEmpty(pkg)) {
+            return;
+        }
+        boolean hit = false;
+        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
+            if (recorder.pkg.equals(pkg)) {
+                recorder.launchCount++;
+                hit = true;
+                break;
+            }
+        }
+        if (!hit) {
+            AppLauncherRecorder recoder = QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
+            recoder.pkg = pkg;
+            recoder.launchCount = 1;
+            mAppLaunchRecorders.add(recoder);
+        }
+        saveAppLaunchRecoder();
+    }
+
+    public void saveAppLaunchRecoder() {
+        StringBuilder resault = new StringBuilder();
+        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
+            resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
+        }
+        AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
+    }
+
+    public void removeAppLaunchRecoder(String pkg) {
+        if (TextUtils.isEmpty(pkg)) {
+            return;
+        }
+        AppLauncherRecorder hitRecoder = null;
+        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
+            if (recorder.pkg.equals(pkg)) {
+                hitRecoder = recorder;
+                break;
+            }
+        }
+        if (hitRecoder != null) {
+            mAppLaunchRecorders.remove(hitRecoder);
+            StringBuilder resault = new StringBuilder();
+            for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
+                resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
+            }
+            AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
+        }
+    }
+    
 }
