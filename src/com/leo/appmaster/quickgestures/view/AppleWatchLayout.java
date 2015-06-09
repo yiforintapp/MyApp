@@ -2,6 +2,7 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
@@ -71,6 +72,7 @@ public class AppleWatchLayout extends ViewGroup {
     private Context mContext;
     private GestureItemView[][] mHoriChildren = new GestureItemView[3][];
     private float mLastMovex;
+    private float mLastAdjustX;
     private float mMinuOffset = 0f;
     private int mAdjustCount = 0;
     private boolean mSnapping;
@@ -82,6 +84,8 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private boolean mNeedRelayoutExtraItem;
+
+    private List<BaseInfo> mRecordMostList;
 
     public AppleWatchLayout(Context context) {
         this(context, null);
@@ -910,6 +914,43 @@ public class AppleWatchLayout extends ViewGroup {
         GType type = mContainer.getCurrentGestureType();
         if (type == GType.DymicLayout) {
             return;
+        } else if (type == GType.MostUsedLayout) {
+            boolean isCheck = AppMasterPreference.getInstance(mContext)
+                    .getQuickGestureCommonAppDialogCheckboxValue();
+            int mNum = getChildCount();
+            LeoLog.d("testSp", "ChildNum : " + mNum);
+            LayoutParams params = null;
+            mRecordMostList = new ArrayList<BaseInfo>();
+
+            // if (isCheck) {
+            // mRecordMostList =
+            // QuickGestureManager.getInstance(mContext).loadRecorderAppInfo();
+            // for (int i = 0; i < mRecordMostList.size(); i++) {
+            // AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+            // LeoLog.d("testSp", "childName : " + sInfo.packageName
+            // + " - childPosition : "
+            // + sInfo.gesturePosition);
+            // }
+
+            // for (int i = 0; i < mNum; i++) {
+            // LayoutParams mParams = null;
+            // mParams = (LayoutParams) getChildAt(i).getLayoutParams();
+            // int position = mParams.position;
+            // if (position > -1) {
+            // if (getChildAt(i).getTag() instanceof AppInfo) {
+            // AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+            // LeoLog.d("testSp", "childName : " + sInfo.packageName
+            // + " - childPosition : "
+            // + position);
+            // if (sInfo != null && !sInfo.label.isEmpty()) {
+            // sInfo.gesturePosition = position;
+            // mRecordMostList.add(sInfo);
+            // }
+            // }
+            // }
+            // }
+            // }
+
         }
 
         if (mReorderAnimator != null && mReorderAnimator.isRunning()) {
@@ -1045,30 +1086,64 @@ public class AppleWatchLayout extends ViewGroup {
                 // TODO update dynamic list
 
             } else if (gType == GType.MostUsedLayout) {
-                LeoLog.d("testSp", "移动啦！");
-                // TODO update most used list
+                boolean isCheck = AppMasterPreference.getInstance(mContext)
+                        .getQuickGestureCommonAppDialogCheckboxValue();
                 int mNum = getChildCount();
                 LeoLog.d("testSp", "ChildNum : " + mNum);
                 LayoutParams params = null;
                 List<BaseInfo> mostUseApp = new ArrayList<BaseInfo>();
-                for (int i = 0; i < mNum; i++) {
-                    params = (LayoutParams) getChildAt(i).getLayoutParams();
-                    int position = params.position;
-                    if (position > -1) {
-                        LeoLog.d("testSp", "child[" + i + "] position is : " + position);
-                        if (getChildAt(i).getTag() instanceof AppInfo) {
-                            LeoLog.d("testSp", "instanceof AppItemInfo");
-                            AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
-                            if (sInfo != null && !sInfo.label.isEmpty()) {
-                                sInfo.gesturePosition = position;
-                                // AppMasterPreference.getInstance(mContext)
-                                // .setCommonAppPackageNameAdd(
-                                // sInfo.packageName + ":" +
-                                // sInfo.gesturePosition);
-                                mostUseApp.add(sInfo);
+
+                if (isCheck) {
+                    for (int i = 0; i < mNum; i++) {
+                        LayoutParams mParams = null;
+                        mParams = (LayoutParams) getChildAt(i).getLayoutParams();
+                        int position = mParams.position;
+                        if (position > -1) {
+                            if (getChildAt(i).getTag() instanceof AppInfo) {
+                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+                                LeoLog.d("testSp", "childName : " + sInfo.packageName
+                                        + " - childPosition : "
+                                        + position);
+                                if (sInfo != null && !sInfo.label.isEmpty()) {
+                                    sInfo.gesturePosition = position;
+                                    mostUseApp.add(sInfo);
+                                }
                             }
                         }
                     }
+
+                    HashMap<String, Integer> packagePosition = new HashMap<String, Integer>();
+                    ArrayList<AppLauncherRecorder> records = LockManager.getInstatnce().mAppLaunchRecorders;
+                    Iterator<AppLauncherRecorder> iterator = records.iterator();
+                    AppLauncherRecorder record;
+                    int i = 0;
+                    while (iterator.hasNext()) {
+                        if (i > 13)
+                            break;
+                        record = iterator.next();
+                        packagePosition.put(record.pkg, record.launchCount);
+                        i++;
+                    }
+
+                } else {
+                    for (int i = 0; i < mNum; i++) {
+                        params = (LayoutParams) getChildAt(i).getLayoutParams();
+                        int position = params.position;
+                        if (position > -1) {
+                            LeoLog.d("testSp", "child[" + i + "] position is : " + position);
+                            if (getChildAt(i).getTag() instanceof AppInfo) {
+                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+                                if (sInfo != null && !sInfo.label.isEmpty()) {
+                                    sInfo.gesturePosition = position;
+                                    mostUseApp.add(sInfo);
+                                }
+                            }
+                        }
+                    }
+                    String NeedSave = QuickSwitchManager.getInstance(getContext())
+                            .listToPackString(mostUseApp, mostUseApp.size());
+                    LeoLog.d("testSp", "NeedSave : " + NeedSave);
+                    mPref.setCommonAppPackageName(NeedSave);
                 }
 
                 String NeedSave = QuickSwitchManager.getInstance(getContext()).listToPackString(
@@ -1476,7 +1551,6 @@ public class AppleWatchLayout extends ViewGroup {
         mLastMovex = moveX;
 
         if (mMinuOffset == 0) {
-            LeoLog.e("xxxx", "mMinuOffset =    " + mMinuOffset + "     moveX = " + moveX);
             if (moveX >= 0) {
                 mMinuOffset = mHoriChildren[0][5].getLeft()
                         - mHoriChildren[0][4].getLeft();
@@ -1484,55 +1558,37 @@ public class AppleWatchLayout extends ViewGroup {
                 mMinuOffset = mHoriChildren[0][4].getRight()
                         - mHoriChildren[0][5].getRight();
             }
+            mLastAdjustX = 0;
         }
 
-        if ((moveX - mAdjustCount * mMinuOffset) >= 0) {
+        if ((moveX - mLastAdjustX) >= 0) {
             direction = Direction.Left;
             mMinuOffset = mHoriChildren[0][5].getLeft()
                     - mHoriChildren[0][4].getLeft();
-            LeoLog.e("xxxx", "direction =    Direction.Left" + "     mAdjustCount = "
-                    + mAdjustCount + "      mMinuOffset = " + mMinuOffset);
-            if ((Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset)) >= Math.abs(mMinuOffset)) {
+            if ((moveX - mLastAdjustX) >= Math.abs(mMinuOffset)) {
                 adjustIconPosition(Direction.Left);
                 mAdjustCount++;
-                LeoLog.e("xxxx", "++ mAdjustCount =    " + mAdjustCount);
+                mLastAdjustX += Math.abs(mMinuOffset);
             }
         } else {
             direction = Direction.Right;
             mMinuOffset = mHoriChildren[0][4].getRight()
                     - mHoriChildren[0][5].getRight();
-            LeoLog.e("xxxx", "direction =    Direction.Right" + "     mAdjustCount = "
-                    + mAdjustCount + "      mMinuOffset = " + mMinuOffset);
-            if ((Math.abs(moveX) - Math.abs((mAdjustCount * mMinuOffset)) >= Math.abs(mMinuOffset))) {
+            if ((moveX - mLastAdjustX) <= -Math.abs(mMinuOffset)) {
                 adjustIconPosition(Direction.Right);
                 mAdjustCount--;
-                LeoLog.e("xxxx", "-- mAdjustCount =    " + mAdjustCount);
+                mLastAdjustX -= Math.abs(mMinuOffset);
             }
         }
 
         if (direction == Direction.Left) {
-            // minuOffset = mHoriChildren[0][5].getLeft()
-            // - mHoriChildren[0][4].getLeft();
-            // mMinuOffset = minuOffset;
-            // int shouldAdjustCount = (int) (moveX / minuOffset);
-            //
-            // if (mAdjustCount < shouldAdjustCount) {
-            // adjustIconPosition(Direction.Left);
-            // mAdjustCount++;
-            // LeoLog.e("xxxx", "++ mAdjustCount =    " + mAdjustCount);
-            // } else if (mAdjustCount > shouldAdjustCount) {
-            // adjustIconPosition(Direction.Right);
-            // mAdjustCount--;
-            // LeoLog.e("xxxx", "-- mAdjustCount =    " + mAdjustCount);
-            // }
-
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
                 if (i == mHoriChildren[0].length - 1) {
                     offset = moveX;
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
@@ -1541,7 +1597,7 @@ public class AppleWatchLayout extends ViewGroup {
                     offset = getOffset(mHoriChildren[0][i], mHoriChildren[0][i + 1],
                             Direction.Left);
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
 
                     if (i == 3 || i == 7) {
                         if (adjustMoveX <= offset / 2) {
@@ -1575,7 +1631,7 @@ public class AppleWatchLayout extends ViewGroup {
                 if (i == mHoriChildren[1].length - 1) {
                     offset = moveX;
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
@@ -1585,7 +1641,7 @@ public class AppleWatchLayout extends ViewGroup {
                             + 1],
                             Direction.Left);
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
 
                     if (i == 2 || i == 5) {
                         if (adjustMoveX <= offset / 2) {
@@ -1618,7 +1674,7 @@ public class AppleWatchLayout extends ViewGroup {
                 if (i == mHoriChildren[1].length - 1) {
                     offset = moveX;
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
@@ -1626,7 +1682,7 @@ public class AppleWatchLayout extends ViewGroup {
                     offset = getOffset(mHoriChildren[2][i], mHoriChildren[2][i + 1],
                             Direction.Left);
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     if (i == 3 || i == 7) {
                         if (adjustMoveX <= offset / 2) {
                             targetScale = (offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
@@ -1645,24 +1701,13 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[2][i].setTranslationY(moveY);
             }
         } else if (direction == Direction.Right) {
-            // minuOffset = mHoriChildren[0][4].getRight()
-            // - mHoriChildren[0][5].getRight();
-            // mMinuOffset = minuOffset;
-            // int shouldAdjustCount = (int) (moveX / minuOffset);
-            // if (mAdjustCount < shouldAdjustCount) {
-            // adjustIconPosition(Direction.Right);
-            // mAdjustCount++;
-            // } else if (mAdjustCount > shouldAdjustCount) {
-            // adjustIconPosition(Direction.Left);
-            // mAdjustCount--;
-            // }
             for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
                 if (i == 0) {
                     offset = moveX;
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
@@ -1672,7 +1717,7 @@ public class AppleWatchLayout extends ViewGroup {
                             - 1],
                             Direction.Right);
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
 
                     if (i == 4 || i == 8) {
                         if (adjustMoveX <= offset / 2) {
@@ -1698,7 +1743,7 @@ public class AppleWatchLayout extends ViewGroup {
                 if (i == 0) {
                     offset = moveX;
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
@@ -1708,7 +1753,7 @@ public class AppleWatchLayout extends ViewGroup {
                             - 1],
                             Direction.Right);
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     if (i == 3 || i == 6) {
                         if (adjustMoveX <= offset / 2) {
                             targetScale = -(offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
@@ -1733,7 +1778,7 @@ public class AppleWatchLayout extends ViewGroup {
                 if (i == 0) {
                     offset = moveX;
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     targetScale = rawScale1 - adjustMoveX / offset * rawScale1;
                     moveY = 0f;
                 } else {
@@ -1743,7 +1788,7 @@ public class AppleWatchLayout extends ViewGroup {
                             - 1],
                             Direction.Right);
                     adjustMoveX = offset / mMinuOffset
-                            * (Math.abs(moveX) - Math.abs(mAdjustCount * mMinuOffset));
+                            * (moveX - mLastAdjustX);
                     if (i == 4 || i == 8) {
                         if (adjustMoveX <= offset / 2) {
                             targetScale = -(offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
@@ -1826,6 +1871,8 @@ public class AppleWatchLayout extends ViewGroup {
                         mSnapping = false;
                         mAdjustCount = 0;
                         mLastMovex = 0;
+                        mLastAdjustX = 0;
+                        mMinuOffset = 0;
                         saveReorderPosition();
                     }
                 });
@@ -1852,6 +1899,8 @@ public class AppleWatchLayout extends ViewGroup {
                         mSnapping = false;
                         mAdjustCount = 0;
                         mLastMovex = 0;
+                        mLastAdjustX = 0;
+                        mMinuOffset = 0;
                         saveReorderPosition();
                     }
                 });
@@ -1892,6 +1941,8 @@ public class AppleWatchLayout extends ViewGroup {
                         mSnapping = false;
                         mAdjustCount = 0;
                         mLastMovex = 0;
+                        mLastAdjustX = 0;
+                        mMinuOffset = 0;
                         saveReorderPosition();
                     }
                 });
@@ -1923,6 +1974,8 @@ public class AppleWatchLayout extends ViewGroup {
                         mSnapping = false;
                         mAdjustCount = 0;
                         mLastMovex = 0;
+                        mLastAdjustX = 0;
+                        mMinuOffset = 0;
                         saveReorderPosition();
                     }
                 });

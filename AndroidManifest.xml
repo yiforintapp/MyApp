@@ -259,12 +259,6 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
-        <activity
             android:name="com.leo.appmaster.imagehide.ImageGridActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
@@ -495,6 +489,12 @@
             android:name="com.leo.appmaster.privacy.PrivacySuggestActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/activity_theme" >
         </activity>
         <activity

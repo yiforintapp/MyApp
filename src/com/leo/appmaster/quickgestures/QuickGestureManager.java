@@ -372,7 +372,7 @@ public class QuickGestureManager {
     }
 
     // Recorder App
-    private List<BaseInfo> loadRecorderAppInfo() {
+    public List<BaseInfo> loadRecorderAppInfo() {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
@@ -660,6 +660,9 @@ public class QuickGestureManager {
                                     mDefineList = comList;
                                 }
 
+                                // 判断要加入的是否已存在，已存在的不加入
+                                addCommonApp = hasSameName(addCommonApp, false);
+
                                 // 记录现有的Icon位置
                                 LeoLog.d("QuickGestureManager", "有货要加");
                                 List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
@@ -708,22 +711,6 @@ public class QuickGestureManager {
 
                         } else {
 
-                            // if (removeCommonApp != null &&
-                            // removeCommonApp.size() > 0) {
-                            // boolean isHasSameName = false;
-                            // for (BaseInfo info : comList) {
-                            // for (BaseInfo baseInfo : removeCommonApp) {
-                            // if (baseInfo.label.equals(info.label)) {
-                            // isHasSameName = true;
-                            // }
-                            // }
-                            // if (!isHasSameName) {
-                            // mDefineList.add(info);
-                            // }
-                            // isHasSameName = false;
-                            // }
-                            // }
-
                             List<AppLauncherRecorder> removeList = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
                             ArrayList<AppLauncherRecorder> record = LockManager.getInstatnce().mAppLaunchRecorders;
                             for (AppLauncherRecorder appLauncherRecorder : record) {
@@ -744,6 +731,12 @@ public class QuickGestureManager {
                             for (AppLauncherRecorder appLauncherRecorder : record) {
                                 if (appLauncherRecorder.launchCount > maxCount) {
                                     maxCount = appLauncherRecorder.launchCount;
+                                }
+                            }
+
+                            if (addCommonApp != null && addCommonApp.size() > 0) {
+                                if (record != null && record.size() > 0) {
+                                    addCommonApp = hasSameName(addCommonApp, true);
                                 }
                             }
 
@@ -773,7 +766,31 @@ public class QuickGestureManager {
                             pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
                         }
                     }
+
+                    private List<BaseInfo> hasSameName(List<BaseInfo> addCommonApp2, boolean isCheck) {
+                        List<BaseInfo> items;
+                        if (isCheck) {
+                            items = loadRecorderAppInfo();
+                        } else {
+                            items = loadCommonAppInfo();
+                        }
+                        List<BaseInfo> AddCommonApps = new ArrayList<BaseInfo>();
+                        for (BaseInfo addInfo : addCommonApp2) {
+                            boolean isHasSameName = false;
+                            for (BaseInfo item : items) {
+                                if (item.label.equals(addInfo.label)) {
+                                    isHasSameName = true;
+                                }
+                            }
+                            if (!isHasSameName) {
+                                AddCommonApps.add(addInfo);
+                            }
+                            isHasSameName = false;
+                        }
+                        return AddCommonApps;
+                    }
                 }).start();
+
                 commonApp.dismiss();
             }
         });
