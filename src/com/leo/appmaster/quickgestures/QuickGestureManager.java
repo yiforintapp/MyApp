@@ -371,10 +371,12 @@ public class QuickGestureManager {
 
     // Recorder App
     public List<BaseInfo> loadRecorderAppInfo() {
+        LeoLog.d("testSp", "loadRecorderAppInfo！");
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         if (recorderApp.size() > 0) {
+            LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
             AppItemInfo info;
@@ -409,6 +411,7 @@ public class QuickGestureManager {
                         resault.add(appItemInfo);
                 }
             } else {
+                LeoLog.d("testSp", "自动填充，没数据！");
                 ActivityManager am = (ActivityManager) mContext
                         .getSystemService(Context.ACTIVITY_SERVICE);
                 List<RecentTaskInfo> recentTasks = am.getRecentTasks(50,
@@ -425,6 +428,7 @@ public class QuickGestureManager {
                         appInfo = engine.getAppInfo(pkg);
                         if (appInfo != null) {
                             resault.add(appInfo);
+                            LeoLog.d("testSp", "add");
                         }
                         // icon = engine.getAppIcon(pkg);
                         // if (icon != null) {

@@ -359,15 +359,22 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             ArrayList<AppLauncherRecorder> records = LockManager.getInstatnce().mAppLaunchRecorders;
             Iterator<AppLauncherRecorder> iterator = records.iterator();
             AppLauncherRecorder record;
+//            int[] launcherCount = new int[records.size()];
             i = 0;
             while (iterator.hasNext()) {
                 if (i > 13)
                     break;
                 record = iterator.next();
+//                launcherCount[i] = record.launchCount;
                 packagePakPosition.put(record.pkg, i + ":" + record.launchCount);
                 mSwitchListSize++;
                 i++;
             }
+            
+//            for (int j = 0; j < launcherCount.length; j++) {
+//                LeoLog.d("testSp", "launcherCount : " + launcherCount[j]);
+//            }
+
 
             for (AppItemInfo info : list) {
                 qgInfo = new QuickGsturebAppInfo();
