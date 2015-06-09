@@ -125,9 +125,9 @@ public class QuickGestureManager {
 
     public Bitmap getMatchedColor(Drawable drawable) {
         Bitmap target = null;
-        target =  LockManager.getInstatnce().mDrawableColors.get(drawable);
+        target = LockManager.getInstatnce().mDrawableColors.get(drawable);
         if (target == null) {
-            target =   LockManager.getInstatnce().mMatcher.getMatchedBitmap(drawable);
+            target = LockManager.getInstatnce().mMatcher.getMatchedBitmap(drawable);
             if (target != null) {
                 LockManager.getInstatnce().mDrawableColors.put(drawable, target);
             }
@@ -961,6 +961,7 @@ public class QuickGestureManager {
                 context
                         .getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new Notification();
+        LockManager.getInstatnce().timeFilterSelf();
         Intent intentPending = new Intent(context,
                 QuickGestureActivity.class);
         intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
