@@ -192,7 +192,7 @@ public class QuickGestureManager {
                         baseInfo.label = baseInfo.getCallLogNumber();
                     }
                     baseInfo.isShowReadTip = true;
-                    if (businessDatas != null) {
+                    if (businessDatas != null && businessDatas.size() > 0) {
                         dynamicList.add(businessDatas.size(), baseInfo);
                     } else {
                         dynamicList.add(0, baseInfo);
@@ -210,7 +210,7 @@ public class QuickGestureManager {
                     item.label = mContext.getResources().getString(
                             R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
                     item.isShowReadTip = true;
-                    if (businessDatas != null) {
+                    if (businessDatas != null && businessDatas.size() > 0) {
                         dynamicList.add(businessDatas.size(), item);
                     } else {
                         dynamicList.add(0, item);
