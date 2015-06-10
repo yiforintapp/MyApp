@@ -49,7 +49,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class QuickGestureFilterAppDialog extends LEOBaseDialog {
     private Context mContext;
     private FilterAppPagedGridView mGridView;
-    private TextView mTitle, mSureBt, mLeftBt;
+    private TextView mTitle, mSureBt, mLeftBt, mSelectedCount;
     private List<QuickGsturebAppInfo> mDisturbList = null;
     private List<QuickGsturebAppInfo> mFreeDisturbApp = null;
     private List<BaseInfo> mAddFreePackageName = null;
@@ -80,6 +80,8 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_free_disturb_app, null);
         Resources resources = AppMasterApplication.getInstance().getResources();
+        mTitle = (TextView) dlgView.findViewById(R.id.free_disturb_dialog_title);
+        mSelectedCount = (TextView) dlgView.findViewById(R.id.selected_app_count);
         mGridView = (FilterAppPagedGridView) dlgView.findViewById(R.id.free_disturb_gridview);
         mSureBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_right_btn);
         mLeftBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_left_btn);
@@ -87,7 +89,6 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         mCheckBoxTv = (TextView) dlgView.findViewById(R.id.dialog_all_app_itme_tv);
         mCheckBox = (CheckBox) dlgView.findViewById(R.id.dialog_all_app_itme_normalRB);
         mGridView.setItemClickListener(new OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 animateItem(arg1);
@@ -175,7 +176,6 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
 
                             mMostAppConunt += 1;
                         }
-
                     } else {
                         selectInfl.isFreeDisturb = true;
                         mFreeDisturbApp.add(selectInfl);
@@ -187,11 +187,31 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                         ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
                                 .setDefaultRecommendApp(true);
                     }
-
+                }
+                if(mFlag == 2){
+                    mSelectedCount.setText(mContext.getResources().getString(R.string.quick_guesture_app_select_count,mSwitchListSize,11));
+                }else if(mFlag == 3){
+                    mSelectedCount.setText(mContext.getResources().getString(R.string.quick_guesture_app_select_count,mMostAppConunt,11));
                 }
             }
         });
-        mTitle = (TextView) dlgView.findViewById(R.id.free_disturb_dialog_title);
+
+        loadData();
+        if (mFlag == 2) {
+            mSelectedCount.setVisibility(View.VISIBLE);
+            mSelectedCount.setText(mContext.getResources().getString(
+                    R.string.quick_guesture_app_select_count, mSwitchListSize, 11));
+        }else if(mFlag == 3){
+            mSelectedCount.setVisibility(View.VISIBLE);
+            mSelectedCount.setText(mContext.getResources().getString(
+                    R.string.quick_guesture_app_select_count, mMostAppConunt, 11));
+        }
+
+        setContentView(dlgView);
+        setCanceledOnTouchOutside(true);
+    }
+
+    private void loadData() {
         switch (mFlag) {
             case 1:
                 // 免打扰应用
@@ -208,8 +228,6 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             default:
                 break;
         }
-        setContentView(dlgView);
-        setCanceledOnTouchOutside(true);
     }
 
     protected boolean getFirstStatusFromPakName(List<QuickGsturebAppInfo> mostUseList2,
