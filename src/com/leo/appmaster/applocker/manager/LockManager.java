@@ -1361,8 +1361,15 @@ public class LockManager {
         }
     }
 
-    public void filterAllOneTime() {
+    public void filterAllOneTime(long outtime) {
         mFilterAll = true;
+        Timer timer = new Timer();
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                mFilterAll = false;
+            }
+        }, outtime);
     }
 
     public void timeFilter(final String packageName, long outtime) {
