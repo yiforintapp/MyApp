@@ -166,7 +166,7 @@ public class QuickGestureManager {
                         message.label = message.getPhoneNumber();
                     }
                     message.isShowReadTip = true;
-                    if (businessDatas != null) {
+                    if (businessDatas != null && businessDatas.size() > 0) {
                         dynamicList.add(businessDatas.size(), message);
                     } else {
                         dynamicList.add(0, message);
@@ -456,7 +456,7 @@ public class QuickGestureManager {
             QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
             for (int j = 0; j < resault.size(); j++) {
                 QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
-                if(mInfo.packageName.equals(mInfoCount.packageName)){
+                if (mInfo.packageName.equals(mInfoCount.packageName)) {
                     resault.remove(j);
                     break;
                 }
