@@ -156,11 +156,11 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             option.inDensity = 480;
             option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
             // scale for hdpi, mdpi and ldpi
-            if(option.inTargetDensity < 125) {
+            if (option.inTargetDensity < 125) {
                 option.inTargetDensity = option.inTargetDensity - 40;
-            } else if(option.inTargetDensity < 165) {
+            } else if (option.inTargetDensity < 165) {
                 option.inTargetDensity = option.inTargetDensity - 40;
-            } else  if(option.inTargetDensity < 245) {
+            } else if (option.inTargetDensity < 245) {
                 option.inTargetDensity = option.inTargetDensity - 40;
             }
             option.inScaled = true;
@@ -229,21 +229,22 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
                             showGuide();
                         }
                     } else {
-//                        AppMasterPreference pre = AppMasterPreference
-//                                .getInstance(SplashActivity.this);
-//                        // 存储的版本号
-//                        String versionName = pre.getAppVersionName();
-//                        // 获取当前的版本号
-//                        String currentVersion = getString(R.string.version_name);
-//                        if (!versionName.equals(currentVersion)) {
-//                            boolean guidNotShown = mMain == null
-//                                    || mMain.getVisibility() != View.VISIBLE;
-//                            if (guidNotShown) {
-//                                showGuide();
-//                            }
-//                        } else {
-//                            startHome();
-//                        }
+                        // AppMasterPreference pre = AppMasterPreference
+                        // .getInstance(SplashActivity.this);
+                        // // 存储的版本号
+                        // String versionName = pre.getAppVersionName();
+                        // // 获取当前的版本号
+                        // String currentVersion =
+                        // getString(R.string.version_name);
+                        // if (!versionName.equals(currentVersion)) {
+                        // boolean guidNotShown = mMain == null
+                        // || mMain.getVisibility() != View.VISIBLE;
+                        // if (guidNotShown) {
+                        // showGuide();
+                        // }
+                        // } else {
+                        // startHome();
+                        // }
                         startHome();
                     }
                     break;
@@ -258,14 +259,19 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
             LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
-            LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                    getPackageName(), true, null);
-            amp.setDoubleCheck(null);
+            if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                startActivity(intent);
+                finish();
+            } else {
+                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                        getPackageName(), true, null);
+                amp.setDoubleCheck(null);
+            }
         } else {
             Intent intent = new Intent(this, LockSettingActivity.class);
             startActivity(intent);
             finish();
-        
         }
     }
 

@@ -93,8 +93,7 @@ public class QuickGestureManager {
         if (!mInited) {
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
-            LockManager.getInstatnce().loadAppLaunchReorder();
-            preloadEmptyIcon();
+            preloadColorIcon();
             Bitmap bmp;
             for (Drawable drawable : mColorBgIcon) {
                 bmp = ((BitmapDrawable) drawable).getBitmap();
@@ -190,7 +189,7 @@ public class QuickGestureManager {
                         baseInfo.label = baseInfo.getCallLogNumber();
                     }
                     baseInfo.isShowReadTip = true;
-                    if (businessDatas != null && businessDatas.size() > 0) {
+                    if (businessDatas != null) {
                         dynamicList.add(businessDatas.size(), baseInfo);
                     } else {
                         dynamicList.add(0, baseInfo);
@@ -210,7 +209,7 @@ public class QuickGestureManager {
                     item.label = mContext.getResources().getString(
                             R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
                     item.isShowReadTip = true;
-                    if (businessDatas != null && businessDatas.size() > 0) {
+                    if (businessDatas != null) {
                         dynamicList.add(businessDatas.size(), item);
                     } else {
                         dynamicList.add(0, item);
@@ -269,7 +268,7 @@ public class QuickGestureManager {
         return dynamicList;
     }
 
-    private void preloadEmptyIcon() {
+    private void preloadColorIcon() {
         Resources res = mContext.getResources();
         mColorBgIcon = new Drawable[11];
         mColorBgIcon[0] = res.getDrawable(R.drawable.switch_orange);
@@ -434,7 +433,7 @@ public class QuickGestureManager {
                 AppItemInfo appInfo;
                 List<String> pkgs = new ArrayList<String>();
                 for (RecentTaskInfo recentTaskInfo : recentTasks) {
-                    if (resault.size() > 11)
+                    if (resault.size() > 10)
                         break;
                     pkg = recentTaskInfo.baseIntent.getComponent().getPackageName();
                     if (!pkgs.contains(pkg)) {
@@ -466,16 +465,19 @@ public class QuickGestureManager {
         LeoLog.d("testSp", "resault.size() : " + resault.size());
 
         // 删除相同应用
-        for (int i = 0; i < mHaveList.size(); i++) {
-            QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
-            for (int j = 0; j < resault.size(); j++) {
-                QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
-                if (mInfo.packageName.equals(mInfoCount.packageName)) {
-                    resault.remove(j);
-                    break;
+        if(resault.size() > 0){
+            for (int i = 0; i < mHaveList.size(); i++) {
+                QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
+                for (int j = 0; j < resault.size(); j++) {
+                    QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
+                    if (mInfo.packageName.equals(mInfoCount.packageName)) {
+                        resault.remove(j);
+                        break;
+                    }
                 }
             }
         }
+
 
         if (mHaveList.size() > 0) {
             int[] mPositions = new int[mHaveList.size()];
@@ -502,7 +504,6 @@ public class QuickGestureManager {
                     QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(m);
 
                     boolean isGetPosition = isGetPosition(i, mPositions);
-
                     if (isGetPosition) {
                         LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
                         // mInfo.gesturePosition = i;
@@ -721,7 +722,7 @@ public class QuickGestureManager {
      * 
      * @param context
      */
-    public void showCommontAppDialog(final Context context) {
+    public void showCommonAppDialog(final Context context) {
         final QuickGestureFilterAppDialog commonApp = new QuickGestureFilterAppDialog(
                 context.getApplicationContext(), 3);
         final AppMasterPreference pref = AppMasterPreference.getInstance(context);
