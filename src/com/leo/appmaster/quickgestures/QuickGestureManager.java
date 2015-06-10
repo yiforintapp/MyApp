@@ -46,6 +46,7 @@ import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.view.EventAction;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -53,6 +54,8 @@ public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
 
     protected static final String AppLauncherRecorder = null;
+    public static final int APPITEMINFO = 1;
+    public static final int NORMALINFO = 0;
     private static QuickGestureManager mInstance;
     private Context mContext;
     private boolean mInited = false;
@@ -91,8 +94,7 @@ public class QuickGestureManager {
         if (!mInited) {
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
-            LockManager.getInstatnce().loadAppLaunchReorder();
-            preloadEmptyIcon();
+            preloadColorIcon();
             Bitmap bmp;
             for (Drawable drawable : mColorBgIcon) {
                 bmp = ((BitmapDrawable) drawable).getBitmap();
@@ -155,8 +157,6 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mMessages != null) {
                 List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
                 for (MessageBean message : messages) {
-                    if (dynamicList.size() > 11)
-                        break;
                     message.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_message);
                     if (message.getMessageName() != null
@@ -171,6 +171,8 @@ public class QuickGestureManager {
                     } else {
                         dynamicList.add(0, message);
                     }
+                    if (dynamicList.size() >= 11)
+                        break;
                 }
             }
         }
@@ -179,8 +181,6 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
                 List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
                 for (ContactCallLog baseInfo : baseInfos) {
-                    if (dynamicList.size() > 11)
-                        break;
                     baseInfo.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_call);
                     if (baseInfo.getCallLogName() != null
@@ -190,11 +190,13 @@ public class QuickGestureManager {
                         baseInfo.label = baseInfo.getCallLogNumber();
                     }
                     baseInfo.isShowReadTip = true;
-                    if (businessDatas != null && businessDatas.size() > 0) {
+                    if (businessDatas != null) {
                         dynamicList.add(businessDatas.size(), baseInfo);
                     } else {
                         dynamicList.add(0, baseInfo);
                     }
+                    if (dynamicList.size() >= 11)
+                        break;
                 }
             }
         }
@@ -208,7 +210,7 @@ public class QuickGestureManager {
                     item.label = mContext.getResources().getString(
                             R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
                     item.isShowReadTip = true;
-                    if (businessDatas != null && businessDatas.size() > 0) {
+                    if (businessDatas != null) {
                         dynamicList.add(businessDatas.size(), item);
                     } else {
                         dynamicList.add(0, item);
@@ -267,7 +269,7 @@ public class QuickGestureManager {
         return dynamicList;
     }
 
-    private void preloadEmptyIcon() {
+    private void preloadColorIcon() {
         Resources res = mContext.getResources();
         mColorBgIcon = new Drawable[11];
         mColorBgIcon[0] = res.getDrawable(R.drawable.switch_orange);
@@ -432,7 +434,7 @@ public class QuickGestureManager {
                 AppItemInfo appInfo;
                 List<String> pkgs = new ArrayList<String>();
                 for (RecentTaskInfo recentTaskInfo : recentTasks) {
-                    if (resault.size() > 11)
+                    if (resault.size() > 10)
                         break;
                     pkg = recentTaskInfo.baseIntent.getComponent().getPackageName();
                     if (!pkgs.contains(pkg)) {
@@ -453,18 +455,28 @@ public class QuickGestureManager {
                     }
                 }
             }
+
+            List<BaseInfo> mFirstList = changeList(resault);
+            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
+                    mFirstList,
+                    mFirstList.size(), NORMALINFO);
+            mSpSwitch.setCommonAppPackageName(mListString);
+            return mFirstList;
+
         }
 
         LeoLog.d("testSp", "resault.size() : " + resault.size());
 
         // 删除相同应用
-        for (int i = 0; i < mHaveList.size(); i++) {
-            QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
-            for (int j = 0; j < resault.size(); j++) {
-                QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
-                if (mInfo.packageName.equals(mInfoCount.packageName)) {
-                    resault.remove(j);
-                    break;
+        if (resault.size() > 0) {
+            for (int i = 0; i < mHaveList.size(); i++) {
+                QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
+                for (int j = 0; j < resault.size(); j++) {
+                    QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
+                    if (mInfo.packageName.equals(mInfoCount.packageName)) {
+                        resault.remove(j);
+                        break;
+                    }
                 }
             }
         }
@@ -494,7 +506,6 @@ public class QuickGestureManager {
                     QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(m);
 
                     boolean isGetPosition = isGetPosition(i, mPositions);
-
                     if (isGetPosition) {
                         LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
                         // mInfo.gesturePosition = i;
@@ -522,6 +533,22 @@ public class QuickGestureManager {
         }
 
         // return resault;
+    }
+
+    private List<BaseInfo> changeList(List<BaseInfo> resault) {
+        List<BaseInfo> mBaseList = new ArrayList<BaseInfo>();
+        QuickGsturebAppInfo temp;
+        for (int i = 0; i < resault.size(); i++) {
+            AppItemInfo appInfo = (AppItemInfo) resault.get(i);
+            temp = new QuickGsturebAppInfo();
+            temp.packageName = appInfo.packageName;
+            temp.activityName = appInfo.activityName;
+            temp.label = appInfo.label;
+            temp.icon = appInfo.icon;
+            temp.gesturePosition = i;
+            mBaseList.add(temp);
+        }
+        return mBaseList;
     }
 
     private boolean isGetPosition(int gesturePosition, int[] mPositions) {
@@ -713,7 +740,7 @@ public class QuickGestureManager {
      * 
      * @param context
      */
-    public void showCommontAppDialog(final Context context) {
+    public void showCommonAppDialog(final Context context) {
         final QuickGestureFilterAppDialog commonApp = new QuickGestureFilterAppDialog(
                 context.getApplicationContext(), 3);
         final AppMasterPreference pref = AppMasterPreference.getInstance(context);
@@ -806,7 +833,7 @@ public class QuickGestureManager {
                         }
 
                         String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                .listToPackString(mDefineList, mDefineList.size());
+                                .listToPackString(mDefineList, mDefineList.size(), NORMALINFO);
                         LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
                         pref.setCommonAppPackageName(mChangeList);
 
@@ -876,6 +903,10 @@ public class QuickGestureManager {
 
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
                             pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
+                            if (flag) {
+                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_tab",
+                                        "common_auto");
+                            }
                         }
                     }
 

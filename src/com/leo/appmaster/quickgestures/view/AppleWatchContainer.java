@@ -379,10 +379,6 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void onTouchUp() {
-        if (mEditing) {
-            mEditing = false;
-            leaveEditMode();
-        }
         LeoLog.d(TAG, "onTouchUp mRotateDegree = " + mRotateDegree);
         if (mTouchDownY > mDymicLayout.getBottom()) {
             if (mOrientation == Orientation.Left) {
@@ -566,7 +562,10 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void snapToPrevious() {
-
+        if (mEditing) {
+            mEditing = false;
+            leaveEditMode();
+        }
         if (mSnaping)
             return;
         float duration = Math.abs(mStartAngle - mRotateDegree) / mStartAngle * mFullRotateDuration;
@@ -621,6 +620,10 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void snapToNext() {
+        if (mEditing) {
+            mEditing = false;
+            leaveEditMode();
+        }
         if (mSnaping)
             return;
         float duration = Math.abs(mStartAngle - mRotateDegree) / mStartAngle * mFullRotateDuration;
