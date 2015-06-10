@@ -316,6 +316,10 @@
     <dimen name="dialog_app_view_width">46dp</dimen>
     <dimen name="dialog_app_margin_top">6dp</dimen>
     <dimen name="quick_gesture_dialog_list_width">300dp</dimen>
+    <dimen name="quick_gesture_item_height">56dp</dimen>
+    <dimen name="quick_gesture_margin_left_to_checkbox">10dp</dimen>
+    <dimen name="dialog_slide_item_margin_top">28dp</dimen>
+    <dimen name="dialog_slide_time_disturbTV_margin_top">40dp</dimen>
     <!-- quick gesutre end -->
     
     <dimen name="dialog_btn_height">48dp</dimen>

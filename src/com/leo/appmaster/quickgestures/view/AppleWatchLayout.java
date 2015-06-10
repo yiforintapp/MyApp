@@ -51,6 +51,7 @@ import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -219,6 +220,10 @@ public class AppleWatchLayout extends ViewGroup {
 
     public boolean isCurrentLayout() {
         return mMyType == mContainer.getCurrentGestureType();
+    }
+
+    public void setType(GType type) {
+        mMyType = type;
     }
 
     public void fillExtraChildren() {
@@ -644,6 +649,7 @@ public class AppleWatchLayout extends ViewGroup {
                 AppUtil.downloadFromBrowser(getContext(),
                         bif.appDownloadUrl);
             }
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
             LeoLog.d("TestLayout", "QuickSwitcherInfo");
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
@@ -681,6 +687,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
         } else if (info instanceof AppItemInfo) {
             LeoLog.d("TestLayout", "AppItemInfo");
             AppItemInfo appInfo = (AppItemInfo) info;
@@ -689,7 +696,16 @@ public class AppleWatchLayout extends ViewGroup {
             intent.setComponent(new ComponentName(appInfo.packageName,
                     appInfo.activityName));
             getContext().startActivity(intent);
+
+            if (mMyType == GType.DymicLayout) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
+            } else if (mMyType == GType.MostUsedLayout) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
+            } else {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
+            }
         } else if (info instanceof MessageBean) {
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
             // 短信提醒
             item.cancelShowReadTip();
             MessageBean bean = (MessageBean) info;
@@ -706,6 +722,7 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             } catch (Exception e) {
             }
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof ContactCallLog) {
             // 电话提醒
             item.cancelShowReadTip();
@@ -717,6 +734,7 @@ public class AppleWatchLayout extends ViewGroup {
                     && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
                 QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);
             }
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGestureContactTipInfo) {
             // 隐私联系人提示
             item.cancelShowReadTip();
@@ -732,6 +750,7 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             } catch (Exception e) {
             }
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGsturebAppInfo) {
             LeoLog.d("TestLayout", "QuickGsturebAppInfo");
             QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
@@ -740,6 +759,7 @@ public class AppleWatchLayout extends ViewGroup {
             intent.setComponent(new ComponentName(appInfo.packageName,
                     appInfo.activityName));
             getContext().startActivity(intent);
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
         }
     }
 
@@ -762,6 +782,11 @@ public class AppleWatchLayout extends ViewGroup {
                     GType type = mContainer.getCurrentGestureType();
                     if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
                         showAddNewDiglog(type);
+                        if(type == GType.MostUsedLayout) {
+                            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_add");
+                        } else {
+                            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_add");
+                        }
                     }
                 } else {
                     Rect rect = giv.getCrossRect();
@@ -796,7 +821,10 @@ public class AppleWatchLayout extends ViewGroup {
         if (type == GType.DymicLayout) {
             QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
                     (BaseInfo) hitView.getTag());
+            
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_delete");
         } else if (type == GType.SwitcherLayout) {
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_delete");
         } else if (type == GType.MostUsedLayout) {
             // TODO
             if (!(hitView.getTag() instanceof GestureEmptyItemInfo)) {
@@ -833,6 +861,8 @@ public class AppleWatchLayout extends ViewGroup {
                             info.packageName + ":" + info.gesturePosition);
                 }
             }
+            
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_delete");
         }
         BaseInfo baseInfo = (BaseInfo) hitView.getTag();
         GestureEmptyItemInfo info = new GestureEmptyItemInfo();
@@ -1086,14 +1116,14 @@ public class AppleWatchLayout extends ViewGroup {
             if (gType == GType.DymicLayout) {
 
             } else if (gType == GType.MostUsedLayout) {
-                boolean isCheck = AppMasterPreference.getInstance(mContext)
-                        .getQuickGestureCommonAppDialogCheckboxValue();
+//                boolean isCheck = AppMasterPreference.getInstance(mContext)
+//                        .getQuickGestureCommonAppDialogCheckboxValue();
                 int mNum = getChildCount();
                 LeoLog.d("testSp", "ChildNum : " + mNum);
                 LayoutParams params = null;
                 List<BaseInfo> mostUseApp = new ArrayList<BaseInfo>();
 
-                if (isCheck) {
+//                if (isCheck) {
                     // for (int i = 0; i < mNum; i++) {
                     // LayoutParams mParams = null;
                     // mParams = (LayoutParams) getChildAt(i).getLayoutParams();
@@ -1146,26 +1176,26 @@ public class AppleWatchLayout extends ViewGroup {
                     // }
                     // isSqueez = false;
                     // }
-                    for (int i = 0; i < mNum; i++) {
-                        params = (LayoutParams) getChildAt(i).getLayoutParams();
-                        int position = params.position;
-                        if (position > -1) {
-                            LeoLog.d("testSp", "child[" + i + "] position is : " + position);
-                            if (getChildAt(i).getTag() instanceof AppInfo) {
-                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
-                                if (sInfo != null && !sInfo.label.isEmpty()) {
-                                    sInfo.gesturePosition = position;
-                                    mostUseApp.add(sInfo);
-                                }
-                            }
-                        }
-                    }
-                    String NeedSave = QuickSwitchManager.getInstance(getContext())
-                            .listToPackString(mostUseApp, mostUseApp.size(), NORMALINFO);
-                    LeoLog.d("testSp", "NeedSave : " + NeedSave);
-                    mPref.setCommonAppPackageName(NeedSave);
+//                    for (int i = 0; i < mNum; i++) {
+//                        params = (LayoutParams) getChildAt(i).getLayoutParams();
+//                        int position = params.position;
+//                        if (position > -1) {
+//                            LeoLog.d("testSp", "child[" + i + "] position is : " + position);
+//                            if (getChildAt(i).getTag() instanceof AppInfo) {
+//                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+//                                if (sInfo != null && !sInfo.label.isEmpty()) {
+//                                    sInfo.gesturePosition = position;
+//                                    mostUseApp.add(sInfo);
+//                                }
+//                            }
+//                        }
+//                    }
+//                    String NeedSave = QuickSwitchManager.getInstance(getContext())
+//                            .listToPackString(mostUseApp, mostUseApp.size(), NORMALINFO);
+//                    LeoLog.d("testSp", "NeedSave : " + NeedSave);
+//                    mPref.setCommonAppPackageName(NeedSave);
 
-                } else {
+//                } else {
                     for (int i = 0; i < mNum; i++) {
                         params = (LayoutParams) getChildAt(i).getLayoutParams();
                         int position = params.position;
@@ -1184,7 +1214,7 @@ public class AppleWatchLayout extends ViewGroup {
                             .listToPackString(mostUseApp, mostUseApp.size(), NORMALINFO);
                     LeoLog.d("testSp", "NeedSave : " + NeedSave);
                     mPref.setCommonAppPackageName(NeedSave);
-                }
+//                }
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;

@@ -58,7 +58,7 @@
                 <RelativeLayout
                     android:id="@+id/open_quick_itemLT"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="@dimen/quick_gesture_item_height"
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/contactIV" >
 
@@ -130,7 +130,7 @@
                 <RelativeLayout
                     android:id="@+id/slid_area_itemLT"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="@dimen/quick_gesture_item_height"
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/contactIV" >
 
@@ -199,7 +199,7 @@
                 <RelativeLayout
                     android:id="@+id/allow_slid_time_itemLT"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="@dimen/quick_gesture_item_height"
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/contactIV" >
 
@@ -270,7 +270,7 @@
                 <RelativeLayout
                     android:id="@+id/no_read_message_itemLT"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="@dimen/quick_gesture_item_height"
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/contactIV" >
 
@@ -339,7 +339,7 @@
                 <RelativeLayout
                     android:id="@+id/recently_contact_itemLT"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="@dimen/quick_gesture_item_height"
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/contactIV" >
 
@@ -408,7 +408,7 @@
                 <RelativeLayout
                     android:id="@+id/privacy_contact_itemLT"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp"
+                    android:layout_height="@dimen/quick_gesture_item_height"
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@id/contactIV" >
 

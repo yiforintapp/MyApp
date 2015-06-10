@@ -46,6 +46,7 @@ import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.view.EventAction;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -165,11 +166,7 @@ public class QuickGestureManager {
                         message.label = message.getPhoneNumber();
                     }
                     message.isShowReadTip = true;
-                    if (businessDatas != null && businessDatas.size() > 0) {
-                        dynamicList.add(businessDatas.size(), message);
-                    } else {
-                        dynamicList.add(0, message);
-                    }
+                    dynamicList.add(message);
                     if (dynamicList.size() >= 11)
                         break;
                 }
@@ -189,11 +186,7 @@ public class QuickGestureManager {
                         baseInfo.label = baseInfo.getCallLogNumber();
                     }
                     baseInfo.isShowReadTip = true;
-                    if (businessDatas != null) {
-                        dynamicList.add(businessDatas.size(), baseInfo);
-                    } else {
-                        dynamicList.add(0, baseInfo);
-                    }
+                    dynamicList.add(baseInfo);
                     if (dynamicList.size() >= 11)
                         break;
                 }
@@ -202,18 +195,14 @@ public class QuickGestureManager {
         // privacy contact
         if (isShowPrivacyContactTip) {
             if (isShowPrivacyCallLog || isShowPrivacyMsm) {
-                if (dynamicList.size() <= 10) {
+                if (dynamicList.size() <= 11) {
                     QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
                     item.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_system);
                     item.label = mContext.getResources().getString(
                             R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
                     item.isShowReadTip = true;
-                    if (businessDatas != null) {
-                        dynamicList.add(businessDatas.size(), item);
-                    } else {
-                        dynamicList.add(0, item);
-                    }
+                    dynamicList.add(item);
                 }
             }
         }
@@ -456,7 +445,8 @@ public class QuickGestureManager {
             }
 
             List<BaseInfo> mFirstList = changeList(resault);
-            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(mFirstList,
+            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
+                    mFirstList,
                     mFirstList.size(), NORMALINFO);
             mSpSwitch.setCommonAppPackageName(mListString);
             return mFirstList;
@@ -901,6 +891,10 @@ public class QuickGestureManager {
 
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
                             pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
+                            if (flag) {
+                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_tab",
+                                        "common_auto");
+                            }
                         }
                     }
 
