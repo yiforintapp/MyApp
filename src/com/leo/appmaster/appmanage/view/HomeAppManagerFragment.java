@@ -650,6 +650,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 startActivity(intentv6);
             } catch (Exception e) {
                 e.printStackTrace();
+                LockManager.getInstatnce().timeFilterSelf();
+                LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
+                        false);
                 Intent intentv5 = new Intent(
                         Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri
@@ -658,8 +661,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                         | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 try {
-                    LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
-                            false);
                     startActivity(intentv5);
                     getActivity().finish();
                 } catch (Exception e1) {

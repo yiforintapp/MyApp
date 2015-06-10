@@ -2137,7 +2137,9 @@ public class AppleWatchLayout extends ViewGroup {
             } else {
                 targetItem = mHoriChildren[2][i - 3];
             }
-            iconAnimators[i] = iconAppearAnimator(targetItem);
+            if (iconAppearAnimator(targetItem) != null) {
+                iconAnimators[i] = iconAppearAnimator(targetItem);
+            }
         }
 
         if (direction == 0) {// show from left-center
@@ -2165,11 +2167,11 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[10];
             lastAnim = iconAnimators[0];
         }
-        firstAnim.setDuration(400);
-        partOneSet.setDuration(400).setStartDelay(120);
-        partTwoSet.setDuration(400).setStartDelay(240);
-        partThreeSet.setDuration(400).setStartDelay(360);
-        lastAnim.setDuration(400).setStartDelay(480);
+        firstAnim.setDuration(320);
+        partOneSet.setDuration(320).setStartDelay(80);
+        partTwoSet.setDuration(320).setStartDelay(160);
+        partThreeSet.setDuration(320).setStartDelay(240);
+        lastAnim.setDuration(320).setStartDelay(320);
         set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }
@@ -2230,11 +2232,11 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[0];
             lastAnim = iconAnimators[10];
         }
-        firstAnim.setDuration(400);
-        partOneSet.setDuration(400).setStartDelay(100);
-        partTwoSet.setDuration(400).setStartDelay(200);
-        partThreeSet.setDuration(400).setStartDelay(300);
-        lastAnim.setDuration(400).setStartDelay(400);
+        firstAnim.setDuration(200);
+        partOneSet.setDuration(200).setStartDelay(80);
+        partTwoSet.setDuration(200).setStartDelay(160);
+        partThreeSet.setDuration(200).setStartDelay(240);
+        lastAnim.setDuration(200).setStartDelay(320);
         set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }

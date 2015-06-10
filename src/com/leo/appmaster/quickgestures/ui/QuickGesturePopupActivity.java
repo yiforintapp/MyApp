@@ -36,8 +36,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
         fillWhichLayoutFitst(mNowLayout);
         fillTwoLayout(mNowLayout);
-        overridePendingTransition(-1, -1);
-
+        overridePendingTransition(0, 0);
     }
 
     private void fillWhichLayoutFitst(int mNowLayout) {
@@ -121,12 +120,18 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-//        LockManager.getInstatnce().filterAllOneTime();
+        // LockManager.getInstatnce().filterAllOneTime();
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
             mContainer.showCloseAnimation();
         }
+    }
+
+    @Override
+    public void finish() {
+        overridePendingTransition(0, 0);
+        super.finish();
     }
 
 }
