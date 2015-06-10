@@ -67,6 +67,7 @@ import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.ui.QuickGestureTipDialog;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
@@ -97,6 +98,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private HomeShadeView mShadeView;
     private LeoPopMenu mLeoPopMenu;
     private LEOAlarmDialog mQuickGestureSettingDialog;
+    private QuickGestureTipDialog mQuickGestureTip;
 
     private float mDrawerOffset;
     private Handler mHandler = new Handler();
@@ -114,6 +116,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
+//        showFirstOpenQuickGestureTipDialog();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
     }
 
@@ -919,39 +922,39 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     private void showFirstOpenQuickGestureTipDialog() {
-        if (mQuickGestureSettingDialog == null) {
-            mQuickGestureSettingDialog = new LEOAlarmDialog(this);
+        if (mQuickGestureTip == null) {
+            mQuickGestureTip = new QuickGestureTipDialog(this);
         }
-        mQuickGestureSettingDialog.setDialogIconVisibility(false);
-        mQuickGestureSettingDialog.setCanceledOnTouchOutside(false);
-        mQuickGestureSettingDialog.setTitle(this.getResources().getString(
-                R.string.pg_appmanager_quick_gesture_option_open_quick_gesture));
-        mQuickGestureSettingDialog.setContent(this.getResources().getString(
-                R.string.first_open_quick_gesture_dialog_tip_cotent));
-        mQuickGestureSettingDialog.setLeftBtnStr(this.getResources().getString(
-                R.string.cancel));
-        mQuickGestureSettingDialog.setRightBtnStr(this.getResources().getString(
-                R.string.makesure));
-        mQuickGestureSettingDialog.setOnClickListener(new OnDiaogClickListener() {
+        mQuickGestureTip.setLeftOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(int which) {
-                if (which == 0) {
-                    if (mQuickGestureSettingDialog != null) {
-                        mQuickGestureSettingDialog.dismiss();
-                    }
-                } else if (which == 1) {
-                    AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
-                    Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
-                    startActivity(inten);
-                    mQuickGestureSettingDialog.dismiss();
+            public void onClick(View arg0) {
+                if (mQuickGestureTip != null) {
+                    mQuickGestureTip.dismiss();
+                }
+
+                AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
+                AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
+                        Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
+
+            }
+        });
+        mQuickGestureTip.setRightOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
+                Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
+                startActivity(inten);
+                if (mQuickGestureTip != null) {
+                    mQuickGestureTip.dismiss();
                 }
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
                 AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
                         Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
             }
         });
-        mQuickGestureSettingDialog.show();
+        mQuickGestureTip.show();
     }
 
     private void showQuickGestureContinue() {
