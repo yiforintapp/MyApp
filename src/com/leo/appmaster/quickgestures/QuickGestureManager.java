@@ -382,7 +382,7 @@ public class QuickGestureManager {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
-        if (recorderApp.size() > 1 && mHaveList.size() > 0) {
+        if (recorderApp.size() > 1 || mHaveList.size() > 0) {
             LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
@@ -449,6 +449,8 @@ public class QuickGestureManager {
             }
         }
 
+        LeoLog.d("testSp", "resault.size() : " + resault.size());
+        
         if (mHaveList.size() > 0) {
             int[] mPositions = new int[mHaveList.size()];
             for (int i = 0; i < mHaveList.size(); i++) {
@@ -465,21 +467,32 @@ public class QuickGestureManager {
             // LeoLog.d("testSp", "mm : " + mPositions[i]);
             // }
 
-            for (int i = 0; i < 11; i++) {
+            
+            int j = 0;
+            int k = 0;
+            int mSize = mHaveList.size()+resault.size()>11?11:mHaveList.size()+resault.size();
+            LeoLog.d("testSp", "mSize : " + mSize);
+            for (int i = 0; i < mSize; i++) {
                 LeoLog.d("testSp", "i  is : " + i);
-                int j = 0;
-                int k = 0;
                 QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(k);
-                QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
-                if (mInfo.gesturePosition == i) {
-                    LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
-                    newresault.add(mInfo);
-                    k++;
-                } else {
-                    LeoLog.d("testSp", "mInfoCount.gesturePosition : " + mInfoCount.gesturePosition);
-                    mInfoCount.gesturePosition = i;
-                    newresault.add(mInfoCount);
-                    j++;
+                if(resault.size() > 0){
+                    QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
+                    if (mInfo.gesturePosition == i) {
+                        LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
+                        newresault.add(mInfo);
+                        if(k < mHaveList.size() - 1){
+                            k++;
+                        }
+                    } else {
+                        LeoLog.d("testSp", "mInfoCount.gesturePosition : " + mInfoCount.gesturePosition);
+                        mInfoCount.gesturePosition = i;
+                        newresault.add(mInfoCount);
+                        if(j < resault.size() - 1){
+                            j++;
+                        }
+                    }
+                }else {
+                    return mHaveList;
                 }
             }
             LeoLog.d("testSp", "newresault.size : " + newresault.size());
