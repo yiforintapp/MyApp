@@ -1116,14 +1116,14 @@ public class AppleWatchLayout extends ViewGroup {
             if (gType == GType.DymicLayout) {
 
             } else if (gType == GType.MostUsedLayout) {
-                boolean isCheck = AppMasterPreference.getInstance(mContext)
-                        .getQuickGestureCommonAppDialogCheckboxValue();
+//                boolean isCheck = AppMasterPreference.getInstance(mContext)
+//                        .getQuickGestureCommonAppDialogCheckboxValue();
                 int mNum = getChildCount();
                 LeoLog.d("testSp", "ChildNum : " + mNum);
                 LayoutParams params = null;
                 List<BaseInfo> mostUseApp = new ArrayList<BaseInfo>();
 
-                if (isCheck) {
+//                if (isCheck) {
                     // for (int i = 0; i < mNum; i++) {
                     // LayoutParams mParams = null;
                     // mParams = (LayoutParams) getChildAt(i).getLayoutParams();
@@ -1176,26 +1176,26 @@ public class AppleWatchLayout extends ViewGroup {
                     // }
                     // isSqueez = false;
                     // }
-                    for (int i = 0; i < mNum; i++) {
-                        params = (LayoutParams) getChildAt(i).getLayoutParams();
-                        int position = params.position;
-                        if (position > -1) {
-                            LeoLog.d("testSp", "child[" + i + "] position is : " + position);
-                            if (getChildAt(i).getTag() instanceof AppInfo) {
-                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
-                                if (sInfo != null && !sInfo.label.isEmpty()) {
-                                    sInfo.gesturePosition = position;
-                                    mostUseApp.add(sInfo);
-                                }
-                            }
-                        }
-                    }
-                    String NeedSave = QuickSwitchManager.getInstance(getContext())
-                            .listToPackString(mostUseApp, mostUseApp.size(), NORMALINFO);
-                    LeoLog.d("testSp", "NeedSave : " + NeedSave);
-                    mPref.setCommonAppPackageName(NeedSave);
+//                    for (int i = 0; i < mNum; i++) {
+//                        params = (LayoutParams) getChildAt(i).getLayoutParams();
+//                        int position = params.position;
+//                        if (position > -1) {
+//                            LeoLog.d("testSp", "child[" + i + "] position is : " + position);
+//                            if (getChildAt(i).getTag() instanceof AppInfo) {
+//                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+//                                if (sInfo != null && !sInfo.label.isEmpty()) {
+//                                    sInfo.gesturePosition = position;
+//                                    mostUseApp.add(sInfo);
+//                                }
+//                            }
+//                        }
+//                    }
+//                    String NeedSave = QuickSwitchManager.getInstance(getContext())
+//                            .listToPackString(mostUseApp, mostUseApp.size(), NORMALINFO);
+//                    LeoLog.d("testSp", "NeedSave : " + NeedSave);
+//                    mPref.setCommonAppPackageName(NeedSave);
 
-                } else {
+//                } else {
                     for (int i = 0; i < mNum; i++) {
                         params = (LayoutParams) getChildAt(i).getLayoutParams();
                         int position = params.position;
@@ -1214,7 +1214,7 @@ public class AppleWatchLayout extends ViewGroup {
                             .listToPackString(mostUseApp, mostUseApp.size(), NORMALINFO);
                     LeoLog.d("testSp", "NeedSave : " + NeedSave);
                     mPref.setCommonAppPackageName(NeedSave);
-                }
+//                }
             } else if (gType == GType.SwitcherLayout) {
                 int mNum = getChildCount();
                 LayoutParams params = null;

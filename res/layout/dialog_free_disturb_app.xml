@@ -40,21 +40,20 @@
         android:layout_marginBottom="16dp"
         android:gravity="center"
         android:orientation="horizontal"
-        android:visibility="gone" >
+        android:visibility="gone"
+        >
 
         <CheckBox
             android:id="@+id/dialog_all_app_itme_normalRB"
             android:layout_width="18dp"
             android:layout_height="18dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
             android:button="@drawable/quick_gesture_dialog_radio_selector" />
 
         <TextView
             android:id="@+id/dialog_all_app_itme_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="@dimen/quick_gesture_margin_left_to_checkbox"
             android:text="@string/privacy_contact_activity_input_checkbox_normal"
             android:textColor="#a7a7a7"
             android:textSize="12sp" />

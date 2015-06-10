@@ -103,7 +103,7 @@
                 android:id="@+id/free_disturbTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="@dimen/dialog_slide_time_disturbTV_margin_top"
                 android:text="@string/pg_appmanager_quick_gesture_slide_time_no_disturb_text"
                 android:textColor="#929292"
                 android:textSize="14sp" />

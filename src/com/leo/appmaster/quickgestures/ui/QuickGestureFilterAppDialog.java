@@ -344,62 +344,15 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         String packageName = null;
         packageName = AppMasterPreference.getInstance(mContext)
                 .getCommonAppPackageName();
-        // int i = 0;
 
         HashMap<String, Integer> packagePosition = new HashMap<String, Integer>();
-        // HashMap<String, String> packagePakPosition = new HashMap<String,
-        // String>();
         boolean isCheck = AppMasterPreference.getInstance(mContext)
                 .getQuickGestureCommonAppDialogCheckboxValue();
         isAutoFillIcon = isCheck;
-        List<QuickGsturebAppInfo> resault = new ArrayList<QuickGsturebAppInfo>();
+        // List<QuickGsturebAppInfo> resault = new
+        // ArrayList<QuickGsturebAppInfo>();
         QuickGsturebAppInfo qgInfo;
 
-        // if (isCheck) {
-        // List<QuickGsturebAppInfo> isCheckList = new
-        // ArrayList<QuickGsturebAppInfo>();
-        // ArrayList<AppLauncherRecorder> records =
-        // LockManager.getInstatnce().mAppLaunchRecorders;
-        // Iterator<AppLauncherRecorder> iterator = records.iterator();
-        // AppLauncherRecorder record;
-        // i = 0;
-        // while (iterator.hasNext()) {
-        // if (i > 13)
-        // break;
-        // record = iterator.next();
-        // packagePakPosition.put(record.pkg, i + ":" + record.launchCount);
-        // mSwitchListSize++;
-        // i++;
-        // }
-        //
-        // for (AppItemInfo info : list) {
-        // qgInfo = new QuickGsturebAppInfo();
-        // qgInfo.label = info.label;
-        // qgInfo.icon = info.icon;
-        // qgInfo.packageName = info.packageName;
-        // qgInfo.activityName = info.activityName;
-        //
-        // String mString = packagePakPosition.get(qgInfo.packageName);
-        // int mPosition = 0;
-        // int mOpenCount = 0;
-        // if (mString != null) {
-        // String[] mPositionAndCount = mString.split(":");
-        // mPosition = Integer.parseInt(mPositionAndCount[0]);
-        // mOpenCount = Integer.parseInt(mPositionAndCount[1]);
-        // }
-        //
-        // // if (packagePosition.get(qgInfo.packageName) != null ) {
-        // if (mOpenCount > 0) {
-        // qgInfo.gesturePosition = mPosition;
-        // qgInfo.isFreeDisturb = true;
-        // isCheckList.add(qgInfo);
-        // }
-        // resault.add(qgInfo);
-        // mostUseList = isCheckList;
-        // mMostAppConunt = mostUseList.size();
-        // }
-        // }
-        // else {
         List<QuickGsturebAppInfo> isNotCheckList = new ArrayList<QuickGsturebAppInfo>();
         if (!AppMasterPreference.PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME
                 .equals(packageName)) {
@@ -413,6 +366,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 }
             }
         }
+        
         for (AppItemInfo info : list) {
             qgInfo = new QuickGsturebAppInfo();
             qgInfo.label = info.label;
@@ -423,15 +377,28 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 qgInfo.gesturePosition = packagePosition.get(qgInfo.packageName);
                 mSwitchListSize++;
                 qgInfo.isFreeDisturb = true;
+                mFreeDisturbApp.add(qgInfo);
                 isNotCheckList.add(qgInfo);
+            }else {
+                qgInfo.isFreeDisturb = false;
+                mDisturbList.add(qgInfo);
             }
-            resault.add(qgInfo);
-            mostUseList = isNotCheckList;
-            mMostAppConunt = mostUseList.size();
         }
-        // }
-        Collections.sort(resault, new PositionComparator());
-        mFreeDisturbApp = resault;
+        mostUseList = isNotCheckList;
+        mMostAppConunt = mostUseList.size();
+
+        
+        if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+            Collections.sort(mFreeDisturbApp, new NameComparator());
+            Collections.sort(mDisturbList, new NameComparator());
+            mFreeDisturbApp.addAll(mDisturbList);
+        } else {
+            Collections.sort(mDisturbList, new NameComparator());
+            mFreeDisturbApp = mDisturbList;
+        }
+        
+        // Collections.sort(resault, new PositionComparator());
+        // mFreeDisturbApp = resault;
         mGridView.setDatas(mFreeDisturbApp, 4, 4);
     }
 
@@ -481,8 +448,11 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             }
 
             if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+                Collections.sort(mFreeDisturbApp, new NameComparator());
+                Collections.sort(mDisturbList, new NameComparator());
                 mFreeDisturbApp.addAll(mDisturbList);
             } else {
+                Collections.sort(mDisturbList, new NameComparator());
                 mFreeDisturbApp = mDisturbList;
             }
         }
