@@ -529,7 +529,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " = ? ",
                         calllog.getCallLogNumber(),
                         mContext);
-                if (flagNumber != -1) {
+                if (flagNumber != -1 && mHandler!=null) {
                     mContactCallLogs.remove(calllog);
                     Message messge = new Message();
                     count = count + 1;

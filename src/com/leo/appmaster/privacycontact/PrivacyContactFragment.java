@@ -561,10 +561,12 @@ public class PrivacyContactFragment extends BaseFragment {
                     }
                 }
                 PrivacyContactManager.getInstance(mActivity).removeContact(contact);
+                if( mHandler!=null){
                 Message messge = new Message();
                 count = count + 1;
                 messge.what = count;
                 mHandler.sendMessage(messge);
+            }
             }
             PrivacyHelper.getInstance(mContext)
                     .computePrivacyLevel(
