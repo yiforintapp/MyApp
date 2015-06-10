@@ -33,6 +33,7 @@ import com.leo.appmaster.applocker.LockModeActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
@@ -948,7 +949,7 @@ public class QuickSwitchManager {
     public void switchSet() {
         LockManager.getInstatnce().timeFilterSelf();
         Intent intent = new Intent(mContext, QuickGestureActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mContext.startActivity(intent);
     }
 
@@ -1190,7 +1191,7 @@ public class QuickSwitchManager {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
             BaseInfo switchInfo = (BaseInfo) mSwitchList.get(i);
-//             String name = switchInfo.label;
+            // String name = switchInfo.label;
             String name = switchInfo.swtichIdentiName;
             int position = switchInfo.gesturePosition;
             LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
@@ -1210,28 +1211,44 @@ public class QuickSwitchManager {
 
         return ListString;
     }
-    
-    public String listToPackString(List<BaseInfo> mSwitchList, int mNum) {
+
+    public String listToPackString(List<BaseInfo> mSwitchList, int mNum, int infoType) {
         String ListString = "";
-        for (int i = 0; i < mNum; i++) {
-            QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
-            String name = switchInfo.packageName;
-            int position = switchInfo.gesturePosition;
-            LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
-            if (i == 0) {
-                ListString = name + ":" + position;
-            } else {
-                ListString = ListString + ";" + name + ":" + position;
+        if (infoType == 0) {
+            for (int i = 0; i < mNum; i++) {
+                QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
+                String name = switchInfo.packageName;
+                int position = switchInfo.gesturePosition;
+                LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
+                if (i == 0) {
+                    ListString = name + ":" + position;
+                } else {
+                    ListString = ListString + ";" + name + ":" + position;
+                }
+            }
+        } else if (infoType == 1) {
+            for (int i = 0; i < mNum; i++) {
+                AppItemInfo switchInfo = (AppItemInfo) mSwitchList.get(i);
+                String name = switchInfo.packageName;
+                // int position = switchInfo.gesturePosition;
+                int position = i;
+                LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
+                if (i == 0) {
+                    ListString = name + ":" + position;
+                } else {
+                    ListString = ListString + ";" + name + ":" + position;
+                }
             }
         }
+
         return ListString;
     }
-    
+
     public String testlistToString(List<BaseInfo> mSwitchList, int mNum, boolean isFromDialog) {
         String ListString = "";
         for (int i = 0; i < mNum; i++) {
             QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
-             String name = switchInfo.label;
+            String name = switchInfo.label;
             int position = switchInfo.gesturePosition;
             LeoLog.d("QuickSwitchManager", "name : " + name + "--position : " + position);
             if (i == 0) {
@@ -1243,7 +1260,6 @@ public class QuickSwitchManager {
 
         return ListString;
     }
-    
 
     public List<BaseInfo> StringToList(String mSwitchListFromSp) {
         List<BaseInfo> mSwitcherList = new ArrayList<BaseInfo>();
