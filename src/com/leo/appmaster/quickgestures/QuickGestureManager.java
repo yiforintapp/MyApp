@@ -157,8 +157,6 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mMessages != null) {
                 List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
                 for (MessageBean message : messages) {
-                    if (dynamicList.size() > 11)
-                        break;
                     message.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_message);
                     if (message.getMessageName() != null
@@ -173,6 +171,8 @@ public class QuickGestureManager {
                     } else {
                         dynamicList.add(0, message);
                     }
+                    if (dynamicList.size() >= 11)
+                        break;
                 }
             }
         }
@@ -181,8 +181,6 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
                 List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
                 for (ContactCallLog baseInfo : baseInfos) {
-                    if (dynamicList.size() > 11)
-                        break;
                     baseInfo.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_call);
                     if (baseInfo.getCallLogName() != null
@@ -197,6 +195,8 @@ public class QuickGestureManager {
                     } else {
                         dynamicList.add(0, baseInfo);
                     }
+                    if (dynamicList.size() >= 11)
+                        break;
                 }
             }
         }
@@ -456,11 +456,12 @@ public class QuickGestureManager {
                 }
             }
 
-            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(resault,
-                    resault.size(), APPITEMINFO);
+            List<BaseInfo> mFirstList = changeList(resault);
+            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
+                    mFirstList,
+                    mFirstList.size(), NORMALINFO);
             mSpSwitch.setCommonAppPackageName(mListString);
-
-            return resault;
+            return mFirstList;
 
         }
 
@@ -532,6 +533,22 @@ public class QuickGestureManager {
         }
 
         // return resault;
+    }
+
+    private List<BaseInfo> changeList(List<BaseInfo> resault) {
+        List<BaseInfo> mBaseList = new ArrayList<BaseInfo>();
+        QuickGsturebAppInfo temp;
+        for (int i = 0; i < resault.size(); i++) {
+            AppItemInfo appInfo = (AppItemInfo) resault.get(i);
+            temp = new QuickGsturebAppInfo();
+            temp.packageName = appInfo.packageName;
+            temp.activityName = appInfo.activityName;
+            temp.label = appInfo.label;
+            temp.icon = appInfo.icon;
+            temp.gesturePosition = i;
+            mBaseList.add(temp);
+        }
+        return mBaseList;
     }
 
     private boolean isGetPosition(int gesturePosition, int[] mPositions) {

@@ -59,6 +59,7 @@ public class AppleWatchLayout extends ViewGroup {
 
     public static final String TAG = "AppleWatchLayout";
     public static final int NORMALINFO = 0;
+    public static final int APPITEMINFO = 1;
 
     private AppleWatchContainer mContainer;
     private AnimatorSet mReorderAnimator;
@@ -1175,6 +1176,25 @@ public class AppleWatchLayout extends ViewGroup {
                     // }
                     // isSqueez = false;
                     // }
+                    for (int i = 0; i < mNum; i++) {
+                        params = (LayoutParams) getChildAt(i).getLayoutParams();
+                        int position = params.position;
+                        if (position > -1) {
+                            LeoLog.d("testSp", "child[" + i + "] position is : " + position);
+                            if (getChildAt(i).getTag() instanceof AppInfo) {
+                                AppInfo sInfo = (AppInfo) getChildAt(i).getTag();
+                                if (sInfo != null && !sInfo.label.isEmpty()) {
+                                    sInfo.gesturePosition = position;
+                                    mostUseApp.add(sInfo);
+                                }
+                            }
+                        }
+                    }
+                    String NeedSave = QuickSwitchManager.getInstance(getContext())
+                            .listToPackString(mostUseApp, mostUseApp.size(), NORMALINFO);
+                    LeoLog.d("testSp", "NeedSave : " + NeedSave);
+                    mPref.setCommonAppPackageName(NeedSave);
+
                 } else {
                     for (int i = 0; i < mNum; i++) {
                         params = (LayoutParams) getChildAt(i).getLayoutParams();
