@@ -57,7 +57,8 @@ import com.leo.appmaster.utils.LeoLog;
 public class AppleWatchLayout extends ViewGroup {
 
     public static final String TAG = "AppleWatchLayout";
-
+    public static final int NORMALINFO = 0;
+    
     private AppleWatchContainer mContainer;
     private AnimatorSet mReorderAnimator;
     private AppMasterPreference mPref;
@@ -802,6 +803,17 @@ public class AppleWatchLayout extends ViewGroup {
                 boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
+                    
+                    List<BaseInfo> mComList = QuickGestureManager.getInstance(mContext).loadCommonAppInfo();
+                    for(int i = 0;i<mComList.size();i++){
+                        AppInfo mInfo = (AppInfo) mComList.get(i);
+                        if(mInfo.packageName.equals(info.packageName)){
+                            AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
+                                    info.packageName + ":" + info.gesturePosition);
+                            break;
+                        }
+                    }
+                    
                     ArrayList<AppLauncherRecorder> mRecorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
                     Iterator<AppLauncherRecorder> recorder = mRecorderApp.iterator();
                     while (recorder.hasNext()) {
@@ -1131,7 +1143,6 @@ public class AppleWatchLayout extends ViewGroup {
                     // }
                     // isSqueez = false;
                     // }
-
                 } else {
                     for (int i = 0; i < mNum; i++) {
                         params = (LayoutParams) getChildAt(i).getLayoutParams();
@@ -1148,7 +1159,7 @@ public class AppleWatchLayout extends ViewGroup {
                         }
                     }
                     String NeedSave = QuickSwitchManager.getInstance(getContext())
-                            .listToPackString(mostUseApp, mostUseApp.size());
+                            .listToPackString(mostUseApp, mostUseApp.size(),NORMALINFO);
                     LeoLog.d("testSp", "NeedSave : " + NeedSave);
                     mPref.setCommonAppPackageName(NeedSave);
                 }

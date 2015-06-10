@@ -386,10 +386,12 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                         }
                     }
                     mLogFlag = true;
+                    if(mHandler!=null){
                     Message messge = new Message();
                     count = count + 1;
                     messge.what = count;
                     mHandler.sendMessage(messge);
+                    }
                     flagContact = false;
                     if (added) {
                         // 通知更新隐私联系人列表
@@ -436,7 +438,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 new String[] {
                                     number
                                 }, AddFromMessageListActivity.this);
-                        if (messageFlag != null) {
+                        if (messageFlag != null && mHandler!=null) {
                             Message messge = new Message();
                             count = count + 1;
                             messge.what = count;
@@ -469,7 +471,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                         }
                         PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
                                 AddFromMessageListActivity.this);
-                        if (callLogFlag != null) {
+                        if (callLogFlag != null && mHandler!=null) {
                             Message messge = new Message();
                             count = count + 1;
                             messge.what = count;

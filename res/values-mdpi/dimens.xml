@@ -168,20 +168,24 @@
 
     <!-- weizhuang -->
     <dimen name="weizhaung_guide_image_margin_top">36dp</dimen>
+      <!-- quick gesture start -->
+    <dimen name="dialog_free_disturb_app_dialog_title_height">40dp</dimen>
     <dimen name="dialog_list_width">260dp</dimen>
     <dimen name="dialog_list_btn_height">42dp</dimen>
     <dimen name="dialog_list_item_height">50dp</dimen>
     <dimen name="dialog_contact_item_height">45dp</dimen>
-    <!-- quick gesture start -->
-    <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
-    <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_pager_dialog_layout_height">340dp</dimen>
+    <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_pager_dialog_layout_height">220dp</dimen>
     <dimen name="quick_gesture_right_top_area_margin_left">45dp</dimen>
     <dimen name="quick_gesture_free_distureb_app_select_icon_width">16dp</dimen>
     <dimen name="quick_gesture_setting_item_height">56dp</dimen>
     <dimen name="quick_seek_bar_width">250dp</dimen>
+    <dimen name="dialog_app_view_width">26dp</dimen>
+    <dimen name="dialog_app_margin_top">1dp</dimen>
+     <dimen name="quick_gesture_dialog_list_width">270dp</dimen>
     <dimen name="gesture_item_text_size">10sp</dimen>
     <!-- quick gesutre end -->
+    <dimen name="dialog_btn_height">48dp</dimen>
 
 </resources>

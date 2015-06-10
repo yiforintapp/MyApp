@@ -24,6 +24,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.ui.LeoAppViewPager;
 import com.leo.appmaster.ui.LeoApplistCirclePageIndicator;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 public class FilterAppPagedGridView extends LinearLayout {
 
@@ -76,6 +77,7 @@ public class FilterAppPagedGridView extends LinearLayout {
             List<QuickGsturebAppInfo> pageData = null;
             GridView gridView = (GridView) mInflater.inflate(
                     R.layout.dialog_free_disturb_app_grid_page_item, mViewPager, false);
+            
             if (i == mPageCount - 1) {
                 pageData = copyFrom(data.subList(i * mPageItemCount,
                         data.size()));

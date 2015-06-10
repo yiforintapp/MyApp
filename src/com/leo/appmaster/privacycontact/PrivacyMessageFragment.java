@@ -538,10 +538,12 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                         }
                     }
                     mMessageList.remove(messageBean);
-                    Message messge = new Message();
-                    count = count + 1;
-                    messge.what = count;
-                    mHandler.sendMessage(messge);
+                    if (mHandler != null) {
+                        Message messge = new Message();
+                        count = count + 1;
+                        messge.what = count;
+                        mHandler.sendMessage(messge);
+                    }
                 }
             } else if (PrivacyContactUtils.MESSAGE_EDIT_MODEL_OPERATION_DELETE
                     .equals(operationModel)) {
@@ -563,10 +565,10 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                         if (noReadMessageCount > 0) {
                             for (int i = 0; i < noReadMessageCount; i++) {
                                 if (temp > 0) {
-                                    temp=temp-1;
+                                    temp = temp - 1;
                                     pre.setMessageNoReadCount(temp);
                                 }
-                                if (temp<= 0) {
+                                if (temp <= 0) {
                                     LeoEventBus
                                             .getDefaultBus()
                                             .post(
@@ -582,7 +584,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                 Constants.COLUMN_MESSAGE_PHONE_NUMBER + " = ? ", new String[] {
                                     messages.getPhoneNumber()
                                 });
-                        if (flagNumber != -1) {
+                        if (flagNumber != -1&& mHandler!=null) {
                             Message messge = new Message();
                             count = count + 1;
                             messge.what = count;
