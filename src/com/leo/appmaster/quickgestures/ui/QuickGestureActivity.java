@@ -59,6 +59,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaog
 import com.leo.appmaster.quickgestures.ui.QuickGestureSlideTimeDialog.UpdateFilterAppClickListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 /**
  * QuickGestureActivity
@@ -755,10 +756,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         ObjectAnimator alphaArrow = ObjectAnimator.ofFloat(view2, "alpha", 0, 0, 1);
         alphaArrow.setDuration(2000);
         alphaArrow.setRepeatCount(-1);
+        float translation = DipPixelUtil.dip2px(this, 100);
         PropertyValuesHolder arrowHolderX = PropertyValuesHolder
-                .ofFloat("translationX", 0, 0, -200);
+                .ofFloat("translationX", 0, 0, -translation);
         PropertyValuesHolder arrowHolderY = PropertyValuesHolder
-                .ofFloat("translationY", 0, 0, -200);
+                .ofFloat("translationY", 0, 0, -translation);
         ObjectAnimator translateArrow = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(
                 view2, arrowHolderX, arrowHolderY);
         translateArrow.setDuration(2000);
