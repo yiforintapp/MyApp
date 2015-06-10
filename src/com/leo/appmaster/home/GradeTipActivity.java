@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.home;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -17,29 +18,29 @@ import android.widget.TextView;
 
 public class GradeTipActivity extends BaseActivity implements OnClickListener {
 
-	private TextView mTvMakeSure;
-	private TextView mFeedbackSure;
+    private TextView mTvMakeSure;
+    private TextView mFeedbackSure;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.layout_show_googleplay_tip);
-		mTvMakeSure = (TextView) findViewById(R.id.tv_make);
-		mFeedbackSure=(TextView) findViewById(R.id.tv_feedback);
-		mTvMakeSure.setOnClickListener(this);
-		mFeedbackSure.setOnClickListener(this);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
+        setContentView(R.layout.layout_show_googleplay_tip);
+        mTvMakeSure = (TextView) findViewById(R.id.tv_make);
+        mFeedbackSure = (TextView) findViewById(R.id.tv_feedback);
+        mTvMakeSure.setOnClickListener(this);
+        mFeedbackSure.setOnClickListener(this);
+    }
 
-	@Override
-	protected void onResume() {
-		AppMasterPreference.getInstance(this).setGoogleTipShowed(true);
-		super.onResume();
-	}
+    @Override
+    protected void onResume() {
+        AppMasterPreference.getInstance(this).setGoogleTipShowed(true);
+        super.onResume();
+    }
 
-	private void openShowGoogleGuide() {
-	    boolean showGP = false;
-		if (AppUtil.appInstalled(getApplicationContext(), "com.android.vending")) {
+    private void openShowGoogleGuide() {
+        boolean showGP = false;
+        if (AppUtil.appInstalled(getApplicationContext(), "com.android.vending")) {
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = Uri
@@ -57,26 +58,27 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             } catch (Exception e) {
 
             }
-		} 
-		if(!showGP) {
-			Intent intent = new Intent(Intent.ACTION_VIEW);
-			Uri uri = Uri
-					.parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-			intent.setData(uri);
-			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		}
-	}
+        }
+        if (!showGP) {
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri
+                    .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+            intent.setData(uri);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
 
-	@Override
-	public void onClick(View v) {
-		if (v == mTvMakeSure) {
-			openShowGoogleGuide();
-			finish();
-		}else if(v==mFeedbackSure){
-		    Intent intent=new Intent(GradeTipActivity.this,FeedbackActivity.class);
-		    startActivity(intent);
-		}
-		
-	}
+    @Override
+    public void onClick(View v) {
+        if (v == mTvMakeSure) {
+            openShowGoogleGuide();
+            finish();
+        } else if (v == mFeedbackSure) {
+            Intent intent = new Intent(GradeTipActivity.this, FeedbackActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+    }
 }

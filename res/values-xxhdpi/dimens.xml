@@ -363,8 +363,13 @@
     <dimen name="quick_gesture_free_distureb_app_select_icon_width">16dp</dimen>
     <dimen name="quick_gesture_setting_item_height">56dp</dimen>
     <dimen name="quick_seek_bar_width">250dp</dimen>
+    <dimen name="gesture_item_text_size">12sp</dimen>
     <!-- quick gesutre end -->
     <dimen name="quick_sliding_set_dialog_width">312dp</dimen>
     <dimen name="quick_sliding_set_dialog_height">393dp</dimen>
+    <dimen name="quick_first_tip_dialog_width">312dp</dimen>
+    <dimen name="quick_first_tip_dialog_height">423dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_width">306dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_height">225dp</dimen>
 
 </resources>
