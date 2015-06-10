@@ -16,6 +16,7 @@ import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -371,10 +372,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 }
                 break;
             case R.id.bg_show_quick_gesture:
-                 startQuickGestureActivity();
-//                Intent intent1= new Intent(mActivity,
-//                        GradeTipActivity.class);
-//                startActivity(intent1);
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qssetting", "home");
+                startQuickGestureActivity();
+                // Intent intent1= new Intent(mActivity,
+                // GradeTipActivity.class);
+                // startActivity(intent1);
                 break;
         }
     }
@@ -629,6 +631,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         boolean checkMiui = BuildProperties.isMIUI();
         boolean isOpenWindow =
                 BuildProperties.isFloatWindowOpAllowed(getActivity());
+        if (!checkFloatWindow) {
+            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "model_"
+                    + BuildProperties.getPoneModel());
+        }
         if (checkMiui && !isOpenWindow) {
             // MIUI
             Intent intentv6 = new
@@ -658,6 +664,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     getActivity().finish();
                 } catch (Exception e1) {
                     e1.printStackTrace();
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "reason_"
+                            + BuildProperties.getPoneModel());
                 }
             }
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);

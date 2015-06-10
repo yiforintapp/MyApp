@@ -39,6 +39,7 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickSwitchManager {
@@ -960,6 +961,7 @@ public class QuickSwitchManager {
     }
 
     public void switchSet() {
+        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qssetting", "quickpage");
         LockManager.getInstatnce().timeFilterSelf();
         Intent intent = new Intent(mContext, QuickGestureActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);

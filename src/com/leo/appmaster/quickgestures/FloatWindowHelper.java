@@ -18,9 +18,11 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -104,7 +106,8 @@ public class FloatWindowHelper {
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -2)) {
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == -2)) {
                 mLeftBottomView.setIsShowReadTip(true, 1);
             }
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
@@ -128,6 +131,13 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
+                                    if (isShowTip) {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "notice");
+                                    } else {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "user");
+                                    }
                                 }
                             } else {
                                 if (((moveX > mLeftBottomParams.width / 12 || moveY > mLeftBottomParams.height / 10)
@@ -137,6 +147,13 @@ public class FloatWindowHelper {
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(-1);
+                                            if (isShowTip) {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "notice");
+                                            } else {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "user");
+                                            }
                                         }
                                     }
                                 }
@@ -149,6 +166,8 @@ public class FloatWindowHelper {
                                 // cancel system no read message tip
                                 if (isShowTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                            "notice");
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -204,6 +223,7 @@ public class FloatWindowHelper {
      */
     public static void createFloatLeftCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
+        final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftCenterView == null) {
             mLeftCenterView = new QuickGesturesAreaView(mContext);
             mLeftCenterView.setOnTouchListener(new OnTouchListener() {
@@ -222,14 +242,21 @@ public class FloatWindowHelper {
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
                             if ((moveX > mLeftCenterParams.width / 6
-                                    || moveY > mLeftCenterParams.width / 6 )
+                                    || moveY > mLeftCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
+                                    if (isShowTip) {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "notice");
+                                    } else {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "user");
+                                    }
                                 }
-                            }else {
+                            } else {
                                 if (((moveX > mLeftCenterParams.width / 12 || moveY > mLeftCenterParams.height / 10)
                                 && !isMoveIng)) {
                                     if (presssure > 0.1) {
@@ -237,6 +264,13 @@ public class FloatWindowHelper {
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(-1);
+                                            if (isShowTip) {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "notice");
+                                            } else {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "user");
+                                            }
                                         }
                                     }
                                 }
@@ -291,7 +325,8 @@ public class FloatWindowHelper {
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -2 )
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == -2)
                     && mLeftBottomView == null) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
@@ -317,8 +352,15 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-2);
+                                    if (isShowTip) {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "notice");
+                                    } else {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "user");
+                                    }
                                 }
-                            }else {
+                            } else {
                                 if (((moveX > mLeftCenterCenterParams.width / 12 || moveY > mLeftCenterCenterParams.height / 10)
                                 && !isMoveIng)) {
                                     if (presssure > 0.1) {
@@ -326,6 +368,13 @@ public class FloatWindowHelper {
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(-2);
+                                            if (isShowTip) {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "notice");
+                                            } else {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "user");
+                                            }
                                         }
                                     }
                                 }
@@ -337,6 +386,8 @@ public class FloatWindowHelper {
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // cancel system no read message tip
                                 if (isShowTip && mLeftBottomView == null) {
+                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                            "notice");
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
@@ -410,6 +461,7 @@ public class FloatWindowHelper {
      */
     public static void createFloatLeftTopWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
+        final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftTopView == null) {
             mLeftTopView = new QuickGesturesAreaView(mContext);
             mLeftTopView.setOnTouchListener(new OnTouchListener() {
@@ -434,8 +486,15 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
+                                    if (isShowTip) {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "notice");
+                                    } else {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "user");
+                                    }
                                 }
-                            }else {
+                            } else {
                                 if (((moveX > mLeftTopParams.width / 12 || moveY > mLeftTopParams.height / 10)
                                 && !isMoveIng)) {
                                     if (presssure > 0.1) {
@@ -443,6 +502,13 @@ public class FloatWindowHelper {
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(-1);
+                                            if (isShowTip) {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "notice");
+                                            } else {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "user");
+                                            }
                                         }
                                     }
                                 }
@@ -499,7 +565,8 @@ public class FloatWindowHelper {
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 2)) {
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == 2)) {
                 mRightBottomView.setIsShowReadTip(true, 2);
             }
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
@@ -524,8 +591,15 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
+                                    if (isShowTip) {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "notice");
+                                    } else {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "user");
+                                    }
                                 }
-                            }else {
+                            } else {
                                 if (((moveX > mRightBottomParams.width / 12 || moveY > mRightBottomParams.height / 10)
                                 && !isMoveIng)) {
                                     if (presssure > 0.1) {
@@ -533,6 +607,13 @@ public class FloatWindowHelper {
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(1);
+                                            if (isShowTip) {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "notice");
+                                            } else {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "user");
+                                            }
                                         }
                                     }
                                 }
@@ -542,8 +623,10 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
-                             // cancel system no read message tip
+                                // cancel system no read message tip
                                 if (isShowTip) {
+                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                            "notice");
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
@@ -596,6 +679,7 @@ public class FloatWindowHelper {
      */
     public static void createFloatRightCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
+        final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightCenterView == null) {
             mRightCenterView = new QuickGesturesAreaView(mContext);
             mRightCenterView.setOnTouchListener(new OnTouchListener() {
@@ -620,8 +704,15 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
+                                    if (isShowTip) {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "notice");
+                                    } else {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "user");
+                                    }
                                 }
-                            }else {
+                            } else {
                                 if (((moveX > mRightCenterParams.width / 12 || moveY > mRightCenterParams.height / 10)
                                 && !isMoveIng)) {
                                     if (presssure > 0.1) {
@@ -629,6 +720,13 @@ public class FloatWindowHelper {
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(1);
+                                            if (isShowTip) {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "notice");
+                                            } else {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "user");
+                                            }
                                         }
                                     }
                                 }
@@ -684,7 +782,8 @@ public class FloatWindowHelper {
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1  || QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 2)
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == 2)
                     && mRightBottomView == null) {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
@@ -710,8 +809,15 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(2);
+                                    if (isShowTip) {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "notice");
+                                    } else {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "user");
+                                    }
                                 }
-                            }else {
+                            } else {
                                 if (((moveX > mRightCenterCenterParams.width / 12 || moveY > mRightCenterCenterParams.height / 10)
                                 && !isMoveIng)) {
                                     if (presssure > 0.1) {
@@ -719,6 +825,13 @@ public class FloatWindowHelper {
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(2);
+                                            if (isShowTip) {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "notice");
+                                            } else {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "user");
+                                            }
                                         }
                                     }
                                 }
@@ -728,8 +841,10 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
-                             // cancel system no read message tip
+                                // cancel system no read message tip
                                 if (isShowTip && mRightBottomView == null) {
+                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                            "notice");
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     Intent intent = new Intent(mContext,
                                             QuickGesturePopupActivity.class);
@@ -807,6 +922,7 @@ public class FloatWindowHelper {
      */
     public static void createFloatRightTopWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
+        final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightTopView == null) {
             mRightTopView = new QuickGesturesAreaView(mContext);
             mRightTopView.setOnTouchListener(new OnTouchListener() {
@@ -831,8 +947,15 @@ public class FloatWindowHelper {
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
+                                    if (isShowTip) {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "notice");
+                                    } else {
+                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                "user");
+                                    }
                                 }
-                            }else {
+                            } else {
                                 if (((moveX > mRightTopParams.width / 12 || moveY > mRightTopParams.height / 10)
                                 && !isMoveIng)) {
                                     if (presssure > 0.1) {
@@ -840,6 +963,13 @@ public class FloatWindowHelper {
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(1);
+                                            if (isShowTip) {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "notice");
+                                            } else {
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                        "user");
+                                            }
                                         }
                                     }
                                 }
