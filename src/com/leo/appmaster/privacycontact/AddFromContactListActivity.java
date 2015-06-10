@@ -390,7 +390,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                     Message messge = new Message();
                     count = count + 1;
                     messge.what = count;
-                    if (messge != null) {
+                    if (messge != null && mHandler!=null) {
                         mHandler.sendMessage(messge);
                     }
                     flagContact = false;
@@ -439,7 +439,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                 new String[] {
                                     number
                                 }, AddFromContactListActivity.this);
-                        if (messageFlag != null) {
+                        if (messageFlag != null && mHandler!=null) {
                             Message messge = new Message();
                             count = count + 1;
                             messge.what = count;
@@ -474,7 +474,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                         Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
                         PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
                                 AddFromContactListActivity.this);
-                        if (callLogFlag != null) {
+                        if (callLogFlag != null && mHandler!=null) {
                             Message messge = new Message();
                             count = count + 1;
                             messge.what = count;
@@ -545,7 +545,6 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
             public void onClick(int which) {
                 if (which == 1) {
                     final int privacyTotal = mAddMessages.size() + mAddCallLogs.size();
-                Log.e("#############", "privacyTotal:"+privacyTotal);
                     if (mHandler == null) {
                         mHandler = new Handler() {
                             @Override
