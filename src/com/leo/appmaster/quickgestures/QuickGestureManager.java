@@ -46,6 +46,7 @@ import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.view.EventAction;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -456,7 +457,8 @@ public class QuickGestureManager {
             }
 
             List<BaseInfo> mFirstList = changeList(resault);
-            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(mFirstList,
+            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
+                    mFirstList,
                     mFirstList.size(), NORMALINFO);
             mSpSwitch.setCommonAppPackageName(mListString);
             return mFirstList;
@@ -901,6 +903,10 @@ public class QuickGestureManager {
 
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
                             pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
+                            if (flag) {
+                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_tab",
+                                        "common_auto");
+                            }
                         }
                     }
 

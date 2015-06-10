@@ -104,7 +104,7 @@ public class FloatWindowHelper {
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1) {
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -2)) {
                 mLeftBottomView.setIsShowReadTip(true, 1);
             }
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
@@ -291,7 +291,7 @@ public class FloatWindowHelper {
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -2 )
                     && mLeftBottomView == null) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
@@ -499,7 +499,7 @@ public class FloatWindowHelper {
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1) {
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 2)) {
                 mRightBottomView.setIsShowReadTip(true, 2);
             }
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
@@ -684,7 +684,7 @@ public class FloatWindowHelper {
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1  || QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 2)
                     && mRightBottomView == null) {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
