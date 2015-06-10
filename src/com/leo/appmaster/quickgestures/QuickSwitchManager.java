@@ -28,6 +28,7 @@ import android.provider.Settings;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockModeActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -101,6 +102,8 @@ public class QuickSwitchManager {
     private boolean mSwitcherLoaded = false;
     private List<BaseInfo> mSaveList = null;
     private List<BaseInfo> mAllList;
+    private int mVersion;
+    private boolean isSIMready = true;
 
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
@@ -122,6 +125,9 @@ public class QuickSwitchManager {
         gps();
         flyMode();
         rotation();
+        
+        mVersion = PhoneInfo.getAndroidVersion();
+        isSIMready = PhoneInfo.isSimAvailable(mContext);
         mobileData();
 
         mHandler = new Handler();
@@ -141,13 +147,20 @@ public class QuickSwitchManager {
             mConnectivityManager = (ConnectivityManager) mContext
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
         }
+        
         try {
-            boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
-                    null);
-            if (isMobileDataEnable) {
-                isMobileDataOpen = true;
-            } else {
+            if(mVersion > 19 && !isSIMready){
                 isMobileDataOpen = false;
+            }else {
+                boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
+                        null);
+                if (isMobileDataEnable) {
+                    isMobileDataOpen = true;
+                    LeoLog.d("testSp", "isMobileDataOpen true");
+                } else {
+                    isMobileDataOpen = false;
+                    LeoLog.d("testSp", "isMobileDataOpen false");
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -1140,17 +1153,22 @@ public class QuickSwitchManager {
     public void toggleMobileData(QuickSwitcherInfo mInfo) {
         Object[] arg = null;
         try {
-            boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
-                    arg);
-            if (isMobileDataEnable) {
-                invokeBooleanArgMethod("setMobileDataEnabled", false);
+            
+            if(mVersion > 19 && !isSIMready){
                 isMobileDataOpen = false;
-            } else {
-                invokeBooleanArgMethod("setMobileDataEnabled", true);
-                isMobileDataOpen = true;
+            }else {
+                boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
+                        arg);
+                if (isMobileDataEnable) {
+                    invokeBooleanArgMethod("setMobileDataEnabled", false);
+                    isMobileDataOpen = false;
+                } else {
+                    invokeBooleanArgMethod("setMobileDataEnabled", true);
+                    isMobileDataOpen = true;
+                }
+                LeoEventBus.getDefaultBus().post(
+                        new ClickQuickItemEvent(MOBILEDATA, mInfo));
             }
-            LeoEventBus.getDefaultBus().post(
-                    new ClickQuickItemEvent(MOBILEDATA, mInfo));
         } catch (Exception e) {
             e.printStackTrace();
         }
