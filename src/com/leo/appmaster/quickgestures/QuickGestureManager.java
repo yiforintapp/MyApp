@@ -450,48 +450,53 @@ public class QuickGestureManager {
         }
 
         LeoLog.d("testSp", "resault.size() : " + resault.size());
-        
-        if (mHaveList.size() > 0) {
-            int[] mPositions = new int[mHaveList.size()];
-            for (int i = 0; i < mHaveList.size(); i++) {
-                BaseInfo mInfo = mHaveList.get(i);
-                mPositions[i] = mInfo.gesturePosition;
-            }
-            // LeoLog.d("testSp", "未排序前的数组");
-            // for(int i = 0;i<mPositions.length;i++){
-            // LeoLog.d("testSp", "mm : " + mPositions[i]);
-            // }
-            sortList(mPositions);
-            // LeoLog.d("testSp", "排序后的数组");
-            // for(int i = 0;i<mPositions.length;i++){
-            // LeoLog.d("testSp", "mm : " + mPositions[i]);
-            // }
 
-            
+        // 删除相同应用
+        for (int i = 0; i < mHaveList.size(); i++) {
+            QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
+            for (int j = 0; j < resault.size(); j++) {
+                QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
+                if(mInfo.packageName.equals(mInfoCount.packageName)){
+                    resault.remove(j);
+                    break;
+                }
+            }
+        }
+
+        if (mHaveList.size() > 0) {
+            // int[] mPositions = new int[mHaveList.size()];
+            // for (int i = 0; i < mHaveList.size(); i++) {
+            // BaseInfo mInfo = mHaveList.get(i);
+            // mPositions[i] = mInfo.gesturePosition;
+            // }
+            // sortList(mPositions);
+
             int j = 0;
             int k = 0;
-            int mSize = mHaveList.size()+resault.size()>11?11:mHaveList.size()+resault.size();
+            int mSize = mHaveList.size() + resault.size() > 11 ? 11 : mHaveList.size()
+                    + resault.size();
             LeoLog.d("testSp", "mSize : " + mSize);
             for (int i = 0; i < mSize; i++) {
                 LeoLog.d("testSp", "i  is : " + i);
                 QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(k);
-                if(resault.size() > 0){
+                if (resault.size() > 0) {
                     QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
                     if (mInfo.gesturePosition == i) {
                         LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
                         newresault.add(mInfo);
-                        if(k < mHaveList.size() - 1){
+                        if (k < mHaveList.size() - 1) {
                             k++;
                         }
                     } else {
-                        LeoLog.d("testSp", "mInfoCount.gesturePosition : " + mInfoCount.gesturePosition);
+                        LeoLog.d("testSp", "mInfoCount.gesturePosition : "
+                                + mInfoCount.gesturePosition);
                         mInfoCount.gesturePosition = i;
                         newresault.add(mInfoCount);
-                        if(j < resault.size() - 1){
+                        if (j < resault.size() - 1) {
                             j++;
                         }
                     }
-                }else {
+                } else {
                     return mHaveList;
                 }
             }
@@ -500,21 +505,21 @@ public class QuickGestureManager {
         } else {
             return resault;
         }
-        
-//        return resault;
+
+        // return resault;
     }
 
-    private void sortList(int[] mPositions) {
-        for (int i = 0; i < mPositions.length; i++) {
-            for (int j = i + 1; j < mPositions.length; j++) {
-                if (mPositions[i] > mPositions[j]) {
-                    int temp = mPositions[i];
-                    mPositions[i] = mPositions[j];
-                    mPositions[j] = temp;
-                }
-            }
-        }
-    }
+    // private void sortList(int[] mPositions) {
+    // for (int i = 0; i < mPositions.length; i++) {
+    // for (int j = i + 1; j < mPositions.length; j++) {
+    // if (mPositions[i] > mPositions[j]) {
+    // int temp = mPositions[i];
+    // mPositions[i] = mPositions[j];
+    // mPositions[j] = temp;
+    // }
+    // }
+    // }
+    // }
 
     // Customize common app
     private List<BaseInfo> loadCommonAppInfo() {
@@ -733,7 +738,7 @@ public class QuickGestureManager {
                             }
 
                             // 判断要加入的是否已存在，已存在的不加入
-                            // addCommonApp = hasSameName(addCommonApp, false);
+                            // addCommonApp = hasSameName(addCommonApp, true);
 
                             // 记录现有的Icon位置
                             LeoLog.d("QuickGestureManager", "有货要加");
@@ -850,29 +855,29 @@ public class QuickGestureManager {
                         }
                     }
 
-                    // private List<BaseInfo> hasSameName(List<BaseInfo>
-                    // addCommonApp2, boolean isCheck) {
-                    // List<BaseInfo> items;
-                    // if (isCheck) {
-                    // items = loadRecorderAppInfo();
-                    // } else {
-                    // items = loadCommonAppInfo();
-                    // }
-                    // List<BaseInfo> AddCommonApps = new ArrayList<BaseInfo>();
-                    // for (BaseInfo addInfo : addCommonApp2) {
-                    // boolean isHasSameName = false;
-                    // for (BaseInfo item : items) {
-                    // if (item.label.equals(addInfo.label)) {
-                    // isHasSameName = true;
-                    // }
-                    // }
-                    // if (!isHasSameName) {
-                    // AddCommonApps.add(addInfo);
-                    // }
-                    // isHasSameName = false;
-                    // }
-                    // return AddCommonApps;
-                    // }
+                    private List<BaseInfo> hasSameName(List<BaseInfo>
+                            addCommonApp2, boolean isCheck) {
+                        List<BaseInfo> items;
+                        if (isCheck) {
+                            items = loadRecorderAppInfo();
+                        } else {
+                            items = loadCommonAppInfo();
+                        }
+                        List<BaseInfo> AddCommonApps = new ArrayList<BaseInfo>();
+                        for (BaseInfo addInfo : addCommonApp2) {
+                            boolean isHasSameName = false;
+                            for (BaseInfo item : items) {
+                                if (item.label.equals(addInfo.label)) {
+                                    isHasSameName = true;
+                                }
+                            }
+                            if (!isHasSameName) {
+                                AddCommonApps.add(addInfo);
+                            }
+                            isHasSameName = false;
+                        }
+                        return AddCommonApps;
+                    }
                 }).start();
 
                 commonApp.dismiss();
