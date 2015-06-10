@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.os.Bundle;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -120,7 +121,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        // LockManager.getInstatnce().filterAllOneTime();
+        LockManager.getInstatnce().filterAllOneTime(2000);
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {

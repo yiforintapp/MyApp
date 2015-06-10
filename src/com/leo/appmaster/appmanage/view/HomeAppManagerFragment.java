@@ -649,7 +649,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         false);
                 startActivity(intentv6);
             } catch (Exception e) {
-                e.printStackTrace();
                 LockManager.getInstatnce().timeFilterSelf();
                 LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
                         false);
@@ -658,22 +657,19 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 Uri uri = Uri
                         .fromParts("package", getActivity().getPackageName(), null);
                 intentv5.setData(uri);
-                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 try {
                     startActivity(intentv5);
                     getActivity().finish();
                 } catch (Exception e1) {
-                    e1.printStackTrace();
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "reason_"
                             + BuildProperties.getPoneModel());
                 }
             }
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                 startActivity(quickIntent);
             } catch (Exception e) {
                 e.printStackTrace();
