@@ -27,7 +27,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Intent.ShortcutIconResource;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.WindowManager;
@@ -59,6 +61,7 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -160,6 +163,9 @@ public class LockManager {
     private ExecutorService mTaskExecutor = Executors.newSingleThreadExecutor();
     private Future<Boolean> mLoadDefaultDataFuture;
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
+    public HashMap<Drawable, Bitmap> mDrawableColors;
+    public ColorMatcher mMatcher;
+
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
         mLockPolicy = new TimeoutRelockPolicy(mContext);
@@ -173,7 +179,6 @@ public class LockManager {
         mTLMap = new HashMap<TimeLock, List<ScheduledFuture<?>>>();
         mHandler = new Handler();
         mTimeChangeReceiver = new TimeChangeReceive();
-        mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
         initFilterList();
     }
 
@@ -188,6 +193,9 @@ public class LockManager {
 
     public void initFilterList() {
         mFilterPgks.put("WaitActivity", true);
+        mDrawableColors = new HashMap<Drawable, Bitmap>();
+        loadAppLaunchReorder();
+        mMatcher = new ColorMatcher();
     }
 
     public void recordOutcountTask(String pkg) {
@@ -1769,7 +1777,7 @@ public class LockManager {
     }
 
     public void loadAppLaunchReorder() {
-//        mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
+        mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
         String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
         AppLauncherRecorder temp = null;
         int sIndex = -1;
@@ -1779,7 +1787,7 @@ public class LockManager {
             for (String recoder : recoderList) {
                 sIndex = recoder.indexOf(':');
                 if (sIndex != -1) {
-                    temp =  QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
+                    temp = QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
                     temp.pkg = recoder.substring(0, sIndex);
                     temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
                     mAppLaunchRecorders.add(temp);
@@ -1787,6 +1795,7 @@ public class LockManager {
             }
         }
     }
+
     public void recordAppLaunch(String pkg) {
         if (TextUtils.isEmpty(pkg)) {
             return;
@@ -1836,5 +1845,5 @@ public class LockManager {
             AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
         }
     }
-    
+
 }

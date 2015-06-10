@@ -1620,21 +1620,24 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
                 PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME);
     }
 
-    public void setCommonAppPackageNameAdd(String name) {
-        String string = getCommonAppPackageName();
-        StringBuffer sb = null;
-        String packageNames = null;
-        if (!PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(string)) {
-            sb = new StringBuffer(string);
-            sb.append(name);
-            packageNames = sb.toString() + ";";
-        } else {
-            packageNames = name + ";";
-        }
-         LeoLog.d("testSp", "packageNames : " + packageNames);
-        mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, packageNames)
-                .commit();
-    }
+    // public void setCommonAppPackageNameAdd(String name) {
+    // String string = getCommonAppPackageName();
+    // StringBuffer sb = null;
+    // String packageNames = null;
+    // if
+    // (!PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(string))
+    // {
+    // sb = new StringBuffer(string);
+    // sb.append(name);
+    // packageNames = sb.toString() + ";";
+    // } else {
+    // packageNames = name + ";";
+    // }
+    // LeoLog.d("testSp", "packageNames : " + packageNames);
+    // mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
+    // packageNames)
+    // .commit();
+    // }
 
     public void setCommonAppPackageName(String name) {
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, name)

@@ -139,7 +139,7 @@
                     android:id="@+id/dialog_radio_right_bottom_tv"
                     android:layout_width="wrap_content"
                     android:layout_height="28dp"
-                    android:layout_marginLeft="28dp"
+                    android:layout_marginLeft="24dp"
                     android:text="@string/pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text"
                     android:textColor="#a7a7a7"
                     android:textSize="18sp" />

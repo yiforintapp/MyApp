@@ -113,6 +113,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // installShortcut();
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
+        showQuickGestureContinue();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
     }
 
@@ -276,7 +277,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         } else {
             app_hot_tip_icon.setVisibility(View.GONE);
         }
-        showQuickGestureContinue();
         super.onResume();
     }
 
@@ -907,13 +907,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         mQuickGestureSettingDialog.dismiss();
                     }
                 } else if (which == 1) {
+                    mQuickGestureSettingDialog.dismiss();
                     AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
                             true);
                     Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
-                    try {
-                        startActivity(inten);
-                    } catch (Exception e) {
-                    }
+                    startActivity(inten);
                 }
             }
         });
@@ -946,6 +944,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
                     Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
                     startActivity(inten);
+                    mQuickGestureSettingDialog.dismiss();
                 }
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
                 AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
@@ -964,10 +963,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(this);
             boolean dialogShow = pre.getQGSettingFirstDialogTip();
             if ((isMiui && setMiuiFist && !dialogShow && isOpenWindow && !isFirstSlidingOpenQuick)
-                    || (isMiui && !setMiuiFist && isOpenWindow) ) {
-                if(pre.getLockType() != AppMasterPreference.LOCK_TYPE_NONE){
-                showQuickGestureSettingDialog();
-            }
+                    || (isMiui && !setMiuiFist && isOpenWindow)) {
+                if (pre.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                    showQuickGestureSettingDialog();
+                }
             }
         }
     }

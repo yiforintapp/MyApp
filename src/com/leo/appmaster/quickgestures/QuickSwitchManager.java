@@ -948,7 +948,7 @@ public class QuickSwitchManager {
     public void switchSet() {
         LockManager.getInstatnce().timeFilterSelf();
         Intent intent = new Intent(mContext, QuickGestureActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK|Intent.FLAG_ACTIVITY_CLEAR_TOP);
         mContext.startActivity(intent);
     }
 
