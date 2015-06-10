@@ -642,15 +642,14 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             intentv6.setClassName("com.miui.securitycenter",
                     "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
             intentv6.putExtra("extra_pkgname", getActivity().getPackageName());
-            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intentv6.setFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP);
             try {
                 LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
                         false);
                 startActivity(intentv6);
             } catch (Exception e) {
                 e.printStackTrace();
-                LockManager.getInstatnce().timeFilterSelf();
+//                LockManager.getInstatnce().timeFilterSelf();
                 LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
                         false);
                 Intent intentv5 = new Intent(
@@ -658,8 +657,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 Uri uri = Uri
                         .fromParts("package", getActivity().getPackageName(), null);
                 intentv5.setData(uri);
-                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                        | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intentv5.setFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 try {
                     startActivity(intentv5);
                     getActivity().finish();
@@ -669,11 +667,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                             + BuildProperties.getPoneModel());
                 }
             }
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+//            LockManager.getInstatnce().timeFilterSelf();
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
             quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             try {
-                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                 startActivity(quickIntent);
             } catch (Exception e) {
                 e.printStackTrace();
