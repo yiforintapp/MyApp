@@ -1164,13 +1164,13 @@ public class QuickSwitchManager {
     public void toggleMobileData(QuickSwitcherInfo mInfo) {
         Object[] arg = null;
         try {
-
             if (mVersion > 19 && !isSIMready) {
                 isMobileDataOpen = false;
             } else {
-                boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
-                        arg);
-                if (isMobileDataEnable) {
+                // boolean isMobileDataEnable =
+                // invokeMethod("getMobileDataEnabled",
+                // arg);
+                if (isMobileDataOpen) {
                     invokeBooleanArgMethod("setMobileDataEnabled", false);
                     isMobileDataOpen = false;
                 } else {
