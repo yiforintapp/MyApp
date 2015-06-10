@@ -650,6 +650,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 startActivity(intentv6);
             } catch (Exception e) {
                 e.printStackTrace();
+//                LockManager.getInstatnce().timeFilterSelf();
                 Intent intentv5 = new Intent(
                         Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri
