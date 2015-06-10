@@ -610,5 +610,8 @@
      <string name="privacy_proposal_tip">Ваш интим. класс %1$s. Просим выполнять такое управл., чтобы повыс. интим. Класс</string>
      <string name="lock_mode_name_maxlength">30</string>
     <!-- version 2.2 end -->
-
+    
+    <!-- version 2.4 start -->
+    <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
+    <!--  version 2.4 end -->
 </resources>
