@@ -336,9 +336,12 @@ public class AppleWatchContainer extends FrameLayout {
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                // if (mEditing) {
-                // LeoLog.d(TAG, "ACTION_MOVE in editing ");
-                // } else {
+
+                if (mEditing) {
+                    if (mTouchDownY < mDymicLayout.getBottom()) {
+                        break;
+                    }
+                }
                 moveX = event.getX();
                 moveY = event.getY();
 
