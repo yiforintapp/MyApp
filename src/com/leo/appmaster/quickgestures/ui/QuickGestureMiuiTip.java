@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.sdk.BaseActivity;
 
 /**
@@ -39,6 +40,8 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
 
     @Override
     public void onClick(View arg0) {
+        
+        LockManager.getInstatnce().filterAllOneTime(1000);
         AppMasterPreference pref = AppMasterPreference.getInstance(QuickGestureMiuiTip.this);
         boolean miuiSetFirst = pref.getQuickGestureMiuiSettingFirstDialogTip();
         if (!miuiSetFirst) {
