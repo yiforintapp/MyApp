@@ -649,7 +649,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         false);
                 startActivity(intentv6);
             } catch (Exception e) {
-                LockManager.getInstatnce().timeFilterSelf();
                 LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
                         false);
                 Intent intentv5 = new Intent(
