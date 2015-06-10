@@ -157,8 +157,6 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mMessages != null) {
                 List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
                 for (MessageBean message : messages) {
-                    if (dynamicList.size() > 11)
-                        break;
                     message.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_message);
                     if (message.getMessageName() != null
@@ -173,6 +171,8 @@ public class QuickGestureManager {
                     } else {
                         dynamicList.add(0, message);
                     }
+                    if (dynamicList.size() >= 11)
+                        break;
                 }
             }
         }
@@ -181,8 +181,6 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
                 List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
                 for (ContactCallLog baseInfo : baseInfos) {
-                    if (dynamicList.size() > 11)
-                        break;
                     baseInfo.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_call);
                     if (baseInfo.getCallLogName() != null
@@ -197,6 +195,8 @@ public class QuickGestureManager {
                     } else {
                         dynamicList.add(0, baseInfo);
                     }
+                    if (dynamicList.size() >= 11)
+                        break;
                 }
             }
         }
