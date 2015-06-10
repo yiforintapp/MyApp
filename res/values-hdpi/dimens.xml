@@ -324,6 +324,7 @@
     <dimen name="apple_watch_item_icon_size">62dp</dimen>
     <dimen name="apple_watch_layout_inner_radius">84dp</dimen>
     <dimen name="apple_watch_layout_outer_radius">128dp</dimen>
+    <dimen name="gesture_item_text_size">10sp</dimen>
     
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>

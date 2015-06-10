@@ -19,8 +19,7 @@
         android:ellipsize="marquee"
         android:gravity="center"
         android:singleLine="true"
-        android:text="wechat"
         android:textColor="#f1f1f1"
-        android:textSize="12sp" />
+        android:textSize="@dimen/gesture_item_text_size" />
 
 </com.leo.appmaster.quickgestures.view.GestureItemView>

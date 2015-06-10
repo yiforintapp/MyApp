@@ -166,14 +166,13 @@
     <dimen name="privacy_proposal_status_padding_bottom">10dp</dimen>
     <dimen name="privacy_suggest_height">90dp</dimen>
 
- <!--  weizhuang -->
+    <!-- weizhuang -->
     <dimen name="weizhaung_guide_image_margin_top">36dp</dimen>
-    
-     <dimen name="dialog_list_width">260dp</dimen>
-      <dimen name="dialog_list_btn_height">42dp</dimen>
-      <dimen name="dialog_list_item_height">50dp</dimen>
-      <dimen name="dialog_contact_item_height">45dp</dimen>
-      <!-- quick gesture start -->
+    <dimen name="dialog_list_width">260dp</dimen>
+    <dimen name="dialog_list_btn_height">42dp</dimen>
+    <dimen name="dialog_list_item_height">50dp</dimen>
+    <dimen name="dialog_contact_item_height">45dp</dimen>
+    <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
@@ -182,5 +181,7 @@
     <dimen name="quick_gesture_free_distureb_app_select_icon_width">16dp</dimen>
     <dimen name="quick_gesture_setting_item_height">56dp</dimen>
     <dimen name="quick_seek_bar_width">250dp</dimen>
+    <dimen name="gesture_item_text_size">10sp</dimen>
     <!-- quick gesutre end -->
+
 </resources>
