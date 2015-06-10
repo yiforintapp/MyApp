@@ -41,7 +41,7 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
     @Override
     public void onClick(View arg0) {
         
-        LockManager.getInstatnce().filterAllOneTime(1000);
+        LockManager.getInstatnce().filterAllOneTime(500);
         AppMasterPreference pref = AppMasterPreference.getInstance(QuickGestureMiuiTip.this);
         boolean miuiSetFirst = pref.getQuickGestureMiuiSettingFirstDialogTip();
         if (!miuiSetFirst) {
