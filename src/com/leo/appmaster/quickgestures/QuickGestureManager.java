@@ -166,11 +166,7 @@ public class QuickGestureManager {
                         message.label = message.getPhoneNumber();
                     }
                     message.isShowReadTip = true;
-                    if (businessDatas != null && businessDatas.size() > 0) {
-                        dynamicList.add(businessDatas.size(), message);
-                    } else {
-                        dynamicList.add(0, message);
-                    }
+                    dynamicList.add(message);
                     if (dynamicList.size() >= 11)
                         break;
                 }
@@ -190,11 +186,7 @@ public class QuickGestureManager {
                         baseInfo.label = baseInfo.getCallLogNumber();
                     }
                     baseInfo.isShowReadTip = true;
-                    if (businessDatas != null) {
-                        dynamicList.add(businessDatas.size(), baseInfo);
-                    } else {
-                        dynamicList.add(0, baseInfo);
-                    }
+                    dynamicList.add(baseInfo);
                     if (dynamicList.size() >= 11)
                         break;
                 }
@@ -203,18 +195,14 @@ public class QuickGestureManager {
         // privacy contact
         if (isShowPrivacyContactTip) {
             if (isShowPrivacyCallLog || isShowPrivacyMsm) {
-                if (dynamicList.size() <= 10) {
+                if (dynamicList.size() <= 11) {
                     QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
                     item.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_system);
                     item.label = mContext.getResources().getString(
                             R.string.pg_appmanager_quick_gesture_privacy_contact_tip_lable);
                     item.isShowReadTip = true;
-                    if (businessDatas != null) {
-                        dynamicList.add(businessDatas.size(), item);
-                    } else {
-                        dynamicList.add(0, item);
-                    }
+                    dynamicList.add(item);
                 }
             }
         }
