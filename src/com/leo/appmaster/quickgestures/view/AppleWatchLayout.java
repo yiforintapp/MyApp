@@ -802,6 +802,17 @@ public class AppleWatchLayout extends ViewGroup {
                 boolean isRecorderFlag = AppMasterPreference.getInstance(mContext)
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
+                    
+                    List<BaseInfo> mComList = QuickGestureManager.getInstance(mContext).loadCommonAppInfo();
+                    for(int i = 0;i<mComList.size();i++){
+                        AppInfo mInfo = (AppInfo) mComList.get(i);
+                        if(mInfo.packageName.equals(info.packageName)){
+                            AppMasterPreference.getInstance(mContext).setCommonAppPackageNameRemove(
+                                    info.packageName + ":" + info.gesturePosition);
+                            break;
+                        }
+                    }
+                    
                     ArrayList<AppLauncherRecorder> mRecorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
                     Iterator<AppLauncherRecorder> recorder = mRecorderApp.iterator();
                     while (recorder.hasNext()) {
@@ -1131,7 +1142,6 @@ public class AppleWatchLayout extends ViewGroup {
                     // }
                     // isSqueez = false;
                     // }
-
                 } else {
                     for (int i = 0; i < mNum; i++) {
                         params = (LayoutParams) getChildAt(i).getLayoutParams();

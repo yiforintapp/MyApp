@@ -377,6 +377,12 @@ public class QuickGestureManager {
         // load前看看已经选定的应用有啥，并且排列在最前面
         List<BaseInfo> mHaveList = loadCommonAppInfo();
         LeoLog.d("testSp", "mHaveList.size : " + mHaveList.size());
+        for (int i = 0; i < mHaveList.size(); i++) {
+            QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
+            LeoLog.d("testSp", "mInfo.pk : " + mInfo.packageName +
+                    " ; mInfo.posi : " + mInfo.gesturePosition);
+        }
+
         List<BaseInfo> newresault = new ArrayList<BaseInfo>();
 
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
@@ -464,35 +470,44 @@ public class QuickGestureManager {
         }
 
         if (mHaveList.size() > 0) {
-            // int[] mPositions = new int[mHaveList.size()];
-            // for (int i = 0; i < mHaveList.size(); i++) {
-            // BaseInfo mInfo = mHaveList.get(i);
-            // mPositions[i] = mInfo.gesturePosition;
-            // }
-            // sortList(mPositions);
+            int[] mPositions = new int[mHaveList.size()];
+            for (int i = 0; i < mHaveList.size(); i++) {
+                BaseInfo mInfo = mHaveList.get(i);
+                mPositions[i] = mInfo.gesturePosition;
+            }
+            sortList(mPositions);
 
             int j = 0;
             int k = 0;
             int mSize = mHaveList.size() + resault.size() > 11 ? 11 : mHaveList.size()
                     + resault.size();
             LeoLog.d("testSp", "mSize : " + mSize);
-            for (int i = 0; i < mSize; i++) {
+            for (int i = 0; i < 11; i++) {
                 LeoLog.d("testSp", "i  is : " + i);
                 QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(k);
                 if (resault.size() > 0) {
-                    QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
-                    if (mInfo.gesturePosition == i) {
+
+                    int m = j;
+                    if (resault.size() <= j) {
+                        m = resault.size() - 1;
+                    }
+                    QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(m);
+
+                    boolean isGetPosition = isGetPosition(i, mPositions);
+
+                    if (isGetPosition) {
                         LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
+                        // mInfo.gesturePosition = i;
                         newresault.add(mInfo);
                         if (k < mHaveList.size() - 1) {
                             k++;
                         }
                     } else {
-                        LeoLog.d("testSp", "mInfoCount.gesturePosition : "
-                                + mInfoCount.gesturePosition);
-                        mInfoCount.gesturePosition = i;
-                        newresault.add(mInfoCount);
-                        if (j < resault.size() - 1) {
+                        if (resault.size() > j && i < mSize) {
+                            LeoLog.d("testSp", "mInfoCount.gesturePosition : "
+                                    + mInfoCount.gesturePosition);
+                            mInfoCount.gesturePosition = i;
+                            newresault.add(mInfoCount);
                             j++;
                         }
                     }
@@ -509,20 +524,29 @@ public class QuickGestureManager {
         // return resault;
     }
 
-    // private void sortList(int[] mPositions) {
-    // for (int i = 0; i < mPositions.length; i++) {
-    // for (int j = i + 1; j < mPositions.length; j++) {
-    // if (mPositions[i] > mPositions[j]) {
-    // int temp = mPositions[i];
-    // mPositions[i] = mPositions[j];
-    // mPositions[j] = temp;
-    // }
-    // }
-    // }
-    // }
+    private boolean isGetPosition(int gesturePosition, int[] mPositions) {
+        for (int i = 0; i < mPositions.length; i++) {
+            if (gesturePosition == mPositions[i]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private void sortList(int[] mPositions) {
+        for (int i = 0; i < mPositions.length; i++) {
+            for (int j = i + 1; j < mPositions.length; j++) {
+                if (mPositions[i] > mPositions[j]) {
+                    int temp = mPositions[i];
+                    mPositions[i] = mPositions[j];
+                    mPositions[j] = temp;
+                }
+            }
+        }
+    }
 
     // Customize common app
-    private List<BaseInfo> loadCommonAppInfo() {
+    public List<BaseInfo> loadCommonAppInfo() {
 
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
