@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
@@ -235,6 +236,7 @@ public class BuildProperties {
                 context.startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
+                SDKWrapper.addEvent(context, SDKWrapper.P1, "qs_open_error", "reason_"+BuildProperties.getPoneModel());
             }
             return;
         } catch (Exception e) {
