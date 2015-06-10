@@ -45,6 +45,7 @@ import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.EventAction;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -922,8 +923,16 @@ public class QuickGestureManager {
                         return AddCommonApps;
                     }
                 }).start();
-
                 commonApp.dismiss();
+                Intent intent = new Intent(AppMasterApplication.getInstance(),
+                        QuickGesturePopupActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (onTuchGestureFlag == -1 || onTuchGestureFlag == -2) {
+                    intent.putExtra("show_orientation", 0);
+                } else if (onTuchGestureFlag == 1 || onTuchGestureFlag == 2) {
+                    intent.putExtra("show_orientation", 2);
+                }
+                AppMasterApplication.getInstance().startActivity(intent);
             }
         });
         commonApp.setLeftBt(new OnClickListener() {
@@ -932,6 +941,15 @@ public class QuickGestureManager {
             public void onClick(View arg0) {
                 // 取消按钮
                 commonApp.dismiss();
+                Intent intent = new Intent(AppMasterApplication.getInstance(),
+                        QuickGesturePopupActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (onTuchGestureFlag == -1 || onTuchGestureFlag == -2) {
+                    intent.putExtra("show_orientation", 0);
+                } else if (onTuchGestureFlag == 1 || onTuchGestureFlag == 2) {
+                    intent.putExtra("show_orientation", 2);
+                }
+                AppMasterApplication.getInstance().startActivity(intent);
             }
         });
 
@@ -963,13 +981,15 @@ public class QuickGestureManager {
                                 boolean addSwitch = false;
                                 boolean removeSwitch = false;
                                 List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
-                                
-                                for(int i = 0;i<addQuickSwitch.size();i++){
+
+                                for (int i = 0; i < addQuickSwitch.size(); i++) {
                                     BaseInfo mInfo = addQuickSwitch.get(i);
-                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_switch", "add_"+mInfo.swtichIdentiName);
-                                    LeoLog.d("testSp", "mInfo.swtichIdentiName : " + mInfo.swtichIdentiName);
+                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_switch",
+                                            "add_" + mInfo.swtichIdentiName);
+                                    LeoLog.d("testSp", "mInfo.swtichIdentiName : "
+                                            + mInfo.swtichIdentiName);
                                 }
-                                
+
                                 // 移除的应用包名
                                 List<BaseInfo> removeQuickSwitch = quickSwitch
                                         .getRemoveFreePackageName();
@@ -1056,6 +1076,15 @@ public class QuickGestureManager {
                             }
                         });
                 quickSwitch.dismiss();
+                Intent intent = new Intent(AppMasterApplication.getInstance(),
+                        QuickGesturePopupActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (onTuchGestureFlag == -1 || onTuchGestureFlag == -2) {
+                    intent.putExtra("show_orientation", 0);
+                } else if (onTuchGestureFlag == 1 || onTuchGestureFlag == 2) {
+                    intent.putExtra("show_orientation", 2);
+                }
+                AppMasterApplication.getInstance().startActivity(intent);
             }
         });
         quickSwitch.setLeftBt(new OnClickListener() {
@@ -1064,6 +1093,15 @@ public class QuickGestureManager {
             public void onClick(View arg0) {
                 // cancel button
                 quickSwitch.dismiss();
+                Intent intent = new Intent(AppMasterApplication.getInstance(),
+                        QuickGesturePopupActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (onTuchGestureFlag == -1 || onTuchGestureFlag == -2) {
+                    intent.putExtra("show_orientation", 0);
+                } else if (onTuchGestureFlag == 1 || onTuchGestureFlag == 2) {
+                    intent.putExtra("show_orientation", 2);
+                }
+                AppMasterApplication.getInstance().startActivity(intent);
             }
         });
         quickSwitch.getWindow().setType(
