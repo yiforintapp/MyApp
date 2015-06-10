@@ -1214,7 +1214,7 @@ public class QuickSwitchManager {
 
     public String listToPackString(List<BaseInfo> mSwitchList, int mNum, int infoType) {
         String ListString = "";
-        if (infoType == 0) {
+//        if (infoType == 0) {
             for (int i = 0; i < mNum; i++) {
                 QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
                 String name = switchInfo.packageName;
@@ -1226,20 +1226,22 @@ public class QuickSwitchManager {
                     ListString = ListString + ";" + name + ":" + position;
                 }
             }
-        } else if (infoType == 1) {
-            for (int i = 0; i < mNum; i++) {
-                AppItemInfo switchInfo = (AppItemInfo) mSwitchList.get(i);
-                String name = switchInfo.packageName;
-                // int position = switchInfo.gesturePosition;
-                int position = i;
-                LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
-                if (i == 0) {
-                    ListString = name + ":" + position;
-                } else {
-                    ListString = ListString + ";" + name + ":" + position;
-                }
-            }
-        }
+//        } 
+        
+//        else if (infoType == 1) {
+//            for (int i = 0; i < mNum; i++) {
+//                QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
+//                String name = switchInfo.packageName;
+//                // int position = switchInfo.gesturePosition;
+//                int position = i;
+//                LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
+//                if (i == 0) {
+//                    ListString = name + ":" + position;
+//                } else {
+//                    ListString = ListString + ";" + name + ":" + position;
+//                }
+//            }
+//        }
 
         return ListString;
     }
