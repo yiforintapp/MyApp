@@ -193,5 +193,6 @@
     <dimen name="quick_gesture_free_distureb_app_select_icon_width">16dp</dimen>
     <dimen name="quick_gesture_setting_item_height">56dp</dimen>
     <dimen name="quick_seek_bar_width">250dp</dimen>
+    <dimen name="gesture_item_text_size">12sp</dimen>
     <!-- quick gesutre end -->
 </resources>
