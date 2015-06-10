@@ -1255,14 +1255,14 @@ public class AppleWatchContainer extends FrameLayout {
 
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 mCornerTabs.getHeight(), 0);
-        tabAnimator.setDuration(400);
+        tabAnimator.setDuration(300);
         tabAnimator.addListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animation) {
                 mCornerTabs.setVisibility(View.VISIBLE);
             };
         });
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1)
-                .setDuration(880);
+                .setDuration(640);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
 
         AnimatorSet set = new AnimatorSet();
@@ -1312,9 +1312,9 @@ public class AppleWatchContainer extends FrameLayout {
 
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 0, mCornerTabs.getHeight());
-        tabAnimator.setDuration(600);
+        tabAnimator.setDuration(250);
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0)
-                .setDuration(400);
+                .setDuration(540);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
 
         AnimatorSet set = new AnimatorSet();
