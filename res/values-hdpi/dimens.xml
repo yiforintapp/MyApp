@@ -126,8 +126,8 @@
     <!-- privacyContact start -->
     <integer name="privacy_contact_red_tip_lockWidth">23</integer>
     <integer name="privacy_contact_red_tip_lockHeight">23</integer>
-    <integer name="privacy_contact_red_tip_tabTextwdth">23</integer>
-    <integer name="privacy_contact_red_tip_tabTexteight">23</integer>
+    <integer name="privacy_contact_red_tip_tabTextwdth">15</integer>
+    <integer name="privacy_contact_red_tip_tabTexteight">15</integer>
 
     <dimen name="activity_privacy_message_item_message_send_edit_parent_height">48dp</dimen>
     <dimen name="acticity_privacy_message_item_list_contactLV_layout_marginBottom">54dp</dimen>
@@ -336,7 +336,7 @@
     <dimen name="quick_seek_bar_width">250dp</dimen>
     <!-- quick gesutre end -->
 
-	<dimen name="privacy_contact_red_tip_x">94dp</dimen>
-    <dimen name="privacy_contact_red_tip_y">12dp</dimen>
+	<dimen name="privacy_contact_red_tip_x">97dp</dimen>
+    <dimen name="privacy_contact_red_tip_y">8dp</dimen>
 
 </resources>
