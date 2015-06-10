@@ -53,6 +53,8 @@ public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
 
     protected static final String AppLauncherRecorder = null;
+    public static final int APPITEMINFO = 1;
+    public static final int NORMALINFO = 0;
     private static QuickGestureManager mInstance;
     private Context mContext;
     private boolean mInited = false;
@@ -453,6 +455,12 @@ public class QuickGestureManager {
                     }
                 }
             }
+            
+            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(resault, resault.size(),APPITEMINFO);
+            mSpSwitch.setCommonAppPackageName(mListString);
+            
+            return resault;
+            
         }
 
         LeoLog.d("testSp", "resault.size() : " + resault.size());
@@ -806,7 +814,7 @@ public class QuickGestureManager {
                         }
 
                         String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                .listToPackString(mDefineList, mDefineList.size());
+                                .listToPackString(mDefineList, mDefineList.size(),NORMALINFO);
                         LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
                         pref.setCommonAppPackageName(mChangeList);
 

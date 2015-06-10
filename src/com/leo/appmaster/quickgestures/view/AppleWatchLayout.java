@@ -57,7 +57,8 @@ import com.leo.appmaster.utils.LeoLog;
 public class AppleWatchLayout extends ViewGroup {
 
     public static final String TAG = "AppleWatchLayout";
-
+    public static final int NORMALINFO = 0;
+    
     private AppleWatchContainer mContainer;
     private AnimatorSet mReorderAnimator;
     private AppMasterPreference mPref;
@@ -1158,7 +1159,7 @@ public class AppleWatchLayout extends ViewGroup {
                         }
                     }
                     String NeedSave = QuickSwitchManager.getInstance(getContext())
-                            .listToPackString(mostUseApp, mostUseApp.size());
+                            .listToPackString(mostUseApp, mostUseApp.size(),NORMALINFO);
                     LeoLog.d("testSp", "NeedSave : " + NeedSave);
                     mPref.setCommonAppPackageName(NeedSave);
                 }
