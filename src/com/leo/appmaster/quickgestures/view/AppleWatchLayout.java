@@ -653,7 +653,6 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
             LeoLog.d("TestLayout", "QuickSwitcherInfo");
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
-            // 蓝牙
             if (sInfo.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(sInfo);
