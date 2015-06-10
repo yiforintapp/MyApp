@@ -226,6 +226,7 @@ public class BuildProperties {
 
     public static void startHuaWeiSysManageIntent(Context context) {
         try {
+            LockManager.getInstatnce().timeFilterSelf();
             Intent intent = new Intent();
             String string = (checkIsHuaWeiPhone()) ? ("com.huawei.systemmanager.SystemManagerMainActivity")
                     : ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
