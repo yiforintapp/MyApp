@@ -642,7 +642,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             intentv6.setClassName("com.miui.securitycenter",
                     "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
             intentv6.putExtra("extra_pkgname", getActivity().getPackageName());
-            intentv6.setFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             try {
                 LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
                         false);
@@ -657,7 +658,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 Uri uri = Uri
                         .fromParts("package", getActivity().getPackageName(), null);
                 intentv5.setData(uri);
-                intentv5.setFlags( Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 try {
                     startActivity(intentv5);
                     getActivity().finish();
