@@ -114,9 +114,9 @@ public class QuickGestureManager {
             LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
             LockManager.getInstatnce().mMatcher.clearItem();
-            LockManager.getInstatnce().mMatcher = null;
+            // LockManager.getInstatnce().mMatcher = null;
             LockManager.getInstatnce().mDrawableColors.clear();
-            LockManager.getInstatnce().mDrawableColors = null;
+            // LockManager.getInstatnce().mDrawableColors = null;
             // TODO Switcher uninit
             QuickSwitchManager.getInstance(mContext).unInit();
             mInited = false;
@@ -373,10 +373,16 @@ public class QuickGestureManager {
 
     // Recorder App
     public List<BaseInfo> loadRecorderAppInfo() {
+
+        // load前看看已经选定的应用有啥，并且排列在最前面
+        List<BaseInfo> mHaveList = loadCommonAppInfo();
+        LeoLog.d("testSp", "mHaveList.size : " + mHaveList.size());
+        List<BaseInfo> newresault = new ArrayList<BaseInfo>();
+
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
-        if (recorderApp.size() > 1) {
+        if (recorderApp.size() > 1 && mHaveList.size() > 0) {
             LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
@@ -442,7 +448,59 @@ public class QuickGestureManager {
                 }
             }
         }
-        return resault;
+
+        if (mHaveList.size() > 0) {
+            int[] mPositions = new int[mHaveList.size()];
+            for (int i = 0; i < mHaveList.size(); i++) {
+                BaseInfo mInfo = mHaveList.get(i);
+                mPositions[i] = mInfo.gesturePosition;
+            }
+            // LeoLog.d("testSp", "未排序前的数组");
+            // for(int i = 0;i<mPositions.length;i++){
+            // LeoLog.d("testSp", "mm : " + mPositions[i]);
+            // }
+            sortList(mPositions);
+            // LeoLog.d("testSp", "排序后的数组");
+            // for(int i = 0;i<mPositions.length;i++){
+            // LeoLog.d("testSp", "mm : " + mPositions[i]);
+            // }
+
+            for (int i = 0; i < 11; i++) {
+                LeoLog.d("testSp", "i  is : " + i);
+                int j = 0;
+                int k = 0;
+                QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(k);
+                QuickGsturebAppInfo mInfoCount = (QuickGsturebAppInfo) resault.get(j);
+                if (mInfo.gesturePosition == i) {
+                    LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
+                    newresault.add(mInfo);
+                    k++;
+                } else {
+                    LeoLog.d("testSp", "mInfoCount.gesturePosition : " + mInfoCount.gesturePosition);
+                    mInfoCount.gesturePosition = i;
+                    newresault.add(mInfoCount);
+                    j++;
+                }
+            }
+            LeoLog.d("testSp", "newresault.size : " + newresault.size());
+            return newresault;
+        } else {
+            return resault;
+        }
+        
+//        return resault;
+    }
+
+    private void sortList(int[] mPositions) {
+        for (int i = 0; i < mPositions.length; i++) {
+            for (int j = i + 1; j < mPositions.length; j++) {
+                if (mPositions[i] > mPositions[j]) {
+                    int temp = mPositions[i];
+                    mPositions[i] = mPositions[j];
+                    mPositions[j] = temp;
+                }
+            }
+        }
     }
 
     // Customize common app
@@ -637,159 +695,171 @@ public class QuickGestureManager {
 
                         // 是否选择使用习惯自动填充
                         boolean flag = commonApp.getCheckValue();
-                        if (!flag) {
-                            List<BaseInfo> comList = loadCommonAppInfo();
-                            List<BaseInfo> tempList = new ArrayList<BaseInfo>();
+                        // if (!flag) {
+                        List<BaseInfo> comList = loadCommonAppInfo();
+                        List<BaseInfo> tempList = new ArrayList<BaseInfo>();
 
-                            if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                                boolean isHasSameName = false;
-                                for (BaseInfo info : comList) {
-                                    for (BaseInfo baseInfo : removeCommonApp) {
-                                        if (baseInfo.label.equals(info.label)) {
-                                            isHasSameName = true;
-                                        }
+                        if (removeCommonApp != null && removeCommonApp.size() > 0) {
+                            boolean isHasSameName = false;
+                            for (BaseInfo info : comList) {
+                                for (BaseInfo baseInfo : removeCommonApp) {
+                                    if (baseInfo.label.equals(info.label)) {
+                                        isHasSameName = true;
                                     }
-                                    if (!isHasSameName) {
-                                        mDefineList.add(info);
-                                    }
-                                    isHasSameName = false;
                                 }
+                                if (!isHasSameName) {
+                                    mDefineList.add(info);
+                                }
+                                isHasSameName = false;
                             }
+                        }
 
-                            if (removeCommonApp != null && addCommonApp.size() > 0) {
-                                if (removeCommonApp.size() == 0) {
-                                    mDefineList = comList;
-                                }
-
-                                // 判断要加入的是否已存在，已存在的不加入
-                                addCommonApp = hasSameName(addCommonApp, false);
-
-                                // 记录现有的Icon位置
-                                LeoLog.d("QuickGestureManager", "有货要加");
-                                List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
-                                List<Integer> sPosition = new ArrayList<Integer>();
-                                for (int i = 0; i < mDefineList.size(); i++) {
-                                    sPosition.add(mDefineList.get(i).gesturePosition);
-                                    LeoLog.d("QuickGestureManager",
-                                            "已有货的位置 :" + mDefineList.get(i).gesturePosition);
-                                }
-
-                                int k = 0;
-                                for (int i = 0; i < 11; i++) {
-                                    boolean isHasIcon = false;
-                                    for (int j = 0; j < mDefineList.size(); j++) {
-                                        if (i == mDefineList.get(j).gesturePosition) {
-                                            isHasIcon = true;
-                                        }
-                                    }
-                                    if (!isHasIcon && addCommonApp.size() > k) {
-                                        LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
-                                        BaseInfo mInfo = addCommonApp.get(k);
-                                        mInfo.gesturePosition = i;
-                                        mfixPostionList.add(mInfo);
-                                        k++;
-                                    }
-                                }
-
-                                LeoLog.d("QuickGestureManager",
-                                        "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
-                                for (int i = 0; i < mfixPostionList.size(); i++) {
-                                    BaseInfo mInfo = mfixPostionList.get(i);
-                                    mDefineList.add(mInfo);
-                                    LeoLog.d("QuickGestureManager", "霸占了 "
-                                            + mInfo.gesturePosition + "号位");
-                                }
-                            }
-
-                            if (addCommonApp.size() == 0 && removeCommonApp.size() == 0) {
+                        if (removeCommonApp != null && addCommonApp.size() > 0) {
+                            if (removeCommonApp.size() == 0) {
                                 mDefineList = comList;
                             }
 
-                            String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                    .listToPackString(mDefineList, mDefineList.size());
-                            LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
-                            pref.setCommonAppPackageName(mChangeList);
+                            // 判断要加入的是否已存在，已存在的不加入
+                            // addCommonApp = hasSameName(addCommonApp, false);
 
-                        } else {
+                            // 记录现有的Icon位置
+                            LeoLog.d("QuickGestureManager", "有货要加");
+                            List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
+                            List<Integer> sPosition = new ArrayList<Integer>();
+                            for (int i = 0; i < mDefineList.size(); i++) {
+                                sPosition.add(mDefineList.get(i).gesturePosition);
+                                LeoLog.d("QuickGestureManager",
+                                        "已有货的位置 :" + mDefineList.get(i).gesturePosition);
+                            }
 
-                            List<AppLauncherRecorder> removeList = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
-                            ArrayList<AppLauncherRecorder> record = LockManager.getInstatnce().mAppLaunchRecorders;
-                            for (AppLauncherRecorder appLauncherRecorder : record) {
-                                for (BaseInfo removeInfo : removeCommonApp) {
-                                    QuickGsturebAppInfo info = (QuickGsturebAppInfo) removeInfo;
-                                    if (appLauncherRecorder.pkg.equals(info.packageName)) {
-                                        removeList.add(appLauncherRecorder);
-                                        break;
+                            int k = 0;
+                            for (int i = 0; i < 11; i++) {
+                                boolean isHasIcon = false;
+                                for (int j = 0; j < mDefineList.size(); j++) {
+                                    if (i == mDefineList.get(j).gesturePosition) {
+                                        isHasIcon = true;
                                     }
                                 }
-                            }
-                            if (removeList.size() > 0) {
-                                record.removeAll(removeList);
-                            }
-                            AppLauncherRecorder addRecord;
-
-                            int maxCount = 0;
-                            for (AppLauncherRecorder appLauncherRecorder : record) {
-                                if (appLauncherRecorder.launchCount > maxCount) {
-                                    maxCount = appLauncherRecorder.launchCount;
+                                if (!isHasIcon && addCommonApp.size() > k) {
+                                    LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
+                                    BaseInfo mInfo = addCommonApp.get(k);
+                                    mInfo.gesturePosition = i;
+                                    mfixPostionList.add(mInfo);
+                                    k++;
                                 }
                             }
 
-                            if (addCommonApp != null && addCommonApp.size() > 0) {
-                                if (record != null && record.size() > 0) {
-                                    addCommonApp = hasSameName(addCommonApp, true);
-                                }
+                            LeoLog.d("QuickGestureManager",
+                                    "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
+                            for (int i = 0; i < mfixPostionList.size(); i++) {
+                                BaseInfo mInfo = mfixPostionList.get(i);
+                                mDefineList.add(mInfo);
+                                LeoLog.d("QuickGestureManager", "霸占了 "
+                                        + mInfo.gesturePosition + "号位");
                             }
-
-                            for (BaseInfo removeInfo : addCommonApp) {
-                                addRecord = new AppLauncherRecorder();
-                                QuickGsturebAppInfo info = (QuickGsturebAppInfo) removeInfo;
-                                addRecord.pkg = info.packageName;
-                                LeoLog.e("QuickGestureManager", addRecord.pkg + ":"
-                                        + info.gesturePosition);
-                                if (record.size() > 0) {
-                                    addRecord.launchCount = maxCount + 1;
-                                } else {
-                                    addRecord.launchCount = 1;
-                                }
-                                record.add(addRecord);
-                            }
-
-                            LeoLog.e("QuickGestureManager", "record size = " + record.size());
-                            for (AppLauncherRecorder appLauncherRecorder : record) {
-                                LeoLog.e("QuickGestureManager", appLauncherRecorder.pkg + ":"
-                                        + appLauncherRecorder.launchCount);
-                            }
-                            LockManager.getInstatnce().saveAppLaunchRecoder();
                         }
+
+                        if (addCommonApp.size() == 0 && removeCommonApp.size() == 0) {
+                            mDefineList = comList;
+                        }
+
+                        String mChangeList = QuickSwitchManager.getInstance(mContext)
+                                .listToPackString(mDefineList, mDefineList.size());
+                        LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
+                        pref.setCommonAppPackageName(mChangeList);
+
+                        // }
+                        // else {
+                        // List<AppLauncherRecorder> removeList = new
+                        // ArrayList<QuickGestureManager.AppLauncherRecorder>();
+                        // ArrayList<AppLauncherRecorder> record =
+                        // LockManager.getInstatnce().mAppLaunchRecorders;
+                        // for (AppLauncherRecorder appLauncherRecorder :
+                        // record) {
+                        // for (BaseInfo removeInfo : removeCommonApp) {
+                        // QuickGsturebAppInfo info = (QuickGsturebAppInfo)
+                        // removeInfo;
+                        // if (appLauncherRecorder.pkg.equals(info.packageName))
+                        // {
+                        // removeList.add(appLauncherRecorder);
+                        // break;
+                        // }
+                        // }
+                        // }
+                        // if (removeList.size() > 0) {
+                        // record.removeAll(removeList);
+                        // }
+                        // AppLauncherRecorder addRecord;
+                        //
+                        // int maxCount = 0;
+                        // for (AppLauncherRecorder appLauncherRecorder :
+                        // record) {
+                        // if (appLauncherRecorder.launchCount > maxCount) {
+                        // maxCount = appLauncherRecorder.launchCount;
+                        // }
+                        // }
+                        //
+                        // if (addCommonApp != null && addCommonApp.size() > 0)
+                        // {
+                        // if (record != null && record.size() > 0) {
+                        // addCommonApp = hasSameName(addCommonApp, true);
+                        // }
+                        // }
+                        //
+                        // for (BaseInfo removeInfo : addCommonApp) {
+                        // addRecord = new AppLauncherRecorder();
+                        // QuickGsturebAppInfo info = (QuickGsturebAppInfo)
+                        // removeInfo;
+                        // addRecord.pkg = info.packageName;
+                        // LeoLog.e("QuickGestureManager", addRecord.pkg + ":"
+                        // + info.gesturePosition);
+                        // if (record.size() > 0) {
+                        // addRecord.launchCount = maxCount + 1;
+                        // } else {
+                        // addRecord.launchCount = 1;
+                        // }
+                        // record.add(addRecord);
+                        // }
+                        //
+                        // LeoLog.e("QuickGestureManager", "record size = " +
+                        // record.size());
+                        // for (AppLauncherRecorder appLauncherRecorder :
+                        // record) {
+                        // LeoLog.e("QuickGestureManager",
+                        // appLauncherRecorder.pkg + ":"
+                        // + appLauncherRecorder.launchCount);
+                        // }
+                        // LockManager.getInstatnce().saveAppLaunchRecoder();
+                        // }
 
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
                             pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
                         }
                     }
 
-                    private List<BaseInfo> hasSameName(List<BaseInfo> addCommonApp2, boolean isCheck) {
-                        List<BaseInfo> items;
-                        if (isCheck) {
-                            items = loadRecorderAppInfo();
-                        } else {
-                            items = loadCommonAppInfo();
-                        }
-                        List<BaseInfo> AddCommonApps = new ArrayList<BaseInfo>();
-                        for (BaseInfo addInfo : addCommonApp2) {
-                            boolean isHasSameName = false;
-                            for (BaseInfo item : items) {
-                                if (item.label.equals(addInfo.label)) {
-                                    isHasSameName = true;
-                                }
-                            }
-                            if (!isHasSameName) {
-                                AddCommonApps.add(addInfo);
-                            }
-                            isHasSameName = false;
-                        }
-                        return AddCommonApps;
-                    }
+                    // private List<BaseInfo> hasSameName(List<BaseInfo>
+                    // addCommonApp2, boolean isCheck) {
+                    // List<BaseInfo> items;
+                    // if (isCheck) {
+                    // items = loadRecorderAppInfo();
+                    // } else {
+                    // items = loadCommonAppInfo();
+                    // }
+                    // List<BaseInfo> AddCommonApps = new ArrayList<BaseInfo>();
+                    // for (BaseInfo addInfo : addCommonApp2) {
+                    // boolean isHasSameName = false;
+                    // for (BaseInfo item : items) {
+                    // if (item.label.equals(addInfo.label)) {
+                    // isHasSameName = true;
+                    // }
+                    // }
+                    // if (!isHasSameName) {
+                    // AddCommonApps.add(addInfo);
+                    // }
+                    // isHasSameName = false;
+                    // }
+                    // return AddCommonApps;
+                    // }
                 }).start();
 
                 commonApp.dismiss();

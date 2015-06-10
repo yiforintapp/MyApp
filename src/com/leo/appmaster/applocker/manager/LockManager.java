@@ -1777,10 +1777,8 @@ public class LockManager {
     }
 
     public void loadAppLaunchReorder() {
-        LeoLog.d("testSp", "loadAppLaunchReorder！");
         mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
         String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
-        LeoLog.d("testSp", "recoders : " + recoders);
         AppLauncherRecorder temp = null;
         int sIndex = -1;
         if (!TextUtils.isEmpty(recoders)) {
@@ -1792,7 +1790,6 @@ public class LockManager {
                     temp = QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
                     temp.pkg = recoder.substring(0, sIndex);
                     temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
-                    LeoLog.d("testSp", "loadAppLaunchReorder！ addaddadd");
                     mAppLaunchRecorders.add(temp);
                 }
             }
@@ -1800,7 +1797,6 @@ public class LockManager {
     }
 
     public void recordAppLaunch(String pkg) {
-        LeoLog.d("testSp", "recordAppLaunch！");
         if (TextUtils.isEmpty(pkg)) {
             return;
         }
@@ -1817,7 +1813,6 @@ public class LockManager {
             recoder.pkg = pkg;
             recoder.launchCount = 1;
             mAppLaunchRecorders.add(recoder);
-            LeoLog.d("testSp", "recordAppLaunch！mAppLaunchRecorders size : " + mAppLaunchRecorders.size());
         }
         saveAppLaunchRecoder();
     }
