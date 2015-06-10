@@ -166,7 +166,7 @@ public class QuickGestureManager {
                         message.label = message.getPhoneNumber();
                     }
                     message.isShowReadTip = true;
-                    if (businessDatas != null) {
+                    if (businessDatas != null && businessDatas.size() > 0) {
                         dynamicList.add(businessDatas.size(), message);
                     } else {
                         dynamicList.add(0, message);

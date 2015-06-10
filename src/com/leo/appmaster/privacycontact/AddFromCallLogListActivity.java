@@ -337,10 +337,12 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         }
                     }
                     mLogFlag = true;// 子线程之前赋值
+                    if(mHandler!=null){
                     Message messge =Message.obtain();
                     count = count + 1;
                     messge.what = count;
                     mHandler.sendMessage(messge);
+                    }
                     flagContact = false;
                     if (added) {
                         // 通知更新隐私联系人列表
@@ -371,7 +373,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                         Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
                         PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
                                 AddFromCallLogListActivity.this);
-                        if (callLogFlag != null) {
+                        if (callLogFlag != null && mHandler!=null) {
                             Message messge = Message.obtain();
                             count = count + 1;
                             messge.what = count;
@@ -407,29 +409,13 @@ public class AddFromCallLogListActivity extends BaseActivity {
                                 new String[] {
                                     number
                                 }, AddFromCallLogListActivity.this);
-                        if (messageFlag != null) {
+                        if (messageFlag != null && mHandler!=null) {
                             Message messge = Message.obtain();
                             count = count + 1;
                             messge.what = count;
                             mHandler.sendMessage(messge);
                         }
                     }
-                    // 更新联系人缓存
-                    // ArrayList<MessageBean> messages = pm.getSysMessage();
-                    // List<String> addNumbers = new ArrayList<String>();
-                    // for (ContactCallLog callLogBean : mAddPrivacyCallLog) {
-                    // addNumbers.add(callLogBean.getCallLogNumber());
-                    // }
-                    // for (MessageBean messge : messages) {
-                    // String formateNumber =
-                    // PrivacyContactUtils.formatePhoneNumber(messge
-                    // .getPhoneNumber());
-                    // for (String string : addNumbers) {
-                    // if (string.contains(formateNumber)) {
-                    // pm.removeSysMessage(messge);
-                    // }
-                    // }
-                    // }
                 }
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                     LeoEventBus.getDefaultBus().post(
