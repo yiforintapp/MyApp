@@ -654,36 +654,66 @@ public class AppleWatchLayout extends ViewGroup {
             LeoLog.d("TestLayout", "QuickSwitcherInfo");
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
             if (sInfo.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext())
                         .toggleFlashLight(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.WLAN)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).toggleWlan(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.CRAME)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).openCrame();
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SOUND)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).toggleSound(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.LIGHT)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).speedUp(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.CHANGEMODE)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).toggleMode();
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SWITCHSET)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).switchSet();
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SETTING)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).goSetting();
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.GPS)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).toggleGPS();
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.FLYMODE)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).toggleFlyMode();
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.ROTATION)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).toggleRotation(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).toggleMobileData(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
+                        + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).goHome();
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
