@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.quickgestures.receiver;
 
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -30,7 +31,7 @@ public class QuickSwitchReceiver extends BroadcastReceiver {
         } else if (NETWORK_CHANGE.equals(action)) {
             LeoLog.d("QuickSwitchReceiver", "数据网络 change");
             QuickSwitchManager.getInstance(context).mobileData();
-        } else if (RINGER_MODE_CHANGED.equals(action)) {
+        } else if (RINGER_MODE_CHANGED.equals(action) && PhoneInfo.getAndroidVersion() < 20) {
             LeoLog.d("QuickSwitchReceiver", "音量 change");
             QuickSwitchManager.getInstance(context).sound();
         }

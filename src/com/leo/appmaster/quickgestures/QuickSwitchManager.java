@@ -125,7 +125,7 @@ public class QuickSwitchManager {
         gps();
         flyMode();
         rotation();
-        
+
         mVersion = PhoneInfo.getAndroidVersion();
         isSIMready = PhoneInfo.isSimAvailable(mContext);
         mobileData();
@@ -147,11 +147,11 @@ public class QuickSwitchManager {
             mConnectivityManager = (ConnectivityManager) mContext
                     .getSystemService(Context.CONNECTIVITY_SERVICE);
         }
-        
+
         try {
-            if(mVersion > 19 && !isSIMready){
+            if (mVersion > 19 && !isSIMready) {
                 isMobileDataOpen = false;
-            }else {
+            } else {
                 boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
                         null);
                 if (isMobileDataEnable) {
@@ -718,7 +718,8 @@ public class QuickSwitchManager {
     }
 
     public void toggleWlan(QuickSwitcherInfo mInfo) {
-        if (!mWifimanager.isWifiEnabled()) {
+        // if (!mWifimanager.isWifiEnabled()) {
+        if (!isWlantOpen) {
             mWifimanager.setWifiEnabled(true);
             isWlantOpen = true;
         } else {
@@ -734,7 +735,8 @@ public class QuickSwitchManager {
             mBluetoothAdapter = BluetoothAdapter
                     .getDefaultAdapter();
         }
-        if (!mBluetoothAdapter.isEnabled()) {
+        // if (!mBluetoothAdapter.isEnabled()) {
+        if (!isBlueToothOpen) {
             mBluetoothAdapter.enable();
             isBlueToothOpen = true;
         } else {
@@ -749,19 +751,28 @@ public class QuickSwitchManager {
         if (mSoundManager == null) {
             mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         }
-        if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL) {
+        // if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL)
+        // {
+        if (mSoundStatus == mSound) {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
             mSoundStatus = mQuite;
-        } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
+            LeoLog.d("testPs", "change mSoundStatus to: " + mSoundStatus);
+            // } else if (mSoundManager.getRingerMode() ==
+            // AudioManager.RINGER_MODE_SILENT) {
+        } else if (mSoundStatus == mQuite) {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
             mSoundStatus = mVibrate;
+            LeoLog.d("testPs", "change mSoundStatus to: " + mSoundStatus);
             if (vib == null) {
                 vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
             }
             vib.vibrate(150);
-        } else if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_VIBRATE) {
+            // } else if (mSoundManager.getRingerMode() ==
+            // AudioManager.RINGER_MODE_VIBRATE) {
+        } else if (mSoundStatus == mVibrate) {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
             mSoundStatus = mSound;
+            LeoLog.d("testPs", "change mSoundStatus to: " + mSoundStatus);
         }
         LeoEventBus.getDefaultBus().post(
                 new ClickQuickItemEvent(SOUND, mInfo));
@@ -1153,10 +1164,10 @@ public class QuickSwitchManager {
     public void toggleMobileData(QuickSwitcherInfo mInfo) {
         Object[] arg = null;
         try {
-            
-            if(mVersion > 19 && !isSIMready){
+
+            if (mVersion > 19 && !isSIMready) {
                 isMobileDataOpen = false;
-            }else {
+            } else {
                 boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
                         arg);
                 if (isMobileDataEnable) {
@@ -1234,34 +1245,36 @@ public class QuickSwitchManager {
 
     public String listToPackString(List<BaseInfo> mSwitchList, int mNum, int infoType) {
         String ListString = "";
-//        if (infoType == 0) {
-            for (int i = 0; i < mNum; i++) {
-                QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
-                String name = switchInfo.packageName;
-                int position = switchInfo.gesturePosition;
-                LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
-                if (i == 0) {
-                    ListString = name + ":" + position;
-                } else {
-                    ListString = ListString + ";" + name + ":" + position;
-                }
+        // if (infoType == 0) {
+        for (int i = 0; i < mNum; i++) {
+            QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
+            String name = switchInfo.packageName;
+            int position = switchInfo.gesturePosition;
+            LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
+            if (i == 0) {
+                ListString = name + ":" + position;
+            } else {
+                ListString = ListString + ";" + name + ":" + position;
             }
-//        } 
-        
-//        else if (infoType == 1) {
-//            for (int i = 0; i < mNum; i++) {
-//                QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
-//                String name = switchInfo.packageName;
-//                // int position = switchInfo.gesturePosition;
-//                int position = i;
-//                LeoLog.d("QuickSwitchManager", "packageName : " + name + "--position : " + position);
-//                if (i == 0) {
-//                    ListString = name + ":" + position;
-//                } else {
-//                    ListString = ListString + ";" + name + ":" + position;
-//                }
-//            }
-//        }
+        }
+        // }
+
+        // else if (infoType == 1) {
+        // for (int i = 0; i < mNum; i++) {
+        // QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo)
+        // mSwitchList.get(i);
+        // String name = switchInfo.packageName;
+        // // int position = switchInfo.gesturePosition;
+        // int position = i;
+        // LeoLog.d("QuickSwitchManager", "packageName : " + name +
+        // "--position : " + position);
+        // if (i == 0) {
+        // ListString = name + ":" + position;
+        // } else {
+        // ListString = ListString + ";" + name + ":" + position;
+        // }
+        // }
+        // }
 
         return ListString;
     }

@@ -1169,20 +1169,14 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
-        // if (mWifimanager == null) {
-        // mWifimanager = (WifiManager)
-        // mContext.getSystemService(Context.WIFI_SERVICE);
-        // }
         boolean isOpen = QuickSwitchManager.checkWlan();
         if (iconSize != mGetIcon) {
             if (isOpen) {
                 sInfo.icon = sInfo.switchIcon[0];
                 tv.setItemIcon(sInfo.switchIcon[0], false);
-                // mWifimanager.setWifiEnabled(false);
             } else {
                 sInfo.icon = sInfo.switchIcon[1];
                 tv.setItemIcon(sInfo.switchIcon[1], false);
-                // mWifimanager.setWifiEnabled(true);
             }
         } else {
             if (isOpen) {
