@@ -2,88 +2,104 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/bg"
     android:layout_gravity="center"
-    >
-    
+    android:background="@drawable/bg" >
+
     <LinearLayout
         android:layout_width="@dimen/quick_gesture_dialog_list_width"
         android:layout_height="wrap_content"
         android:background="@drawable/bg"
-        android:orientation="vertical"  >
-    
-    <TextView
-        android:id="@+id/free_disturb_dialog_title"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dialog_free_disturb_app_dialog_title_height"
-        android:gravity="center"
-        android:text="@string/pg_appmanager_quick_gesture_select_free_disturb_app_text"
-        android:textColor="#676767"
-        android:textSize="18sp" >
-    </TextView>
+        android:orientation="vertical" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#eeeeee" />
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialog_free_disturb_app_dialog_title_height"
+            android:gravity="center" >
 
-    <com.leo.appmaster.quickgestures.view.FilterAppPagedGridView
-        android:id="@+id/free_disturb_gridview"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="@dimen/dialog_free_disturb_app_free_disturb_gridview_padding_top" />
+            <TextView
+                android:id="@+id/free_disturb_dialog_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="@string/pg_appmanager_quick_gesture_select_free_disturb_app_text"
+                android:textColor="#676767"
+                android:textSize="18sp" >
+            </TextView>
 
-    <LinearLayout
-        android:id="@+id/checkboxLL"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        >
-
-        <CheckBox
-            android:id="@+id/dialog_all_app_itme_normalRB"
-            android:layout_width="18dp"
-            android:layout_height="18dp"
-            android:button="@drawable/quick_gesture_dialog_radio_selector" />
+            <TextView
+                android:id="@+id/selected_app_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/free_disturb_dialog_title"
+                android:text="(0/0)"
+                android:textColor="#676767"
+                android:textSize="18sp" 
+                android:visibility="gone"/>
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/dialog_all_app_itme_tv"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#eeeeee" />
+
+        <com.leo.appmaster.quickgestures.view.FilterAppPagedGridView
+            android:id="@+id/free_disturb_gridview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/quick_gesture_margin_left_to_checkbox"
-            android:text="@string/privacy_contact_activity_input_checkbox_normal"
-            android:textColor="#a7a7a7"
-            android:textSize="12sp" />
+            android:paddingTop="@dimen/dialog_free_disturb_app_free_disturb_gridview_padding_top" />
+
+        <LinearLayout
+            android:id="@+id/checkboxLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <CheckBox
+                android:id="@+id/dialog_all_app_itme_normalRB"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
+                android:button="@drawable/quick_gesture_dialog_radio_selector" />
+
+            <TextView
+                android:id="@+id/dialog_all_app_itme_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/quick_gesture_margin_left_to_checkbox"
+                android:text="@string/privacy_contact_activity_input_checkbox_normal"
+                android:textColor="#a7a7a7"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dlg_2btn_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialog_btn_height"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/quick_freed_disturb_dlg_left_btn"
+                style="@style/dlg_left_button_txt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/cancel" />
+
+            <TextView
+                android:id="@+id/quick_freed_disturb_dlg_right_btn"
+                style="@style/dlg_right_button_txt"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/makesure" />
+        </LinearLayout>
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/dlg_2btn_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dialog_btn_height"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center"
-        android:orientation="horizontal" >
-
-        <TextView
-            android:id="@+id/quick_freed_disturb_dlg_left_btn"
-            style="@style/dlg_left_button_txt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/cancel" />
-
-        <TextView
-            android:id="@+id/quick_freed_disturb_dlg_right_btn"
-            style="@style/dlg_right_button_txt"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/makesure" />
-    </LinearLayout>
-</LinearLayout>
 </LinearLayout>
