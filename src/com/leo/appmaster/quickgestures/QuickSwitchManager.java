@@ -598,7 +598,7 @@ public class QuickSwitchManager {
         }
     }
 
-    public List<BaseInfo> getAllList() {
+    public List<BaseInfo> getAllSwitchers() {
         if (mAllList == null) {
             mAllList = new ArrayList<BaseInfo>();
         } else {

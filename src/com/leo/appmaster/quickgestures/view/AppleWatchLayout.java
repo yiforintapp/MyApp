@@ -778,7 +778,7 @@ public class AppleWatchLayout extends ViewGroup {
     private void showAddNewDiglog(GType type) {
         QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
-            qgm.showCommontAppDialog(getContext());
+            qgm.showCommonAppDialog(getContext());
             ((Activity) getContext()).finish();
             mPref.setLastTimeLayout(2);
         } else if (type == GType.SwitcherLayout) {

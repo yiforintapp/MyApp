@@ -344,10 +344,11 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         String packageName = null;
         packageName = AppMasterPreference.getInstance(mContext)
                 .getCommonAppPackageName();
-//        int i = 0;
+        // int i = 0;
 
         HashMap<String, Integer> packagePosition = new HashMap<String, Integer>();
-//        HashMap<String, String> packagePakPosition = new HashMap<String, String>();
+        // HashMap<String, String> packagePakPosition = new HashMap<String,
+        // String>();
         boolean isCheck = AppMasterPreference.getInstance(mContext)
                 .getQuickGestureCommonAppDialogCheckboxValue();
         isAutoFillIcon = isCheck;
@@ -441,7 +442,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         // 设置为快捷开关
         mFreeDisturbApp = new ArrayList<QuickGsturebAppInfo>();
         QuickSwitchManager qsm = QuickSwitchManager.getInstance(mContext);
-        List<BaseInfo> allList = qsm.getAllList();
+        List<BaseInfo> allList = qsm.getAllSwitchers();
         // 设置为快捷手势的开关
         String packageNames = AppMasterPreference.getInstance(mContext)
                 .getSwitchList();
@@ -485,6 +486,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 mFreeDisturbApp = mDisturbList;
             }
         }
+
         mGridView.setDatas(mFreeDisturbApp, 4, 4);
     }
 

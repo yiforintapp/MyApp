@@ -168,6 +168,9 @@ public class LockManager {
 
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
+        mDrawableColors = new HashMap<Drawable, Bitmap>();
+        loadAppLaunchReorder();
+        mMatcher = new ColorMatcher();
         mLockPolicy = new TimeoutRelockPolicy(mContext);
         mFilterPgks = new HashMap<String, Boolean>();
         mFilterActivitys = new HashMap<String, Boolean>();
@@ -193,9 +196,6 @@ public class LockManager {
 
     public void initFilterList() {
         mFilterPgks.put("WaitActivity", true);
-        mDrawableColors = new HashMap<Drawable, Bitmap>();
-        loadAppLaunchReorder();
-        mMatcher = new ColorMatcher();
     }
 
     public void recordOutcountTask(String pkg) {
@@ -1502,11 +1502,16 @@ public class LockManager {
         return mLockPolicy;
     }
 
+    public boolean inRelockTime(String pkg) {
+        return ((TimeoutRelockPolicy) mLockPolicy).inRelockTime(pkg);
+    }
+
     public boolean applyLock(int lockMode, String lockedPkg, boolean restart,
             OnUnlockedListener listener) {
 
         if (mFilterAll) {
             mFilterAll = false;
+            LeoLog.e("xxxx", "mFilterAll");
             return false;
         }
 
@@ -1516,6 +1521,7 @@ public class LockManager {
             long curTime = System.currentTimeMillis();
             if (filterTime != 0 && (curTime - filterTime) <= 60 * 1000) {
                 amp.setLastFilterSelfTime(0);
+                LeoLog.e("xxxx", "time filter");
                 return false;
             }
 
@@ -1537,6 +1543,7 @@ public class LockManager {
             AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
             amp.setUnlocked(true);
             amp.setDoubleCheck(null);
+            LeoLog.e("xxxx", "in mFilterPgks");
             return false;
         }
 

@@ -222,7 +222,7 @@ public class FilterAppPagedGridView extends LinearLayout {
                         .findViewById(R.id.iv_app_icon_free);
                 vh.textView = (TextView) convertView
                         .findViewById(R.id.tv_app_name_free);
-                convertView.setTag(vh);
+                convertView.setTag(vh);                 
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }

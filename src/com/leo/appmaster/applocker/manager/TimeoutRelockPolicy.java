@@ -38,13 +38,27 @@ public class TimeoutRelockPolicy implements ILockPolicy {
             if ((curTime - lastLockTime) < getRelockTime())
                 return true;
         }
-//        else {
-//            UnlockTimeHolder holder = new UnlockTimeHolder();
-//            holder.lastUnlockTime = curTime;
-//            holder.secondUnlockTime = 0;
-//            holder.firstUnlockTime = 0;
-//            mLockapp.put(pkg, holder);
-//        }
+        // else {
+        // UnlockTimeHolder holder = new UnlockTimeHolder();
+        // holder.lastUnlockTime = curTime;
+        // holder.secondUnlockTime = 0;
+        // holder.firstUnlockTime = 0;
+        // mLockapp.put(pkg, holder);
+        // }
+        return false;
+    }
+
+    public boolean inRelockTime(String pkg) {
+        long curTime = System.nanoTime() / 1000000;
+        if (mLockapp.containsKey(pkg)) {
+            long lastLockTime = mLockapp.get(pkg).lastUnlockTime;
+
+            LeoLog.d(TAG, " curTime -  lastLockTime = "
+                    + (curTime - lastLockTime) + "       mRelockTimeout =  "
+                    + getRelockTime());
+            if ((curTime - lastLockTime) < getRelockTime())
+                return true;
+        }
         return false;
     }
 
@@ -54,7 +68,7 @@ public class TimeoutRelockPolicy implements ILockPolicy {
 
     @Override
     public void onUnlocked(String pkg) {
-        long curTime =System.nanoTime() / 1000000;
+        long curTime = System.nanoTime() / 1000000;
         UnlockTimeHolder holder = mLockapp.get(pkg);
         if (holder == null) {
             holder = new UnlockTimeHolder();
