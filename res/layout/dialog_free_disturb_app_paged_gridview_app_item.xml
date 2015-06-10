@@ -8,15 +8,15 @@
 
     <com.leo.appmaster.quickgestures.view.FilterAppImageView
         android:id="@+id/iv_app_icon_free"
-        android:layout_width="46dp"
-        android:layout_height="46dp" />
+        android:layout_width="@dimen/dialog_app_view_width"
+        android:layout_height="@dimen/dialog_app_view_width" />
 
     <TextView
         android:id="@+id/tv_app_name_free"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top"
-        android:layout_marginTop="6dp"
+        android:layout_marginTop="@dimen/dialog_app_margin_top"
         android:ellipsize="marquee"
         android:gravity="center"
         android:singleLine="true"
