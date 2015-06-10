@@ -58,6 +58,7 @@ import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.quickgestures.ui.QuickGestureSlideTimeDialog.UpdateFilterAppClickListener;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
 
@@ -83,6 +84,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mRecentlyContactOpenCK, mPrivacyContactOpenCK;
     private boolean mFlag, mOpenQuickFlag, mNoReadMessageFlag, mRecentlyContactFlag,
             mPrivacyContactFlag;
+    private String slidingArea = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -173,6 +175,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
          * init sliding area
          */
         mSlidAreaTv.setText(getSlidingAreaShowString());
+        SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting", slidingArea);
     }
 
     private String getSlidingAreaShowString() {
@@ -181,21 +184,25 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             sb.append(this.getResources().getString(
                     R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text)
                     + ",");
+            slidingArea = slidingArea + "+leftd";
         }
         if (mPre.getDialogRadioRightBottom()) {
             sb.append(this.getResources().getString(
                     R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text)
                     + ",");
+            slidingArea = slidingArea + "+rightd";
         }
         if (mPre.getDialogRadioLeftCenter()) {
             sb.append(this.getResources().getString(
                     R.string.pg_appmanager_quick_gesture_option_dialog_radio_left_center_text)
                     + ",");
+            slidingArea = slidingArea + "+leftm";
         }
         if (mPre.getDialogRadioRightCenter()) {
             sb.append(this.getResources().getString(
                     R.string.pg_appmanager_quick_gesture_option_dialog_radio_right_center_text)
                     + ",");
+            slidingArea = slidingArea + "+rightm";
         }
 
         if (sb != null && sb.length() > 0) {
@@ -460,11 +467,15 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onClick(View arg0) {
                 // just home
                 if (mSlideTimeDialog.getJustHometCheckStatus()) {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "slidetime_launcher");
                     mSlidingTimeTv
                             .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
                 }
                 // home and all app
                 if (mSlideTimeDialog.getAppHomeCheckStatus()) {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "launcher+apps");
                     mSlidingTimeTv
                             .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
                 }
@@ -547,6 +558,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             QuickGsturebAppInfo string = (QuickGsturebAppInfo) object;
                             AppMasterPreference.getInstance(QuickGestureActivity.this)
                                     .setFreeDisturbAppPackageNameAdd(string.packageName);
+                            SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1,
+                                    "qssetting", "noslideapps_" + string.packageName);
                         }
                     }
                     if (removeFreeAppNames != null && removeFreeAppNames.size() > 0) {
@@ -691,6 +704,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 R.string.quick_gesture_first_open_sliding_toast);
                         Toast.makeText(this, toastText, Toast.LENGTH_SHORT)
                                 .show();
+                        SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                                "qs_open");
                         Intent intent;
                         intent = new Intent(AppMasterApplication.getInstance(),
                                 QuickGesturePopupActivity.class);
@@ -787,6 +802,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         switch (flag) {
             case R.id.open_quick:
                 if (mOpenQuickFlag) {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "qs_close");
                     mQuickOpenCK.setImageResource(R.drawable.switch_off);
                     mPre.setSwitchOpenQuickGesture(false);
                     mOpenQuickFlag = false;
@@ -803,6 +820,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         }
                     });
                 } else {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "qs_open");
                     mPre.setSwitchOpenQuickGesture(true);
                     mQuickOpenCK.setImageResource(R.drawable.switch_on);
                     mOpenQuickFlag = true;
@@ -821,20 +840,28 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 }
                 break;
             case R.id.slid_area:
+                SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                        "area_cli");
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
                 break;
             case R.id.allow_slid_time:
+                SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                        "slidetime");
                 showSlideShowTimeSettingDialog();
                 break;
             case R.id.no_read_message_content:
                 if (!mNoReadMessageFlag) {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "message_open");
                     mPre.setSwitchOpenNoReadMessageTip(true);
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
                     mNoReadMessageFlag = true;
                     // checkout system database no read message
                     checkNoReadMessage();
                 } else {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "message_close");
                     mPre.setSwitchOpenNoReadMessageTip(false);
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
                     mNoReadMessageFlag = false;
@@ -842,11 +869,15 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 break;
             case R.id.recently_contact_content:
                 if (!mRecentlyContactFlag) {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "recent_open");
                     mPre.setSwitchOpenRecentlyContact(true);
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_on);
                     mRecentlyContactFlag = true;
                     checkNoReadCallLog();
                 } else {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "recent_close");
                     mPre.setSwitchOpenRecentlyContact(false);
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
                     mRecentlyContactFlag = false;
@@ -854,10 +885,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 break;
             case R.id.privacy_contact_content:
                 if (!mPrivacyContactFlag) {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "primessage_open");
                     mPre.setSwitchOpenPrivacyContactMessageTip(true);
                     mPrivacyContactOpenCK.setImageResource(R.drawable.switch_on);
                     mPrivacyContactFlag = true;
                 } else {
+                    SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+                            "primessage_close");
                     mPre.setSwitchOpenPrivacyContactMessageTip(false);
                     mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
                     mPrivacyContactFlag = false;

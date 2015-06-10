@@ -3,10 +3,10 @@ package com.leo.appmaster.quickgestures.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -19,19 +19,22 @@ import com.leo.appmaster.sdk.BaseActivity;
  */
 public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener {
     private RelativeLayout mMiuiTipRL;
+    private TextView mButton;
     private boolean checkHuaWeiSys;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_miui_open_float_window_tip);
         Intent intent = this.getIntent();
         String sysName = intent.getStringExtra("sys_name");
         if ("huawei".equals(sysName)) {
             checkHuaWeiSys = true;
         }
-        setContentView(R.layout.activity_miui_open_float_window_tip);
+        mButton = (TextView) findViewById(R.id.miui_bt);
         mMiuiTipRL = (RelativeLayout) findViewById(R.id.miui_tipRL);
         mMiuiTipRL.setOnClickListener(this);
+        mButton.setOnClickListener(this);
     }
 
     @Override

@@ -12,6 +12,7 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Environment;
+import android.telephony.SmsManager;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 
@@ -273,4 +274,18 @@ public class PhoneInfo {
 		}
 		return content;
 	}
+	
+    public static boolean isSimAvailable(Context mContext) {
+        try {
+            TelephonyManager mgr = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
+            SmsManager smsManager = SmsManager.getDefault();
+            return (TelephonyManager.SIM_STATE_READY == mgr.getSimState())
+                    && (smsManager != null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    
 }

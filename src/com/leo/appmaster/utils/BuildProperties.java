@@ -12,6 +12,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
@@ -225,6 +226,7 @@ public class BuildProperties {
 
     public static void startHuaWeiSysManageIntent(Context context) {
         try {
+            LockManager.getInstatnce().timeFilterSelf();
             Intent intent = new Intent();
             String string = (checkIsHuaWeiPhone()) ? ("com.huawei.systemmanager.SystemManagerMainActivity")
                     : ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
@@ -235,6 +237,7 @@ public class BuildProperties {
                 context.startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
+                SDKWrapper.addEvent(context, SDKWrapper.P1, "qs_open_error", "reason_"+BuildProperties.getPoneModel());
             }
             return;
         } catch (Exception e) {

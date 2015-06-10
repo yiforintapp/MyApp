@@ -653,7 +653,6 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
             LeoLog.d("TestLayout", "QuickSwitcherInfo");
             QuickSwitcherInfo sInfo = (QuickSwitcherInfo) info;
-            // 蓝牙
             if (sInfo.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
                 QuickSwitchManager.getInstance(getContext())
                         .toggleBluetooth(sInfo);
@@ -2064,6 +2063,9 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private Animator iconAppearAnimator(final View targetView) {
+        if(targetView == null){
+            return null;
+        }
         float scale = targetView.getScaleX();
         float maxScale = 1.2f * scale;
         PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1.0f);
