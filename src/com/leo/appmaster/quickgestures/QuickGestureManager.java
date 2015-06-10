@@ -454,18 +454,19 @@ public class QuickGestureManager {
                     }
                 }
             }
-            
-            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(resault, resault.size(),APPITEMINFO);
+
+            List<BaseInfo> mFirstList = changeList(resault);
+            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(mFirstList,
+                    mFirstList.size(), NORMALINFO);
             mSpSwitch.setCommonAppPackageName(mListString);
-            
-            return resault;
-            
+            return mFirstList;
+
         }
 
         LeoLog.d("testSp", "resault.size() : " + resault.size());
 
         // 删除相同应用
-        if(resault.size() > 0){
+        if (resault.size() > 0) {
             for (int i = 0; i < mHaveList.size(); i++) {
                 QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
                 for (int j = 0; j < resault.size(); j++) {
@@ -477,7 +478,6 @@ public class QuickGestureManager {
                 }
             }
         }
-
 
         if (mHaveList.size() > 0) {
             int[] mPositions = new int[mHaveList.size()];
@@ -531,6 +531,22 @@ public class QuickGestureManager {
         }
 
         // return resault;
+    }
+
+    private List<BaseInfo> changeList(List<BaseInfo> resault) {
+        List<BaseInfo> mBaseList = new ArrayList<BaseInfo>();
+        QuickGsturebAppInfo temp;
+        for (int i = 0; i < resault.size(); i++) {
+            AppItemInfo appInfo = (AppItemInfo) resault.get(i);
+            temp = new QuickGsturebAppInfo();
+            temp.packageName = appInfo.packageName;
+            temp.activityName = appInfo.activityName;
+            temp.label = appInfo.label;
+            temp.icon = appInfo.icon;
+            temp.gesturePosition = i;
+            mBaseList.add(temp);
+        }
+        return mBaseList;
     }
 
     private boolean isGetPosition(int gesturePosition, int[] mPositions) {
@@ -815,7 +831,7 @@ public class QuickGestureManager {
                         }
 
                         String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                .listToPackString(mDefineList, mDefineList.size(),NORMALINFO);
+                                .listToPackString(mDefineList, mDefineList.size(), NORMALINFO);
                         LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
                         pref.setCommonAppPackageName(mChangeList);
 
