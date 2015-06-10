@@ -448,8 +448,11 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             }
 
             if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
+                Collections.sort(mFreeDisturbApp, new NameComparator());
+                Collections.sort(mDisturbList, new NameComparator());
                 mFreeDisturbApp.addAll(mDisturbList);
             } else {
+                Collections.sort(mDisturbList, new NameComparator());
                 mFreeDisturbApp = mDisturbList;
             }
         }
