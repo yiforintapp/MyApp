@@ -649,8 +649,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         false);
                 startActivity(intentv6);
             } catch (Exception e) {
-                e.printStackTrace();
-//                LockManager.getInstatnce().timeFilterSelf();
+                LockManager.getInstatnce().timeFilterSelf();
                 LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
                         false);
                 Intent intentv5 = new Intent(
@@ -663,16 +662,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     startActivity(intentv5);
                     getActivity().finish();
                 } catch (Exception e1) {
-                    e1.printStackTrace();
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "reason_"
                             + BuildProperties.getPoneModel());
                 }
             }
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-//            LockManager.getInstatnce().timeFilterSelf();
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 startActivity(quickIntent);
             } catch (Exception e) {
