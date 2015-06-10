@@ -2064,6 +2064,9 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private Animator iconAppearAnimator(final View targetView) {
+        if(targetView == null){
+            return null;
+        }
         float scale = targetView.getScaleX();
         float maxScale = 1.2f * scale;
         PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1.0f);
