@@ -46,6 +46,7 @@ import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.view.EventAction;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -454,18 +455,19 @@ public class QuickGestureManager {
                     }
                 }
             }
-            
-            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(resault, resault.size(),APPITEMINFO);
+
+            String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(resault,
+                    resault.size(), APPITEMINFO);
             mSpSwitch.setCommonAppPackageName(mListString);
-            
+
             return resault;
-            
+
         }
 
         LeoLog.d("testSp", "resault.size() : " + resault.size());
 
         // 删除相同应用
-        if(resault.size() > 0){
+        if (resault.size() > 0) {
             for (int i = 0; i < mHaveList.size(); i++) {
                 QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
                 for (int j = 0; j < resault.size(); j++) {
@@ -477,7 +479,6 @@ public class QuickGestureManager {
                 }
             }
         }
-
 
         if (mHaveList.size() > 0) {
             int[] mPositions = new int[mHaveList.size()];
@@ -815,7 +816,7 @@ public class QuickGestureManager {
                         }
 
                         String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                .listToPackString(mDefineList, mDefineList.size(),NORMALINFO);
+                                .listToPackString(mDefineList, mDefineList.size(), NORMALINFO);
                         LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
                         pref.setCommonAppPackageName(mChangeList);
 
@@ -885,6 +886,10 @@ public class QuickGestureManager {
 
                         if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
                             pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
+                            if (flag) {
+                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_tab",
+                                        "common_auto");
+                            }
                         }
                     }
 
