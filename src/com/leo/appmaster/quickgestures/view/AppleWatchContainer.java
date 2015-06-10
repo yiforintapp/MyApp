@@ -14,6 +14,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.net.wifi.WifiManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.GestureDetector;
@@ -54,6 +55,7 @@ public class AppleWatchContainer extends FrameLayout {
     private AppMasterPreference mPref;
     private int mCurrentLayout = 3;
     private List<QuickSwitcherInfo> mSwitchList;
+    private WifiManager mWifimanager;
 
     public static enum Orientation {
         Left, Right;
@@ -754,13 +756,7 @@ public class AppleWatchContainer extends FrameLayout {
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
                 // 加速
                 checkSpeedUpStatus(sInfo, mGetIcon, tv);
-            }
-            // else if
-            // (sInfo.swtichIdentiName.equals(QuickSwitchManager.CHANGEMODE)) {
-            // // 情景模式切换
-            // checkChangeMode(sInfo, mGetIcon, tv);
-            // }
-            else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SWITCHSET)) {
+            } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SWITCHSET)) {
                 // 手势设置
                 checkSwitchSet(sInfo, mGetIcon, tv);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SETTING)) {
@@ -1173,14 +1169,20 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        // if (mWifimanager == null) {
+        // mWifimanager = (WifiManager)
+        // mContext.getSystemService(Context.WIFI_SERVICE);
+        // }
         boolean isOpen = QuickSwitchManager.checkWlan();
         if (iconSize != mGetIcon) {
             if (isOpen) {
                 sInfo.icon = sInfo.switchIcon[0];
                 tv.setItemIcon(sInfo.switchIcon[0], false);
+                // mWifimanager.setWifiEnabled(false);
             } else {
                 sInfo.icon = sInfo.switchIcon[1];
                 tv.setItemIcon(sInfo.switchIcon[1], false);
+                // mWifimanager.setWifiEnabled(true);
             }
         } else {
             if (isOpen) {
@@ -1255,14 +1257,14 @@ public class AppleWatchContainer extends FrameLayout {
 
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 mCornerTabs.getHeight(), 0);
-        tabAnimator.setDuration(400);
+        tabAnimator.setDuration(300);
         tabAnimator.addListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animation) {
                 mCornerTabs.setVisibility(View.VISIBLE);
             };
         });
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1)
-                .setDuration(880);
+                .setDuration(640);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
 
         AnimatorSet set = new AnimatorSet();
@@ -1312,9 +1314,9 @@ public class AppleWatchContainer extends FrameLayout {
 
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 0, mCornerTabs.getHeight());
-        tabAnimator.setDuration(600);
+        tabAnimator.setDuration(250);
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0)
-                .setDuration(400);
+                .setDuration(540);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
 
         AnimatorSet set = new AnimatorSet();

@@ -963,6 +963,13 @@ public class QuickGestureManager {
                                 boolean addSwitch = false;
                                 boolean removeSwitch = false;
                                 List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                                
+                                for(int i = 0;i<addQuickSwitch.size();i++){
+                                    BaseInfo mInfo = addQuickSwitch.get(i);
+                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_switch", "add_"+mInfo.swtichIdentiName);
+                                    LeoLog.d("testSp", "mInfo.swtichIdentiName : " + mInfo.swtichIdentiName);
+                                }
+                                
                                 // 移除的应用包名
                                 List<BaseInfo> removeQuickSwitch = quickSwitch
                                         .getRemoveFreePackageName();
