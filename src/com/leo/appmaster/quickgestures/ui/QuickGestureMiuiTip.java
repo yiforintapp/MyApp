@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.RelativeLayout;
@@ -40,8 +41,7 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
 
     @Override
     public void onClick(View arg0) {
-        
-        LockManager.getInstatnce().filterAllOneTime(1000);
+        LockManager.getInstatnce().filterAllOneTime(2000);
         AppMasterPreference pref = AppMasterPreference.getInstance(QuickGestureMiuiTip.this);
         boolean miuiSetFirst = pref.getQuickGestureMiuiSettingFirstDialogTip();
         if (!miuiSetFirst) {
