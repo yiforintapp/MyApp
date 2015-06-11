@@ -29,6 +29,7 @@ public class FilterAppImageView extends ImageView {
     private Bitmap mSourceBitmap, mGaryBitmap;
     private PaintFlagsDrawFilter mDrawFilter;
     private QuickGsturebAppInfo changeInfo;
+    private boolean isFromSwitch = false;
 
     public FilterAppImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -90,17 +91,19 @@ public class FilterAppImageView extends ImageView {
                             true);
                     int red, green, blue, alpha;
                     int pixel;
-                    for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
-                        for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
-                            pixel = mGaryBitmap.getPixel(i, j);
+                    if(!isFromSwitch){
+                        for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
+                            for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
+                                pixel = mGaryBitmap.getPixel(i, j);
 
-                            alpha = (int) (Color.alpha(pixel));
-                            red = (int) (Color.red(pixel) * 0.5);
-                            green = (int) (Color.green(pixel) * 0.5);
-                            blue = (int) (Color.blue(pixel) * 0.5);
+                                alpha = (int) (Color.alpha(pixel));
+                                red = (int) (Color.red(pixel) * 0.5);
+                                green = (int) (Color.green(pixel) * 0.5);
+                                blue = (int) (Color.blue(pixel) * 0.5);
 
-                            pixel = Color.argb(alpha, red, green, blue);
-                            mGaryBitmap.setPixel(i, j, pixel);
+                                pixel = Color.argb(alpha, red, green, blue);
+                                mGaryBitmap.setPixel(i, j, pixel);
+                            }
                         }
                     }
                 }
@@ -295,5 +298,11 @@ public class FilterAppImageView extends ImageView {
         mDefaultRecommend = defaultApp;
         changeInfo = selectInfl;
         invalidate();
+    }
+
+    public void makeFlag(int quickSwitchMode) {
+        if(quickSwitchMode == 2){
+            isFromSwitch = true;
+        }
     }
 }

@@ -93,6 +93,7 @@ public class QuickGestureManager {
 
     public void init() {
         if (!mInited) {
+            mInited = true;
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
             preloadColorIcon();
@@ -103,12 +104,12 @@ public class QuickGestureManager {
             }
             // TODO switcher init
             QuickSwitchManager.getInstance(mContext).init();
-            mInited = true;
         }
     }
 
     public void unInit() {
         if (mInited) {
+            mInited = false;
             mDynamicList.clear();
             mMostUsedList.clear();
             mDynamicList = null;
@@ -122,7 +123,6 @@ public class QuickGestureManager {
             // LockManager.getInstatnce().mDrawableColors = null;
             // TODO Switcher uninit
             QuickSwitchManager.getInstance(mContext).unInit();
-            mInited = false;
         }
     }
 
@@ -149,6 +149,7 @@ public class QuickGestureManager {
                 if (count == 4) {
                     break;
                 }
+                count++;
                 dynamicList.add(businessItem);
             }
             // businessItem = businessDatas.get(0);
@@ -386,7 +387,7 @@ public class QuickGestureManager {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
-        if (recorderApp.size() > 1 || mHaveList.size() > 0) {
+        if (recorderApp!= null && ( recorderApp.size() > 1 || mHaveList.size() > 0)) {
             LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
@@ -458,13 +459,12 @@ public class QuickGestureManager {
                     mFirstList.size(), NORMALINFO);
             mSpSwitch.setCommonAppPackageName(mListString);
             return mFirstList;
-
         }
 
         LeoLog.d("testSp", "resault.size() : " + resault.size());
 
         // 删除相同应用
-        if (resault.size() > 0) {
+        if (resault.size() > 0 && mHaveList.size() > 0) {
             for (int i = 0; i < mHaveList.size(); i++) {
                 QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
                 for (int j = 0; j < resault.size(); j++) {
@@ -523,12 +523,23 @@ public class QuickGestureManager {
                 }
             }
             LeoLog.d("testSp", "newresault.size : " + newresault.size());
-            return newresault;
-        } else {
-            return resault;
+            // return newresault;
+            resault.clear();
+            resault = newresault;
         }
-
+        // else {
         // return resault;
+        // }
+        
+        
+        
+        
+        String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
+                resault,
+                resault.size(), NORMALINFO);
+        mSpSwitch.setCommonAppPackageName(mListString);
+        
+        return resault;
     }
 
     private List<BaseInfo> changeList(List<BaseInfo> resault) {

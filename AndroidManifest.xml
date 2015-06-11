@@ -500,7 +500,7 @@
             android:name="com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip"
