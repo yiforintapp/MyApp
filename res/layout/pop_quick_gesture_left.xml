@@ -15,12 +15,12 @@
         android:layerType="hardware"
         qiuckgesture:Direction="left" >
 
+        <!-- android:src="@drawable/outside_circle_two_left" -->
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_gravity="left|bottom"
-            android:src="@drawable/outside_circle_two_left" />
+            android:layout_gravity="left|bottom" />
 
         <com.leo.appmaster.quickgestures.view.SectorTabs
             android:id="@+id/cornerTabs"
