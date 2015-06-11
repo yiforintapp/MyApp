@@ -343,9 +343,13 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         int lastVercode = pref.getCurrentAppVersionCode();
         if (lastVercode < 0) {
-            pref.setIsUpdateQuickGestureUser(false);
+            if (Integer.valueOf(PhoneInfo.getVersionCode(this)) != 37) {
+                pref.setIsUpdateQuickGestureUser(false);
+            } else {
+                pref.setIsUpdateQuickGestureUser(true);
+            }
         } else {
-            if (lastVercode >= 36 && !pref.getIsUpdateQuickGestureUser()) {
+            if (lastVercode >= 37 && !pref.getIsUpdateQuickGestureUser()) {
                 pref.setIsUpdateQuickGestureUser(true);
             }
         }
