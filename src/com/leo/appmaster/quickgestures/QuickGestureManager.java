@@ -93,6 +93,7 @@ public class QuickGestureManager {
 
     public void init() {
         if (!mInited) {
+            mInited = true;
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
             preloadColorIcon();
@@ -103,18 +104,16 @@ public class QuickGestureManager {
             }
             // TODO switcher init
             QuickSwitchManager.getInstance(mContext).init();
-            mInited = true;
         }
     }
 
     public void unInit() {
         if (mInited) {
+            mInited = false;
             mDynamicList.clear();
             mMostUsedList.clear();
             mDynamicList = null;
             mMostUsedList = null;
-            LockManager.getInstatnce().mAppLaunchRecorders.clear();
-            LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
             LockManager.getInstatnce().mMatcher.clearItem();
             // LockManager.getInstatnce().mMatcher = null;
@@ -122,7 +121,6 @@ public class QuickGestureManager {
             // LockManager.getInstatnce().mDrawableColors = null;
             // TODO Switcher uninit
             QuickSwitchManager.getInstance(mContext).unInit();
-            mInited = false;
         }
     }
 
@@ -386,7 +384,7 @@ public class QuickGestureManager {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
-        if (recorderApp.size() > 1 || mHaveList.size() > 0) {
+        if (recorderApp!= null && ( recorderApp.size() > 1 || mHaveList.size() > 0)) {
             LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
