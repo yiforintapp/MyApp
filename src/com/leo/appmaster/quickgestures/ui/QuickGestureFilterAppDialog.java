@@ -415,8 +415,6 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             mFreeDisturbApp = mDisturbList;
         }
         
-        // Collections.sort(resault, new PositionComparator());
-        // mFreeDisturbApp = resault;
         mGridView.setDatas(mFreeDisturbApp, 4, 4);
     }
 

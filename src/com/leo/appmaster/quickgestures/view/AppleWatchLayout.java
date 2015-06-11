@@ -678,7 +678,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.LIGHT)) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
                         + sInfo.swtichIdentiName);
-                QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo);
+                QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo,item);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
                         + sInfo.swtichIdentiName);
