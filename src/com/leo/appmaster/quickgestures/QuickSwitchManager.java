@@ -625,8 +625,10 @@ public class QuickSwitchManager {
 
     public List<BaseInfo> getAllSwitchers() {
         if (mAllList == null) {
+            LeoLog.d("loadAll", "new allList");
             mAllList = new ArrayList<BaseInfo>();
         } else {
+            LeoLog.d("loadAll", "have allList");
             return mAllList;
         }
         // 蓝牙开关
@@ -1387,6 +1389,10 @@ public class QuickSwitchManager {
             mSaveList.clear();
             mSaveList = null;
         }
+    }
+    
+    public void loadAllSwitchList(){
+        
     }
 
 }

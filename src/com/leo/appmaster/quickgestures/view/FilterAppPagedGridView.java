@@ -41,6 +41,7 @@ public class FilterAppPagedGridView extends LinearLayout {
     private OnItemClickListener mClickListener;
     private OnTouchListener mTouchListener;
     private int mPageCount;
+    private int quickSwitchMode = 0;
 
     public FilterAppPagedGridView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -228,6 +229,8 @@ public class FilterAppPagedGridView extends LinearLayout {
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
+            
+            vh.imageView.makeFlag(quickSwitchMode);
             QuickGsturebAppInfo info = mList.get(position);
             vh.imageView.setDefaultRecommendApp(info.isFreeDisturb);
             vh.imageView.setImageDrawable(info.icon);
@@ -280,6 +283,10 @@ public class FilterAppPagedGridView extends LinearLayout {
         } catch (Exception e) {
 
         }
+    }
+
+    public void setFlag(int mFlag) {
+        this.quickSwitchMode = mFlag;
     }
 
 }

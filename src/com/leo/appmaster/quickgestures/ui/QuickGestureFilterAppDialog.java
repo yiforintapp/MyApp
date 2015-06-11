@@ -83,6 +83,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         mTitle = (TextView) dlgView.findViewById(R.id.free_disturb_dialog_title);
         mSelectedCount = (TextView) dlgView.findViewById(R.id.selected_app_count);
         mGridView = (FilterAppPagedGridView) dlgView.findViewById(R.id.free_disturb_gridview);
+        mGridView.setFlag(mFlag);
         mSureBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_right_btn);
         mLeftBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_left_btn);
         mCheckBoxLL = (LinearLayout) dlgView.findViewById(R.id.checkboxLL);
