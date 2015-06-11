@@ -36,6 +36,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 //        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
 //        mContainer.setSystemUiVisibility(uiOptions);
 //        System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+        
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
@@ -54,6 +55,15 @@ public class QuickGesturePopupActivity extends BaseActivity {
         } else {
             fillSwitcherLayout(false);
         }
+    }
+    
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        if(!hasFocus) {
+            FloatWindowHelper.mGestureShowing = false;
+            finish();
+        }
+        super.onWindowFocusChanged(hasFocus);
     }
 
     public void onEventMainThread(ClickQuickItemEvent event) {
@@ -94,8 +104,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onPause() {
         LeoLog.e("XXXX", "onPause");
-        FloatWindowHelper.mGestureShowing = false;
-        finish();
         super.onPause();
     }
 
