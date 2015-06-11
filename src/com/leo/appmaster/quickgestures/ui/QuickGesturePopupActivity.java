@@ -87,6 +87,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
+        LeoLog.e("XXXX", "onPause");
         FloatWindowHelper.mGestureShowing = false;
         finish();
         super.onPause();

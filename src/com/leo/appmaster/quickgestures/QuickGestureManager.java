@@ -142,10 +142,17 @@ public class QuickGestureManager {
         Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
                 .getBusinessData();
         List<BaseInfo> dynamicList = new ArrayList<BaseInfo>();
-        BusinessItemInfo businessItem = null;
+        // BusinessItemInfo businessItem = null;
         if (businessDatas != null && businessDatas.size() > 0) {
-            businessItem = businessDatas.get(0);
-            dynamicList.add(businessItem);
+            int count = 0;
+            for (BusinessItemInfo businessItem : businessDatas) {
+                if (count == 4) {
+                    break;
+                }
+                dynamicList.add(businessItem);
+            }
+            // businessItem = businessDatas.get(0);
+            // dynamicList.add(businessItem);
         }
         // no read sys_message
         boolean isShowMsmTip = AppMasterPreference.getInstance(mContext)
