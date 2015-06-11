@@ -149,6 +149,7 @@ public class QuickGestureManager {
                 if (count == 4) {
                     break;
                 }
+                count++;
                 dynamicList.add(businessItem);
             }
             // businessItem = businessDatas.get(0);

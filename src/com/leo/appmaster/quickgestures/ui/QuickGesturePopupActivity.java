@@ -4,6 +4,9 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.List;
 
 import android.os.Bundle;
+import android.os.SystemProperties;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -29,7 +32,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-
+//        SystemProperties.set("java.util.Arrays.useLegacyMergeSort", "true");
+//        int uiOptions = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+//        mContainer.setSystemUiVisibility(uiOptions);
+//        System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
