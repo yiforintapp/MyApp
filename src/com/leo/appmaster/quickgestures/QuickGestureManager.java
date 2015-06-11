@@ -114,7 +114,7 @@ public class QuickGestureManager {
             mDynamicList = null;
             mMostUsedList = null;
             LockManager.getInstatnce().mAppLaunchRecorders.clear();
-            LockManager.getInstatnce().mAppLaunchRecorders = null;
+//            LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
             LockManager.getInstatnce().mMatcher.clearItem();
             // LockManager.getInstatnce().mMatcher = null;
