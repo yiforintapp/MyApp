@@ -531,7 +531,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         });
     }
-
+    
     private void judgeShowGradeTip() {
         mHandler.postDelayed(new Runnable() {
             @Override

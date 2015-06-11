@@ -57,7 +57,7 @@
                     android:layout_width="@dimen/quick_seek_bar_width"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:max="100" />
+                    android:max="30" />
 
                 <TextView
                     android:id="@+id/seekbar_text_progress"

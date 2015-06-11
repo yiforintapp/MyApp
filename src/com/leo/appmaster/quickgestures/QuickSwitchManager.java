@@ -6,6 +6,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
 import android.content.ContentResolver;
@@ -25,8 +26,11 @@ import android.os.PowerManager;
 import android.os.Vibrator;
 import android.provider.MediaStore;
 import android.provider.Settings;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.baidu.mobstat.a;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
@@ -39,6 +43,7 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.view.GestureItemView;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -152,17 +157,22 @@ public class QuickSwitchManager {
             if (mVersion > 19 && !isSIMready) {
                 isMobileDataOpen = false;
             } else {
-                boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
-                        null);
-                if (isMobileDataEnable) {
-                    isMobileDataOpen = true;
-                    LeoLog.d("testSp", "isMobileDataOpen true");
+                if (isSIMready) {
+                    boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
+                            null);
+                    if (isMobileDataEnable) {
+                        isMobileDataOpen = true;
+                        LeoLog.d("testPs", "isMobileDataOpen true");
+                    } else {
+                        isMobileDataOpen = false;
+                        LeoLog.d("testPs", "isMobileDataOpen false");
+                    }
                 } else {
                     isMobileDataOpen = false;
-                    LeoLog.d("testSp", "isMobileDataOpen false");
                 }
             }
         } catch (Exception e) {
+            LeoLog.d("testPs", "isMobileDataOpen catchcatchcatchcatch");
             e.printStackTrace();
         }
     }
@@ -719,15 +729,20 @@ public class QuickSwitchManager {
 
     public void toggleWlan(QuickSwitcherInfo mInfo) {
         // if (!mWifimanager.isWifiEnabled()) {
-        if (!isWlantOpen) {
-            mWifimanager.setWifiEnabled(true);
-            isWlantOpen = true;
-        } else {
-            mWifimanager.setWifiEnabled(false);
-            isWlantOpen = false;
+        try {
+            if (!isWlantOpen) {
+                mWifimanager.setWifiEnabled(true);
+                isWlantOpen = true;
+            } else {
+                mWifimanager.setWifiEnabled(false);
+                isWlantOpen = false;
+            }
+            LeoEventBus.getDefaultBus().post(
+                    new ClickQuickItemEvent(WLAN, mInfo));
+        } catch (Exception e) {
+
         }
-        LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(WLAN, mInfo));
+
     }
 
     public void toggleBluetooth(QuickSwitcherInfo mInfo) {
@@ -871,7 +886,7 @@ public class QuickSwitchManager {
         mContext.startActivity(intent);
     }
 
-    public void toggleLight(QuickSwitcherInfo mInfo) {
+    public void toggleLight(QuickSwitcherInfo mInfo, GestureItemView item) {
         int light = 0;
         switch (getBrightStatus()) {
             case LIGHT_AUTO:
@@ -895,7 +910,7 @@ public class QuickSwitchManager {
                 light = LIGHT_NORMAL - 1;
                 break;
         }
-        setLight(light);
+        setLight(light, item);
         setScreenLightValue(mContext.getContentResolver(), light);
         LeoEventBus.getDefaultBus().post(
                 new ClickQuickItemEvent(LIGHT, mInfo));
@@ -905,37 +920,72 @@ public class QuickSwitchManager {
      * 因为PowerManager提供的函数setBacklightBrightness接口是隐藏的，
      * 所以在基于第三方开发调用该函数时，只能通过反射实现在运行时调用
      */
-    private void setLight(int light) {
+    private void setLight(int light, GestureItemView item) {
         try {
-            // 得到PowerManager类对应的Class对象
-            Class<?> pmClass = Class.forName(mPowerManager.getClass().getName());
-            // 得到PowerManager类中的成员mService（mService为PowerManagerService类型）
-            Field field = pmClass.getDeclaredField("mService");
-            field.setAccessible(true);
-            // 实例化mService
-            Object iPM = field.get(mPowerManager);
-            // 得到PowerManagerService对应的Class对象
-            Class<?> iPMClass = Class.forName(iPM.getClass().getName());
-            /*
-             * 得到PowerManagerService的函数setBacklightBrightness对应的Method对象，
-             * PowerManager的函数setBacklightBrightness实现在PowerManagerService中
-             */
-            Method method = iPMClass.getDeclaredMethod("setBacklightBrightness", int.class);
-            method.setAccessible(true);
-            // 调用实现PowerManagerService的setBacklightBrightness
-            method.invoke(iPM, light);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        } catch (IllegalArgumentException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
+            // // 得到PowerManager类对应的Class对象
+            // Class<?> pmClass =
+            // Class.forName(mPowerManager.getClass().getName());
+            // // 得到PowerManager类中的成员mService（mService为PowerManagerService类型）
+            // Field field = pmClass.getDeclaredField("mService");
+            // field.setAccessible(true);
+            // // 实例化mService
+            // Object iPM = field.get(mPowerManager);
+            // // 得到PowerManagerService对应的Class对象
+            // Class<?> iPMClass = Class.forName(iPM.getClass().getName());
+            // /*
+            // * 得到PowerManagerService的函数setBacklightBrightness对应的Method对象，
+            // * PowerManager的函数setBacklightBrightness实现在PowerManagerService中
+            // */
+            // Method method =
+            // iPMClass.getDeclaredMethod("setBacklightBrightness", int.class);
+            // method.setAccessible(true);
+            // // 调用实现PowerManagerService的setBacklightBrightness
+            // method.invoke(iPM, light);
+
+            android.provider.Settings.System.putInt(mContext.getContentResolver(),
+                    android.provider.Settings.System.SCREEN_BRIGHTNESS,
+                    light);
+
+            changeTheLight(light, item);
+
+            // int tmpInt =
+            // Settings.System.getInt(mContext.getContentResolver(),
+            // Settings.System.SCREEN_BRIGHTNESS, -1);
+            // WindowManager.LayoutParams lp = ((Activity)
+            // mContext).getWindow().getAttributes();
+            // // lp.screenBrightness = 1.0f;
+            // // Float tmpFloat = (float)tmpInt / 255;
+            // if (0 <= tmpInt && tmpInt <= 255) {
+            // lp.screenBrightness = tmpInt;
+            // }
+            // ((Activity) mContext).getWindow().setAttributes(lp);
+
+            // } catch (ClassNotFoundException e) {
+            // e.printStackTrace();
+            // } catch (NoSuchFieldException e) {
+            // e.printStackTrace();
+            // } catch (IllegalArgumentException e) {
+            // e.printStackTrace();
+            // } catch (IllegalAccessException e) {
+            // e.printStackTrace();
+            // } catch (NoSuchMethodException e) {
+            // e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    private void changeTheLight(int light2, GestureItemView item) {
+        Activity activity = (Activity) item.getContext();
+        Window localWindow = activity.getWindow();
+        WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
+        if (light2 < 0) {
+        }
+        for (float f = -1.0F;; f = light2 / 255.0F)
+        {
+            localLayoutParams.screenBrightness = f;
+            localWindow.setAttributes(localLayoutParams);
+            return;
         }
     }
 
@@ -1167,20 +1217,27 @@ public class QuickSwitchManager {
             if (mVersion > 19 && !isSIMready) {
                 isMobileDataOpen = false;
             } else {
-                // boolean isMobileDataEnable =
-                // invokeMethod("getMobileDataEnabled",
-                // arg);
-                if (isMobileDataOpen) {
-                    invokeBooleanArgMethod("setMobileDataEnabled", false);
-                    isMobileDataOpen = false;
+                if (isSIMready) {
+                    boolean isMobileDataEnable =
+                            invokeMethod("getMobileDataEnabled",
+                                    arg);
+                    if (isMobileDataEnable) {
+                        invokeBooleanArgMethod("setMobileDataEnabled", false);
+                        isMobileDataOpen = false;
+                        LeoLog.d("testPs", "setMobileDataEnabled false");
+                    } else {
+                        invokeBooleanArgMethod("setMobileDataEnabled", true);
+                        isMobileDataOpen = true;
+                        LeoLog.d("testPs", "setMobileDataEnabled true");
+                    }
+                    LeoEventBus.getDefaultBus().post(
+                            new ClickQuickItemEvent(MOBILEDATA, mInfo));
                 } else {
-                    invokeBooleanArgMethod("setMobileDataEnabled", true);
-                    isMobileDataOpen = true;
+                    isMobileDataOpen = false;
                 }
-                LeoEventBus.getDefaultBus().post(
-                        new ClickQuickItemEvent(MOBILEDATA, mInfo));
             }
         } catch (Exception e) {
+            LeoLog.d("testPs", "toggleMobileData catchcatchcatchcatch");
             e.printStackTrace();
         }
     }
