@@ -73,7 +73,7 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+//         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
