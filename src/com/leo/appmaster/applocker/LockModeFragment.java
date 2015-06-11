@@ -45,6 +45,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
     private boolean mEditing;
 
     private LEOAlarmDialog mMakeSureChange;
+    private int mSelectCount;
 
     @Override
     protected int layoutResourceId() {
@@ -210,10 +211,13 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     } else {
                         mode.selected = !mode.selected;
                         if (mode.selected) {
+                            mSelectCount++;
                             iv.setImageResource(R.drawable.select);
                         } else {
                             iv.setImageResource(R.drawable.unselect);
+                            mSelectCount--;
                         }
+                        ((LockModeActivity) mActivity).onSelectItemChanged(mSelectCount);
                     }
 
                 } else {
@@ -286,7 +290,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         intent.putExtra("new_mode", true);
         startActivity(intent);
     }
-    
+
     private void installLockModeShortcut(LockMode lockMode) {
         Intent shortcutIntent = new Intent(mActivity, LockScreenActivity.class);
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

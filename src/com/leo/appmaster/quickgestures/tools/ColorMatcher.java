@@ -31,8 +31,8 @@ public class ColorMatcher {
     public void addBitmapSample(Bitmap bmp) {
         this.colorBase.add(new BaseColorItem(bmp));
     }
-    
-    public void clearItem(){
+
+    public void clearItem() {
         colorBase.clear();
         clearCachedTargetLab();
     }
@@ -47,17 +47,23 @@ public class ColorMatcher {
 
     public Bitmap getMatchedBitmap(Drawable target) {
         Bitmap targetBmp = drawableToBitmap(target);
-
+        if (targetBmp == null) {
+            return null;
+        }
         BaseColorItem item = this.getMatchedItem(targetBmp);
+
         if (item != null) {
             return item.getBitmap();
         }
-//        targetBmp.recycle();
+        // targetBmp.recycle();
         return null;
 
     }
 
     public Bitmap drawableToBitmap(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
         if (drawable instanceof BitmapDrawable) {
             return ((BitmapDrawable) drawable).getBitmap();
         }

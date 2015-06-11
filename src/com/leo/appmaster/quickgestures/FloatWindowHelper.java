@@ -140,9 +140,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mLeftBottomParams.width / 12 || moveY > mLeftBottomParams.height / 10)
+                                if (((moveX > mLeftBottomParams.width / 10 || moveY > mLeftBottomParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.1) {
+                                    if (presssure > 0.5) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -257,9 +257,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mLeftCenterParams.width / 12 || moveY > mLeftCenterParams.height / 10)
+                                if (((moveX > mLeftCenterParams.width / 10 || moveY > mLeftCenterParams.height /8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.1) {
+                                    if (presssure > 0.5) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -361,9 +361,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mLeftCenterCenterParams.width / 12 || moveY > mLeftCenterCenterParams.height / 10)
+                                if (((moveX > mLeftCenterCenterParams.width / 10 || moveY > mLeftCenterCenterParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.1) {
+                                    if (presssure > 0.5) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -495,9 +495,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mLeftTopParams.width / 12 || moveY > mLeftTopParams.height / 10)
+                                if (((moveX > mLeftTopParams.width / 10 || moveY > mLeftTopParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.1) {
+                                    if (presssure > 0.5) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -600,9 +600,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mRightBottomParams.width / 12 || moveY > mRightBottomParams.height / 10)
+                                if (((moveX > mRightBottomParams.width / 10 || moveY > mRightBottomParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.1) {
+                                    if (presssure > 0.5) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -713,9 +713,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mRightCenterParams.width / 12 || moveY > mRightCenterParams.height / 10)
+                                if (((moveX > mRightCenterParams.width / 10 || moveY > mRightCenterParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.1) {
+                                    if (presssure > 0.5) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -818,9 +818,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mRightCenterCenterParams.width / 12 || moveY > mRightCenterCenterParams.height / 10)
+                                if (((moveX > mRightCenterCenterParams.width / 10 || moveY > mRightCenterCenterParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.1) {
+                                    if (presssure > 0.5) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -956,9 +956,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mRightTopParams.width / 12 || moveY > mRightTopParams.height / 10)
+                                if (((moveX > mRightTopParams.width / 10 || moveY > mRightTopParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.1) {
+                                    if (presssure > 0.5) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);

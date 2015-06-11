@@ -197,7 +197,7 @@ public class TaskDetectService extends Service {
     private void startFloatWindowTask() {
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
-        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1500,
+        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1000,
                 TimeUnit.MILLISECONDS);
     }
 

@@ -32,6 +32,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;

@@ -12,8 +12,12 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.Intent.ShortcutIconResource;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
+import android.nfc.NfcAdapter.CreateBeamUrisCallback;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -45,9 +49,12 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -83,15 +90,20 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private ImageView mHandImage, mArrowImage, mQuickOpenCK, mNoReadMessageOpenCK,
             mRecentlyContactOpenCK, mPrivacyContactOpenCK;
     private boolean mFlag, mOpenQuickFlag, mNoReadMessageFlag, mRecentlyContactFlag,
-            mPrivacyContactFlag;
+            mPrivacyContactFlag,mFromShortcut;
     private String slidingArea = "";
-
+    public static final String FROME_STATUSBAR = "from_statusbar";
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
         initUi();
+        Intent intent = getIntent();
+        if (intent != null) {
+            mFromShortcut = intent.getBooleanExtra(FROME_STATUSBAR, false);
+        }
     }
 
     private void initUi() {
@@ -751,6 +763,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         } catch (Exception e) {
                         }
                         mFlag = true;
+                        createShortCut();
                     }
                 }
                 break;
@@ -957,5 +970,30 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 }
             }
         });
+    }
+    
+  /**
+   * create shortcut of quick guesture
+   */
+    private void createShortCut(){
+        SharedPreferences prefernece = PreferenceManager
+                .getDefaultSharedPreferences(QuickGestureActivity.this);
+        boolean quickGestureFlag = prefernece.getBoolean("shortcut_quickGesture", false);
+        if(!quickGestureFlag){
+            Intent quickGestureShortIntent = new Intent(QuickGestureActivity.this, ProxyActivity.class);
+            quickGestureShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                    StatusBarEventService.EVENT_BUSINESS_QUICK_GUESTURE);
+            
+            Intent quickGestureShortcut = new Intent( "com.android.launcher.action.INSTALL_SHORTCUT");
+            ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
+                    QuickGestureActivity.this, R.drawable.gesture_desktopo_icon);
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,getString(R.string.quick_guesture_switchset));
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, quickGestureShortIntent);
+            quickGestureShortcut.putExtra("duplicate", false);
+            quickGestureShortcut.putExtra("from_shortcut", true);
+            sendBroadcast(quickGestureShortcut);
+            prefernece.edit().putBoolean("shortcut_quickGesture", true).commit();
+        }
     }
 }

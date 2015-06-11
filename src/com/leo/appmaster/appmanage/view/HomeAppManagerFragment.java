@@ -665,7 +665,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                             + BuildProperties.getPoneModel());
                 }
             }
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+//            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+            LockManager.getInstatnce().timeFilterSelf();
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
             quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {

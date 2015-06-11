@@ -1237,8 +1237,6 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void showOpenAnimation(final Runnable run) {
-        final long a = System.currentTimeMillis();
-
         int direction = mShowOrientation == Orientation.Left ? 0 : 2;
         final AppleWatchLayout targetLayout;
         if (mCurrentGestureType == GType.DymicLayout) {
@@ -1273,7 +1271,6 @@ public class AppleWatchContainer extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                Log.i("time", System.currentTimeMillis() - a + " ");
                 isAnimating = false;
                 targetLayout.post(new Runnable() {
                     @Override
@@ -1288,8 +1285,6 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void showCloseAnimation() {
-        final long a = System.currentTimeMillis();
-
         int direction = mShowOrientation == Orientation.Left ? 0 : 2;
         AppleWatchLayout targetLayout;
         if (mCurrentGestureType == GType.DymicLayout) {
@@ -1328,7 +1323,6 @@ public class AppleWatchContainer extends FrameLayout {
                 activity.finish();
                 isAnimating = false;
                 super.onAnimationEnd(animation);
-                Log.i("close time", System.currentTimeMillis() - a + " ");
             }
         });
         set.start();
