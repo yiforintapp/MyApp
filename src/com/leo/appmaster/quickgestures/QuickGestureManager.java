@@ -459,13 +459,12 @@ public class QuickGestureManager {
                     mFirstList.size(), NORMALINFO);
             mSpSwitch.setCommonAppPackageName(mListString);
             return mFirstList;
-
         }
 
         LeoLog.d("testSp", "resault.size() : " + resault.size());
 
         // 删除相同应用
-        if (resault.size() > 0) {
+        if (resault.size() > 0 && mHaveList.size() > 0) {
             for (int i = 0; i < mHaveList.size(); i++) {
                 QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(i);
                 for (int j = 0; j < resault.size(); j++) {
@@ -524,12 +523,23 @@ public class QuickGestureManager {
                 }
             }
             LeoLog.d("testSp", "newresault.size : " + newresault.size());
-            return newresault;
-        } else {
-            return resault;
+            // return newresault;
+            resault.clear();
+            resault = newresault;
         }
-
+        // else {
         // return resault;
+        // }
+        
+        
+        
+        
+        String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
+                resault,
+                resault.size(), NORMALINFO);
+        mSpSwitch.setCommonAppPackageName(mListString);
+        
+        return resault;
     }
 
     private List<BaseInfo> changeList(List<BaseInfo> resault) {
