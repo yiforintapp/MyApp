@@ -1,12 +1,14 @@
 
 package com.leo.appmaster.applocker.service;
 
+import android.R.integer;
 import android.app.IntentService;
 import android.content.Intent;
 
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -22,6 +24,7 @@ public class StatusBarEventService extends IntentService {
     public static final int EVENT_NEW_THEME = 0;
     public static final int EVENT_BUSINESS_APP = 1;
     public static final int EVENT_BUSINESS_GAME = 2;
+    public static final int EVENT_BUSINESS_QUICK_GUESTURE=3;
 
     public StatusBarEventService() {
         super("");
@@ -62,7 +65,13 @@ public class StatusBarEventService extends IntentService {
             targetIntent.putExtra(HotAppActivity.SHOW_PAGE, HotAppActivity.PAGE_GAME);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        } else {
+        }else if(eventType == EVENT_BUSINESS_QUICK_GUESTURE){
+            LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+            targetIntent = new Intent(this, QuickGestureActivity.class);
+            targetIntent.putExtra(QuickGestureActivity.FROME_STATUSBAR, true);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        }else {
             return;
         }
 
