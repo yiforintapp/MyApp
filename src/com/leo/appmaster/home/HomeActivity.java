@@ -542,7 +542,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 @SuppressWarnings("deprecation")
                 RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(
                         1).get(0);
-
                 String pkg = HomeActivity.this.getPackageName();
                 if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
                     long count = AppMasterPreference.getInstance(
@@ -550,7 +549,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     boolean haveTip = AppMasterPreference.getInstance(
                             HomeActivity.this).getGoogleTipShowed();
                     if (count >= 25 && !haveTip) {
-                        LockManager.getInstatnce().timeFilterSelf();
+//                        LockManager.getInstatnce().timeFilterSelf();
                         Intent intent = new Intent(HomeActivity.this,
                                 GradeTipActivity.class);
                         HomeActivity.this.startActivity(intent);

@@ -374,9 +374,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             case R.id.bg_show_quick_gesture:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qssetting", "home");
                 startQuickGestureActivity();
-                // Intent intent1= new Intent(mActivity,
-                // GradeTipActivity.class);
-                // startActivity(intent1);
+//                LockManager.getInstatnce().timeFilterSelf();
+//                 Intent intent1= new Intent(mActivity,
+//                 GradeTipActivity.class);
+//                 startActivity(intent1);
                 break;
         }
     }

@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.AppUtil;
@@ -42,6 +43,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         boolean showGP = false;
         if (AppUtil.appInstalled(getApplicationContext(), "com.android.vending")) {
             try {
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = Uri
                         .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
@@ -51,6 +53,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
                 intent.setComponent(cn);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                LockManager.getInstatnce().timeFilterSelf();
                 Intent intent2 = new Intent(this, GooglePlayGuideActivity.class);
                 intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent2);
@@ -60,6 +63,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             }
         }
         if (!showGP) {
+            LockManager.getInstatnce().timeFilterSelf();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri
                     .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
