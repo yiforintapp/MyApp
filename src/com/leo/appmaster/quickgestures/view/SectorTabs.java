@@ -135,14 +135,14 @@ public class SectorTabs extends View {
 
         if (mOrientation == Orientation.Left) {
             mCoverAngle = -mDymicTargetAngle;
-            mBackground = res.getDrawable(R.drawable.left_tab_bg);
-            mCorner = res.getDrawable(R.drawable.left_corner);
-            mCover = res.getDrawable(R.drawable.left_corver);
+//            mBackground = res.getDrawable(R.drawable.left_tab_bg);
+//            mCorner = res.getDrawable(R.drawable.left_corner);
+//            mCover = res.getDrawable(R.drawable.left_corver);
         } else {
             mCoverAngle = mDymicTargetAngle;
-            mBackground = res.getDrawable(R.drawable.right_tab_bg);
-            mCorner = res.getDrawable(R.drawable.right_corner);
-            mCover = res.getDrawable(R.drawable.right_corver);
+//            mBackground = res.getDrawable(R.drawable.right_tab_bg);
+//            mCorner = res.getDrawable(R.drawable.right_corner);
+//            mCover = res.getDrawable(R.drawable.right_corver);
         }
 
         mCornerWidth = mCorner.getIntrinsicWidth();
