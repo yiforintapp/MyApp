@@ -28,7 +28,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
     private boolean mEditMode;
     private int mEditIndex;
     private Fragment mFragment;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,13 +40,13 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         mPagerTab = (LeoPagerTab) findViewById(R.id.tab_indicator);
         mViewPager = (EditableViewPager) findViewById(R.id.viewpager);
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        
+
         initFragment();
         mViewPager.setAdapter(new HomePagerAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2);
         mPagerTab.setViewPager(mViewPager);
         mPagerTab.setOnPageChangeListener(new ModePageChangeListiner());
-        
+
         mTtileBar.setTitle(R.string.lock_mode);
         mTtileBar.setBackViewListener(new OnClickListener() {
             @Override
@@ -80,10 +80,10 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
             if (f instanceof Editable) {
                 ((Editable) f).onFinishEditMode();
             }
-            //show help tip
-          if(mEditIndex!=0){
+            // show help tip
+            if (mEditIndex != 0) {
                 showTitleBarOption(mEditIndex);
-           }
+            }
         } else {
             finish();
         }
@@ -109,7 +109,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         LocationLockFragment locationFragment = new LocationLockFragment();
         holder.fragment = locationFragment;
         mFragmentHolders[2] = holder;
-        
+
         // AM-614, remove cached fragments
         FragmentManager fm = getSupportFragmentManager();
         try {
@@ -168,20 +168,32 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         mEditMode = true;
         mEditIndex = i;
         mPagerTab.setVisibility(View.GONE);
-        mTtileBar.setOptionImage(R.drawable.delete);
+        mTtileBar.setOptionImage(R.drawable.un_delete);
         mViewPager.setScrollable(false);
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        mTtileBar.setOptionListener(this);
+        mTtileBar.setOptionListener(null);
+        mTtileBar.setOptionImageBackground(0);
     }
-    
-    public CommonTitleBar getActivityCommonTitleBar(){
-        if(null != mTtileBar){
+
+    public void onSelectItemChanged(int count) {
+        if (count == 0) {
+            mTtileBar.setOptionImage(R.drawable.un_delete);
+            mTtileBar.setOptionListener(null);
+            mTtileBar.setOptionImageBackground(0);
+        } else {
+            mTtileBar.setOptionImage(R.drawable.delete);
+            mTtileBar.setOptionListener(this);
+            mTtileBar.setOptionImageBackground(R.drawable.title_bar_option_selector);
+        }
+    }
+
+    public CommonTitleBar getActivityCommonTitleBar() {
+        if (null != mTtileBar) {
             return this.mTtileBar;
         }
         return null;
     }
-    
-    
+
     class ModePageChangeListiner implements OnPageChangeListener {
 
         @Override
@@ -200,18 +212,19 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
             showTitleBarOption(position);
         }
     }
-    
-    private void showTitleBarOption(int currentPageItem){
+
+    private void showTitleBarOption(int currentPageItem) {
         OnClickListener listener = null;
-        if(currentPageItem ==0){
+        if (currentPageItem == 0) {
             return;
         }
         if (currentPageItem == 1) {
             mFragment = mFragmentHolders.clone()[currentPageItem].fragment;
-             listener = new OnClickListener() {
+            listener = new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppMasterPreference.getInstance(LockModeActivity.this).setTimeLockModeGuideClicked(true);
+                    AppMasterPreference.getInstance(LockModeActivity.this)
+                            .setTimeLockModeGuideClicked(true);
                     ((TimeLockFragment) mFragment).lockGuide();
                     /* SDK Event Mark */
                     SDKWrapper.addEvent(LockModeActivity.this, SDKWrapper.P1, "help", "time");
@@ -219,22 +232,23 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
             };
         } else if (currentPageItem == 2) {
             mFragment = mFragmentHolders.clone()[currentPageItem].fragment;
-             listener = new OnClickListener() {
+            listener = new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    AppMasterPreference.getInstance(LockModeActivity.this).setLocationLockModeGuideClicked(true);
+                    AppMasterPreference.getInstance(LockModeActivity.this)
+                            .setLocationLockModeGuideClicked(true);
                     ((LocationLockFragment) mFragment).lockGuide();
                     /* SDK Event Mark */
                     SDKWrapper.addEvent(LockModeActivity.this, SDKWrapper.P1, "help", "local");
                 }
             };
         }
-        
+
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.setOptionImage(R.drawable.tips_icon);
-        if(null != listener){
+        if (null != listener) {
             mTtileBar.setOptionListener(listener);
         }
     }
-    
+
 }

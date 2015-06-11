@@ -90,7 +90,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     public void setBackArrowVisibility(int visibility) {
         mIvBackArrow.setVisibility(visibility);
     }
-    
+
     public void setBackArrowImg(int imgID) {
         mIvBackArrow.setImageResource(imgID);
     }
@@ -107,6 +107,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mTvOptionText.setBackgroundResource(resId);
     }
 
+    public void setOptionImageBackground(int resId) {
+        mTvOptionImage.setBackgroundResource(resId);
+    }
+
     public void setOptionText(String text) {
         mTvOptionText.setText(text);
     }
@@ -115,8 +119,8 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mTvOptionText.setOnClickListener(listener);
         mTvOptionImage.setOnClickListener(listener);
     }
-    
-    public void setOptionAnimation(Animation animation){
+
+    public void setOptionAnimation(Animation animation) {
         mTvOptionImage.startAnimation(animation);
     }
 
@@ -130,6 +134,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
     public void setOptionImage(int resID) {
         mTvOptionImage.setImageResource(resID);
+    }
+
+    public void setOptionIamgeEnabled(boolean disable) {
+        mTvOptionImage.setEnabled(disable);
     }
 
     public void setHelpSettingImage(int resId) {
@@ -152,9 +160,10 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mTvLogo.setVisibility(View.VISIBLE);
     }
 
-    public View getOptionImageView(){
+    public View getOptionImageView() {
         return mTvOptionImage;
     }
+
     @Override
     public void onClick(View v) {
         if (mLayoutBackView == v) {
@@ -162,14 +171,14 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         }
 
     }
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
             super.onRestoreInstanceState(state);
         } catch (Exception e) {
-            
+
         }
     }
-    
+
 }
