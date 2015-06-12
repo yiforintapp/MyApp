@@ -584,17 +584,18 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 .getFristDialogTip();
                         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getIsUpdateQuickGestureUser();
-                        // Log.e("######", "是否为升级用户：" + updateUser);
+//                        Log.e("######", "newUserCount：" + newUserCount+"||firstSlidingTip:"+firstSlidingTip+"||firstDilaogTip:"+firstDilaogTip);
+//                         Log.e("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
                             // new user
                             if (newUserCount >= 10 && !firstSlidingTip && !firstDilaogTip) {
-                                // Log.e("######", "新用户提示！");
+//                                 Log.e("######", "新用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
                         } else {
                             // update user
                             if (!firstSlidingTip && !firstDilaogTip) {
-                                // Log.e("######", "升级用户提示！");
+//                                 Log.e("######", "升级用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
 
@@ -971,6 +972,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
             }
         });
+        mQuickGestureTip.setCanceledOnTouchOutside(false);
         mQuickGestureTip.show();
     }
 

@@ -342,8 +342,7 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         int lastVercode = pref.getCurrentAppVersionCode();
         if (lastVercode < 0) {
-            String vercode = pref.getLastVersion();
-            if (vercode != null && !"".equals(vercode)) {
+            if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 if (Integer.valueOf(PhoneInfo.getVersionCode(this)) >= 37) {
                     pref.setIsUpdateQuickGestureUser(true);
                 }
