@@ -344,12 +344,14 @@ public class AppMasterApplication extends Application {
         if (lastVercode < 0) {
             String vercode = pref.getLastVersion();
             if (!TextUtils.isEmpty(vercode)) {
-                pref.setIsUpdateQuickGestureUser(true);
-            } else{
+                if (Integer.valueOf(PhoneInfo.getVersionCode(this)) >= 37) {
+                    pref.setIsUpdateQuickGestureUser(true);
+                }
+            } else {
                 pref.setIsUpdateQuickGestureUser(false);
             }
         } else {
-            if (lastVercode >= 37 && !pref.getIsUpdateQuickGestureUser()) {
+            if (lastVercode > 37) {
                 pref.setIsUpdateQuickGestureUser(true);
             }
         }

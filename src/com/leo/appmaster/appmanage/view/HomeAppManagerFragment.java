@@ -672,7 +672,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 }
             }
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-//            LockManager.getInstatnce().filterAllOneTime(1000);
+            LockManager.getInstatnce().filterAllOneTime(1000);
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
             quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(quickIntent);
