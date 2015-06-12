@@ -1256,7 +1256,7 @@ public class AppleWatchContainer extends FrameLayout {
             };
         });
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1)
-                .setDuration(320);
+                .setDuration(480);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
 
         AnimatorSet set = new AnimatorSet();
@@ -1305,10 +1305,10 @@ public class AppleWatchContainer extends FrameLayout {
                 0, mCornerTabs.getHeight());
         tabAnimator.setDuration(200);
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0)
-                .setDuration(320);
+                .setDuration(400);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
-        ObjectAnimator bgAlphaAnimator = ObjectAnimator.ofFloat(getParent(), "alpha", 1.0f,0f).setDuration(50);
-        bgAlphaAnimator.setStartDelay(270);
+        ObjectAnimator bgAlphaAnimator = ObjectAnimator.ofFloat(getParent(), "alpha", 1.0f,0f).setDuration(80);
+        bgAlphaAnimator.setStartDelay(320);
 
         AnimatorSet set = new AnimatorSet();
         set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet,bgAlphaAnimator);
