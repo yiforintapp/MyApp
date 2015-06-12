@@ -678,7 +678,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.LIGHT)) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
                         + sInfo.swtichIdentiName);
-                QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo,item);
+                QuickSwitchManager.getInstance(getContext()).toggleLight(sInfo, item);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
                         + sInfo.swtichIdentiName);
@@ -849,10 +849,15 @@ public class AppleWatchLayout extends ViewGroup {
 
     private void replaceEmptyIcon(GestureItemView hitView) {
         GType type = mContainer.getCurrentGestureType();
+        BaseInfo baseInfo = (BaseInfo) hitView.getTag();
+        QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.DymicLayout) {
             QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
                     (BaseInfo) hitView.getTag());
 
+            if (baseInfo instanceof BusinessItemInfo) {
+                qgm.deleteBusinessItem((BusinessItemInfo) baseInfo);
+            }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_delete");
         } else if (type == GType.SwitcherLayout) {
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_delete");
@@ -864,8 +869,7 @@ public class AppleWatchLayout extends ViewGroup {
                         .getQuickGestureCommonAppDialogCheckboxValue();
                 if (isRecorderFlag) {
 
-                    List<BaseInfo> mComList = QuickGestureManager.getInstance(mContext)
-                            .loadCommonAppInfo();
+                    List<BaseInfo> mComList = qgm.loadCommonAppInfo();
                     for (int i = 0; i < mComList.size(); i++) {
                         AppInfo mInfo = (AppInfo) mComList.get(i);
                         if (mInfo.packageName.equals(info.packageName)) {
@@ -895,10 +899,10 @@ public class AppleWatchLayout extends ViewGroup {
 
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_delete");
         }
-        BaseInfo baseInfo = (BaseInfo) hitView.getTag();
+
         GestureEmptyItemInfo info = new GestureEmptyItemInfo();
         info.gesturePosition = baseInfo.gesturePosition;
-        info.icon = QuickGestureManager.getInstance(getContext()).applyEmptyIcon();
+        info.icon = qgm.applyEmptyIcon();
         hitView.setItemIcon(info.icon, false);
         hitView.setItemName(info.label);
         hitView.setDecorateAction(null);

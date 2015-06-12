@@ -39,7 +39,7 @@ public class AppBusinessManager {
 
     public static final String TAG = "AppBusinessManager";
 
-    private static final int DELAY_2_HOUR = 10 * /*60 **/ 60 * 1000;
+    private static final int DELAY_2_HOUR = 10 * /* 60 * */60 * 1000;
     // public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
     public static final int DELAY_12_HOUR = 15 * 60 * 1000;
 
@@ -178,6 +178,26 @@ public class AppBusinessManager {
                 return null;
             }
         }
+    }
+
+    public void removeBusinessData(BusinessItemInfo info) {
+        mBusinessList.remove(info);
+        deleteLocalData(info);
+    }
+
+    private void deleteLocalData(final BusinessItemInfo info) {
+        Runnable deleteTask = new Runnable() {
+
+            @Override
+            public void run() {
+                final ContentResolver resolver = mContext
+                        .getContentResolver();
+                resolver.delete(Constants.APPLIST_BUSINESS_URI, "package_name=" + info.packageName,
+                        null);
+            }
+        };
+
+        AppMasterApplication.getInstance().postInAppThreadPool(deleteTask);
     }
 
     public boolean hasBusinessData(int type) {

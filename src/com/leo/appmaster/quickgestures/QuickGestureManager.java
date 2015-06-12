@@ -115,7 +115,7 @@ public class QuickGestureManager {
             mDynamicList = null;
             mMostUsedList = null;
             LockManager.getInstatnce().mAppLaunchRecorders.clear();
-//            LockManager.getInstatnce().mAppLaunchRecorders = null;
+            // LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
             LockManager.getInstatnce().mMatcher.clearItem();
             // LockManager.getInstatnce().mMatcher = null;
@@ -387,7 +387,7 @@ public class QuickGestureManager {
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
-        if (recorderApp!= null && ( recorderApp.size() > 1 || mHaveList.size() > 0)) {
+        if (recorderApp != null && (recorderApp.size() > 1 || mHaveList.size() > 0)) {
             LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
@@ -530,15 +530,12 @@ public class QuickGestureManager {
         // else {
         // return resault;
         // }
-        
-        
-        
-        
+
         String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
                 resault,
                 resault.size(), NORMALINFO);
         mSpSwitch.setCommonAppPackageName(mListString);
-        
+
         return resault;
     }
 
@@ -974,6 +971,11 @@ public class QuickGestureManager {
         commonApp.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         commonApp.show();
+    }
+
+    public void deleteBusinessItem(BusinessItemInfo info) {
+        AppBusinessManager abm = AppBusinessManager.getInstance(mContext);
+        abm.removeBusinessData(info);
     }
 
     /**
