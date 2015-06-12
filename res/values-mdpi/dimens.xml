@@ -168,7 +168,7 @@
 
     <!-- weizhuang -->
     <dimen name="weizhaung_guide_image_margin_top">36dp</dimen>
-      <!-- quick gesture start -->
+    <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">40dp</dimen>
     <dimen name="dialog_list_width">260dp</dimen>
     <dimen name="dialog_list_btn_height">42dp</dimen>
@@ -183,7 +183,7 @@
     <dimen name="quick_seek_bar_width">250dp</dimen>
     <dimen name="dialog_app_view_width">26dp</dimen>
     <dimen name="dialog_app_margin_top">1dp</dimen>
-     <dimen name="quick_gesture_dialog_list_width">270dp</dimen>
+    <dimen name="quick_gesture_dialog_list_width">270dp</dimen>
     <dimen name="gesture_item_text_size">10sp</dimen>
     <dimen name="quick_gesture_item_height">50dp</dimen>
     <dimen name="quick_gesture_margin_left_to_checkbox">6dp</dimen>
@@ -191,5 +191,6 @@
     <dimen name="dialog_slide_time_disturbTV_margin_top">28dp</dimen>
     <!-- quick gesutre end -->
     <dimen name="dialog_btn_height">48dp</dimen>
+    <dimen name="apple_watch_item_icon_size">62dp</dimen>
 
 </resources>

@@ -325,7 +325,6 @@
     <dimen name="apple_watch_layout_inner_radius">84dp</dimen>
     <dimen name="apple_watch_layout_outer_radius">128dp</dimen>
     <dimen name="gesture_item_text_size">10sp</dimen>
-    
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
@@ -337,11 +336,12 @@
     <dimen name="dialog_app_view_width">30dp</dimen>
     <dimen name="dialog_app_margin_top">6dp</dimen>
     <dimen name="quick_gesture_dialog_list_width">280dp</dimen>
-     <dimen name="quick_gesture_item_height">56dp</dimen>
-     <dimen name="quick_gesture_margin_left_to_checkbox">6dp</dimen>
-     <dimen name="dialog_slide_item_margin_top">16dp</dimen>
-     <dimen name="dialog_slide_time_disturbTV_margin_top">30dp</dimen>
+    <dimen name="quick_gesture_item_height">56dp</dimen>
+    <dimen name="quick_gesture_margin_left_to_checkbox">6dp</dimen>
+    <dimen name="dialog_slide_item_margin_top">16dp</dimen>
+    <dimen name="dialog_slide_time_disturbTV_margin_top">30dp</dimen>
     <!-- quick gesutre end -->
-	<dimen name="privacy_contact_red_tip_x">97dp</dimen>
+    <dimen name="privacy_contact_red_tip_x">97dp</dimen>
     <dimen name="privacy_contact_red_tip_y">8dp</dimen>
+
 </resources>
