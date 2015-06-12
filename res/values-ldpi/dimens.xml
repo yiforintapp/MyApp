@@ -220,6 +220,12 @@
     <dimen name="quick_gesture_margin_left_to_checkbox">6dp</dimen>
     <dimen name="dialog_slide_item_margin_top">10dp</dimen>
     <dimen name="dialog_slide_time_disturbTV_margin_top">20dp</dimen>
+    <dimen name="quick_first_tip_dialog_width">260dp</dimen>
+    <dimen name="quick_first_tip_dialog_height">323dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_width">250dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_height">155dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_margin_top">15dp</dimen>
+    <dimen name="quick_first_tip_dialog_title_margin_top">60dp</dimen>
     <!-- quick gesutre end -->
 
     <integer name="privacy_contact_red_tip_tabTextwdth">10</integer>
