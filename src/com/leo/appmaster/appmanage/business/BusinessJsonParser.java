@@ -103,6 +103,7 @@ public class BusinessJsonParser {
                             bean.desc = "";
                             bean.appDownloadCount = "";
                             bean.rating = 0;
+                            bean.iconLoaded = false;
                             list.add(bean);
                         } catch (JSONException e) {
                             LeoLog.e("parserJsonObject", e.getMessage());
