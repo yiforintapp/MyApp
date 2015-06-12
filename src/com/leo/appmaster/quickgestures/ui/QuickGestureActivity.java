@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -52,6 +53,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureSlideTimeDialog.UpdateFilt
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 
 /**
@@ -694,6 +696,10 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 float moveY = Math.abs(event.getY() - downY);
 
                 if (moveX > width / 50 || moveY > width / 50) {
+
+                    boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(QuickGestureActivity.this);
+                    boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(QuickGestureActivity.this);
+                    Log.e("#########", "机型华为："+checkHuaWei+"||悬浮窗权限："+checkFloatWindow);
                     if (!mFlag) {
                         mTipRL.clearAnimation();
                         mTipRL.setVisibility(View.GONE);
