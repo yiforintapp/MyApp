@@ -251,4 +251,10 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         }
     }
 
+    public void disableOptionImage() {
+        mTtileBar.setOptionImage(R.drawable.un_delete);
+        mTtileBar.setOptionListener(null);
+        mTtileBar.setOptionImageBackground(0);
+    }
+
 }

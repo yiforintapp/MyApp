@@ -28,6 +28,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
@@ -309,6 +310,9 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
             mLockListView.setOnItemClickListener(null);
             mEditing = true;
             mLockListView.removeHeaderView(mListHeader);
+            for (TimeLock lock : mTimeLockList) {
+                lock.selected = false;
+            }
             mTimeLockAdapter.notifyDataSetChanged();
         }
         return false;
@@ -334,6 +338,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         for (TimeLock lock : deleteList) {
             lm.removeTimeLock(lock);
         }
+        ((LockModeActivity)mActivity).disableOptionImage();
         mTimeLockAdapter.notifyDataSetChanged();
     }
 
