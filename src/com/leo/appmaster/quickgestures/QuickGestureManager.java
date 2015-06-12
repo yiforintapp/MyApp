@@ -1160,14 +1160,15 @@ public class QuickGestureManager {
 
     public void sendPermissionOpenNotification(final Context context) {
         new Handler().postDelayed(new Runnable() {
-            
+
             @Override
             public void run() {
                 NotificationManager notificationManager = (NotificationManager)
                         context
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification notification = new Notification();
-                LockManager.getInstatnce().timeFilterSelf();
+                // LockManager.getInstatnce().timeFilterSelf();
+                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                 Intent intentPending = new Intent(context,
                         QuickGestureActivity.class);
                 intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1187,7 +1188,8 @@ public class QuickGestureManager {
                         R.drawable.ic_launcher_notification_big);
                 notification.when = System.currentTimeMillis();
                 notificationManager.notify(20150603, notification);
-                AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
+                AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(
+                        true);
             }
         }, 5000);
 
@@ -1206,7 +1208,7 @@ public class QuickGestureManager {
         return null;
     }
 
-    public  void startQuickGestureActivity(Context context) {
+    public void startQuickGestureActivity(Context context) {
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(context);
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(context);
         boolean checkMiui = BuildProperties.isMIUI();
