@@ -699,7 +699,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
                     boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(QuickGestureActivity.this);
                     boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(QuickGestureActivity.this);
-                    Log.e("#########", "机型华为："+checkHuaWei+"||悬浮窗权限："+checkFloatWindow);
+//                    Log.e("#########", "机型华为："+checkHuaWei+"||悬浮窗权限："+checkFloatWindow);
                     if (!mFlag) {
                         mTipRL.clearAnimation();
                         mTipRL.setVisibility(View.GONE);
