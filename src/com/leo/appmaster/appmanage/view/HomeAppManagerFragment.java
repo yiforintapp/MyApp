@@ -652,7 +652,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             try {
                 LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
                         false);
-                LockManager.getInstatnce().filterAllOneTime(1000);
+                LockManager.getInstatnce().filterAllOneTime(2000);
                 startActivity(intentv6);
             } catch (Exception e) {
                 LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
@@ -674,7 +674,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             LockManager.getInstatnce().filterAllOneTime(1000);
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(quickIntent);
         } else if (checkHuaWei && !checkFloatWindow) {
             BuildProperties.isToHuaWeiSystemManager(getActivity());
