@@ -634,6 +634,66 @@
     <!-- version 2.2 end -->
 
     <!-- version 2.4 start -->
+  <!-- quick gesture -->
+    <string name="pg_appmanager_quick_gesture_name">快捷手势</string>
+    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">ใช้ท่ามือ</string>
+    <string name="pg_appmanager_quick_gesture_option_switch_setting">การกำหนดเปิดปิด</string>
+    <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">หัวข้อท่ามือ</string>
+    <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">ปัจจุบัน %1$s</string>
+    <string name="pg_appmanager_quick_gesture_option_sliding_area_location_title">แบ่งที่ภูมิภาค</string>
+    <string name="pg_appmanager_quick_gesture_option_no_read_message_tip">ข้อความไม่อ่าน</string>
+    <string name="pg_appmanager_quick_gesture_option_recently_contact">ผู้ติดต่อสุดท้าย</string>
+    <string name="pg_appmanager_quick_gesture_option_privacy_contact_message_tip">ข้อความ ผตต.ลับ</string>
+    <string name="pg_appmanager_quick_gesture_option_able_sliding_time">แบ่งโอกาศได้</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">ส่วนล่างข้างซ้าย</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">ส่วนล่างข้างขวา</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">ส่วนกลางข้างซ้าย</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">ส่วนกลางข้างขวา</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_just_home_text">เพียงเดสก์ท็อป</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_home_and_all_app_text">เดสก์ท็อปและใช้</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_no_disturb_text">การใช้ไม่รบกวน</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">ขอเลือกภูมิภาคหนึ่งอย่างน้อย</string>
+    <string name="pg_appmanager_quick_gesture_select_free_disturb_app_text">ขอเลือกการรบกวน</string>
+    <string name="pg_appmanager_quick_gesture_no_free_add_free_disturb_app_text">เพิ่มการไม่รบกวน</string>
+    <string name="pg_appmanager_quick_gesture_miui_open_float_window_tip_text">เปิดหน้าต่างใช้ท่ามือ</string>
+    <string name="pg_appmanager_quick_gesture_first_tip_text">ขีดออกจากข้างใดเขตแสดง</string>
+    <string name="pg_appmanager_quick_switch_dialog_title">ขอเลือกสวิตช์ฉับ</string>
+    <string name="quick_gesture_change_common_app_dialog_title">ขอเลือกการใช้</string>
+    <string name="quick_gesture_change_common_app_dialog_checkbox_text">เพิ่ม/เปลี่ยนการใช้</string>
+    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">系统信息</string>
+    <string name="quick_gesture_dialog_tip_contniue_title">กำหนดท่ามือ</string>
+    <string name="quick_gesture_dialog_tip_contniue_cotent">ตรวจพบท่านได้เปิดการกำหนดหน้าต่างโฟลทิง กำหนดท่ามือฉับต่อไปหรือไม่</string>
+    <string name="quick_gesture_dialog_tip_contniue_left_bt">ต่อไป</string>
+    <string name="quick_gesture_dialog_tip_contniue_right_bt">รอเดี๋ยว</string>
+    <string name="quick_gesture_miui_tip_button_text">รู้แล้ว</string>
+    <string name="quick_gesture_dynamic">最近使用</string>
+    <string name="quick_gesture_switcher">เปิดปิดฉับ</string>
+    <string name="quick_gesture_most_used">ใช้บ่อย</string>
+    <string name="quick_gesture_first_open_sliding_toast">เปิดการฉับ</string>
+    <string name="quick_guesture_bluetooth">บลูทูธ</string>
+    <string name="quick_guesture_flashlight">ไฟฉาย</string>
+    <string name="quick_guesture_wlan">WLAN</string>
+    <string name="quick_guesture_carme">กล้องถ่าย</string>
+    <string name="quick_guesture_sound">เสียง</string>
+    <string name="quick_guesture_light">ความสว่าง</string>
+    <string name="quick_guesture_speedup">เร่งเร็ว</string>
+    <string name="quick_guesture_changemode">เปลี่ยนแบบ</string>
+    <string name="quick_guesture_switchset">กน.ท่ามือ</string>
+    <string name="quick_guesture_setting">กน.ระบบ</string>
+    <string name="quick_guesture_gps">GPS</string>
+    <string name="quick_guesture_flymode">แบบการบิน</string>
+    <string name="quick_guesture_rotation">หมุนเวียน</string>
+    <string name="quick_guesture_mobliedata">ย้ายข้อมูล</string>
+    <string name="quick_guesture_home">เดสก์ท็อป</string>
+    <string name="quick_guesture_lockscreen">ล็อคจอ</string>
     <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
-    <!--  version 2.4 end -->
+    <string name="pass_gesture_change">เปลี่ยนแบบรหัส</string>
+    <string name="permission_open_tip_notification_title">设置快捷手势</string>
+    <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">开启快捷手势，只要轻松一划，想要的应用/开关尽在眼前</string>
+    <string name="grade_tip_feedback">我要吐槽</string>
+    <string name="quick_first_tip_dialog_right_bt">立即体验</string>
+    <string name="quick_first_tip_dialog_left_bt">稍后再试</string>
+      <!-- quick gesture -->
+ <!-- version 2.4 end -->
 </resources>
