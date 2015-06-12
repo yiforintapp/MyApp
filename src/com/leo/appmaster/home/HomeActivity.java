@@ -18,6 +18,7 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -58,6 +59,8 @@ import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -66,7 +69,9 @@ import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.quickgestures.ui.QuickGestureTipDialog;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -85,7 +90,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         OnPageChangeListener, OnShaderColorChangedLisetner {
 
     private final static String KEY_ROOT_CHECK = "root_check";
-
     private ViewStub mViewStub;
     private MultiModeView mMultiModeView;
     private DrawerLayout mDrawerLayout;
@@ -99,7 +103,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private LeoPopMenu mLeoPopMenu;
     private LEOAlarmDialog mQuickGestureSettingDialog;
     private QuickGestureTipDialog mQuickGestureTip;
-
     private float mDrawerOffset;
     private Handler mHandler = new Handler();
     private DrawerArrowDrawable mDrawerArrowDrawable;
@@ -118,6 +121,19 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         showQuickGestureContinue();
 //        showFirstOpenQuickGestureTipDialog();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
+        LeoEventBus.getDefaultBus().register(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LeoEventBus.getDefaultBus().unregister(this);
+    }
+
+    public void onEventMainThread(BackupEvent event) {
+        if (HomeAppManagerFragment.FINISH_HOME_ACTIVITY_FALG.equals(event.eventMsg)) {
+            this.finish();
+        }
     }
 
     private void initUI() {
@@ -531,7 +547,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         });
     }
-    
+
     private void judgeShowGradeTip() {
         mHandler.postDelayed(new Runnable() {
             @Override
@@ -549,7 +565,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     boolean haveTip = AppMasterPreference.getInstance(
                             HomeActivity.this).getGoogleTipShowed();
                     if (count >= 25 && !haveTip) {
-//                        LockManager.getInstatnce().timeFilterSelf();
+                        // LockManager.getInstatnce().timeFilterSelf();
                         Intent intent = new Intent(HomeActivity.this,
                                 GradeTipActivity.class);
                         HomeActivity.this.startActivity(intent);
@@ -569,7 +585,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         // Log.e("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
                             // new user
-                            if (newUserCount >= 50 && !firstSlidingTip) {
+                            if (newUserCount >= 10 && !firstSlidingTip) {
                                 // Log.e("######", "新用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
@@ -943,8 +959,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             @Override
             public void onClick(View arg0) {
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
-                Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
-                startActivity(inten);
+                startQuickGestureActivity();
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
@@ -972,4 +987,70 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             }
         }
     }
+
+    public void startQuickGestureActivity() {
+        boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(this);
+        boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(this);
+        boolean checkMiui = BuildProperties.isMIUI();
+        boolean isOpenWindow =
+                BuildProperties.isFloatWindowOpAllowed(this);
+        if (!checkFloatWindow) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_open_error", "model_"
+                    + BuildProperties.getPoneModel());
+        }
+        if (checkMiui && !isOpenWindow) {
+            // MIUI
+            Intent intentv6 = new
+                    Intent("miui.intent.action.APP_PERM_EDITOR");
+            intentv6.setClassName("com.miui.securitycenter",
+                    "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+            intentv6.putExtra("extra_pkgname", this.getPackageName());
+            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            try {
+                LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
+                        false);
+                LockManager.getInstatnce().filterAllOneTime(1000);
+                startActivity(intentv6);
+            } catch (Exception e) {
+                LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
+                        false);
+                LockManager.getInstatnce().filterAllOneTime(1000);
+                Intent intentv5 = new Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri
+                        .fromParts("package", this.getPackageName(), null);
+                intentv5.setData(uri);
+                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                try {
+                    startActivity(intentv5);
+                } catch (Exception e1) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_open_error", "reason_"
+                            + BuildProperties.getPoneModel());
+                }
+            }
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+            // LockManager.getInstatnce().filterAllOneTime(1000);
+            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(quickIntent);
+            // mActivity.finish();
+        } else if (checkHuaWei && !checkFloatWindow) {
+            BuildProperties.isToHuaWeiSystemManager(this);
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.putExtra("sys_name", "huawei");
+            try {
+                startActivity(quickIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Intent quickIntent = new Intent(this, QuickGestureActivity.class);
+            this.startActivity(quickIntent);
+        }
+    }
+
 }

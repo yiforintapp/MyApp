@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 
 /**
@@ -57,6 +60,8 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
             }, 3000);
         }
         QuickGestureMiuiTip.this.finish();
+        LeoEventBus.getDefaultBus().post(
+                new BackupEvent(HomeAppManagerFragment.FINISH_HOME_ACTIVITY_FALG));
     }
 
     @Override
@@ -67,6 +72,12 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
     @Override
     protected void onStop() {
         super.onStop();
-        QuickGestureMiuiTip.this.finish();
+        // QuickGestureMiuiTip.this.finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
     }
 }
