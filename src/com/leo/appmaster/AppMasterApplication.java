@@ -332,7 +332,6 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(this))) {
             pref.setUnlockCount(0);
-            pref.setNewUserUnlockCount(0);
         }
         if (pref.getCurrentAppVersionCode() != Integer.valueOf(PhoneInfo.getVersionCode(this))) {
             pref.setNewUserUnlockCount(0);
@@ -343,9 +342,15 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         int lastVercode = pref.getCurrentAppVersionCode();
         if (lastVercode < 0) {
-            pref.setIsUpdateQuickGestureUser(false);
+            if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                if (Integer.valueOf(PhoneInfo.getVersionCode(this)) >= 37) {
+                    pref.setIsUpdateQuickGestureUser(true);
+                }
+            } else {
+                pref.setIsUpdateQuickGestureUser(false);
+            }
         } else {
-            if (lastVercode >= 36 && !pref.getIsUpdateQuickGestureUser()) {
+            if (lastVercode > 37) {
                 pref.setIsUpdateQuickGestureUser(true);
             }
         }

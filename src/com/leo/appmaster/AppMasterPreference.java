@@ -169,6 +169,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE = "quick_gesture_quickswitch_list_size";
     public static final String PREF_QUICK_FIRST_SLIDING_TIP = "quick_first_sliding_tip";
     public static final String PREF_QUICK_GESTURE_RED_TIP = "quick_gesture_red_tip";
+    public static final String PREF_QUICK_GESTURE_FIRST_DIALOG_TIP = "quick_gesture_dialog_tip";
     public static final String PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME = "quick_gesture_quick_switch_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME = "quick_gesture_common_app_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG = "quick_gesture_common_app_dialog_checkbox_flag";
@@ -1578,6 +1579,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getFristSlidingTip() {
         return mPref.getBoolean(PREF_QUICK_FIRST_SLIDING_TIP, false);
+    }
+
+    public void setFristDialogTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_TIP, flag)
+                .commit();
+    }
+
+    public boolean getFristDialogTip() {
+        return mPref.getBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_TIP, false);
     }
 
     public void setQuickGestureRedTip(boolean flag) {

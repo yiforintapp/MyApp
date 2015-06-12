@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Vector;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -26,6 +27,8 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.provider.Settings;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 import android.view.View;
@@ -51,8 +54,8 @@ import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
-import com.leo.appmaster.quickgestures.view.EventAction;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -98,6 +101,7 @@ public class QuickGestureManager {
 
     public void init() {
         if (!mInited) {
+            mInited = true;
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
             preloadColorIcon();
@@ -108,18 +112,18 @@ public class QuickGestureManager {
             }
             // TODO switcher init
             QuickSwitchManager.getInstance(mContext).init();
-            mInited = true;
         }
     }
 
     public void unInit() {
         if (mInited) {
+            mInited = false;
             mDynamicList.clear();
             mMostUsedList.clear();
             mDynamicList = null;
             mMostUsedList = null;
             LockManager.getInstatnce().mAppLaunchRecorders.clear();
-            LockManager.getInstatnce().mAppLaunchRecorders = null;
+            // LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
             LockManager.getInstatnce().mMatcher.clearItem();
             // LockManager.getInstatnce().mMatcher = null;
@@ -127,7 +131,6 @@ public class QuickGestureManager {
             // LockManager.getInstatnce().mDrawableColors = null;
             // TODO Switcher uninit
             QuickSwitchManager.getInstance(mContext).unInit();
-            mInited = false;
         }
     }
 
@@ -151,7 +154,7 @@ public class QuickGestureManager {
         if (businessDatas != null && businessDatas.size() > 0) {
             int count = 0;
             for (BusinessItemInfo businessItem : businessDatas) {
-                if (count == 4) {
+                if (count == 4 || !businessItem.iconLoaded || businessItem.icon == null) {
                     break;
                 }
                 count++;
@@ -395,7 +398,7 @@ public class QuickGestureManager {
         Collections.sort(recorderApp, new LaunchCount());
 
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
-        if (recorderApp.size() > 1 || mHaveList.size() > 0) {
+        if (recorderApp != null && (recorderApp.size() > 1 || mHaveList.size() > 0)) {
             LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
 
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
@@ -1040,6 +1043,11 @@ public class QuickGestureManager {
         commonApp.show();
     }
 
+    public void deleteBusinessItem(BusinessItemInfo info) {
+        AppBusinessManager abm = AppBusinessManager.getInstance(mContext);
+        abm.removeBusinessData(info);
+    }
+
     /**
      * Quick Switch Dialog
      * 
@@ -1215,32 +1223,41 @@ public class QuickGestureManager {
         mSlidAreaSize = value;
     }
 
-    public void sendPermissionOpenNotification(Context context) {
-        NotificationManager notificationManager = (NotificationManager)
-                context
-                        .getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification();
-        LockManager.getInstatnce().timeFilterSelf();
-        Intent intentPending = new Intent(context,
-                QuickGestureActivity.class);
-        intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intentPending,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.icon = R.drawable.ic_launcher_notification;
-        notification.tickerText = context
-                .getString(R.string.permission_open_tip_notification_title);
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-        notification
-                .setLatestEventInfo(
-                        context,
-                        context.getString(R.string.permission_open_tip_notification_title),
-                        context.getString(R.string.permission_open_tip_notification_content),
-                        contentIntent);
-        NotificationUtil.setBigIcon(notification,
-                R.drawable.ic_launcher_notification_big);
-        notification.when = System.currentTimeMillis();
-        notificationManager.notify(20150603, notification);
-        AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
+    public void sendPermissionOpenNotification(final Context context) {
+        new Handler().postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                NotificationManager notificationManager = (NotificationManager)
+                        context
+                                .getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification notification = new Notification();
+                // LockManager.getInstatnce().timeFilterSelf();
+                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+                Intent intentPending = new Intent(context,
+                        QuickGestureActivity.class);
+                intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intentPending,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                notification.icon = R.drawable.ic_launcher_notification;
+                notification.tickerText = context
+                        .getString(R.string.permission_open_tip_notification_title);
+                notification.flags = Notification.FLAG_AUTO_CANCEL;
+                notification
+                        .setLatestEventInfo(
+                                context,
+                                context.getString(R.string.permission_open_tip_notification_title),
+                                context.getString(R.string.permission_open_tip_notification_content),
+                                contentIntent);
+                NotificationUtil.setBigIcon(notification,
+                        R.drawable.ic_launcher_notification_big);
+                notification.when = System.currentTimeMillis();
+                notificationManager.notify(20150603, notification);
+                AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(
+                        true);
+            }
+        }, 5000);
+
     }
 
     // public void removeItemFromAppLaunchRecoder(String packageName) {

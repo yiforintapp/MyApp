@@ -38,9 +38,10 @@ import com.leo.appmaster.utils.LeoLog;
 public class AppBusinessManager {
 
     public static final String TAG = "AppBusinessManager";
-    
-    private static final int DELAY_2_HOUR = 2 * 60 * 60 * 1000;
-    public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
+
+    private static final int DELAY_2_HOUR = 3 * /* 60 * */60 * 1000;
+    // public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
+    public static final int DELAY_12_HOUR = 5 * 60 * 1000;
 
     // private static final int DELAY_2_HOUR = 5 * 1000;
     // public static final int DELAY_12_HOUR = 5 * 1000;
@@ -68,19 +69,19 @@ public class AppBusinessManager {
         mContext = ctx.getApplicationContext();
         mBusinessListeners = new ArrayList<AppBusinessManager.BusinessListener>();
         mBusinessList = new Vector<BusinessItemInfo>();
-//         init();
+        // init();
     }
 
     public void init() {
         LeoLog.e("xxxx", "business init");
         loadInitData();
-        syncServerGestureData();
-//        syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);
-//        syncOtherRecommend(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
+        syncServerGestureData(true);
+        // syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);
+        // syncOtherRecommend(BusinessItemInfo.CONTAIN_CAPACITY_SORT);
     }
 
     private void loadInitData() {
-        
+
         LeoLog.d("xxxx", "loadInitData");
         mLoadInitDataTask = new FutureTask<Vector<BusinessItemInfo>>(
                 new Callable<Vector<BusinessItemInfo>>() {
@@ -179,6 +180,26 @@ public class AppBusinessManager {
         }
     }
 
+    public void removeBusinessData(BusinessItemInfo info) {
+        mBusinessList.remove(info);
+        deleteLocalData(info);
+    }
+
+    private void deleteLocalData(final BusinessItemInfo info) {
+        Runnable deleteTask = new Runnable() {
+
+            @Override
+            public void run() {
+                final ContentResolver resolver = mContext
+                        .getContentResolver();
+                resolver.delete(Constants.APPLIST_BUSINESS_URI, "package_name=" + info.packageName,
+                        null);
+            }
+        };
+
+        AppMasterApplication.getInstance().postInAppThreadPool(deleteTask);
+    }
+
     public boolean hasBusinessData(int type) {
         Vector<BusinessItemInfo> businessDatas = getBusinessData();
         for (BusinessItemInfo businessItemInfo : businessDatas) {
@@ -191,7 +212,7 @@ public class AppBusinessManager {
         return false;
     }
 
-    private void syncServerGestureData() {
+    private void syncServerGestureData(boolean firstSync) {
         LeoLog.d(TAG, "syncServerGestureData");
         final AppMasterPreference pref = AppMasterPreference
                 .getInstance(mContext);
@@ -199,7 +220,7 @@ public class AppBusinessManager {
 
         long lastSyncTime = pref.getLastSyncBusinessTime();
         if (lastSyncTime == 0
-                || (curTime - pref.getLastSyncBusinessTime()) > DELAY_12_HOUR) {
+                || (curTime - pref.getLastSyncBusinessTime()) >= DELAY_12_HOUR) {
             HttpRequestAgent.getInstance(mContext).loadGestureRecomApp(
                     BusinessItemInfo.CONTAIN_APPLIST,
                     new Listener<JSONObject>() {
@@ -239,10 +260,11 @@ public class AppBusinessManager {
                                     // timer.schedule(recheckTask,
                                     // DELAY_2_HOUR);
                                 } finally {
+                                    LeoLog.e("syncServerData", "recheck task");
                                     TimerTask recheckTask = new TimerTask() {
                                         @Override
                                         public void run() {
-                                            syncServerGestureData();
+                                            syncServerGestureData(false);
                                         }
                                     };
                                     Timer timer = new Timer();
@@ -258,7 +280,7 @@ public class AppBusinessManager {
                             TimerTask recheckTask = new TimerTask() {
                                 @Override
                                 public void run() {
-                                    syncServerGestureData();
+                                    syncServerGestureData(false);
                                 }
                             };
                             Timer timer = new Timer();
@@ -267,6 +289,18 @@ public class AppBusinessManager {
                             // "home_apps");
                         }
                     });
+        } else {
+            if (firstSync) {
+                TimerTask recheckTask = new TimerTask() {
+                    @Override
+                    public void run() {
+                        syncServerGestureData(false);
+                    }
+                };
+                Timer timer = new Timer();
+                timer.schedule(recheckTask,
+                        DELAY_12_HOUR - (curTime - pref.getLastSyncBusinessTime()));
+            }
         }
     }
 
@@ -358,6 +392,7 @@ public class AppBusinessManager {
                 mBusinessList.clear();
                 if (list == null || list.isEmpty())
                     return;
+                LeoLog.d(TAG, "syncGestureData list = " + list.size());
                 ContentValues[] values = new ContentValues[list.size()];
                 BusinessItemInfo businessItemInfo;
                 for (int i = 0; i < list.size(); i++) {

@@ -53,7 +53,7 @@
     <dimen name="lock_icon_height">24dp</dimen>
     <dimen name="default_lock_recomment_title_top">30dp</dimen>
     <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
-    <dimen name="app_item_linearlayout_padding">5dp</dimen>
+    <dimen name="app_item_linearlayout_padding">3dp</dimen>
 
     <integer name="recomment_gridview_row_count">4</integer>
     <integer name="recomment_gridview_col_count">4</integer>
@@ -350,10 +350,9 @@
     <dimen name="apple_watch_tab_item_size">38dp</dimen>
     <dimen name="apple_watch_select_bar_width">40dp</dimen>
     <dimen name="apple_watch_select_bar_height">15dp</dimen>
-    <dimen name="apple_watch_item_icon_size">70dp</dimen>
+    <dimen name="apple_watch_item_icon_size">68dp</dimen>
     <dimen name="apple_watch_layout_inner_radius">94dp</dimen>
     <dimen name="apple_watch_layout_outer_radius">144dp</dimen>
-
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
@@ -364,18 +363,19 @@
     <dimen name="quick_seek_bar_width">250dp</dimen>
     <dimen name="dialog_app_view_width">46dp</dimen>
     <dimen name="dialog_app_margin_top">6dp</dimen>
-     <dimen name="quick_gesture_dialog_list_width">320dp</dimen>
+    <dimen name="quick_gesture_dialog_list_width">320dp</dimen>
     <dimen name="gesture_item_text_size">12sp</dimen>
     <dimen name="quick_sliding_set_dialog_width">312dp</dimen>
     <dimen name="quick_sliding_set_dialog_height">393dp</dimen>
-    <dimen name="quick_first_tip_dialog_width">312dp</dimen>
-    <dimen name="quick_first_tip_dialog_height">423dp</dimen>
-    <dimen name="quick_first_tip_dialog_content_phone_width">306dp</dimen>
-    <dimen name="quick_first_tip_dialog_content_phone_height">225dp</dimen>
     <dimen name="quick_gesture_margin_left_to_checkbox">10dp</dimen>
     <dimen name="dialog_slide_item_margin_top">28dp</dimen>
     <dimen name="dialog_slide_time_disturbTV_margin_top">40dp</dimen>
-     <!-- quick gesutre end -->
-     
+     <dimen name="quick_first_tip_dialog_width">312dp</dimen>
+    <dimen name="quick_first_tip_dialog_height">423dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_width">306dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_height">225dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_margin_top">20dp</dimen>
+    <dimen name="quick_first_tip_dialog_title_margin_top">80dp</dimen>
+    <!-- quick gesutre end -->
     <dimen name="dialog_btn_height">48dp</dimen>
 </resources>

@@ -63,6 +63,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static final String MESSAGE_DELETE_APP = "message_delete_app";
     public static final String MESSAGE_ADD_APP = "message_add_app";
     public static final String DAY_TRAFFIC_SETTING = "day_traffic_setting";
+    public static final String FINISH_HOME_ACTIVITY_FALG="finish_home_activity";
     public static final int DONGHUA_CHANGE_TEXT = 0;
     public static final int DONGHUA_SHOW_BEGIN = 1;
     public static boolean isClean = false;
@@ -71,6 +72,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private boolean isStopDongHua = false;
     private int mNowDongHuaWhere = 0;
     private int lastPosition = -1;
+    
 
     // private boolean isReNewFragment = false;
 
@@ -207,6 +209,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         } else if (MESSAGE_ADD_APP.equals(event.eventMsg)) {
             loadData();
             fillData();
+        }else if(FINISH_HOME_ACTIVITY_FALG.equals(event.eventMsg)){
+            mActivity.finish();
         }
     }
 
@@ -374,6 +378,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             case R.id.bg_show_quick_gesture:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qssetting", "home");
                 startQuickGestureActivity();
+                // LockManager.getInstatnce().timeFilterSelf();
                 // Intent intent1= new Intent(mActivity,
                 // GradeTipActivity.class);
                 // startActivity(intent1);
@@ -647,10 +652,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             try {
                 LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
                         false);
+                LockManager.getInstatnce().filterAllOneTime(2000);
                 startActivity(intentv6);
             } catch (Exception e) {
                 LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
                         false);
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 Intent intentv5 = new Intent(
                         Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
                 Uri uri = Uri
@@ -659,29 +666,24 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 try {
                     startActivity(intentv5);
-                    getActivity().finish();
                 } catch (Exception e1) {
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "reason_"
                             + BuildProperties.getPoneModel());
                 }
             }
-//            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            LockManager.getInstatnce().timeFilterSelf();
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+            LockManager.getInstatnce().filterAllOneTime(1000);
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(quickIntent);
         } else if (checkHuaWei && !checkFloatWindow) {
             BuildProperties.isToHuaWeiSystemManager(getActivity());
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
             quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             quickIntent.putExtra("sys_name", "huawei");
             try {
-                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                 startActivity(quickIntent);
             } catch (Exception e) {
                 e.printStackTrace();

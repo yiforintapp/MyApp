@@ -297,14 +297,13 @@
     <dimen name="privacy_proposal_status_padding_bottom">17dp</dimen>
     <dimen name="privacy_suggest_height">120dp</dimen>
 
-    <!--  weizhuang -->
+    <!-- weizhuang -->
     <dimen name="weizhaung_guide_image_margin_top">60dp</dimen>
-    
     <dimen name="dialog_list_width">300dp</dimen>
-     <dimen name="dialog_list_btn_height">42dp</dimen>
-          <dimen name="dialog_list_item_height">50dp</dimen>
-          <dimen name="dialog_contact_item_height">56dp</dimen>
-     <!-- quick gesture start -->
+    <dimen name="dialog_list_btn_height">42dp</dimen>
+    <dimen name="dialog_list_item_height">50dp</dimen>
+    <dimen name="dialog_contact_item_height">56dp</dimen>
+    <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_paged_gridview_indicator_dialog_margin_top">18dp</dimen>
@@ -320,7 +319,15 @@
     <dimen name="quick_gesture_margin_left_to_checkbox">10dp</dimen>
     <dimen name="dialog_slide_item_margin_top">28dp</dimen>
     <dimen name="dialog_slide_time_disturbTV_margin_top">40dp</dimen>
+    <dimen name="quick_first_tip_dialog_width">312dp</dimen>
+    <dimen name="quick_first_tip_dialog_height">423dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_width">306dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_height">225dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_margin_top">20dp</dimen>
+    <dimen name="quick_first_tip_dialog_title_margin_top">80dp</dimen>
     <!-- quick gesutre end -->
-    
+
     <dimen name="dialog_btn_height">48dp</dimen>
+    <dimen name="apple_watch_item_icon_size">62dp</dimen>
+
 </resources>
