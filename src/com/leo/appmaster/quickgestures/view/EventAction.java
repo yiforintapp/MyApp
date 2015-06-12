@@ -2,6 +2,8 @@
 package com.leo.appmaster.quickgestures.view;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.Utilities;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -57,7 +59,7 @@ public class EventAction implements DecorateAction {
         mDrawRect = new Rect(scrollX, scrollY, scrollX + mNumBg.getIntrinsicWidth(), scrollY
                 + mNumBg.getIntrinsicHeight());
 
-        canvas.translate(scrollX, scrollY);
+        canvas.translate(scrollX-33, scrollY);
         mNumBg.setBounds(0, 0, mNumBg.getIntrinsicWidth(), mNumBg.getIntrinsicHeight());
         mNumBg.draw(canvas);
 
