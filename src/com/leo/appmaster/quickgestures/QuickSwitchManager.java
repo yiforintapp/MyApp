@@ -1014,7 +1014,7 @@ public class QuickSwitchManager {
 
     public void speedUp(QuickSwitcherInfo mInfo) {
         LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(ROTATION, mInfo));
+                new ClickQuickItemEvent(SPEEDUP, mInfo));
     }
 
     public void toggleMode() {

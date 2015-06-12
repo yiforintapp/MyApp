@@ -103,14 +103,14 @@ public class AppleWatchContainer extends FrameLayout {
         LeoLog.d("AppleWatchContainer", "刚来！show 出的是：" + mCurrentLayout);
         makeNowLayout();
 
-        // 清理内存
-        mCleaner = ProcessCleaner.getInstance(context);
-        mLastUsedMem = mCleaner.getUsedMem();
-        // clean
-        mCleaner.tryClean(mContext);
-        long curUsedMem = mCleaner.getUsedMem();
-        mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-        System.gc();
+//        // 清理内存
+//        mCleaner = ProcessCleaner.getInstance(context);
+//        mLastUsedMem = mCleaner.getUsedMem();
+//        // clean
+//        mCleaner.tryClean(mContext);
+//        long curUsedMem = mCleaner.getUsedMem();
+//        mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+//        System.gc();
 
         int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
         if (derictor == 0) {
@@ -1430,6 +1430,16 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
+        
+        // 清理内存
+        mCleaner = ProcessCleaner.getInstance(mContext);
+        mLastUsedMem = mCleaner.getUsedMem();
+        // clean
+        mCleaner.tryClean(mContext);
+        long curUsedMem = mCleaner.getUsedMem();
+        mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+        System.gc();
+        
         isAnimating = true;
         // first - change to no roket icon
         info.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
