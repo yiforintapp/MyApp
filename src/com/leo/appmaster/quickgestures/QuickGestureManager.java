@@ -978,6 +978,11 @@ public class QuickGestureManager {
         commonApp.show();
     }
 
+    public void deleteBusinessItem(BusinessItemInfo info) {
+        AppBusinessManager abm = AppBusinessManager.getInstance(mContext);
+        abm.removeBusinessData(info);
+    }
+
     /**
      * Quick Switch Dialog
      * 
