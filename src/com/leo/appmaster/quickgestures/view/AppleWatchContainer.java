@@ -1245,14 +1245,14 @@ public class AppleWatchContainer extends FrameLayout {
 
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 mCornerTabs.getHeight(), 0);
-        tabAnimator.setDuration(300);
+        tabAnimator.setDuration(200);
         tabAnimator.addListener(new AnimatorListenerAdapter() {
             public void onAnimationStart(Animator animation) {
                 mCornerTabs.setVisibility(View.VISIBLE);
             };
         });
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1)
-                .setDuration(640);
+                .setDuration(320);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
 
         AnimatorSet set = new AnimatorSet();
@@ -1299,13 +1299,15 @@ public class AppleWatchContainer extends FrameLayout {
 
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 0, mCornerTabs.getHeight());
-        tabAnimator.setDuration(250);
+        tabAnimator.setDuration(200);
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0)
-                .setDuration(540);
+                .setDuration(320);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
+        ObjectAnimator bgAlphaAnimator = ObjectAnimator.ofFloat(getParent(), "alpha", 1.0f,0f).setDuration(50);
+        bgAlphaAnimator.setStartDelay(270);
 
         AnimatorSet set = new AnimatorSet();
-        set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet);
+        set.playTogether(tabAnimator, titleAnimator, iconAnimatorSet,bgAlphaAnimator);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
