@@ -343,7 +343,7 @@ public class AppMasterApplication extends Application {
         int lastVercode = pref.getCurrentAppVersionCode();
         if (lastVercode < 0) {
             String vercode = pref.getLastVersion();
-            if (!TextUtils.isEmpty(vercode)) {
+            if (vercode != null && !"".equals(vercode)) {
                 if (Integer.valueOf(PhoneInfo.getVersionCode(this)) >= 37) {
                     pref.setIsUpdateQuickGestureUser(true);
                 }

@@ -62,6 +62,7 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
         QuickGestureMiuiTip.this.finish();
         LeoEventBus.getDefaultBus().post(
                 new BackupEvent(HomeAppManagerFragment.FINISH_HOME_ACTIVITY_FALG));
+        LockManager.getInstatnce().filterAllOneTime(1000);
     }
 
     @Override
