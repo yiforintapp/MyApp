@@ -23,6 +23,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
 import android.provider.Settings;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
@@ -1152,32 +1153,39 @@ public class QuickGestureManager {
         mSlidAreaSize = value;
     }
 
-    public void sendPermissionOpenNotification(Context context) {
-        NotificationManager notificationManager = (NotificationManager)
-                context
-                        .getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification notification = new Notification();
-        LockManager.getInstatnce().timeFilterSelf();
-        Intent intentPending = new Intent(context,
-                QuickGestureActivity.class);
-        intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intentPending,
-                PendingIntent.FLAG_UPDATE_CURRENT);
-        notification.icon = R.drawable.ic_launcher_notification;
-        notification.tickerText = context
-                .getString(R.string.permission_open_tip_notification_title);
-        notification.flags = Notification.FLAG_AUTO_CANCEL;
-        notification
-                .setLatestEventInfo(
-                        context,
-                        context.getString(R.string.permission_open_tip_notification_title),
-                        context.getString(R.string.permission_open_tip_notification_content),
-                        contentIntent);
-        NotificationUtil.setBigIcon(notification,
-                R.drawable.ic_launcher_notification_big);
-        notification.when = System.currentTimeMillis();
-        notificationManager.notify(20150603, notification);
-        AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
+    public void sendPermissionOpenNotification(final Context context) {
+        new Handler().postDelayed(new Runnable() {
+            
+            @Override
+            public void run() {
+                NotificationManager notificationManager = (NotificationManager)
+                        context
+                                .getSystemService(Context.NOTIFICATION_SERVICE);
+                Notification notification = new Notification();
+                LockManager.getInstatnce().timeFilterSelf();
+                Intent intentPending = new Intent(context,
+                        QuickGestureActivity.class);
+                intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intentPending,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                notification.icon = R.drawable.ic_launcher_notification;
+                notification.tickerText = context
+                        .getString(R.string.permission_open_tip_notification_title);
+                notification.flags = Notification.FLAG_AUTO_CANCEL;
+                notification
+                        .setLatestEventInfo(
+                                context,
+                                context.getString(R.string.permission_open_tip_notification_title),
+                                context.getString(R.string.permission_open_tip_notification_content),
+                                contentIntent);
+                NotificationUtil.setBigIcon(notification,
+                        R.drawable.ic_launcher_notification_big);
+                notification.when = System.currentTimeMillis();
+                notificationManager.notify(20150603, notification);
+                AppMasterPreference.getInstance(context).setQuickPermissonOpenFirstNotificatioin(true);
+            }
+        }, 5000);
+
     }
 
     // public void removeItemFromAppLaunchRecoder(String packageName) {
