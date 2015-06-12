@@ -151,7 +151,7 @@ public class QuickGestureManager {
         if (businessDatas != null && businessDatas.size() > 0) {
             int count = 0;
             for (BusinessItemInfo businessItem : businessDatas) {
-                if (count == 4) {
+                if (count == 4 || !businessItem.iconLoaded || businessItem.icon == null) {
                     break;
                 }
                 count++;

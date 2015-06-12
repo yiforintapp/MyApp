@@ -41,7 +41,7 @@ public class AppBusinessManager {
 
     private static final int DELAY_2_HOUR = 3 * /* 60 * */60 * 1000;
     // public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
-    public static final int DELAY_12_HOUR = 8 * 60 * 1000;
+    public static final int DELAY_12_HOUR = 5 * 60 * 1000;
 
     // private static final int DELAY_2_HOUR = 5 * 1000;
     // public static final int DELAY_12_HOUR = 5 * 1000;
