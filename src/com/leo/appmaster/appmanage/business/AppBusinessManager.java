@@ -39,9 +39,9 @@ public class AppBusinessManager {
 
     public static final String TAG = "AppBusinessManager";
 
-    private static final int DELAY_2_HOUR = 1 * /*60 **/ 60 * 1000;
+    private static final int DELAY_2_HOUR = 10 * /*60 **/ 60 * 1000;
     // public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
-    public static final int DELAY_12_HOUR = 1 * 60 * 1000;
+    public static final int DELAY_12_HOUR = 15 * 60 * 1000;
 
     // private static final int DELAY_2_HOUR = 5 * 1000;
     // public static final int DELAY_12_HOUR = 5 * 1000;
