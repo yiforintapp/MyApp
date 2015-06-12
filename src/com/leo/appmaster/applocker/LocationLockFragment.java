@@ -292,6 +292,9 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
             mLockListView.setOnItemClickListener(null);
             mEditing = true;
             mLockListView.removeHeaderView(mListHeader);
+            for (LocationLock lock : mLocationLockList) {
+                lock.selected = false;
+            }
             mLocationLockAdapter.notifyDataSetChanged();
         }
         return false;
@@ -317,6 +320,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         for (LocationLock lock : deleteList) {
             lm.removeLocationLock(lock);
         }
+        ((LockModeActivity)mActivity).disableOptionImage();
         mLocationLockAdapter.notifyDataSetChanged();
     }
 

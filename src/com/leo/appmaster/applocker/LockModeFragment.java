@@ -133,6 +133,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     for (LockMode lockMode : deleteList) {
                         lm.removeLockMode(lockMode);
                     }
+                    ((LockModeActivity)mActivity).disableOptionImage();
                     mModeAdapter.notifyDataSetChanged();
                 }
             }
@@ -429,6 +430,9 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
             mModeListView.setOnItemClickListener(null);
             mModeListView.removeHeaderView(mListHeader);
             mEditing = true;
+            for (LockMode lock : mModeList) {
+                lock.selected = false;
+            }
             mModeAdapter.notifyDataSetChanged();
         }
         return false;
