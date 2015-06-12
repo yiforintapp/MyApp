@@ -17,6 +17,7 @@ import android.content.res.TypedArray;
 import android.net.wifi.WifiManager;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -89,6 +90,7 @@ public class AppleWatchContainer extends FrameLayout {
     private boolean mHasRelayout;
     private boolean mMoving;
     protected long mStartShowingTime;
+    private int screenH;
 
     public AppleWatchContainer(Context context) {
         super(context);
@@ -103,15 +105,9 @@ public class AppleWatchContainer extends FrameLayout {
         LeoLog.d("AppleWatchContainer", "刚来！show 出的是：" + mCurrentLayout);
         makeNowLayout();
 
-//        // 清理内存
-//        mCleaner = ProcessCleaner.getInstance(context);
-//        mLastUsedMem = mCleaner.getUsedMem();
-//        // clean
-//        mCleaner.tryClean(mContext);
-//        long curUsedMem = mCleaner.getUsedMem();
-//        mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-//        System.gc();
-
+        Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
+        screenH = mDisplay.getHeight();
+        
         int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
         if (derictor == 0) {
             mOrientation = Orientation.Left;
@@ -1564,11 +1560,22 @@ public class AppleWatchContainer extends FrameLayout {
         } else {
             mToast = mContext.getString(R.string.the_best_status_toast);
         }
+        
         tv_clean_rocket.setText(mToast);
         Toast toast = new Toast(mContext);
         toast.setView(view);
         toast.setDuration(0);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, 150);
+        int marginTop = 0;
+        if(screenH >= 1920){
+            marginTop = 150;
+        }else if(screenH >= 1280){
+            marginTop = 120;
+        }else if(screenH >= 800){
+            marginTop = 80;
+        }else {
+            marginTop = 30;
+        }
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
         toast.show();
         isClean = true;
 
