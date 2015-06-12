@@ -2171,11 +2171,11 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[10];
             lastAnim = iconAnimators[0];
         }
-        firstAnim.setDuration(160);
-        partOneSet.setDuration(160).setStartDelay(40);
-        partTwoSet.setDuration(160).setStartDelay(80);
-        partThreeSet.setDuration(160).setStartDelay(120);
-        lastAnim.setDuration(160).setStartDelay(160);
+        firstAnim.setDuration(240);
+        partOneSet.setDuration(240).setStartDelay(60);
+        partTwoSet.setDuration(240).setStartDelay(120);
+        partThreeSet.setDuration(240).setStartDelay(180);
+        lastAnim.setDuration(240).setStartDelay(240);
         set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }
@@ -2236,11 +2236,11 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[0];
             lastAnim = iconAnimators[10];
         }
-        firstAnim.setDuration(160);
-        partOneSet.setDuration(160).setStartDelay(40);
-        partTwoSet.setDuration(160).setStartDelay(80);
-        partThreeSet.setDuration(160).setStartDelay(120);
-        lastAnim.setDuration(160).setStartDelay(160);
+        firstAnim.setDuration(200);
+        partOneSet.setDuration(200).setStartDelay(50);
+        partTwoSet.setDuration(200).setStartDelay(100);
+        partThreeSet.setDuration(200).setStartDelay(150);
+        lastAnim.setDuration(200).setStartDelay(200);
         set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }
