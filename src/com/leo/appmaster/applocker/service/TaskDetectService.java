@@ -100,7 +100,14 @@ public class TaskDetectService extends Service {
         startForeground(1, getNotification(getApplicationContext()));
         startPhantomService();
         checkFloatWindow();
-        sendQuickPermissionOpenNotification(getApplicationContext());
+        mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
+                TimeUnit.MILLISECONDS);
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+                sendQuickPermissionOpenNotification(getApplicationContext());
+//            }
+//        }, 1000);
         super.onCreate();
     }
 
@@ -578,7 +585,7 @@ public class TaskDetectService extends Service {
         return sNotification;
     }
 
-    private void sendQuickPermissionOpenNotification(Context context) {
+    private void sendQuickPermissionOpenNotification(final Context context) {
         boolean flag = AppMasterPreference.getInstance(context)
                 .getQuickPermissonOpenFirstNotificatioin();
         // if(!flag){
@@ -596,8 +603,10 @@ public class TaskDetectService extends Service {
             if ((checkHuaWei || checkMiui)
                     && checkFloatWindow) {
                 if (AppMasterPreference.getInstance(context).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+
                     QuickGestureManager.getInstance(context)
                             .sendPermissionOpenNotification(context);
+
                 }
             }
         }

@@ -119,7 +119,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
-//        showFirstOpenQuickGestureTipDialog();
+        // showFirstOpenQuickGestureTipDialog();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
     }
@@ -580,18 +580,20 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         boolean firstSlidingTip = AppMasterPreference
                                 .getInstance(HomeActivity.this)
                                 .getFristSlidingTip();
+                        boolean firstDilaogTip = AppMasterPreference.getInstance(HomeActivity.this)
+                                .getFristDialogTip();
                         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getIsUpdateQuickGestureUser();
                         // Log.e("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
                             // new user
-                            if (newUserCount >= 10 && !firstSlidingTip) {
+                            if (newUserCount >= 10 && !firstSlidingTip && !firstDilaogTip) {
                                 // Log.e("######", "新用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
                         } else {
                             // update user
-                            if (!firstSlidingTip) {
+                            if (!firstSlidingTip && !firstDilaogTip) {
                                 // Log.e("######", "升级用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
@@ -947,7 +949,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
-
+                AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
                 AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
                         Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
@@ -963,6 +965,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
+                AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
                 AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
                         Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
@@ -1030,7 +1033,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 }
             }
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            // LockManager.getInstatnce().filterAllOneTime(1000);
+            LockManager.getInstatnce().filterAllOneTime(1000);
             Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
             quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(quickIntent);
