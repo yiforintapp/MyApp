@@ -675,6 +675,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     @Override
     protected void onResume() {
         super.onResume();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "theme");
     }
 
     @Override

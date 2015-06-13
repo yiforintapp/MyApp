@@ -201,6 +201,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             AppMasterPreference.getInstance(this).setUnlocked(false);
         }
         super.onResume();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {

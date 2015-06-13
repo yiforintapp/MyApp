@@ -23,15 +23,12 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.QuickGestureFloatWindowEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
@@ -47,7 +44,7 @@ public class TaskDetectService extends Service {
 
     public static final String EXTRA_STARTUP_FROM = "start_from";
 
-    private static final String SYSTEMUI_PKG = "com.android.systemui";
+    public static final String SYSTEMUI_PKG = "com.android.systemui";
     private static final String ES_UNINSTALL_ACTIVITY = ".app.UninstallMonitorActivity";
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
