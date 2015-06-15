@@ -21,6 +21,7 @@ import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Vibrator;
@@ -50,6 +51,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class QuickSwitchManager {
 
     private static QuickSwitchManager mInstance;
+    public final static String LENOVO = "Lenovo";
     public final static String BLUETOOTH = "bluetooth";
     public final static String FLASHLIGHT = "flashlight";
     public final static String WLAN = "wlan";
@@ -1070,16 +1072,33 @@ public class QuickSwitchManager {
     }
 
     public void toggleFlyMode() {
+        String mBrand = getVendor();
         try {
-            Intent callFLYSettingIntent = new Intent(
-                    android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
-            callFLYSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(callFLYSettingIntent);
+            if (!LENOVO.equals(mBrand)) {
+                Intent callFLYSettingIntent = new Intent(
+                        android.provider.Settings.ACTION_AIRPLANE_MODE_SETTINGS);
+                callFLYSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(callFLYSettingIntent);
+            } else {
+                Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
         } catch (Exception e) {
             Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(intent);
         }
+    }
+
+    public String getVendor() {
+        String mBrandString = "";
+        try {
+            mBrandString = Build.BRAND;
+        } catch (Exception e) {
+            mBrandString = "";
+        }
+        return mBrandString;
     }
 
     public static boolean checkRotation() {
