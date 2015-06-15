@@ -195,9 +195,6 @@ public class AppleWatchLayout extends ViewGroup {
                 gestureItem.setDecorateAction(new EventAction(getContext(), info.eventNumber));
             }
 
-            if (isCurrentLayout()) {
-                gestureItem.setVisibility(View.INVISIBLE);
-            }
             gestureItem.setTag(info);
             if (isCurrentLayout()) {
                 gestureItem.setVisibility(View.INVISIBLE);
