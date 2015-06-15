@@ -1032,6 +1032,7 @@ public class QuickSwitchManager {
         LockManager.getInstatnce().timeFilterSelf();
         Intent intent = new Intent(mContext, QuickGestureActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
 
@@ -1394,9 +1395,9 @@ public class QuickSwitchManager {
             mSaveList = null;
         }
     }
-    
-    public void loadAllSwitchList(){
-        
+
+    public void loadAllSwitchList() {
+
     }
 
 }
