@@ -348,13 +348,20 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         int lastVercode = pref.getCurrentAppVersionCode();
         if (lastVercode < 0) {
-            if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                if (Integer.valueOf(PhoneInfo.getVersionCode(this)) >= 37) {
-                    pref.setIsUpdateQuickGestureUser(true);
-                }
-            } else {
+            // boolean flag= pref.getQuickFirstDialogTipIsHavePassword();
+            // if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE ) {
+            // if (Integer.valueOf(PhoneInfo.getVersionCode(this)) >= 37) {
+            // pref.setIsUpdateQuickGestureUser(true);
+            // pref.setQuickFirstDialogTipIsHavePassword(true);
+            // }
+            // } else{
+            // pref.setIsUpdateQuickGestureUser(false);
+            // }
+            //
+            if(pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE ){
                 pref.setIsUpdateQuickGestureUser(false);
             }
+            
         } else {
             if (lastVercode > 37) {
                 pref.setIsUpdateQuickGestureUser(true);

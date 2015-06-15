@@ -181,6 +181,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_FIRST_OPEN_QUICK_POPUP = "quick_gesture_first_open_popu";
     public static final String PREF_UPDATE_QUICK_GESTURE_USER = "update_quick_gesture_user";
     public static final String PREF_CURRENT_APP_VERSION_CODE = "app_version_code";
+    public static final String PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD = "fist_dialog_tip_have_password";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1761,7 +1762,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getIsUpdateQuickGestureUser() {
-        return mPref.getBoolean(PREF_UPDATE_QUICK_GESTURE_USER, false);
+        return mPref.getBoolean(PREF_UPDATE_QUICK_GESTURE_USER, true);
     }
 
     public void setCurrentAppVersionCode(int versionCode) {
@@ -1770,5 +1771,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getCurrentAppVersionCode() {
         return mPref.getInt(PREF_CURRENT_APP_VERSION_CODE, -1);
+    }
+
+    public void setQuickFirstDialogTipIsHavePassword(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD, flag).commit();
+    }
+
+    public boolean getQuickFirstDialogTipIsHavePassword() {
+        return mPref.getBoolean(PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD, false);
     }
 }
