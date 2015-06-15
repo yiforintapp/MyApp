@@ -154,6 +154,7 @@ public class QuickGestureManager {
         if (businessDatas != null && businessDatas.size() > 0) {
             int count = 0;
             for (BusinessItemInfo businessItem : businessDatas) {
+                businessItem.gesturePosition = -1000;
                 if (count == 4 || !businessItem.iconLoaded || businessItem.icon == null) {
                     break;
                 }
