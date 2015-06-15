@@ -127,7 +127,9 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                 R.drawable.unselect));
                         calllog.setCheck(false);
                         mDeleteCallLog.remove(calllog);
-                        mCallLogCount = mCallLogCount - 1;
+                        if (mCallLogCount > 0) {
+                            mCallLogCount = mCallLogCount - 1;
+                        }
                     }
                     updateTitleBarSelectStatus();
                 }
@@ -176,7 +178,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
         } else if (PrivacyContactUtils.CALL_LOG_EDIT_MODEL_OPERATION_DELETE
                 .equals(event.editModel)) {
             if (!mDeleteCallLog.isEmpty()) {
-                showRestoreMessageDialog(
+                showDeleteMoreDialog(
                         getResources().getString(R.string.privacy_call_delete_call_log),
                         PrivacyContactUtils.CALL_LOG_EDIT_MODEL_OPERATION_DELETE);
             }
@@ -368,7 +370,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
      * @param phoneNumber
      * @return
      */
-    private void getCallLog() {
+    private ArrayList<ContactCallLog> getCallLog() {
+        ArrayList<ContactCallLog> contactCalls = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> callLogList = new ConcurrentHashMap<String, ContactCallLog>();
         Cursor cursor = mContext.getContentResolver()
                 .query(Constants.PRIVACY_CALL_LOG_URI, null, null, null, "call_log_date desc");
@@ -416,11 +419,12 @@ public class PrivacyCalllogFragment extends BaseFragment {
             }
             Iterable<ContactCallLog> iterable = callLogList.values();
             for (ContactCallLog contactCallLog : iterable) {
-                mContactCallLogs.add(contactCallLog);
+                contactCalls.add(contactCallLog);
             }
-            Collections.sort(mContactCallLogs, PrivacyContactUtils.mCallLogCamparator);
+            Collections.sort(contactCalls, PrivacyContactUtils.mCallLogCamparator);
             cursor.close();
         }
+        return contactCalls;
     }
 
     private void showProgressDialog(int maxValue, int currentValue) {
@@ -439,7 +443,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
         mProgressDialog.show();
     }
 
-    private void showRestoreMessageDialog(String content, final String flag) {
+    private void showDeleteMoreDialog(String content, final String flag) {
         if (mAddCallLogDialog == null) {
             mAddCallLogDialog = new LEOAlarmDialog(mContext);
         }
@@ -456,14 +460,14 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                 int currentValue = msg.what;
                                 if (currentValue >= mCallLogCount) {
                                     if (mProgressDialog != null) {
-                                        mProgressDialog.cancel();
                                         if (mContactCallLogs == null
                                                 || mContactCallLogs.size() == 0) {
                                             mDefaultText.setVisibility(View.VISIBLE);
                                         } else {
                                             mDefaultText.setVisibility(View.GONE);
                                         }
-                                        mAdapter.notifyDataSetChanged();
+                                        // mAdapter.notifyDataSetChanged();
+                                        mProgressDialog.cancel();
                                     }
                                 } else {
                                     mProgressDialog.setProgress(currentValue);
@@ -493,7 +497,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
     }
 
     // 删除隐私通话记录
-    private class PrivacyCallLogTask extends AsyncTask<String, Boolean, Boolean>
+    private class PrivacyCallLogTask extends AsyncTask<String, Boolean, List<ContactCallLog>>
     {
         @Override
         protected void onPreExecute() {
@@ -501,8 +505,9 @@ public class PrivacyCalllogFragment extends BaseFragment {
         }
 
         @Override
-        protected Boolean doInBackground(String... arg0) {
+        protected List<ContactCallLog> doInBackground(String... arg0) {
             int count = 0;
+            List<ContactCallLog> deleteCallLog = new ArrayList<ContactCallLog>();
             AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
             int temp = pre.getCallLogNoReadCount();
             for (ContactCallLog calllog : mDeleteCallLog) {
@@ -512,10 +517,10 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     if (noReadCount > 0) {
                         for (int i = 0; i < noReadCount; i++) {
                             if (temp > 0) {
-                                temp =temp- 1;
+                                temp = temp - 1;
                                 pre.setCallLogNoReadCount(temp);
                             }
-                            if (temp<= 0) {
+                            if (temp <= 0) {
                                 LeoEventBus
                                         .getDefaultBus()
                                         .post(
@@ -529,19 +534,23 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " = ? ",
                         calllog.getCallLogNumber(),
                         mContext);
-                if (flagNumber != -1 && mHandler!=null) {
-                    mContactCallLogs.remove(calllog);
+                if (flagNumber != -1 && mHandler != null) {
+                    // mContactCallLogs.remove(calllog);
+                    deleteCallLog.add(calllog);
                     Message messge = new Message();
                     count = count + 1;
                     messge.what = count;
                     mHandler.sendMessage(messge);
                 }
             }
-            return null;
+            return deleteCallLog;
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(List<ContactCallLog> result) {
+            for (ContactCallLog calllog : result) {
+                mContactCallLogs.remove(calllog);
+            }
             mIsEditModel = false;
             mCallLogCount = 0;
             mAdapter.notifyDataSetChanged();
@@ -584,22 +593,27 @@ public class PrivacyCalllogFragment extends BaseFragment {
         }
     }
 
-    private class PrivacyContactCallLogTask extends AsyncTask<String, Boolean, Boolean> {
+    private class PrivacyContactCallLogTask extends
+            AsyncTask<String, Boolean, ArrayList<ContactCallLog>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected Boolean doInBackground(String... arg0) {
-            mContactCallLogs.clear();
-            getCallLog();
-            return null;
+        protected ArrayList<ContactCallLog> doInBackground(String... arg0) {
+            ArrayList<ContactCallLog> calllogs = new ArrayList<ContactCallLog>();
+            calllogs = getCallLog();
+            return calllogs;
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(ArrayList<ContactCallLog> result) {
             super.onPostExecute(result);
+            if (mContactCallLogs != null) {
+                mContactCallLogs.clear();
+                mContactCallLogs = result;
+            }
             if (mContactCallLogs == null || mContactCallLogs.size() == 0) {
                 mDefaultText.setVisibility(View.VISIBLE);
             } else {
