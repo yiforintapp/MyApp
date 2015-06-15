@@ -191,7 +191,7 @@ public class AppBusinessManager {
             public void run() {
                 final ContentResolver resolver = mContext
                         .getContentResolver();
-                resolver.delete(Constants.APPLIST_BUSINESS_URI, "package_name=" + info.packageName,
+                resolver.delete(Constants.APPLIST_BUSINESS_URI, "lebal=" + info.label,
                         null);
             }
         };

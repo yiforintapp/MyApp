@@ -150,9 +150,11 @@ public class QuickGestureManager {
         Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
                 .getBusinessData();
         List<BaseInfo> dynamicList = new ArrayList<BaseInfo>();
+        LeoLog.e("xxxx", "businessDatas size = " + businessDatas.size());
         if (businessDatas != null && businessDatas.size() > 0) {
             int count = 0;
             for (BusinessItemInfo businessItem : businessDatas) {
+                businessItem.gesturePosition = -1000;
                 if (count == 4 || !businessItem.iconLoaded || businessItem.icon == null) {
                     break;
                 }
