@@ -154,7 +154,7 @@ public class HttpRequestAgent {
         
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 "", listener, eListener);
-        request.setShouldCache(true);
+        request.setShouldCache(false);
         mRequestQueue.add(request);
     }
 

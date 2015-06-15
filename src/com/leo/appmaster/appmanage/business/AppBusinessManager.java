@@ -38,14 +38,12 @@ import com.leo.appmaster.utils.LeoLog;
 public class AppBusinessManager {
 
     public static final String TAG = "AppBusinessManager";
-
-    private static final int DELAY_2_HOUR = 3 * /* 60 * */60 * 1000;
+    private static final int DELAY_2_HOUR = 10 * 1000;
     // public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
-    public static final int DELAY_12_HOUR = 5 * 60 * 1000;
+    public static final int DELAY_12_HOUR = 20 * 1000;
 
     // private static final int DELAY_2_HOUR = 5 * 1000;
     // public static final int DELAY_12_HOUR = 5 * 1000;
-
     /**
      * applist business data change listener
      * 
@@ -73,7 +71,7 @@ public class AppBusinessManager {
     }
 
     public void init() {
-        LeoLog.e("xxxx", "business init");
+        LeoLog.e(TAG, "business init");
         loadInitData();
         syncServerGestureData(true);
         // syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);
@@ -82,7 +80,7 @@ public class AppBusinessManager {
 
     private void loadInitData() {
 
-        LeoLog.d("xxxx", "loadInitData");
+        LeoLog.d(TAG, "loadInitData");
         mLoadInitDataTask = new FutureTask<Vector<BusinessItemInfo>>(
                 new Callable<Vector<BusinessItemInfo>>() {
                     @Override
@@ -235,7 +233,7 @@ public class AppBusinessManager {
                                                 .currentTimeMillis());
                                         if (!noModify) {
                                             // to paser data
-                                            LeoLog.d("trySyncServerData",
+                                            LeoLog.d(TAG,
                                                     response.toString());
                                             List<BusinessItemInfo> list = BusinessJsonParser
                                                     .parserGestureData(mContext, response);
@@ -243,13 +241,12 @@ public class AppBusinessManager {
                                                     BusinessItemInfo.CONTAIN_QUICK_GESTURE,
                                                     list);
                                         } else {
-                                            LeoLog.d("trySyncServerData",
+                                            LeoLog.d(TAG,
                                                     "noModify");
                                         }
                                     }
                                 } catch (Exception e) {
-                                    e.printStackTrace();
-                                    LeoLog.e("syncServerData", e.getMessage());
+                                    LeoLog.e(TAG, e.getMessage());
                                     // TimerTask recheckTask = new TimerTask() {
                                     // @Override
                                     // public void run() {
@@ -260,7 +257,7 @@ public class AppBusinessManager {
                                     // timer.schedule(recheckTask,
                                     // DELAY_2_HOUR);
                                 } finally {
-                                    LeoLog.e("syncServerData", "recheck task");
+                                    LeoLog.e(TAG, "recheck task");
                                     TimerTask recheckTask = new TimerTask() {
                                         @Override
                                         public void run() {
@@ -276,7 +273,7 @@ public class AppBusinessManager {
                     }, new ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            LeoLog.e("syncServerData", error.getMessage());
+                            LeoLog.e(TAG, error.getMessage());
                             TimerTask recheckTask = new TimerTask() {
                                 @Override
                                 public void run() {
@@ -392,7 +389,6 @@ public class AppBusinessManager {
                 mBusinessList.clear();
                 if (list == null || list.isEmpty())
                     return;
-                LeoLog.d(TAG, "syncGestureData list = " + list.size());
                 ContentValues[] values = new ContentValues[list.size()];
                 BusinessItemInfo businessItemInfo;
                 for (int i = 0; i < list.size(); i++) {
@@ -417,6 +413,7 @@ public class AppBusinessManager {
                 // write db
                 resolver.bulkInsert(Constants.APPLIST_BUSINESS_URI, values);
                 // goto laod app icon
+                LeoLog.d(TAG, "syncGestureData list = " + mBusinessList.size());
                 loadAppIcon();
             }
         });
