@@ -60,17 +60,17 @@
                 style="@style/dlg_content_txt"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/quick_first_tip_dialog_content_margin_top"
                 android:layout_marginBottom="@dimen/quick_first_tip_dialog_content_margin_top"
+                android:layout_marginTop="@dimen/quick_first_tip_dialog_content_margin_top"
+                android:ellipsize="end"
                 android:gravity="center"
+                android:maxLines="5"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
-                android:text="asdfffffffffffffffffffffffffffffffffasdfasdfafasdfdasfasasdfasdfafasdfdasfasdfasasdfasdfafasdfdasfasdfasdfasasdasdfasdfafasdfdasfasdfasasdfasdfafasdfdasfasdfasasdfasdfafasdfdasfasdfasfasdfafasdfdasfasdfasdasdfasdfafasdfdasfasdfasasdfasdfafasdfdasfasdfasasdfasdfafasdfdasfasdfasasdfasdfafasdfdasfasdfasfasdfasdf"
+                android:text="@string/first_open_quick_gesture_dialog_tip_cotent"
                 android:textColor="#848484"
-                android:ellipsize="end"
-                android:maxLines="5"
                 android:textSize="@dimen/quick_first_tip_dialog_content_text_size" />
-            <!-- android:text="@string/first_open_quick_gesture_dialog_tip_cotent" -->
+           
         </LinearLayout>
     </LinearLayout>
 
