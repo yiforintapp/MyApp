@@ -150,6 +150,7 @@ public class QuickGestureManager {
         Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
                 .getBusinessData();
         List<BaseInfo> dynamicList = new ArrayList<BaseInfo>();
+        LeoLog.e("xxxx", "businessDatas size = " + businessDatas.size());
         if (businessDatas != null && businessDatas.size() > 0) {
             int count = 0;
             for (BusinessItemInfo businessItem : businessDatas) {

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
@@ -107,6 +108,14 @@ public class GestureItemView extends LinearLayout {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
+
+        if (isBusinessItem()) {
+            if (mDecorateAction == null) {
+                mDecorateAction = new EventAction(getContext(), 0);
+                mIsShowReadTip = true;
+            }
+        }
+
         if (mEditing && !(getTag() instanceof GestureEmptyItemInfo)) {
             drawCross(canvas);
         } else {
@@ -139,6 +148,11 @@ public class GestureItemView extends LinearLayout {
             mImageView.setImageDrawable(null);
         }
         invalidate();
+    }
+
+    private boolean isBusinessItem() {
+        Object tag = getTag();
+        return tag instanceof BusinessItemInfo;
     }
 
     private boolean isDynamicItem() {
