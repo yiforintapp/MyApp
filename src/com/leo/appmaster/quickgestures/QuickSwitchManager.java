@@ -243,15 +243,19 @@ public class QuickSwitchManager {
     }
 
     public void blueTooth() {
-        if (mBluetoothAdapter == null) {
-            mBluetoothAdapter = BluetoothAdapter
-                    .getDefaultAdapter();
+        try {
+            if (mBluetoothAdapter == null) {
+                mBluetoothAdapter = BluetoothAdapter
+                        .getDefaultAdapter();
+            }
+            if (mBluetoothAdapter.isEnabled()) {
+                isBlueToothOpen = true;
+            } else {
+                isBlueToothOpen = false;
+            }
+        } catch (Exception e) {
         }
-        if (mBluetoothAdapter.isEnabled()) {
-            isBlueToothOpen = true;
-        } else {
-            isBlueToothOpen = false;
-        }
+
     }
 
     private void lightPower() {
@@ -1014,7 +1018,7 @@ public class QuickSwitchManager {
 
     public void speedUp(QuickSwitcherInfo mInfo) {
         LeoEventBus.getDefaultBus().post(
-                new ClickQuickItemEvent(ROTATION, mInfo));
+                new ClickQuickItemEvent(SPEEDUP, mInfo));
     }
 
     public void toggleMode() {

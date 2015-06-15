@@ -2105,7 +2105,7 @@ public class AppleWatchLayout extends ViewGroup {
             return null;
         }
         float scale = targetView.getScaleX();
-        float maxScale = 1.2f * scale;
+        float maxScale = 1.1f * scale;
         PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 0f, 1.0f);
         PropertyValuesHolder pvScaleX = PropertyValuesHolder.ofFloat("scaleX", 0.5f, maxScale,
                 scale);
@@ -2171,18 +2171,18 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[10];
             lastAnim = iconAnimators[0];
         }
-        firstAnim.setDuration(320);
-        partOneSet.setDuration(320).setStartDelay(80);
-        partTwoSet.setDuration(320).setStartDelay(160);
-        partThreeSet.setDuration(320).setStartDelay(240);
-        lastAnim.setDuration(320).setStartDelay(320);
+        firstAnim.setDuration(240);
+        partOneSet.setDuration(240).setStartDelay(60);
+        partTwoSet.setDuration(240).setStartDelay(120);
+        partThreeSet.setDuration(240).setStartDelay(180);
+        lastAnim.setDuration(240).setStartDelay(240);
         set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }
 
     private Animator iconDisappearAnimator(final View targetView) {
         float scale = targetView.getScaleX();
-        float maxScale = 1.2f * scale;
+        float maxScale = 1.1f * scale;
         PropertyValuesHolder pvAlpha = PropertyValuesHolder.ofFloat("alpha", 1.0f, 0f);
         PropertyValuesHolder pvScaleX = PropertyValuesHolder.ofFloat("scaleX", scale, maxScale, 0f);
         PropertyValuesHolder pvScaleY = PropertyValuesHolder.ofFloat("scaleY", scale, maxScale, 0f);
@@ -2237,10 +2237,10 @@ public class AppleWatchLayout extends ViewGroup {
             lastAnim = iconAnimators[10];
         }
         firstAnim.setDuration(200);
-        partOneSet.setDuration(200).setStartDelay(80);
-        partTwoSet.setDuration(200).setStartDelay(160);
-        partThreeSet.setDuration(200).setStartDelay(240);
-        lastAnim.setDuration(200).setStartDelay(320);
+        partOneSet.setDuration(200).setStartDelay(50);
+        partTwoSet.setDuration(200).setStartDelay(100);
+        partThreeSet.setDuration(200).setStartDelay(150);
+        lastAnim.setDuration(200).setStartDelay(200);
         set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }
