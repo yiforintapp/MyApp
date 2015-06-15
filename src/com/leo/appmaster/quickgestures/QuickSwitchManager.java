@@ -1032,7 +1032,7 @@ public class QuickSwitchManager {
         LockManager.getInstatnce().filterAllOneTime(1000);
         Intent intent = new Intent(mContext, QuickGestureActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
 
@@ -1076,15 +1076,9 @@ public class QuickSwitchManager {
             callFLYSettingIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             mContext.startActivity(callFLYSettingIntent);
         } catch (Exception e) {
-            try {
-                Intent intent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-            } catch (Exception e2) {
-                Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                mContext.startActivity(intent);
-            }
+            Intent intent = new Intent(android.provider.Settings.ACTION_SETTINGS);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
         }
     }
 
