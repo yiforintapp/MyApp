@@ -208,12 +208,12 @@ public class AppleWatchLayout extends ViewGroup {
         requestLayout();
 
         if (loadExtra) {
-            // postDelayed(new Runnable() {
-            // @Override
-            // public void run() {
-            fillExtraChildren();
-            // }
-            // }, 800);
+            postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    fillExtraChildren();
+                }
+            }, 800);
         }
 
     }
