@@ -16,7 +16,6 @@ import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +28,6 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.baidu.mobstat.m;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -46,8 +44,6 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
-import com.leo.appmaster.home.GradeTipActivity;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
@@ -215,6 +211,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     public void showdonghua() {
+        LeoLog.d("shodonghua", "SHOW DONG HUA");
         new Thread() {
             public void run() {
                 int startProgress = 0;
@@ -308,9 +305,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         + RestoreListSize, resources.getString(R.string.first_backups_app)
                         + RestoreListSize);
 
-        // clean View
-        // cleanView();
-        // cleanMemory();
         LeoLog.d("HomeAppManagerFragment", "loadData() finish");
     }
 
