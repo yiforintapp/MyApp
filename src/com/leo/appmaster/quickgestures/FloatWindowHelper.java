@@ -192,6 +192,8 @@ public class FloatWindowHelper {
             });
             int width = windowManager.getDefaultDisplay().getWidth();
             int height = windowManager.getDefaultDisplay().getHeight();
+//            Log.e("#########", "widht:"+width+"||height:"+height);
+//            mContext.getResources().getDimension(R.dimen.quick_sliding_area_space_height)
             int flag = Utilities.isScreenType(mContext);
             if (mLeftBottomParams == null) {
                 mLeftBottomParams = new LayoutParams();
