@@ -237,8 +237,9 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
      * getMessages
      */
     @SuppressLint("SimpleDateFormat")
-    private void getMessages(String model, String selection, String[]
+    private List<MessageBean> getMessages(String model, String selection, String[]
             selectionArgs) {
+        List<MessageBean> messages = new ArrayList<MessageBean>();
         AppMasterPreference preference = AppMasterPreference.getInstance(mContext);
         List<MessageBean> mMessages = new ArrayList<MessageBean>();
         Map<String, MessageBean> messageList = new HashMap<String, MessageBean>();
@@ -292,12 +293,13 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         if (QUERY_SQL_TABLE_MESSAGE_LIST_MODEL.equals(model)) {
             Iterable<MessageBean> it = messageList.values();
             for (MessageBean mb : it) {
-                mMessageList.add(mb);
+                messages.add(mb);
             }
         } else if (QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL.equals(model)) {
-            mRestoremessgeLists = mMessages;
+            messages = mMessages;
         }
-        Collections.sort(mMessageList, PrivacyContactUtils.mMessageCamparator);
+        Collections.sort(messages, PrivacyContactUtils.mMessageCamparator);
+        return messages;
     }
 
     // get no read message count
@@ -502,7 +504,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                     isOtherLogs = PrivacyContactUtils.EDIT_MODEL_OPERATION_RESTORE;
                     String fromateNumber = PrivacyContactUtils.formatePhoneNumber(messageBean
                             .getPhoneNumber());
-                    getMessages(
+                    mRestoremessgeLists = getMessages(
                             QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL,
                             Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ? ",
                             new String[] {
@@ -584,14 +586,14 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                 Constants.COLUMN_MESSAGE_PHONE_NUMBER + " = ? ", new String[] {
                                     messages.getPhoneNumber()
                                 });
-                        if (flagNumber != -1&& mHandler!=null) {
+                        if (flagNumber != -1 && mHandler != null) {
                             Message messge = new Message();
                             count = count + 1;
                             messge.what = count;
                             mHandler.sendMessage(messge);
                         }
                     }
-                    mMessageList.remove(messageBean);
+                    // mMessageList.remove(messageBean);
                 }
             }
             return isOtherLogs;
@@ -600,6 +602,15 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            if (PrivacyContactUtils.MESSAGE_EDIT_MODEL_OPERATION_DELETE.equals(result)) {
+                for (MessageBean messageBean : mRestorMessages) {
+                    mMessageList.remove(messageBean);
+                }
+            } else if (PrivacyContactUtils.EDIT_MODEL_OPERATION_RESTORE.equals(result)) {
+                for (MessageBean messageBean : mRestorMessages) {
+                    mMessageList.remove(messageBean);
+                }
+            }
             restoreParameter();
             mRestoreCount = 0;
             LeoEventBus.getDefaultBus().post(
@@ -611,24 +622,26 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     }
 
     // 加载数据
-    private class PrivacyContactDateTask extends AsyncTask<String, Boolean, Boolean> {
+    private class PrivacyContactDateTask extends AsyncTask<String, Boolean, List<MessageBean>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
         }
 
         @Override
-        protected Boolean doInBackground(String... arg0) {
-            if (mMessageList != null && mMessageList.size() > 0) {
-                mMessageList.clear();
-            }
-            getMessages(QUERY_SQL_TABLE_MESSAGE_LIST_MODEL, null, null);
-            return null;
+        protected List<MessageBean> doInBackground(String... arg0) {
+            List<MessageBean> messageList = getMessages(QUERY_SQL_TABLE_MESSAGE_LIST_MODEL, null,
+                    null);
+            return messageList;
         }
 
         @Override
-        protected void onPostExecute(Boolean result) {
+        protected void onPostExecute(List<MessageBean> result) {
             super.onPostExecute(result);
+            if (mMessageList != null && mMessageList.size() > 0) {
+                mMessageList.clear();
+            }
+            mMessageList = result;
             isShowDefaultImage();
             mAdapter.notifyDataSetChanged();
         }
