@@ -127,7 +127,9 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                 R.drawable.unselect));
                         calllog.setCheck(false);
                         mDeleteCallLog.remove(calllog);
-                        mCallLogCount = mCallLogCount - 1;
+                        if (mCallLogCount > 0) {
+                            mCallLogCount = mCallLogCount - 1;
+                        }
                     }
                     updateTitleBarSelectStatus();
                 }
@@ -176,7 +178,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
         } else if (PrivacyContactUtils.CALL_LOG_EDIT_MODEL_OPERATION_DELETE
                 .equals(event.editModel)) {
             if (!mDeleteCallLog.isEmpty()) {
-                showRestoreMessageDialog(
+                showDeleteMoreDialog(
                         getResources().getString(R.string.privacy_call_delete_call_log),
                         PrivacyContactUtils.CALL_LOG_EDIT_MODEL_OPERATION_DELETE);
             }
@@ -439,7 +441,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
         mProgressDialog.show();
     }
 
-    private void showRestoreMessageDialog(String content, final String flag) {
+    private void showDeleteMoreDialog(String content, final String flag) {
         if (mAddCallLogDialog == null) {
             mAddCallLogDialog = new LEOAlarmDialog(mContext);
         }
@@ -456,14 +458,14 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                 int currentValue = msg.what;
                                 if (currentValue >= mCallLogCount) {
                                     if (mProgressDialog != null) {
-                                        mProgressDialog.cancel();
                                         if (mContactCallLogs == null
                                                 || mContactCallLogs.size() == 0) {
                                             mDefaultText.setVisibility(View.VISIBLE);
                                         } else {
                                             mDefaultText.setVisibility(View.GONE);
                                         }
-                                        mAdapter.notifyDataSetChanged();
+//                                        mAdapter.notifyDataSetChanged();
+                                        mProgressDialog.cancel();
                                     }
                                 } else {
                                     mProgressDialog.setProgress(currentValue);
@@ -512,10 +514,10 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     if (noReadCount > 0) {
                         for (int i = 0; i < noReadCount; i++) {
                             if (temp > 0) {
-                                temp =temp- 1;
+                                temp = temp - 1;
                                 pre.setCallLogNoReadCount(temp);
                             }
-                            if (temp<= 0) {
+                            if (temp <= 0) {
                                 LeoEventBus
                                         .getDefaultBus()
                                         .post(
@@ -529,7 +531,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " = ? ",
                         calllog.getCallLogNumber(),
                         mContext);
-                if (flagNumber != -1 && mHandler!=null) {
+                if (flagNumber != -1 && mHandler != null) {
                     mContactCallLogs.remove(calllog);
                     Message messge = new Message();
                     count = count + 1;

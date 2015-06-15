@@ -99,12 +99,7 @@ public class TaskDetectService extends Service {
         checkFloatWindow();
         mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
-//        new Handler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-                sendQuickPermissionOpenNotification(getApplicationContext());
-//            }
-//        }, 1000);
+        sendQuickPermissionOpenNotification(getApplicationContext());
         super.onCreate();
     }
 
@@ -591,14 +586,13 @@ public class TaskDetectService extends Service {
         // Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"不去下面执行");
         // }
         if (!flag) {
-            boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(context);
+//            boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(context);
             boolean checkMiui = BuildProperties.isMIUI();
             boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(context);
             // Log.e("#######", "是否为MIUI：" + checkMiui);
             // Log.e("######", "是否为HUAWEI：" + checkHuaWei);
             // Log.e("####", "悬浮窗权限是否打开：" + checkFloatWindow);
-            if ((checkHuaWei || checkMiui)
-                    && checkFloatWindow) {
+            if (checkMiui && checkFloatWindow) {
                 if (AppMasterPreference.getInstance(context).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
 
                     QuickGestureManager.getInstance(context)
