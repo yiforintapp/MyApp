@@ -182,7 +182,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_UPDATE_QUICK_GESTURE_USER = "update_quick_gesture_user";
     public static final String PREF_CURRENT_APP_VERSION_CODE = "app_version_code";
     public static final String PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD = "fist_dialog_tip_have_password";
-    public static final String PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE="rootview_and_window_height_space";
+    public static final String PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE = "rootview_and_window_height_space";
+    public static final String PREF_DELETED_BUSINESS_ITEMS = "deleted_business_items";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -387,7 +388,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mLastShowTime = lastShowTime;
         mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime).commit();
     }
-    
+
     public long getLastUBCTime() {
         if (mLastUBCTime < 0) {
             mLastUBCTime = mPref.getLong(PREF_LAST_UBC, 0);
@@ -1781,10 +1782,20 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getQuickFirstDialogTipIsHavePassword() {
         return mPref.getBoolean(PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD, false);
     }
-    public void setRootViewAndWindowHeighSpace(int flag){
+
+    public void setRootViewAndWindowHeighSpace(int flag) {
         mPref.edit().putInt(PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE, flag).commit();
     }
-    public int getRootViewAndWindowHeighSpace(){
+
+    public int getRootViewAndWindowHeighSpace() {
         return mPref.getInt(PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE, 0);
+    }
+
+    public String getDeletedBusinessItems() {
+        return mPref.getString(PREF_DELETED_BUSINESS_ITEMS, ";");
+    }
+
+    public void setDeletedBusinessItems(String detail) {
+        mPref.edit().putString(PREF_DELETED_BUSINESS_ITEMS, detail).commit();
     }
 }
