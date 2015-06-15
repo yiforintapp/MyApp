@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
@@ -263,6 +264,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mNoReadMessageOpen.setOnClickListener(null);
         mRecentlyContactOPen.setOnClickListener(null);
         mPrivacyContactOpen.setOnClickListener(null);
+    }
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
     }
 
     @Override
@@ -707,6 +714,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     // Log.e("#########",
                     // "机型华为："+checkHuaWei+"||悬浮窗权限："+checkFloatWindow);
                     if (!mFlag) {
+                        AppMasterPreference.getInstance(this).setRootViewAndWindowHeighSpace(
+                                screenSpace());
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
                         mTipRL.clearAnimation();
                         mHandImage.setVisibility(View.GONE);
                         mArrowImage.setVisibility(View.GONE);
@@ -784,6 +794,19 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         return true;
     }
 
+    // 计算根布局与屏幕高的差值
+    private int screenSpace() {
+        int height = ((WindowManager) QuickGestureActivity.this
+                .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getHeight();
+        int rootHeight = mActivityRootView.getRootView().getHeight();
+        if (mActivityRootView != null) {
+            int temp = Math.abs(rootHeight - height);
+            return temp;
+        } else {
+            return 0;
+        }
+    }
+
     private void quickTipAnim(View view) {
         AlphaAnimation alpha = new AlphaAnimation(0, 1);
         alpha.setDuration(1000);
@@ -839,6 +862,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     unSetOnClickListener();
                     closeQuickSetting();
                     QuickGestureManager.getInstance(this).stopFloatWindow();
+                    QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = 0;
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                     // uninit quick gesture data
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
@@ -858,6 +882,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             .startFloatWindow();
                     setOnClickListener();
                     initChexkBox();
+                    QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
                     // init quick gesture data
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
@@ -873,14 +898,19 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         "area_cli");
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
+                AppMasterPreference.getInstance(QuickGestureActivity.this)
+                        .setRootViewAndWindowHeighSpace(screenSpace());
+                QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
                 mActivityRootView.getViewTreeObserver()
                         .addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
                             @Override
                             public void onGlobalLayout() {
+                                AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                        .setRootViewAndWindowHeighSpace(screenSpace());
+                                QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
+//                                FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                                 int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
-                                Log.e("#######", "改变:"+value);
-//                                FloatWindowHelper.updateView(QuickGestureActivity.this, value);
-                                FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
+                                FloatWindowHelper.updateView(QuickGestureActivity.this, value);
                             }
                         });
 

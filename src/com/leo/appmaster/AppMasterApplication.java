@@ -40,6 +40,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -65,6 +66,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -155,6 +157,8 @@ public class AppMasterApplication extends Application {
         }
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
+        QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
+                .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
     }
 
     private String getUserSerial() {
@@ -352,10 +356,10 @@ public class AppMasterApplication extends Application {
             // pref.setIsUpdateQuickGestureUser(false);
             // }
             //
-            if(pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE ){
+            if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                 pref.setIsUpdateQuickGestureUser(false);
             }
-            
+
         } else {
             if (lastVercode > 37) {
                 pref.setIsUpdateQuickGestureUser(true);

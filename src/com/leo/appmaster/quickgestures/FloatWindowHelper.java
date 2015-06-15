@@ -23,6 +23,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -148,10 +149,12 @@ public class FloatWindowHelper {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(-1);
                                             if (isShowTip) {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "notice");
                                             } else {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "user");
                                             }
                                         }
@@ -191,9 +194,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
-//            Log.e("#########", "widht:"+width+"||height:"+height);
-//            mContext.getResources().getDimension(R.dimen.quick_sliding_area_space_height)
+            int temp=0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
+                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            }
+            int height = windowManager.getDefaultDisplay().getHeight()+temp;
             int flag = Utilities.isScreenType(mContext);
             if (mLeftBottomParams == null) {
                 mLeftBottomParams = new LayoutParams();
@@ -259,7 +264,7 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mLeftCenterParams.width / 10 || moveY > mLeftCenterParams.height /8)
+                                if (((moveX > mLeftCenterParams.width / 10 || moveY > mLeftCenterParams.height / 8)
                                 && !isMoveIng)) {
                                     if (presssure > 0.5) {
                                         isMoveIng = true;
@@ -267,10 +272,12 @@ public class FloatWindowHelper {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(-1);
                                             if (isShowTip) {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "notice");
                                             } else {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "user");
                                             }
                                         }
@@ -290,7 +297,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
+            int temp=0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
+                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            }
+            int height = windowManager.getDefaultDisplay().getHeight()+temp;
             if (mLeftCenterParams == null) {
                 mLeftCenterParams = new LayoutParams();
                 mLeftCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext, mLeftCenterWidth) / 2) + (value / 2)) * 2;
@@ -371,10 +382,12 @@ public class FloatWindowHelper {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(-2);
                                             if (isShowTip) {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "notice");
                                             } else {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "user");
                                             }
                                         }
@@ -410,7 +423,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
+            int temp=0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
+                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            }
+            int height = windowManager.getDefaultDisplay().getHeight()+temp;
             int leftBottom = (int) ((DipPixelUtil.dip2px(mContext, mLeftBottomHeight) / 2) + (value)) * 2;
             int leftCenter = (int) ((DipPixelUtil.dip2px(mContext, mLeftCenterHeight) / 2) + (value)) * 2;
             if (mLeftCenterCenterParams == null) {
@@ -505,10 +522,12 @@ public class FloatWindowHelper {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(-1);
                                             if (isShowTip) {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "notice");
                                             } else {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "user");
                                             }
                                         }
@@ -528,7 +547,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
+            int temp=0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
+                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            }
+            int height = windowManager.getDefaultDisplay().getHeight()+temp;
             if (mLeftTopParams == null) {
                 mLeftTopParams = new LayoutParams();
                 mLeftTopParams.width = (int) ((DipPixelUtil.dip2px(mContext, mLeftTopWidth) / 2) + (value / 2)) * 2;
@@ -610,10 +633,12 @@ public class FloatWindowHelper {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(1);
                                             if (isShowTip) {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "notice");
                                             } else {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "user");
                                             }
                                         }
@@ -649,7 +674,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
+            int temp=0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
+                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            }
+            int height = windowManager.getDefaultDisplay().getHeight()+temp;
             if (mRightBottomParams == null) {
                 mRightBottomParams = new LayoutParams();
                 mRightBottomParams.width = (int) ((DipPixelUtil.dip2px(mContext, mRightBottomWidth) / 2) + (value / 2)) * 2;
@@ -723,10 +752,12 @@ public class FloatWindowHelper {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(1);
                                             if (isShowTip) {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "notice");
                                             } else {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "user");
                                             }
                                         }
@@ -746,7 +777,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
+            int temp=0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
+                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            }
+            int height = windowManager.getDefaultDisplay().getHeight()+temp;
             if (mRightCenterParams == null) {
                 mRightCenterParams = new LayoutParams();
                 mRightCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext, mRightCenterWidth) / 2) + (value / 2)) * 2;
@@ -828,10 +863,12 @@ public class FloatWindowHelper {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(2);
                                             if (isShowTip) {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "notice");
                                             } else {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "user");
                                             }
                                         }
@@ -867,7 +904,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
+            int temp=0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
+                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            }
+            int height = windowManager.getDefaultDisplay().getHeight()+temp;
             int rightBottom = (int) ((DipPixelUtil.dip2px(mContext,
                     mRightCenterHeight) / 2) + (value)) * 2;
             int rightCenter = (int) ((DipPixelUtil.dip2px(mContext,
@@ -966,10 +1007,12 @@ public class FloatWindowHelper {
                                             removeAllFloatWindow(mContext);
                                             onTouchAreaShowQuick(1);
                                             if (isShowTip) {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "notice");
                                             } else {
-                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "qs_page",
                                                         "user");
                                             }
                                         }
@@ -989,7 +1032,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int height = windowManager.getDefaultDisplay().getHeight();
+            int temp=0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
+                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            }
+            int height = windowManager.getDefaultDisplay().getHeight()+temp;
             if (mRightTopParams == null) {
                 mRightTopParams = new LayoutParams();
                 mRightTopParams.width = (int) ((DipPixelUtil.dip2px(mContext, mRightTopWidth) / 2) + (value / 2)) * 2;
@@ -1105,7 +1152,11 @@ public class FloatWindowHelper {
         WindowManager manager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
-        int height = display.getHeight();
+        int temp=0;
+        if (QuickGestureManager.getInstance(context).screenSpace >=0) {
+            temp=QuickGestureManager.getInstance(context).screenSpace ;
+        }
+        int height = windowManager.getDefaultDisplay().getHeight()+temp;
         int width = display.getWidth();
         int leftBottom = (int) ((DipPixelUtil.dip2px(context, mLeftBottomHeight) / 2) + (value)) * 2;
         int leftCenter = (int) ((DipPixelUtil.dip2px(context, mLeftCenterHeight) / 2) + (value)) * 2;

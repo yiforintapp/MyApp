@@ -181,6 +181,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_UPDATE_QUICK_GESTURE_USER = "update_quick_gesture_user";
     public static final String PREF_CURRENT_APP_VERSION_CODE = "app_version_code";
     public static final String PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD = "fist_dialog_tip_have_password";
+    public static final String PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE="rootview_and_window_height_space";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1765,5 +1766,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getQuickFirstDialogTipIsHavePassword() {
         return mPref.getBoolean(PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD, false);
+    }
+    public void setRootViewAndWindowHeighSpace(int flag){
+        mPref.edit().putInt(PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE, flag).commit();
+    }
+    public int getRootViewAndWindowHeighSpace(){
+        return mPref.getInt(PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE, 0);
     }
 }
