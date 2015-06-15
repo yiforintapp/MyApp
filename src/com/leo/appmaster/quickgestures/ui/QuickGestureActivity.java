@@ -89,10 +89,39 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         setContentView(R.layout.activity_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
         initUi();
-        mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
         Intent intent = getIntent();
         if (intent != null) {
             mFromShortcut = intent.getBooleanExtra(FROME_STATUSBAR, false);
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        initQuickGestureOpen();
+        if (mPre.getSwitchOpenQuickGesture()) {
+            initChexkBox();
+            setOnClickListener();
+        } else {
+            closeQuickSetting();
+        }
+        initSlidingAreaText();
+        if (!AppMasterPreference.getInstance(this)
+                .getFristSlidingTip()) {
+            gestureTranslationAnim(mHandImage, mArrowImage);
+            mTipRL.setVisibility(View.VISIBLE);
+            mTipRL.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View arg0) {
+
+                }
+            });
+            quickTipAnim(mTipRL);
+            mLeftTopView.setOnTouchListener(this);
+            mLeftBottomView.setOnTouchListener(this);
+            mRightTopView.setOnTouchListener(this);
+            mRightBottomView.setOnTouchListener(this);
         }
     }
 
@@ -119,29 +148,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
         mSlidingTimeTv = (TextView) findViewById(R.id.allow_slid_time_item_cotentTV);
         mSlidAreaTv = (TextView) findViewById(R.id.slid_area_item_cotentTV);
-        initQuickGestureOpen();
-        if (mPre.getSwitchOpenQuickGesture()) {
-            initChexkBox();
-            setOnClickListener();
-        }
-        initSlidingAreaText();
-        if (!AppMasterPreference.getInstance(this)
-                .getFristSlidingTip()) {
-            gestureTranslationAnim(mHandImage, mArrowImage);
-            mTipRL.setVisibility(View.VISIBLE);
-            mTipRL.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View arg0) {
-
-                }
-            });
-            quickTipAnim(mTipRL);
-            mLeftTopView.setOnTouchListener(this);
-            mLeftBottomView.setOnTouchListener(this);
-            mRightTopView.setOnTouchListener(this);
-            mRightBottomView.setOnTouchListener(this);
-
-        }
+        mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
     }
 
     private void initQuickGestureOpen() {
@@ -264,12 +271,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mNoReadMessageOpen.setOnClickListener(null);
         mRecentlyContactOPen.setOnClickListener(null);
         mPrivacyContactOpen.setOnClickListener(null);
-    }
-
-    @Override
-    protected void onResume() {
-        // TODO Auto-generated method stub
-        super.onResume();
     }
 
     @Override
@@ -908,8 +909,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 AppMasterPreference.getInstance(QuickGestureActivity.this)
                                         .setRootViewAndWindowHeighSpace(screenSpace());
                                 QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
-//                                FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
-                                int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
+                                // FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
+                                int value = QuickGestureManager
+                                        .getInstance(getApplicationContext()).mSlidAreaSize;
                                 FloatWindowHelper.updateView(QuickGestureActivity.this, value);
                             }
                         });

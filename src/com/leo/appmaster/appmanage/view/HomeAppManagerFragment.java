@@ -690,7 +690,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             }
         } else {
             Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             mActivity.startActivity(quickIntent);
         }
     }
