@@ -110,9 +110,11 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.home.ProxyActivity"
+            android:launchMode="singleInstance"
             android:excludeFromRecents="true"
             android:exported="true"
             android:noHistory="true"
+            android:taskAffinity="com.leo.appmaster.proxy"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity

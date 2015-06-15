@@ -27,8 +27,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +67,6 @@ import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.quickgestures.ui.QuickGestureTipDialog;
@@ -297,6 +294,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             app_hot_tip_icon.setVisibility(View.GONE);
         }
         super.onResume();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
     }
 
     @Override
