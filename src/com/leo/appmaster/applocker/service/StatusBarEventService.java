@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.applocker.service;
 
-import android.R.integer;
 import android.app.IntentService;
 import android.content.Intent;
 
@@ -21,6 +20,7 @@ public class StatusBarEventService extends IntentService {
     public static final String TAG = "StatusBarEventService";
     public static final String EXTRA_EVENT_TYPE = "extra_event_type";
 
+    public static final int EVENT_EMPTY = -1;
     public static final int EVENT_NEW_THEME = 0;
     public static final int EVENT_BUSINESS_APP = 1;
     public static final int EVENT_BUSINESS_GAME = 2;

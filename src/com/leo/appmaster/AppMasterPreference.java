@@ -60,6 +60,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_ONLINE_THEME_SERIAL = "online_theme_serialnumber";
     public static final String PREF_LOCAL_THEME_SERIAL = "local_theme_serialnumber";
     public static final String PREF_LAST_CHECK_NEW_THEME = "last_check_new_theme_time";
+    public static final String PREF_LAST_UBC = "last_ubc_time";
 
     // applist business
     public static final String PREF_LAST_SYNC_BUSINESS_TIME = "last_sync_business_time";
@@ -180,6 +181,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_FIRST_OPEN_QUICK_POPUP = "quick_gesture_first_open_popu";
     public static final String PREF_UPDATE_QUICK_GESTURE_USER = "update_quick_gesture_user";
     public static final String PREF_CURRENT_APP_VERSION_CODE = "app_version_code";
+    public static final String PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD = "fist_dialog_tip_have_password";
+    public static final String PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE="rootview_and_window_height_space";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -219,6 +222,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private long mLastCheckThemeTime = -1;
     private long mLastSyncBusinessTime = -1;
     private long mUnlockCount = -1;
+    private long mLastUBCTime = -1;
     private int mRelockTimeOut = -1;
     private long mMonthGprsAll = -1;
     private long mItSelfTodayBase = -1;
@@ -382,6 +386,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setLastShowTime(long lastShowTime) {
         mLastShowTime = lastShowTime;
         mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime).commit();
+    }
+    
+    public long getLastUBCTime() {
+        if (mLastUBCTime < 0) {
+            mLastUBCTime = mPref.getLong(PREF_LAST_UBC, 0);
+        }
+        return mLastUBCTime;
+    }
+
+    public void setLastUBCTime(long time) {
+        mLastUBCTime = time;
+        mPref.edit().putLong(PREF_LAST_UBC, time).commit();
     }
 
     public boolean getMessageRedTip() {
@@ -1747,7 +1763,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getIsUpdateQuickGestureUser() {
-        return mPref.getBoolean(PREF_UPDATE_QUICK_GESTURE_USER, false);
+        return mPref.getBoolean(PREF_UPDATE_QUICK_GESTURE_USER, true);
     }
 
     public void setCurrentAppVersionCode(int versionCode) {
@@ -1756,5 +1772,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getCurrentAppVersionCode() {
         return mPref.getInt(PREF_CURRENT_APP_VERSION_CODE, -1);
+    }
+
+    public void setQuickFirstDialogTipIsHavePassword(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD, flag).commit();
+    }
+
+    public boolean getQuickFirstDialogTipIsHavePassword() {
+        return mPref.getBoolean(PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD, false);
+    }
+    public void setRootViewAndWindowHeighSpace(int flag){
+        mPref.edit().putInt(PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE, flag).commit();
+    }
+    public int getRootViewAndWindowHeighSpace(){
+        return mPref.getInt(PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE, 0);
     }
 }

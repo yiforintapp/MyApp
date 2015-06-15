@@ -20,10 +20,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
@@ -73,7 +75,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView,
             mSlidingTimeTv, mSlidAreaTv;
     private RelativeLayout mTipRL, mOpenQuick, mSlidingArea, mSlidingTime, mNoReadMessageOpen,
-            mRecentlyContactOPen, mPrivacyContactOpen;
+            mRecentlyContactOPen, mPrivacyContactOpen, mActivityRootView;
     private ImageView mHandImage, mArrowImage, mQuickOpenCK, mNoReadMessageOpenCK,
             mRecentlyContactOpenCK, mPrivacyContactOpenCK;
     private boolean mFlag, mOpenQuickFlag, mNoReadMessageFlag, mRecentlyContactFlag,
@@ -87,6 +89,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         setContentView(R.layout.activity_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
         initUi();
+        mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
         Intent intent = getIntent();
         if (intent != null) {
             mFromShortcut = intent.getBooleanExtra(FROME_STATUSBAR, false);
@@ -261,6 +264,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mNoReadMessageOpen.setOnClickListener(null);
         mRecentlyContactOPen.setOnClickListener(null);
         mPrivacyContactOpen.setOnClickListener(null);
+    }
+
+    @Override
+    protected void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
     }
 
     @Override
@@ -690,88 +699,92 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             case MotionEvent.ACTION_DOWN:
                 downX = event.getX();
                 downY = event.getY();
+                // Log.e("##########", "dsfgsdfg");
                 break;
             case MotionEvent.ACTION_MOVE:
                 float moveX = Math.abs(event.getX() - downX);
                 float moveY = Math.abs(event.getY() - downY);
-//                Log.e("########", "触摸1");
+                // Log.e("########", "触摸1");
                 if (moveX > width / 50 || moveY > width / 50) {
-//                    Log.e("########", "触摸2");
-                        boolean checkHuaWei = BuildProperties
-                                .isHuaWeiTipPhone(QuickGestureActivity.this);
-                        boolean checkFloatWindow = BuildProperties
-                                .isFloatWindowOpAllowed(QuickGestureActivity.this);
-                        // Log.e("#########",
-                        // "机型华为："+checkHuaWei+"||悬浮窗权限："+checkFloatWindow);
-                        if (!mFlag) {
-                            mTipRL.clearAnimation();
-                            mHandImage.setVisibility(View.GONE);
-                            mArrowImage.setVisibility(View.GONE);
-                            if (viewId == R.id.gesture_left_tips_top_tv
-                                    || viewId == R.id.gesture_left_tips_bottom) {
-                                QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -1;
-                            } else if (viewId == R.id.gesture_right_tips_top_tv
-                                    || viewId == R.id.gesture_right_tips_bottom) {
-                                QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = 1;
-                            }
-                            SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1,
-                                    "qssetting",
-                                    "qs_open");
-                            QuickGestureManager.getInstance(getApplicationContext()).init();
-                            Intent intent;
-                            intent = new Intent(AppMasterApplication.getInstance(),
-                                    QuickGesturePopupActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            switch (viewId) {
-                                case R.id.gesture_left_tips_top_tv:
-                                    intent.putExtra("show_orientation", 0);
-                                    break;
-                                case R.id.gesture_left_tips_bottom:
-                                    intent.putExtra("show_orientation", 0);
-                                    break;
-                                case R.id.gesture_right_tips_top_tv:
-                                    intent.putExtra("show_orientation", 2);
-                                    break;
-                                case R.id.gesture_right_tips_bottom:
-                                    intent.putExtra("show_orientation", 2);
-                                    break;
-                            }
-                            try {
-                                AppMasterApplication.getInstance().startActivity(intent);
-                                AppMasterPreference.getInstance(this).setFristSlidingTip(true);
-                                if (mQuickOpenCK != null) {
-                                    mQuickOpenCK.setImageResource(R.drawable.switch_on);
-                                    mPre.setSwitchOpenQuickGesture(true);
-                                    mQuickOpenCK.setImageResource(R.drawable.switch_on);
-                                    mOpenQuickFlag = true;
-                                    QuickGestureManager.getInstance(QuickGestureActivity.this)
-                                            .startFloatWindow();
-                                    setOnClickListener();
-                                    initChexkBox();
-                                    // checkNoReadCallLog();
-                                    // checkNoReadMessage();
-                                    // init quick gesture data
-                                }
-                            } catch (Exception e) {
-                            }
-                            mTipRL.postDelayed(new Runnable() {
-
-                                @Override
-                                public void run() {
-                                    // TODO Auto-generated method stub
-                                    mTipRL.setVisibility(View.GONE);
-                                }
-                            }, 2000);
-                            String toastText = QuickGestureActivity.this.getResources()
-                                    .getString(
-                                            R.string.quick_gesture_first_open_sliding_toast);
-                            Toast.makeText(QuickGestureActivity.this, toastText,
-                                    Toast.LENGTH_SHORT)
-                                    .show();
-                            mFlag = true;
-                            createShortCut();
+                    // Log.e("########", "触摸2");
+                    boolean checkHuaWei = BuildProperties
+                            .isHuaWeiTipPhone(QuickGestureActivity.this);
+                    boolean checkFloatWindow = BuildProperties
+                            .isFloatWindowOpAllowed(QuickGestureActivity.this);
+                    // Log.e("#########",
+                    // "机型华为："+checkHuaWei+"||悬浮窗权限："+checkFloatWindow);
+                    if (!mFlag) {
+                        AppMasterPreference.getInstance(this).setRootViewAndWindowHeighSpace(
+                                screenSpace());
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
+                        mTipRL.clearAnimation();
+                        mHandImage.setVisibility(View.GONE);
+                        mArrowImage.setVisibility(View.GONE);
+                        if (viewId == R.id.gesture_left_tips_top_tv
+                                || viewId == R.id.gesture_left_tips_bottom) {
+                            QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -1;
+                        } else if (viewId == R.id.gesture_right_tips_top_tv
+                                || viewId == R.id.gesture_right_tips_bottom) {
+                            QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = 1;
                         }
+                        SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1,
+                                "qssetting",
+                                "qs_open");
+                        QuickGestureManager.getInstance(getApplicationContext()).init();
+                        Intent intent;
+                        intent = new Intent(AppMasterApplication.getInstance(),
+                                QuickGesturePopupActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        switch (viewId) {
+                            case R.id.gesture_left_tips_top_tv:
+                                intent.putExtra("show_orientation", 0);
+                                break;
+                            case R.id.gesture_left_tips_bottom:
+                                intent.putExtra("show_orientation", 0);
+                                break;
+                            case R.id.gesture_right_tips_top_tv:
+                                intent.putExtra("show_orientation", 2);
+                                break;
+                            case R.id.gesture_right_tips_bottom:
+                                intent.putExtra("show_orientation", 2);
+                                break;
+                        }
+                        try {
+                            AppMasterApplication.getInstance().startActivity(intent);
+                            AppMasterPreference.getInstance(this).setFristSlidingTip(true);
+                            if (mQuickOpenCK != null) {
+                                mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                                mPre.setSwitchOpenQuickGesture(true);
+                                mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                                mOpenQuickFlag = true;
+                                QuickGestureManager.getInstance(QuickGestureActivity.this)
+                                        .startFloatWindow();
+                                setOnClickListener();
+                                initChexkBox();
+                                // checkNoReadCallLog();
+                                // checkNoReadMessage();
+                                // init quick gesture data
+                            }
+                        } catch (Exception e) {
+                        }
+                        mTipRL.postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                // TODO Auto-generated method stub
+                                mTipRL.setVisibility(View.GONE);
+                            }
+                        }, 2000);
+                        String toastText = QuickGestureActivity.this.getResources()
+                                .getString(
+                                        R.string.quick_gesture_first_open_sliding_toast);
+                        Toast.makeText(QuickGestureActivity.this, toastText,
+                                Toast.LENGTH_SHORT)
+                                .show();
+                        mFlag = true;
+                        createShortCut();
                     }
+                }
                 break;
             case MotionEvent.ACTION_UP:
                 break;
@@ -779,6 +792,19 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 break;
         }
         return true;
+    }
+
+    // 计算根布局与屏幕高的差值
+    private int screenSpace() {
+        int height = ((WindowManager) QuickGestureActivity.this
+                .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getHeight();
+        int rootHeight = mActivityRootView.getRootView().getHeight();
+        if (mActivityRootView != null) {
+            int temp = Math.abs(rootHeight - height);
+            return temp;
+        } else {
+            return 0;
+        }
     }
 
     private void quickTipAnim(View view) {
@@ -836,6 +862,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     unSetOnClickListener();
                     closeQuickSetting();
                     QuickGestureManager.getInstance(this).stopFloatWindow();
+                    QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = 0;
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                     // uninit quick gesture data
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
@@ -855,6 +882,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             .startFloatWindow();
                     setOnClickListener();
                     initChexkBox();
+                    QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
                     // init quick gesture data
                     AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
@@ -870,6 +898,22 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         "area_cli");
                 FloatWindowHelper.mEditQuickAreaFlag = true;
                 showSettingDialog(true);
+                AppMasterPreference.getInstance(QuickGestureActivity.this)
+                        .setRootViewAndWindowHeighSpace(screenSpace());
+                QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
+                mActivityRootView.getViewTreeObserver()
+                        .addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+                            @Override
+                            public void onGlobalLayout() {
+                                AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                        .setRootViewAndWindowHeighSpace(screenSpace());
+                                QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
+//                                FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
+                                int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
+                                FloatWindowHelper.updateView(QuickGestureActivity.this, value);
+                            }
+                        });
+
                 break;
             case R.id.allow_slid_time:
                 SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",

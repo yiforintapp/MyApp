@@ -86,7 +86,7 @@ public class QuickGestureManager {
     public boolean isJustHome;
     public boolean isAppsAndHome;
     public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
-
+    public int screenSpace;//根布局与屏幕高的差值
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);

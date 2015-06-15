@@ -30,7 +30,6 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
-import com.leo.appmaster.utils.LeoLog;
 
 public class HotAppActivity extends BaseFragmentActivity implements OnPageChangeListener  {
     public static final String FROME_STATUSBAR = "from_statusbar";
@@ -159,6 +158,7 @@ public class HotAppActivity extends BaseFragmentActivity implements OnPageChange
             mViewPager.setCurrentItem(mPage);
         }
         super.onResume();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "hots");
     }
     
     @Override
