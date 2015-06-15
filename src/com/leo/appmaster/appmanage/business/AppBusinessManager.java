@@ -38,9 +38,9 @@ import com.leo.appmaster.utils.LeoLog;
 public class AppBusinessManager {
 
     public static final String TAG = "AppBusinessManager";
-    private static final int DELAY_2_HOUR = 10 * 1000;
+    private static final int DELAY_2_HOUR = 3 * 60 * 1000;
     // public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
-    public static final int DELAY_12_HOUR = 20 * 1000;
+    public static final int DELAY_12_HOUR = 5 * 60 * 1000;
 
     // private static final int DELAY_2_HOUR = 5 * 1000;
     // public static final int DELAY_12_HOUR = 5 * 1000;

@@ -216,6 +216,8 @@ public class AppleWatchLayout extends ViewGroup {
             }, 800);
         }
 
+        setChildrenDrawnWithCacheEnabled(true);
+        setDrawingCacheEnabled(true);
     }
 
     public boolean isCurrentLayout() {
@@ -511,6 +513,7 @@ public class AppleWatchLayout extends ViewGroup {
         setPivotY(mTotalHeight * 3);
         // mContainer = (AppleWatchContainer) getParent();
         // }
+
     }
 
     private void inflateItem(GestureItemView item, BaseInfo info) {
