@@ -1,11 +1,15 @@
 
 package com.leo.appmaster.quickgestures;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import java.util.Vector;
 
 import android.app.Activity;
@@ -34,6 +38,7 @@ import android.view.WindowManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -48,9 +53,7 @@ import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
-import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
-import com.leo.appmaster.quickgestures.view.EventAction;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -151,7 +154,7 @@ public class QuickGestureManager {
         if (businessDatas != null && businessDatas.size() > 0) {
             int count = 0;
             for (BusinessItemInfo businessItem : businessDatas) {
-                if (count == 4) {
+                if (count == 4 || !businessItem.iconLoaded || businessItem.icon == null) {
                     break;
                 }
                 count++;
@@ -388,12 +391,16 @@ public class QuickGestureManager {
         }
 
         List<BaseInfo> newresault = new ArrayList<BaseInfo>();
-
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         ArrayList<AppLauncherRecorder> recorderApp = LockManager.getInstatnce().mAppLaunchRecorders;
+
+        // LaunchCount
+        Collections.sort(recorderApp, new LaunchCount());
+
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         if (recorderApp != null && (recorderApp.size() > 1 || mHaveList.size() > 0)) {
             LeoLog.d("testSp", "recorderApp.size() : " + recorderApp.size());
+
             Iterator<AppLauncherRecorder> recorder = recorderApp.iterator();
             int i = 0;
             AppItemInfo info;
@@ -402,6 +409,8 @@ public class QuickGestureManager {
                 AppLauncherRecorder recorderAppInfo = recorder.next();
                 if (recorderAppInfo.launchCount > 0) {
                     info = engine.getAppInfo(recorderAppInfo.pkg);
+                    LeoLog.d("testSp", "recorderApp.pk : " + recorderAppInfo.pkg +
+                            " ; mInfo.launchCount : " + recorderAppInfo.launchCount);
                     if (info == null)
                         continue;
                     if (i >= 11) {
@@ -445,15 +454,6 @@ public class QuickGestureManager {
                         if (appInfo != null) {
                             resault.add(appInfo);
                         }
-                        // icon = engine.getAppIcon(pkg);
-                        // if (icon != null) {
-                        // appInfo = new AppItemInfo();
-                        // appInfo.packageName = pkg;
-                        // appInfo.activityName = engine.getActivityName(pkg);
-                        // appInfo.icon = icon;
-                        // appInfo.label = engine.getAppName(pkg);
-                        // dynamicList.add(appInfo);
-                        // }
                     }
                 }
             }
@@ -495,11 +495,10 @@ public class QuickGestureManager {
             int mSize = mHaveList.size() + resault.size() > 11 ? 11 : mHaveList.size()
                     + resault.size();
             LeoLog.d("testSp", "mSize : " + mSize);
-            for (int i = 0; i < 11; i++) {
-                LeoLog.d("testSp", "i  is : " + i);
-                QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(k);
-                if (resault.size() > 0) {
-
+            if (resault.size() > 0) {
+                for (int i = 0; i < 11; i++) {
+                    LeoLog.d("testSp", "i  is : " + i);
+                    QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) mHaveList.get(k);
                     int m = j;
                     if (resault.size() <= j) {
                         m = resault.size() - 1;
@@ -509,7 +508,6 @@ public class QuickGestureManager {
                     boolean isGetPosition = isGetPosition(i, mPositions);
                     if (isGetPosition) {
                         LeoLog.d("testSp", "mInfo.gesturePosition : " + mInfo.gesturePosition);
-                        // mInfo.gesturePosition = i;
                         newresault.add(mInfo);
                         if (k < mHaveList.size() - 1) {
                             k++;
@@ -523,25 +521,92 @@ public class QuickGestureManager {
                             j++;
                         }
                     }
-                } else {
-                    return mHaveList;
+                }
+                LeoLog.d("testSp", "newresault.size : " + newresault.size());
+                resault.clear();
+                resault = newresault;
+            } else {
+                resault = mHaveList;
+            }
+        }
+
+        // 记录点击排行
+        List<String> mBackListRank = new ArrayList<String>();
+        if (recorderApp.size() > 0) {
+            for (int i = 0; i < recorderApp.size(); i++) {
+                AppLauncherRecorder recorderAppInfo = recorderApp.get(i);
+                for (int j = 0; j < resault.size(); j++) {
+                    QuickGsturebAppInfo mInfo = (QuickGsturebAppInfo) resault.get(j);
+                    if (recorderAppInfo.pkg.equals(mInfo.packageName)) {
+                        LeoLog.d("testSp", "mBackListRank.pk : " + mInfo.packageName);
+                        mBackListRank.add(mInfo.packageName);
+                    }
                 }
             }
-            LeoLog.d("testSp", "newresault.size : " + newresault.size());
-            // return newresault;
-            resault.clear();
-            resault = newresault;
         }
-        // else {
-        // return resault;
-        // }
+        
+        //换位
+        makeResaultList(resault, mBackListRank);
 
         String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
                 resault,
                 resault.size(), NORMALINFO);
         mSpSwitch.setCommonAppPackageName(mListString);
-
         return resault;
+    }
+
+    private void makeResaultList(List<BaseInfo> resault, List<String> mBackListRank) {
+        for (int i = 0; i < mBackListRank.size(); i++) {
+            String mRankPck = mBackListRank.get(i);
+            int mRankPosition = i;
+            int AgoPosition = 0;
+            for (int j = 0; j < resault.size(); j++) {
+                QuickGsturebAppInfo mAgoInfo = (QuickGsturebAppInfo) resault.get(j);
+                if (mAgoInfo.packageName.equals(mRankPck)) {
+                    AgoPosition = mAgoInfo.gesturePosition;
+                    QuickGsturebAppInfo aInfo = getInfoFromPosition(resault, mRankPosition);
+                    if (mRankPosition != AgoPosition) {
+                        mAgoInfo.gesturePosition = mRankPosition;
+                        aInfo.gesturePosition = AgoPosition;
+                    }
+                }
+            }
+        }
+    }
+
+    private QuickGsturebAppInfo getInfoFromPosition(List<BaseInfo> resault, int mRankPosition) {
+        QuickGsturebAppInfo returnInfo = new QuickGsturebAppInfo();
+        for (int j = 0; j < resault.size(); j++) {
+            QuickGsturebAppInfo mInInfo = (QuickGsturebAppInfo) resault.get(j);
+            if (mRankPosition == mInInfo.gesturePosition) {
+                returnInfo = mInInfo;
+            }
+        }
+        return returnInfo;
+    }
+
+    private QuickGsturebAppInfo checkInfo(List<BaseInfo> resault, String mPack) {
+        QuickGsturebAppInfo returnInfo = new QuickGsturebAppInfo();
+        for (int j = 0; j < resault.size(); j++) {
+            QuickGsturebAppInfo mInInfo = (QuickGsturebAppInfo) resault.get(j);
+            if (mPack.equals(mInInfo.packageName)) {
+                returnInfo = mInInfo;
+            }
+        }
+        return returnInfo;
+    }
+
+    public static class LaunchCount implements Comparator<AppLauncherRecorder> {
+        @Override
+        public int compare(AppLauncherRecorder lhs, AppLauncherRecorder rhs) {
+            if (rhs.launchCount > lhs.launchCount) {
+                return 1;
+            } else if (rhs.launchCount == lhs.launchCount) {
+                return 0;
+            } else {
+                return -1;
+            }
+        }
     }
 
     private List<BaseInfo> changeList(List<BaseInfo> resault) {
@@ -1203,8 +1268,4 @@ public class QuickGestureManager {
     // }
     // }
 
-    public static AppLauncherRecorder AppLauncherRecorder() {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

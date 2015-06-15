@@ -39,9 +39,9 @@ public class AppBusinessManager {
 
     public static final String TAG = "AppBusinessManager";
 
-    private static final int DELAY_2_HOUR = 10 * /* 60 * */60 * 1000;
+    private static final int DELAY_2_HOUR = 3 * /* 60 * */60 * 1000;
     // public static final int DELAY_12_HOUR = 12 * 60 * 60 * 1000;
-    public static final int DELAY_12_HOUR = 15 * 60 * 1000;
+    public static final int DELAY_12_HOUR = 5 * 60 * 1000;
 
     // private static final int DELAY_2_HOUR = 5 * 1000;
     // public static final int DELAY_12_HOUR = 5 * 1000;
@@ -392,6 +392,7 @@ public class AppBusinessManager {
                 mBusinessList.clear();
                 if (list == null || list.isEmpty())
                     return;
+                LeoLog.d(TAG, "syncGestureData list = " + list.size());
                 ContentValues[] values = new ContentValues[list.size()];
                 BusinessItemInfo businessItemInfo;
                 for (int i = 0; i < list.size(); i++) {
