@@ -543,8 +543,8 @@ public class QuickGestureManager {
                 }
             }
         }
-        
-        //换位
+
+        // 换位
         makeResaultList(resault, mBackListRank);
 
         String mListString = QuickSwitchManager.getInstance(mContext).listToPackString(
@@ -584,16 +584,17 @@ public class QuickGestureManager {
         return returnInfo;
     }
 
-    private QuickGsturebAppInfo checkInfo(List<BaseInfo> resault, String mPack) {
-        QuickGsturebAppInfo returnInfo = new QuickGsturebAppInfo();
-        for (int j = 0; j < resault.size(); j++) {
-            QuickGsturebAppInfo mInInfo = (QuickGsturebAppInfo) resault.get(j);
-            if (mPack.equals(mInInfo.packageName)) {
-                returnInfo = mInInfo;
-            }
-        }
-        return returnInfo;
-    }
+    // private QuickGsturebAppInfo checkInfo(List<BaseInfo> resault, String
+    // mPack) {
+    // QuickGsturebAppInfo returnInfo = new QuickGsturebAppInfo();
+    // for (int j = 0; j < resault.size(); j++) {
+    // QuickGsturebAppInfo mInInfo = (QuickGsturebAppInfo) resault.get(j);
+    // if (mPack.equals(mInInfo.packageName)) {
+    // returnInfo = mInInfo;
+    // }
+    // }
+    // return returnInfo;
+    // }
 
     public static class LaunchCount implements Comparator<AppLauncherRecorder> {
         @Override
@@ -983,29 +984,29 @@ public class QuickGestureManager {
                         }
                     }
 
-                    private List<BaseInfo> hasSameName(List<BaseInfo>
-                            addCommonApp2, boolean isCheck) {
-                        List<BaseInfo> items;
-                        if (isCheck) {
-                            items = loadRecorderAppInfo();
-                        } else {
-                            items = loadCommonAppInfo();
-                        }
-                        List<BaseInfo> AddCommonApps = new ArrayList<BaseInfo>();
-                        for (BaseInfo addInfo : addCommonApp2) {
-                            boolean isHasSameName = false;
-                            for (BaseInfo item : items) {
-                                if (item.label.equals(addInfo.label)) {
-                                    isHasSameName = true;
-                                }
-                            }
-                            if (!isHasSameName) {
-                                AddCommonApps.add(addInfo);
-                            }
-                            isHasSameName = false;
-                        }
-                        return AddCommonApps;
-                    }
+                    // private List<BaseInfo> hasSameName(List<BaseInfo>
+                    // addCommonApp2, boolean isCheck) {
+                    // List<BaseInfo> items;
+                    // if (isCheck) {
+                    // items = loadRecorderAppInfo();
+                    // } else {
+                    // items = loadCommonAppInfo();
+                    // }
+                    // List<BaseInfo> AddCommonApps = new ArrayList<BaseInfo>();
+                    // for (BaseInfo addInfo : addCommonApp2) {
+                    // boolean isHasSameName = false;
+                    // for (BaseInfo item : items) {
+                    // if (item.label.equals(addInfo.label)) {
+                    // isHasSameName = true;
+                    // }
+                    // }
+                    // if (!isHasSameName) {
+                    // AddCommonApps.add(addInfo);
+                    // }
+                    // isHasSameName = false;
+                    // }
+                    // return AddCommonApps;
+                    // }
                 }).start();
                 commonApp.dismiss();
                 Intent intent = new Intent(AppMasterApplication.getInstance(),
