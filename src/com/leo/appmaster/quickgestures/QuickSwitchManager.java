@@ -299,7 +299,7 @@ public class QuickSwitchManager {
             if (!auto) {
                 light = android.provider.Settings.System.getInt(cr,
                         Settings.System.SCREEN_BRIGHTNESS, -1);
-                if (light > 0 && light <= LIGHT_NORMAL) {
+                if (light >= 0 && light <= LIGHT_NORMAL) {
                     return LIGHT_NORMAL;
                 } else if (light > LIGHT_NORMAL && light <= LIGHT_50_PERCENT) {
                     return LIGHT_50_PERCENT;
