@@ -20,6 +20,9 @@ import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.ActivityManager.RunningTaskInfo;
 import android.app.AlarmManager;
 import android.app.Application;
 import android.app.Notification;
@@ -33,13 +36,16 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.media.AudioManager;
+import android.os.Build;
 import android.os.Handler;
+import android.os.PowerManager;
 import android.os.UserManager;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -56,6 +62,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
+import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -65,6 +72,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -155,6 +163,8 @@ public class AppMasterApplication extends Application {
         }
         registerReceiveMessageCallIntercept();
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
+        QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
+                .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
     }
 
     private String getUserSerial() {
@@ -352,10 +362,10 @@ public class AppMasterApplication extends Application {
             // pref.setIsUpdateQuickGestureUser(false);
             // }
             //
-            if(pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE ){
+            if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                 pref.setIsUpdateQuickGestureUser(false);
             }
-            
+
         } else {
             if (lastVercode > 37) {
                 pref.setIsUpdateQuickGestureUser(true);
@@ -637,8 +647,41 @@ public class AppMasterApplication extends Application {
         }
 
     }
+    
+    public void checkUBC() {
+        mExecutorService.execute(new Runnable() {          
+            @Override
+            public void run() {
+                String pkgName = getTopPackage();
+                if(pkgName != null && pkgName.equals(getApplicationContext().getPackageName())) {
+                    return;
+                }
+                AppMasterPreference pref = AppMasterPreference.getInstance(getApplicationContext());
+                long curTime = System.currentTimeMillis();
+                long lastUBC = pref.getLastUBCTime();
+                if (Math.abs(curTime - lastUBC) > AppMasterConfig.TIME_12_HOUR) {
+                    pref.setLastUBCTime(curTime);
+                    if (lastUBC > 0) {
+                        mHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Intent intent = new Intent();
+                                intent.setClass(getApplicationContext(), ProxyActivity.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                            }
+                        });
+                    } 
+                }
+            }
+        });
+    }
 
     public void checkNewTheme() {
+        PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
+        if(pm.isScreenOn()) {
+            checkUBC();
+        }
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
         long curTime = System.currentTimeMillis();
 
@@ -1055,6 +1098,46 @@ public class AppMasterApplication extends Application {
      */
     public static boolean isAboveICS() {
         return AppMasterApplication.SDK_VERSION >= 14;
+    }
+    
+    private String getTopPackage() {
+        ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        if (Build.VERSION.SDK_INT > 19) { // Android L and above
+            List<RunningAppProcessInfo> list = am.getRunningAppProcesses();
+            for (RunningAppProcessInfo pi : list) {
+                if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                        /*
+                         * Foreground or Visible
+                         */
+                        && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
+                        /*
+                         * Filter provider and service
+                         */
+                        && (0x4 & pi.flags) > 0
+                        && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
+                    /*
+                     * Must have activities and one activity is on the top
+                     */
+                    String pkgList[] = pi.pkgList;
+                    if (pkgList != null && pkgList.length > 0) {
+                        String pkgName = pkgList[0];
+                        if (TaskDetectService.SYSTEMUI_PKG.equals(pkgName)) {
+                            continue;
+                        }
+                        return pkgName;
+                    }
+                }
+            }
+        } else {
+            List<RunningTaskInfo> tasks = am.getRunningTasks(1);
+            if (tasks != null && tasks.size() > 0) {
+                RunningTaskInfo topTaskInfo = tasks.get(0);
+                if (topTaskInfo.topActivity != null) {
+                    return topTaskInfo.topActivity.getPackageName();
+                }
+            }
+        }
+        return null;
     }
 
 }

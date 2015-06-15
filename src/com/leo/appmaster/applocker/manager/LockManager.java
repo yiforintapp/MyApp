@@ -4,7 +4,6 @@ package com.leo.appmaster.applocker.manager;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -20,19 +19,16 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import android.app.ActivityManager;
-import android.app.ActivityManager.RecentTaskInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.Intent.ShortcutIconResource;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -56,12 +52,10 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
-import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -1492,6 +1486,7 @@ public class LockManager {
 
         } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
             LockManager.getInstatnce().startLockService();
+            AppMasterApplication.getInstance().checkUBC();
             mHandler.postDelayed(new Runnable() {
 
                 @Override
@@ -1627,6 +1622,8 @@ public class LockManager {
         if (list.contains(lastRunningPkg)
                 && !LockScreenActivity.class.getName().contains(lastRunningActivity)
                 && !WaitActivity.class
+                        .getName().contains(lastRunningActivity)
+                        &&  !ProxyActivity.class
                         .getName().contains(lastRunningActivity)) {
             LeoLog.d("Track Lock Screen",
                     "apply lockscreen form screen on => " + lastRunningPkg

@@ -86,7 +86,7 @@ public class QuickGestureManager {
     public boolean isJustHome;
     public boolean isAppsAndHome;
     public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
-
+    public int screenSpace;//根布局与屏幕高的差值
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);
@@ -150,7 +150,6 @@ public class QuickGestureManager {
         Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
                 .getBusinessData();
         List<BaseInfo> dynamicList = new ArrayList<BaseInfo>();
-        // BusinessItemInfo businessItem = null;
         if (businessDatas != null && businessDatas.size() > 0) {
             int count = 0;
             for (BusinessItemInfo businessItem : businessDatas) {
