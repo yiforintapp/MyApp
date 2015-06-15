@@ -769,6 +769,7 @@ public class AppleWatchLayout extends ViewGroup {
             item.cancelShowReadTip();
             Intent intent = new Intent();
             intent.setClass(mContext, PrivacyContactActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 mContext.startActivity(intent);
                 if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog) {
