@@ -60,6 +60,7 @@ public class AppBusinessManager {
     private Vector<BusinessItemInfo> mBusinessList;
     private FutureTask<Vector<BusinessItemInfo>> mLoadInitDataTask;
     private boolean mInitDataLoaded = false;
+    private int mErrorTryCount = 0;
 
     private static AppBusinessManager mInstance;
 
@@ -214,11 +215,12 @@ public class AppBusinessManager {
         LeoLog.d(TAG, "syncServerGestureData");
         final AppMasterPreference pref = AppMasterPreference
                 .getInstance(mContext);
-        long curTime = System.currentTimeMillis();
+        final long curTime = System.currentTimeMillis();
 
         long lastSyncTime = pref.getLastSyncBusinessTime();
         if (lastSyncTime == 0
                 || (curTime - pref.getLastSyncBusinessTime()) >= DELAY_12_HOUR) {
+            mErrorTryCount = 0;
             HttpRequestAgent.getInstance(mContext).loadGestureRecomApp(
                     BusinessItemInfo.CONTAIN_APPLIST,
                     new Listener<JSONObject>() {
@@ -226,13 +228,13 @@ public class AppBusinessManager {
                         @Override
                         public void onResponse(JSONObject response,
                                 boolean noModify) {
+                            mErrorTryCount = 0;
                             if (response != null) {
                                 try {
                                     if (response != null) {
                                         pref.setLastSyncBusinessTime(System
                                                 .currentTimeMillis());
                                         if (!noModify) {
-                                            // to paser data
                                             LeoLog.d(TAG,
                                                     response.toString());
                                             List<BusinessItemInfo> list = BusinessJsonParser
@@ -247,15 +249,6 @@ public class AppBusinessManager {
                                     }
                                 } catch (Exception e) {
                                     LeoLog.e(TAG, e.getMessage());
-                                    // TimerTask recheckTask = new TimerTask() {
-                                    // @Override
-                                    // public void run() {
-                                    // syncServerAppListData();
-                                    // }
-                                    // };
-                                    // Timer timer = new Timer();
-                                    // timer.schedule(recheckTask,
-                                    // DELAY_2_HOUR);
                                 } finally {
                                     LeoLog.e(TAG, "recheck task");
                                     TimerTask recheckTask = new TimerTask() {
@@ -274,16 +267,27 @@ public class AppBusinessManager {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             LeoLog.e(TAG, error.getMessage());
-                            TimerTask recheckTask = new TimerTask() {
-                                @Override
-                                public void run() {
-                                    syncServerGestureData(false);
-                                }
-                            };
-                            Timer timer = new Timer();
-                            timer.schedule(recheckTask, DELAY_2_HOUR);
-                            // LoadFailUtils.sendLoadFail(mContext,
-                            // "home_apps");
+                            if (mErrorTryCount < 3) {
+                                TimerTask recheckTask = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        syncServerGestureData(false);
+                                    }
+                                };
+                                Timer timer = new Timer();
+                                timer.schedule(recheckTask, DELAY_2_HOUR);
+                                mErrorTryCount++;
+                            } else {
+                                TimerTask recheckTask = new TimerTask() {
+                                    @Override
+                                    public void run() {
+                                        syncServerGestureData(false);
+                                    }
+                                };
+                                Timer timer = new Timer();
+                                timer.schedule(recheckTask,
+                                        DELAY_12_HOUR / 2);
+                            }
                         }
                     });
         } else {
