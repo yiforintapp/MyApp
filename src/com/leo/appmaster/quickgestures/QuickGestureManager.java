@@ -1,18 +1,14 @@
 
 package com.leo.appmaster.quickgestures;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Set;
 import java.util.Vector;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -28,7 +24,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
-import android.provider.Settings;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 import android.view.View;
@@ -38,7 +33,6 @@ import android.view.WindowManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -47,15 +41,12 @@ import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
-import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.tools.ColorMatcher;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -68,6 +59,7 @@ public class QuickGestureManager {
     private static QuickGestureManager mInstance;
     private Context mContext;
     private boolean mInited = false;
+    private List<String> mDeletedBusinessItems;
     private AppMasterPreference mSpSwitch;
     public List<MessageBean> mMessages;
     public List<ContactCallLog> mCallLogs;
@@ -86,7 +78,8 @@ public class QuickGestureManager {
     public boolean isJustHome;
     public boolean isAppsAndHome;
     public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
-    public int screenSpace;//根布局与屏幕高的差值
+    public int screenSpace;// 根布局与屏幕高的差值
+
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);
@@ -105,6 +98,7 @@ public class QuickGestureManager {
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
             preloadColorIcon();
+            loadDeletedBusinessItems();
             Bitmap bmp;
             for (Drawable drawable : mColorBgIcon) {
                 bmp = ((BitmapDrawable) drawable).getBitmap();
@@ -113,6 +107,25 @@ public class QuickGestureManager {
             // TODO switcher init
             QuickSwitchManager.getInstance(mContext).init();
         }
+    }
+
+    private void loadDeletedBusinessItems() {
+        mDeletedBusinessItems = new ArrayList<String>();
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        String deleteds = amp.getDeletedBusinessItems();
+        deleteds.subSequence(0, deleteds.length() - 1);
+        String[] resault = deleteds.split(";");
+        for (String string : resault) {
+            mDeletedBusinessItems.add(string);
+        }
+    }
+
+    private void addDeleteBusinessItem(String pkg) {
+        mDeletedBusinessItems.add(pkg);
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        String deteleds = amp.getDeletedBusinessItems();
+        deteleds = deteleds + pkg + ";";
+        amp.setDeletedBusinessItems(deteleds);
     }
 
     public void unInit() {
@@ -155,9 +168,14 @@ public class QuickGestureManager {
             int count = 0;
             for (BusinessItemInfo businessItem : businessDatas) {
                 businessItem.gesturePosition = -1000;
-                if (count == 4 || !businessItem.iconLoaded || businessItem.icon == null) {
+                if (count == 4) {
                     break;
                 }
+                if (!businessItem.iconLoaded || businessItem.icon == null
+                        || mDeletedBusinessItems.contains(businessItem.packageName)) {
+                    continue;
+                }
+                
                 count++;
                 dynamicList.add(businessItem);
             }
@@ -1048,6 +1066,7 @@ public class QuickGestureManager {
     public void deleteBusinessItem(BusinessItemInfo info) {
         AppBusinessManager abm = AppBusinessManager.getInstance(mContext);
         abm.removeBusinessData(info);
+        addDeleteBusinessItem(info.packageName);
     }
 
     /**
