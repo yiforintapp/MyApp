@@ -802,12 +802,14 @@ public class QuickSwitchManager {
             String mNowStatus = params.getFlashMode();
 
             if (mNowStatus.equals(OFFSTATUS)) {
+                Toast.makeText(mContext, "open flash", 0).show();
                 isFlashLightOpen = true;
                 params.setFlashMode(Parameters.FLASH_MODE_TORCH);
                 mCamera.setParameters(params);
                 mCamera.startPreview();
                 LeoLog.d("checkflash", "now status is : " + mNowStatus);
             } else if (mNowStatus.equals(OPENSTATUS)) {
+                Toast.makeText(mContext, "close flash", 0).show();
                 isFlashLightOpen = false;
                 params.setFlashMode(Parameters.FLASH_MODE_OFF);
                 mCamera.stopPreview();
@@ -815,6 +817,7 @@ public class QuickSwitchManager {
                 LeoLog.d("checkflash", "now status is : " + mNowStatus);
             }
         } catch (Exception e) {
+            Toast.makeText(mContext, "catchcatchcatch", 0).show();
             LeoLog.d("checkflash", "catchcatchcatch");
             if (mCamera != null) {
                 Parameters params = mCamera.getParameters();  
@@ -822,6 +825,7 @@ public class QuickSwitchManager {
                 mCamera.setParameters(params);
                 mCamera.release();
                 mCamera = null;
+                Toast.makeText(mContext, "make Camera = null", 1).show();
             }
             isFlashLightOpen = false;
         }
