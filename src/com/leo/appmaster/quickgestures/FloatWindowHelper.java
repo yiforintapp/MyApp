@@ -150,9 +150,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mLeftBottomParams.width / 10 || moveY > mLeftBottomParams.height / 8)
+                                if (((moveX > mLeftBottomParams.width / 6 || moveY > mLeftBottomParams.height / 4)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.5) {
+                                    if (presssure > 1.0) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -273,9 +273,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mLeftCenterParams.width / 10 || moveY > mLeftCenterParams.height / 8)
+                                if (((moveX > mLeftCenterParams.width / 6 || moveY > mLeftCenterParams.height / 4)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.5) {
+                                    if (presssure > 1.0) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -377,7 +377,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if ((moveX > mLeftCenterCenterParams.width / 6
+                            if ((moveX > mLeftCenterCenterParams.width / 8
                                     || moveY > mLeftCenterCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
@@ -393,9 +393,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mLeftCenterCenterParams.width / 10 || moveY > mLeftCenterCenterParams.height / 8)
+                                if (((moveX > mLeftCenterCenterParams.width / 6 || moveY > mLeftCenterCenterParams.height / 4)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.5) {
+                                    if (presssure > 1.0) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -535,7 +535,7 @@ public class FloatWindowHelper {
                             } else {
                                 if (((moveX > mLeftTopParams.width / 10 || moveY > mLeftTopParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.5) {
+                                    if (presssure > 1.0) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -654,9 +654,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mRightBottomParams.width / 10 || moveY > mRightBottomParams.height / 8)
+                                if (((moveX > mRightBottomParams.width / 6 || moveY > mRightBottomParams.height / 4)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.5) {
+                                    if (presssure > 1.0) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -757,7 +757,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if ((moveX > mRightCenterParams.width / 6
+                            if ((moveX > mRightCenterParams.width / 8
                                     || moveY > mRightCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
@@ -773,9 +773,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mRightCenterParams.width / 10 || moveY > mRightCenterParams.height / 8)
+                                if (((moveX > mRightCenterParams.width /6 || moveY > mRightCenterParams.height / 4)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.5) {
+                                    if (presssure > 1.0) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -879,7 +879,7 @@ public class FloatWindowHelper {
                             float moveX = Math.abs(startX - event.getRawX());
                             float moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if ((moveX > mRightCenterCenterParams.width / 6
+                            if ((moveX > mRightCenterCenterParams.width / 8
                                     || moveY > mRightCenterCenterParams.width / 6)
                                     && !isMoveIng) {
                                 isMoveIng = true;
@@ -895,9 +895,9 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mRightCenterCenterParams.width / 10 || moveY > mRightCenterCenterParams.height / 8)
+                                if (((moveX > mRightCenterCenterParams.width / 6 || moveY > mRightCenterCenterParams.height / 4)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.5) {
+                                    if (presssure > 1.0) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
@@ -1041,7 +1041,7 @@ public class FloatWindowHelper {
                             } else {
                                 if (((moveX > mRightTopParams.width / 10 || moveY > mRightTopParams.height / 8)
                                 && !isMoveIng)) {
-                                    if (presssure > 0.5) {
+                                    if (presssure > 1.0) {
                                         isMoveIng = true;
                                         if (!mEditQuickAreaFlag) {
                                             removeAllFloatWindow(mContext);
