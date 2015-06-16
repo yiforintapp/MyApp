@@ -104,6 +104,8 @@ public class FloatWindowHelper {
     public static void createFloatLeftBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+       final  boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                .checkBusinessRedTip();
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
             // no read contact /message/privacycontact red tip
@@ -113,8 +115,6 @@ public class FloatWindowHelper {
                 mLeftBottomView.setIsShowReadTip(true, 1);
             }
             // business red tip
-            boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
-                    .checkBusinessRedTip();
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == -2)) {
@@ -176,7 +176,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // cancel system no read message tip
-                                if (isShowTip) {
+                                if (isShowTip || isShowBusinessRedTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
                                             "notice");
@@ -344,6 +344,8 @@ public class FloatWindowHelper {
     public static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final  boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                .checkBusinessRedTip();
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
@@ -354,8 +356,6 @@ public class FloatWindowHelper {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
             // business red tip
-            boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
-                    .checkBusinessRedTip();
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == -2)
@@ -419,7 +419,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // cancel system no read message tip
-                                if (isShowTip && mLeftBottomView == null) {
+                                if ((isShowTip || isShowBusinessRedTip) && mLeftBottomView == null ) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
                                             "notice");
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
@@ -606,6 +606,8 @@ public class FloatWindowHelper {
     public static void createFloatRightBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final  boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                .checkBusinessRedTip();
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
 
@@ -616,8 +618,6 @@ public class FloatWindowHelper {
                 mRightBottomView.setIsShowReadTip(true, 2);
             }
             // business red tip
-            boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
-                    .checkBusinessRedTip();
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)) {
@@ -680,7 +680,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // cancel system no read message tip
-                                if (isShowTip) {
+                                if (isShowTip || isShowBusinessRedTip) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
                                             "notice");
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
@@ -845,6 +845,8 @@ public class FloatWindowHelper {
     public static void createFloatRightCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final   boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                .checkBusinessRedTip();
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
@@ -855,8 +857,6 @@ public class FloatWindowHelper {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
             // business red tip
-            boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
-                    .checkBusinessRedTip();
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)
@@ -921,7 +921,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // cancel system no read message tip
-                                if (isShowTip && mRightBottomView == null) {
+                                if ((isShowTip ||isShowBusinessRedTip) && mRightBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
                                             "notice");
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
