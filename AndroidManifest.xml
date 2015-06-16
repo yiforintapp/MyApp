@@ -110,9 +110,9 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.home.ProxyActivity"
-            android:launchMode="singleInstance"
             android:excludeFromRecents="true"
             android:exported="true"
+            android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.proxy"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
@@ -497,6 +497,11 @@
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity"
@@ -510,7 +515,15 @@
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
         </activity>
-
+        <activity
+            android:name="com.leo.appmaster.quickgestures.QuickGestureProxyActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity="com.leo.appmaster.proxy"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
         <service
             android:name="com.leo.appmaster.applocker.service.TaskDetectService"
             android:exported="true" >

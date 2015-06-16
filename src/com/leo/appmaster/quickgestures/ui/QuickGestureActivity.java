@@ -16,16 +16,15 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
@@ -43,12 +42,12 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickGestureProxyActivity;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.quickgestures.ui.QuickGestureSlideTimeDialog.UpdateFilterAppClickListener;
@@ -1023,16 +1022,16 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         boolean quickGestureFlag = prefernece.getBoolean("shortcut_quickGesture", false);
         if (!quickGestureFlag) {
             Intent quickGestureShortIntent = new Intent(QuickGestureActivity.this,
-                    ProxyActivity.class);
+                    QuickGestureProxyActivity.class);
             quickGestureShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                     StatusBarEventService.EVENT_BUSINESS_QUICK_GUESTURE);
 
             Intent quickGestureShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-            ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
+            ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
                     QuickGestureActivity.this, R.drawable.gesture_desktopo_icon);
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
                     getString(R.string.quick_guesture_switchset));
-            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, quickGestureIconRes);
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, quickGestureShortIntent);
             quickGestureShortcut.putExtra("duplicate", false);
             quickGestureShortcut.putExtra("from_shortcut", true);
