@@ -76,6 +76,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
             mViewPager.setScrollable(true);
             mPagerTab.setCurrentItem(mEditIndex);
             mTtileBar.setOptionImageVisibility(View.INVISIBLE);
+            mPagerTab.setOnPageChangeListener(new ModePageChangeListiner());
             Fragment f = mFragmentHolders.clone()[mEditIndex].fragment;
             if (f instanceof Editable) {
                 ((Editable) f).onFinishEditMode();
@@ -173,6 +174,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.setOptionListener(null);
         mTtileBar.setOptionImageBackground(0);
+        mPagerTab.setOnPageChangeListener(null);
     }
 
     public void onSelectItemChanged(int count) {

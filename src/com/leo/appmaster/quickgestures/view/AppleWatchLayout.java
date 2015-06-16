@@ -624,24 +624,8 @@ public class AppleWatchLayout extends ViewGroup {
         if (info instanceof BusinessItemInfo) {// 运营app
             LeoLog.d("TestLayout", "BusinessItemInfo");
             BusinessItemInfo bif = (BusinessItemInfo) info;
-            if (bif.gpPriority == 1) {
-                if (AppUtil.appInstalled(getContext(),
-                        Constants.GP_PACKAGE)) {
-                    try {
-                        AppUtil.downloadFromGp(getContext(),
-                                bif.packageName);
-                    } catch (Exception e) {
-                        AppUtil.downloadFromBrowser(getContext(),
-                                bif.appDownloadUrl);
-                    }
-                } else {
-                    AppUtil.downloadFromBrowser(getContext(),
-                            bif.appDownloadUrl);
-                }
-            } else {
-                AppUtil.downloadFromBrowser(getContext(),
-                        bif.appDownloadUrl);
-            }
+            checkDownload(bif);
+            QuickGestureManager.getInstance(getContext()).onBusinessItemClicked(bif);
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickSwitcherInfo) {// 快捷开关
             LeoLog.d("TestLayout", "QuickSwitcherInfo");
@@ -786,6 +770,27 @@ public class AppleWatchLayout extends ViewGroup {
         }
     }
 
+    private void checkDownload(BusinessItemInfo bif) {
+        if (bif.gpPriority == 1) {
+            if (AppUtil.appInstalled(getContext(),
+                    Constants.GP_PACKAGE)) {
+                try {
+                    AppUtil.downloadFromGp(getContext(),
+                            bif.packageName);
+                } catch (Exception e) {
+                    AppUtil.downloadFromBrowser(getContext(),
+                            bif.appDownloadUrl);
+                }
+            } else {
+                AppUtil.downloadFromBrowser(getContext(),
+                        bif.appDownloadUrl);
+            }
+        } else {
+            AppUtil.downloadFromBrowser(getContext(),
+                    bif.appDownloadUrl);
+        }
+    }
+
     public void checkItemClick(float x, float y) {
         View hitView = null, tempView = null;
         for (int i = 0; i < getChildCount(); i++) {
@@ -850,7 +855,7 @@ public class AppleWatchLayout extends ViewGroup {
                     (BaseInfo) hitView.getTag());
 
             if (baseInfo instanceof BusinessItemInfo) {
-                qgm.deleteBusinessItem((BusinessItemInfo) baseInfo);
+                qgm.onBusinessItemClicked((BusinessItemInfo) baseInfo);
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_delete");
         } else if (type == GType.SwitcherLayout) {

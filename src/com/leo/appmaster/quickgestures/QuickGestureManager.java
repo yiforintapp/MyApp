@@ -32,6 +32,7 @@ import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
@@ -47,6 +48,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -83,6 +85,8 @@ public class QuickGestureManager {
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);
+        mDeletedBusinessItems = new ArrayList<String>();
+        loadDeletedBusinessItems();
     }
 
     public static synchronized QuickGestureManager getInstance(Context ctx) {
@@ -98,19 +102,20 @@ public class QuickGestureManager {
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
             preloadColorIcon();
-            loadDeletedBusinessItems();
             Bitmap bmp;
             for (Drawable drawable : mColorBgIcon) {
                 bmp = ((BitmapDrawable) drawable).getBitmap();
                 LockManager.getInstatnce().mMatcher.addBitmapSample(bmp);
             }
-            // TODO switcher init
             QuickSwitchManager.getInstance(mContext).init();
         }
     }
 
+    public List<String> getDeletedBusinessList() {
+        return mDeletedBusinessItems;
+    }
+
     private void loadDeletedBusinessItems() {
-        mDeletedBusinessItems = new ArrayList<String>();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         String deleteds = amp.getDeletedBusinessItems();
         deleteds.subSequence(0, deleteds.length() - 1);
@@ -136,13 +141,9 @@ public class QuickGestureManager {
             mDynamicList = null;
             mMostUsedList = null;
             LockManager.getInstatnce().mAppLaunchRecorders.clear();
-            // LockManager.getInstatnce().mAppLaunchRecorders = null;
             mColorBgIcon = null;
             LockManager.getInstatnce().mMatcher.clearItem();
-            // LockManager.getInstatnce().mMatcher = null;
             LockManager.getInstatnce().mDrawableColors.clear();
-            // LockManager.getInstatnce().mDrawableColors = null;
-            // TODO Switcher uninit
             QuickSwitchManager.getInstance(mContext).unInit();
         }
     }
@@ -160,27 +161,31 @@ public class QuickGestureManager {
     }
 
     public List<BaseInfo> getDynamicList() {
-        Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
-                .getBusinessData();
+        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         List<BaseInfo> dynamicList = new ArrayList<BaseInfo>();
-        LeoLog.e("xxxx", "businessDatas size = " + businessDatas.size());
-        if (businessDatas != null && businessDatas.size() > 0) {
-            int count = 0;
-            for (BusinessItemInfo businessItem : businessDatas) {
-                businessItem.gesturePosition = -1000;
-                if (count == 4) {
-                    break;
+        if (!AppMasterPreference.getInstance(mContext).getLastBusinessRedTipShow()) {
+            Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
+                    .getBusinessData();
+            LeoLog.e("xxxx", "businessDatas size = " + businessDatas.size());
+            if (businessDatas != null && businessDatas.size() > 0) {
+                int count = 0;
+                for (BusinessItemInfo businessItem : businessDatas) {
+                    businessItem.gesturePosition = -1000;
+                    if (count == 1) {
+                        break;
+                    }
+                    if (!businessItem.iconLoaded || businessItem.icon == null
+                            || mDeletedBusinessItems.contains(businessItem.packageName)) {
+                        continue;
+                    }
+                    if (engine.getAppInfo(businessItem.packageName) != null) {
+                        continue;
+                    }
+
+                    count++;
+                    dynamicList.add(businessItem);
                 }
-                if (!businessItem.iconLoaded || businessItem.icon == null
-                        || mDeletedBusinessItems.contains(businessItem.packageName)) {
-                    continue;
-                }
-                
-                count++;
-                dynamicList.add(businessItem);
             }
-            // businessItem = businessDatas.get(0);
-            // dynamicList.add(businessItem);
         }
         // no read sys_message
         boolean isShowMsmTip = AppMasterPreference.getInstance(mContext)
@@ -243,7 +248,6 @@ public class QuickGestureManager {
             }
         }
 
-        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         ArrayList<AppItemInfo> datas = engine.getLaunchTimeSortedApps();
         Drawable icon;
         AppItemInfo appInfo;
@@ -885,12 +889,6 @@ public class QuickGestureManager {
         commonApp.show();
     }
 
-    public void deleteBusinessItem(BusinessItemInfo info) {
-        AppBusinessManager abm = AppBusinessManager.getInstance(mContext);
-        abm.removeBusinessData(info);
-        addDeleteBusinessItem(info.packageName);
-    }
-
     /**
      * Quick Switch Dialog
      * 
@@ -1066,6 +1064,12 @@ public class QuickGestureManager {
         mSlidAreaSize = value;
     }
 
+    public void onBusinessItemClicked(BusinessItemInfo info) {
+        AppBusinessManager.getInstance(mContext).onItemClicked(info);
+        addDeleteBusinessItem(info.packageName);
+        AppMasterPreference.getInstance(mContext).setLastBusinessRedTipShow(true);
+    }
+
     public void sendPermissionOpenNotification(final Context context) {
         new Handler().postDelayed(new Runnable() {
 
@@ -1075,7 +1079,6 @@ public class QuickGestureManager {
                         context
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification notification = new Notification();
-                // LockManager.getInstatnce().timeFilterSelf();
                 LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                 Intent intentPending = new Intent(context,
                         QuickGestureActivity.class);
@@ -1086,12 +1089,10 @@ public class QuickGestureManager {
                 notification.tickerText = context
                         .getString(R.string.permission_open_tip_notification_title);
                 notification.flags = Notification.FLAG_AUTO_CANCEL;
-                notification
-                        .setLatestEventInfo(
-                                context,
-                                context.getString(R.string.permission_open_tip_notification_title),
-                                context.getString(R.string.permission_open_tip_notification_content),
-                                contentIntent);
+                String title = context.getString(R.string.permission_open_tip_notification_title);
+                String content = context
+                        .getString(R.string.permission_open_tip_notification_content);
+                notification.setLatestEventInfo(context, title, content, contentIntent);
                 NotificationUtil.setBigIcon(notification,
                         R.drawable.ic_launcher_notification_big);
                 notification.when = System.currentTimeMillis();
@@ -1103,4 +1104,23 @@ public class QuickGestureManager {
 
     }
 
+    public boolean checkBusinessRedTip() {
+        if (AppMasterPreference.getInstance(mContext).getLastBusinessRedTipShow()) {
+            return false;
+        }
+        Vector<BusinessItemInfo> mBusinessList = AppBusinessManager.getInstance(mContext)
+                .getBusinessData();
+        boolean show = false;
+        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
+        for (BusinessItemInfo info : mBusinessList) {
+            if (engine.getAppInfo(info.packageName) != null
+                    || mDeletedBusinessItems.contains(info.packageName)) {
+                continue;
+            } else {
+                show = true;
+                break;
+            }
+        }
+        return show;
+    }
 }

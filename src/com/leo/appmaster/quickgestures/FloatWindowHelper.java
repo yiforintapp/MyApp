@@ -106,7 +106,16 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
+            // no read contact /message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == -2)) {
+                mLeftBottomView.setIsShowReadTip(true, 1);
+            }
+            // business red tip
+            boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                    .checkBusinessRedTip();
+            if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == -2)) {
                 mLeftBottomView.setIsShowReadTip(true, 1);
@@ -194,11 +203,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int temp=0;
-            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
-                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            int temp = 0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >= 0) {
+                temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
-            int height = windowManager.getDefaultDisplay().getHeight()+temp;
+            int height = windowManager.getDefaultDisplay().getHeight() + temp;
             int flag = Utilities.isScreenType(mContext);
             if (mLeftBottomParams == null) {
                 mLeftBottomParams = new LayoutParams();
@@ -297,11 +306,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int temp=0;
-            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
-                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            int temp = 0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >= 0) {
+                temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
-            int height = windowManager.getDefaultDisplay().getHeight()+temp;
+            int height = windowManager.getDefaultDisplay().getHeight() + temp;
             if (mLeftCenterParams == null) {
                 mLeftCenterParams = new LayoutParams();
                 mLeftCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext, mLeftCenterWidth) / 2) + (value / 2)) * 2;
@@ -337,7 +346,17 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
+            // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == -2)
+                    && mLeftBottomView == null) {
+                mLeftCenterCenterView.setIsShowReadTip(true, 3);
+            }
+            // business red tip
+            boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                    .checkBusinessRedTip();
+            if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == -2)
                     && mLeftBottomView == null) {
@@ -423,11 +442,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int temp=0;
-            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
-                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            int temp = 0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >= 0) {
+                temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
-            int height = windowManager.getDefaultDisplay().getHeight()+temp;
+            int height = windowManager.getDefaultDisplay().getHeight() + temp;
             int leftBottom = (int) ((DipPixelUtil.dip2px(mContext, mLeftBottomHeight) / 2) + (value)) * 2;
             int leftCenter = (int) ((DipPixelUtil.dip2px(mContext, mLeftCenterHeight) / 2) + (value)) * 2;
             if (mLeftCenterCenterParams == null) {
@@ -547,11 +566,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int temp=0;
-            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
-                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            int temp = 0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >= 0) {
+                temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
-            int height = windowManager.getDefaultDisplay().getHeight()+temp;
+            int height = windowManager.getDefaultDisplay().getHeight() + temp;
             if (mLeftTopParams == null) {
                 mLeftTopParams = new LayoutParams();
                 mLeftTopParams.width = (int) ((DipPixelUtil.dip2px(mContext, mLeftTopWidth) / 2) + (value / 2)) * 2;
@@ -589,7 +608,17 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
+
+            // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == 2)) {
+                mRightBottomView.setIsShowReadTip(true, 2);
+            }
+            // business red tip
+            boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                    .checkBusinessRedTip();
+            if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)) {
                 mRightBottomView.setIsShowReadTip(true, 2);
@@ -674,11 +703,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int temp=0;
-            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
-                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            int temp = 0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >= 0) {
+                temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
-            int height = windowManager.getDefaultDisplay().getHeight()+temp;
+            int height = windowManager.getDefaultDisplay().getHeight() + temp;
             if (mRightBottomParams == null) {
                 mRightBottomParams = new LayoutParams();
                 mRightBottomParams.width = (int) ((DipPixelUtil.dip2px(mContext, mRightBottomWidth) / 2) + (value / 2)) * 2;
@@ -777,11 +806,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int temp=0;
-            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
-                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            int temp = 0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >= 0) {
+                temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
-            int height = windowManager.getDefaultDisplay().getHeight()+temp;
+            int height = windowManager.getDefaultDisplay().getHeight() + temp;
             if (mRightCenterParams == null) {
                 mRightCenterParams = new LayoutParams();
                 mRightCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext, mRightCenterWidth) / 2) + (value / 2)) * 2;
@@ -818,12 +847,23 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
+            // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)
                     && mRightBottomView == null) {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
+            // business red tip
+            boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                    .checkBusinessRedTip();
+            if (isShowBusinessRedTip
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == 2)
+                    && mRightBottomView == null) {
+                mRightCenterCenterView.setIsShowReadTip(true, 4);
+            }
+
             mRightCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -904,11 +944,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int temp=0;
-            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
-                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            int temp = 0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >= 0) {
+                temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
-            int height = windowManager.getDefaultDisplay().getHeight()+temp;
+            int height = windowManager.getDefaultDisplay().getHeight() + temp;
             int rightBottom = (int) ((DipPixelUtil.dip2px(mContext,
                     mRightCenterHeight) / 2) + (value)) * 2;
             int rightCenter = (int) ((DipPixelUtil.dip2px(mContext,
@@ -1032,11 +1072,11 @@ public class FloatWindowHelper {
                 }
             });
             int width = windowManager.getDefaultDisplay().getWidth();
-            int temp=0;
-            if (QuickGestureManager.getInstance(mContext).screenSpace >=0) {
-                temp=QuickGestureManager.getInstance(mContext).screenSpace ;
+            int temp = 0;
+            if (QuickGestureManager.getInstance(mContext).screenSpace >= 0) {
+                temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
-            int height = windowManager.getDefaultDisplay().getHeight()+temp;
+            int height = windowManager.getDefaultDisplay().getHeight() + temp;
             if (mRightTopParams == null) {
                 mRightTopParams = new LayoutParams();
                 mRightTopParams.width = (int) ((DipPixelUtil.dip2px(mContext, mRightTopWidth) / 2) + (value / 2)) * 2;
@@ -1152,11 +1192,11 @@ public class FloatWindowHelper {
         WindowManager manager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         Display display = manager.getDefaultDisplay();
-        int temp=0;
-        if (QuickGestureManager.getInstance(context).screenSpace >=0) {
-            temp=QuickGestureManager.getInstance(context).screenSpace ;
+        int temp = 0;
+        if (QuickGestureManager.getInstance(context).screenSpace >= 0) {
+            temp = QuickGestureManager.getInstance(context).screenSpace;
         }
-        int height = windowManager.getDefaultDisplay().getHeight()+temp;
+        int height = windowManager.getDefaultDisplay().getHeight() + temp;
         int width = display.getWidth();
         int leftBottom = (int) ((DipPixelUtil.dip2px(context, mLeftBottomHeight) / 2) + (value)) * 2;
         int leftCenter = (int) ((DipPixelUtil.dip2px(context, mLeftCenterHeight) / 2) + (value)) * 2;
