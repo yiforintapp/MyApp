@@ -27,6 +27,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -116,7 +117,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
-        // showFirstOpenQuickGestureTipDialog();
+         int width=(int) ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
+         int height=(int) ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getHeight();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
     }
@@ -601,7 +603,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     }
                 }
             }
-        }, 5000);
+        }, 3000);
     }
 
     @Override

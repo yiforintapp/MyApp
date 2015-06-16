@@ -201,11 +201,11 @@
     <dimen name="dialog_slide_item_margin_top">28dp</dimen>
     <dimen name="dialog_slide_time_disturbTV_margin_top">40dp</dimen>
     <dimen name="quick_first_tip_dialog_width">312dp</dimen>
-    <dimen name="quick_first_tip_dialog_height">423dp</dimen>
-    <dimen name="quick_first_tip_dialog_content_phone_width">306dp</dimen>
-    <dimen name="quick_first_tip_dialog_content_phone_height">225dp</dimen>
+    <dimen name="quick_first_tip_dialog_height">78dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_width">312dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_height">75dp</dimen>
     <dimen name="quick_first_tip_dialog_content_margin_top">20dp</dimen>
-    <dimen name="quick_first_tip_dialog_title_margin_top">80dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_text_size">14sp</dimen>
     <!-- quick gesutre end -->
 
     <dimen name="dialog_btn_height">48dp</dimen>
