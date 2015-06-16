@@ -31,7 +31,6 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.baidu.mobstat.a;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
@@ -39,7 +38,6 @@ import com.leo.appmaster.applocker.LockModeActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
@@ -540,17 +538,6 @@ public class QuickSwitchManager {
                 switchSetInfo.icon = mContext.getResources().getDrawable(
                         R.drawable.switch_set);
                 mSaveList.add(switchSetInfo);
-                // 情景模式切换
-                // QuickSwitcherInfo changeModeInfo = new QuickSwitcherInfo();
-                // changeModeInfo.swtichIdentiName = CHANGEMODE;
-                // changeModeInfo.label = getLabelFromName(CHANGEMODE);
-                // changeModeInfo.switchIcon =
-                // getIconFromName(changeModeInfo.label);
-                // changeModeInfo.gesturePosition = 8;
-                // changeModeInfo.isFreeDisturb = true;
-                // changeModeInfo.icon = mContext.getResources().getDrawable(
-                // R.drawable.switch_mode);
-                // mSaveList.add(changeModeInfo);
                 // 移动数据
                 QuickSwitcherInfo mobileDataInfo = new QuickSwitcherInfo();
                 mobileDataInfo.swtichIdentiName = MOBILEDATA;
@@ -736,7 +723,6 @@ public class QuickSwitchManager {
     }
 
     public void toggleWlan(QuickSwitcherInfo mInfo) {
-        // if (!mWifimanager.isWifiEnabled()) {
         try {
             if (!isWlantOpen) {
                 mWifimanager.setWifiEnabled(true);
@@ -758,7 +744,6 @@ public class QuickSwitchManager {
             mBluetoothAdapter = BluetoothAdapter
                     .getDefaultAdapter();
         }
-        // if (!mBluetoothAdapter.isEnabled()) {
         if (!isBlueToothOpen) {
             mBluetoothAdapter.enable();
             isBlueToothOpen = true;
@@ -774,14 +759,10 @@ public class QuickSwitchManager {
         if (mSoundManager == null) {
             mSoundManager = (AudioManager) mContext.getSystemService(Context.AUDIO_SERVICE);
         }
-        // if (mSoundManager.getRingerMode() == AudioManager.RINGER_MODE_NORMAL)
-        // {
         if (mSoundStatus == mSound) {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
             mSoundStatus = mQuite;
             LeoLog.d("testPs", "change mSoundStatus to: " + mSoundStatus);
-            // } else if (mSoundManager.getRingerMode() ==
-            // AudioManager.RINGER_MODE_SILENT) {
         } else if (mSoundStatus == mQuite) {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
             mSoundStatus = mVibrate;
@@ -790,8 +771,6 @@ public class QuickSwitchManager {
                 vib = (Vibrator) mContext.getSystemService(Service.VIBRATOR_SERVICE);
             }
             vib.vibrate(150);
-            // } else if (mSoundManager.getRingerMode() ==
-            // AudioManager.RINGER_MODE_VIBRATE) {
         } else if (mSoundStatus == mVibrate) {
             mSoundManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
             mSoundStatus = mSound;
@@ -930,25 +909,6 @@ public class QuickSwitchManager {
      */
     private void setLight(int light, GestureItemView item) {
         try {
-            // // 得到PowerManager类对应的Class对象
-            // Class<?> pmClass =
-            // Class.forName(mPowerManager.getClass().getName());
-            // // 得到PowerManager类中的成员mService（mService为PowerManagerService类型）
-            // Field field = pmClass.getDeclaredField("mService");
-            // field.setAccessible(true);
-            // // 实例化mService
-            // Object iPM = field.get(mPowerManager);
-            // // 得到PowerManagerService对应的Class对象
-            // Class<?> iPMClass = Class.forName(iPM.getClass().getName());
-            // /*
-            // * 得到PowerManagerService的函数setBacklightBrightness对应的Method对象，
-            // * PowerManager的函数setBacklightBrightness实现在PowerManagerService中
-            // */
-            // Method method =
-            // iPMClass.getDeclaredMethod("setBacklightBrightness", int.class);
-            // method.setAccessible(true);
-            // // 调用实现PowerManagerService的setBacklightBrightness
-            // method.invoke(iPM, light);
 
             android.provider.Settings.System.putInt(mContext.getContentResolver(),
                     android.provider.Settings.System.SCREEN_BRIGHTNESS,
@@ -956,28 +916,6 @@ public class QuickSwitchManager {
 
             changeTheLight(light, item);
 
-            // int tmpInt =
-            // Settings.System.getInt(mContext.getContentResolver(),
-            // Settings.System.SCREEN_BRIGHTNESS, -1);
-            // WindowManager.LayoutParams lp = ((Activity)
-            // mContext).getWindow().getAttributes();
-            // // lp.screenBrightness = 1.0f;
-            // // Float tmpFloat = (float)tmpInt / 255;
-            // if (0 <= tmpInt && tmpInt <= 255) {
-            // lp.screenBrightness = tmpInt;
-            // }
-            // ((Activity) mContext).getWindow().setAttributes(lp);
-
-            // } catch (ClassNotFoundException e) {
-            // e.printStackTrace();
-            // } catch (NoSuchFieldException e) {
-            // e.printStackTrace();
-            // } catch (IllegalArgumentException e) {
-            // e.printStackTrace();
-            // } catch (IllegalAccessException e) {
-            // e.printStackTrace();
-            // } catch (NoSuchMethodException e) {
-            // e.printStackTrace();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1340,25 +1278,6 @@ public class QuickSwitchManager {
                 ListString = ListString + ";" + name + ":" + position;
             }
         }
-        // }
-
-        // else if (infoType == 1) {
-        // for (int i = 0; i < mNum; i++) {
-        // QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo)
-        // mSwitchList.get(i);
-        // String name = switchInfo.packageName;
-        // // int position = switchInfo.gesturePosition;
-        // int position = i;
-        // LeoLog.d("QuickSwitchManager", "packageName : " + name +
-        // "--position : " + position);
-        // if (i == 0) {
-        // ListString = name + ":" + position;
-        // } else {
-        // ListString = ListString + ";" + name + ":" + position;
-        // }
-        // }
-        // }
-
         return ListString;
     }
 
