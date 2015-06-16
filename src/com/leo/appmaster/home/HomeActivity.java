@@ -117,8 +117,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
-//         showFirstOpenQuickGestureTipDialog();
-//      Log.e("######", "宽："+width+"高；"+height);
          int width=(int) ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getWidth();
          int height=(int) ((WindowManager) this.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getHeight();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");

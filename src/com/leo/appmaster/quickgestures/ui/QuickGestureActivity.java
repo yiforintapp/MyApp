@@ -700,20 +700,15 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             case MotionEvent.ACTION_DOWN:
                 downX = event.getX();
                 downY = event.getY();
-                // Log.e("##########", "dsfgsdfg");
                 break;
             case MotionEvent.ACTION_MOVE:
                 float moveX = Math.abs(event.getX() - downX);
                 float moveY = Math.abs(event.getY() - downY);
-                // Log.e("########", "触摸1");
                 if (moveX > width / 50 || moveY > width / 50) {
-                    // Log.e("########", "触摸2");
                     boolean checkHuaWei = BuildProperties
                             .isHuaWeiTipPhone(QuickGestureActivity.this);
                     boolean checkFloatWindow = BuildProperties
                             .isFloatWindowOpAllowed(QuickGestureActivity.this);
-                    // Log.e("#########",
-                    // "机型华为："+checkHuaWei+"||悬浮窗权限："+checkFloatWindow);
                     if (!mFlag) {
                         AppMasterPreference.getInstance(this).setRootViewAndWindowHeighSpace(
                                 screenSpace());
@@ -762,9 +757,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                         .startFloatWindow();
                                 setOnClickListener();
                                 initChexkBox();
-                                // checkNoReadCallLog();
-                                // checkNoReadMessage();
-                                // init quick gesture data
                             }
                         } catch (Exception e) {
                         }
@@ -772,7 +764,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
                             @Override
                             public void run() {
-                                // TODO Auto-generated method stub
                                 mTipRL.setVisibility(View.GONE);
                             }
                         }, 2000);
@@ -909,7 +900,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 AppMasterPreference.getInstance(QuickGestureActivity.this)
                                         .setRootViewAndWindowHeighSpace(screenSpace());
                                 QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
-                                // FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                                 int value = QuickGestureManager
                                         .getInstance(getApplicationContext()).mSlidAreaSize;
                                 FloatWindowHelper.updateView(QuickGestureActivity.this, value);
