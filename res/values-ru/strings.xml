@@ -612,7 +612,7 @@
     <!-- version 2.2 end -->
     
     <!-- version 2.4 start -->
-      <string name="pg_appmanager_quick_gesture_name">快捷手势</string>
+      <string name="pg_appmanager_quick_gesture_name">быстрый жест</string>
     <string name="pg_appmanager_quick_gesture_option_open_quick_gesture"> Откройте быстрый и удобый жест</string>
     <string name="pg_appmanager_quick_gesture_option_switch_setting">Установка выключателя</string>
     <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">Жестовая тема </string>
@@ -637,13 +637,13 @@
     <string name="pg_appmanager_quick_switch_dialog_title">выберите быстрый и удобный выключатель</string>
     <string name="quick_gesture_change_common_app_dialog_title">выберите применение</string>
     <string name="quick_gesture_change_common_app_dialog_checkbox_text">по привычке пользования автоматически добавлять или менять применение</string>
-    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">系统信息</string>
+    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">система</string>
     <string name="quick_gesture_dialog_tip_contniue_title">продолжите установить быстрый и удобный жест</string>
     <string name="quick_gesture_dialog_tip_contniue_cotent">Мы заметили, что вы открыли установку взвешенного окна, продолжите ли вы установить быстрый и удобный жест</string>
     <string name="quick_gesture_dialog_tip_contniue_left_bt">продолжите</string>
     <string name="quick_gesture_dialog_tip_contniue_right_bt">позже установить</string>
     <string name="quick_gesture_miui_tip_button_text">знаю</string>
-    <string name="quick_gesture_dynamic">最近使用</string>
+    <string name="quick_gesture_dynamic">Ближайшее</string>
     <string name="quick_gesture_switcher">быстрый и удобный выключатель</string>
     <string name="quick_gesture_most_used">самое употребительное</string>
     <string name="quick_gesture_first_open_sliding_toast">откройте  быстрое и удобое путешествие </string>
@@ -665,12 +665,12 @@
     <string name="quick_guesture_lockscreen">экран на замок</string>
     <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
     <string name="pass_gesture_change">способ переключения кода</string>
-    <string name="permission_open_tip_notification_title">设置快捷手势</string>
-    <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">开启快捷手势，只要轻松一划，想要的应用/开关尽在眼前</string>
-    <string name="grade_tip_feedback">我要吐槽</string>
-    <string name="quick_first_tip_dialog_right_bt">立即体验</string>
-    <string name="quick_first_tip_dialog_left_bt">稍后再试</string>
+    <string name="permission_open_tip_notification_title">быстрый жест</string>
+    <string name="permission_open_tip_notification_content">установить быстрый жест</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Вы еще банальным образом управляете применением и быстрым выключателем? Попробуйте управление быстрым выключателем, одинаковым с apple watch. Вы будете самым cool человеком среди друзей.</string>
+    <string name="grade_tip_feedback">Проблемы</string>
+    <string name="quick_first_tip_dialog_right_bt">Пользование</string>
+    <string name="quick_first_tip_dialog_left_bt">позже</string>
      <!-- quick gesture -->
     <!--  version 2.4 end -->
 </resources>
