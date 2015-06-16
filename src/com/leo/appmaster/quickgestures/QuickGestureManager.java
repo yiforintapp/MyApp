@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Vector;
 
 import android.app.ActivityManager;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -32,9 +32,9 @@ import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
@@ -48,7 +48,6 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -1081,8 +1080,9 @@ public class QuickGestureManager {
                 Notification notification = new Notification();
                 LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                 Intent intentPending = new Intent(context,
-                        QuickGestureActivity.class);
-                intentPending.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        QuickGestureProxyActivity.class);
+                intentPending.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                        StatusBarEventService.EVENT_BUSINESS_QUICK_GUESTURE);
                 PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intentPending,
                         PendingIntent.FLAG_UPDATE_CURRENT);
                 notification.icon = R.drawable.ic_launcher_notification;
