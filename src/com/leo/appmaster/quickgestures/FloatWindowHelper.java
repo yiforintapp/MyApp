@@ -621,7 +621,7 @@ public class FloatWindowHelper {
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)) {
-                mLeftCenterCenterView.setIsShowReadTip(true, 2);
+                mRightBottomView.setIsShowReadTip(true, 2);
             }
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
@@ -861,7 +861,7 @@ public class FloatWindowHelper {
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)
                     && mRightBottomView == null) {
-                mLeftCenterCenterView.setIsShowReadTip(true, 4);
+                mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
 
             mRightCenterCenterView.setOnTouchListener(new OnTouchListener() {
