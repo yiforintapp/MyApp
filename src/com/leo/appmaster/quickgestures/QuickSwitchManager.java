@@ -154,9 +154,9 @@ public class QuickSwitchManager {
         Camera cam = Camera.open();
         Camera.Parameters p = cam.getParameters();
         String position = p.getFlashMode();// 获取闪光灯的状态
-        if(position.equals(OFFSTATUS)){
+        if (position.equals(OFFSTATUS)) {
             isFlashLightOpen = false;
-        }else if(position.equals(OPENSTATUS)){
+        } else if (position.equals(OPENSTATUS)) {
             isFlashLightOpen = true;
         }
     }
@@ -800,23 +800,26 @@ public class QuickSwitchManager {
             mCamera = Camera.open();
             Parameters params = mCamera.getParameters();
             String mNowStatus = params.getFlashMode();
-            
-            if(mNowStatus.equals(OFFSTATUS)){
-                 isFlashLightOpen = true;
-                  params.setFlashMode(Parameters.FLASH_MODE_TORCH);
-                  mCamera.setParameters(params);
-                  mCamera.startPreview();
-                  LeoLog.d("checkflash", "now status is : " + mNowStatus);
-            }else if(mNowStatus.equals(OPENSTATUS)){
-                 isFlashLightOpen = false;
-                  params.setFlashMode(Parameters.FLASH_MODE_OFF);
-                  mCamera.stopPreview();
-                  mCamera.release();
-                  LeoLog.d("checkflash", "now status is : " + mNowStatus);
+
+            if (mNowStatus.equals(OFFSTATUS)) {
+                isFlashLightOpen = true;
+                params.setFlashMode(Parameters.FLASH_MODE_TORCH);
+                mCamera.setParameters(params);
+                mCamera.startPreview();
+                LeoLog.d("checkflash", "now status is : " + mNowStatus);
+            } else if (mNowStatus.equals(OPENSTATUS)) {
+                isFlashLightOpen = false;
+                params.setFlashMode(Parameters.FLASH_MODE_OFF);
+                mCamera.stopPreview();
+                mCamera.release();
+                LeoLog.d("checkflash", "now status is : " + mNowStatus);
             }
         } catch (Exception e) {
             LeoLog.d("checkflash", "catchcatchcatch");
             if (mCamera != null) {
+                Parameters params = mCamera.getParameters();  
+                params.setFlashMode(Parameters.FLASH_MODE_OFF);
+                mCamera.setParameters(params);
                 mCamera.release();
                 mCamera = null;
             }
@@ -914,9 +917,11 @@ public class QuickSwitchManager {
     }
 
     public void openCrame() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        intent.addCategory("android.intent.category.DEFAULT");
-        intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+//         intent.addCategory("android.intent.category.DEFAULT");
+//        intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+        Intent intent = new Intent(); //调用照相机 
+        intent.setAction("android.media.action.STILL_IMAGE_CAMERA"); 
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
