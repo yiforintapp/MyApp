@@ -49,6 +49,8 @@ import com.leo.appmaster.utils.LeoLog;
 public class QuickSwitchManager {
 
     private static QuickSwitchManager mInstance;
+    private final static String OPENSTATUS = "torch";
+    private final static String OFFSTATUS = "off";
     public final static String LENOVO = "Lenovo";
     public final static String BLUETOOTH = "bluetooth";
     public final static String FLASHLIGHT = "flashlight";
@@ -130,6 +132,7 @@ public class QuickSwitchManager {
         gps();
         flyMode();
         rotation();
+        flashlight();
 
         mVersion = PhoneInfo.getAndroidVersion();
         isSIMready = PhoneInfo.isSimAvailable(mContext);
@@ -145,6 +148,17 @@ public class QuickSwitchManager {
         // GPS观察者
         mGpsObserver = new GpsObserver(mHandler);
         mGpsObserver.startObserver();
+    }
+
+    private void flashlight() {
+        Camera cam = Camera.open();
+        Camera.Parameters p = cam.getParameters();
+        String position = p.getFlashMode();// 获取闪光灯的状态
+        if(position.equals(OFFSTATUS)){
+            isFlashLightOpen = false;
+        }else if(position.equals(OPENSTATUS)){
+            isFlashLightOpen = true;
+        }
     }
 
     public void mobileData() {
@@ -781,38 +795,72 @@ public class QuickSwitchManager {
     }
 
     public void toggleFlashLight(QuickSwitcherInfo mInfo) {
-        if (!isFlashLightOpen) {
-            isFlashLightOpen = true;
-            try {
-                mCamera = Camera.open();
-            } catch (Exception e) {
-                if (mCamera != null) {
-                    mCamera.release();
-                    mCamera = null;
-                }
-                isFlashLightOpen = false;
-                return;
+
+        try {
+            mCamera = Camera.open();
+            Parameters params = mCamera.getParameters();
+            String mNowStatus = params.getFlashMode();
+            
+            if(mNowStatus.equals(OFFSTATUS)){
+                 isFlashLightOpen = true;
+                  params.setFlashMode(Parameters.FLASH_MODE_TORCH);
+                  mCamera.setParameters(params);
+                  mCamera.startPreview();
+                  LeoLog.d("checkflash", "now status is : " + mNowStatus);
+            }else if(mNowStatus.equals(OPENSTATUS)){
+                 isFlashLightOpen = false;
+                  params.setFlashMode(Parameters.FLASH_MODE_OFF);
+                  mCamera.stopPreview();
+                  mCamera.release();
+                  LeoLog.d("checkflash", "now status is : " + mNowStatus);
             }
-            try {
-                Parameters params = mCamera.getParameters();
-                params.setFlashMode(Parameters.FLASH_MODE_TORCH);
-                mCamera.setParameters(params);
-                mCamera.startPreview();
-            } catch (Exception ee) {
-                return;
-            }
-        } else {
-            try {
-                isFlashLightOpen = false;
-                Parameters params = mCamera.getParameters();
-                params.setFlashMode(Parameters.FLASH_MODE_OFF);
-                mCamera.stopPreview();
+        } catch (Exception e) {
+            LeoLog.d("checkflash", "catchcatchcatch");
+            if (mCamera != null) {
                 mCamera.release();
-            } catch (Exception e) {
-                isFlashLightOpen = false;
-                return;
+                mCamera = null;
             }
+            isFlashLightOpen = false;
         }
+
+        // if (!isFlashLightOpen) {
+        // isFlashLightOpen = true;
+        // try {
+        // mCamera = Camera.open();
+        // } catch (Exception e) {
+        // if (mCamera != null) {
+        // mCamera.release();
+        // mCamera = null;
+        // }
+        // isFlashLightOpen = false;
+        // return;
+        // }
+        // try {
+        // Parameters params = mCamera.getParameters();
+        // params.setFlashMode(Parameters.FLASH_MODE_TORCH);
+        // mCamera.setParameters(params);
+        // mCamera.startPreview();
+        //
+        // String nowStatus = params.getFlashMode();
+        // LeoLog.d("flashlight", "now status is : " + nowStatus);
+        // } catch (Exception ee) {
+        // return;
+        // }
+        // } else {
+        // try {
+        // isFlashLightOpen = false;
+        // Parameters params = mCamera.getParameters();
+        // params.setFlashMode(Parameters.FLASH_MODE_OFF);
+        // mCamera.stopPreview();
+        // mCamera.release();
+        //
+        // String nowStatus = params.getFlashMode();
+        // LeoLog.d("flashlight", "now status is : " + nowStatus);
+        // } catch (Exception e) {
+        // isFlashLightOpen = false;
+        // return;
+        // }
+        // }
         LeoEventBus.getDefaultBus().post(
                 new ClickQuickItemEvent(FLASHLIGHT, mInfo));
     }
