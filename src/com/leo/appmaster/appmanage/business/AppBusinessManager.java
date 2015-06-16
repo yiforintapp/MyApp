@@ -24,9 +24,12 @@ import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -242,6 +245,7 @@ public class AppBusinessManager {
                                             syncGestureData(
                                                     BusinessItemInfo.CONTAIN_QUICK_GESTURE,
                                                     list);
+                                            pref.setLastBusinessRedTipShow(false);
                                         } else {
                                             LeoLog.d(TAG,
                                                     "noModify");
@@ -413,7 +417,6 @@ public class AppBusinessManager {
                     values[i] = value;
                     mBusinessList.add(businessItemInfo);
                 }
-                notifyBusinessChange();
                 // write db
                 resolver.bulkInsert(Constants.APPLIST_BUSINESS_URI, values);
                 // goto laod app icon
@@ -429,6 +432,9 @@ public class AppBusinessManager {
             for (BusinessListener listner : mBusinessListeners) {
                 listner.onBusinessDataChange(mBusinessList);
             }
+        }
+        if (QuickGestureManager.getInstance(mContext).checkBusinessRedTip()) {
+            FloatWindowHelper.removeShowReadTipWindow(mContext);
         }
     }
 
@@ -459,5 +465,17 @@ public class AppBusinessManager {
                         }
                     });
         }
+    }
+
+    public void onItemClicked(final BusinessItemInfo info) {
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                ContentResolver resolver = mContext.getContentResolver();
+                resolver.delete(Constants.APPLIST_BUSINESS_URI, "lebal=" + info.label, null);
+            }
+        };
+        AppMasterApplication.getInstance().postInAppThreadPool(runnable);
+        mBusinessList.remove(info);
     }
 }

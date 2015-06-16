@@ -184,6 +184,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD = "fist_dialog_tip_have_password";
     public static final String PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE = "rootview_and_window_height_space";
     public static final String PREF_DELETED_BUSINESS_ITEMS = "deleted_business_items";
+    public static final String PREF_LAST_BUSINESS_RED_TIP = "last_business_red_tip";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1797,5 +1798,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setDeletedBusinessItems(String detail) {
         mPref.edit().putString(PREF_DELETED_BUSINESS_ITEMS, detail).commit();
+    }
+
+    public void setLastBusinessRedTipShow(boolean b) {
+        mPref.edit().putBoolean(PREF_LAST_BUSINESS_RED_TIP, b).commit();
+    }
+
+    public boolean getLastBusinessRedTipShow() {
+        return mPref.getBoolean(PREF_LAST_BUSINESS_RED_TIP, true);
     }
 }
