@@ -136,7 +136,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        LockManager.getInstatnce().filterAllOneTime(1000);
+        LockManager.getInstatnce().filterAllOneTime(500);
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
