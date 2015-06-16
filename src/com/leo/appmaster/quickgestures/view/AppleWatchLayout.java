@@ -20,6 +20,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -735,7 +736,11 @@ public class AppleWatchLayout extends ViewGroup {
             ContactCallLog callLog = (ContactCallLog) info;
             Intent intent = new Intent();
             intent.setAction(Intent.ACTION_CALL_BUTTON);
-            mContext.startActivity(intent);
+            try {
+                mContext.startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null
                     && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
                 QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);

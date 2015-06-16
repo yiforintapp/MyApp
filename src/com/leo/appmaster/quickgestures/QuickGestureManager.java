@@ -26,6 +26,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -197,6 +198,7 @@ public class QuickGestureManager {
             if (QuickGestureManager.getInstance(mContext).mMessages != null) {
                 List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
                 for (MessageBean message : messages) {
+                    message.gesturePosition = -1000;
                     message.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_message);
                     if (message.getMessageName() != null
@@ -212,11 +214,13 @@ public class QuickGestureManager {
                 }
             }
         }
-        // // no read sys_call
+
+        // no read sys_call
         if (isShowCallLogTip) {
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
                 List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
                 for (ContactCallLog baseInfo : baseInfos) {
+                    baseInfo.gesturePosition = -1000;
                     baseInfo.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_call);
                     if (baseInfo.getCallLogName() != null
@@ -237,6 +241,7 @@ public class QuickGestureManager {
             if (isShowPrivacyCallLog || isShowPrivacyMsm) {
                 if (dynamicList.size() <= 11) {
                     QuickGestureContactTipInfo item = new QuickGestureContactTipInfo();
+                    item.gesturePosition = -1000;
                     item.icon = mContext.getResources().getDrawable(
                             R.drawable.gesture_system);
                     item.label = mContext.getResources().getString(
@@ -662,7 +667,11 @@ public class QuickGestureManager {
                 isShowPrivacyMsm = false;
             }
         }
-
+        if ((mMessages == null || mMessages.size() <= 0)
+                && (mCallLogs == null || mCallLogs.size() <= 0) && !isShowPrivacyCallLog
+                && !isShowPrivacyMsm) {
+            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+        }
     }
 
     public List<String> getFreeDisturbAppName() {

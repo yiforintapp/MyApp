@@ -186,7 +186,7 @@ public class FloatWindowHelper {
                                     intent.putExtra("show_orientation", 0);
                                     try {
                                         mContext.startActivity(intent);
-                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+//                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -429,7 +429,7 @@ public class FloatWindowHelper {
                                     intent.putExtra("show_orientation", 0);
                                     try {
                                         mContext.startActivity(intent);
-                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+//                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -690,7 +690,7 @@ public class FloatWindowHelper {
                                     intent.putExtra("show_orientation", 2);
                                     try {
                                         mContext.startActivity(intent);
-                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+//                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -931,7 +931,7 @@ public class FloatWindowHelper {
                                     intent.putExtra("show_orientation", 2);
                                     try {
                                         mContext.startActivity(intent);
-                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+//                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -1587,7 +1587,7 @@ public class FloatWindowHelper {
             if (QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage) {
                 AppMasterPreference.getInstance(AppMasterApplication.getInstance())
                         .setLastTimeLayout(1);
-                QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage = false;
+//                QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage = false;
             }
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
