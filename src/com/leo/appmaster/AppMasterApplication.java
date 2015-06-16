@@ -75,6 +75,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -165,6 +166,8 @@ public class AppMasterApplication extends Application {
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
+        //TODO 测试
+//       BuildProperties. isOppoOs();
     }
 
     private String getUserSerial() {
