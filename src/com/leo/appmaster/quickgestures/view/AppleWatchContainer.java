@@ -70,12 +70,12 @@ public class AppleWatchContainer extends FrameLayout {
 
     private AppleWatchLayout mDymicLayout, mMostUsedLayout, mSwitcherLayout;
     private AppleWatchTabs mCornerTabs;
-    private TextView mTvCurName, mTvLeftTypeName,mTvRightTypeName;
+    private TextView mTvCurName, mTvLeftTypeName, mTvRightTypeName;
     private GType mCurrentGestureType = GType.SwitcherLayout;
     private Orientation mOrientation = Orientation.Left;
     private GestureDetector mGesDetector;
     private Orientation mShowOrientation = Orientation.Left;
-    private ImageView mRockey, mPIngtai, mYun,mTvTypeBg;
+    private ImageView mRockey, mPIngtai, mYun, mTvTypeBg;
 
     private float mSelfHeight;
     private float mTouchDownX, mTouchDownY;
@@ -92,7 +92,7 @@ public class AppleWatchContainer extends FrameLayout {
     private boolean mHasRelayout;
     private boolean mMoving;
     protected long mStartShowingTime;
-    private int screenH,screenW;
+    private int screenH, screenW;
 
     public AppleWatchContainer(Context context) {
         super(context);
@@ -110,7 +110,7 @@ public class AppleWatchContainer extends FrameLayout {
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         screenH = mDisplay.getHeight();
         screenW = mDisplay.getWidth();
-        
+
         int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
         if (derictor == 0) {
             mOrientation = Orientation.Left;
@@ -272,9 +272,9 @@ public class AppleWatchContainer extends FrameLayout {
     @Override
     protected void onFinishInflate() {
         mTvCurName = (TextView) findViewById(R.id.tv_type_name);
-        mTvLeftTypeName = (TextView)findViewById(R.id.tv_left_type_name);
-        mTvRightTypeName = (TextView)findViewById(R.id.tv_right_type_name);
-        mTvTypeBg = (ImageView)findViewById(R.id.tv_type_bg);
+        mTvLeftTypeName = (TextView) findViewById(R.id.tv_left_type_name);
+        mTvRightTypeName = (TextView) findViewById(R.id.tv_right_type_name);
+        mTvTypeBg = (ImageView) findViewById(R.id.tv_type_bg);
         mCornerTabs = (AppleWatchTabs) findViewById(R.id.applewatchtab);
         mDymicLayout = (AppleWatchLayout) findViewById(R.id.qg_dymic_layout);
         mDymicLayout.mMyType = GType.DymicLayout;
@@ -356,12 +356,13 @@ public class AppleWatchContainer extends FrameLayout {
                 moveY = event.getY();
 
                 // 下拉通知栏，finish
-//                if (mTouchDownY >= 0 && mTouchDownY < 70) {
-//                    if (moveY - mTouchDownY > 70) {
-//                        Activity activity = (Activity) AppleWatchContainer.this.getContext();
-//                        activity.finish();
-//                    }
-//                }
+                // if (mTouchDownY >= 0 && mTouchDownY < 70) {
+                // if (moveY - mTouchDownY > 70) {
+                // Activity activity = (Activity)
+                // AppleWatchContainer.this.getContext();
+                // activity.finish();
+                // }
+                // }
 
                 if (Math.abs(moveX - mTouchDownX) > DipPixelUtil.dip2px(getContext(), 10)) {
                     mMoving = true;
@@ -1269,11 +1270,12 @@ public class AppleWatchContainer extends FrameLayout {
         });
         ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 0, 1)
                 .setDuration(480);
-        ObjectAnimator titleBgAnimator = ObjectAnimator.ofFloat(mTvTypeBg, "alpha", 0,1).setDuration(480);
+        ObjectAnimator titleBgAnimator = ObjectAnimator.ofFloat(mTvTypeBg, "alpha", 0, 1)
+                .setDuration(480);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconShowAnimator(direction);
 
         AnimatorSet set = new AnimatorSet();
-        set.playTogether(tabAnimator, titleAnimator, titleBgAnimator,iconAnimatorSet);
+        set.playTogether(tabAnimator, titleAnimator, titleBgAnimator, iconAnimatorSet);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -1302,29 +1304,26 @@ public class AppleWatchContainer extends FrameLayout {
         AppleWatchLayout targetLayout;
         if (mCurrentGestureType == GType.DymicLayout) {
             targetLayout = mDymicLayout;
-            LeoLog.d("AppleWatchContainer", "关闭是 : mDymicLayout");
-            mPref.setLastTimeLayout(mLastTimeDymic);
         } else if (mCurrentGestureType == GType.MostUsedLayout) {
             targetLayout = mMostUsedLayout;
-            LeoLog.d("AppleWatchContainer", "关闭是 : mLastTimeMost");
-            mPref.setLastTimeLayout(mLastTimeMost);
         } else {
             targetLayout = mSwitcherLayout;
-            LeoLog.d("AppleWatchContainer", "关闭是 : mLastTimeSwitch");
-            mPref.setLastTimeLayout(mLastTimeSwitch);
         }
-
         ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
                 0, mCornerTabs.getHeight());
         tabAnimator.setDuration(200);
-        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0).setDuration(400);
-        ObjectAnimator titleBgAnimator = ObjectAnimator.ofFloat(mTvTypeBg, "alpha", 1,0).setDuration(400);
+        ObjectAnimator titleAnimator = ObjectAnimator.ofFloat(mTvCurName, "alpha", 1, 0)
+                .setDuration(400);
+        ObjectAnimator titleBgAnimator = ObjectAnimator.ofFloat(mTvTypeBg, "alpha", 1, 0)
+                .setDuration(400);
         AnimatorSet iconAnimatorSet = targetLayout.makeIconCloseAnimator(direction);
-        ObjectAnimator bgAlphaAnimator = ObjectAnimator.ofFloat(getParent(), "alpha", 1.0f,0f).setDuration(80);
+        ObjectAnimator bgAlphaAnimator = ObjectAnimator.ofFloat(getParent(), "alpha", 1.0f, 0f)
+                .setDuration(80);
         bgAlphaAnimator.setStartDelay(320);
 
         AnimatorSet set = new AnimatorSet();
-        set.playTogether(tabAnimator, titleAnimator, titleBgAnimator,iconAnimatorSet,bgAlphaAnimator);
+        set.playTogether(tabAnimator, titleAnimator, titleBgAnimator, iconAnimatorSet,
+                bgAlphaAnimator);
         set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -1341,6 +1340,16 @@ public class AppleWatchContainer extends FrameLayout {
             }
         });
         set.start();
+    }
+
+    public void saveGestureType() {
+        if (mCurrentGestureType == GType.DymicLayout) {
+            mPref.setLastTimeLayout(mLastTimeDymic);
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            mPref.setLastTimeLayout(mLastTimeMost);
+        } else {
+            mPref.setLastTimeLayout(mLastTimeSwitch);
+        }
     }
 
     public void hideGestureLayout(GType type) {
@@ -1445,7 +1454,7 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
-        
+
         // 清理内存
         mCleaner = ProcessCleaner.getInstance(mContext);
         mLastUsedMem = mCleaner.getUsedMem();
@@ -1454,7 +1463,7 @@ public class AppleWatchContainer extends FrameLayout {
         long curUsedMem = mCleaner.getUsedMem();
         mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
         System.gc();
-        
+
         isAnimating = true;
         // first - change to no roket icon
         info.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
@@ -1579,19 +1588,19 @@ public class AppleWatchContainer extends FrameLayout {
         } else {
             mToast = mContext.getString(R.string.the_best_status_toast);
         }
-        
+
         tv_clean_rocket.setText(mToast);
         Toast toast = new Toast(mContext);
         toast.setView(view);
         toast.setDuration(0);
         int marginTop = 0;
-        if(screenH >= 1920){
+        if (screenH >= 1920) {
             marginTop = 150;
-        }else if(screenH >= 1280){
+        } else if (screenH >= 1280) {
             marginTop = 120;
-        }else if(screenH >= 800){
+        } else if (screenH >= 800) {
             marginTop = 80;
-        }else {
+        } else {
             marginTop = 30;
         }
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
@@ -1626,47 +1635,48 @@ public class AppleWatchContainer extends FrameLayout {
     /**
      * translate the layout title
      */
-    private void translateTitleLayout(){
-        if(mRotateDegree == 0)
+    private void translateTitleLayout() {
+        if (mRotateDegree == 0)
             return;
-        float transX,scale, allAngle = 40;
+        float transX, scale, allAngle = 40;
         float percent = mRotateDegree / allAngle;
-        float inViewWidth,outViewWidth,transInX;
-            if(percent <0){
-                 inViewWidth = mTvLeftTypeName.getWidth();
-                 outViewWidth = mTvCurName.getWidth();
-                 transInX =  (inViewWidth+outViewWidth)/2;
-                percent = -percent;
-                transX = transInX*percent;
-                scale = 0.5f+0.5f*percent;
-                mTvLeftTypeName.setVisibility(View.VISIBLE);
-                mTvLeftTypeName.setTranslationX(transX);
-                mTvLeftTypeName.setAlpha(percent);
-                mTvLeftTypeName.setScaleX(scale);
-                mTvLeftTypeName.setScaleY(scale);
-            }else{
-                inViewWidth = mTvRightTypeName.getWidth();
-                outViewWidth = mTvCurName.getWidth();
-                transInX =  (inViewWidth+outViewWidth)/2;
-                transX = transInX*percent;
-                transX = -transX;
-                scale = 0.5f+0.5f*percent;
-               mTvRightTypeName.setVisibility(View.VISIBLE);
-               mTvRightTypeName.setTranslationX(transX);
-               mTvRightTypeName.setAlpha(percent);
-               mTvRightTypeName.setScaleX(scale);
-               mTvRightTypeName.setScaleY(scale);
-            }
-            mTvCurName.setTranslationX(transX);
-            mTvCurName.setAlpha(1-percent);
-            mTvCurName.setScaleX(1.5f-scale);
-            mTvCurName.setScaleY(1.5f-scale);
-            Log.i("trans","percent = "+percent+"  mRotateDegree = "+mRotateDegree);
+        float inViewWidth, outViewWidth, transInX;
+        if (percent < 0) {
+            inViewWidth = mTvLeftTypeName.getWidth();
+            outViewWidth = mTvCurName.getWidth();
+            transInX = (inViewWidth + outViewWidth) / 2;
+            percent = -percent;
+            transX = transInX * percent;
+            scale = 0.5f + 0.5f * percent;
+            mTvLeftTypeName.setVisibility(View.VISIBLE);
+            mTvLeftTypeName.setTranslationX(transX);
+            mTvLeftTypeName.setAlpha(percent);
+            mTvLeftTypeName.setScaleX(scale);
+            mTvLeftTypeName.setScaleY(scale);
+        } else {
+            inViewWidth = mTvRightTypeName.getWidth();
+            outViewWidth = mTvCurName.getWidth();
+            transInX = (inViewWidth + outViewWidth) / 2;
+            transX = transInX * percent;
+            transX = -transX;
+            scale = 0.5f + 0.5f * percent;
+            mTvRightTypeName.setVisibility(View.VISIBLE);
+            mTvRightTypeName.setTranslationX(transX);
+            mTvRightTypeName.setAlpha(percent);
+            mTvRightTypeName.setScaleX(scale);
+            mTvRightTypeName.setScaleY(scale);
+        }
+        mTvCurName.setTranslationX(transX);
+        mTvCurName.setAlpha(1 - percent);
+        mTvCurName.setScaleX(1.5f - scale);
+        mTvCurName.setScaleY(1.5f - scale);
+        Log.i("trans", "percent = " + percent + "  mRotateDegree = " + mRotateDegree);
     }
-   /**
-    * Initialization title view
-    */
-    private void initTitleView(){
+
+    /**
+     * Initialization title view
+     */
+    private void initTitleView() {
         mTvCurName.setTranslationX(0);
         mTvCurName.setScaleX(1.0f);
         mTvCurName.setScaleY(1.0f);
@@ -1679,23 +1689,23 @@ public class AppleWatchContainer extends FrameLayout {
         mTvRightTypeName.setScaleX(1.0f);
         mTvRightTypeName.setScaleY(1.0f);
         mTvRightTypeName.setAlpha(1.0f);
-        
+
         mTvLeftTypeName.setVisibility(View.INVISIBLE);
         mTvRightTypeName.setVisibility(View.INVISIBLE);
-        
-        if(mCurrentGestureType == GType.SwitcherLayout){
+
+        if (mCurrentGestureType == GType.SwitcherLayout) {
             mTvCurName.setText(R.string.quick_gesture_switcher);
             mTvLeftTypeName.setText(R.string.quick_gesture_most_used);
             mTvRightTypeName.setText(R.string.quick_gesture_dynamic);
-        }else if(mCurrentGestureType == GType.MostUsedLayout){
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
             mTvCurName.setText(R.string.quick_gesture_most_used);
             mTvLeftTypeName.setText(R.string.quick_gesture_dynamic);
             mTvRightTypeName.setText(R.string.quick_gesture_switcher);
-        }else{
+        } else {
             mTvCurName.setText(R.string.quick_gesture_dynamic);
             mTvLeftTypeName.setText(R.string.quick_gesture_switcher);
             mTvRightTypeName.setText(R.string.quick_gesture_most_used);
         }
     }
-    
+
 }

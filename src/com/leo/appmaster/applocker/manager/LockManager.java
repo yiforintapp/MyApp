@@ -57,6 +57,7 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.tools.ColorMatcher;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -1620,11 +1621,10 @@ public class LockManager {
         final String lastRunningPkg = service.getLastRunningPackage();
         final String lastRunningActivity = service.getLastRunningActivity();
         if (list.contains(lastRunningPkg)
+                && !QuickGesturePopupActivity.class.getName().contains(lastRunningActivity)
                 && !LockScreenActivity.class.getName().contains(lastRunningActivity)
-                && !WaitActivity.class
-                        .getName().contains(lastRunningActivity)
-                        &&  !ProxyActivity.class
-                        .getName().contains(lastRunningActivity)) {
+                && !WaitActivity.class.getName().contains(lastRunningActivity)
+                && !ProxyActivity.class.getName().contains(lastRunningActivity)) {
             LeoLog.d("Track Lock Screen",
                     "apply lockscreen form screen on => " + lastRunningPkg
                             + "/" + lastRunningActivity);
