@@ -11,9 +11,6 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.sdk.SDKWrapper;
-
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
 import android.content.Context;
@@ -22,7 +19,11 @@ import android.content.pm.PackageInfo;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
+import android.text.TextUtils;
 import android.util.Log;
+
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 
 /**
  * 判断小米系统工具类
@@ -35,7 +36,7 @@ public class BuildProperties {
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
     private static final String sMake = Build.MANUFACTURER.toLowerCase();
     private static final String mModel = Build.MODEL.toLowerCase();
-    public static final String I_STYLE_MODEL="i-mobile I-STYLE 217";
+    public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";
 
     private final Properties properties;
 
@@ -237,7 +238,8 @@ public class BuildProperties {
                 context.startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
-                SDKWrapper.addEvent(context, SDKWrapper.P1, "qs_open_error", "reason_"+BuildProperties.getPoneModel());
+                SDKWrapper.addEvent(context, SDKWrapper.P1, "qs_open_error", "reason_"
+                        + BuildProperties.getPoneModel());
             }
             return;
         } catch (Exception e) {
@@ -252,5 +254,12 @@ public class BuildProperties {
 
     public static String getPoneModel() {
         return android.os.Build.MODEL;
+    }
+
+    public static boolean isOppoOs() {
+        Log.e("#########","手机系统识别："+getSystemProperty("ro.build.version.opporom"));
+        if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom"))))
+            return false;
+        return true;
     }
 }
