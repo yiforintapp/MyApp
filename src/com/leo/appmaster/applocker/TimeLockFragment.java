@@ -357,8 +357,9 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockGuideIcon.setImageResource(R.drawable.modes_tips_time);
         mLockGuideText.setText(R.string.time_lock_mode_guide_content);
         mUserKnowBtn.setOnClickListener(this);
-        // if ever pack up guide page then next time guide page should
-        // appearance as animation
+        /**
+         *  if ever pack up guide page then next time guide page should appearance as animation
+         */
         if (AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()) {
             mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_in);
             mLockGuideView.startAnimation(mGuidAnimation);

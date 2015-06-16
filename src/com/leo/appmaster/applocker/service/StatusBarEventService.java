@@ -24,7 +24,8 @@ public class StatusBarEventService extends IntentService {
     public static final int EVENT_NEW_THEME = 0;
     public static final int EVENT_BUSINESS_APP = 1;
     public static final int EVENT_BUSINESS_GAME = 2;
-    public static final int EVENT_BUSINESS_QUICK_GUESTURE=3;
+    public static final int EVENT_BUSINESS_QUICK_GUESTURE = 3;
+    public static final int EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION = 4;
 
     public StatusBarEventService() {
         super("");
@@ -37,7 +38,7 @@ public class StatusBarEventService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         LeoLog.d(TAG, "onHandleIntent");
-        if(intent == null) {
+        if (intent == null) {
             return;
         }
         Intent targetIntent = null;
@@ -56,7 +57,7 @@ public class StatusBarEventService extends IntentService {
             targetIntent.putExtra(HotAppActivity.SHOW_PAGE, HotAppActivity.PAGE_APP);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            
+
         } else if (eventType == EVENT_BUSINESS_GAME) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "hots", "statusbar_game");
             LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
@@ -65,17 +66,22 @@ public class StatusBarEventService extends IntentService {
             targetIntent.putExtra(HotAppActivity.SHOW_PAGE, HotAppActivity.PAGE_GAME);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        }else if(eventType == EVENT_BUSINESS_QUICK_GUESTURE){
+        } else if (eventType == EVENT_BUSINESS_QUICK_GUESTURE) {
             LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
             targetIntent = new Intent(this, QuickGestureActivity.class);
             targetIntent.putExtra(QuickGestureActivity.FROME_STATUSBAR, true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        }else {
+        } else if (eventType == EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION) {
+            LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+            targetIntent = new Intent(this, QuickGestureActivity.class);
+            targetIntent.putExtra(QuickGestureActivity.FROME_STATUSBAR, true);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        } else {
             return;
         }
 
         startActivity(targetIntent);
     }
-
 }

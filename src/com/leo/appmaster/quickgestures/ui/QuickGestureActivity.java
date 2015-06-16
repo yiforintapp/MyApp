@@ -1025,7 +1025,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     QuickGestureProxyActivity.class);
             quickGestureShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                     StatusBarEventService.EVENT_BUSINESS_QUICK_GUESTURE);
-
             Intent quickGestureShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
             ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
                     QuickGestureActivity.this, R.drawable.gesture_desktopo_icon);
