@@ -85,6 +85,8 @@ public class QuickGestureManager {
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);
+        mDeletedBusinessItems = new ArrayList<String>();
+        loadDeletedBusinessItems();
     }
 
     public static synchronized QuickGestureManager getInstance(Context ctx) {
@@ -100,7 +102,6 @@ public class QuickGestureManager {
             mDynamicList = new ArrayList<BaseInfo>();
             mMostUsedList = new ArrayList<BaseInfo>();
             preloadColorIcon();
-            loadDeletedBusinessItems();
             Bitmap bmp;
             for (Drawable drawable : mColorBgIcon) {
                 bmp = ((BitmapDrawable) drawable).getBitmap();
@@ -115,7 +116,6 @@ public class QuickGestureManager {
     }
 
     private void loadDeletedBusinessItems() {
-        mDeletedBusinessItems = new ArrayList<String>();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         String deleteds = amp.getDeletedBusinessItems();
         deleteds.subSequence(0, deleteds.length() - 1);
