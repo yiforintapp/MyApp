@@ -167,7 +167,12 @@ public class AppMasterApplication extends Application {
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
         //TODO 测试
-//       BuildProperties. isOppoOs();
+        boolean isOppoOs=BuildProperties. isOppoOs();
+        boolean isOpenWindow =
+                BuildProperties.isFloatWindowOpAllowed(getApplicationContext());
+        Log.e("#########","是否为oppoOs："+isOppoOs);
+        Log.e("#########","悬浮窗权限是否打开："+isOpenWindow);
+        
     }
 
     private String getUserSerial() {
