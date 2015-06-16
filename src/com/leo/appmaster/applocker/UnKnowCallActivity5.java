@@ -37,7 +37,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     private final static int SHOWNORMAL = 6;
     private TextView tv_use_tips, tv_use_tips_content;
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
-            iv_duanxin_big, iv_jieting_big, iv_hands,iv_topguide;
+            iv_duanxin_big, iv_jieting_big, iv_hands, iv_topguide;
     private GestureRelative mViewContent;
     private CirCleDongHua myself_circle;
     private boolean isShowing = false;
@@ -48,7 +48,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     private float lc_left, lc_top, lc_right, lc_bottom;
     private int gua_yuan_x, gua_yuan_y, gua_left, gua_top, gua_right, gua_bottom;
     private int duan_yuan_x, duan_yuan_y, duan_left, duan_top, duan_right, duan_bottom;
-    private int top_guide_left,top_guide_top,top_guide_right,top_guide_bottom;
+    private int top_guide_left, top_guide_top, top_guide_right, top_guide_bottom;
     private int jie_yuan_x, jie_yuan_y, jie_left, jie_top, jie_right, jie_bottom;
     private int gua_left_big, gua_top_big, gua_right_big, gua_bottom_big;
     private int duan_left_big, duan_top_big, duan_right_big, duan_bottom_big;
@@ -65,7 +65,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                 case 1:
                     iv_dianhua_hold.layout(hold_left, hold_top, hold_right, hold_bottom);
                     LeoLog.d("testGElayout", "电话柄左：" + hold_left + "右：" + hold_right);
-                    
+
                     iv_guaduan.layout(gua_left, gua_top, gua_right, gua_bottom);
                     iv_guaduan_big.layout(gua_left_big, gua_top_big, gua_right_big, gua_bottom_big);
 
@@ -75,17 +75,18 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
 
                     iv_jieting.layout(jie_left, jie_top, jie_right, jie_bottom);
                     iv_jieting_big.layout(jie_left_big, jie_top_big, jie_right_big, jie_bottom_big);
-                    
-                    iv_topguide.layout(top_guide_left, top_guide_top, top_guide_right, top_guide_bottom);
+
+                    iv_topguide.layout(top_guide_left, top_guide_top, top_guide_right,
+                            top_guide_bottom);
 
                     iv_dianhua_hold.setVisibility(View.VISIBLE);
                     iv_guaduan.setVisibility(View.VISIBLE);
                     iv_duanxin.setVisibility(View.VISIBLE);
                     iv_jieting.setVisibility(View.VISIBLE);
                     iv_topguide.setVisibility(View.VISIBLE);
-                    
+
                     mViewContent.mFilterLayout = true;
-                    
+
                     if (!isShowing) {
                         iv_hands.setVisibility(View.VISIBLE);
                         iv_hands.layout(hand_left, hand_top, hand_right, hand_bottom);
@@ -169,37 +170,43 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     }
 
     private void setTimerTask() {
-        mTimer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                isLunXun = true;
-                LeoLog.d("testunknow",
-                        "hand_x : " + iv_hands.getX() + " ; hand_y : " + iv_hands.getY());
-                int handX = (int) iv_hands.getX();
-                int handY = (int) iv_hands.getY();
-                int handWidth = iv_hands.getWidth();
-                int handHeight = iv_hands.getHeight();
-                int handLeft = handX - handWidth / 2;
-                int handTop = handY - handHeight / 2;
-                if (handLeft < gua_right + 10 && handTop < gua_top - 10) {
-                    Message message = new Message();
-                    message.what = SHOWGUABIG;
-                    handler.sendMessage(message);
-                } else if (handTop < duan_bottom + 10 && handLeft > duan_left - 10) {
-                    Message message = new Message();
-                    message.what = SHOWDUANBIG;
-                    handler.sendMessage(message);
-                } else if (handLeft > jie_left - 20) {
-                    Message message = new Message();
-                    message.what = SHOWJIEBIG;
-                    handler.sendMessage(message);
-                } else {
-                    Message message = new Message();
-                    message.what = SHOWNORMAL;
-                    handler.sendMessage(message);
-                }
+        try {
+            if (mTimer != null) {
+                mTimer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        isLunXun = true;
+                        LeoLog.d("testunknow",
+                                "hand_x : " + iv_hands.getX() + " ; hand_y : " + iv_hands.getY());
+                        int handX = (int) iv_hands.getX();
+                        int handY = (int) iv_hands.getY();
+                        int handWidth = iv_hands.getWidth();
+                        int handHeight = iv_hands.getHeight();
+                        int handLeft = handX - handWidth / 2;
+                        int handTop = handY - handHeight / 2;
+                        if (handLeft < gua_right + 10 && handTop < gua_top - 10) {
+                            Message message = new Message();
+                            message.what = SHOWGUABIG;
+                            handler.sendMessage(message);
+                        } else if (handTop < duan_bottom + 10 && handLeft > duan_left - 10) {
+                            Message message = new Message();
+                            message.what = SHOWDUANBIG;
+                            handler.sendMessage(message);
+                        } else if (handLeft > jie_left - 20) {
+                            Message message = new Message();
+                            message.what = SHOWJIEBIG;
+                            handler.sendMessage(message);
+                        } else {
+                            Message message = new Message();
+                            message.what = SHOWNORMAL;
+                            handler.sendMessage(message);
+                        }
+                    }
+                }, 100, 100);
             }
-        }, 100, 100);
+        } catch (Exception e) {
+
+        }
     }
 
     private void init() {
@@ -323,7 +330,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         jie_right_big = jie_yuan_x + (jie_big_width / 2);
         jie_bottom_big = jie_yuan_y + (jie_big_height / 2);
 
-
         int hand_width = iv_hands.getWidth();
         int hand_height = iv_hands.getHeight();
         hand_x = gua_yuan_x + hand_width / 2;
@@ -332,12 +338,12 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         hand_top = hand_y - (hand_height / 2);
         hand_right = hand_x + (hand_width / 2);
         hand_bottom = hand_y + (hand_height / 2);
-        
-        //top guide
-        top_guide_left = (int) (mYuanX-mBanJing);
-        top_guide_top = (int) (mYuanY-mBanJing)- 4;
-        top_guide_right = (int) (mYuanX+mBanJing)+DipPixelUtil.dip2px(this, 5);
-        top_guide_bottom = (int)(mYuanY);
+
+        // top guide
+        top_guide_left = (int) (mYuanX - mBanJing);
+        top_guide_top = (int) (mYuanY - mBanJing) - 4;
+        top_guide_right = (int) (mYuanX + mBanJing) + DipPixelUtil.dip2px(this, 5);
+        top_guide_bottom = (int) (mYuanY);
     }
 
     public void setHold() {
@@ -376,48 +382,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                     int bottom = (int) (lc_bottom + newY);
                     int right = (int) (lc_right + newX);
 
-                    // if (left < gua_right + 10 && top > gua_top - gua_top / 2
-                    // && bottom < gua_bottom + gua_bottom / 2 && right >
-                    // gua_left - 10) {
-                    // iv_guaduan_big.setVisibility(View.VISIBLE);
-                    // iv_guaduan.setVisibility(View.INVISIBLE);
-                    // isControlGua = false;
-                    // } else {
-                    // if (!isControlGua) {
-                    // iv_guaduan_big.setVisibility(View.INVISIBLE);
-                    // iv_guaduan.setVisibility(View.VISIBLE);
-                    // }
-                    // isControlGua = true;
-                    // }
-                    //
-                    // if (top < duan_bottom + 10 && bottom > duan_top - 10
-                    // && left > duan_left - duan_left / 2
-                    // && right < duan_right + duan_right / 2) {
-                    // iv_duanxin.setVisibility(View.INVISIBLE);
-                    // iv_duanxin_big.setVisibility(View.VISIBLE);
-                    // isControlDuan = false;
-                    // } else {
-                    // if (!isControlDuan) {
-                    // iv_duanxin.setVisibility(View.VISIBLE);
-                    // iv_duanxin_big.setVisibility(View.INVISIBLE);
-                    // }
-                    // isControlDuan = true;
-                    // }
-                    //
-                    // if (right > jie_left - 10 && top > jie_top - jie_top / 2
-                    // && bottom < jie_bottom + jie_bottom / 2 && left <
-                    // jie_right + 10) {
-                    // iv_jieting_big.setVisibility(View.VISIBLE);
-                    // iv_jieting.setVisibility(View.INVISIBLE);
-                    // isControlJie = false;
-                    // } else {
-                    // if (!isControlJie) {
-                    // iv_jieting_big.setVisibility(View.INVISIBLE);
-                    // iv_jieting.setVisibility(View.VISIBLE);
-                    // }
-                    // isControlJie = true;
-                    // }
-
                     if (left < gua_left) {
                         left = gua_left;
                         right = left + iv_dianhua_hold.getWidth();
@@ -446,13 +410,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
                     v.layout(hold_left, hold_top, hold_right, hold_bottom);
 
                     myself_circle.setVisibility(View.VISIBLE);
-                    // iv_guaduan_big.setVisibility(View.INVISIBLE);
-                    // iv_guaduan.setVisibility(View.VISIBLE);
-                    // iv_duanxin_big.setVisibility(View.INVISIBLE);
-                    // iv_duanxin.setVisibility(View.VISIBLE);
-                    // iv_jieting_big.setVisibility(View.INVISIBLE);
-                    // iv_jieting.setVisibility(View.VISIBLE);
-
                     break;
                 default:
                     break;
@@ -474,6 +431,8 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         }
         if (mTimer != null) {
             mTimer.cancel();
+            mTimer.purge();
+            mTimer = null;
         }
         mViewContent.mFilterLayout = false;
         super.onDestroy();

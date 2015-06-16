@@ -14,24 +14,63 @@
         android:hapticFeedbackEnabled="true"
         android:layerType="hardware" >
 
-        <TextView
-            android:id="@+id/tv_type_name"
+        <ImageView
+            android:id="@+id/tv_type_bg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
             android:layout_marginBottom="321dp"
-            android:background="@drawable/gesture_title_bar"
             android:gravity="center"
-            android:padding="3dp"
-            android:textSize="16sp" />
+            android:src="@drawable/gesture_title_bar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="321dp" >
+
+            <TextView
+                android:id="@+id/tv_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:padding="3dp"
+                android:textSize="16sp" />
+
+            <TextView
+                android:id="@+id/tv_left_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toLeftOf="@+id/tv_type_name"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="left"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/tv_right_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@+id/tv_type_name"
+                android:gravity="center"
+                android:padding="3dp"
+                android:text="right"
+                android:textSize="16sp"
+                android:visibility="invisible" />
+        </RelativeLayout>
 
         <com.leo.appmaster.quickgestures.view.AppleWatchTabs
             android:id="@+id/applewatchtab"
             android:layout_width="145dp"
             android:layout_height="70dp"
             android:layout_gravity="center|bottom"
-            android:visibility="invisible"
-            android:background="@drawable/gesture_select_circle" />
+            android:background="@drawable/gesture_select_circle"
+            android:visibility="invisible" />
 
         <com.leo.appmaster.quickgestures.view.AppleWatchLayout
             android:id="@+id/qg_dymic_layout"
