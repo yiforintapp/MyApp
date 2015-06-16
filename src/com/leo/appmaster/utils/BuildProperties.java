@@ -20,7 +20,6 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -257,9 +256,26 @@ public class BuildProperties {
     }
 
     public static boolean isOppoOs() {
-        Log.e("#########","手机系统识别："+getSystemProperty("ro.build.version.opporom"));
         if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom"))))
             return false;
         return true;
     }
+
+    // back:{true,false}(ture:sucessful,false:failure)
+    public static boolean startOppoManageIntent(Context context) {
+        LockManager.getInstatnce().timeFilterSelf();
+        Intent intent = new Intent();
+        intent.setClassName("com.oppo.safe",
+                "com.oppo.safe.permission.PermissionTopActivity");
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            context.startActivity(intent);
+            return true;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 }

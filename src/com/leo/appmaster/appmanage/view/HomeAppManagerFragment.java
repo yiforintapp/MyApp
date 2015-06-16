@@ -59,7 +59,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static final String MESSAGE_DELETE_APP = "message_delete_app";
     public static final String MESSAGE_ADD_APP = "message_add_app";
     public static final String DAY_TRAFFIC_SETTING = "day_traffic_setting";
-    public static final String FINISH_HOME_ACTIVITY_FALG="finish_home_activity";
+    public static final String FINISH_HOME_ACTIVITY_FALG = "finish_home_activity";
     public static final int DONGHUA_CHANGE_TEXT = 0;
     public static final int DONGHUA_SHOW_BEGIN = 1;
     public static boolean isClean = false;
@@ -68,7 +68,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private boolean isStopDongHua = false;
     private int mNowDongHuaWhere = 0;
     private int lastPosition = -1;
-    
 
     // private boolean isReNewFragment = false;
 
@@ -205,7 +204,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         } else if (MESSAGE_ADD_APP.equals(event.eventMsg)) {
             loadData();
             fillData();
-        }else if(FINISH_HOME_ACTIVITY_FALG.equals(event.eventMsg)){
+        } else if (FINISH_HOME_ACTIVITY_FALG.equals(event.eventMsg)) {
             mActivity.finish();
         }
     }
@@ -628,6 +627,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(getActivity());
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(getActivity());
         boolean checkMiui = BuildProperties.isMIUI();
+        boolean isOppoOs = BuildProperties.isOppoOs();
         boolean isOpenWindow =
                 BuildProperties.isFloatWindowOpAllowed(getActivity());
         if (!checkFloatWindow) {
@@ -672,6 +672,18 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             startActivity(quickIntent);
         } else if (checkHuaWei && !checkFloatWindow) {
             BuildProperties.isToHuaWeiSystemManager(getActivity());
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.putExtra("sys_name", "huawei");
+            try {
+                startActivity(quickIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (isOppoOs && !isOpenWindow) {
+            boolean backFlag = BuildProperties.startOppoManageIntent(mActivity);
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
             quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
