@@ -1,10 +1,12 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.os.Bundle;
 import android.os.SystemProperties;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 

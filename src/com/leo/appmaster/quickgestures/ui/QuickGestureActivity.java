@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,6 +17,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -121,6 +123,18 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mLeftBottomView.setOnTouchListener(this);
             mRightTopView.setOnTouchListener(this);
             mRightBottomView.setOnTouchListener(this);
+            // 初始化数据
+            QuickGestureManager.getInstance(getApplicationContext()).init();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(!AppMasterPreference.getInstance(this)
+                .getFristSlidingTip()){
+            // 反初始化数据
+            QuickGestureManager.getInstance(getApplicationContext()).unInit();
         }
     }
 
@@ -725,7 +739,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1,
                                 "qssetting",
                                 "qs_open");
-                        QuickGestureManager.getInstance(getApplicationContext()).init();
                         Intent intent;
                         intent = new Intent(AppMasterApplication.getInstance(),
                                 QuickGesturePopupActivity.class);
@@ -747,17 +760,17 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
                             AppMasterPreference.getInstance(this).setFristSlidingTip(true);
-                            if (mQuickOpenCK != null) {
-                                mQuickOpenCK.setImageResource(R.drawable.switch_on);
-                                mPre.setSwitchOpenQuickGesture(true);
-                                mQuickOpenCK.setImageResource(R.drawable.switch_on);
-                                mOpenQuickFlag = true;
-                                QuickGestureManager.getInstance(QuickGestureActivity.this)
-                                        .startFloatWindow();
-                                setOnClickListener();
-                                initChexkBox();
-                            }
                         } catch (Exception e) {
+                        }
+                        if (mQuickOpenCK != null) {
+                            mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                            mPre.setSwitchOpenQuickGesture(true);
+                            mQuickOpenCK.setImageResource(R.drawable.switch_on);
+                            mOpenQuickFlag = true;
+                            QuickGestureManager.getInstance(QuickGestureActivity.this)
+                                    .startFloatWindow();
+                            setOnClickListener();
+                            initChexkBox();
                         }
                         mTipRL.postDelayed(new Runnable() {
 
@@ -765,7 +778,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             public void run() {
                                 mTipRL.setVisibility(View.GONE);
                             }
-                        }, 2000);
+                        }, 1000);
                         String toastText = QuickGestureActivity.this.getResources()
                                 .getString(
                                         R.string.quick_gesture_first_open_sliding_toast);
