@@ -49,6 +49,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 public class AppleWatchLayout extends ViewGroup {
@@ -717,11 +718,18 @@ public class AppleWatchLayout extends ViewGroup {
             // 短信提醒
             item.cancelShowReadTip();
             MessageBean bean = (MessageBean) info;
-            Uri smsToUri = Uri.parse("smsto://" +
-                    bean.getPhoneNumber());
-            Intent mIntent = new
-                    Intent(android.content.Intent.ACTION_SENDTO,
-                            smsToUri);
+            Intent mIntent = null;
+            if (!BuildProperties.isMIUI()) {
+                Uri smsToUri = Uri.parse("smsto://" +
+                        bean.getPhoneNumber());
+                mIntent = new
+                        Intent(android.content.Intent.ACTION_SENDTO,
+                                smsToUri);
+            } else {
+                QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag=true;
+                mIntent = new Intent();
+                mIntent.setClassName("com.android.mms", "com.android.mms.ui.ConversationList");
+            }
             try {
                 mContext.startActivity(mIntent);
                 if (QuickGestureManager.getInstance(mContext).mMessages != null

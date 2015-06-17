@@ -27,6 +27,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.Utilities;
 
 @SuppressLint("NewApi")
@@ -91,25 +92,35 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 .getLastMessageContact();
                         Iterator<MessageBean> ite = messages.iterator();
                         while (ite.hasNext()) {
-                            if(contact!=null && !Utilities.isEmpty(contact.getContactNumber())){
-                            MessageBean message = ite.next();
-                            String formateLastCall = PrivacyContactUtils
-                                    .formatePhoneNumber(contact.getContactNumber());
-                            String contactCallFromate = PrivacyContactUtils
-                                    .formatePhoneNumber(message.getPhoneNumber());
-                            if (formateLastCall.equals(contactCallFromate)) {
-                                messages.remove(message);
-                            }
-                            }else{
+                            if (contact != null && !Utilities.isEmpty(contact.getContactNumber())) {
+                                MessageBean message = ite.next();
+                                String formateLastCall = PrivacyContactUtils
+                                        .formatePhoneNumber(contact.getContactNumber());
+                                String contactCallFromate = PrivacyContactUtils
+                                        .formatePhoneNumber(message.getPhoneNumber());
+                                if (formateLastCall.equals(contactCallFromate)) {
+                                    messages.remove(message);
+                                }
+                            } else {
                                 break;
                             }
                         }
                         if (messages != null && messages.size() > 0) {
                             if (AppMasterPreference.getInstance(mContext)
                                     .getSwitchOpenNoReadMessageTip()) {
-                                QuickGestureManager.getInstance(mContext).mMessages = messages;
-                                QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-                                FloatWindowHelper.removeShowReadTipWindow(mContext);
+                                if (BuildProperties.isMIUI()) {
+                                    if(!QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag){
+                                    QuickGestureManager.getInstance(mContext).mMessages = messages;
+                                    QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+                                    FloatWindowHelper.removeShowReadTipWindow(mContext);
+                                    }else{
+                                        QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag=false;
+                                    }
+                                } else {
+                                    QuickGestureManager.getInstance(mContext).mMessages = messages;
+                                    QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+                                    FloatWindowHelper.removeShowReadTipWindow(mContext);
+                                }
                             }
                         }
                     }
