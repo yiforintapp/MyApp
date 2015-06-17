@@ -9,6 +9,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -162,7 +163,7 @@ public class QuickSwitchManager {
                 isFlashLightOpen = true;
             }
         } catch (Exception e) {
-            if(cam != null){
+            if (cam != null) {
                 mCamera.release();
                 mCamera = null;
             }
@@ -924,13 +925,24 @@ public class QuickSwitchManager {
     }
 
     public void openCrame() {
-        // Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // intent.addCategory("android.intent.category.DEFAULT");
-        // intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
-        Intent intent = new Intent(); // 调用照相机
-        intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+        String mBrand = getVendor();
+        if (mBrand.contains("htc")) {
+            LeoLog.d("testbrand", "mBrand : " + mBrand);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.addCategory("android.intent.category.LAUNCHER");
+            intent.setAction("android.intent.action.MAIN");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName component = new ComponentName("com.htc.camera",
+                    "com.htc.camera.CameraEntry");
+            intent.setComponent(component);
+            mContext.startActivity(intent);
+        } else {
+            Intent intent = new Intent(); // 调用照相机
+            intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        }
+
     }
 
     public void toggleLight(QuickSwitcherInfo mInfo, GestureItemView item) {
@@ -971,11 +983,11 @@ public class QuickSwitchManager {
         try {
 
             LeoLog.d("testlight", "light is : " + light);
-            
-            if(light == 0){
+
+            if (light == 0) {
                 light = 10;
             }
-            
+
             android.provider.Settings.System.putInt(mContext.getContentResolver(),
                     android.provider.Settings.System.SCREEN_BRIGHTNESS,
                     light);
