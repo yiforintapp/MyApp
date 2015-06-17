@@ -680,7 +680,7 @@ public class AppMasterApplication extends Application {
 
     public void checkNewTheme() {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if(pm.isScreenOn()) {
+        if(pm.isInteractive()) {
             checkUBC();
         }
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);

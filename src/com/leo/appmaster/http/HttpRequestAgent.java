@@ -82,12 +82,6 @@ public class HttpRequestAgent {
     public void checkNewTheme(Listener<JSONObject> listener,
             ErrorListener eListener) {
         String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
-        // List<String> hideThemes = AppMasterPreference.getInstance(mContext)
-        // .getHideThemeList();
-        // String combined = "";
-        // for (String string : hideThemes) {
-        // combined = combined + string + ";";
-        // }
         String body = "update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalThemeSerialNumber() + "&market_id="
@@ -104,11 +98,9 @@ public class HttpRequestAgent {
     public void checkNewBusinessData(Listener<JSONObject> listener,
             ErrorListener eListener) {
         String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
-        // String url =
-        // "http://192.168.1.201:8800/appmaster/apprecommend/checkappupdate";
         String body = "update_flag="
                 + AppMasterPreference.getInstance(mContext)
-                        .getLocalThemeSerialNumber() + "&market_id="
+                        .getLocalBusinessSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
                 + AppwallHttpUtil.getLanguage() + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
@@ -151,7 +143,6 @@ public class HttpRequestAgent {
                 + mContext.getString(R.string.channel_code) + ".html");
         
         LeoLog.d("loadGestureRecomApp", "url = " + url);
-        
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 "", listener, eListener);
         request.setShouldCache(false);
