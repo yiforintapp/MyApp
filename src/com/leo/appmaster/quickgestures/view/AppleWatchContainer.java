@@ -1279,7 +1279,6 @@ public class AppleWatchContainer extends FrameLayout {
             public void onAnimationStart(Animator animation) {
                 mStartShowingTime = System.currentTimeMillis();
                 isAnimating = true;
-                // targetLayout.setVisibility(View.VISIBLE);
             }
 
             @Override
