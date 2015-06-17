@@ -676,7 +676,7 @@ public class AppMasterApplication extends Application {
 
     public void checkNewTheme() {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if(pm.isInteractive()) {
+        if(pm.isScreenOn()) {
             checkUBC();
         }
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -735,6 +735,7 @@ public class AppMasterApplication extends Application {
                                                     new NewThemeEvent(EventId.EVENT_NEW_THEME,
                                                             "new theme", true));
 
+                                            
                                             showNewThemeTip(title, content);
                                         }
                                         pref.setLastCheckThemeTime(System

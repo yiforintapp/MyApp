@@ -82,15 +82,16 @@ public class HttpRequestAgent {
     public void checkNewTheme(Listener<JSONObject> listener,
             ErrorListener eListener) {
         String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
-        String body = "update_flag="
+        String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalThemeSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
                 + AppwallHttpUtil.getLanguage() + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
+        url += body;
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
-                body, listener, eListener);
+                "", listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
     }
@@ -98,15 +99,16 @@ public class HttpRequestAgent {
     public void checkNewBusinessData(Listener<JSONObject> listener,
             ErrorListener eListener) {
         String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
-        String body = "update_flag="
+        String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalBusinessSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
                 + AppwallHttpUtil.getLanguage() + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
+        url += body;
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
-                body, listener, eListener);
+                "", listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
     }
