@@ -260,15 +260,11 @@ public class AppMasterApplication extends Application {
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
-                LeoLog.e("xxxx", "startInitTask");
-                // AppBusinessManager.getInstance(mInstance).init();
                 if (AppMasterPreference.getInstance(getApplicationContext())
                         .getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(AppMasterApplication.this).init();
                 }
                 checkUpdateFinish();
-                // judgeLockService();
-                // judgeStatictiUnlockCount();
                 quickGestureTipInit();
                 checkIsUpdateUser();
                 mAppsEngine.preloadAllBaseInfo();
@@ -830,16 +826,12 @@ public class AppMasterApplication extends Application {
                         Listener<JSONObject>() {
                             @Override
                             public void onResponse(JSONObject response, boolean noMidify) {
-                                // Log.e("xxxxxxx", "拉取闪屏成功");
                                 if (response != null) {
                                     try {
                                         String startDate = response.getString("b");
                                         String imageUrl = response.getString("a");
                                         String endDate = response.getString("c");
                                         String splashUriFlag = imageUrl + startDate + endDate;
-                                        // Log.e("xxxxxxx", "数据：" +
-                                        // splashUriFlag);
-                                        // 保存获取的数据
                                         String prefStringUri = pref.getSplashUriFlag();
                                         int prefInt = pref.getSaveSplashIsMemeryEnough();
                                         if (!prefStringUri.equals(splashUriFlag) || prefInt != -1) {
@@ -916,14 +908,11 @@ public class AppMasterApplication extends Application {
                         }, new ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                // 拉取失败重试策略
                                 LeoLog.e("loadSplash", error.getMessage());
-                                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏失败");
                                 if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
                                     pref.setSplashLoadFailDate(failDate);
                                 } else if (pref.getSplashLoadFailNumber() >= 0
                                         && pref.getSplashLoadFailNumber() <= 2) {
-                                    // Log.e("xxxxxxxxxxxxxxx", "失败，重试！");
                                     pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
                                 }
                                 pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
@@ -981,7 +970,6 @@ public class AppMasterApplication extends Application {
         }, new ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                // Log.e("xxxxxxxxxxxxxxx", "加载闪屏图片失败");
                 AppMasterPreference.getInstance(getApplicationContext())
                         .setSaveSplashIsMemeryEnough(2);
                 if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {

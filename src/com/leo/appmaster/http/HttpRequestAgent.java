@@ -127,7 +127,7 @@ public class HttpRequestAgent {
         request.setShouldCache(true);
         mRequestQueue.add(request);
     }
-    
+
     /**
      * get gesture recommend apps
      * 
@@ -136,12 +136,12 @@ public class HttpRequestAgent {
      */
     public void loadGestureRecomApp(int type, Listener<JSONObject> listener,
             ErrorListener eListener) {
-        
-        String url = Utilities.getURL(AppMasterConfig.GESTURE_RECOMMEND_URL+"/"
+
+        String url = Utilities.getURL(AppMasterConfig.GESTURE_RECOMMEND_URL + "/"
                 + mContext.getString(R.string.version_name) + "/"
-                + Utilities.getCountryID(mContext) + "/" + AppwallHttpUtil.getLanguage() +"/"
+                + Utilities.getCountryID(mContext) + "/" + AppwallHttpUtil.getLanguage() + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
-        
+
         LeoLog.d("loadGestureRecomApp", "url = " + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 "", listener, eListener);
@@ -195,7 +195,6 @@ public class HttpRequestAgent {
      */
     public void loadSplashDate(Listener<JSONObject> listener,
             ErrorListener errorListener) {
-//        Log.e("xxxxxxx", "开始加载");
         String object = "";
         String url = Utilities.getURL(Constants.SPLASH_URL
                 + mContext.getString(R.string.version_name) + "/"
@@ -216,7 +215,7 @@ public class HttpRequestAgent {
      */
     public void loadSplashImage(final String url, String dir,
             Listener<File> listener, ErrorListener eListener) {
-        FileRequest request = new FileRequest(url, dir,listener,eListener);
+        FileRequest request = new FileRequest(url, dir, listener, eListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
     }
