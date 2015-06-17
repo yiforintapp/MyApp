@@ -9,10 +9,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.TextPaint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -333,16 +336,32 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             if (mIsRedTip) {
-                canvas.translate(getResources().getDimension(R.dimen.privacy_contact_red_tip_x),
-                        getResources().getDimension(R.dimen.privacy_contact_red_tip_y));
-                Paint paint = new Paint();
-                paint.setAntiAlias(true);
-                paint.setStyle(Paint.Style.FILL);
-                Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_tip);
                 int tabTextwdth = getResources().getInteger(
                         R.integer.privacy_contact_red_tip_tabTextwdth);
                 int tabTexteight = getResources().getInteger(
                         R.integer.privacy_contact_red_tip_tabTexteight);
+                
+                TextPaint textPaint = this.getPaint();
+                Drawable drawable = getCompoundDrawables()[0];
+                float x,y = getResources().getDimension(R.dimen.privacy_contact_red_tip_y);
+                float textWidth =  textPaint.measureText(getText().toString());
+                float imgwidth = drawable.getIntrinsicWidth();
+                /**the text center is (W-(imgwidth+getPaddingLeft()))/2**/
+                x = (imgwidth+getPaddingLeft()+textWidth+getMeasuredWidth())/2;
+                x = (float) Math.ceil(x);
+                if(x > this.getMeasuredWidth()-tabTextwdth){
+                    /**
+                     * if the left not enougth ,then up the red tip
+                     */
+                    x = this.getMeasuredWidth() - tabTextwdth;
+                    y = y-DipPixelUtil.dip2px(getContext(), 3);
+                }
+                canvas.translate( x, y);
+                Paint paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setStyle(Paint.Style.FILL);
+                Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_tip);
+              
                 float scaleX = (float) tabTextwdth / redTip.getWidth();
                 float scaleY = (float) tabTexteight / redTip.getHeight();
                 Matrix matrix = new Matrix();
