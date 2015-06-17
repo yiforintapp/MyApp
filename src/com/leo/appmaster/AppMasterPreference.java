@@ -185,6 +185,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE = "rootview_and_window_height_space";
     public static final String PREF_DELETED_BUSINESS_ITEMS = "deleted_business_items";
     public static final String PREF_LAST_BUSINESS_RED_TIP = "last_business_red_tip";
+    public static final String PREF_QUICK_NO_MSM_TIP = "quick_no_msm_tip";
+    public static final String PREF_QUICK_NO_CALL_LOG_TIP = "quick_no_call_log_tip";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1806,5 +1808,22 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getLastBusinessRedTipShow() {
         return mPref.getBoolean(PREF_LAST_BUSINESS_RED_TIP, true);
+    }
+
+    public boolean getQuickGestureCallLogTip() {
+        return mPref.getBoolean(PREF_QUICK_NO_CALL_LOG_TIP, false);
+    }
+
+    public void setQuickGestureCallLogTip(boolean b) {
+        mPref.edit().putBoolean(PREF_QUICK_NO_CALL_LOG_TIP, b).commit();
+
+    }
+
+    public boolean getQuickGestureMsmTip() {
+        return mPref.getBoolean(PREF_QUICK_NO_MSM_TIP, false);
+    }
+
+    public void setQuickGestureMsmTip(boolean b) {
+        mPref.edit().putBoolean(PREF_QUICK_NO_MSM_TIP, b).commit();
     }
 }

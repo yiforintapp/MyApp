@@ -929,15 +929,22 @@ public class QuickSwitchManager {
     public void openCrame() {
         String mBrand = getVendor();
         if (mBrand.contains("htc")) {
-            LeoLog.d("testbrand", "mBrand : " + mBrand);
-            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            intent.addCategory("android.intent.category.LAUNCHER");
-            intent.setAction("android.intent.action.MAIN");
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            ComponentName component = new ComponentName("com.htc.camera",
-                    "com.htc.camera.CameraEntry");
-            intent.setComponent(component);
-            mContext.startActivity(intent);
+            try {
+                LeoLog.d("testbrand", "mBrand : " + mBrand);
+                Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                intent.addCategory("android.intent.category.LAUNCHER");
+                intent.setAction("android.intent.action.MAIN");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                ComponentName component = new ComponentName("com.htc.camera",
+                        "com.htc.camera.CameraEntry");
+                intent.setComponent(component);
+                mContext.startActivity(intent);
+            } catch (Exception e) {
+                Intent intent = new Intent(); // 调用照相机
+                intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(intent);
+            }
         } else {
             Intent intent = new Intent(); // 调用照相机
             intent.setAction("android.media.action.STILL_IMAGE_CAMERA");

@@ -4,6 +4,7 @@ package com.leo.appmaster.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
@@ -167,14 +168,16 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             // TODO(快捷手势隐私联系人提醒)
             if (flag == 1) {
                 // 隐私通话
-                if (mPreference.getSwitchOpenPrivacyContactMessageTip()) {
+                Log.e("#########","通话："+mPreference.getQuickGestureCallLogTip());
+                if (mPreference.getSwitchOpenPrivacyContactMessageTip() &&  mPreference.getQuickGestureCallLogTip()) {
                     QuickGestureManager.getInstance(getActivity()).isShowPrivacyCallLog = true;
                     QuickGestureManager.getInstance(getActivity()).isShowSysNoReadMessage = true;
                     FloatWindowHelper.removeShowReadTipWindow(getActivity());
                 }
             } else if (flag == 0) {
+                Log.e("#########","短信："+mPreference.getQuickGestureMsmTip());
                 // 隐私短信
-                if (mPreference.getSwitchOpenPrivacyContactMessageTip()) {
+                if (mPreference.getSwitchOpenPrivacyContactMessageTip() && mPreference.getQuickGestureMsmTip()) {
                     QuickGestureManager.getInstance(getActivity()).isShowPrivacyMsm = true;
                     QuickGestureManager.getInstance(getActivity()).isShowSysNoReadMessage = true;
                     FloatWindowHelper.removeShowReadTipWindow(getActivity());

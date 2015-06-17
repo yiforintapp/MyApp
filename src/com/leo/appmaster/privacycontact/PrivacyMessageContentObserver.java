@@ -269,6 +269,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
                         }
                     }
+                    AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
                     // 通知更新通话记录
                     LeoEventBus
                             .getDefaultBus()

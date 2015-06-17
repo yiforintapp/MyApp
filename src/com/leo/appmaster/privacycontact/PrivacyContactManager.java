@@ -222,6 +222,7 @@ public class PrivacyContactManager {
                             R.drawable.ic_launcher_notification_big);
                     notification.when = System.currentTimeMillis();
                     notificationManager.notify(20140901, notification);
+                    AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
                 }
                 String dateFrom = sdf.format(new Date(sendDate));
                 message.setMessageTime(dateFrom);
@@ -270,6 +271,7 @@ public class PrivacyContactManager {
                         R.drawable.ic_launcher_notification_big);
                 notification.when = System.currentTimeMillis();
                 notificationManager.notify(20140901, notification);
+                AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
             }
         }
         // 通知更新短信记录

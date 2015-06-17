@@ -1381,6 +1381,7 @@ public class FloatWindowHelper {
                     .getInstance(AppMasterApplication.getInstance()).isLeftCenter;
             boolean rightCenter = QuickGestureManager.getInstance(AppMasterApplication
                     .getInstance()).isRightCenter;
+//            Log.e("##########","leftBottom:"+leftBottom+"|rightBottom:"+rightBottom+"|leftCenter:"+leftCenter+"|rightCenter:"+rightCenter);
             // left bottom
             if (leftBottom) {
                 FloatWindowHelper
