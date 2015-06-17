@@ -243,5 +243,6 @@
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="gesture_item_imageview_padding">10dp</dimen>
     <dimen name="dialog_btn_height">48dp</dimen>
+    <dimen name="text_icon_margin">5dp</dimen>
 
 </resources>
