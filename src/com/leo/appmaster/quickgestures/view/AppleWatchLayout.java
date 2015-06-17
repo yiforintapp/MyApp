@@ -1342,7 +1342,6 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     private void adjustIconPosition(Direction direction) {
-        LeoLog.e("xxxx", "adjustIconPosition   direction = " + direction);
         int i, firstPosition, lastPosition;
         GestureItemView tempView;
         if (direction == Direction.Left) {

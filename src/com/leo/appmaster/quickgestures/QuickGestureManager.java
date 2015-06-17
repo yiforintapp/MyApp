@@ -166,7 +166,6 @@ public class QuickGestureManager {
         if (!AppMasterPreference.getInstance(mContext).getLastBusinessRedTipShow()) {
             Vector<BusinessItemInfo> businessDatas = AppBusinessManager.getInstance(mContext)
                     .getBusinessData();
-            LeoLog.e("xxxx", "businessDatas size = " + businessDatas.size());
             if (businessDatas != null && businessDatas.size() > 0) {
                 int count = 0;
                 for (BusinessItemInfo businessItem : businessDatas) {
