@@ -43,26 +43,26 @@
                 android:id="@+id/tv_left_type_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
+                android:layout_alignBaseline="@id/tv_type_name"
+                android:layout_alignBottom="@id/tv_type_name"
                 android:layout_toLeftOf="@+id/tv_type_name"
                 android:gravity="center"
                 android:padding="3dp"
-                android:text="left"
-                android:textSize="16sp"
                 android:singleLine="true"
+                android:textSize="16sp"
                 android:visibility="invisible" />
 
             <TextView
                 android:id="@+id/tv_right_type_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_toRightOf="@+id/tv_type_name"
+                android:layout_alignBaseline="@+id/tv_type_name"
+                android:layout_alignBottom="@id/tv_type_name"
+                android:layout_toRightOf="@id/tv_type_name"
                 android:gravity="center"
                 android:padding="3dp"
-                android:text="right"
-                android:textSize="16sp"
                 android:singleLine="true"
+                android:textSize="16sp"
                 android:visibility="invisible" />
         </RelativeLayout>
 
