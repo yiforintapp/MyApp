@@ -22,11 +22,11 @@ public class ThemeJsonObjectParser {
 		if (jsonObject != null) {
 			try {
 
-				String serialNumber = jsonObject.getString("update_flag");
+//				String serialNumber = jsonObject.getString("update_flag");
 				AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
-				pref.setLocalThemeSerialNumber(serialNumber);
-				pref.setOnlineThemeSerialNumber(serialNumber);
-				LeoLog.d("parserJsonObject", "serialNumber = " + serialNumber);
+				pref.setLocalThemeSerialNumber(pref.getOnlineThemeSerialNumber());
+//				pref.setOnlineThemeSerialNumber(serialNumber);
+//				LeoLog.d("parserJsonObject", "serialNumber = " + serialNumber);
 
 				JSONArray array = jsonObject.getJSONArray("data");
 				list = new ArrayList<ThemeItemInfo>();
