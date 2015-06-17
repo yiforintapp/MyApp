@@ -133,7 +133,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     for (LockMode lockMode : deleteList) {
                         lm.removeLockMode(lockMode);
                     }
-                    ((LockModeActivity)mActivity).disableOptionImage();
+                    ((LockModeActivity) mActivity).disableOptionImage();
                     mModeAdapter.notifyDataSetChanged();
                 }
             }
@@ -293,7 +293,18 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
     }
 
     private void installLockModeShortcut(LockMode lockMode) {
-        Intent shortcutIntent = new Intent(mActivity, LockScreenActivity.class);
+        Intent shortcutIntent = null;
+        if (lockMode.defaultFlag == 0) {
+            shortcutIntent = new Intent(mActivity, UnlockAllModeProxyActivity.class);
+        } else if (lockMode.defaultFlag == 1) {
+            shortcutIntent = new Intent(mActivity, VisitorModeProxyActivity.class);
+        } else if (lockMode.defaultFlag == 2) {
+            shortcutIntent = new Intent(mActivity, OfficeModeProxyActivity.class);
+        } else if (lockMode.defaultFlag == 3) {
+            shortcutIntent = new Intent(mActivity, FamilyModeProxyActivity.class);
+        } else {
+            shortcutIntent = new Intent(mActivity, LockScreenActivity.class);
+        }
         shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         shortcutIntent.putExtra("quick_lock_mode", true);
         shortcutIntent.putExtra("lock_mode_id", lockMode.modeId);

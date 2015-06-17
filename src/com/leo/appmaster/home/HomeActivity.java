@@ -586,7 +586,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 //                         Log.e("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
                             // new user
-                            if (newUserCount >= 10 && !firstSlidingTip && !firstDilaogTip) {
+                            if (newUserCount >= 50 && !firstSlidingTip && !firstDilaogTip) {
 //                                 Log.e("######", "新用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
