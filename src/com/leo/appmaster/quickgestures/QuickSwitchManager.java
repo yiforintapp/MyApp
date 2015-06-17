@@ -1355,7 +1355,6 @@ public class QuickSwitchManager {
 
     public String listToPackString(List<BaseInfo> mSwitchList, int mNum, int infoType) {
         String ListString = "";
-        // if (infoType == 0) {
         for (int i = 0; i < mNum; i++) {
             QuickGsturebAppInfo switchInfo = (QuickGsturebAppInfo) mSwitchList.get(i);
             String name = switchInfo.packageName;
@@ -1421,10 +1420,6 @@ public class QuickSwitchManager {
             mSaveList.clear();
             mSaveList = null;
         }
-    }
-
-    public void loadAllSwitchList() {
-
     }
 
 }
