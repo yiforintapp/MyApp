@@ -373,7 +373,7 @@
     <dimen name="quick_first_tip_dialog_width">312dp</dimen>
     <dimen name="quick_first_tip_dialog_height">78dp</dimen>
     <dimen name="quick_first_tip_dialog_content_phone_width">312dp</dimen>
-    <dimen name="quick_first_tip_dialog_content_phone_height">75dp</dimen>
+    <dimen name="quick_first_tip_dialog_content_phone_height">150dp</dimen>
     <dimen name="quick_first_tip_dialog_content_margin_top">20dp</dimen>
     <dimen name="quick_first_tip_dialog_title_margin_top">6dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">14sp</dimen>
