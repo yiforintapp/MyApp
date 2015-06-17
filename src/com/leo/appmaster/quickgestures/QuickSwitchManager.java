@@ -151,14 +151,24 @@ public class QuickSwitchManager {
     }
 
     private void flashlight() {
-        Camera cam = Camera.open();
-        Camera.Parameters p = cam.getParameters();
-        String position = p.getFlashMode();// 获取闪光灯的状态
-        if (position.equals(OFFSTATUS)) {
+        Camera cam = null;
+        try {
+            cam = Camera.open();
+            Camera.Parameters p = cam.getParameters();
+            String position = p.getFlashMode();// 获取闪光灯的状态
+            if (position.equals(OFFSTATUS)) {
+                isFlashLightOpen = false;
+            } else if (position.equals(OPENSTATUS)) {
+                isFlashLightOpen = true;
+            }
+        } catch (Exception e) {
+            if(cam != null){
+                mCamera.release();
+                mCamera = null;
+            }
             isFlashLightOpen = false;
-        } else if (position.equals(OPENSTATUS)) {
-            isFlashLightOpen = true;
         }
+
     }
 
     public void mobileData() {
