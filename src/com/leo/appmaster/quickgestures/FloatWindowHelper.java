@@ -104,7 +104,7 @@ public class FloatWindowHelper {
     public static void createFloatLeftBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-       final  boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+        final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
@@ -186,7 +186,8 @@ public class FloatWindowHelper {
                                     intent.putExtra("show_orientation", 0);
                                     try {
                                         mContext.startActivity(intent);
-//                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+                                        // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                        // = false;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -344,7 +345,7 @@ public class FloatWindowHelper {
     public static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-        final  boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+        final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
@@ -419,7 +420,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // cancel system no read message tip
-                                if ((isShowTip || isShowBusinessRedTip) && mLeftBottomView == null ) {
+                                if ((isShowTip || isShowBusinessRedTip) && mLeftBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
                                             "notice");
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
@@ -429,7 +430,8 @@ public class FloatWindowHelper {
                                     intent.putExtra("show_orientation", 0);
                                     try {
                                         mContext.startActivity(intent);
-//                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+                                        // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                        // = false;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -606,7 +608,7 @@ public class FloatWindowHelper {
     public static void createFloatRightBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-        final  boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+        final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
@@ -690,7 +692,8 @@ public class FloatWindowHelper {
                                     intent.putExtra("show_orientation", 2);
                                     try {
                                         mContext.startActivity(intent);
-//                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+                                        // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                        // = false;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -773,7 +776,7 @@ public class FloatWindowHelper {
                                     }
                                 }
                             } else {
-                                if (((moveX > mRightCenterParams.width /6 || moveY > mRightCenterParams.height / 4)
+                                if (((moveX > mRightCenterParams.width / 6 || moveY > mRightCenterParams.height / 4)
                                 && !isMoveIng)) {
                                     if (presssure > 1.0) {
                                         isMoveIng = true;
@@ -845,7 +848,7 @@ public class FloatWindowHelper {
     public static void createFloatRightCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-        final   boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+        final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
@@ -921,7 +924,7 @@ public class FloatWindowHelper {
                             if (Math.abs(startX - event.getRawX()) < 10
                                     || Math.abs(startY - event.getRawY()) < 10) {
                                 // cancel system no read message tip
-                                if ((isShowTip ||isShowBusinessRedTip) && mRightBottomView == null) {
+                                if ((isShowTip || isShowBusinessRedTip) && mRightBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
                                             "notice");
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
@@ -931,7 +934,8 @@ public class FloatWindowHelper {
                                     intent.putExtra("show_orientation", 2);
                                     try {
                                         mContext.startActivity(intent);
-//                                        QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+                                        // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                        // = false;
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
@@ -1587,7 +1591,8 @@ public class FloatWindowHelper {
             if (QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage) {
                 AppMasterPreference.getInstance(AppMasterApplication.getInstance())
                         .setLastTimeLayout(1);
-//                QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage = false;
+                // QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage
+                // = false;
             }
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);

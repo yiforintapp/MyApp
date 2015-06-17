@@ -206,7 +206,7 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }, 800);
         }
-
+ 
         setChildrenDrawnWithCacheEnabled(true);
         setDrawingCacheEnabled(true);
     }
@@ -282,6 +282,7 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i] = addView;
                 addView.measure(childWidthMeasureSpec, childHeightMeasureSpec);
                 addView(addView);
+                LeoLog.e("xxxx", "left  = " +(tempView.getLeft() - mTotalWidth) + "        top = " + tempView.getTop());
                 addView.layout(tempView.getLeft() - mTotalWidth, tempView.getTop(),
                         tempView.getRight() - mTotalWidth, tempView.getBottom());
                 addView.setScaleX(lp.scale);
