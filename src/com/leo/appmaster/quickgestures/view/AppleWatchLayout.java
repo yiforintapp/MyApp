@@ -1593,6 +1593,8 @@ public class AppleWatchLayout extends ViewGroup {
 
         if (direction == Direction.Left) {
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
+                if (mHoriChildren[0][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
                 if (i == mHoriChildren[0].length - 1) {
@@ -1636,6 +1638,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[0][i].setTranslationY(moveY);
             }
             for (i = 0; i < mHoriChildren[1].length - 1; i++) {
+                if (mHoriChildren[1][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[1][i]
                         .getLayoutParams()).scale;
                 if (i == mHoriChildren[1].length - 1) {
@@ -1680,6 +1684,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i].setTranslationY(moveY);
             }
             for (i = 0; i < mHoriChildren[2].length - 1; i++) {
+                if (mHoriChildren[2][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
                 if (i == mHoriChildren[1].length - 1) {
                     offset = moveX;
@@ -1712,6 +1718,8 @@ public class AppleWatchLayout extends ViewGroup {
             }
         } else if (direction == Direction.Right) {
             for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
+                if (mHoriChildren[0][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
                 if (i == 0) {
@@ -1748,6 +1756,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[0][i].setTranslationY(moveY);
             }
             for (i = mHoriChildren[1].length - 1; i >= 0; i--) {
+                if (mHoriChildren[1][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[1][i]
                         .getLayoutParams()).scale;
                 if (i == 0) {
@@ -1783,6 +1793,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i].setTranslationY(moveY);
             }
             for (i = mHoriChildren[2].length - 1; i >= 0; i--) {
+                if (mHoriChildren[2][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[2][i]
                         .getLayoutParams()).scale;
                 if (i == 0) {

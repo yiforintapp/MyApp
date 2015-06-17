@@ -9,6 +9,7 @@ import java.util.List;
 import android.app.Activity;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -151,14 +152,24 @@ public class QuickSwitchManager {
     }
 
     private void flashlight() {
-        Camera cam = Camera.open();
-        Camera.Parameters p = cam.getParameters();
-        String position = p.getFlashMode();// 获取闪光灯的状态
-        if (position.equals(OFFSTATUS)) {
+        Camera cam = null;
+        try {
+            cam = Camera.open();
+            Camera.Parameters p = cam.getParameters();
+            String position = p.getFlashMode();// 获取闪光灯的状态
+            if (position.equals(OFFSTATUS)) {
+                isFlashLightOpen = false;
+            } else if (position.equals(OPENSTATUS)) {
+                isFlashLightOpen = true;
+            }
+        } catch (Exception e) {
+            if (cam != null) {
+                mCamera.release();
+                mCamera = null;
+            }
             isFlashLightOpen = false;
-        } else if (position.equals(OPENSTATUS)) {
-            isFlashLightOpen = true;
         }
+
     }
 
     public void mobileData() {
@@ -814,7 +825,7 @@ public class QuickSwitchManager {
             }
         } catch (Exception e) {
             if (mCamera != null) {
-                Parameters params = mCamera.getParameters();  
+                Parameters params = mCamera.getParameters();
                 params.setFlashMode(Parameters.FLASH_MODE_OFF);
                 mCamera.setParameters(params);
                 mCamera.release();
@@ -914,13 +925,24 @@ public class QuickSwitchManager {
     }
 
     public void openCrame() {
-//        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-//         intent.addCategory("android.intent.category.DEFAULT");
-//        intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
-        Intent intent = new Intent(); //调用照相机 
-        intent.setAction("android.media.action.STILL_IMAGE_CAMERA"); 
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        mContext.startActivity(intent);
+        String mBrand = getVendor();
+        if (mBrand.contains("htc")) {
+            LeoLog.d("testbrand", "mBrand : " + mBrand);
+            Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            intent.addCategory("android.intent.category.LAUNCHER");
+            intent.setAction("android.intent.action.MAIN");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName component = new ComponentName("com.htc.camera",
+                    "com.htc.camera.CameraEntry");
+            intent.setComponent(component);
+            mContext.startActivity(intent);
+        } else {
+            Intent intent = new Intent(); // 调用照相机
+            intent.setAction("android.media.action.STILL_IMAGE_CAMERA");
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        }
+
     }
 
     public void toggleLight(QuickSwitcherInfo mInfo, GestureItemView item) {
@@ -960,9 +982,18 @@ public class QuickSwitchManager {
     private void setLight(int light, GestureItemView item) {
         try {
 
+            LeoLog.d("testlight", "light is : " + light);
+
+            if (light == 0) {
+                light = 10;
+            }
+
             android.provider.Settings.System.putInt(mContext.getContentResolver(),
                     android.provider.Settings.System.SCREEN_BRIGHTNESS,
                     light);
+
+            Uri uri = android.provider.Settings.System.getUriFor("screen_brightness");
+            mContext.getContentResolver().notifyChange(uri, null);
 
             changeTheLight(light, item);
 
@@ -974,15 +1005,21 @@ public class QuickSwitchManager {
     private void changeTheLight(int light2, GestureItemView item) {
         Activity activity = (Activity) item.getContext();
         Window localWindow = activity.getWindow();
-        WindowManager.LayoutParams localLayoutParams = localWindow.getAttributes();
-        if (light2 < 0) {
-        }
-        for (float f = -1.0F;; f = light2 / 255.0F)
-        {
-            localLayoutParams.screenBrightness = f;
-            localWindow.setAttributes(localLayoutParams);
-            return;
-        }
+        WindowManager.LayoutParams lp = localWindow.getAttributes();
+        // 0到1,调整亮度暗到全亮
+        lp.screenBrightness = Float.valueOf(light2 / 255f);
+        localWindow.setAttributes(lp);
+        // WindowManager.LayoutParams localLayoutParams =
+        // localWindow.getAttributes();
+        // if (light2 < 0) {
+        // }
+        // for (float f = -1.0F;; f = light2 / 255.0F)
+        // {
+        // localLayoutParams.screenBrightness = f;
+        // localWindow.setAttributes(localLayoutParams);
+        // return;
+        // }
+
     }
 
     // 启动自动调节亮度
