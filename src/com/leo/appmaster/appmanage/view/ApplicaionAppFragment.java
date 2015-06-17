@@ -29,6 +29,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -400,6 +401,8 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
                                         BusinessItemInfo.CONTAIN_BUSINESS_FOLDER);
                         Message msg = mHandler.obtainMessage(
                                 MSG_LOAD_INIT_SUCCESSED, list);
+                        AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
+                        amp.setLocalBusinessSerialNumber(amp.getOnlineBusinessSerialNumber());
                         mHandler.sendMessage(msg);
                         mInitDataLoadFinish = true;
                         mInitLoading = false;
