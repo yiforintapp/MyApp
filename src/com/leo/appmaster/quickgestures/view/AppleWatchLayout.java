@@ -50,6 +50,7 @@ import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 public class AppleWatchLayout extends ViewGroup {
@@ -206,7 +207,7 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }, 800);
         }
- 
+
         setChildrenDrawnWithCacheEnabled(true);
         setDrawingCacheEnabled(true);
     }
@@ -282,7 +283,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i] = addView;
                 addView.measure(childWidthMeasureSpec, childHeightMeasureSpec);
                 addView(addView);
-                LeoLog.e("xxxx", "left  = " +(tempView.getLeft() - mTotalWidth) + "        top = " + tempView.getTop());
+                LeoLog.e("xxxx", "left  = " + (tempView.getLeft() - mTotalWidth) + "        top = "
+                        + tempView.getTop());
                 addView.layout(tempView.getLeft() - mTotalWidth, tempView.getTop(),
                         tempView.getRight() - mTotalWidth, tempView.getBottom());
                 addView.setScaleX(lp.scale);
@@ -717,11 +719,18 @@ public class AppleWatchLayout extends ViewGroup {
             // 短信提醒
             item.cancelShowReadTip();
             MessageBean bean = (MessageBean) info;
-            Uri smsToUri = Uri.parse("smsto://" +
-                    bean.getPhoneNumber());
-            Intent mIntent = new
-                    Intent(android.content.Intent.ACTION_SENDTO,
-                            smsToUri);
+            Intent mIntent = null;
+            if (!BuildProperties.isMIUI()) {
+                Uri smsToUri = Uri.parse("smsto://" +
+                        bean.getPhoneNumber());
+                mIntent = new
+                        Intent(android.content.Intent.ACTION_SENDTO,
+                                smsToUri);
+            } else {
+                QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag=true;
+                mIntent = new Intent();
+                mIntent.setClassName("com.android.mms", "com.android.mms.ui.ConversationList");
+            }
             try {
                 mContext.startActivity(mIntent);
                 if (QuickGestureManager.getInstance(mContext).mMessages != null
@@ -756,11 +765,13 @@ public class AppleWatchLayout extends ViewGroup {
             try {
                 mContext.startActivity(intent);
                 if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog) {
-                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(new QuickGestureContactTipInfo());
+                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                            new QuickGestureContactTipInfo());
                     QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = false;
                 }
                 if (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm) {
-                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(new QuickGestureContactTipInfo());
+                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                            new QuickGestureContactTipInfo());
                     QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = false;
                 }
             } catch (Exception e) {

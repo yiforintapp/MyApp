@@ -73,6 +73,7 @@ public class QuickGestureManager {
     public boolean isShowPrivacyMsm = false;
     public boolean isShowPrivacyCallLog = false;
     public boolean isShowSysNoReadMessage = false;
+    public boolean mMiuiToMsmFlag=false;
     /*
      * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
      */
@@ -194,7 +195,7 @@ public class QuickGestureManager {
         boolean isShowPrivacyContactTip = AppMasterPreference.getInstance(mContext)
                 .getSwitchOpenPrivacyContactMessageTip();
         if (isShowMsmTip) {
-            if (QuickGestureManager.getInstance(mContext).mMessages != null) {
+            if (QuickGestureManager.getInstance(mContext).mMessages != null && QuickGestureManager.getInstance(mContext).mMessages.size()>0) {
                 List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
                 for (MessageBean message : messages) {
                     message.gesturePosition = -1000;
@@ -216,7 +217,8 @@ public class QuickGestureManager {
 
         // no read sys_call
         if (isShowCallLogTip) {
-            if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
+            
+            if (QuickGestureManager.getInstance(mContext).mCallLogs != null && QuickGestureManager.getInstance(mContext).mCallLogs.size()>0) {
                 List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
                 for (ContactCallLog baseInfo : baseInfos) {
                     baseInfo.gesturePosition = -1000;
@@ -651,7 +653,11 @@ public class QuickGestureManager {
         if (info instanceof MessageBean) {
             MessageBean bean = (MessageBean) info;
             if (mMessages != null && mMessages.size() > 0) {
+//                for (int i = 0; i < mMessages.size(); i++) {
+//                    Log.e("#########", "***"+mMessages.get(i).label);
+//                }
                 mMessages.remove(bean);
+                Log.e("#########", "***"+mMessages.size());
             }
         } else if (info instanceof ContactCallLog) {
             ContactCallLog callLog = (ContactCallLog) info;
