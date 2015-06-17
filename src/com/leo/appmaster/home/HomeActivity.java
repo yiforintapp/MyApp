@@ -499,8 +499,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     sendBroadcast(shortcut);
                     prefernece.edit().putBoolean("shortcut", true).commit();
                 }
-                boolean appwallFlag = prefernece.getBoolean("shortcut_appwall", false);
-                if (appwallFlag) {
+//                boolean appwallFlag = prefernece.getBoolean("shortcut_appwall", false);
+//                if (appwallFlag) {
                     // Intent appWallShortIntent = new Intent(HomeActivity.this,
                     // AppWallActivity.class);
                     // appWallShortIntent.putExtra("from_appwall_shortcut",
@@ -517,24 +517,24 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     // appWallShortcut.putExtra("duplicate", true);
                     // sendBroadcast(appWallShortcut);
                     // prefernece.edit().putBoolean("shortcut_appwall", false);
-                } else {
-                    Intent appWallShortIntent = new Intent(HomeActivity.this, ProxyActivity.class);
-                    appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-                            StatusBarEventService.EVENT_BUSINESS_GAME);
-                    Intent appWallShortcut = new Intent(
-                            "com.android.launcher.action.INSTALL_SHORTCUT");
-                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                            getString(R.string.appwall_name));
-                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
-                            HomeActivity.this,
-                            R.drawable.game);
-                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
-                    appWallShortcut.putExtra("duplicate", false);
-                    appWallShortcut.putExtra("from_shortcut", true);
-                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
-                    sendBroadcast(appWallShortcut);
-                    prefernece.edit().putBoolean("shortcut_appwall", true).commit();
-                }
+//                } else {
+//                    Intent appWallShortIntent = new Intent(HomeActivity.this, ProxyActivity.class);
+//                    appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+//                            StatusBarEventService.EVENT_BUSINESS_GAME);
+//                    Intent appWallShortcut = new Intent(
+//                            "com.android.launcher.action.INSTALL_SHORTCUT");
+//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+//                            getString(R.string.appwall_name));
+//                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
+//                            HomeActivity.this,
+//                            R.drawable.game);
+//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
+//                    appWallShortcut.putExtra("duplicate", false);
+//                    appWallShortcut.putExtra("from_shortcut", true);
+//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
+//                    sendBroadcast(appWallShortcut);
+//                    prefernece.edit().putBoolean("shortcut_appwall", true).commit();
+//                }
                 if (prefernece.getBoolean(KEY_ROOT_CHECK, true)) {
                     boolean root = RootChecker.isRoot();
                     if (root) {

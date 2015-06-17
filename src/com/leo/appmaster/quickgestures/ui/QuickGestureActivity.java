@@ -465,8 +465,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private void updateFloatWindowBackGroudColor() {
         FloatWindowHelper
                 .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
-        FloatWindowHelper.createFloatWindow(QuickGestureActivity.this, AppMasterPreference
-                .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
+//        FloatWindowHelper.createFloatWindow(QuickGestureActivity.this, AppMasterPreference
+//                .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
     }
 
     // sliding time setting diallg
@@ -926,7 +926,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 FloatWindowHelper.updateView(QuickGestureActivity.this, value);
                             }
                         });
-
                 break;
             case R.id.allow_slid_time:
                 SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",

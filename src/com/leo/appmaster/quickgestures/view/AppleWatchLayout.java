@@ -755,9 +755,11 @@ public class AppleWatchLayout extends ViewGroup {
             try {
                 mContext.startActivity(intent);
                 if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog) {
+                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(new QuickGestureContactTipInfo());
                     QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = false;
                 }
                 if (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm) {
+                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(new QuickGestureContactTipInfo());
                     QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = false;
                 }
             } catch (Exception e) {

@@ -662,9 +662,11 @@ public class QuickGestureManager {
         } else if (info instanceof QuickGestureContactTipInfo) {
             if (isShowPrivacyCallLog) {
                 isShowPrivacyCallLog = false;
+                AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(false);
             }
             if (isShowPrivacyMsm) {
                 isShowPrivacyMsm = false;
+                AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(false);
             }
         }
         if ((mMessages == null || mMessages.size() <= 0)
