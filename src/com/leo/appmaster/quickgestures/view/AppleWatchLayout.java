@@ -1554,6 +1554,9 @@ public class AppleWatchLayout extends ViewGroup {
      * @param moveX
      */
     private void computeTranslateScale(Direction direction, float moveX) {
+
+        LeoLog.d("computeTranslateScale", "moveX = " + moveX);
+
         int i;
         float adjustMoveX;
         float offset, moveY;
@@ -1593,6 +1596,8 @@ public class AppleWatchLayout extends ViewGroup {
 
         if (direction == Direction.Left) {
             for (i = 0; i < mHoriChildren[0].length - 1; i++) {
+                if (mHoriChildren[0][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
                 if (i == mHoriChildren[0].length - 1) {
@@ -1636,6 +1641,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[0][i].setTranslationY(moveY);
             }
             for (i = 0; i < mHoriChildren[1].length - 1; i++) {
+                if (mHoriChildren[1][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[1][i]
                         .getLayoutParams()).scale;
                 if (i == mHoriChildren[1].length - 1) {
@@ -1680,6 +1687,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i].setTranslationY(moveY);
             }
             for (i = 0; i < mHoriChildren[2].length - 1; i++) {
+                if (mHoriChildren[2][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).scale;
                 if (i == mHoriChildren[1].length - 1) {
                     offset = moveX;
@@ -1712,6 +1721,8 @@ public class AppleWatchLayout extends ViewGroup {
             }
         } else if (direction == Direction.Right) {
             for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
+                if (mHoriChildren[0][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[0][i]
                         .getLayoutParams()).scale;
                 if (i == 0) {
@@ -1748,6 +1759,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[0][i].setTranslationY(moveY);
             }
             for (i = mHoriChildren[1].length - 1; i >= 0; i--) {
+                if (mHoriChildren[1][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[1][i]
                         .getLayoutParams()).scale;
                 if (i == 0) {
@@ -1783,6 +1796,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i].setTranslationY(moveY);
             }
             for (i = mHoriChildren[2].length - 1; i >= 0; i--) {
+                if (mHoriChildren[2][i] == null)
+                    continue;
                 rawScale1 = ((LayoutParams) mHoriChildren[2][i]
                         .getLayoutParams()).scale;
                 if (i == 0) {
@@ -1827,37 +1842,37 @@ public class AppleWatchLayout extends ViewGroup {
         return resault;
     }
 
-    // private void printChildren() {
-    // GestureItemView targetView;
-    // LayoutParams targetLp;
-    // String resault = "";
-    // for (int i = 0; i < 12; i++) {
-    // targetView = mHoriChildren[0][i];
-    // targetLp = (LayoutParams) targetView.getLayoutParams();
-    // resault += targetView.getItemName().toString() + targetLp.position +
-    // "    "
-    // + targetView.getTranslationX() + "; ";
-    // }
-    // LeoLog.d("children", resault);
-    // resault = "";
-    // for (int i = 0; i < 9; i++) {
-    // targetView = mHoriChildren[1][i];
-    // targetLp = (LayoutParams) targetView.getLayoutParams();
-    // resault += targetView.getItemName().toString() + targetLp.position +
-    // "    "
-    // + targetView.getTranslationX() + "; ";
-    // }
-    // LeoLog.d("children", resault);
-    // resault = "";
-    // for (int i = 0; i < 12; i++) {
-    // targetView = mHoriChildren[2][i];
-    // targetLp = (LayoutParams) targetView.getLayoutParams();
-    // resault += targetView.getItemName().toString() + targetLp.position +
-    // "    "
-    // + targetView.getTranslationX() + "; ";
-    // }
-    // LeoLog.d("children", resault);
-    // }
+    public void printChildren() {
+        GestureItemView targetView;
+        LayoutParams targetLp;
+        String resault = "";
+        for (int i = 0; i < 12; i++) {
+            targetView = mHoriChildren[0][i];
+            targetLp = (LayoutParams) targetView.getLayoutParams();
+            resault += targetView.getItemName().toString() + targetLp.position +
+                    "    "
+                    + targetView.getTranslationX() + "; ";
+        }
+        LeoLog.d("children", resault);
+        resault = "";
+        for (int i = 0; i < 9; i++) {
+            targetView = mHoriChildren[1][i];
+            targetLp = (LayoutParams) targetView.getLayoutParams();
+            resault += targetView.getItemName().toString() + targetLp.position +
+                    "    "
+                    + targetView.getTranslationX() + "; ";
+        }
+        LeoLog.d("children", resault);
+        resault = "";
+        for (int i = 0; i < 12; i++) {
+            targetView = mHoriChildren[2][i];
+            targetLp = (LayoutParams) targetView.getLayoutParams();
+            resault += targetView.getItemName().toString() + targetLp.position +
+                    "    "
+                    + targetView.getTranslationX() + "; ";
+        }
+        LeoLog.d("children", resault);
+    }
 
     public void snapLong(Direction direction) {
         float target;
