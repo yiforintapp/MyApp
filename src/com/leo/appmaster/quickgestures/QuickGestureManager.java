@@ -214,7 +214,7 @@ public class QuickGestureManager {
                 }
             }
         }
-        
+
         // no read sys_call
         if (isShowCallLogTip) {
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
@@ -667,7 +667,11 @@ public class QuickGestureManager {
                 isShowPrivacyMsm = false;
             }
         }
-
+        if ((mMessages == null || mMessages.size() <= 0)
+                && (mCallLogs == null || mCallLogs.size() <= 0) && !isShowPrivacyCallLog
+                && !isShowPrivacyMsm) {
+            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+        }
     }
 
     public List<String> getFreeDisturbAppName() {

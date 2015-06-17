@@ -49,6 +49,7 @@
                 android:padding="3dp"
                 android:text="left"
                 android:textSize="16sp"
+                android:singleLine="true"
                 android:visibility="invisible" />
 
             <TextView
@@ -61,6 +62,7 @@
                 android:padding="3dp"
                 android:text="right"
                 android:textSize="16sp"
+                android:singleLine="true"
                 android:visibility="invisible" />
         </RelativeLayout>
 
