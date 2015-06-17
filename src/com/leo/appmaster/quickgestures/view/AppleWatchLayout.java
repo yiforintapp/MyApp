@@ -20,7 +20,6 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -206,7 +205,7 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }, 800);
         }
- 
+
         setChildrenDrawnWithCacheEnabled(true);
         setDrawingCacheEnabled(true);
     }
@@ -282,7 +281,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i] = addView;
                 addView.measure(childWidthMeasureSpec, childHeightMeasureSpec);
                 addView(addView);
-                LeoLog.e("xxxx", "left  = " +(tempView.getLeft() - mTotalWidth) + "        top = " + tempView.getTop());
+                LeoLog.e("xxxx", "left  = " + (tempView.getLeft() - mTotalWidth) + "        top = "
+                        + tempView.getTop());
                 addView.layout(tempView.getLeft() - mTotalWidth, tempView.getTop(),
                         tempView.getRight() - mTotalWidth, tempView.getBottom());
                 addView.setScaleX(lp.scale);
@@ -756,11 +756,13 @@ public class AppleWatchLayout extends ViewGroup {
             try {
                 mContext.startActivity(intent);
                 if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog) {
-                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(new QuickGestureContactTipInfo());
+                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                            new QuickGestureContactTipInfo());
                     QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = false;
                 }
                 if (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm) {
-                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(new QuickGestureContactTipInfo());
+                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                            new QuickGestureContactTipInfo());
                     QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = false;
                 }
             } catch (Exception e) {
@@ -1215,6 +1217,9 @@ public class AppleWatchLayout extends ViewGroup {
             GestureItemView item = (GestureItemView) getChildAt(i);
             item.leaveEditMode();
         }
+
+        // for sequeeze item
+        relayoutExtraChildren();
     }
 
     public void onEnterEditMode() {
