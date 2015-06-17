@@ -164,8 +164,10 @@ public class QuickSwitchManager {
             }
         } catch (Exception e) {
             if (cam != null) {
-                mCamera.release();
-                mCamera = null;
+                if (mCamera != null) {
+                    mCamera.release();
+                    mCamera = null;
+                }
             }
             isFlashLightOpen = false;
         }

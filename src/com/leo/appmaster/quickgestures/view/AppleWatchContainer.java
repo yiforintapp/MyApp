@@ -354,32 +354,15 @@ public class AppleWatchContainer extends FrameLayout {
                 }
                 moveX = event.getX();
                 moveY = event.getY();
-
-                // 下拉通知栏，finish
-                // if (mTouchDownY >= 0 && mTouchDownY < 70) {
-                // if (moveY - mTouchDownY > 70) {
-                // Activity activity = (Activity)
-                // AppleWatchContainer.this.getContext();
-                // activity.finish();
-                // }
-                // }
-
-                if (Math.abs(moveX - mTouchDownX) > DipPixelUtil.dip2px(getContext(), 10)) {
-                    mMoving = true;
-                    if (mTouchDownY >= mDymicLayout.getTop()
-                            && mTouchDownY <= mDymicLayout.getBottom()) {
-                        onTouchMoveTranslate(moveX - mTouchDownX, moveY - mTouchDownY);
-                    }
-
-                    if (mTouchDownY > mDymicLayout.getBottom()) {
-                        if (mDymicLayout.mHasFillExtraItems
-                                && mMostUsedLayout.mHasFillExtraItems
-                                && mSwitcherLayout.mHasFillExtraItems) {
-                            onTouchMoveRotate(moveX, moveY);
-                        }
+                if (mMoving) {
+                    onTouchMove(moveX, moveY);
+                } else {
+                    if (Math.abs(moveX - mTouchDownX) > DipPixelUtil.dip2px(getContext(), 10)) {
+                        mMoving = true;
+                        onTouchMove(moveX, moveY);
                     }
                 }
-                // }
+
                 break;
             case MotionEvent.ACTION_UP:
                 mMoving = false;
@@ -390,6 +373,21 @@ public class AppleWatchContainer extends FrameLayout {
         }
 
         return true;
+    }
+
+    private void onTouchMove(float moveX, float moveY) {
+        if (mTouchDownY >= mDymicLayout.getTop()
+                && mTouchDownY <= mDymicLayout.getBottom()) {
+            onTouchMoveTranslate(moveX - mTouchDownX, moveY - mTouchDownY);
+        }
+
+        if (mTouchDownY > mDymicLayout.getBottom()) {
+            if (mDymicLayout.mHasFillExtraItems
+                    && mMostUsedLayout.mHasFillExtraItems
+                    && mSwitcherLayout.mHasFillExtraItems) {
+                onTouchMoveRotate(moveX, moveY);
+            }
+        }
     }
 
     private void onTouchUp() {

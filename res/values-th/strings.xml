@@ -137,7 +137,7 @@
     <string name="app_setting_update">ตรวจหาการปรับปรุง</string>
     <string name="feedback">ให้เราตอบรับ</string>
     <string name="grade">คะแนนประเมิน</string>
-    <string name="grade_tip">ขอบคุฌที่ใช้บริการ เราได้รับ5คะแนนไหม?</string>
+    <string name="grade_tip">ท่านได้ใช้ทหารอารักขาลับLEOหลายครั้งแล้ว ชอบไหม ขอให้ห้าดาวเพื่อให้กำลังใจ</string>
     <string name="app_setting_about">เกี่ยวกับ</string>
     <string name="forbid_uninstall">ป้องกันถอนการติดตั้ง</string>
     <string name="auto_lock">ล็อคเมื่อปิด</string>
@@ -636,7 +636,7 @@
     <!-- version 2.4 start -->
   <!-- quick gesture -->
     <string name="pg_appmanager_quick_gesture_name">ท่ามือ</string>
-    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">ใช้ท่ามือ</string>
+    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">เปิดท่ามือ</string>
     <string name="pg_appmanager_quick_gesture_option_switch_setting">การกำหนดเปิดปิด</string>
     <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">หัวข้อท่ามือ</string>
     <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">ปัจจุบัน %1$s</string>
@@ -645,10 +645,10 @@
     <string name="pg_appmanager_quick_gesture_option_recently_contact">ผู้ติดต่อสุดท้าย</string>
     <string name="pg_appmanager_quick_gesture_option_privacy_contact_message_tip">ข้อความ ผตต.ลับ</string>
     <string name="pg_appmanager_quick_gesture_option_able_sliding_time">แบ่งโอกาศได้</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">ส่วนล่างข้างซ้าย</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">ส่วนล่างข้างขวา</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">ส่วนกลางข้างซ้าย</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">ส่วนกลางข้างขวา</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">ซ้ายใต้</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">ขวาใต้</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">ซ้ายกลาง</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">ขวากลาง</string>
     <string name="pg_appmanager_quick_gesture_slide_time_just_home_text">เพียงเดสก์ท็อป</string>
     <string name="pg_appmanager_quick_gesture_slide_time_home_and_all_app_text">เดสก์ท็อปและใช้</string>
     <string name="pg_appmanager_quick_gesture_slide_time_no_disturb_text">การใช้ไม่รบกวน</string>
@@ -689,7 +689,7 @@
     <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
     <string name="pass_gesture_change">เปลี่ยนแบบรหัส</string>
     <string name="permission_open_tip_notification_title">ทำท่ามือ</string>
-    <string name="permission_open_tip_notification_content">คลิคก็ใช้ท่ามือ</string>
+    <string name="permission_open_tip_notification_content">คลิคก็เปิดท่ามือ</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">สวิตช์เหมือนapple watch</string>
     <string name="grade_tip_feedback">ผมตอบ</string>
     <string name="quick_first_tip_dialog_right_bt">ทดลอง</string>

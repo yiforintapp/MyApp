@@ -135,7 +135,7 @@
     <string name="app_setting_update">проверить обновление</string>
     <string name="feedback">мнения абонента</string>
     <string name="grade">оценить маркета Google</string>
-    <string name="grade_tip">прошу дать нам оценку, чтобы мы улучшили</string>
+    <string name="grade_tip">Вы уже много раз пользуетесь нашим продуктом, вам понравился? Дайте нам пять звезд для поощрения!</string>
     <string name="app_setting_about">в отношении</string>
     <string name="forbid_uninstall">предотвращать удаление</string>
     <string name="auto_lock">автоблокировка при блокировании экрана</string>

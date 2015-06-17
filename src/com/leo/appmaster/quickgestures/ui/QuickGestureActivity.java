@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -17,7 +16,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -56,7 +54,6 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureSlideTimeDialog.UpdateFilt
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 
 /**
@@ -83,6 +80,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mPrivacyContactFlag, mFromShortcut;
     private String slidingArea = "";
     public static final String FROME_STATUSBAR = "from_statusbar";
+    private boolean initFlag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -98,7 +96,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     @Override
     protected void onResume() {
-        // TODO Auto-generated method stub
         super.onResume();
         initQuickGestureOpen();
         if (mPre.getSwitchOpenQuickGesture()) {
@@ -106,6 +103,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             setOnClickListener();
         } else {
             closeQuickSetting();
+            // 初始化数据
+            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                @Override
+                public void run() {
+                    QuickGestureManager.getInstance(getApplicationContext()).init();
+                }
+            });
         }
         initSlidingAreaText();
         if (!AppMasterPreference.getInstance(this)
@@ -124,17 +128,27 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mRightTopView.setOnTouchListener(this);
             mRightBottomView.setOnTouchListener(this);
             // 初始化数据
-            QuickGestureManager.getInstance(getApplicationContext()).init();
+            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                @Override
+                public void run() {
+                    QuickGestureManager.getInstance(getApplicationContext()).init();
+                }
+            });
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(!AppMasterPreference.getInstance(this)
-                .getFristSlidingTip()){
-            // 反初始化数据
-            QuickGestureManager.getInstance(getApplicationContext()).unInit();
+        if (!AppMasterPreference.getInstance(this)
+                .getFristSlidingTip() || !mPre.getSwitchOpenQuickGesture()) {
+            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                @Override
+                public void run() {
+                    // 反初始化数据
+                    QuickGestureManager.getInstance(getApplicationContext()).unInit();
+                }
+            });
         }
     }
 
@@ -258,7 +272,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     }
 
     private void closeQuickSetting() {
-        // TODO Auto-generated method stub
         if (mNoReadMessageOpenCK != null) {
             mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
         }
@@ -400,7 +413,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
             }
         });
-        // TODO
         mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
 
             @Override
@@ -661,6 +673,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             ImageView imageView, deleteImageView;
         }
 
+        @SuppressLint("InflateParams")
         @Override
         public View getView(int position, View convertView, ViewGroup arg2) {
             ViewHolder vh = null;
@@ -718,10 +731,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 float moveX = Math.abs(event.getX() - downX);
                 float moveY = Math.abs(event.getY() - downY);
                 if (moveX > width / 50 || moveY > width / 50) {
-                    boolean checkHuaWei = BuildProperties
-                            .isHuaWeiTipPhone(QuickGestureActivity.this);
-                    boolean checkFloatWindow = BuildProperties
-                            .isFloatWindowOpAllowed(QuickGestureActivity.this);
                     if (!mFlag) {
                         AppMasterPreference.getInstance(this).setRootViewAndWindowHeighSpace(
                                 screenSpace());
@@ -773,7 +782,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             initChexkBox();
                         }
                         mTipRL.postDelayed(new Runnable() {
-
                             @Override
                             public void run() {
                                 mTipRL.setVisibility(View.GONE);
@@ -800,6 +808,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     // 计算根布局与屏幕高的差值
     private int screenSpace() {
+        @SuppressWarnings("deprecation")
         int height = ((WindowManager) QuickGestureActivity.this
                 .getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getHeight();
         int rootHeight = mActivityRootView.getRootView().getHeight();
@@ -869,13 +878,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = 0;
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                     // uninit quick gesture data
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            QuickGestureManager.getInstance(getApplicationContext()).unInit();
-                        }
-                    });
+//                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            QuickGestureManager.getInstance(getApplicationContext()).unInit();
+//                        }
+//                    });
                 } else {
                     SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
                             "qs_open");
@@ -888,13 +897,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     initChexkBox();
                     QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
                     // init quick gesture data
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            QuickGestureManager.getInstance(getApplicationContext()).init();
-                        }
-                    });
+//                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+//
+//                        @Override
+//                        public void run() {
+//                            QuickGestureManager.getInstance(getApplicationContext()).init();
+//                        }
+//                    });
                 }
                 break;
             case R.id.slid_area:
