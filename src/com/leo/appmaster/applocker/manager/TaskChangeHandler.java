@@ -10,6 +10,7 @@ import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -74,6 +75,14 @@ public class TaskChangeHandler {
             return;
         }
 //         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+        
+        //for gesture check
+        if(activity.contains(GESTURE)) {
+            FloatWindowHelper.mGestureShowing = true;
+        } else {
+            FloatWindowHelper.mGestureShowing = false;
+        }
+        
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
