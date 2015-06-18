@@ -1636,6 +1636,10 @@ public class AppleWatchContainer extends FrameLayout {
         if (mRotateDegree == 0)
             return;
         float transX, scale, allAngle = 40;
+        if(mRotateDegree >allAngle)
+            mRotateDegree = 40;
+        if(mRotateDegree < -allAngle)
+            mRotateDegree = -40;
         float percent = mRotateDegree / allAngle;
         float inViewWidth, outViewWidth, transInX;
         if (percent < 0) {
