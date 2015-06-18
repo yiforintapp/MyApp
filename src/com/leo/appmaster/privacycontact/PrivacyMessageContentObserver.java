@@ -115,19 +115,20 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if (messages != null && messages.size() > 0) {
                             if (AppMasterPreference.getInstance(mContext)
                                     .getSwitchOpenNoReadMessageTip()) {
-                                if (BuildProperties.isMIUI()) {
-                                    if(!QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag){
+//                                if (BuildProperties.isMIUI()) {
+//                                    Log.e("#####", "改变");
+//                                    if(!QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag){
+//                                    QuickGestureManager.getInstance(mContext).mMessages = messages;
+//                                    QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+//                                    FloatWindowHelper.removeShowReadTipWindow(mContext);
+//                                    }else{
+//                                        QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag=false;
+//                                    }
+//                                } else {
                                     QuickGestureManager.getInstance(mContext).mMessages = messages;
                                     QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                                     FloatWindowHelper.removeShowReadTipWindow(mContext);
-                                    }else{
-                                        QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag=false;
-                                    }
-                                } else {
-                                    QuickGestureManager.getInstance(mContext).mMessages = messages;
-                                    QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-                                    FloatWindowHelper.removeShowReadTipWindow(mContext);
-                                }
+//                                }
                             }
                         }
                     }

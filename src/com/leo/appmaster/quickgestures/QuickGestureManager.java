@@ -657,7 +657,7 @@ public class QuickGestureManager {
 //                    Log.e("#########", "***"+mMessages.get(i).label);
 //                }
                 mMessages.remove(bean);
-                Log.e("#########", "***"+mMessages.size());
+//                Log.e("#########", "***"+mMessages.size());
             }
         } else if (info instanceof ContactCallLog) {
             ContactCallLog callLog = (ContactCallLog) info;
