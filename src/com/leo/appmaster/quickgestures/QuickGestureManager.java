@@ -73,7 +73,7 @@ public class QuickGestureManager {
     public boolean isShowPrivacyMsm = false;
     public boolean isShowPrivacyCallLog = false;
     public boolean isShowSysNoReadMessage = false;
-    public boolean mMiuiToMsmFlag=false;
+    public boolean mToMsmFlag=false;
     /*
      * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
      */

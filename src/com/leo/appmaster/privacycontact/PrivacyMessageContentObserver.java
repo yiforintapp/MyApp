@@ -77,7 +77,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     });
                 } catch (Exception e) {
                 }
-              //TODO
+                // TODO
                 // 隐私短信
                 if (pref.getSwitchOpenPrivacyContactMessageTip() && pref.getQuickGestureMsmTip()) {
                     QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = true;
@@ -115,20 +115,26 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if (messages != null && messages.size() > 0) {
                             if (AppMasterPreference.getInstance(mContext)
                                     .getSwitchOpenNoReadMessageTip()) {
-//                                if (BuildProperties.isMIUI()) {
-//                                    Log.e("#####", "改变");
-//                                    if(!QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag){
-//                                    QuickGestureManager.getInstance(mContext).mMessages = messages;
-//                                    QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-//                                    FloatWindowHelper.removeShowReadTipWindow(mContext);
-//                                    }else{
-//                                        QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag=false;
-//                                    }
-//                                } else {
+                                // if (BuildProperties.isMIUI()) {
+//                                Log.e("#####", "改变");
+                                // if(!QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag){
+                                // QuickGestureManager.getInstance(mContext).mMessages
+                                // = messages;
+                                // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                // = true;
+                                // FloatWindowHelper.removeShowReadTipWindow(mContext);
+                                // }else{
+                                // QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag=false;
+                                // }
+                                // } else {
+                                if (!QuickGestureManager.getInstance(mContext).mToMsmFlag) {
                                     QuickGestureManager.getInstance(mContext).mMessages = messages;
                                     QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                                     FloatWindowHelper.removeShowReadTipWindow(mContext);
-//                                }
+                                } else {
+                                    QuickGestureManager.getInstance(mContext).mToMsmFlag = false;
+                                }
+                                // }
                             }
                         }
                     }
@@ -318,7 +324,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     }
                 }
                 cursor.close();
-                // TODO 
+                // TODO
                 AppMasterPreference mPreference = AppMasterPreference.getInstance(mContext);
                 AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
                 if (mPreference.getSwitchOpenPrivacyContactMessageTip()

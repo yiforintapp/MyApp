@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
+import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
@@ -717,6 +718,7 @@ public class AppleWatchLayout extends ViewGroup {
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
             // 短信提醒
             item.cancelShowReadTip();
+            QuickGestureManager.getInstance(mContext).mToMsmFlag = true;
             MessageBean bean = (MessageBean) info;
             Intent mIntent = null;
             // if (!BuildProperties.isMIUI()) {
@@ -726,9 +728,9 @@ public class AppleWatchLayout extends ViewGroup {
                     Intent(android.content.Intent.ACTION_SENDTO,
                             smsToUri);
             // } else {
-            if (BuildProperties.isMIUI()) {
-                QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag = true;
-            }
+            // if (BuildProperties.isMIUI()) {
+            // QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag = true;
+            // }
             // mIntent = new Intent();
             // mIntent.setClassName("com.android.mms",
             // "com.android.mms.ui.ConversationList");
@@ -741,6 +743,13 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             } catch (Exception e) {
             }
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    QuickGestureManager.getInstance(mContext).mToMsmFlag = false;
+                }
+            }, 2000);
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof ContactCallLog) {
             // 电话提醒
@@ -1661,12 +1670,14 @@ public class AppleWatchLayout extends ViewGroup {
                             } else {
                                 targetScale = (adjustMoveX - offset / 2) /
                                         (offset / 2) * rawScale1;
-                                // targetScale = rawScale1 - (offset - adjustMoveX)
+                                // targetScale = rawScale1 - (offset -
+                                // adjustMoveX)
                                 // * (rawScale1 / offset);
 
                             }
                         } else {
-                            targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                            targetScale = rawScale1 + adjustMoveX / offset
+                                    * (rawScale2 - rawScale1);
                         }
 
                         moveY = computetranslationY(mHoriChildren[0][i],
@@ -1707,11 +1718,13 @@ public class AppleWatchLayout extends ViewGroup {
                             } else {
                                 targetScale = (adjustMoveX - offset / 2) /
                                         (offset / 2) * rawScale1;
-                                // targetScale = rawScale1 - (offset - adjustMoveX)
+                                // targetScale = rawScale1 - (offset -
+                                // adjustMoveX)
                                 // * (rawScale1 / offset);
                             }
                         } else {
-                            targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                            targetScale = rawScale1 + adjustMoveX / offset
+                                    * (rawScale2 - rawScale1);
                         }
 
                         moveY = computetranslationY(mHoriChildren[1][i],
@@ -1747,7 +1760,8 @@ public class AppleWatchLayout extends ViewGroup {
                                 targetScale = (adjustMoveX - offset / 2) / (offset / 2) * rawScale1;
                             }
                         } else {
-                            targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                            targetScale = rawScale1 + adjustMoveX / offset
+                                    * (rawScale2 - rawScale1);
                         }
                         moveY = computetranslationY(mHoriChildren[2][i], mHoriChildren[2][i + 1],
                                 adjustMoveX);
@@ -1780,12 +1794,15 @@ public class AppleWatchLayout extends ViewGroup {
 
                         if (i == 4 || i == 8) {
                             if (adjustMoveX <= offset / 2) {
-                                targetScale = -(offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
+                                targetScale = -(offset / 2 - adjustMoveX) / (offset / 2)
+                                        * rawScale1;
                             } else {
-                                targetScale = -(adjustMoveX - offset / 2) / (offset / 2) * rawScale1;
+                                targetScale = -(adjustMoveX - offset / 2) / (offset / 2)
+                                        * rawScale1;
                             }
                         } else {
-                            targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                            targetScale = rawScale1 + adjustMoveX / offset
+                                    * (rawScale2 - rawScale1);
                         }
                         moveY = computetranslationY(mHoriChildren[0][i],
                                 mHoriChildren[0][i - 1],
@@ -1817,12 +1834,15 @@ public class AppleWatchLayout extends ViewGroup {
                                 * (moveX - mLastAdjustX);
                         if (i == 3 || i == 6) {
                             if (adjustMoveX <= offset / 2) {
-                                targetScale = -(offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
+                                targetScale = -(offset / 2 - adjustMoveX) / (offset / 2)
+                                        * rawScale1;
                             } else {
-                                targetScale = -(adjustMoveX - offset / 2) / (offset / 2) * rawScale1;
+                                targetScale = -(adjustMoveX - offset / 2) / (offset / 2)
+                                        * rawScale1;
                             }
                         } else {
-                            targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                            targetScale = rawScale1 + adjustMoveX / offset
+                                    * (rawScale2 - rawScale1);
                         }
                         moveY = computetranslationY(mHoriChildren[1][i],
                                 mHoriChildren[1][i - 1],
@@ -1854,12 +1874,15 @@ public class AppleWatchLayout extends ViewGroup {
                                 * (moveX - mLastAdjustX);
                         if (i == 4 || i == 8) {
                             if (adjustMoveX <= offset / 2) {
-                                targetScale = -(offset / 2 - adjustMoveX) / (offset / 2) * rawScale1;
+                                targetScale = -(offset / 2 - adjustMoveX) / (offset / 2)
+                                        * rawScale1;
                             } else {
-                                targetScale = -(adjustMoveX - offset / 2) / (offset / 2) * rawScale1;
+                                targetScale = -(adjustMoveX - offset / 2) / (offset / 2)
+                                        * rawScale1;
                             }
                         } else {
-                            targetScale = rawScale1 + adjustMoveX / offset * (rawScale2 - rawScale1);
+                            targetScale = rawScale1 + adjustMoveX / offset
+                                    * (rawScale2 - rawScale1);
                         }
                         moveY = computetranslationY(mHoriChildren[2][i],
                                 mHoriChildren[2][i - 1], adjustMoveX);
@@ -1871,9 +1894,9 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }
         } catch (Exception e) {
-            
+
         }
-       
+
     }
 
     private float computetranslationY(GestureItemView from, GestureItemView to, float tranX) {
