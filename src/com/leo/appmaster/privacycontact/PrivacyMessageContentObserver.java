@@ -77,6 +77,13 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     });
                 } catch (Exception e) {
                 }
+              //TODO
+                // 隐私短信
+                if (pref.getSwitchOpenPrivacyContactMessageTip() && pref.getQuickGestureMsmTip()) {
+                    QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = true;
+                    QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+                    FloatWindowHelper.removeShowReadTipWindow(mContext);
+                }
             } else {
 
             }
@@ -310,6 +317,16 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     }
                 }
                 cursor.close();
+                // TODO 
+                AppMasterPreference mPreference = AppMasterPreference.getInstance(mContext);
+                AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
+                if (mPreference.getSwitchOpenPrivacyContactMessageTip()
+                        && mPreference.getQuickGestureCallLogTip()) {
+                    QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = true;
+                    QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+                    FloatWindowHelper.removeShowReadTipWindow(mContext);
+                }
+
             }
         }
     }

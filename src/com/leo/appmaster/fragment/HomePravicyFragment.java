@@ -166,23 +166,23 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         if (cunt > 0) {
             view.showTip(true);
             // TODO(快捷手势隐私联系人提醒)
-            if (flag == 1) {
-                // 隐私通话
-                Log.e("#########","通话："+mPreference.getQuickGestureCallLogTip());
-                if (mPreference.getSwitchOpenPrivacyContactMessageTip() &&  mPreference.getQuickGestureCallLogTip()) {
-                    QuickGestureManager.getInstance(getActivity()).isShowPrivacyCallLog = true;
-                    QuickGestureManager.getInstance(getActivity()).isShowSysNoReadMessage = true;
-                    FloatWindowHelper.removeShowReadTipWindow(getActivity());
-                }
-            } else if (flag == 0) {
-                Log.e("#########","短信："+mPreference.getQuickGestureMsmTip());
-                // 隐私短信
-                if (mPreference.getSwitchOpenPrivacyContactMessageTip() && mPreference.getQuickGestureMsmTip()) {
-                    QuickGestureManager.getInstance(getActivity()).isShowPrivacyMsm = true;
-                    QuickGestureManager.getInstance(getActivity()).isShowSysNoReadMessage = true;
-                    FloatWindowHelper.removeShowReadTipWindow(getActivity());
-                }
-            }
+//            if (flag == 1) {
+//                // 隐私通话
+//                Log.e("#########","通话："+mPreference.getQuickGestureCallLogTip());
+//                if (mPreference.getSwitchOpenPrivacyContactMessageTip() &&  mPreference.getQuickGestureCallLogTip()) {
+//                    QuickGestureManager.getInstance(getActivity()).isShowPrivacyCallLog = true;
+//                    QuickGestureManager.getInstance(getActivity()).isShowSysNoReadMessage = true;
+//                    FloatWindowHelper.removeShowReadTipWindow(getActivity());
+//                }
+//            } else if (flag == 0) {
+//                Log.e("#########","短信："+mPreference.getQuickGestureMsmTip());
+//                // 隐私短信
+//                if (mPreference.getSwitchOpenPrivacyContactMessageTip() && mPreference.getQuickGestureMsmTip()) {
+//                    QuickGestureManager.getInstance(getActivity()).isShowPrivacyMsm = true;
+//                    QuickGestureManager.getInstance(getActivity()).isShowSysNoReadMessage = true;
+//                    FloatWindowHelper.removeShowReadTipWindow(getActivity());
+//                }
+//            }
         } else {
             view.showTip(false);
         }

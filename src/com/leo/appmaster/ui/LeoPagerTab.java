@@ -340,28 +340,31 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
                         R.integer.privacy_contact_red_tip_tabTextwdth);
                 int tabTexteight = getResources().getInteger(
                         R.integer.privacy_contact_red_tip_tabTexteight);
-                
+
                 TextPaint textPaint = this.getPaint();
                 Drawable drawable = getCompoundDrawables()[0];
-                float x,y = getResources().getDimension(R.dimen.privacy_contact_red_tip_y);
-                float textWidth =  textPaint.measureText(getText().toString());
-                float imgwidth = drawable.getIntrinsicWidth();
-                /**the text center is (W-(imgwidth+getPaddingLeft()))/2**/
-                x = (imgwidth+getPaddingLeft()+textWidth+getMeasuredWidth())/2;
-                x = (float) Math.ceil(x);
-                if(x > this.getMeasuredWidth()-tabTextwdth){
-                    /**
-                     * if the left not enougth ,then up the red tip
-                     */
-                    x = this.getMeasuredWidth() - tabTextwdth;
-                    y = y-DipPixelUtil.dip2px(getContext(), 3);
+                float x = getResources().getDimension(R.dimen.privacy_contact_red_tip_x);
+                float y = getResources().getDimension(R.dimen.privacy_contact_red_tip_y);
+                float textWidth = textPaint.measureText(getText().toString());
+                if (drawable != null) {
+                    float imgwidth = drawable.getIntrinsicWidth();
+                    /** the text center is (W-(imgwidth+getPaddingLeft()))/2 **/
+                    x = (imgwidth + getPaddingLeft() + textWidth + getMeasuredWidth()) / 2;
+                    x = (float) Math.ceil(x);
+                    if (x > this.getMeasuredWidth() - tabTextwdth) {
+                        /**
+                         * if the left not enougth ,then up the red tip
+                         */
+                        x = this.getMeasuredWidth() - tabTextwdth;
+                        y = y - DipPixelUtil.dip2px(getContext(), 3);
+                    }
                 }
-                canvas.translate( x, y);
+                canvas.translate(x, y);
                 Paint paint = new Paint();
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.FILL);
                 Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_tip);
-              
+
                 float scaleX = (float) tabTextwdth / redTip.getWidth();
                 float scaleY = (float) tabTexteight / redTip.getHeight();
                 Matrix matrix = new Matrix();
