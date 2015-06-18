@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="37"
+    android:versionCode="39"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -62,14 +62,6 @@
     <!-- quickSwitch -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission
-        android:name="android.permission.WRITE_APN_SETTINGS"
-        tools:ignore="ProtectedPermissions" />
-    <uses-permission android:name="android.permission.USES_POLICY_FORCE_LOCK" />
-    <uses-permission
-        android:name="android.permission.DEVICE_POWER"
-        tools:ignore="ProtectedPermissions" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
     <uses-permission android:name="android.permission.CAMERA" />
 
