@@ -719,17 +719,17 @@ public class AppleWatchLayout extends ViewGroup {
             item.cancelShowReadTip();
             MessageBean bean = (MessageBean) info;
             Intent mIntent = null;
-            if (!BuildProperties.isMIUI()) {
-                Uri smsToUri = Uri.parse("smsto://" +
+//            if (!BuildProperties.isMIUI()) {
+                Uri smsToUri = Uri.parse("smsto:" +
                         bean.getPhoneNumber());
                 mIntent = new
                         Intent(android.content.Intent.ACTION_SENDTO,
                                 smsToUri);
-            } else {
+//            } else {
                 QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag = true;
-                mIntent = new Intent();
-                mIntent.setClassName("com.android.mms", "com.android.mms.ui.ConversationList");
-            }
+//                mIntent = new Intent();
+//                mIntent.setClassName("com.android.mms", "com.android.mms.ui.ConversationList");
+//            }
             try {
                 mContext.startActivity(mIntent);
                 if (QuickGestureManager.getInstance(mContext).mMessages != null
