@@ -726,7 +726,7 @@ public class AppleWatchLayout extends ViewGroup {
                         Intent(android.content.Intent.ACTION_SENDTO,
                                 smsToUri);
             } else {
-                QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag=true;
+                QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag = true;
                 mIntent = new Intent();
                 mIntent.setClassName("com.android.mms", "com.android.mms.ui.ConversationList");
             }
@@ -1227,7 +1227,14 @@ public class AppleWatchLayout extends ViewGroup {
         }
 
         // for sequeeze item
-        relayoutExtraChildren();
+        post(new Runnable() {
+
+            @Override
+            public void run() {
+                relayoutExtraChildren();
+            }
+        });
+
     }
 
     public void onEnterEditMode() {
@@ -1495,6 +1502,8 @@ public class AppleWatchLayout extends ViewGroup {
             if (i < 4) {
                 targetView = mHoriChildren[0][i];
                 tempView = mHoriChildren[0][i + 4];
+                if (targetView == null || tempView == null)
+                    continue;
                 targetLp = (LayoutParams) targetView.getLayoutParams();
                 tempLp = (LayoutParams) tempView.getLayoutParams();
                 targetView.layout(tempView.getLeft() - mTotalWidth, tempView.getTop(),
@@ -1505,6 +1514,8 @@ public class AppleWatchLayout extends ViewGroup {
             } else {
                 tempView = mHoriChildren[0][i];
                 targetView = mHoriChildren[0][i + 4];
+                if (targetView == null || tempView == null)
+                    continue;
                 targetLp = (LayoutParams) targetView.getLayoutParams();
                 tempLp = (LayoutParams) tempView.getLayoutParams();
                 targetView.layout(tempView.getLeft() + mTotalWidth, tempView.getTop(),
@@ -1520,6 +1531,8 @@ public class AppleWatchLayout extends ViewGroup {
             if (i < 3) {
                 targetView = mHoriChildren[1][i];
                 tempView = mHoriChildren[1][i + 3];
+                if (targetView == null || tempView == null)
+                    continue;
                 targetLp = (LayoutParams) targetView.getLayoutParams();
                 tempLp = (LayoutParams) tempView.getLayoutParams();
                 targetView.layout(tempView.getLeft() - mTotalWidth, tempView.getTop(),
@@ -1530,6 +1543,8 @@ public class AppleWatchLayout extends ViewGroup {
             } else {
                 tempView = mHoriChildren[1][i];
                 targetView = mHoriChildren[1][i + 3];
+                if (targetView == null || tempView == null)
+                    continue;
                 targetLp = (LayoutParams) targetView.getLayoutParams();
                 tempLp = (LayoutParams) tempView.getLayoutParams();
                 targetView.layout(tempView.getLeft() + mTotalWidth, tempView.getTop(),
@@ -1543,6 +1558,8 @@ public class AppleWatchLayout extends ViewGroup {
             if (i < 4) {
                 targetView = mHoriChildren[2][i];
                 tempView = mHoriChildren[2][i + 4];
+                if (targetView == null || tempView == null)
+                    continue;
                 targetLp = (LayoutParams) targetView.getLayoutParams();
                 tempLp = (LayoutParams) tempView.getLayoutParams();
                 targetView.layout(tempView.getLeft() - mTotalWidth, tempView.getTop(),
@@ -1553,6 +1570,8 @@ public class AppleWatchLayout extends ViewGroup {
             } else {
                 tempView = mHoriChildren[2][i];
                 targetView = mHoriChildren[2][i + 4];
+                if (targetView == null || tempView == null)
+                    continue;
                 targetLp = (LayoutParams) targetView.getLayoutParams();
                 tempLp = (LayoutParams) tempView.getLayoutParams();
                 targetView.layout(tempView.getLeft() + mTotalWidth, tempView.getTop(),
