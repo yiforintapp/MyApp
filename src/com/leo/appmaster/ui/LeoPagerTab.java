@@ -4,6 +4,7 @@ package com.leo.appmaster.ui;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -336,27 +337,32 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             if (mIsRedTip) {
-                int tabTextwdth = getResources().getInteger(
+                Resources res = getResources();
+                int tabTextwdth = res.getInteger(
                         R.integer.privacy_contact_red_tip_tabTextwdth);
-                int tabTexteight = getResources().getInteger(
+                int tabTexteight = res.getInteger(
                         R.integer.privacy_contact_red_tip_tabTexteight);
 
-                TextPaint textPaint = this.getPaint();
+                TextPaint textPaint = getPaint();
                 Drawable drawable = getCompoundDrawables()[0];
-                float x = getResources().getDimension(R.dimen.privacy_contact_red_tip_x);
-                float y = getResources().getDimension(R.dimen.privacy_contact_red_tip_y);
-                float textWidth = textPaint.measureText(getText().toString());
+                float x = res.getDimension(R.dimen.privacy_contact_red_tip_x);
+                float y = res.getDimension(R.dimen.privacy_contact_red_tip_y);
                 if (drawable != null) {
-                    float imgwidth = drawable.getIntrinsicWidth();
-                    /** the text center is (W-(imgwidth+getPaddingLeft()))/2 **/
-                    x = (imgwidth + getPaddingLeft() + textWidth + getMeasuredWidth()) / 2;
-                    x = (float) Math.ceil(x);
-                    if (x > this.getMeasuredWidth() - tabTextwdth) {
-                        /**
-                         * if the left not enougth ,then up the red tip
-                         */
-                        x = this.getMeasuredWidth() - tabTextwdth;
-                        y = y - DipPixelUtil.dip2px(getContext(), 3);
+                    CharSequence text = getText();
+                    if(text != null) {
+                        float textWidth = textPaint.measureText(text.toString());
+
+                        float imgwidth = drawable.getIntrinsicWidth();
+                        /** the text center is (W-(imgwidth+getPaddingLeft()))/2 **/
+                        x = (imgwidth + getPaddingLeft() + textWidth + getMeasuredWidth()) / 2;
+                        x = (float) Math.ceil(x);
+                        if (x > this.getMeasuredWidth() - tabTextwdth) {
+                            /**
+                             * if the left not enougth ,then up the red tip
+                             */
+                            x = this.getMeasuredWidth() - tabTextwdth;
+                            y = y - DipPixelUtil.dip2px(getContext(), 3);
+                        }
                     }
                 }
                 canvas.translate(x, y);
