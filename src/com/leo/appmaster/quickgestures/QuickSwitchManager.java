@@ -634,7 +634,6 @@ public class QuickSwitchManager {
                 mSaveList = QuickSwitchManager.getInstance(mContext).StringToList(
                         restoredData);
             }
-
         }
         if (mSaveList.size() > 11) {
             return mSaveList.subList(0, 11);

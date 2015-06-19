@@ -1,16 +1,10 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.os.Bundle;
-import android.os.SystemProperties;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -31,6 +25,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        long startTime = System.currentTimeMillis();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
@@ -43,6 +38,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
         fillWhichLayoutFitst(mNowLayout);
         fillTwoLayout(mNowLayout);
         overridePendingTransition(0, 0);
+        
+        long finishTime = System.currentTimeMillis();
+        long duringTime = finishTime - startTime;
+        LeoLog.d("testDuring", "Time is : " + duringTime);
     }
 
     private void fillWhichLayoutFitst(int mNowLayout) {
