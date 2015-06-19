@@ -32,6 +32,7 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.BuildProperties;
@@ -191,12 +192,13 @@ public class TaskDetectService extends Service {
         // right center
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
                 .getDialogRadioRightCenter();
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).resetSlidAreaSize();
     }
 
     private void startFloatWindowTask() {
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
-        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1000,
+        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1500,
                 TimeUnit.MILLISECONDS);
     }
 
@@ -453,7 +455,6 @@ public class TaskDetectService extends Service {
                         if (!FloatWindowHelper.mGestureShowing
                                 && AppMasterPreference.getInstance(getApplicationContext())
                                         .getFristSlidingTip()) {
-
                             // set background color
                             if (FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper
@@ -498,64 +499,69 @@ public class TaskDetectService extends Service {
 
     // checkout current runing filter app
     private boolean checkForegroundRuningFilterApp(ActivityManager activityManager) {
-        String pkgName = null;
-        if (Build.VERSION.SDK_INT > 19) {
-            List<RunningAppProcessInfo> list = activityManager.getRunningAppProcesses();
-            for (RunningAppProcessInfo pi : list) {
-                if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
-                        && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
-                        && (0x4 & pi.flags) > 0
-                        && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
-                    String pkgList[] = pi.pkgList;
-                    if (pkgList != null && pkgList.length > 0) {
-                        pkgName = pkgList[0];
-                        if (SYSTEMUI_PKG.equals(pkgName)) {
-                            continue;
+        List<String> filterAppList = QuickGestureManager.getInstance(getApplicationContext())
+                .getFreeDisturbAppName();
+        if (filterAppList != null && filterAppList.size() > 0) {
+            String pkgName = null;
+            if (Build.VERSION.SDK_INT > 19) {
+                List<RunningAppProcessInfo> list = activityManager.getRunningAppProcesses();
+                for (RunningAppProcessInfo pi : list) {
+                    if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                            && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
+                            && (0x4 & pi.flags) > 0
+                            && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
+                        String pkgList[] = pi.pkgList;
+                        if (pkgList != null && pkgList.length > 0) {
+                            pkgName = pkgList[0];
+                            if (SYSTEMUI_PKG.equals(pkgName)) {
+                                continue;
+                            }
+                            break;
                         }
-                        break;
                     }
                 }
-            }
-        } else {
-            List<RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
-            if (tasks != null && tasks.size() > 0) {
-                RunningTaskInfo topTaskInfo = tasks.get(0);
-                if (topTaskInfo.topActivity == null) {
-                    return false;
-                }
-                pkgName = topTaskInfo.topActivity.getPackageName();
-                if (Utilities.isEmpty(pkgName)) {
-                    List<RunningAppProcessInfo> list = activityManager
-                            .getRunningAppProcesses();
-                    for (RunningAppProcessInfo pi : list) {
-                        if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
-                                && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
-                                && (0x4 & pi.flags) > 0) {
-                            String pkgList[] = pi.pkgList;
-                            if (pkgList != null && pkgList.length > 0) {
-                                pkgName = pkgList[0];
-                                if (SYSTEMUI_PKG.equals(pkgName)) {
-                                    continue;
+            } else {
+                List<RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
+                if (tasks != null && tasks.size() > 0) {
+                    RunningTaskInfo topTaskInfo = tasks.get(0);
+                    if (topTaskInfo.topActivity == null) {
+                        return false;
+                    }
+                    pkgName = topTaskInfo.topActivity.getPackageName();
+                    if (Utilities.isEmpty(pkgName)) {
+                        List<RunningAppProcessInfo> list = activityManager
+                                .getRunningAppProcesses();
+                        for (RunningAppProcessInfo pi : list) {
+                            if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
+                                    && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
+                                    && (0x4 & pi.flags) > 0) {
+                                String pkgList[] = pi.pkgList;
+                                if (pkgList != null && pkgList.length > 0) {
+                                    pkgName = pkgList[0];
+                                    if (SYSTEMUI_PKG.equals(pkgName)) {
+                                        continue;
+                                    }
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
                 }
             }
-        }
-        if (pkgName != null) {
-            if (QuickGestureManager.getInstance(getApplicationContext())
-                    .getFreeDisturbAppName()
-                    .contains(pkgName)) {
-                // Log.d("get current running app", "pkgName:" + pkgName);
-                return true;
+            if (pkgName != null) {
+                if (QuickGestureManager.getInstance(getApplicationContext())
+                        .getFreeDisturbAppName()
+                        .contains(pkgName)) {
+                    // Log.d("get current running app", "pkgName:" + pkgName);
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
-        } else {
-            return false;
         }
+        return false;
     }
 
     public static TaskDetectService getService() {
@@ -586,7 +592,7 @@ public class TaskDetectService extends Service {
         // Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"不去下面执行");
         // }
         if (!flag) {
-//            boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(context);
+            // boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(context);
             boolean checkMiui = BuildProperties.isMIUI();
             boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(context);
             // Log.e("#######", "是否为MIUI：" + checkMiui);

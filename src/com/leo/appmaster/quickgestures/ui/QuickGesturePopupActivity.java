@@ -31,6 +31,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        Log.e("#########", "快捷手势进入onCreate时间："+System.currentTimeMillis());
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
@@ -43,6 +44,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         fillWhichLayoutFitst(mNowLayout);
         fillTwoLayout(mNowLayout);
         overridePendingTransition(0, 0);
+//        Log.e("#########", "快捷手势进入结束onCreate时间："+System.currentTimeMillis());
     }
 
     private void fillWhichLayoutFitst(int mNowLayout) {
@@ -71,6 +73,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+//        Log.e("#########", "快捷手势进入onResume时间："+System.currentTimeMillis());
         FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
@@ -85,6 +88,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             }
         });
         super.onResume();
+//        Log.e("#########", "快捷手势结束onResume时间："+System.currentTimeMillis());
     }
 
     private void fillTwoLayout(int mNowLayout) {
@@ -127,8 +131,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        FloatWindowHelper.mGestureShowing = false;
         LeoEventBus.getDefaultBus().unregister(this);
+        FloatWindowHelper.mGestureShowing = false;
+        int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
+      FloatWindowHelper.createFloatWindow(this,value);
         super.onDestroy();
     }
 
