@@ -27,7 +27,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -46,7 +45,6 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -1153,17 +1151,20 @@ public class QuickGestureManager {
         }
         Vector<BusinessItemInfo> mBusinessList = AppBusinessManager.getInstance(mContext)
                 .getBusinessData();
-        boolean show = false;
-        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
-        for (BusinessItemInfo info : mBusinessList) {
-            if (engine.getAppInfo(info.packageName) != null
-                    || mDeletedBusinessItems.contains(info.packageName)) {
-                continue;
-            } else {
-                show = true;
-                break;
+        if(mBusinessList != null) {
+            boolean show = false;
+            AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
+            for (BusinessItemInfo info : mBusinessList) {
+                if (engine.getAppInfo(info.packageName) != null
+                        || mDeletedBusinessItems.contains(info.packageName)) {
+                    continue;
+                } else {
+                    show = true;
+                    break;
+                }
             }
+            return show;
         }
-        return show;
+        return false;
     }
 }
