@@ -1378,8 +1378,13 @@ public class AppleWatchLayout extends ViewGroup {
         int i, firstPosition, lastPosition;
         GestureItemView tempView;
         if (direction == Direction.Left) {
+            if (mHoriChildren[0][0] == null)
+                return;
             firstPosition = ((LayoutParams) mHoriChildren[0][0].getLayoutParams()).position;
             for (i = 0; i < mHoriChildren[0].length; i++) {
+                if (mHoriChildren[0][i] == null || mHoriChildren[0][i + 1] == null) {
+                    continue;
+                }
                 if (i == mHoriChildren[0].length - 1) {
                     ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).position = firstPosition;
                 } else {
@@ -1398,8 +1403,13 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }
 
+            if (mHoriChildren[1][0] == null)
+                return;
             firstPosition = ((LayoutParams) mHoriChildren[1][0].getLayoutParams()).position;
             for (i = 0; i < mHoriChildren[1].length; i++) {
+                if (mHoriChildren[1][i] == null || mHoriChildren[1][i + 1] == null) {
+                    continue;
+                }
                 if (i == mHoriChildren[1].length - 1) {
                     ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).position = firstPosition;
                 } else {
@@ -1418,8 +1428,13 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }
 
+            if (mHoriChildren[2][0] == null)
+                return;
             firstPosition = ((LayoutParams) mHoriChildren[2][0].getLayoutParams()).position;
             for (i = 0; i < mHoriChildren[2].length; i++) {
+                if (mHoriChildren[2][i] == null || mHoriChildren[2][i + 1] == null) {
+                    continue;
+                }
                 if (i == mHoriChildren[2].length - 1) {
                     ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).position = firstPosition;
                 } else {
@@ -1439,9 +1454,14 @@ public class AppleWatchLayout extends ViewGroup {
             }
 
         } else if (direction == Direction.Right) {
+            if (mHoriChildren[0][mHoriChildren[0].length - 1] == null)
+                return;
             lastPosition = ((LayoutParams) mHoriChildren[0][mHoriChildren[0].length - 1]
                     .getLayoutParams()).position;
             for (i = mHoriChildren[0].length - 1; i >= 0; i--) {
+                if (mHoriChildren[0][i] == null || mHoriChildren[0][i - 1] == null) {
+                    continue;
+                }
                 if (i == 0) {
                     ((LayoutParams) mHoriChildren[0][i].getLayoutParams()).position = lastPosition;
                 } else {
@@ -1460,9 +1480,14 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }
 
+            if (mHoriChildren[1][mHoriChildren[1].length - 1] == null)
+                return;
             lastPosition = ((LayoutParams) mHoriChildren[1][mHoriChildren[1].length - 1]
                     .getLayoutParams()).position;
             for (i = mHoriChildren[1].length - 1; i >= 0; i--) {
+                if (mHoriChildren[1][i] == null || mHoriChildren[1][i - 1] == null) {
+                    continue;
+                }
                 if (i == 0) {
                     ((LayoutParams) mHoriChildren[1][i].getLayoutParams()).position = lastPosition;
                 } else {
@@ -1481,9 +1506,14 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }
 
+            if (mHoriChildren[2][mHoriChildren[2].length - 1] == null)
+                return;
             lastPosition = ((LayoutParams) mHoriChildren[2][mHoriChildren[2].length - 1]
                     .getLayoutParams()).position;
             for (i = mHoriChildren[2].length - 1; i >= 0; i--) {
+                if (mHoriChildren[2][i] == null || mHoriChildren[2][i - 1] == null) {
+                    continue;
+                }
                 if (i == 0) {
                     ((LayoutParams) mHoriChildren[2][i].getLayoutParams()).position = lastPosition;
                 } else {
