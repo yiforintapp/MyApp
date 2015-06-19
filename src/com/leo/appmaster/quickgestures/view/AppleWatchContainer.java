@@ -1459,7 +1459,7 @@ public class AppleWatchContainer extends FrameLayout {
         mCleaner.tryClean(mContext);
         long curUsedMem = mCleaner.getUsedMem();
         mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-        System.gc();
+        // System.gc();
 
         isAnimating = true;
         // first - change to no roket icon
@@ -1636,9 +1636,9 @@ public class AppleWatchContainer extends FrameLayout {
         if (mRotateDegree == 0)
             return;
         float transX, scale, allAngle = 40;
-        if(mRotateDegree >allAngle)
+        if (mRotateDegree > allAngle)
             mRotateDegree = 40;
-        if(mRotateDegree < -allAngle)
+        if (mRotateDegree < -allAngle)
             mRotateDegree = -40;
         float percent = mRotateDegree / allAngle;
         float inViewWidth, outViewWidth, transInX;

@@ -15,7 +15,6 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
 
@@ -29,14 +28,13 @@ public class QuickGesturePopupActivity extends BaseActivity {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-        
+
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
         mNowLayout = mContainer.getNowLayout();
 
         fillWhichLayoutFitst(mNowLayout);
-        fillTwoLayout(mNowLayout);
         overridePendingTransition(0, 0);
         
         long finishTime = System.currentTimeMillis();
@@ -53,10 +51,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
             fillSwitcherLayout(false);
         }
     }
-    
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        if(!hasFocus) {
+        if (!hasFocus) {
             FloatWindowHelper.mGestureShowing = false;
             mContainer.saveGestureType();
             finish();
@@ -77,7 +75,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 mContainer.showOpenAnimation(new Runnable() {
                     @Override
                     public void run() {
-                        // fillTwoLayout(mNowLayout);
+                         fillTwoLayout(mNowLayout);
                     }
 
                 });
