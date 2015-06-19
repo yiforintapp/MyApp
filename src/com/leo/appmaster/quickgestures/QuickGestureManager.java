@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -73,7 +74,7 @@ public class QuickGestureManager {
     public boolean isShowPrivacyMsm = false;
     public boolean isShowPrivacyCallLog = false;
     public boolean isShowSysNoReadMessage = false;
-    public boolean mToMsmFlag=false;
+    public boolean mToMsmFlag = false;
     /*
      * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
      */
@@ -104,12 +105,29 @@ public class QuickGestureManager {
             mMostUsedList = new ArrayList<BaseInfo>();
             preloadColorIcon();
             Bitmap bmp;
+            LockManager lm = LockManager.getInstatnce();
             for (Drawable drawable : mColorBgIcon) {
                 bmp = ((BitmapDrawable) drawable).getBitmap();
-                LockManager.getInstatnce().mMatcher.addBitmapSample(bmp);
+                lm.mMatcher.addBitmapSample(bmp);
             }
+            // todo load app icon matcher color
+            preloadIconMatcherColor();
+
             QuickSwitchManager.getInstance(mContext).init();
         }
+    }
+
+    private void preloadIconMatcherColor() {
+        long startTime = System.currentTimeMillis();
+        AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
+        ArrayList<AppItemInfo> allApps = engine.getAllPkgInfo();
+        for (AppItemInfo appItemInfo : allApps) {
+            getMatchedColor(appItemInfo.icon);
+        }
+        long endTime = System.currentTimeMillis();
+
+        LeoLog.e("xxxx", "preloadIconMatcherColor time = " + (endTime - startTime) / 1000
+                + "         size = " + LockManager.getInstatnce().mDrawableColors.size());
     }
 
     public List<String> getDeletedBusinessList() {
@@ -153,15 +171,19 @@ public class QuickGestureManager {
         Bitmap target = null;
         target = LockManager.getInstatnce().mDrawableColors.get(drawable);
         if (target == null) {
+            LeoLog.e("xxxx", "target dont hitted");
             target = LockManager.getInstatnce().mMatcher.getMatchedBitmap(drawable);
             if (target != null) {
                 LockManager.getInstatnce().mDrawableColors.put(drawable, target);
             }
+        } else {
+            LeoLog.e("xxxx", "target hitted");
         }
         return target;
     }
 
     public List<BaseInfo> getDynamicList() {
+        long startTime = System.currentTimeMillis();
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         List<BaseInfo> dynamicList = new ArrayList<BaseInfo>();
         if (!AppMasterPreference.getInstance(mContext).getLastBusinessRedTipShow()) {
@@ -195,7 +217,8 @@ public class QuickGestureManager {
         boolean isShowPrivacyContactTip = AppMasterPreference.getInstance(mContext)
                 .getSwitchOpenPrivacyContactMessageTip();
         if (isShowMsmTip) {
-            if (QuickGestureManager.getInstance(mContext).mMessages != null && QuickGestureManager.getInstance(mContext).mMessages.size()>0) {
+            if (QuickGestureManager.getInstance(mContext).mMessages != null
+                    && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
                 List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
                 for (MessageBean message : messages) {
                     message.gesturePosition = -1000;
@@ -217,8 +240,9 @@ public class QuickGestureManager {
 
         // no read sys_call
         if (isShowCallLogTip) {
-            
-            if (QuickGestureManager.getInstance(mContext).mCallLogs != null && QuickGestureManager.getInstance(mContext).mCallLogs.size()>0) {
+
+            if (QuickGestureManager.getInstance(mContext).mCallLogs != null
+                    && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
                 List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
                 for (ContactCallLog baseInfo : baseInfos) {
                     baseInfo.gesturePosition = -1000;
@@ -299,6 +323,8 @@ public class QuickGestureManager {
             }
         }
 
+        long endTime = System.currentTimeMillis();
+        LeoLog.e("xxxx", "getDynamic time = " + (endTime - startTime));
         return dynamicList;
     }
 
@@ -593,7 +619,7 @@ public class QuickGestureManager {
 
     // Customize common app
     public List<BaseInfo> loadCommonAppInfo() {
-
+        long startTime = System.currentTimeMillis();
         List<BaseInfo> resault = new ArrayList<BaseInfo>();
         List<QuickGsturebAppInfo> packageNames = new ArrayList<QuickGsturebAppInfo>();
         AppLoadEngine engin = AppLoadEngine.getInstance(mContext);
@@ -627,7 +653,8 @@ public class QuickGestureManager {
                 }
             }
         }
-
+        long endTime = System.currentTimeMillis();
+        LeoLog.e("xxxx", "getMostUsed time = " + (endTime - startTime));
         return resault;
     }
 
@@ -653,11 +680,11 @@ public class QuickGestureManager {
         if (info instanceof MessageBean) {
             MessageBean bean = (MessageBean) info;
             if (mMessages != null && mMessages.size() > 0) {
-//                for (int i = 0; i < mMessages.size(); i++) {
-//                    Log.e("#########", "***"+mMessages.get(i).label);
-//                }
+                // for (int i = 0; i < mMessages.size(); i++) {
+                // Log.e("#########", "***"+mMessages.get(i).label);
+                // }
                 mMessages.remove(bean);
-//                Log.e("#########", "***"+mMessages.size());
+                // Log.e("#########", "***"+mMessages.size());
             }
         } else if (info instanceof ContactCallLog) {
             ContactCallLog callLog = (ContactCallLog) info;

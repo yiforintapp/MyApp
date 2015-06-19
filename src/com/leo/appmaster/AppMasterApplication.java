@@ -260,6 +260,7 @@ public class AppMasterApplication extends Application {
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
+                mAppsEngine.preloadAllBaseInfo();
                 if (AppMasterPreference.getInstance(getApplicationContext())
                         .getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(AppMasterApplication.this).init();
@@ -267,7 +268,6 @@ public class AppMasterApplication extends Application {
                 checkUpdateFinish();
                 quickGestureTipInit();
                 checkIsUpdateUser();
-                mAppsEngine.preloadAllBaseInfo();
                 mBackupManager.getBackupList();
                 PrivacyContactManager.getInstance(ctx).getPrivateContacts();
                 // GP check
