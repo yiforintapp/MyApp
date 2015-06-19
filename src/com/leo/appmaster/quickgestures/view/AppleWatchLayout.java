@@ -283,8 +283,6 @@ public class AppleWatchLayout extends ViewGroup {
                 mHoriChildren[1][i] = addView;
                 addView.measure(childWidthMeasureSpec, childHeightMeasureSpec);
                 addView(addView);
-                LeoLog.e("xxxx", "left  = " + (tempView.getLeft() - mTotalWidth) + "        top = "
-                        + tempView.getTop());
                 addView.layout(tempView.getLeft() - mTotalWidth, tempView.getTop(),
                         tempView.getRight() - mTotalWidth, tempView.getBottom());
                 addView.setScaleX(lp.scale);
@@ -432,7 +430,6 @@ public class AppleWatchLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        LeoLog.e(TAG, "onLayout");
         // Laying out the child views
         final int childCount = getChildCount();
         if (childCount == 0) {

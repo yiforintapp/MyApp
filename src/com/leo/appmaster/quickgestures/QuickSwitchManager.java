@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.quickgestures;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -476,6 +475,7 @@ public class QuickSwitchManager {
     }
 
     public synchronized List<BaseInfo> getSwitchList(int switchNum) {
+        long startTime = System.currentTimeMillis();
         if (mSwitcherLoaded) {
             if (mSaveList.size() > 11) {
                 return mSaveList.subList(0, 11);
@@ -633,9 +633,11 @@ public class QuickSwitchManager {
             } else {
                 mSaveList = QuickSwitchManager.getInstance(mContext).StringToList(
                         restoredData);
+                mSwitcherLoaded = true;
             }
-
         }
+        long endTime = System.currentTimeMillis();
+        LeoLog.e("xxxx", "getSwitcher time = " + (endTime - startTime));
         if (mSaveList.size() > 11) {
             return mSaveList.subList(0, 11);
         } else {

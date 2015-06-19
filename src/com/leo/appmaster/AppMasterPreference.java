@@ -1678,16 +1678,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         String string = getCommonAppPackageName();
         String packageNames = null;
         String mComeName = name.split(":")[0];
-        // LeoLog.d("testSp", "string : " + string);
-        // LeoLog.d("testSp", "mComeName : " + mComeName);
         if (!PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME.equals(string)) {
-            // packageNames = string.replace(name + ";", "");
             String[] TName = string.split(";");
             for (int i = 0; i < TName.length; i++) {
-                // LeoLog.d("testSp", "TName : " + TName[i]);
                 String[] SName = TName[i].split(":");
                 if (!mComeName.equals(SName[0])) {
-                    // LeoLog.d("testSp", "SName : " + SName[0]);
                     if (i == TName.length) {
                         packageNames += TName[i];
                     } else if (packageNames == null) {
@@ -1698,12 +1693,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
                 }
             }
         }
-        // LeoLog.d("testSp", "packageNames : " + packageNames);
-        // String[] Name = packageNames.split(";");
-        // LeoLog.d("testSp", "Name lenght is : " + Name.length);
-        // for (int i = 0; i < Name.length; i++) {
-        // LeoLog.d("testSp", "Name is : " + Name[i]);
-        // }
         mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
                 packageNames)
                 .commit();

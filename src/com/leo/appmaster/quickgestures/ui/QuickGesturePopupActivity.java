@@ -1,16 +1,10 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.os.Bundle;
-import android.os.SystemProperties;
-import android.util.Log;
-import android.view.MotionEvent;
-import android.view.View;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -32,19 +26,22 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        Log.e("#########", "快捷手势进入onCreate时间："+System.currentTimeMillis());
+        long startTime = System.currentTimeMillis();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-        
+
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
         mNowLayout = mContainer.getNowLayout();
 
         fillWhichLayoutFitst(mNowLayout);
-        fillTwoLayout(mNowLayout);
         overridePendingTransition(0, 0);
 //        Log.e("#########", "快捷手势进入结束onCreate时间："+System.currentTimeMillis());
+        long finishTime = System.currentTimeMillis();
+        long duringTime = finishTime - startTime;
+        LeoLog.d("testDuring", "Time is : " + duringTime);
     }
 
     private void fillWhichLayoutFitst(int mNowLayout) {
@@ -56,10 +53,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
             fillSwitcherLayout(false);
         }
     }
-    
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        if(!hasFocus) {
+        if (!hasFocus) {
             FloatWindowHelper.mGestureShowing = false;
             mContainer.saveGestureType();
             finish();
@@ -81,7 +78,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 mContainer.showOpenAnimation(new Runnable() {
                     @Override
                     public void run() {
-                        // fillTwoLayout(mNowLayout);
+                         fillTwoLayout(mNowLayout);
                     }
 
                 });
