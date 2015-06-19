@@ -1246,7 +1246,7 @@ public class FloatWindowHelper {
 
     private static void createFloatArea(Context context, int value, boolean leftBottom,
             boolean rightBottom, boolean leftCenter, boolean rightCenter) {
-        Log.e("#########", "++++++++++++++++++++开始创建热取时间：" + System.currentTimeMillis());
+//        Log.e("#########", "++++++++++++++++++++开始创建热取时间：" + System.currentTimeMillis());
         // left bottom
         if (leftBottom) {
             FloatWindowHelper
@@ -1287,7 +1287,7 @@ public class FloatWindowHelper {
                         .createFloatRightCenterWindow(context, value);
             }
         }
-        Log.e("#########", "++++++++++++++++++++结束创建热取时间：" + System.currentTimeMillis());
+//        Log.e("#########", "++++++++++++++++++++结束创建热取时间：" + System.currentTimeMillis());
     }
 
     /**
