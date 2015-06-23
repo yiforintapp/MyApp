@@ -25,7 +25,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        Log.e("#########", "快捷手势进入onCreate时间："+System.currentTimeMillis());
+        // Log.e("#########", "快捷手势进入onCreate时间："+System.currentTimeMillis());
         long startTime = System.currentTimeMillis();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
@@ -38,7 +38,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
         fillWhichLayoutFitst(mNowLayout);
         overridePendingTransition(0, 0);
-//        Log.e("#########", "快捷手势进入结束onCreate时间："+System.currentTimeMillis());
+        // Log.e("#########", "快捷手势进入结束onCreate时间："+System.currentTimeMillis());
         long finishTime = System.currentTimeMillis();
         long duringTime = finishTime - startTime;
         LeoLog.d("testDuring", "Time is : " + duringTime);
@@ -70,7 +70,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-//        Log.e("#########", "快捷手势进入onResume时间："+System.currentTimeMillis());
+        // Log.e("#########", "快捷手势进入onResume时间："+System.currentTimeMillis());
         FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
@@ -78,14 +78,14 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 mContainer.showOpenAnimation(new Runnable() {
                     @Override
                     public void run() {
-                         fillTwoLayout(mNowLayout);
+                        fillTwoLayout(mNowLayout);
                     }
 
                 });
             }
         });
         super.onResume();
-//        Log.e("#########", "快捷手势结束onResume时间："+System.currentTimeMillis());
+        // Log.e("#########", "快捷手势结束onResume时间："+System.currentTimeMillis());
     }
 
     private void fillTwoLayout(int mNowLayout) {
@@ -109,6 +109,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
+        FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
     }
 
     private void fillDynamicLayout(boolean loadExtra) {
@@ -130,8 +132,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onDestroy() {
         LeoEventBus.getDefaultBus().unregister(this);
         FloatWindowHelper.mGestureShowing = false;
-        int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
-      FloatWindowHelper.createFloatWindow(this,value);
         super.onDestroy();
     }
 
