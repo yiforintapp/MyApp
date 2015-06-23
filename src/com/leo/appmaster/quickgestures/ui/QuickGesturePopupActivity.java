@@ -24,7 +24,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        long startTime = System.currentTimeMillis();
+        // long startTime = System.currentTimeMillis();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
@@ -36,10 +36,9 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
         fillWhichLayoutFitst(mNowLayout);
         overridePendingTransition(0, 0);
-        
-        long finishTime = System.currentTimeMillis();
-        long duringTime = finishTime - startTime;
-        LeoLog.d("testDuring", "Time is : " + duringTime);
+
+        // long finishTime = System.currentTimeMillis();
+        // long duringTime = finishTime - startTime;
     }
 
     private void fillWhichLayoutFitst(int mNowLayout) {
@@ -75,7 +74,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 mContainer.showOpenAnimation(new Runnable() {
                     @Override
                     public void run() {
-                         fillTwoLayout(mNowLayout);
+                        fillTwoLayout(mNowLayout);
                     }
 
                 });
