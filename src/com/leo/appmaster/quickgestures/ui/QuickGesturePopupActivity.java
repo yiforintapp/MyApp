@@ -15,6 +15,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
 
@@ -25,6 +26,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // long startTime = System.currentTimeMillis();
+        // Log.e("#########", "快捷手势进入onCreate时间："+System.currentTimeMillis());
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
@@ -39,6 +41,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
         // long finishTime = System.currentTimeMillis();
         // long duringTime = finishTime - startTime;
+        // Log.e("#########", "快捷手势进入结束onCreate时间："+System.currentTimeMillis());
+        // LeoLog.d("testDuring", "Time is : " + duringTime);
     }
 
     private void fillWhichLayoutFitst(int mNowLayout) {
@@ -67,6 +71,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        // Log.e("#########", "快捷手势进入onResume时间："+System.currentTimeMillis());
         FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
@@ -81,6 +86,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             }
         });
         super.onResume();
+        // Log.e("#########", "快捷手势结束onResume时间："+System.currentTimeMillis());
     }
 
     private void fillTwoLayout(int mNowLayout) {
@@ -123,8 +129,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        FloatWindowHelper.mGestureShowing = false;
         LeoEventBus.getDefaultBus().unregister(this);
+        FloatWindowHelper.mGestureShowing = false;
+        int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
+        FloatWindowHelper.createFloatWindow(this, value);
         super.onDestroy();
     }
 
