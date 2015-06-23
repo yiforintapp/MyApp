@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -113,6 +114,7 @@ public class AppMasterApplication extends Application {
     public static int densityDpi;
     public static String densityString;
     public static int MAX_OUTER_BLUR_RADIUS;
+    public ExecutorService cachedThreadPool;
     static {
         // For android L and above, daemon service is not work, so disable it
         if (PhoneInfo.getAndroidVersion() < 20) {
@@ -129,6 +131,7 @@ public class AppMasterApplication extends Application {
         mActivityList = new ArrayList<Activity>();
         mInstance = this;
         mExecutorService = Executors.newScheduledThreadPool(3);
+        cachedThreadPool = Executors.newCachedThreadPool();
         mHandler = new Handler();
         mAppsEngine = AppLoadEngine.getInstance(this);
         mBackupManager = new AppBackupRestoreManager(this);
@@ -182,6 +185,10 @@ public class AppMasterApplication extends Application {
             }
         }
         return userSerial;
+    }
+
+    public ExecutorService getExecutorService() {
+        return cachedThreadPool;
     }
 
     /**
@@ -644,13 +651,13 @@ public class AppMasterApplication extends Application {
         }
 
     }
-    
+
     public void checkUBC() {
-        mExecutorService.execute(new Runnable() {          
+        mExecutorService.execute(new Runnable() {
             @Override
             public void run() {
                 String pkgName = getTopPackage();
-                if(pkgName != null && pkgName.equals(getApplicationContext().getPackageName())) {
+                if (pkgName != null && pkgName.equals(getApplicationContext().getPackageName())) {
                     return;
                 }
                 AppMasterPreference pref = AppMasterPreference.getInstance(getApplicationContext());
@@ -668,7 +675,7 @@ public class AppMasterApplication extends Application {
                                 startActivity(intent);
                             }
                         });
-                    } 
+                    }
                 }
             }
         });
@@ -676,7 +683,7 @@ public class AppMasterApplication extends Application {
 
     public void checkNewTheme() {
         PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
-        if(pm.isScreenOn()) {
+        if (pm.isScreenOn()) {
             checkUBC();
         }
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -735,7 +742,6 @@ public class AppMasterApplication extends Application {
                                                     new NewThemeEvent(EventId.EVENT_NEW_THEME,
                                                             "new theme", true));
 
-                                            
                                             showNewThemeTip(title, content);
                                         }
                                         pref.setLastCheckThemeTime(System
@@ -1089,7 +1095,7 @@ public class AppMasterApplication extends Application {
     public static boolean isAboveICS() {
         return AppMasterApplication.SDK_VERSION >= 14;
     }
-    
+
     private String getTopPackage() {
         ActivityManager am = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
         if (Build.VERSION.SDK_INT > 19) { // Android L and above
