@@ -57,7 +57,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (!hasFocus) {
-            createFloatView();
             FloatWindowHelper.mGestureShowing = false;
             mContainer.saveGestureType();
             finish();
@@ -140,6 +139,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
+            createFloatView();
             mContainer.showCloseAnimation();
             mContainer.saveGestureType();
         }
