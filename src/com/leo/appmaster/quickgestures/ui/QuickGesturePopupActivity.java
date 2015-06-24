@@ -109,8 +109,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        FloatWindowHelper.createFloatWindow(getApplicationContext(),
-                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
     }
 
     private void fillDynamicLayout(boolean loadExtra) {
@@ -141,6 +139,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
+            createFloatView();
             mContainer.showCloseAnimation();
             mContainer.saveGestureType();
         }
@@ -151,5 +150,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
         overridePendingTransition(0, 0);
         super.finish();
     }
-
+    /*快捷手势消失，立即创建响应热区*/
+    private void createFloatView(){
+        FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+        QuickGestureManager.getInstance(this).startFloatWindow();
+    }
 }
