@@ -7,6 +7,7 @@ import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -23,7 +24,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     public static final int LOCK_TYPE_PASSWD = 1;
     public static final int LOCK_TYPE_GESTURE = 2;
-    private int mLockType = LOCK_TYPE_PASSWD;
+    // private int mLockType = LOCK_TYPE_PASSWD;
+    private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
     private FragmentManager mFm;
     private PasswdSettingFragment mPasswd;
@@ -81,18 +83,35 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             mTitleBar.setTitle(R.string.reset_passwd);
         }
 
+        LeoLog.d("testSetPass", "Now Type is : " + mLockType);
+
         mFm = getSupportFragmentManager();
         FragmentTransaction tans = mFm.beginTransaction();
         int type = AppMasterPreference.getInstance(this).getLockType();
-        if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {
-            mLockType = LOCK_TYPE_GESTURE;
-            tans.replace(R.id.fragment_contain, mGesture);
-            mSwitchBottom.setText(getString(R.string.switch_passwd));
-        } else {
+
+        if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            LeoLog.d("testSetPass", "LOCK_TYPE_PASSWD");
             mLockType = LOCK_TYPE_PASSWD;
             tans.replace(R.id.fragment_contain, mPasswd);
             mSwitchBottom.setText(getString(R.string.switch_gesture));
+        } else {
+            LeoLog.d("testSetPass", "LOCK_TYPE_GESTURE");
+            mLockType = LOCK_TYPE_GESTURE;
+            tans.replace(R.id.fragment_contain, mGesture);
+            mSwitchBottom.setText(getString(R.string.switch_passwd));
         }
+        
+        // if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {
+        // LeoLog.d("testSetPass", "LOCK_TYPE_GESTURE");
+        // mLockType = LOCK_TYPE_GESTURE;
+        // tans.replace(R.id.fragment_contain, mGesture);
+        // mSwitchBottom.setText(getString(R.string.switch_passwd));
+        // } else {
+        // LeoLog.d("testSetPass", "LOCK_TYPE_PASSWD");
+        // mLockType = LOCK_TYPE_PASSWD;
+        // tans.replace(R.id.fragment_contain, mPasswd);
+        // mSwitchBottom.setText(getString(R.string.switch_gesture));
+        // }
         tans.commit();
 
     }
