@@ -393,29 +393,31 @@ public class AppLoadEngine extends BroadcastReceiver {
                     .getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
             for (ApplicationInfo applicationInfo : all) {
                 String packageName = applicationInfo.packageName;
-                AppItemInfo appInfo = new AppItemInfo();
+                if(packageName.isEmpty())
+                    continue;
+//                AppItemInfo appInfo = new AppItemInfo();
                 Intent intent = new Intent(Intent.ACTION_MAIN, null);
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 intent.setPackage(packageName);
-                List<ResolveInfo> apps = mPm.queryIntentActivities(intent,
-                        0);
+                List<ResolveInfo> apps = mPm.queryIntentActivities(intent, 0);
                 ResolveInfo info = apps.size() > 0 ? apps.get(0) : null;
-                loadAppInfoOfPackage(packageName, info != null ? info.activityInfo.name : "",
+                /*loadAppInfoOfPackage(packageName, info != null ? info.activityInfo.name : "",
                         applicationInfo, appInfo);
                 try {
                     appInfo.installTime = mPm.getPackageInfo(packageName, 0).firstInstallTime;
                 } catch (NameNotFoundException e) {
                     e.printStackTrace();
-                }
-
-                if (isThemeApk(packageName)) {
-                    if (!themeList.contains(packageName)) {
-                        themeList.add(packageName);
+                }*/
+                if(null != info){
+                    if (isThemeApk(packageName)) {
+                        if (!themeList.contains(packageName)) {
+                            themeList.add(packageName);
+                        }
                     }
                 }
-                pre.setHaveEverAppLoaded(true);
-                pre.setHideThemeList(themeList);
             }
+            pre.setHaveEverAppLoaded(true);
+            pre.setHideThemeList(themeList);
         }
         return isFirstLoadApp;
     }
