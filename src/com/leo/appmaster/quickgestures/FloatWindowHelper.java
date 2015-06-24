@@ -10,6 +10,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 
@@ -92,7 +93,6 @@ public class FloatWindowHelper {
     private static final int RIGHT_CENTER_FLAG = -2;
     private static final int RIGHT_CENTER_CENTER_FLAG = -3;
     private static final int RIGHT_TOP_FLAG = -4;
-
     /**
      * left bottom must call in UI thread
      * 
@@ -120,6 +120,8 @@ public class FloatWindowHelper {
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    float moveX = 0;
+                    float moveY = 0;
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
@@ -129,15 +131,17 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
-                            float presssure = event.getPressure();
-                            if (((moveX > 10 || moveY > 10)
+//                            Log.e(TAG,"按压力度："+event.getPressure());
+                             moveX = Math.abs(startX - event.getRawX());
+                             moveY = Math.abs(startY - event.getRawY());
+//                            Log.e(TAG, "____"+ViewConfiguration.get(mContext).getScaledTouchSlop());
+                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() ||event.getPressure()>0.55)
                             && !isMoveIng)) {
 //                                Log.e("#########", "进入滑动响应时间：" + System.currentTimeMillis());
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
+                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -151,8 +155,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
+//                            if (Math.abs(startX - event.getRawX()) < 10
+//                                    || Math.abs(startY - event.getRawY()) < 10) {
+                            if((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY< ViewConfiguration.get(mContext).getScaledTouchSlop() )){
                                 // cancel system no read message tip
                                 if (isShowTip || isShowBusinessRedTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
@@ -232,6 +237,8 @@ public class FloatWindowHelper {
             mLeftCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    float moveX = 0;
+                    float moveY=0;
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
@@ -241,14 +248,18 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
+//                            Log.e(TAG,"按压力度："+event.getPressure());
+                             moveX = Math.abs(startX - event.getRawX());
+                             moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if (((moveX > 10 || moveY > 10)
-                            && !isMoveIng)) {
+//                            if (((moveX > 10 || moveY > 10)
+//                            && !isMoveIng)) {
+                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() ||event.getPressure()>0.55 )
+                                    && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
+                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -262,8 +273,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
+//                            if (Math.abs(startX - event.getRawX()) < 10
+//                                    || Math.abs(startY - event.getRawY()) < 10) {
+                            if((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY< ViewConfiguration.get(mContext).getScaledTouchSlop() )){
                                 removeSwipWindow(mContext, 2);
                             }
                             break;
@@ -339,6 +351,8 @@ public class FloatWindowHelper {
             mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    float moveX = 0;
+                    float moveY=0;
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
@@ -348,17 +362,21 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
+//                            Log.e(TAG,"按压力度："+event.getPressure());
+                             moveX = Math.abs(startX - event.getRawX());
+                             moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
                             // if ((moveX > mLeftCenterCenterParams.width / 8
                             // || moveY > mLeftCenterCenterParams.width / 6)
                             // && !isMoveIng) {
-                            if (((moveX > 10 || moveY > 10)
-                            && !isMoveIng)) {
+//                            if (((moveX > 10 || moveY > 10)
+//                            && !isMoveIng)) {
+                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() ||event.getPressure()>0.55 )
+                                    && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
+                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-2);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -372,8 +390,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
+//                            if (Math.abs(startX - event.getRawX()) < 10
+//                                    || Math.abs(startY - event.getRawY()) < 10) {
+                            if((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY< ViewConfiguration.get(mContext).getScaledTouchSlop() )){
                                 // cancel system no read message tip
                                 if ((isShowTip || isShowBusinessRedTip) && mLeftBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -468,6 +487,9 @@ public class FloatWindowHelper {
             mLeftTopView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    float moveX = 0;
+                    float moveY=0;
+                    
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
@@ -477,14 +499,18 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
+//                            Log.e(TAG,"按压力度："+event.getPressure());
+                             moveX = Math.abs(startX - event.getRawX());
+                             moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if (((moveX > 10 || moveY > 10)
-                            && !isMoveIng)) {
+//                            if (((moveX > 10 || moveY > 10)
+//                            && !isMoveIng)) {
+                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() ||event.getPressure()>0.55 )
+                                    && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
+                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -498,8 +524,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
+//                            if (Math.abs(startX - event.getRawX()) < 10
+//                                    || Math.abs(startY - event.getRawY()) < 10) {
+                            if((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY< ViewConfiguration.get(mContext).getScaledTouchSlop() )){
                                 removeSwipWindow(mContext, 3);
                             }
                             break;
@@ -573,6 +600,8 @@ public class FloatWindowHelper {
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    float moveX = 0;
+                    float moveY=0;
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
@@ -582,14 +611,18 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
+//                            Log.e(TAG,"按压力度："+event.getPressure());
+                             moveX = Math.abs(startX - event.getRawX());
+                             moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if (((moveX > 10 || moveY > 10)
-                            && !isMoveIng)) {
+//                            if (((moveX > 10 || moveY > 10)
+//                            && !isMoveIng)) {
+                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() ||event.getPressure()>0.55 )
+                                    && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
+                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -603,8 +636,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
+//                            if (Math.abs(startX - event.getRawX()) < 10
+//                                    || Math.abs(startY - event.getRawY()) < 10) {
+                            if((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY< ViewConfiguration.get(mContext).getScaledTouchSlop() )){
                                 // cancel system no read message tip
                                 if (isShowTip || isShowBusinessRedTip) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -673,6 +707,8 @@ public class FloatWindowHelper {
             mRightCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    float moveX = 0;
+                    float moveY=0;
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
@@ -682,14 +718,18 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
+//                            Log.e(TAG,"按压力度："+event.getPressure());
+                             moveX = Math.abs(startX - event.getRawX());
+                             moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if (((moveX > 10 || moveY > 10)
-                            && !isMoveIng)) {
+//                            if (((moveX > 10 || moveY > 10)
+//                            && !isMoveIng)) {
+                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop()  ||event.getPressure()>0.55)
+                                    && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
+                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -703,8 +743,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
+//                            if (Math.abs(startX - event.getRawX()) < 10
+//                                    || Math.abs(startY - event.getRawY()) < 10) {
+                            if((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY< ViewConfiguration.get(mContext).getScaledTouchSlop() )){
                                 removeSwipWindow(mContext, -2);
                             }
                             break;
@@ -777,6 +818,8 @@ public class FloatWindowHelper {
             mRightCenterCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    float moveX = 0;
+                    float moveY =0;
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
@@ -786,14 +829,18 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
+//                            Log.e(TAG,"按压力度："+event.getPressure());
+                             moveX = Math.abs(startX - event.getRawX());
+                             moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if (((moveX > 10 || moveY > 10)
-                            && !isMoveIng)) {
+//                            if (((moveX > 10 || moveY > 10)
+//                            && !isMoveIng)) {
+                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() ||event.getPressure()>0.55 )
+                                    && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
+                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(2);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -807,8 +854,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
+//                            if (Math.abs(startX - event.getRawX()) < 10
+//                                    || Math.abs(startY - event.getRawY()) < 10) {
+                            if((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY< ViewConfiguration.get(mContext).getScaledTouchSlop() )){
                                 // cancel system no read message tip
                                 if ((isShowTip || isShowBusinessRedTip) && mRightBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -903,6 +951,8 @@ public class FloatWindowHelper {
             mRightTopView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
+                    float moveX = 0;
+                    float moveY =0;
                     switch (event.getAction()) {
                         case MotionEvent.ACTION_OUTSIDE:
                             break;
@@ -912,14 +962,18 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            float moveX = Math.abs(startX - event.getRawX());
-                            float moveY = Math.abs(startY - event.getRawY());
+//                            Log.e(TAG,"按压力度："+event.getPressure());
+                             moveX = Math.abs(startX - event.getRawX());
+                             moveY = Math.abs(startY - event.getRawY());
                             float presssure = event.getPressure();
-                            if (((moveX > 10 || moveY > 10)
-                            && !isMoveIng)) {
+//                            if (((moveX > 10 || moveY > 10)
+//                            && !isMoveIng)) {
+                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop()  ||event.getPressure()>0.55)
+                                    && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
+                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -933,8 +987,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if (Math.abs(startX - event.getRawX()) < 10
-                                    || Math.abs(startY - event.getRawY()) < 10) {
+//                            if (Math.abs(startX - event.getRawX()) < 10
+//                                    || Math.abs(startY - event.getRawY()) < 10) {
+                            if((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY< ViewConfiguration.get(mContext).getScaledTouchSlop() )){
                                 removeSwipWindow(mContext, -3);
                             }
                             break;
