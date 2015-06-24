@@ -152,8 +152,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
     /*快捷手势消失，立即创建响应热区*/
     private void createFloatView(){
-        FloatWindowHelper.createFloatWindow(getApplicationContext(),
-                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+//        FloatWindowHelper.closePopuCreateFloatWindow(getApplicationContext(),
+//                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
         QuickGestureManager.getInstance(this).startFloatWindow();
     }
 }

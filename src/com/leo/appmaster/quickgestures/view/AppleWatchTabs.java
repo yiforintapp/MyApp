@@ -14,12 +14,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 
-public class AppleWatchTabs extends ViewGroup implements OnClickListener {
+public class AppleWatchTabs extends ViewGroup {
     private static final String TAG = "CornerTabs";
 
     private AppleWatchContainer mContainer;
@@ -47,13 +46,10 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         mSelectBarHeight = res.getDimensionPixelSize(R.dimen.apple_watch_select_bar_height);
         mIvDynamic = new ImageView(getContext());
         mIvDynamic.setImageResource(R.drawable.gesture_recent);
-        mIvDynamic.setOnClickListener(this);
         mIvMostUsed = new ImageView(getContext());
         mIvMostUsed.setImageResource(R.drawable.gesture_apps);
-        mIvMostUsed.setOnClickListener(this);
         mIvSwitcher = new ImageView(getContext());
         mIvSwitcher.setImageResource(R.drawable.gesture_switch);
-        mIvSwitcher.setOnClickListener(this);
         addView(mIvDynamic);
         addView(mIvMostUsed);
         addView(mIvSwitcher);
@@ -413,7 +409,6 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         va.start();
     }
 
-    @Override
     public void onClick(View v) {
         LeoLog.d(TAG, "onClick");
         GType type = mContainer.getCurrentGestureType();
@@ -452,4 +447,24 @@ public class AppleWatchTabs extends ViewGroup implements OnClickListener {
         requestLayout();
     }
 
+    public boolean handleClick(float tapX, float tapY) {
+
+        if (tapX > mIvDynamic.getLeft() && tapX < mIvDynamic.getRight()
+                && tapY > mIvDynamic.getTop() && tapY < mIvDynamic.getBottom()) {
+            onClick(mIvDynamic);
+            return true;
+        }
+        if (tapX > mIvMostUsed.getLeft() && tapX < mIvMostUsed.getRight()
+                && tapY > mIvMostUsed.getTop() && tapY < mIvMostUsed.getBottom()) {
+            onClick(mIvMostUsed);
+            return true;
+        }
+        if (tapX > mIvSwitcher.getLeft() && tapX < mIvSwitcher.getRight()
+                && tapY > mIvSwitcher.getTop() && tapY < mIvSwitcher.getBottom()) {
+            onClick(mIvSwitcher);
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -1608,4 +1608,31 @@ public class FloatWindowHelper {
             }
         }
     }
+//    public static void closePopuCreateFloatWindow(Context context,int value){
+//        if(mLeftBottomView!=null && mLeftBottomParams!=null){
+//            mWindowManager.addView(mLeftBottomView,mLeftBottomParams);
+//        }
+//        if (mLeftCenterView != null && mLeftCenterCenterParams!=null) {
+//            mWindowManager.addView(mLeftCenterView, mLeftCenterParams);
+//        }
+//        if (mLeftTopView != null && mLeftTopParams!=null)  {
+//            mWindowManager.addView(mLeftTopView, mLeftTopParams);
+//        }
+//        if (mLeftCenterCenterView != null && mLeftCenterCenterParams!=null) {
+//            mWindowManager.addView(mLeftCenterCenterView, mLeftCenterCenterParams);
+//        }
+//        // update right
+//        if (mRightBottomView != null && mRightBottomParams!=null) {
+//            mWindowManager.addView(mRightBottomView, mRightBottomParams);
+//        }
+//        if (mRightCenterView != null && mRightCenterParams!=null) {
+//            mWindowManager.addView(mRightCenterView, mRightCenterParams);
+//        }
+//        if (mRightTopView != null && mRightTopParams!=null) {
+//            mWindowManager.addView(mRightTopView, mRightTopParams);
+//        }
+//        if (mRightCenterCenterView != null && mRightCenterCenterParams!=null ){
+//            mWindowManager.addView(mRightCenterCenterView, mRightCenterCenterParams);
+//        }
+//    }
 }
