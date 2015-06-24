@@ -115,6 +115,8 @@
             android:layout_width="37dp"
             android:layout_height="72dp"
             android:background="@drawable/gesture_rocket"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:visibility="invisible" />
 
         <ImageView
@@ -123,6 +125,8 @@
             android:layout_height="64dp"
             android:layout_gravity="center|bottom"
             android:background="@drawable/gesture_launcher"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:visibility="invisible" />
 
         <ImageView
@@ -131,6 +135,8 @@
             android:layout_height="100dp"
             android:layout_gravity="center|bottom"
             android:background="@drawable/rocket_cloud"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
             android:visibility="invisible" />
     </com.leo.appmaster.quickgestures.view.AppleWatchContainer>
 
