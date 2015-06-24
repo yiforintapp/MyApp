@@ -189,7 +189,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
     @Override
     protected void onResume() {
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
-        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 1000);
+        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 2000);
         LockManager lm = LockManager.getInstatnce();
         lm.clearFilterList();
         super.onResume();

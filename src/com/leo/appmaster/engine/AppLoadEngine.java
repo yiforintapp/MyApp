@@ -148,7 +148,7 @@ public class AppLoadEngine extends BroadcastReceiver {
     };
 
     private List<String> mRecommendLocklist;
-
+    
     private AppLoadEngine(Context context) {
         mContext = context.getApplicationContext();
         mPm = mContext.getPackageManager();
@@ -205,20 +205,28 @@ public class AppLoadEngine extends BroadcastReceiver {
     public void registerAppChangeListener(AppChangeListener aListener) {
         if (mListeners.contains(aListener))
             return;
-        mListeners.add(aListener);
+        synchronized (mLock) {
+            mListeners.add(aListener);
+        }
     }
 
     public void unregisterAppChangeListener(AppChangeListener aListener) {
-        mListeners.remove(aListener);
+        synchronized (mLock) {
+            mListeners.remove(aListener);
+        }
     }
 
     public void clearAllListeners() {
-        mListeners.clear();
+        synchronized (mLock) {
+            mListeners.clear();
+        }
     }
 
     private void notifyChange(ArrayList<AppItemInfo> changed, int type) {
-        for (AppChangeListener listener : mListeners) {
-            listener.onAppChanged(changed, type);
+        synchronized (mLock) {
+            for (AppChangeListener listener : mListeners) {
+                listener.onAppChanged(changed, type);
+            }
         }
     }
 
@@ -385,29 +393,31 @@ public class AppLoadEngine extends BroadcastReceiver {
                     .getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
             for (ApplicationInfo applicationInfo : all) {
                 String packageName = applicationInfo.packageName;
-                AppItemInfo appInfo = new AppItemInfo();
+                if(packageName.isEmpty())
+                    continue;
+//                AppItemInfo appInfo = new AppItemInfo();
                 Intent intent = new Intent(Intent.ACTION_MAIN, null);
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 intent.setPackage(packageName);
-                List<ResolveInfo> apps = mPm.queryIntentActivities(intent,
-                        0);
+                List<ResolveInfo> apps = mPm.queryIntentActivities(intent, 0);
                 ResolveInfo info = apps.size() > 0 ? apps.get(0) : null;
-                loadAppInfoOfPackage(packageName, info != null ? info.activityInfo.name : "",
+                /*loadAppInfoOfPackage(packageName, info != null ? info.activityInfo.name : "",
                         applicationInfo, appInfo);
                 try {
                     appInfo.installTime = mPm.getPackageInfo(packageName, 0).firstInstallTime;
                 } catch (NameNotFoundException e) {
                     e.printStackTrace();
-                }
-
-                if (isThemeApk(packageName)) {
-                    if (!themeList.contains(packageName)) {
-                        themeList.add(packageName);
+                }*/
+                if(null != info){
+                    if (isThemeApk(packageName)) {
+                        if (!themeList.contains(packageName)) {
+                            themeList.add(packageName);
+                        }
                     }
                 }
-                pre.setHaveEverAppLoaded(true);
-                pre.setHideThemeList(themeList);
             }
+            pre.setHaveEverAppLoaded(true);
+            pre.setHideThemeList(themeList);
         }
         return isFirstLoadApp;
     }

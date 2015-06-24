@@ -144,16 +144,29 @@ public class AppleWatchContainer extends FrameLayout {
                         float tapY = e.getY();
                         float tapX = e.getX();
                         if (tapY < mDymicLayout.getTop()
-                                || (tapY >= mDymicLayout.getBottom() && (tapX < mCornerTabs
-                                        .getLeft() || tapX > mCornerTabs.getRight()))) {
-                            if (mEditing) {
-                                leaveEditMode();
-                            } else {
-                                Activity activity = (Activity) AppleWatchContainer.this
-                                        .getContext();
-                                activity.onBackPressed();
-                            }
+                                || tapY >= mDymicLayout.getBottom()) {
 
+                            if (tapY >= mDymicLayout.getBottom() && (tapX > mCornerTabs
+                                    .getLeft() && tapX < mCornerTabs.getRight())) {
+                                if (!mCornerTabs.handleClick(tapX - mCornerTabs.getLeft(), tapY
+                                        - mCornerTabs.getTop())) {
+                                    if (mEditing) {
+                                        leaveEditMode();
+                                    } else {
+                                        Activity activity = (Activity) AppleWatchContainer.this
+                                                .getContext();
+                                        activity.onBackPressed();
+                                    }
+                                }
+                            } else {
+                                if (mEditing) {
+                                    leaveEditMode();
+                                } else {
+                                    Activity activity = (Activity) AppleWatchContainer.this
+                                            .getContext();
+                                    activity.onBackPressed();
+                                }
+                            }
                         } else {
                             AppleWatchLayout gestureLayout = null;
                             if (mCurrentGestureType == GType.DymicLayout) {
@@ -173,7 +186,8 @@ public class AppleWatchContainer extends FrameLayout {
                             float velocityY) {
                         LeoLog.d(TAG, "onFling: velocityX = " + velocityX + "  velocityY = "
                                 + velocityY);
-                        if (mTouchDownY > mDymicLayout.getBottom()) {
+                        if (mTouchDownY > mDymicLayout.getBottom()
+                                || mTouchDownY < mDymicLayout.getTop()) {
                             if (!mEditing) {
                                 leaveEditMode();
                             }
@@ -338,12 +352,14 @@ public class AppleWatchContainer extends FrameLayout {
                 if (mEditing) {
                     if (!gestureLayout.checkActionDownInEditing(event.getX(), event.getY()
                             - gestureLayout.getTop())) {
-                        if (mTouchDownY > mDymicLayout.getBottom()) {
+                        if (mTouchDownY > mDymicLayout.getBottom()
+                                || mTouchDownY < mDymicLayout.getTop()) {
                             onTouchDown();
                         }
                     }
                 } else {
-                    if (mTouchDownY > mDymicLayout.getBottom()) {
+                    if (mTouchDownY > mDymicLayout.getBottom()
+                            || mTouchDownY < mDymicLayout.getTop()) {
                         onTouchDown();
                     }
                 }
@@ -385,7 +401,7 @@ public class AppleWatchContainer extends FrameLayout {
             onTouchMoveTranslate(moveX - mTouchDownX, moveY - mTouchDownY);
         }
 
-        if (mTouchDownY > mDymicLayout.getBottom()) {
+        if (mTouchDownY > mDymicLayout.getBottom() || mTouchDownY < mDymicLayout.getTop()) {
             if (mDymicLayout.mHasFillExtraItems
                     && mMostUsedLayout.mHasFillExtraItems
                     && mSwitcherLayout.mHasFillExtraItems) {
@@ -396,7 +412,7 @@ public class AppleWatchContainer extends FrameLayout {
 
     private void onTouchUp() {
         LeoLog.d(TAG, "onTouchUp mRotateDegree = " + mRotateDegree);
-        if (mTouchDownY > mDymicLayout.getBottom()) {
+        if (mTouchDownY > mDymicLayout.getBottom() || mTouchDownY < mDymicLayout.getTop()) {
             if (mOrientation == Orientation.Left) {
                 if (mRotateDegree < 0) {
                     if (mRotateDegree < -15) {
@@ -1478,7 +1494,6 @@ public class AppleWatchContainer extends FrameLayout {
                 cleanMem();
             }
         });
-
 
         isAnimating = true;
         // first - change to no roket icon
