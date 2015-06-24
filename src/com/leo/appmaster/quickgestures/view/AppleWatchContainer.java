@@ -1467,22 +1467,18 @@ public class AppleWatchContainer extends FrameLayout {
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
 
         cachedThreadPool = AppMasterApplication.getInstance().getExecutorService();
-        if (cachedThreadPool != null) {
-            cachedThreadPool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    cleanMem();
-                }
-            });
-        } else {
+
+        if (cachedThreadPool == null) {
             cachedThreadPool = Executors.newCachedThreadPool();
-            cachedThreadPool.execute(new Runnable() {
-                @Override
-                public void run() {
-                    cleanMem();
-                }
-            });
         }
+
+        cachedThreadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                cleanMem();
+            }
+        });
+
 
         isAnimating = true;
         // first - change to no roket icon
