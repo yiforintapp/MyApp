@@ -21,6 +21,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private AppleWatchContainer mContainer;
     private int mNowLayout;
+    private boolean isCloseWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +86,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             }
         });
         super.onResume();
+        FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
         // Log.e("#########", "快捷手势结束onResume时间："+System.currentTimeMillis());
     }
 
@@ -130,6 +132,9 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onDestroy() {
         LeoEventBus.getDefaultBus().unregister(this);
         FloatWindowHelper.mGestureShowing = false;
+        if (!isCloseWindow) {
+            createFloatView();
+        }
         super.onDestroy();
     }
 
@@ -139,9 +144,9 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
-            createFloatView();
             mContainer.showCloseAnimation();
             mContainer.saveGestureType();
+            createFloatView();
         }
     }
 
@@ -150,10 +155,22 @@ public class QuickGesturePopupActivity extends BaseActivity {
         overridePendingTransition(0, 0);
         super.finish();
     }
-    /*快捷手势消失，立即创建响应热区*/
-    private void createFloatView(){
-//        FloatWindowHelper.closePopuCreateFloatWindow(getApplicationContext(),
-//                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
-        QuickGestureManager.getInstance(this).startFloatWindow();
+
+    /* 快捷手势消失，立即创建响应热区 */
+    private void createFloatView() {
+        FloatWindowHelper.mGestureShowing = false;
+        isCloseWindow = true;
+        FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+        mContainer.postDelayed(new Runnable() {
+
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                        QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+                isCloseWindow = false;
+            }
+        }, 200);
     }
 }
