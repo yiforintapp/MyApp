@@ -171,6 +171,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
                         QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
                 isCloseWindow = false;
             }
-        }, 200);
+        }, 100);
     }
 }
