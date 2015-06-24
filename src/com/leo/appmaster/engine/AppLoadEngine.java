@@ -148,7 +148,7 @@ public class AppLoadEngine extends BroadcastReceiver {
     };
 
     private List<String> mRecommendLocklist;
-
+    
     private AppLoadEngine(Context context) {
         mContext = context.getApplicationContext();
         mPm = mContext.getPackageManager();
@@ -205,20 +205,28 @@ public class AppLoadEngine extends BroadcastReceiver {
     public void registerAppChangeListener(AppChangeListener aListener) {
         if (mListeners.contains(aListener))
             return;
-        mListeners.add(aListener);
+        synchronized (mLock) {
+            mListeners.add(aListener);
+        }
     }
 
     public void unregisterAppChangeListener(AppChangeListener aListener) {
-        mListeners.remove(aListener);
+        synchronized (mLock) {
+            mListeners.remove(aListener);
+        }
     }
 
     public void clearAllListeners() {
-        mListeners.clear();
+        synchronized (mLock) {
+            mListeners.clear();
+        }
     }
 
     private void notifyChange(ArrayList<AppItemInfo> changed, int type) {
-        for (AppChangeListener listener : mListeners) {
-            listener.onAppChanged(changed, type);
+        synchronized (mLock) {
+            for (AppChangeListener listener : mListeners) {
+                listener.onAppChanged(changed, type);
+            }
         }
     }
 
