@@ -83,24 +83,20 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             mTitleBar.setTitle(R.string.reset_passwd);
         }
 
-        LeoLog.d("testSetPass", "Now Type is : " + mLockType);
-
         mFm = getSupportFragmentManager();
         FragmentTransaction tans = mFm.beginTransaction();
         int type = AppMasterPreference.getInstance(this).getLockType();
 
         if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            LeoLog.d("testSetPass", "LOCK_TYPE_PASSWD");
             mLockType = LOCK_TYPE_PASSWD;
             tans.replace(R.id.fragment_contain, mPasswd);
             mSwitchBottom.setText(getString(R.string.switch_gesture));
         } else {
-            LeoLog.d("testSetPass", "LOCK_TYPE_GESTURE");
             mLockType = LOCK_TYPE_GESTURE;
             tans.replace(R.id.fragment_contain, mGesture);
             mSwitchBottom.setText(getString(R.string.switch_passwd));
         }
-        
+
         // if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {
         // LeoLog.d("testSetPass", "LOCK_TYPE_GESTURE");
         // mLockType = LOCK_TYPE_GESTURE;
@@ -118,10 +114,19 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     private void initUI() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTitleBar.openBackView();
-        mTitleBar.setTitle(R.string.passwd_setting);
+        if (mResetFlag) {
+            mTitleBar.openBackView();
+            mTitleBar.setTitle(R.string.reset_passwd);
+            // mTitleBar.setVisibility(View.INVISIBLE);
+        } else {
+            // mTitleBar.openBackView();
+            // mTitleBar.setTitle(R.string.passwd_setting);
+            mTitleBar.setVisibility(View.INVISIBLE);
+        }
+        
         mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
         mSwitchBottom.setOnClickListener(this);
+        
     }
 
     @Override
