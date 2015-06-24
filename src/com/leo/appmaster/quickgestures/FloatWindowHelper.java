@@ -141,7 +141,7 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
-                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
+                                    //QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -259,7 +259,7 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
-                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
+                                    //QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -376,7 +376,7 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
-                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
+                                    //QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-2);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -510,7 +510,7 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
-                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
+                                    //QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -622,7 +622,7 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
-                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
+                                    //QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -729,7 +729,7 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
-                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
+                                    //QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -840,7 +840,7 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
-                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
+                                    //QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(2);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -973,7 +973,7 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     removeAllFloatWindow(mContext);
-                                    QuickGestureManager.getInstance(mContext).stopFloatWindow();
+                                    //QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -1299,7 +1299,7 @@ public class FloatWindowHelper {
         return mWindowManager;
     }
 
-    private static void createFloatArea(Context context, int value, boolean leftBottom,
+    private  static void createFloatArea(Context context, int value, boolean leftBottom,
             boolean rightBottom, boolean leftCenter, boolean rightCenter) {
 //        Log.e("#########", "++++++++++++++++++++开始创建热取时间：" + System.currentTimeMillis());
         // left bottom
@@ -1350,7 +1350,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatWindow(Context context, int value) {
+    public synchronized static void createFloatWindow(Context context, int value) {
         boolean leftBottom = QuickGestureManager
                 .getInstance(AppMasterApplication.getInstance()).isLeftBottom;
         boolean rightBottom = QuickGestureManager.getInstance(AppMasterApplication
