@@ -322,7 +322,9 @@ public class LockModeEditActivity extends BaseActivity implements
                 if (mModeNameDiglog == null) {
                     mModeNameDiglog = new LeoSingleLinesInputDialog(this);
                 }
-                mModeNameDiglog.getEditText().setText(mEditMode.modeName);
+
+                // mModeNameDiglog.getEditText().setText(mEditMode.modeName);
+                mModeNameDiglog.getEditText().setText(mModeName);
                 mModeNameDiglog.getEditText().selectAll();
                 mModeNameDiglog.setRightBtnListener(new DialogInterface.OnClickListener() {
                     @Override
