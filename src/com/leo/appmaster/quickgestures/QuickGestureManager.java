@@ -27,6 +27,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -238,7 +239,6 @@ public class QuickGestureManager {
 
         // no read sys_call
         if (isShowCallLogTip) {
-
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null
                     && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
                 List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
@@ -1147,7 +1147,7 @@ public class QuickGestureManager {
         }
         Vector<BusinessItemInfo> mBusinessList = AppBusinessManager.getInstance(mContext)
                 .getBusinessData();
-        if(mBusinessList != null) {
+        if (mBusinessList != null) {
             boolean show = false;
             AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
             for (BusinessItemInfo info : mBusinessList) {

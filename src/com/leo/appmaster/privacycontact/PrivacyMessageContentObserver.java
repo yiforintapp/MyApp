@@ -112,11 +112,24 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 break;
                             }
                         }
+                        // 查看未读短信时，清除未读操作（包括第三方，或者系统自带短信列表查看）
+                        if (messages == null || messages.size() <= 0) {
+                            Log.e(FloatWindowHelper.RUN_TAG, "查看后未读数量数量：" + messages.size());
+                            /*
+                             * 全部已读，去除热区红点
+                             */
+                            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+                            if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
+                                QuickGestureManager.getInstance(mContext).mCallLogs.clear();
+                            }
+                            FloatWindowHelper.removeShowReadTipWindow(mContext);
+                        }
+                        //有未读短信时操作
                         if (messages != null && messages.size() > 0) {
                             if (AppMasterPreference.getInstance(mContext)
                                     .getSwitchOpenNoReadMessageTip()) {
                                 // if (BuildProperties.isMIUI()) {
-//                                Log.e("#####", "改变");
+                                // Log.e("#####", "改变");
                                 // if(!QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag){
                                 // QuickGestureManager.getInstance(mContext).mMessages
                                 // = messages;
@@ -177,7 +190,21 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 break;
                             }
                         }
+                        // 查看通话记录时，清除未读操作（包括第三方，或者系统自带通话记录列表查看）
+                        if (callLogs == null || callLogs.size() <= 0) {
+//                            Log.e(FloatWindowHelper.RUN_TAG, "查看后未读数量数量：" + callLogs.size());
+                            /*
+                             * 全部已读，去除热区红点
+                             */
+                            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
+                            if (QuickGestureManager.getInstance(mContext).mCallLogs != null) {
+                                QuickGestureManager.getInstance(mContext).mCallLogs.clear();
+                            }
+                            FloatWindowHelper.removeShowReadTipWindow(mContext);
+                        }
+                        // 有未读通话时操作
                         if (callLogs != null && callLogs.size() > 0) {
+//                            Log.e(FloatWindowHelper.RUN_TAG, "未读数量数量：" + callLogs.size());
                             if (AppMasterPreference.getInstance(mContext)
                                     .getSwitchOpenRecentlyContact()) {
                                 QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
@@ -326,7 +353,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 cursor.close();
                 // TODO
                 AppMasterPreference mPreference = AppMasterPreference.getInstance(mContext);
-                AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
+                // AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
                 if (mPreference.getSwitchOpenPrivacyContactMessageTip()
                         && mPreference.getQuickGestureCallLogTip()) {
                     QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = true;

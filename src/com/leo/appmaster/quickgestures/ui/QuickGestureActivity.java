@@ -1050,7 +1050,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
                     QuickGestureActivity.this, R.drawable.gesture_desktopo_icon);
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                    getString(R.string.quick_guesture_switchset));
+                    getString(R.string.pg_appmanager_quick_gesture_name));
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, quickGestureIconRes);
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, quickGestureShortIntent);
             quickGestureShortcut.putExtra("duplicate", false);

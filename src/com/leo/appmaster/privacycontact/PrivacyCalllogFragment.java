@@ -582,6 +582,11 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 if (temp > 0) {
                     pre.setCallLogNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
+                        //TODO 隐私通话没有未读
+                        /**
+                         * 对快捷手势隐私联系人，红点去除操作
+                         */
+                        
                         LeoEventBus
                                 .getDefaultBus()
                                 .post(
