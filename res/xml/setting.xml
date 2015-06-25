@@ -4,7 +4,8 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="set_forbid_uninstall"
-        android:layout="@layout/pref_list_item_top"
+        android:layout="@layout/pref_list_item_top_uninstall"
+        android:summary="@string/forbid_uninstall_off"
         android:title="@string/forbid_uninstall"
         android:widgetLayout="@layout/pref_widget_checkbox" />
 
@@ -68,7 +69,7 @@
         android:layout="@layout/pref_list_item_bot"
         android:title="@string/lock_setting_unlock_all"
       android:widgetLayout="@layout/pref_widget_checkbox" 
-        />
+        />
     -->
 
 </PreferenceScreen>
