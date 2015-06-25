@@ -794,6 +794,11 @@ public class AppleWatchLayout extends ViewGroup {
                     appInfo.activityName));
             getContext().startActivity(intent);
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
+        }else if(info instanceof GestureEmptyItemInfo){
+            GType type = mContainer.getCurrentGestureType();
+            if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
+                showAddNewDiglog(type);
+            }
         }
     }
 
