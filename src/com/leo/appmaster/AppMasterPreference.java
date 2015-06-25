@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -170,7 +171,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE = "quick_gesture_quickswitch_list_size";
     public static final String PREF_QUICK_FIRST_SLIDING_TIP = "quick_first_sliding_tip";
     public static final String PREF_QUICK_GESTURE_RED_TIP = "quick_gesture_red_tip";
-    public static final String PREF_QUICK_GESTURE_FIRST_DIALOG_TIP = "quick_gesture_dialog_tip";
+    public static final String PREF_QUICK_GESTURE_FIRST_DIALOG_TIP = "quick_gesture_guide_dialog_tip";
     public static final String PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME = "quick_gesture_quick_switch_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME = "quick_gesture_common_app_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG = "quick_gesture_common_app_dialog_checkbox_flag";
@@ -187,6 +188,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LAST_BUSINESS_RED_TIP = "last_business_red_tip";
     public static final String PREF_QUICK_NO_MSM_TIP = "quick_no_msm_tip";
     public static final String PREF_QUICK_NO_CALL_LOG_TIP = "quick_no_call_log_tip";
+    public static final String PREF_ENTER_HOME_TIMES= "enter_home_times";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -245,6 +247,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private long mNewUserUnlockCount = -1;
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
+    private int mEnterHomeTimes = -1;
 
     private AppMasterPreference(Context context) {
         mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1814,5 +1817,17 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setQuickGestureMsmTip(boolean b) {
         mPref.edit().putBoolean(PREF_QUICK_NO_MSM_TIP, b).commit();
+    }
+    
+    public void setEnterHomeTimes(int times){
+        mEnterHomeTimes = times;
+        mPref.edit().putInt(PREF_ENTER_HOME_TIMES, times).commit();
+    }
+    
+    public int getEnterHomeTimes(){
+        if(mEnterHomeTimes < 0){
+            mEnterHomeTimes = mPref.getInt(PREF_ENTER_HOME_TIMES, 0);
+        }
+        return mEnterHomeTimes;
     }
 }

@@ -53,7 +53,6 @@ import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -106,7 +105,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private DrawerArrowDrawable mDrawerArrowDrawable;
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
     private ImageView app_hot_tip_icon;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -117,6 +116,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
+        recordEnterHomeTimes();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
     }
@@ -261,7 +261,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onResume() {
         /* check if there is force update when showing HomeActivity */
         SDKWrapper.checkForceUpdate();
-
         judgeShowGradeTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.
@@ -568,32 +567,28 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 GradeTipActivity.class);
                         HomeActivity.this.startActivity(intent);
                     }
-                    // quick gesture tip
-                    // new user 50 tip
+                    /**
+                     * show quick guesture dialog tip
+                     */
                     boolean switchQuickGesture = AppMasterPreference.getInstance(HomeActivity.this)
                             .getSwitchOpenQuickGesture();
                     if (!switchQuickGesture) {
-                        long newUserCount = AppMasterPreference.getInstance(
-                                HomeActivity.this).getNewUserUnlockCount();
-                        boolean firstSlidingTip = AppMasterPreference
-                                .getInstance(HomeActivity.this)
-                                .getFristSlidingTip();
                         boolean firstDilaogTip = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getFristDialogTip();
                         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getIsUpdateQuickGestureUser();
-//                        Log.e("######", "newUserCount：" + newUserCount+"||firstSlidingTip:"+firstSlidingTip+"||firstDilaogTip:"+firstDilaogTip);
-//                         Log.e("######", "是否为升级用户：" + updateUser);
+                        Log.i("######", "firstDilaogTip:"+firstDilaogTip);
+                         Log.i("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
-                            // new user
-                            if (newUserCount >= 50 && !firstSlidingTip && !firstDilaogTip) {
-//                                 Log.e("######", "新用户提示！");
-                                showFirstOpenQuickGestureTipDialog();
+                            // new user,enter home  >=2 times
+                            if(!firstDilaogTip && AppMasterPreference.getInstance(HomeActivity.this).getEnterHomeTimes() >=2){
+                                    Log.i("######", "新用户提示！");
+                                    showFirstOpenQuickGestureTipDialog();
                             }
                         } else {
                             // update user
-                            if (!firstSlidingTip && !firstDilaogTip) {
-//                                 Log.e("######", "升级用户提示！");
+                            if (!firstDilaogTip) {
+                                Log.i("######", "升级用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
 
@@ -1055,4 +1050,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
+    public void recordEnterHomeTimes(){
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        int times = pref.getEnterHomeTimes(); 
+        if(times <2){
+            pref.setEnterHomeTimes(++times);
+        }
+        Log.i("######", "times = "+times);
+    }
 }
