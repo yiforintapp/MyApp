@@ -1047,6 +1047,10 @@ public class PrivacyContactUtils {
                 if (temp > 0) {
                     pre.setMessageNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
+                        //TODO 隐私短信没有未读
+                        /**
+                         * 对快捷手势隐私联系人未读，红点操作
+                         */
                         LeoEventBus
                                 .getDefaultBus()
                                 .post(

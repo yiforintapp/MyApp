@@ -734,10 +734,10 @@ public class AppleWatchLayout extends ViewGroup {
             // }
             try {
                 mContext.startActivity(mIntent);
-                if (QuickGestureManager.getInstance(mContext).mMessages != null
-                        && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
-                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
-                }
+//                if (QuickGestureManager.getInstance(mContext).mMessages != null
+//                        && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
+//                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
+//                }
             } catch (Exception e) {
             }
             new Handler().postDelayed(new Runnable() {
@@ -759,10 +759,10 @@ public class AppleWatchLayout extends ViewGroup {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (QuickGestureManager.getInstance(mContext).mCallLogs != null
-                    && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
-                QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);
-            }
+//            if (QuickGestureManager.getInstance(mContext).mCallLogs != null
+//                    && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
+//                QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);
+//            }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGestureContactTipInfo) {
             // 隐私联系人提示
