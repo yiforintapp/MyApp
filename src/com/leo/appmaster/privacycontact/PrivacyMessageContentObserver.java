@@ -114,7 +114,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         }
                         // 查看未读短信时，清除未读操作（包括第三方，或者系统自带短信列表查看）
                         if (messages == null || messages.size() <= 0) {
-                            Log.e(FloatWindowHelper.RUN_TAG, "查看后未读数量数量：" + messages.size());
+//                            Log.e(FloatWindowHelper.RUN_TAG, "查看后未读数量数量：" + messages.size());
                             /*
                              * 全部已读，去除热区红点
                              */
