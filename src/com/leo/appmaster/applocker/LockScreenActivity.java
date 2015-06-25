@@ -84,6 +84,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     public static final String TAG = "LockScreenActivity";
 
+    private static final String mPrivateLockPck = "com.leo.appmaster";
     public static final String THEME_CHANGE = "lock_theme_change";
     public static final String EXTRA_LOCK_MODE = "extra_lock_type";
     public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
@@ -485,30 +486,32 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private PretendFragment getPretendFragment() {
-        int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
-        // pretendLock = 1;
-        if (pretendLock == 1) { /* app error */
-            PretendAppErrorFragment paf = new PretendAppErrorFragment();
-            String tip = "";
-            PackageManager pm = this.getPackageManager();
-            try {
-                ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
-                        PackageManager.GET_UNINSTALLED_PACKAGES);
-                String lab = info.loadLabel(pm).toString();
-                tip = getString(R.string.pretend_app_error, lab);
-
-            } catch (Exception e) {
-                tip = getString(R.string.weizhuang_error_notice);
-                e.printStackTrace();
+        LeoLog.d("whatisthis", "mLockedPackage : " + mLockedPackage);
+        if(!mPrivateLockPck.equals(mLockedPackage)){
+            int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
+            // pretendLock = 1;
+            if (pretendLock == 1) { /* app error */
+                PretendAppErrorFragment paf = new PretendAppErrorFragment();
+                String tip = "";
+                PackageManager pm = this.getPackageManager();
+                try {
+                    ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
+                            PackageManager.GET_UNINSTALLED_PACKAGES);
+                    String lab = info.loadLabel(pm).toString();
+                    tip = getString(R.string.pretend_app_error, lab);
+                } catch (Exception e) {
+                    tip = getString(R.string.weizhuang_error_notice);
+                    e.printStackTrace();
+                }
+                paf.setErrorTip(tip);
+                return paf;
+            } else if (pretendLock == 2) {/* unknow call */
+                PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
+                return unknowcall;
+            } else if (pretendLock == 3) {/* fingerprint */
+                PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
+                return weizhuang;
             }
-            paf.setErrorTip(tip);
-            return paf;
-        } else if (pretendLock == 2) {/* unknow call */
-            PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
-            return unknowcall;
-        } else if (pretendLock == 3) {/* fingerprint */
-            PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
-            return weizhuang;
         }
         return null;
     }
