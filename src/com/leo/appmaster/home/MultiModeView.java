@@ -45,9 +45,12 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 
 public class MultiModeView extends RelativeLayout implements OnClickListener {
 
+    private static final String SHOW_NOW = "mode changed_show_now";
+    private static final String START_FROM_ADD = "startFromadd";
     private CirclePageIndicator mIndicator;
     private ViewPager mViewPager;
     private View mPagerContainer;
@@ -59,7 +62,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     private View mHolder;
     private LockManager mLockManager;
     private int currModePosition;
-    private Bitmap grayBitmap ;
+    private Bitmap grayBitmap;
 
     public MultiModeView(Context context) {
         super(context);
@@ -83,7 +86,12 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     }
 
     public void onEventMainThread(LockModeEvent event) {
-       //fillUI(false);
+        LeoLog.d("testMultiModeView", "event.eventMsg : " + event.eventMsg);
+        if(event.eventMsg.equals(SHOW_NOW)){
+            LeoLog.d("testMultiModeView", "copy that!!");
+            show();
+        }
+        // fillUI(false);
         // mAdapter.notifyDataSetChanged();
     }
 
@@ -121,21 +129,21 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             ImageView selectedImg = (ImageView) view.findViewById(R.id.img_selected);
             TextView name = (TextView) view.findViewById(R.id.tv_mode_name);
             name.setText(lockMode.modeName);
-            
+
             if (lockMode.isCurrentUsed) {
                 mSelected = mHolder;
                 currModePosition = list.indexOf(lockMode);
                 mIvAdd.post(new Runnable() {
                     @Override
                     public void run() {
-                        grayBitmap =  BitmapUtils.createGaryBitmap(((LockMode) mSelected.getTag()).modeIcon);
+                        grayBitmap = BitmapUtils.createGaryBitmap(((LockMode) mSelected.getTag()).modeIcon);
                     }
                 });
             }
             selectedImg.setVisibility(View.GONE);
             modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
                     lockMode.modeIcon)));
-            
+
             mHolder.setTag(lockMode);
             mHolder.setOnClickListener(this);
             mHolder.setOnTouchListener(new ModeTouchListener());
@@ -148,18 +156,18 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     }
 
     public void show() {
-        
+
         mModeNameTv.setVisibility(View.INVISIBLE);
         mIvAdd.setVisibility(View.INVISIBLE);
         backgroundAnimtion();
-        
+
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
             fillUI(true);
         }
     }
-    
-    private void backgroundAnimtion(){
+
+    private void backgroundAnimtion() {
         ValueAnimator bgAnim = ObjectAnimator.ofFloat(this, "alpha", 0, 1.0f);
         ValueAnimator alphaAnimator = ValueAnimator.ofFloat(0f, 1.0f);
         alphaAnimator.addListener(new AnimatorListenerAdapter() {
@@ -187,6 +195,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
     private void addLockMode() {
         Intent intent = new Intent(this.getContext(), LockModeEditActivity.class);
+        intent.setAction(START_FROM_ADD);
         intent.putExtra("mode_name", getContext().getString(R.string.new_mode));
         intent.putExtra("new_mode", true);
         getContext().startActivity(intent);
@@ -213,15 +222,17 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-         if (v.getId() == R.id.mode_holder && v == mSelected) {
-               hide();
-         }
-         if (v == this) {
-             hide();
-         } else if (v == mIvAdd) {
-             addLockMode();
-             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modesadd", "home");
-         }
+        if (v.getId() == R.id.mode_holder && v == mSelected) {
+            hide();
+        }
+        if (v == this) {
+            hide();
+        } else if (v == mIvAdd) {
+            addLockMode();
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modesadd", "home");
+            //TODO
+            hide();
+        }
     }
 
     private void startRcommendLock() {
@@ -234,15 +245,16 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         private LayoutInflater mInflater;
         private boolean showAnimation;
         Set<Integer> poSet = new HashSet<Integer>();
-        
+
         public ModeAdapter(Context ctx) {
             mInflater = LayoutInflater.from(ctx);
         }
 
         public ModeAdapter(Context ctx, boolean showAnimation) {
             this.showAnimation = showAnimation;
-            int currNextPostion = currModePosition +1>=mViews.size()?currModePosition:currModePosition+1;
-            int currPrePosition = currModePosition -1<0?0:currModePosition-1;
+            int currNextPostion = currModePosition + 1 >= mViews.size() ? currModePosition
+                    : currModePosition + 1;
+            int currPrePosition = currModePosition - 1 < 0 ? 0 : currModePosition - 1;
             poSet.add(currNextPostion);
             poSet.add(currPrePosition);
             poSet.add(currModePosition);
@@ -261,14 +273,18 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
         @Override
         public void destroyItem(ViewGroup container, int position, Object object) {
-            container.removeView(mViews.get(position));
+            try {
+                container.removeView(mViews.get(position));
+            } catch (Exception e) {
+                container.removeView(mViews.get(position - 1));
+            }
         }
 
         @Override
         public Object instantiateItem(ViewGroup container, int position) {
-             View view = mViews.get(position);
-          
-            if (showAnimation && poSet.contains(position) ) {
+            View view = mViews.get(position);
+
+            if (showAnimation && poSet.contains(position)) {
                 ballAnimtion(view).start();
             }
             container.addView(view);
@@ -277,17 +293,18 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     }
 
     /**
-     * get the mode ball appear  animation
+     * get the mode ball appear animation
+     * 
      * @param view
      * @return
      */
-    private AnimatorSet ballAnimtion(final View view){
+    private AnimatorSet ballAnimtion(final View view) {
         final View holder = view.findViewById(R.id.mode_holder);
-         final TextView  modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
-         final ImageView selectedImg =  (ImageView) view.findViewById(R.id.img_selected);
-         final TextView modeName = (TextView) view.findViewById(R.id.tv_mode_name);
-         modeName.setAlpha(0);
-         
+        final TextView modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
+        final ImageView selectedImg = (ImageView) view.findViewById(R.id.img_selected);
+        final TextView modeName = (TextView) view.findViewById(R.id.tv_mode_name);
+        modeName.setAlpha(0);
+
         ValueAnimator ballAnim1 = ValueAnimator.ofFloat(0.5f, 1.05f).setDuration(300);
         ballAnim1.addUpdateListener(new AnimatorUpdateListener() {
             @Override
@@ -297,9 +314,10 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 holder.setScaleY(currentValue);
             }
         });
-        ValueAnimator ballAnim2 = ValueAnimator.ofFloat(1.0f,0.95f,1.0f).setDuration(300);
+        ValueAnimator ballAnim2 = ValueAnimator.ofFloat(1.0f, 0.95f, 1.0f).setDuration(300);
         ballAnim2.addUpdateListener(new AnimatorUpdateListener() {
             boolean flag = true;
+
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float currentValue = (Float) animation.getAnimatedValue();
@@ -312,7 +330,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 }
             }
         });
-        
+
         ValueAnimator alphaAnimator = ValueAnimator.ofFloat(0f, 1.0f).setDuration(300);
         alphaAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -333,15 +351,14 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 modeName.setAlpha(currValue);
             }
         });
-        
+
         AnimatorSet part = new AnimatorSet();
-        part.playTogether(ballAnim2,alphaAnimator);
+        part.playTogether(ballAnim2, alphaAnimator);
         AnimatorSet set = new AnimatorSet();
         set.play(ballAnim1).before(part);
-        return  set;
+        return set;
     }
-    
-    
+
     @Override
     public void onRestoreInstanceState(Parcelable state) {
         try {
@@ -350,10 +367,11 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
         }
     }
-    
+
     private class ModeTouchListener implements View.OnTouchListener {
-        ImageView selectedImg ;
-        TextView modeIcon ;
+        ImageView selectedImg;
+        TextView modeIcon;
+
         @SuppressWarnings("deprecation")
         @Override
         public boolean onTouch(final View view, MotionEvent event) {
@@ -371,36 +389,38 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                         case MotionEvent.ACTION_UP:
                             view.setScaleX(1.0f);
                             view.setScaleY(1.0f);
-                                LockMode lastSelectedMode = (LockMode) mSelected.getTag();
-                                modeIcon = (TextView) mSelected.findViewById(R.id.tv_lock_mode_icon);
-                                selectedImg = (ImageView) mSelected.findViewById(R.id.img_selected);
-                                selectedImg.setVisibility(View.GONE);
-                                modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
-                                        lastSelectedMode.modeIcon)));
+                            LockMode lastSelectedMode = (LockMode) mSelected.getTag();
+                            modeIcon = (TextView) mSelected.findViewById(R.id.tv_lock_mode_icon);
+                            selectedImg = (ImageView) mSelected.findViewById(R.id.img_selected);
+                            selectedImg.setVisibility(View.GONE);
+                            modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
+                                    lastSelectedMode.modeIcon)));
 
-                                modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
-                                post(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
-                                                BitmapUtils .createGaryBitmap(mode.modeIcon))));
-                                        selectedImg.setVisibility(View.VISIBLE);
-                                    }
-                                });
-                                selectedImg = (ImageView) view.findViewById(R.id.img_selected);
+                            modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
+                            post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    modeIcon.setBackgroundDrawable((new BitmapDrawable(
+                                            getResources(),
+                                            BitmapUtils.createGaryBitmap(mode.modeIcon))));
+                                    selectedImg.setVisibility(View.VISIBLE);
+                                }
+                            });
+                            selectedImg = (ImageView) view.findViewById(R.id.img_selected);
 
-                                mSelected = view;
-                                mLockManager.setCurrentLockMode(mode, true);
-                                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modeschage", "home");
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        LeoEventBus.getDefaultBus().post(
-                                                        new LockModeEvent(EventId.EVENT_MODE_CHANGE,"multi mode page selectd"));
-                                    }
-                                }).start();
-                                
-                               disappearAnim(curPosition,selectedImg);
+                            mSelected = view;
+                            mLockManager.setCurrentLockMode(mode, true);
+                            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modeschage", "home");
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    LeoEventBus.getDefaultBus().post(
+                                            new LockModeEvent(EventId.EVENT_MODE_CHANGE,
+                                                    "multi mode page selectd"));
+                                }
+                            }).start();
+
+                            disappearAnim(curPosition, selectedImg);
                             break;
                         case MotionEvent.ACTION_CANCEL:
                             view.setScaleX(1.0f);
@@ -415,19 +435,22 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             return false;
         }
     }
-    
+
     /**
      * this mode ball disapper animation
+     * 
      * @param curPosition
      * @param selectedImg
      */
-    private void disappearAnim(int curPosition,View selectedImg){
-        View prePage = mViews.get(curPosition==0?0:curPosition-1);
-        View nextPage = mViews.get(curPosition==mViews.size()-1?curPosition:curPosition+1); 
-        final TextView prePageModeName = (TextView)prePage.findViewById(R.id.tv_mode_name);
-        final TextView nextPageModeName = (TextView)nextPage.findViewById(R.id.tv_mode_name);
-        final TextView thisModeName = (TextView)mViews.get(curPosition).findViewById(R.id.tv_mode_name);
-        
+    private void disappearAnim(int curPosition, View selectedImg) {
+        View prePage = mViews.get(curPosition == 0 ? 0 : curPosition - 1);
+        View nextPage = mViews
+                .get(curPosition == mViews.size() - 1 ? curPosition : curPosition + 1);
+        final TextView prePageModeName = (TextView) prePage.findViewById(R.id.tv_mode_name);
+        final TextView nextPageModeName = (TextView) nextPage.findViewById(R.id.tv_mode_name);
+        final TextView thisModeName = (TextView) mViews.get(curPosition).findViewById(
+                R.id.tv_mode_name);
+
         ValueAnimator textAnim = ValueAnimator.ofFloat(0f);
         textAnim.setDuration(200);
         textAnim.addUpdateListener(new AnimatorUpdateListener() {
@@ -440,16 +463,18 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 mModeNameTv.setAlpha(value);
             }
         });
-        ObjectAnimator thisViewAlpha = ObjectAnimator.ofFloat(MultiModeView.this, "alpha", 0f).setDuration(400);
-        ObjectAnimator selectImgAlpha = ObjectAnimator.ofFloat(selectedImg, "alpha",0f).setDuration(400);
+        ObjectAnimator thisViewAlpha = ObjectAnimator.ofFloat(MultiModeView.this, "alpha", 0f)
+                .setDuration(400);
+        ObjectAnimator selectImgAlpha = ObjectAnimator.ofFloat(selectedImg, "alpha", 0f)
+                .setDuration(400);
         AnimatorSet set = new AnimatorSet();
-        set.addListener(new AnimatorListenerAdapter(){
+        set.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 hide();
             }
         });
-        set.playTogether(thisViewAlpha,selectImgAlpha,textAnim);
+        set.playTogether(thisViewAlpha, selectImgAlpha, textAnim);
         set.setStartDelay(400);
         set.start();
     }
