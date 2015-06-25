@@ -44,10 +44,14 @@ import com.leo.appmaster.ui.PagedGridView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LeoSingleLinesInputDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class LockModeEditActivity extends BaseActivity implements
         AppChangeListener, OnItemClickListener, OnClickListener {
 
+    private static final String SHOW_NOW = "mode changed_show_now";
+    private static final String START_FROM_ADD = "startFromadd";
+    private String eventMsg = "";
     public LayoutInflater mInflater;
     public ImageView mIvBack, mIvNameEdit, mIvDone;
     public TextView mTvName;
@@ -101,6 +105,15 @@ public class LockModeEditActivity extends BaseActivity implements
 
     private void handleIntent() {
         Intent intent = getIntent();
+        String Action = intent.getAction();
+        LeoLog.d("testMultiModeView", "Action : " + Action);
+        
+        if(Action == null){
+            eventMsg = "mode changed";
+        }else if(Action.equals(START_FROM_ADD)){
+            eventMsg = SHOW_NOW;
+        }
+        
         mModeName = intent.getStringExtra("mode_name");
         mModeId = intent.getIntExtra("mode_id", -1);
         mNewMode = intent.getBooleanExtra("new_mode", false);
@@ -405,8 +418,11 @@ public class LockModeEditActivity extends BaseActivity implements
                             }
                             Toast.makeText(LockModeEditActivity.this, R.string.save_successful, 0)
                                     .show();
+                            // LeoEventBus.getDefaultBus().post(
+                            // new LockModeEvent(EventId.EVENT_MODE_CHANGE,
+                            // "mode changed"));
                             LeoEventBus.getDefaultBus().post(
-                                    new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed"));
+                                    new LockModeEvent(EventId.EVENT_MODE_CHANGE, eventMsg));
                             finish();
                         }
                     }
@@ -439,8 +455,10 @@ public class LockModeEditActivity extends BaseActivity implements
                 lm.updateMode(mEditMode);
             }
             Toast.makeText(LockModeEditActivity.this, R.string.save_successful, 0).show();
+            // LeoEventBus.getDefaultBus().post(
+            // new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed"));
             LeoEventBus.getDefaultBus().post(
-                    new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed"));
+                    new LockModeEvent(EventId.EVENT_MODE_CHANGE, eventMsg));
             finish();
         }
 
