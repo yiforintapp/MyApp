@@ -31,6 +31,7 @@ import android.widget.Gallery;
 import android.widget.ImageView;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -74,6 +75,9 @@ public class LockPatternView extends ViewGroup {
     private static final int BUTTON_STATE_MOVE_RIGHT = 4;
 
     private int mGestureState = BUTTON_STATE_NAMAL;
+
+    private boolean isFromLockScreenActivity = false;
+    private boolean isHideLine = false;
 
     /**
      * How many milliseconds we spend animating each circle of a lock pattern if
@@ -272,6 +276,8 @@ public class LockPatternView extends ViewGroup {
 
     public LockPatternView(Context context, AttributeSet attrs) {
         super(context, attrs);
+
+        isHideLine = AppMasterPreference.getInstance(context).getIsHideLine();
 
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.LockPatternView);
@@ -1034,7 +1040,7 @@ public class LockPatternView extends ViewGroup {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         final ArrayList<Cell> pattern = mPattern;
-        //已连接上的icon数
+        // 已连接上的icon数
         final int count = pattern.size();
         final boolean[][] drawLookup = mPatternDrawLookup;
 
@@ -1102,43 +1108,14 @@ public class LockPatternView extends ViewGroup {
         boolean oldFlag = (mPaint.getFlags() & Paint.FILTER_BITMAP_FLAG) != 0;
         mPaint.setFilterBitmap(true); // draw with higher quality since we
                                       // render with transforms
-        // draw the lines
-        if (drawPath) {
-            boolean anyCircles = false;
-            for (int i = 0; i < count; i++) {
-                Cell cell = pattern.get(i);
 
-                // only draw the part of the pattern stored in
-                // the lookup table (this is only different in the case
-                // of animation).
-                if (!drawLookup[cell.row][cell.column]) {
-                    break;
-                }
-                anyCircles = true;
-
-                float centerX = getCenterXForColumn(cell.column);
-                float centerY = getCenterYForRow(cell.row);
-                if (i == 0) {
-                    currentPath.moveTo(centerX, centerY);
-                } else {
-                    currentPath.lineTo(centerX, centerY);
-                }
+        // draw the lines && hideline 
+        if (isFromLockScreenActivity) {
+            if (!isHideLine) {
+                drawPath(canvas, pattern, count, drawLookup, currentPath, drawPath);
             }
-
-            // add last in progress section
-            if ((mPatternInProgress || mPatternDisplayMode == DisplayMode.Animate)
-                    && anyCircles) {
-                currentPath.lineTo(mInProgressX, mInProgressY);
-            }
-            // chang the line color in different DisplayMode
-            if (mPatternDisplayMode == DisplayMode.Wrong)
-                mPathPaint.setColor(0x7fbb0000);
-            else
-                mPathPaint.setColor(mColor);
-            // mPathPaint.setColor(R.color.black);
-            canvas.drawPath(currentPath, mPathPaint);
-            //轨迹断裂bug
-            invalidate();
+        } else {
+            drawPath(canvas, pattern, count, drawLookup, currentPath, drawPath);
         }
 
         // draw the circles
@@ -1181,6 +1158,47 @@ public class LockPatternView extends ViewGroup {
             }
         }
         super.dispatchDraw(canvas);
+    }
+
+    private void drawPath(Canvas canvas, final ArrayList<Cell> pattern, final int count,
+            final boolean[][] drawLookup, final Path currentPath, final boolean drawPath) {
+        if (drawPath) {
+            boolean anyCircles = false;
+            for (int i = 0; i < count; i++) {
+                Cell cell = pattern.get(i);
+
+                // only draw the part of the pattern stored in
+                // the lookup table (this is only different in the case
+                // of animation).
+                if (!drawLookup[cell.row][cell.column]) {
+                    break;
+                }
+                anyCircles = true;
+
+                float centerX = getCenterXForColumn(cell.column);
+                float centerY = getCenterYForRow(cell.row);
+                if (i == 0) {
+                    currentPath.moveTo(centerX, centerY);
+                } else {
+                    currentPath.lineTo(centerX, centerY);
+                }
+            }
+
+            // add last in progress section
+            if ((mPatternInProgress || mPatternDisplayMode == DisplayMode.Animate)
+                    && anyCircles) {
+                currentPath.lineTo(mInProgressX, mInProgressY);
+            }
+            // chang the line color in different DisplayMode
+            if (mPatternDisplayMode == DisplayMode.Wrong)
+                mPathPaint.setColor(0x7fbb0000);
+            else
+                mPathPaint.setColor(mColor);
+            // mPathPaint.setColor(R.color.black);
+            canvas.drawPath(currentPath, mPathPaint);
+            // 轨迹断裂bug
+            invalidate();
+        }
     }
 
     private void setCirclesResource(boolean[][] partOfPattern) {
@@ -1486,6 +1504,10 @@ public class LockPatternView extends ViewGroup {
     private boolean needChangeTheme() {
         return ThemeUtils.checkThemeNeed(mContext)
                 && (mLockMode == LockManager.LOCK_MODE_FULL);
+    }
+
+    public void setIsFromLockScreenActivity(boolean isture) {
+        this.isFromLockScreenActivity = isture;
     }
 
 }

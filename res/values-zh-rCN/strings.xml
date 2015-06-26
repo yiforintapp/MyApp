@@ -243,6 +243,7 @@
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
+    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
     <string name="app_no_video_hide">请点击添加按钮，添加需要隐藏的视频</string>
     <string name="app_no_video_gallery_hide">没有可隐藏的视频</string>
     <string name="app_video_hide">视频隐藏</string>
