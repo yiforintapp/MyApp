@@ -28,6 +28,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private static final String PREF_PASSWD_ANWSER = "passwd_anwser";
     private static final String PREF_PASSWD_TIP = "passwd_tip";
     public static final String PREF_LOCKER_THEME = "set_locker_theme";
+    public static final String PREF_HIDE_LOCK_LINE = "app_hide_lockline";
     public static final String PREF_RELOCK_TIME = "relock_time";
     public static final String PREF_AUTO_LOCK = "set_auto_lock";
     public static final String PREF_SET_PROTECT = "set_passwd_protect";
@@ -678,6 +679,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_NEW_APP_LOCK_TIP, true);
     }
 
+    public void setHideLine(boolean isHide){
+        mPref.edit().putBoolean(PREF_HIDE_LOCK_LINE, isHide).commit();
+    }
+    
+    public boolean getIsHideLine(){
+        return mPref.getBoolean(PREF_HIDE_LOCK_LINE, false);
+    }
+    
     public void setSortType(int type) {
         mPref.edit().putInt(PREF_SORT_TYPE, type).commit();
     }
