@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -160,6 +161,8 @@ public class PasswdProtectActivity extends BaseActivity implements
         });
         
         mAnwser = (EditText) findViewById(R.id.et_anwser);
+        PasswdProtectActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        mAnwser.requestFocus();
         mAnwser.setOnClickListener(this);
         mAnwser.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
