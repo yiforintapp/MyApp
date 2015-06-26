@@ -1034,6 +1034,7 @@ public class LockPatternView extends ViewGroup {
     @Override
     protected void dispatchDraw(Canvas canvas) {
         final ArrayList<Cell> pattern = mPattern;
+        //已连接上的icon数
         final int count = pattern.size();
         final boolean[][] drawLookup = mPatternDrawLookup;
 
@@ -1136,6 +1137,8 @@ public class LockPatternView extends ViewGroup {
                 mPathPaint.setColor(mColor);
             // mPathPaint.setColor(R.color.black);
             canvas.drawPath(currentPath, mPathPaint);
+            //轨迹断裂bug
+            invalidate();
         }
 
         // draw the circles
