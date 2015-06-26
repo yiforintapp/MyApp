@@ -249,6 +249,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      */
     @Override
     protected void onNewIntent(Intent intent) {
+        
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
             finish();
@@ -259,6 +260,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
             mLockedPackage = newLockedPkg;
+            
+            if(mPretendFragment != null){
+                mPretendLayout.setVisibility(View.GONE);
+                mLockLayout.setVisibility(View.VISIBLE);
+            }
+            
             // change background
             if (!ThemeUtils.checkThemeNeed(this)
                     && (mLockMode == LockManager.LOCK_MODE_FULL)) {
@@ -271,11 +278,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockFragment.onLockPackageChanged(mLockedPackage);
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
 
+            mPretendFragment = getPretendFragment();
             if (mPretendFragment != null) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction tans;
                 mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
-                mPretendFragment = getPretendFragment();
                 mLockLayout.setVisibility(View.GONE);
                 mPretendLayout.setVisibility(View.VISIBLE);
                 tans = fm.beginTransaction();
@@ -480,6 +487,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             tans.add(R.id.pretend_layout, mPretendFragment);
             tans.commit();
         } else {
+            LeoLog.d("whatisthis", "mPretendFragment == null " );
             mLockLayout.setVisibility(View.VISIBLE);
             mPretendLayout.setVisibility(View.GONE);
         }
