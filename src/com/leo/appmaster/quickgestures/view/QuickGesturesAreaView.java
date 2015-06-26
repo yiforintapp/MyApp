@@ -1,15 +1,20 @@
 
 package com.leo.appmaster.quickgestures.view;
 
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.utils.DipPixelUtil;
 
 /**
@@ -25,6 +30,8 @@ public class QuickGesturesAreaView extends View {
     private Paint mPaint;
     private float x, y;
     private int radius;
+    private ValueAnimator mAnimator;
+    private int mAlpha = 255;
 
     public QuickGesturesAreaView(Context context) {
         super(context);
@@ -38,14 +45,16 @@ public class QuickGesturesAreaView extends View {
 
     private void initPain(Context context) {
         mPaint = new Paint();
-        mPaint.setColor(Color.RED);
         mPaint.setAntiAlias(true);
         mPaint.setStyle(Paint.Style.FILL);
+        mPaint.setColor(Color.RED);
+        mPaint.setAlpha(mAlpha);
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        initPain(mContext);
         if (mIsShowReadTip) {
             if (mDirectionFlag > 0) {
                 drawReadTip(canvas, mPaint, mDirectionFlag);
@@ -74,7 +83,6 @@ public class QuickGesturesAreaView extends View {
         setFocusable(true);
         setClickable(true);
         radius = DipPixelUtil.dip2px(mContext, 5);
-        initPain(mContext);
     }
 
     private void drawReadTip(Canvas canvas, Paint paint, int flag) {
@@ -97,6 +105,31 @@ public class QuickGesturesAreaView extends View {
     public void setIsShowReadTip(boolean flag, int directionFlag) {
         mIsShowReadTip = flag;
         mDirectionFlag = directionFlag;
-        invalidate();
+        // invalidate();
+        playAnim();
+    }
+
+    private void playAnim() {
+        cancelAnim(true);
+        mAnimator = new ValueAnimator();
+        mAnimator.setDuration(800);
+        mAnimator.setFloatValues(1.0f, 0.0f);
+        mAnimator.removeAllUpdateListeners();
+        mAnimator.setRepeatMode(ValueAnimator.REVERSE);
+        mAnimator.setRepeatCount(ValueAnimator.INFINITE);
+        mAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                final float percent = (Float) animation.getAnimatedValue();
+                mAlpha = (int) (255 * percent);
+                invalidate();
+            }
+        });
+        mAnimator.start();
+    }
+
+    private void cancelAnim(boolean b) {
+        if (mAnimator != null) {
+            mAnimator.cancel();
+        }
     }
 }
