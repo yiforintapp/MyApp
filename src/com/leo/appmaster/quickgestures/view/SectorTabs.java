@@ -154,7 +154,7 @@ public class SectorTabs extends View {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
-            mContainer.showCloseAnimation();
+            mContainer.showCloseAnimation(null);
         }
     }
 

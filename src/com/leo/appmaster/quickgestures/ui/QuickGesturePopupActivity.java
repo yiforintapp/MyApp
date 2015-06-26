@@ -153,10 +153,15 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
-            mContainer.showCloseAnimation();
+            mContainer.showCloseAnimation(new Runnable() {
+
+                @Override
+                public void run() {
+                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                    createFloatView();
+                }
+            });
             mContainer.saveGestureType();
-            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-            createFloatView();
         }
     }
 
