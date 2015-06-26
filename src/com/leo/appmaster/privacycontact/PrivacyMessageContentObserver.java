@@ -232,11 +232,15 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             // callLogs.size());
                             if (AppMasterPreference.getInstance(mContext)
                                     .getSwitchOpenRecentlyContact()) {
-                                QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
-                                QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-                                FloatWindowHelper.removeShowReadTipWindow(mContext);
-                                if (PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {
-                                    PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag = false;
+                                if (!QuickGestureManager.getInstance(mContext).mToCallFlag) {
+                                    QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
+                                    QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+                                    FloatWindowHelper.removeShowReadTipWindow(mContext);
+                                    if (PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {
+                                        PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag = false;
+                                    }
+                                } else {
+                                    QuickGestureManager.getInstance(mContext).mToCallFlag = false;
                                 }
                             }
                         }

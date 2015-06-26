@@ -756,9 +756,12 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (info instanceof ContactCallLog) {
             // 电话提醒
             item.cancelShowReadTip();
+            QuickGestureManager.getInstance(mContext).mToCallFlag = true;
             ContactCallLog callLog = (ContactCallLog) info;
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_CALL_BUTTON);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setType("vnd.android.cursor.dir/calls");
+//            intent.setAction(Intent.ACTION_CALL_BUTTON);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 mContext.startActivity(intent);
             } catch (Exception e) {
@@ -769,6 +772,13 @@ public class AppleWatchLayout extends ViewGroup {
             // 0) {
             // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);
             // }
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    QuickGestureManager.getInstance(mContext).mToCallFlag = false;
+                }
+            }, 2000);
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGestureContactTipInfo) {
             // 隐私联系人提示
