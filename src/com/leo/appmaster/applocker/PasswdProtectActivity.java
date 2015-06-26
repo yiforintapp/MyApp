@@ -131,7 +131,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                     public void onClick(View v) {
                         mQuesDialog.dismiss();
                     }
-                });
+                });//555
                 
                 TextView mTitle = (TextView) mQuesDialog.findViewById(R.id.dlg_title);
                 mTitle.setText(getResources().getString(R.string.input_qusetion));
