@@ -82,7 +82,7 @@ public class QuickGesturesAreaView extends View {
         // setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
         setFocusable(true);
         setClickable(true);
-        radius = DipPixelUtil.dip2px(mContext, 5);
+        radius = DipPixelUtil.dip2px(mContext, 4);
     }
 
     private void drawReadTip(Canvas canvas, Paint paint, int flag) {
