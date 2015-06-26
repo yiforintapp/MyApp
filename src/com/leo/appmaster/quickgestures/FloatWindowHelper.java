@@ -1486,11 +1486,16 @@ public class FloatWindowHelper {
      * 
      * @param flag
      */
-    public static void updateFloatWindowBackgroudColor(boolean flag) {
+    public static void updateFloatWindowBackgroudColor(Context context, boolean flag) {
         if (flag) {
             if (mLeftBottomView != null) {
                 mLeftBottomView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == -1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == -2)) {
+                    mLeftBottomView.setIsShowReadTip(false, 1);
+                }
             }
             if (mLeftCenterView != null) {
                 mLeftCenterView
@@ -1499,6 +1504,12 @@ public class FloatWindowHelper {
             if (mLeftCenterCenterView != null) {
                 mLeftCenterCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == -1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == -2)
+                        && mLeftBottomView == null) {
+                    mLeftCenterCenterView.setIsShowReadTip(false, 3);
+                }
             }
             if (mLeftTopView != null) {
                 mLeftTopView.setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
@@ -1506,6 +1517,11 @@ public class FloatWindowHelper {
             if (mRightBottomView != null) {
                 mRightBottomView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == 1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == 2)) {
+                    mRightBottomView.setIsShowReadTip(false, 2);
+                }
             }
             if (mRightCenterView != null) {
                 mRightCenterView
@@ -1514,6 +1530,12 @@ public class FloatWindowHelper {
             if (mRightCenterCenterView != null) {
                 mRightCenterCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == 1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == 2)
+                        && mRightBottomView == null) {
+                    mRightCenterCenterView.setIsShowReadTip(false, 4);
+                }
             }
             if (mRightTopView != null) {
                 mRightTopView
@@ -1523,6 +1545,11 @@ public class FloatWindowHelper {
             if (mLeftBottomView != null) {
                 mLeftBottomView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == -1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == -2)) {
+                    mLeftBottomView.setIsShowReadTip(true, 1);
+                }
             }
             if (mLeftCenterView != null) {
                 mLeftCenterView
@@ -1531,6 +1558,12 @@ public class FloatWindowHelper {
             if (mLeftCenterCenterView != null) {
                 mLeftCenterCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == -1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == -2)
+                        && mLeftBottomView == null) {
+                    mLeftCenterCenterView.setIsShowReadTip(true, 3);
+                }
             }
             if (mLeftTopView != null) {
                 mLeftTopView
@@ -1539,6 +1572,11 @@ public class FloatWindowHelper {
             if (mRightBottomView != null) {
                 mRightBottomView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == 1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == 2)) {
+                    mRightBottomView.setIsShowReadTip(true, 2);
+                }
             }
             if (mRightCenterView != null) {
                 mRightCenterView
@@ -1547,6 +1585,12 @@ public class FloatWindowHelper {
             if (mRightCenterCenterView != null) {
                 mRightCenterCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == 1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == 2)
+                        && mRightBottomView == null) {
+                    mRightCenterCenterView.setIsShowReadTip(true, 4);
+                }
             }
             if (mRightTopView != null) {
                 mRightTopView
@@ -1629,7 +1673,7 @@ public class FloatWindowHelper {
             }
             if (FloatWindowHelper.mEditQuickAreaFlag) {
                 FloatWindowHelper
-                        .updateFloatWindowBackgroudColor(true);
+                        .updateFloatWindowBackgroudColor(context, true);
             }
         }
     }

@@ -462,7 +462,7 @@ public class TaskDetectService extends Service {
                             // set background color
                             if (FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper
-                                        .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
+                                        .updateFloatWindowBackgroudColor(getApplicationContext(),FloatWindowHelper.mEditQuickAreaFlag);
                             }
                             boolean isJustHome = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isJustHome;

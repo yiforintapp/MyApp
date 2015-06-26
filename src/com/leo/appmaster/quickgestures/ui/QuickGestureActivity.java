@@ -470,7 +470,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     // update backgroud color
     private void updateFloatWindowBackGroudColor() {
         FloatWindowHelper
-                .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
+                .updateFloatWindowBackgroudColor(this,FloatWindowHelper.mEditQuickAreaFlag);
         // FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
         // AppMasterPreference
         // .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
