@@ -30,6 +30,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -52,7 +54,14 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, final Intent intent) {
-        if(PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+        /*
+         * 有新短信来时恢复该短信是否经过红点提示标记的默认值false
+         */
+        if (QuickGestureManager.getInstance(mContext).isMessageRead) {
+            QuickGestureManager.getInstance(mContext).isMessageRead = false;
+            AppMasterPreference.getInstance(mContext).setMessageIsRedTip(false);
+        }
+        if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
             return;
         }
         String action = intent.getAction();
@@ -74,7 +83,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     mPhoneNumber = message.getOriginatingAddress();// 电话号
                     mMessgeBody = message.getMessageBody();// 短信内容
                     mSendDate = message.getTimestampMillis();
-
                     if (!Utilities.isEmpty(mPhoneNumber)) {
                         String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
                         ContactBean contact = getPrivateMessage(formateNumber, mContext);
@@ -89,6 +97,8 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             messageBean.setMessageIsRead(0);
                             messageBean.setMessageTime(sendTime);
                             messageBean.setMessageType(mAnswer);
+                            // 过滤监控短信记录数据库，隐私联系人删除未读短信记录时引发数据库变化而做的操作（要在执行删除操作之前去赋值）
+                            PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag = true;
                             AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                                 @Override
                                 public void run() {
@@ -103,7 +113,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             } catch (Exception e) {
 
             } catch (Error error) {
-                
+
             }
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
             // 获取来电号码
@@ -247,6 +257,10 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             notification.when = System.currentTimeMillis();
             notificationManager.notify(20140902, notification);
         }
+        /*
+         * 记录最后隐私短信和隐私通话哪个最后记录(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)
+         */
+        QuickGestureManager.getInstance(mContext).privacyLastRecord = QuickGestureManager.RECORD_CALL;
     }
 
     private void saveCallLog(ContactBean contact) {

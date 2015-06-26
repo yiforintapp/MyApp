@@ -58,6 +58,8 @@ public class QuickGestureManager {
     protected static final String AppLauncherRecorder = null;
     public static final int APPITEMINFO = 1;
     public static final int NORMALINFO = 0;
+    public static final String RECORD_CALL="call";
+    public static final String RECORD_MSM="msm";
     private static QuickGestureManager mInstance;
     private Context mContext;
     private boolean mInited = false;
@@ -82,6 +84,8 @@ public class QuickGestureManager {
     public boolean isAppsAndHome;
     public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
     public int screenSpace;// 根布局与屏幕高的差值
+    public boolean isMessageRead;
+    public  String privacyLastRecord;//RECORD_CALL:最后记录为通话记录，RECORD_MSM：最后记录为短信
 
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
@@ -218,22 +222,29 @@ public class QuickGestureManager {
         if (isShowMsmTip) {
             if (QuickGestureManager.getInstance(mContext).mMessages != null
                     && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
-                List<MessageBean> messages = QuickGestureManager.getInstance(mContext).mMessages;
-                for (MessageBean message : messages) {
-                    message.gesturePosition = -1000;
-                    message.icon = mContext.getResources().getDrawable(
-                            R.drawable.gesture_message);
-                    if (message.getMessageName() != null
-                            && !"".equals(message.getMessageName())) {
-                        message.label = message.getMessageName();
-                    } else {
-                        message.label = message.getPhoneNumber();
-                    }
-                    message.isShowReadTip = true;
-                    dynamicList.add(message);
-                    if (dynamicList.size() >= 11)
-                        break;
-                }
+                // List<MessageBean> messages =
+                // QuickGestureManager.getInstance(mContext).mMessages;
+                // for (MessageBean message : messages) {
+                MessageBean message = QuickGestureManager.getInstance(mContext).mMessages.get(0);
+                message.gesturePosition = -1000;
+                message.icon = mContext.getResources().getDrawable(
+                        R.drawable.gesture_message);
+//                if (QuickGestureManager.getInstance(mContext).mMessages.size() > 1) {
+                    message.label = mContext.getResources().getString(
+                            R.string.privacy_contact_message);
+//                } else {
+//                    if (message.getMessageName() != null
+//                            && !"".equals(message.getMessageName())) {
+//                        message.label = message.getMessageName();
+//                    } else {
+//                        message.label = message.getPhoneNumber();
+//                    }
+//                }
+                message.isShowReadTip = true;
+                dynamicList.add(message);
+                // if (dynamicList.size() >= 11)
+                // break;
+                // }
             }
         }
 
@@ -241,22 +252,29 @@ public class QuickGestureManager {
         if (isShowCallLogTip) {
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null
                     && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
-                List<ContactCallLog> baseInfos = QuickGestureManager.getInstance(mContext).mCallLogs;
-                for (ContactCallLog baseInfo : baseInfos) {
-                    baseInfo.gesturePosition = -1000;
-                    baseInfo.icon = mContext.getResources().getDrawable(
-                            R.drawable.gesture_call);
-                    if (baseInfo.getCallLogName() != null
-                            && !"".equals(baseInfo.getCallLogName())) {
-                        baseInfo.label = baseInfo.getCallLogName();
-                    } else {
-                        baseInfo.label = baseInfo.getCallLogNumber();
-                    }
-                    baseInfo.isShowReadTip = true;
-                    dynamicList.add(baseInfo);
-                    if (dynamicList.size() >= 11)
-                        break;
-                }
+                // List<ContactCallLog> baseInfos =
+                // QuickGestureManager.getInstance(mContext).mCallLogs;
+                // for (ContactCallLog baseInfo : baseInfos) {
+                ContactCallLog baseInfo = QuickGestureManager.getInstance(mContext).mCallLogs.get(0);
+                baseInfo.gesturePosition = -1000;
+                baseInfo.icon = mContext.getResources().getDrawable(
+                        R.drawable.gesture_call);
+//                if (QuickGestureManager.getInstance(mContext).mCallLogs.size() > 1) {
+                    baseInfo.label = mContext.getResources().getString(
+                            R.string.privacy_contact_calllog);
+//                } else {
+//                    if (baseInfo.getCallLogName() != null
+//                            && !"".equals(baseInfo.getCallLogName())) {
+//                        baseInfo.label = baseInfo.getCallLogName();
+//                    } else {
+//                        baseInfo.label = baseInfo.getCallLogNumber();
+//                    }
+//                }
+                baseInfo.isShowReadTip = true;
+                dynamicList.add(baseInfo);
+                // if (dynamicList.size() >= 11)
+                // break;
+                // }
             }
         }
         // privacy contact

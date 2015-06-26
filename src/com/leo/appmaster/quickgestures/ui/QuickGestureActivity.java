@@ -465,8 +465,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private void updateFloatWindowBackGroudColor() {
         FloatWindowHelper
                 .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
-//        FloatWindowHelper.createFloatWindow(QuickGestureActivity.this, AppMasterPreference
-//                .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
+        // FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
+        // AppMasterPreference
+        // .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
     }
 
     // sliding time setting diallg
@@ -878,13 +879,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = 0;
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                     // uninit quick gesture data
-//                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            QuickGestureManager.getInstance(getApplicationContext()).unInit();
-//                        }
-//                    });
+                    // AppMasterApplication.getInstance().postInAppThreadPool(new
+                    // Runnable() {
+                    //
+                    // @Override
+                    // public void run() {
+                    // QuickGestureManager.getInstance(getApplicationContext()).unInit();
+                    // }
+                    // });
                 } else {
                     SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
                             "qs_open");
@@ -897,13 +899,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     initChexkBox();
                     QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
                     // init quick gesture data
-//                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            QuickGestureManager.getInstance(getApplicationContext()).init();
-//                        }
-//                    });
+                    // AppMasterApplication.getInstance().postInAppThreadPool(new
+                    // Runnable() {
+                    //
+                    // @Override
+                    // public void run() {
+                    // QuickGestureManager.getInstance(getApplicationContext()).init();
+                    // }
+                    // });
                 }
                 break;
             case R.id.slid_area:
@@ -940,6 +943,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
                     mNoReadMessageFlag = true;
                     // checkout system database no read message
+                    if (QuickGestureManager.getInstance(QuickGestureActivity.this).isMessageRead) {
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).isMessageRead = false;
+                        AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                .setMessageIsRedTip(false);
+                    }
                     checkNoReadMessage();
                 } else {
                     SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",

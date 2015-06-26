@@ -194,6 +194,9 @@ public class TaskDetectService extends Service {
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
                 .getDialogRadioRightCenter();
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).resetSlidAreaSize();
+        //初始化未读短信是否已经红点提示过
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageRead = AppMasterPreference
+                .getInstance(getApplicationContext()).getMessageIsRedTip();
     }
 
     private void startFloatWindowTask() {

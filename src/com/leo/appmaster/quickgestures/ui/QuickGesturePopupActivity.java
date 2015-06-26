@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -168,7 +169,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     /* 快捷手势消失，立即创建响应热区 */
     private void createFloatView() {
         // 去除热区红点和去除未读，运营icon
-        cancelAllRedTip();
+        cancelAllRedTip(getApplicationContext());
         // 创建热区处理
         isCloseWindow = true;
         FloatWindowHelper.mGestureShowing = false;
@@ -183,30 +184,41 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 isCloseWindow = false;
             }
         }, 500);
+        // 多条短信提示后，未读短信红点提示标记为已读
+        if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageRead) {
+            QuickGestureManager.getInstance(getApplicationContext()).isMessageRead = true;
+            AppMasterPreference.getInstance(getApplicationContext()).setMessageIsRedTip(true);
+        }
     }
 
-    // 热区红点，未读，运营icon和红点
-    private void cancelAllRedTip() {
+    // 去除热区红点，未读，运营icon和红点
+    private void cancelAllRedTip(Context context) {
         // 隐私通话
-        if (QuickGestureManager.getInstance(getApplicationContext()).isShowPrivacyCallLog) {
-            QuickGestureManager.getInstance(getApplicationContext()).isShowPrivacyCallLog = false;
-            AppMasterPreference.getInstance(getApplicationContext()).setQuickGestureCallLogTip(
+        if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
+            AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
                     false);
         }
         // 隐私短信
-        if (QuickGestureManager.getInstance(getApplicationContext()).isShowPrivacyMsm) {
-            QuickGestureManager.getInstance(getApplicationContext()).isShowPrivacyMsm = false;
-            AppMasterPreference.getInstance(getApplicationContext()).setQuickGestureMsmTip(false);
+        if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
+            AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
         }
         // 短信，通话记录
-        if (QuickGestureManager.getInstance(getApplicationContext()).isShowSysNoReadMessage) {
-            QuickGestureManager.getInstance(getApplicationContext()).isShowSysNoReadMessage = false;
-            if (QuickGestureManager.getInstance(getApplicationContext()).mCallLogs != null) {
-                QuickGestureManager.getInstance(getApplicationContext()).mCallLogs.clear();
+        if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            if (QuickGestureManager.getInstance(context).mCallLogs != null) {
+                QuickGestureManager.getInstance(context).mCallLogs.clear();
             }
-            if (QuickGestureManager.getInstance(getApplicationContext()).mMessages != null) {
-                QuickGestureManager.getInstance(getApplicationContext()).mMessages.clear();
+            if (QuickGestureManager.getInstance(context).mMessages != null) {
+                QuickGestureManager.getInstance(context).mMessages.clear();
             }
+        }
+        // 运营
+        if (!AppMasterPreference.getInstance(context).getLastBusinessRedTipShow()) {
+            AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
         }
     }
 }
