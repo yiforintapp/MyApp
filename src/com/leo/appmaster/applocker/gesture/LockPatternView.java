@@ -38,6 +38,7 @@ import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
 
 /**
@@ -830,6 +831,7 @@ public class LockPatternView extends ViewGroup {
         // AM-678
         try {
             final int historySize = event.getHistorySize();
+            LeoLog.d("testPattern", "historySize : " + historySize);
             for (int i = 0; i < historySize + 1; i++) {
                 final float x = i < historySize ? event.getHistoricalX(i) : event
                         .getX();
@@ -954,7 +956,6 @@ public class LockPatternView extends ViewGroup {
                                     (int) (right + widthOffset),
                                     (int) (bottom + heightOffset));
                         }
-
                         invalidate(invalidateRect);
                     } else {
                         invalidate();
@@ -1084,6 +1085,7 @@ public class LockPatternView extends ViewGroup {
         mPathPaint.setStrokeWidth(radius);
 
         final Path currentPath = mCurrentPath;
+        // rewind当前path，清除掉所有直线，曲线，但是保留它内部的数据结构，以便更好的重新使用
         currentPath.rewind();
 
         // TODO: the path should be created and cached every time we hit-detect
@@ -1132,6 +1134,7 @@ public class LockPatternView extends ViewGroup {
                 mPathPaint.setColor(0x7fbb0000);
             else
                 mPathPaint.setColor(mColor);
+            // mPathPaint.setColor(R.color.black);
             canvas.drawPath(currentPath, mPathPaint);
         }
 
@@ -1481,5 +1484,5 @@ public class LockPatternView extends ViewGroup {
         return ThemeUtils.checkThemeNeed(mContext)
                 && (mLockMode == LockManager.LOCK_MODE_FULL);
     }
-    
+
 }
