@@ -153,7 +153,7 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         }
         FloatWindowHelper.mEditQuickAreaFlag = false;
         QuickGestureActivity.mAlarmDialogFlag = false;
-        FloatWindowHelper.updateFloatWindowBackgroudColor(false);
+        FloatWindowHelper.updateFloatWindowBackgroudColor(mContext,false);
     }
 
     public void setOnClickListener(OnDiaogClickListener listener) {
