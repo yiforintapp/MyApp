@@ -37,6 +37,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -84,6 +85,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     public static final String TAG = "LockScreenActivity";
 
+    private static final String mPrivateLockPck = "com.leo.appmaster";
     public static final String THEME_CHANGE = "lock_theme_change";
     public static final String EXTRA_LOCK_MODE = "extra_lock_type";
     public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
@@ -269,19 +271,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockFragment.onLockPackageChanged(mLockedPackage);
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
 
-            
-            if(mPretendFragment != null){
+            if (mPretendFragment != null) {
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction tans;
                 mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
                 mPretendFragment = getPretendFragment();
-                    mLockLayout.setVisibility(View.GONE);
-                    mPretendLayout.setVisibility(View.VISIBLE);
-                    tans = fm.beginTransaction();
-                    tans.replace(R.id.pretend_layout, mPretendFragment);
-                    tans.commitAllowingStateLoss();
+                mLockLayout.setVisibility(View.GONE);
+                mPretendLayout.setVisibility(View.VISIBLE);
+                tans = fm.beginTransaction();
+                tans.replace(R.id.pretend_layout, mPretendFragment);
+                tans.commitAllowingStateLoss();
             }
-           if(mPretendFragment != null) {
+            if (mPretendFragment != null) {
                 mLockLayout.setVisibility(View.GONE);
                 mPretendLayout.setVisibility(View.VISIBLE);
                 if (mPretendFragment instanceof PretendAppErrorFragment) {
@@ -365,10 +366,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void setAppInfoBackground(Drawable drawable) {
-        if(drawable != null) {
+        if (drawable != null) {
             int h = drawable.getIntrinsicHeight() * 9 / 10;
             int w = h * 3 / 5;
-            if(h > 0 && w > 0) {
+            if (h > 0 && w > 0) {
                 mAppBaseInfoLayoutbg = Bitmap.createBitmap(w, h,
                         Bitmap.Config.ARGB_8888);
                 Canvas canvas = new Canvas(mAppBaseInfoLayoutbg);
@@ -485,30 +486,32 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private PretendFragment getPretendFragment() {
-        int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
-        // pretendLock = 1;
-        if (pretendLock == 1) { /* app error */
-            PretendAppErrorFragment paf = new PretendAppErrorFragment();
-            String tip = "";
-            PackageManager pm = this.getPackageManager();
-            try {
-                ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
-                        PackageManager.GET_UNINSTALLED_PACKAGES);
-                String lab = info.loadLabel(pm).toString();
-                tip = getString(R.string.pretend_app_error, lab);
-
-            } catch (Exception e) {
-                tip = getString(R.string.weizhuang_error_notice);
-                e.printStackTrace();
+        LeoLog.d("whatisthis", "mLockedPackage : " + mLockedPackage);
+        if (!mPrivateLockPck.equals(mLockedPackage)) {
+            int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
+            // pretendLock = 1;
+            if (pretendLock == 1) { /* app error */
+                PretendAppErrorFragment paf = new PretendAppErrorFragment();
+                String tip = "";
+                PackageManager pm = this.getPackageManager();
+                try {
+                    ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
+                            PackageManager.GET_UNINSTALLED_PACKAGES);
+                    String lab = info.loadLabel(pm).toString();
+                    tip = getString(R.string.pretend_app_error, lab);
+                } catch (Exception e) {
+                    tip = getString(R.string.weizhuang_error_notice);
+                    e.printStackTrace();
+                }
+                paf.setErrorTip(tip);
+                return paf;
+            } else if (pretendLock == 2) {/* unknow call */
+                PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
+                return unknowcall;
+            } else if (pretendLock == 3) {/* fingerprint */
+                PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
+                return weizhuang;
             }
-            paf.setErrorTip(tip);
-            return paf;
-        } else if (pretendLock == 2) {/* unknow call */
-            PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
-            return unknowcall;
-        } else if (pretendLock == 3) {/* fingerprint */
-            PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
-            return weizhuang;
         }
         return null;
     }
@@ -521,7 +524,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             for (LockMode lockMode : modeList) {
                 if (mQuiclModeId == lockMode.modeId) {
                     willLaunch = lockMode;
-                    Log.i("tag","falg =="+ lockMode.defaultFlag);
+                    Log.i("tag", "falg ==" + lockMode.defaultFlag);
                     break;
                 }
             }
@@ -540,11 +543,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 LockMode lockMode = LockManager.getInstatnce().getCurLockMode();
                 lm.setCurrentLockMode(willLaunch, true);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
-                /**mode change tip**/
-                if(null != lockMode){
+                /** mode change tip **/
+                if (null != lockMode) {
                     int currentModeFlag = lockMode.defaultFlag;
-                    showModeActiveTip(willLaunch.defaultFlag,currentModeFlag);
-                }else{
+                    showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
+                } else {
                     showModeActiveTip(willLaunch);
                 }
             } else {
@@ -579,7 +582,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
 
                 pref.setUnlockCount(pref.getUnlockCount() + 1);
-                //quick gesture unlock count 
+                // quick gesture unlock count
                 pref.setNewUserUnlockCount(pref.getNewUserUnlockCount() + 1);
             } else if (mLockMode == LockManager.LOCK_MODE_PURE) {
             }
@@ -594,6 +597,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 finish();
             }
         }, 100);
+
+        AppMasterPreference amp = AppMasterPreference.getInstance(LockScreenActivity.this);
+        amp.setLockerScreenThemeGuide(true);
+
     }
 
     public void onUnlockOutcount() {
@@ -664,7 +671,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         }
                     });
                 }
-                mLeoPopMenu.setPopMenuItems(this,getPopMenuItems());
+                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems());
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
                 break;
@@ -818,59 +825,61 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mLockLayout.setVisibility(View.VISIBLE);
     }
 
-   private float top,width,height;
-   private LeoCircleView bgView;
-   private ImageView modeIconOut;
-   private ImageView modeIconIn;
-   private ImageView modeIconDown;
-   private TextView mActiveText;
-   private Map<String, Object> currModeIconMap;
-   private Map<String, Object> willModeIconMap;
+    private float top, width, height;
+    private LeoCircleView bgView;
+    private ImageView modeIconOut;
+    private ImageView modeIconIn;
+    private ImageView modeIconDown;
+    private TextView mActiveText;
+    private Map<String, Object> currModeIconMap;
+    private Map<String, Object> willModeIconMap;
+
     /**
      * show the tip when mode success activating
      */
-    private void showModeActiveTip(int willModeFlag,int currentModeFlag) {
-       currModeIconMap = modeIconSwitch(currentModeFlag);
-       willModeIconMap = modeIconSwitch(willModeFlag);
-        
+    private void showModeActiveTip(int willModeFlag, int currentModeFlag) {
+        currModeIconMap = modeIconSwitch(currentModeFlag);
+        willModeIconMap = modeIconSwitch(willModeFlag);
+
         View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
         mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
-       mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
-       bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
-       modeIconIn = (ImageView)mTipView.findViewById(R.id.mode_active_in);
-       modeIconOut = (ImageView)mTipView.findViewById(R.id.mode_active_out);
-       modeIconDown = (ImageView)mTipView.findViewById(R.id.mode_active_down);
-        modeIconIn.setImageResource((Integer)willModeIconMap.get("modeIcon"));
-        modeIconOut.setImageResource((Integer)currModeIconMap.get("modeIcon"));
-        modeIconDown.setImageResource((Integer)willModeIconMap.get("modeDown"));
+        mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
+        bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
+        modeIconIn = (ImageView) mTipView.findViewById(R.id.mode_active_in);
+        modeIconOut = (ImageView) mTipView.findViewById(R.id.mode_active_out);
+        modeIconDown = (ImageView) mTipView.findViewById(R.id.mode_active_down);
+        modeIconIn.setImageResource((Integer) willModeIconMap.get("modeIcon"));
+        modeIconOut.setImageResource((Integer) currModeIconMap.get("modeIcon"));
+        modeIconDown.setImageResource((Integer) willModeIconMap.get("modeDown"));
         bgView.setColor(Color.parseColor(currModeIconMap.get("bgColor").toString()));
-        
-        ViewTreeObserver vto =  modeIconOut.getViewTreeObserver(); 
-        vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { 
-            @SuppressWarnings("deprecation") 
-            @Override 
-            public void onGlobalLayout() { 
-                modeIconOut.getViewTreeObserver().removeGlobalOnLayoutListener(this); 
-                width = modeIconOut.getWidth(); 
+
+        ViewTreeObserver vto = modeIconOut.getViewTreeObserver();
+        vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
+            @SuppressWarnings("deprecation")
+            @Override
+            public void onGlobalLayout() {
+                modeIconOut.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+                width = modeIconOut.getWidth();
                 top = modeIconOut.getTop();
                 height = modeIconOut.getHeight();
                 activeAnimation();
-            } 
-        }); 
-        
+            }
+        });
+
         Toast toast = new Toast(this);
         toast.setView(mTipView);
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(1000);
         toast.show();
     }
-    
-    private void  activeAnimation(){
-         int bg_anim_time = 300;
-         int in_anim_time = 400;
-         int out_anim_time=300;
-        
-        ValueAnimator colorAnim = ValueAnimator.ofObject(new ColorEvaluator(), currModeIconMap.get("bgColor"),willModeIconMap.get("bgColor"));
+
+    private void activeAnimation() {
+        int bg_anim_time = 300;
+        int in_anim_time = 400;
+        int out_anim_time = 300;
+
+        ValueAnimator colorAnim = ValueAnimator.ofObject(new ColorEvaluator(),
+                currModeIconMap.get("bgColor"), willModeIconMap.get("bgColor"));
         colorAnim.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -879,26 +888,27 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         });
         colorAnim.setDuration(bg_anim_time);
-        
+
         final float outLength = top + height;
         ValueAnimator outAnimator = ValueAnimator.ofFloat(0, outLength).setDuration(out_anim_time);
         outAnimator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float curr = (Float) animation.getAnimatedValue();
-                float percent = 1.0f-curr / outLength;
+                float percent = 1.0f - curr / outLength;
                 modeIconOut.setTranslationY(curr);
-                if(percent>=0.6f){
+                if (percent >= 0.6f) {
                     modeIconOut.setAlpha(percent);
                     modeIconOut.setScaleX(percent);
                     modeIconOut.setScaleY(percent);
                 }
             }
         });
-        
-        final float maxLength = 2 * top ;
-        final float upLength = top + height/2;
-        ValueAnimator inAnimator = ValueAnimator.ofFloat(-(upLength), top, 0f).setDuration(in_anim_time);
+
+        final float maxLength = 2 * top;
+        final float upLength = top + height / 2;
+        ValueAnimator inAnimator = ValueAnimator.ofFloat(-(upLength), top, 0f).setDuration(
+                in_anim_time);
         inAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -913,7 +923,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 modeIconIn.setTranslationY(curr);
                 curr = curr + upLength;
                 float percent = curr / maxLength;
-                if(percent>1.0f){
+                if (percent > 1.0f) {
                     percent = 1.0f;
                 }
                 modeIconIn.setAlpha(0.6f * percent + 0.4f);
@@ -921,8 +931,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 modeIconIn.setScaleY(0.3f * percent + 0.7f);
             }
         });
-        
-        ValueAnimator downAnimator = ValueAnimator.ofFloat(0,1.2f,0.9f,1.0f).setDuration(300);
+
+        ValueAnimator downAnimator = ValueAnimator.ofFloat(0, 1.2f, 0.9f, 1.0f).setDuration(300);
         downAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -933,20 +943,20 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         downAnimator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                float curr = (Float)animation.getAnimatedValue();
+                float curr = (Float) animation.getAnimatedValue();
                 modeIconDown.setScaleX(curr);
                 modeIconDown.setScaleY(curr);
             }
         });
         downAnimator.setStartDelay(in_anim_time);
-            
-       AnimatorSet set = new AnimatorSet();
-       set.setStartDelay(400);
-       set.playTogether(colorAnim,outAnimator,inAnimator,downAnimator);
-       set.start();
+
+        AnimatorSet set = new AnimatorSet();
+        set.setStartDelay(400);
+        set.playTogether(colorAnim, outAnimator, inAnimator, downAnimator);
+        set.start();
     }
-    
-    private Map<String, Object> modeIconSwitch(int modeFlag){
+
+    private Map<String, Object> modeIconSwitch(int modeFlag) {
         Map<String, Object> iconMap = new HashMap<String, Object>();
         switch (modeFlag) {
             case 1:
@@ -955,7 +965,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 iconMap.put("modeDown", R.drawable.visitor_mode_done);
                 break;
             case 3:
-                iconMap.put("bgColor","#ffa71c");
+                iconMap.put("bgColor", "#ffa71c");
                 iconMap.put("modeIcon", R.drawable.family_mode);
                 iconMap.put("modeDown", R.drawable.family_mode_done);
                 break;
@@ -967,7 +977,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         return iconMap;
     }
-    
+
     /**
      * show the defalut toast tip when mode success activating
      */

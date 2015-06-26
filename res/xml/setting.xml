@@ -4,7 +4,8 @@
     <CheckBoxPreference
         android:defaultValue="true"
         android:key="set_forbid_uninstall"
-        android:layout="@layout/pref_list_item_top"
+        android:layout="@layout/pref_list_item_top_uninstall"
+        android:summary="@string/forbid_uninstall_off"
         android:title="@string/forbid_uninstall"
         android:widgetLayout="@layout/pref_widget_checkbox" />
 
@@ -56,11 +57,14 @@
         android:title="@string/passwd_notify"
         android:widgetLayout="@layout/pref_widget_more" >
     </Preference>
+    
     <Preference
         android:key="relock_time"
-        android:layout="@layout/pref_list_item_bot"
+        android:layout="@layout/pref_list_item_bot_lock_time"
+        android:summary="@string/lock_right_now"
         android:title="@string/change_lock_time"
         android:widgetLayout="@layout/pref_widget_more" />
+    
     <!--
            <CheckBoxPreference 
             android:defaultValue="false"
@@ -68,7 +72,7 @@
         android:layout="@layout/pref_list_item_bot"
         android:title="@string/lock_setting_unlock_all"
       android:widgetLayout="@layout/pref_widget_checkbox" 
-        />
+        />
     -->
 
 </PreferenceScreen>
