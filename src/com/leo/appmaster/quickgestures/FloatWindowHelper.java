@@ -103,22 +103,26 @@ public class FloatWindowHelper {
     public static void createFloatLeftBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-        final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
-                .checkBusinessRedTip();
+        // final boolean isShowBusinessRedTip =
+        // QuickGestureManager.getInstance(mContext)
+        // .checkBusinessRedTip();
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
-            // no read contact /message/privacycontact red tip
-            if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == -2)) {
-                mLeftBottomView.setIsShowReadTip(true, 1);
-            }
-            // business red tip
-            if (isShowBusinessRedTip
-                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == -2)) {
-                mLeftBottomView.setIsShowReadTip(true, 1);
-            }
+            // // no read contact /message/privacycontact red tip
+            // if
+            // (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+            // && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag
+            // == -1 || QuickGestureManager
+            // .getInstance(mContext).onTuchGestureFlag == -2)) {
+            // mLeftBottomView.setIsShowReadTip(true, 1);
+            // }
+            // // business red tip
+            // if (isShowBusinessRedTip
+            // && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag
+            // == -1 || QuickGestureManager
+            // .getInstance(mContext).onTuchGestureFlag == -2)) {
+            // mLeftBottomView.setIsShowReadTip(true, 1);
+            // }
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -133,21 +137,16 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            // Log.e(TAG,"按压力度："+event.getPressure());
                             moveX = Math.abs(startX - event.getRawX());
                             moveY = Math.abs(startY - event.getRawY());
-                            // Log.e(TAG,
-                            // "____"+ViewConfiguration.get(mContext).getScaledTouchSlop());
                             if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
                                     || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || event
                                     .getPressure() > 0.55)
                             && !isMoveIng)) {
-                                // Log.e("#########", "进入滑动响应时间：" +
-                                // System.currentTimeMillis());
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
+                                    FloatWindowHelper.mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
-                                    // QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -166,22 +165,24 @@ public class FloatWindowHelper {
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop())) {
                                 // cancel system no read message tip
-                                if (isShowTip || isShowBusinessRedTip) {
-                                    AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
-                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                            "notice");
-                                    Intent intent = new Intent(mContext,
-                                            QuickGesturePopupActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("show_orientation", 0);
-                                    try {
-                                        mContext.startActivity(intent);
-                                        // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                                        // = false;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
+                                // if (isShowTip || isShowBusinessRedTip) {
+                                // AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+                                // SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                // "qs_page",
+                                // "notice");
+                                // Intent intent = new Intent(mContext,
+                                // QuickGesturePopupActivity.class);
+                                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                // intent.putExtra("show_orientation", 0);
+                                // try {
+                                // mContext.startActivity(intent);
+                                // //
+                                // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                // // = false;
+                                // } catch (Exception e) {
+                                // e.printStackTrace();
+                                // }
+                                // }
                                 removeSwipWindow(mContext, 1);
                             }
                             break;
@@ -239,8 +240,22 @@ public class FloatWindowHelper {
     public static void createFloatLeftCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                .checkBusinessRedTip();
         if (mLeftCenterView == null) {
             mLeftCenterView = new QuickGesturesAreaView(mContext);
+            // no read contact /message/privacycontact red tip
+            if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == -2)) {
+                mLeftCenterView.setIsShowReadTip(true, 1);
+            }
+            // business red tip
+            if (isShowBusinessRedTip
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == -2)) {
+                mLeftCenterView.setIsShowReadTip(true, 1);
+            }
             mLeftCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -267,8 +282,8 @@ public class FloatWindowHelper {
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
+                                    FloatWindowHelper.mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
-                                    // QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -286,6 +301,23 @@ public class FloatWindowHelper {
                             // || Math.abs(startY - event.getRawY()) < 10) {
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop())) {
+                                // cancel system no read message tip
+                                if (isShowTip || isShowBusinessRedTip) {
+                                    AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                            "notice");
+                                    Intent intent = new Intent(mContext,
+                                            QuickGesturePopupActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("show_orientation", 0);
+                                    try {
+                                        mContext.startActivity(intent);
+                                        // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                        // = false;
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 removeSwipWindow(mContext, 2);
                             }
                             break;
@@ -387,8 +419,8 @@ public class FloatWindowHelper {
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
+                                    FloatWindowHelper.mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
-                                    // QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-2);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -526,8 +558,8 @@ public class FloatWindowHelper {
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
+                                    FloatWindowHelper.mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
-                                    // QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -604,23 +636,27 @@ public class FloatWindowHelper {
     public static void createFloatRightBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-        final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
-                .checkBusinessRedTip();
+        // final boolean isShowBusinessRedTip =
+        // QuickGestureManager.getInstance(mContext)
+        // .checkBusinessRedTip();
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
 
-            // no read contact/message/privacycontact red tip
-            if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == 2)) {
-                mRightBottomView.setIsShowReadTip(true, 2);
-            }
-            // business red tip
-            if (isShowBusinessRedTip
-                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == 2)) {
-                mRightBottomView.setIsShowReadTip(true, 2);
-            }
+            // // no read contact/message/privacycontact red tip
+            // if
+            // (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+            // && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag
+            // == 1 || QuickGestureManager
+            // .getInstance(mContext).onTuchGestureFlag == 2)) {
+            // mRightBottomView.setIsShowReadTip(true, 2);
+            // }
+            // // business red tip
+            // if (isShowBusinessRedTip
+            // && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag
+            // == 1 || QuickGestureManager
+            // .getInstance(mContext).onTuchGestureFlag == 2)) {
+            // mRightBottomView.setIsShowReadTip(true, 2);
+            // }
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -647,8 +683,8 @@ public class FloatWindowHelper {
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
+                                    FloatWindowHelper.mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
-                                    // QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -667,22 +703,24 @@ public class FloatWindowHelper {
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop())) {
                                 // cancel system no read message tip
-                                if (isShowTip || isShowBusinessRedTip) {
-                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                            "notice");
-                                    AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
-                                    Intent intent = new Intent(mContext,
-                                            QuickGesturePopupActivity.class);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    intent.putExtra("show_orientation", 2);
-                                    try {
-                                        mContext.startActivity(intent);
-                                        // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                                        // = false;
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                    }
-                                }
+                                // if (isShowTip || isShowBusinessRedTip) {
+                                // SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                // "qs_page",
+                                // "notice");
+                                // AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+                                // Intent intent = new Intent(mContext,
+                                // QuickGesturePopupActivity.class);
+                                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                // intent.putExtra("show_orientation", 2);
+                                // try {
+                                // mContext.startActivity(intent);
+                                // //
+                                // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                // // = false;
+                                // } catch (Exception e) {
+                                // e.printStackTrace();
+                                // }
+                                // }
                                 removeSwipWindow(mContext, -1);
                             }
                             break;
@@ -734,8 +772,22 @@ public class FloatWindowHelper {
     public static void createFloatRightCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
+                .checkBusinessRedTip();
         if (mRightCenterView == null) {
             mRightCenterView = new QuickGesturesAreaView(mContext);
+            // no read contact/message/privacycontact red tip
+            if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == 2)) {
+                mRightCenterView.setIsShowReadTip(true, 2);
+            }
+            // business red tip
+            if (isShowBusinessRedTip
+                    && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
+                            .getInstance(mContext).onTuchGestureFlag == 2)) {
+                mRightCenterView.setIsShowReadTip(true, 2);
+            }
             mRightCenterView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -762,8 +814,8 @@ public class FloatWindowHelper {
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
+                                    FloatWindowHelper.mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
-                                    // QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -781,6 +833,23 @@ public class FloatWindowHelper {
                             // || Math.abs(startY - event.getRawY()) < 10) {
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop())) {
+                                // cancel system no read message tip
+                                if (isShowTip || isShowBusinessRedTip) {
+                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                            "notice");
+                                    AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+                                    Intent intent = new Intent(mContext,
+                                            QuickGesturePopupActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    intent.putExtra("show_orientation", 2);
+                                    try {
+                                        mContext.startActivity(intent);
+                                        // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                        // = false;
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 removeSwipWindow(mContext, -2);
                             }
                             break;
@@ -881,8 +950,8 @@ public class FloatWindowHelper {
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
+                                    FloatWindowHelper.mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
-                                    // QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(2);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -1023,8 +1092,8 @@ public class FloatWindowHelper {
                             && !isMoveIng)) {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
+                                    FloatWindowHelper.mGestureShowing = true;
                                     removeAllFloatWindow(mContext);
-                                    // QuickGestureManager.getInstance(mContext).stopFloatWindow();
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
                                         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -1162,9 +1231,9 @@ public class FloatWindowHelper {
 
     // remove have red tip float window
     public static void removeShowReadTipWindow(Context context) {
-        removeSwipWindow(context, 1);
+        removeSwipWindow(context, 2);
         removeSwipWindow(context, 4);
-        removeSwipWindow(context, -1);
+        removeSwipWindow(context, -2);
         removeSwipWindow(context, -4);
     }
 
@@ -1491,15 +1560,15 @@ public class FloatWindowHelper {
             if (mLeftBottomView != null) {
                 mLeftBottomView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
-                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
-                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == -1 || QuickGestureManager
-                                .getInstance(context).onTuchGestureFlag == -2)) {
-                    mLeftBottomView.setIsShowReadTip(false, 1);
-                }
             }
             if (mLeftCenterView != null) {
                 mLeftCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == -1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == -2)) {
+                    mLeftCenterView.setIsShowReadTip(false, 1);
+                }
             }
             if (mLeftCenterCenterView != null) {
                 mLeftCenterCenterView
@@ -1517,15 +1586,15 @@ public class FloatWindowHelper {
             if (mRightBottomView != null) {
                 mRightBottomView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
-                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
-                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == 1 || QuickGestureManager
-                                .getInstance(context).onTuchGestureFlag == 2)) {
-                    mRightBottomView.setIsShowReadTip(false, 2);
-                }
             }
             if (mRightCenterView != null) {
                 mRightCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_show_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == 1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == 2)) {
+                    mRightCenterView.setIsShowReadTip(false, 2);
+                }
             }
             if (mRightCenterCenterView != null) {
                 mRightCenterCenterView
@@ -1545,15 +1614,15 @@ public class FloatWindowHelper {
             if (mLeftBottomView != null) {
                 mLeftBottomView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
-                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
-                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == -1 || QuickGestureManager
-                                .getInstance(context).onTuchGestureFlag == -2)) {
-                    mLeftBottomView.setIsShowReadTip(true, 1);
-                }
             }
             if (mLeftCenterView != null) {
                 mLeftCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == -1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == -2)) {
+                    mLeftCenterView.setIsShowReadTip(true, 1);
+                }
             }
             if (mLeftCenterCenterView != null) {
                 mLeftCenterCenterView
@@ -1572,15 +1641,15 @@ public class FloatWindowHelper {
             if (mRightBottomView != null) {
                 mRightBottomView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
-                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
-                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == 1 || QuickGestureManager
-                                .getInstance(context).onTuchGestureFlag == 2)) {
-                    mRightBottomView.setIsShowReadTip(true, 2);
-                }
             }
             if (mRightCenterView != null) {
                 mRightCenterView
                         .setBackgroundResource(R.color.quick_gesture_switch_setting_hidden_color);
+                if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                        && (QuickGestureManager.getInstance(context).onTuchGestureFlag == 1 || QuickGestureManager
+                                .getInstance(context).onTuchGestureFlag == 2)) {
+                    mRightCenterView.setIsShowReadTip(true, 2);
+                }
             }
             if (mRightCenterCenterView != null) {
                 mRightCenterCenterView
