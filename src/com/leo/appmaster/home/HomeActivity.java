@@ -48,6 +48,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockChangeModeActivity;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
@@ -105,11 +106,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private DrawerArrowDrawable mDrawerArrowDrawable;
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
     private ImageView app_hot_tip_icon;
-    
+    private int type;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        // lockType , num or guesture
         initUI();
         tryTransStatusbar();
         // installShortcut();
@@ -261,6 +264,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onResume() {
         /* check if there is force update when showing HomeActivity */
         SDKWrapper.checkForceUpdate();
+        type = AppMasterPreference.getInstance(this).getLockType();
+
         judgeShowGradeTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.
@@ -349,9 +354,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
                     mDrawerLayout.closeDrawer(Gravity.START);
                 }
+
                 if (mLeoPopMenu == null) {
                     mLeoPopMenu = new LeoPopMenu();
                 }
+
                 mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
                 mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
                     @Override
@@ -368,7 +375,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                              * SDKWrapper.addEvent(HomeActivity.this,
                              * SDKWrapper.P1, "home", "changepwd");
                              */
-                            Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
+                            Intent intent = new Intent(HomeActivity.this, LockChangeModeActivity.class);
                             intent.putExtra("reset_passwd", true);
                             startActivity(intent);
                         } else if (position == 2) {
@@ -422,7 +429,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private List<String> getRightMenuItems() {
         List<String> listItems = new ArrayList<String>();
         listItems.add(getString(R.string.reset_passwd));
-        listItems.add(getString(R.string.pass_gesture_change));
+        if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            listItems.add(getString(R.string.change_to_gesture));
+        } else {
+            listItems.add(getString(R.string.change_to_password));
+        }
         listItems.add(getString(R.string.set_protect_or_not));
         listItems.add(getString(R.string.passwd_notify));
         listItems.add(getString(R.string.lock_setting));
@@ -496,42 +507,48 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     sendBroadcast(shortcut);
                     prefernece.edit().putBoolean("shortcut", true).commit();
                 }
-//                boolean appwallFlag = prefernece.getBoolean("shortcut_appwall", false);
-//                if (appwallFlag) {
-                    // Intent appWallShortIntent = new Intent(HomeActivity.this,
-                    // AppWallActivity.class);
-                    // appWallShortIntent.putExtra("from_appwall_shortcut",
-                    // true);
-                    // appWallShortIntent.setAction(Intent.ACTION_MAIN);
-                    // appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                    // appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    // Intent appWallShortcut = new Intent(
-                    // "com.android.launcher.action.UNINSTALL_SHORTCUT");
-                    // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                    // getString(R.string.appwall_name));
-                    // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
-                    // appWallShortIntent);
-                    // appWallShortcut.putExtra("duplicate", true);
-                    // sendBroadcast(appWallShortcut);
-                    // prefernece.edit().putBoolean("shortcut_appwall", false);
-//                } else {
-//                    Intent appWallShortIntent = new Intent(HomeActivity.this, ProxyActivity.class);
-//                    appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-//                            StatusBarEventService.EVENT_BUSINESS_GAME);
-//                    Intent appWallShortcut = new Intent(
-//                            "com.android.launcher.action.INSTALL_SHORTCUT");
-//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-//                            getString(R.string.appwall_name));
-//                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
-//                            HomeActivity.this,
-//                            R.drawable.game);
-//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
-//                    appWallShortcut.putExtra("duplicate", false);
-//                    appWallShortcut.putExtra("from_shortcut", true);
-//                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
-//                    sendBroadcast(appWallShortcut);
-//                    prefernece.edit().putBoolean("shortcut_appwall", true).commit();
-//                }
+                // boolean appwallFlag =
+                // prefernece.getBoolean("shortcut_appwall", false);
+                // if (appwallFlag) {
+                // Intent appWallShortIntent = new Intent(HomeActivity.this,
+                // AppWallActivity.class);
+                // appWallShortIntent.putExtra("from_appwall_shortcut",
+                // true);
+                // appWallShortIntent.setAction(Intent.ACTION_MAIN);
+                // appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
+                // appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                // Intent appWallShortcut = new Intent(
+                // "com.android.launcher.action.UNINSTALL_SHORTCUT");
+                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                // getString(R.string.appwall_name));
+                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
+                // appWallShortIntent);
+                // appWallShortcut.putExtra("duplicate", true);
+                // sendBroadcast(appWallShortcut);
+                // prefernece.edit().putBoolean("shortcut_appwall", false);
+                // } else {
+                // Intent appWallShortIntent = new Intent(HomeActivity.this,
+                // ProxyActivity.class);
+                // appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                // StatusBarEventService.EVENT_BUSINESS_GAME);
+                // Intent appWallShortcut = new Intent(
+                // "com.android.launcher.action.INSTALL_SHORTCUT");
+                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                // getString(R.string.appwall_name));
+                // ShortcutIconResource appwallIconRes =
+                // Intent.ShortcutIconResource.fromContext(
+                // HomeActivity.this,
+                // R.drawable.game);
+                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                // appwallIconRes);
+                // appWallShortcut.putExtra("duplicate", false);
+                // appWallShortcut.putExtra("from_shortcut", true);
+                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
+                // appWallShortIntent);
+                // sendBroadcast(appWallShortcut);
+                // prefernece.edit().putBoolean("shortcut_appwall",
+                // true).commit();
+                // }
                 if (prefernece.getBoolean(KEY_ROOT_CHECK, true)) {
                     boolean root = RootChecker.isRoot();
                     if (root) {

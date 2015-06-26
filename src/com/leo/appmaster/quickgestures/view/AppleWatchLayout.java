@@ -21,6 +21,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -40,6 +41,8 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
@@ -52,6 +55,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 public class AppleWatchLayout extends ViewGroup {
 
@@ -718,26 +722,27 @@ public class AppleWatchLayout extends ViewGroup {
             QuickGestureManager.getInstance(mContext).mToMsmFlag = true;
             MessageBean bean = (MessageBean) info;
             Intent mIntent = null;
-            // if (!BuildProperties.isMIUI()) {
-            Uri smsToUri = Uri.parse("smsto:" +
-                    bean.getPhoneNumber());
-            mIntent = new
-                    Intent(android.content.Intent.ACTION_SENDTO,
-                            smsToUri);
-            // } else {
-            // if (BuildProperties.isMIUI()) {
-            // QuickGestureManager.getInstance(mContext).mMiuiToMsmFlag = true;
-            // }
-            // mIntent = new Intent();
-            // mIntent.setClassName("com.android.mms",
-            // "com.android.mms.ui.ConversationList");
-            // }
+            if (QuickGestureManager.getInstance(mContext).mMessages != null
+                    && QuickGestureManager.getInstance(mContext).mMessages.size() == 1) {
+                Uri smsToUri = Uri.parse("smsto:" +
+                        bean.getPhoneNumber());
+                mIntent = new
+                        Intent(android.content.Intent.ACTION_SENDTO,
+                                smsToUri);
+            } else {
+                mIntent = new Intent();
+                mIntent = new Intent(Intent.ACTION_VIEW);
+                mIntent.setType("vnd.android-dir/mms-sms");
+                mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
+            }
             try {
                 mContext.startActivity(mIntent);
-                if (QuickGestureManager.getInstance(mContext).mMessages != null
-                        && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
-                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
-                }
+                // if (QuickGestureManager.getInstance(mContext).mMessages !=
+                // null
+                // && QuickGestureManager.getInstance(mContext).mMessages.size()
+                // > 0) {
+                // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
+                // }
             } catch (Exception e) {
             }
             new Handler().postDelayed(new Runnable() {
@@ -751,18 +756,29 @@ public class AppleWatchLayout extends ViewGroup {
         } else if (info instanceof ContactCallLog) {
             // 电话提醒
             item.cancelShowReadTip();
+            QuickGestureManager.getInstance(mContext).mToCallFlag = true;
             ContactCallLog callLog = (ContactCallLog) info;
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_CALL_BUTTON);
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.setType("vnd.android.cursor.dir/calls");
+//            intent.setAction(Intent.ACTION_CALL_BUTTON);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 mContext.startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            if (QuickGestureManager.getInstance(mContext).mCallLogs != null
-                    && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
-                QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);
-            }
+            // if (QuickGestureManager.getInstance(mContext).mCallLogs != null
+            // && QuickGestureManager.getInstance(mContext).mCallLogs.size() >
+            // 0) {
+            // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);
+            // }
+            new Handler().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    QuickGestureManager.getInstance(mContext).mToCallFlag = false;
+                }
+            }, 2000);
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGestureContactTipInfo) {
             // 隐私联系人提示
@@ -770,18 +786,29 @@ public class AppleWatchLayout extends ViewGroup {
             Intent intent = new Intent();
             intent.setClass(mContext, PrivacyContactActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            if (!Utilities.isEmpty(QuickGestureManager.getInstance(mContext).privacyLastRecord)) {
+                if (QuickGestureManager.getInstance(mContext).privacyLastRecord
+                        .equals(QuickGestureManager.RECORD_MSM)) {
+                    intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                            PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+                } else if (QuickGestureManager.getInstance(mContext).privacyLastRecord
+                        .equals(QuickGestureManager.RECORD_CALL)) {
+                    intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                            PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+                }
+            }
             try {
                 mContext.startActivity(intent);
-                if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog) {
-                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
-                            new QuickGestureContactTipInfo());
-                    QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = false;
-                }
-                if (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm) {
-                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
-                            new QuickGestureContactTipInfo());
-                    QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = false;
-                }
+//                if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog) {
+//                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+//                            new QuickGestureContactTipInfo());
+//                    QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = false;
+//                }
+//                if (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm) {
+//                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+//                            new QuickGestureContactTipInfo());
+//                    QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = false;
+//                }
             } catch (Exception e) {
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");

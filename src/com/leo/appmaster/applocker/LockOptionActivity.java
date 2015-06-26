@@ -13,15 +13,21 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.backup.AppBackupItemView;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.LeoLog;
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -31,7 +37,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     private Preference mTheme, mLockSetting, mResetPasswd, mChangeProtectQuestion,
             mChangePasswdTip, mChangeLockTime;
 
-    private CheckBoxPreference mForbidUninstall, mAutoLock, mLockerClean;
+    private CheckBoxPreference mForbidUninstall, mAutoLock, mLockerClean, mHideLockLine;
     private Preference mLockerTheme;
     private Preference mSetProtect;
 
@@ -67,6 +73,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         mForbidUninstall = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_FORBIND_UNINSTALL);
         mAutoLock = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_AUTO_LOCK);
         mLockerClean = (CheckBoxPreference) findPreference("app_lock_clean");
+        mHideLockLine = (CheckBoxPreference) findPreference(AppMasterPreference.PREF_HIDE_LOCK_LINE);
         mSetProtect = findPreference(AppMasterPreference.PREF_SET_PROTECT);
         mLockSetting = (Preference) findPreference(AppMasterPreference.PREF_LOCK_SETTING);
         mResetPasswd = (Preference) findPreference("change_passwd");
@@ -89,6 +96,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             getPreferenceScreen().removePreference(mAutoLock);
             getPreferenceScreen().removePreference(mLockSetting);
             getPreferenceScreen().removePreference(mLockerClean);
+            getPreferenceScreen().removePreference(mHideLockLine);
             getPreferenceScreen().removePreference(
                     findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
         }
@@ -98,6 +106,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             getPreferenceScreen().removePreference(mAutoLock);
             getPreferenceScreen().removePreference(mLockSetting);
             getPreferenceScreen().removePreference(mLockerClean);
+            getPreferenceScreen().removePreference(mHideLockLine);
             getPreferenceScreen().removePreference(
                     findPreference(AppMasterPreference.PREF_NEW_APP_LOCK_TIP));
         }
@@ -115,8 +124,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mAutoLock.setOnPreferenceChangeListener(this);
             mLockSetting.setOnPreferenceClickListener(this);
             mLockerClean.setOnPreferenceChangeListener(this);
+            mHideLockLine.setOnPreferenceChangeListener(this);
         }
         mLockerClean.setOnPreferenceChangeListener(this);
+        mHideLockLine.setOnPreferenceChangeListener(this);
         mTheme.setOnPreferenceClickListener(this);
         mChangeProtectQuestion.setOnPreferenceClickListener(this);
         mChangePasswdTip.setOnPreferenceClickListener(this);
@@ -146,8 +157,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     protected void onResume() {
         if (isAdminActive()) {
             mForbidUninstall.setChecked(true);
+            mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
         } else {
             mForbidUninstall.setChecked(false);
+            mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
         }
         if (haveProtect()) {
             mSetProtect.setTitle(R.string.passwd_protect);
@@ -196,7 +209,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
-
         if (AppMasterPreference.PREF_FORBIND_UNINSTALL.equals(key)) {
             Intent intent = null;
             ComponentName component = new ComponentName(this,
@@ -239,6 +251,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             if ((Boolean) newValue) {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "lockboost");
             }
+        } else if (AppMasterPreference.PREF_HIDE_LOCK_LINE.equals(key)) {
+            mHideLockLine.setChecked((Boolean) newValue);
+            AppMasterPreference.getInstance(LockOptionActivity.this)
+                    .setHideLine((Boolean) newValue);
         }
         return false;
     }

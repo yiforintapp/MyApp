@@ -23,6 +23,7 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -193,6 +194,9 @@ public class TaskDetectService extends Service {
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
                 .getDialogRadioRightCenter();
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).resetSlidAreaSize();
+        //初始化未读短信是否已经红点提示过
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageRead = AppMasterPreference
+                .getInstance(getApplicationContext()).getMessageIsRedTip();
     }
 
     private void startFloatWindowTask() {
@@ -458,7 +462,7 @@ public class TaskDetectService extends Service {
                             // set background color
                             if (FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper
-                                        .updateFloatWindowBackgroudColor(FloatWindowHelper.mEditQuickAreaFlag);
+                                        .updateFloatWindowBackgroudColor(getApplicationContext(),FloatWindowHelper.mEditQuickAreaFlag);
                             }
                             boolean isJustHome = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isJustHome;

@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -14,6 +15,7 @@ import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -63,7 +65,13 @@ public class QuickGesturePopupActivity extends BaseActivity {
             FloatWindowHelper.mGestureShowing = false;
             mContainer.saveGestureType();
             finish();
+        } else {
+            /*
+             * 快捷手势界面创建后停止创建热区的任务，解决关闭界面时立即创建热区与任务创建热区之间的时间差，引起的创建问题
+             */
+            FloatWindowHelper.stopFloatWindowCreate(getApplicationContext());
         }
+
         super.onWindowFocusChanged(hasFocus);
     }
 
@@ -148,7 +156,14 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
-            mContainer.showCloseAnimation();
+            mContainer.showCloseAnimation(new Runnable() {
+
+                @Override
+                public void run() {
+                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                    createFloatView();
+                }
+            });
             mContainer.saveGestureType();
             createFloatView();
             showWhiteFloatView();
@@ -163,20 +178,58 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     /* 快捷手势消失，立即创建响应热区 */
     private void createFloatView() {
-        FloatWindowHelper.mGestureShowing = false;
+        // 去除热区红点和去除未读，运营icon
+        cancelAllRedTip(getApplicationContext());
+        // 创建热区处理
         isCloseWindow = true;
+        FloatWindowHelper.mGestureShowing = false;
         FloatWindowHelper.createFloatWindow(getApplicationContext(),
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
         mContainer.postDelayed(new Runnable() {
-
             @Override
             public void run() {
-                // TODO Auto-generated method stub
-                FloatWindowHelper.createFloatWindow(getApplicationContext(),
-                        QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+                /* 再次为mGestureShowing赋值，解决偶尔出现创建热区时mGestureShowing值没有即使更新问题 */
+                FloatWindowHelper.mGestureShowing = false;
+                QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
                 isCloseWindow = false;
             }
-        }, 100);
+        }, 500);
+        // 多条短信提示后，未读短信红点提示标记为已读
+        if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageRead) {
+            QuickGestureManager.getInstance(getApplicationContext()).isMessageRead = true;
+            AppMasterPreference.getInstance(getApplicationContext()).setMessageIsRedTip(true);
+        }
+    }
+
+    // 去除热区红点，未读，运营icon和红点
+    private void cancelAllRedTip(Context context) {
+        // 隐私通话
+        if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
+            AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
+                    false);
+        }
+        // 隐私短信
+        if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
+            AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
+        }
+        // 短信，通话记录
+        if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            if (QuickGestureManager.getInstance(context).mCallLogs != null) {
+                QuickGestureManager.getInstance(context).mCallLogs.clear();
+            }
+            if (QuickGestureManager.getInstance(context).mMessages != null) {
+                QuickGestureManager.getInstance(context).mMessages.clear();
+            }
+        }
+        // 运营
+        if (!AppMasterPreference.getInstance(context).getLastBusinessRedTipShow()) {
+            AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
+        }
     }
     
     private void showWhiteFloatView(){

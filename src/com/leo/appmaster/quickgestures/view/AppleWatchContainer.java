@@ -1317,7 +1317,7 @@ public class AppleWatchContainer extends FrameLayout {
         set.start();
     }
 
-    public void showCloseAnimation() {
+    public void showCloseAnimation(final Runnable runnable) {
         int direction = mShowOrientation == Orientation.Left ? 0 : 2;
         AppleWatchLayout targetLayout;
         if (mCurrentGestureType == GType.DymicLayout) {
@@ -1352,9 +1352,11 @@ public class AppleWatchContainer extends FrameLayout {
             public void onAnimationEnd(Animator animation) {
                 Activity activity = (Activity) AppleWatchContainer.this.getContext();
                 FloatWindowHelper.mGestureShowing = false;
-                activity.finish();
                 isAnimating = false;
-                super.onAnimationEnd(animation);
+                activity.finish();
+                if (runnable != null) {
+                    runnable.run();
+                }
             }
         });
         set.start();

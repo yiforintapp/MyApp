@@ -50,6 +50,7 @@ public class GestureLockFragment extends LockFragment implements
         mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
         mLockPatternView.setOnPatternListener(this);
         mLockPatternView.setLockMode(mLockMode);
+        mLockPatternView.setIsFromLockScreenActivity(true);
         mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
         mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
         if (mLockMode == LockManager.LOCK_MODE_FULL && mPackageName != null) {

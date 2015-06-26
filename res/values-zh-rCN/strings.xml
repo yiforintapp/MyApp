@@ -71,7 +71,7 @@
     <string name="passwd_hint_tip">密码提示：</string>
     <string name="set_protect_or_not">"密保问题"</string>
     <string name="set_protect_message">"为了避免忘记密码而无法进入应用锁，建议设置密保问题，是否设置?"</string>
-    <string name="find_gesture">手势找回</string>
+    <string name="find_gesture">忘记密码</string>
     <string name="pp_success">密码保护设置成功</string>
     <string name="passwd_setting">密码设置</string>
     <string name="set_success">设置成功</string>
@@ -138,7 +138,9 @@
     <string name="grade">五星好评</string>
     <string name="grade_tip">您已经使用隐私卫士很多次了，喜欢我们吗，给5星鼓励下吧！</string>
     <string name="app_setting_about">关于</string>
-    <string name="forbid_uninstall">防止卸载</string>
+     <string name="forbid_uninstall">高级保护</string>
+    <string name="forbid_uninstall_off">赶紧给老子开启高级保护！</string>
+    <string name="forbid_uninstall_on">开了高级保护就对了嘛！！乖</string>
     <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
@@ -241,6 +243,7 @@
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
+    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
     <string name="app_no_video_hide">请点击添加按钮，添加需要隐藏的视频</string>
     <string name="app_no_video_gallery_hide">没有可隐藏的视频</string>
     <string name="app_video_hide">视频隐藏</string>
@@ -702,6 +705,8 @@
     <string name="quick_guesture_lockscreen">锁屏</string>
     <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
     <string name="pass_gesture_change">切换密码方式</string>
+    <string name="change_to_gesture">切换为手势密码</string>
+    <string name="change_to_password">切换为数字密码</string>
     <string name="permission_open_tip_notification_title">设置快捷手势</string>
     <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">还在用老办法管理应用和快捷开关吗？赶快试试和apple watch一样的快捷开关管理吧，让你成为朋友中最cool的人！</string>

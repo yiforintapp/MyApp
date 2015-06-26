@@ -47,6 +47,8 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -582,6 +584,24 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 if (temp > 0) {
                     pre.setCallLogNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
+                        // TODO 隐私通话没有未读
+                        /**
+                         * 对快捷手势隐私联系人，红点去除操作
+                         */
+                        // 隐私通话
+                        if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
+                            QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
+                            AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
+                                    false);
+                            if (pre.getMessageNoReadCount() <= 0
+                                    && (QuickGestureManager.getInstance(context).mMessages != null
+                                    && QuickGestureManager.getInstance(context).mMessages.size() <= 0)/* 未读短信 */
+                                    && !AppMasterPreference.getInstance(context)
+                                            .getLastBusinessRedTipShow()/* 运营 */) {
+                                QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+                            }
+                        }
+                        FloatWindowHelper.removeShowReadTipWindow(context);
                         LeoEventBus
                                 .getDefaultBus()
                                 .post(

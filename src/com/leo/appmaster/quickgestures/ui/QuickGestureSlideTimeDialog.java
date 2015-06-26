@@ -33,7 +33,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
     private Context mContext;
     private TextView sure_button, mLeftBt, title, mFreeDisturbTv;
     private ListView mRadioListView;
-    private LinearLayout mFreeDisturbAppHs, mFreeDisturbAppAddBt;
+    private LinearLayout mFreeDisturbAppHs, mFreeDisturbAppAddBt, mFilterAppLt;
     private CheckBox mJustHomeCb, mAppHomeCb;
     private LeoHorizontalListView mHorizontalLV;
     private boolean mIsFilterAppEditFlag;
@@ -69,6 +69,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
         mFreeDisturbAppAddBt = (LinearLayout) dlgView.findViewById(R.id.no_free_app_bt);
         mHorizontalLV = (LeoHorizontalListView) dlgView
                 .findViewById(R.id.quick_gesture_horizontalLV);
+        mFilterAppLt = (LinearLayout) dlgView.findViewById(R.id.fiter_app_LT);
         mJustHomeCb.setSelected(AppMasterPreference.getInstance(mContext).getSlideTimeJustHome());
         mAppHomeCb.setSelected(AppMasterPreference.getInstance(mContext)
                 .getSlideTimeAllAppAndHome());
@@ -78,6 +79,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 mJustHomeCb.setSelected(true);
                 mAppHomeCb.setSelected(false);
+                setFilterAppBtVisibility(false);
             }
         });
         mAppHomeCb.setOnCheckedChangeListener(new OnCheckedChangeListener() {
@@ -86,12 +88,21 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 mJustHomeCb.setSelected(false);
                 mAppHomeCb.setSelected(true);
+                setFilterAppBtVisibility(true);
             }
         });
         setContentView(dlgView);
 
         setCanceledOnTouchOutside(true);
-        
+
+    }
+
+    public void setFilterAppBtVisibility(boolean flag) {
+        if (flag) {
+            mFilterAppLt.setVisibility(View.VISIBLE);
+        } else {
+            mFilterAppLt.setVisibility(View.GONE);
+        }
     }
 
     public boolean getJustHometCheckStatus() {
@@ -208,6 +219,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             mUpdateFilterApp.updateFilterAppClickListener();
         }
     }
+
     @Override
     protected void onStop() {
         super.onStop();
