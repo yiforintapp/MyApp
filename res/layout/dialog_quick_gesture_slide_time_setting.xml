@@ -3,8 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/bg"
-    >
+    android:background="@drawable/bg" >
 
     <RelativeLayout
         android:layout_width="@dimen/dialog_list_width"
@@ -99,45 +98,52 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/free_disturbTV"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/fiter_app_LT"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dialog_slide_time_disturbTV_margin_top"
-                android:text="@string/pg_appmanager_quick_gesture_slide_time_no_disturb_text"
-                android:textColor="#929292"
-                android:textSize="14sp" />
-
-            <com.leo.appmaster.quickgestures.ui.LeoHorizontalListView
-                android:id="@+id/quick_gesture_horizontalLV"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="24dp"
-                android:scrollbars="none" >
-            </com.leo.appmaster.quickgestures.ui.LeoHorizontalListView>
-
-            <LinearLayout
-                android:id="@+id/no_free_app_bt"
-                android:layout_width="match_parent"
-                android:layout_height="46dp"
-                android:layout_marginTop="30dp"
-                android:background="@drawable/block_add_bg"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:visibility="gone" >
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/block_add_img" />
+                android:orientation="vertical" >
 
                 <TextView
+                    android:id="@+id/free_disturbTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:text="@string/pg_appmanager_quick_gesture_no_free_add_free_disturb_app_text"
-                    android:textColor="#bfbfbf"
-                    android:textSize="12dp" />
+                    android:text="@string/pg_appmanager_quick_gesture_slide_time_no_disturb_text"
+                    android:textColor="#929292"
+                    android:textSize="14sp" />
+
+                <com.leo.appmaster.quickgestures.ui.LeoHorizontalListView
+                    android:id="@+id/quick_gesture_horizontalLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="24dp"
+                    android:scrollbars="none" >
+                </com.leo.appmaster.quickgestures.ui.LeoHorizontalListView>
+
+                <LinearLayout
+                    android:id="@+id/no_free_app_bt"
+                    android:layout_width="match_parent"
+                    android:layout_height="46dp"
+                    android:layout_marginTop="30dp"
+                    android:background="@drawable/block_add_bg"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:visibility="gone" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/block_add_img" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:text="@string/pg_appmanager_quick_gesture_no_free_add_free_disturb_app_text"
+                        android:textColor="#bfbfbf"
+                        android:textSize="12dp" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
 
