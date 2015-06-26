@@ -23,6 +23,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.NotificationUtil;
 
 public class PrivacyContactManager {
@@ -40,7 +41,8 @@ public class PrivacyContactManager {
     // private boolean mSysMessageLoaded = false;
     // private boolean mSysContactsLoaded = false;
     // private boolean mSysCallLogLoaded = false;
-
+    public  boolean deleteCallLogDatebaseFlag;// 用来做隐私联系人通话删除时的通话标志
+    public boolean deleteMsmDatebaseFlag;// 用来做隐私联系人短信删除时的标志
     private PrivacyContactManager(Context context) {
         this.mContext = context.getApplicationContext();
         mContacts = new ArrayList<ContactBean>();
@@ -196,6 +198,11 @@ public class PrivacyContactManager {
                 } else {
                     pre.setMessageNoReadCount(1);
                 }
+                /*
+                 * 
+                 * 记录最后隐私短信和隐私通话哪个最后来电(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)       
+                 */
+                QuickGestureManager.getInstance(mContext).privacyLastRecord=QuickGestureManager.RECORD_MSM;
                 // 发送拦截通知
                 if (messageItemRuning) {
                     NotificationManager notificationManager = (NotificationManager) mContext

@@ -187,6 +187,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LAST_BUSINESS_RED_TIP = "last_business_red_tip";
     public static final String PREF_QUICK_NO_MSM_TIP = "quick_no_msm_tip";
     public static final String PREF_QUICK_NO_CALL_LOG_TIP = "quick_no_call_log_tip";
+    public static final String PREF_QUICK_MESSAGE_IS_RED_TIP = "quick_message_is_red_tip";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1201,6 +1202,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setCallLogItemRuning(boolean flag) {
+        //隐私通话记录是否查看详情状态，如果true，则发送通知，如果为false，不用发送通知
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
     }
 
@@ -1814,5 +1816,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setQuickGestureMsmTip(boolean b) {
         mPref.edit().putBoolean(PREF_QUICK_NO_MSM_TIP, b).commit();
+    }
+
+    public void setMessageIsRedTip(boolean flag) {
+        // 设置未读短信是否已经红点提示过
+        mPref.edit().putBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, flag).commit();
+    }
+
+    public boolean getMessageIsRedTip() {
+        return mPref.getBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, false);
     }
 }

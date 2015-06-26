@@ -99,7 +99,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
         mContactCallLog.setAdapter(mAdapter);
         mCallPhone.setOnClickListener(this);
         mSendMessageView.setOnClickListener(this);
-        // 标识该Activity创建不通知
+        // 处于隐私通话详情查看状态不发送通知
         AppMasterPreference.getInstance(this).setCallLogItemRuning(false);
     }
 

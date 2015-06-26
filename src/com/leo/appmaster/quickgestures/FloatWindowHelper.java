@@ -1694,4 +1694,5 @@ public class FloatWindowHelper {
         QuickGestureManager.getInstance(context).stopFloatWindow();
         FloatWindowHelper.removeAllFloatWindow(context);
     }
+
 }

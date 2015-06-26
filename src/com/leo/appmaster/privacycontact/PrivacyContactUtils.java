@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import android.animation.FloatEvaluator;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -35,6 +36,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 
 public class PrivacyContactUtils {
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
@@ -352,9 +355,9 @@ public class PrivacyContactUtils {
                 }
             }
         } catch (Exception e) {
-            
-        }finally {
-            if(cursorContact != null) {
+
+        } finally {
+            if (cursorContact != null) {
                 cursorContact.close();
             }
         }
@@ -1047,10 +1050,22 @@ public class PrivacyContactUtils {
                 if (temp > 0) {
                     pre.setMessageNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
-                        //TODO 隐私短信没有未读
                         /**
                          * 对快捷手势隐私联系人未读，红点操作
                          */
+                        if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
+                            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+                            QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
+                            AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
+                            if (pre.getCallLogNoReadCount() <= 0
+                                    && (QuickGestureManager.getInstance(context).mMessages != null
+                                    && QuickGestureManager.getInstance(context).mMessages.size() <= 0)/* 未读短信 */
+                                    && !AppMasterPreference.getInstance(context)
+                                            .getLastBusinessRedTipShow()/* 运营 */) {
+                                QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+                            }
+                        }
+                        FloatWindowHelper.removeShowReadTipWindow(context);
                         LeoEventBus
                                 .getDefaultBus()
                                 .post(
