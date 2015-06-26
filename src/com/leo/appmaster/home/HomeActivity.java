@@ -580,10 +580,16 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         Log.i("######", "firstDilaogTip:"+firstDilaogTip);
                          Log.i("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
+                            boolean isMiui = BuildProperties.isMIUI();
+                            boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(HomeActivity.this);
                             // new user,enter home  >=2 times
                             if(!firstDilaogTip && AppMasterPreference.getInstance(HomeActivity.this).getEnterHomeTimes() >=2){
-                                    Log.i("######", "新用户提示！");
-                                    showFirstOpenQuickGestureTipDialog();
+                                    if(isMiui && isOpenWindow){
+                                        AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
+                                    }else {
+                                        showFirstOpenQuickGestureTipDialog();
+                                        Log.i("######", "新用户提示！");
+                                    }
                             }
                         } else {
                             // update user

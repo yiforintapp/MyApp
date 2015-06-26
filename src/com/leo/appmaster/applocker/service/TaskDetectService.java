@@ -465,12 +465,19 @@ public class TaskDetectService extends Service {
                             boolean isAppsAndHome = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isAppsAndHome;
                             if (isAppsAndHome) {
-                                if (!checkForegroundRuningFilterApp(mActivityManager)
+                                boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
+                                if (!isFilterApp
                                         || FloatWindowHelper.mEditQuickAreaFlag) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                                }
+                                /**about white float  view **/
+                                if (!isFilterApp  && !FloatWindowHelper.mEditQuickAreaFlag){
+                                        FloatWindowHelper.showWhiteFloatView(TaskDetectService.this);
+                                }else{
+                                    FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
                                 }
                             } else if (isJustHome) {
                                 boolean isHomeFlag = Utilities.isHome(getApplicationContext());
@@ -480,12 +487,21 @@ public class TaskDetectService extends Service {
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
+                                /**about white float  view **/
+                                if (isHomeFlag){
+                                    if(sp_traffic.getSwitchOpenStrengthenMode()){
+                                        FloatWindowHelper.showWhiteFloatView(TaskDetectService.this);
+                                    }
+                                }else{
+                                    FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
+                                }
                             }
                         } else {
                             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                         }
                     } else {
                         FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                        FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
                     }
                 }
             };

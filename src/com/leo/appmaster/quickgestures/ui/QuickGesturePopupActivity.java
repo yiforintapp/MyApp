@@ -4,7 +4,9 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.List;
 
 import android.os.Bundle;
+import android.util.Log;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -87,6 +89,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         });
         super.onResume();
         FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+        FloatWindowHelper.hideWhiteFloatView(getApplicationContext());
         // Log.e("#########", "快捷手势结束onResume时间："+System.currentTimeMillis());
     }
 
@@ -135,6 +138,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (!isCloseWindow) {
             createFloatView();
         }
+        showWhiteFloatView();
         super.onDestroy();
     }
 
@@ -147,6 +151,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             mContainer.showCloseAnimation();
             mContainer.saveGestureType();
             createFloatView();
+            showWhiteFloatView();
         }
     }
 
@@ -172,5 +177,16 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 isCloseWindow = false;
             }
         }, 100);
+    }
+    
+    private void showWhiteFloatView(){
+        if(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()){
+            mContainer.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
+                }
+            }, 100);
+        }
     }
 }

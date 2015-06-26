@@ -1,6 +1,10 @@
 
 package com.leo.appmaster.quickgestures;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +17,7 @@ import android.view.View.OnTouchListener;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
+import android.widget.ImageView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -45,10 +50,11 @@ public class FloatWindowHelper {
     private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,
             mRightCenterCenterView;
     private static LayoutParams mLeftBottomParams, mLeftCenterParams, mLeftTopParams,
-            mLeftCenterCenterParams;
+            mLeftCenterCenterParams,mWhiteFloatParams;
     private static LayoutParams mRightBottomParams, mRightCenterParams, mRightTopParams,
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
+    private static ImageView mWhiteFloatView ;
 
     public static boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
@@ -85,6 +91,8 @@ public class FloatWindowHelper {
     private static float mRightTopWidth = 10;
     // right top height
     private static float mRightTopHeight = 30;
+    // white float width and height
+    private static int mWhiteFLoatWidth = 60;
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
     private static final int LEFT_TOP_FLAG = 3;
@@ -93,6 +101,7 @@ public class FloatWindowHelper {
     private static final int RIGHT_CENTER_FLAG = -2;
     private static final int RIGHT_CENTER_CENTER_FLAG = -3;
     private static final int RIGHT_TOP_FLAG = -4;
+    
     /**
      * left bottom must call in UI thread
      * 
@@ -1635,4 +1644,175 @@ public class FloatWindowHelper {
 //            mWindowManager.addView(mRightCenterCenterView, mRightCenterCenterParams);
 //        }
 //    }
+    
+    
+    public static void createWhiteFloatView(Context mContext){
+        WindowManager windowManager = getWindowManager(mContext);
+        int W = windowManager.getDefaultDisplay().getWidth();
+        int H = windowManager.getDefaultDisplay().getHeight();
+        int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
+        
+        if(null == mWhiteFloatParams){
+            mWhiteFloatParams = new LayoutParams();
+            mWhiteFloatParams.width = mWhiteFLoatWidth;
+            mWhiteFloatParams.height = mWhiteFLoatWidth;
+            mWhiteFloatParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+            mWhiteFloatParams.format = PixelFormat.RGBA_8888;
+            mWhiteFloatParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+        if(lastSlideOrientation < 0){
+            mWhiteFloatParams.x = -W/2;
+            if(lastSlideOrientation == -1){
+                mWhiteFloatParams.y = H-mWhiteFloatParams.height;
+            }else if(lastSlideOrientation == -2){
+                mWhiteFloatParams.y = mWhiteFloatParams.height;
+            }
+        }else{
+            mWhiteFloatParams.x = W/2;
+            if(lastSlideOrientation == 1){
+                mWhiteFloatParams.y = H-mWhiteFloatParams.height;
+            }else if(lastSlideOrientation == 2){
+                mWhiteFloatParams.y = mWhiteFloatParams.height;
+            }
+        }
+        if(null == mWhiteFloatView){
+            mWhiteFloatView = new ImageView(mContext);
+            mWhiteFloatView.setImageResource(R.drawable.radio_buttons);
+            setWhiteFloatOnTouchEvent(mContext);
+        }
+        windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
+    }
+    
+    public static void removeWhiteFloatView(Context mContext){
+      if(null != mWhiteFloatView){
+          WindowManager windowManager = getWindowManager(mContext);
+          windowManager.removeView(mWhiteFloatView);
+      }
+    }
+    
+    public static void hideWhiteFloatView(Context mContext){
+        if(!AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode())
+            return;
+        if(null != mWhiteFloatView && null != mWhiteFloatParams){
+            if(mWhiteFloatView.getVisibility() == View.VISIBLE){
+                WindowManager windowManager = getWindowManager(mContext);
+                mWhiteFloatView.setVisibility(View.GONE);
+                windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+            }
+        }
+    }
+    
+    public static void showWhiteFloatView(Context mContext){
+        if(!AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode())
+            return;
+        if(null != mWhiteFloatView && null != mWhiteFloatParams){
+            if(hasMessageTip(mContext)){
+                
+            }else{
+                if(mWhiteFloatView.getVisibility() != View.VISIBLE){
+                    WindowManager windowManager = getWindowManager(mContext);
+                    mWhiteFloatView.setVisibility(View.VISIBLE);
+                    windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                }
+            }
+        }else{
+            createWhiteFloatView(mContext);
+        }
+    }
+    
+    private static void setWhiteFloatOnclickListener(final Context mContext){
+        if(null == mWhiteFloatView)
+            return;
+        if(hasMessageTip(mContext)){
+            AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+        }
+        int oreatation = mWhiteFloatParams.x<0?0:2;
+        showQuickGuestureView(mContext,oreatation);
+       hideWhiteFloatView(mContext);
+       Log.i("tag", "white float");
+    }
+    
+    private static void setWhiteFloatOnTouchEvent(final Context mContext){
+        if(null == mWhiteFloatView)
+            return;
+        final WindowManager windowManager = getWindowManager(mContext);
+        final int W = windowManager.getDefaultDisplay().getWidth();
+        final int H = windowManager.getDefaultDisplay().getHeight();
+        final int diff = DipPixelUtil.dip2px(mContext,10);
+        
+        mWhiteFloatView.setOnTouchListener(new OnTouchListener() {
+            float startX,startY,x,y,moveX,moveY;
+            long downTime;
+            ValueAnimator animator;
+            
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_OUTSIDE:
+                        break;
+                    case MotionEvent.ACTION_DOWN:
+                        startX = event.getRawX();
+                        startY = event.getRawY();
+                        downTime = System.currentTimeMillis();
+                        Log.i("tag","down");
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                         moveX = Math.abs(startX - event.getRawX());
+                         moveY = Math.abs(startY - event.getRawY());
+                         if(moveX > 10 && moveY > 10){
+                             x = event.getRawX()-W/2-diff;
+                             y =  event.getRawY()-H/2-diff;
+                             mWhiteFloatParams.x = (int) x;
+                             mWhiteFloatParams.y = (int) y;
+                             windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                             Log.i("######", "event.getRawX() : "+event.getRawX()+", event.getRawY() : "+event.getRawY());
+                         }
+                         Log.i("tag","move  "+ViewConfiguration.get(mContext).getScaledTouchSlop());
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        if(System.currentTimeMillis() - downTime<200){
+                            setWhiteFloatOnclickListener(mContext);
+                        }
+                           if(x<0){
+                                animator = ValueAnimator.ofInt((int)x,-W/2);
+                           }else {
+                               animator = ValueAnimator.ofInt((int)x,W/2);
+                           }
+                           animator.addUpdateListener(new AnimatorUpdateListener() {
+                               @Override
+                               public void onAnimationUpdate(ValueAnimator animation) {
+                                   int value  = (Integer) animation.getAnimatedValue();
+                                   mWhiteFloatParams.x = value;
+                                   windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                                   Log.i("######", "mWhiteFloatParams.x : "+mWhiteFloatParams.x+" , mWhiteFloatParams.y:"+mWhiteFloatParams.y);
+                               }
+                           });
+                           animator.addListener(new AnimatorListenerAdapter() {
+                               public void onAnimationEnd(Animator animation) {
+                                   
+                               };
+                           });
+                           animator.start();
+                        Log.i("tag","up");
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+    
+    private static void showQuickGuestureView(Context mContext , int orientation){
+        Intent intent = new Intent(mContext,
+                QuickGesturePopupActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.putExtra("show_orientation", orientation);
+        mContext.startActivity(intent);
+    }
+    
+    private static boolean hasMessageTip(Context mContext){
+         boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+         boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext).checkBusinessRedTip();
+         return isShowTip || isShowBusinessRedTip;
+    }
 }

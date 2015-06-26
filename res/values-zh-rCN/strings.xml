@@ -710,5 +710,10 @@
     <string name="quick_first_tip_dialog_left_bt">稍后再试</string>
     <!-- quick gesture -->
  <!-- version 2.4 end -->
+ 
+ <!-- version 2.5 start-->
+ 	<string name="quick_guesture_strengthen_mode_title">强化划出模式</string>
+ 	<string name="quick_guesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
+ <!-- version 2.5 end -->
     
 </resources>

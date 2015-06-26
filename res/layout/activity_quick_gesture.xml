@@ -244,6 +244,68 @@
                         android:src="@drawable/privacy_proposals_arrow" />
                 </RelativeLayout>
             </RelativeLayout>
+            
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#eeeeee" />
+
+            <!-- 强化模式 -->
+            <RelativeLayout
+                android:id="@+id/strengthen_slid_mode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/manager_backup_list_selecter" >
+
+                 <RelativeLayout
+                    android:id="@+id/strengthen_mode_itemLT"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/quick_gesture_item_height"
+                    android:layout_marginLeft="16dp"
+                    >
+
+                    <LinearLayout
+                        android:id="@+id/strengthen_mode_linear"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="40dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/strengthen_mode_nameTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:text="@string/quick_guesture_strengthen_mode_title"
+                            android:textColor="#414141"
+                            android:textSize="16dp" />
+
+                        <TextView
+                            android:id="@+id/strengthen_mode_cotentTV"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:ellipsize="end"
+                            android:singleLine="true"
+                            android:textColor="#999999"
+                            android:textSize="10dp"
+                            android:text="@string/quick_guesture_strengthen_mode_content" 
+                            />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/strengthen_mode_switch_check"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:paddingRight="16dp"
+                        android:src="@drawable/switch_off" />
+                </RelativeLayout>
+            </RelativeLayout>
         </LinearLayout>
         <!-- 未读短信提示 -->
 

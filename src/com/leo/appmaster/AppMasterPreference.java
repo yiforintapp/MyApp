@@ -156,6 +156,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP = "switch_open_no_read_message_tip";
     public static final String PREF_SWITCH_OPEN_RECENTLY_CONTACT = "switch_open_recently_contact";
     public static final String PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP = "switch_open_privacy_contact_message_tip";
+    public static final String PREF_SWTICH_OPEN_STRENGTH_MODE = "switch_open_strength_mode";
 
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM = "dialog_radio_setting_left_bottom";
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM = "dialog_radio_setting_right_bottom";
@@ -1829,5 +1830,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             mEnterHomeTimes = mPref.getInt(PREF_ENTER_HOME_TIMES, 0);
         }
         return mEnterHomeTimes;
+    }
+    
+    public void setSwitchOpenStrengthenMode(boolean flag){
+        mPref.edit().putBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, flag).commit();
+    }
+    
+    public boolean getSwitchOpenStrengthenMode(){
+        return mPref.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, false);
     }
 }
