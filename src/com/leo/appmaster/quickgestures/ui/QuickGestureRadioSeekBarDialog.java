@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView.OnItemClickListener;
@@ -130,6 +131,29 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         setRightBtnListener(listener);
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        // Log.e(FloatWindowHelper.RUN_TAG, "结束");
+        if (!QuickGestureActivity.isSureBt) {
+            QuickGestureManager.getInstance(mContext).mSlidAreaSize = AppMasterPreference
+                    .getInstance(
+                            mContext).getQuickGestureDialogSeekBarValue();
+            FloatWindowHelper.updateView(mContext,
+                    QuickGestureManager.getInstance(mContext).mSlidAreaSize);
+        } else {
+            QuickGestureActivity.isSureBt = false;
+        }
+        FloatWindowHelper.mEditQuickAreaFlag = false;
+        QuickGestureActivity.mAlarmDialogFlag = false;
+        FloatWindowHelper.updateFloatWindowBackgroudColor(false);
     }
 
     public void setOnClickListener(OnDiaogClickListener listener) {

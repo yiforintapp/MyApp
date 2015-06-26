@@ -16,6 +16,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -67,7 +68,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private AppMasterPreference mPre;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
     private QuickGestureSlideTimeDialog mSlideTimeDialog;
-    private boolean mAlarmDialogFlag = false;
+    public static boolean mAlarmDialogFlag = false;
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView,
@@ -81,7 +82,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private String slidingArea = "";
     public static final String FROME_STATUSBAR = "from_statusbar";
     private boolean initFlag;
-
+    public static boolean isSureBt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +151,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 }
             });
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 
     private void initUi() {
@@ -417,6 +423,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(int progress) {
+                isSureBt=true;
                 boolean mLeftBottom = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftBottom;
                 boolean mRightBottm = QuickGestureManager.getInstance(AppMasterApplication
@@ -427,8 +434,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         .getInstance()).isRightCenter;
                 if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
                     // save progress value
-                    mPre.setQuickGestureDialogSeekBarValue(mAlarmDialog
-                            .getSeekBarProgressValue());
+                    mPre.setQuickGestureDialogSeekBarValue(QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
                     // save sliding area value
                     mPre.setDialogRadioLeftBottom(mLeftBottom);
                     mPre.setDialogRadioRightBottom(mRightBottm);
@@ -440,9 +446,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     setSlidingAreaSetting();
                     if (mAlarmDialog != null) {
                         mAlarmDialog.dismiss();
-                        FloatWindowHelper.mEditQuickAreaFlag = false;
-                        mAlarmDialogFlag = false;
-                        updateFloatWindowBackGroudColor();
+//                        FloatWindowHelper.mEditQuickAreaFlag = false;
+//                        mAlarmDialogFlag = false;
+//                        updateFloatWindowBackGroudColor();
                     }
                 } else {
                     Toast.makeText(
@@ -455,7 +461,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 }
             }
         });
-        mAlarmDialog.setCancelable(false);
+        mAlarmDialog.setCancelable(true);
         mAlarmDialog.show();
         mAlarmDialogFlag = true;
         updateFloatWindowBackGroudColor();
