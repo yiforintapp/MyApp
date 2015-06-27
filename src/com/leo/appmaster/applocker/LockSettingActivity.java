@@ -22,7 +22,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
 
     public static final String RESET_PASSWD_FLAG = "reset_passwd";
-
+    public static final String ROTATE_FRAGMENT = "rotate_fragment";
     public static final int LOCK_TYPE_PASSWD = 1;
     public static final int LOCK_TYPE_GESTURE = 2;
     // private int mLockType = LOCK_TYPE_PASSWD;
@@ -37,6 +37,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private Resources res;
 
     private boolean mResetFlag;
+    private boolean mIsRotateFragment = false;
 
     public boolean mToLockList;
     public boolean mJustFinish;
@@ -73,6 +74,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private void handleIntent() {
         Intent intent = getIntent();
         mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
+        mIsRotateFragment = intent.getBooleanExtra(ROTATE_FRAGMENT, false);
         mToLockList = intent.getBooleanExtra("to_lock_list", false);
         mJustFinish = intent.getBooleanExtra("just_finish", false);
         mFromQuickMode = intent.getBooleanExtra("from_quick_mode", false);
@@ -91,18 +93,34 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         FragmentTransaction tans = mFm.beginTransaction();
         int type = AppMasterPreference.getInstance(this).getLockType();
 
-        if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            mLockType = LOCK_TYPE_PASSWD;
-            tans.replace(R.id.fragment_contain, mPasswd);
-            mSwitchBottom.setText(getString(R.string.switch_gesture));
-            iv_reset_icon.setBackground(res.getDrawable(
-                    R.drawable.reset_pass_gesture_icon));
+        if (!mIsRotateFragment) {
+            if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
+                mLockType = LOCK_TYPE_PASSWD;
+                tans.replace(R.id.fragment_contain, mPasswd);
+                mSwitchBottom.setText(getString(R.string.switch_gesture));
+                iv_reset_icon.setBackground(res.getDrawable(
+                        R.drawable.reset_pass_gesture_icon));
+            } else {
+                mLockType = LOCK_TYPE_GESTURE;
+                tans.replace(R.id.fragment_contain, mGesture);
+                mSwitchBottom.setText(getString(R.string.switch_passwd));
+                iv_reset_icon.setBackground(res.getDrawable(
+                        R.drawable.reset_pass_number_icon));
+            }
         } else {
-            mLockType = LOCK_TYPE_GESTURE;
-            tans.replace(R.id.fragment_contain, mGesture);
-            mSwitchBottom.setText(getString(R.string.switch_passwd));
-            iv_reset_icon.setBackground(res.getDrawable(
-                    R.drawable.reset_pass_number_icon));
+            if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
+                mLockType = LOCK_TYPE_GESTURE;
+                tans.replace(R.id.fragment_contain, mGesture);
+                mSwitchBottom.setText(getString(R.string.switch_passwd));
+                iv_reset_icon.setBackground(res.getDrawable(
+                        R.drawable.reset_pass_number_icon));
+            } else {
+                mLockType = LOCK_TYPE_PASSWD;
+                tans.replace(R.id.fragment_contain, mPasswd);
+                mSwitchBottom.setText(getString(R.string.switch_gesture));
+                iv_reset_icon.setBackground(res.getDrawable(
+                        R.drawable.reset_pass_gesture_icon));
+            }
         }
 
         // if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {

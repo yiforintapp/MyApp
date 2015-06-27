@@ -48,7 +48,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockChangeModeActivity;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
@@ -89,6 +88,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         OnPageChangeListener, OnShaderColorChangedLisetner {
 
     private final static String KEY_ROOT_CHECK = "root_check";
+    public static final String ROTATE_FRAGMENT = "rotate_fragment";
     private ViewStub mViewStub;
     private MultiModeView mMultiModeView;
     private DrawerLayout mDrawerLayout;
@@ -376,8 +376,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                              * SDKWrapper.addEvent(HomeActivity.this,
                              * SDKWrapper.P1, "home", "changepwd");
                              */
-                            Intent intent = new Intent(HomeActivity.this, LockChangeModeActivity.class);
+//                            Intent intent = new Intent(HomeActivity.this, LockChangeModeActivity.class);
+                            Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);
+                            intent.putExtra(ROTATE_FRAGMENT, true);
                             startActivity(intent);
                         } else if (position == 2) {
                             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "mibao");
