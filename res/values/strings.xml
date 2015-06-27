@@ -699,5 +699,15 @@
     <string name="grade_tip_feedback">Feedback</string>
     <string name="quick_first_tip_dialog_right_bt">Go for it</string>
     <string name="quick_first_tip_dialog_left_bt">Later</string>
- <!-- version 2.4 end -->
+    <!-- version 2.4 end -->
+
+
+    <!-- version 2.5 huangqili part -->
+    <string name="forbid_uninstall_off">赶紧给老子开启高级保护！</string>
+    <string name="forbid_uninstall_on">开了高级保护就对了嘛！！乖</string>
+    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
+    <string name="change_to_gesture">切换为手势密码</string>
+    <string name="change_to_password">切换为数字密码</string>
+    <!-- version 2.5 huangqili part -->
+
 </resources>

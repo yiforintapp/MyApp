@@ -136,13 +136,6 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.applocker.LockChangeModeActivity"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
-        <activity
             android:name="com.leo.appmaster.applocker.LockScreenActivity"
             android:clearTaskOnLaunch="true"
             android:excludeFromRecents="true"
