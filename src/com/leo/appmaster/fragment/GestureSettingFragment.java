@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.res.Resources;
 import android.content.Intent;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +41,9 @@ public class GestureSettingFragment extends BaseFragment implements
         OnClickListener, OnPatternListener, OnDismissListener,
         OnDiaogClickListener {
 
-    private TextView mTvGestureTip, mTvPasswdFuncTip, mTvBottom, mSwitchBottom;
+    private TextView mTvGestureTip, mTvPasswdFuncTip, mTvBottom;
+    private ImageView iv_reset_icon;
+    private View reset_button_content, reset_buton_content_activity;
     private LockPatternView mLockPatternView;
     private int mInputCount = 1;
     private String mTempGesture1, mTempGesture2;
@@ -54,13 +58,15 @@ public class GestureSettingFragment extends BaseFragment implements
 
     @Override
     protected void onInitUI() {
+        iv_reset_icon = (ImageView) findViewById(R.id.iv_reset_icon);
         mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
+        reset_button_content = findViewById(R.id.reset_button_content);
+        reset_buton_content_activity = mActivity.findViewById(R.id.switch_bottom_content);
         mLockPatternView.setOnPatternListener(this);
         mTvGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
         mTvPasswdFuncTip = (TextView) findViewById(R.id.tv_passwd_function_tip);
         mTvBottom = (TextView) findViewById(R.id.tv_bottom);
-        mTvBottom.setOnClickListener(this);
-        mSwitchBottom = (TextView) mActivity.findViewById(R.id.switch_bottom);
+        reset_button_content.setOnClickListener(this);
 
         if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
             mTvGestureTip.setText(R.string.first_set_passwd_hint);
@@ -73,7 +79,7 @@ public class GestureSettingFragment extends BaseFragment implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_bottom:
+            case R.id.reset_button_content:
                 resetGesture();
                 break;
             default:
@@ -93,8 +99,8 @@ public class GestureSettingFragment extends BaseFragment implements
         }
         mTvPasswdFuncTip.setText(R.string.gestur_passwd_function_hint);
 
-        mSwitchBottom.setVisibility(View.VISIBLE);
-        mTvBottom.setVisibility(View.INVISIBLE);
+        reset_buton_content_activity.setVisibility(View.VISIBLE);
+        reset_button_content.setVisibility(View.INVISIBLE);
     }
 
     @Override
@@ -139,8 +145,8 @@ public class GestureSettingFragment extends BaseFragment implements
             mTvPasswdFuncTip.setText(R.string.input_again);
             mLockPatternView.clearPattern();
             mInputCount++;
-            mSwitchBottom.setVisibility(View.INVISIBLE);
-            mTvBottom.setVisibility(View.VISIBLE);
+            reset_buton_content_activity.setVisibility(View.INVISIBLE);
+            reset_button_content.setVisibility(View.VISIBLE);
         } else {
             mTempGesture2 = LockPatternUtils.patternToString(pattern);
             if (mTempGesture2.equals(mTempGesture1)) {
@@ -258,17 +264,14 @@ public class GestureSettingFragment extends BaseFragment implements
                 startActivity(intent);
             } else if (((LockSettingActivity) mActivity).mJustFinish) {
                 // do nothing
-               /* if (((LockSettingActivity) mActivity).mFromQuickMode) {
-                    int modeId = ((LockSettingActivity) mActivity).mModeId;
-                    LockManager lm = LockManager.getInstatnce();
-                    List<LockMode> modeList = lm.getLockMode();
-                    for (LockMode lockMode : modeList) {
-                        if (lockMode.modeId == modeId) {
-                            showModeActiveTip(lockMode);
-                            break;
-                        }
-                    }
-                }*/
+                /*
+                 * if (((LockSettingActivity) mActivity).mFromQuickMode) { int
+                 * modeId = ((LockSettingActivity) mActivity).mModeId;
+                 * LockManager lm = LockManager.getInstatnce(); List<LockMode>
+                 * modeList = lm.getLockMode(); for (LockMode lockMode :
+                 * modeList) { if (lockMode.modeId == modeId) {
+                 * showModeActiveTip(lockMode); break; } } }
+                 */
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
                 intent = new Intent(mActivity, HomeActivity.class);
@@ -287,16 +290,16 @@ public class GestureSettingFragment extends BaseFragment implements
     /**
      * show the tip when mode success activating
      */
-  /*  private void showModeActiveTip(LockMode mode) {
-        View mTipView = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_active_tip, null);
-        TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
-        mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
-        Toast toast = new Toast(mActivity);
-        toast.setView(mTipView);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.show();
-    }*/
+    /*
+     * private void showModeActiveTip(LockMode mode) { View mTipView =
+     * LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_active_tip,
+     * null); TextView mActiveText = (TextView)
+     * mTipView.findViewById(R.id.active_text);
+     * mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+     * Toast toast = new Toast(mActivity); toast.setView(mTipView);
+     * toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0,
+     * 0); toast.setDuration(Toast.LENGTH_SHORT); toast.show(); }
+     */
 
     @Override
     public void onClick(int which) {

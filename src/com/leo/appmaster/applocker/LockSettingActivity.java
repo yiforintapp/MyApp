@@ -7,14 +7,15 @@ import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
@@ -31,6 +32,9 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private PasswdSettingFragment mPasswd;
     private GestureSettingFragment mGesture;
     private TextView mSwitchBottom;
+    private View switch_bottom_content;
+    private ImageView iv_reset_icon;
+    private Resources res;
 
     private boolean mResetFlag;
 
@@ -91,10 +95,14 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             mLockType = LOCK_TYPE_PASSWD;
             tans.replace(R.id.fragment_contain, mPasswd);
             mSwitchBottom.setText(getString(R.string.switch_gesture));
+            iv_reset_icon.setBackground(res.getDrawable(
+                    R.drawable.reset_pass_gesture_icon));
         } else {
             mLockType = LOCK_TYPE_GESTURE;
             tans.replace(R.id.fragment_contain, mGesture);
             mSwitchBottom.setText(getString(R.string.switch_passwd));
+            iv_reset_icon.setBackground(res.getDrawable(
+                    R.drawable.reset_pass_number_icon));
         }
 
         // if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {
@@ -113,6 +121,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
+        res = getResources();
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         if (mResetFlag) {
             mTitleBar.openBackView();
@@ -123,16 +132,18 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             // mTitleBar.setTitle(R.string.passwd_setting);
             mTitleBar.setVisibility(View.INVISIBLE);
         }
-        
+
         mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
-        mSwitchBottom.setOnClickListener(this);
-        
+        switch_bottom_content = findViewById(R.id.switch_bottom_content);
+        iv_reset_icon = (ImageView) findViewById(R.id.iv_reset_icon);
+        switch_bottom_content.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.switch_bottom:
+            case R.id.switch_bottom_content:
                 switchLockType();
                 break;
             default:
@@ -146,10 +157,14 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             tans.replace(R.id.fragment_contain, mGesture);
             mLockType = LOCK_TYPE_GESTURE;
             mSwitchBottom.setText(getString(R.string.switch_passwd));
+            iv_reset_icon.setBackground(res.getDrawable(
+                    R.drawable.reset_pass_number_icon));
         } else {
             tans.replace(R.id.fragment_contain, mPasswd);
             mLockType = LOCK_TYPE_PASSWD;
             mSwitchBottom.setText(getString(R.string.switch_gesture));
+            iv_reset_icon.setBackground(res.getDrawable(
+                    R.drawable.reset_pass_gesture_icon));
         }
         tans.commit();
     }
