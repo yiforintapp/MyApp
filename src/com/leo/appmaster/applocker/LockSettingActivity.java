@@ -7,21 +7,22 @@ import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
 
     public static final String RESET_PASSWD_FLAG = "reset_passwd";
-
+    public static final String ROTATE_FRAGMENT = "rotate_fragment";
     public static final int LOCK_TYPE_PASSWD = 1;
     public static final int LOCK_TYPE_GESTURE = 2;
     // private int mLockType = LOCK_TYPE_PASSWD;
@@ -31,8 +32,12 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private PasswdSettingFragment mPasswd;
     private GestureSettingFragment mGesture;
     private TextView mSwitchBottom;
+    private View switch_bottom_content;
+    private ImageView iv_reset_icon;
+    private Resources res;
 
     private boolean mResetFlag;
+    private boolean mIsRotateFragment = false;
 
     public boolean mToLockList;
     public boolean mJustFinish;
@@ -69,6 +74,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     private void handleIntent() {
         Intent intent = getIntent();
         mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
+        mIsRotateFragment = intent.getBooleanExtra(ROTATE_FRAGMENT, false);
         mToLockList = intent.getBooleanExtra("to_lock_list", false);
         mJustFinish = intent.getBooleanExtra("just_finish", false);
         mFromQuickMode = intent.getBooleanExtra("from_quick_mode", false);
@@ -87,14 +93,34 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         FragmentTransaction tans = mFm.beginTransaction();
         int type = AppMasterPreference.getInstance(this).getLockType();
 
-        if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            mLockType = LOCK_TYPE_PASSWD;
-            tans.replace(R.id.fragment_contain, mPasswd);
-            mSwitchBottom.setText(getString(R.string.switch_gesture));
+        if (!mIsRotateFragment) {
+            if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
+                mLockType = LOCK_TYPE_PASSWD;
+                tans.replace(R.id.fragment_contain, mPasswd);
+                mSwitchBottom.setText(getString(R.string.switch_gesture));
+                iv_reset_icon.setBackground(res.getDrawable(
+                        R.drawable.reset_pass_gesture_icon));
+            } else {
+                mLockType = LOCK_TYPE_GESTURE;
+                tans.replace(R.id.fragment_contain, mGesture);
+                mSwitchBottom.setText(getString(R.string.switch_passwd));
+                iv_reset_icon.setBackground(res.getDrawable(
+                        R.drawable.reset_pass_number_icon));
+            }
         } else {
-            mLockType = LOCK_TYPE_GESTURE;
-            tans.replace(R.id.fragment_contain, mGesture);
-            mSwitchBottom.setText(getString(R.string.switch_passwd));
+            if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
+                mLockType = LOCK_TYPE_GESTURE;
+                tans.replace(R.id.fragment_contain, mGesture);
+                mSwitchBottom.setText(getString(R.string.switch_passwd));
+                iv_reset_icon.setBackground(res.getDrawable(
+                        R.drawable.reset_pass_number_icon));
+            } else {
+                mLockType = LOCK_TYPE_PASSWD;
+                tans.replace(R.id.fragment_contain, mPasswd);
+                mSwitchBottom.setText(getString(R.string.switch_gesture));
+                iv_reset_icon.setBackground(res.getDrawable(
+                        R.drawable.reset_pass_gesture_icon));
+            }
         }
 
         // if (type == AppMasterPreference.LOCK_TYPE_GESTURE) {
@@ -113,6 +139,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
+        res = getResources();
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         if (mResetFlag) {
             mTitleBar.openBackView();
@@ -123,16 +150,18 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             // mTitleBar.setTitle(R.string.passwd_setting);
             mTitleBar.setVisibility(View.INVISIBLE);
         }
-        
+
         mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
-        mSwitchBottom.setOnClickListener(this);
-        
+        switch_bottom_content = findViewById(R.id.switch_bottom_content);
+        iv_reset_icon = (ImageView) findViewById(R.id.iv_reset_icon);
+        switch_bottom_content.setOnClickListener(this);
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.switch_bottom:
+            case R.id.switch_bottom_content:
                 switchLockType();
                 break;
             default:
@@ -146,10 +175,14 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             tans.replace(R.id.fragment_contain, mGesture);
             mLockType = LOCK_TYPE_GESTURE;
             mSwitchBottom.setText(getString(R.string.switch_passwd));
+            iv_reset_icon.setBackground(res.getDrawable(
+                    R.drawable.reset_pass_number_icon));
         } else {
             tans.replace(R.id.fragment_contain, mPasswd);
             mLockType = LOCK_TYPE_PASSWD;
             mSwitchBottom.setText(getString(R.string.switch_gesture));
+            iv_reset_icon.setBackground(res.getDrawable(
+                    R.drawable.reset_pass_gesture_icon));
         }
         tans.commit();
     }

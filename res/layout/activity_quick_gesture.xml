@@ -363,9 +363,9 @@
                             android:layout_marginTop="8dp"
                             android:ellipsize="end"
                             android:singleLine="true"
+                            android:text="@string/quick_no_msm_annotation"
                             android:textColor="#999999"
-                            android:textSize="10dp"
-                            android:visibility="gone" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <ImageView
@@ -432,9 +432,9 @@
                             android:layout_marginTop="8dp"
                             android:ellipsize="end"
                             android:singleLine="true"
+                            android:text="@string/quick_no_call_log_annotation"
                             android:textColor="#999999"
-                            android:textSize="10dp"
-                            android:visibility="gone" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <ImageView
@@ -501,9 +501,9 @@
                             android:layout_marginTop="8dp"
                             android:ellipsize="end"
                             android:singleLine="true"
+                            android:text="@string/quick_no_pricay_contact_annotation"
                             android:textColor="#999999"
-                            android:textSize="10dp"
-                            android:visibility="gone" />
+                            android:textSize="10dp" />
                     </LinearLayout>
 
                     <ImageView

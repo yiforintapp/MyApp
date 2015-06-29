@@ -39,8 +39,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 
     private ImageView iv_delete;
     private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
-    private TextView mInputTip, mTvPasswdFuncTip, mTvBottom, mSwitchBottom;
-
+    private TextView mInputTip, mTvPasswdFuncTip, mTvBottom;
+    private View reset_button_content, reset_buton_content_activity;
     private int mInputCount = 1;
     private String mTempFirstPasswd = "";
     private String mTempSecondPasswd = "";
@@ -84,13 +84,13 @@ public class PasswdSettingFragment extends BaseFragment implements
         mTvPasswd2 = (TextView) findViewById(R.id.tv_passwd_2);
         mTvPasswd3 = (TextView) findViewById(R.id.tv_passwd_3);
         mTvPasswd4 = (TextView) findViewById(R.id.tv_passwd_4);
-
+        reset_button_content = findViewById(R.id.reset_button_content);
+        reset_buton_content_activity = mActivity.findViewById(R.id.switch_bottom_content);
         mInputTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
         mTvPasswdFuncTip = (TextView) findViewById(R.id.tv_passwd_function_tip);
 
         mTvBottom = (TextView) findViewById(R.id.tv_bottom);
-        mTvBottom.setOnClickListener(this);
-        mSwitchBottom = (TextView) mActivity.findViewById(R.id.switch_bottom);
+        reset_button_content.setOnClickListener(this);
 
         if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
             mInputTip.setText(R.string.first_set_passwd_hint);
@@ -139,7 +139,7 @@ public class PasswdSettingFragment extends BaseFragment implements
             case R.id.tv_ok:
                 makesurePasswd();
                 break;
-            case R.id.tv_bottom:
+            case R.id.reset_button_content:
                 resetPasswd();
                 break;
 
@@ -188,8 +188,8 @@ public class PasswdSettingFragment extends BaseFragment implements
             mInputTip.setText(R.string.set_passwd);
         }
         mTvPasswdFuncTip.setText(R.string.digital_passwd_function_hint);
-        mSwitchBottom.setVisibility(View.VISIBLE);
-        mTvBottom.setVisibility(View.INVISIBLE);
+        reset_buton_content_activity.setVisibility(View.VISIBLE);
+        reset_button_content.setVisibility(View.INVISIBLE);
     }
 
     private void makesurePasswd() {
@@ -202,8 +202,8 @@ public class PasswdSettingFragment extends BaseFragment implements
                     mInputTip.setText(R.string.make_passwd);
                     mTvPasswdFuncTip.setText(R.string.input_again);
                     iv_delete.setEnabled(false);
-                    mSwitchBottom.setVisibility(View.INVISIBLE);
-                    mTvBottom.setVisibility(View.VISIBLE);
+                    reset_buton_content_activity.setVisibility(View.INVISIBLE);
+                    reset_button_content.setVisibility(View.VISIBLE);
                 } else if (mInputCount == 2) {
                     AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
                     if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
@@ -364,17 +364,14 @@ public class PasswdSettingFragment extends BaseFragment implements
                 startActivity(intent);
             } else if (((LockSettingActivity) mActivity).mJustFinish) {
                 // do nothing
-                /*if (((LockSettingActivity) mActivity).mFromQuickMode) {
-                    int modeId = ((LockSettingActivity) mActivity).mModeId;
-                    LockManager lm = LockManager.getInstatnce();
-                    List<LockMode> modeList = lm.getLockMode();
-                    for (LockMode lockMode : modeList) {
-                        if (lockMode.modeId == modeId) {
-                            showModeActiveTip(lockMode);
-                            break;
-                        }
-                    }
-                }*/
+                /*
+                 * if (((LockSettingActivity) mActivity).mFromQuickMode) { int
+                 * modeId = ((LockSettingActivity) mActivity).mModeId;
+                 * LockManager lm = LockManager.getInstatnce(); List<LockMode>
+                 * modeList = lm.getLockMode(); for (LockMode lockMode :
+                 * modeList) { if (lockMode.modeId == modeId) {
+                 * showModeActiveTip(lockMode); break; } } }
+                 */
             } else {
                 intent = new Intent(mActivity, HomeActivity.class);
                 mActivity.startActivity(intent);
@@ -394,16 +391,16 @@ public class PasswdSettingFragment extends BaseFragment implements
     /**
      * show the tip when mode success activating
      */
-  /*  private void showModeActiveTip(LockMode mode) {
-        View mTipView = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_active_tip, null);
-        TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
-        mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
-        Toast toast = new Toast(mActivity);
-        toast.setView(mTipView);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.show();
-    }*/
+    /*
+     * private void showModeActiveTip(LockMode mode) { View mTipView =
+     * LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_active_tip,
+     * null); TextView mActiveText = (TextView)
+     * mTipView.findViewById(R.id.active_text);
+     * mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+     * Toast toast = new Toast(mActivity); toast.setView(mTipView);
+     * toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0,
+     * 0); toast.setDuration(Toast.LENGTH_SHORT); toast.show(); }
+     */
 
     @Override
     public void onClick(int which) {

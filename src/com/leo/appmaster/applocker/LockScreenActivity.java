@@ -102,6 +102,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private EditText mEtQuestion, mEtAnwser;
     private String mLockTitle;
     private ImageView mThemeView;
+    private View switch_bottom_content;
 
     private boolean mNewTheme;
     private RelativeLayout mLockerGuide;
@@ -437,6 +438,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
         mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
         mThemeView = (ImageView) findViewById(R.id.img_layout_right);
+        switch_bottom_content = findViewById(R.id.switch_bottom_content);
+        switch_bottom_content.setVisibility(View.INVISIBLE);
         TextView lockGuideTv = (TextView) mLockerGuide.findViewById(R.id.lock_guide_tv);
         lockGuideTv.setText(getString(R.string.help_setting_guide));
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);

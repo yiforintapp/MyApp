@@ -37,16 +37,34 @@
         android:layout_marginTop="@dimen/gesture_setting_margintop"
         android:padding="8dp" />
 
-    <TextView
-        android:id="@+id/tv_bottom"
+    <RelativeLayout
+        android:id="@+id/reset_button_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
+        android:background="@drawable/reset_pass_frame"
         android:padding="10dp"
-        android:text="@string/reset_gesture_passwd"
-        android:textColor="@color/common_button_selecter" 
-        android:visibility="invisible"/>
+        android:visibility="invisible" >
+
+        <ImageView
+            android:id="@+id/iv_reset_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/reset_pass_gesture_icon" />
+
+        <TextView
+            android:id="@+id/tv_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@id/iv_reset_icon"
+            android:text="@string/reset_gesture_passwd"
+            android:textColor="@color/common_button_selecter"
+            android:textSize="13sp" />
+    </RelativeLayout>
 
 </RelativeLayout>

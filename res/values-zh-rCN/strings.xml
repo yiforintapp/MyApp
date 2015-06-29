@@ -713,6 +713,9 @@
     <string name="grade_tip_feedback">我要吐槽</string>
     <string name="quick_first_tip_dialog_right_bt">立即体验</string>
     <string name="quick_first_tip_dialog_left_bt">稍后再试</string>
+    <string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
+    <string name="quick_no_call_log_annotation">未接来电会在快捷手势中提示</string>
+    <string name="quick_no_pricay_contact_annotation">信息会以系统信息的形式提示</string>
     <!-- quick gesture -->
  <!-- version 2.4 end -->
  

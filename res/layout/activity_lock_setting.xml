@@ -40,15 +40,32 @@
                 android:textColor="#FFFFFF" />
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/switch_bottom"
+        <RelativeLayout
+            android:id="@+id/switch_bottom_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="10dp"
-            android:padding="10dp"
-            android:textColor="@color/common_button_selecter" />
+            android:background="@drawable/reset_pass_frame"
+            android:padding="10dp" >
+
+            <ImageView
+                android:id="@+id/iv_reset_icon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/switch_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toRightOf="@id/iv_reset_icon"
+                android:textColor="@color/common_button_selecter"
+                android:textSize="13sp" />
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
