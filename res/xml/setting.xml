@@ -26,7 +26,6 @@
        
     <CheckBoxPreference
         android:defaultValue="true"
-        
         android:key="new_app_lock_tip"
         android:summary="@string/summary_newapp_lock"
         android:layout="@layout/pref_list_item_mid"
