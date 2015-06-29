@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.util.Log;
 import android.view.Display;
-import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -1890,7 +1889,6 @@ public class FloatWindowHelper {
             mWhiteFloatParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                     | LayoutParams.FLAG_NOT_FOCUSABLE;
         }
-        
         //get the last coordinate,if 0 then appear in last swipe orientation 
         int[] coordinate = AppMasterPreference.getInstance(mContext).getWhiteFloatViewCoordinate();
         if(coordinate[0] == 0){
@@ -1970,12 +1968,6 @@ public class FloatWindowHelper {
         }else{
             createWhiteFloatView(mContext);
         }
-    }
-    
-    public static void update(Context mContext){
-        WindowManager windowManager = getWindowManager(mContext);
-        mWhiteFloatView.setVisibility(View.GONE);
-        windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
     }
     
     private static void setWhiteFloatOnclickListener(final Context mContext){

@@ -4,7 +4,6 @@ package com.leo.appmaster.quickgestures.ui;
 import java.util.List;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -16,18 +15,17 @@ import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 
 public class QuickGesturePopupActivity extends BaseActivity {
 
     private AppleWatchContainer mContainer;
     private int mNowLayout;
     private boolean isCloseWindow,ifCreateWhiteFloat;
+    private boolean isShowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +73,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
+        Log.i("null","onResume");
         FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
@@ -134,6 +133,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
+        Log.i("null","onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
         FloatWindowHelper.mGestureShowing = false;
         if (!isCloseWindow) {
@@ -143,7 +143,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
             showWhiteFloatView();
             ifCreateWhiteFloat = true;
         }
-        Log.i("tag","onDestroy");
         super.onDestroy();
     }
 
@@ -237,6 +236,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
     
     private void showWhiteFloatView(){
+        Log.i("null","FloatWindowHelper.mGestureShowing = "+FloatWindowHelper.mGestureShowing);
         if(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()){
             mContainer.post(new Runnable() {
                 @Override

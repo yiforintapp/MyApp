@@ -80,7 +80,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // home page
     public static final String PREF_HOME_BUSINESS_NEW_TIP_CLICK = "home_business_tip_click";
     public static final String PREF_HOME_LOCKED = "home_locked";
-    public static final String PREF_FIRST_USE_APP = "first_use_privacy_guard";
+    public static final String PREF_FIRST_USE_APP = "first_use_new_version";
 
     public static final String PREF_APP_MANAGER_FRAGMENT_FIRST_IN = "fragment_first_in";
     // flow calulate

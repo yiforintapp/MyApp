@@ -486,7 +486,6 @@ public class TaskDetectService extends Service {
                                     } else {
                                         FloatWindowHelper
                                                 .hideWhiteFloatView(TaskDetectService.this);
-                                        Log.i("null","isFilterApp service hide");
                                     }
                                 }
                             } else if (isJustHome) {
@@ -505,7 +504,6 @@ public class TaskDetectService extends Service {
                                         }
                                     }else{
                                         FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
-                                        Log.i("null","isHomeFlag service hide");
                                     }
                                 }
                             }

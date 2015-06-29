@@ -63,4 +63,27 @@
         leoindicator:strokeColor="@color/gray" />
 </FrameLayout>
 
+<FrameLayout
+    android:id="@+id/layout_new_func_guide"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:visibility="gone" >
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/new_func_guide_viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.leo.appmaster.ui.CirclePageIndicator
+        android:id="@+id/new_splash_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="@dimen/guide_page_indicator_margin_buttom"
+        leoindicator:radiu="4dp"
+        leoindicator:fillColor="@color/black"
+        leoindicator:pageColor="#00000000"
+        leoindicator:strokeColor="@color/gray" />
+</FrameLayout>
+
 </FrameLayout>

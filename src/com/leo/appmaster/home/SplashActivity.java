@@ -6,6 +6,7 @@ import java.lang.reflect.Field;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,13 +65,13 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
     private Handler mEventHandler;
 
     /* Guide page stuff begin */
-    private ViewPager mViewPager;
+    private ViewPager mViewPager,mNewFuncViewPager;
     /* pages */
-    private ArrayList<View> mPageViews;
+    private ArrayList<View> mPageViews,mNewFuncPageViews;
     private GuideItemView mPageBackgroundView;
     /* footer indicators */
     private CirclePageIndicator mIndicator;
-    private ViewGroup mMain;
+    private ViewGroup mMain,mNewGuideMain;
     /* color for each page */
     private int[] mPageColors = new int[4];
     private EdgeEffectCompat leftEdge;
@@ -223,10 +224,10 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             switch (msg.what) {
                 case MSG_LAUNCH_HOME_ACTIVITY:
                     if (AppMasterPreference.getInstance(SplashActivity.this).getFirstUse()) {
-                        boolean guidNotShown = mMain == null
-                                || mMain.getVisibility() != View.VISIBLE;
+                        boolean guidNotShown = mNewGuideMain == null
+                                || mNewGuideMain.getVisibility() != View.VISIBLE;
                         if (guidNotShown) {
-                            showGuide();
+                            showNewFuncGuide();
                         }
                     } else {
                         // AppMasterPreference pre = AppMasterPreference
@@ -393,7 +394,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         aa.setDuration(1000);
         mMain.startAnimation(aa);
 
-        mViewPager.setAdapter(new GuidePageAdapter());
+        mViewPager.setAdapter(new GuidePageAdapter(mPageViews));
         mIndicator = (CirclePageIndicator) findViewById(R.id.splash_indicator);
         mIndicator.setViewPager(mViewPager);
         mIndicator.setOnPageChangeListener(this);
@@ -415,12 +416,16 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
     }
 
     class GuidePageAdapter extends PagerAdapter {
-
+        List<View> pageViews;
+        
+        public GuidePageAdapter(List<View> pageViews) {
+            this.pageViews = pageViews;
+        }
+        
         @Override
         public int getCount() {
-            return mPageViews.size();
+            return pageViews.size();
         }
-
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
             return arg0 == arg1;
@@ -433,13 +438,13 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
 
         @Override
         public void destroyItem(View arg0, int arg1, Object arg2) {
-            ((ViewPager) arg0).removeView(mPageViews.get(arg1));
+            ((ViewPager) arg0).removeView(pageViews.get(arg1));
         }
 
         @Override
         public Object instantiateItem(View arg0, int arg1) {
-            ((ViewPager) arg0).addView(mPageViews.get(arg1));
-            return mPageViews.get(arg1);
+            ((ViewPager) arg0).addView(pageViews.get(arg1));
+            return pageViews.get(arg1);
         }
 
         @Override
@@ -526,5 +531,78 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             flag = file.delete();
         }
         return flag;
+    }
+    
+    private void showNewFuncGuide(){
+        mNewFuncPageViews = new ArrayList<View>();
+        LayoutInflater inflater = getLayoutInflater();
+        TextView textView;
+        Button moreGuideButton,enterAppButton;
+        
+        ViewGroup page1= (ViewGroup) inflater.inflate(R.layout.new_func_guide_page_layout, null);
+        page1.setBackgroundColor(Color.YELLOW);
+        textView = (TextView) page1.findViewById(R.id.new_guide_content);
+        textView.setText("page1");
+        mNewFuncPageViews.add(page1);
+        
+        ViewGroup page2= (ViewGroup) inflater.inflate(R.layout.new_func_guide_page_layout, null);
+        textView = (TextView) page2.findViewById(R.id.new_guide_content);
+        page2.setBackgroundColor(Color.BLUE);
+        textView.setText("page2");
+        mNewFuncPageViews.add(page2);
+        
+        ViewGroup page3= (ViewGroup) inflater.inflate(R.layout.new_func_guide_page_layout, null);
+        textView = (TextView) page3.findViewById(R.id.new_guide_content);
+        page3.setBackgroundColor(Color.CYAN);
+        textView.setText("page3");
+        mNewFuncPageViews.add(page3);
+        
+        mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
+        mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
+        initViewPagerEdges(mNewFuncViewPager);
+
+        mNewGuideMain.setVisibility(View.VISIBLE);
+        AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
+        aa.setDuration(1000);
+        mNewGuideMain.startAnimation(aa);
+
+        mNewFuncViewPager.setAdapter(new GuidePageAdapter(mNewFuncPageViews));
+        mIndicator = (CirclePageIndicator) findViewById(R.id.new_splash_indicator);
+        mIndicator.setViewPager(mNewFuncViewPager);
+        
+        moreGuideButton = (Button) page3.findViewById(R.id.btn_more_func);
+        moreGuideButton.setVisibility(View.VISIBLE);
+        moreGuideButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mNewGuideMain.setVisibility(View.INVISIBLE);
+                showGuide();
+            }
+        });
+        enterAppButton = (Button)page3.findViewById(R.id.btn_enter_app);
+        enterAppButton.setVisibility(View.VISIBLE);
+        enterAppButton.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
+                startHome();
+                String currentVersionName = SplashActivity.this
+                        .getString(R.string.version_name);
+                AppMasterPreference.getInstance(SplashActivity.this).setAppVersionName(
+                        currentVersionName);
+            }
+        });
+    }
+    
+    @Override
+    public void onBackPressed() {
+        if(mMain != null && mMain.getVisibility() == View.VISIBLE){
+            mMain.setVisibility(View.INVISIBLE);
+            mNewGuideMain.setVisibility(View.VISIBLE);
+            mNewFuncViewPager.setCurrentItem(mNewFuncPageViews.size()-1);
+        }else {
+            super.onBackPressed();
+        }
     }
 }
