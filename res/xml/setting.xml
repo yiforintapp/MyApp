@@ -20,39 +20,37 @@
         android:defaultValue="true"
         android:key="set_auto_lock"
         android:title="@string/auto_lock"
-        android:layout="@layout/pref_list_item_top_uninstall"
+        android:layout="@layout/pref_list_item_top"
         android:summary="@string/summary_autolock_after_lockscreen"
         android:widgetLayout="@layout/pref_widget_checkbox" />
-        <!-- android:layout="@layout/pref_list_item_top" 同下 -->
+       
     <CheckBoxPreference
         android:defaultValue="true"
-        android:layout="@layout/pref_list_item_top_uninstall"
+        
         android:key="new_app_lock_tip"
         android:summary="@string/summary_newapp_lock"
+        android:layout="@layout/pref_list_item_mid"
         android:title="@string/new_app_lock_tip"
         android:widgetLayout="@layout/pref_widget_checkbox" />
-      <!--   android:layout="@layout/pref_list_item_mid"
-      		这个是CheckBoxPreference最开始的布局，后面因为要添加summary，做了一个pref_list_item_top_uninstall,
-      		其他的条目的布局样式也和这个一样，所以直接使用
-       -->
+      		
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="app_lock_clean"
-        android:layout="@layout/pref_list_item_top_uninstall"
+        android:layout="@layout/pref_list_item_mid"
         android:title="@string/setting_locker_clean"
         android:summary="@string/summary_aacelerate_after_unlock"
         android:widgetLayout="@layout/pref_widget_checkbox" />
     <CheckBoxPreference
         android:defaultValue="false"
         android:key="app_hide_lockline"
-        android:layout="@layout/pref_list_item_top_uninstall"
+        android:layout="@layout/pref_list_item_mid"
         android:title="@string/setting_hide_lockline"
         android:summary="@string/summary_hide_lockline"
         android:widgetLayout="@layout/pref_widget_checkbox" />
 
     <Preference
         android:key="lock_setting"
-        android:layout="@layout/pref_list_item_top_uninstall"
+        android:layout="@layout/pref_list_item_mid"
         android:summary="@string/summary_setting_locker"
         android:title="@string/lock_help_lock_setting_button"
         android:widgetLayout="@layout/pref_widget_more" />
