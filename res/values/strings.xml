@@ -708,6 +708,9 @@
     <string name="setting_hide_lockline">隐藏解锁轨迹</string>
     <string name="change_to_gesture">切换为手势密码</string>
     <string name="change_to_password">切换为数字密码</string>
+    <string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
+    <string name="quick_no_call_log_annotation">未接来电会在快捷手势中提示</string>
+    <string name="quick_no_pricay_contact_annotation">信息会以系统信息的形式提示</string>
     <!-- version 2.5 huangqili part -->
 
 </resources>
