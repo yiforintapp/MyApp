@@ -51,7 +51,7 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
 
-    public static boolean mGestureShowing = false;
+    public  static volatile boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
     private static float startX;
     private static float startY;
@@ -147,6 +147,10 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     FloatWindowHelper.mGestureShowing = true;
+                                    /*
+                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                     */
+                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
@@ -284,6 +288,10 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     FloatWindowHelper.mGestureShowing = true;
+                                    /*
+                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                     */
+                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
@@ -421,6 +429,10 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     FloatWindowHelper.mGestureShowing = true;
+                                    /*
+                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                     */
+                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-2);
                                     if (isShowTip) {
@@ -560,6 +572,10 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     FloatWindowHelper.mGestureShowing = true;
+                                    /*
+                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                     */
+                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(-1);
                                     if (isShowTip) {
@@ -685,6 +701,10 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     FloatWindowHelper.mGestureShowing = true;
+                                    /*
+                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                     */
+                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
@@ -816,6 +836,10 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     FloatWindowHelper.mGestureShowing = true;
+                                    /*
+                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                     */
+                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {
@@ -952,6 +976,10 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     FloatWindowHelper.mGestureShowing = true;
+                                    /*
+                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                     */
+                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(2);
                                     if (isShowTip) {
@@ -1094,6 +1122,10 @@ public class FloatWindowHelper {
                                 isMoveIng = true;
                                 if (!mEditQuickAreaFlag) {
                                     FloatWindowHelper.mGestureShowing = true;
+                                    /*
+                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                     */
+                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
                                     removeAllFloatWindow(mContext);
                                     onTouchAreaShowQuick(1);
                                     if (isShowTip) {

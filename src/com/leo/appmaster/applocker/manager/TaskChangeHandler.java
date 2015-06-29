@@ -24,7 +24,7 @@ public class TaskChangeHandler {
     public static final String PROXYNAME = "ProxyActivity";
     public static final String WAITNAME = "WaitActivity";
     public static final String GESTURE = "QuickGesturePopupActivity";
-//    public static final String GESTURESETTING = "QuickGestureActivity";
+    // public static final String GESTURESETTING = "QuickGestureActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
     private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
@@ -74,15 +74,16 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-//         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
-        
-        //for gesture check
-        if(activity.contains(GESTURE)) {
-            FloatWindowHelper.mGestureShowing = true;
+        // LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+
+        // for gesture check
+        if (activity.contains(GESTURE)) {
+            /* 解决：关闭GESTURE这个Acitivty后启动创建热区任务时闪动创建问题 */
+            // FloatWindowHelper.mGestureShowing = true;
         } else {
             FloatWindowHelper.mGestureShowing = false;
         }
-        
+
         String myPackage = mContext.getPackageName();
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
@@ -100,7 +101,11 @@ public class TaskChangeHandler {
                         || (isCurrentSelf
                                 && (activity
                                         .contains(SPLASHNAME) || activity
-                                        .contains(GESTURE)/* || activity.contains(GESTURESETTING)*/ || activity.contains(PROXYNAME) || activity
+                                        .contains(GESTURE)/*
+                                                           * ||
+                                                           * activity.contains
+                                                           * (GESTURESETTING)
+                                                           */|| activity.contains(PROXYNAME) || activity
                                             .contains(WAITNAME))
                                 || (!unlocked && activity.contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
@@ -114,7 +119,11 @@ public class TaskChangeHandler {
                         || (isCurrentSelf
                                 && (activity
                                         .contains(SPLASHNAME) || activity
-                                        .contains(GESTURE)/*|| activity.contains(GESTURESETTING)*/ || activity.contains(PROXYNAME) || activity
+                                        .contains(GESTURE)/*
+                                                           * ||
+                                                           * activity.contains
+                                                           * (GESTURESETTING)
+                                                           */|| activity.contains(PROXYNAME) || activity
                                             .contains(WAITNAME)) || (activity
                                     .contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
@@ -129,7 +138,8 @@ public class TaskChangeHandler {
 
             // remocde app launch recoder
             LockManager.getInstatnce().recordAppLaunch(mLastRunningPkg);
-            AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg, System.currentTimeMillis());
+            AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,
+                    System.currentTimeMillis());
 
             // For android 5.0, download package changed
             if (pkg.equals(DOWNLAOD_PKG_21)) {
