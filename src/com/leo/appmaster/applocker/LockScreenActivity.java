@@ -737,7 +737,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     
     private List<Integer> getRightMenuIcons() {
         List<Integer> icons = new ArrayList<Integer>();
-        icons.add(R.drawable.reset_pasword_icon);
+        icons.add(R.drawable.forget_password_icon);
         return icons;
     }
 
