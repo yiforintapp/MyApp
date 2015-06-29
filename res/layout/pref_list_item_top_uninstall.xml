@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="75dp"
+    android:layout_height="65dp"
     android:background="@drawable/manager_backup_list_selecter"
     android:gravity="center_vertical" >
 
@@ -29,11 +29,12 @@
             android:layout_height="wrap_content"
             android:layout_below="@android:id/title"
             android:layout_marginTop="5dp"
-            android:ellipsize="marquee"
+            android:ellipsize="end"
             android:fadingEdge="horizontal"
             android:gravity="center_vertical"
-            android:textColor="@color/gray"
-            android:textSize="13.0sp" />
+            android:maxLines="2"
+            android:textColor="#999999"
+            android:textSize="11.0sp" />
     </RelativeLayout>
 
     <LinearLayout

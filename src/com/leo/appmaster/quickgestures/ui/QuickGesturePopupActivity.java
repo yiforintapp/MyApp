@@ -5,8 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
-
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -15,7 +13,6 @@ import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -87,7 +84,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
             }
         });
         super.onResume();
-        // Log.e("#########", "快捷手势结束onResume时间："+System.currentTimeMillis());
     }
 
     private void fillTwoLayout(int mNowLayout) {
@@ -144,17 +140,13 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
-            FloatWindowHelper.mGestureShowing = false;
             mContainer.showCloseAnimation(new Runnable() {
-
                 @Override
                 public void run() {
-                    // FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                    // createFloatView();
+                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                    createFloatView();
                 }
             });
-            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-            createFloatView();
             mContainer.saveGestureType();
         }
     }
@@ -174,15 +166,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
         FloatWindowHelper.mGestureShowing = false;
         FloatWindowHelper.createFloatWindow(getApplicationContext(),
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
-        // mContainer.postDelayed(new Runnable() {
-        // @Override
-        // public void run() {
-        // // /* 再次为mGestureShowing赋值，解决偶尔出现创建热区时mGestureShowing值没有即使更新问题 */
-        // // FloatWindowHelper.mGestureShowing = false;
         QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
         isCloseWindow = false;
-        // }
-        // }, 500);
         // 多条短信提示后，未读短信红点提示标记为已读
         if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageRead) {
             QuickGestureManager.getInstance(getApplicationContext()).isMessageRead = true;
