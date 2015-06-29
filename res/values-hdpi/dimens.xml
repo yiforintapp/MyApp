@@ -356,4 +356,8 @@
     <dimen name="quick_setting_item_text_line_space">2.33dp</dimen>
     <dimen name="quick_setting_item_space">5dp</dimen>
 
+    <!-- 2.5 ql part -->
+    <dimen name="lock_setting_item_des_width">185dp</dimen>
+    <!-- 2.5 ql part -->
+
 </resources>

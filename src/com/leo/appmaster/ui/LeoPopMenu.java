@@ -255,10 +255,11 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
+        //特殊处理一下只有一个item的情况，放宽长度限制，免得换行
         if(items.size()==1)
         {
-            newSmallWidth+=20;
-            newLongWidth+=20;
+            newSmallWidth+=720/W*20;
+            newLongWidth+=720/W*20;
         }
     }
 
