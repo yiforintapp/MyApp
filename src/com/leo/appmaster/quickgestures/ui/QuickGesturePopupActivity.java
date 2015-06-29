@@ -144,17 +144,16 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
-            FloatWindowHelper.mGestureShowing = false;
             mContainer.showCloseAnimation(new Runnable() {
 
                 @Override
                 public void run() {
-                    // FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                    // createFloatView();
+                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                     createFloatView();
                 }
             });
-            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-            createFloatView();
+//            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+//            createFloatView();
             mContainer.saveGestureType();
         }
     }
