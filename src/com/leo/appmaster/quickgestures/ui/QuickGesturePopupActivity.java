@@ -30,7 +30,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Log.e("#########", "快捷手势进入onCreate时间："+System.currentTimeMillis());
         long startTime = System.currentTimeMillis();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
@@ -43,7 +42,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
         fillWhichLayoutFitst(mNowLayout);
         overridePendingTransition(0, 0);
-        // Log.e("#########", "快捷手势进入结束onCreate时间："+System.currentTimeMillis());
         long finishTime = System.currentTimeMillis();
         long duringTime = finishTime - startTime;
         LeoLog.d("testDuring", "Time is : " + duringTime);
@@ -65,13 +63,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             FloatWindowHelper.mGestureShowing = false;
             mContainer.saveGestureType();
             finish();
-        } else {
-            /*
-             * 快捷手势界面创建后停止创建热区的任务，解决关闭界面时立即创建热区与任务创建热区之间的时间差，引起的创建问题
-             */
-            FloatWindowHelper.stopFloatWindowCreate(getApplicationContext());
         }
-
         super.onWindowFocusChanged(hasFocus);
     }
 
@@ -81,7 +73,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        // Log.e("#########", "快捷手势进入onResume时间："+System.currentTimeMillis());
         FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
@@ -153,14 +144,17 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
+            FloatWindowHelper.mGestureShowing = false;
             mContainer.showCloseAnimation(new Runnable() {
 
                 @Override
                 public void run() {
-                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                    createFloatView();
+                    // FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                    // createFloatView();
                 }
             });
+            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+            createFloatView();
             mContainer.saveGestureType();
         }
     }
@@ -180,15 +174,15 @@ public class QuickGesturePopupActivity extends BaseActivity {
         FloatWindowHelper.mGestureShowing = false;
         FloatWindowHelper.createFloatWindow(getApplicationContext(),
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
-        mContainer.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                /* 再次为mGestureShowing赋值，解决偶尔出现创建热区时mGestureShowing值没有即使更新问题 */
-                FloatWindowHelper.mGestureShowing = false;
-                QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
-                isCloseWindow = false;
-            }
-        }, 500);
+        // mContainer.postDelayed(new Runnable() {
+        // @Override
+        // public void run() {
+        // // /* 再次为mGestureShowing赋值，解决偶尔出现创建热区时mGestureShowing值没有即使更新问题 */
+        // // FloatWindowHelper.mGestureShowing = false;
+        QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
+        isCloseWindow = false;
+        // }
+        // }, 500);
         // 多条短信提示后，未读短信红点提示标记为已读
         if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageRead) {
             QuickGestureManager.getInstance(getApplicationContext()).isMessageRead = true;
