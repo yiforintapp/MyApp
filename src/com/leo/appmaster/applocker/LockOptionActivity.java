@@ -162,6 +162,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mForbidUninstall.setChecked(false);
             mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
         }
+//        mChangeLockTime.setSummary(R.string.summary_setting_locker);
+//        mHideLockLine.setSummary(R.string.summary_hide_lockline);
+//        mLockerClean.setSummary(R.string.summary_aacelerate_after_unlock);
+        
         if (haveProtect()) {
             mSetProtect.setTitle(R.string.passwd_protect);
         } else {

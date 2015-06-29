@@ -255,6 +255,11 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
+        if(items.size()==1)
+        {
+            newSmallWidth+=20;
+            newLongWidth+=20;
+        }
     }
 
     public List<String> getPopMenuItems() {
