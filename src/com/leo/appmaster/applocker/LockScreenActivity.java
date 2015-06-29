@@ -682,9 +682,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         }
                     });
                 }
-                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems());
+              
+                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(),getRightMenuIcons(),true);
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
+                
                 break;
             case R.id.layout_title_back:
                 onBackPressed();
@@ -731,6 +733,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             listItems.add(resources.getString(R.string.find_passwd));
         }
         return listItems;
+    }
+    
+    private List<Integer> getRightMenuIcons() {
+        List<Integer> icons = new ArrayList<Integer>();
+        icons.add(R.drawable.reset_pasword_icon);
+        return icons;
     }
 
     @Override
