@@ -83,6 +83,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     public static final String FROME_STATUSBAR = "from_statusbar";
     private boolean initFlag;
     public static boolean isSureBt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -167,21 +168,21 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mLeftBottomView = (TextView) findViewById(R.id.gesture_left_tips_bottom);
         mRightTopView = (TextView) findViewById(R.id.gesture_right_tips_top_tv);
         mRightBottomView = (TextView) findViewById(R.id.gesture_right_tips_bottom);
-        mHandImage = (ImageView) findViewById(R.id.gesture_handIV);
-        mArrowImage = (ImageView) findViewById(R.id.gesture_arrowIV);
         mOpenQuick = (RelativeLayout) findViewById(R.id.open_quick);
         mSlidingArea = (RelativeLayout) findViewById(R.id.slid_area);
         mSlidingTime = (RelativeLayout) findViewById(R.id.allow_slid_time);
         mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);
         mRecentlyContactOPen = (RelativeLayout) findViewById(R.id.recently_contact_content);
         mPrivacyContactOpen = (RelativeLayout) findViewById(R.id.privacy_contact_content);
+        mSlidingTimeTv = (TextView) findViewById(R.id.allow_slid_time_item_cotentTV);
+        mSlidAreaTv = (TextView) findViewById(R.id.slid_area_item_cotentTV);
+        mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
+        mHandImage = (ImageView) findViewById(R.id.gesture_handIV);
+        mArrowImage = (ImageView) findViewById(R.id.gesture_arrowIV);
         mQuickOpenCK = (ImageView) findViewById(R.id.open_quick_gesture_check);
         mNoReadMessageOpenCK = (ImageView) findViewById(R.id.no_read_message_check);
         mRecentlyContactOpenCK = (ImageView) findViewById(R.id.recently_contact_check);
         mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
-        mSlidingTimeTv = (TextView) findViewById(R.id.allow_slid_time_item_cotentTV);
-        mSlidAreaTv = (TextView) findViewById(R.id.slid_area_item_cotentTV);
-        mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
     }
 
     private void initQuickGestureOpen() {
@@ -423,7 +424,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onClick(int progress) {
-                isSureBt=true;
+                isSureBt = true;
                 boolean mLeftBottom = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftBottom;
                 boolean mRightBottm = QuickGestureManager.getInstance(AppMasterApplication
@@ -434,7 +435,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         .getInstance()).isRightCenter;
                 if (mLeftBottom || mRightBottm || mLeftCenter || mRightCenter) {
                     // save progress value
-                    mPre.setQuickGestureDialogSeekBarValue(QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+                    mPre.setQuickGestureDialogSeekBarValue(QuickGestureManager
+                            .getInstance(getApplicationContext()).mSlidAreaSize);
                     // save sliding area value
                     mPre.setDialogRadioLeftBottom(mLeftBottom);
                     mPre.setDialogRadioRightBottom(mRightBottm);
@@ -446,9 +448,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     setSlidingAreaSetting();
                     if (mAlarmDialog != null) {
                         mAlarmDialog.dismiss();
-//                        FloatWindowHelper.mEditQuickAreaFlag = false;
-//                        mAlarmDialogFlag = false;
-//                        updateFloatWindowBackGroudColor();
+                        // FloatWindowHelper.mEditQuickAreaFlag = false;
+                        // mAlarmDialogFlag = false;
+                        // updateFloatWindowBackGroudColor();
                     }
                 } else {
                     Toast.makeText(
@@ -470,7 +472,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     // update backgroud color
     private void updateFloatWindowBackGroudColor() {
         FloatWindowHelper
-                .updateFloatWindowBackgroudColor(this,FloatWindowHelper.mEditQuickAreaFlag);
+                .updateFloatWindowBackgroudColor(this, FloatWindowHelper.mEditQuickAreaFlag);
         // FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
         // AppMasterPreference
         // .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
