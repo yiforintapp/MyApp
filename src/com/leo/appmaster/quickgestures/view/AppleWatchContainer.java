@@ -1351,12 +1351,12 @@ public class AppleWatchContainer extends FrameLayout {
             @Override
             public void onAnimationEnd(Animator animation) {
                 Activity activity = (Activity) AppleWatchContainer.this.getContext();
-                FloatWindowHelper.mGestureShowing = false;
                 isAnimating = false;
                 activity.finish();
                 if (runnable != null) {
                     runnable.run();
                 }
+                FloatWindowHelper.mGestureShowing = false;
             }
         });
         set.start();

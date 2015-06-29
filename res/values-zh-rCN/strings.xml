@@ -139,8 +139,6 @@
     <string name="grade_tip">您已经使用隐私卫士很多次了，喜欢我们吗，给5星鼓励下吧！</string>
     <string name="app_setting_about">关于</string>
      <string name="forbid_uninstall">高级保护</string>
-    <string name="forbid_uninstall_off">赶紧给老子开启高级保护！</string>
-    <string name="forbid_uninstall_on">开了高级保护就对了嘛！！乖</string>
     <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
@@ -243,7 +241,6 @@
     <string name="locker_theme_guide">恭喜！您的主题会使用在应用解锁界面</string>
     <string name="locker_clean">优化成功，已提速&#160;%1$s</string>
     <string name="setting_locker_clean">解锁后加速</string>
-    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
     <string name="app_no_video_hide">请点击添加按钮，添加需要隐藏的视频</string>
     <string name="app_no_video_gallery_hide">没有可隐藏的视频</string>
     <string name="app_video_hide">视频隐藏</string>
@@ -705,8 +702,6 @@
     <string name="quick_guesture_lockscreen">锁屏</string>
     <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
     <string name="pass_gesture_change">切换密码方式</string>
-    <string name="change_to_gesture">切换为手势密码</string>
-    <string name="change_to_password">切换为数字密码</string>
     <string name="permission_open_tip_notification_title">设置快捷手势</string>
     <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">还在用老办法管理应用和快捷开关吗？赶快试试和apple watch一样的快捷开关管理吧，让你成为朋友中最cool的人！</string>
@@ -719,9 +714,22 @@
     <!-- quick gesture -->
  <!-- version 2.4 end -->
  
- <!-- version 2.5 start-->
- 	<string name="quick_guesture_strengthen_mode_title">强化划出模式</string>
- 	<string name="quick_guesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
- <!-- version 2.5 end -->
+    <!-- version 2.5 huangqili part -->
+   <string name="forbid_uninstall_off">开启高级保护，防止隐私卫士被恶意卸载，更好地保护您的隐私</string>
+    <string name="forbid_uninstall_on">高级保护开启成功!</string>
+    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
+    <string name="change_to_gesture">切换为手势密码</string>
+    <string name="change_to_password">切换为数字密码</string>
     
+    <string name="summary_newapp_lock">新安装应用时，一键快速加锁</string>
+    <string name="summary_aacelerate_after_unlock">解锁应用时清理内存，自动提速</string>
+    <string name="summary_autolock_after_lockscreen">锁屏后所有应用重新锁定</string>
+    <string name="summary_setting_locker">选择应用锁定设置</string>
+    <string name="summary_hide_lockline">将应用解锁轨迹隐藏，更安全地保护您的隐私</string>
+    
+    <string name="quick_guesture_strengthen_mode_title">强化划出模式</string>
+ 	<string name="quick_guesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
+    
+    <!-- version 2.5 huangqili part -->
+
 </resources>

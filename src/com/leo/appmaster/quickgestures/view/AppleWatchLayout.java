@@ -211,9 +211,6 @@ public class AppleWatchLayout extends ViewGroup {
                 }
             }, 800);
         }
-
-        setChildrenDrawnWithCacheEnabled(true);
-        setDrawingCacheEnabled(true);
     }
 
     public boolean isCurrentLayout() {
@@ -430,6 +427,9 @@ public class AppleWatchLayout extends ViewGroup {
         mTotalHeight = getMeasuredHeight();
         mCenterPointX = mTotalWidth / 2;
         mCenterPointY = mTotalHeight / 2;
+
+        // setChildrenDrawnWithCacheEnabled(true);
+        // setDrawingCacheEnabled(true);
     }
 
     @Override
@@ -760,7 +760,7 @@ public class AppleWatchLayout extends ViewGroup {
             ContactCallLog callLog = (ContactCallLog) info;
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setType("vnd.android.cursor.dir/calls");
-//            intent.setAction(Intent.ACTION_CALL_BUTTON);
+            // intent.setAction(Intent.ACTION_CALL_BUTTON);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 mContext.startActivity(intent);
@@ -799,16 +799,22 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
-//                if (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog) {
-//                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
-//                            new QuickGestureContactTipInfo());
-//                    QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = false;
-//                }
-//                if (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm) {
-//                    QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
-//                            new QuickGestureContactTipInfo());
-//                    QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = false;
-//                }
+                // if
+                // (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog)
+                // {
+                // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                // new QuickGestureContactTipInfo());
+                // QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog
+                // = false;
+                // }
+                // if
+                // (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm)
+                // {
+                // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
+                // new QuickGestureContactTipInfo());
+                // QuickGestureManager.getInstance(mContext).isShowPrivacyMsm =
+                // false;
+                // }
             } catch (Exception e) {
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
@@ -864,26 +870,24 @@ public class AppleWatchLayout extends ViewGroup {
         LeoLog.d("checkItemClick", "hitView = " + hitView);
         if (hitView != null) {
             GestureItemView giv = (GestureItemView) hitView;
-            if (mContainer.isEditing()) {
-                if (giv.isEmptyIcon()) {
-                    GType type = mContainer.getCurrentGestureType();
-                    if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
-                        showAddNewDiglog(type);
-                        if (type == GType.MostUsedLayout) {
-                            SDKWrapper
-                                    .addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_add");
-                        } else {
-                            SDKWrapper
-                                    .addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_add");
-                        }
+            if (giv.isEmptyIcon()) {
+                GType type = mContainer.getCurrentGestureType();
+                if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
+                    showAddNewDiglog(type);
+                    if (type == GType.MostUsedLayout) {
+                        SDKWrapper
+                                .addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_add");
+                    } else {
+                        SDKWrapper
+                                .addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_add");
                     }
-                } else {
-                    Rect rect = giv.getCrossRect();
-                    int offsetX = (int) (x - hitView.getLeft());
-                    int onnsetY = (int) (y - hitView.getTop());
-                    if (rect.contains(offsetX, onnsetY)) {
-                        replaceEmptyIcon(giv);
-                    }
+                }
+            } else if (mContainer.isEditing()) {
+                Rect rect = giv.getCrossRect();
+                int offsetX = (int) (x - hitView.getLeft());
+                int onnsetY = (int) (y - hitView.getTop());
+                if (rect.contains(offsetX, onnsetY)) {
+                    replaceEmptyIcon(giv);
                 }
             } else {
                 animateItem(hitView);

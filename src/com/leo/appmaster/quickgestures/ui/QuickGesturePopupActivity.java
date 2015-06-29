@@ -25,7 +25,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private AppleWatchContainer mContainer;
     private int mNowLayout;
     private boolean isCloseWindow,ifCreateWhiteFloat;
-    private boolean isShowing;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +87,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             }
         });
         super.onResume();
-        FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
         FloatWindowHelper.hideWhiteFloatView(getApplicationContext());
-        // Log.e("#########", "快捷手势结束onResume时间："+System.currentTimeMillis());
     }
 
     private void fillTwoLayout(int mNowLayout) {
@@ -138,9 +135,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
         FloatWindowHelper.mGestureShowing = false;
         if (!isCloseWindow) {
             createFloatView();
+            Log.i("null","onDestroy  createFloatView");
         }
         if(!ifCreateWhiteFloat){
             showWhiteFloatView();
+            Log.i("null","onDestroy  showWhiteFloatView");
             ifCreateWhiteFloat = true;
         }
         super.onDestroy();
@@ -152,23 +151,18 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
-            FloatWindowHelper.mGestureShowing = false;
             mContainer.showCloseAnimation(new Runnable() {
                 @Override
                 public void run() {
-                    // FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                    // createFloatView();
+                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                    createFloatView();
+                    if(!ifCreateWhiteFloat){
+                        showWhiteFloatView();
+                        ifCreateWhiteFloat = true;
+                    }
                 }
             });
-            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-            createFloatView();
             mContainer.saveGestureType();
-            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-            createFloatView();
-            if(!ifCreateWhiteFloat){
-                showWhiteFloatView();
-                ifCreateWhiteFloat = true;
-            }
             Log.i("null", "onBackPressed");
         }
     }
@@ -188,20 +182,14 @@ public class QuickGesturePopupActivity extends BaseActivity {
         FloatWindowHelper.mGestureShowing = false;
         FloatWindowHelper.createFloatWindow(getApplicationContext(),
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
-        // mContainer.postDelayed(new Runnable() {
-        // @Override
-        // public void run() {
-        // // /* 再次为mGestureShowing赋值，解决偶尔出现创建热区时mGestureShowing值没有即使更新问题 */
-        // // FloatWindowHelper.mGestureShowing = false;
         QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
         isCloseWindow = false;
-        // }
-        // }, 500);
         // 多条短信提示后，未读短信红点提示标记为已读
         if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageRead) {
             QuickGestureManager.getInstance(getApplicationContext()).isMessageRead = true;
             AppMasterPreference.getInstance(getApplicationContext()).setMessageIsRedTip(true);
         }
+        Log.i("null", "createFloatView");
     }
 
     // 去除热区红点，未读，运营icon和红点
@@ -241,9 +229,9 @@ public class QuickGesturePopupActivity extends BaseActivity {
             mContainer.post(new Runnable() {
                 @Override
                 public void run() {
-                   // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
-                    FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
-                    FloatWindowHelper.createWhiteFloatView(getApplicationContext());
+                   FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
+                   // FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
+                    //FloatWindowHelper.createWhiteFloatView(getApplicationContext());
                     Log.i("null", "showWhiteFloatView'");
                 }
             });
