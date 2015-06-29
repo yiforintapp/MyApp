@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.quickgestures;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
@@ -26,8 +24,11 @@ import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.quickgestures.view.SectorQuickGestureContainer;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.Utilities;
+import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
+import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 
 /**
  * QuickGestureWindowManager
@@ -55,6 +56,8 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
     private static ImageView mWhiteFloatView ;
+    private static ScreenOnOffListener mScreenListener;
+    
 
     public static boolean mGestureShowing = false;
     public static boolean mEditQuickAreaFlag = false;
@@ -108,6 +111,7 @@ public class FloatWindowHelper {
      * @param context
      */
     public static void createFloatLeftBottomWindow(final Context mContext, int value) {
+        Log.i("null", "createFloatLeftBottomWindow" );
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         // final boolean isShowBusinessRedTip =
@@ -245,6 +249,7 @@ public class FloatWindowHelper {
      * @param context
      */
     public static void createFloatLeftCenterWindow(final Context mContext, int value) {
+        Log.i("null", "createFloatLeftCenterWindow" );
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
@@ -377,6 +382,7 @@ public class FloatWindowHelper {
      * @param context
      */
     public static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
+        
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
@@ -534,6 +540,7 @@ public class FloatWindowHelper {
      * @param context
      */
     public static void createFloatLeftTopWindow(final Context mContext, int value) {
+        Log.i("null", "createFloatLeftTopWindow" );
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftTopView == null) {
@@ -1845,56 +1852,78 @@ public class FloatWindowHelper {
             mWhiteFloatParams = new LayoutParams();
             mWhiteFloatParams.width = mWhiteFLoatWidth;
             mWhiteFloatParams.height = mWhiteFLoatWidth;
-            mWhiteFloatParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
+            mWhiteFloatParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
             mWhiteFloatParams.format = PixelFormat.RGBA_8888;
             mWhiteFloatParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                     | LayoutParams.FLAG_NOT_FOCUSABLE;
         }
-        if(lastSlideOrientation < 0){
-            mWhiteFloatParams.x = -W/2;
-            if(lastSlideOrientation == -1){
-                mWhiteFloatParams.y = H-mWhiteFloatParams.height;
-            }else if(lastSlideOrientation == -2){
-                mWhiteFloatParams.y = mWhiteFloatParams.height;
+        
+        //get the last coordinate,if 0 then appear in last swipe orientation 
+        int[] coordinate = AppMasterPreference.getInstance(mContext).getWhiteFloatViewCoordinate();
+        if(coordinate[0] == 0){
+            if(lastSlideOrientation < 0){
+                mWhiteFloatParams.x = -W/2;
+                if(lastSlideOrientation == -1){
+                    mWhiteFloatParams.y = H-mWhiteFloatParams.height;
+                }else if(lastSlideOrientation == -2){
+                    mWhiteFloatParams.y = mWhiteFloatParams.height;
+                }
+            }else{
+                mWhiteFloatParams.x = W/2;
+                if(lastSlideOrientation == 1){
+                    mWhiteFloatParams.y = H-mWhiteFloatParams.height;
+                }else if(lastSlideOrientation == 2){
+                    mWhiteFloatParams.y = mWhiteFloatParams.height;
+                }
             }
-        }else{
-            mWhiteFloatParams.x = W/2;
-            if(lastSlideOrientation == 1){
-                mWhiteFloatParams.y = H-mWhiteFloatParams.height;
-            }else if(lastSlideOrientation == 2){
-                mWhiteFloatParams.y = mWhiteFloatParams.height;
-            }
+        }else {
+            mWhiteFloatParams.x = coordinate[0];
+            mWhiteFloatParams.y = coordinate[1];
         }
+        
         if(null == mWhiteFloatView){
             mWhiteFloatView = new ImageView(mContext);
             mWhiteFloatView.setImageResource(R.drawable.radio_buttons);
             setWhiteFloatOnTouchEvent(mContext);
         }
-        windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
+        try {
+            windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
+        } catch (Exception e) {
+        }
+        registerWhiteFlaotOnScreenListener(mContext);
+        Log.i("null","创建小白点");
     }
     
     public static void removeWhiteFloatView(Context mContext){
       if(null != mWhiteFloatView){
           WindowManager windowManager = getWindowManager(mContext);
-          windowManager.removeView(mWhiteFloatView);
+          try{
+              windowManager.removeView(mWhiteFloatView);
+          }catch(Exception e){
+          }
+          if(null != mScreenListener){
+              LeoGlobalBroadcast.unregisterBroadcastListener(mScreenListener);
+          }
+          mWhiteFloatView = null;
+          Log.i("null","删除小白点");
       }
     }
     
     public static void hideWhiteFloatView(Context mContext){
-        if(!AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode())
-            return;
         if(null != mWhiteFloatView && null != mWhiteFloatParams){
             if(mWhiteFloatView.getVisibility() == View.VISIBLE){
                 WindowManager windowManager = getWindowManager(mContext);
                 mWhiteFloatView.setVisibility(View.GONE);
-                windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                try{
+                    windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                }catch(Exception e){
+                }
+                Log.i("null","hide");
             }
         }
     }
     
     public static void showWhiteFloatView(Context mContext){
-        if(!AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode())
-            return;
         if(null != mWhiteFloatView && null != mWhiteFloatParams){
             if(hasMessageTip(mContext)){
                 
@@ -1910,6 +1939,12 @@ public class FloatWindowHelper {
         }
     }
     
+    public static void update(Context mContext){
+        WindowManager windowManager = getWindowManager(mContext);
+        mWhiteFloatView.setVisibility(View.GONE);
+        windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+    }
+    
     private static void setWhiteFloatOnclickListener(final Context mContext){
         if(null == mWhiteFloatView)
             return;
@@ -1918,20 +1953,20 @@ public class FloatWindowHelper {
         }
         int oreatation = mWhiteFloatParams.x<0?0:2;
         showQuickGuestureView(mContext,oreatation);
-       hideWhiteFloatView(mContext);
-       Log.i("tag", "white float");
+       Log.i("null", "white float");
     }
     
     private static void setWhiteFloatOnTouchEvent(final Context mContext){
         if(null == mWhiteFloatView)
             return;
         final WindowManager windowManager = getWindowManager(mContext);
-        final int W = windowManager.getDefaultDisplay().getWidth();
-        final int H = windowManager.getDefaultDisplay().getHeight();
+        final int halfW = windowManager.getDefaultDisplay().getWidth()/2;
+        final int halfH = windowManager.getDefaultDisplay().getHeight()/2;
         final int diff = DipPixelUtil.dip2px(mContext,10);
         
         mWhiteFloatView.setOnTouchListener(new OnTouchListener() {
             float startX,startY,x,y,moveX,moveY;
+            int upX,upY;
             long downTime;
             ValueAnimator animator;
             
@@ -1944,49 +1979,43 @@ public class FloatWindowHelper {
                         startX = event.getRawX();
                         startY = event.getRawY();
                         downTime = System.currentTimeMillis();
-                        Log.i("tag","down");
                         break;
                     case MotionEvent.ACTION_MOVE:
                          moveX = Math.abs(startX - event.getRawX());
                          moveY = Math.abs(startY - event.getRawY());
                          if(moveX > 10 && moveY > 10){
-                             x = event.getRawX()-W/2-diff;
-                             y =  event.getRawY()-H/2-diff;
+                             x = event.getRawX()-halfW;
+                             y =  event.getRawY()-halfH-diff;
                              mWhiteFloatParams.x = (int) x;
                              mWhiteFloatParams.y = (int) y;
                              windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
-                             Log.i("######", "event.getRawX() : "+event.getRawX()+", event.getRawY() : "+event.getRawY());
                          }
-                         Log.i("tag","move  "+ViewConfiguration.get(mContext).getScaledTouchSlop());
                         break;
                     case MotionEvent.ACTION_UP:
-                        if(System.currentTimeMillis() - downTime<200){
+                        upX = event.getRawX() < halfW ? -halfW : halfW;
+                        upY = (int) (event.getRawY() - halfH);
+                        if (System.currentTimeMillis() - downTime < 200) {
                             setWhiteFloatOnclickListener(mContext);
+                        }else {
+                            if (x < 0) {
+                                animator = ValueAnimator.ofInt((int) x, -halfW);
+                            } else {
+                                animator = ValueAnimator.ofInt((int) x, halfW);
+                            }
+                            animator.addUpdateListener(new AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimator animation) {
+                                    int value = (Integer) animation.getAnimatedValue();
+                                    mWhiteFloatParams.x = value;
+                                    windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                                }
+                            });
+                            animator.start();
                         }
-                           if(x<0){
-                                animator = ValueAnimator.ofInt((int)x,-W/2);
-                           }else {
-                               animator = ValueAnimator.ofInt((int)x,W/2);
-                           }
-                           animator.addUpdateListener(new AnimatorUpdateListener() {
-                               @Override
-                               public void onAnimationUpdate(ValueAnimator animation) {
-                                   int value  = (Integer) animation.getAnimatedValue();
-                                   mWhiteFloatParams.x = value;
-                                   windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
-                                   Log.i("######", "mWhiteFloatParams.x : "+mWhiteFloatParams.x+" , mWhiteFloatParams.y:"+mWhiteFloatParams.y);
-                               }
-                           });
-                           animator.addListener(new AnimatorListenerAdapter() {
-                               public void onAnimationEnd(Animator animation) {
-                                   
-                               };
-                           });
-                           animator.start();
-                        Log.i("tag","up");
+                        AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(upX,upY);
                         break;
                 }
-                return true;
+                return false;
             }
         });
     }
@@ -2013,4 +2042,28 @@ public class FloatWindowHelper {
         FloatWindowHelper.removeAllFloatWindow(context);
     }
 
+    private static void registerWhiteFlaotOnScreenListener(final Context mContext){
+        if(null == mScreenListener){
+            mScreenListener = new ScreenOnOffListener() {
+                @Override
+                public void onScreenChanged(Intent intent) {
+                        if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+                            hideWhiteFloatView(mContext);
+                            AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(false);
+                            Log.i("null","锁屏啦");
+                        }else if(!AppUtil.isScreenLocked(mContext) && Intent.ACTION_SCREEN_ON.equals(intent.getAction())){
+                            Log.i("null","亮屏啦");
+                            AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
+                            showWhiteFloatView(mContext);
+                        }else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+                            Log.i("null","解锁啦");
+                            AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
+                            showWhiteFloatView(mContext);
+                        }
+                    super.onScreenChanged(intent);
+                }
+            };
+        }
+        LeoGlobalBroadcast.registerBroadcastListener(mScreenListener);
+    }
 }

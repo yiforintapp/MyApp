@@ -175,13 +175,13 @@ public class QuickGestureManager {
         Bitmap target = null;
         target = LockManager.getInstatnce().mDrawableColors.get(drawable);
         if (target == null) {
-            LeoLog.e("xxxx", "target dont hitted");
+           // LeoLog.e("xxxx", "target dont hitted");
             target = LockManager.getInstatnce().mMatcher.getMatchedBitmap(drawable);
             if (target != null) {
                 LockManager.getInstatnce().mDrawableColors.put(drawable, target);
             }
         } else {
-            LeoLog.e("xxxx", "target hitted");
+            //LeoLog.e("xxxx", "target hitted");
         }
         return target;
     }

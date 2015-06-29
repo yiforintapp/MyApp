@@ -478,10 +478,16 @@ public class TaskDetectService extends Service {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
                                 /**about white float  view **/
-                                if (!isFilterApp  && !FloatWindowHelper.mEditQuickAreaFlag){
-                                        FloatWindowHelper.showWhiteFloatView(TaskDetectService.this);
-                                }else{
-                                    FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
+                                if (sp_traffic.getSwitchOpenStrengthenMode()) {
+                                    if (!isFilterApp) {
+                                        if( !FloatWindowHelper.mEditQuickAreaFlag){
+                                            FloatWindowHelper.showWhiteFloatView(TaskDetectService.this);
+                                        }
+                                    } else {
+                                        FloatWindowHelper
+                                                .hideWhiteFloatView(TaskDetectService.this);
+                                        Log.i("null","isFilterApp service hide");
+                                    }
                                 }
                             } else if (isJustHome) {
                                 boolean isHomeFlag = Utilities.isHome(getApplicationContext());
@@ -492,12 +498,15 @@ public class TaskDetectService extends Service {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
                                 /**about white float  view **/
-                                if (isHomeFlag){
-                                    if(sp_traffic.getSwitchOpenStrengthenMode()){
-                                        FloatWindowHelper.showWhiteFloatView(TaskDetectService.this);
+                                if(sp_traffic.getSwitchOpenStrengthenMode()){
+                                    if (isHomeFlag){
+                                        if(!FloatWindowHelper.mEditQuickAreaFlag){
+                                            FloatWindowHelper.showWhiteFloatView(TaskDetectService.this);
+                                        }
+                                    }else{
+                                        FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
+                                        Log.i("null","isHomeFlag service hide");
                                     }
-                                }else{
-                                    FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
                                 }
                             }
                         } else {

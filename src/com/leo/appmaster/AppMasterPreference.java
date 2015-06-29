@@ -13,6 +13,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.leo.appmaster.R.string;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -158,6 +159,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWITCH_OPEN_RECENTLY_CONTACT = "switch_open_recently_contact";
     public static final String PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP = "switch_open_privacy_contact_message_tip";
     public static final String PREF_SWTICH_OPEN_STRENGTH_MODE = "switch_open_strength_mode";
+    public static final String PREF_WHITE_FLOAT_COORDINATE= "white_float_coordinate";
 
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM = "dialog_radio_setting_left_bottom";
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM = "dialog_radio_setting_right_bottom";
@@ -1858,5 +1860,17 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getMessageIsRedTip() {
         return mPref.getBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, false);
+    }
+    
+    public void setWhiteFloatViewCoordinate(int x,int y){
+        mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x+":"+y).commit();
+    }
+    
+    public int[] getWhiteFloatViewCoordinate(){
+        int[] coordinate = new int[2];
+        String[] str  = mPref.getString(PREF_WHITE_FLOAT_COORDINATE, "0:0").split(":");
+        coordinate[0] = Integer.valueOf(str[0]);
+        coordinate[1] = Integer.valueOf(str[1]);
+        return coordinate;
     }
 }

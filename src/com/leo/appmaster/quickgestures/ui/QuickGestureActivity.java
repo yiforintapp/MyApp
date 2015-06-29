@@ -41,6 +41,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.TimeoutRelockPolicy;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
@@ -56,6 +58,8 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 
 /**
  * QuickGestureActivity
@@ -1114,6 +1118,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             FloatWindowHelper.createWhiteFloatView(this);
         }else{
             FloatWindowHelper.removeWhiteFloatView(this);
+            mPre.setWhiteFloatViewCoordinate(0, 0);
         }
     }
 }
