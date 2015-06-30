@@ -161,6 +161,7 @@ public class LockManager {
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     public HashMap<Drawable, Bitmap> mDrawableColors;
     public ColorMatcher mMatcher;
+    private TimerTask mFillterAllTask;
 
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
@@ -1360,12 +1361,20 @@ public class LockManager {
     public void filterAllOneTime(long outtime) {
         mFilterAll = true;
         Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+
+        if (mFillterAllTask != null) {
+            mFillterAllTask.cancel();
+        }
+
+        mFillterAllTask = new TimerTask() {
             @Override
             public void run() {
                 mFilterAll = false;
+                mFillterAllTask = null;
             }
-        }, outtime);
+        };
+
+        timer.schedule(mFillterAllTask, outtime);
     }
 
     public void timeFilter(final String packageName, long outtime) {
