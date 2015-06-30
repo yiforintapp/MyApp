@@ -509,6 +509,7 @@ public class TaskDetectService extends Service {
                             }
                         } else {
                             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                            FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
                         }
                     } else {
                         FloatWindowHelper.removeAllFloatWindow(getApplicationContext());

@@ -244,5 +244,7 @@
     <dimen name="gesture_item_imageview_padding">10dp</dimen>
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="text_icon_margin">5dp</dimen>
+    <dimen name="quick_white_float_width">40dp</dimen>
+    <dimen name="quick_white_float_height">40dp</dimen>
 
 </resources>

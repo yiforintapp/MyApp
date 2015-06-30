@@ -980,7 +980,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             @Override
             public void onClick(View arg0) {
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
-                startQuickGestureActivity();
+               // startQuickGestureActivity();
+                startQuickGestureTip();
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
@@ -1082,5 +1083,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             pref.setEnterHomeTimes(++times);
         }
         Log.i("######", "times = "+times);
+    }
+    
+    private void startQuickGestureTip(){
+        mPagerTab.setCurrentItem(2);
     }
 }

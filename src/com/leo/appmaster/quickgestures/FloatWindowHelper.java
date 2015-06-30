@@ -95,7 +95,8 @@ public class FloatWindowHelper {
     // right top height
     private static float mRightTopHeight = 30;
     // white float width and height
-    private static int mWhiteFLoatWidth = 60;
+    private static int mWhiteFLoatWidth,mWhiteFloatHeight;
+
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
     private static final int LEFT_TOP_FLAG = 3;
@@ -1845,8 +1846,14 @@ public class FloatWindowHelper {
             int W = windowManager.getDefaultDisplay().getWidth();
             int H = windowManager.getDefaultDisplay().getHeight();
             int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
-
+            
             if (null == mWhiteFloatParams) {
+                if(mWhiteFLoatWidth <=0){
+                    mWhiteFLoatWidth = mContext.getResources().getDimensionPixelSize(R.dimen.quick_white_float_width);
+                }
+                if(mWhiteFloatHeight <=0){
+                    mWhiteFloatHeight = mContext.getResources().getDimensionPixelSize(R.dimen.quick_white_float_height);
+                }
                 mWhiteFloatParams = new LayoutParams();
                 mWhiteFloatParams.width = mWhiteFLoatWidth;
                 mWhiteFloatParams.height = mWhiteFLoatWidth;
@@ -1857,8 +1864,7 @@ public class FloatWindowHelper {
             }
             // get the last coordinate,if 0 then appear in last swipe
             // orientation
-            int[] coordinate = AppMasterPreference.getInstance(mContext)
-                    .getWhiteFloatViewCoordinate();
+            int[] coordinate = AppMasterPreference.getInstance(mContext).getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
                 if (lastSlideOrientation < 0) {
                     mWhiteFloatParams.x = -W / 2;
@@ -1881,11 +1887,12 @@ public class FloatWindowHelper {
             }
 
             mWhiteFloatView = new ImageView(mContext);
-            mWhiteFloatView.setImageResource(R.drawable.radio_buttons);
+            mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
             setWhiteFloatOnTouchEvent(mContext);
             try {
                 windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
             } catch (Exception e) {
+                windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             }
             registerWhiteFlaotOnScreenListener(mContext);
             Log.i("null", "创建小白点");
@@ -1923,11 +1930,13 @@ public class FloatWindowHelper {
     
     public static void showWhiteFloatView(Context mContext){
         if(null != mWhiteFloatView && null != mWhiteFloatParams){
+            WindowManager windowManager = getWindowManager(mContext);
             if(hasMessageTip(mContext)){
-                
+                mWhiteFloatView.setVisibility(View.VISIBLE);
+                mWhiteFloatView.setImageResource(R.drawable.gesture_red_point);
+                windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             }else{
                 if(mWhiteFloatView.getVisibility() != View.VISIBLE){
-                    WindowManager windowManager = getWindowManager(mContext);
                     mWhiteFloatView.setVisibility(View.VISIBLE);
                     windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
                 }
@@ -1942,6 +1951,7 @@ public class FloatWindowHelper {
             return;
         if(hasMessageTip(mContext)){
             AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+            mWhiteFloatView.setImageResource(0);
         }
         int oreatation = mWhiteFloatParams.x<0?0:2;
         showQuickGuestureView(mContext,oreatation);
@@ -1960,6 +1970,7 @@ public class FloatWindowHelper {
             float startX,startY,x,y,moveX,moveY;
             int upX,upY;
             long downTime;
+            boolean ifMove;
             ValueAnimator animator;
             
             @Override
@@ -1971,29 +1982,36 @@ public class FloatWindowHelper {
                         startX = event.getRawX();
                         startY = event.getRawY();
                         downTime = System.currentTimeMillis();
+                        Log.i("tag", "startX ="+startX+"startY = "+startY);
                         break;
                     case MotionEvent.ACTION_MOVE:
                          moveX = Math.abs(startX - event.getRawX());
                          moveY = Math.abs(startY - event.getRawY());
-                         if(moveX > 10 && moveY > 10){
+                         if(moveX > 10 || moveY > 10){
                              x = event.getRawX()-halfW;
                              y =  event.getRawY()-halfH-diff;
                              mWhiteFloatParams.x = (int) x;
                              mWhiteFloatParams.y = (int) y;
                              windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                             ifMove = true;
                          }
+                         Log.i("tag","x = "+x+" y = "+y);
+                         Log.i("tag", "event.getRawX() = "+event.getRawX());
+                         Log.i("tag","moveX = "+moveX);
                         break;
                     case MotionEvent.ACTION_UP:
                         upX = event.getRawX() < halfW ? -halfW : halfW;
                         upY = (int) (event.getRawY() - halfH);
-                        if (System.currentTimeMillis() - downTime < 200) {
+                        Log.i("tag", System.currentTimeMillis() - downTime+" ");
+                        if (System.currentTimeMillis() - downTime < 150) {
                             setWhiteFloatOnclickListener(mContext);
-                        }else {
+                        }else if(ifMove){
                             if (x < 0) {
                                 animator = ValueAnimator.ofInt((int) x, -halfW);
                             } else {
                                 animator = ValueAnimator.ofInt((int) x, halfW);
                             }
+                            Log.i("tag","up then  x = "+x);
                             animator.addUpdateListener(new AnimatorUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -2004,10 +2022,12 @@ public class FloatWindowHelper {
                             });
                             animator.start();
                         }
-                        AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(upX,upY);
+                        if(moveY >10){
+                            AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(upX,upY);
+                        }
                         break;
                 }
-                return false;
+                return true;
             }
         });
     }

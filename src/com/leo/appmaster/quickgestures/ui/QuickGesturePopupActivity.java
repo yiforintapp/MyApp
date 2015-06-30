@@ -82,7 +82,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     public void run() {
                         fillTwoLayout(mNowLayout);
                     }
-
                 });
             }
         });
@@ -229,9 +228,9 @@ public class QuickGesturePopupActivity extends BaseActivity {
             mContainer.post(new Runnable() {
                 @Override
                 public void run() {
-                   FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
-                   // FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
-                    //FloatWindowHelper.createWhiteFloatView(getApplicationContext());
+                   //FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
+                    FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
+                    FloatWindowHelper.createWhiteFloatView(getApplicationContext());
                     Log.i("null", "showWhiteFloatView'");
                 }
             });
