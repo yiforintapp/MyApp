@@ -143,25 +143,30 @@ public class FloatWindowHelper {
                             float pressure = event.getPressure();
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
-                          //Log.e(FloatWindowHelper.RUN_TAG, "移动距离："+moveX+":"+moveY);
-                            if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
-                                    || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || pressure > 0.8)
-                            && !isMoveIng)) {
-                                isMoveIng = true;
-                                if (!mEditQuickAreaFlag) {
-                                    FloatWindowHelper.mGestureShowing = true;
-                                    /*
-                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
-                                     */
-                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
-                                    removeAllFloatWindow(mContext);
-                                    onTouchAreaShowQuick(-1);
-                                    if (isShowTip) {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "notice");
-                                    } else {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "user");
+                            // Log.e(FloatWindowHelper.RUN_TAG,
+                            // "移动距离："+moveX+":"+moveY);
+                            if (-moveX > 0 && moveY > 0) {
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
+                                        || moveY > ViewConfiguration.get(mContext)
+                                                .getScaledTouchSlop() /*|| pressure > 0.8*/)
+                                && !isMoveIng)) {
+                                    isMoveIng = true;
+                                    if (!mEditQuickAreaFlag) {
+                                        FloatWindowHelper.mGestureShowing = true;
+                                        /*
+                                         * 快捷手势界面创建后停止创建热区的任务，
+                                         * 解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                         */
+                                        FloatWindowHelper.stopFloatWindowCreate(mContext);
+                                        removeAllFloatWindow(mContext);
+                                        onTouchAreaShowQuick(-1);
+                                        if (isShowTip) {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "notice");
+                                        } else {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "user");
+                                        }
                                     }
                                 }
                             }
@@ -278,32 +283,37 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-//                            moveX = Math.abs(startX - event.getRawX());
-//                            moveY = Math.abs(startY - event.getRawY());
+                            // moveX = Math.abs(startX - event.getRawX());
+                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                          //Log.e(FloatWindowHelper.RUN_TAG, "移动距离："+moveX+":"+moveY);
+                            // Log.e(FloatWindowHelper.RUN_TAG,
+                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
-//                            Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
-//                                    .getPressure());
-                            if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
-                                    || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || presssure > 0.8)
-                            && !isMoveIng)) {
-                                isMoveIng = true;
-                                if (!mEditQuickAreaFlag) {
-                                    FloatWindowHelper.mGestureShowing = true;
-                                    /*
-                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
-                                     */
-                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
-                                    removeAllFloatWindow(mContext);
-                                    onTouchAreaShowQuick(-1);
-                                    if (isShowTip) {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "notice");
-                                    } else {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "user");
+                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
+                            // .getPressure());
+                            if (-moveX > 0 && moveY > 0) {
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
+                                        || moveY > ViewConfiguration.get(mContext)
+                                                .getScaledTouchSlop() /*|| presssure > 0.8*/)
+                                && !isMoveIng)) {
+                                    isMoveIng = true;
+                                    if (!mEditQuickAreaFlag) {
+                                        FloatWindowHelper.mGestureShowing = true;
+                                        /*
+                                         * 快捷手势界面创建后停止创建热区的任务，
+                                         * 解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                         */
+                                        FloatWindowHelper.stopFloatWindowCreate(mContext);
+                                        removeAllFloatWindow(mContext);
+                                        onTouchAreaShowQuick(-1);
+                                        if (isShowTip) {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "notice");
+                                        } else {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "user");
+                                        }
                                     }
                                 }
                             }
@@ -413,32 +423,36 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-//                            moveX = Math.abs(startX - event.getRawX());
-//                            moveY = Math.abs(startY - event.getRawY());
+                            // moveX = Math.abs(startX - event.getRawX());
+                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                          //Log.e(FloatWindowHelper.RUN_TAG, "移动距离："+moveX+":"+moveY);
+//                            Log.e(FloatWindowHelper.RUN_TAG, "移动距离：" + moveX + ":" + moveY);
                             float presssure = event.getPressure();
-//                            Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
-//                                    .getPressure());
-                            if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
-                                    || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || presssure > 0.8)
-                            && !isMoveIng)) {
-                                isMoveIng = true;
-                                if (!mEditQuickAreaFlag) {
-                                    FloatWindowHelper.mGestureShowing = true;
-                                    /*
-                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
-                                     */
-                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
-                                    removeAllFloatWindow(mContext);
-                                    onTouchAreaShowQuick(-2);
-                                    if (isShowTip) {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "notice");
-                                    } else {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "user");
+                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
+                            // .getPressure());
+                            if (-moveX > 0 && moveY > 0) {
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
+                                        || moveY > ViewConfiguration.get(mContext)
+                                                .getScaledTouchSlop() /*|| presssure > 0.8*/)
+                                && !isMoveIng)) {
+                                    isMoveIng = true;
+                                    if (!mEditQuickAreaFlag) {
+                                        FloatWindowHelper.mGestureShowing = true;
+                                        /*
+                                         * 快捷手势界面创建后停止创建热区的任务，
+                                         * 解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                         */
+                                        FloatWindowHelper.stopFloatWindowCreate(mContext);
+                                        removeAllFloatWindow(mContext);
+                                        onTouchAreaShowQuick(-2);
+                                        if (isShowTip) {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "notice");
+                                        } else {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "user");
+                                        }
                                     }
                                 }
                             }
@@ -553,32 +567,37 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-//                            moveX = Math.abs(startX - event.getRawX());
-//                            moveY = Math.abs(startY - event.getRawY());
+                            // moveX = Math.abs(startX - event.getRawX());
+                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                          //Log.e(FloatWindowHelper.RUN_TAG, "移动距离："+moveX+":"+moveY);
+                            // Log.e(FloatWindowHelper.RUN_TAG,
+                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
-                            if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
-                                    || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || presssure > 0.8)
-                            && !isMoveIng)) {
-                                isMoveIng = true;
-                                if (!mEditQuickAreaFlag) {
-                                    FloatWindowHelper.mGestureShowing = true;
-                                    /*
-                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
-                                     */
-                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
-                                    removeAllFloatWindow(mContext);
-                                    onTouchAreaShowQuick(-1);
-                                    if (isShowTip) {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "notice");
-                                    } else {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "user");
+                            if (-moveX > 0 && moveY > 0) {
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
+                                        || moveY > ViewConfiguration.get(mContext)
+                                                .getScaledTouchSlop() /*|| presssure > 0.8*/)
+                                && !isMoveIng)) {
+                                    isMoveIng = true;
+                                    if (!mEditQuickAreaFlag) {
+                                        FloatWindowHelper.mGestureShowing = true;
+                                        /*
+                                         * 快捷手势界面创建后停止创建热区的任务，
+                                         * 解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                         */
+                                        FloatWindowHelper.stopFloatWindowCreate(mContext);
+                                        removeAllFloatWindow(mContext);
+                                        onTouchAreaShowQuick(-1);
+                                        if (isShowTip) {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "notice");
+                                        } else {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "user");
+                                        }
                                     }
                                 }
                             }
@@ -682,32 +701,37 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_MOVE:
                             // Log.e(TAG,"按压力度："+event.getPressure());
-//                            moveX = Math.abs(startX - event.getRawX());
-//                            moveY = Math.abs(startY - event.getRawY());
+                            // moveX = Math.abs(startX - event.getRawX());
+                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                          //Log.e(FloatWindowHelper.RUN_TAG, "移动距离："+moveX+":"+moveY);
+                            // Log.e(FloatWindowHelper.RUN_TAG,
+                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
-                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
-                                    || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || presssure > 0.8)
-                            && !isMoveIng)) {
-                                isMoveIng = true;
-                                if (!mEditQuickAreaFlag) {
-                                    FloatWindowHelper.mGestureShowing = true;
-                                    /*
-                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
-                                     */
-                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
-                                    removeAllFloatWindow(mContext);
-                                    onTouchAreaShowQuick(1);
-                                    if (isShowTip) {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "notice");
-                                    } else {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "user");
+                            if (moveX > 0 && moveY > 0) {
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
+                                        || moveY > ViewConfiguration.get(mContext)
+                                                .getScaledTouchSlop() /*|| presssure > 0.8*/)
+                                && !isMoveIng)) {
+                                    isMoveIng = true;
+                                    if (!mEditQuickAreaFlag) {
+                                        FloatWindowHelper.mGestureShowing = true;
+                                        /*
+                                         * 快捷手势界面创建后停止创建热区的任务，
+                                         * 解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                         */
+                                        FloatWindowHelper.stopFloatWindowCreate(mContext);
+                                        removeAllFloatWindow(mContext);
+                                        onTouchAreaShowQuick(1);
+                                        if (isShowTip) {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "notice");
+                                        } else {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "user");
+                                        }
                                     }
                                 }
                             }
@@ -817,32 +841,37 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_MOVE:
                             // Log.e(TAG,"按压力度："+event.getPressure());
-//                            moveX = Math.abs(startX - event.getRawX());
-//                            moveY = Math.abs(startY - event.getRawY());
+                            // moveX = Math.abs(startX - event.getRawX());
+                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                          //Log.e(FloatWindowHelper.RUN_TAG, "移动距离："+moveX+":"+moveY);
+                            // Log.e(FloatWindowHelper.RUN_TAG,
+                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
-//                            Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
-//                                    .getPressure());
-                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
-                                    || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || presssure > 0.8)
-                            && !isMoveIng)) {
-                                isMoveIng = true;
-                                if (!mEditQuickAreaFlag) {
-                                    FloatWindowHelper.mGestureShowing = true;
-                                    /*
-                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
-                                     */
-                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
-                                    removeAllFloatWindow(mContext);
-                                    onTouchAreaShowQuick(1);
-                                    if (isShowTip) {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "notice");
-                                    } else {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "user");
+                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
+                            // .getPressure());
+                            if (moveX > 0 && moveY > 0) {
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
+                                        || moveY > ViewConfiguration.get(mContext)
+                                                .getScaledTouchSlop() /*|| presssure > 0.8*/)
+                                && !isMoveIng)) {
+                                    isMoveIng = true;
+                                    if (!mEditQuickAreaFlag) {
+                                        FloatWindowHelper.mGestureShowing = true;
+                                        /*
+                                         * 快捷手势界面创建后停止创建热区的任务，
+                                         * 解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                         */
+                                        FloatWindowHelper.stopFloatWindowCreate(mContext);
+                                        removeAllFloatWindow(mContext);
+                                        onTouchAreaShowQuick(1);
+                                        if (isShowTip) {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "notice");
+                                        } else {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "user");
+                                        }
                                     }
                                 }
                             }
@@ -954,32 +983,36 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-//                            moveX = Math.abs(startX - event.getRawX());
-//                            moveY = Math.abs(startY - event.getRawY());
+                            // moveX = Math.abs(startX - event.getRawX());
+                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                          //Log.e(FloatWindowHelper.RUN_TAG, "移动距离："+moveX+":"+moveY);
+//                            Log.e(FloatWindowHelper.RUN_TAG, "移动距离：" + moveX + ":" + moveY);
                             float presssure = event.getPressure();
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
-                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
-                                    || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || presssure > 0.8)
-                            && !isMoveIng)) {
-                                isMoveIng = true;
-                                if (!mEditQuickAreaFlag) {
-                                    FloatWindowHelper.mGestureShowing = true;
-                                    /*
-                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
-                                     */
-                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
-                                    removeAllFloatWindow(mContext);
-                                    onTouchAreaShowQuick(2);
-                                    if (isShowTip) {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "notice");
-                                    } else {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "user");
+                            if (moveX > 0 && moveY > 0) {
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
+                                        || moveY > ViewConfiguration.get(mContext)
+                                                .getScaledTouchSlop() /*|| presssure > 0.8*/)
+                                && !isMoveIng)) {
+                                    isMoveIng = true;
+                                    if (!mEditQuickAreaFlag) {
+                                        FloatWindowHelper.mGestureShowing = true;
+                                        /*
+                                         * 快捷手势界面创建后停止创建热区的任务，
+                                         * 解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                         */
+                                        FloatWindowHelper.stopFloatWindowCreate(mContext);
+                                        removeAllFloatWindow(mContext);
+                                        onTouchAreaShowQuick(2);
+                                        if (isShowTip) {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "notice");
+                                        } else {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "user");
+                                        }
                                     }
                                 }
                             }
@@ -1097,32 +1130,36 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-//                            moveX = Math.abs(startX - event.getRawX());
-//                            moveY = Math.abs(startY - event.getRawY());
+                            // moveX = Math.abs(startX - event.getRawX());
+                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                          //Log.e(FloatWindowHelper.RUN_TAG, "移动距离："+moveX+":"+moveY);
+                            // Log.e(FloatWindowHelper.RUN_TAG,
+                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
-                            if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
-                                    || moveY > ViewConfiguration.get(mContext).getScaledTouchSlop() || presssure > 0.8)
-                            && !isMoveIng)) {
-                                isMoveIng = true;
-                                if (!mEditQuickAreaFlag) {
-                                    FloatWindowHelper.mGestureShowing = true;
-                                    /*
-                                     * 快捷手势界面创建后停止创建热区的任务，解决因为快捷界面首次启动慢在此过程中热区又创建的问题
-                                     */
-                                    FloatWindowHelper.stopFloatWindowCreate(mContext);
-                                    removeAllFloatWindow(mContext);
-                                    onTouchAreaShowQuick(1);
-                                    if (isShowTip) {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "notice");
-                                    } else {
-                                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
-                                                "user");
+                            if (moveX > 0 && moveY > 0) {
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()
+                                        || moveY > ViewConfiguration.get(mContext)
+                                                .getScaledTouchSlop() /*|| presssure > 0.8*/) && !isMoveIng)) {
+                                    isMoveIng = true;
+                                    if (!mEditQuickAreaFlag) {
+                                        FloatWindowHelper.mGestureShowing = true;
+                                        /*
+                                         * 快捷手势界面创建后停止创建热区的任务，
+                                         * 解决因为快捷界面首次启动慢在此过程中热区又创建的问题
+                                         */
+                                        FloatWindowHelper.stopFloatWindowCreate(mContext);
+                                        removeAllFloatWindow(mContext);
+                                        onTouchAreaShowQuick(1);
+                                        if (isShowTip) {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "notice");
+                                        } else {
+                                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
+                                                    "user");
+                                        }
                                     }
                                 }
                             }
