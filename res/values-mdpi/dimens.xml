@@ -199,5 +199,8 @@
     <!-- quick gesutre end -->
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="apple_watch_item_icon_size">62dp</dimen>
+    <!-- 2.5 ql part -->
+    <dimen name="lock_setting_item_des_width">170dp</dimen>
+    <!-- 2.5 ql part -->
 
 </resources>

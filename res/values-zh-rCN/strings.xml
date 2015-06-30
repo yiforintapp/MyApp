@@ -716,7 +716,7 @@
  
     <!-- version 2.5 huangqili part -->
    <string name="forbid_uninstall_off">开启高级保护，防止隐私卫士被恶意卸载，更好地保护您的隐私</string>
-    <string name="forbid_uninstall_on">高级保护开启成功!</string>
+    <string name="forbid_uninstall_on">高级保护开启成功！</string>
     <string name="setting_hide_lockline">隐藏解锁轨迹</string>
     <string name="change_to_gesture">切换为手势密码</string>
     <string name="change_to_password">切换为数字密码</string>

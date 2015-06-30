@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
@@ -45,6 +46,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -1350,8 +1352,10 @@ public class AppleWatchContainer extends FrameLayout {
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                Activity activity = (Activity) AppleWatchContainer.this.getContext();
+                QuickGesturePopupActivity activity = (QuickGesturePopupActivity) AppleWatchContainer.this
+                        .getContext();
                 isAnimating = false;
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 activity.finish();
                 if (runnable != null) {
                     runnable.run();

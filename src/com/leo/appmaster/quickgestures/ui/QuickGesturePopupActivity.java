@@ -21,6 +21,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
+    
 
     private AppleWatchContainer mContainer;
     private int mNowLayout;
@@ -59,6 +60,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (!hasFocus) {
+            LockManager.getInstatnce().filterAllOneTime(1000);
             FloatWindowHelper.mGestureShowing = false;
             mContainer.saveGestureType();
             finish();
@@ -146,7 +148,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
-        LockManager.getInstatnce().filterAllOneTime(500);
         if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         } else {
