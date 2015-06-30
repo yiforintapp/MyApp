@@ -74,7 +74,7 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-        // LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
 
         // for gesture check
         if (activity.contains(GESTURE)) {

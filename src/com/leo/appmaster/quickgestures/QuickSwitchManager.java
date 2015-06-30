@@ -475,7 +475,6 @@ public class QuickSwitchManager {
     }
 
     public synchronized List<BaseInfo> getSwitchList(int switchNum) {
-        long startTime = System.currentTimeMillis();
         if (mSwitcherLoaded) {
             if (mSaveList.size() > 11) {
                 return mSaveList.subList(0, 11);
@@ -636,8 +635,6 @@ public class QuickSwitchManager {
                 mSwitcherLoaded = true;
             }
         }
-        long endTime = System.currentTimeMillis();
-        LeoLog.e("xxxx", "getSwitcher time = " + (endTime - startTime));
         if (mSaveList.size() > 11) {
             return mSaveList.subList(0, 11);
         } else {
