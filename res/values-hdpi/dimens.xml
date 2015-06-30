@@ -352,9 +352,10 @@
     <dimen name="privacy_contact_red_tip_x">97dp</dimen>
     <dimen name="privacy_contact_red_tip_y">8dp</dimen>
     <dimen name="quick_setting_item_text_margin_switch">16dp</dimen>
-    <dimen name="quick_setting_item_text_padding">15.33dp</dimen>
+    <dimen name="quick_setting_item_text_padding_bottom">9.66dp</dimen>
+    <dimen name="quick_setting_item_text_padding_top">16dp</dimen>
     <dimen name="quick_setting_item_text_line_space">2.33dp</dimen>
-    <dimen name="quick_setting_item_space">5dp</dimen>
+    <dimen name="quick_setting_item_space">5.67dp</dimen>
 
     <!-- 2.5 ql part -->
     <dimen name="lock_setting_item_des_width">185dp</dimen>

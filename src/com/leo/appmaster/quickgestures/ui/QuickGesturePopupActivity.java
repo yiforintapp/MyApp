@@ -43,7 +43,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         long duringTime = finishTime - startTime;
         LeoLog.d("testDuring", "Time is : " + duringTime);
     }
-
+  
     private void fillWhichLayoutFitst(int mNowLayout) {
         if (mNowLayout == 1) {
             fillDynamicLayout(false);

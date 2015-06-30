@@ -40,7 +40,7 @@
                     <RelativeLayout
                         android:id="@+id/open_quick"
                         android:layout_width="match_parent"
-                        android:layout_height="73.33dp"
+                        android:layout_height="60dp"
                         android:background="@drawable/manager_backup_list_selecter"
                         android:gravity="center_vertical" >
 
@@ -129,16 +129,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_toRightOf="@id/contactIV"
-                            android:paddingBottom="@dimen/quick_setting_item_text_padding"
-                            android:paddingTop="@dimen/quick_setting_item_text_padding" >
+                            android:layout_toRightOf="@id/contactIV" >
 
                             <LinearLayout
                                 android:id="@+id/slid_area_linear"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:layout_marginBottom="@dimen/quick_setting_item_text_padding_bottom"
                                 android:layout_marginRight="@dimen/quick_setting_item_text_margin_switch"
+                                android:layout_marginTop="@dimen/quick_setting_item_text_padding_top"
                                 android:layout_toLeftOf="@+id/slid_area_arrow"
                                 android:orientation="vertical" >
 
@@ -200,16 +200,15 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_toRightOf="@id/contactIV"
-                            android:paddingBottom="@dimen/quick_setting_item_text_padding"
-                            android:paddingTop="@dimen/quick_setting_item_text_padding" >
-
+                            android:layout_toRightOf="@id/contactIV" >
                             <LinearLayout
                                 android:id="@+id/allow_slid_time_linear"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:layout_marginBottom="@dimen/quick_setting_item_text_padding_bottom"
                                 android:layout_marginRight="@dimen/quick_setting_item_text_margin_switch"
+                                android:layout_marginTop="@dimen/quick_setting_item_text_padding_top"
                                 android:layout_toLeftOf="@+id/allow_slid_time_arrow"
                                 android:orientation="vertical" >
 
@@ -273,16 +272,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_toRightOf="@id/contactIV"
-                            android:paddingBottom="@dimen/quick_setting_item_text_padding"
-                            android:paddingTop="@dimen/quick_setting_item_text_padding" >
+                            android:layout_toRightOf="@id/contactIV" >
 
                             <LinearLayout
                                 android:id="@+id/no_read_message_linear"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:layout_marginBottom="@dimen/quick_setting_item_text_padding_bottom"
                                 android:layout_marginRight="@dimen/quick_setting_item_text_margin_switch"
+                                android:layout_marginTop="@dimen/quick_setting_item_text_padding_top"
                                 android:layout_toLeftOf="@+id/no_read_message_check"
                                 android:orientation="vertical" >
 
@@ -344,16 +343,16 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
-                            android:layout_toRightOf="@id/contactIV"
-                            android:paddingBottom="@dimen/quick_setting_item_text_padding"
-                            android:paddingTop="@dimen/quick_setting_item_text_padding" >
+                            android:layout_toRightOf="@id/contactIV" >
 
                             <LinearLayout
                                 android:id="@+id/recently_contact_linear"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:layout_marginBottom="@dimen/quick_setting_item_text_padding_bottom"
                                 android:layout_marginRight="@dimen/quick_setting_item_text_margin_switch"
+                                android:layout_marginTop="@dimen/quick_setting_item_text_padding_top"
                                 android:layout_toLeftOf="@+id/recently_contact_check"
                                 android:orientation="vertical" >
 
@@ -400,9 +399,7 @@
                         android:id="@+id/privacy_contact_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/manager_backup_list_selecter"
-                        android:paddingBottom="@dimen/quick_setting_item_text_padding"
-                        android:paddingTop="@dimen/quick_setting_item_text_padding" >
+                        android:background="@drawable/manager_backup_list_selecter" >
 
                         <ImageView
                             android:id="@+id/privacy_contact_option_IV"
@@ -424,7 +421,9 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_centerVertical="true"
+                                android:layout_marginBottom="@dimen/quick_setting_item_text_padding_bottom"
                                 android:layout_marginRight="@dimen/quick_setting_item_text_margin_switch"
+                                android:layout_marginTop="@dimen/quick_setting_item_text_padding_top"
                                 android:layout_toLeftOf="@+id/privacy_contact_check"
                                 android:orientation="vertical" >
 
@@ -445,9 +444,10 @@
                                     android:layout_marginTop="@dimen/quick_setting_item_space"
                                     android:ellipsize="end"
                                     android:lineSpacingExtra="@dimen/quick_setting_item_text_line_space"
-                                    android:text="@string/quick_no_pricay_contact_annotation"
+                                    android:text="My father was a self-taught mandolin player. He was one of the best string instrument players in our town."
                                     android:textColor="#9b9b9b"
                                     android:textSize="12dp" />
+                                <!-- android:text="@string/quick_no_pricay_contact_annotation" -->
                             </LinearLayout>
 
                             <ImageView
