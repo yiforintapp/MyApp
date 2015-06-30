@@ -206,7 +206,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             /*
                              * 全部已读，去除热区红点
                              */
-                            // 判断隐私联系人，短信，运营是否还有显示红点的需求，没有了取将红点标志设为false
+                            // 判断隐私联系人，短信，运营是否还有显示红点的需求，没有了将红点标志设为false
                             if ((QuickGestureManager.getInstance(mContext).mMessages != null
                                     && QuickGestureManager.getInstance(mContext).mMessages.size() <= 0)/* 未读短信 */
                                     && AppMasterPreference.getInstance(mContext)
@@ -388,7 +388,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     }
                 }
                 cursor.close();
-                // TODO
                 AppMasterPreference mPreference = AppMasterPreference.getInstance(mContext);
                 // AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
                 if (mPreference.getSwitchOpenPrivacyContactMessageTip()

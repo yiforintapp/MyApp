@@ -54,18 +54,12 @@
 
                     <CheckBox
                         android:id="@+id/dialog_radio_slide_time_just_home_cb"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:button="@drawable/privacy_contact_input_radio_selecter" />
-
-                    <TextView
-                        android:id="@+id/dialog_radio__tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
+                        android:layout_height="24dp"
+                        android:button="@drawable/privacy_contact_input_radio_selecter"
+                        android:paddingLeft="24dp"
                         android:text="@string/pg_appmanager_quick_gesture_slide_time_just_home_text"
-                        android:textColor="@color/black"
-                        android:textSize="16dp" />
+                        android:textColor="@color/black" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -83,18 +77,12 @@
 
                     <CheckBox
                         android:id="@+id/dialog_radio_slide_time_all_app_and_home_cb"
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:button="@drawable/privacy_contact_input_radio_selecter" />
-
-                    <TextView
-                        android:id="@+id/dialog_radio_itme_tv"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="24dp"
+                        android:layout_height="24dp"
+                        android:button="@drawable/privacy_contact_input_radio_selecter"
+                        android:paddingLeft="24dp"
                         android:text="@string/pg_appmanager_quick_gesture_slide_time_home_and_all_app_text"
-                        android:textColor="@color/black"
-                        android:textSize="16dp" />
+                        android:textColor="@color/black" />
                 </LinearLayout>
             </LinearLayout>
 
