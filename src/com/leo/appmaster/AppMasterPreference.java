@@ -160,6 +160,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP = "switch_open_privacy_contact_message_tip";
     public static final String PREF_SWTICH_OPEN_STRENGTH_MODE = "switch_open_strength_mode";
     public static final String PREF_WHITE_FLOAT_COORDINATE= "white_float_coordinate";
+    public static final String PREF_USE_STRENGTHTNEN_MODE_TIMES = "use_strengthen_mode_times";
 
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM = "dialog_radio_setting_left_bottom";
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM = "dialog_radio_setting_right_bottom";
@@ -253,6 +254,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
     private int mEnterHomeTimes = -1;
+    private int mUseStrengthModeTimes = -1;
 
     private AppMasterPreference(Context context) {
         mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -1872,5 +1874,19 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         coordinate[0] = Integer.valueOf(str[0]);
         coordinate[1] = Integer.valueOf(str[1]);
         return coordinate;
+    }
+    
+    public void addUseStrengthenModeTimes(){
+        if(mUseStrengthModeTimes < 0){
+            mUseStrengthModeTimes = getUseStrengthenModeTimes();
+        }
+        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, mUseStrengthModeTimes++).commit();
+    }
+    
+    public int  getUseStrengthenModeTimes(){
+        if(mUseStrengthModeTimes < 0){
+           mUseStrengthModeTimes =  mPref.getInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, 0);
+        }
+        return mUseStrengthModeTimes;
     }
 }

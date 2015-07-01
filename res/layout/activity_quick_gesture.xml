@@ -279,7 +279,7 @@
                                     android:layout_height="wrap_content"
                                     android:ellipsize="end"
                                     android:singleLine="true"
-                                    android:text="@string/quick_guesture_strengthen_mode_title"
+                                    android:text="@string/quick_gesture_strengthen_mode_title"
                                     android:textColor="#414141"
                                     android:textSize="16dp" />
 
@@ -290,7 +290,7 @@
                                     android:layout_marginTop="@dimen/quick_setting_item_space"
                                     android:ellipsize="end"
                                     android:lineSpacingExtra="@dimen/quick_setting_item_text_line_space"
-                                    android:text="@string/quick_guesture_strengthen_mode_content"
+                                    android:text="@string/quick_gesture_strengthen_mode_content"
                                     android:textColor="#9b9b9b"
                                     android:textSize="12dp" />
                             </LinearLayout>
@@ -543,7 +543,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/quick_gesture_miui_tip_color"
-                android:visibility="gone" >
+                >
 
                 <ImageView
                     android:id="@+id/gesture_handIV"
@@ -562,11 +562,22 @@
                     android:layout_alignParentRight="true"
                     android:src="@drawable/gesture_arrow_tips" />
 
+                <ImageView
+                    android:id="@+id/gesture_introductIV"
+                    android:layout_width="314dp"
+                    android:layout_height="224dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="64dp"
+                    android:src="@drawable/gesture_guide_phone" />
+                
                 <TextView
                     android:id="@+id/quick_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
+                    android:layout_below="@id/gesture_introductIV"
+                    android:layout_marginTop="20dp"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/pg_appmanager_quick_gesture_name"
                     android:textColor="#ffffff"
                     android:textSize="16sp" />
@@ -576,8 +587,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/quick_title"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="18dp"
+                    android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:paddingLeft="50dp"
                     android:paddingRight="50dp"
@@ -626,6 +636,7 @@
                         android:layout_below="@id/gesture_right_tips_top_tv"
                         android:background="@drawable/gesture_right_tips_bottom" />
                 </RelativeLayout>
+
             </RelativeLayout>
     
 </RelativeLayout>

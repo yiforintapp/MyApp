@@ -2008,13 +2008,14 @@ public class FloatWindowHelper {
     private static void setWhiteFloatOnclickListener(final Context mContext){
         if(null == mWhiteFloatView)
             return;
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         if(hasMessageTip(mContext)){
-            AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+            pref.setLastTimeLayout(1);
             mWhiteFloatView.setImageResource(0);
         }
+        pref.addUseStrengthenModeTimes();
         int oreatation = mWhiteFloatParams.x<0?0:2;
         showQuickGuestureView(mContext,oreatation);
-       Log.i("null", "white float");
     }
     
     private static void setWhiteFloatOnTouchEvent(final Context mContext){
