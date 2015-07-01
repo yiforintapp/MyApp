@@ -161,6 +161,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWTICH_OPEN_STRENGTH_MODE = "switch_open_strength_mode";
     public static final String PREF_WHITE_FLOAT_COORDINATE = "white_float_coordinate";
     public static final String PREF_USE_STRENGTHTNEN_MODE_TIMES = "use_strengthen_mode_times";
+    public static final String PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED = "if_success_slide_tiped";
 
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM = "dialog_radio_setting_left_bottom";
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM = "dialog_radio_setting_right_bottom";
@@ -1902,5 +1903,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setEverCloseWhiteDot(boolean b) {
         mHasEverCloseWhiteDot = b;
         mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b);
+    }
+
+    public boolean getQuickGestureSuccSlideTiped() {
+        return mPref.getBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, false);
+    }
+
+    /**
+     * set when success slide quick watch whether tiped
+     */
+    public void setQuickGestureSuccSlideTiped(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, flag).commit();
     }
 }
