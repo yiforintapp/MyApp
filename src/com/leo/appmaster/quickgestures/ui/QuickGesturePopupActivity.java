@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
 
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.baidu.mobstat.a;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -244,18 +246,21 @@ public class QuickGesturePopupActivity extends BaseActivity {
         }
     }
     
-    private void showSuccessTip(){
+    private void showSuccessTip() {
         AppMasterPreference pref = AppMasterPreference.getInstance(getApplicationContext());
-        if(!pref.getQuickGestureSuccSlideTiped()){
-            mSuccessTipView.setVisibility(View.VISIBLE);
-            Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
-            mKnowbButton.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mSuccessTipView.setVisibility(View.GONE);
-                }
-            });
-            pref.setQuickGestureSuccSlideTiped(true);
-        }
+        if (pref.getQuickGestureSuccSlideTiped())
+            return;
+        
+        mSuccessTipView.setVisibility(View.VISIBLE);
+        final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView, "alpha",
+                1.0f, 0f).setDuration(200);
+        Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
+        mKnowbButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                alphaAnimator.start();
+            }
+        });
+        pref.setQuickGestureSuccSlideTiped(true);
     }
 }
