@@ -8,10 +8,10 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-import com.baidu.mobstat.a;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -23,37 +23,56 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
-    
 
     private AppleWatchContainer mContainer;
+    private View mGestureTipTitle;
+    private TextView mGestureTipContent;
+    private boolean mFromWhiteDot;
     private int mNowLayout;
-    private boolean isCloseWindow,ifCreateWhiteFloat;
+    private boolean isCloseWindow, ifCreateWhiteFloat;
     private View mSuccessTipView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        long startTime = System.currentTimeMillis();
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
-        mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-        mSuccessTipView = findViewById(R.id.gesture_success_tip);
+        handleIntent();
+        initIU();
+        checkFirstWhiteClick();
+        fillWhichLayoutFitst(mNowLayout);
+        overridePendingTransition(0, 0);
+    }
 
+    private void handleIntent() {
+        mFromWhiteDot = getIntent().getBooleanExtra("from_white_dot", false);
+    }
+
+    private void initIU() {
+        mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
         mNowLayout = mContainer.getNowLayout();
+        mSuccessTipView = findViewById(R.id.gesture_success_tip);
 
-        fillWhichLayoutFitst(mNowLayout);
-        overridePendingTransition(0, 0);
-        long finishTime = System.currentTimeMillis();
-        long duringTime = finishTime - startTime;
-        LeoLog.d("testDuring", "Time is : " + duringTime);
+        mGestureTipTitle = findViewById(R.id.gesture_success_title);
+        mGestureTipContent = (TextView) findViewById(R.id.gesture_success_content);
     }
-  
+
+    private void checkFirstWhiteClick() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        if (mFromWhiteDot && !amp.hasEverCloseWhiteDot()) {
+            int clickCount = amp.getUseStrengthenModeTimes();
+            if (clickCount == 1) {
+                mGestureTipTitle.setVisibility(View.GONE);
+                mGestureTipContent.setText(R.string.white_dot_click_tip);
+            }
+        }
+    }
+
     private void fillWhichLayoutFitst(int mNowLayout) {
         if (mNowLayout == 1) {
             fillDynamicLayout(false);
@@ -81,7 +100,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        Log.i("null","onResume");
+        Log.i("null", "onResume");
         FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
@@ -139,16 +158,16 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        Log.i("null","onDestroy");
+        Log.i("null", "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
         FloatWindowHelper.mGestureShowing = false;
         if (!isCloseWindow) {
             createFloatView();
-            Log.i("null","onDestroy  createFloatView");
+            Log.i("null", "onDestroy  createFloatView");
         }
-        if(!ifCreateWhiteFloat){
+        if (!ifCreateWhiteFloat) {
             showWhiteFloatView();
-            Log.i("null","onDestroy  showWhiteFloatView");
+            Log.i("null", "onDestroy  showWhiteFloatView");
             ifCreateWhiteFloat = true;
         }
         super.onDestroy();
@@ -164,7 +183,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 public void run() {
                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                     createFloatView();
-                    if(!ifCreateWhiteFloat){
+                    if (!ifCreateWhiteFloat) {
                         showWhiteFloatView();
                         ifCreateWhiteFloat = true;
                     }
@@ -230,14 +249,14 @@ public class QuickGesturePopupActivity extends BaseActivity {
             AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
         }
     }
-    
-    private void showWhiteFloatView(){
-        Log.i("null","FloatWindowHelper.mGestureShowing = "+FloatWindowHelper.mGestureShowing);
-        if(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()){
+
+    private void showWhiteFloatView() {
+        Log.i("null", "FloatWindowHelper.mGestureShowing = " + FloatWindowHelper.mGestureShowing);
+        if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()) {
             mContainer.post(new Runnable() {
                 @Override
                 public void run() {
-                   //FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
+                    // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
                     FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
                     FloatWindowHelper.createWhiteFloatView(getApplicationContext());
                     Log.i("null", "showWhiteFloatView'");
@@ -245,12 +264,12 @@ public class QuickGesturePopupActivity extends BaseActivity {
             });
         }
     }
-    
+
     private void showSuccessTip() {
         AppMasterPreference pref = AppMasterPreference.getInstance(getApplicationContext());
         if (pref.getQuickGestureSuccSlideTiped())
             return;
-        
+
         mSuccessTipView.setVisibility(View.VISIBLE);
         final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView, "alpha",
                 1.0f, 0f).setDuration(200);

@@ -673,4 +673,23 @@
     <string name="quick_first_tip_dialog_left_bt">позже</string>
      <!-- quick gesture -->
     <!--  version 2.4 end -->
+    
+        <!-- version 2.5 huangqili part -->
+   <string name="forbid_uninstall_off">开启高级保护，防止隐私卫士被恶意卸载，更好地保护您的隐私</string>
+    <string name="forbid_uninstall_on">高级保护开启成功！</string>
+    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
+    <string name="change_to_gesture">切换为手势密码</string>
+    <string name="change_to_password">切换为数字密码</string>
+    <string name="summary_newapp_lock">新安装应用时，一键快速加锁</string>
+    <string name="summary_aacelerate_after_unlock">解锁应用时清理内存，自动提速</string>
+    <string name="summary_autolock_after_lockscreen">锁屏后所有应用重新锁定</string>
+    <string name="summary_setting_locker">选择应用锁定设置</string>
+    <string name="summary_hide_lockline">将应用解锁轨迹隐藏，更安全地保护您的隐私</string>
+    <string name="quick_gesture_strengthen_mode_title">强化划出模式</string>
+ 	<string name="quick_gesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
+ 	<string name="quick_gesture_success_title">开启快捷手势成功!</string>
+ 	<string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
+    
+ 	<string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭．</string>
+    <!-- version 2.5 huangqili part -->
 </resources>

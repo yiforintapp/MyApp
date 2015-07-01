@@ -1006,6 +1006,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 break;
             case R.id.strengthen_slid_mode:
                 if(mStrengthenModeFlag){
+                    mPre.setEverCloseWhiteDot(true);
                     mPre.setSwitchOpenStrengthenMode(false);
                     mStrengthenModeFlag = false;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);

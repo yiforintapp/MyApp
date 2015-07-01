@@ -406,7 +406,7 @@
     <string name="aready_lock">ได้ล็อค</string>
     <string name="choose_mode">โหมดเลือกฉาก</string>
     <string name="create_mode_shortcut_title">สร้างทางลัด</string>
-     <string name="create_mode_shortcut_tip">เพิ่มทางลัดไปยังเดสก์ทอป %1$s</string>
+    <string name="create_mode_shortcut_tip">เพิ่มทางลัดไปยังเดสก์ทอป %1$s</string>
     <string name="create_mode_shortcut_content">สร้างทางลัดที่จะได้รับการเข้าถึงที่รวดเร็วในการเลือกโหมด</string>
     <string name="mode_change">ถูกเปิดใช้งาน<xliff:g id="mode">%1$s</xliff:g></string>
     <string name="lock_change">ถูกเปิดใช้งาน<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
@@ -624,17 +624,19 @@
     <string name="mode_missing">คุณยังไม่ได้สร้างรูปแบบสถานการณ์นี้กรุณาลบทางลัดนี้</string>
 
     <!-- version 2.1 end -->
-    
-       <!-- version 2.2 start -->
+
+
+    <!-- version 2.2 start -->
     <string name="feedback_content_guide">ปัญหาที่ท่านพบ</string>
     <string name="feedback_email_guide">อีเมล์</string>
     <string name="feedback_category_guide">ประเภทปัญหา</string>
-     <string name="privacy_proposal_tip">ระดับลับ %1$s ทำดังนี้</string>
-     <string name="lock_mode_name_maxlength">30</string>
+    <string name="privacy_proposal_tip">ระดับลับ %1$s ทำดังนี้</string>
+    <string name="lock_mode_name_maxlength">30</string>
     <!-- version 2.2 end -->
 
+
     <!-- version 2.4 start -->
-  <!-- quick gesture -->
+    <!-- quick gesture -->
     <string name="pg_appmanager_quick_gesture_name">ท่ามือ</string>
     <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">เปิดท่ามือ</string>
     <string name="pg_appmanager_quick_gesture_option_switch_setting">การกำหนดเปิดปิด</string>
@@ -694,6 +696,24 @@
     <string name="grade_tip_feedback">ผมตอบ</string>
     <string name="quick_first_tip_dialog_right_bt">ทดลอง</string>
     <string name="quick_first_tip_dialog_left_bt">ทดลองอีก</string>
-      <!-- quick gesture -->
- <!-- version 2.4 end -->
+    <!-- quick gesture -->
+    <!-- version 2.4 end -->
+    <!-- version 2.5 huangqili part -->
+    <string name="forbid_uninstall_off">开启高级保护，防止隐私卫士被恶意卸载，更好地保护您的隐私</string>
+    <string name="forbid_uninstall_on">高级保护开启成功！</string>
+    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
+    <string name="change_to_gesture">切换为手势密码</string>
+    <string name="change_to_password">切换为数字密码</string>
+    <string name="summary_newapp_lock">新安装应用时，一键快速加锁</string>
+    <string name="summary_aacelerate_after_unlock">解锁应用时清理内存，自动提速</string>
+    <string name="summary_autolock_after_lockscreen">锁屏后所有应用重新锁定</string>
+    <string name="summary_setting_locker">选择应用锁定设置</string>
+    <string name="summary_hide_lockline">将应用解锁轨迹隐藏，更安全地保护您的隐私</string>
+    <string name="quick_gesture_strengthen_mode_title">强化划出模式</string>
+    <string name="quick_gesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
+    <string name="quick_gesture_success_title">开启快捷手势成功!</string>
+    <string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
+    <string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭．</string>
+    <!-- version 2.5 huangqili part -->
+
 </resources>

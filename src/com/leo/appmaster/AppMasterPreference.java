@@ -159,9 +159,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWITCH_OPEN_RECENTLY_CONTACT = "switch_open_recently_contact";
     public static final String PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP = "switch_open_privacy_contact_message_tip";
     public static final String PREF_SWTICH_OPEN_STRENGTH_MODE = "switch_open_strength_mode";
-    public static final String PREF_WHITE_FLOAT_COORDINATE= "white_float_coordinate";
+    public static final String PREF_WHITE_FLOAT_COORDINATE = "white_float_coordinate";
     public static final String PREF_USE_STRENGTHTNEN_MODE_TIMES = "use_strengthen_mode_times";
-    public static final String PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED= "if_success_slide_tiped";
+    public static final String PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED = "if_success_slide_tiped";
 
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM = "dialog_radio_setting_left_bottom";
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM = "dialog_radio_setting_right_bottom";
@@ -194,8 +194,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LAST_BUSINESS_RED_TIP = "last_business_red_tip";
     public static final String PREF_QUICK_NO_MSM_TIP = "quick_no_msm_tip";
     public static final String PREF_QUICK_NO_CALL_LOG_TIP = "quick_no_call_log_tip";
-    public static final String PREF_ENTER_HOME_TIMES= "enter_home_times";
+    public static final String PREF_ENTER_HOME_TIMES = "enter_home_times";
     public static final String PREF_QUICK_MESSAGE_IS_RED_TIP = "quick_message_is_red_tip";
+    public static final String PREF_HAS_EVER_CLOSE_WHITE_DOT = "has_ever_close_white_dot";
+
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -256,6 +258,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private static AppMasterPreference mInstance;
     private int mEnterHomeTimes = -1;
     private int mUseStrengthModeTimes = -1;
+    private boolean mHasEverCloseWhiteDot;
 
     private AppMasterPreference(Context context) {
         mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -688,14 +691,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_NEW_APP_LOCK_TIP, true);
     }
 
-    public void setHideLine(boolean isHide){
+    public void setHideLine(boolean isHide) {
         mPref.edit().putBoolean(PREF_HIDE_LOCK_LINE, isHide).commit();
     }
-    
-    public boolean getIsHideLine(){
+
+    public boolean getIsHideLine() {
         return mPref.getBoolean(PREF_HIDE_LOCK_LINE, false);
     }
-    
+
     public void setSortType(int type) {
         mPref.edit().putInt(PREF_SORT_TYPE, type).commit();
     }
@@ -846,6 +849,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         } else if (mLockType == LOCK_TYPE_PASSWD) {
             mPassword = mPref.getString(PREF_PASSWORD, null);
         }
+
+        mHasEverCloseWhiteDot = mPref.getBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, false);
     }
 
     @Override
@@ -1220,7 +1225,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setCallLogItemRuning(boolean flag) {
-        //隐私通话记录是否查看详情状态，如果true，则发送通知，如果为false，不用发送通知
+        // 隐私通话记录是否查看详情状态，如果true，则发送通知，如果为false，不用发送通知
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
     }
 
@@ -1835,25 +1840,25 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setQuickGestureMsmTip(boolean b) {
         mPref.edit().putBoolean(PREF_QUICK_NO_MSM_TIP, b).commit();
     }
-    
-    public void setEnterHomeTimes(int times){
+
+    public void setEnterHomeTimes(int times) {
         mEnterHomeTimes = times;
         mPref.edit().putInt(PREF_ENTER_HOME_TIMES, times).commit();
     }
-    
-    public int getEnterHomeTimes(){
-        if(mEnterHomeTimes < 0){
+
+    public int getEnterHomeTimes() {
+        if (mEnterHomeTimes < 0) {
             mEnterHomeTimes = mPref.getInt(PREF_ENTER_HOME_TIMES, 0);
         }
         return mEnterHomeTimes;
     }
-    
-    public void setSwitchOpenStrengthenMode(boolean flag){
+
+    public void setSwitchOpenStrengthenMode(boolean flag) {
         mPref.edit().putBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, flag).commit();
     }
-    
-    public boolean getSwitchOpenStrengthenMode(){
-        return mPref.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, true);
+
+    public boolean getSwitchOpenStrengthenMode() {
+        return mPref.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, false);
     }
 
     public void setMessageIsRedTip(boolean flag) {
@@ -1864,40 +1869,50 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getMessageIsRedTip() {
         return mPref.getBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, false);
     }
-    
-    public void setWhiteFloatViewCoordinate(int x,int y){
-        mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x+":"+y).commit();
+
+    public void setWhiteFloatViewCoordinate(int x, int y) {
+        mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x + ":" + y).commit();
     }
-    
-    public int[] getWhiteFloatViewCoordinate(){
+
+    public int[] getWhiteFloatViewCoordinate() {
         int[] coordinate = new int[2];
-        String[] str  = mPref.getString(PREF_WHITE_FLOAT_COORDINATE, "0:0").split(":");
+        String[] str = mPref.getString(PREF_WHITE_FLOAT_COORDINATE, "0:0").split(":");
         coordinate[0] = Integer.valueOf(str[0]);
         coordinate[1] = Integer.valueOf(str[1]);
         return coordinate;
     }
-    
-    public void addUseStrengthenModeTimes(){
-        if(mUseStrengthModeTimes < 0){
+
+    public void addUseStrengthenModeTimes() {
+        if (mUseStrengthModeTimes < 0) {
             mUseStrengthModeTimes = getUseStrengthenModeTimes();
         }
         mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, mUseStrengthModeTimes++).commit();
     }
-    
-    public int  getUseStrengthenModeTimes(){
-        if(mUseStrengthModeTimes < 0){
-           mUseStrengthModeTimes =  mPref.getInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, 0);
+
+    public int getUseStrengthenModeTimes() {
+        if (mUseStrengthModeTimes < 0) {
+            mUseStrengthModeTimes = mPref.getInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, 0);
         }
         return mUseStrengthModeTimes;
     }
-    
-    public boolean getQuickGestureSuccSlideTiped(){
+
+    public boolean hasEverCloseWhiteDot() {
+        return mHasEverCloseWhiteDot;
+    }
+
+    public void setEverCloseWhiteDot(boolean b) {
+        mHasEverCloseWhiteDot = b;
+        mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b);
+    }
+
+    public boolean getQuickGestureSuccSlideTiped() {
         return mPref.getBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, false);
     }
+
     /**
-     * set when success slide quick watch whether tiped 
+     * set when success slide quick watch whether tiped
      */
-    public void setQuickGestureSuccSlideTiped(boolean flag){
+    public void setQuickGestureSuccSlideTiped(boolean flag) {
         mPref.edit().putBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, flag).commit();
     }
 }
