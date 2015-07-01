@@ -922,6 +922,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
                         "area_cli");
                 FloatWindowHelper.mEditQuickAreaFlag = true;
+                if (FloatWindowHelper.mGestureShowing) {
+                    FloatWindowHelper.mGestureShowing = false;
+                }
                 showSettingDialog(true);
                 AppMasterPreference.getInstance(QuickGestureActivity.this)
                         .setRootViewAndWindowHeighSpace(screenSpace());

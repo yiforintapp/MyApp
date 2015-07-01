@@ -35,8 +35,12 @@ public class BuildProperties {
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
     private static final String sMake = Build.MANUFACTURER.toLowerCase();
     private static final String mModel = Build.MODEL.toLowerCase();
+    // 解锁等待界面动画执行过快机型
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";
-    public static final String[] filterPhoneMode={"SM-N9150"};
+    // 跳转通话记录特别处理机型数组
+    public static final String[] filterPhoneMode = {
+            "SM-N9150"
+    };
     private final Properties properties;
 
     private BuildProperties() throws IOException {
@@ -138,6 +142,7 @@ public class BuildProperties {
 
     }
 
+    // 是否为MIUI系统
     public static boolean isMIUI() {
         try {
             final BuildProperties prop = BuildProperties.newInstance();

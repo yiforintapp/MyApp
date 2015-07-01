@@ -4,6 +4,7 @@ package com.leo.appmaster.quickgestures.ui;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -16,6 +17,7 @@ public class QuickGestureTipDialog extends LEOBaseDialog {
     private TextView mContent;
     private TextView mLeftBtn;
     private TextView mRightBtn;
+    private ImageView quickContentIcon;
 
     public interface OnDiaogClickListener {
         public void onClick(int which);
@@ -32,11 +34,19 @@ public class QuickGestureTipDialog extends LEOBaseDialog {
                 R.layout.quick_gesture_tip_dialog_alarm, null);
         mTitle = (TextView) dlgView.findViewById(R.id.quick_dlg_title_tv);
         mContent = (TextView) dlgView.findViewById(R.id.quick_dlg_content);
-
+        quickContentIcon = (ImageView) dlgView.findViewById(R.id.quick_dlg_icon);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.quick_dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.quick_dlg_right_btn);
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    public void setQuickContentIconVisibility(boolean flag) {
+        if (flag) {
+            quickContentIcon.setVisibility(View.VISIBLE);
+        } else {
+            quickContentIcon.setVisibility(View.GONE);
+        }
     }
 
     public void setTitle(String titleStr) {

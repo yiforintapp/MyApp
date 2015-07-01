@@ -39,8 +39,8 @@
 
             <ImageView
                 android:id="@+id/quick_dlg_icon"
-                android:layout_width="@dimen/quick_first_tip_dialog_content_phone_width"
-                android:layout_height="@dimen/quick_first_tip_dialog_content_phone_height"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"

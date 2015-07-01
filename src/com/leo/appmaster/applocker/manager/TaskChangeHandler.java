@@ -78,7 +78,7 @@ public class TaskChangeHandler {
 
         // for gesture check
         if (activity.contains(GESTURE)) {
-            /* 解决：关闭GESTURE这个Acitivty后启动创建热区任务时闪动创建问题 */
+            /* 去除下面代码为了解决：关闭GESTURE这个Acitivty后启动创建热区任务时闪动创建问题 */
             // FloatWindowHelper.mGestureShowing = true;
         } else {
             FloatWindowHelper.mGestureShowing = false;
