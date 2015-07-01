@@ -9,7 +9,8 @@
         android:id="@+id/gesture_success_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp" >
+        android:layout_marginTop="50dp" 
+        >
 
         <RelativeLayout
             android:id="@+id/gesture_success_title"
@@ -61,7 +62,7 @@
             android:textSize="16sp" />
     </RelativeLayout>
 
-    
+    <!-- about the watch view -->
     <com.leo.appmaster.quickgestures.view.AppleWatchContainer
         android:id="@+id/gesture_container"
         android:layout_width="match_parent"
