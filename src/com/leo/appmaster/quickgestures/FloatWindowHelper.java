@@ -58,34 +58,34 @@ public class FloatWindowHelper {
     private static boolean isMoveIng = false;
     public static boolean isFanShowing = false;
     // left bottom width
-    private static float mLeftBottomWidth = 20;
+    private static float mLeftBottomWidth = 40;
     // left bottom height
-    private static float mLeftBottomHeight = 10;
+    private static float mLeftBottomHeight = 20;
     // left center width
-    private static float mLeftCenterWidth = 15;
+    private static float mLeftCenterWidth = 30;
     // left center height
-    private static float mLeftCenterHeight = 35;
+    private static float mLeftCenterHeight =60;
     // left center center height
     private static float mLeftCenterCenterHeight = 250;
     // left top width
-    private static float mLeftTopWidth = 8;
+    private static float mLeftTopWidth = 15;
     // left top height
-    private static float mLeftTopHeight = 30;
+    private static float mLeftTopHeight = 40;
 
     // right bottom width
-    private static float mRightBottomWidth = 20;
+    private static float mRightBottomWidth = 40;
     // right bottom height
-    private static float mRightBottomHeight = 10;
+    private static float mRightBottomHeight = 20;
     // right center width
-    private static float mRightCenterWidth = 15;
+    private static float mRightCenterWidth = 30;
     // right center height
-    private static float mRightCenterHeight = 35;
+    private static float mRightCenterHeight = 60;
     // right center center height
     private static float mRightCenterCenterHeight = 250;
     // right top width
-    private static float mRightTopWidth = 8;
+    private static float mRightTopWidth = 15;
     // right top height
-    private static float mRightTopHeight = 30;
+    private static float mRightTopHeight = 40;
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
     private static final int LEFT_TOP_FLAG = 3;
@@ -146,9 +146,9 @@ public class FloatWindowHelper {
                             // Log.e(FloatWindowHelper.RUN_TAG,
                             // "移动距离："+moveX+":"+moveY);
                             if (-moveX > 0 && moveY > 0) {
-                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*2
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5
                                         || moveY > ViewConfiguration.get(mContext)
-                                                .getScaledTouchSlop()*2 /*|| pressure > 0.8*/)
+                                                .getScaledTouchSlop()*1.5 /*|| pressure > 0.8*/)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -175,8 +175,8 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             // if (Math.abs(startX - event.getRawX()) < 10
                             // || Math.abs(startY - event.getRawY()) < 10) {
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop()*2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop()*1.5)) {
                                 // cancel system no read message tip
                                 // if (isShowTip || isShowBusinessRedTip) {
                                 // AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
@@ -293,9 +293,9 @@ public class FloatWindowHelper {
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
                             // .getPressure());
                             if (-moveX > 0 && moveY > 0) {
-                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*2
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5
                                         || moveY > ViewConfiguration.get(mContext)
-                                                .getScaledTouchSlop()*2 /*|| presssure > 0.8*/)
+                                                .getScaledTouchSlop()*1.5 /*|| presssure > 0.8*/)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -320,8 +320,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop()*2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop()*1.5)) {
                                 // cancel system no read message tip
                                 if (isShowTip || isShowBusinessRedTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
@@ -432,9 +432,9 @@ public class FloatWindowHelper {
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
                             // .getPressure());
                             if (-moveX > 0 && moveY > 0) {
-                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*2
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5
                                         || moveY > ViewConfiguration.get(mContext)
-                                                .getScaledTouchSlop()*2 /*|| presssure > 0.8*/)
+                                                .getScaledTouchSlop()*1.5 /*|| presssure > 0.8*/)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -459,8 +459,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop()*2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop()*1.5)) {
                                 // cancel system no read message tip
                                 if ((isShowTip || isShowBusinessRedTip) && mLeftBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -577,9 +577,9 @@ public class FloatWindowHelper {
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
                             if (-moveX > 0 && moveY > 0) {
-                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*2
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5
                                         || moveY > ViewConfiguration.get(mContext)
-                                                .getScaledTouchSlop()*2 /*|| presssure > 0.8*/)
+                                                .getScaledTouchSlop()*1.5 /*|| presssure > 0.8*/)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -604,8 +604,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop()*2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop()*1.5)) {
                                 removeSwipWindow(mContext, 3);
                             }
                             break;
@@ -711,9 +711,9 @@ public class FloatWindowHelper {
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
                             if (moveX > 0 && moveY > 0) {
-                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*2
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5
                                         || moveY > ViewConfiguration.get(mContext)
-                                                .getScaledTouchSlop()*2 /*|| presssure > 0.8*/)
+                                                .getScaledTouchSlop()*1.5 /*|| presssure > 0.8*/)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -738,8 +738,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop()*2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop()*1.5)) {
                                 // cancel system no read message tip
                                 // if (isShowTip || isShowBusinessRedTip) {
                                 // SDKWrapper.addEvent(mContext, SDKWrapper.P1,
@@ -851,9 +851,9 @@ public class FloatWindowHelper {
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
                             // .getPressure());
                             if (moveX > 0 && moveY > 0) {
-                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*2
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5
                                         || moveY > ViewConfiguration.get(mContext)
-                                                .getScaledTouchSlop()*2 /*|| presssure > 0.8*/)
+                                                .getScaledTouchSlop()*1.5 /*|| presssure > 0.8*/)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -878,8 +878,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop()*2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop()*1.5)) {
                                 // cancel system no read message tip
                                 if (isShowTip || isShowBusinessRedTip) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -992,9 +992,9 @@ public class FloatWindowHelper {
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
                             if (moveX > 0 && moveY > 0) {
-                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*2
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5
                                         || moveY > ViewConfiguration.get(mContext)
-                                                .getScaledTouchSlop()*2 /*|| presssure > 0.8*/)
+                                                .getScaledTouchSlop()*1.5 /*|| presssure > 0.8*/)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -1019,8 +1019,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop()*2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop()*1.5)) {
                                 // cancel system no read message tip
                                 if ((isShowTip || isShowBusinessRedTip) && mRightBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -1140,9 +1140,9 @@ public class FloatWindowHelper {
                             // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
                             // .getPressure());
                             if (moveX > 0 && moveY > 0) {
-                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*2
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5
                                         || moveY > ViewConfiguration.get(mContext)
-                                                .getScaledTouchSlop()*2 /*|| presssure > 0.8*/) && !isMoveIng)) {
+                                                .getScaledTouchSlop()*1.5 /*|| presssure > 0.8*/) && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
                                         FloatWindowHelper.mGestureShowing = true;
@@ -1166,8 +1166,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop()*2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop()*1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop()*1.5)) {
                                 removeSwipWindow(mContext, -3);
                             }
                             break;

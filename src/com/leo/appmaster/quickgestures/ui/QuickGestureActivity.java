@@ -106,7 +106,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             setOnClickListener();
         } else {
             closeQuickSetting();
-            // 初始化数据
+            // 初始化快捷手势数据
             AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                 @Override
                 public void run() {
@@ -130,7 +130,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mLeftBottomView.setOnTouchListener(this);
             mRightTopView.setOnTouchListener(this);
             mRightBottomView.setOnTouchListener(this);
-            // 初始化数据
+            // 初始化快捷手势数据
             AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                 @Override
                 public void run() {
@@ -148,7 +148,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                 @Override
                 public void run() {
-                    // 反初始化数据
+                    // 反初始化快捷手势数据
                     QuickGestureManager.getInstance(getApplicationContext()).unInit();
                 }
             });

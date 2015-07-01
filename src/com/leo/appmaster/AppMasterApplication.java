@@ -267,6 +267,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 mAppsEngine.preloadAllBaseInfo();
+                //初始化快捷手势数据
                 if (AppMasterPreference.getInstance(getApplicationContext())
                         .getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(AppMasterApplication.this).init();
