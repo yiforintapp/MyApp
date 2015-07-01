@@ -7,12 +7,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -155,13 +157,17 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     @Override
     protected void onResume() {
+        //等待半秒去激活设备管理器
+        SystemClock.sleep(500);
         if (isAdminActive()) {
+            
             mForbidUninstall.setChecked(true);
             mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
         } else {
             mForbidUninstall.setChecked(false);
             mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
         }
+//        Log.e("poha", isAdminActive()+"");
 //        mChangeLockTime.setSummary(R.string.summary_setting_locker);
 //        mHideLockLine.setSummary(R.string.summary_hide_lockline);
 //        mLockerClean.setSummary(R.string.summary_aacelerate_after_unlock);

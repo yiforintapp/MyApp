@@ -361,5 +361,4 @@ public class LeoHorizontalListView extends AdapterView<ListAdapter> {
             return viewRect.contains((int) e.getRawX(), (int) e.getRawY());
         }
     };
-
 }

@@ -36,7 +36,7 @@ public class BuildProperties {
     private static final String sMake = Build.MANUFACTURER.toLowerCase();
     private static final String mModel = Build.MODEL.toLowerCase();
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";
-
+    public static final String[] filterPhoneMode={"SM-N9150"};
     private final Properties properties;
 
     private BuildProperties() throws IOException {
