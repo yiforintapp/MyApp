@@ -621,7 +621,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     }
                 }
             }
-        }, 3000);
+        }, 1000);
     }
 
     @Override
@@ -980,8 +980,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             @Override
             public void onClick(View arg0) {
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
-               // startQuickGestureActivity();
-                startQuickGestureTip();
+                startQuickGestureEnterTip();
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
@@ -1012,70 +1011,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    public void startQuickGestureActivity() {
-        boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(this);
-        boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(this);
-        boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOpenWindow =
-                BuildProperties.isFloatWindowOpAllowed(this);
-        if (!checkFloatWindow) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_open_error", "model_"
-                    + BuildProperties.getPoneModel());
-        }
-        if (checkMiui && !isOpenWindow) {
-            // MIUI
-            Intent intentv6 = new
-                    Intent("miui.intent.action.APP_PERM_EDITOR");
-            intentv6.setClassName("com.miui.securitycenter",
-                    "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-            intentv6.putExtra("extra_pkgname", this.getPackageName());
-            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            try {
-                LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(2000);
-                startActivity(intentv6);
-            } catch (Exception e) {
-                LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(1000);
-                Intent intentv5 = new Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri
-                        .fromParts("package", this.getPackageName(), null);
-                intentv5.setData(uri);
-                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                try {
-                    startActivity(intentv5);
-                } catch (Exception e1) {
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_open_error", "reason_"
-                            + BuildProperties.getPoneModel());
-                }
-            }
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            LockManager.getInstatnce().filterAllOneTime(1000);
-            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(quickIntent);
-        } else if (checkHuaWei && !checkFloatWindow) {
-            BuildProperties.isToHuaWeiSystemManager(this);
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            quickIntent.putExtra("sys_name", "huawei");
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Intent quickIntent = new Intent(this, QuickGestureActivity.class);
-            this.startActivity(quickIntent);
-        }
-    }
-
     public void recordEnterHomeTimes(){
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         int times = pref.getEnterHomeTimes(); 
@@ -1085,7 +1020,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         Log.i("######", "times = "+times);
     }
     
-    private void startQuickGestureTip(){
+    private void startQuickGestureEnterTip(){
         mPagerTab.setCurrentItem(2);
+        HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
+        fragment.playQuickGestureEnterAnim();
     }
 }
