@@ -9,7 +9,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.Editable;
+import android.text.Selection;
+import android.text.Spannable;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -161,8 +165,11 @@ public class PasswdProtectActivity extends BaseActivity implements
         });
         
         mAnwser = (EditText) findViewById(R.id.et_anwser);
+        //使得密保问题获得焦点，弹出键盘，并使光标置于最后
         PasswdProtectActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         mAnwser.requestFocus();
+                  
+        
         mAnwser.setOnClickListener(this);
         mAnwser.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -190,6 +197,14 @@ public class PasswdProtectActivity extends BaseActivity implements
         String answer = AppMasterPreference.getInstance(this).getPpAnwser();
         if (question != null) {
             mAnwser.setText(answer);
+            CharSequence astext = mAnwser.getText();
+            if(astext instanceof Spannable)
+            {
+                Spannable spanText=(Spannable)astext;
+                Selection.setSelection(spanText, astext.length());
+            }
+            
+            
         }
 
     }
@@ -360,4 +375,5 @@ public class PasswdProtectActivity extends BaseActivity implements
         TextView name;
         ImageView selecte;
     }
+    
 }
