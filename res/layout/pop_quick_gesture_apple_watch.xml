@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ee000000" >
+    android:background="#cc000000" >
 
     <com.leo.appmaster.quickgestures.view.AppleWatchContainer
         android:id="@+id/gesture_container"

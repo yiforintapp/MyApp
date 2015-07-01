@@ -252,7 +252,6 @@ public class AppMasterApplication extends Application {
          * filter);
          */
         IntentFilter filter = new IntentFilter();
-        // 移动App完成之后发生的广播
         filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE);
         // 正在移动App是发出的广播
         filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
