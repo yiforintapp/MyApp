@@ -718,6 +718,7 @@
     <string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
     <string name="quick_no_call_log_annotation">未接来电会在快捷手势中提示</string>
     <string name="quick_no_pricay_contact_annotation">信息会以系统信息的形式提示</string>
+    <string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭．</string>
     <!-- version 2.5 huangqili part -->
     
     
