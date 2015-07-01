@@ -70,7 +70,7 @@ public class FloatWindowHelper {
     // left top width
     private static float mLeftTopWidth = 15;
     // left top height
-    private static float mLeftTopHeight = 40;
+    private static float mLeftTopHeight = 50;
 
     // right bottom width
     private static float mRightBottomWidth = 40;
@@ -85,7 +85,7 @@ public class FloatWindowHelper {
     // right top width
     private static float mRightTopWidth = 15;
     // right top height
-    private static float mRightTopHeight = 40;
+    private static float mRightTopHeight = 50;
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
     private static final int LEFT_TOP_FLAG = 3;
@@ -94,7 +94,6 @@ public class FloatWindowHelper {
     private static final int RIGHT_CENTER_FLAG = -2;
     private static final int RIGHT_CENTER_CENTER_FLAG = -3;
     private static final int RIGHT_TOP_FLAG = -4;
-    public static final String RUN_TAG = "RUN_TAG";
 
     /**
      * left bottom must call in UI thread
