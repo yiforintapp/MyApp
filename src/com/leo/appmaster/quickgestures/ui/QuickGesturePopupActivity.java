@@ -6,6 +6,9 @@ import java.util.List;
 import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -26,6 +29,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private AppleWatchContainer mContainer;
     private int mNowLayout;
     private boolean isCloseWindow,ifCreateWhiteFloat;
+    private View mSuccessTipView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +38,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
+        mSuccessTipView = findViewById(R.id.gesture_success_tip);
 
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
@@ -89,6 +94,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         });
         super.onResume();
         FloatWindowHelper.hideWhiteFloatView(getApplicationContext());
+        showSuccessTip();
     }
 
     private void fillTwoLayout(int mNowLayout) {
@@ -235,6 +241,21 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     Log.i("null", "showWhiteFloatView'");
                 }
             });
+        }
+    }
+    
+    private void showSuccessTip(){
+        AppMasterPreference pref = AppMasterPreference.getInstance(getApplicationContext());
+        if(!pref.getQuickGestureSuccSlideTiped()){
+            mSuccessTipView.setVisibility(View.VISIBLE);
+            Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
+            mKnowbButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mSuccessTipView.setVisibility(View.GONE);
+                }
+            });
+            pref.setQuickGestureSuccSlideTiped(true);
         }
     }
 }
