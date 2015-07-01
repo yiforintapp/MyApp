@@ -208,9 +208,13 @@
     <dimen name="quick_first_tip_dialog_content_text_size">14sp</dimen>
     <!-- quick gesutre end -->
 
-	<dimen name="privacy_contact_red_tip_x">105dp</dimen>
+    <dimen name="privacy_contact_red_tip_x">105dp</dimen>
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="apple_watch_item_icon_size">62dp</dimen>
     <dimen name="text_icon_margin">10dp</dimen>
+
+    <!-- 2.5 ql part -->
+    <dimen name="lock_setting_item_des_width">200dp</dimen>
+    <!-- 2.5 ql part -->
 
 </resources>
