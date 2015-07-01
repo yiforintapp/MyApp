@@ -1853,7 +1853,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
     
     public boolean getSwitchOpenStrengthenMode(){
-        return mPref.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, false);
+        return mPref.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, true);
     }
 
     public void setMessageIsRedTip(boolean flag) {

@@ -762,16 +762,10 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         mTipRL.clearAnimation();
                         mHandImage.setVisibility(View.GONE);
                         mArrowImage.setVisibility(View.GONE);
-                        if (viewId == R.id.gesture_left_tips_top_tv
-                                || viewId == R.id.gesture_left_tips_bottom) {
-                            QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -1;
-                        } else if (viewId == R.id.gesture_right_tips_top_tv
-                                || viewId == R.id.gesture_right_tips_bottom) {
-                            QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = 1;
-                        }
+                        // init the first time white float position
+                        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -2;
                         SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1,
-                                "qssetting",
-                                "qs_open");
+                                "qssetting", "qs_open");
                         Intent intent;
                         intent = new Intent(AppMasterApplication.getInstance(),
                                 QuickGesturePopupActivity.class);
@@ -811,12 +805,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                 mTipRL.setVisibility(View.GONE);
                             }
                         }, 1000);
-                        String toastText = QuickGestureActivity.this.getResources()
-                                .getString(
-                                        R.string.quick_gesture_first_open_sliding_toast);
-                        Toast.makeText(QuickGestureActivity.this, toastText,
-                                Toast.LENGTH_SHORT)
-                                .show();
                         mFlag = true;
                         createShortCut();
                     }
