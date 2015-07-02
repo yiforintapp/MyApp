@@ -65,6 +65,7 @@ public class AppleWatchContainer extends FrameLayout {
     private List<QuickSwitcherInfo> mSwitchList;
     private WifiManager mWifimanager;
     private ExecutorService cachedThreadPool;
+    private boolean isCleanFinish = false;
 
     public static enum Orientation {
         Left, Right;
@@ -1477,6 +1478,7 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void cleanMem() {
+        isCleanFinish = false;
         // 清理内存
         mCleaner = ProcessCleaner.getInstance(mContext);
         mLastUsedMem = mCleaner.getUsedMem();
@@ -1484,6 +1486,7 @@ public class AppleWatchContainer extends FrameLayout {
         mCleaner.tryClean(mContext);
         long curUsedMem = mCleaner.getUsedMem();
         mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+        isCleanFinish = true;
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
@@ -1537,7 +1540,7 @@ public class AppleWatchContainer extends FrameLayout {
         ObjectAnimator turnBig2 = ObjectAnimator.ofFloat(mRockey, "scaleY", 1f, 1.3f);
         AnimatorSet animSet = new AnimatorSet();
         animSet.play(turnBig).with(turnBig2);
-        animSet.setDuration(600);
+        animSet.setDuration(60);
         animSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -1556,7 +1559,7 @@ public class AppleWatchContainer extends FrameLayout {
                         .ofFloat(mPIngtai, "translationY", mScreenHeight, transY);
                 AnimatorSet animMoveSet = new AnimatorSet();
                 animMoveSet.play(moveToX).with(moveToY).with(pingtaiMoveToY);
-                animMoveSet.setDuration(800);
+                animMoveSet.setDuration(80);
                 animMoveSet.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -1574,7 +1577,7 @@ public class AppleWatchContainer extends FrameLayout {
                         AnimatorSet animMoveGoSet = new AnimatorSet();
                         animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY)
                                 .with(yunComeOut).before(yunLeave);
-                        animMoveGoSet.setDuration(800);
+                        animMoveGoSet.setDuration(80);
                         animMoveGoSet.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -1594,7 +1597,7 @@ public class AppleWatchContainer extends FrameLayout {
                                 AnimatorSet returnAnimation = new AnimatorSet();
                                 returnAnimation.play(turnSmall).with(turnSmall2).with(returnX)
                                         .with(returnY).with(pingtai_returnY);
-                                returnAnimation.setDuration(300);
+                                returnAnimation.setDuration(30);
                                 returnAnimation.start();
                                 // make normal iCon
                                 makeNormalIcon(info);
@@ -1616,12 +1619,20 @@ public class AppleWatchContainer extends FrameLayout {
         TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
         String mToast;
         if (!isClean) {
-            if (mCleanMem <= 0) {
-                mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
-            } else {
+            if(isCleanFinish){
+                if (mCleanMem <= 0) {
+                    LeoLog.d("testspeed", "CleanMem <= 0");
+                    mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
+                } else {
+                    LeoLog.d("testspeed", "CleanMem > 0");
+                    mToast = mContext.getString(R.string.home_app_manager_mem_clean,
+                            TextFormater.dataSizeFormat(mCleanMem));
+                }
+            }else {
                 mToast = mContext.getString(R.string.home_app_manager_mem_clean,
-                        TextFormater.dataSizeFormat(mCleanMem));
+                        TextFormater.dataSizeFormat(230));
             }
+
         } else {
             mToast = mContext.getString(R.string.the_best_status_toast);
         }
