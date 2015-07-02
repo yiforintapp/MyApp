@@ -731,7 +731,7 @@ public class AppleWatchLayout extends ViewGroup {
                         Intent(android.content.Intent.ACTION_SENDTO,
                                 smsToUri);
             } else {
-                mIntent = new Intent();
+//                mIntent = new Intent();
                 mIntent = new Intent(Intent.ACTION_VIEW);
                 mIntent.setType("vnd.android-dir/mms-sms");
                 mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
@@ -744,6 +744,9 @@ public class AppleWatchLayout extends ViewGroup {
                 // > 0) {
                 // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
                 // }
+                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                FloatWindowHelper.cancelAllRedTip(getContext());
+
             } catch (Exception e) {
             }
             /*
@@ -777,6 +780,8 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
+                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                FloatWindowHelper.cancelAllRedTip(getContext());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -812,6 +817,8 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
+                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                FloatWindowHelper.cancelAllRedTip(getContext());
                 // if
                 // (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog)
                 // {
