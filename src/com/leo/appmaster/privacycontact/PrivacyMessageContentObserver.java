@@ -59,7 +59,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         final ContentResolver cr = mContext.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(mContext);
         if (MESSAGE_MODEL.equals(mFlag)) {
-            Log.e(Constants.RUN_TAG, "短信数据库有变");
+//            Log.e(Constants.RUN_TAG, "短信数据库有变");
             mLastMessage = pcm.getLastMessage();
             List<MessageBean> messages = null;
             if (mLastMessage != null) {
