@@ -1540,7 +1540,7 @@ public class AppleWatchContainer extends FrameLayout {
         ObjectAnimator turnBig2 = ObjectAnimator.ofFloat(mRockey, "scaleY", 1f, 1.3f);
         AnimatorSet animSet = new AnimatorSet();
         animSet.play(turnBig).with(turnBig2);
-        animSet.setDuration(60);
+        animSet.setDuration(600);
         animSet.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -1559,7 +1559,7 @@ public class AppleWatchContainer extends FrameLayout {
                         .ofFloat(mPIngtai, "translationY", mScreenHeight, transY);
                 AnimatorSet animMoveSet = new AnimatorSet();
                 animMoveSet.play(moveToX).with(moveToY).with(pingtaiMoveToY);
-                animMoveSet.setDuration(80);
+                animMoveSet.setDuration(800);
                 animMoveSet.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -1577,7 +1577,7 @@ public class AppleWatchContainer extends FrameLayout {
                         AnimatorSet animMoveGoSet = new AnimatorSet();
                         animMoveGoSet.play(mRocketmoveToY).with(pingtaiMoveDownToY)
                                 .with(yunComeOut).before(yunLeave);
-                        animMoveGoSet.setDuration(80);
+                        animMoveGoSet.setDuration(800);
                         animMoveGoSet.addListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(Animator animation) {
@@ -1597,7 +1597,7 @@ public class AppleWatchContainer extends FrameLayout {
                                 AnimatorSet returnAnimation = new AnimatorSet();
                                 returnAnimation.play(turnSmall).with(turnSmall2).with(returnX)
                                         .with(returnY).with(pingtai_returnY);
-                                returnAnimation.setDuration(30);
+                                returnAnimation.setDuration(300);
                                 returnAnimation.start();
                                 // make normal iCon
                                 makeNormalIcon(info);
