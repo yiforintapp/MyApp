@@ -28,7 +28,6 @@ public class QuickGestureTipDialog extends LEOBaseDialog {
         mContext = context.getApplicationContext();
         initUI();
     }
-
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.quick_gesture_tip_dialog_alarm, null);

@@ -88,6 +88,8 @@ public class QuickGestureManager {
     public boolean isMessageRead;
     public String privacyLastRecord;// RECORD_CALL:最后记录为通话记录，RECORD_MSM：最后记录为短信
 
+    public boolean isCallLogRead;
+
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);

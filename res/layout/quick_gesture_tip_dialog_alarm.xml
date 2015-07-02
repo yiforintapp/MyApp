@@ -45,6 +45,10 @@
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:src="@drawable/dialog_gesture_phone" />
+            <!--
+     android:layout_width="@dimen/quick_first_tip_dialog_content_phone_width"
+                android:layout_height="@dimen/quick_first_tip_dialog_content_phone_height"
+            -->
 
             <TextView
                 android:id="@+id/quick_dlg_title"

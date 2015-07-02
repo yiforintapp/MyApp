@@ -123,8 +123,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
         // TODO
-        // showQuickGestureSettingDialog();
-        // showFirstOpenQuickGestureTipDialog();
+//         showQuickGestureSettingDialog();
+//         showFirstOpenQuickGestureTipDialog();
     }
 
     @Override

@@ -594,9 +594,9 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
                                     false);
                             if (pre.getMessageNoReadCount() <= 0
-                                    && (QuickGestureManager.getInstance(context).mMessages != null
-                                    && QuickGestureManager.getInstance(context).mMessages.size() <= 0)/* 未读短信 */
-                                    && !AppMasterPreference.getInstance(context)
+                                    && (QuickGestureManager.getInstance(context).mMessages == null
+                                    || QuickGestureManager.getInstance(context).mMessages.size() <= 0)/* 未读短信 */
+                                    && AppMasterPreference.getInstance(context)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
                                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
                             }

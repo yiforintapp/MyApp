@@ -189,6 +189,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_NO_MSM_TIP = "quick_no_msm_tip";
     public static final String PREF_QUICK_NO_CALL_LOG_TIP = "quick_no_call_log_tip";
     public static final String PREF_QUICK_MESSAGE_IS_RED_TIP = "quick_message_is_red_tip";
+    public static final String PREF_QUICK_CALL_LOG_IS_RED_TIP = "quick_call_log_is_red_tip";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -679,14 +680,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_NEW_APP_LOCK_TIP, true);
     }
 
-    public void setHideLine(boolean isHide){
+    public void setHideLine(boolean isHide) {
         mPref.edit().putBoolean(PREF_HIDE_LOCK_LINE, isHide).commit();
     }
-    
-    public boolean getIsHideLine(){
+
+    public boolean getIsHideLine() {
         return mPref.getBoolean(PREF_HIDE_LOCK_LINE, false);
     }
-    
+
     public void setSortType(int type) {
         mPref.edit().putInt(PREF_SORT_TYPE, type).commit();
     }
@@ -1211,7 +1212,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setCallLogItemRuning(boolean flag) {
-        //隐私通话记录是否查看详情状态，如果true，则发送通知，如果为false，不用发送通知
+        // 隐私通话记录是否查看详情状态，如果true，则发送通知，如果为false，不用发送通知
         mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).commit();
     }
 
@@ -1834,5 +1835,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getMessageIsRedTip() {
         return mPref.getBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, false);
+    }
+
+    public void setCallLogIsRedTip(boolean flag) {
+        // 设置未读通话是否已经红点提示过
+        mPref.edit().putBoolean(PREF_QUICK_CALL_LOG_IS_RED_TIP, flag).commit();
+    }
+
+    public boolean getCallLogIsRedTip() {
+        return mPref.getBoolean(PREF_QUICK_CALL_LOG_IS_RED_TIP, false);
     }
 }
