@@ -232,7 +232,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             // callLogs.size());
                             if (AppMasterPreference.getInstance(mContext)
                                     .getSwitchOpenRecentlyContact()) {
-                                if (!QuickGestureManager.getInstance(mContext).mToCallFlag) {
+                                if (!QuickGestureManager.getInstance(mContext).mToCallFlag
+                                        && !QuickGestureManager.getInstance(mContext).isCallLogRead) {
                                     QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
                                     QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                                     FloatWindowHelper.removeShowReadTipWindow(mContext);

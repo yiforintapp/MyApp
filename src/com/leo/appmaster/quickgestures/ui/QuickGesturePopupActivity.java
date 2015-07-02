@@ -19,7 +19,6 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
-    
 
     private AppleWatchContainer mContainer;
     private int mNowLayout;
@@ -44,7 +43,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         long duringTime = finishTime - startTime;
         LeoLog.d("testDuring", "Time is : " + duringTime);
     }
-  
+
     private void fillWhichLayoutFitst(int mNowLayout) {
         if (mNowLayout == 1) {
             fillDynamicLayout(false);
@@ -173,6 +172,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageRead) {
             QuickGestureManager.getInstance(getApplicationContext()).isMessageRead = true;
             AppMasterPreference.getInstance(getApplicationContext()).setMessageIsRedTip(true);
+        }
+        // 解决通话未读红点提示后，其他一些原因引起通话记录数据库的改变使红点再次显示
+        if (!QuickGestureManager.getInstance(getApplicationContext()).isCallLogRead) {
+            QuickGestureManager.getInstance(getApplicationContext()).isCallLogRead = true;
+            AppMasterPreference.getInstance(getApplicationContext()).setCallLogIsRedTip(true);
         }
     }
 

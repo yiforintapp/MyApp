@@ -32,6 +32,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -54,16 +55,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, final Intent intent) {
-        /*
-         * 有新短信来时恢复该短信是否经过红点提示标记的默认值false
-         */
-        if (QuickGestureManager.getInstance(mContext).isMessageRead) {
-            QuickGestureManager.getInstance(mContext).isMessageRead = false;
-            AppMasterPreference.getInstance(mContext).setMessageIsRedTip(false);
-        }
-        if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
-            return;
-        }
+
         String action = intent.getAction();
         mContext = context;
         if (mSimpleDateFormate == null) {
@@ -73,6 +65,17 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
+            /*
+             * 有新短信来时恢复该短信是否经过红点提示标记的默认值false
+             */
+            if (QuickGestureManager.getInstance(mContext).isMessageRead) {
+                QuickGestureManager.getInstance(mContext).isMessageRead = false;
+                AppMasterPreference.getInstance(mContext).setMessageIsRedTip(false);
+            }
+
+            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+                return;
+            }
             // Crash from feedback
             try {
                 Bundle bundle = intent.getExtras();
@@ -119,6 +122,19 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             // 获取来电号码
             final String phoneNumber =
                     intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
+            //通话判断来电号码是否存在来判断是，拨出还是呼入，进行isCallLogRead值的初始化
+            if (!Utilities.isEmpty(phoneNumber)) {
+//                Log.e(Constants.RUN_TAG, "" + "更新电话");
+                if (QuickGestureManager.getInstance(mContext).isCallLogRead) {
+                    QuickGestureManager.getInstance(mContext).isCallLogRead = false;
+                    AppMasterPreference.getInstance(mContext)
+                            .setCallLogIsRedTip(false);
+                }
+            }
+            //没有隐私联系人时直接结束
+            if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
+                return;
+            }
             // 获取当前时间
             if (mSimpleDateFormate == null) {
                 mSimpleDateFormate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");

@@ -976,6 +976,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mPre.setSwitchOpenRecentlyContact(true);
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_on);
                     mRecentlyContactFlag = true;
+                    if (QuickGestureManager.getInstance(QuickGestureActivity.this).isCallLogRead) {
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).isCallLogRead = false;
+                        AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                .setCallLogIsRedTip(false);
+                    }
                     checkNoReadCallLog();
                 } else {
                     SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",

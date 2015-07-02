@@ -571,10 +571,16 @@ public class PrivacyContactUtils {
         // PhoneLookup.DISPLAY_NAME,
         // PhoneLookup.TYPE, PhoneLookup.LABEL
         // }, null, null, null);
-        Cursor cursor = contentResolver.query(Uri.withAppendedPath(
-                PhoneLookup.CONTENT_FILTER_URI, number), new String[] {
-                PhoneLookup.DISPLAY_NAME,
-        }, null, null, null);
+        Cursor cursor = null;
+        // 防止在查询过程中出现异常
+        try {
+            cursor = contentResolver.query(Uri.withAppendedPath(
+                    PhoneLookup.CONTENT_FILTER_URI, number), new String[] {
+                    PhoneLookup.DISPLAY_NAME,
+            }, null, null, null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 phoneName = cursor.getString(cursor.getColumnIndex(Phone.DISPLAY_NAME));
@@ -902,11 +908,17 @@ public class PrivacyContactUtils {
     public static Bitmap getContactIconFromSystem(Context context, String number) {
         Bitmap contactIcon = null;
         String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        Cursor cur = context.getContentResolver().query(CONTACT_PHONE_URL, null,
-                Phone.NUMBER + " LIKE ? ",
-                new String[] {
-                    "%" + formateNumber
-                }, null);
+        Cursor cur = null;
+        try {
+            cur = context.getContentResolver().query(CONTACT_PHONE_URL, null,
+                    Phone.NUMBER + " LIKE ? ",
+                    new String[] {
+                        "%" + formateNumber
+                    }, null);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         if (cur != null) {
             while (cur.moveToNext()) {
                 Long contactid =
@@ -1023,13 +1035,17 @@ public class PrivacyContactUtils {
     public static int queryMessageFromNumber(ContentResolver cr, String number) {
         int count = 0;
         if (number != null && !"".equals(number)) {
-            Cursor cursor = cr.query(Constants.PRIVACY_MESSAGE_URI, null,
-                    "contact_phone_number LIKE ? ", new String[] {
-                        "%" + number
-                    }, null);
-            if (cursor != null) {
-                count = cursor.getCount();
-                cursor.close();
+            try {
+                Cursor cursor = cr.query(Constants.PRIVACY_MESSAGE_URI, null,
+                        "contact_phone_number LIKE ? ", new String[] {
+                            "%" + number
+                        }, null);
+                if (cursor != null) {
+                    count = cursor.getCount();
+                    cursor.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
         return count;
@@ -1081,26 +1097,35 @@ public class PrivacyContactUtils {
     public static int queryMySelfMessageThreadId(Context context, String selection,
             String selectionArgs) {
         int threadId = -1;
-        Cursor cur = context.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
-                selection, new String[] {
-                    selectionArgs
-                }, null);
-        if (cur != null && cur.getCount() > 0) {
-            while (cur.moveToNext()) {
-                threadId = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
-                break;
+        try {
+            Cursor cur = context.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
+                    selection, new String[] {
+                        selectionArgs
+                    }, null);
+            if (cur != null && cur.getCount() > 0) {
+                while (cur.moveToNext()) {
+                    threadId = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
+                    break;
+                }
             }
-        }
-        if (cur != null) {
-            cur.close();
+            if (cur != null) {
+                cur.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return threadId;
     }
 
     public static List<ContactBean> loadPrivateContacts(Context mContext) {
         List<ContactBean> mContacts = new ArrayList<ContactBean>();
-        Cursor cur = mContext.getContentResolver().query(Constants.PRIVACY_CONTACT_URI, null,
-                null, null, "_id desc");
+        Cursor cur=null;
+        try {
+            cur = mContext.getContentResolver().query(Constants.PRIVACY_CONTACT_URI, null,
+                    null, null, "_id desc");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         if (cur != null) {
             while (cur.moveToNext()) {
                 ContactBean mb = new ContactBean();
@@ -1233,15 +1258,19 @@ public class PrivacyContactUtils {
     public static int getNoReadMessage(Context context, String number) {
         int count = 0;
         String fromateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        Cursor cur = context.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
-                Constants.COLUMN_MESSAGE_PHONE_NUMBER
-                        + " LIKE ? and message_is_read = 0",
-                new String[] {
-                    "%" + fromateNumber
-                }, null);
-        if (cur != null) {
-            count = cur.getCount();
-            cur.close();
+        try {
+            Cursor cur = context.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
+                    Constants.COLUMN_MESSAGE_PHONE_NUMBER
+                            + " LIKE ? and message_is_read = 0",
+                    new String[] {
+                        "%" + fromateNumber
+                    }, null);
+            if (cur != null) {
+                count = cur.getCount();
+                cur.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return count;
     }
@@ -1250,15 +1279,19 @@ public class PrivacyContactUtils {
     public static int getNoReadCallLogCount(Context context, String number) {
         int count = 0;
         String fromateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-        Cursor cur = context.getContentResolver().query(Constants.PRIVACY_CALL_LOG_URI, null,
-                Constants.COLUMN_CALL_LOG_PHONE_NUMBER
-                        + " LIKE ? and call_log_is_read = 0",
-                new String[] {
-                    "%" + fromateNumber
-                }, null);
-        if (cur != null) {
-            count = cur.getCount();
-            cur.close();
+        try {
+            Cursor cur = context.getContentResolver().query(Constants.PRIVACY_CALL_LOG_URI, null,
+                    Constants.COLUMN_CALL_LOG_PHONE_NUMBER
+                            + " LIKE ? and call_log_is_read = 0",
+                    new String[] {
+                        "%" + fromateNumber
+                    }, null);
+            if (cur != null) {
+                count = cur.getCount();
+                cur.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return count;
     }
