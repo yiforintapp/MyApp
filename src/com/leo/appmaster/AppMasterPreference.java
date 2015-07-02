@@ -162,6 +162,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_WHITE_FLOAT_COORDINATE = "white_float_coordinate";
     public static final String PREF_USE_STRENGTHTNEN_MODE_TIMES = "use_strengthen_mode_times";
     public static final String PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED = "if_success_slide_tiped";
+    public static final String PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME = "quick_gesture_default_common";
 
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM = "dialog_radio_setting_left_bottom";
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM = "dialog_radio_setting_right_bottom";
@@ -197,6 +198,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_ENTER_HOME_TIMES = "enter_home_times";
     public static final String PREF_QUICK_MESSAGE_IS_RED_TIP = "quick_message_is_red_tip";
     public static final String PREF_HAS_EVER_CLOSE_WHITE_DOT = "has_ever_close_white_dot";
+    public static final String PREF_NEED_WHITE_DOT_SLIDE_TIP = "need_white_dot_slide_tip";
 
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -206,7 +208,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private String mLockPolicy;
     private List<String> mRecommentAppList;
     // private boolean mLockerScreenThemeGuide = false;
-    public static final String PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME = "quick_gesture_default_common";
     public static final int LOCK_TYPE_NONE = -1;
     public static final int LOCK_TYPE_PASSWD = 0;
     public static final int LOCK_TYPE_GESTURE = 1;
@@ -259,6 +260,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mEnterHomeTimes = -1;
     private int mUseStrengthModeTimes = -1;
     private boolean mHasEverCloseWhiteDot;
+    private boolean mNeedShowWhiteDotSlideTip;
 
     private AppMasterPreference(Context context) {
         mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -851,6 +853,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         }
 
         mHasEverCloseWhiteDot = mPref.getBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, false);
+        mNeedShowWhiteDotSlideTip = mPref.getBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, false);
     }
 
     @Override
@@ -1905,14 +1908,23 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b);
     }
 
-    public boolean getQuickGestureSuccSlideTiped() {
-        return mPref.getBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, false);
-    }
-
     /**
      * set when success slide quick watch whether tiped
      */
     public void setQuickGestureSuccSlideTiped(boolean flag) {
         mPref.edit().putBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, flag).commit();
     }
+
+    public boolean getQuickGestureSuccSlideTiped() {
+        return mPref.getBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, false);
+    }
+
+    public boolean getNeedShowWhiteDotSlideTip() {
+        return mPref.getBoolean(PREF_NEED_WHITE_DOT_SLIDE_TIP, true);
+    }
+
+    public void setNeedShowWhiteDotSlideTip(boolean need) {
+        mPref.edit().putBoolean(PREF_NEED_WHITE_DOT_SLIDE_TIP, need).commit();
+    }
+
 }

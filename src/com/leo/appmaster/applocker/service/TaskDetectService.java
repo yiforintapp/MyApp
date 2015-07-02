@@ -194,7 +194,7 @@ public class TaskDetectService extends Service {
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
                 .getDialogRadioRightCenter();
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).resetSlidAreaSize();
-        //初始化未读短信是否已经红点提示过
+        // 初始化未读短信是否已经红点提示过
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageRead = AppMasterPreference
                 .getInstance(getApplicationContext()).getMessageIsRedTip();
     }
@@ -459,10 +459,21 @@ public class TaskDetectService extends Service {
                         if (!FloatWindowHelper.mGestureShowing
                                 && AppMasterPreference.getInstance(getApplicationContext())
                                         .getFristSlidingTip()) {
+                            boolean isHomeFlag = false;
+                            AppMasterPreference amp = AppMasterPreference
+                                    .getInstance(getApplicationContext());
+                            if (amp.getNeedShowWhiteDotSlideTip()) {
+                                isHomeFlag = Utilities.isHome(getApplicationContext());
+                                if(isHomeFlag) {
+                                    FloatWindowHelper.checkShowWhiteDotSlideTip(TaskDetectService.this
+                                            .getApplicationContext());
+                                }
+                            }
                             // set background color
                             if (FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper
-                                        .updateFloatWindowBackgroudColor(getApplicationContext(),FloatWindowHelper.mEditQuickAreaFlag);
+                                        .updateFloatWindowBackgroudColor(getApplicationContext(),
+                                                FloatWindowHelper.mEditQuickAreaFlag);
                             }
                             boolean isJustHome = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isJustHome;
@@ -477,11 +488,12 @@ public class TaskDetectService extends Service {
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
-                                /**about white float  view **/
+                                /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
                                     if (!isFilterApp) {
-                                        if( !FloatWindowHelper.mEditQuickAreaFlag){
-                                            FloatWindowHelper.showWhiteFloatView(TaskDetectService.this);
+                                        if (!FloatWindowHelper.mEditQuickAreaFlag) {
+                                            FloatWindowHelper
+                                                    .showWhiteFloatView(TaskDetectService.this);
                                         }
                                     } else {
                                         FloatWindowHelper
@@ -489,21 +501,24 @@ public class TaskDetectService extends Service {
                                     }
                                 }
                             } else if (isJustHome) {
-                                boolean isHomeFlag = Utilities.isHome(getApplicationContext());
+                                if (!isHomeFlag)
+                                    isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if (isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
-                                /**about white float  view **/
-                                if(sp_traffic.getSwitchOpenStrengthenMode()){
-                                    if (isHomeFlag){
-                                        if(!FloatWindowHelper.mEditQuickAreaFlag){
-                                            FloatWindowHelper.showWhiteFloatView(TaskDetectService.this);
+                                /** about white float view **/
+                                if (sp_traffic.getSwitchOpenStrengthenMode()) {
+                                    if (isHomeFlag) {
+                                        if (!FloatWindowHelper.mEditQuickAreaFlag) {
+                                            FloatWindowHelper
+                                                    .showWhiteFloatView(TaskDetectService.this);
                                         }
-                                    }else{
-                                        FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
+                                    } else {
+                                        FloatWindowHelper
+                                                .hideWhiteFloatView(TaskDetectService.this);
                                     }
                                 }
                             }

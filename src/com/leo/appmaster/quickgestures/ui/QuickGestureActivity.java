@@ -74,11 +74,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private TextView mLeftTopView, mLeftBottomView, mRightTopView, mRightBottomView,
             mSlidingTimeTv, mSlidAreaTv;
     private RelativeLayout mTipRL, mOpenQuick, mSlidingArea, mSlidingTime, mNoReadMessageOpen,
-            mRecentlyContactOPen, mPrivacyContactOpen, mActivityRootView,mStrengthenModeView;
+            mRecentlyContactOPen, mPrivacyContactOpen, mActivityRootView, mStrengthenModeView;
     private ImageView mHandImage, mArrowImage, mQuickOpenCK, mNoReadMessageOpenCK,
-            mRecentlyContactOpenCK, mPrivacyContactOpenCK,mStrengthModeOpenCk;
+            mRecentlyContactOpenCK, mPrivacyContactOpenCK, mStrengthModeOpenCk;
     private boolean mFlag, mOpenQuickFlag, mNoReadMessageFlag, mRecentlyContactFlag,
-            mPrivacyContactFlag, mFromShortcut,mStrengthenModeFlag;
+            mPrivacyContactFlag, mFromShortcut, mStrengthenModeFlag;
     private String slidingArea = "";
     public static final String FROME_STATUSBAR = "from_statusbar";
     private boolean initFlag;
@@ -174,7 +174,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);
         mRecentlyContactOPen = (RelativeLayout) findViewById(R.id.recently_contact_content);
         mPrivacyContactOpen = (RelativeLayout) findViewById(R.id.privacy_contact_content);
-        mStrengthenModeView = (RelativeLayout)findViewById(R.id.strengthen_slid_mode);
+        mStrengthenModeView = (RelativeLayout) findViewById(R.id.strengthen_slid_mode);
         mSlidingTimeTv = (TextView) findViewById(R.id.allow_slid_time_item_cotentTV);
         mSlidAreaTv = (TextView) findViewById(R.id.slid_area_item_cotentTV);
         mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
@@ -184,7 +184,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mNoReadMessageOpenCK = (ImageView) findViewById(R.id.no_read_message_check);
         mRecentlyContactOpenCK = (ImageView) findViewById(R.id.recently_contact_check);
         mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
-        mStrengthModeOpenCk = (ImageView)findViewById(R.id.strengthen_mode_switch_check);
+        mStrengthModeOpenCk = (ImageView) findViewById(R.id.strengthen_mode_switch_check);
     }
 
     private void initQuickGestureOpen() {
@@ -261,7 +261,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mRecentlyContactFlag = mPre.getSwitchOpenRecentlyContact();
         mPrivacyContactFlag = mPre.getSwitchOpenPrivacyContactMessageTip();
         mStrengthenModeFlag = mPre.getSwitchOpenStrengthenMode();
-        
+
         // no read message switch
         if (mNoReadMessageFlag) {
             mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
@@ -280,10 +280,10 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         } else {
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
-        //strengthen mode
-        if(mStrengthenModeFlag){
+        // strengthen mode
+        if (mStrengthenModeFlag) {
             mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
-        }else {
+        } else {
             mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
         }
     }
@@ -298,7 +298,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         if (mPrivacyContactOpenCK != null) {
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
-        if(mStrengthModeOpenCk != null){
+        if (mStrengthModeOpenCk != null) {
             mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
         }
     }
@@ -901,7 +901,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     QuickGestureManager.getInstance(this).stopFloatWindow();
                     QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = 0;
                     FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
-                    if(AppMasterPreference.getInstance(QuickGestureActivity.this).getSwitchOpenStrengthenMode()){
+                    if (AppMasterPreference.getInstance(QuickGestureActivity.this)
+                            .getSwitchOpenStrengthenMode()) {
                         FloatWindowHelper.removeWhiteFloatView(QuickGestureActivity.this);
                     }
                     // uninit quick gesture data
@@ -923,7 +924,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     setOnClickListener();
                     initChexkBox();
                     QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
-                    if(AppMasterPreference.getInstance(QuickGestureActivity.this).getSwitchOpenStrengthenMode()){
+                    if (AppMasterPreference.getInstance(QuickGestureActivity.this)
+                            .getSwitchOpenStrengthenMode()) {
                         FloatWindowHelper.createWhiteFloatView(getApplicationContext());
                     }
                     // init quick gesture data
@@ -1017,12 +1019,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 }
                 break;
             case R.id.strengthen_slid_mode:
-                if(mStrengthenModeFlag){
+                if (mStrengthenModeFlag) {
                     mPre.setEverCloseWhiteDot(true);
                     mPre.setSwitchOpenStrengthenMode(false);
+                    mPre.setNeedShowWhiteDotSlideTip(false);
                     mStrengthenModeFlag = false;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
-                }else {
+                } else {
                     mPre.setSwitchOpenStrengthenMode(true);
                     mStrengthenModeFlag = true;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
@@ -1108,14 +1111,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             prefernece.edit().putBoolean("shortcut_quickGesture", true).commit();
         }
     }
-    
+
     /**
      * switch strength mode open
      */
-    private void switchStrengthMode(){
-        if(mStrengthenModeFlag){
+    private void switchStrengthMode() {
+        if (mStrengthenModeFlag) {
             FloatWindowHelper.createWhiteFloatView(this);
-        }else{
+        } else {
             FloatWindowHelper.removeWhiteFloatView(this);
             mPre.setWhiteFloatViewCoordinate(0, 0);
         }

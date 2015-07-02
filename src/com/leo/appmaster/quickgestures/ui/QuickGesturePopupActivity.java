@@ -56,8 +56,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
         mNowLayout = mContainer.getNowLayout();
-        mSuccessTipView = findViewById(R.id.gesture_success_tip);
 
+        mSuccessTipView = findViewById(R.id.gesture_success_tip);
         mGestureTipTitle = findViewById(R.id.gesture_success_title);
         mGestureTipContent = (TextView) findViewById(R.id.gesture_success_content);
     }
@@ -67,8 +67,18 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot()) {
             int clickCount = amp.getUseStrengthenModeTimes();
             if (clickCount == 1) {
+                mSuccessTipView.setVisibility(View.VISIBLE);
                 mGestureTipTitle.setVisibility(View.GONE);
                 mGestureTipContent.setText(R.string.white_dot_click_tip);
+                Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
+                final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView,
+                        "alpha", 1.0f, 0f).setDuration(200);
+                mKnowbButton.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alphaAnimator.start();
+                    }
+                });
             }
         }
     }
