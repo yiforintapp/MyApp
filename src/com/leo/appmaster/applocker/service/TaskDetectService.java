@@ -462,13 +462,13 @@ public class TaskDetectService extends Service {
                             boolean isHomeFlag = false;
                             AppMasterPreference amp = AppMasterPreference
                                     .getInstance(getApplicationContext());
-                            if (amp.getNeedShowWhiteDotSlideTip()) {
+//                            if (amp.getNeedShowWhiteDotSlideTip()) {
                                 isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if(isHomeFlag) {
-                                    FloatWindowHelper.checkShowWhiteDotSlideTip(TaskDetectService.this
+                                    FloatWindowHelper.checkShowWhiteDotLuminescence(TaskDetectService.this
                                             .getApplicationContext());
                                 }
-                            }
+//                            }
                             // set background color
                             if (FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper

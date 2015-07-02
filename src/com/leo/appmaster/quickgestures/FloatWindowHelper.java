@@ -6,7 +6,10 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
+import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.text.TextPaint;
 import android.util.Log;
 import android.view.Display;
@@ -62,7 +65,6 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
     private static ImageView mWhiteFloatView;
-    private static TextView mWhiteDotSlideTip;
     private static ScreenOnOffListener mScreenListener;
 
     public static volatile boolean mGestureShowing = false;
@@ -1761,7 +1763,7 @@ public class FloatWindowHelper {
         }
     }
 
-    private static void setWhiteFloatOnclickListener(final Context mContext) {
+    private static void onWhiteFloatClick(Context mContext) {
         if (null == mWhiteFloatView)
             return;
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
@@ -1771,6 +1773,7 @@ public class FloatWindowHelper {
         }
         pref.addUseStrengthenModeTimes();
         pref.setNeedShowWhiteDotSlideTip(false);
+        checkDismissWhiteDotLuminescence(mContext);
         int oreatation = mWhiteFloatParams.x < 0 ? 0 : 2;
         showQuickGuestureView(mContext, oreatation);
     }
@@ -1799,9 +1802,6 @@ public class FloatWindowHelper {
                         startX = event.getRawX();
                         startY = event.getRawY();
                         downTime = System.currentTimeMillis();
-                        if (mWhiteDotSlideTip != null) {
-                            dissmissWhiteDotSlideTip(mContext);
-                        }
                         Log.i("tag", "startX =" + startX + "startY = " + startY);
                         break;
                     case MotionEvent.ACTION_MOVE:
@@ -1824,7 +1824,7 @@ public class FloatWindowHelper {
                         upY = (int) (event.getRawY() - halfH);
                         Log.i("tag", System.currentTimeMillis() - downTime + " ");
                         if (System.currentTimeMillis() - downTime < 150) {
-                            setWhiteFloatOnclickListener(mContext);
+                            onWhiteFloatClick(mContext);
                         } else if (ifMove) {
                             if (x < 0) {
                                 animator = ValueAnimator.ofInt((int) x, -halfW);
@@ -1905,61 +1905,27 @@ public class FloatWindowHelper {
         LeoGlobalBroadcast.registerBroadcastListener(mScreenListener);
     }
 
-    public static void checkShowWhiteDotSlideTip(Context context) {
+    public static void checkShowWhiteDotLuminescence(Context context) {
         if (mWhiteFloatView != null && mWhiteFloatView.getVisibility() == View.VISIBLE) {
-            WindowManager windowManager = getWindowManager(context);
-            mWhiteDotSlideTip = new TextView(context);
-            LayoutParams lp = new LayoutParams();
-            TextPaint tp = new TextPaint();
-            String content = context.getString(R.string.white_dot_slide_tip);
-            int textSize = DipPixelUtil.dip2px(context, 12);
-            tp.setTextSize(textSize);
-            float textWidth = tp.measureText(content);
-            float maxWidth = DipPixelUtil.dip2px(context, 150);
-            if (textWidth > maxWidth) {
-                lp.width = (int) maxWidth;
-                int lineCount = (int) (textWidth / textWidth + 1);
-                lp.height = lineCount * textSize + textSize;
-            } else {
-                lp.width = (int) textWidth;
-                lp.height = textSize + textSize;
-            }
-            lp.type = LayoutParams.TYPE_SYSTEM_ERROR;
-            lp.format = PixelFormat.RGBA_8888;
-            lp.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                    | LayoutParams.FLAG_NOT_FOCUSABLE;
-            lp.y = mWhiteFloatParams.y + (lp.height - mWhiteFloatParams.height) / 2;
-            if (mWhiteFloatParams.x > 100) {
-                lp.x = mWhiteFloatParams.width + 20;
-            } else {
-                lp.x = mWhiteFloatParams.width - lp.width - 20;
-            }
 
-            mWhiteDotSlideTip.setPadding(5, 5, 5, 5);
-            mWhiteDotSlideTip.setGravity(Gravity.CENTER);
-            mWhiteDotSlideTip.setText(content);
-
-            windowManager.addView(mWhiteDotSlideTip, lp);
-
-            AppMasterPreference amp = AppMasterPreference
-                    .getInstance(context);
-            amp.setNeedShowWhiteDotSlideTip(false);
+            AnimationDrawable ad = (AnimationDrawable) context.getResources().getDrawable(
+                    R.drawable.white_dot_luminescence);
+            mWhiteFloatView.setBackgroundDrawable(ad);
+            ad.start();
         }
     }
 
-    public static void dissmissWhiteDotSlideTip(final Context context) {
-        if (mWhiteDotSlideTip != null) {
-            AlphaAnimation aa = new AlphaAnimation(1.0f, 0.0f);
-            aa.setDuration(300);
-            aa.setAnimationListener(new AnimationListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    WindowManager windowManager = getWindowManager(context);
-                    windowManager.removeView(mWhiteDotSlideTip);
-                    mWhiteDotSlideTip = null;
-                }
-            });
-            mWhiteDotSlideTip.startAnimation(aa);
+    public static void checkDismissWhiteDotLuminescence(final Context context) {
+        if (mWhiteFloatView != null) {
+            Drawable bd = mWhiteFloatView.getBackground();
+            if (bd instanceof AnimationDrawable) {
+                AnimationDrawable ad = (AnimationDrawable) bd;
+                ad.stop();
+                mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
+                AppMasterPreference amp = AppMasterPreference
+                        .getInstance(context);
+                amp.setNeedShowWhiteDotSlideTip(false);
+            }
         }
     }
 }
