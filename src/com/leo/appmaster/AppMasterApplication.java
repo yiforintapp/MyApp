@@ -252,7 +252,6 @@ public class AppMasterApplication extends Application {
          * filter);
          */
         IntentFilter filter = new IntentFilter();
-        // 移动App完成之后发生的广播
         filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE);
         // 正在移动App是发出的广播
         filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
@@ -268,6 +267,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 mAppsEngine.preloadAllBaseInfo();
+                //初始化快捷手势数据
                 if (AppMasterPreference.getInstance(getApplicationContext())
                         .getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(AppMasterApplication.this).init();

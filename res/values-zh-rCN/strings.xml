@@ -725,7 +725,7 @@
     <string name="summary_autolock_after_lockscreen">锁屏后所有应用重新锁定</string>
     <string name="summary_setting_locker">选择应用锁定设置</string>
     <string name="summary_hide_lockline">将应用解锁轨迹隐藏，更安全地保护您的隐私</string>
-    <string name="quick_gesture_strengthen_mode_title">强化划出模式</string>
+    <string name="quick_gesture_strengthen_mode_title">小白点</string>
  	<string name="quick_gesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
  	<string name="quick_gesture_success_title">开启快捷手势成功!</string>
  	<string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>

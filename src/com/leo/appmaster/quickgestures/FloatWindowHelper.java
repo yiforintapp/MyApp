@@ -72,34 +72,34 @@ public class FloatWindowHelper {
     private static boolean isMoveIng = false;
     public static boolean isFanShowing = false;
     // left bottom width
-    private static float mLeftBottomWidth = 20;
+    private static float mLeftBottomWidth = 40;
     // left bottom height
-    private static float mLeftBottomHeight = 10;
+    private static float mLeftBottomHeight = 20;
     // left center width
-    private static float mLeftCenterWidth = 15;
+    private static float mLeftCenterWidth = 30;
     // left center height
-    private static float mLeftCenterHeight = 35;
+    private static float mLeftCenterHeight = 60;
     // left center center height
     private static float mLeftCenterCenterHeight = 250;
     // left top width
-    private static float mLeftTopWidth = 8;
+    private static float mLeftTopWidth = 15;
     // left top height
-    private static float mLeftTopHeight = 30;
+    private static float mLeftTopHeight = 50;
 
     // right bottom width
-    private static float mRightBottomWidth = 20;
+    private static float mRightBottomWidth = 40;
     // right bottom height
-    private static float mRightBottomHeight = 10;
+    private static float mRightBottomHeight = 20;
     // right center width
-    private static float mRightCenterWidth = 15;
+    private static float mRightCenterWidth = 30;
     // right center height
-    private static float mRightCenterHeight = 35;
+    private static float mRightCenterHeight = 60;
     // right center center height
     private static float mRightCenterCenterHeight = 250;
     // right top width
-    private static float mRightTopWidth = 8;
+    private static float mRightTopWidth = 15;
     // right top height
-    private static float mRightTopHeight = 30;
+    private static float mRightTopHeight = 50;
     // white float width and height
     private static int mWhiteFLoatWidth, mWhiteFloatHeight;
 
@@ -122,26 +122,9 @@ public class FloatWindowHelper {
         Log.i("null", "createFloatLeftBottomWindow");
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-        // final boolean isShowBusinessRedTip =
-        // QuickGestureManager.getInstance(mContext)
-        // .checkBusinessRedTip();
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
             // // no read contact /message/privacycontact red tip
-            // if
-            // (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-            // && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag
-            // == -1 || QuickGestureManager
-            // .getInstance(mContext).onTuchGestureFlag == -2)) {
-            // mLeftBottomView.setIsShowReadTip(true, 1);
-            // }
-            // // business red tip
-            // if (isShowBusinessRedTip
-            // && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag
-            // == -1 || QuickGestureManager
-            // .getInstance(mContext).onTuchGestureFlag == -2)) {
-            // mLeftBottomView.setIsShowReadTip(true, 1);
-            // }
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -159,17 +142,14 @@ public class FloatWindowHelper {
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
                             float pressure = event.getPressure();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
-                            // .getPressure());
-                            // Log.e(FloatWindowHelper.RUN_TAG,
-                            // "移动距离："+moveX+":"+moveY);
                             if (-moveX > 0 && moveY > 0) {
-                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 2
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
-                                        .getScaledTouchSlop() * 2 /*
-                                                                   * || pressure
-                                                                   * > 0.8
-                                                                   */)
+                                        .getScaledTouchSlop() * 1.5 /*
+                                                                     * ||
+                                                                     * pressure
+                                                                     * > 0.8
+                                                                     */)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -194,29 +174,9 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            // if (Math.abs(startX - event.getRawX()) < 10
-                            // || Math.abs(startY - event.getRawY()) < 10) {
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop() * 2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 // cancel system no read message tip
-                                // if (isShowTip || isShowBusinessRedTip) {
-                                // AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
-                                // SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                                // "qs_page",
-                                // "notice");
-                                // Intent intent = new Intent(mContext,
-                                // QuickGesturePopupActivity.class);
-                                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                // intent.putExtra("show_orientation", 0);
-                                // try {
-                                // mContext.startActivity(intent);
-                                // //
-                                // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                                // // = false;
-                                // } catch (Exception e) {
-                                // e.printStackTrace();
-                                // }
-                                // }
                                 removeSwipWindow(mContext, 1);
                             }
                             break;
@@ -239,8 +199,6 @@ public class FloatWindowHelper {
                 mLeftBottomParams = new LayoutParams();
                 mLeftBottomParams.width = (int) ((DipPixelUtil.dip2px(mContext, mLeftBottomWidth) / 2) + (value / 2)) * 2;
                 mLeftBottomParams.height = (int) ((DipPixelUtil.dip2px(mContext, mLeftBottomHeight) / 2) + (value)) * 2;
-                // mLeftBottomParams.x = (int) (-(width / 2) +
-                // (mLeftBottomParams.width / 2));
                 mLeftBottomParams.x = (int) ((DipPixelUtil.dip2px(mContext, mLeftCenterWidth) / 2) + (value / 2))
                         * 2 + (-(width / 2) + (mLeftBottomParams.width / 2));
                 mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
@@ -248,12 +206,7 @@ public class FloatWindowHelper {
                 mLeftBottomParams.format = PixelFormat.RGBA_8888;
                 mLeftBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
-
             } else {
-                // mLeftBottomParams.x = -(width / 2) + (mLeftBottomParams.width
-                // / 2);
-                // mLeftBottomParams.y = (height / 2) -
-                // (mLeftBottomParams.height / 2);
                 mLeftBottomParams.x = (int) ((DipPixelUtil.dip2px(mContext, mLeftCenterWidth) / 2) + (value / 2))
                         * 2 + (-(width / 2) + (mLeftBottomParams.width / 2));
                 mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
@@ -305,23 +258,17 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            // moveX = Math.abs(startX - event.getRawX());
-                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            // Log.e(FloatWindowHelper.RUN_TAG,
-                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
-                            // .getPressure());
                             if (-moveX > 0 && moveY > 0) {
-                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 2
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
-                                        .getScaledTouchSlop() * 2 /*
-                                                                   * ||
-                                                                   * presssure >
-                                                                   * 0.8
-                                                                   */)
+                                        .getScaledTouchSlop() * 1.5 /*
+                                                                     * ||
+                                                                     * presssure
+                                                                     * > 0.8
+                                                                     */)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -346,8 +293,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop() * 2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 // cancel system no read message tip
                                 if (isShowTip || isShowBusinessRedTip) {
                                     AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
@@ -381,22 +328,12 @@ public class FloatWindowHelper {
                 mLeftCenterParams.width = (int) ((DipPixelUtil.dip2px(mContext, mLeftCenterWidth) / 2) + (value / 2)) * 2;
                 mLeftCenterParams.height = (int) ((DipPixelUtil.dip2px(mContext, mLeftCenterHeight) / 2) + (value)) * 2;
                 mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
-                // mLeftCenterParams.y = (int) ((height / 2) -
-                // (mLeftCenterParams.height / 2)
-                // - mLeftBottomParams.height - DipPixelUtil.dip2px(mContext,
-                // 12));
                 mLeftCenterParams.y = (int) ((height / 2) - (mLeftCenterParams.height / 2));
                 mLeftCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mLeftCenterParams.format = PixelFormat.RGBA_8888;
                 mLeftCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                // mLeftCenterParams.x = (int) (-(width / 2) +
-                // (mLeftCenterParams.width / 2));
-                // mLeftCenterParams.y = (int) ((height / 2) -
-                // (mLeftCenterParams.height / 2)
-                // - mLeftBottomParams.height - DipPixelUtil.dip2px(mContext,
-                // 12));
                 mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
                 mLeftCenterParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
             }
@@ -450,23 +387,17 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            // moveX = Math.abs(startX - event.getRawX());
-                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "移动距离：" + moveX
-                            // + ":" + moveY);
                             float presssure = event.getPressure();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
-                            // .getPressure());
                             if (-moveX > 0 && moveY > 0) {
-                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 2
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
-                                        .getScaledTouchSlop() * 2 /*
-                                                                   * ||
-                                                                   * presssure >
-                                                                   * 0.8
-                                                                   */)
+                                        .getScaledTouchSlop() * 1.5 /*
+                                                                     * ||
+                                                                     * presssure
+                                                                     * > 0.8
+                                                                     */)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -491,8 +422,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop() * 2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 // cancel system no read message tip
                                 if ((isShowTip || isShowBusinessRedTip) && mLeftBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -531,11 +462,6 @@ public class FloatWindowHelper {
                         mLeftCenterCenterHeight) / 2) + (value)) * 2;
                 mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
                 if (mLeftBottomView != null) {
-                    // mLeftCenterCenterParams.y = (int) ((height / 2)
-                    // - (mLeftCenterCenterParams.height / 2) -
-                    // mLeftBottomParams.height
-                    // - mLeftCenterParams.height - DipPixelUtil
-                    // .dip2px(mContext, 12));
                     mLeftCenterCenterParams.y = (int) ((height / 2)
                             - (mLeftCenterCenterParams.height / 2) - mLeftCenterParams.height - DipPixelUtil
                             .dip2px(mContext, 12));
@@ -552,11 +478,6 @@ public class FloatWindowHelper {
             } else {
                 mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
                 if (mLeftBottomView != null) {
-                    // mLeftCenterCenterParams.y = (int) ((height / 2)
-                    // - (mLeftCenterCenterParams.height / 2) -
-                    // mLeftBottomParams.height
-                    // - mLeftCenterParams.height - DipPixelUtil
-                    // .dip2px(mContext, 12));
                     mLeftCenterCenterParams.y = (int) ((height / 2)
                             - (mLeftCenterCenterParams.height / 2) - mLeftCenterParams.height - DipPixelUtil
                             .dip2px(mContext, 12));
@@ -600,23 +521,17 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            // moveX = Math.abs(startX - event.getRawX());
-                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            // Log.e(FloatWindowHelper.RUN_TAG,
-                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
-                            // .getPressure());
                             if (-moveX > 0 && moveY > 0) {
-                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 2
+                                if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
-                                        .getScaledTouchSlop() * 2 /*
-                                                                   * ||
-                                                                   * presssure >
-                                                                   * 0.8
-                                                                   */)
+                                        .getScaledTouchSlop() * 1.5 /*
+                                                                     * ||
+                                                                     * presssure
+                                                                     * > 0.8
+                                                                     */)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -641,8 +556,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop() * 2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 removeSwipWindow(mContext, 3);
                             }
                             break;
@@ -661,11 +576,6 @@ public class FloatWindowHelper {
                 mLeftTopParams.width = (int) ((DipPixelUtil.dip2px(mContext, mLeftTopWidth) / 2) + (value / 2)) * 2;
                 mLeftTopParams.height = (int) ((DipPixelUtil.dip2px(mContext, mLeftTopHeight) / 2) + (value)) * 2;
                 mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
-                // mLeftTopParams.y = (int) ((height / 2) -
-                // (mLeftTopParams.height / 2)
-                // - mLeftBottomParams.height - mLeftCenterParams.height -
-                // DipPixelUtil
-                // .dip2px(mContext, 12));
                 mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
                         - mLeftCenterParams.height - DipPixelUtil
                         .dip2px(mContext, 12));
@@ -676,11 +586,6 @@ public class FloatWindowHelper {
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
                 mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
-                // mLeftTopParams.y = (int) ((height / 2) -
-                // (mLeftTopParams.height / 2)
-                // - mLeftBottomParams.height - mLeftCenterParams.height -
-                // DipPixelUtil
-                // .dip2px(mContext, 12));
                 mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
                         - mLeftCenterParams.height - DipPixelUtil
                         .dip2px(mContext, 12));
@@ -702,27 +607,8 @@ public class FloatWindowHelper {
     public static void createFloatRightBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-        // final boolean isShowBusinessRedTip =
-        // QuickGestureManager.getInstance(mContext)
-        // .checkBusinessRedTip();
         if (mRightBottomView == null) {
             mRightBottomView = new QuickGesturesAreaView(mContext);
-
-            // // no read contact/message/privacycontact red tip
-            // if
-            // (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-            // && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag
-            // == 1 || QuickGestureManager
-            // .getInstance(mContext).onTuchGestureFlag == 2)) {
-            // mRightBottomView.setIsShowReadTip(true, 2);
-            // }
-            // // business red tip
-            // if (isShowBusinessRedTip
-            // && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag
-            // == 1 || QuickGestureManager
-            // .getInstance(mContext).onTuchGestureFlag == 2)) {
-            // mRightBottomView.setIsShowReadTip(true, 2);
-            // }
             mRightBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -737,24 +623,17 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            // Log.e(TAG,"按压力度："+event.getPressure());
-                            // moveX = Math.abs(startX - event.getRawX());
-                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            // Log.e(FloatWindowHelper.RUN_TAG,
-                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
-                            // .getPressure());
                             if (moveX > 0 && moveY > 0) {
-                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 2
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
-                                        .getScaledTouchSlop() * 2 /*
-                                                                   * ||
-                                                                   * presssure >
-                                                                   * 0.8
-                                                                   */)
+                                        .getScaledTouchSlop() * 1.5 /*
+                                                                     * ||
+                                                                     * presssure
+                                                                     * > 0.8
+                                                                     */)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -779,27 +658,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop() * 2)) {
-                                // cancel system no read message tip
-                                // if (isShowTip || isShowBusinessRedTip) {
-                                // SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                                // "qs_page",
-                                // "notice");
-                                // AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
-                                // Intent intent = new Intent(mContext,
-                                // QuickGesturePopupActivity.class);
-                                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                // intent.putExtra("show_orientation", 2);
-                                // try {
-                                // mContext.startActivity(intent);
-                                // //
-                                // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                                // // = false;
-                                // } catch (Exception e) {
-                                // e.printStackTrace();
-                                // }
-                                // }
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 removeSwipWindow(mContext, -1);
                             }
                             break;
@@ -827,8 +687,6 @@ public class FloatWindowHelper {
                 mRightBottomParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                // mRightBottomParams.x = (int) ((width / 2) +
-                // (mRightBottomParams.width / 2));
                 mRightBottomParams.x = (int) ((width / 2) - (mRightBottomParams.width / 2))
                         - ((DipPixelUtil.dip2px(mContext, mRightCenterWidth) / 2) + (value / 2))
                         * 2;
@@ -881,24 +739,17 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            // Log.e(TAG,"按压力度："+event.getPressure());
-                            // moveX = Math.abs(startX - event.getRawX());
-                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            // Log.e(FloatWindowHelper.RUN_TAG,
-                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力：" + event
-                            // .getPressure());
                             if (moveX > 0 && moveY > 0) {
-                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 2
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
-                                        .getScaledTouchSlop() * 2 /*
-                                                                   * ||
-                                                                   * presssure >
-                                                                   * 0.8
-                                                                   */)
+                                        .getScaledTouchSlop() * 1.5 /*
+                                                                     * ||
+                                                                     * presssure
+                                                                     * > 0.8
+                                                                     */)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -923,8 +774,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop() * 2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 // cancel system no read message tip
                                 if (isShowTip || isShowBusinessRedTip) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -960,21 +811,11 @@ public class FloatWindowHelper {
                         mRightCenterHeight) / 2) + (value)) * 2;
                 mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
                 mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2));
-                // mRightCenterParams.y = (int) ((height / 2) -
-                // (mRightCenterParams.height / 2)
-                // - mRightBottomParams.height - DipPixelUtil.dip2px(mContext,
-                // 12));
                 mRightCenterParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightCenterParams.format = PixelFormat.RGBA_8888;
                 mRightCenterParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
-                // mRightCenterParams.x = (int) ((width / 2) +
-                // (mRightCenterParams.width / 2));
-                // mRightCenterParams.y = (int) ((height / 2) -
-                // (mRightCenterParams.height / 2)
-                // - mRightBottomParams.height - DipPixelUtil.dip2px(mContext,
-                // 12));
                 mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
                 mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2));
             }
@@ -1028,23 +869,17 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            // moveX = Math.abs(startX - event.getRawX());
-                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "移动距离：" + moveX
-                            // + ":" + moveY);
                             float presssure = event.getPressure();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
-                            // .getPressure());
                             if (moveX > 0 && moveY > 0) {
-                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 2
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
-                                        .getScaledTouchSlop() * 2 /*
-                                                                   * ||
-                                                                   * presssure >
-                                                                   * 0.8
-                                                                   */)
+                                        .getScaledTouchSlop() * 1.5 /*
+                                                                     * ||
+                                                                     * presssure
+                                                                     * > 0.8
+                                                                     */)
                                 && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
@@ -1069,8 +904,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop() * 2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 // cancel system no read message tip
                                 if ((isShowTip || isShowBusinessRedTip) && mRightBottomView == null) {
                                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_page",
@@ -1111,11 +946,6 @@ public class FloatWindowHelper {
                         mRightCenterCenterHeight) / 2) + (value)) * 2;
                 mRightCenterCenterParams.x = (int) ((width / 2) + (mRightCenterCenterParams.width / 2));
                 if (mRightBottomView != null) {
-                    // mRightCenterCenterParams.y = (int) ((height / 2)
-                    // - (mRightCenterCenterParams.height / 2) -
-                    // mRightBottomParams.height
-                    // - mRightCenterParams.height - DipPixelUtil
-                    // .dip2px(mContext, 12));
                     mRightCenterCenterParams.y = (int) ((height / 2)
                             - (mRightCenterCenterParams.height / 2) - mRightCenterParams.height - DipPixelUtil
                             .dip2px(mContext, 12));
@@ -1131,11 +961,6 @@ public class FloatWindowHelper {
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
                 if (mRightBottomView != null) {
-                    // mRightCenterCenterParams.y = (int) ((height / 2)
-                    // - (mRightCenterCenterParams.height / 2) -
-                    // mRightBottomParams.height
-                    // - mRightCenterParams.height - DipPixelUtil
-                    // .dip2px(mContext, 12));
                     mRightCenterCenterParams.y = (int) ((height / 2)
                             - (mRightCenterCenterParams.height / 2) - mRightCenterParams.height - DipPixelUtil
                             .dip2px(mContext, 12));
@@ -1180,23 +1005,17 @@ public class FloatWindowHelper {
                             startY = event.getRawY();
                             break;
                         case MotionEvent.ACTION_MOVE:
-                            // moveX = Math.abs(startX - event.getRawX());
-                            // moveY = Math.abs(startY - event.getRawY());
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            // Log.e(FloatWindowHelper.RUN_TAG,
-                            // "移动距离："+moveX+":"+moveY);
                             float presssure = event.getPressure();
-                            // Log.e(FloatWindowHelper.RUN_TAG, "手指压力："+event
-                            // .getPressure());
                             if (moveX > 0 && moveY > 0) {
-                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 2
+                                if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
-                                        .getScaledTouchSlop() * 2 /*
-                                                                   * ||
-                                                                   * presssure >
-                                                                   * 0.8
-                                                                   */) && !isMoveIng)) {
+                                        .getScaledTouchSlop() * 1.5 /*
+                                                                     * ||
+                                                                     * presssure
+                                                                     * > 0.8
+                                                                     */) && !isMoveIng)) {
                                     isMoveIng = true;
                                     if (!mEditQuickAreaFlag) {
                                         FloatWindowHelper.mGestureShowing = true;
@@ -1220,8 +1039,8 @@ public class FloatWindowHelper {
                             break;
                         case MotionEvent.ACTION_UP:
                             isMoveIng = false;
-                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 2 && moveY < ViewConfiguration
-                                    .get(mContext).getScaledTouchSlop() * 2)) {
+                            if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
+                                    .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 removeSwipWindow(mContext, -3);
                             }
                             break;
@@ -1242,22 +1061,12 @@ public class FloatWindowHelper {
                 mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
                 mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
                         - mRightCenterParams.height - DipPixelUtil.dip2px(mContext, 12));
-                // mRightTopParams.y = (int) ((height / 2) -
-                // (mRightTopParams.height / 2)
-                // - mRightBottomParams.height - mRightCenterParams.height -
-                // DipPixelUtil
-                // .dip2px(mContext, 12));
                 mRightTopParams.type = LayoutParams.TYPE_SYSTEM_ALERT;
                 mRightTopParams.format = PixelFormat.RGBA_8888;
                 mRightTopParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
                         | LayoutParams.FLAG_NOT_FOCUSABLE;
             } else {
                 mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
-                // mRightTopParams.y = (int) ((height / 2) -
-                // (mRightTopParams.height / 2)
-                // - mRightBottomParams.height - mRightCenterParams.height -
-                // DipPixelUtil
-                // .dip2px(mContext, 12));
                 mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
                         - mRightCenterParams.height - DipPixelUtil.dip2px(mContext, 12));
             }
@@ -1374,10 +1183,6 @@ public class FloatWindowHelper {
         if (mLeftBottomParams != null) {
             mLeftBottomParams.width = (int) ((DipPixelUtil.dip2px(context, mLeftBottomWidth) / 2) + (value / 2)) * 2;
             mLeftBottomParams.height = (int) ((DipPixelUtil.dip2px(context, mLeftBottomHeight) / 2) + (value)) * 2;
-            // mLeftBottomParams.x = (int) (-(width / 2) +
-            // (mLeftBottomParams.width / 2));
-            // mLeftBottomParams.y = (int) ((height / 2) -
-            // (mLeftBottomParams.height / 2));
             mLeftBottomParams.x = (int) ((DipPixelUtil.dip2px(context, mLeftCenterWidth) / 2) + (value / 2))
                     * 2 + (-(width / 2) + (mLeftBottomParams.width / 2));
             mLeftBottomParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
@@ -1386,11 +1191,6 @@ public class FloatWindowHelper {
         if (mLeftCenterParams != null) {
             mLeftCenterParams.width = (int) ((DipPixelUtil.dip2px(context, mLeftCenterWidth) / 2) + (value / 2)) * 2;
             mLeftCenterParams.height = (int) ((DipPixelUtil.dip2px(context, mLeftCenterHeight) / 2) + (value)) * 2;
-            // mLeftCenterParams.x = (int) (-(width / 2) +
-            // (mLeftCenterParams.width / 2));
-            // mLeftCenterParams.y = (int) ((height / 2) -
-            // (mLeftCenterParams.height / 2)
-            // - mLeftBottomParams.height - DipPixelUtil.dip2px(context, 12));
             mLeftCenterParams.x = (int) (-(width / 2) + (mLeftCenterParams.width / 2));
             mLeftCenterParams.y = (int) ((height / 2) - (mLeftBottomParams.height / 2));
         }
@@ -1401,11 +1201,6 @@ public class FloatWindowHelper {
                     mLeftCenterCenterHeight) / 2) + (value)) * 2;
             mLeftCenterCenterParams.x = (int) (-(width / 2) + (mLeftCenterCenterParams.width / 2));
             if (mLeftBottomView != null) {
-                // mLeftCenterCenterParams.y = (int) ((height / 2)
-                // - (mLeftCenterCenterParams.height / 2) -
-                // mLeftBottomParams.height
-                // - mLeftCenterParams.height - DipPixelUtil
-                // .dip2px(context, 12));
                 mLeftCenterCenterParams.y = (int) ((height / 2)
                         - (mLeftCenterCenterParams.height / 2) - mLeftCenterParams.height - DipPixelUtil
                         .dip2px(context, 12));
@@ -1420,11 +1215,6 @@ public class FloatWindowHelper {
             mLeftTopParams.width = (int) ((DipPixelUtil.dip2px(context, mLeftTopWidth) / 2) + (value / 2)) * 2;
             mLeftTopParams.height = (int) ((DipPixelUtil.dip2px(context, mLeftTopHeight) / 2) + (value)) * 2;
             mLeftTopParams.x = (int) (-(width / 2) + (mLeftTopParams.width / 2));
-            // mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height /
-            // 2)
-            // - mLeftBottomParams.height - mLeftCenterParams.height -
-            // DipPixelUtil.dip2px(
-            // context, 12));
             mLeftTopParams.y = (int) ((height / 2) - (mLeftTopParams.height / 2)
                     - mLeftCenterParams.height - DipPixelUtil
                     .dip2px(context, 12));
@@ -1433,8 +1223,6 @@ public class FloatWindowHelper {
         if (mRightBottomParams != null) {
             mRightBottomParams.width = (int) ((DipPixelUtil.dip2px(context, mRightBottomWidth) / 2) + (value / 2)) * 2;
             mRightBottomParams.height = (int) ((DipPixelUtil.dip2px(context, mRightBottomHeight) / 2) + (value)) * 2;
-            // mRightBottomParams.x = +(width / 2);
-            // mRightBottomParams.y = (height / 2) - value;
             mRightBottomParams.x = (int) ((width / 2) - (mRightBottomParams.width / 2))
                     - ((DipPixelUtil.dip2px(context, mRightCenterWidth) / 2) + (value / 2)) * 2;
             mRightBottomParams.y = (int) ((height / 2) - (mRightBottomParams.height / 2));
@@ -1443,11 +1231,6 @@ public class FloatWindowHelper {
         if (mRightCenterParams != null) {
             mRightCenterParams.width = (int) ((DipPixelUtil.dip2px(context, mRightCenterWidth) / 2) + (value / 2)) * 2;
             mRightCenterParams.height = (int) ((DipPixelUtil.dip2px(context, mRightCenterHeight) / 2) + (value)) * 2;
-            // mRightCenterParams.x = (int) ((width / 2) +
-            // (mRightCenterParams.width / 2));
-            // mRightCenterParams.y = (int) ((height / 2) -
-            // (mRightCenterParams.height / 2)
-            // - mRightBottomParams.height - DipPixelUtil.dip2px(context, 12));
             mRightCenterParams.x = (int) ((width / 2) + (mRightCenterParams.width / 2));
             mRightCenterParams.y = (int) ((height / 2) - (mRightCenterParams.height / 2));
         }
@@ -1456,11 +1239,6 @@ public class FloatWindowHelper {
             mRightTopParams.width = (int) ((DipPixelUtil.dip2px(context, mRightTopWidth) / 2) + (value / 2)) * 2;
             mRightTopParams.height = (int) ((DipPixelUtil.dip2px(context, mRightTopHeight) / 2) + (value)) * 2;
             mRightTopParams.x = (int) ((width / 2) + (mRightTopParams.width / 2));
-            // mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height
-            // / 2)
-            // - mRightBottomParams.height - mRightCenterParams.height -
-            // DipPixelUtil.dip2px(
-            // context, 12));
             mRightTopParams.y = (int) ((height / 2) - (mRightTopParams.height / 2)
                     - mRightCenterParams.height - DipPixelUtil.dip2px(context, 12));
         }
@@ -1471,11 +1249,6 @@ public class FloatWindowHelper {
             mRightCenterCenterParams.height = (int) ((DipPixelUtil.dip2px(context,
                     mRightCenterCenterHeight) / 2) + (value)) * 2;
             if (mRightBottomView != null) {
-                // mRightCenterCenterParams.y = (int) ((height / 2)
-                // - (mRightCenterCenterParams.height / 2) -
-                // mRightBottomParams.height
-                // - mRightCenterParams.height - DipPixelUtil
-                // .dip2px(context, 12));
                 mRightCenterCenterParams.y = (int) ((height / 2)
                         - (mRightCenterCenterParams.height / 2) - mRightCenterParams.height - DipPixelUtil
                         .dip2px(context, 12));
@@ -1556,9 +1329,6 @@ public class FloatWindowHelper {
 
     private static void createFloatArea(Context context, int value, boolean leftBottom,
             boolean rightBottom, boolean leftCenter, boolean rightCenter) {
-        // Log.e("#########", "++++++++++++++++++++开始创建热取时间：" +
-        // System.currentTimeMillis());
-        // left bottom
         if (leftBottom) {
             FloatWindowHelper
                     .createFloatLeftBottomWindow(context, value);
@@ -1598,8 +1368,6 @@ public class FloatWindowHelper {
                         .createFloatRightCenterWindow(context, value);
             }
         }
-        // Log.e("#########", "++++++++++++++++++++结束创建热取时间：" +
-        // System.currentTimeMillis());
     }
 
     /**
@@ -1649,16 +1417,6 @@ public class FloatWindowHelper {
             }
         }
 
-        // if (!FloatWindowHelper.isLeftBottomShowing()
-        // || !FloatWindowHelper.isLeftCenterShowing()
-        // || !FloatWindowHelper.isLeftTopShowing()
-        // || !FloatWindowHelper.isRightBottomShowing()
-        // || !FloatWindowHelper.isRightCenterShowing()
-        // || !FloatWindowHelper.isRightTopShowing()
-        // || !FloatWindowHelper.isLeftCenterCenterShowing()
-        // || !FloatWindowHelper.isRightCenterCenterShowing()) {
-        //
-        // }
     }
 
     /**
@@ -1858,45 +1616,28 @@ public class FloatWindowHelper {
         }
     }
 
-    public static void closeQuickGesture(SectorQuickGestureContainer.Orientation orientation) {
-        if (orientation == SectorQuickGestureContainer.Orientation.Left) {
-            // sLeftPopup.dismiss();
-        } else {
-            // sRightPopup.dismiss();s
-        }
-    }
-
     private static void onTouchAreaShowQuick(int flag) {
         if (flag == -1 || flag == -2) {
-            // Log.e("#########", "滑动功能处理起始时间：" + System.currentTimeMillis());
-            // cancel message tip
             if (QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage) {
                 AppMasterPreference.getInstance(AppMasterApplication.getInstance())
                         .setLastTimeLayout(1);
-                // QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage
-                // = false;
             }
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("show_orientation", 0);
-            // Log.e("#########", "滑动准备启动快捷手势界面时间：" +
-            // System.currentTimeMillis());
             AppMasterApplication.getInstance().startActivity(intent);
             if (flag == -1) {
                 QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -1;
             } else if (flag == -2) {
                 QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -2;
             }
-            // Log.e("#########", "滑动功能处理结束时间：" + System.currentTimeMillis());
 
         } else if (flag == 1 || flag == 2) {
             // cancel message tip
             if (QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage) {
                 AppMasterPreference.getInstance(AppMasterApplication.getInstance())
                         .setLastTimeLayout(1);
-                // QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isShowSysNoReadMessage
-                // = false;
             }
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
@@ -1910,34 +1651,6 @@ public class FloatWindowHelper {
             }
         }
     }
-
-    // public static void closePopuCreateFloatWindow(Context context,int value){
-    // if(mLeftBottomView!=null && mLeftBottomParams!=null){
-    // mWindowManager.addView(mLeftBottomView,mLeftBottomParams);
-    // }
-    // if (mLeftCenterView != null && mLeftCenterCenterParams!=null) {
-    // mWindowManager.addView(mLeftCenterView, mLeftCenterParams);
-    // }
-    // if (mLeftTopView != null && mLeftTopParams!=null) {
-    // mWindowManager.addView(mLeftTopView, mLeftTopParams);
-    // }
-    // if (mLeftCenterCenterView != null && mLeftCenterCenterParams!=null) {
-    // mWindowManager.addView(mLeftCenterCenterView, mLeftCenterCenterParams);
-    // }
-    // // update right
-    // if (mRightBottomView != null && mRightBottomParams!=null) {
-    // mWindowManager.addView(mRightBottomView, mRightBottomParams);
-    // }
-    // if (mRightCenterView != null && mRightCenterParams!=null) {
-    // mWindowManager.addView(mRightCenterView, mRightCenterParams);
-    // }
-    // if (mRightTopView != null && mRightTopParams!=null) {
-    // mWindowManager.addView(mRightTopView, mRightTopParams);
-    // }
-    // if (mRightCenterCenterView != null && mRightCenterCenterParams!=null ){
-    // mWindowManager.addView(mRightCenterCenterView, mRightCenterCenterParams);
-    // }
-    // }
 
     public static void createWhiteFloatView(Context mContext) {
         if (null == mWhiteFloatView) {
@@ -2086,7 +1799,7 @@ public class FloatWindowHelper {
                         startX = event.getRawX();
                         startY = event.getRawY();
                         downTime = System.currentTimeMillis();
-                        if(mWhiteDotSlideTip != null) {
+                        if (mWhiteDotSlideTip != null) {
                             dissmissWhiteDotSlideTip(mContext);
                         }
                         Log.i("tag", "startX =" + startX + "startY = " + startY);
@@ -2227,7 +1940,7 @@ public class FloatWindowHelper {
             mWhiteDotSlideTip.setText(content);
 
             windowManager.addView(mWhiteDotSlideTip, lp);
-            
+
             AppMasterPreference amp = AppMasterPreference
                     .getInstance(context);
             amp.setNeedShowWhiteDotSlideTip(false);

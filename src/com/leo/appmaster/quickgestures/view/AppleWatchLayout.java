@@ -2,6 +2,7 @@
 package com.leo.appmaster.quickgestures.view;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -18,6 +19,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
+import android.hardware.camera2.utils.ArrayUtils;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.AttributeSet;
@@ -760,8 +762,16 @@ public class AppleWatchLayout extends ViewGroup {
             ContactCallLog callLog = (ContactCallLog) info;
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setType("vnd.android.cursor.dir/calls");
-            // intent.setAction(Intent.ACTION_CALL_BUTTON);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            List<String> filterPhoneMode = Arrays.asList(BuildProperties.filterPhoneMode);
+            // Log.e(Constants.RUN_TAG, "机型："+BuildProperties.getPoneModel());
+            // Log.e(Constants.RUN_TAG,
+            // "是否为过滤机型："+filterPhoneMode.contains(BuildProperties.getPoneModel()));
+            if (filterPhoneMode.contains(BuildProperties.getPoneModel())) {
+                // Log.e(Constants.RUN_TAG, "进来");
+                intent.setComponent(new ComponentName("com.android.contacts",
+                        "com.android.dialer.DialtactsActivity"));
+            }
             try {
                 mContext.startActivity(intent);
             } catch (Exception e) {
