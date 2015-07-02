@@ -87,7 +87,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
     public void onEventMainThread(LockModeEvent event) {
         LeoLog.d("testMultiModeView", "event.eventMsg : " + event.eventMsg);
-        if(event.eventMsg.equals(SHOW_NOW)){
+        if (event.eventMsg.equals(SHOW_NOW)) {
             LeoLog.d("testMultiModeView", "copy that!!");
             show();
         }
@@ -230,7 +230,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         } else if (v == mIvAdd) {
             addLockMode();
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modesadd", "home");
-            //TODO
+            // TODO
             hide();
         }
     }
@@ -276,7 +276,10 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             try {
                 container.removeView(mViews.get(position));
             } catch (Exception e) {
-                container.removeView(mViews.get(position - 1));
+                try {
+                    container.removeView(mViews.get(position - 1));
+                } catch (Exception e2) {
+                }
             }
         }
 
