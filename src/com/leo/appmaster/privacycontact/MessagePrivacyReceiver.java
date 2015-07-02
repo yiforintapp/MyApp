@@ -65,6 +65,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
+//            Log.e(Constants.RUN_TAG, "" + "来短信");
             /*
              * 有新短信来时恢复该短信是否经过红点提示标记的默认值false
              */

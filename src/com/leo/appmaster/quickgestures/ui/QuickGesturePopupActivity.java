@@ -5,7 +5,10 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
+
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -160,7 +163,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     /* 快捷手势消失，立即创建响应热区 */
     private void createFloatView() {
         // 去除热区红点和去除未读，运营icon
-        cancelAllRedTip(getApplicationContext());
+        FloatWindowHelper.cancelAllRedTip(getApplicationContext());
         // 创建热区处理
         isCloseWindow = true;
         FloatWindowHelper.mGestureShowing = false;
@@ -180,34 +183,4 @@ public class QuickGesturePopupActivity extends BaseActivity {
         }
     }
 
-    // 去除热区红点，未读，运营icon和红点
-    private void cancelAllRedTip(Context context) {
-        // 隐私通话
-        if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
-            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
-            QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
-            AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
-                    false);
-        }
-        // 隐私短信
-        if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
-            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
-            QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
-            AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
-        }
-        // 短信，通话记录
-        if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
-            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
-            if (QuickGestureManager.getInstance(context).mCallLogs != null) {
-                QuickGestureManager.getInstance(context).mCallLogs.clear();
-            }
-            if (QuickGestureManager.getInstance(context).mMessages != null) {
-                QuickGestureManager.getInstance(context).mMessages.clear();
-            }
-        }
-        // 运营
-        if (!AppMasterPreference.getInstance(context).getLastBusinessRedTipShow()) {
-            AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
-        }
-    }
 }
