@@ -1074,9 +1074,9 @@ public class PrivacyContactUtils {
                             QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
                             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
                             if (pre.getCallLogNoReadCount() <= 0
-                                    && (QuickGestureManager.getInstance(context).mMessages != null
-                                    && QuickGestureManager.getInstance(context).mMessages.size() <= 0)/* 未读短信 */
-                                    && !AppMasterPreference.getInstance(context)
+                                    && (QuickGestureManager.getInstance(context).mCallLogs == null
+                                    || QuickGestureManager.getInstance(context).mCallLogs.size() <= 0)/* 未读短信 */
+                                    && AppMasterPreference.getInstance(context)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
                                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
                             }

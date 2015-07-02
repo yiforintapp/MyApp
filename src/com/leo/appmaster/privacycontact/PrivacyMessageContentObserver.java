@@ -117,13 +117,13 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             /*
                              * 全部已读，去除热区红点
                              */
-                            if ((QuickGestureManager.getInstance(mContext).mCallLogs != null
-                                    && QuickGestureManager.getInstance(mContext).mCallLogs.size() <= 0)/* 未读短信 */
+                            if ((QuickGestureManager.getInstance(mContext).mCallLogs == null || QuickGestureManager
+                                    .getInstance(mContext).mCallLogs.size() <= 0)/* 未读短信 */
                                     && AppMasterPreference.getInstance(mContext)
                                             .getCallLogNoReadCount() > 0/* 隐私通话 */
                                     && AppMasterPreference.getInstance(mContext)
                                             .getMessageNoReadCount() > 0/* 隐私短信 */
-                                    && !AppMasterPreference.getInstance(mContext)
+                                    && AppMasterPreference.getInstance(mContext)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
                                 QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                             }
@@ -207,13 +207,15 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                              * 全部已读，去除热区红点
                              */
                             // 判断隐私联系人，短信，运营是否还有显示红点的需求，没有了将红点标志设为false
-                            if ((QuickGestureManager.getInstance(mContext).mMessages != null
-                                    && QuickGestureManager.getInstance(mContext).mMessages.size() <= 0)/* 未读短信 */
+                            // Log.e(Constants.RUN_TAG,
+                            // "未读短信："+QuickGestureManager.getInstance(mContext).mMessages.size());
+                            if ((QuickGestureManager.getInstance(mContext).mMessages == null || QuickGestureManager
+                                    .getInstance(mContext).mMessages.size() <= 0)/* 未读短信 */
                                     && AppMasterPreference.getInstance(mContext)
                                             .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                     && AppMasterPreference.getInstance(mContext)
                                             .getMessageNoReadCount() <= 0/* 隐私短信 */
-                                    && !AppMasterPreference.getInstance(mContext)
+                                    && AppMasterPreference.getInstance(mContext)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
                                 QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                             }
