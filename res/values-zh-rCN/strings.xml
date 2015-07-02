@@ -729,7 +729,7 @@
  	<string name="quick_gesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
  	<string name="quick_gesture_success_title">开启快捷手势成功!</string>
  	<string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
-    
+    <string name="go_set">去设置</string>
  	<string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭．</string>
  	<string name="white_dot_slide_tip">点我可以唤出快捷手势哦</string>
  	

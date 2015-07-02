@@ -2,9 +2,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cc000000" >
+    android:background="#dd000000" >
 
     <!-- about the watch view -->
+
     <com.leo.appmaster.quickgestures.view.AppleWatchContainer
         android:id="@+id/gesture_container"
         android:layout_width="match_parent"
@@ -140,15 +141,15 @@
             android:focusableInTouchMode="false"
             android:visibility="invisible" />
     </com.leo.appmaster.quickgestures.view.AppleWatchContainer>
-    
+
     <!-- about the success tip -->
+
     <RelativeLayout
         android:id="@+id/gesture_success_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="50dp"
-        android:visibility="gone" 
-        >
+        android:visibility="invisible" >
 
         <RelativeLayout
             android:id="@+id/gesture_success_title"
@@ -180,24 +181,45 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/gesture_success_title"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
+            android:maxWidth="280dp"
             android:text="@string/quick_gesture_success_content"
             android:textColor="@color/white"
             android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/know_button"
-            android:layout_width="100dp"
-            android:layout_height="36dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/gesture_success_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:background="@drawable/manager_done_button_selecter"
-            android:text="@string/lock_mode_guide_button_text"
-            android:textColor="@color/white"
-            android:textSize="16sp" />
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/know_button"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/manager_done_button_selecter"
+                android:text="@string/lock_mode_guide_button_text"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/set_button"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/manager_done_button_selecter"
+                android:text="@string/go_set"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone" />
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>
