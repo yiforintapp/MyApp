@@ -338,6 +338,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         for (TimeLock lock : deleteList) {
             lm.removeTimeLock(lock);
         }
+        mSelectCount = 0;
         ((LockModeActivity)mActivity).disableOptionImage();
         mTimeLockAdapter.notifyDataSetChanged();
     }
