@@ -1649,47 +1649,33 @@ public class FloatWindowHelper {
     public static void createWhiteFloatView(Context mContext) {
         if (null == mWhiteFloatView) {
             WindowManager windowManager = getWindowManager(mContext);
-            int W = windowManager.getDefaultDisplay().getWidth();
-            int H = windowManager.getDefaultDisplay().getHeight();
+            int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
+            int H = windowManager.getDefaultDisplay().getHeight() / 2;
             int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
 
-            if (null == mWhiteFloatParams) {
-                if (mWhiteFLoatWidth <= 0) {
-                    mWhiteFLoatWidth = mContext.getResources().getDimensionPixelSize(
-                            R.dimen.quick_white_float_width);
-                }
-                if (mWhiteFloatHeight <= 0) {
-                    mWhiteFloatHeight = mContext.getResources().getDimensionPixelSize(
-                            R.dimen.quick_white_float_height);
-                }
-                mWhiteFloatParams = new LayoutParams();
-                mWhiteFloatParams.width = mWhiteFLoatWidth;
-                mWhiteFloatParams.height = mWhiteFLoatWidth;
-                mWhiteFloatParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
-                mWhiteFloatParams.format = PixelFormat.RGBA_8888;
-                mWhiteFloatParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | LayoutParams.FLAG_NOT_FOCUSABLE;
-            }
+            createWhiteFloatParams(mContext);
             // get the last coordinate,if 0 then appear in last swipe
             // orientation
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
                 if (lastSlideOrientation < 0) {
-                    mWhiteFloatParams.x = -W / 2;
+                    mWhiteFloatParams.x = -halfW;
                     if (lastSlideOrientation == -1) {
                         mWhiteFloatParams.y = H - mWhiteFloatParams.height;
                     } else if (lastSlideOrientation == -2) {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 } else {
-                    mWhiteFloatParams.x = W / 2;
+                    mWhiteFloatParams.x = halfW;
                     if (lastSlideOrientation == 1) {
                         mWhiteFloatParams.y = H - mWhiteFloatParams.height;
                     } else if (lastSlideOrientation == 2) {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 }
+                AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(
+                        mWhiteFloatParams.x, mWhiteFloatParams.y);
             } else {
                 mWhiteFloatParams.x = coordinate[0];
                 mWhiteFloatParams.y = coordinate[1];
@@ -1698,16 +1684,36 @@ public class FloatWindowHelper {
             mWhiteFloatView = new ImageView(mContext);
             mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
             setWhiteFloatOnTouchEvent(mContext);
+            registerWhiteFlaotOnScreenListener(mContext);
             try {
                 windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
             } catch (Exception e) {
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             }
-            registerWhiteFlaotOnScreenListener(mContext);
             Log.i("null", "创建小白点");
         }
     }
 
+    private static void createWhiteFloatParams(Context mContext){
+        if (null == mWhiteFloatParams) {
+            if (mWhiteFLoatWidth <= 0) {
+                mWhiteFLoatWidth = mContext.getResources().getDimensionPixelSize(
+                        R.dimen.quick_white_float_width);
+            }
+            if (mWhiteFloatHeight <= 0) {
+                mWhiteFloatHeight = mContext.getResources().getDimensionPixelSize(
+                        R.dimen.quick_white_float_height);
+            }
+            mWhiteFloatParams = new LayoutParams();
+            mWhiteFloatParams.width = mWhiteFLoatWidth;
+            mWhiteFloatParams.height = mWhiteFLoatWidth;
+            mWhiteFloatParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
+            mWhiteFloatParams.format = PixelFormat.RGBA_8888;
+            mWhiteFloatParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+    }
+    
     public static void removeWhiteFloatView(Context mContext) {
         if (null != mWhiteFloatView) {
             WindowManager windowManager = getWindowManager(mContext);
