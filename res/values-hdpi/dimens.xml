@@ -199,7 +199,7 @@
 
 
     <!-- BackupActivity -->
-    <dimen name="app_manager_backup_head_back">50dp</dimen>
+    <dimen name="app_manager_backup_head_back">56dp</dimen>
     <dimen name="app_manager_backup_list_margin_bottom">58dp</dimen>
     <dimen name="app_manager_backup_backup_button_width">218dp</dimen>
     <dimen name="app_manager_backup_backup_button_height">38dp</dimen>
