@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginBottom="321dp"
+            android:layout_marginBottom="318dp"
             android:gravity="center"
             android:src="@drawable/gesture_title_bar" />
 
@@ -29,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginBottom="321dp" >
+            android:layout_marginBottom="318dp" >
 
             <TextView
                 android:id="@+id/tv_type_name"
@@ -39,7 +39,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:padding="3dp"
-                android:textSize="16sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_left_type_name"
@@ -51,7 +51,7 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:textSize="16sp"
+                android:textSize="14dp"
                 android:visibility="invisible" />
 
             <TextView
@@ -64,7 +64,7 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:textSize="16sp"
+                android:textSize="14dp"
                 android:visibility="invisible" />
         </RelativeLayout>
 
