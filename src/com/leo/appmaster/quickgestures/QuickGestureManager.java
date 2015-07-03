@@ -85,7 +85,7 @@ public class QuickGestureManager {
     public boolean isAppsAndHome;
     public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
     public int screenSpace;// 根布局与屏幕高的差值
-    public boolean isMessageRead;
+    public boolean isMessageReadRedTip;
     public String privacyLastRecord;// RECORD_CALL:最后记录为通话记录，RECORD_MSM：最后记录为短信
 
     public boolean isCallLogRead;

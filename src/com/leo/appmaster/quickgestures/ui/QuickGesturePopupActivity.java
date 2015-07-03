@@ -162,8 +162,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     /* 快捷手势消失，立即创建响应热区 */
     private void createFloatView() {
-        // 去除热区红点和去除未读，运营icon
-        FloatWindowHelper.cancelAllRedTip(getApplicationContext());
         // 创建热区处理
         isCloseWindow = true;
         FloatWindowHelper.mGestureShowing = false;
@@ -171,16 +169,23 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
         QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
         isCloseWindow = false;
-        // 多条短信提示后，未读短信红点提示标记为已读
-        if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageRead) {
-            QuickGestureManager.getInstance(getApplicationContext()).isMessageRead = true;
+        // 多条短信提示后，未读短信红点提示标记为已读,只有当有红点提示，在关闭的时候才会执行
+        if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageReadRedTip
+                && (QuickGestureManager.getInstance(getApplicationContext()).mMessages != null
+                && QuickGestureManager.getInstance(getApplicationContext()).mMessages.size() > 0)) {
+            QuickGestureManager.getInstance(getApplicationContext()).isMessageReadRedTip = true;
             AppMasterPreference.getInstance(getApplicationContext()).setMessageIsRedTip(true);
         }
         // 解决通话未读红点提示后，其他一些原因引起通话记录数据库的改变使红点再次显示
-        if (!QuickGestureManager.getInstance(getApplicationContext()).isCallLogRead) {
+        if (!QuickGestureManager.getInstance(getApplicationContext()).isCallLogRead
+                && (QuickGestureManager.getInstance(getApplicationContext()).mCallLogs != null
+                && QuickGestureManager.getInstance(getApplicationContext()).mCallLogs.size() > 0)) {
             QuickGestureManager.getInstance(getApplicationContext()).isCallLogRead = true;
             AppMasterPreference.getInstance(getApplicationContext()).setCallLogIsRedTip(true);
         }
+        // 去除热区红点和去除未读，运营icon
+        FloatWindowHelper.cancelAllRedTip(getApplicationContext());
+        FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
     }
 
 }

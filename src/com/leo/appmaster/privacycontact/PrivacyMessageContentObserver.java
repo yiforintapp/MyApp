@@ -92,24 +92,55 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         List<MessageBean> messages = PrivacyContactUtils
                                 .getSysMessage(mContext, cr,
                                         "read=0 AND type=1", null, false);
-                        ContactBean contact = PrivacyContactManager.getInstance(mContext)
-                                .getLastMessageContact();
-                        Iterator<MessageBean> ite = messages.iterator();
-                        while (ite.hasNext()) {
-                            if (contact != null && !Utilities.isEmpty(contact.getContactNumber())) {
-                                MessageBean message = ite.next();
-                                String formateLastCall = PrivacyContactUtils
-                                        .formatePhoneNumber(contact.getContactNumber());
-                                String contactCallFromate = PrivacyContactUtils
-                                        .formatePhoneNumber(message.getPhoneNumber());
-                                if (formateLastCall.equals(contactCallFromate)) {
-                                    messages.remove(message);
+                        if (messages != null && messages.size() > 0) {
+                            ContactBean contact = PrivacyContactManager.getInstance(mContext)
+                                    .getLastMessageContact();
+                            Iterator<MessageBean> ite = messages.iterator();
+                            while (ite.hasNext()) {
+                                if (contact != null
+                                        && !Utilities.isEmpty(contact.getContactNumber())) {
+                                    MessageBean message = ite.next();
+                                    String formateLastCall = PrivacyContactUtils
+                                            .formatePhoneNumber(contact.getContactNumber());
+                                    String contactCallFromate = PrivacyContactUtils
+                                            .formatePhoneNumber(message.getPhoneNumber());
+                                    if (formateLastCall.equals(contactCallFromate)) {
+                                        messages.remove(message);
+                                    }
+                                } else {
+                                    break;
                                 }
-                            } else {
-                                break;
                             }
+                            /*
+                             * 用于解决MIUI系统无法接收系统短信广播恢复isMessageReadRedTip的默认值，用此来恢复
+                             * 目前解决方法
+                             * ：每次去记录上次未读数量，用当前未读数量与上次相比如果大于则有新的未读，如果小于则读取了一些未读
+                             * ，如果等于则没有未读被读
+                             */
+                            if (BuildProperties.isMIUI()) {
+                                List<MessageBean> messageList = PrivacyContactUtils
+                                        .getSysMessage(mContext, cr,
+                                                "read=0 AND type=1", null, true);
+                                if (messageList != null) {
+                                    if (messageList.size() > PrivacyContactManager
+                                            .getInstance(mContext).messageSize) {
+                                        // Log.e(Constants.RUN_TAG, "有新短信更改：");
+                                        if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
+                                            QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
+                                            AppMasterPreference.getInstance(mContext)
+                                                    .setMessageIsRedTip(false);
+                                        }
+                                    }
+                                    PrivacyContactManager.getInstance(mContext).messageSize = messageList
+                                            .size();
+                                }
+                            }
+
                         }
-//                        Log.e(Constants.RUN_TAG, "未读短信："+messages.size()+":"+PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag);
+                        // Log.e(Constants.RUN_TAG, "未读短信：" + messages.size() +
+                        // ":"
+                        // +
+                        // PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag);
                         // 查看未读短信时，清除未读操作（包括第三方，或者系统自带短信列表查看）
                         if (messages == null
                                 || messages.size() <= 0
@@ -119,25 +150,29 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             /*
                              * 全部已读，去除热区红点
                              */
-//                            if(QuickGestureManager.getInstance(mContext).mCallLogs == null || QuickGestureManager
-//                                    .getInstance(mContext).mCallLogs.size() <= 0){
-//                            Log.e(Constants.RUN_TAG, "未读通话为空");
-//                            }
-//                            Log.e(Constants.RUN_TAG, "隐私通话："+AppMasterPreference.getInstance(mContext)
-//                                    .getCallLogNoReadCount());
-//                            Log.e(Constants.RUN_TAG, "隐私短信"+AppMasterPreference.getInstance(mContext)
-//                                    .getMessageNoReadCount());
-//                            Log.e(Constants.RUN_TAG, "运营："+AppMasterPreference.getInstance(mContext)
-//                                    .getLastBusinessRedTipShow());
+                            // if(QuickGestureManager.getInstance(mContext).mCallLogs
+                            // == null || QuickGestureManager
+                            // .getInstance(mContext).mCallLogs.size() <= 0){
+                            // Log.e(Constants.RUN_TAG, "未读通话为空");
+                            // }
+                            // Log.e(Constants.RUN_TAG,
+                            // "隐私通话："+AppMasterPreference.getInstance(mContext)
+                            // .getCallLogNoReadCount());
+                            // Log.e(Constants.RUN_TAG,
+                            // "隐私短信"+AppMasterPreference.getInstance(mContext)
+                            // .getMessageNoReadCount());
+                            // Log.e(Constants.RUN_TAG,
+                            // "运营："+AppMasterPreference.getInstance(mContext)
+                            // .getLastBusinessRedTipShow());
                             if ((QuickGestureManager.getInstance(mContext).mCallLogs == null || QuickGestureManager
-                                    .getInstance(mContext).mCallLogs.size() <= 0)/* 未读通话*/
+                                    .getInstance(mContext).mCallLogs.size() <= 0)/* 未读通话 */
                                     && AppMasterPreference.getInstance(mContext)
                                             .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                     && AppMasterPreference.getInstance(mContext)
                                             .getMessageNoReadCount() <= 0/* 隐私短信 */
                                     && AppMasterPreference.getInstance(mContext)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
-//                                Log.e(Constants.RUN_TAG, "设置短信显示");
+                                // Log.e(Constants.RUN_TAG, "设置短信显示");
                                 QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                             }
                             if (QuickGestureManager.getInstance(mContext).mMessages != null) {
@@ -159,8 +194,12 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                  * isMessageRead
                                  * =false时，说明该短信没有经过红点提示，如果为true说明该短信经过红点提示并且提示已经打开
                                  */
+//                                Log.e(Constants.RUN_TAG,
+//                                        "操作未读短信"
+//                                                + QuickGestureManager.getInstance(mContext).isMessageReadRedTip);
                                 if (!QuickGestureManager.getInstance(mContext).mToMsmFlag
-                                        && !QuickGestureManager.getInstance(mContext).isMessageRead) {
+                                        && !QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
+//                                    Log.e(Constants.RUN_TAG, "进来");
                                     QuickGestureManager.getInstance(mContext).mMessages = messages;
                                     QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                                     FloatWindowHelper.removeShowReadTipWindow(mContext);

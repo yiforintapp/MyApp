@@ -758,6 +758,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1,
                                 "qssetting",
                                 "qs_open");
+                        AppMasterPreference.getInstance(this).setFristSlidingTip(true);
                         Intent intent;
                         intent = new Intent(AppMasterApplication.getInstance(),
                                 QuickGesturePopupActivity.class);
@@ -778,7 +779,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         }
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
-                            AppMasterPreference.getInstance(this).setFristSlidingTip(true);
                         } catch (Exception e) {
                         }
                         if (mQuickOpenCK != null) {
@@ -955,8 +955,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
                     mNoReadMessageFlag = true;
                     // checkout system database no read message
-                    if (QuickGestureManager.getInstance(QuickGestureActivity.this).isMessageRead) {
-                        QuickGestureManager.getInstance(QuickGestureActivity.this).isMessageRead = false;
+                    if (QuickGestureManager.getInstance(QuickGestureActivity.this).isMessageReadRedTip) {
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).isMessageReadRedTip = false;
                         AppMasterPreference.getInstance(QuickGestureActivity.this)
                                 .setMessageIsRedTip(false);
                     }
