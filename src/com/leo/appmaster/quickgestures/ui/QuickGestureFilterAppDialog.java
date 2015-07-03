@@ -22,6 +22,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -156,6 +157,8 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                             ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
                                     .setDefaultRecommendApp(selectInfl, true);
                             mSwitchListSize += 1;
+                        }else {
+                            Toast.makeText(mContext, "", 0).show();
                         }
                     } else if (mFlag == 3) {
                         if (mMostAppConunt <= 10) {
