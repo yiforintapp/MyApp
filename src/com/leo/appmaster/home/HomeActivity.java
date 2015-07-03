@@ -18,7 +18,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -68,7 +67,6 @@ import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.quickgestures.ui.QuickGestureTipDialog;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -1020,6 +1018,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         Log.i("######", "times = "+times);
     }
     
+    /**
+     * show the animation when click try in the dialog
+     */
     private void startQuickGestureEnterTip(){
         mPagerTab.setCurrentItem(2);
         HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
