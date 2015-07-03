@@ -942,8 +942,10 @@ public class QuickGestureManager {
             }
         });
 
+        // commonApp.getWindow().setType(
+        // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         commonApp.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         commonApp.show();
     }
 
@@ -1093,8 +1095,10 @@ public class QuickGestureManager {
                 AppMasterApplication.getInstance().startActivity(intent);
             }
         });
+        // quickSwitch.getWindow().setType(
+        // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         quickSwitch.show();
     }
 
