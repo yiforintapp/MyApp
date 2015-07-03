@@ -183,7 +183,7 @@
             android:layout_below="@+id/gesture_success_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
-            android:maxWidth="280dp"
+            android:maxWidth="300dp"
             android:text="@string/quick_gesture_success_content"
             android:textColor="@color/white"
             android:textSize="14sp" />
