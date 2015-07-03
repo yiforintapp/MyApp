@@ -676,13 +676,18 @@ public class FileOperationUtil {
         File file = new File(fromFile);
         String[] paths = getSdCardPaths(ctx);
         int position = 0;
-        if (fromFile.startsWith(paths[0])) {
-            position = 1;
-        } else if (fromFile.startsWith(paths[1])) {
-            position = 0;
-        } else {
+        try {
+            if (fromFile.startsWith(paths[0])) {
+                position = 1;
+            } else if (fromFile.startsWith(paths[1])) {
+                position = 0;
+            } else {
+                position = -1;
+            }
+        } catch (Exception e) {
             position = -1;
         }
+
         String newPath = null;
         if (position == -1) {
             String pathOther = fromFile.replace(".leotmi", "");
