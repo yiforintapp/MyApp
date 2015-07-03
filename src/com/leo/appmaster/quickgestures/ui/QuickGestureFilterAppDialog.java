@@ -157,8 +157,9 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                             ((FilterAppImageView) arg1.findViewById(R.id.iv_app_icon_free))
                                     .setDefaultRecommendApp(selectInfl, true);
                             mSwitchListSize += 1;
-                        }else {
-                            Toast.makeText(mContext, "", 0).show();
+                        } else {
+                            Toast.makeText(mContext, mContext.getString(R.string.can_not_add_more),
+                                    0).show();
                         }
                     } else if (mFlag == 3) {
                         if (mMostAppConunt <= 10) {
@@ -179,6 +180,9 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                                     .setDefaultRecommendApp(true);
 
                             mMostAppConunt += 1;
+                        } else {
+                            Toast.makeText(mContext, mContext.getString(R.string.can_not_add_more),
+                                    0).show();
                         }
                     } else {
                         selectInfl.isFreeDisturb = true;
@@ -192,10 +196,12 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                                 .setDefaultRecommendApp(true);
                     }
                 }
-                if(mFlag == 2){
-                    mSelectedCount.setText(mContext.getResources().getString(R.string.quick_guesture_app_select_count,mSwitchListSize,11));
-                }else if(mFlag == 3){
-                    mSelectedCount.setText(mContext.getResources().getString(R.string.quick_guesture_app_select_count,mMostAppConunt,11));
+                if (mFlag == 2) {
+                    mSelectedCount.setText(mContext.getResources().getString(
+                            R.string.quick_guesture_app_select_count, mSwitchListSize, 11));
+                } else if (mFlag == 3) {
+                    mSelectedCount.setText(mContext.getResources().getString(
+                            R.string.quick_guesture_app_select_count, mMostAppConunt, 11));
                 }
             }
         });
@@ -205,7 +211,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             mSelectedCount.setVisibility(View.VISIBLE);
             mSelectedCount.setText(mContext.getResources().getString(
                     R.string.quick_guesture_app_select_count, mSwitchListSize, 11));
-        }else if(mFlag == 3){
+        } else if (mFlag == 3) {
             mSelectedCount.setVisibility(View.VISIBLE);
             mSelectedCount.setText(mContext.getResources().getString(
                     R.string.quick_guesture_app_select_count, mMostAppConunt, 11));
@@ -388,7 +394,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 }
             }
         }
-        
+
         for (AppItemInfo info : list) {
             qgInfo = new QuickGsturebAppInfo();
             qgInfo.label = info.label;
@@ -401,7 +407,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 qgInfo.isFreeDisturb = true;
                 mFreeDisturbApp.add(qgInfo);
                 isNotCheckList.add(qgInfo);
-            }else {
+            } else {
                 qgInfo.isFreeDisturb = false;
                 mDisturbList.add(qgInfo);
             }
@@ -409,7 +415,6 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
         mostUseList = isNotCheckList;
         mMostAppConunt = mostUseList.size();
 
-        
         if (mFreeDisturbApp != null && mFreeDisturbApp.size() > 0) {
             Collections.sort(mFreeDisturbApp, new NameComparator());
             Collections.sort(mDisturbList, new NameComparator());
@@ -418,7 +423,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
             Collections.sort(mDisturbList, new NameComparator());
             mFreeDisturbApp = mDisturbList;
         }
-        
+
         mGridView.setDatas(mFreeDisturbApp, 4, 4);
     }
 
