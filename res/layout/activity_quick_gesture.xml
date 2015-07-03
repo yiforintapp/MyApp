@@ -201,6 +201,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="16dp"
                             android:layout_toRightOf="@id/contactIV" >
+
                             <LinearLayout
                                 android:id="@+id/allow_slid_time_linear"
                                 android:layout_width="match_parent"
@@ -444,7 +445,7 @@
                                     android:layout_marginTop="@dimen/quick_setting_item_space"
                                     android:ellipsize="end"
                                     android:lineSpacingExtra="@dimen/quick_setting_item_text_line_space"
-                                    android:text="My father was a self-taught mandolin player. He was one of the best string instrument players in our town."
+                                    android:text="@string/quick_no_pricay_contact_annotation"
                                     android:textColor="#9b9b9b"
                                     android:textSize="12dp" />
                                 <!-- android:text="@string/quick_no_pricay_contact_annotation" -->
