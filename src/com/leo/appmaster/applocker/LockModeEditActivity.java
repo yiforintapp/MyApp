@@ -10,6 +10,7 @@ import java.util.List;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
@@ -20,6 +21,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -107,13 +109,13 @@ public class LockModeEditActivity extends BaseActivity implements
         Intent intent = getIntent();
         String Action = intent.getAction();
         LeoLog.d("testMultiModeView", "Action : " + Action);
-        
-        if(Action == null){
+
+        if (Action == null) {
             eventMsg = "mode changed";
-        }else if(Action.equals(START_FROM_ADD)){
+        } else if (Action.equals(START_FROM_ADD)) {
             eventMsg = SHOW_NOW;
         }
-        
+
         mModeName = intent.getStringExtra("mode_name");
         mModeId = intent.getIntExtra("mode_id", -1);
         mNewMode = intent.getBooleanExtra("new_mode", false);
@@ -418,12 +420,16 @@ public class LockModeEditActivity extends BaseActivity implements
                             }
                             Toast.makeText(LockModeEditActivity.this, R.string.save_successful, 0)
                                     .show();
-                            // LeoEventBus.getDefaultBus().post(
-                            // new LockModeEvent(EventId.EVENT_MODE_CHANGE,
-                            // "mode changed"));
                             LeoEventBus.getDefaultBus().post(
                                     new LockModeEvent(EventId.EVENT_MODE_CHANGE, eventMsg));
-                            finish();
+                            hideIME();
+                            mModeNameDiglog.getEditText().postDelayed(new Runnable() {
+
+                                @Override
+                                public void run() {
+                                    finish();
+                                }
+                            }, 400);
                         }
                     }
                 }
@@ -459,9 +465,21 @@ public class LockModeEditActivity extends BaseActivity implements
             // new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed"));
             LeoEventBus.getDefaultBus().post(
                     new LockModeEvent(EventId.EVENT_MODE_CHANGE, eventMsg));
-            finish();
+            hideIME();
+            mModeNameDiglog.getEditText().postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    finish();
+                }
+            }, 400);
         }
 
+    }
+
+    private void hideIME() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mModeNameDiglog.getEditText().getWindowToken(), 0);
     }
 
     private class LockedAppComparator implements Comparator<AppInfo> {

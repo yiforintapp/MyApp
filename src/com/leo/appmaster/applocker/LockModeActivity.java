@@ -157,7 +157,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
     public void onClick(View v) {
         if (v.getId() == R.id.tv_option_image) {
             if (mEditMode) {
-                Fragment f = mFragmentHolders.clone()[mEditIndex].fragment;
+                Fragment f = mFragmentHolders[mEditIndex].fragment;
                 if (f instanceof Editable) {
                     ((Editable) f).onChangeItem();
                 }

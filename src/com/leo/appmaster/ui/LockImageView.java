@@ -200,7 +200,7 @@ public class LockImageView extends ImageView {
 	                    int lockWidth = getResources().getDimensionPixelSize(
 	                            R.dimen.default_lock_icon_width);
 	                    int lockHeight = getResources().getDimensionPixelSize(
-	                            R.dimen.lock_icon_height);
+	                            R.dimen.default_lock_icon_width);
 
 	                    float scaleX = (float) lockWidth / lockBitmap.getWidth();
 	                    float scaleY = (float) lockHeight / lockBitmap.getHeight();

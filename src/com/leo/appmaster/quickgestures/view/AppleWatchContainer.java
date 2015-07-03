@@ -65,6 +65,7 @@ public class AppleWatchContainer extends FrameLayout {
     private List<QuickSwitcherInfo> mSwitchList;
     private WifiManager mWifimanager;
     private ExecutorService cachedThreadPool;
+    private boolean isCleanFinish = false;
 
     public static enum Orientation {
         Left, Right;
@@ -1478,6 +1479,7 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void cleanMem() {
+        isCleanFinish = false;
         // 清理内存
         mCleaner = ProcessCleaner.getInstance(mContext);
         mLastUsedMem = mCleaner.getUsedMem();
@@ -1485,6 +1487,7 @@ public class AppleWatchContainer extends FrameLayout {
         mCleaner.tryClean(mContext);
         long curUsedMem = mCleaner.getUsedMem();
         mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+        isCleanFinish = true;
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
@@ -1617,12 +1620,20 @@ public class AppleWatchContainer extends FrameLayout {
         TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
         String mToast;
         if (!isClean) {
-            if (mCleanMem <= 0) {
-                mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
-            } else {
+            if(isCleanFinish){
+                if (mCleanMem <= 0) {
+                    LeoLog.d("testspeed", "CleanMem <= 0");
+                    mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
+                } else {
+                    LeoLog.d("testspeed", "CleanMem > 0");
+                    mToast = mContext.getString(R.string.home_app_manager_mem_clean,
+                            TextFormater.dataSizeFormat(mCleanMem));
+                }
+            }else {
                 mToast = mContext.getString(R.string.home_app_manager_mem_clean,
-                        TextFormater.dataSizeFormat(mCleanMem));
+                        TextFormater.dataSizeFormat(230));
             }
+
         } else {
             mToast = mContext.getString(R.string.the_best_status_toast);
         }

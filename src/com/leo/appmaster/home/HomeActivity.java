@@ -97,7 +97,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private View mBgStatusbar, mFgStatusbar;
     private HomeShadeView mShadeView;
     private LeoPopMenu mLeoPopMenu;
-    private LEOAlarmDialog mQuickGestureSettingDialog;
+    private QuickGestureTipDialog mQuickGestureSettingDialog;
     private QuickGestureTipDialog mQuickGestureTip;
     private float mDrawerOffset;
     private Handler mHandler = new Handler();
@@ -120,6 +120,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         recordEnterHomeTimes();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
+        // TODO
+//         showQuickGestureSettingDialog();
+//         showFirstOpenQuickGestureTipDialog();
     }
 
     @Override
@@ -373,7 +376,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                              * SDKWrapper.addEvent(HomeActivity.this,
                              * SDKWrapper.P1, "home", "changepwd");
                              */
-//                            Intent intent = new Intent(HomeActivity.this, LockChangeModeActivity.class);
+                            // Intent intent = new Intent(HomeActivity.this,
+                            // LockChangeModeActivity.class);
                             Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);
                             intent.putExtra(ROTATE_FRAGMENT, true);
@@ -921,9 +925,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     private void showQuickGestureSettingDialog() {
         if (mQuickGestureSettingDialog == null) {
-            mQuickGestureSettingDialog = new LEOAlarmDialog(this);
+            mQuickGestureSettingDialog = new QuickGestureTipDialog(this);
         }
-        mQuickGestureSettingDialog.setDialogIconVisibility(false);
+        mQuickGestureSettingDialog.setQuickContentIconVisibility(true);
         mQuickGestureSettingDialog.setCanceledOnTouchOutside(false);
         mQuickGestureSettingDialog.setTitle(this.getResources().getString(
                 R.string.quick_gesture_dialog_tip_contniue_title));
@@ -933,25 +937,49 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 R.string.quick_gesture_dialog_tip_contniue_right_bt));
         mQuickGestureSettingDialog.setRightBtnStr(this.getResources().getString(
                 R.string.quick_gesture_dialog_tip_contniue_left_bt));
-        mQuickGestureSettingDialog.setOnClickListener(new OnDiaogClickListener() {
+        mQuickGestureSettingDialog.setLeftOnClickListener(new OnClickListener() {
 
             @Override
-            public void onClick(int which) {
-                if (which == 0) {
-                    AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
-                            true);
-                    if (mQuickGestureSettingDialog != null) {
-                        mQuickGestureSettingDialog.dismiss();
-                    }
-                } else if (which == 1) {
+            public void onClick(View v) {
+                AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
+                        true);
+                if (mQuickGestureSettingDialog != null) {
                     mQuickGestureSettingDialog.dismiss();
-                    AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
-                            true);
-                    Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
-                    startActivity(inten);
                 }
             }
         });
+        mQuickGestureSettingDialog.setRightOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mQuickGestureSettingDialog.dismiss();
+                AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
+                        true);
+                Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
+                startActivity(inten);
+            }
+        });
+        // mQuickGestureSettingDialog.setOnClickListener(new
+        // OnDiaogClickListener() {
+        //
+        // @Override
+        // public void onClick(int which) {
+        // if (which == 0) {
+        // AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
+        // true);
+        // if (mQuickGestureSettingDialog != null) {
+        // mQuickGestureSettingDialog.dismiss();
+        // }
+        // } else if (which == 1) {
+        // mQuickGestureSettingDialog.dismiss();
+        // AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
+        // true);
+        // Intent inten = new Intent(HomeActivity.this,
+        // QuickGestureActivity.class);
+        // startActivity(inten);
+        // }
+        // }
+        // });
         mQuickGestureSettingDialog.show();
     }
 

@@ -3,16 +3,26 @@
     android:id="@+id/miui_tipRL"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:background="@color/quick_gesture_miui_tip_color" >
+
+    <ImageView
+        android:id="@+id/miui_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:src="@drawable/gesture_float_phone" />
 
     <TextView
         android:id="@+id/miui_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/miui_image"
         android:layout_centerInParent="true"
         android:gravity="center"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
+        android:layout_marginTop="16dp"
         android:text="@string/pg_appmanager_quick_gesture_miui_open_float_window_tip_text"
         android:textColor="@color/white" />
 
@@ -22,11 +32,11 @@
         android:layout_height="40dp"
         android:layout_below="@id/miui_text"
         android:layout_centerInParent="true"
-        android:layout_marginTop="40dp"
-        android:textSize="16sp"
-        android:textColor="#FFFFFF"
-        android:gravity="center"
+        android:layout_marginTop="32dp"
         android:background="@drawable/miui_tip_bt_selector"
-        android:text="@string/quick_gesture_miui_tip_button_text" />
+        android:gravity="center"
+        android:text="@string/quick_gesture_miui_tip_button_text"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp" />
 
 </RelativeLayout>

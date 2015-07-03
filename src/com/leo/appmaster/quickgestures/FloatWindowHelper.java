@@ -654,6 +654,25 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop() * 1.5)) {
+                                // cancel system no read message tip
+                                // if (isShowTip || isShowBusinessRedTip) {
+                                // SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                // "qs_page",
+                                // "notice");
+                                // AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+                                // Intent intent = new Intent(mContext,
+                                // QuickGesturePopupActivity.class);
+                                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                // intent.putExtra("show_orientation", 2);
+                                // try {
+                                // mContext.startActivity(intent);
+                                // //
+                                // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                // // = false;
+                                // } catch (Exception e) {
+                                // e.printStackTrace();
+                                // }
+                                // }
                                 removeSwipWindow(mContext, -1);
                             }
                             break;
@@ -1924,6 +1943,37 @@ public class FloatWindowHelper {
                         .getInstance(context);
                 amp.setNeedShowWhiteDotSlideTip(false);
             }
+        }
+    }
+    
+    // 去除热区红点，未读，运营icon和红点
+    public static void cancelAllRedTip(Context context) {
+        // 隐私通话
+        if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
+            AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
+                    false);
+        }
+        // 隐私短信
+        if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
+            AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
+        }
+        // 短信，通话记录
+        if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            if (QuickGestureManager.getInstance(context).mCallLogs != null) {
+                QuickGestureManager.getInstance(context).mCallLogs.clear();
+            }
+            if (QuickGestureManager.getInstance(context).mMessages != null) {
+                QuickGestureManager.getInstance(context).mMessages.clear();
+            }
+        }
+        // 运营
+        if (!AppMasterPreference.getInstance(context).getLastBusinessRedTipShow()) {
+            AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
         }
     }
 }
