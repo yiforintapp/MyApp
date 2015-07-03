@@ -730,8 +730,17 @@
  	<string name="quick_gesture_success_title">开启快捷手势成功!</string>
  	<string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
     <string name="go_set">去设置</string>
- 	<string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！\n如果您觉得打扰，可以在快捷手势设置中关闭．</string>
- 	<string name="white_dot_slide_tip">点我可以唤出快捷手势哦</string>
+ 	<string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭．</string>
+ 	<string name="quick_gesture_open_text">已开启</string>
+ 	<string name="quick_gesture_close_text">已关闭</string>
+ 	<string name="quick_gesture_introduction_title">什么是快捷手势?</string>
+ 	<string name="quick_gesture_introduction_content">快捷手势是隐士卫士推出的一款高效插件，通过他你可以很方便的管理手机中的系统开关，以及快速打开应用</string>
+ 	<string name="quick_gesture_slide_guide_title">如何开启划出手势?</string>
+ 	<string name="quick_gesture_slide_guide_content">您只需在手机的角落轻轻划出，就可以开启快捷手势</string>
+ 	<string name="quick_gesture_slide_setting_content">如果您的手机难以划出，可以点击这里设置划出区域</string>
+ 	<string name="quick_gesture_edit_guide_title">如何编辑快捷手势的开关或应用?</string>
+ 	<string name="quick_gesture_edit_guide_content">在任何一个快捷手势的tap类别中长按应用/开关，即可以进入编辑界面，您可以删除应用/开关，也可以在常用应用和快捷开关中添加应用/开关</string>
+ 	<string name="quick_gesture_edit_extra_content">注:最近使用的应用是系统生成的，所以不可以主动添加</string>
  	<string name="can_not_add_more">不能添加更多</string>
     <!-- version 2.5 huangqili part -->
 

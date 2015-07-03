@@ -90,4 +90,7 @@
     <color name="mode_default_bg">#44c4f5</color>
     <color name="accent_dark">#000000</color>
 	<color name="quick_success_title_color">#0095FF</color>
+	<color name="quick_open_text_color">#4a63e5</color>
+	<color name="quick_close_text_color">#666666</color>
+	<color name="quick_intro_color">#9b9b9b</color>
 </resources>
