@@ -3,22 +3,40 @@
     android:oneshot="false" >
 
     <item
-        android:drawable="@drawable/gesture_white_point"
+        android:drawable="@drawable/gif1"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/gesture_white_point"
+        android:drawable="@drawable/gif2"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/gesture_white_point"
+        android:drawable="@drawable/gif3"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/gesture_white_point"
+        android:drawable="@drawable/gif4"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/gesture_white_point"
+        android:drawable="@drawable/gif5"
         android:duration="50"/>
     <item
-        android:drawable="@drawable/gesture_white_point"
+        android:drawable="@drawable/gif6"
         android:duration="50"/>
+    <item
+        android:drawable="@drawable/gif7"
+        android:duration="50"/>
+    <item
+        android:drawable="@drawable/gif8"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/gif9"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/gif10"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/gif11"
+        android:duration="100"/>
+    <item
+        android:drawable="@drawable/gif12"
+        android:duration="2000"/>
 
 </animation-list>
