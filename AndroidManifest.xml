@@ -493,6 +493,12 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        
+        <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
