@@ -6,6 +6,7 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.Utilities;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -58,8 +59,10 @@ public class EventAction implements DecorateAction {
 
         mDrawRect = new Rect(scrollX, scrollY, scrollX + mNumBg.getIntrinsicWidth(), scrollY
                 + mNumBg.getIntrinsicHeight());
-
-        canvas.translate(scrollX-33, scrollY);
+        
+        //canvas.translate(scrollX-33, scrollY);
+        
+        canvas.translate(scrollX-15, scrollY);
         mNumBg.setBounds(0, 0, mNumBg.getIntrinsicWidth(), mNumBg.getIntrinsicHeight());
         mNumBg.draw(canvas);
 
