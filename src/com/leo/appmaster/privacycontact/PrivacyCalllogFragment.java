@@ -44,7 +44,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -168,7 +168,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
         }
     }
 
-    public void onEventMainThread(PrivacyDeletEditEvent event) {
+    public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (PrivacyContactUtils.CANCEL_EDIT_MODEL.equals(event.editModel)) {
             restoreParameter();
             if (mContactCallLogs == null || mContactCallLogs.size() == 0) {
@@ -526,7 +526,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                 LeoEventBus
                                         .getDefaultBus()
                                         .post(
-                                                new PrivacyDeletEditEvent(
+                                                new PrivacyEditFloatEvent(
                                                         PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
                             }
                         }
@@ -605,7 +605,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         LeoEventBus
                                 .getDefaultBus()
                                 .post(
-                                        new PrivacyDeletEditEvent(
+                                        new PrivacyEditFloatEvent(
                                                 PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
                     }
                 }

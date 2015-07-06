@@ -21,7 +21,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.HomeActivity;
@@ -175,7 +175,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEvent(
+                            new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.MESSAGE_EDIT_MODEL_OPERATION_DELETE));
 
                 }
@@ -192,7 +192,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEvent(
+                            new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.EDIT_MODEL_OPERATION_RESTORE));
 
                 }
@@ -204,7 +204,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                     mTtileBar.setHelpSettingVisiblity(View.GONE);
                     chanageEditModel();
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                            new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
                 }
             });
         } else if (PrivacyContactUtils.FROM_CALL_LOG_EVENT.equals(event.eventMsg)) {
@@ -226,7 +226,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEvent(
+                            new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.CALL_LOG_EDIT_MODEL_OPERATION_DELETE));
 
                 }
@@ -237,7 +237,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 public void onClick(View arg0) {
                     chanageEditModel();
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                            new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
                 }
             });
         } else if (PrivacyContactUtils.FROM_CONTACT_EVENT.equals(event.eventMsg)) {
@@ -258,7 +258,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEvent(
+                            new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.CONTACT_EDIT_MODEL_OPERATION_DELETE));
 
                 }
@@ -268,7 +268,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 public void onClick(View arg0) {
                     chanageEditModel();
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                            new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
                 }
             });
         } else if (PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL.equals(event.eventMsg)) {
@@ -298,7 +298,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                     mTtileBar.setHelpSettingVisiblity(View.GONE);
                     chanageEditModel();
                     LeoEventBus.getDefaultBus().post(
-                            new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                            new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
                 }
             });
 
@@ -326,12 +326,12 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             public void onClick(View arg0) {
                 chanageEditModel();
                 LeoEventBus.getDefaultBus().post(
-                        new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                        new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
             }
         });
     }
 
-    public void onEventMainThread(PrivacyDeletEditEvent event) {
+    public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION
                 .equals(event.editModel)) {
             // if (pagerPosition != 1) {
@@ -465,7 +465,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             }
             chanageEditModel();
             LeoEventBus.getDefaultBus().post(
-                    new PrivacyDeletEditEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
+                    new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
         } else {
             if (mBackFlag) {
                 LockManager.getInstatnce().timeFilter(getPackageName(), 500);

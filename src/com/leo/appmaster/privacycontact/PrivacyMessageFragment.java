@@ -42,7 +42,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -101,7 +101,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         task.execute("");
     }
 
-    public void onEventMainThread(PrivacyDeletEditEvent event) {
+    public void onEventMainThread(PrivacyEditFloatEvent event) {
         mEditModelOperaction = event.editModel;
         if (PrivacyContactUtils.CANCEL_EDIT_MODEL.equals(event.editModel)) {
             restoreParameter();
@@ -574,7 +574,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                     LeoEventBus
                                             .getDefaultBus()
                                             .post(
-                                                    new PrivacyDeletEditEvent(
+                                                    new PrivacyEditFloatEvent(
                                                             PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT));
                                 }
                             }

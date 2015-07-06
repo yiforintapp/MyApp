@@ -19,6 +19,8 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
@@ -143,6 +145,9 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         super.onDetachedFromWindow();
         // Log.e(FloatWindowHelper.RUN_TAG, "结束");
         if (!QuickGestureActivity.isSureBt) {
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyEditFloatEvent(
+                            QuickGestureManager.getInstance(mContext).QUICK_GESTURE_SETTING_EVENT));
             QuickGestureManager.getInstance(mContext).mSlidAreaSize = AppMasterPreference
                     .getInstance(
                             mContext).getQuickGestureDialogSeekBarValue();
@@ -153,7 +158,7 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         }
         FloatWindowHelper.mEditQuickAreaFlag = false;
         QuickGestureActivity.mAlarmDialogFlag = false;
-        FloatWindowHelper.updateFloatWindowBackgroudColor(mContext,false);
+        FloatWindowHelper.updateFloatWindowBackgroudColor(mContext, false);
     }
 
     public void setOnClickListener(OnDiaogClickListener listener) {

@@ -22,7 +22,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -284,10 +284,10 @@ public class PrivacyContactManager {
         }
         // 通知更新短信记录
         LeoEventBus.getDefaultBus().post(
-                new PrivacyDeletEditEvent(
+                new PrivacyEditFloatEvent(
                         PrivacyContactUtils.PRIVACY_RECEIVER_MESSAGE_NOTIFICATION));
         LeoEventBus.getDefaultBus().post(
-                new PrivacyDeletEditEvent(
+                new PrivacyEditFloatEvent(
                         PrivacyContactUtils.MESSAGE_PRIVACY_INTERCEPT_NOTIFICATION));
         String dateFrom = sdf.format(new Date(sendDate));
         message.setMessageTime(dateFrom);

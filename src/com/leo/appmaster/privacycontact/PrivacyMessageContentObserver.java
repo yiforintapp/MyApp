@@ -24,7 +24,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.BuildProperties;
@@ -387,7 +387,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 LeoEventBus
                                         .getDefaultBus()
                                         .post(
-                                                new PrivacyDeletEditEvent(
+                                                new PrivacyEditFloatEvent(
                                                         PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
                             }
                         }
@@ -404,7 +404,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(
-                                            new PrivacyDeletEditEvent(
+                                            new PrivacyEditFloatEvent(
                                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
                         }
                     }
@@ -427,7 +427,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     LeoEventBus
                             .getDefaultBus()
                             .post(
-                                    new PrivacyDeletEditEvent(
+                                    new PrivacyEditFloatEvent(
                                             PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
                     // 发送通知
                     if (call.getAnswerType() == 1) {

@@ -35,7 +35,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -87,7 +87,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
             @Override
             public void onClick(View arg0) {
                 LeoEventBus.getDefaultBus().post(
-                        new PrivacyDeletEditEvent(
+                        new PrivacyEditFloatEvent(
                                 PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
                 PrivacyMessageItemActivity.this.finish();
             }
@@ -168,7 +168,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
     @Override
     public void onBackPressed() {
         LeoEventBus.getDefaultBus().post(
-                new PrivacyDeletEditEvent(
+                new PrivacyEditFloatEvent(
                         PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
         PrivacyMessageItemActivity.this.finish();
     }
@@ -181,7 +181,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
         super.onDestroy();
     }
 
-    public void onEventMainThread(PrivacyDeletEditEvent event) {
+    public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (PrivacyContactUtils.MESSAGE_PRIVACY_INTERCEPT_NOTIFICATION.equals(event.editModel)) {
             mMessages.clear();
             String number = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);

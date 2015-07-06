@@ -32,6 +32,7 @@ import android.app.PendingIntent;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -41,12 +42,12 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.UserManager;
+import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -73,10 +74,9 @@ import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.QuickGestureProxyActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -267,7 +267,7 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 mAppsEngine.preloadAllBaseInfo();
-                //初始化快捷手势数据
+                // 初始化快捷手势数据
                 if (AppMasterPreference.getInstance(getApplicationContext())
                         .getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(AppMasterApplication.this).init();
@@ -282,7 +282,7 @@ public class AppMasterApplication extends Application {
                     SDKWrapper.addEvent(AppMasterApplication.this, SDKWrapper.P1, "gp_check",
                             "nogp");
                 }
-
+                removeQuickGestureIcon();
             }
         });
     }
@@ -291,6 +291,39 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(this))) {
             pref.setNewUserUnlockCount(0);
+        }
+    }
+
+    private void removeQuickGestureIcon() {
+        if (!AppMasterPreference.getInstance(getApplicationContext())
+                .getRemoveQuickGestureIcon()) {
+            // remove unlock all shortcut
+            Intent quickGestureShortIntent = new Intent(getApplicationContext(),
+                    QuickGestureProxyActivity.class);
+            quickGestureShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                    StatusBarEventService.EVENT_BUSINESS_QUICK_GUESTURE);
+            quickGestureShortIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            quickGestureShortIntent.setAction(Intent.ACTION_VIEW);
+            Intent quickGestureShortcut = new Intent(
+                    "com.android.launcher.action.UNINSTALL_SHORTCUT");
+            ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
+                    getApplicationContext(), R.drawable.gesture_desktopo_icon);
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                    getString(R.string.pg_appmanager_quick_gesture_name));
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                    quickGestureIconRes);
+            quickGestureShortcut
+                    .putExtra(Intent.EXTRA_SHORTCUT_INTENT, quickGestureShortIntent);
+            quickGestureShortcut.putExtra("duplicate", false);
+            quickGestureShortcut.putExtra("from_shortcut", true);
+            getApplicationContext().sendBroadcast(quickGestureShortcut);
+
+            AppMasterPreference.getInstance(getApplicationContext())
+                    .setRemoveQuickGestureIcon(true);
+            SharedPreferences prefernece = PreferenceManager
+                    .getDefaultSharedPreferences(getApplicationContext());
+            prefernece.edit().putBoolean("shortcut_quickGesture", false).commit();
+            QuickGestureManager.getInstance(getApplicationContext()).createShortCut();
         }
     }
 

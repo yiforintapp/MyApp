@@ -29,7 +29,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
@@ -159,7 +159,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             LeoEventBus
                                     .getDefaultBus()
                                     .post(
-                                            new PrivacyDeletEditEvent(
+                                            new PrivacyEditFloatEvent(
                                                     PrivacyContactUtils.PRIVACY_INTERCEPT_CONTACT_EVENT));
                             try {
                                 // 挂断电话
@@ -315,14 +315,14 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                 LeoEventBus
                         .getDefaultBus()
                         .post(
-                                new PrivacyDeletEditEvent(
+                                new PrivacyEditFloatEvent(
                                         PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP));
 
             }
             LeoEventBus
                     .getDefaultBus()
                     .post(
-                            new PrivacyDeletEditEvent(
+                            new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
             // 发送通知
             callLogNotification(mContext);

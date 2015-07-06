@@ -13,7 +13,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyLevelChangeEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -86,7 +86,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         onLevelChange(PrivacyHelper.getInstance(mActivity).getCurLevelColor().toIntColor());
     }
 
-    public void onEventMainThread(PrivacyDeletEditEvent event) {
+    public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT
                 .equals(event.editModel)
                 || PrivacyContactUtils.PRIVACY_RECEIVER_MESSAGE_NOTIFICATION

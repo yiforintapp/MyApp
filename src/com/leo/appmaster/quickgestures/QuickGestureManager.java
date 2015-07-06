@@ -17,6 +17,8 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.Intent.ShortcutIconResource;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -25,6 +27,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
 import android.util.Log;
@@ -46,6 +49,7 @@ import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -77,6 +81,7 @@ public class QuickGestureManager {
     public boolean isShowSysNoReadMessage = false;
     public boolean mToMsmFlag;
     public boolean mToCallFlag;
+    public static String QUICK_GESTURE_SETTING_EVENT = "quick_gesture_setting_event";
     /*
      * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
      */
@@ -1136,7 +1141,8 @@ public class QuickGestureManager {
                         context
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification notification = new Notification();
-//                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+                // LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster",
+                // false);
                 Intent intentPending = new Intent(context,
                         QuickGestureProxyActivity.class);
                 intentPending.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
@@ -1183,5 +1189,31 @@ public class QuickGestureManager {
             return show;
         }
         return false;
+    }
+
+    /**
+     * create shortcut of quick guesture
+     */
+    public void createShortCut() {
+        SharedPreferences prefernece = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
+        boolean quickGestureFlag = prefernece.getBoolean("shortcut_quickGesture", false);
+        if (!quickGestureFlag) {
+            Intent quickGestureShortIntent = new Intent(mContext,
+                    QuickGestureProxyActivity.class);
+            quickGestureShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                    StatusBarEventService.EVENT_BUSINESS_QUICK_GUESTURE);
+            Intent quickGestureShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+            ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
+                    mContext, R.drawable.gesture_desktopo_icon);
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mContext.getResources()
+                    .getString(R.string.pg_appmanager_quick_gesture_name));
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, quickGestureIconRes);
+            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, quickGestureShortIntent);
+            quickGestureShortcut.putExtra("duplicate", false);
+            quickGestureShortcut.putExtra("from_shortcut", true);
+            mContext.sendBroadcast(quickGestureShortcut);
+            prefernece.edit().putBoolean("shortcut_quickGesture", true).commit();
+        }
     }
 }

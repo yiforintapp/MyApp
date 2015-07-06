@@ -35,7 +35,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 
@@ -1085,7 +1085,7 @@ public class PrivacyContactUtils {
                         LeoEventBus
                                 .getDefaultBus()
                                 .post(
-                                        new PrivacyDeletEditEvent(
+                                        new PrivacyEditFloatEvent(
                                                 PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT));
                     }
                 }

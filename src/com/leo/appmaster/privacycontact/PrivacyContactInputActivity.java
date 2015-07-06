@@ -28,7 +28,7 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyDeletEditEvent;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -177,7 +177,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                         // 通知更新隐私联系人列表
                         LeoEventBus
                                 .getDefaultBus()
-                                .post(new PrivacyDeletEditEvent(
+                                .post(new PrivacyEditFloatEvent(
                                         PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
                     } else {
                         Toast.makeText(PrivacyContactInputActivity.this,
@@ -400,12 +400,12 @@ public class PrivacyContactInputActivity extends BaseActivity {
             if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                 LeoEventBus.getDefaultBus().post(
                         new
-                        PrivacyDeletEditEvent(PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
+                        PrivacyEditFloatEvent(PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
             }
             if (mAddMessages != null && mAddMessages.size() != 0) {
                 LeoEventBus.getDefaultBus().post(
                         new
-                        PrivacyDeletEditEvent(PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
+                        PrivacyEditFloatEvent(PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
             }
         }
     }

@@ -41,8 +41,12 @@ import android.widget.VideoView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureProxyActivity;
@@ -76,6 +80,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private boolean mFromShortcut, isRoating, isTranslating;
     public static boolean isSureBt;
     private AnimatorSet mSlideGuideAnim;
+    private boolean leftBottomTemp, leftCenterTemp, rightBottomTemp, RightCenterTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,6 +92,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         if (intent != null) {
             mFromShortcut = intent.getBooleanExtra(FROME_STATUSBAR, false);
         }
+        LeoEventBus.getDefaultBus().register(this);
     }
 
     @Override
@@ -128,6 +134,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LeoEventBus.getDefaultBus().unregister(this);
         if (!mPre.getFristSlidingTip() || !mPre.getSwitchOpenQuickGesture()) {
             AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                 @Override
@@ -224,6 +231,22 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
     }
 
+    public void onEventMainThread(PrivacyEditFloatEvent event) {
+        if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
+                .equals(event.editModel)) {
+            Log.e(FloatWindowHelper.RUN_TAG, "取消");
+            // recorderSlidingSetting();
+        }
+    }
+
+    private void recorderSlidingSetting() {
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = leftCenterTemp;
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = RightCenterTemp;
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = leftBottomTemp;
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = rightBottomTemp;
+        unInitSlidingSetting();
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
@@ -249,6 +272,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mAlarmDialog.setSeekBarTextVisibility(false);
         mAlarmDialog.setSeekbarTextProgressVisibility(false);
         mAlarmDialog.setSeekBarProgressValue(mPre.getQuickGestureDialogSeekBarValue());
+        recorderSlidingSetting();
         mAlarmDialog.setLeftBottomOnClickListener(new OnClickListener() {
 
             @Override
@@ -284,6 +308,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = true;
                     mAlarmDialog.setRightBottomBackgroud(QuickGestureActivity.this.getResources()
                             .getDrawable(R.drawable.select));
+
                 }
                 FloatWindowHelper.setShowSlideArea(QuickGestureActivity.this,
                         FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
@@ -369,12 +394,21 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                             R.string.pg_appmanager_quick_gesture_option_dialog_radio_toast_text),
                             Toast.LENGTH_SHORT).show();
                 }
+                unInitSlidingSetting();
             }
+
         });
         mAlarmDialog.setCancelable(true);
         mAlarmDialog.show();
         mAlarmDialogFlag = true;
         updateFloatWindowBackGroudColor();
+    }
+
+    private void unInitSlidingSetting() {
+        leftCenterTemp = false;
+        RightCenterTemp = false;
+        leftBottomTemp = false;
+        rightBottomTemp = false;
     }
 
     // update backgroud color
@@ -448,7 +482,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                             }
                         }, 1000);
                         mFlag = true;
-                        createShortCut();
+                        QuickGestureManager.getInstance(getApplicationContext()).createShortCut();
                     }
                 }
                 break;
@@ -543,34 +577,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
 
     }
-    
-    /**
-     * create shortcut of quick guesture
-     */
-    private void createShortCut() {
-        SharedPreferences prefernece = PreferenceManager
-                .getDefaultSharedPreferences(QuickGestureActivity.this);
-        boolean quickGestureFlag = prefernece.getBoolean("shortcut_quickGesture", false);
-        if (!quickGestureFlag) {
-            Intent quickGestureShortIntent = new Intent(QuickGestureActivity.this,
-                    QuickGestureProxyActivity.class);
-            quickGestureShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-                    StatusBarEventService.EVENT_BUSINESS_QUICK_GUESTURE);
-            Intent quickGestureShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-            ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
-                    QuickGestureActivity.this, R.drawable.gesture_desktopo_icon);
-            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                    getString(R.string.pg_appmanager_quick_gesture_name));
-            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, quickGestureIconRes);
-            quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, quickGestureShortIntent);
-            quickGestureShortcut.putExtra("duplicate", false);
-            quickGestureShortcut.putExtra("from_shortcut", true);
-            sendBroadcast(quickGestureShortcut);
-            prefernece.edit().putBoolean("shortcut_quickGesture", true).commit();
-        }
-    }
-    
-    private void gestureSwitch(){
+
+
+    private void gestureSwitch() {
         if (mOpenQuickFlag) {
             SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
                     "qs_close");
@@ -605,8 +614,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
 
     }
-    
-    private void updateSlideView(){
+
+    private void updateSlideView() {
         SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
                 "area_cli");
         FloatWindowHelper.mEditQuickAreaFlag = true;
@@ -627,7 +636,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     }
                 });
     }
-    
+
     private void closeQuickGestureAnimation() {
         ValueAnimator mRotateClose = ValueAnimator.ofFloat(0, 90).setDuration(200);
         mRotateClose.setInterpolator(new LinearInterpolator());
@@ -757,6 +766,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onAnimationStart(Animator animation) {
                 isTranslating = true;
             }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 isTranslating = false;

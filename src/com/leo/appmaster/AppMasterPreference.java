@@ -196,6 +196,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_HAS_EVER_CLOSE_WHITE_DOT = "has_ever_close_white_dot";
     public static final String PREF_NEED_WHITE_DOT_SLIDE_TIP = "need_white_dot_slide_tip";
     public static final String PREF_QUICK_CALL_LOG_IS_RED_TIP = "quick_call_log_is_red_tip";
+    public static final String PREF_QUICK_REMOVE_ICON = "quick_remove_icon";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1930,5 +1931,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getCallLogIsRedTip() {
         return mPref.getBoolean(PREF_QUICK_CALL_LOG_IS_RED_TIP, false);
+    }
+
+    public void setRemoveQuickGestureIcon(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUICK_REMOVE_ICON, flag).commit();
+    }
+
+    public boolean getRemoveQuickGestureIcon() {
+        return mPref.getBoolean(PREF_QUICK_REMOVE_ICON, false);
     }
 }
