@@ -712,8 +712,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
                     mNoReadMessageFlag = true;
                     // checkout system database no read message
-                    if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isMessageRead) {
-                        QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isMessageRead = false;
+                    if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isMessageReadRedTip) {
+                        QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isMessageReadRedTip = false;
                         AppMasterPreference.getInstance(QuickGestureSettingActivity.this)
                                 .setMessageIsRedTip(false);
                     }

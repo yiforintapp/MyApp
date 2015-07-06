@@ -725,17 +725,23 @@ public class AppleWatchLayout extends ViewGroup {
             MessageBean bean = (MessageBean) info;
             Intent mIntent = null;
             if (QuickGestureManager.getInstance(mContext).mMessages != null
-                    && QuickGestureManager.getInstance(mContext).mMessages.size() == 1) {
-                Uri smsToUri = Uri.parse("smsto:" +
-                        bean.getPhoneNumber());
+                    && QuickGestureManager.getInstance(mContext).mMessages.size() <= 1) {
+                Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
                 mIntent = new
                         Intent(android.content.Intent.ACTION_SENDTO,
                                 smsToUri);
             } else {
-                mIntent = new Intent();
-                mIntent = new Intent(Intent.ACTION_VIEW);
-                mIntent.setType("vnd.android-dir/mms-sms");
-                mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
+                if (BuildProperties.isHuaWeiTipPhone(mContext)) {
+                    mIntent = new Intent();
+                    mIntent.setType("vnd.android-dir/mms-sms");
+                    mIntent.setComponent(new ComponentName("com.android.contacts",
+                            "com.android.mms.ui.ConversationList"));
+                } else {
+                    mIntent = new Intent(Intent.ACTION_VIEW);
+                    mIntent.setType("vnd.android-dir/mms-sms");
+                    mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
+                }
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             try {
                 mContext.startActivity(mIntent);
@@ -745,8 +751,15 @@ public class AppleWatchLayout extends ViewGroup {
                 // > 0) {
                 // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
                 // }
+                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                FloatWindowHelper.cancelAllRedTip(getContext());
+
             } catch (Exception e) {
             }
+            /*
+             * mToMsmFlag用来解决：点击icon进入短信列表是部分手机会触发短信数据库改变而重新让红点显示出来的问题
+             * ，延迟两秒初始化该值为了解决，该值任务完成再来短信时恢复正常流程
+             */
             new Handler().postDelayed(new Runnable() {
 
                 @Override
@@ -774,6 +787,8 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
+                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                FloatWindowHelper.cancelAllRedTip(getContext());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -809,6 +824,8 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
+                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                FloatWindowHelper.cancelAllRedTip(getContext());
                 // if
                 // (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog)
                 // {

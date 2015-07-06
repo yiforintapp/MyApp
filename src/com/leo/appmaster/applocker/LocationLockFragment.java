@@ -320,6 +320,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         for (LocationLock lock : deleteList) {
             lm.removeLocationLock(lock);
         }
+        mSelectCount = 0;
         ((LockModeActivity)mActivity).disableOptionImage();
         mLocationLockAdapter.notifyDataSetChanged();
     }

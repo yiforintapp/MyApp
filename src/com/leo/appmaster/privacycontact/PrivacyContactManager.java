@@ -43,6 +43,7 @@ public class PrivacyContactManager {
     // private boolean mSysCallLogLoaded = false;
     public  boolean deleteCallLogDatebaseFlag;// 用来做隐私联系人通话删除时的通话标志
     public boolean deleteMsmDatebaseFlag;// 用来做隐私联系人短信删除时的标志
+    public int messageSize;//对红米未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
     private PrivacyContactManager(Context context) {
         this.mContext = context.getApplicationContext();
         mContacts = new ArrayList<ContactBean>();

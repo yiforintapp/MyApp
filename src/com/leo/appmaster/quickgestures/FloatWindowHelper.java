@@ -654,6 +654,25 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop() * 1.5)) {
+                                // cancel system no read message tip
+                                // if (isShowTip || isShowBusinessRedTip) {
+                                // SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                // "qs_page",
+                                // "notice");
+                                // AppMasterPreference.getInstance(mContext).setLastTimeLayout(1);
+                                // Intent intent = new Intent(mContext,
+                                // QuickGesturePopupActivity.class);
+                                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                // intent.putExtra("show_orientation", 2);
+                                // try {
+                                // mContext.startActivity(intent);
+                                // //
+                                // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
+                                // // = false;
+                                // } catch (Exception e) {
+                                // e.printStackTrace();
+                                // }
+                                // }
                                 removeSwipWindow(mContext, -1);
                             }
                             break;
@@ -1649,47 +1668,33 @@ public class FloatWindowHelper {
     public static void createWhiteFloatView(Context mContext) {
         if (null == mWhiteFloatView) {
             WindowManager windowManager = getWindowManager(mContext);
-            int W = windowManager.getDefaultDisplay().getWidth();
-            int H = windowManager.getDefaultDisplay().getHeight();
+            int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
+            int H = windowManager.getDefaultDisplay().getHeight() / 2;
             int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
 
-            if (null == mWhiteFloatParams) {
-                if (mWhiteFLoatWidth <= 0) {
-                    mWhiteFLoatWidth = mContext.getResources().getDimensionPixelSize(
-                            R.dimen.quick_white_float_width);
-                }
-                if (mWhiteFloatHeight <= 0) {
-                    mWhiteFloatHeight = mContext.getResources().getDimensionPixelSize(
-                            R.dimen.quick_white_float_height);
-                }
-                mWhiteFloatParams = new LayoutParams();
-                mWhiteFloatParams.width = mWhiteFLoatWidth;
-                mWhiteFloatParams.height = mWhiteFLoatWidth;
-                mWhiteFloatParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
-                mWhiteFloatParams.format = PixelFormat.RGBA_8888;
-                mWhiteFloatParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
-                        | LayoutParams.FLAG_NOT_FOCUSABLE;
-            }
+            createWhiteFloatParams(mContext);
             // get the last coordinate,if 0 then appear in last swipe
             // orientation
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
                 if (lastSlideOrientation < 0) {
-                    mWhiteFloatParams.x = -W / 2;
+                    mWhiteFloatParams.x = -halfW;
                     if (lastSlideOrientation == -1) {
                         mWhiteFloatParams.y = H - mWhiteFloatParams.height;
                     } else if (lastSlideOrientation == -2) {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 } else {
-                    mWhiteFloatParams.x = W / 2;
+                    mWhiteFloatParams.x = halfW;
                     if (lastSlideOrientation == 1) {
                         mWhiteFloatParams.y = H - mWhiteFloatParams.height;
                     } else if (lastSlideOrientation == 2) {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 }
+                AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(
+                        mWhiteFloatParams.x, mWhiteFloatParams.y);
             } else {
                 mWhiteFloatParams.x = coordinate[0];
                 mWhiteFloatParams.y = coordinate[1];
@@ -1698,16 +1703,36 @@ public class FloatWindowHelper {
             mWhiteFloatView = new ImageView(mContext);
             mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
             setWhiteFloatOnTouchEvent(mContext);
+            registerWhiteFlaotOnScreenListener(mContext);
             try {
                 windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
             } catch (Exception e) {
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             }
-            registerWhiteFlaotOnScreenListener(mContext);
             Log.i("null", "创建小白点");
         }
     }
 
+    private static void createWhiteFloatParams(Context mContext){
+        if (null == mWhiteFloatParams) {
+            if (mWhiteFLoatWidth <= 0) {
+                mWhiteFLoatWidth = mContext.getResources().getDimensionPixelSize(
+                        R.dimen.quick_white_float_width);
+            }
+            if (mWhiteFloatHeight <= 0) {
+                mWhiteFloatHeight = mContext.getResources().getDimensionPixelSize(
+                        R.dimen.quick_white_float_height);
+            }
+            mWhiteFloatParams = new LayoutParams();
+            mWhiteFloatParams.width = mWhiteFLoatWidth;
+            mWhiteFloatParams.height = mWhiteFLoatWidth;
+            mWhiteFloatParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
+            mWhiteFloatParams.format = PixelFormat.RGBA_8888;
+            mWhiteFloatParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
+                    | LayoutParams.FLAG_NOT_FOCUSABLE;
+        }
+    }
+    
     public static void removeWhiteFloatView(Context mContext) {
         if (null != mWhiteFloatView) {
             WindowManager windowManager = getWindowManager(mContext);
@@ -1918,6 +1943,37 @@ public class FloatWindowHelper {
                         .getInstance(context);
                 amp.setNeedShowWhiteDotSlideTip(false);
             }
+        }
+    }
+    
+    // 去除热区红点，未读，运营icon和红点
+    public static void cancelAllRedTip(Context context) {
+        // 隐私通话
+        if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
+            AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
+                    false);
+        }
+        // 隐私短信
+        if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
+            AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
+        }
+        // 短信，通话记录
+        if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
+            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            if (QuickGestureManager.getInstance(context).mCallLogs != null) {
+                QuickGestureManager.getInstance(context).mCallLogs.clear();
+            }
+            if (QuickGestureManager.getInstance(context).mMessages != null) {
+                QuickGestureManager.getInstance(context).mMessages.clear();
+            }
+        }
+        // 运营
+        if (!AppMasterPreference.getInstance(context).getLastBusinessRedTipShow()) {
+            AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
         }
     }
 }

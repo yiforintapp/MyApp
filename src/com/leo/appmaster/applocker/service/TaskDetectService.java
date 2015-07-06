@@ -27,6 +27,7 @@ import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
@@ -195,8 +196,12 @@ public class TaskDetectService extends Service {
                 .getDialogRadioRightCenter();
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).resetSlidAreaSize();
         // 初始化未读短信是否已经红点提示过
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageRead = AppMasterPreference
-                .getInstance(getApplicationContext()).getMessageIsRedTip();
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageReadRedTip = pre
+                .getMessageIsRedTip();
+//        Log.e(Constants.RUN_TAG, "值：" + pre.getMessageIsRedTip());
+        // 初始化未读通话记录是否已经红点提示过
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isCallLogRead = pre
+                .getCallLogIsRedTip();
     }
 
     private void startFloatWindowTask() {

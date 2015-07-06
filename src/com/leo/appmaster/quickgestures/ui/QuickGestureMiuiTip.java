@@ -38,7 +38,7 @@ public class QuickGestureMiuiTip extends BaseActivity implements OnClickListener
         }
         mButton = (TextView) findViewById(R.id.miui_bt);
         mMiuiTipRL = (RelativeLayout) findViewById(R.id.miui_tipRL);
-        mMiuiTipRL.setOnClickListener(this);
+//        mMiuiTipRL.setOnClickListener(this);
         mButton.setOnClickListener(this);
     }
 

@@ -413,6 +413,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -2;
                         SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1,
                                 "qssetting", "qs_open");
+                        AppMasterPreference.getInstance(this).setFristSlidingTip(true);
                         Intent intent;
                         intent = new Intent(AppMasterApplication.getInstance(),
                                 QuickGesturePopupActivity.class);
@@ -433,7 +434,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         }
                         try {
                             AppMasterApplication.getInstance().startActivity(intent);
-                            AppMasterPreference.getInstance(this).setFristSlidingTip(true);
                         } catch (Exception e) {
                         }
                         mPre.setSwitchOpenQuickGesture(true);
