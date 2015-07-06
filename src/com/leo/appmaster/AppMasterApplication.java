@@ -322,6 +322,8 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String lastVercode = pref.getLastVersion();
         String versionCode = PhoneInfo.getVersionCode(this);
+        LeoLog.i("value", "lastVercode="+lastVercode);
+        LeoLog.i("value", "versionCode="+versionCode);
         if (TextUtils.isEmpty(lastVercode)) {
             // first install
             if (Integer.parseInt(versionCode) == 34) {
