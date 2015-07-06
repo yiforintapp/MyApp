@@ -274,7 +274,6 @@ public class AppMasterApplication extends Application {
                 }
                 checkUpdateFinish();
                 quickGestureTipInit();
-                checkIsUpdateUser();
                 mBackupManager.getBackupList();
                 PrivacyContactManager.getInstance(ctx).getPrivateContacts();
                 // GP check
@@ -329,6 +328,7 @@ public class AppMasterApplication extends Application {
                 // remove unlock-all shortcut v2.1
                 tryRemoveUnlockAllShortcut(this);
             }
+            pref.setIsUpdateQuickGestureUser(false);
         } else {
             if (Integer.parseInt(lastVercode) < Integer.parseInt(versionCode)) {
                 // hit update
@@ -336,6 +336,7 @@ public class AppMasterApplication extends Application {
                     // remove unlock-all shortcut v2.1
                     tryRemoveUnlockAllShortcut(this);
                 }
+                pref.setIsUpdateQuickGestureUser(true);
             }
         }
         pref.setLastVersion(versionCode);
@@ -350,32 +351,6 @@ public class AppMasterApplication extends Application {
         if (pref.getCurrentAppVersionCode() != Integer.valueOf(PhoneInfo.getVersionCode(this))) {
             pref.setNewUserUnlockCount(0);
         }
-    }
-
-    private void checkIsUpdateUser() {
-        AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        int lastVercode = pref.getCurrentAppVersionCode();
-        if (lastVercode < 0) {
-            // boolean flag= pref.getQuickFirstDialogTipIsHavePassword();
-            // if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE ) {
-            // if (Integer.valueOf(PhoneInfo.getVersionCode(this)) >= 37) {
-            // pref.setIsUpdateQuickGestureUser(true);
-            // pref.setQuickFirstDialogTipIsHavePassword(true);
-            // }
-            // } else{
-            // pref.setIsUpdateQuickGestureUser(false);
-            // }
-            //
-            if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-                pref.setIsUpdateQuickGestureUser(false);
-            }
-
-        } else {
-            if (lastVercode > 37) {
-                pref.setIsUpdateQuickGestureUser(true);
-            }
-        }
-
     }
 
     private void initImageLoader() {

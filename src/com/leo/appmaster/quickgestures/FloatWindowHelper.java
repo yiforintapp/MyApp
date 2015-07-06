@@ -1683,9 +1683,11 @@ public class FloatWindowHelper {
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
                 // if is the upgrade user and first time create white float,then show int the left center
+                Log.i("null", "pref.getUseStrengthenModeTimes() = "+pref.getUseStrengthenModeTimes());
+                Log.i("null", "pref.getIsUpdateQuickGestureUser() = "+pref.getIsUpdateQuickGestureUser());
                 if(pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()){
-                    Log.i("null", "lastSlideOrientation ="+lastSlideOrientation);
                     lastSlideOrientation = -2;
+                    Log.i("null", "lastSlideOrientation ="+lastSlideOrientation);
                 }
                 if (lastSlideOrientation < 0) {
                     mWhiteFloatParams.x = -halfW;
