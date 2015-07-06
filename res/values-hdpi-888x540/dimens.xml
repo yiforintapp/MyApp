@@ -330,6 +330,7 @@
     <!-- quick gesutre end -->
 
     <dimen name="dialog_btn_height">48dp</dimen>
-    <dimen name="apple_watch_item_icon_size">62dp</dimen>
+    <dimen name="apple_watch_item_icon_size">74dp</dimen>
+    <dimen name="apple_watch_item_size">90dp</dimen>
 
 </resources>

@@ -4,6 +4,11 @@ package com.leo.appmaster.appmanage.view;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.R.integer;
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -16,6 +21,7 @@ import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -704,4 +710,28 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         }
     }
 
+    public void playQuickGestureEnterAnim(){
+        if(null != mQuickGesture){
+            ValueAnimator scaling = ValueAnimator.ofInt(0,600);
+            scaling.addUpdateListener(new AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimator animation) {
+                       int value = (Integer) animation.getAnimatedValue();
+                       float scale;
+                       if(value<=200){
+                           scale = (float) (1.0f+0.001*value);
+                       }else{
+                           scale = (float) (1.3-0.0005*value);
+                       }
+                       Log.i("value", value+" : "+scale+" : "+animation.getCurrentPlayTime());
+                       mQuickGesture.setScaleX(scale);
+                       mQuickGesture.setScaleY(scale);
+                }
+            });
+            scaling.setDuration(600);
+            scaling.setRepeatCount(2);
+            scaling.setRepeatMode(ValueAnimator.RESTART);
+            scaling.start();
+        }
+    }
 }

@@ -16,14 +16,12 @@ import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -510,14 +508,18 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                     for (VideoItemBean item : list) {
                         if (!mIsBackgoundRunning)
                             break;
-                        newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
-                        newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
-                        if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
-                            FileOperationUtil.saveImageMediaEntry(FileOperationUtil.makePath(
-                                    FileOperationUtil.getDirPathFromFilepath(item.getPath()),
-                                    newFileName), context);
-                            FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
-                            mVideoItems.remove(item);
+                        try {
+                            newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
+                            newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
+                            if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
+                                FileOperationUtil.saveImageMediaEntry(FileOperationUtil.makePath(
+                                        FileOperationUtil.getDirPathFromFilepath(item.getPath()),
+                                        newFileName), context);
+                                FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
+                                mVideoItems.remove(item);
+                            }
+                        } catch (Exception e) {
+                            isSuccess = false;
                         }
                     }
                 }

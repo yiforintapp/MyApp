@@ -69,8 +69,8 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             /*
              * 有新短信来时恢复该短信是否经过红点提示标记的默认值false
              */
-            if (QuickGestureManager.getInstance(mContext).isMessageRead) {
-                QuickGestureManager.getInstance(mContext).isMessageRead = false;
+            if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
+                QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
                 AppMasterPreference.getInstance(mContext).setMessageIsRedTip(false);
             }
 

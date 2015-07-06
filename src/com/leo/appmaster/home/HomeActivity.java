@@ -18,7 +18,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -53,7 +52,6 @@ import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -69,7 +67,6 @@ import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.quickgestures.ui.QuickGestureTipDialog;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -120,6 +117,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
+        recordEnterHomeTimes();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
         // TODO
@@ -267,7 +265,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onResume() {
         /* check if there is force update when showing HomeActivity */
         SDKWrapper.checkForceUpdate();
-
         type = AppMasterPreference.getInstance(this).getLockType();
 
         judgeShowGradeTip();
@@ -591,33 +588,34 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 GradeTipActivity.class);
                         HomeActivity.this.startActivity(intent);
                     }
-                    // quick gesture tip
-                    // new user 50 tip
+                    /**
+                     * show quick guesture dialog tip
+                     */
                     boolean switchQuickGesture = AppMasterPreference.getInstance(HomeActivity.this)
                             .getSwitchOpenQuickGesture();
                     if (!switchQuickGesture) {
-                        long newUserCount = AppMasterPreference.getInstance(
-                                HomeActivity.this).getNewUserUnlockCount();
-                        boolean firstSlidingTip = AppMasterPreference
-                                .getInstance(HomeActivity.this)
-                                .getFristSlidingTip();
                         boolean firstDilaogTip = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getFristDialogTip();
                         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getIsUpdateQuickGestureUser();
-                        // Log.e("######", "newUserCount：" +
-                        // newUserCount+"||firstSlidingTip:"+firstSlidingTip+"||firstDilaogTip:"+firstDilaogTip);
-                        // Log.e("######", "是否为升级用户：" + updateUser);
+                        Log.i("######", "firstDilaogTip:"+firstDilaogTip);
+                         Log.i("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
-                            // new user
-                            if (newUserCount >= 50 && !firstSlidingTip && !firstDilaogTip) {
-                                // Log.e("######", "新用户提示！");
-                                showFirstOpenQuickGestureTipDialog();
+                            boolean isMiui = BuildProperties.isMIUI();
+                            boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(HomeActivity.this);
+                            // new user,enter home  >=2 times
+                            if(!firstDilaogTip && AppMasterPreference.getInstance(HomeActivity.this).getEnterHomeTimes() >=2){
+                                    if(isMiui && isOpenWindow){
+                                        AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
+                                    }else {
+                                        showFirstOpenQuickGestureTipDialog();
+                                        Log.i("######", "新用户提示！");
+                                    }
                             }
                         } else {
                             // update user
-                            if (!firstSlidingTip && !firstDilaogTip) {
-                                // Log.e("######", "升级用户提示！");
+                            if (!firstDilaogTip) {
+                                Log.i("######", "升级用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
 
@@ -625,7 +623,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     }
                 }
             }
-        }, 3000);
+        }, 1000);
     }
 
     @Override
@@ -1008,7 +1006,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             @Override
             public void onClick(View arg0) {
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
-                startQuickGestureActivity();
+                startQuickGestureEnterTip();
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
@@ -1039,68 +1037,21 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    public void startQuickGestureActivity() {
-        boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(this);
-        boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(this);
-        boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOpenWindow =
-                BuildProperties.isFloatWindowOpAllowed(this);
-        if (!checkFloatWindow) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_open_error", "model_"
-                    + BuildProperties.getPoneModel());
+    public void recordEnterHomeTimes(){
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        int times = pref.getEnterHomeTimes(); 
+        if(times <2){
+            pref.setEnterHomeTimes(++times);
         }
-        if (checkMiui && !isOpenWindow) {
-            // MIUI
-            Intent intentv6 = new
-                    Intent("miui.intent.action.APP_PERM_EDITOR");
-            intentv6.setClassName("com.miui.securitycenter",
-                    "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-            intentv6.putExtra("extra_pkgname", this.getPackageName());
-            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            try {
-                LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(2000);
-                startActivity(intentv6);
-            } catch (Exception e) {
-                LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(1000);
-                Intent intentv5 = new Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri
-                        .fromParts("package", this.getPackageName(), null);
-                intentv5.setData(uri);
-                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                try {
-                    startActivity(intentv5);
-                } catch (Exception e1) {
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_open_error", "reason_"
-                            + BuildProperties.getPoneModel());
-                }
-            }
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            LockManager.getInstatnce().filterAllOneTime(1000);
-            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(quickIntent);
-        } else if (checkHuaWei && !checkFloatWindow) {
-            BuildProperties.isToHuaWeiSystemManager(this);
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            quickIntent.putExtra("sys_name", "huawei");
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Intent quickIntent = new Intent(this, QuickGestureActivity.class);
-            this.startActivity(quickIntent);
-        }
+        Log.i("######", "times = "+times);
     }
-
+    
+    /**
+     * show the animation when click try in the dialog
+     */
+    private void startQuickGestureEnterTip(){
+        mPagerTab.setCurrentItem(2);
+        HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
+        fragment.playQuickGestureEnterAnim();
+    }
 }

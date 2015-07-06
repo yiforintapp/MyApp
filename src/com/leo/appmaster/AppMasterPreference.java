@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -12,6 +13,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
+import com.leo.appmaster.R.string;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -78,7 +80,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // home page
     public static final String PREF_HOME_BUSINESS_NEW_TIP_CLICK = "home_business_tip_click";
     public static final String PREF_HOME_LOCKED = "home_locked";
-    public static final String PREF_FIRST_USE_APP = "first_use_privacy_guard";
+    public static final String PREF_FIRST_USE_APP = "first_use_new_version";
 
     public static final String PREF_APP_MANAGER_FRAGMENT_FIRST_IN = "fragment_first_in";
     // flow calulate
@@ -156,6 +158,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP = "switch_open_no_read_message_tip";
     public static final String PREF_SWITCH_OPEN_RECENTLY_CONTACT = "switch_open_recently_contact";
     public static final String PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP = "switch_open_privacy_contact_message_tip";
+    public static final String PREF_SWTICH_OPEN_STRENGTH_MODE = "switch_open_strength_mode";
+    public static final String PREF_WHITE_FLOAT_COORDINATE = "white_float_coordinate";
+    public static final String PREF_USE_STRENGTHTNEN_MODE_TIMES = "use_strengthen_mode_times";
+    public static final String PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED = "if_success_slide_tiped";
+    public static final String PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME = "quick_gesture_default_common";
 
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM = "dialog_radio_setting_left_bottom";
     public static final String PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM = "dialog_radio_setting_right_bottom";
@@ -171,7 +178,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE = "quick_gesture_quickswitch_list_size";
     public static final String PREF_QUICK_FIRST_SLIDING_TIP = "quick_first_sliding_tip";
     public static final String PREF_QUICK_GESTURE_RED_TIP = "quick_gesture_red_tip";
-    public static final String PREF_QUICK_GESTURE_FIRST_DIALOG_TIP = "quick_gesture_dialog_tip";
+    public static final String PREF_QUICK_GESTURE_FIRST_DIALOG_TIP = "quick_gesture_guide_dialog_tip";
     public static final String PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME = "quick_gesture_quick_switch_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME = "quick_gesture_common_app_package_name";
     public static final String PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG = "quick_gesture_common_app_dialog_checkbox_flag";
@@ -188,7 +195,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LAST_BUSINESS_RED_TIP = "last_business_red_tip";
     public static final String PREF_QUICK_NO_MSM_TIP = "quick_no_msm_tip";
     public static final String PREF_QUICK_NO_CALL_LOG_TIP = "quick_no_call_log_tip";
+    public static final String PREF_ENTER_HOME_TIMES = "enter_home_times";
     public static final String PREF_QUICK_MESSAGE_IS_RED_TIP = "quick_message_is_red_tip";
+    public static final String PREF_HAS_EVER_CLOSE_WHITE_DOT = "has_ever_close_white_dot";
+    public static final String PREF_NEED_WHITE_DOT_SLIDE_TIP = "need_white_dot_slide_tip";
     public static final String PREF_QUICK_CALL_LOG_IS_RED_TIP = "quick_call_log_is_red_tip";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -198,7 +208,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private String mLockPolicy;
     private List<String> mRecommentAppList;
     // private boolean mLockerScreenThemeGuide = false;
-    public static final String PREF_QUICK_GESTURE_DEFAULT_COMMON_APP_INFO_PACKAGE_NAME = "quick_gesture_default_common";
     public static final int LOCK_TYPE_NONE = -1;
     public static final int LOCK_TYPE_PASSWD = 0;
     public static final int LOCK_TYPE_GESTURE = 1;
@@ -248,6 +257,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private long mNewUserUnlockCount = -1;
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
+    private int mEnterHomeTimes = -1;
+    private int mUseStrengthModeTimes = -1;
+    private boolean mHasEverCloseWhiteDot;
+    private boolean mNeedShowWhiteDotSlideTip;
 
     private AppMasterPreference(Context context) {
         mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -838,6 +851,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         } else if (mLockType == LOCK_TYPE_PASSWD) {
             mPassword = mPref.getString(PREF_PASSWORD, null);
         }
+
+        mHasEverCloseWhiteDot = mPref.getBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, false);
+        mNeedShowWhiteDotSlideTip = mPref.getBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, false);
     }
 
     @Override
@@ -1828,6 +1844,26 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_QUICK_NO_MSM_TIP, b).commit();
     }
 
+    public void setEnterHomeTimes(int times) {
+        mEnterHomeTimes = times;
+        mPref.edit().putInt(PREF_ENTER_HOME_TIMES, times).commit();
+    }
+
+    public int getEnterHomeTimes() {
+        if (mEnterHomeTimes < 0) {
+            mEnterHomeTimes = mPref.getInt(PREF_ENTER_HOME_TIMES, 0);
+        }
+        return mEnterHomeTimes;
+    }
+
+    public void setSwitchOpenStrengthenMode(boolean flag) {
+        mPref.edit().putBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, flag).commit();
+    }
+
+    public boolean getSwitchOpenStrengthenMode() {
+        return mPref.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, true);
+    }
+
     public void setMessageIsRedTip(boolean flag) {
         // 设置未读短信是否已经红点提示过
         mPref.edit().putBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, flag).commit();
@@ -1835,6 +1871,60 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getMessageIsRedTip() {
         return mPref.getBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, false);
+    }
+
+    public void setWhiteFloatViewCoordinate(int x, int y) {
+        mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x + ":" + y).commit();
+    }
+
+    public int[] getWhiteFloatViewCoordinate() {
+        int[] coordinate = new int[2];
+        String[] str = mPref.getString(PREF_WHITE_FLOAT_COORDINATE, "0:0").split(":");
+        coordinate[0] = Integer.valueOf(str[0]);
+        coordinate[1] = Integer.valueOf(str[1]);
+        return coordinate;
+    }
+
+    public void addUseStrengthenModeTimes() {
+        if (mUseStrengthModeTimes < 0) {
+            mUseStrengthModeTimes = getUseStrengthenModeTimes();
+        }
+        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, mUseStrengthModeTimes++).commit();
+    }
+
+    public int getUseStrengthenModeTimes() {
+        if (mUseStrengthModeTimes < 0) {
+            mUseStrengthModeTimes = mPref.getInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, 0);
+        }
+        return mUseStrengthModeTimes;
+    }
+
+    public boolean hasEverCloseWhiteDot() {
+        return mHasEverCloseWhiteDot;
+    }
+
+    public void setEverCloseWhiteDot(boolean b) {
+        mHasEverCloseWhiteDot = b;
+        mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b);
+    }
+
+    /**
+     * set when success slide quick watch whether tiped
+     */
+    public void setQuickGestureSuccSlideTiped(boolean flag) {
+        mPref.edit().putBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, flag).commit();
+    }
+
+    public boolean getQuickGestureSuccSlideTiped() {
+        return mPref.getBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, false);
+    }
+
+    public boolean getNeedShowWhiteDotSlideTip() {
+        return mPref.getBoolean(PREF_NEED_WHITE_DOT_SLIDE_TIP, true);
+    }
+
+    public void setNeedShowWhiteDotSlideTip(boolean need) {
+        mPref.edit().putBoolean(PREF_NEED_WHITE_DOT_SLIDE_TIP, need).commit();
     }
 
     public void setCallLogIsRedTip(boolean flag) {

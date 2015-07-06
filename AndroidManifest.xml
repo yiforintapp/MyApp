@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="39"
+    android:versionCode="40"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -493,8 +493,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:name="com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        
+        <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity"
             android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:finishOnTaskLaunch="true"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>

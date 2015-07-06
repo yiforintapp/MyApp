@@ -85,7 +85,7 @@ public class QuickGestureManager {
     public boolean isAppsAndHome;
     public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
     public int screenSpace;// 根布局与屏幕高的差值
-    public boolean isMessageRead;
+    public boolean isMessageReadRedTip;
     public String privacyLastRecord;// RECORD_CALL:最后记录为通话记录，RECORD_MSM：最后记录为短信
 
     public boolean isCallLogRead;
@@ -131,9 +131,6 @@ public class QuickGestureManager {
             getMatchedColor(appItemInfo.icon);
         }
         long endTime = System.currentTimeMillis();
-
-        LeoLog.e("xxxx", "preloadIconMatcherColor time = " + (endTime - startTime) / 1000
-                + "         size = " + LockManager.getInstatnce().mDrawableColors.size());
     }
 
     public List<String> getDeletedBusinessList() {
@@ -346,7 +343,6 @@ public class QuickGestureManager {
         }
 
         long endTime = System.currentTimeMillis();
-        LeoLog.e("xxxx", "getDynamic time = " + (endTime - startTime));
         return dynamicList;
     }
 
@@ -671,13 +667,10 @@ public class QuickGestureManager {
                 }
             }
         }
-        long endTime = System.currentTimeMillis();
-        LeoLog.e("xxxx", "getMostUsed time = " + (endTime - startTime));
         return resault;
     }
 
     public List<BaseInfo> getSwitcherList() {
-        // QuickSwitchManager.getInstance(mContext).getAllList();
         return QuickSwitchManager.getInstance(mContext).getSwitchList(11);
     }
 
@@ -944,8 +937,10 @@ public class QuickGestureManager {
             }
         });
 
+        // commonApp.getWindow().setType(
+        // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         commonApp.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         commonApp.show();
     }
 
@@ -1095,8 +1090,10 @@ public class QuickGestureManager {
                 AppMasterApplication.getInstance().startActivity(intent);
             }
         });
+        // quickSwitch.getWindow().setType(
+        // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         quickSwitch.show();
     }
 
