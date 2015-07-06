@@ -68,7 +68,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot()) {
             int clickCount = amp.getUseStrengthenModeTimes();
-            if (clickCount == 1) {
+         //   if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
                 mGestureTipTitle.setVisibility(View.GONE);
                 mGestureTipContent.setText(R.string.white_dot_click_tip);
@@ -88,13 +88,14 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(QuickGesturePopupActivity.this,
-                                QuickGestureActivity.class);
+                                QuickGestureSettingActivity.class);
+                        intent.putExtra("from_pop_set", true);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                                 | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                     }
                 });
-            }
+          //  }
         }
     }
 
