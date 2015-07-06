@@ -586,6 +586,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             if (AppMasterPreference.getInstance(QuickGestureActivity.this)
                     .getSwitchOpenStrengthenMode()) {
                 FloatWindowHelper.removeWhiteFloatView(QuickGestureActivity.this);
+                mPre.setWhiteFloatViewCoordinate(0, 0);
             }
         } else {
             SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
