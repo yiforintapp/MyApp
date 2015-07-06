@@ -762,7 +762,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
         targetLayout.fillItems(infos, loadExtra);
     }
-
+    
     private List<BaseInfo> fixInfoRight(List<BaseInfo> infos) {
         QuickSwitcherInfo sInfo = null;
         List<BaseInfo> mSwitchList = new ArrayList<BaseInfo>();

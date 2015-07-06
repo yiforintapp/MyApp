@@ -52,6 +52,7 @@ import com.leo.appmaster.quickgestures.model.GestureEmptyItemInfo;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
+import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
@@ -855,6 +856,10 @@ public class AppleWatchLayout extends ViewGroup {
             getContext().startActivity(intent);
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
         }
+        
+        QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
+        activity.setItemClick(true);
+        
     }
 
     private void checkDownload(BusinessItemInfo bif) {

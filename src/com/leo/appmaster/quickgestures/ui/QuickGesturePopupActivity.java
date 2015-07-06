@@ -18,14 +18,17 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.AppleWatchLayout;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
 
     private AppleWatchContainer mContainer;
+    // private AppleWatchLayout mLayout;
     private int mNowLayout;
     private boolean isCloseWindow;
+    public boolean isItemClick = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
         setContentView(R.layout.pop_quick_gesture_apple_watch);
         LeoEventBus.getDefaultBus().register(this);
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
-
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
         mContainer.setShowOrientation(showOrientation == 0 ? AppleWatchContainer.Orientation.Left
                 : AppleWatchContainer.Orientation.Right);
@@ -57,10 +59,19 @@ public class QuickGesturePopupActivity extends BaseActivity {
         }
     }
 
+    public void setItemClick(boolean set) {
+        LeoLog.d("testiconclick", "setItemClick is true");
+        isItemClick = set;
+    }
+
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         if (!hasFocus) {
-            LockManager.getInstatnce().filterAllOneTime(1000);
+            if (!isItemClick) {
+                LockManager.getInstatnce().filterAllOneTime(1000);
+                LeoLog.d("testiconclick", "go filterAllOneTime");
+            }
+            isItemClick = false;
             FloatWindowHelper.mGestureShowing = false;
             mContainer.saveGestureType();
             finish();
