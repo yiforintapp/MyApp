@@ -39,7 +39,8 @@
     android:id="@+id/layout_guide"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="gone" >
+    android:visibility="gone" 
+    >
 
     <com.leo.appmaster.home.GuideItemView
         android:id="@+id/guide_bg_view"
@@ -68,6 +69,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:visibility="gone" >
+    
+    <com.leo.appmaster.home.GuideItemView
+        android:id="@+id/new_func_guide_bg_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/new_func_guide_viewpager"
