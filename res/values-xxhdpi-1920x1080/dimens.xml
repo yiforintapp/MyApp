@@ -177,10 +177,11 @@
     <dimen name="quick_first_tip_dialog_content_margin_top">20dp</dimen>
     <dimen name="quick_first_tip_dialog_title_margin_top">6dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">14sp</dimen>
+     <dimen name="quick_white_float_width">40dp</dimen>
     <!-- quick gesutre end -->
 
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="apple_watch_item_icon_size">74dp</dimen>
     <dimen name="apple_watch_item_size">90dp</dimen>
-
+	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
 </resources>

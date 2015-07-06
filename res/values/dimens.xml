@@ -213,7 +213,7 @@
     <dimen name="apple_watch_item_size">90dp</dimen>
     <dimen name="apple_watch_layout_inner_radius">96dp</dimen>
     <dimen name="apple_watch_layout_outer_radius">152dp</dimen>
-    <!-- quick guesture end -->
+
     <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
@@ -237,6 +237,7 @@
     <dimen name="quick_first_tip_dialog_content_margin_top">15dp</dimen>
     <dimen name="quick_first_tip_dialog_title_margin_top">6dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">14sp</dimen>
+    <dimen name="quick_white_float_width">40dp</dimen>
     <!-- quick gesutre end -->
 
     <dimen name="privacy_contact_red_tip_x">94dp</dimen>
@@ -244,7 +245,5 @@
     <dimen name="gesture_item_imageview_padding">10dp</dimen>
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="text_icon_margin">5dp</dimen>
-    <dimen name="quick_white_float_width">40dp</dimen>
-    <dimen name="quick_white_float_height">40dp</dimen>
-
+	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
 </resources>

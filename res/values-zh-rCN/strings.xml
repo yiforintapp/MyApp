@@ -704,7 +704,7 @@
     <string name="pass_gesture_change">切换密码方式</string>
     <string name="permission_open_tip_notification_title">设置快捷手势</string>
     <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">还在用老办法管理应用和快捷开关吗？赶快试试和apple watch一样的快捷开关管理吧，让你成为朋友中最cool的人！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">还在用老办法管理应用和快捷开关吗？赶快试试和apple watch一样的快捷开关管理吧，让你成为朋友中最cool的人！\n新版快捷手势，更流畅，更好用！</string>
     <string name="grade_tip_feedback">我要吐槽</string>
     <string name="quick_first_tip_dialog_right_bt">立即体验</string>
     <string name="quick_first_tip_dialog_left_bt">稍后再试</string>

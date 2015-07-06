@@ -224,18 +224,19 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
+        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
         if (mLeftCenterView == null) {
             mLeftCenterView = new QuickGesturesAreaView(mContext);
             // no read contact /message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == -2)) {
+                            .getInstance(mContext).onTuchGestureFlag == -2) && !isOpenStrengthenMode) {
                 mLeftCenterView.setIsShowReadTip(true, 1);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == -2)) {
+                            .getInstance(mContext).onTuchGestureFlag == -2) && !isOpenStrengthenMode) {
                 mLeftCenterView.setIsShowReadTip(true, 1);
             }
             mLeftCenterView.setOnTouchListener(new OnTouchListener() {
@@ -351,20 +352,21 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
+        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == -2)
-                    && mLeftBottomView == null) {
+                    && mLeftBottomView == null && !isOpenStrengthenMode) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == -2)
-                    && mLeftBottomView == null) {
+                    && mLeftBottomView == null && !isOpenStrengthenMode) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
             mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {
@@ -724,18 +726,19 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
+        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
         if (mRightCenterView == null) {
             mRightCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == 2)) {
+                            .getInstance(mContext).onTuchGestureFlag == 2) && !isOpenStrengthenMode) {
                 mRightCenterView.setIsShowReadTip(true, 2);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == 2)) {
+                            .getInstance(mContext).onTuchGestureFlag == 2) && !isOpenStrengthenMode) {
                 mRightCenterView.setIsShowReadTip(true, 2);
             }
             mRightCenterView.setOnTouchListener(new OnTouchListener() {
@@ -851,20 +854,21 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
+        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)
-                    && mRightBottomView == null) {
+                    && mRightBottomView == null && !isOpenStrengthenMode) {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)
-                    && mRightBottomView == null) {
+                    && mRightBottomView == null && !isOpenStrengthenMode) {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
 
@@ -1668,16 +1672,21 @@ public class FloatWindowHelper {
     public static void createWhiteFloatView(Context mContext) {
         if (null == mWhiteFloatView) {
             WindowManager windowManager = getWindowManager(mContext);
+            AppMasterPreference pref =  AppMasterPreference.getInstance(mContext);
             int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
             int H = windowManager.getDefaultDisplay().getHeight() / 2;
             int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
 
             createWhiteFloatParams(mContext);
-            // get the last coordinate,if 0 then appear in last swipe
-            // orientation
+            // get the last coordinate,if 0 then appear in last swipe orientation
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
+                // if is the upgrade user and first time create white float,then show int the left center
+                if(pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()){
+                    Log.i("null", "lastSlideOrientation ="+lastSlideOrientation);
+                    lastSlideOrientation = -2;
+                }
                 if (lastSlideOrientation < 0) {
                     mWhiteFloatParams.x = -halfW;
                     if (lastSlideOrientation == -1) {
@@ -1693,8 +1702,7 @@ public class FloatWindowHelper {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 }
-                AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(
-                        mWhiteFloatParams.x, mWhiteFloatParams.y);
+               pref.setWhiteFloatViewCoordinate(mWhiteFloatParams.x, mWhiteFloatParams.y);
             } else {
                 mWhiteFloatParams.x = coordinate[0];
                 mWhiteFloatParams.y = coordinate[1];
@@ -1721,7 +1729,7 @@ public class FloatWindowHelper {
             }
             if (mWhiteFloatHeight <= 0) {
                 mWhiteFloatHeight = mContext.getResources().getDimensionPixelSize(
-                        R.dimen.quick_white_float_height);
+                        R.dimen.quick_white_float_width);
             }
             mWhiteFloatParams = new LayoutParams();
             mWhiteFloatParams.width = mWhiteFLoatWidth;
@@ -1904,14 +1912,11 @@ public class FloatWindowHelper {
                         hideWhiteFloatView(mContext);
                         AppMasterPreference.getInstance(mContext)
                                 .setSwitchOpenStrengthenMode(false);
-                        Log.i("null", "锁屏啦");
                     } else if (!AppUtil.isScreenLocked(mContext)
                             && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-                        Log.i("null", "亮屏啦");
                         AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
                         showWhiteFloatView(mContext);
                     } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-                        Log.i("null", "解锁啦");
                         AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
                         showWhiteFloatView(mContext);
                     }

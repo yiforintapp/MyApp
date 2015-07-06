@@ -102,7 +102,7 @@ public class TaskDetectService extends Service {
         checkFloatWindow();
         mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
-        sendQuickPermissionOpenNotification(getApplicationContext());
+        // sendQuickPermissionOpenNotification(getApplicationContext());
         super.onCreate();
     }
 
@@ -198,7 +198,7 @@ public class TaskDetectService extends Service {
         // 初始化未读短信是否已经红点提示过
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageReadRedTip = pre
                 .getMessageIsRedTip();
-//        Log.e(Constants.RUN_TAG, "值：" + pre.getMessageIsRedTip());
+        // Log.e(Constants.RUN_TAG, "值：" + pre.getMessageIsRedTip());
         // 初始化未读通话记录是否已经红点提示过
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isCallLogRead = pre
                 .getCallLogIsRedTip();
@@ -469,9 +469,10 @@ public class TaskDetectService extends Service {
                                     .getInstance(getApplicationContext());
                             if (amp.getNeedShowWhiteDotSlideTip()) {
                                 isHomeFlag = Utilities.isHome(getApplicationContext());
-                                if(isHomeFlag) {
-                                    FloatWindowHelper.checkShowWhiteDotLuminescence(TaskDetectService.this
-                                            .getApplicationContext());
+                                if (isHomeFlag) {
+                                    FloatWindowHelper
+                                            .checkShowWhiteDotLuminescence(TaskDetectService.this
+                                                    .getApplicationContext());
                                 }
                             }
                             // set background color
@@ -631,6 +632,7 @@ public class TaskDetectService extends Service {
         return sNotification;
     }
 
+    // 检测悬浮窗打开发送通知
     private void sendQuickPermissionOpenNotification(final Context context) {
         boolean flag = AppMasterPreference.getInstance(context)
                 .getQuickPermissonOpenFirstNotificatioin();
