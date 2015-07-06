@@ -479,7 +479,8 @@ public class LockModeEditActivity extends BaseActivity implements
 
     private void hideIME() {
         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(mModeNameDiglog.getEditText().getWindowToken(), 0);
+        View v = mModeNameDiglog.getEditText();
+        imm.hideSoftInputFromWindow(v != null ? v.getWindowToken() : mIvBack.getWindowToken(), 0);
     }
 
     private class LockedAppComparator implements Comparator<AppInfo> {
