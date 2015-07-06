@@ -54,6 +54,15 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
         initUI();
     }
 
+    @Override
+    public void onAttachedToWindow() {
+        // TODO Auto-generated method stub
+        super.onAttachedToWindow();
+        // 免干扰应用显示区域显示判断
+        setFilterAppBtVisibility(AppMasterPreference.getInstance(mContext)
+                .getSlideTimeAllAppAndHome());
+    }
+
     @SuppressLint("CutPasteId")
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
@@ -92,7 +101,6 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
             }
         });
         setContentView(dlgView);
-
         setCanceledOnTouchOutside(true);
 
     }
