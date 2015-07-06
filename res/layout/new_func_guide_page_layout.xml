@@ -30,5 +30,6 @@
         android:layout_marginTop="91dp"
         android:text="立即体验"
         android:visibility="gone" />
+    
 
 </RelativeLayout>
