@@ -226,6 +226,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             });
             mContainer.saveGestureType();
             Log.i("null", "onBackPressed");
+            
         }
     }
 
@@ -240,6 +241,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         // 创建热区处理
         isCloseWindow = true;
         FloatWindowHelper.mGestureShowing = false;
+        
         FloatWindowHelper.createFloatWindow(getApplicationContext(),
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
         QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();

@@ -127,7 +127,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LeoEventBus.getDefaultBus().unregister(this);
         if (!mPre.getFristSlidingTip() || !mPre.getSwitchOpenQuickGesture()) {
             AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
                 @Override
@@ -137,11 +136,23 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 }
             });
         }
+        LeoEventBus.getDefaultBus().unregister(this);
     }
-
+    public void onEventMainThread(PrivacyEditFloatEvent event) {
+        if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
+                .equals(event.editModel)) {
+            FloatWindowHelper.initSlidingArea(AppMasterPreference.getInstance(this));
+            setShowSlideAllArea();
+        }
+    }
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+    }
+    private void setShowSlideAllArea() {
+        FloatWindowHelper.removeAllFloatWindow(this);
+         FloatWindowHelper.createFloatWindow(getApplicationContext(),
+         QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
     }
 
     private void initUi() {
@@ -224,22 +235,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
     }
 
-    public void onEventMainThread(PrivacyEditFloatEvent event) {
-        if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
-                .equals(event.editModel)) {
-            Log.e(FloatWindowHelper.RUN_TAG, "取消");
-            // recorderSlidingSetting();
-        }
-    }
-
-    private void recorderSlidingSetting() {
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = leftCenterTemp;
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = RightCenterTemp;
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = leftBottomTemp;
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = rightBottomTemp;
-        unInitSlidingSetting();
-    }
-
     @Override
     protected void onPause() {
         super.onPause();
@@ -267,7 +262,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mAlarmDialog.setSeekBarTextVisibility(false);
         mAlarmDialog.setSeekbarTextProgressVisibility(false);
         mAlarmDialog.setSeekBarProgressValue(mPre.getQuickGestureDialogSeekBarValue());
-        recorderSlidingSetting();
         mAlarmDialog.setLeftBottomOnClickListener(new OnClickListener() {
 
             @Override
@@ -554,6 +548,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 Intent intent = new Intent(QuickGestureActivity.this,
                         QuickGestureSettingActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.gesture_switch_text:
                 gestureSwitch();

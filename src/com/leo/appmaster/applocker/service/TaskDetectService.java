@@ -182,18 +182,7 @@ public class TaskDetectService extends Service {
         // home and apps
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isAppsAndHome = pre
                 .getSlideTimeAllAppAndHome();
-        // left bottom
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = pre
-                .getDialogRadioLeftBottom();
-        // right bottom
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = pre
-                .getDialogRadioRightBottom();
-        // left center
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = pre
-                .getDialogRadioLeftCenter();
-        // right center
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
-                .getDialogRadioRightCenter();
+        FloatWindowHelper.initSlidingArea(pre);
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).resetSlidAreaSize();
         // 初始化未读短信是否已经红点提示过
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageReadRedTip = pre
@@ -203,6 +192,8 @@ public class TaskDetectService extends Service {
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isCallLogRead = pre
                 .getCallLogIsRedTip();
     }
+
+
 
     private void startFloatWindowTask() {
         stopFloatWindowTask();

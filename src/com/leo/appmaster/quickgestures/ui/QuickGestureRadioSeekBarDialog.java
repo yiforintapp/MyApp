@@ -51,6 +51,40 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         initUI();
     }
 
+    @Override
+    public void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        if (AppMasterPreference.getInstance(mContext).getDialogRadioLeftBottom()) {
+            mLeftBottom.setBackgroundDrawable(mContext.getResources()
+                    .getDrawable(R.drawable.select));
+        } else {
+            mLeftBottom.setBackgroundDrawable(mContext.getResources().getDrawable(
+                    R.drawable.unselect));
+        }
+        if (AppMasterPreference.getInstance(mContext).getDialogRadioRightBottom()) {
+            mRightBottom.setBackgroundDrawable(mContext.getResources().getDrawable(
+                    R.drawable.select));
+        } else {
+            mRightBottom.setBackgroundDrawable(mContext.getResources().getDrawable(
+                    R.drawable.unselect));
+        }
+
+        if (AppMasterPreference.getInstance(mContext).getDialogRadioLeftCenter()) {
+            mLeftCenter.setBackgroundDrawable(mContext.getResources()
+                    .getDrawable(R.drawable.select));
+        } else {
+            mLeftCenter.setBackgroundDrawable(mContext.getResources().getDrawable(
+                    R.drawable.unselect));
+        }
+        if (AppMasterPreference.getInstance(mContext).getDialogRadioRightCenter()) {
+            mRightCenter.setBackgroundDrawable(mContext.getResources().getDrawable(
+                    R.drawable.select));
+        } else {
+            mRightCenter.setBackgroundDrawable(mContext.getResources().getDrawable(
+                    R.drawable.unselect));
+        }
+    }
+
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_quick_gesture_radio_seekbar_setting, null);
@@ -62,42 +96,14 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
         mSeekBar = (SeekBar) dlgView.findViewById(R.id.qucik_seekBar);
         mLeftBottom = (ImageView) dlgView.findViewById(R.id.dialog_radio_left_bottomRB);
-        if (AppMasterPreference.getInstance(mContext).getDialogRadioLeftBottom()) {
-            mLeftBottom.setBackgroundDrawable(mContext.getResources()
-                    .getDrawable(R.drawable.select));
-        } else {
-            mLeftBottom.setBackgroundDrawable(mContext.getResources().getDrawable(
-                    R.drawable.unselect));
-        }
-        mRightBottom = (ImageView) dlgView.findViewById(R.id.dialog_radio_right_bottomRB);
-        if (AppMasterPreference.getInstance(mContext).getDialogRadioRightBottom()) {
-            mRightBottom.setBackgroundDrawable(mContext.getResources().getDrawable(
-                    R.drawable.select));
-        } else {
-            mRightBottom.setBackgroundDrawable(mContext.getResources().getDrawable(
-                    R.drawable.unselect));
-        }
-        mLeftCenter = (ImageView) dlgView.findViewById(R.id.dialog_radio_left_centerRB);
-        if (AppMasterPreference.getInstance(mContext).getDialogRadioLeftCenter()) {
-            mLeftCenter.setBackgroundDrawable(mContext.getResources()
-                    .getDrawable(R.drawable.select));
-        } else {
-            mLeftCenter.setBackgroundDrawable(mContext.getResources().getDrawable(
-                    R.drawable.unselect));
-        }
-        mRightCenter = (ImageView) dlgView.findViewById(R.id.dialog_radio_right_center_normalRB);
-        if (AppMasterPreference.getInstance(mContext).getDialogRadioRightCenter()) {
-            mRightCenter.setBackgroundDrawable(mContext.getResources().getDrawable(
-                    R.drawable.select));
-        } else {
-            mRightCenter.setBackgroundDrawable(mContext.getResources().getDrawable(
-                    R.drawable.unselect));
-        }
         mRadioListView = (ListView) dlgView.findViewById(R.id.radioLV);
         mLeftBottomLt = (LinearLayout) dlgView.findViewById(R.id.left_bottom_lt);
         mRightBottomLt = (LinearLayout) dlgView.findViewById(R.id.right_bottom_lt);
         mLeftCenterLt = (LinearLayout) dlgView.findViewById(R.id.left_center_lt);
+        mRightBottom = (ImageView) dlgView.findViewById(R.id.dialog_radio_right_bottomRB);
         mRightCenterLt = (LinearLayout) dlgView.findViewById(R.id.right_center_lt);
+        mLeftCenter = (ImageView) dlgView.findViewById(R.id.dialog_radio_left_centerRB);
+        mRightCenter = (ImageView) dlgView.findViewById(R.id.dialog_radio_right_center_normalRB);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
@@ -143,7 +149,6 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
     @Override
     public void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        // Log.e(FloatWindowHelper.RUN_TAG, "结束");
         if (!QuickGestureActivity.isSureBt) {
             LeoEventBus.getDefaultBus().post(
                     new PrivacyEditFloatEvent(
@@ -153,11 +158,14 @@ public class QuickGestureRadioSeekBarDialog extends LEOBaseDialog {
                             mContext).getQuickGestureDialogSeekBarValue();
             FloatWindowHelper.updateView(mContext,
                     QuickGestureManager.getInstance(mContext).mSlidAreaSize);
+            LeoEventBus.getDefaultBus().post(
+                    new PrivacyEditFloatEvent(
+                            QuickGestureManager.getInstance(mContext).QUICK_GESTURE_SETTING_EVENT));
         } else {
             QuickGestureActivity.isSureBt = false;
         }
         FloatWindowHelper.mEditQuickAreaFlag = false;
-        QuickGestureActivity.mAlarmDialogFlag = false;
+        // QuickGestureActivity.mAlarmDialogFlag = false;
         FloatWindowHelper.updateFloatWindowBackgroudColor(mContext, false);
     }
 

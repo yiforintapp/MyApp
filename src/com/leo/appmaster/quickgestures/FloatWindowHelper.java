@@ -224,19 +224,22 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
-        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
+        final boolean isOpenStrengthenMode = AppMasterPreference.getInstance(mContext)
+                .getSwitchOpenStrengthenMode();
         if (mLeftCenterView == null) {
             mLeftCenterView = new QuickGesturesAreaView(mContext);
             // no read contact /message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == -2) && !isOpenStrengthenMode) {
+                            .getInstance(mContext).onTuchGestureFlag == -2)
+                    && !isOpenStrengthenMode) {
                 mLeftCenterView.setIsShowReadTip(true, 1);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == -2) && !isOpenStrengthenMode) {
+                            .getInstance(mContext).onTuchGestureFlag == -2)
+                    && !isOpenStrengthenMode) {
                 mLeftCenterView.setIsShowReadTip(true, 1);
             }
             mLeftCenterView.setOnTouchListener(new OnTouchListener() {
@@ -352,7 +355,8 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
-        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
+        final boolean isOpenStrengthenMode = AppMasterPreference.getInstance(mContext)
+                .getSwitchOpenStrengthenMode();
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
@@ -726,7 +730,8 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
-        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
+        final boolean isOpenStrengthenMode = AppMasterPreference.getInstance(mContext)
+                .getSwitchOpenStrengthenMode();
         if (mRightCenterView == null) {
             mRightCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
@@ -854,7 +859,8 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
-        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
+        final boolean isOpenStrengthenMode = AppMasterPreference.getInstance(mContext)
+                .getSwitchOpenStrengthenMode();
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
@@ -1168,6 +1174,7 @@ public class FloatWindowHelper {
 
     // remove have red tip float window
     public static void removeShowReadTipWindow(Context context) {
+        // Log.e(FloatWindowHelper.RUN_TAG, "删除红点");
         removeSwipWindow(context, 2);
         removeSwipWindow(context, 4);
         removeSwipWindow(context, -2);
@@ -1672,41 +1679,43 @@ public class FloatWindowHelper {
     public static void createWhiteFloatView(Context mContext) {
         if (null == mWhiteFloatView) {
             WindowManager windowManager = getWindowManager(mContext);
-            AppMasterPreference pref =  AppMasterPreference.getInstance(mContext);
+            AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
             int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
             int H = windowManager.getDefaultDisplay().getHeight() / 2;
             int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
 
             createWhiteFloatParams(mContext);
-            // get the last coordinate,if 0 then appear in last swipe orientation
+            // get the last coordinate,if 0 then appear in last swipe
+            // orientation
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
-                // if is the upgrade user and first time create white float,then show int the left center
-                if(pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()){
+                // if is the upgrade user and first time create white float,then
+                // show int the left center
+                if (pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()) {
                     lastSlideOrientation = -2;
                 }
                 if (lastSlideOrientation < 0) {
                     mWhiteFloatParams.x = -halfW;
                     if (lastSlideOrientation == -1) {
-                        mWhiteFloatParams.y = H - mWhiteFloatParams.height/2;
+                        mWhiteFloatParams.y = H - mWhiteFloatParams.height / 2;
                     } else if (lastSlideOrientation == -2) {
-                      mWhiteFloatParams.y = mWhiteFloatParams.height;
+                        mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 } else {
                     mWhiteFloatParams.x = halfW;
                     if (lastSlideOrientation == 1) {
-                        mWhiteFloatParams.y = H - mWhiteFloatParams.height/2;
+                        mWhiteFloatParams.y = H - mWhiteFloatParams.height / 2;
                     } else if (lastSlideOrientation == 2) {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 }
-               pref.setWhiteFloatViewCoordinate(mWhiteFloatParams.x, mWhiteFloatParams.y);
+                pref.setWhiteFloatViewCoordinate(mWhiteFloatParams.x, mWhiteFloatParams.y);
             } else {
                 mWhiteFloatParams.x = coordinate[0];
                 mWhiteFloatParams.y = coordinate[1];
             }
-            Log.i("######", "mWhiteFloatParams.y = "+mWhiteFloatParams.y);
+            Log.i("######", "mWhiteFloatParams.y = " + mWhiteFloatParams.y);
 
             mWhiteFloatView = new ImageView(mContext);
             mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
@@ -1720,7 +1729,7 @@ public class FloatWindowHelper {
         }
     }
 
-    private static void createWhiteFloatParams(Context mContext){
+    private static void createWhiteFloatParams(Context mContext) {
         if (null == mWhiteFloatParams) {
             if (mWhiteFLoatWidth <= 0) {
                 mWhiteFLoatWidth = mContext.getResources().getDimensionPixelSize(
@@ -1739,7 +1748,7 @@ public class FloatWindowHelper {
                     | LayoutParams.FLAG_NOT_FOCUSABLE;
         }
     }
-    
+
     public static void removeWhiteFloatView(Context mContext) {
         if (null != mWhiteFloatView) {
             WindowManager windowManager = getWindowManager(mContext);
@@ -1777,10 +1786,11 @@ public class FloatWindowHelper {
                 mWhiteFloatView.setImageResource(R.drawable.gesture_red_point);
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             } else {
-                if (mWhiteFloatView.getVisibility() != View.VISIBLE) {
-                    mWhiteFloatView.setVisibility(View.VISIBLE);
-                    windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
-                }
+                // if (mWhiteFloatView.getVisibility() != View.VISIBLE) {
+                mWhiteFloatView.setVisibility(View.VISIBLE);
+                mWhiteFloatView.setImageResource(0);
+                windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                // }
             }
         } else {
             createWhiteFloatView(mContext);
@@ -1949,7 +1959,7 @@ public class FloatWindowHelper {
             }
         }
     }
-    
+
     // 去除热区红点，未读，运营icon和红点
     public static void cancelAllRedTip(Context context) {
         // 隐私通话
@@ -1979,5 +1989,20 @@ public class FloatWindowHelper {
         if (!AppMasterPreference.getInstance(context).getLastBusinessRedTipShow()) {
             AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
         }
+    }
+
+    public static void initSlidingArea(AppMasterPreference pre) {
+        // left bottom
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = pre
+                .getDialogRadioLeftBottom();
+        // right bottom
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = pre
+                .getDialogRadioRightBottom();
+        // left center
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = pre
+                .getDialogRadioLeftCenter();
+        // right center
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
+                .getDialogRadioRightCenter();
     }
 }
