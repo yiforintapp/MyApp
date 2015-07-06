@@ -987,20 +987,15 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mQuickGestureTip = new QuickGestureTipDialog(this);
         }
         mQuickGestureTip.setLeftOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
-                AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
-                        Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
-
             }
         });
         mQuickGestureTip.setRightOnClickListener(new OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
@@ -1009,8 +1004,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     mQuickGestureTip.dismiss();
                 }
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
-                AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
-                        Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
             }
         });
         mQuickGestureTip.setCanceledOnTouchOutside(false);
