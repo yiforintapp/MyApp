@@ -66,6 +66,9 @@
     <color name="guide_page3_background_color">#8758cf</color>
     <color name="guide_page4_background_color">#fca53d</color>
     <color name="guide_indicator_fill_color">#87a9dc</color>
+    <color name="new_guide_page1_background_color">#CAE1FF</color>
+     <color name="new_guide_page2_background_color">#EEEE00</color>
+      <color name="new_guide_page3_background_color">#98FB98</color>
     <!-- guide page begin -->
 
     <color name="weisuo_text">#636363</color>
@@ -89,5 +92,8 @@
     <color name="mode_visitor_bg">#5653b4</color>
     <color name="mode_default_bg">#44c4f5</color>
     <color name="accent_dark">#000000</color>
-
+	<color name="quick_success_title_color">#0095FF</color>
+	<color name="quick_open_text_color">#4a63e5</color>
+	<color name="quick_close_text_color">#666666</color>
+	<color name="quick_intro_color">#9b9b9b</color>
 </resources>

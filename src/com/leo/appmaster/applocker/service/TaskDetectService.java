@@ -464,6 +464,16 @@ public class TaskDetectService extends Service {
                         if (!FloatWindowHelper.mGestureShowing
                                 && AppMasterPreference.getInstance(getApplicationContext())
                                         .getFristSlidingTip()) {
+                            boolean isHomeFlag = false;
+                            AppMasterPreference amp = AppMasterPreference
+                                    .getInstance(getApplicationContext());
+                            if (amp.getNeedShowWhiteDotSlideTip()) {
+                                isHomeFlag = Utilities.isHome(getApplicationContext());
+                                if(isHomeFlag) {
+                                    FloatWindowHelper.checkShowWhiteDotLuminescence(TaskDetectService.this
+                                            .getApplicationContext());
+                                }
+                            }
                             // set background color
                             if (FloatWindowHelper.mEditQuickAreaFlag) {
                                 FloatWindowHelper
@@ -475,27 +485,55 @@ public class TaskDetectService extends Service {
                             boolean isAppsAndHome = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isAppsAndHome;
                             if (isAppsAndHome) {
-                                if (!checkForegroundRuningFilterApp(mActivityManager)
+                                boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
+                                if (!isFilterApp
                                         || FloatWindowHelper.mEditQuickAreaFlag) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
+                                /** about white float view **/
+                                if (sp_traffic.getSwitchOpenStrengthenMode()) {
+                                    if (!isFilterApp) {
+                                        if (!FloatWindowHelper.mEditQuickAreaFlag) {
+                                            FloatWindowHelper
+                                                    .showWhiteFloatView(TaskDetectService.this);
+                                        }
+                                    } else {
+                                        FloatWindowHelper
+                                                .hideWhiteFloatView(TaskDetectService.this);
+                                    }
+                                }
                             } else if (isJustHome) {
-                                boolean isHomeFlag = Utilities.isHome(getApplicationContext());
+                                if (!isHomeFlag)
+                                    isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if (isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
+                                /** about white float view **/
+                                if (sp_traffic.getSwitchOpenStrengthenMode()) {
+                                    if (isHomeFlag) {
+                                        if (!FloatWindowHelper.mEditQuickAreaFlag) {
+                                            FloatWindowHelper
+                                                    .showWhiteFloatView(TaskDetectService.this);
+                                        }
+                                    } else {
+                                        FloatWindowHelper
+                                                .hideWhiteFloatView(TaskDetectService.this);
+                                    }
+                                }
                             }
                         } else {
                             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                            FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
                         }
                     } else {
                         FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                        FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
                     }
                 }
             };

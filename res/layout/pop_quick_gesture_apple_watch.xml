@@ -2,7 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#cc000000" >
+    android:background="#dd000000" >
+
+    <!-- about the watch view -->
 
     <com.leo.appmaster.quickgestures.view.AppleWatchContainer
         android:id="@+id/gesture_container"
@@ -19,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginBottom="321dp"
+            android:layout_marginBottom="318dp"
             android:gravity="center"
             android:src="@drawable/gesture_title_bar" />
 
@@ -27,7 +29,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginBottom="321dp" >
+            android:layout_marginBottom="318dp" >
 
             <TextView
                 android:id="@+id/tv_type_name"
@@ -37,7 +39,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:padding="3dp"
-                android:textSize="16sp" />
+                android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_left_type_name"
@@ -49,7 +51,7 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:textSize="16sp"
+                android:textSize="14dp"
                 android:visibility="invisible" />
 
             <TextView
@@ -62,7 +64,7 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:textSize="16sp"
+                android:textSize="14dp"
                 android:visibility="invisible" />
         </RelativeLayout>
 
@@ -139,5 +141,85 @@
             android:focusableInTouchMode="false"
             android:visibility="invisible" />
     </com.leo.appmaster.quickgestures.view.AppleWatchContainer>
+
+    <!-- about the success tip -->
+
+    <RelativeLayout
+        android:id="@+id/gesture_success_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:visibility="invisible" >
+
+        <RelativeLayout
+            android:id="@+id/gesture_success_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/success_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="16dp"
+                android:layout_toLeftOf="@+id/success_title"
+                android:src="@drawable/gesture_success" />
+
+            <TextView
+                android:id="@+id/success_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/quick_gesture_success_title"
+                android:textColor="@color/quick_success_title_color"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/gesture_success_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gesture_success_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:maxWidth="300dp"
+            android:text="@string/quick_gesture_success_content"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gesture_success_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/know_button"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/manager_done_button_selecter"
+                android:text="@string/lock_mode_guide_button_text"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/set_button"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/manager_done_button_selecter"
+                android:text="@string/go_set"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
 
 </RelativeLayout>

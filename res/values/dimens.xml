@@ -206,13 +206,13 @@
 
     <!-- apple watch -->
     <dimen name="apple_watch_text_size">12dp</dimen>
-    <dimen name="apple_watch_item_size">85dp</dimen>
     <dimen name="apple_watch_tab_item_size">38dp</dimen>
     <dimen name="apple_watch_select_bar_width">40dp</dimen>
     <dimen name="apple_watch_select_bar_height">15dp</dimen>
-    <dimen name="apple_watch_item_icon_size">70dp</dimen>
-    <dimen name="apple_watch_layout_inner_radius">94dp</dimen>
-    <dimen name="apple_watch_layout_outer_radius">144dp</dimen>
+    <dimen name="apple_watch_item_icon_size">74dp</dimen>
+    <dimen name="apple_watch_item_size">90dp</dimen>
+    <dimen name="apple_watch_layout_inner_radius">96dp</dimen>
+    <dimen name="apple_watch_layout_outer_radius">152dp</dimen>
     <!-- quick guesture end -->
     <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
@@ -244,5 +244,7 @@
     <dimen name="gesture_item_imageview_padding">10dp</dimen>
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="text_icon_margin">5dp</dimen>
+    <dimen name="quick_white_float_width">40dp</dimen>
+    <dimen name="quick_white_float_height">40dp</dimen>
 
 </resources>

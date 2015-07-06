@@ -10,6 +10,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 
 import android.app.Activity;
+import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -122,4 +123,9 @@ public class AppUtil {
         return TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
     }
 
+    public static boolean isScreenLocked(Context mcContext) {  
+        KeyguardManager mKeyguardManager = (KeyguardManager) mcContext
+                .getSystemService(mcContext.KEYGUARD_SERVICE);  
+        return mKeyguardManager.inKeyguardRestrictedInputMode();  
+    }  
 }
