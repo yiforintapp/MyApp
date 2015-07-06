@@ -1981,4 +1981,18 @@ public class FloatWindowHelper {
             AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
         }
     }
+    public static  void initSlidingArea(AppMasterPreference pre) {
+        // left bottom
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = pre
+                .getDialogRadioLeftBottom();
+        // right bottom
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = pre
+                .getDialogRadioRightBottom();
+        // left center
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = pre
+                .getDialogRadioLeftCenter();
+        // right center
+        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
+                .getDialogRadioRightCenter();
+    }
 }

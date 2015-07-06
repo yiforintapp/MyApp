@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,6 +31,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
@@ -65,7 +68,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             mPrivacyContactFlag, mStrengthenModeFlag, isFromPopView;
     private String slidingArea = "";
     public static final String FROME_STATUSBAR = "from_statusbar";
-    public static boolean isSureBt;
+    private boolean leftBottomTemp, leftCenterTemp, rightBottomTemp, RightCenterTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +78,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         Intent intent = getIntent();
         isFromPopView = intent.getBooleanExtra("from_pop_set", false);
         initUi();
+        LeoEventBus.getDefaultBus().register(this);
     }
 
     @Override
@@ -93,12 +97,29 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        LeoEventBus.getDefaultBus().unregister(this);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
+
+    public void onEventMainThread(PrivacyEditFloatEvent event) {
+        if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
+                .equals(event.editModel)) {
+            FloatWindowHelper.initSlidingArea(AppMasterPreference.getInstance(this));
+            setShowSlideAllArea();
+        }
+    }
+
+    private void setShowSlideAllArea() {
+        FloatWindowHelper.removeAllFloatWindow(this);
+         FloatWindowHelper.createFloatWindow(getApplicationContext(),
+         QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+    }
+
+
 
     private void initUi() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
@@ -263,10 +284,10 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     @Override
     protected void onRestart() {
         super.onRestart();
-//        if (mAlarmDialogFlag) {
-//            FloatWindowHelper.mEditQuickAreaFlag = true;
-//            updateFloatWindowBackGroudColor();
-//        }
+        // if (mAlarmDialogFlag) {
+        // FloatWindowHelper.mEditQuickAreaFlag = true;
+        // updateFloatWindowBackGroudColor();
+        // }
     }
 
     @Override
@@ -274,7 +295,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         super.onPause();
         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
             FloatWindowHelper.mEditQuickAreaFlag = false;
-//            mAlarmDialogFlag = false;
+            // mAlarmDialogFlag = false;
             updateFloatWindowBackGroudColor();
             mAlarmDialog.dismiss();
         }
@@ -336,6 +357,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                             .getResources()
                             .getDrawable(R.drawable.select));
                 }
+
                 FloatWindowHelper.setShowSlideArea(QuickGestureSettingActivity.this,
                         FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
             }
@@ -358,6 +380,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                             .getResources()
                             .getDrawable(R.drawable.select));
                 }
+
                 FloatWindowHelper.setShowSlideArea(QuickGestureSettingActivity.this,
                         FloatWindowHelper.QUICK_GESTURE_LEFT_SLIDE_AREA);
             }
@@ -380,6 +403,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                             .getResources()
                             .getDrawable(R.drawable.select));
                 }
+
                 FloatWindowHelper.setShowSlideArea(QuickGestureSettingActivity.this,
                         FloatWindowHelper.QUICK_GESTURE_RIGHT_SLIDE_AREA);
             }
@@ -388,7 +412,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
 
             @Override
             public void onClick(int progress) {
-                isSureBt = true;
+                QuickGestureActivity.isSureBt = true;
                 boolean mLeftBottom = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftBottom;
                 boolean mRightBottm = QuickGestureManager.getInstance(AppMasterApplication
@@ -430,7 +454,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         });
         mAlarmDialog.setCancelable(true);
         mAlarmDialog.show();
-//        mAlarmDialogFlag = true;
+        // mAlarmDialogFlag = true;
         updateFloatWindowBackGroudColor();
     }
 
@@ -864,9 +888,9 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
      * switch strength mode open
      */
     private void switchStrengthMode() {
-        if (mStrengthenModeFlag ) {
+        if (mStrengthenModeFlag) {
             FloatWindowHelper.createWhiteFloatView(this);
-            if(AppMasterPreference.getInstance(this).getSlideTimeJustHome()){
+            if (AppMasterPreference.getInstance(this).getSlideTimeJustHome()) {
                 FloatWindowHelper.hideWhiteFloatView(this);
             }
         } else {
