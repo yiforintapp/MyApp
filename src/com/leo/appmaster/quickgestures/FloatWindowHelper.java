@@ -224,18 +224,19 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
+        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
         if (mLeftCenterView == null) {
             mLeftCenterView = new QuickGesturesAreaView(mContext);
             // no read contact /message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == -2)) {
+                            .getInstance(mContext).onTuchGestureFlag == -2) && !isOpenStrengthenMode) {
                 mLeftCenterView.setIsShowReadTip(true, 1);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == -2)) {
+                            .getInstance(mContext).onTuchGestureFlag == -2) && !isOpenStrengthenMode) {
                 mLeftCenterView.setIsShowReadTip(true, 1);
             }
             mLeftCenterView.setOnTouchListener(new OnTouchListener() {
@@ -351,20 +352,21 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
+        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
         if (mLeftCenterCenterView == null) {
             mLeftCenterCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == -2)
-                    && mLeftBottomView == null) {
+                    && mLeftBottomView == null && !isOpenStrengthenMode) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == -1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == -2)
-                    && mLeftBottomView == null) {
+                    && mLeftBottomView == null && !isOpenStrengthenMode) {
                 mLeftCenterCenterView.setIsShowReadTip(true, 3);
             }
             mLeftCenterCenterView.setOnTouchListener(new OnTouchListener() {
@@ -724,18 +726,19 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
+        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
         if (mRightCenterView == null) {
             mRightCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == 2)) {
+                            .getInstance(mContext).onTuchGestureFlag == 2) && !isOpenStrengthenMode) {
                 mRightCenterView.setIsShowReadTip(true, 2);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
-                            .getInstance(mContext).onTuchGestureFlag == 2)) {
+                            .getInstance(mContext).onTuchGestureFlag == 2) && !isOpenStrengthenMode) {
                 mRightCenterView.setIsShowReadTip(true, 2);
             }
             mRightCenterView.setOnTouchListener(new OnTouchListener() {
@@ -851,20 +854,21 @@ public class FloatWindowHelper {
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
+        final boolean isOpenStrengthenMode=AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode();
         if (mRightCenterCenterView == null) {
             mRightCenterCenterView = new QuickGesturesAreaView(mContext);
             // no read contact/message/privacycontact red tip
             if (QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)
-                    && mRightBottomView == null) {
+                    && mRightBottomView == null && !isOpenStrengthenMode) {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
             // business red tip
             if (isShowBusinessRedTip
                     && (QuickGestureManager.getInstance(mContext).onTuchGestureFlag == 1 || QuickGestureManager
                             .getInstance(mContext).onTuchGestureFlag == 2)
-                    && mRightBottomView == null) {
+                    && mRightBottomView == null && !isOpenStrengthenMode) {
                 mRightCenterCenterView.setIsShowReadTip(true, 4);
             }
 
