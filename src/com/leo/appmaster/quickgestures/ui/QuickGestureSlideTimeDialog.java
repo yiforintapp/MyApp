@@ -228,6 +228,7 @@ public class QuickGestureSlideTimeDialog extends LEOBaseDialog {
         }
     }
 
+    
     @Override
     protected void onStop() {
         super.onStop();

@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.CallLog.Calls;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -865,8 +864,11 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
      * switch strength mode open
      */
     private void switchStrengthMode() {
-        if (mStrengthenModeFlag) {
+        if (mStrengthenModeFlag ) {
             FloatWindowHelper.createWhiteFloatView(this);
+            if(AppMasterPreference.getInstance(this).getSlideTimeJustHome()){
+                FloatWindowHelper.hideWhiteFloatView(this);
+            }
         } else {
             FloatWindowHelper.removeWhiteFloatView(this);
             mPre.setWhiteFloatViewCoordinate(0, 0);

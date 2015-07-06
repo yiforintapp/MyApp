@@ -1684,23 +1684,20 @@ public class FloatWindowHelper {
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
                 // if is the upgrade user and first time create white float,then show int the left center
-                Log.i("null", "pref.getUseStrengthenModeTimes() = "+pref.getUseStrengthenModeTimes());
-                Log.i("null", "pref.getIsUpdateQuickGestureUser() = "+pref.getIsUpdateQuickGestureUser());
                 if(pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()){
                     lastSlideOrientation = -2;
-                    Log.i("null", "lastSlideOrientation ="+lastSlideOrientation);
                 }
                 if (lastSlideOrientation < 0) {
                     mWhiteFloatParams.x = -halfW;
                     if (lastSlideOrientation == -1) {
-                        mWhiteFloatParams.y = H - mWhiteFloatParams.height;
+                        mWhiteFloatParams.y = H - mWhiteFloatParams.height/2;
                     } else if (lastSlideOrientation == -2) {
-                        mWhiteFloatParams.y = mWhiteFloatParams.height;
+                      mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 } else {
                     mWhiteFloatParams.x = halfW;
                     if (lastSlideOrientation == 1) {
-                        mWhiteFloatParams.y = H - mWhiteFloatParams.height;
+                        mWhiteFloatParams.y = H - mWhiteFloatParams.height/2;
                     } else if (lastSlideOrientation == 2) {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
@@ -1710,6 +1707,7 @@ public class FloatWindowHelper {
                 mWhiteFloatParams.x = coordinate[0];
                 mWhiteFloatParams.y = coordinate[1];
             }
+            Log.i("######", "mWhiteFloatParams.y = "+mWhiteFloatParams.y);
 
             mWhiteFloatView = new ImageView(mContext);
             mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
@@ -1720,7 +1718,6 @@ public class FloatWindowHelper {
             } catch (Exception e) {
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             }
-            Log.i("null", "创建小白点");
         }
     }
 
@@ -1736,7 +1733,7 @@ public class FloatWindowHelper {
             }
             mWhiteFloatParams = new LayoutParams();
             mWhiteFloatParams.width = mWhiteFLoatWidth;
-            mWhiteFloatParams.height = mWhiteFLoatWidth;
+            mWhiteFloatParams.height = mWhiteFloatHeight;
             mWhiteFloatParams.type = LayoutParams.TYPE_SYSTEM_ERROR;
             mWhiteFloatParams.format = PixelFormat.RGBA_8888;
             mWhiteFloatParams.flags = LayoutParams.FLAG_NOT_TOUCH_MODAL
