@@ -75,6 +75,8 @@ public class TaskChangeHandler {
             return;
         }
 
+        LeoLog.d("handleAppLaunch", pkg + "/" + activity);
+        
         // for gesture check
         if (activity.contains(GESTURE)) {
             /* 解决：关闭GESTURE这个Acitivty后启动创建热区任务时闪动创建问题 */
