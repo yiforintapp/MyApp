@@ -1901,7 +1901,6 @@ public class FloatWindowHelper {
         boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
-        Log.e(FloatWindowHelper.RUN_TAG, "是否有未读：" + isShowTip + ",运营：" + isShowBusinessRedTip);
         return isShowTip || isShowBusinessRedTip;
     }
 
