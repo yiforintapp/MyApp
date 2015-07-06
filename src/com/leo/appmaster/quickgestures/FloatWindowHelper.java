@@ -1668,6 +1668,7 @@ public class FloatWindowHelper {
     public static void createWhiteFloatView(Context mContext) {
         if (null == mWhiteFloatView) {
             WindowManager windowManager = getWindowManager(mContext);
+            AppMasterPreference pref =  AppMasterPreference.getInstance(mContext);
             int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
             int H = windowManager.getDefaultDisplay().getHeight() / 2;
             int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
@@ -1677,6 +1678,11 @@ public class FloatWindowHelper {
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
+                // if is the upgrade user and first time create white float,then show int the left center
+                if(pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()){
+                    Log.i("null", "lastSlideOrientation ="+lastSlideOrientation);
+                    lastSlideOrientation = -2;
+                }
                 if (lastSlideOrientation < 0) {
                     mWhiteFloatParams.x = -halfW;
                     if (lastSlideOrientation == -1) {
@@ -1692,8 +1698,7 @@ public class FloatWindowHelper {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 }
-                AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(
-                        mWhiteFloatParams.x, mWhiteFloatParams.y);
+               pref.setWhiteFloatViewCoordinate(mWhiteFloatParams.x, mWhiteFloatParams.y);
             } else {
                 mWhiteFloatParams.x = coordinate[0];
                 mWhiteFloatParams.y = coordinate[1];
