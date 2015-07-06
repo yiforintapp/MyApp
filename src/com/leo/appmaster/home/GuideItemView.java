@@ -17,7 +17,9 @@ public class GuideItemView extends View {
     
     public void initBackgroundColor(int backgroundColor){
         mInitialColor = backgroundColor;
+        mCurrentColor = backgroundColor;
         this.setBackgroundColor(backgroundColor);
+        invalidate();
     }
     
     public int getInitBackgroundColor(){

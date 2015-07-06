@@ -604,7 +604,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             boolean isMiui = BuildProperties.isMIUI();
                             boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(HomeActivity.this);
                             // new user,enter home  >=2 times
-                            if(!firstDilaogTip && AppMasterPreference.getInstance(HomeActivity.this).getEnterHomeTimes() >=2){
+                            if(!firstDilaogTip && AppMasterPreference.getInstance(HomeActivity.this).getEnterHomeTimes() ==2){
                                     if(isMiui && isOpenWindow){
                                         AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
                                     }else {
@@ -618,7 +618,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 Log.i("######", "升级用户提示！");
                                 showFirstOpenQuickGestureTipDialog();
                             }
-
                         }
                     }
                 }
@@ -994,7 +993,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
-                AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
                 AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
                         Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
@@ -1010,13 +1008,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
-                AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
                 AppMasterPreference.getInstance(HomeActivity.this).setCurrentAppVersionCode(
                         Integer.valueOf(PhoneInfo.getVersionCode(HomeActivity.this)));
             }
         });
         mQuickGestureTip.setCanceledOnTouchOutside(false);
+        AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
         mQuickGestureTip.show();
     }
 

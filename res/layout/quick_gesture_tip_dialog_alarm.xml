@@ -67,7 +67,6 @@
                 android:layout_marginBottom="@dimen/quick_first_tip_dialog_content_margin_top"
                 android:layout_marginTop="@dimen/quick_first_tip_dialog_content_margin_top"
                 android:ellipsize="end"
-                android:gravity="center"
                 android:maxLines="6"
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"

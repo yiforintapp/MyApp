@@ -48,7 +48,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
  * 
  * @author run
  */
-public class QuickGestureSettingActivity extends BaseActivity implements  OnClickListener,
+public class QuickGestureSettingActivity extends BaseActivity implements OnClickListener,
         UpdateFilterAppClickListener {
     private CommonTitleBar mTitleBar;
     private AppMasterPreference mPre;
@@ -58,12 +58,12 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
     private TextView mSlidingTimeTv, mSlidAreaTv;
-    private RelativeLayout   mSlidingArea, mSlidingTime, mNoReadMessageOpen,
-            mRecentlyContactOPen, mPrivacyContactOpen, mActivityRootView,mStrengthenModeView;
-    private ImageView  mNoReadMessageOpenCK,
-            mRecentlyContactOpenCK, mPrivacyContactOpenCK,mStrengthModeOpenCk;
-    private boolean  mNoReadMessageFlag, mRecentlyContactFlag,
-            mPrivacyContactFlag,mStrengthenModeFlag;
+    private RelativeLayout mSlidingArea, mSlidingTime, mNoReadMessageOpen,
+            mRecentlyContactOPen, mPrivacyContactOpen, mActivityRootView, mStrengthenModeView;
+    private ImageView mNoReadMessageOpenCK,
+            mRecentlyContactOpenCK, mPrivacyContactOpenCK, mStrengthModeOpenCk;
+    private boolean mNoReadMessageFlag, mRecentlyContactFlag,
+            mPrivacyContactFlag, mStrengthenModeFlag, isFromPopView;
     private String slidingArea = "";
     public static final String FROME_STATUSBAR = "from_statusbar";
     public static boolean isSureBt;
@@ -73,6 +73,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
+        Intent intent = getIntent();
+        isFromPopView = intent.getBooleanExtra("from_pop_set", false);
         initUi();
     }
 
@@ -101,21 +103,38 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
 
     private void initUi() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
-        mTitleBar.openBackView();
+        setTitltBarBackClick();
         mTitleBar.setTitle(R.string.pg_appmanager_quick_gesture_name);
         mSlidingArea = (RelativeLayout) findViewById(R.id.slid_area);
         mSlidingTime = (RelativeLayout) findViewById(R.id.allow_slid_time);
         mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);
         mRecentlyContactOPen = (RelativeLayout) findViewById(R.id.recently_contact_content);
         mPrivacyContactOpen = (RelativeLayout) findViewById(R.id.privacy_contact_content);
-        mStrengthenModeView = (RelativeLayout)findViewById(R.id.strengthen_slid_mode);
+        mStrengthenModeView = (RelativeLayout) findViewById(R.id.strengthen_slid_mode);
         mSlidingTimeTv = (TextView) findViewById(R.id.allow_slid_time_item_cotentTV);
         mSlidAreaTv = (TextView) findViewById(R.id.slid_area_item_cotentTV);
         mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
         mNoReadMessageOpenCK = (ImageView) findViewById(R.id.no_read_message_check);
         mRecentlyContactOpenCK = (ImageView) findViewById(R.id.recently_contact_check);
         mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
-        mStrengthModeOpenCk = (ImageView)findViewById(R.id.strengthen_mode_switch_check);
+        mStrengthModeOpenCk = (ImageView) findViewById(R.id.strengthen_mode_switch_check);
+    }
+
+    private void setTitltBarBackClick() {
+        if (isFromPopView) {
+            mTitleBar.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(QuickGestureSettingActivity.this,
+                            QuickGestureActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            mTitleBar.openBackView();
+        }
     }
 
     private void initSlidingAreaText() {
@@ -140,7 +159,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
          * init sliding area
          */
         mSlidAreaTv.setText(getSlidingAreaShowString());
-        SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting", slidingArea);
+        SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                slidingArea);
     }
 
     private String getSlidingAreaShowString() {
@@ -181,7 +201,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
         mRecentlyContactFlag = mPre.getSwitchOpenRecentlyContact();
         mPrivacyContactFlag = mPre.getSwitchOpenPrivacyContactMessageTip();
         mStrengthenModeFlag = mPre.getSwitchOpenStrengthenMode();
-        
+
         // no read message switch
         if (mNoReadMessageFlag) {
             mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
@@ -200,10 +220,10 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
         } else {
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
-        //strengthen mode
-        if(mStrengthenModeFlag){
+        // strengthen mode
+        if (mStrengthenModeFlag) {
             mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
-        }else {
+        } else {
             mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
         }
     }
@@ -218,7 +238,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
         if (mPrivacyContactOpenCK != null) {
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
-        if(mStrengthModeOpenCk != null){
+        if (mStrengthModeOpenCk != null) {
             mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
         }
     }
@@ -283,11 +303,13 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                 boolean leftBottomStatus = QuickGestureManager.getInstance(AppMasterApplication
                         .getInstance()).isLeftBottom;
                 if (leftBottomStatus) {
-                    mAlarmDialog.setLeftBottomBackgroud(QuickGestureSettingActivity.this.getResources()
+                    mAlarmDialog.setLeftBottomBackgroud(QuickGestureSettingActivity.this
+                            .getResources()
                             .getDrawable(R.drawable.unselect));
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = false;
                 } else {
-                    mAlarmDialog.setLeftBottomBackgroud(QuickGestureSettingActivity.this.getResources()
+                    mAlarmDialog.setLeftBottomBackgroud(QuickGestureSettingActivity.this
+                            .getResources()
                             .getDrawable(R.drawable.select));
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom = true;
                 }
@@ -304,11 +326,13 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                         .getInstance()).isRightBottom;
                 if (rightBottomStatus) {
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = false;
-                    mAlarmDialog.setRightBottomBackgroud(QuickGestureSettingActivity.this.getResources()
+                    mAlarmDialog.setRightBottomBackgroud(QuickGestureSettingActivity.this
+                            .getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom = true;
-                    mAlarmDialog.setRightBottomBackgroud(QuickGestureSettingActivity.this.getResources()
+                    mAlarmDialog.setRightBottomBackgroud(QuickGestureSettingActivity.this
+                            .getResources()
                             .getDrawable(R.drawable.select));
                 }
                 FloatWindowHelper.setShowSlideArea(QuickGestureSettingActivity.this,
@@ -324,11 +348,13 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                         .getInstance()).isLeftCenter;
                 if (leftCenterStatus) {
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = false;
-                    mAlarmDialog.setLeftCenterBackgroud(QuickGestureSettingActivity.this.getResources()
+                    mAlarmDialog.setLeftCenterBackgroud(QuickGestureSettingActivity.this
+                            .getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftCenter = true;
-                    mAlarmDialog.setLeftCenterBackgroud(QuickGestureSettingActivity.this.getResources()
+                    mAlarmDialog.setLeftCenterBackgroud(QuickGestureSettingActivity.this
+                            .getResources()
                             .getDrawable(R.drawable.select));
                 }
                 FloatWindowHelper.setShowSlideArea(QuickGestureSettingActivity.this,
@@ -344,11 +370,13 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                         .getInstance()).isRightCenter;
                 if (rightCenterStatus) {
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = false;
-                    mAlarmDialog.setRightCenterBackgroud(QuickGestureSettingActivity.this.getResources()
+                    mAlarmDialog.setRightCenterBackgroud(QuickGestureSettingActivity.this
+                            .getResources()
                             .getDrawable(R.drawable.unselect));
                 } else {
                     QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = true;
-                    mAlarmDialog.setRightCenterBackgroud(QuickGestureSettingActivity.this.getResources()
+                    mAlarmDialog.setRightCenterBackgroud(QuickGestureSettingActivity.this
+                            .getResources()
                             .getDrawable(R.drawable.select));
                 }
                 FloatWindowHelper.setShowSlideArea(QuickGestureSettingActivity.this,
@@ -377,7 +405,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                     mPre.setDialogRadioRightBottom(mRightBottm);
                     mPre.setDialogRadioLeftCenter(mLeftCenter);
                     mPre.setDialogRadioRightCenter(mRightCenter);
-                    QuickGestureManager.getInstance(QuickGestureSettingActivity.this).resetSlidAreaSize();
+                    QuickGestureManager.getInstance(QuickGestureSettingActivity.this)
+                            .resetSlidAreaSize();
                     // update area background color
                     updateFloatWindowBackGroudColor();
                     setSlidingAreaSetting();
@@ -445,20 +474,23 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
             public void onClick(View arg0) {
                 // just home
                 if (mSlideTimeDialog.getJustHometCheckStatus()) {
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
                             "slidetime_launcher");
                     mSlidingTimeTv
                             .setText(R.string.pg_appmanager_quick_gesture_slide_time_just_home_text);
                 }
                 // home and all app
                 if (mSlideTimeDialog.getAppHomeCheckStatus()) {
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
                             "launcher+apps");
                     mSlidingTimeTv
                             .setText(R.string.pg_appmanager_quick_gesture_slide_time_home_and_all_app_text);
                 }
-                AppMasterPreference.getInstance(QuickGestureSettingActivity.this).setSlideTimeJustHome(
-                        mSlideTimeDialog.getJustHometCheckStatus());
+                AppMasterPreference.getInstance(QuickGestureSettingActivity.this)
+                        .setSlideTimeJustHome(
+                                mSlideTimeDialog.getJustHometCheckStatus());
                 AppMasterPreference.getInstance(QuickGestureSettingActivity.this)
                         .setSlideTimeAllAppAndHome(mSlideTimeDialog.getAppHomeCheckStatus());
                 // update catch value
@@ -659,7 +691,6 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
         }
     }
 
-    
     // 计算根布局与屏幕高的差值
     private int screenSpace() {
         @SuppressWarnings("deprecation")
@@ -695,7 +726,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                                 QuickGestureManager.getInstance(QuickGestureSettingActivity.this).screenSpace = screenSpace();
                                 int value = QuickGestureManager
                                         .getInstance(getApplicationContext()).mSlidAreaSize;
-                                FloatWindowHelper.updateView(QuickGestureSettingActivity.this, value);
+                                FloatWindowHelper.updateView(QuickGestureSettingActivity.this,
+                                        value);
                             }
                         });
                 break;
@@ -706,7 +738,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                 break;
             case R.id.no_read_message_content:
                 if (!mNoReadMessageFlag) {
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
                             "message_open");
                     mPre.setSwitchOpenNoReadMessageTip(true);
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_on);
@@ -719,7 +752,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                     }
                     checkNoReadMessage();
                 } else {
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
                             "message_close");
                     mPre.setSwitchOpenNoReadMessageTip(false);
                     mNoReadMessageOpenCK.setImageResource(R.drawable.switch_off);
@@ -728,14 +762,16 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                 break;
             case R.id.recently_contact_content:
                 if (!mRecentlyContactFlag) {
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
                             "recent_open");
                     mPre.setSwitchOpenRecentlyContact(true);
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_on);
                     mRecentlyContactFlag = true;
                     checkNoReadCallLog();
                 } else {
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
                             "recent_close");
                     mPre.setSwitchOpenRecentlyContact(false);
                     mRecentlyContactOpenCK.setImageResource(R.drawable.switch_off);
@@ -744,13 +780,15 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                 break;
             case R.id.privacy_contact_content:
                 if (!mPrivacyContactFlag) {
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
                             "primessage_open");
                     mPre.setSwitchOpenPrivacyContactMessageTip(true);
                     mPrivacyContactOpenCK.setImageResource(R.drawable.switch_on);
                     mPrivacyContactFlag = true;
                 } else {
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
                             "primessage_close");
                     mPre.setSwitchOpenPrivacyContactMessageTip(false);
                     mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
@@ -758,12 +796,12 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
                 }
                 break;
             case R.id.strengthen_slid_mode:
-                if(mStrengthenModeFlag){
+                if (mStrengthenModeFlag) {
                     mPre.setEverCloseWhiteDot(true);
                     mPre.setSwitchOpenStrengthenMode(false);
                     mStrengthenModeFlag = false;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
-                }else {
+                } else {
                     mPre.setSwitchOpenStrengthenMode(true);
                     mStrengthenModeFlag = true;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
@@ -824,14 +862,13 @@ public class QuickGestureSettingActivity extends BaseActivity implements  OnClic
         });
     }
 
-    
     /**
      * switch strength mode open
      */
-    private void switchStrengthMode(){
-        if(mStrengthenModeFlag){
+    private void switchStrengthMode() {
+        if (mStrengthenModeFlag) {
             FloatWindowHelper.createWhiteFloatView(this);
-        }else{
+        } else {
             FloatWindowHelper.removeWhiteFloatView(this);
             mPre.setWhiteFloatViewCoordinate(0, 0);
         }

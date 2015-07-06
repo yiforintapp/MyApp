@@ -1136,7 +1136,7 @@ public class QuickGestureManager {
                         context
                                 .getSystemService(Context.NOTIFICATION_SERVICE);
                 Notification notification = new Notification();
-                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+//                LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
                 Intent intentPending = new Intent(context,
                         QuickGestureProxyActivity.class);
                 intentPending.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
