@@ -235,7 +235,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         super.finish();
     }
 
-    /* 快捷手势消失，立即创建响应热区 */
+    /* 快捷手势消失，立即创建响应热区 */ 
     private void createFloatView() {
         // 创建热区处理
         isCloseWindow = true;
