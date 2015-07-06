@@ -1673,8 +1673,7 @@ public class FloatWindowHelper {
             int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
 
             createWhiteFloatParams(mContext);
-            // get the last coordinate,if 0 then appear in last swipe
-            // orientation
+            // get the last coordinate,if 0 then appear in last swipe orientation
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
@@ -1721,7 +1720,7 @@ public class FloatWindowHelper {
             }
             if (mWhiteFloatHeight <= 0) {
                 mWhiteFloatHeight = mContext.getResources().getDimensionPixelSize(
-                        R.dimen.quick_white_float_height);
+                        R.dimen.quick_white_float_width);
             }
             mWhiteFloatParams = new LayoutParams();
             mWhiteFloatParams.width = mWhiteFLoatWidth;
@@ -1904,14 +1903,11 @@ public class FloatWindowHelper {
                         hideWhiteFloatView(mContext);
                         AppMasterPreference.getInstance(mContext)
                                 .setSwitchOpenStrengthenMode(false);
-                        Log.i("null", "锁屏啦");
                     } else if (!AppUtil.isScreenLocked(mContext)
                             && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-                        Log.i("null", "亮屏啦");
                         AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
                         showWhiteFloatView(mContext);
                     } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-                        Log.i("null", "解锁啦");
                         AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
                         showWhiteFloatView(mContext);
                     }

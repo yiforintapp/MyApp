@@ -327,6 +327,7 @@
     <dimen name="quick_first_tip_dialog_content_margin_top">10dp</dimen>
     <dimen name="quick_first_tip_dialog_title_margin_top">3dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">12sp</dimen>
+     <dimen name="quick_white_float_width">40dp</dimen>
     <!-- quick gesutre end -->
 
     <dimen name="dialog_btn_height">48dp</dimen>

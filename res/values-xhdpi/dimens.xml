@@ -206,6 +206,7 @@
     <dimen name="quick_first_tip_dialog_content_phone_height">150dp</dimen>
     <dimen name="quick_first_tip_dialog_content_margin_top">20dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">14sp</dimen>
+     <dimen name="quick_white_float_width">40dp</dimen>
     <!-- quick gesutre end -->
 
     <dimen name="privacy_contact_red_tip_x">105dp</dimen>
