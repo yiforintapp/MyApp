@@ -8,6 +8,9 @@
     <item
         android:drawable="@drawable/gif2"
         android:duration="50"/>
+        <item
+        android:drawable="@drawable/gif3"
+        android:duration="50"/>
     <item
         android:drawable="@drawable/gif4"
         android:duration="50"/>
@@ -31,6 +34,9 @@
         android:duration="100"/>
     <item
         android:drawable="@drawable/gif13"
+        android:duration="100"/>
+        <item
+        android:drawable="@drawable/gif14"
         android:duration="100"/>
     <item
         android:drawable="@drawable/gif15"
