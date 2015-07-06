@@ -264,10 +264,10 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (mAlarmDialogFlag) {
-            FloatWindowHelper.mEditQuickAreaFlag = true;
-            updateFloatWindowBackGroudColor();
-        }
+//        if (mAlarmDialogFlag) {
+//            FloatWindowHelper.mEditQuickAreaFlag = true;
+//            updateFloatWindowBackGroudColor();
+//        }
     }
 
     @Override
@@ -275,7 +275,9 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         super.onPause();
         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
             FloatWindowHelper.mEditQuickAreaFlag = false;
+//            mAlarmDialogFlag = false;
             updateFloatWindowBackGroudColor();
+            mAlarmDialog.dismiss();
         }
     }
 
@@ -429,7 +431,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         });
         mAlarmDialog.setCancelable(true);
         mAlarmDialog.show();
-        mAlarmDialogFlag = true;
+//        mAlarmDialogFlag = true;
         updateFloatWindowBackGroudColor();
     }
 
@@ -437,9 +439,6 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     private void updateFloatWindowBackGroudColor() {
         FloatWindowHelper
                 .updateFloatWindowBackgroudColor(this, FloatWindowHelper.mEditQuickAreaFlag);
-        // FloatWindowHelper.createFloatWindow(QuickGestureActivity.this,
-        // AppMasterPreference
-        // .getInstance(getApplicationContext()).getQuickGestureDialogSeekBarValue());
     }
 
     // sliding time setting diallg
