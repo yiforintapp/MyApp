@@ -1168,7 +1168,6 @@ public class FloatWindowHelper {
 
     // remove have red tip float window
     public static void removeShowReadTipWindow(Context context) {
-//        Log.e(FloatWindowHelper.RUN_TAG, "删除红点");
         removeSwipWindow(context, 2);
         removeSwipWindow(context, 4);
         removeSwipWindow(context, -2);

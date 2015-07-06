@@ -13,13 +13,10 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Intent.ShortcutIconResource;
-import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,15 +38,11 @@ import android.widget.VideoView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickGestureProxyActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureRadioSeekBarDialog.OnDiaogClickListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -254,6 +247,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             FloatWindowHelper.mEditQuickAreaFlag = false;
             updateFloatWindowBackGroudColor();
         }
+        
+        Log.i("######","onPause()");
     }
 
     class DialogRadioBean {
@@ -717,9 +712,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             sildeGuideTransAnim();
         }
         if (!isTranslating) {
+            //play
             mSlideStopImage.setVisibility(View.INVISIBLE);
             mSlideGuideAnim.start();
         } else {
+            //stop
             mSlideStopImage.setVisibility(View.VISIBLE);
             List<Animator> throbbers = mSlideGuideAnim.getChildAnimations();
             for (Animator animator : throbbers) {
@@ -801,4 +798,31 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             });
         }
     }
+    
+    @Override
+    protected void onStop() {
+        stopAnimation();
+        Log.i("######","onStop()");
+        super.onStop();
+    }
+    
+    private void stopAnimation(){
+        // stop the slide guide animation
+        if (null != mSlideGuideAnim && isTranslating) {
+            mSlideStopImage.setVisibility(View.VISIBLE);
+            List<Animator> throbbers = mSlideGuideAnim.getChildAnimations();
+            for (Animator animator : throbbers) {
+                ((ObjectAnimator) animator).setRepeatCount(0);
+                ((ObjectAnimator) animator).setRepeatMode(0);
+            }
+            mSlideGuideAnim.cancel();
+            mSlideGuideAnim = null;
+        }
+        // stop the edit video
+        mEditVideoView.stopPlayback();
+        mEditStopImage.setVisibility(View.VISIBLE);
+        mEditVideoBgImage.setVisibility(View.VISIBLE);
+    }
+    
+    
 }

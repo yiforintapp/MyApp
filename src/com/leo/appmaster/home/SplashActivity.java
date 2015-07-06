@@ -401,6 +401,7 @@ public class SplashActivity extends BaseActivity {
         Button button = (Button) mPageViews.get(mPageViews.size() - 1).findViewById(
                 R.id.button_guide);
         button.setVisibility(View.VISIBLE);
+        button.setBackgroundResource(R.drawable.letgo_bg);
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -503,31 +504,31 @@ public class SplashActivity extends BaseActivity {
         /* page1 */
         ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page1.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_1));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_1));
         tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page1_title));
+        tvTitle.setText(getResources().getString(R.string.new_guide_page1_title));
         tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page1_content));
+        tvContent.setText(getResources().getString(R.string.new_guide_page1_content));
         mNewFuncPageViews.add(page1);
         
         /* page2 */
         ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page2.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_1));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
         tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page1_title));
+        tvTitle.setText(getResources().getString(R.string.new_guide_page2_title));
         tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page1_content));
+        tvContent.setText(getResources().getString(R.string.new_guide_page2_content));
         mNewFuncPageViews.add(page2);
         
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_1));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_3));
         tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page1_title));
+        tvTitle.setText(getResources().getString(R.string.new_guide_page3_title));
         tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page1_content));
+        tvContent.setText(getResources().getString(R.string.new_guide_page3_content));
         mNewFuncPageViews.add(page3);
         
         mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
@@ -556,6 +557,7 @@ public class SplashActivity extends BaseActivity {
         
         enterAppButton = (Button)page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
+        enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             
             @Override

@@ -64,7 +64,7 @@
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
             android:textSize="14dp"
-            android:textColor="@color/help_setting_title"
+            android:textColor="@color/guide_more_text_color"
             android:visibility="gone"
             android:text="MORE >"
             />
