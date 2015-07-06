@@ -10,7 +10,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,7 +20,6 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -58,7 +56,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.NinePatchChunk;
 
-public class SplashActivity extends BaseActivity implements OnPageChangeListener {
+public class SplashActivity extends BaseActivity {
 
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
     private Handler mEventHandler;
@@ -67,7 +65,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
     private ViewPager mViewPager,mNewFuncViewPager;
     /* pages */
     private ArrayList<View> mPageViews,mNewFuncPageViews;
-    private GuideItemView mPageBackgroundView;
+    private GuideItemView mPageBackgroundView,mNewPageBackgroundView;
     /* footer indicators */
     private CirclePageIndicator mIndicator;
     private ViewGroup mMain,mNewGuideMain;
@@ -340,6 +338,8 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         mPageColors[2] = getResources().getColor(R.color.guide_page3_background_color);
         mPageColors[3] = getResources().getColor(R.color.guide_page4_background_color);
 
+        Log.i("tag", mPageColors[0] +"  "+ mPageColors[3]);
+        
         LayoutInflater inflater = getLayoutInflater();
         mPageViews = new ArrayList<View>();
         mPageBackgroundView = (GuideItemView) findViewById(R.id.guide_bg_view);
@@ -445,50 +445,6 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             ((ViewPager) arg0).addView(pageViews.get(arg1));
             return pageViews.get(arg1);
         }
-
-        @Override
-        public void restoreState(Parcelable arg0, ClassLoader arg1) {
-        }
-
-        @Override
-        public Parcelable saveState() {
-            return null;
-        }
-
-        @Override
-        public void startUpdate(View arg0) {
-        }
-
-        @Override
-        public void finishUpdate(View arg0) {
-        }
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-        if (arg1 > 0.0f && arg0 + 1 < mPageViews.size()) {
-            int newColor = caculateNewColor(
-                    mPageColors[arg0], mPageColors[arg0 + 1], arg1);
-            mPageBackgroundView.setCurrentColor(newColor);
-        }
-        /* disable edges scrolling effect */
-        if (leftEdge != null && rightEdge != null) {
-            leftEdge.finish();
-            rightEdge.finish();
-            leftEdge.setSize(0, 0);
-            rightEdge.setSize(0, 0);
-        }
-        if (mViewPager != null) {
-            mViewPager.invalidate();
-        }
-    }
-
-    @Override
-    public void onPageSelected(int arg0) {
     }
 
     private int caculateNewColor(int originColor, int targetColor, float position) {
@@ -542,8 +498,8 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         mPageColors[5] = getResources().getColor(R.color.new_guide_page2_background_color);
         mPageColors[6] = getResources().getColor(R.color.new_guide_page3_background_color);
         
-        mPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
-        mPageBackgroundView.initBackgroundColor(mPageColors[4]);
+        mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
+        mNewPageBackgroundView.initBackgroundColor(mPageColors[4]);
         /* page1 */
         ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page1.findViewById(R.id.guide_image);
@@ -620,6 +576,7 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
             mMain.setVisibility(View.INVISIBLE);
             mNewGuideMain.setVisibility(View.VISIBLE);
             mNewFuncViewPager.setCurrentItem(mNewFuncPageViews.size()-1);
+            initViewPagerEdges(mNewFuncViewPager);
         }else {
             super.onBackPressed();
         }
@@ -629,16 +586,19 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
 
         List<View> pageViews;
         int startColorIndex = 0;
+        GuideItemView backGroundView;
         
         GuidePageChangeListener(List<View> pageViews){
             this.pageViews = pageViews;
+            initBackGroundView();
         }
         
         GuidePageChangeListener(List<View> pageViews,int startColorIndex){
             this.pageViews = pageViews;
             this.startColorIndex = startColorIndex;
+            initBackGroundView();
         }
-        
+       
         @Override
         public void onPageScrollStateChanged(int arg0) {
         }
@@ -647,10 +607,8 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
         public void onPageScrolled(int arg0, float arg1, int arg2) {
             if (arg1 > 0.0f && arg0 + 1 < pageViews.size()) {
                 int newColor = caculateNewColor(
-                        mPageColors[arg0+startColorIndex], mPageColors[arg0 + 1+startColorIndex], arg1);
-                mPageBackgroundView.setCurrentColor(newColor);
-                Log.i("tag", "arg0+startColorIndex = "+(arg0+startColorIndex) + " mPageColors[arg0+startColorIndex] = "+mPageColors[arg0+startColorIndex]);
-                Log.i("tag", "mPageColors[arg0 + 1+startColorIndex] = "+(arg0+startColorIndex+1)+" mPageColors[arg0 + 1+startColorIndex] = "+mPageColors[arg0 + 1+startColorIndex]);
+                mPageColors[arg0+startColorIndex], mPageColors[arg0 + 1+startColorIndex], arg1);
+                backGroundView.setCurrentColor(newColor);
             }
             /* disable edges scrolling effect */
             if (leftEdge != null && rightEdge != null) {
@@ -672,6 +630,14 @@ public class SplashActivity extends BaseActivity implements OnPageChangeListener
 
         @Override
         public void onPageSelected(int arg0) {
+        }
+        
+        private void initBackGroundView(){
+            if(startColorIndex == 0){
+                backGroundView = mPageBackgroundView;
+            }else {
+                backGroundView = mNewPageBackgroundView;
+            }
         }
     }
 }

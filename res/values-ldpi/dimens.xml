@@ -227,6 +227,7 @@
     <dimen name="quick_first_tip_dialog_content_margin_top">5dp</dimen>
     <dimen name="quick_first_tip_dialog_title_margin_top">2dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">12sp</dimen>
+     <dimen name="quick_white_float_width">36dp</dimen>
     <!-- quick gesutre end -->
 
     <integer name="privacy_contact_red_tip_tabTextwdth">10</integer>
@@ -236,5 +237,5 @@
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="text_icon_margin">3dp</dimen>
     <dimen name="dialog_btn_height">40dp</dimen>
-
+	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
 </resources>
