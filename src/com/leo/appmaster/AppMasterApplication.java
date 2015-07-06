@@ -263,6 +263,7 @@ public class AppMasterApplication extends Application {
     }
 
     private void startInitTask(final Context ctx) {
+        checkUpdateFinish();
         postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
@@ -272,7 +273,7 @@ public class AppMasterApplication extends Application {
                         .getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(AppMasterApplication.this).init();
                 }
-                checkUpdateFinish();
+                /*checkUpdateFinish();*/
                 quickGestureTipInit();
                 mBackupManager.getBackupList();
                 PrivacyContactManager.getInstance(ctx).getPrivateContacts();
