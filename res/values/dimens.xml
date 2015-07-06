@@ -246,5 +246,5 @@
     <dimen name="text_icon_margin">5dp</dimen>
     <dimen name="quick_white_float_width">40dp</dimen>
     <dimen name="quick_white_float_height">40dp</dimen>
-
+	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
 </resources>

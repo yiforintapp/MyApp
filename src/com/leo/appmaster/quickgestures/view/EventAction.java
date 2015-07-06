@@ -26,7 +26,7 @@ public class EventAction implements DecorateAction {
     private int mNumber;
     final Drawable mNumBg;
     private Rect mDrawRect;
-
+    private Context mContext;
     @Override
     public int getActionType() {
         return ACTION_EVENT;
@@ -49,6 +49,7 @@ public class EventAction implements DecorateAction {
     public EventAction(Context context, int number) {
         mNumBg = context.getResources().getDrawable(R.drawable.red_tip);
         mNumber = number;
+        mContext=context;
     }
 
     /**
@@ -60,9 +61,10 @@ public class EventAction implements DecorateAction {
         mDrawRect = new Rect(scrollX, scrollY, scrollX + mNumBg.getIntrinsicWidth(), scrollY
                 + mNumBg.getIntrinsicHeight());
         
+        float offsetx = mContext.getResources().getDimension(R.dimen.gesture_item_readtips_offsetx);
         //canvas.translate(scrollX-33, scrollY);
         
-        canvas.translate(scrollX-15, scrollY);
+        canvas.translate(scrollX-offsetx, scrollY);
         mNumBg.setBounds(0, 0, mNumBg.getIntrinsicWidth(), mNumBg.getIntrinsicHeight());
         mNumBg.draw(canvas);
 

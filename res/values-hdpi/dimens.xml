@@ -359,6 +359,7 @@
 
     <!-- 2.5 ql part -->
     <dimen name="lock_setting_item_des_width">185dp</dimen>
+    <dimen name="gesture_item_readtips_offsetx">15dp</dimen>
     <!-- 2.5 ql part -->
 
 </resources>

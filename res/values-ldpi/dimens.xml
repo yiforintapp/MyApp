@@ -236,5 +236,5 @@
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="text_icon_margin">3dp</dimen>
     <dimen name="dialog_btn_height">40dp</dimen>
-
+	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
 </resources>
