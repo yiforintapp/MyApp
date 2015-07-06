@@ -353,6 +353,7 @@ public class LockManager {
     }
 
     private void initLocationLock() {
+        LeoLog.d("onNetworkStateChange", "initLocationLock");
         if (NetWorkUtil.isNetworkAvailable(mContext)) {
             if (NetWorkUtil.isWifiConnected(mContext)) {
                 mCurNetType = mLastNetType = NETWORK_WIFI;
@@ -403,8 +404,12 @@ public class LockManager {
                 }
 
                 LeoLog.d("onNetworkStateChange", "mCurWifi: " + mCurWifi);
+                LeoLog.d("onNetworkStateChange", "mLastNetType --> " + mLastNetType);
+                LeoLog.d("onNetworkStateChange", "mCurNetType --> " + mCurNetType);
                 if (mLastNetType != mCurNetType) {
+                    LeoLog.d("onNetworkStateChange", "mLastNetType != mCurNetType");
                     if (mLastNetType == NETWORK_WIFI) {
+                        LeoLog.d("onNetworkStateChange", "mLastNetType == NETWORK_WIFI");
                         // change wifi to no-wifi
                         /*
                          * change wifi to no-wifi, select the last match
@@ -437,6 +442,7 @@ public class LockManager {
                         }
                     } else {
                         if (mCurNetType == NETWORK_WIFI) {
+                            LeoLog.d("onNetworkStateChange", "mCurNetType == NETWORK_WIFI");
                             // change no-wifi to wifi
                             /*
                              * change no-wifi to wifi, select the last match
@@ -471,6 +477,7 @@ public class LockManager {
                     }
                 } else {
                     if (mCurNetType == NETWORK_WIFI) {
+                        LeoLog.d("onNetworkStateChange", "mCurNetType == NETWORK_WIFI");
                         // change wifi to another wifi
                         /*
                          * change wifi to another wifi, select the last match
@@ -478,30 +485,61 @@ public class LockManager {
                          */
                         LocationLock selseLock = null;
                         for (LocationLock lock : mLocationLockList) {
-                            if (lock.using && TextUtils.equals(mCurWifi, lock.ssid)) {
-                                if (selseLock == null) {
-                                    selseLock = lock;
-                                } else {
-                                    if (lock.id > selseLock.id) {
+                            LeoLog.d("onNetworkStateChange", "lock.name is --> " + lock.name);
+                            LeoLog.d("onNetworkStateChange", " lock.ssid is --> " + lock.ssid);
+                            LeoLog.d("onNetworkStateChange", "mCurWifi is --> " + mCurWifi);
+
+                            if (lock.using) {
+                                if (TextUtils.equals(mCurWifi, lock.ssid)) {
+                                    if (selseLock == null) {
                                         selseLock = lock;
+                                    } else {
+                                        if (lock.id > selseLock.id) {
+                                            selseLock = lock;
+                                        }
+                                    }
+                                    if (selseLock != null) {
+                                        LeoLog.d("onNetworkStateChange", "selseLock != null");
+                                        for (LockMode lockMode : mLockModeList) {
+                                            if (lockMode.modeId == selseLock.entranceModeId) {
+                                                LeoLog.d("onNetworkStateChange", "hit location: "
+                                                        + selseLock.name + "   "
+                                                        + selseLock.entranceModeName);
+                                                setCurrentLockMode(lockMode, false);
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "modeschage",
+                                                        "local");
+                                                break;
+                                            }
+                                        }
+                                    }
+                                } else if (TextUtils.equals(mLastWifi, lock.ssid)) {
+                                    // AM-1724 wifi-to-wifi but not same wifi of
+                                    // lockModeName .
+                                    if (selseLock == null) {
+                                        selseLock = lock;
+                                    } else {
+                                        if (lock.id > selseLock.id) {
+                                            selseLock = lock;
+                                        }
+                                    }
+                                    if (selseLock != null) {
+                                        for (LockMode lockMode : mLockModeList) {
+                                            if (lockMode.modeId == selseLock.quitModeId) {
+                                                LeoLog.d("onNetworkStateChange", "hit location: "
+                                                        + selseLock.name + "   "
+                                                        + selseLock.quitModeName);
+                                                setCurrentLockMode(lockMode, false);
+                                                SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                                                        "modeschage",
+                                                        "local");
+                                                break;
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
-                        if (selseLock != null) {
-                            for (LockMode lockMode : mLockModeList) {
-                                if (lockMode.modeId == selseLock.entranceModeId) {
-                                    LeoLog.d("onNetworkStateChange", "hit location: "
-                                            + selseLock.name + "   "
-                                            + selseLock.entranceModeName);
-                                    setCurrentLockMode(lockMode, false);
-                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "modeschage",
-                                            "local");
-                                    break;
-                                }
-                            }
-                        }
-
                     }
                 }
 

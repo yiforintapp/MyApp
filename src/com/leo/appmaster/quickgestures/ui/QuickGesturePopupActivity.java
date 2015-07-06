@@ -68,7 +68,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot()) {
             int clickCount = amp.getUseStrengthenModeTimes();
-         //   if (clickCount == 1) {
+            if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
                 mGestureTipTitle.setVisibility(View.GONE);
                 mGestureTipContent.setText(R.string.white_dot_click_tip);
@@ -95,7 +95,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 });
-          //  }
+            }
         }
     }
 
@@ -235,7 +235,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         super.finish();
     }
 
-    /* 快捷手势消失，立即创建响应热区 */
+    /* 快捷手势消失，立即创建响应热区 */ 
     private void createFloatView() {
         // 创建热区处理
         isCloseWindow = true;
