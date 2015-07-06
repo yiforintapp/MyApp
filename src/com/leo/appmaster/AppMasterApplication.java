@@ -48,6 +48,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -64,6 +65,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
@@ -73,6 +75,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureProxyActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -281,8 +284,10 @@ public class AppMasterApplication extends Application {
                     SDKWrapper.addEvent(AppMasterApplication.this, SDKWrapper.P1, "gp_check",
                             "nogp");
                 }
-                removeQuickGestureIcon();
+                // // 升级用户更换快捷手势
+                checkRemoveQuickGestureIcon(ctx);
             }
+
         });
     }
 
@@ -290,6 +295,24 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(this))) {
             pref.setNewUserUnlockCount(0);
+        }
+    }
+
+    private void checkRemoveQuickGestureIcon(final Context ctx) {
+        boolean updateUser = AppMasterPreference.getInstance(ctx)
+                .getIsUpdateQuickGestureUser();
+        // if (updateUser) {
+        // removeQuickGestureIcon();
+        // }
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        String lastVercode = pref.getLastVersion();
+        String versionCode = PhoneInfo.getVersionCode(this);
+        // first install
+        if (!TextUtils.isEmpty(lastVercode)
+                && (Integer.parseInt(lastVercode) < Integer.parseInt(versionCode))) {
+            // update
+            removeQuickGestureIcon();
+            // Log.e(FloatWindowHelper.RUN_TAG, "更新用户");
         }
     }
 
