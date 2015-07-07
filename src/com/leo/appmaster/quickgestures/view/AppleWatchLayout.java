@@ -19,11 +19,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Rect;
-import android.hardware.camera2.utils.ArrayUtils;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -782,7 +780,6 @@ public class AppleWatchLayout extends ViewGroup {
             // Log.e(Constants.RUN_TAG,
             // "是否为过滤机型："+filterPhoneMode.contains(BuildProperties.getPoneModel()));
             if (filterPhoneMode.contains(BuildProperties.getPoneModel())) {
-                // Log.e(Constants.RUN_TAG, "进来");
                 intent.setComponent(new ComponentName("com.android.contacts",
                         "com.android.dialer.DialtactsActivity"));
             }

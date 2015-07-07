@@ -555,7 +555,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                 for (MessageBean messageBean : mRestorMessages) {
                     String fromateNumber = PrivacyContactUtils.formatePhoneNumber(messageBean
                             .getPhoneNumber());
-                    getMessages(
+                    mRestoremessgeLists= getMessages(
                             QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL,
                             Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ? ",
                             new String[] {

@@ -250,15 +250,22 @@ public final class Utilities {
     }
 
     public static String getCountryID(Context context) {
-        TelephonyManager tm = (TelephonyManager) context
-                .getSystemService(Context.TELEPHONY_SERVICE);
-        String id = tm.getSimCountryIso();
-        if (isEmpty(id)) {
-            id = "d";
-        } else {
-            id = id.toLowerCase();
+        //AM-1764 android.os.TransactionTooLargeException
+        TelephonyManager tm;
+        try {
+            tm = (TelephonyManager) context
+                    .getSystemService(Context.TELEPHONY_SERVICE);
+            String id = tm.getSimCountryIso();
+            if (isEmpty(id)) {
+                id = "d";
+            } else {
+                id = id.toLowerCase();
+            }
+            return id;
+        } catch (Exception e) {
+            return "d";
         }
-        return id;
+
     }
 
     // 判断当前是否为桌面

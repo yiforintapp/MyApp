@@ -117,6 +117,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
+        Log.i("null","onWindowFocusChanged");
         if (!hasFocus) {
             if (!isItemClick) {
                 LockManager.getInstatnce().filterAllOneTime(1000);
@@ -136,7 +137,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        Log.i("null", "QuickGesturePopupActivity onResume");
+        Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
         FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
@@ -149,10 +150,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 });
             }
         });
-        super.onResume();
         FloatWindowHelper.hideWhiteFloatView(getApplicationContext());
         showSuccessTip();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "qt");
+        super.onResume();
     }
 
     private void fillTwoLayout(int mNowLayout) {
@@ -170,11 +171,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        Log.i("null","QuickGesturePopupActivity onPause()");
-        if (!ifCreateWhiteFloat) {
+        Log.i("null","QuickGesturePopupActivity onPause() + "+FloatWindowHelper.mGestureShowing);
+        if (!ifCreateWhiteFloat && !FloatWindowHelper.mGestureShowing) {
             showWhiteFloatView();
-            Log.i("null", "onPause  showWhiteFloatView");
             ifCreateWhiteFloat = true;
+            Log.i("null", "QuickGesturePopupActivity onPause  showWhiteFloatView");
         }
         super.onPause();
     }
@@ -204,7 +205,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onDestroy() {
         Log.i("null","QuickGesturePopupActivity onDestroy()");
         LeoEventBus.getDefaultBus().unregister(this);
-        FloatWindowHelper.mGestureShowing = false;
         if (!isCloseWindow) {
             createFloatView();
         }
@@ -221,6 +221,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 public void run() {
                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                     createFloatView();
+                    
                     if (!ifCreateWhiteFloat) {
                         showWhiteFloatView();
                         ifCreateWhiteFloat = true;
@@ -243,7 +244,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void createFloatView() {
         // 创建热区处理
         isCloseWindow = true;
-        FloatWindowHelper.mGestureShowing = false;
         
         FloatWindowHelper.createFloatWindow(getApplicationContext(),
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
@@ -278,6 +278,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
                     FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
                     FloatWindowHelper.createWhiteFloatView(getApplicationContext());
+                    Log.i("null" ,"showWhiteFloatView");
                 }
             });
         }

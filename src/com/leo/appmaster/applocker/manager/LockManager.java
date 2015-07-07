@@ -1194,7 +1194,14 @@ public class LockManager {
                     list = new LinkedList<String>();
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {
-                        if (AppUtil.appInstalled(mContext, pkg)) {
+                        //AM-1765 联想K2110Aandroid]testin测试运行失败
+                        boolean isAppInstalled = false;
+                        try {
+                            isAppInstalled = AppUtil.appInstalled(mContext, pkg);
+                        } catch (Exception e) {
+                            isAppInstalled = false;
+                        }
+                        if (isAppInstalled) {
                             list.add(pkg);
                         }
                     }
