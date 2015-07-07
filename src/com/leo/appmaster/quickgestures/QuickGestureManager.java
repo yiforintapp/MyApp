@@ -16,6 +16,8 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.Intent.ShortcutIconResource;
@@ -82,6 +84,8 @@ public class QuickGestureManager {
     public boolean mToMsmFlag;
     public boolean mToCallFlag;
     public static String QUICK_GESTURE_SETTING_EVENT = "quick_gesture_setting_event";
+    public boolean isDialogShowing = false;
+    
     /*
      * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
      */
@@ -925,7 +929,6 @@ public class QuickGestureManager {
             }
         });
         commonApp.setLeftBt(new OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
                 // 取消按钮
@@ -944,8 +947,15 @@ public class QuickGestureManager {
 
         // commonApp.getWindow().setType(
         // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        commonApp.getWindow().setType(
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        commonApp.getWindow().setType(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        commonApp.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                isDialogShowing = false;
+                Log.i("null", "commonApp dialog "+ isDialogShowing);
+            }
+        });
+        isDialogShowing = true;
         commonApp.show();
     }
 
@@ -1099,6 +1109,14 @@ public class QuickGestureManager {
         // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.getWindow().setType(
                 WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        quickSwitch.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                isDialogShowing = false;
+                Log.i("null", "quickSwitch dialog "+ isDialogShowing);
+            }
+        });
+        isDialogShowing = true;
         quickSwitch.show();
     }
 
