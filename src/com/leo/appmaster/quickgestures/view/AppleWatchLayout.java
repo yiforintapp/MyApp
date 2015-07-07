@@ -119,7 +119,7 @@ public class AppleWatchLayout extends ViewGroup {
             int[] hit = new int[11];
             for (int i = 0; i < infos.size(); i++) {
                 info = (BaseInfo) infos.get(i);
-                if (info.gesturePosition < 0 || info.gesturePosition >= 11) {
+                if (info.gesturePosition < 0 || info.gesturePosition > 11) {
                     info.gesturePosition = i;
                 }
                 hit[info.gesturePosition] = 1;
@@ -811,6 +811,7 @@ public class AppleWatchLayout extends ViewGroup {
             item.cancelShowReadTip();
             Intent intent = new Intent();
             intent.setClass(mContext, PrivacyContactActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             if (!Utilities.isEmpty(QuickGestureManager.getInstance(mContext).privacyLastRecord)) {
                 if (QuickGestureManager.getInstance(mContext).privacyLastRecord
                         .equals(QuickGestureManager.RECORD_MSM)) {
