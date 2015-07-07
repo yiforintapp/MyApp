@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.animation.FloatEvaluator;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
@@ -1066,6 +1067,13 @@ public class PrivacyContactUtils {
                 if (temp > 0) {
                     pre.setMessageNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
+                        // 没有未读去除隐私通知
+                        if (pre.getCallLogNoReadCount() <= 0) {
+                            NotificationManager notificationManager = (NotificationManager)
+                                    context
+                                            .getSystemService(Context.NOTIFICATION_SERVICE);
+                            notificationManager.cancel(20140901);
+                        }
                         /**
                          * 对快捷手势隐私联系人未读，红点操作
                          */

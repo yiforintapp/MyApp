@@ -13,6 +13,7 @@ import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -584,7 +585,14 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 if (temp > 0) {
                     pre.setCallLogNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
-                        // TODO 隐私通话没有未读
+                        // 没有未读去除隐私通知
+                        if (pre.getMessageNoReadCount() <= 0) {
+                            NotificationManager notificationManager = (NotificationManager)
+                                    context
+                                            .getSystemService(Context.NOTIFICATION_SERVICE);
+                            notificationManager.cancel(20140902);
+                        }
+                        // 隐私通话没有未读
                         /**
                          * 对快捷手势隐私联系人，红点去除操作
                          */
