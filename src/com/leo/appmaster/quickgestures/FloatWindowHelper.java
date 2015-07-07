@@ -1723,6 +1723,7 @@ public class FloatWindowHelper {
             } catch (Exception e) {
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             }
+            Log.i("null", "createWhiteFloatView");
         }
     }
 
@@ -1767,9 +1768,9 @@ public class FloatWindowHelper {
                 mWhiteFloatView.setVisibility(View.GONE);
                 try {
                     windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
+                    Log.i("null", "hideWhiteFloatView");
                 } catch (Exception e) {
                 }
-                Log.i("null", "hide");
             }
         }
     }
@@ -1782,11 +1783,9 @@ public class FloatWindowHelper {
                 mWhiteFloatView.setImageResource(R.drawable.gesture_red_point);
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             } else {
-                // if (mWhiteFloatView.getVisibility() != View.VISIBLE) {
                 mWhiteFloatView.setVisibility(View.VISIBLE);
                 mWhiteFloatView.setImageResource(0);
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
-                // }
             }
         } else {
             createWhiteFloatView(mContext);

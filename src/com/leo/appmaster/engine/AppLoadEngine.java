@@ -822,7 +822,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                     dialog.getWindow().setType(
                             WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
                     dialog.show();
-
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "tdau", "dialogue");
                 }
             }, 5000);
         }
