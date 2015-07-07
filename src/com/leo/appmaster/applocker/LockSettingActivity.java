@@ -98,28 +98,28 @@ public class LockSettingActivity extends BaseFragmentActivity implements
                 mLockType = LOCK_TYPE_PASSWD;
                 tans.replace(R.id.fragment_contain, mPasswd);
                 mSwitchBottom.setText(getString(R.string.switch_gesture));
-                iv_reset_icon.setBackground(res.getDrawable(
-                        R.drawable.reset_pass_gesture_icon));
+                iv_reset_icon.setBackgroundResource(
+                        R.drawable.reset_pass_gesture_icon);
             } else {
                 mLockType = LOCK_TYPE_GESTURE;
                 tans.replace(R.id.fragment_contain, mGesture);
                 mSwitchBottom.setText(getString(R.string.switch_passwd));
-                iv_reset_icon.setBackground(res.getDrawable(
-                        R.drawable.reset_pass_number_icon));
+                iv_reset_icon.setBackgroundResource(
+                        R.drawable.reset_pass_number_icon);
             }
         } else {
             if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
                 mLockType = LOCK_TYPE_GESTURE;
                 tans.replace(R.id.fragment_contain, mGesture);
                 mSwitchBottom.setText(getString(R.string.switch_passwd));
-                iv_reset_icon.setBackground(res.getDrawable(
-                        R.drawable.reset_pass_number_icon));
+                iv_reset_icon.setBackgroundResource(
+                        R.drawable.reset_pass_number_icon);
             } else {
                 mLockType = LOCK_TYPE_PASSWD;
                 tans.replace(R.id.fragment_contain, mPasswd);
                 mSwitchBottom.setText(getString(R.string.switch_gesture));
-                iv_reset_icon.setBackground(res.getDrawable(
-                        R.drawable.reset_pass_gesture_icon));
+                iv_reset_icon.setBackgroundResource(
+                        R.drawable.reset_pass_gesture_icon);
             }
         }
 
@@ -175,14 +175,14 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             tans.replace(R.id.fragment_contain, mGesture);
             mLockType = LOCK_TYPE_GESTURE;
             mSwitchBottom.setText(getString(R.string.switch_passwd));
-            iv_reset_icon.setBackground(res.getDrawable(
-                    R.drawable.reset_pass_number_icon));
+            iv_reset_icon.setBackgroundResource(
+                    R.drawable.reset_pass_number_icon);
         } else {
             tans.replace(R.id.fragment_contain, mPasswd);
             mLockType = LOCK_TYPE_PASSWD;
             mSwitchBottom.setText(getString(R.string.switch_gesture));
-            iv_reset_icon.setBackground(res.getDrawable(
-                    R.drawable.reset_pass_gesture_icon));
+            iv_reset_icon.setBackgroundResource(
+                    R.drawable.reset_pass_gesture_icon);
         }
         tans.commit();
     }
