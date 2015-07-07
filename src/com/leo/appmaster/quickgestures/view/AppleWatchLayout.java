@@ -119,7 +119,7 @@ public class AppleWatchLayout extends ViewGroup {
             int[] hit = new int[11];
             for (int i = 0; i < infos.size(); i++) {
                 info = (BaseInfo) infos.get(i);
-                if (info.gesturePosition < 0 || info.gesturePosition > 11) {
+                if (info.gesturePosition < 0 || info.gesturePosition >= 11) {
                     info.gesturePosition = i;
                 }
                 hit[info.gesturePosition] = 1;
