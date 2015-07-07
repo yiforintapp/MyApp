@@ -154,6 +154,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             });
         } else {
             mTitleBar.openBackView();
+            Log.i("null", "back");
         }
     }
 

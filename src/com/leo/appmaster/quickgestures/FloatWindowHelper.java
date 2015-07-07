@@ -95,7 +95,7 @@ public class FloatWindowHelper {
     // right top height
     private static float mRightTopHeight = 50;
     // white float width and height
-    private static int mWhiteFLoatWidth, mWhiteFloatHeight;
+    private static int mWhiteFLoatWidth, mWhiteFloatHeight,mLastClickTime;
 
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
@@ -1795,9 +1795,13 @@ public class FloatWindowHelper {
     private static void onWhiteFloatClick(Context mContext) {
         if (null == mWhiteFloatView)
             return;
+        if(System.currentTimeMillis() - mLastClickTime <1000){
+            return;
+        }
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         if (hasMessageTip(mContext)) {
-            pref.setLastTimeLayout(1);
+            // if has new tip,then to last use layout
+            pref.setLastTimeLayout(1); 
             mWhiteFloatView.setImageResource(0);
         }
         pref.addUseStrengthenModeTimes();
