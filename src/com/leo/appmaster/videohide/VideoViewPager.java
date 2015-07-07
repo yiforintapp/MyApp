@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -18,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
@@ -29,6 +31,7 @@ import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -414,17 +417,22 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             if (flag && mPosition < mAllPath.size()) {
                 String path = mAllPath.get(mPosition);
                 newFileName = FileOperationUtil.getNameFromFilepath(path);
-                newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
-                if (!FileOperationUtil.renameFile(path, newFileName)) {
-                    return isSuccess = false;
-                } else {
-                    mResultPath.add(path);
-                    FileOperationUtil.saveFileMediaEntry(
-                            FileOperationUtil.makePath(
-                                    FileOperationUtil.getDirPathFromFilepath(path), newFileName),
-                            context);
-                    FileOperationUtil.deleteFileMediaEntry(path, context);
-                    mAllPath.remove(mPosition);
+                try {
+                        newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
+                        if (!FileOperationUtil.renameFile(path, newFileName)) {
+                            return isSuccess = false;
+                        } else {
+                            mResultPath.add(path);
+                            FileOperationUtil.saveFileMediaEntry(
+                                    FileOperationUtil.makePath(
+                                            FileOperationUtil.getDirPathFromFilepath(path),
+                                            newFileName),
+                                    context);
+                            FileOperationUtil.deleteFileMediaEntry(path, context);
+                            mAllPath.remove(mPosition);
+                        }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             return isSuccess;

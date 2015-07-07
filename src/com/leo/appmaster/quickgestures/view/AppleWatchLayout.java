@@ -811,7 +811,6 @@ public class AppleWatchLayout extends ViewGroup {
             item.cancelShowReadTip();
             Intent intent = new Intent();
             intent.setClass(mContext, PrivacyContactActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             if (!Utilities.isEmpty(QuickGestureManager.getInstance(mContext).privacyLastRecord)) {
                 if (QuickGestureManager.getInstance(mContext).privacyLastRecord
                         .equals(QuickGestureManager.RECORD_MSM)) {

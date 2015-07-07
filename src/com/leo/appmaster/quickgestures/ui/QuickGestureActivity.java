@@ -73,7 +73,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private boolean mFromShortcut, isRoating, isTranslating;
     public static boolean isSureBt;
     private AnimatorSet mSlideGuideAnim;
-    private boolean leftBottomTemp, leftCenterTemp, rightBottomTemp, RightCenterTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -229,10 +228,10 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (mAlarmDialogFlag) {
-            FloatWindowHelper.mEditQuickAreaFlag = true;
-            updateFloatWindowBackGroudColor();
-        }
+//        if (mAlarmDialogFlag) {
+//            FloatWindowHelper.mEditQuickAreaFlag = true;
+//            updateFloatWindowBackGroudColor();
+//        }
     }
 
     @Override
@@ -240,9 +239,10 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         super.onPause();
         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
             FloatWindowHelper.mEditQuickAreaFlag = false;
+            // mAlarmDialogFlag = false;
             updateFloatWindowBackGroudColor();
+            mAlarmDialog.dismiss();
         }
-        
         Log.i("######","onPause()");
     }
 
@@ -383,22 +383,15 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                             R.string.pg_appmanager_quick_gesture_option_dialog_radio_toast_text),
                             Toast.LENGTH_SHORT).show();
                 }
-                unInitSlidingSetting();
             }
 
         });
         mAlarmDialog.setCancelable(true);
         mAlarmDialog.show();
-        mAlarmDialogFlag = true;
+//        mAlarmDialogFlag = true;
         updateFloatWindowBackGroudColor();
     }
 
-    private void unInitSlidingSetting() {
-        leftCenterTemp = false;
-        RightCenterTemp = false;
-        leftBottomTemp = false;
-        rightBottomTemp = false;
-    }
 
     // update backgroud color
     private void updateFloatWindowBackGroudColor() {
@@ -548,7 +541,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 Intent intent = new Intent(QuickGestureActivity.this,
                         QuickGestureSettingActivity.class);
                 startActivity(intent);
-                finish();
+//                finish();
                 break;
             case R.id.gesture_switch_text:
                 gestureSwitch();

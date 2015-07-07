@@ -228,8 +228,11 @@ public class FileOperationUtil {
 
         try {
             if (file.isFile()) {
-                String newFileDir = newPath.substring(0,
-                        newPath.lastIndexOf(File.separator));
+                int pos = newPath.lastIndexOf(File.separator);
+                String newFileDir = null;
+                if (pos > -1) {
+                    newFileDir = newPath.substring(0, pos);
+                }
                 File temp = new File(newFileDir);
                 LeoLog.d("RenameFile", "fileDir = " + newFileDir);
                 if (temp.exists()) {
@@ -246,6 +249,7 @@ public class FileOperationUtil {
                         newPath = newPath.replace(SDCARD_DIR_NAME + File.separator, "");
                     }
                 }
+
                 boolean ret = file.renameTo(new File(newPath));
                 LeoLog.d("RenameFile", ret + " : rename file " + filePath
                         + " to " + newPath);
@@ -305,12 +309,20 @@ public class FileOperationUtil {
         if (file.isFile()) {
             String newFileDir = null;
             if (newHided) {
-                newFileDir = newPath.substring(0,
-                        newPath.lastIndexOf(File.separator)).replace(
-                        SDCARD_DIR_NAME + File.separator, "");
+                try {
+                    newFileDir = newPath.substring(0,
+                            newPath.lastIndexOf(File.separator)).replace(
+                            SDCARD_DIR_NAME + File.separator, "");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             } else {
-                newFileDir = newPath.substring(0,
-                        newPath.lastIndexOf(File.separator));
+                try {
+                    newFileDir = newPath.substring(0,
+                            newPath.lastIndexOf(File.separator));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             File temp = new File(newFileDir);
@@ -587,7 +599,11 @@ public class FileOperationUtil {
     public static int hideImageFileCopy(Context ctx, String fromFile, String newName)
     {
         String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
-        String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
+        try {
+            String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
+        } catch (Exception e1) {
+            e1.printStackTrace();
+        }
         String fileName = FileOperationUtil.getNameFromFilepath(fromFile);
         File file = new File(fromFile);
         String[] paths = getSdCardPaths(ctx);
@@ -610,8 +626,15 @@ public class FileOperationUtil {
 
         }
         if (file.isFile()) {
-            String newFileDir = newPath.substring(0,
-                    newPath.lastIndexOf(File.separator));
+            String newFileDir = null;
+            try {
+                if (newPath.lastIndexOf(File.separator) > -1) {
+                    newFileDir = newPath.substring(0,
+                            newPath.lastIndexOf(File.separator));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             File temp = new File(newFileDir);
             LeoLog.d("RenameFile", "fileDir = " + newFileDir);
             if (temp.exists()) {
@@ -701,8 +724,15 @@ public class FileOperationUtil {
             // FileOperationUtil.getDirPathFromFilepath(fromFile), fileName);
         }
         if (file.isFile()) {
-            String newFileDir = newPath.substring(0,
-                    newPath.lastIndexOf(File.separator));
+            String newFileDir = null;
+            try {
+                if (newPath.lastIndexOf(File.separator) > -1) {
+                    newFileDir = newPath.substring(0,
+                            newPath.lastIndexOf(File.separator));
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             File temp = new File(newFileDir);
             LeoLog.d("RenameFile", "fileDir = " + newFileDir);
             if (temp.exists()) {
