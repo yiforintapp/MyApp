@@ -1890,7 +1890,7 @@ public class FloatWindowHelper {
     private static void showQuickGuestureView(Context mContext, int orientation) {
         Intent intent = new Intent(mContext,
                 QuickGesturePopupActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("show_orientation", orientation);
         intent.putExtra("from_white_dot", true);
         mContext.startActivity(intent);
