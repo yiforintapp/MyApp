@@ -65,18 +65,17 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     private ImageView mNoReadMessageOpenCK,
             mRecentlyContactOpenCK, mPrivacyContactOpenCK, mStrengthModeOpenCk;
     private boolean mNoReadMessageFlag, mRecentlyContactFlag,
-            mPrivacyContactFlag, mStrengthenModeFlag, isFromPopView;
+            mPrivacyContactFlag, mStrengthenModeFlag;
     private String slidingArea = "";
     public static final String FROME_STATUSBAR = "from_statusbar";
     private boolean leftBottomTemp, leftCenterTemp, rightBottomTemp, RightCenterTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("null", "actiity onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
-        Intent intent = getIntent();
-        isFromPopView = intent.getBooleanExtra("from_pop_set", false);
         initUi();
         LeoEventBus.getDefaultBus().register(this);
     }
@@ -123,7 +122,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
 
     private void initUi() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
-        setTitltBarBackClick();
+        mTitleBar.openBackView();
         mTitleBar.setTitle(R.string.pg_appmanager_quick_gesture_name);
         mSlidingArea = (RelativeLayout) findViewById(R.id.slid_area);
         mSlidingTime = (RelativeLayout) findViewById(R.id.allow_slid_time);
@@ -138,24 +137,6 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         mRecentlyContactOpenCK = (ImageView) findViewById(R.id.recently_contact_check);
         mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
         mStrengthModeOpenCk = (ImageView) findViewById(R.id.strengthen_mode_switch_check);
-    }
-
-    private void setTitltBarBackClick() {
-        if (isFromPopView) {
-            mTitleBar.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(QuickGestureSettingActivity.this,
-                            QuickGestureActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                            | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
-            });
-        } else {
-            mTitleBar.openBackView();
-            Log.i("null", "back");
-        }
     }
 
     private void initSlidingAreaText() {
