@@ -95,7 +95,7 @@ public class FloatWindowHelper {
     // right top height
     private static float mRightTopHeight = 50;
     // white float width and height
-    private static int mWhiteFLoatWidth, mWhiteFloatHeight,mLastClickTime;
+    private static int mWhiteFLoatWidth, mWhiteFloatHeight, mLastClickTime;
 
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
@@ -220,6 +220,7 @@ public class FloatWindowHelper {
     public static void createFloatLeftCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
+        Log.e(FloatWindowHelper.RUN_TAG,  "红点显示："+isShowTip);
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
         final boolean isOpenStrengthenMode = AppMasterPreference.getInstance(mContext)
@@ -1795,13 +1796,13 @@ public class FloatWindowHelper {
     private static void onWhiteFloatClick(Context mContext) {
         if (null == mWhiteFloatView)
             return;
-        if(System.currentTimeMillis() - mLastClickTime <1000){
+        if (System.currentTimeMillis() - mLastClickTime < 1000) {
             return;
         }
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         if (hasMessageTip(mContext)) {
             // if has new tip,then to last use layout
-            pref.setLastTimeLayout(1); 
+            pref.setLastTimeLayout(1);
             mWhiteFloatView.setImageResource(0);
         }
         pref.addUseStrengthenModeTimes();
@@ -1961,6 +1962,8 @@ public class FloatWindowHelper {
 
     // 去除热区红点，未读，运营icon和红点
     public static void cancelAllRedTip(Context context) {
+//        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
+//                + QuickGestureManager.getInstance(context).isShowSysNoReadMessage);
         // 隐私通话
         if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
             QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
@@ -1975,18 +1978,26 @@ public class FloatWindowHelper {
             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
         }
         // 短信，通话记录
-        if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
-            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
-            if (QuickGestureManager.getInstance(context).mCallLogs != null) {
-                QuickGestureManager.getInstance(context).mCallLogs.clear();
+        if (QuickGestureManager.getInstance(context).mCallLogs != null) {
+            QuickGestureManager.getInstance(context).mCallLogs.clear();
+            Log.e(FloatWindowHelper.RUN_TAG,  ",通话数量是多少："
+                    + QuickGestureManager.getInstance(context).mCallLogs.size());
+            if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
+                QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
             }
-            if (QuickGestureManager.getInstance(context).mMessages != null) {
-                QuickGestureManager.getInstance(context).mMessages.clear();
+        }
+        if (QuickGestureManager.getInstance(context).mMessages != null) {
+            QuickGestureManager.getInstance(context).mMessages.clear();
+            if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
+                QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
             }
         }
         // 运营
         if (!AppMasterPreference.getInstance(context).getLastBusinessRedTipShow()) {
             AppMasterPreference.getInstance(context).setLastBusinessRedTipShow(true);
+            if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
+                QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+            }
         }
     }
 

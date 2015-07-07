@@ -169,7 +169,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        Log.i("null","QuickGesturePopupActivity onPause()");
+        Log.i("null", "QuickGesturePopupActivity onPause()");
         if (!ifCreateWhiteFloat) {
             showWhiteFloatView();
             Log.i("null", "onPause  showWhiteFloatView");
@@ -180,7 +180,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onStop() {
-        Log.i("null","QuickGesturePopupActivity onStop()");
+        Log.i("null", "QuickGesturePopupActivity onStop()");
         super.onStop();
     }
 
@@ -201,7 +201,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        Log.i("null","QuickGesturePopupActivity onDestroy()");
+        Log.i("null", "QuickGesturePopupActivity onDestroy()");
         LeoEventBus.getDefaultBus().unregister(this);
         FloatWindowHelper.mGestureShowing = false;
         if (!isCloseWindow) {
@@ -238,12 +238,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
         super.finish();
     }
 
-    /* 快捷手势消失，立即创建响应热区 */ 
+    /* 快捷手势消失，立即创建响应热区 */
     private void createFloatView() {
         // 创建热区处理
         isCloseWindow = true;
         FloatWindowHelper.mGestureShowing = false;
-        
         FloatWindowHelper.createFloatWindow(getApplicationContext(),
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
         QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
@@ -262,15 +261,25 @@ public class QuickGesturePopupActivity extends BaseActivity {
             QuickGestureManager.getInstance(getApplicationContext()).isCallLogRead = true;
             AppMasterPreference.getInstance(getApplicationContext()).setCallLogIsRedTip(true);
         }
+        // 去除所有类型产生的红点
+        cancelAllRedPointTip();
+        //TODO
+        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
+                + QuickGestureManager.getInstance(this).isShowSysNoReadMessage);
+    }
+
+    private void cancelAllRedPointTip() {
         // 去除热区红点和去除未读，运营icon
         FloatWindowHelper.cancelAllRedTip(getApplicationContext());
         FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
     }
 
     private void showWhiteFloatView() {
-      //  Log.i("null", "FloatWindowHelper.mGestureShowing = " + FloatWindowHelper.mGestureShowing);
-        if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode() && !QuickGestureManager
-                .getInstance(this).isDialogShowing) {
+        // Log.i("null", "FloatWindowHelper.mGestureShowing = " +
+        // FloatWindowHelper.mGestureShowing);
+        if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()
+                && !QuickGestureManager
+                        .getInstance(this).isDialogShowing) {
             mContainer.post(new Runnable() {
                 @Override
                 public void run() {
