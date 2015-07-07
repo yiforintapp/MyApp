@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -268,7 +269,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private void showWhiteFloatView() {
       //  Log.i("null", "FloatWindowHelper.mGestureShowing = " + FloatWindowHelper.mGestureShowing);
-        if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()) {
+        if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode() && !QuickGestureManager
+                .getInstance(this).isDialogShowing) {
             mContainer.post(new Runnable() {
                 @Override
                 public void run() {
