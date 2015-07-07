@@ -456,8 +456,7 @@ public class TaskDetectService extends Service {
                                 && AppMasterPreference.getInstance(getApplicationContext())
                                         .getFristSlidingTip()) {
                             boolean isHomeFlag = false;
-                            AppMasterPreference amp = AppMasterPreference
-                                    .getInstance(getApplicationContext());
+                            AppMasterPreference amp = AppMasterPreference.getInstance(getApplicationContext());
                             if (amp.getNeedShowWhiteDotSlideTip()) {
                                 isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if (isHomeFlag) {
@@ -476,10 +475,13 @@ public class TaskDetectService extends Service {
                                     .getInstance(AppMasterApplication.getInstance()).isJustHome;
                             boolean isAppsAndHome = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isAppsAndHome;
+                            //when the dialog is showing ,the window view not create
+                            boolean isDialogingShowing =  QuickGestureManager
+                                    .getInstance(AppMasterApplication.getInstance()).isDialogShowing;
                             if (isAppsAndHome) {
                                 boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
-                                if (!isFilterApp
-                                        || FloatWindowHelper.mEditQuickAreaFlag) {
+                                if ((!isFilterApp
+                                        || FloatWindowHelper.mEditQuickAreaFlag) && !isDialogingShowing) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                 } else {
@@ -487,11 +489,9 @@ public class TaskDetectService extends Service {
                                 }
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
-                                    if (!isFilterApp) {
-                                        if (!FloatWindowHelper.mEditQuickAreaFlag) {
+                                    if (!isFilterApp && !FloatWindowHelper.mEditQuickAreaFlag  && !isDialogingShowing) {
                                             FloatWindowHelper
                                                     .showWhiteFloatView(TaskDetectService.this);
-                                        }
                                     } else {
                                         FloatWindowHelper
                                                 .hideWhiteFloatView(TaskDetectService.this);
@@ -500,7 +500,7 @@ public class TaskDetectService extends Service {
                             } else if (isJustHome) {
                                 if (!isHomeFlag)
                                     isHomeFlag = Utilities.isHome(getApplicationContext());
-                                if (isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag) {
+                                if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag) && !isDialogingShowing) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                 } else {
@@ -508,11 +508,9 @@ public class TaskDetectService extends Service {
                                 }
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
-                                    if (isHomeFlag) {
-                                        if (!FloatWindowHelper.mEditQuickAreaFlag) {
+                                    if (isHomeFlag && !FloatWindowHelper.mEditQuickAreaFlag && !isDialogingShowing) {
                                             FloatWindowHelper
                                                     .showWhiteFloatView(TaskDetectService.this);
-                                        }
                                     } else {
                                         FloatWindowHelper
                                                 .hideWhiteFloatView(TaskDetectService.this);
