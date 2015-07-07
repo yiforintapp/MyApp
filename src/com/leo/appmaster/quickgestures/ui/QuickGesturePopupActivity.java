@@ -8,11 +8,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -24,6 +23,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
@@ -152,6 +152,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         super.onResume();
         FloatWindowHelper.hideWhiteFloatView(getApplicationContext());
         showSuccessTip();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "qt");
     }
 
     private void fillTwoLayout(int mNowLayout) {

@@ -121,6 +121,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 }
             });
         }
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "qtset");
     }
 
     @Override
