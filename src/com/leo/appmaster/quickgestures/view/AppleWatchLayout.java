@@ -782,7 +782,6 @@ public class AppleWatchLayout extends ViewGroup {
             // Log.e(Constants.RUN_TAG,
             // "是否为过滤机型："+filterPhoneMode.contains(BuildProperties.getPoneModel()));
             if (filterPhoneMode.contains(BuildProperties.getPoneModel())) {
-                // Log.e(Constants.RUN_TAG, "进来");
                 intent.setComponent(new ComponentName("com.android.contacts",
                         "com.android.dialer.DialtactsActivity"));
             }
