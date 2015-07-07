@@ -220,10 +220,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     private void setOnClickListener() {
         mSlideAreaSetBtn.setOnClickListener(this);
+        mSlideAreaSetBtn.setBackgroundResource(R.drawable.manager_done_button_selecter);
     }
 
     private void unSetOnClickListener() {
         mSlideAreaSetBtn.setOnClickListener(null);
+        mSlideAreaSetBtn.setBackgroundColor(getResources().getColor(R.color.gray));
     }
 
     @Override
