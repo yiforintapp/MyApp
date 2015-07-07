@@ -557,6 +557,7 @@ public class SplashActivity extends BaseActivity {
         
         enterAppButton = (Button)page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
+        enterAppButton.setTextColor(getResources().getColor(R.color.new_guide_page3_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             

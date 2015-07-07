@@ -68,7 +68,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot()) {
             int clickCount = amp.getUseStrengthenModeTimes();
-            if (clickCount == 1) {
+            //if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
                 mGestureTipTitle.setVisibility(View.GONE);
                 mGestureTipContent.setText(R.string.white_dot_click_tip);
@@ -95,7 +95,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                         startActivity(intent);
                     }
                 });
-            }
+            //}
         }
     }
 
@@ -168,11 +168,18 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
+        Log.i("null","onPause()");
+        if (!ifCreateWhiteFloat) {
+            showWhiteFloatView();
+            Log.i("null", "onPause  showWhiteFloatView");
+            ifCreateWhiteFloat = true;
+        }
         super.onPause();
     }
 
     @Override
     protected void onStop() {
+        Log.i("null","onStop()");
         super.onStop();
     }
 
@@ -193,17 +200,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        Log.i("null", "onDestroy");
+        Log.i("null","onDestroy()");
         LeoEventBus.getDefaultBus().unregister(this);
         FloatWindowHelper.mGestureShowing = false;
         if (!isCloseWindow) {
             createFloatView();
-            Log.i("null", "onDestroy  createFloatView");
-        }
-        if (!ifCreateWhiteFloat) {
-            showWhiteFloatView();
-            Log.i("null", "onDestroy  showWhiteFloatView");
-            ifCreateWhiteFloat = true;
         }
         super.onDestroy();
     }
@@ -221,12 +222,12 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     if (!ifCreateWhiteFloat) {
                         showWhiteFloatView();
                         ifCreateWhiteFloat = true;
+                        Log.i("null", "onBackPressed  showWhiteFloatView");
                     }
                 }
             });
             mContainer.saveGestureType();
             Log.i("null", "onBackPressed");
-            
         }
     }
 
@@ -266,7 +267,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
 
     private void showWhiteFloatView() {
-        Log.i("null", "FloatWindowHelper.mGestureShowing = " + FloatWindowHelper.mGestureShowing);
+      //  Log.i("null", "FloatWindowHelper.mGestureShowing = " + FloatWindowHelper.mGestureShowing);
         if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()) {
             mContainer.post(new Runnable() {
                 @Override
@@ -274,7 +275,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
                     FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
                     FloatWindowHelper.createWhiteFloatView(getApplicationContext());
-                    Log.i("null", "showWhiteFloatView'");
                 }
             });
         }
