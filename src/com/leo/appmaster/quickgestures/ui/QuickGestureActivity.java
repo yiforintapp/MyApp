@@ -136,6 +136,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             });
         }
         LeoEventBus.getDefaultBus().unregister(this);
+        Log.i("null","onDestroy()");
     }
     public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
@@ -243,7 +244,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             updateFloatWindowBackGroudColor();
             mAlarmDialog.dismiss();
         }
-        Log.i("######","onPause()");
     }
 
     class DialogRadioBean {
@@ -541,7 +541,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 Intent intent = new Intent(QuickGestureActivity.this,
                         QuickGestureSettingActivity.class);
                 startActivity(intent);
-//                finish();
                 break;
             case R.id.gesture_switch_text:
                 gestureSwitch();
@@ -790,7 +789,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onStop() {
         stopAnimation();
-        Log.i("######","onStop()");
         super.onStop();
     }
     

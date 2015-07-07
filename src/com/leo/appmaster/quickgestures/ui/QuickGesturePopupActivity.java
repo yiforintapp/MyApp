@@ -68,7 +68,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot()) {
             int clickCount = amp.getUseStrengthenModeTimes();
-            if (clickCount == 1) {
+            //if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
                 mGestureTipTitle.setVisibility(View.GONE);
                 mGestureTipContent.setText(R.string.white_dot_click_tip);
@@ -89,13 +89,13 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     public void onClick(View v) {
                         Intent intent = new Intent(QuickGesturePopupActivity.this,
                                 QuickGestureSettingActivity.class);
-                        intent.putExtra("from_pop_set", true);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
+                        finish();
                     }
                 });
-            }
+            //}
         }
     }
 
@@ -135,7 +135,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        Log.i("null", "onResume");
+        Log.i("null", "QuickGesturePopupActivity onResume");
         FloatWindowHelper.mGestureShowing = true;
         mContainer.post(new Runnable() {
             @Override
@@ -168,11 +168,18 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
+        Log.i("null","QuickGesturePopupActivity onPause()");
+        if (!ifCreateWhiteFloat) {
+            showWhiteFloatView();
+            Log.i("null", "onPause  showWhiteFloatView");
+            ifCreateWhiteFloat = true;
+        }
         super.onPause();
     }
 
     @Override
     protected void onStop() {
+        Log.i("null","QuickGesturePopupActivity onStop()");
         super.onStop();
     }
 
@@ -193,17 +200,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        Log.i("null", "onDestroy");
+        Log.i("null","QuickGesturePopupActivity onDestroy()");
         LeoEventBus.getDefaultBus().unregister(this);
         FloatWindowHelper.mGestureShowing = false;
         if (!isCloseWindow) {
             createFloatView();
-            Log.i("null", "onDestroy  createFloatView");
-        }
-        if (!ifCreateWhiteFloat) {
-            showWhiteFloatView();
-            Log.i("null", "onDestroy  showWhiteFloatView");
-            ifCreateWhiteFloat = true;
         }
         super.onDestroy();
     }
@@ -221,12 +222,12 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     if (!ifCreateWhiteFloat) {
                         showWhiteFloatView();
                         ifCreateWhiteFloat = true;
+                        Log.i("null", "onBackPressed  showWhiteFloatView");
                     }
                 }
             });
             mContainer.saveGestureType();
-            Log.i("null", "onBackPressed");
-            
+            Log.i("null", "QuickGesturePopupActivity onBackPressed");
         }
     }
 
@@ -266,7 +267,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
 
     private void showWhiteFloatView() {
-        Log.i("null", "FloatWindowHelper.mGestureShowing = " + FloatWindowHelper.mGestureShowing);
+      //  Log.i("null", "FloatWindowHelper.mGestureShowing = " + FloatWindowHelper.mGestureShowing);
         if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()) {
             mContainer.post(new Runnable() {
                 @Override
@@ -274,7 +275,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
                     FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
                     FloatWindowHelper.createWhiteFloatView(getApplicationContext());
-                    Log.i("null", "showWhiteFloatView'");
                 }
             });
         }
