@@ -39,7 +39,7 @@ public class BuildProperties {
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";
     // 跳转通话记录特别处理机型数组
     public static final String[] filterPhoneMode = {
-            "SM-N9150"
+            "SM-N9150","SM-G9250"
     };
     private final Properties properties;
 

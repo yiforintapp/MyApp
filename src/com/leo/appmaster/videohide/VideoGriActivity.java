@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,6 +48,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -510,14 +512,18 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             break;
                         try {
                             newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
-                            newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
-                            if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
-                                FileOperationUtil.saveImageMediaEntry(FileOperationUtil.makePath(
-                                        FileOperationUtil.getDirPathFromFilepath(item.getPath()),
-                                        newFileName), context);
-                                FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
-                                mVideoItems.remove(item);
-                            }
+                            // TODO
+                                newFileName = newFileName.substring(1,
+                                        newFileName.indexOf(".leotmv"));
+                                if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
+                                    FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+                                            .makePath(
+                                                    FileOperationUtil.getDirPathFromFilepath(item
+                                                            .getPath()),
+                                                    newFileName), context);
+                                    FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
+                                    mVideoItems.remove(item);
+                                }
                         } catch (Exception e) {
                             isSuccess = false;
                         }

@@ -95,7 +95,7 @@ public class FloatWindowHelper {
     // right top height
     private static float mRightTopHeight = 50;
     // white float width and height
-    private static int mWhiteFLoatWidth, mWhiteFloatHeight;
+    private static int mWhiteFLoatWidth, mWhiteFloatHeight,mLastClickTime;
 
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
@@ -113,7 +113,6 @@ public class FloatWindowHelper {
      * @param context
      */
     public static void createFloatLeftBottomWindow(final Context mContext, int value) {
-        Log.i("null", "createFloatLeftBottomWindow");
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftBottomView == null) {
@@ -219,7 +218,6 @@ public class FloatWindowHelper {
      * @param context
      */
     public static void createFloatLeftCenterWindow(final Context mContext, int value) {
-        Log.i("null", "createFloatLeftCenterWindow");
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
@@ -350,7 +348,6 @@ public class FloatWindowHelper {
      * @param context
      */
     public static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
-
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
@@ -501,7 +498,6 @@ public class FloatWindowHelper {
      * @param context
      */
     public static void createFloatLeftTopWindow(final Context mContext, int value) {
-        Log.i("null", "createFloatLeftTopWindow");
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftTopView == null) {
@@ -1760,7 +1756,6 @@ public class FloatWindowHelper {
                 LeoGlobalBroadcast.unregisterBroadcastListener(mScreenListener);
             }
             mWhiteFloatView = null;
-            Log.i("null", "删除小白点");
         }
     }
 
@@ -1800,9 +1795,13 @@ public class FloatWindowHelper {
     private static void onWhiteFloatClick(Context mContext) {
         if (null == mWhiteFloatView)
             return;
+        if(System.currentTimeMillis() - mLastClickTime <1000){
+            return;
+        }
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         if (hasMessageTip(mContext)) {
-            pref.setLastTimeLayout(1);
+            // if has new tip,then to last use layout
+            pref.setLastTimeLayout(1); 
             mWhiteFloatView.setImageResource(0);
         }
         pref.addUseStrengthenModeTimes();
@@ -1891,7 +1890,7 @@ public class FloatWindowHelper {
     private static void showQuickGuestureView(Context mContext, int orientation) {
         Intent intent = new Intent(mContext,
                 QuickGesturePopupActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("show_orientation", orientation);
         intent.putExtra("from_white_dot", true);
         mContext.startActivity(intent);

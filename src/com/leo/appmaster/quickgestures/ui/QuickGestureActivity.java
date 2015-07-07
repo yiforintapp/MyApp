@@ -73,7 +73,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private boolean mFromShortcut, isRoating, isTranslating;
     public static boolean isSureBt;
     private AnimatorSet mSlideGuideAnim;
-    private boolean leftBottomTemp, leftCenterTemp, rightBottomTemp, RightCenterTemp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -137,6 +136,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             });
         }
         LeoEventBus.getDefaultBus().unregister(this);
+        Log.i("null","onDestroy()");
     }
     public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
@@ -220,19 +220,21 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     private void setOnClickListener() {
         mSlideAreaSetBtn.setOnClickListener(this);
+        mSlideAreaSetBtn.setBackgroundResource(R.drawable.manager_done_button_selecter);
     }
 
     private void unSetOnClickListener() {
         mSlideAreaSetBtn.setOnClickListener(null);
+        mSlideAreaSetBtn.setBackgroundColor(getResources().getColor(R.color.gray));
     }
 
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (mAlarmDialogFlag) {
-            FloatWindowHelper.mEditQuickAreaFlag = true;
-            updateFloatWindowBackGroudColor();
-        }
+//        if (mAlarmDialogFlag) {
+//            FloatWindowHelper.mEditQuickAreaFlag = true;
+//            updateFloatWindowBackGroudColor();
+//        }
     }
 
     @Override
@@ -240,10 +242,10 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         super.onPause();
         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
             FloatWindowHelper.mEditQuickAreaFlag = false;
+            // mAlarmDialogFlag = false;
             updateFloatWindowBackGroudColor();
+            mAlarmDialog.dismiss();
         }
-        
-        Log.i("######","onPause()");
     }
 
     class DialogRadioBean {
@@ -383,22 +385,15 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                                             R.string.pg_appmanager_quick_gesture_option_dialog_radio_toast_text),
                             Toast.LENGTH_SHORT).show();
                 }
-                unInitSlidingSetting();
             }
 
         });
         mAlarmDialog.setCancelable(true);
         mAlarmDialog.show();
-        mAlarmDialogFlag = true;
+//        mAlarmDialogFlag = true;
         updateFloatWindowBackGroudColor();
     }
 
-    private void unInitSlidingSetting() {
-        leftCenterTemp = false;
-        RightCenterTemp = false;
-        leftBottomTemp = false;
-        rightBottomTemp = false;
-    }
 
     // update backgroud color
     private void updateFloatWindowBackGroudColor() {
@@ -548,7 +543,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 Intent intent = new Intent(QuickGestureActivity.this,
                         QuickGestureSettingActivity.class);
                 startActivity(intent);
-                finish();
                 break;
             case R.id.gesture_switch_text:
                 gestureSwitch();
@@ -797,7 +791,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onStop() {
         stopAnimation();
-        Log.i("######","onStop()");
         super.onStop();
     }
     

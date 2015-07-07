@@ -782,7 +782,6 @@ public class AppleWatchLayout extends ViewGroup {
             // Log.e(Constants.RUN_TAG,
             // "是否为过滤机型："+filterPhoneMode.contains(BuildProperties.getPoneModel()));
             if (filterPhoneMode.contains(BuildProperties.getPoneModel())) {
-                // Log.e(Constants.RUN_TAG, "进来");
                 intent.setComponent(new ComponentName("com.android.contacts",
                         "com.android.dialer.DialtactsActivity"));
             }
@@ -811,7 +810,7 @@ public class AppleWatchLayout extends ViewGroup {
             item.cancelShowReadTip();
             Intent intent = new Intent();
             intent.setClass(mContext, PrivacyContactActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             if (!Utilities.isEmpty(QuickGestureManager.getInstance(mContext).privacyLastRecord)) {
                 if (QuickGestureManager.getInstance(mContext).privacyLastRecord
                         .equals(QuickGestureManager.RECORD_MSM)) {
