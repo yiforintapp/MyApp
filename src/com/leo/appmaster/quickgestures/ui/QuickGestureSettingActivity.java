@@ -810,6 +810,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
                 }
                 switchStrengthMode();
+                //通知更新滑动区域红点显示状况
+                FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
                 break;
         }
 
