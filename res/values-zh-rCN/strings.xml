@@ -730,7 +730,7 @@
  	<string name="quick_gesture_success_title">开启快捷手势成功!</string>
  	<string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
     <string name="go_set">去设置</string>
- 	<string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭．</string>
+ 	<string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭。</string>
  	<string name="quick_gesture_open_text">已开启</string>
  	<string name="quick_gesture_close_text">已关闭</string>
  	<string name="quick_gesture_introduction_title">什么是快捷手势?</string>
