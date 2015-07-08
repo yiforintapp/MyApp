@@ -485,6 +485,7 @@
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
             android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/activity_theme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -495,7 +496,7 @@
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home" 
+            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/activity_theme" >
         </activity>
         

@@ -260,7 +260,7 @@ public class QuickGestureManager {
         // no read sys_call
         
         if (isShowCallLogTip) {
-            Log.e(FloatWindowHelper.RUN_TAG, "通话数量："+QuickGestureManager.getInstance(mContext).mCallLogs.size());
+//            Log.e(FloatWindowHelper.RUN_TAG, "通话数量："+QuickGestureManager.getInstance(mContext).mCallLogs.size());
             if (QuickGestureManager.getInstance(mContext).mCallLogs != null
                     && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
                 // List<ContactCallLog> baseInfos =

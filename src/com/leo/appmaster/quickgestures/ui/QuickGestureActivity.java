@@ -3,6 +3,7 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
 
+import android.R.integer;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -16,6 +17,7 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -573,30 +575,16 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             }
             mPre.setSwitchOpenQuickGesture(false);
             mOpenQuickFlag = false;
-            unSetOnClickListener();
-            QuickGestureManager.getInstance(this).stopFloatWindow();
             QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = 0;
-            FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
-            if (AppMasterPreference.getInstance(QuickGestureActivity.this)
-                    .getSwitchOpenStrengthenMode()) {
-                FloatWindowHelper.removeWhiteFloatView(QuickGestureActivity.this);
-                mPre.setWhiteFloatViewCoordinate(0, 0);
-            }
         } else {
             SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
                     "qs_open");
-            mPre.setSwitchOpenQuickGesture(true);
-            mOpenQuickFlag = true;
             if (!isRoating) {
                 openQuickGestureAnimation();
             }
-            QuickGestureManager.getInstance(QuickGestureActivity.this).startFloatWindow();
-            setOnClickListener();
+            mPre.setSwitchOpenQuickGesture(true);
+            mOpenQuickFlag = true;
             QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
-            if (AppMasterPreference.getInstance(QuickGestureActivity.this)
-                    .getSwitchOpenStrengthenMode()) {
-                FloatWindowHelper.createWhiteFloatView(getApplicationContext());
-            }
         }
 
     }
@@ -631,7 +619,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (Float) animation.getAnimatedValue();
                 float percent = value / 90;
-                Log.i("tag", "value = " + value + "   percent = " + percent);
+                Log.i("value", "value = " + value + "   percent = " + percent);
                 mRotationImage.setRotation(value);
                 mRotationOpenBgImage.setAlpha(1 - percent);
                 mRotationCloseBgImage.setAlpha(percent);
@@ -642,17 +630,29 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onAnimationStart(Animator animation) {
                 isRoating = true;
             }
-
+            
             @Override
             public void onAnimationEnd(Animator animation) {
+                mRotationImage.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mGestureSwitchView.setBackgroundResource(R.drawable.gesture_close_bg);
+                    }
+                });
                 mRotationImage.setRotation(0);
-                mGestureSwitchView.setBackgroundResource(R.drawable.gesture_close_bg);
                 mRotationImage.setImageResource(R.drawable.gesture_rotation_close);
                 mGestureSwitch.setBackgroundResource(R.drawable.gesture_close_selecter);
                 mGestureSwitch.setText(R.string.quick_gesture_close_text);
-                mGestureSwitch
-                        .setTextColor(getResources().getColor(R.color.quick_close_text_color));
+                mGestureSwitch.setTextColor(getResources().getColor(R.color.quick_close_text_color));
                 unSetOnClickListener();
+                
+                QuickGestureManager.getInstance(QuickGestureActivity.this).stopFloatWindow();
+                FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
+                if (AppMasterPreference.getInstance(QuickGestureActivity.this)
+                        .getSwitchOpenStrengthenMode()) {
+                    FloatWindowHelper.removeWhiteFloatView(QuickGestureActivity.this);
+                    mPre.setWhiteFloatViewCoordinate(0, 0);
+                }
                 isRoating = false;
             }
         });
@@ -667,7 +667,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (Float) animation.getAnimatedValue();
                 float percent = value / 90;
-                Log.i("tag", "value = " + value + "   percent = " + percent);
+                Log.i("value", "value = " + value + "   percent = " + percent);
                 mRotationImage.setRotation(-value);
                 mRotationCloseBgImage.setAlpha(1 - percent);
                 mRotationOpenBgImage.setAlpha(percent);
@@ -681,13 +681,24 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onAnimationEnd(Animator animation) {
+                mRotationImage.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        mGestureSwitchView.setBackgroundResource(R.drawable.gesture_open_bg);
+                    }
+                });
                 mRotationImage.setRotation(0);
-                mGestureSwitchView.setBackgroundResource(R.drawable.gesture_open_bg);
                 mRotationImage.setImageResource(R.drawable.gesture_rotation_open);
                 mGestureSwitch.setBackgroundResource(R.drawable.gesture_open_selecter);
                 mGestureSwitch.setText(R.string.quick_gesture_open_text);
                 mGestureSwitch.setTextColor(getResources().getColor(R.color.quick_open_text_color));
                 setOnClickListener();
+                
+                QuickGestureManager.getInstance(QuickGestureActivity.this).startFloatWindow();
+                if (AppMasterPreference.getInstance(QuickGestureActivity.this)
+                        .getSwitchOpenStrengthenMode()) {
+                    FloatWindowHelper.createWhiteFloatView(getApplicationContext());
+                }
                 isRoating = false;
             }
         });
@@ -736,25 +747,22 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
         ObjectAnimator arrowAlpha = ObjectAnimator.ofFloat(mSlideGuideArrow, "alpha", 0, 0, 1);
         arrowAlpha.setRepeatCount(-1);
+        float trans = DipPixelUtil.dip2px(this, 60);
         PropertyValuesHolder arrowHolderX = PropertyValuesHolder
-                .ofFloat("translationX", 0, 0, 120);
+                .ofFloat("translationX", 0, 0, trans);
         PropertyValuesHolder arrowHolderY = PropertyValuesHolder
-                .ofFloat("translationY", 0, 0, -120);
+                .ofFloat("translationY", 0, 0, -trans);
         ObjectAnimator arrawTranslate = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(
-                mSlideGuideArrow,
-                arrowHolderX, arrowHolderY);
+                mSlideGuideArrow,arrowHolderX, arrowHolderY);
         arrawTranslate.setRepeatCount(-1);
         arrawTranslate.setInterpolator(new AccelerateDecelerateInterpolator());
 
-        mSlideGuideAnim.setDuration(1500);
         mSlideGuideAnim.playTogether(handAlpha, handTranslate, arrowAlpha, arrawTranslate);
-
         mSlideGuideAnim.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
                 isTranslating = true;
             }
-
             @Override
             public void onAnimationEnd(Animator animation) {
                 isTranslating = false;
@@ -766,6 +774,16 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 mSlideGuideArrow.setAlpha(1.0f);
             }
         });
+        
+        int version = Build.VERSION.SDK_INT;
+        if(version == 14 || version == 15){
+            handAlpha.setDuration(1500);
+            handTranslate.setDuration(1500);
+            arrowAlpha.setDuration(1500);
+            arrawTranslate.setDuration(1500);
+        }else {
+            mSlideGuideAnim.setDuration(1500);
+        }
     }
 
     private void onEditVideoClick() {
