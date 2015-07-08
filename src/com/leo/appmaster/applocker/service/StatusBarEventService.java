@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
@@ -70,8 +71,7 @@ public class StatusBarEventService extends IntentService {
             LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
             targetIntent = new Intent(this, QuickGestureActivity.class);
             targetIntent.putExtra(QuickGestureActivity.FROME_STATUSBAR, true);
-            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } else if (eventType == EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION) {
             LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
             targetIntent = new Intent(this, QuickGestureActivity.class);

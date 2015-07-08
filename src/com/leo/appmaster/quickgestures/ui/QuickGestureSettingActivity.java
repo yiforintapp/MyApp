@@ -122,7 +122,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     private void initUi() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
         mTitleBar.openBackView();
-        mTitleBar.setTitle(R.string.pg_appmanager_quick_gesture_name);
+        mTitleBar.setTitle(R.string.quick_setting_title);
         mSlidingArea = (RelativeLayout) findViewById(R.id.slid_area);
         mSlidingTime = (RelativeLayout) findViewById(R.id.allow_slid_time);
         mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);

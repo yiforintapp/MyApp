@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
+import java.io.IOException;
 import java.util.List;
 
 import android.R.integer;
@@ -14,6 +15,8 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.AssetFileDescriptor;
+import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
@@ -71,7 +74,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private Button mSlideAreaSetBtn;
     private VideoView mEditVideoView;
     private boolean mFlag, mOpenQuickFlag;
-    public static final String FROME_STATUSBAR = "from_statusbar";
+    public static final String FROME_STATUSBAR = "from_shortcut";
     private boolean mFromShortcut, isRoating, isTranslating;
     public static boolean isSureBt;
     private AnimatorSet mSlideGuideAnim;
@@ -81,11 +84,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quick_gesture);
         mPre = AppMasterPreference.getInstance(this);
-        initUi();
         Intent intent = getIntent();
         if (intent != null) {
             mFromShortcut = intent.getBooleanExtra(FROME_STATUSBAR, false);
         }
+        initUi();
         LeoEventBus.getDefaultBus().register(this);
     }
 
@@ -160,11 +163,17 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     private void initUi() {
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_quick_gesture_title_bar);
-        mTitleBar.openBackView();
         mTitleBar.setTitle(R.string.pg_appmanager_quick_gesture_name);
         mTitleBar.setOptionImageVisibility(View.VISIBLE);
         mTitleBar.setOptionImage(R.drawable.setup);
         mTitleBar.setOptionListener(this);
+        if(mFromShortcut){
+            mTitleBar.setBackArrowImg(R.drawable.gesture_title_icon);
+            mTitleBar.setBackArrawImgSize(DipPixelUtil.dip2px(this, 24));
+        }else{
+            mTitleBar.openBackView();
+        }
+
 
         mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_helping);
         mGestureSwitchView = (FrameLayout) findViewById(R.id.gesure_switch);
@@ -799,12 +808,34 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         } else {
             mEditStopImage.setVisibility(View.INVISIBLE);
             mEditVideoBgImage.setVisibility(View.INVISIBLE);
+            
+          /*  AssetManager manager = getAssets()  ;
+            MediaPlayer  mediaPlayer = new MediaPlayer();
+                try {
+                    AssetFileDescriptor fileDescriptor = manager.openFd("eidt_gesture.mp4");
+                    mediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(),
+                                              fileDescriptor.getStartOffset(),
+                                              fileDescriptor.getLength());
+                    mediaPlayer.prepare();
+                } catch (IllegalArgumentException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IllegalStateException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            mediaPlayer.start();*/
+            
             Uri uri = Uri.parse("android.resource://com.leo.appmaster/" + R.raw.eidt_gesture);
             mEditVideoView.setVideoURI(uri);
             mEditVideoView.start();
             mEditVideoView.setOnCompletionListener(new OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    mp.prepareAsync();
                     mEditVideoView.start();
                 }
             });

@@ -153,7 +153,7 @@ public class QuickSwitchManager {
     }
 
     private void flashlight() {
-        if(BuildProperties.isLava504Q()) {
+        if (BuildProperties.isLava504Q()) {
             return;
         }
         Camera cam = null;
@@ -1078,7 +1078,7 @@ public class QuickSwitchManager {
         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qssetting", "quickpage");
         LockManager.getInstatnce().filterAllOneTime(1000);
         Intent intent = new Intent(mContext, QuickGestureSettingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
         // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
