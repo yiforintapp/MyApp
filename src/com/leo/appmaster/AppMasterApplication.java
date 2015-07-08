@@ -269,7 +269,7 @@ public class AppMasterApplication extends Application {
     private void startInitTask(final Context ctx) {
         // 升级用户更换快捷手势
         if (AppMasterPreference.getInstance(ctx)
-                .getSwitchOpenQuickGesture()) {
+                .getFristSlidingTip()) {
             checkRemoveQuickGestureIcon(ctx);
         }
         checkUpdateFinish();
