@@ -33,6 +33,7 @@ import com.leo.appmaster.R;
 public class LeoPopMenu {
 
     public final static int DIRECTION_DOWN = 1;
+    //public final static float SMALLWidth = 160.0f;
     public final static float SMALLWidth = 160.0f;
     public final static float LongWidth = 230.0f;
 
@@ -255,11 +256,11 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
-        //特殊处理一下只有一个item的情况，放宽长度限制，免得换行
+        //特殊处理一下只有一个item的情况
         if(items.size()==1)
         {
-            newSmallWidth+=720/W*20;
-            newLongWidth+=720/W*20;
+            newSmallWidth-=W/720*20;
+            newLongWidth-=W/720*20;
         }
     }
 

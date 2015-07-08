@@ -21,7 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginBottom="318dp"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="@dimen/apple_watch_title_bg_margin_bottom"
             android:gravity="center"
             android:src="@drawable/gesture_title_bar" />
 
@@ -29,7 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:layout_marginBottom="318dp" >
+            android:layout_marginBottom="@dimen/apple_watch_title_margin_bottom" >
 
             <TextView
                 android:id="@+id/tv_type_name"
@@ -39,7 +40,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:padding="3dp"
-                android:textSize="16dp" />
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/tv_left_type_name"
@@ -51,7 +52,7 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:textSize="16dp"
+                android:textSize="18dp"
                 android:visibility="invisible" />
 
             <TextView
@@ -64,7 +65,7 @@
                 android:gravity="center"
                 android:padding="3dp"
                 android:singleLine="true"
-                android:textSize="16dp"
+                android:textSize="18dp"
                 android:visibility="invisible" />
         </RelativeLayout>
 
@@ -81,7 +82,7 @@
             android:layout_width="match_parent"
             android:layout_height="235dp"
             android:layout_gravity="bottom"
-            android:layout_marginBottom=" 75dp"
+            android:layout_marginBottom="@dimen/apple_watch_layout_margin_bottom"
             android:layout_marginTop="40dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -93,7 +94,7 @@
             android:layout_width="match_parent"
             android:layout_height="235dp"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="75dp"
+            android:layout_marginBottom="@dimen/apple_watch_layout_margin_bottom"
             android:layout_marginTop="40dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -105,7 +106,7 @@
             android:layout_width="match_parent"
             android:layout_height="235dp"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="74dp"
+            android:layout_marginBottom="@dimen/apple_watch_layout_margin_bottom"
             android:layout_marginTop="40dp"
             android:focusable="false"
             android:focusableInTouchMode="false"
@@ -148,7 +149,7 @@
         android:id="@+id/gesture_success_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="@dimen/apple_watch_top_title_margin_top"
         android:visibility="invisible" >
 
         <RelativeLayout
@@ -193,7 +194,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/gesture_success_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/apple_watch_top_btn_margin_top"
             android:gravity="center"
             android:orientation="horizontal" >
 
