@@ -59,7 +59,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         final ContentResolver cr = mContext.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(mContext);
         if (MESSAGE_MODEL.equals(mFlag)) {
-//            Log.e(Constants.RUN_TAG, "短信数据库有变");
             mLastMessage = pcm.getLastMessage();
             List<MessageBean> messages = null;
             if (mLastMessage != null) {
@@ -79,7 +78,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
                 // 隐私短信
                 if (pref.getSwitchOpenPrivacyContactMessageTip() && pref.getQuickGestureMsmTip()) {
-                    Log.e(FloatWindowHelper.RUN_TAG, "隐私短信赋值");
                     QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = true;
                     QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                     FloatWindowHelper.removeShowReadTipWindow(mContext);
@@ -125,7 +123,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 if (messageList != null) {
                                     if (messageList.size() > PrivacyContactManager
                                             .getInstance(mContext).messageSize) {
-                                        // Log.e(Constants.RUN_TAG, "有新短信更改：");
                                         if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
                                             QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
                                             AppMasterPreference.getInstance(mContext)
@@ -138,16 +135,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             }
 
                         }
-                        // Log.e(Constants.RUN_TAG, "未读短信：" + messages.size() +
-                        // ":"
-                        // +
-                        // PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag);
                         // 查看未读短信时，清除未读操作（包括第三方，或者系统自带短信列表查看）
                         if (messages == null
                                 || messages.size() <= 0
                                 && !PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag) {
-                            // Log.e(FloatWindowHelper.RUN_TAG, "查看后未读数量数量：" +
-                            // messages.size());
                             /*
                              * 全部已读，去除热区红点
                              */
@@ -182,7 +173,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             FloatWindowHelper.removeShowReadTipWindow(mContext);
                         } else {
                             if (PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag) {
-                                Log.e(FloatWindowHelper.RUN_TAG, "拦截通话删除通话赋值");
                                 QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                             }
 
@@ -202,7 +192,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 if (!QuickGestureManager.getInstance(mContext).mToMsmFlag
                                         && !QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
 //                                    Log.e(Constants.RUN_TAG, "进来");
-                                    Log.e(FloatWindowHelper.RUN_TAG, "未读短信赋值");
                                     QuickGestureManager.getInstance(mContext).mMessages = messages;
                                     QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                                     FloatWindowHelper.removeShowReadTipWindow(mContext);
@@ -215,7 +204,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
             });
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
-            Log.e(FloatWindowHelper.RUN_TAG, "*************************通话数据库改变");
             final ContactBean call = PrivacyContactManager.getInstance(mContext).getLastCall();
             if (call != null) {
                 CallLogTask task = new CallLogTask();
@@ -281,7 +269,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             FloatWindowHelper.removeShowReadTipWindow(mContext);
                         } else {
                             if (PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {
-                                Log.e(FloatWindowHelper.RUN_TAG, "拦截通话删除通话赋值");
                                 QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                             }
                         }
@@ -289,13 +276,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if (callLogs != null && callLogs.size() > 0) {
                             // Log.e(FloatWindowHelper.RUN_TAG, "未读数量数量：" +
                             // callLogs.size());
-                            Log.e(FloatWindowHelper.RUN_TAG, "数据库监控未读通话红点是否已读："+QuickGestureManager.getInstance(mContext).isCallLogRead);
                             if (AppMasterPreference.getInstance(mContext)
                                     .getSwitchOpenRecentlyContact()) {
                                 if (!QuickGestureManager.getInstance(mContext).mToCallFlag
                                         && !QuickGestureManager.getInstance(mContext).isCallLogRead) {
                                     QuickGestureManager.getInstance(mContext).mCallLogs = callLogs;
-                                    Log.e(FloatWindowHelper.RUN_TAG, "未读通话赋值");
                                     QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                                     FloatWindowHelper.removeShowReadTipWindow(mContext);
                                     if (PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {
@@ -454,7 +439,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 // AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
                 if (mPreference.getSwitchOpenPrivacyContactMessageTip()
                         && mPreference.getQuickGestureCallLogTip()) {
-                    Log.e(FloatWindowHelper.RUN_TAG, "隐私通话赋值");
                     QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = true;
                     QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                     FloatWindowHelper.removeShowReadTipWindow(mContext);
