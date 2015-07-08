@@ -280,6 +280,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void cancelAllRedPointTip() {
         // 去除热区红点和去除未读，运营icon
         FloatWindowHelper.cancelAllRedTip(getApplicationContext());
+//        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
+//                + QuickGestureManager.getInstance(this).isShowSysNoReadMessage);
         FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
     }
 
