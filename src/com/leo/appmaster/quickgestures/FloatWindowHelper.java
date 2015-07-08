@@ -1960,8 +1960,8 @@ public class FloatWindowHelper {
 
     // 去除热区红点，未读，运营icon和红点
     public static void cancelAllRedTip(Context context) {
-//        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
-//                + QuickGestureManager.getInstance(context).isShowSysNoReadMessage);
+        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
+                + QuickGestureManager.getInstance(context).isShowSysNoReadMessage);
         // 隐私通话
         if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
             QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
