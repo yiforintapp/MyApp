@@ -220,7 +220,6 @@ public class FloatWindowHelper {
     public static void createFloatLeftCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
-        Log.e(FloatWindowHelper.RUN_TAG,  "红点显示："+isShowTip);
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
                 .checkBusinessRedTip();
         final boolean isOpenStrengthenMode = AppMasterPreference.getInstance(mContext)

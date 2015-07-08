@@ -834,7 +834,6 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                 if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mMessages != null
                         && QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mMessages
                                 .size() > 0) {
-                    Log.e(FloatWindowHelper.RUN_TAG, "检查短信赋值");
                     QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isShowSysNoReadMessage = true;
                     FloatWindowHelper
                             .removeShowReadTipWindow(QuickGestureSettingActivity.this);
@@ -860,7 +859,6 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                 if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mCallLogs != null
                         && QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mCallLogs
                                 .size() > 0) {
-                    Log.e(FloatWindowHelper.RUN_TAG, "检查通话赋值");
                     QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isShowSysNoReadMessage = true;
                     FloatWindowHelper
                             .removeShowReadTipWindow(QuickGestureSettingActivity.this);

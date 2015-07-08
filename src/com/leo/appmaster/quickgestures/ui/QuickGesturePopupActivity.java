@@ -139,7 +139,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onResume() {
         Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
         FloatWindowHelper.mGestureShowing = true;
-        isCloseWindow = false;
+        isCloseWindow = false; // 动画结束是否执行去除红点标识
         mContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -207,7 +207,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
         Log.i("null", "QuickGesturePopupActivity onDestroy()");
         LeoEventBus.getDefaultBus().unregister(this);
         if (!isCloseWindow) {
-            Log.e(FloatWindowHelper.RUN_TAG, "这里执行");
             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
             createFloatView();
         }
@@ -248,7 +247,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
         // 创建热区处理
         isCloseWindow = true;
         FloatWindowHelper.mGestureShowing = false;
-
         // 多条短信提示后，未读短信红点提示标记为已读,只有当有红点提示，在关闭的时候才会执行
         if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageReadRedTip
                 && (QuickGestureManager.getInstance(getApplicationContext()).mMessages != null
@@ -257,8 +255,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
             AppMasterPreference.getInstance(getApplicationContext()).setMessageIsRedTip(true);
         }
         // 解决通话未读红点提示后，其他一些原因引起通话记录数据库的改变使红点再次显示
-        Log.e(FloatWindowHelper.RUN_TAG, "关闭快捷手势时通话记录大小："
-                + QuickGestureManager.getInstance(getApplicationContext()).mCallLogs.size());
         if (!QuickGestureManager.getInstance(getApplicationContext()).isCallLogRead
                 && (QuickGestureManager.getInstance(getApplicationContext()).mCallLogs != null
                 && QuickGestureManager.getInstance(getApplicationContext()).mCallLogs.size() > 0)) {
@@ -268,12 +264,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
         // 去除所有类型产生的红点
         cancelAllRedPointTip();
-        // TODO
-        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
-                + QuickGestureManager.getInstance(this).isShowSysNoReadMessage);
         FloatWindowHelper.createFloatWindow(getApplicationContext(),
                 QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
-        Log.e(FloatWindowHelper.RUN_TAG, "关闭快捷手势时未读通话红点是否已读："+QuickGestureManager.getInstance(this).isCallLogRead);
         QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
     }
 
