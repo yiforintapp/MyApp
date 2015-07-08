@@ -270,6 +270,7 @@ public class AppMasterApplication extends Application {
         // 升级用户更换快捷手势
         if (AppMasterPreference.getInstance(ctx)
                 .getFristSlidingTip()) {
+            //在首次引导滑动没有执行之前不会执行此处
             checkRemoveQuickGestureIcon(ctx);
         }
         checkUpdateFinish();
