@@ -227,7 +227,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     }
 
     private void unSetOnClickListener() {
-        mSlideAreaSetBtn.setOnClickListener(null);
+        mSlideAreaSetBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast toast = Toast.makeText(QuickGestureActivity.this, "要打开快捷手势哦",Toast.LENGTH_SHORT);
+                toast.show();
+            }
+        });
         mSlideAreaSetBtn.setBackgroundColor(getResources().getColor(R.color.gray));
     }
 
