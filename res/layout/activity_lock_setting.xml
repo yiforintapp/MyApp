@@ -45,6 +45,7 @@
             android:layout_width="wrap_content"
             android:layout_height="23dp"
             android:layout_alignParentBottom="true"
+            android:gravity="center_vertical"
             android:layout_centerHorizontal="true"
             android:background="@drawable/reset_pass_frame"
 			android:layout_marginBottom="18dp" 
@@ -52,7 +53,6 @@
    			android:paddingBottom="3dp"
    			android:paddingLeft="9dp"
    			android:paddingRight="9dp"
-   			android:gravity="center_vertical"
             >
 
             <ImageView
@@ -67,10 +67,9 @@
                 android:id="@+id/switch_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                
+                android:gravity="center_vertical"
              	android:layout_marginLeft="4dp"
-				
-   				android:gravity="center_vertical"
+			
                 android:maxLines="1"
                 android:layout_toRightOf="@id/iv_reset_icon"
                 android:textColor="@color/common_button_selecter"

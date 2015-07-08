@@ -386,5 +386,6 @@
     <!-- quick gesutre end -->
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="gesture_item_readtips_offsetx">15dp</dimen>
+    	 <dimen name="lock_setting_title_margintop">22dp</dimen>
 
 </resources>

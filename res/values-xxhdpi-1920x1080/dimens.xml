@@ -184,4 +184,5 @@
     <dimen name="apple_watch_item_icon_size">74dp</dimen>
     <dimen name="apple_watch_item_size">90dp</dimen>
 	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
+		 <dimen name="lock_setting_title_margintop">22dp</dimen>
 </resources>
