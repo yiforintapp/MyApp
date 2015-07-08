@@ -268,7 +268,10 @@ public class AppMasterApplication extends Application {
 
     private void startInitTask(final Context ctx) {
         // 升级用户更换快捷手势
-        checkRemoveQuickGestureIcon(ctx);
+        if (AppMasterPreference.getInstance(ctx)
+                .getSwitchOpenQuickGesture()) {
+            checkRemoveQuickGestureIcon(ctx);
+        }
         checkUpdateFinish();
         postInAppThreadPool(new Runnable() {
             @Override
