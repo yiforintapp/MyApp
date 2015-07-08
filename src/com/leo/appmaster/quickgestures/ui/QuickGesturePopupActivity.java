@@ -254,7 +254,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void createFloatView() {
         // 创建热区处理
         isCloseWindow = true;
-        FloatWindowHelper.mGestureShowing = false;
+       // FloatWindowHelper.mGestureShowing = false;
         // 多条短信提示后，未读短信红点提示标记为已读,只有当有红点提示，在关闭的时候才会执行
         if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageReadRedTip
                 && (QuickGestureManager.getInstance(getApplicationContext()).mMessages != null

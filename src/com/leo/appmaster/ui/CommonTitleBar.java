@@ -11,6 +11,7 @@ import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -93,6 +94,13 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
     public void setBackArrowImg(int imgID) {
         mIvBackArrow.setImageResource(imgID);
+    }
+    
+    public void setBackArrawImgSize(int size){
+        LinearLayout.LayoutParams  params = (LinearLayout.LayoutParams) mIvBackArrow.getLayoutParams();
+        params.width = size;
+        params.height = size;
+        mIvBackArrow.setLayoutParams(params);
     }
 
     public void setOptionTextVisibility(int visibility) {

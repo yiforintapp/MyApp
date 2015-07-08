@@ -748,6 +748,7 @@
  	<string name="new_guide_page2_content">一点即变，趣味无限</string>
  	<string name="new_guide_page3_title">快捷手势小白点</string>
  	<string name="new_guide_page3_content">轻轻一点，手势即现</string>
+ 	<string name="quick_setting_title">快捷手势设置</string>
     <!-- version 2.5 huangqili part -->
 
 </resources>

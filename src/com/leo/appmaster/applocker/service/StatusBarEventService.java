@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker.service;
 
 import android.app.IntentService;
 import android.content.Intent;
+import android.util.Log;
 
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
