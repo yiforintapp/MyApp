@@ -277,12 +277,21 @@ public class AppMasterApplication extends Application {
                         .getSwitchOpenQuickGesture()) {
                     QuickGestureManager.getInstance(AppMasterApplication.this).init();
                 }
-                /*checkUpdateFinish();*/
+                /* checkUpdateFinish(); */
                 quickGestureTipInit();
                 mBackupManager.getBackupList();
                 PrivacyContactManager.getInstance(ctx).getPrivateContacts();
                 // GP check
-                if (!AppUtil.appInstalled(AppMasterApplication.this, Constants.GP_PACKAGE)) {
+                boolean isAppInstalled;
+
+                try {
+                    isAppInstalled = AppUtil.appInstalled(AppMasterApplication.this,
+                            Constants.GP_PACKAGE);
+                } catch (Exception e) {
+                    isAppInstalled = false;
+                }
+
+                if (!isAppInstalled) {
                     SDKWrapper.addEvent(AppMasterApplication.this, SDKWrapper.P1, "gp_check",
                             "nogp");
                 }
@@ -301,8 +310,8 @@ public class AppMasterApplication extends Application {
     }
 
     private void checkRemoveQuickGestureIcon(final Context ctx) {
-        boolean updateUser = AppMasterPreference.getInstance(ctx)
-                .getIsUpdateQuickGestureUser();
+        // boolean updateUser = AppMasterPreference.getInstance(ctx)
+        // .getIsUpdateQuickGestureUser();
         // if (updateUser) {
         // removeQuickGestureIcon();
         // }
@@ -380,8 +389,8 @@ public class AppMasterApplication extends Application {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String lastVercode = pref.getLastVersion();
         String versionCode = PhoneInfo.getVersionCode(this);
-        LeoLog.i("value", "lastVercode="+lastVercode);
-        LeoLog.i("value", "versionCode="+versionCode);
+        LeoLog.i("value", "lastVercode=" + lastVercode);
+        LeoLog.i("value", "versionCode=" + versionCode);
         if (TextUtils.isEmpty(lastVercode)) {
             // first install
             if (Integer.parseInt(versionCode) == 34) {

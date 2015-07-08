@@ -369,9 +369,6 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                 hold_top = (int) (mYuanY - (hold_height / 2));
                 hold_right = (int) (mYuanX + (hold_width / 2));
                 hold_bottom = (int) (mYuanY + (hold_height / 2));
-                // LeoLog.d("testnewcall", "hold_left is : " + hold_left
-                // + "--hold_top is : " + hold_top + "--hold_right is : "
-                // + hold_right + "hold_bottom is : " + hold_bottom);
 
                 // gua
                 gua_yuan_x = (int) (mYuanX - mBanJing);
@@ -430,11 +427,6 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                 jie_right_big = jie_yuan_x + (jie_big_width / 2);
                 jie_bottom_big = jie_yuan_y + (jie_big_height / 2);
 
-                // mFinishLockWidth = jie_right - gua_left;
-                // mFinishLockHeight = gua_bottom - duan_top;
-                // LeoLog.d("testUnknowCall", "mFinishLockWidth :" +
-                // mFinishLockWidth + "mFinishLockHeight :" +
-                // mFinishLockHeight);
                 finish_left = gua_left - gua_width / 2 + 10;
                 finish_top = duan_top - duan_height / 2;
                 finish_right = jie_right + jie_width / 2 - 10;

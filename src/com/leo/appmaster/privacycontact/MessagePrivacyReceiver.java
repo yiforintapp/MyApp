@@ -224,11 +224,13 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     public static ContactBean getPrivateMessage(String number, Context context) {
         ContactBean flagContact = null;
+        String formateNumber=null;
         if (!Utilities.isEmpty(number)) {
             List<ContactBean> contacts = PrivacyContactManager.getInstance(context)
                     .getPrivateContacts();
+             formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
             for (ContactBean contactBean : contacts) {
-                if (contactBean.getContactNumber().contains(number)) {
+                if (contactBean.getContactNumber().contains(formateNumber)) {
                     flagContact = contactBean;
                     break;
                 }

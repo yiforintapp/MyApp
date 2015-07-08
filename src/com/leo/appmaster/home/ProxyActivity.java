@@ -37,6 +37,7 @@ public class ProxyActivity extends Activity {
         super.onResume();
         SDKWrapper.onResume(this);
         if (mDelayFinish && mHandler != null) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "fdau", "view");
             mHandler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
