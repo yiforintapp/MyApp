@@ -803,6 +803,7 @@ public class AppleWatchLayout extends ViewGroup {
             }, 2000);
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGestureContactTipInfo) {
+            LeoLog.d("testiconclick", "ok i click QuickGestureContactTipInfo");
             // 隐私联系人提示
             item.cancelShowReadTip();
             Intent intent = new Intent();
