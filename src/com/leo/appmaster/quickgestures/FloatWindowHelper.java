@@ -1978,8 +1978,6 @@ public class FloatWindowHelper {
         // 短信，通话记录
         if (QuickGestureManager.getInstance(context).mCallLogs != null) {
             QuickGestureManager.getInstance(context).mCallLogs.clear();
-            Log.e(FloatWindowHelper.RUN_TAG,  ",通话数量是多少："
-                    + QuickGestureManager.getInstance(context).mCallLogs.size());
             if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
             }

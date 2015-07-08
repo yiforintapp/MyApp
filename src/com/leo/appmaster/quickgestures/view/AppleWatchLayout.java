@@ -22,6 +22,7 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -736,7 +737,8 @@ public class AppleWatchLayout extends ViewGroup {
                     mIntent.setComponent(new ComponentName("com.android.contacts",
                             "com.android.mms.ui.ConversationList"));
                 } else {
-                    mIntent = new Intent(Intent.ACTION_VIEW);
+//                    mIntent = new Intent(Intent.ACTION_VIEW);
+                    mIntent = new Intent();
                     mIntent.setType("vnd.android-dir/mms-sms");
                     mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
                 }

@@ -356,12 +356,7 @@ public class AppMasterApplication extends Application {
             SharedPreferences prefernece = PreferenceManager
                     .getDefaultSharedPreferences(getApplicationContext());
             prefernece.edit().putBoolean("shortcut_quickGesture", false).commit();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    QuickGestureManager.getInstance(getApplicationContext()).createShortCut();
-                }
-            }, 1000);
+            QuickGestureManager.getInstance(getApplicationContext()).createShortCut();
         }
     }
 
