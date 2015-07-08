@@ -1078,7 +1078,7 @@ public class PrivacyContactUtils {
                          * 对快捷手势隐私联系人未读，红点操作
                          */
                         if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
-                            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+//                            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
                             QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
                             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
                             if (pre.getCallLogNoReadCount() <= 0
