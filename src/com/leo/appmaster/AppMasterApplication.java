@@ -268,7 +268,11 @@ public class AppMasterApplication extends Application {
 
     private void startInitTask(final Context ctx) {
         // 升级用户更换快捷手势
-        checkRemoveQuickGestureIcon(ctx);
+        if (AppMasterPreference.getInstance(ctx)
+                .getFristSlidingTip()) {
+            //在首次引导滑动没有执行之前不会执行此处
+            checkRemoveQuickGestureIcon(ctx);
+        }
         checkUpdateFinish();
         postInAppThreadPool(new Runnable() {
             @Override
@@ -356,12 +360,7 @@ public class AppMasterApplication extends Application {
             SharedPreferences prefernece = PreferenceManager
                     .getDefaultSharedPreferences(getApplicationContext());
             prefernece.edit().putBoolean("shortcut_quickGesture", false).commit();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    QuickGestureManager.getInstance(getApplicationContext()).createShortCut();
-                }
-            }, 1000);
+            QuickGestureManager.getInstance(getApplicationContext()).createShortCut();
         }
     }
 
