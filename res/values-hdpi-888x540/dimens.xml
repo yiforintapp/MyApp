@@ -327,11 +327,17 @@
     <dimen name="quick_first_tip_dialog_content_margin_top">10dp</dimen>
     <dimen name="quick_first_tip_dialog_title_margin_top">3dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">12sp</dimen>
-     <dimen name="quick_white_float_width">40dp</dimen>
+    <dimen name="quick_white_float_width">40dp</dimen>
+    <dimen name="apple_watch_layout_margin_bottom">65dp</dimen>
+    <dimen name="apple_watch_title_margin_bottom">290dp</dimen>
+    <dimen name="apple_watch_title_bg_margin_bottom">289dp</dimen>
+    <dimen name="apple_watch_top_title_margin_top">10dp</dimen>
+    <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
     <!-- quick gesutre end -->
 
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="apple_watch_item_icon_size">74dp</dimen>
     <dimen name="apple_watch_item_size">90dp</dimen>
-	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
+    <dimen name="gesture_item_readtips_offsetx">15dp</dimen>
+
 </resources>
