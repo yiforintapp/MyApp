@@ -323,7 +323,7 @@ public class AppMasterApplication extends Application {
             removeQuickGestureIcon();
 //            Log.e(FloatWindowHelper.RUN_TAG, "更新用户");
         }else{
-            Log.e(FloatWindowHelper.RUN_TAG, "记录的版本号为空");
+//            Log.e(FloatWindowHelper.RUN_TAG, "记录的版本号为空");
         }
     }
 
