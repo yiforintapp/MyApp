@@ -691,7 +691,7 @@ public class AppMasterApplication extends Application {
             }
             long delay = pref.getBusinessCurrentStrategy()
                     - (curTime - lastCheckTime);
-            timer.schedule(recheckTask, delay);
+            timer.schedule(recheckTask, delay < 0 ? 0 : delay);
         }
 
     }

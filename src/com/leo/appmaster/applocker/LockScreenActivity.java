@@ -187,9 +187,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onResume() {
-        //每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);  
-        
+        // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
+        // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -254,7 +254,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      */
     @Override
     protected void onNewIntent(Intent intent) {
-        
+
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
             finish();
@@ -265,12 +265,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
             mLockedPackage = newLockedPkg;
-            
-            if(mPretendFragment != null){
+
+            if (mPretendFragment != null) {
                 mPretendLayout.setVisibility(View.GONE);
                 mLockLayout.setVisibility(View.VISIBLE);
             }
-            
+
             // change background
             if (!ThemeUtils.checkThemeNeed(this)
                     && (mLockMode == LockManager.LOCK_MODE_FULL)) {
@@ -494,7 +494,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             tans.add(R.id.pretend_layout, mPretendFragment);
             tans.commit();
         } else {
-            LeoLog.d("whatisthis", "mPretendFragment == null " );
+            LeoLog.d("whatisthis", "mPretendFragment == null ");
             mLockLayout.setVisibility(View.VISIBLE);
             mPretendLayout.setVisibility(View.GONE);
         }
@@ -686,11 +686,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         }
                     });
                 }
-              
-                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(),getRightMenuIcons(),true);
+
+                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getRightMenuIcons(), true);
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
-                
+
                 break;
             case R.id.layout_title_back:
                 onBackPressed();
@@ -738,7 +738,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         return listItems;
     }
-    
+
     private List<Integer> getRightMenuIcons() {
         List<Integer> icons = new ArrayList<Integer>();
         icons.add(R.drawable.forget_password_icon);
