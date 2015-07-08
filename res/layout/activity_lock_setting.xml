@@ -43,15 +43,15 @@
         <RelativeLayout
             android:id="@+id/switch_bottom_content"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="23dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/reset_pass_frame"
 			android:layout_marginBottom="18dp" 
-   			android:paddingTop="5dp"
-   			android:paddingBottom="5dp"
-   			android:paddingLeft="7dp"
-   			android:paddingRight="7dp"
+   			android:paddingTop="3dp"
+   			android:paddingBottom="3dp"
+   			android:paddingLeft="9dp"
+   			android:paddingRight="9dp"
             >
 
             <ImageView
@@ -68,8 +68,8 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
              	android:layout_marginLeft="4dp"
-				            
-   				android:text="使用数字密码"
+				android:gravity="center_vertical"
+   				
                 android:maxLines="1"
                 android:layout_toRightOf="@id/iv_reset_icon"
                 android:textColor="@color/common_button_selecter"

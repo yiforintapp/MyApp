@@ -153,6 +153,9 @@ public class QuickSwitchManager {
     }
 
     private void flashlight() {
+        if(BuildProperties.isLava504Q()) {
+            return;
+        }
         Camera cam = null;
         try {
             cam = Camera.open();
