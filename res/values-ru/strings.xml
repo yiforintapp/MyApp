@@ -675,21 +675,40 @@
     <!--  version 2.4 end -->
     
         <!-- version 2.5 huangqili part -->
-   <string name="forbid_uninstall_off">开启高级保护，防止隐私卫士被恶意卸载，更好地保护您的隐私</string>
-    <string name="forbid_uninstall_on">高级保护开启成功！</string>
-    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
-    <string name="change_to_gesture">切换为手势密码</string>
-    <string name="change_to_password">切换为数字密码</string>
-    <string name="summary_newapp_lock">新安装应用时，一键快速加锁</string>
-    <string name="summary_aacelerate_after_unlock">解锁应用时清理内存，自动提速</string>
-    <string name="summary_autolock_after_lockscreen">锁屏后所有应用重新锁定</string>
-    <string name="summary_setting_locker">选择应用锁定设置</string>
-    <string name="summary_hide_lockline">将应用解锁轨迹隐藏，更安全地保护您的隐私</string>
-    <string name="quick_gesture_strengthen_mode_title">强化划出模式</string>
- 	<string name="quick_gesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
- 	<string name="quick_gesture_success_title">开启快捷手势成功!</string>
- 	<string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
-    
- 	<string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭．</string>
+        
+   <string name="forbid_uninstall_off">откройте высшую защиту, чтобы караула не злостно отгрузить и лучше сохранить ваши личные данные.  </string>
+    <string name="forbid_uninstall_on">успешно открыта высшая защита!</string>
+    <string name="setting_hide_lockline">скройте след отмыкания</string>
+    <string name="change_to_gesture">переключите на код жеста</string>
+    <string name="change_to_password">переключите на код цифры</string>
+    <string name="summary_newapp_lock">при новой установке применения кнопкой быстро запереть</string>
+    <string name="summary_aacelerate_after_unlock">при применении отмыкания устранить память и самостоятельно ускорить</string>
+    <string name="summary_autolock_after_lockscreen">после замка экрана все применения заново заперты</string>
+    <string name="summary_setting_locker">выберите заарретированную установку</string>
+    <string name="summary_hide_lockline">скройте след отмыкания</string>
+    <string name="quick_gesture_strengthen_mode_title">белое пятнышко</string>
+ 	<string name="quick_gesture_strengthen_mode_content">кликните белое пятнышко и можете открыть быстрый и удобный жест </string>
+ 	<string name="quick_gesture_success_title">успешно открыт быстрый и удобный жест!</string>
+ 	<string name="quick_gesture_success_content">вы можете кликнуть внизу и  использовать быстрый и удобный жест, давайте попробуйте!</string>
+    <string name="go_set">установите</string>
+ 	<string name="white_dot_click_tip">поздравляю вас с успешным открытием быстрого и удобного жеста через белое пятнышко. Если вам мешает, его закройте в установке.</string>
+ 	<string name="quick_gesture_open_text">открыто</string>
+ 	<string name="quick_gesture_close_text">закрыто</string>
+ 	<string name="quick_gesture_introduction_title">Что это за Быстрый и удобный жест?</string>
+ 	<string name="quick_gesture_introduction_content">Быстрым и удобным жестом является высокоэффективный вставной блок из Караула, через его вам можно удобно управлять включателей системы, и быстро включать программы.</string>
+ 	<string name="quick_gesture_slide_guide_title">Как быстро открыть скольжение жеста?</string>
+ 	<string name="quick_gesture_slide_guide_content">Только полегоньку  скользните на угол мобильника и можете открыть быстрый и удобный жест </string>
+ 	<string name="quick_gesture_slide_setting_content">Если трудно скользните жест, тогда можно кликнить здесь и настройть зону скольжения.</string>
+ 	<string name="quick_gesture_edit_guide_title">Как составлять включатель и приложения быстрого и удобного жеста?</string>
+ 	<string name="quick_gesture_edit_guide_content">В любом классе tap быстрого и удобного жеста долгим нажатием Приложения/включатели можно доступить к интерфейсу редактора, вы можете исключить приложения/включатель, так и можете добавить приложение/включатель в часто употребляемые приложения и удобные и быстрые включатели</string>
+ 	<string name="quick_gesture_edit_extra_content">Примечание:  Недавно используемые приложения формируется системой,  поэтому активно добавить невозможно.</string>
+ 	<string name="can_not_add_more">нельзя добавить больше</string>
+ 	 	<string name="new_guide_page1_title">быстрый и удобный жест</string>
+ 	<string name="new_guide_page1_content">откройте применение быстро</string>
+ 	<string name="new_guide_page2_title">применение маскировки</string>
+ 	<string name="new_guide_page2_content">интересное отмыкание</string>
+ 	<string name="new_guide_page3_title">белое пятнышко</string>
+ 	<string name="new_guide_page3_content">вызовете быстрый и удобный жест быстро</string>
+ 	
     <!-- version 2.5 huangqili part -->
 </resources>

@@ -699,21 +699,38 @@
     <!-- quick gesture -->
     <!-- version 2.4 end -->
     <!-- version 2.5 huangqili part -->
-    <string name="forbid_uninstall_off">开启高级保护，防止隐私卫士被恶意卸载，更好地保护您的隐私</string>
-    <string name="forbid_uninstall_on">高级保护开启成功！</string>
-    <string name="setting_hide_lockline">隐藏解锁轨迹</string>
-    <string name="change_to_gesture">切换为手势密码</string>
-    <string name="change_to_password">切换为数字密码</string>
-    <string name="summary_newapp_lock">新安装应用时，一键快速加锁</string>
-    <string name="summary_aacelerate_after_unlock">解锁应用时清理内存，自动提速</string>
-    <string name="summary_autolock_after_lockscreen">锁屏后所有应用重新锁定</string>
-    <string name="summary_setting_locker">选择应用锁定设置</string>
-    <string name="summary_hide_lockline">将应用解锁轨迹隐藏，更安全地保护您的隐私</string>
-    <string name="quick_gesture_strengthen_mode_title">强化划出模式</string>
-    <string name="quick_gesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
-    <string name="quick_gesture_success_title">开启快捷手势成功!</string>
-    <string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
-    <string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭．</string>
-    <!-- version 2.5 huangqili part -->
+   <string name="forbid_uninstall_off">เปิดคุ้มครองระดับสูง ป้องกันทหารอารักขาลับถูกอันโลด คุ้มครองความลับส่วนตัว</string>
+    <string name="forbid_uninstall_on">เปิดคุ้มครองระดับสูงเสร็จ</string>
+    <string name="setting_hide_lockline">ซ่อนเส้นปลดลอค</string>
+    <string name="change_to_gesture">เปลี่ยนเป็นรหัสท่ามือ</string>
+    <string name="change_to_password">เปลี่ยนเป็นรหัสตัวเลข</string>
+    <string name="summary_newapp_lock">เมื่อติดตั้งการใช้ใหม่ ลอคด้วยปุ่มหนึ่ง</string>
+    <string name="summary_aacelerate_after_unlock">เมื่อปลดลอคการใช้ เคลียร์หน่วยความจำ เพิ่มความเร็ว</string>
+    <string name="summary_autolock_after_lockscreen">การใช้ทั้งหมดถูกลอคใหม่หลังจอถูกลอค</string>
+    <string name="summary_setting_locker">เลือกการกำหนดลอคการใช้</string>
+    <string name="summary_hide_lockline">ซ่อนเส้นปลดลอค คุ้มครองความลับส่วนตัว</string>
+    <string name="quick_gesture_strengthen_mode_title">จุดขาวเล็ก</string>
+ 	<string name="quick_gesture_strengthen_mode_content">คลิคจุดขาวเล็กเปิดท่ามือ</string>
+ 	<string name="quick_gesture_success_title">เปิดท่ามือเสร็จ</string>
+ 	<string name="quick_gesture_success_content">คลิคข้างล่างเพื่อเปิด/ปิดบลูทูธ wifi</string>
+    <string name="go_set">ไปกำหนด</string>
+ 	<string name="white_dot_click_tip">เปิดท่ามือเสร็จ ปิดได้ในการกำหนดท่ามือ</string>
+ 	<string name="quick_gesture_open_text">เปิดแล้ว</string>
+ 	<string name="quick_gesture_close_text">ปิดแล้ว</string>
+ 	<string name="quick_gesture_introduction_title">ท่าทางด่วนคืออะไร</string>
+ 	<string name="quick_gesture_introduction_content">ท่าทางด่วนเป็นตัวแยกที่มีประสิทธิภาพที่ออกมาจากผู้คุ้มกันที่มองไม่เห็น คุณสามารถจัดการระบบของมือถือแล้วเปิดซอฟต์แวร์ให้เร็วขึ้น</string>
+ 	<string name="quick_gesture_slide_guide_title">เปิดท่าทางวาดอย่างไร</string>
+ 	<string name="quick_gesture_slide_guide_content">คุณเค่วาดที่มุมโทรศัพท์ก็สามารถเปิดท่าทางด่วนได้</string>
+ 	<string name="quick_gesture_slide_setting_content">ถ้ามือถือคุณวาดไม่ได้ สามารถกดที่นี่ติดตังบริเวณวาด</string>
+ 	<string name="quick_gesture_edit_guide_title">บรรณาธิการเปิดหรือใช้ของการแสดงท่าทางด่วนยังไง</string>
+ 	<string name="quick_gesture_edit_guide_content">กดซอฟต์แวร์หรือสวิตซ์ที่อยู่ในtapอันใดอันหนึ่งของท่าทางด่วน ก็สามารถเข้าสู่อินเตอร์เฟซการแก้ไข คุณสามารถลบหรือเพิ่มซอฟต์แวร์หรือสวิตซ์อันนี้ </string>
+ 	<string name="quick_gesture_edit_extra_content">บันทึก ซอฟต์แวร์ที่เพิ่งใช้เกิดมาจากระบบ ไม่สามารถเพิ่มได้</string>
+ 	<string name="can_not_add_more">เพิ่มไม่ได้</string>
+ 	 	<string name="new_guide_page1_title">ท่ามือ</string>
+ 	<string name="new_guide_page1_content">ขีดก็แสดง</string>
+ 	<string name="new_guide_page2_title">ปลอมตัวการใช้</string>
+ 	<string name="new_guide_page2_content">คลิคก็เปลี่ยน</string>
+ 	<string name="new_guide_page3_title">จุดขาวเล็กท่ามือ</string>
+ 	<string name="new_guide_page3_content">คลิคท่ามือก็แสดง</string>
 
 </resources>
