@@ -37,8 +37,9 @@ public class AppUtil {
 
     public static boolean appInstalled(Context ctx, String pkg) {
 
-        PackageManager pm = ctx.getPackageManager();
+        PackageManager pm;
         try {
+            pm = ctx.getPackageManager();
             pm.getApplicationInfo(pkg, PackageManager.GET_ACTIVITIES);
             return true;
         } catch (NameNotFoundException e) {
@@ -110,12 +111,12 @@ public class AppUtil {
 
     public static Drawable getDrawable(PackageManager pm, String pkg) {
         Drawable d = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppIcon(pkg);
-       if(d == null) {
-           try {
-               d = pm.getApplicationIcon(pkg);
-           } catch (NameNotFoundException e) {            
-           }
-       }
+        if (d == null) {
+            try {
+                d = pm.getApplicationIcon(pkg);
+            } catch (NameNotFoundException e) {
+            }
+        }
         return d;
     }
 
@@ -123,9 +124,9 @@ public class AppUtil {
         return TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
     }
 
-    public static boolean isScreenLocked(Context mcContext) {  
+    public static boolean isScreenLocked(Context mcContext) {
         KeyguardManager mKeyguardManager = (KeyguardManager) mcContext
-                .getSystemService(mcContext.KEYGUARD_SERVICE);  
-        return mKeyguardManager.inKeyguardRestrictedInputMode();  
-    }  
+                .getSystemService(mcContext.KEYGUARD_SERVICE);
+        return mKeyguardManager.inKeyguardRestrictedInputMode();
+    }
 }

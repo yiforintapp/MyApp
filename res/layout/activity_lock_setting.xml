@@ -46,22 +46,31 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
             android:background="@drawable/reset_pass_frame"
-            android:padding="10dp" >
+			android:layout_marginBottom="18dp" 
+   			android:paddingTop="5dp"
+   			android:paddingBottom="5dp"
+   			android:paddingLeft="7dp"
+   			android:paddingRight="7dp"
+            >
 
             <ImageView
                 android:id="@+id/iv_reset_icon"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:layout_centerVertical="true" />
-
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+               
+                android:layout_centerVertical="true" />        
+		<!-- w h20 -->
+		
             <TextView
                 android:id="@+id/switch_bottom"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
+             	android:layout_marginLeft="4dp"
+				            
+   				android:text="使用数字密码"
+                android:maxLines="1"
                 android:layout_toRightOf="@id/iv_reset_icon"
                 android:textColor="@color/common_button_selecter"
                 android:textSize="13sp" />
