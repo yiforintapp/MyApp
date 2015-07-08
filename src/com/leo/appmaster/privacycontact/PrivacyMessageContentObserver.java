@@ -59,7 +59,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         final ContentResolver cr = mContext.getContentResolver();
         PrivacyContactManager pcm = PrivacyContactManager.getInstance(mContext);
         if (MESSAGE_MODEL.equals(mFlag)) {
-//            Log.e(Constants.RUN_TAG, "短信数据库有变");
             mLastMessage = pcm.getLastMessage();
             List<MessageBean> messages = null;
             if (mLastMessage != null) {
@@ -124,7 +123,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 if (messageList != null) {
                                     if (messageList.size() > PrivacyContactManager
                                             .getInstance(mContext).messageSize) {
-                                        // Log.e(Constants.RUN_TAG, "有新短信更改：");
                                         if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
                                             QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
                                             AppMasterPreference.getInstance(mContext)
@@ -137,16 +135,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             }
 
                         }
-                        // Log.e(Constants.RUN_TAG, "未读短信：" + messages.size() +
-                        // ":"
-                        // +
-                        // PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag);
                         // 查看未读短信时，清除未读操作（包括第三方，或者系统自带短信列表查看）
                         if (messages == null
                                 || messages.size() <= 0
                                 && !PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag) {
-                            // Log.e(FloatWindowHelper.RUN_TAG, "查看后未读数量数量：" +
-                            // messages.size());
                             /*
                              * 全部已读，去除热区红点
                              */

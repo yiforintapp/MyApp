@@ -117,7 +117,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        Log.i("null","onWindowFocusChanged");
+        Log.i("null", "onWindowFocusChanged");
         if (!hasFocus) {
             if (!isItemClick) {
                 LockManager.getInstatnce().filterAllOneTime(1000);
@@ -139,6 +139,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onResume() {
         Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
         FloatWindowHelper.mGestureShowing = true;
+        isCloseWindow = false; // 动画结束是否执行去除红点标识
         mContainer.post(new Runnable() {
             @Override
             public void run() {
@@ -171,7 +172,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        Log.i("null","QuickGesturePopupActivity onPause() + "+FloatWindowHelper.mGestureShowing);
+        Log.i("null", "QuickGesturePopupActivity onPause() + " + FloatWindowHelper.mGestureShowing);
         if (!ifCreateWhiteFloat && !FloatWindowHelper.mGestureShowing) {
             showWhiteFloatView();
             ifCreateWhiteFloat = true;
@@ -206,6 +207,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         Log.i("null", "QuickGesturePopupActivity onDestroy()");
         LeoEventBus.getDefaultBus().unregister(this);
         if (!isCloseWindow) {
+            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
             createFloatView();
         }
         super.onDestroy();
@@ -221,7 +223,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 public void run() {
                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                     createFloatView();
-                    
+
                     if (!ifCreateWhiteFloat) {
                         showWhiteFloatView();
                         ifCreateWhiteFloat = true;
@@ -245,10 +247,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
         // 创建热区处理
         isCloseWindow = true;
         FloatWindowHelper.mGestureShowing = false;
-        FloatWindowHelper.createFloatWindow(getApplicationContext(),
-                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
-        QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
-        isCloseWindow = false;
         // 多条短信提示后，未读短信红点提示标记为已读,只有当有红点提示，在关闭的时候才会执行
         if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageReadRedTip
                 && (QuickGestureManager.getInstance(getApplicationContext()).mMessages != null
@@ -263,11 +261,12 @@ public class QuickGesturePopupActivity extends BaseActivity {
             QuickGestureManager.getInstance(getApplicationContext()).isCallLogRead = true;
             AppMasterPreference.getInstance(getApplicationContext()).setCallLogIsRedTip(true);
         }
+
         // 去除所有类型产生的红点
         cancelAllRedPointTip();
-        //TODO
-        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
-                + QuickGestureManager.getInstance(this).isShowSysNoReadMessage);
+        FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+        QuickGestureManager.getInstance(getApplicationContext()).startFloatWindow();
     }
 
     private void cancelAllRedPointTip() {
@@ -288,7 +287,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
                     FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
                     FloatWindowHelper.createWhiteFloatView(getApplicationContext());
-                    Log.i("null" ,"showWhiteFloatView");
+                    Log.i("null", "showWhiteFloatView");
                 }
             });
         }

@@ -187,7 +187,6 @@ public class TaskDetectService extends Service {
         // 初始化未读短信是否已经红点提示过
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageReadRedTip = pre
                 .getMessageIsRedTip();
-        // Log.e(Constants.RUN_TAG, "值：" + pre.getMessageIsRedTip());
         // 初始化未读通话记录是否已经红点提示过
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isCallLogRead = pre
                 .getCallLogIsRedTip();
