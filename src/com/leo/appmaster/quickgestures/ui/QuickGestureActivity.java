@@ -613,7 +613,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     private void closeQuickGestureAnimation() {
         ValueAnimator mRotateClose = ValueAnimator.ofFloat(0, 90).setDuration(200);
-        mRotateClose.setInterpolator(new LinearInterpolator());
         mRotateClose.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -633,26 +632,26 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             
             @Override
             public void onAnimationEnd(Animator animation) {
-                mRotationImage.post(new Runnable() {
+                mGestureSwitch.post(new Runnable() {
                     @Override
                     public void run() {
-                        mGestureSwitchView.setBackgroundResource(R.drawable.gesture_close_bg);
+                        mGestureSwitch.setBackgroundResource(R.drawable.gesture_close_selecter);
+                        mGestureSwitch.setText(R.string.quick_gesture_close_text);
+                        mGestureSwitch.setTextColor(getResources().getColor(R.color.quick_close_text_color));
+                        unSetOnClickListener();
+                        
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).stopFloatWindow();
+                        FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
+                        if (AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                .getSwitchOpenStrengthenMode()) {
+                            FloatWindowHelper.removeWhiteFloatView(QuickGestureActivity.this);
+                            mPre.setWhiteFloatViewCoordinate(0, 0);
+                        }
                     }
                 });
+                mGestureSwitchView.setBackgroundResource(R.drawable.gesture_close_bg);
                 mRotationImage.setRotation(0);
                 mRotationImage.setImageResource(R.drawable.gesture_rotation_close);
-                mGestureSwitch.setBackgroundResource(R.drawable.gesture_close_selecter);
-                mGestureSwitch.setText(R.string.quick_gesture_close_text);
-                mGestureSwitch.setTextColor(getResources().getColor(R.color.quick_close_text_color));
-                unSetOnClickListener();
-                
-                QuickGestureManager.getInstance(QuickGestureActivity.this).stopFloatWindow();
-                FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
-                if (AppMasterPreference.getInstance(QuickGestureActivity.this)
-                        .getSwitchOpenStrengthenMode()) {
-                    FloatWindowHelper.removeWhiteFloatView(QuickGestureActivity.this);
-                    mPre.setWhiteFloatViewCoordinate(0, 0);
-                }
                 isRoating = false;
             }
         });
@@ -661,7 +660,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     private void openQuickGestureAnimation() {
         ValueAnimator mRotateOpen = ValueAnimator.ofFloat(0, 90).setDuration(200);
-        mRotateOpen.setInterpolator(new LinearInterpolator());
         mRotateOpen.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
@@ -681,24 +679,24 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
             @Override
             public void onAnimationEnd(Animator animation) {
-                mRotationImage.post(new Runnable() {
+                mGestureSwitch.post(new Runnable() {
                     @Override
                     public void run() {
-                        mGestureSwitchView.setBackgroundResource(R.drawable.gesture_open_bg);
+                        mGestureSwitch.setBackgroundResource(R.drawable.gesture_open_selecter);
+                        mGestureSwitch.setText(R.string.quick_gesture_open_text);
+                        mGestureSwitch.setTextColor(getResources().getColor(R.color.quick_open_text_color));
+                        setOnClickListener();
+                        
+                        QuickGestureManager.getInstance(QuickGestureActivity.this).startFloatWindow();
+                        if (AppMasterPreference.getInstance(QuickGestureActivity.this)
+                                .getSwitchOpenStrengthenMode()) {
+                            FloatWindowHelper.createWhiteFloatView(getApplicationContext());
+                        }
                     }
                 });
+                mGestureSwitchView.setBackgroundResource(R.drawable.gesture_open_bg);
                 mRotationImage.setRotation(0);
-                mRotationImage.setImageResource(R.drawable.gesture_rotation_open);
-                mGestureSwitch.setBackgroundResource(R.drawable.gesture_open_selecter);
-                mGestureSwitch.setText(R.string.quick_gesture_open_text);
-                mGestureSwitch.setTextColor(getResources().getColor(R.color.quick_open_text_color));
-                setOnClickListener();
-                
-                QuickGestureManager.getInstance(QuickGestureActivity.this).startFloatWindow();
-                if (AppMasterPreference.getInstance(QuickGestureActivity.this)
-                        .getSwitchOpenStrengthenMode()) {
-                    FloatWindowHelper.createWhiteFloatView(getApplicationContext());
-                }
+               mRotationImage.setImageResource(R.drawable.gesture_rotation_open);
                 isRoating = false;
             }
         });
