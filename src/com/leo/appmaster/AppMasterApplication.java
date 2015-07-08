@@ -267,6 +267,8 @@ public class AppMasterApplication extends Application {
     }
 
     private void startInitTask(final Context ctx) {
+        // 升级用户更换快捷手势
+        checkRemoveQuickGestureIcon(ctx);
         checkUpdateFinish();
         postInAppThreadPool(new Runnable() {
             @Override
@@ -295,8 +297,6 @@ public class AppMasterApplication extends Application {
                     SDKWrapper.addEvent(AppMasterApplication.this, SDKWrapper.P1, "gp_check",
                             "nogp");
                 }
-                // // 升级用户更换快捷手势
-                checkRemoveQuickGestureIcon(ctx);
             }
 
         });
@@ -310,20 +310,20 @@ public class AppMasterApplication extends Application {
     }
 
     private void checkRemoveQuickGestureIcon(final Context ctx) {
-        // boolean updateUser = AppMasterPreference.getInstance(ctx)
-        // .getIsUpdateQuickGestureUser();
-        // if (updateUser) {
-        // removeQuickGestureIcon();
-        // }
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String lastVercode = pref.getLastVersion();
         String versionCode = PhoneInfo.getVersionCode(this);
+        // if (lastVercode != null) {
+        // Log.e(FloatWindowHelper.RUN_TAG, "记录的版本号："+lastVercode);
+        // }
         // first install
         if (!TextUtils.isEmpty(lastVercode)
                 && (Integer.parseInt(lastVercode) < Integer.parseInt(versionCode))) {
             // update
             removeQuickGestureIcon();
             // Log.e(FloatWindowHelper.RUN_TAG, "更新用户");
+        } else {
+            // Log.e(FloatWindowHelper.RUN_TAG, "记录的版本号为空");
         }
     }
 
@@ -356,7 +356,12 @@ public class AppMasterApplication extends Application {
             SharedPreferences prefernece = PreferenceManager
                     .getDefaultSharedPreferences(getApplicationContext());
             prefernece.edit().putBoolean("shortcut_quickGesture", false).commit();
-            QuickGestureManager.getInstance(getApplicationContext()).createShortCut();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    QuickGestureManager.getInstance(getApplicationContext()).createShortCut();
+                }
+            }, 1000);
         }
     }
 

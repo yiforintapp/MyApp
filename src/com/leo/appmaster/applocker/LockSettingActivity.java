@@ -8,15 +8,19 @@ import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.view.Display;
+import android.view.DisplayInfo;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
@@ -140,7 +144,11 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     private void initUI() {
         res = getResources();
+   
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        //
+       
+        //
         if (mResetFlag) {
             mTitleBar.openBackView();
             mTitleBar.setTitle(R.string.reset_passwd);
@@ -148,7 +156,22 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         } else {
             // mTitleBar.openBackView();
             // mTitleBar.setTitle(R.string.passwd_setting);
-            mTitleBar.setVisibility(View.INVISIBLE);
+            
+           // mTitleBar.setVisibility(View.INVISIBLE);
+            
+            Display mDisplay = getWindowManager().getDefaultDisplay();
+            int W = mDisplay.getWidth();
+            int H = mDisplay.getHeight();
+            //使得小尺寸机型在此时去除titlebar，而不是隐藏，否则下方位置不够
+            if(H>900)
+            {
+                mTitleBar.setVisibility(View.INVISIBLE);
+            }
+            else
+            {
+                mTitleBar.setVisibility(View.GONE);
+            }
+            
         }
 
         mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
