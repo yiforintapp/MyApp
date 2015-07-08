@@ -322,8 +322,8 @@
     <dimen name="apple_watch_select_bar_height">15dp</dimen>
     <dimen name="apple_watch_item_icon_size">74dp</dimen>
     <dimen name="apple_watch_item_size">90dp</dimen>
-    <dimen name="apple_watch_layout_inner_radius">84dp</dimen>
-    <dimen name="apple_watch_layout_outer_radius">128dp</dimen>
+    <dimen name="apple_watch_layout_inner_radius">93dp</dimen>
+    <dimen name="apple_watch_layout_outer_radius">145dp</dimen>
     <dimen name="gesture_item_text_size">12dp</dimen>
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
@@ -347,10 +347,10 @@
     <dimen name="quick_first_tip_dialog_content_margin_top">10dp</dimen>
     <dimen name="quick_first_tip_dialog_title_margin_top">3dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">12sp</dimen>
-    <dimen name="apple_watch_layout_margin_bottom">65dp</dimen>
-    <dimen name="apple_watch_title_margin_bottom">292dp</dimen>
-    <dimen name="apple_watch_title_bg_margin_bottom">290dp</dimen>
-        <dimen name="apple_watch_top_title_margin_top">10dp</dimen>
+    <dimen name="apple_watch_layout_margin_bottom">70dp</dimen>
+    <dimen name="apple_watch_title_margin_bottom">305dp</dimen>
+    <dimen name="apple_watch_title_bg_margin_bottom">303dp</dimen>
+    <dimen name="apple_watch_top_title_margin_top">10dp</dimen>
     <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
     <!-- quick gesutre end -->
     <dimen name="privacy_contact_red_tip_x">97dp</dimen>
