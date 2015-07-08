@@ -174,8 +174,13 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onPause() {
         Log.i("null", "QuickGesturePopupActivity onPause() + " + FloatWindowHelper.mGestureShowing);
         if (!ifCreateWhiteFloat && !FloatWindowHelper.mGestureShowing) {
-            showWhiteFloatView();
-            ifCreateWhiteFloat = true;
+            mContainer.post(new Runnable() {
+                @Override
+                public void run() {
+                    showWhiteFloatView();
+                    ifCreateWhiteFloat = true;
+                }
+            });
             Log.i("null", "QuickGesturePopupActivity onPause  showWhiteFloatView");
         }
         super.onPause();
@@ -221,18 +226,21 @@ public class QuickGesturePopupActivity extends BaseActivity {
             mContainer.showCloseAnimation(new Runnable() {
                 @Override
                 public void run() {
-                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                    createFloatView();
-
                     if (!ifCreateWhiteFloat) {
                         showWhiteFloatView();
                         ifCreateWhiteFloat = true;
                         Log.i("null", "onBackPressed  showWhiteFloatView");
                     }
+                    mContainer.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                            createFloatView();
+                        }
+                    });
                 }
             });
             mContainer.saveGestureType();
-            Log.i("null", "QuickGesturePopupActivity onBackPressed");
         }
     }
 
@@ -275,21 +283,17 @@ public class QuickGesturePopupActivity extends BaseActivity {
         FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
     }
 
+    /**
+     * 显示小白点
+     */
     private void showWhiteFloatView() {
-        // Log.i("null", "FloatWindowHelper.mGestureShowing = " +
-        // FloatWindowHelper.mGestureShowing);
         if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()
                 && !QuickGestureManager
                         .getInstance(this).isDialogShowing) {
-            mContainer.post(new Runnable() {
-                @Override
-                public void run() {
-                    // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
-                    FloatWindowHelper.removeWhiteFloatView(getApplicationContext());
-                    FloatWindowHelper.createWhiteFloatView(getApplicationContext());
-                    Log.i("null", "showWhiteFloatView");
-                }
-            });
+          // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
+            FloatWindowHelper.removeWhiteFloatView(QuickGesturePopupActivity.this);
+            FloatWindowHelper.createWhiteFloatView(QuickGesturePopupActivity.this);
+            Log.i("null", "showWhiteFloatView");
         }
     }
 
