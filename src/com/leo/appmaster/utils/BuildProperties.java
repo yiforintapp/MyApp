@@ -260,6 +260,10 @@ public class BuildProperties {
         return android.os.Build.MODEL;
     }
 
+    public static boolean isLava504Q() {
+        return  TextUtils.equals("504Q+", android.os.Build.MODEL);
+    }
+    
     public static boolean isOppoOs() {
         if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom"))))
             return false;

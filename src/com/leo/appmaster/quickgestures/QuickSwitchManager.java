@@ -45,6 +45,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity;
 import com.leo.appmaster.quickgestures.view.GestureItemView;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickSwitchManager {
@@ -152,6 +153,9 @@ public class QuickSwitchManager {
     }
 
     private void flashlight() {
+        if(BuildProperties.isLava504Q()) {
+            return;
+        }
         Camera cam = null;
         try {
             cam = Camera.open();
