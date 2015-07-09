@@ -1802,7 +1802,7 @@ public class FloatWindowHelper {
                 @Override
                 public void run() {
 
-                    nowCount = new CountDownTimer(3000, 1000) {
+                    nowCount = new CountDownTimer(5000, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
                             LeoLog.d("testAnimation", "millisUntilFinished : "
