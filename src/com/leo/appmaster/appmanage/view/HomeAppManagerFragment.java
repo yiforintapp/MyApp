@@ -388,6 +388,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             case R.id.bg_show_quick_gesture:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qssetting", "home");
                 startQuickGestureActivity();
+                mGestureIconBg.setVisibility(View.GONE);
 //                Intent intent1 = new Intent(Intent.ACTION_VIEW);
 //                intent1.setType("vnd.android.cursor.dir/calls");
 //                intent1.setAction(Intent.ACTION_CALL_BUTTON);
