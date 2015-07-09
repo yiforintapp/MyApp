@@ -2,6 +2,7 @@
 package com.leo.appmaster.ui;
 
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,6 +25,8 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -260,6 +263,15 @@ public class LeoPopMenu {
         
         if(items.size()==1)
         {
+            Locale locale = mContext.getResources().getConfiguration().locale;
+            String language = locale.getLanguage();
+    
+            //Toast.makeText(mContext, language, 0).show();
+            if(language.endsWith("th"))
+            {
+                newSmallWidth=120;
+                newLongWidth=120;
+            }
             if(H<=480)
             {
                 newSmallWidth+=10;
@@ -267,11 +279,13 @@ public class LeoPopMenu {
             }
             else
             {         
-                newSmallWidth-=W/720*30;
-                newLongWidth-=W/720*30;
+                newSmallWidth-=W/720*25;
+                newLongWidth-=W/720*25;
             }
         }    
-       
+       //特殊处理泰文系统
+        
+            
     }
 
     public List<String> getPopMenuItems() {

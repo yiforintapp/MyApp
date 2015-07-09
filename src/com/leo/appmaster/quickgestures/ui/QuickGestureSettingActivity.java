@@ -254,12 +254,13 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     }
 
     private void unSetOnClickListener() {
-        mSlidingArea.setOnClickListener(null);
-        mSlidingTime.setOnClickListener(null);
-        mNoReadMessageOpen.setOnClickListener(null);
-        mRecentlyContactOPen.setOnClickListener(null);
-        mPrivacyContactOpen.setOnClickListener(null);
-        mStrengthenModeView.setOnClickListener(null);
+        DisableClickListener disableClickListener = new DisableClickListener();
+        mSlidingArea.setOnClickListener(disableClickListener);
+        mSlidingTime.setOnClickListener(disableClickListener);
+        mNoReadMessageOpen.setOnClickListener(disableClickListener);
+        mRecentlyContactOPen.setOnClickListener(disableClickListener);
+        mPrivacyContactOpen.setOnClickListener(disableClickListener);
+        mStrengthenModeView.setOnClickListener(disableClickListener);
     }
 
     @Override
@@ -879,6 +880,15 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         } else {
             FloatWindowHelper.removeWhiteFloatView(this);
             mPre.setWhiteFloatViewCoordinate(0, 0);
+        }
+    }
+    
+    class DisableClickListener implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Toast toast = Toast.makeText(QuickGestureSettingActivity.this,getResources().getString(R.string.quick_open_tip),
+                    Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }

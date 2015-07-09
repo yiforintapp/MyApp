@@ -117,6 +117,15 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        LeoEventBus.getDefaultBus().post(
+                new PrivacyEditFloatEvent(
+                        PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
+        PrivacyCallLogListActivity.this.finish();
+    }
+
+    @Override
     protected void onDestroy() {
         LeoEventBus.getDefaultBus().unregister(this);
         // 标识该Activity销毁通知
@@ -319,7 +328,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                     }
                     mContactCallLogs.add(callLog);
                 } catch (Exception e) {
-                    
+
                 }
             }
             cursor.close();

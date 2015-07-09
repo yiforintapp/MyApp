@@ -709,6 +709,6 @@
  	<string name="new_guide_page2_content">интересное отмыкание</string>
  	<string name="new_guide_page3_title">белое пятнышко</string>
  	<string name="new_guide_page3_content">вызовете быстрый и удобный жест быстро</string>
- 	
+ 	<string name="quick_open_tip">Быстрый и удобный жест еще закрытый</string>
     <!-- version 2.5 huangqili part -->
 </resources>

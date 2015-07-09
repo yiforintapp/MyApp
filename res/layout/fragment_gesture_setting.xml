@@ -49,22 +49,19 @@
         android:paddingLeft="9dp"
         android:paddingRight="9dp"
         android:paddingTop="3dp"
-        
         android:visibility="invisible" >
-
         <ImageView
             android:id="@+id/iv_reset_icon"
             android:layout_width="13dp"
             android:layout_height="13dp"
          	 android:layout_centerVertical="true"
             android:background="@drawable/reset_pass_gesture_icon" />
-
         <TextView
             android:id="@+id/tv_bottom"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
-            android:gravity="center_vertical"
+            android:gravity="center"
             android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/iv_reset_icon"
             android:text="@string/reset_gesture_passwd"
