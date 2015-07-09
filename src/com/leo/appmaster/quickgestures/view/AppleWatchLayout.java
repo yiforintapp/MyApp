@@ -21,6 +21,7 @@ import android.content.res.Resources;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -35,6 +36,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
+import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -703,7 +706,9 @@ public class AppleWatchLayout extends ViewGroup {
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
         } else if (info instanceof AppItemInfo) {
             LeoLog.d("TestLayout", "AppItemInfo");
-            AppItemInfo appInfo = (AppItemInfo) info;
+            final AppItemInfo appInfo = (AppItemInfo) info;
+
+            List<String> lockList = LockManager.getInstatnce().getCurLockList();
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setComponent(new ComponentName(appInfo.packageName,
@@ -716,6 +721,13 @@ public class AppleWatchLayout extends ViewGroup {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
             } else {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
+            }
+            if (lockList.contains(appInfo.packageName)) {
+                if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
+                } else {
+                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                            appInfo.packageName, false, null);
+                }
             }
         } else if (info instanceof MessageBean) {
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
@@ -737,7 +749,7 @@ public class AppleWatchLayout extends ViewGroup {
                     mIntent.setComponent(new ComponentName("com.android.contacts",
                             "com.android.mms.ui.ConversationList"));
                 } else {
-//                    mIntent = new Intent(Intent.ACTION_VIEW);
+                    // mIntent = new Intent(Intent.ACTION_VIEW);
                     mIntent = new Intent();
                     mIntent.setType("vnd.android-dir/mms-sms");
                     mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
@@ -752,8 +764,8 @@ public class AppleWatchLayout extends ViewGroup {
                 // > 0) {
                 // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
                 // }
-//                FloatWindowHelper.cancelAllRedTip(getContext());
-//                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                // FloatWindowHelper.cancelAllRedTip(getContext());
+                // FloatWindowHelper.removeShowReadTipWindow(getContext());
             } catch (Exception e) {
             }
             /*
@@ -786,8 +798,8 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
-//                FloatWindowHelper.cancelAllRedTip(getContext());
-//                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                // FloatWindowHelper.cancelAllRedTip(getContext());
+                // FloatWindowHelper.removeShowReadTipWindow(getContext());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -824,8 +836,8 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
-//                FloatWindowHelper.cancelAllRedTip(getContext());
-//                FloatWindowHelper.removeShowReadTipWindow(getContext());
+                // FloatWindowHelper.cancelAllRedTip(getContext());
+                // FloatWindowHelper.removeShowReadTipWindow(getContext());
                 // if
                 // (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog)
                 // {
@@ -842,28 +854,39 @@ public class AppleWatchLayout extends ViewGroup {
                 // QuickGestureManager.getInstance(mContext).isShowPrivacyMsm =
                 // false;
                 // }
+                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                        mContext.getPackageName(), false, null);
             } catch (Exception e) {
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGsturebAppInfo) {
             LeoLog.d("TestLayout", "QuickGsturebAppInfo");
-            QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
+            final QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
+            List<String> lockList = LockManager.getInstatnce().getCurLockList();
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setComponent(new ComponentName(appInfo.packageName,
                     appInfo.activityName));
             getContext().startActivity(intent);
+
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
-        }else if(info instanceof GestureEmptyItemInfo){
+            if (lockList.contains(appInfo.packageName)) {
+                if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
+                } else {
+                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                            appInfo.packageName, false, null);
+                }
+            }
+        } else if (info instanceof GestureEmptyItemInfo) {
             GType type = mContainer.getCurrentGestureType();
             if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
                 showAddNewDiglog(type);
             }
         }
-        
+
         QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
         activity.setItemClick(true);
-        
+
     }
 
     private void checkDownload(BusinessItemInfo bif) {
