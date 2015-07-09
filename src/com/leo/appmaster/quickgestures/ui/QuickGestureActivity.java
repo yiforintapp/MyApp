@@ -566,7 +566,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 startActivity(intent);
                 break;
             case R.id.gesture_switch_text:
-                gestureSwitch();
+                if (!isRoating) {
+                    gestureSwitch();
+                }
                 break;
             case R.id.slide_guide_show:
                 onSlideGuideClick();
