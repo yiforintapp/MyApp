@@ -1078,12 +1078,25 @@ public class PrivacyContactUtils {
                          * 对快捷手势隐私联系人未读，红点操作
                          */
                         if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
-//                            QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+                            // QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+                            // = false;
                             QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
                             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
-                            if (pre.getCallLogNoReadCount() <= 0
-                                    && (QuickGestureManager.getInstance(context).mCallLogs == null
-                                    || QuickGestureManager.getInstance(context).mCallLogs.size() <= 0)/* 未读短信 */
+                            /*
+                             * if (pre.getCallLogNoReadCount() <= 0 &&
+                             * (QuickGestureManager
+                             * .getInstance(context).mCallLogs == null ||
+                             * QuickGestureManager
+                             * .getInstance(context).mCallLogs.size() <= 0) 未读短信
+                             * && AppMasterPreference.getInstance(context)
+                             * .getLastBusinessRedTipShow() 运营 ) {
+                             */
+                            if ((QuickGestureManager.getInstance(context).mMessages == null || QuickGestureManager
+                                    .getInstance(context).mMessages.size() <= 0)/* 未读短信 */
+                                    && (QuickGestureManager.getInstance(context).mCallLogs == null || QuickGestureManager
+                                            .getInstance(context).mCallLogs.size() <= 0)/* 未读通话 */
+                                    && AppMasterPreference.getInstance(context)
+                                            .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                     && AppMasterPreference.getInstance(context)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
                                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
@@ -1127,7 +1140,7 @@ public class PrivacyContactUtils {
 
     public static List<ContactBean> loadPrivateContacts(Context mContext) {
         List<ContactBean> mContacts = new ArrayList<ContactBean>();
-        Cursor cur=null;
+        Cursor cur = null;
         try {
             cur = mContext.getContentResolver().query(Constants.PRIVACY_CONTACT_URI, null,
                     null, null, "_id desc");
