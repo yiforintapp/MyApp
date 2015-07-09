@@ -279,8 +279,8 @@ public class LeoPopMenu {
             }
             else
             {         
-                newSmallWidth-=W/720*25;
-                newLongWidth-=W/720*25;
+                newSmallWidth-=W/720*20;
+                newLongWidth-=W/720*20;
             }
         }    
        //特殊处理泰文系统
