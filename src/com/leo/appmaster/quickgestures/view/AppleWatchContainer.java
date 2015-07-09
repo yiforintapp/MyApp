@@ -1357,7 +1357,6 @@ public class AppleWatchContainer extends FrameLayout {
                         .getContext();
                 isAnimating = false;
                 LockManager.getInstatnce().filterAllOneTime(1000);
-                activity.finish();
                 if (runnable != null) {
                     runnable.run();
                 }
