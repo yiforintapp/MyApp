@@ -313,12 +313,17 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         @Override
         protected Cursor doInBackground(ContactBean... arg0) {
             call = arg0[0];
+            ContentResolver cr=mContext.getContentResolver();
             String formatNumber = PrivacyContactUtils.formatePhoneNumber(call
                     .getContactNumber());
-            cursor = mContext.getContentResolver().query(PrivacyContactUtils.CALL_LOG_URI, null,
-                    "number LIKE  ? ", new String[] {
-                        "%" + formatNumber
-                    }, null, null);
+            try {
+                cursor = cr.query(PrivacyContactUtils.CALL_LOG_URI, null,
+                        "number LIKE  ? ", new String[] {
+                            "%" + formatNumber
+                        }, null, null);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
 
             return cursor;
         }

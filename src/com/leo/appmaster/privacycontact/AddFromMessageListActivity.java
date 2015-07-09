@@ -45,6 +45,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.utils.BuildProperties;
 
 public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
     private ListView mListMessage;
@@ -134,8 +135,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
 
             @Override
             public void run() {
-                for (MessageBean message : mMessageList) {
-                    message.setCheck(false);
+                if (mMessageList != null) {
+                    for (MessageBean message : mMessageList) {
+                        message.setCheck(false);
+                    }
                 }
 
             }
@@ -386,11 +389,11 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                         }
                     }
                     mLogFlag = true;
-                    if(mHandler!=null){
-                    Message messge = new Message();
-                    count = count + 1;
-                    messge.what = count;
-                    mHandler.sendMessage(messge);
+                    if (mHandler != null) {
+                        Message messge = new Message();
+                        count = count + 1;
+                        messge.what = count;
+                        mHandler.sendMessage(messge);
                     }
                     flagContact = false;
                     if (added) {
@@ -438,7 +441,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 new String[] {
                                     number
                                 }, AddFromMessageListActivity.this);
-                        if (messageFlag != null && mHandler!=null) {
+                        if (messageFlag != null && mHandler != null) {
                             Message messge = new Message();
                             count = count + 1;
                             messge.what = count;
@@ -471,7 +474,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                         }
                         PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
                                 AddFromMessageListActivity.this);
-                        if (callLogFlag != null && mHandler!=null) {
+                        if (callLogFlag != null && mHandler != null) {
                             Message messge = new Message();
                             count = count + 1;
                             messge.what = count;
@@ -546,16 +549,24 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         protected Integer doInBackground(Boolean... arg0) {
             boolean flag = arg0[0];
             if (flag) {
-                mMessageList = PrivacyContactUtils
-                        .queryMessageList(AddFromMessageListActivity.this);
+//                List<MessageBean> messageList;
+                if (BuildProperties.isMIUI()) {
+                    mMessageList = PrivacyContactUtils
+                            .getSysMessage(AddFromMessageListActivity.this,
+                                    AddFromMessageListActivity.this.getContentResolver(), null,
+                                    null, false);
+                } else {
+                    mMessageList = PrivacyContactUtils
+                            .queryMessageList(AddFromMessageListActivity.this);
+                }
                 // mMessageList =
                 // PrivacyContactManager.getInstance(AddFromMessageListActivity.this)
                 // .getSysMessage();
-//                 mMessageList =
-//                 PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
-//                 AddFromMessageListActivity.this.getContentResolver(), null,
-//                 null,
-//                 false);
+                // mMessageList =
+                // PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
+                // AddFromMessageListActivity.this.getContentResolver(), null,
+                // null,
+                // false);
                 if (mMessageList != null && mMessageList.size() > 0) {
                     Collections.sort(mMessageList,
                             PrivacyContactUtils.mMessageCamparator);
