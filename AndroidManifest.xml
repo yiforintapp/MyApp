@@ -359,6 +359,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.privacycontact.PrivacyContactActivity"
+            android:exported="true"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >

@@ -1080,8 +1080,8 @@ public class QuickSwitchManager {
         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qssetting", "quickpage");
         LockManager.getInstatnce().filterAllOneTime(1000);
         Intent intent = new Intent(mContext, QuickGestureSettingActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
 
