@@ -251,7 +251,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
                             createFloatView();
                         }
                     });
-                    QuickGesturePopupActivity.this.finish();
                 }
             });
             mContainer.saveGestureType();
