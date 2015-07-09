@@ -492,12 +492,17 @@ public class PrivacyContactFragment extends BaseFragment {
                                                         AppMasterPreference.getInstance(
                                                                 getActivity())
                                                                 .setQuickGestureMsmTip(false);
-                                                        if (pre.getCallLogNoReadCount() <= 0
+                                                        if ((QuickGestureManager
+                                                                .getInstance(getActivity()).mMessages == null || QuickGestureManager
+                                                                .getInstance(getActivity()).mMessages
+                                                                .size() <= 0)/* 未读短信 */
                                                                 && (QuickGestureManager
-                                                                        .getInstance(getActivity()).mCallLogs == null
-                                                                || QuickGestureManager
+                                                                        .getInstance(getActivity()).mCallLogs == null || QuickGestureManager
                                                                         .getInstance(getActivity()).mCallLogs
-                                                                        .size() <= 0)/* 未读短信 */
+                                                                        .size() <= 0)/* 未读通话 */
+                                                                && AppMasterPreference.getInstance(
+                                                                        getActivity())
+                                                                        .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                                                 && AppMasterPreference
                                                                         .getInstance(getActivity())
                                                                         .getLastBusinessRedTipShow()/* 运营 */) {
@@ -586,12 +591,37 @@ public class PrivacyContactFragment extends BaseFragment {
                                                                 getActivity())
                                                                 .setQuickGestureCallLogTip(
                                                                         false);
-                                                        if (pre.getMessageNoReadCount() <= 0
+                                                        /*
+                                                         * if (pre.
+                                                         * getMessageNoReadCount
+                                                         * () <= 0 &&
+                                                         * (QuickGestureManager
+                                                         * .
+                                                         * getInstance(getActivity
+                                                         * ()).mMessages == null
+                                                         * ||
+                                                         * QuickGestureManager
+                                                         * .getInstance
+                                                         * (getActivity
+                                                         * ()).mMessages .size()
+                                                         * <= 0) 未读短信 &&
+                                                         * AppMasterPreference
+                                                         * .getInstance
+                                                         * (getActivity()) .
+                                                         * getLastBusinessRedTipShow
+                                                         * () 运营 ) {
+                                                         */
+                                                        if ((QuickGestureManager
+                                                                .getInstance(getActivity()).mMessages == null || QuickGestureManager
+                                                                .getInstance(getActivity()).mMessages
+                                                                .size() <= 0)/* 未读短信 */
                                                                 && (QuickGestureManager
-                                                                        .getInstance(getActivity()).mMessages == null
-                                                                || QuickGestureManager
-                                                                        .getInstance(getActivity()).mMessages
-                                                                        .size() <= 0)/* 未读短信 */
+                                                                        .getInstance(getActivity()).mCallLogs == null || QuickGestureManager
+                                                                        .getInstance(getActivity()).mCallLogs
+                                                                        .size() <= 0)/* 未读通话 */
+                                                                && AppMasterPreference.getInstance(
+                                                                        getActivity())
+                                                                        .getMessageNoReadCount() <= 0/* 隐私短信 */
                                                                 && AppMasterPreference
                                                                         .getInstance(getActivity())
                                                                         .getLastBusinessRedTipShow()/* 运营 */) {

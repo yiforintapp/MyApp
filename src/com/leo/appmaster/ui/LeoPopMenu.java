@@ -256,12 +256,22 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
-        //特殊处理一下只有一个item的情况
+        //特殊处理一下只有一个item的情况,以免换行不好看或空白太多
+        
         if(items.size()==1)
         {
-            newSmallWidth-=W/720*20;
-            newLongWidth-=W/720*20;
-        }
+            if(H<=480)
+            {
+                newSmallWidth+=10;
+                newLongWidth+=10;
+            }
+            else
+            {         
+                newSmallWidth-=W/720*30;
+                newLongWidth-=W/720*30;
+            }
+        }    
+       
     }
 
     public List<String> getPopMenuItems() {

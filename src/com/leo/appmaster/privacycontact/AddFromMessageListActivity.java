@@ -549,24 +549,24 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         protected Integer doInBackground(Boolean... arg0) {
             boolean flag = arg0[0];
             if (flag) {
-//                List<MessageBean> messageList;
-                if (BuildProperties.isMIUI()) {
-                    mMessageList = PrivacyContactUtils
-                            .getSysMessage(AddFromMessageListActivity.this,
-                                    AddFromMessageListActivity.this.getContentResolver(), null,
-                                    null, false);
-                } else {
-                    mMessageList = PrivacyContactUtils
-                            .queryMessageList(AddFromMessageListActivity.this);
-                }
+                // List<MessageBean> messageList;
+                // if (BuildProperties.isMIUI()) {
+                // mMessageList = PrivacyContactUtils
+                // .getSysMessage(AddFromMessageListActivity.this,
+                // AddFromMessageListActivity.this.getContentResolver(), null,
+                // null, false);
+                // } else {
+                // mMessageList = PrivacyContactUtils
+                // .queryMessageList(AddFromMessageListActivity.this);
+                // }
                 // mMessageList =
                 // PrivacyContactManager.getInstance(AddFromMessageListActivity.this)
                 // .getSysMessage();
-                // mMessageList =
-                // PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
-                // AddFromMessageListActivity.this.getContentResolver(), null,
-                // null,
-                // false);
+                mMessageList =
+                        PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
+                                AddFromMessageListActivity.this.getContentResolver(), null,
+                                null,
+                                false);
                 if (mMessageList != null && mMessageList.size() > 0) {
                     Collections.sort(mMessageList,
                             PrivacyContactUtils.mMessageCamparator);
