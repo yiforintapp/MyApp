@@ -829,7 +829,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 }
             mediaPlayer.start();*/
             
-            Uri uri = Uri.parse("android.resource://com.leo.appmaster/" + R.raw.eidt_gesture);
+            Uri uri = Uri.parse("android.resource://com.leo.appmaster/" + R.raw.edit_gesture);
             mEditVideoView.setVideoURI(uri);
             mEditVideoView.start();
             mEditVideoView.setOnCompletionListener(new OnCompletionListener() {

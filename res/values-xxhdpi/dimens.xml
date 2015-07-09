@@ -386,5 +386,9 @@
     <!-- quick gesutre end -->
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="gesture_item_readtips_offsetx">15dp</dimen>
+    
+    <!-- 2.5 start -->
+    <dimen name="gesture_app_manager_bg_width">54dp</dimen>
+    <!-- 2.5 end -->
 
 </resources>

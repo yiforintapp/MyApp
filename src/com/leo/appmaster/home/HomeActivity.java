@@ -78,6 +78,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.RootChecker;
 
 public class HomeActivity extends BaseFragmentActivity implements OnClickListener,
@@ -121,8 +122,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
         // TODO
-//         showQuickGestureSettingDialog();
-//         showFirstOpenQuickGestureTipDialog();
     }
 
     @Override
@@ -1041,8 +1040,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
      * show the animation when click try in the dialog
      */
     private void startQuickGestureEnterTip(){
-        mPagerTab.setCurrentItem(2);
         HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
+        fragment.isGestureAnimating  = true;
+        LeoLog.d("shodonghua", "set true");
+        mPagerTab.setCurrentItem(2);
         fragment.playQuickGestureEnterAnim();
     }
 }
