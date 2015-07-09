@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.ui;
 
+import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Parcelable;
@@ -66,6 +67,13 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
     public void setTitle(int resid) {
         mTvTitle.setText(resid);
+    }
+    
+    public void setTitlePaddingLeft(int paddingLeft){
+        int paddingRight = mTvTitle.getPaddingRight();
+        int paddingTop = mTvTitle.getPaddingTop();
+        int paddingBottom = mTvTitle.getPaddingBottom();
+        mTvTitle.setPadding(paddingLeft, paddingRight, paddingTop, paddingBottom);
     }
 
     public void setSpinerText(String text) {

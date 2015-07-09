@@ -227,8 +227,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         new Thread() {
             public void run() {
                 if (isGestureAnimating) {
-                    LeoLog.d("shodonghua", "isGestureAnimating = "+isGestureAnimating);
-                    LeoLog.d("shodonghua", "stop the progress");
                     roundProgressBar.setProgress( mProgress);
                     Message msg = Message.obtain();
                     msg.what = DONGHUA_CHANGE_TEXT;

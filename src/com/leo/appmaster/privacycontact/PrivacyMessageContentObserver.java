@@ -47,7 +47,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     @Override
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
-        // Log.e(FloatWindowHelper.RUN_TAG, "监控短信");
+         Log.e(FloatWindowHelper.RUN_TAG, "监控短信");
         int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
