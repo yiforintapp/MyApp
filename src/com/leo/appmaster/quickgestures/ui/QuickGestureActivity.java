@@ -814,8 +814,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         } else {
             mEditStopImage.setVisibility(View.INVISIBLE);
             mEditVideoBgImage.setVisibility(View.INVISIBLE);
-
-            Uri uri = Uri.parse("android.resource://com.leo.appmaster/" + R.raw.eidt_gesture);
+            Uri uri = Uri.parse("android.resource://com.leo.appmaster/" + R.raw.edit_gesture);
             mEditVideoView.setVideoURI(uri);
             mEditVideoView.start();
             mEditVideoView.setOnCompletionListener(new OnCompletionListener() {
