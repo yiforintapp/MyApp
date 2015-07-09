@@ -753,7 +753,7 @@ public class AppleWatchLayout extends ViewGroup {
             Intent mIntent = null;
             if (QuickGestureManager.getInstance(mContext).mMessages != null
                     && QuickGestureManager.getInstance(mContext).mMessages.size() <= 1) {
-                Uri smsToUri = Uri.parse("smsto://" + bean.getPhoneNumber());
+                Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
                 mIntent = new
                         Intent(android.content.Intent.ACTION_SENDTO,
                                 smsToUri);

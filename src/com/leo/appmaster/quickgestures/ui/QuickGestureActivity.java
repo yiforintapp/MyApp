@@ -173,7 +173,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         if (mFromShortcut) {
             mTitleBar.setBackArrowImg(R.drawable.gesture_title_icon);
             mTitleBar.setBackArrawImgSize(DipPixelUtil.dip2px(this, 24));
-        } else {
+            mTitleBar.setTitlePaddingLeft(DipPixelUtil.dip2px(this, 8));
+        }else{
             mTitleBar.openBackView();
         }
 

@@ -161,31 +161,6 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                     /* SDK */
                     SDKWrapper.addEvent(PrivacyCallLogListActivity.this, SDKWrapper.P1, "call",
                             "call");
-                    // 添加到隐私通话中
-                    // ContentValues values = new ContentValues();
-                    // values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER,
-                    // mCallLogNumber);
-                    // values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME,
-                    // mName);
-                    // SimpleDateFormat df = new
-                    // SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                    // String date = df.format(new Date());
-                    // values.put(Constants.COLUMN_CALL_LOG_DATE, date);
-                    // values.put(Constants.COLUMN_CALL_LOG_TYPE,
-                    // CallLog.Calls.OUTGOING_TYPE);
-                    /*
-                     * 来电：CallLog.Calls.INCOMING_TYPE (常量值：1),
-                     * 已拨：CallLog.Calls.OUTGOING_TYPE (常量值：2)
-                     * 未接：CallLog.Calls.MISSED_TYPE (常量值：3)
-                     */
-                    // getContentResolver().insert(
-                    // Constants.PRIVACY_CALL_LOG_URI, values);
-                    // // 删除系统通话记录
-                    // String number =
-                    // PrivacyContactUtils.formatePhoneNumber(mCallLogNumber);
-                    // PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?",
-                    // number,
-                    // PrivacyCallLogListActivity.this);
                 } catch (Exception e) {
                 }
                 break;
