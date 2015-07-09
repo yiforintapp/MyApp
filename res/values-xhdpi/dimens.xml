@@ -73,7 +73,7 @@
     <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">14sp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
-    <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">10dp</dimen>
+    <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">18dp</dimen>
     <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">40dp</dimen>
     <dimen name="activity_wait_textView1_marginbottom">165dp</dimen>
     <dimen name="list_item_locktheme_tick_sel_width">64px</dimen>
@@ -206,7 +206,7 @@
     <dimen name="quick_first_tip_dialog_content_phone_height">150dp</dimen>
     <dimen name="quick_first_tip_dialog_content_margin_top">20dp</dimen>
     <dimen name="quick_first_tip_dialog_content_text_size">14sp</dimen>
-     <dimen name="quick_white_float_width">40dp</dimen>
+    <dimen name="quick_white_float_width">40dp</dimen>
     <!-- quick gesutre end -->
 
     <dimen name="privacy_contact_red_tip_x">105dp</dimen>
@@ -214,10 +214,11 @@
     <dimen name="apple_watch_item_icon_size">74dp</dimen>
     <dimen name="apple_watch_item_size">90dp</dimen>
     <dimen name="text_icon_margin">10dp</dimen>
-	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
+    <dimen name="gesture_item_readtips_offsetx">15dp</dimen>
     <!-- 2.5 ql part -->
     <dimen name="lock_setting_item_des_width">200dp</dimen>
     <dimen name="gesture_app_manager_bg_width">54dp</dimen>
+    <dimen name="lock_setting_title_margintop">22dp</dimen>
     <!-- 2.5 ql part -->
 
 </resources>
