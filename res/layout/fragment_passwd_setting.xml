@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="0dp"
+        android:layout_marginTop="@dimen/lock_setting_title_margintop"
         android:enabled="false"
         android:gravity="center"
         android:text="@string/first_set_passwd_hint"
@@ -265,7 +265,6 @@
         android:paddingLeft="9dp"
         android:paddingRight="9dp"
         android:paddingTop="3dp"
-         android:gravity="center_vertical"
         android:visibility="invisible" >
 
         <ImageView
@@ -279,7 +278,7 @@
             android:id="@+id/tv_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:gravity="center_vertical"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             
             android:maxLines="1"
