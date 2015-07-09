@@ -1194,7 +1194,7 @@ public class LockManager {
                     list = new LinkedList<String>();
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {
-                        //AM-1765 联想K2110Aandroid]testin测试运行失败
+                        // AM-1765 联想K2110Aandroid]testin测试运行失败
                         boolean isAppInstalled = false;
                         try {
                             isAppInstalled = AppUtil.appInstalled(mContext, pkg);
@@ -1644,6 +1644,14 @@ public class LockManager {
         TaskDetectService service = TaskDetectService.getService();
         if (service != null) {
             return service.getLastRunningActivity();
+        }
+        return null;
+    }
+
+    public String getLastPackage() {
+        TaskDetectService service = TaskDetectService.getService();
+        if (service != null) {
+            return service.getLastRunningPackage();
         }
         return null;
     }
