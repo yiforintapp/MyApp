@@ -1082,15 +1082,6 @@ public class PrivacyContactUtils {
                             // = false;
                             QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
                             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
-                            /*
-                             * if (pre.getCallLogNoReadCount() <= 0 &&
-                             * (QuickGestureManager
-                             * .getInstance(context).mCallLogs == null ||
-                             * QuickGestureManager
-                             * .getInstance(context).mCallLogs.size() <= 0) 未读短信
-                             * && AppMasterPreference.getInstance(context)
-                             * .getLastBusinessRedTipShow() 运营 ) {
-                             */
                             if ((QuickGestureManager.getInstance(context).mMessages == null || QuickGestureManager
                                     .getInstance(context).mMessages.size() <= 0)/* 未读短信 */
                                     && (QuickGestureManager.getInstance(context).mCallLogs == null || QuickGestureManager

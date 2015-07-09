@@ -610,16 +610,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                             .getMessageNoReadCount() <= 0/* 隐私短信 */
                                     && AppMasterPreference.getInstance(context)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
-                                /*
-                                 * if (pre.getMessageNoReadCount() <= 0 &&
-                                 * (QuickGestureManager
-                                 * .getInstance(context).mMessages == null ||
-                                 * QuickGestureManager
-                                 * .getInstance(context).mMessages.size() <= 0)
-                                 * 未读短信 &&
-                                 * AppMasterPreference.getInstance(context)
-                                 * .getLastBusinessRedTipShow() 运营 ) {
-                                 */
                                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
                             }
                         }
