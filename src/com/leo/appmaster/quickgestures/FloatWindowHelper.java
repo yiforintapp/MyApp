@@ -28,6 +28,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
+import com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
@@ -1895,9 +1896,14 @@ public class FloatWindowHelper {
         }
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         if (hasMessageTip(mContext)) {
-            // if has new tip,then to last use layout
+            // if has new tip,remove the red tip and go to last use layout
             pref.setLastTimeLayout(1);
             mWhiteFloatView.setImageResource(0);
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "qssetting","point_notice");
+        }else{
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "qssetting","point_user");
         }
         pref.addUseStrengthenModeTimes();
         pref.setNeedShowWhiteDotSlideTip(false);
