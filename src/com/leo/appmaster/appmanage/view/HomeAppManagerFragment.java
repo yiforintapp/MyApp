@@ -22,6 +22,7 @@ import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -388,7 +389,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             case R.id.bg_show_quick_gesture:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qssetting", "home");
                 startQuickGestureActivity();
-                mGestureIconBg.setVisibility(View.GONE);
+                if(mGestureIconBg.getVisibility() == View.VISIBLE){
+                    Log.i("value", "pop_y");
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_guide", "pop_y");
+                    mGestureIconBg.setVisibility(View.GONE);
+                }
+                startQuickGestureActivity();
 //                Intent intent1 = new Intent(Intent.ACTION_VIEW);
 //                intent1.setType("vnd.android.cursor.dir/calls");
 //                intent1.setAction(Intent.ACTION_CALL_BUTTON);
@@ -756,5 +762,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         AnimatorSet set = new AnimatorSet();
         set.playTogether(alphaAnimator, gestureSmall);
         set.start();
+    }
+    
+    public void setGestureTabBgVisibility(int visiable){
+        if(null != mGestureIconBg){
+            if(mGestureIconBg.getVisibility() == View.VISIBLE){
+                mGestureIconBg.setVisibility(visiable);
+            }
+        }
     }
 }
