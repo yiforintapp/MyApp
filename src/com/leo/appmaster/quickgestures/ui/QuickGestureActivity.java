@@ -142,8 +142,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             });
         }
         LeoEventBus.getDefaultBus().unregister(this);
-        Log.i("null","onDestroy()");
+        Log.i("null", "onDestroy()");
     }
+
     public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
                 .equals(event.editModel)) {
@@ -151,14 +152,16 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             setShowSlideAllArea();
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
     }
+
     private void setShowSlideAllArea() {
         FloatWindowHelper.removeAllFloatWindow(this);
-         FloatWindowHelper.createFloatWindow(getApplicationContext(),
-         QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
+        FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize);
     }
 
     private void initUi() {
@@ -167,13 +170,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mTitleBar.setOptionImageVisibility(View.VISIBLE);
         mTitleBar.setOptionImage(R.drawable.setup);
         mTitleBar.setOptionListener(this);
-        if(mFromShortcut){
+        if (mFromShortcut) {
             mTitleBar.setBackArrowImg(R.drawable.gesture_title_icon);
             mTitleBar.setBackArrawImgSize(DipPixelUtil.dip2px(this, 24));
+            mTitleBar.setTitlePaddingLeft(DipPixelUtil.dip2px(this, 8));
         }else{
             mTitleBar.openBackView();
         }
-
 
         mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_helping);
         mGestureSwitchView = (FrameLayout) findViewById(R.id.gesure_switch);
@@ -239,7 +242,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mSlideAreaSetBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(QuickGestureActivity.this, "要打开快捷手势哦",Toast.LENGTH_SHORT);
+                Toast toast = Toast.makeText(QuickGestureActivity.this, "要打开快捷手势哦",
+                        Toast.LENGTH_SHORT);
                 toast.show();
             }
         });
@@ -249,10 +253,10 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     @Override
     protected void onRestart() {
         super.onRestart();
-//        if (mAlarmDialogFlag) {
-//            FloatWindowHelper.mEditQuickAreaFlag = true;
-//            updateFloatWindowBackGroudColor();
-//        }
+        // if (mAlarmDialogFlag) {
+        // FloatWindowHelper.mEditQuickAreaFlag = true;
+        // updateFloatWindowBackGroudColor();
+        // }
     }
 
     @Override
@@ -408,10 +412,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         });
         mAlarmDialog.setCancelable(true);
         mAlarmDialog.show();
-//        mAlarmDialogFlag = true;
+        // mAlarmDialogFlag = true;
         updateFloatWindowBackGroudColor();
     }
-
 
     // update backgroud color
     private void updateFloatWindowBackGroudColor() {
@@ -580,7 +583,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     }
 
-
     private void gestureSwitch() {
         if (mOpenQuickFlag) {
             SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
@@ -644,7 +646,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onAnimationStart(Animator animation) {
                 isRoating = true;
             }
-            
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 mGestureSwitch.post(new Runnable() {
@@ -652,10 +654,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     public void run() {
                         mGestureSwitch.setBackgroundResource(R.drawable.gesture_close_selecter);
                         mGestureSwitch.setText(R.string.quick_gesture_close_text);
-                        mGestureSwitch.setTextColor(getResources().getColor(R.color.quick_close_text_color));
+                        mGestureSwitch.setTextColor(getResources().getColor(
+                                R.color.quick_close_text_color));
                         unSetOnClickListener();
-                        
-                        QuickGestureManager.getInstance(QuickGestureActivity.this).stopFloatWindow();
+
+                        QuickGestureManager.getInstance(QuickGestureActivity.this)
+                                .stopFloatWindow();
                         FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
                         if (AppMasterPreference.getInstance(QuickGestureActivity.this)
                                 .getSwitchOpenStrengthenMode()) {
@@ -699,10 +703,12 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     public void run() {
                         mGestureSwitch.setBackgroundResource(R.drawable.gesture_open_selecter);
                         mGestureSwitch.setText(R.string.quick_gesture_open_text);
-                        mGestureSwitch.setTextColor(getResources().getColor(R.color.quick_open_text_color));
+                        mGestureSwitch.setTextColor(getResources().getColor(
+                                R.color.quick_open_text_color));
                         setOnClickListener();
-                        
-                        QuickGestureManager.getInstance(QuickGestureActivity.this).startFloatWindow();
+
+                        QuickGestureManager.getInstance(QuickGestureActivity.this)
+                                .startFloatWindow();
                         if (AppMasterPreference.getInstance(QuickGestureActivity.this)
                                 .getSwitchOpenStrengthenMode()) {
                             FloatWindowHelper.createWhiteFloatView(getApplicationContext());
@@ -711,7 +717,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 });
                 mGestureSwitchView.setBackgroundResource(R.drawable.gesture_open_bg);
                 mRotationImage.setRotation(0);
-               mRotationImage.setImageResource(R.drawable.gesture_rotation_open);
+                mRotationImage.setImageResource(R.drawable.gesture_rotation_open);
                 isRoating = false;
             }
         });
@@ -726,11 +732,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             sildeGuideTransAnim();
         }
         if (!isTranslating) {
-            //play
+            // play
             mSlideStopImage.setVisibility(View.INVISIBLE);
             mSlideGuideAnim.start();
         } else {
-            //stop
+            // stop
             mSlideStopImage.setVisibility(View.VISIBLE);
             List<Animator> throbbers = mSlideGuideAnim.getChildAnimations();
             for (Animator animator : throbbers) {
@@ -766,7 +772,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         PropertyValuesHolder arrowHolderY = PropertyValuesHolder
                 .ofFloat("translationY", 0, 0, -trans);
         ObjectAnimator arrawTranslate = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(
-                mSlideGuideArrow,arrowHolderX, arrowHolderY);
+                mSlideGuideArrow, arrowHolderX, arrowHolderY);
         arrawTranslate.setRepeatCount(-1);
         arrawTranslate.setInterpolator(new AccelerateDecelerateInterpolator());
 
@@ -776,6 +782,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onAnimationStart(Animator animation) {
                 isTranslating = true;
             }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 isTranslating = false;
@@ -787,14 +794,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 mSlideGuideArrow.setAlpha(1.0f);
             }
         });
-        
+
         int version = Build.VERSION.SDK_INT;
-        if(version == 14 || version == 15){
+        if (version == 14 || version == 15) {
             handAlpha.setDuration(1500);
             handTranslate.setDuration(1500);
             arrowAlpha.setDuration(1500);
             arrawTranslate.setDuration(1500);
-        }else {
+        } else {
             mSlideGuideAnim.setDuration(1500);
         }
     }
@@ -808,47 +815,25 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         } else {
             mEditStopImage.setVisibility(View.INVISIBLE);
             mEditVideoBgImage.setVisibility(View.INVISIBLE);
-            
-          /*  AssetManager manager = getAssets()  ;
-            MediaPlayer  mediaPlayer = new MediaPlayer();
-                try {
-                    AssetFileDescriptor fileDescriptor = manager.openFd("eidt_gesture.mp4");
-                    mediaPlayer.setDataSource(fileDescriptor.getFileDescriptor(),
-                                              fileDescriptor.getStartOffset(),
-                                              fileDescriptor.getLength());
-                    mediaPlayer.prepare();
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            mediaPlayer.start();*/
-            
-            Uri uri = Uri.parse("android.resource://com.leo.appmaster/" + R.raw.eidt_gesture);
+            Uri uri = Uri.parse("android.resource://com.leo.appmaster/" + R.raw.edit_gesture);
             mEditVideoView.setVideoURI(uri);
             mEditVideoView.start();
             mEditVideoView.setOnCompletionListener(new OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
-                    mp.prepareAsync();
                     mEditVideoView.start();
                 }
             });
         }
     }
-    
+
     @Override
     protected void onStop() {
         stopAnimation();
         super.onStop();
     }
-    
-    private void stopAnimation(){
+
+    private void stopAnimation() {
         // stop the slide guide animation
         if (null != mSlideGuideAnim && isTranslating) {
             mSlideStopImage.setVisibility(View.VISIBLE);
@@ -865,6 +850,5 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mEditStopImage.setVisibility(View.VISIBLE);
         mEditVideoBgImage.setVisibility(View.VISIBLE);
     }
-    
-    
+
 }

@@ -6,7 +6,10 @@ import java.util.ArrayList;
 
 import android.R.integer;
 import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
@@ -25,9 +28,11 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.ScaleAnimation;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -37,6 +42,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
@@ -72,6 +78,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static boolean isShowIng = false;
     private boolean curFastThanset = false;
     private boolean isStopDongHua = false;
+    public boolean isGestureAnimating = false;
     private int mNowDongHuaWhere = 0;
     private int lastPosition = -1;
 
@@ -89,7 +96,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private ListView list_delete;
     private AppBackupRestoreManager mDeleteManager;
     private AppDeleteAdapter mDeleteAdapter;
-    private ImageView iv_donghua, mQuickGestureRedTip;
+    private ImageView iv_donghua, mQuickGestureRedTip,mGestureIconBg,mGestureIcon;
     private TextView tv_installed_app, tv_ap_data, tv_backup_num,
             tv_from_big_donghua;
     // private int InstalledApps = 0;
@@ -219,23 +226,31 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         LeoLog.d("shodonghua", "SHOW DONG HUA");
         new Thread() {
             public void run() {
-                int startProgress = 0;
-                while (mProgress > startProgress) {
-                    try {
-                        Thread.sleep(15);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                    if (isStopDongHua) {
-                        break;
-                    }
-                    startProgress += 1;
-                    mNowDongHuaWhere = startProgress;
-                    roundProgressBar.setProgress(startProgress);
+                if (isGestureAnimating) {
+                    roundProgressBar.setProgress( mProgress);
                     Message msg = Message.obtain();
                     msg.what = DONGHUA_CHANGE_TEXT;
-                    msg.obj = startProgress;
+                    msg.obj = mProgress;
                     handler.sendMessage(msg);
+                } else {
+                    int startProgress = 0;
+                    while (mProgress > startProgress) {
+                        try {
+                            Thread.sleep(15);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if (isStopDongHua) {
+                            break;
+                        }
+                        startProgress += 1;
+                        mNowDongHuaWhere = startProgress;
+                        roundProgressBar.setProgress(startProgress);
+                        Message msg = Message.obtain();
+                        msg.what = DONGHUA_CHANGE_TEXT;
+                        msg.obj = startProgress;
+                        handler.sendMessage(msg);
+                    }
                 }
                 try {
                     Thread.sleep(500);
@@ -271,6 +286,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         resources = AppMasterApplication.getInstance().getResources();
         mQuickGesture = findViewById(R.id.bg_show_quick_gesture);
         mQuickGesture.setOnClickListener(this);
+        mGestureIconBg = (ImageView)mQuickGesture.findViewById(R.id.gesture_icon_bg);
+        mGestureIcon = (ImageView)mQuickGesture.findViewById(R.id.quick_gesture_icon);
     }
 
     public void fillData() {
@@ -710,28 +727,39 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         }
     }
 
-    public void playQuickGestureEnterAnim(){
-        if(null != mQuickGesture){
-            ValueAnimator scaling = ValueAnimator.ofInt(0,600);
-            scaling.addUpdateListener(new AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                       int value = (Integer) animation.getAnimatedValue();
-                       float scale;
-                       if(value<=200){
-                           scale = (float) (1.0f+0.001*value);
-                       }else{
-                           scale = (float) (1.3-0.0005*value);
-                       }
-                       Log.i("value", value+" : "+scale+" : "+animation.getCurrentPlayTime());
-                       mQuickGesture.setScaleX(scale);
-                       mQuickGesture.setScaleY(scale);
-                }
-            });
-            scaling.setDuration(600);
-            scaling.setRepeatCount(2);
-            scaling.setRepeatMode(ValueAnimator.RESTART);
-            scaling.start();
+    public void playQuickGestureEnterAnim() {
+        if (null == mGestureIcon || null == mGestureIconBg) {
+            return;
         }
+        final ObjectAnimator lastAlphaAnimator = ObjectAnimator.ofFloat(mGestureIconBg, "alpha", 0f, 1.0f).setDuration(300);
+        
+        ObjectAnimator alphaAnimator = ObjectAnimator
+                .ofFloat(mGestureIconBg, "alpha", 0f, 1.0f, 0f).setDuration(800);
+        alphaAnimator.setRepeatCount(2);
+        alphaAnimator.setRepeatMode(ValueAnimator.RESTART);
+        alphaAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mGestureIconBg.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                lastAlphaAnimator.start();
+                isGestureAnimating = false;
+            }
+        });
+
+        PropertyValuesHolder smallX = PropertyValuesHolder
+                .ofFloat("scaleX", 1.0f, 1.2f, 1.0f);
+        PropertyValuesHolder smallY = PropertyValuesHolder
+                .ofFloat("scaleY", 1.0f, 1.2f, 1.0f);
+        ObjectAnimator gestureSmall = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(
+                mGestureIcon, smallX, smallY);
+        gestureSmall.setDuration(800);
+        gestureSmall.setRepeatCount(2);
+        gestureSmall.setRepeatMode(ValueAnimator.RESTART);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(alphaAnimator, gestureSmall);
+        set.start();
     }
 }
