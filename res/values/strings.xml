@@ -181,7 +181,7 @@
     <string name="feedback">Give us feedbacks</string>
     <string name="first_set_passwd_hint">Enter your password</string>
     <string name="gestur_passwd_function_hint">Connect at least four dots</string>
-    <string name="digital_passwd_function_hint">Enter a 4-letter passcode</string>
+    <string name="digital_passwd_function_hint">Enter a 4-digit passcode</string>
     <string name="gesture_start_hint">Lift your finger to finish</string>
     <string name="make_passwd">Re-enter to confirm</string>
     <string name="input_again">Please enter again</string>
@@ -672,9 +672,9 @@
     <string name="quick_gesture_dialog_tip_contniue_right_bt">Later</string>
     <string name="quick_gesture_miui_tip_button_text">OK</string>
     <string name="quick_gesture_dynamic">Recent Apps</string>
-    <string name="quick_gesture_switcher">Easy </string>
+    <string name="quick_gesture_switcher">Switch </string>
     <string name="quick_gesture_most_used">Favorites</string>
-    <string name="quick_gesture_first_open_sliding_toast">Enjoy simple trip!</string>
+    <string name="quick_gesture_first_open_sliding_toast">Amazing Shortcuts!</string>
     <string name="quick_guesture_bluetooth">Bluetooth</string>
     <string name="quick_guesture_flashlight">Flashlight</string>
     <string name="quick_guesture_wlan">WLAN</string>
@@ -694,7 +694,7 @@
     <string name="pass_gesture_change">Switch password pattern</string>
     <string name="permission_open_tip_notification_title">Set shortcuts</string>
     <string name="permission_open_tip_notification_content">Click to start shortcuts</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">Wanna manage Apps like Apple Watch? Try shortcuts</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Easy Shortcuts make your phone like Apple watch</string>
     <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
     <string name="grade_tip_feedback">Feedback</string>
     <string name="quick_first_tip_dialog_right_bt">Go for it</string>
