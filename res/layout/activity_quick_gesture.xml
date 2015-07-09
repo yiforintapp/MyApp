@@ -327,6 +327,7 @@
             android:layout_below="@id/quick_title"
             android:layout_marginTop="15dp"
             android:gravity="center"
+            android:layout_centerHorizontal="true"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
             android:text="@string/pg_appmanager_quick_gesture_first_tip_text"
