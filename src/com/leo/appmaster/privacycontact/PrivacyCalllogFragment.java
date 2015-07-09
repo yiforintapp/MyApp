@@ -597,15 +597,29 @@ public class PrivacyCalllogFragment extends BaseFragment {
                          * 对快捷手势隐私联系人，红点去除操作
                          */
                         // 隐私通话
+
                         if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
                             QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
                             AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
                                     false);
-                            if (pre.getMessageNoReadCount() <= 0
-                                    && (QuickGestureManager.getInstance(context).mMessages == null
-                                    || QuickGestureManager.getInstance(context).mMessages.size() <= 0)/* 未读短信 */
+                            if ((QuickGestureManager.getInstance(context).mCallLogs == null || QuickGestureManager
+                                    .getInstance(context).mCallLogs.size() <= 0)/* 未读通话 */
+                                    && (QuickGestureManager.getInstance(context).mMessages == null || QuickGestureManager
+                                            .getInstance(context).mMessages.size() <= 0)/* 未读短信 */
+                                    && AppMasterPreference.getInstance(context)
+                                            .getMessageNoReadCount() <= 0/* 隐私短信 */
                                     && AppMasterPreference.getInstance(context)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
+                                /*
+                                 * if (pre.getMessageNoReadCount() <= 0 &&
+                                 * (QuickGestureManager
+                                 * .getInstance(context).mMessages == null ||
+                                 * QuickGestureManager
+                                 * .getInstance(context).mMessages.size() <= 0)
+                                 * 未读短信 &&
+                                 * AppMasterPreference.getInstance(context)
+                                 * .getLastBusinessRedTipShow() 运营 ) {
+                                 */
                                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
                             }
                         }
