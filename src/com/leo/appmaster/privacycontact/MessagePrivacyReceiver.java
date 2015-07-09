@@ -33,6 +33,7 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -107,6 +108,11 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                     PrivacyContactManager.getInstance(mContext).synMessage(
                                             mSimpleDateFormate, messageBean, mContext,
                                             mSendDate);
+                                    if (Build.VERSION.SDK_INT < 19 && !BuildProperties.isMIUI()) {
+                                        // 对于4.0的系统由于可以直接拦截，拦截后不会触发数据库变化，所以再此处通知快捷手势有新消息
+                                        noReadPrivacyMsmTipForQuickGesture(AppMasterPreference
+                                                .getInstance(mContext));
+                                    }
                                 }
                             });
                         }
@@ -121,16 +127,16 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             // 获取来电号码
             final String phoneNumber =
                     intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-            //通话判断来电号码是否存在来判断是，拨出还是呼入，进行isCallLogRead值的初始化
+            // 通话判断来电号码是否存在来判断是，拨出还是呼入，进行isCallLogRead值的初始化
             if (!Utilities.isEmpty(phoneNumber)) {
-//                Log.e(Constants.RUN_TAG, "" + "更新电话");
+                // Log.e(Constants.RUN_TAG, "" + "更新电话");
                 if (QuickGestureManager.getInstance(mContext).isCallLogRead) {
                     QuickGestureManager.getInstance(mContext).isCallLogRead = false;
                     AppMasterPreference.getInstance(mContext)
                             .setCallLogIsRedTip(false);
                 }
             }
-            //没有隐私联系人时直接结束
+            // 没有隐私联系人时直接结束
             if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
                 return;
             }
@@ -222,11 +228,11 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     public static ContactBean getPrivateMessage(String number, Context context) {
         ContactBean flagContact = null;
-        String formateNumber=null;
+        String formateNumber = null;
         if (!Utilities.isEmpty(number)) {
             List<ContactBean> contacts = PrivacyContactManager.getInstance(context)
                     .getPrivateContacts();
-             formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+            formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
             for (ContactBean contactBean : contacts) {
                 if (contactBean.getContactNumber().contains(formateNumber)) {
                     flagContact = contactBean;
@@ -326,6 +332,18 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
             // 发送通知
             callLogNotification(mContext);
+        }
+    }
+
+    private void noReadPrivacyMsmTipForQuickGesture(AppMasterPreference pref) {
+        Log.e(Constants.RUN_TAG,
+                "pref.getSwitchOpenPrivacyContactMessageTip()="
+                        + pref.getSwitchOpenPrivacyContactMessageTip()
+                        + ";pref.getQuickGestureMsmTip()=" + pref.getQuickGestureMsmTip());
+        if (pref.getSwitchOpenPrivacyContactMessageTip() && pref.getQuickGestureMsmTip()) {
+            QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = true;
+            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
+            FloatWindowHelper.removeShowReadTipWindow(mContext);
         }
     }
 }

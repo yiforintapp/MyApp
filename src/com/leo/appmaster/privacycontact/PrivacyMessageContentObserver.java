@@ -209,7 +209,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 String contactCallFromate = PrivacyContactUtils
                                         .formatePhoneNumber(message.getPhoneNumber());
                                 if (formateLastCall.equals(contactCallFromate)) {
-                                    //过略掉隐私联系人，留下非隐私联系人
+                                    // 过略掉隐私联系人，留下非隐私联系人
                                     messages.remove(message);
                                 }
                             } else {
