@@ -944,6 +944,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 if (mQuickGestureSettingDialog != null) {
                     mQuickGestureSettingDialog.dismiss();
                 }
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
+                        "continued_n");
             }
         });
         mQuickGestureSettingDialog.setRightOnClickListener(new OnClickListener() {
@@ -955,29 +957,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         true);
                 Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
                 startActivity(inten);
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
+                        "continued_y");
             }
         });
-        // mQuickGestureSettingDialog.setOnClickListener(new
-        // OnDiaogClickListener() {
-        //
-        // @Override
-        // public void onClick(int which) {
-        // if (which == 0) {
-        // AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
-        // true);
-        // if (mQuickGestureSettingDialog != null) {
-        // mQuickGestureSettingDialog.dismiss();
-        // }
-        // } else if (which == 1) {
-        // mQuickGestureSettingDialog.dismiss();
-        // AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
-        // true);
-        // Intent inten = new Intent(HomeActivity.this,
-        // QuickGestureActivity.class);
-        // startActivity(inten);
-        // }
-        // }
-        // });
         mQuickGestureSettingDialog.show();
     }
 
@@ -991,12 +974,16 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 if (mQuickGestureTip != null) {
                     mQuickGestureTip.dismiss();
                 }
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
+                        "firsd_n");
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
             }
         });
         mQuickGestureTip.setRightOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
+                        "firstd_y");
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
                 startQuickGestureEnterTip();
                 if (mQuickGestureTip != null) {
