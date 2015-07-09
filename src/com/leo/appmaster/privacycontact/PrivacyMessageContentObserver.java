@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
-import android.R.string;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
@@ -22,7 +21,6 @@ import android.util.Log;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -325,9 +323,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 cursor = cr.query(PrivacyContactUtils.CALL_LOG_URI, null,
                         "number LIKE  ? ", new String[] {
                             "%" + formatNumber
-                        }, null, null);
+                        }, null);
             } catch (Exception e) {
-                e.printStackTrace();
+            } catch (Error error) {
+                // AM-1824, No such method error
             }
 
             return cursor;
