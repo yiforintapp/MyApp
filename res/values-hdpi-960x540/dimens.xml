@@ -78,7 +78,7 @@
     <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">14sp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
-    <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">10dp</dimen>
+    <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">18dp</dimen>
     <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">40dp</dimen>
     <dimen name="activity_wait_textView1_marginbottom">165dp</dimen>
     <dimen name="list_item_locktheme_tick_sel_width">64px</dimen>
@@ -335,4 +335,5 @@
     <dimen name="apple_watch_item_icon_size">74dp</dimen>
     <dimen name="apple_watch_item_size">90dp</dimen>
 	<dimen name="gesture_item_readtips_offsetx">15dp</dimen>
+	 <dimen name="lock_setting_title_margintop">22dp</dimen>
 </resources>

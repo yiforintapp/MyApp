@@ -61,7 +61,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (mSimpleDateFormate == null) {
             mSimpleDateFormate = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         }
-        Log.e(FloatWindowHelper.RUN_TAG, "来短信");
         // 拦截信息
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
@@ -73,7 +72,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                 QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
                 AppMasterPreference.getInstance(mContext).setMessageIsRedTip(false);
             }
-            Log.e(FloatWindowHelper.RUN_TAG, "是否右隐私联系人："+PrivacyContactManager.getInstance(context).getPrivacyContactsCount());
             if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
                 return;
             }
