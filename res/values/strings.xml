@@ -670,7 +670,7 @@
     <string name="quick_gesture_dialog_tip_contniue_cotent">You have enabled pop-up window.Continue to set the easy shortcuts?</string>
     <string name="quick_gesture_dialog_tip_contniue_left_bt">Continue</string>
     <string name="quick_gesture_dialog_tip_contniue_right_bt">Later</string>
-    <string name="quick_gesture_miui_tip_button_text">OK</string>
+    <string name="quick_gesture_miui_tip_button_text">Got it</string>
     <string name="quick_gesture_dynamic">Recent Apps</string>
     <string name="quick_gesture_switcher">Switch </string>
     <string name="quick_gesture_most_used">Favorites</string>
@@ -736,7 +736,9 @@
  	<string name="new_guide_page2_content">Mask on apps, guard on phone</string>
  	<string name="new_guide_page3_title">Little white dot</string>
  	<string name="new_guide_page3_content">Only a click to show easy shortcuts</string>
+ 	<string name="quick_open_tip">You have not enabled easy shortcuts.</string>
  	 	<string name="quick_setting_title">快捷手势设置</string>
+ 	 	
     <!-- version 2.5 huangqili part -->
 
 </resources>

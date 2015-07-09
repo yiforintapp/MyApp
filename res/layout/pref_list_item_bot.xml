@@ -16,11 +16,10 @@
 
         <TextView
             android:id="@android:id/title"
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/lock_setting_item_title_des_width"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:singleLine="true"
             android:textColor="@color/option_text_color"
             android:textSize="16.0sp" />
 

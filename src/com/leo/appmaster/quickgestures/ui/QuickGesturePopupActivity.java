@@ -3,6 +3,8 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -77,11 +79,16 @@ public class QuickGesturePopupActivity extends BaseActivity {
             int clickCount = amp.getUseStrengthenModeTimes();
             if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
-                mGestureTipTitle.setVisibility(View.GONE);
                 mGestureTipContent.setText(R.string.white_dot_click_tip);
                 Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
                 final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView,
                         "alpha", 1.0f, 0f).setDuration(200);
+                alphaAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mSuccessTipView.setVisibility(View.GONE);
+                    }
+                });
                 mKnowbButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -314,6 +321,12 @@ public class QuickGesturePopupActivity extends BaseActivity {
         mSuccessTipView.setVisibility(View.VISIBLE);
         final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView, "alpha",
                 1.0f, 0f).setDuration(200);
+        alphaAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                mSuccessTipView.setVisibility(View.GONE);
+            }
+        });
         Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
         mKnowbButton.setOnClickListener(new OnClickListener() {
             @Override

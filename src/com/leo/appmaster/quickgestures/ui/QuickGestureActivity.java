@@ -242,7 +242,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mSlideAreaSetBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast toast = Toast.makeText(QuickGestureActivity.this, "要打开快捷手势哦",
+                Toast toast = Toast.makeText(QuickGestureActivity.this,getResources().getString(R.string.quick_open_tip),
                         Toast.LENGTH_SHORT);
                 toast.show();
             }
@@ -566,7 +566,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 startActivity(intent);
                 break;
             case R.id.gesture_switch_text:
-                gestureSwitch();
+                if (!isRoating) {
+                    gestureSwitch();
+                }
                 break;
             case R.id.slide_guide_show:
                 onSlideGuideClick();
@@ -635,7 +637,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (Float) animation.getAnimatedValue();
                 float percent = value / 90;
-                Log.i("value", "value = " + value + "   percent = " + percent);
                 mRotationImage.setRotation(value);
                 mRotationOpenBgImage.setAlpha(1 - percent);
                 mRotationCloseBgImage.setAlpha(percent);
@@ -684,7 +685,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             public void onAnimationUpdate(ValueAnimator animation) {
                 float value = (Float) animation.getAnimatedValue();
                 float percent = value / 90;
-                Log.i("value", "value = " + value + "   percent = " + percent);
                 mRotationImage.setRotation(-value);
                 mRotationCloseBgImage.setAlpha(1 - percent);
                 mRotationOpenBgImage.setAlpha(percent);

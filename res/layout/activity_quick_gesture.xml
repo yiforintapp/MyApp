@@ -141,6 +141,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/slide_guide_title"
                     android:layout_marginTop="8dp"
+                    android:layout_centerHorizontal="true"
                     android:text="@string/quick_gesture_slide_guide_content"
                     android:textColor="@color/quick_intro_color"
                     android:textSize="12dp" />
@@ -326,6 +327,7 @@
             android:layout_below="@id/quick_title"
             android:layout_marginTop="15dp"
             android:gravity="center"
+            android:layout_centerHorizontal="true"
             android:paddingLeft="50dp"
             android:paddingRight="50dp"
             android:text="@string/pg_appmanager_quick_gesture_first_tip_text"
