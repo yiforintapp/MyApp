@@ -56,7 +56,7 @@
             android:id="@+id/iv_reset_icon"
             android:layout_width="13dp"
             android:layout_height="13dp"
-            android:layout_centerVertical="true"
+         	 android:layout_centerVertical="true"
             android:background="@drawable/reset_pass_gesture_icon" />
 
         <TextView
@@ -64,7 +64,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="8dp"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="4dp"
             android:layout_toRightOf="@id/iv_reset_icon"
             android:text="@string/reset_gesture_passwd"
             android:textColor="@color/common_button_selecter"
