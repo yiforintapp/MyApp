@@ -231,6 +231,7 @@ public class PrivacyContactManager {
                     notification.when = System.currentTimeMillis();
                     notificationManager.notify(20140901, notification);
                     AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
+                    
                 }
                 String dateFrom = sdf.format(new Date(sendDate));
                 message.setMessageTime(dateFrom);

@@ -11,6 +11,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -1657,6 +1659,11 @@ public class FloatWindowHelper {
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("show_orientation", 0);
+            if (TextUtils
+                    .equals(AppMasterApplication.getInstance().getPackageName(), LockManager
+                            .getInstatnce().getLastPackage())) {
+                intent.putExtra("from_self_app", true);
+            }
             AppMasterApplication.getInstance().startActivity(intent);
             if (flag == -1) {
                 QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -1;
@@ -1674,6 +1681,11 @@ public class FloatWindowHelper {
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("show_orientation", 2);
+            if (TextUtils
+                    .equals(AppMasterApplication.getInstance().getPackageName(), LockManager
+                            .getInstatnce().getLastPackage())) {
+                intent.putExtra("from_self_app", true);
+            }
             AppMasterApplication.getInstance().startActivity(intent);
             if (flag == 1) {
                 QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = 1;
@@ -1986,6 +1998,10 @@ public class FloatWindowHelper {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("show_orientation", orientation);
         intent.putExtra("from_white_dot", true);
+        if (TextUtils
+                .equals(mContext.getPackageName(), LockManager.getInstatnce().getLastPackage())) {
+            intent.putExtra("from_self_app", true);
+        }
         mContext.startActivity(intent);
     }
 

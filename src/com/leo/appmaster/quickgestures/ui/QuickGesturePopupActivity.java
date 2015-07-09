@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -32,7 +32,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     public boolean isItemClick = false;
     private View mGestureTipTitle;
     private TextView mGestureTipContent;
-    private boolean mFromWhiteDot;
+    private boolean mFromWhiteDot, mFromSelfApp;
     private int mNowLayout;
     private boolean isCloseWindow, ifCreateWhiteFloat;
     private View mSuccessTipView;
@@ -50,9 +50,15 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
 
     private void handleIntent() {
-        mFromWhiteDot = getIntent().getBooleanExtra("from_white_dot", false);
+        Intent intent = getIntent();
+        mFromWhiteDot = intent.getBooleanExtra("from_white_dot", false);
+        mFromSelfApp = intent.getBooleanExtra("from_self_app", false);
     }
 
+    public boolean isFromSelfApp() {
+        return mFromSelfApp;
+    }
+    
     private void initIU() {
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
@@ -254,7 +260,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void createFloatView() {
         // 创建热区处理
         isCloseWindow = true;
-       // FloatWindowHelper.mGestureShowing = false;
+        // FloatWindowHelper.mGestureShowing = false;
         // 多条短信提示后，未读短信红点提示标记为已读,只有当有红点提示，在关闭的时候才会执行
         if (!QuickGestureManager.getInstance(getApplicationContext()).isMessageReadRedTip
                 && (QuickGestureManager.getInstance(getApplicationContext()).mMessages != null
@@ -280,8 +286,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void cancelAllRedPointTip() {
         // 去除热区红点和去除未读，运营icon
         FloatWindowHelper.cancelAllRedTip(getApplicationContext());
-//        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
-//                + QuickGestureManager.getInstance(this).isShowSysNoReadMessage);
+        // Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
+        // + QuickGestureManager.getInstance(this).isShowSysNoReadMessage);
         FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
     }
 
@@ -292,7 +298,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()
                 && !QuickGestureManager
                         .getInstance(this).isDialogShowing) {
-          // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
+            // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
             FloatWindowHelper.removeWhiteFloatView(QuickGesturePopupActivity.this);
             FloatWindowHelper.createWhiteFloatView(QuickGesturePopupActivity.this);
             Log.i("null", "showWhiteFloatView");

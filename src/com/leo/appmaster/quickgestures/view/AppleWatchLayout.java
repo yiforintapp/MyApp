@@ -709,11 +709,25 @@ public class AppleWatchLayout extends ViewGroup {
             final AppItemInfo appInfo = (AppItemInfo) info;
 
             List<String> lockList = LockManager.getInstatnce().getCurLockList();
-            Intent intent = new Intent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setComponent(new ComponentName(appInfo.packageName,
-                    appInfo.activityName));
-            getContext().startActivity(intent);
+            if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
+                QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
+                if (activity.isFromSelfApp()) {
+                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                            appInfo.packageName, false, null);
+                } else {
+                    Intent intent = new Intent();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setComponent(new ComponentName(appInfo.packageName,
+                            appInfo.activityName));
+                    getContext().startActivity(intent);
+                }
+            } else {
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setComponent(new ComponentName(appInfo.packageName,
+                        appInfo.activityName));
+                getContext().startActivity(intent);
+            }
 
             if (mMyType == GType.DymicLayout) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
@@ -724,6 +738,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
             if (lockList.contains(appInfo.packageName)) {
                 if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
+
                 } else {
                     LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                             appInfo.packageName, false, null);
@@ -738,7 +753,7 @@ public class AppleWatchLayout extends ViewGroup {
             Intent mIntent = null;
             if (QuickGestureManager.getInstance(mContext).mMessages != null
                     && QuickGestureManager.getInstance(mContext).mMessages.size() <= 1) {
-                Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
+                Uri smsToUri = Uri.parse("smsto://" + bean.getPhoneNumber());
                 mIntent = new
                         Intent(android.content.Intent.ACTION_SENDTO,
                                 smsToUri);
@@ -863,11 +878,25 @@ public class AppleWatchLayout extends ViewGroup {
             LeoLog.d("TestLayout", "QuickGsturebAppInfo");
             final QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
             List<String> lockList = LockManager.getInstatnce().getCurLockList();
-            Intent intent = new Intent();
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.setComponent(new ComponentName(appInfo.packageName,
-                    appInfo.activityName));
-            getContext().startActivity(intent);
+            if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
+                QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
+                if (activity.isFromSelfApp()) {
+                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                            appInfo.packageName, false, null);
+                } else {
+                    Intent intent = new Intent();
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.setComponent(new ComponentName(appInfo.packageName,
+                            appInfo.activityName));
+                    getContext().startActivity(intent);
+                }
+            } else {
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setComponent(new ComponentName(appInfo.packageName,
+                        appInfo.activityName));
+                getContext().startActivity(intent);
+            }
 
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
             if (lockList.contains(appInfo.packageName)) {
