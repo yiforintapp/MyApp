@@ -749,6 +749,7 @@
  	<string name="new_guide_page3_title">快捷手势小白点</string>
  	<string name="new_guide_page3_content">轻轻一点，手势即现</string>
  	<string name="quick_setting_title">快捷手势设置</string>
+ 	<string name="quick_open_tip">您还没有开启快捷手势</string>
     <!-- version 2.5 huangqili part -->
 
 </resources>
