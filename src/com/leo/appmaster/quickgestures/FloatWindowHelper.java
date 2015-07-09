@@ -1747,7 +1747,6 @@ public class FloatWindowHelper {
             registerWhiteFlaotOnScreenListener(mContext);
             try {
                 windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
-                whiteFloatAppearAnim(mContext);
             } catch (Exception e) {
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             }
@@ -2123,33 +2122,5 @@ public class FloatWindowHelper {
         // right center
         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightCenter = pre
                 .getDialogRadioRightCenter();
-    }
-    
-    private static void whiteFloatAppearAnim(Context mContext){
-        final WindowManager windowManager = getWindowManager(mContext);
-        ValueAnimator alphAnimator = ValueAnimator.ofFloat(0f,1.0f).setDuration(600);
-        alphAnimator.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                mWhiteFloatParams.alpha = (Float) animation.getAnimatedValue();
-                Log.i("value","mWhiteFloatParams.alpha = " +mWhiteFloatParams.alpha);
-                windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
-            }
-        });
-        alphAnimator.start();
-        mLastClickTime = System.currentTimeMillis();
-        Log.i("null", "whiteFloatAppearAnim 变亮");
-    }
-    
-    /**
-     * change the alpha of white float
-     * @param startAlpha
-     * @param endAlpha
-     */
-    private static void whiteFloatAlphaAnim(float startAlpha,float endAlpha){
-        if(null != mWhiteFloatView){
-            ObjectAnimator alphAnimator = ObjectAnimator.ofFloat(mWhiteFloatView, "alpha", startAlpha,endAlpha).setDuration(600);
-            alphAnimator.start();
-        }
     }
 }
