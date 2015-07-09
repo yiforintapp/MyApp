@@ -66,12 +66,12 @@
             <TextView
                 android:id="@+id/switch_bottom"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:gravity="center"
              	android:layout_marginLeft="4dp"
 				 android:layout_centerVertical="true"
                 android:maxLines="1"
-          
+          		
                 android:layout_toRightOf="@id/iv_reset_icon"
                 android:textColor="@color/common_button_selecter"
                 android:textSize="13sp" />
