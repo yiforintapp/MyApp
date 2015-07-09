@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.CountDownTimer;
+import android.os.Handler;
 import android.util.Log;
 import android.view.Display;
 import android.view.MotionEvent;
@@ -27,6 +29,7 @@ import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
@@ -43,6 +46,8 @@ public class FloatWindowHelper {
     public static final String QUICK_GESTURE_SETTING_DIALOG_RADIO_SLIDE_TIME_SETTING_FINISH_NOTIFICATION = "quick_gesture_setting_finish_notification";
     public static final String QUICK_GESTURE_LEFT_SLIDE_AREA = "left_slide_area";
     public static final String QUICK_GESTURE_RIGHT_SLIDE_AREA = "right_slide_area";
+    public static final int showFirstWhite = 1;
+    public static final int moveThen = 2;
     public static final int ONTUCH_LEFT_FLAG = -1;
     public static final int ONTUCH_RIGHT_FLAG = 1;
     public static final String QUICK_GESTURE_MSM_TIP = "quick_gesture_msm_tip";
@@ -106,6 +111,12 @@ public class FloatWindowHelper {
     private static final int RIGHT_CENTER_CENTER_FLAG = -3;
     private static final int RIGHT_TOP_FLAG = -4;
     public static final String RUN_TAG = "RUN_TAG";
+    private static AnimationDrawable animationLightDrawable;
+    private static AnimationDrawable animationDarkDrawable;
+    private static int otherStep = 0;
+    private static boolean beComingDark = false;
+    private static boolean isControling = false;
+    private static CountDownTimer nowCount;
 
     /**
      * left bottom must call in UI thread
@@ -1714,7 +1725,10 @@ public class FloatWindowHelper {
             Log.i("######", "mWhiteFloatParams.y = " + mWhiteFloatParams.y);
 
             mWhiteFloatView = new ImageView(mContext);
-            mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
+            // mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
+
+            goToChangeLight();
+
             setWhiteFloatOnTouchEvent(mContext);
             registerWhiteFlaotOnScreenListener(mContext);
             try {
@@ -1724,6 +1738,74 @@ public class FloatWindowHelper {
             }
             Log.i("null", "createWhiteFloatView");
         }
+    }
+
+    private static void goToChangeDark() {
+        if (mWhiteFloatView != null && !isControling) {
+            beComingDark = true;
+            mWhiteFloatView.setBackgroundResource(R.drawable.whitedotanimation2);
+            animationDarkDrawable = (AnimationDrawable)
+                    mWhiteFloatView.getBackground();
+            animationDarkDrawable.start();
+
+            int duration = 0;
+            for (int i = 0; i < animationDarkDrawable.getNumberOfFrames(); i++) {
+                duration += animationDarkDrawable.getDuration(i);
+            }
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+                    beComingDark = false;
+                }
+            }, duration);
+        }
+    }
+
+    private static void goToChangeLight() {
+        if (mWhiteFloatView != null) {
+
+            // 取消上一次的持续效果
+            if (nowCount != null) {
+                nowCount.cancel();
+                nowCount = null;
+            }
+
+            mWhiteFloatView.setBackgroundResource(R.drawable.whitedotanimation1);
+            animationLightDrawable = (AnimationDrawable)
+                    mWhiteFloatView.getBackground();
+            animationLightDrawable.start();
+
+            // 已经变亮，开始计时变暗
+            int duration = 0;
+            for (int i = 0; i < animationLightDrawable.getNumberOfFrames(); i++) {
+                duration += animationLightDrawable.getDuration(i);
+            }
+            Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+
+                @Override
+                public void run() {
+
+                    nowCount = new CountDownTimer(3000, 1000) {
+                        @Override
+                        public void onTick(long millisUntilFinished) {
+                            LeoLog.d("testAnimation", "millisUntilFinished : "
+                                    + millisUntilFinished);
+                        }
+
+                        @Override
+                        public void onFinish() {
+                            LeoLog.d("testAnimation", "Finish!");
+                            goToChangeDark();
+                        }
+                    };
+                    nowCount.start();
+                }
+            }, duration);
+        }
+
     }
 
     private static void createWhiteFloatParams(Context mContext) {
@@ -1831,12 +1913,21 @@ public class FloatWindowHelper {
                     case MotionEvent.ACTION_OUTSIDE:
                         break;
                     case MotionEvent.ACTION_DOWN:
+                        isControling = true;
+                        // 取消上一次的持续效果
+                        if (nowCount != null) {
+                            nowCount.cancel();
+                            nowCount = null;
+                        }
+                        mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
+
                         startX = event.getRawX();
                         startY = event.getRawY();
                         downTime = System.currentTimeMillis();
                         Log.i("tag", "startX =" + startX + "startY = " + startY);
                         break;
                     case MotionEvent.ACTION_MOVE:
+                        LeoLog.d("", "");
                         moveX = Math.abs(startX - event.getRawX());
                         moveY = Math.abs(startY - event.getRawY());
                         if (moveX > 10 || moveY > 10) {
@@ -1852,6 +1943,9 @@ public class FloatWindowHelper {
                         Log.i("tag", "moveX = " + moveX);
                         break;
                     case MotionEvent.ACTION_UP:
+                        isControling = false;
+                        goToChangeLight();
+
                         upX = event.getRawX() < halfW ? -halfW : halfW;
                         upY = (int) (event.getRawY() - halfH);
                         Log.i("tag", System.currentTimeMillis() - downTime + " ");
