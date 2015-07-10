@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 
 import android.annotation.SuppressLint;
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
@@ -499,7 +500,9 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             String isOtherLogs = null;
             String operationModel = arg0[0];
             ContentResolver cr = mContext.getContentResolver();
+            AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
             if (PrivacyContactUtils.EDIT_MODEL_OPERATION_RESTORE.equals(operationModel)) {
+                int temp = pre.getMessageNoReadCount();
                 for (MessageBean messageBean : mRestorMessages) {
                     isOtherLogs = PrivacyContactUtils.EDIT_MODEL_OPERATION_RESTORE;
                     String fromateNumber = PrivacyContactUtils.formatePhoneNumber(messageBean
@@ -510,6 +513,38 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                             new String[] {
                                 "%" + fromateNumber
                             });
+                    // delete message cancel red tip
+                    if (temp > 0) {
+                        int noReadMessageCount = noReadMessage(messageBean.getPhoneNumber());
+                        if (noReadMessageCount > 0) {
+                            for (int i = 0; i < noReadMessageCount; i++) {
+                                if (temp > 0) {
+                                    temp = temp - 1;
+                                    pre.setMessageNoReadCount(temp);
+                                }
+                                if (temp <= 0) {
+                                    // 没有未读去除隐私通知
+                                    if (pre.getCallLogNoReadCount() <= 0) {
+                                        NotificationManager notificationManager = (NotificationManager) getActivity()
+                                                .getSystemService(
+                                                        Context.NOTIFICATION_SERVICE);
+                                        notificationManager.cancel(20140901);
+                                    }
+                                    /**
+                                     * 对快捷手势隐私联系人未读，红点操作
+                                     */
+                                    PrivacyContactManager.getInstance(mContext)
+                                            .deletePrivacyMsmCancelRedTip(mContext);
+
+                                    LeoEventBus
+                                            .getDefaultBus()
+                                            .post(
+                                                    new PrivacyEditFloatEvent(
+                                                            PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT));
+                                }
+                            }
+                        }
+                    }
                     for (MessageBean messages : mRestoremessgeLists) {
                         ContentValues values = new ContentValues();
                         values.put("address", messages.getPhoneNumber());
@@ -550,12 +585,11 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             } else if (PrivacyContactUtils.MESSAGE_EDIT_MODEL_OPERATION_DELETE
                     .equals(operationModel)) {
                 isOtherLogs = PrivacyContactUtils.MESSAGE_EDIT_MODEL_OPERATION_DELETE;
-                AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
                 int temp = pre.getMessageNoReadCount();
                 for (MessageBean messageBean : mRestorMessages) {
                     String fromateNumber = PrivacyContactUtils.formatePhoneNumber(messageBean
                             .getPhoneNumber());
-                    mRestoremessgeLists= getMessages(
+                    mRestoremessgeLists = getMessages(
                             QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL,
                             Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ? ",
                             new String[] {
@@ -571,6 +605,19 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                     pre.setMessageNoReadCount(temp);
                                 }
                                 if (temp <= 0) {
+                                    // 没有未读去除隐私通知
+                                    if (pre.getCallLogNoReadCount() <= 0) {
+                                        NotificationManager notificationManager = (NotificationManager) getActivity()
+                                                .getSystemService(
+                                                        Context.NOTIFICATION_SERVICE);
+                                        notificationManager.cancel(20140901);
+                                    }
+                                    /**
+                                     * 对快捷手势隐私联系人未读，红点操作
+                                     */
+                                    PrivacyContactManager.getInstance(mContext)
+                                            .deletePrivacyMsmCancelRedTip(mContext);
+
                                     LeoEventBus
                                             .getDefaultBus()
                                             .post(

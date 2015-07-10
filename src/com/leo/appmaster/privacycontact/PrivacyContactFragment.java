@@ -483,35 +483,8 @@ public class PrivacyContactFragment extends BaseFragment {
                                                     /**
                                                      * 对快捷手势隐私联系人未读，红点操作
                                                      */
-                                                    if (QuickGestureManager
-                                                            .getInstance(getActivity()).isShowPrivacyMsm) {
-                                                        // QuickGestureManager.getInstance(context).isShowSysNoReadMessage
-                                                        // = false;
-                                                        QuickGestureManager
-                                                                .getInstance(getActivity()).isShowPrivacyMsm = false;
-                                                        AppMasterPreference.getInstance(
-                                                                getActivity())
-                                                                .setQuickGestureMsmTip(false);
-                                                        if ((QuickGestureManager
-                                                                .getInstance(getActivity()).mMessages == null || QuickGestureManager
-                                                                .getInstance(getActivity()).mMessages
-                                                                .size() <= 0)/* 未读短信 */
-                                                                && (QuickGestureManager
-                                                                        .getInstance(getActivity()).mCallLogs == null || QuickGestureManager
-                                                                        .getInstance(getActivity()).mCallLogs
-                                                                        .size() <= 0)/* 未读通话 */
-                                                                && AppMasterPreference.getInstance(
-                                                                        getActivity())
-                                                                        .getCallLogNoReadCount() <= 0/* 隐私通话 */
-                                                                && AppMasterPreference
-                                                                        .getInstance(getActivity())
-                                                                        .getLastBusinessRedTipShow()/* 运营 */) {
-                                                            QuickGestureManager
-                                                                    .getInstance(getActivity()).isShowSysNoReadMessage = false;
-                                                        }
-                                                    }
-                                                    FloatWindowHelper
-                                                            .removeShowReadTipWindow(getActivity());
+                                                    PrivacyContactManager.getInstance(mContext)
+                                                            .deletePrivacyMsmCancelRedTip(mContext);
                                                     LeoEventBus
                                                             .getDefaultBus()
                                                             .post(
@@ -580,57 +553,11 @@ public class PrivacyContactFragment extends BaseFragment {
                                                     }
                                                     // 隐私通话没有未读
                                                     /**
-                                                     * 对快捷手势隐私联系人，红点去除操作
+                                                     * 对快捷手势隐私联系人,消费隐私通话时，红点去除操作
                                                      */
-                                                    // 隐私通话
-                                                    if (QuickGestureManager
-                                                            .getInstance(getActivity()).isShowPrivacyCallLog) {
-                                                        QuickGestureManager
-                                                                .getInstance(getActivity()).isShowPrivacyCallLog = false;
-                                                        AppMasterPreference.getInstance(
-                                                                getActivity())
-                                                                .setQuickGestureCallLogTip(
-                                                                        false);
-                                                        /*
-                                                         * if (pre.
-                                                         * getMessageNoReadCount
-                                                         * () <= 0 &&
-                                                         * (QuickGestureManager
-                                                         * .
-                                                         * getInstance(getActivity
-                                                         * ()).mMessages == null
-                                                         * ||
-                                                         * QuickGestureManager
-                                                         * .getInstance
-                                                         * (getActivity
-                                                         * ()).mMessages .size()
-                                                         * <= 0) 未读短信 &&
-                                                         * AppMasterPreference
-                                                         * .getInstance
-                                                         * (getActivity()) .
-                                                         * getLastBusinessRedTipShow
-                                                         * () 运营 ) {
-                                                         */
-                                                        if ((QuickGestureManager
-                                                                .getInstance(getActivity()).mMessages == null || QuickGestureManager
-                                                                .getInstance(getActivity()).mMessages
-                                                                .size() <= 0)/* 未读短信 */
-                                                                && (QuickGestureManager
-                                                                        .getInstance(getActivity()).mCallLogs == null || QuickGestureManager
-                                                                        .getInstance(getActivity()).mCallLogs
-                                                                        .size() <= 0)/* 未读通话 */
-                                                                && AppMasterPreference.getInstance(
-                                                                        getActivity())
-                                                                        .getMessageNoReadCount() <= 0/* 隐私短信 */
-                                                                && AppMasterPreference
-                                                                        .getInstance(getActivity())
-                                                                        .getLastBusinessRedTipShow()/* 运营 */) {
-                                                            QuickGestureManager
-                                                                    .getInstance(getActivity()).isShowSysNoReadMessage = false;
-                                                        }
-                                                    }
-                                                    FloatWindowHelper
-                                                            .removeShowReadTipWindow(getActivity());
+                                                    PrivacyContactManager
+                                                            .getInstance(mContext)
+                                                            .deletePrivacyCallCancelRedTip(mContext);
                                                     LeoEventBus
                                                             .getDefaultBus()
                                                             .post(

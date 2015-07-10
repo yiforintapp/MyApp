@@ -524,6 +524,21 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                 pre.setCallLogNoReadCount(temp);
                             }
                             if (temp <= 0) {
+
+                                // 没有未读去除隐私通知
+                                if (pre.getMessageNoReadCount() <= 0) {
+                                    NotificationManager notificationManager = (NotificationManager) getActivity()
+                                            .getSystemService(
+                                                    Context.NOTIFICATION_SERVICE);
+                                    notificationManager.cancel(20140902);
+                                }
+                                // 隐私通话没有未读
+                                /**
+                                 * 对快捷手势隐私联系人,消费隐私通话时，红点去除操作
+                                 */
+                                PrivacyContactManager
+                                        .getInstance(mContext)
+                                        .deletePrivacyCallCancelRedTip(mContext);
                                 LeoEventBus
                                         .getDefaultBus()
                                         .post(

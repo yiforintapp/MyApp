@@ -465,9 +465,12 @@ public class LockModeEditActivity extends BaseActivity implements
             // new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed"));
             LeoEventBus.getDefaultBus().post(
                     new LockModeEvent(EventId.EVENT_MODE_CHANGE, eventMsg));
-            hideIME();
-            mModeNameDiglog.getEditText().postDelayed(new Runnable() {
+            if (mModeNameDiglog != null) {
+                hideIME();
+            }
 
+            // mModeNameDiglog.getEditText().postDelayed(new Runnable() {
+            mIvNameEdit.postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     finish();
