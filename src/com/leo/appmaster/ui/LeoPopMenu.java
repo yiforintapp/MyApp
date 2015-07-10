@@ -259,14 +259,22 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
+        Locale locale = mContext.getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+//        Log.e("poha", language);
+        if(language.endsWith("en"))
+        {
+//            Log.e("poha", "done");
+            newSmallWidth-=20*H/1280;
+            newLongWidth-=20*H/1280;
+        }
         //特殊处理一下只有一个item的情况,以免换行不好看或空白太多，目前只有忘记密码部分
         
         if(items.size()==1)
         {
-            Locale locale = mContext.getResources().getConfiguration().locale;
-            String language = locale.getLanguage();
-    
-           Log.e("poha", H+"");
+           
+            
+//           Log.e("poha", H+"");
            
             if(H<=480)
             {
@@ -299,6 +307,7 @@ public class LeoPopMenu {
                 newSmallWidth=120;
                 newLongWidth=120;
             }
+          
         }    
     
         
