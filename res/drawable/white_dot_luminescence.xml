@@ -22,30 +22,30 @@
         android:duration="50"/>
     <item
         android:drawable="@drawable/gif7"
-        android:duration="100"/>
+        android:duration="50"/>
+    <item
+        android:drawable="@drawable/gif8"
+        android:duration="70"/>
     <item
         android:drawable="@drawable/gif9"
-        android:duration="100"/>
+        android:duration="70"/>
+    <item
+        android:drawable="@drawable/gif10"
+        android:duration="70"/>
     <item
         android:drawable="@drawable/gif11"
-        android:duration="100"/>
-    <item
+        android:duration="70"/>
+        <item
         android:drawable="@drawable/gif12"
-        android:duration="100"/>
+        android:duration="60"/>
     <item
         android:drawable="@drawable/gif13"
-        android:duration="100"/>
-        <item
+        android:duration="60"/>
+    <item
         android:drawable="@drawable/gif14"
-        android:duration="100"/>
+        android:duration="60"/>
     <item
         android:drawable="@drawable/gif15"
-        android:duration="100"/>
-    <item
-        android:drawable="@drawable/gif18"
-        android:duration="100"/>
-    <item
-        android:drawable="@drawable/gif19"
         android:duration="2000"/>
 
 </animation-list>
