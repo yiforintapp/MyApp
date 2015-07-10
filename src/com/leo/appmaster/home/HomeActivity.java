@@ -128,12 +128,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
-        Log.i("value", "home onDestroy");
     }
     
     @Override
     protected void onPause() {
-        Log.i("value", "home onPause");
         removeAppFragmentGestureBg();
         super.onPause();
     }
