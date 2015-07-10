@@ -106,10 +106,13 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                 } else if (which == 1) {
                     mode.selected = !mode.selected;
                     if (mode.selected) {
+                        mSelectCount++;
                         iv.setImageResource(R.drawable.select);
                     } else {
+                        mSelectCount--;
                         iv.setImageResource(R.drawable.unselect);
                     }
+                    ((LockModeActivity) mActivity).onSelectItemChanged(mSelectCount);
                 }
             }
         });
