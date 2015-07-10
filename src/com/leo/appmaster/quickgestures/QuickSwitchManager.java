@@ -1081,7 +1081,7 @@ public class QuickSwitchManager {
         LockManager.getInstatnce().filterAllOneTime(1000);
         Intent intent = new Intent(mContext, QuickGestureSettingActivity.class);
 //        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_TASK_ON_HOME);
-         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         mContext.startActivity(intent);
     }
 
