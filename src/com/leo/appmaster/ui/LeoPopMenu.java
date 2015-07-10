@@ -268,33 +268,34 @@ public class LeoPopMenu {
         Locale locale = mContext.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
 //        Log.e("poha", language);
+           Log.e("poha", H+"");
         if(language.endsWith("en"))
         {
             
             if(H<=480)
             {
                 newSmallWidth=newSmallWidth+(10*480/H);
-                newLongWidth=newSmallWidth+(10*480/H);
+                newLongWidth=newLongWidth+(10*480/H);
             }
             else if(H<=800)
             {         
                 newSmallWidth=newSmallWidth-(18*H/800);
-                newLongWidth=newSmallWidth-(18*H/800);
+                newLongWidth=newLongWidth-(18*H/800);
             }
             else if(H<=1280)
             {
-                newSmallWidth=newSmallWidth-(20*H/1280);
-                newLongWidth=newSmallWidth-(20*H/1280);
+                newSmallWidth=newSmallWidth-(5*H/1280);
+                newLongWidth=newLongWidth-(5*H/1280);
             }
-            else if(H<=1920)
-            {
-                newSmallWidth=newSmallWidth-(20*H/1280);
-                newLongWidth=newSmallWidth-(20*H/1280);
-            }
+//            else if(H<=1920)
+//            {
+//                newSmallWidth=newSmallWidth+(100*1920/H);
+//                newLongWidth=newLongWidth+(100*1920/H);
+//            }
             
 //            Log.e("poha", "done");
-            newSmallWidth-=20*H/1280;
-            newLongWidth-=20*H/1280;
+//            newSmallWidth-=20*H/1280;
+//            newLongWidth-=20*H/1280;
         }
         //特殊处理一下只有一个item的情况,以免换行不好看或空白太多，目前只有忘记密码部分
         
@@ -307,22 +308,22 @@ public class LeoPopMenu {
             if(H<=480)
             {
                 newSmallWidth=newSmallWidth+(18*480/H);
-                newLongWidth=newSmallWidth+(18*480/H);
+                newLongWidth=newLongWidth+(18*480/H);
             }
             else if(H<=800)
             {         
                 newSmallWidth=newSmallWidth+(5*800/H);
-                newLongWidth=newSmallWidth+(5*800/H);
+                newLongWidth=newLongWidth+(5*800/H);
             }
             else if(H<=1280)
             {
                 newSmallWidth=newSmallWidth-(0*H/1280);
-                newLongWidth=newSmallWidth-(0*H/1280);
+                newLongWidth=newLongWidth-(0*H/1280);
             }
             else if(H<=1920)
             {
                 newSmallWidth=newSmallWidth-(20*H/1280);
-                newLongWidth=newSmallWidth-(20*H/1280);
+                newLongWidth=newLongWidth-(20*H/1280);
             }
             
             

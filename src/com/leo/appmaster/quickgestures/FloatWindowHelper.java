@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.quickgestures;
 
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
@@ -28,7 +27,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;

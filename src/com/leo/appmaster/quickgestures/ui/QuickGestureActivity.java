@@ -2,6 +2,7 @@
 package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
+import java.util.Locale;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -183,7 +184,14 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mGestureSwitch = (TextView) findViewById(R.id.gesture_switch_text);
         mGestureSwitch.setOnClickListener(this);
         mSlideAreaSetBtn = (Button) findViewById(R.id.slide_setting_button);
-
+        Locale locale = getResources().getConfiguration().locale;
+        String language = locale.getLanguage();
+//        Log.e("poha", language);
+          
+        if(language.endsWith("ru"))
+        {
+            mSlideAreaSetBtn.setTextSize(10f);
+        }
         mSlideGuideView = (RelativeLayout) findViewById(R.id.slide_guide_show);
         mSlideGuideView.setOnClickListener(this);
         mSlideGuidehand = (ImageView) mSlideGuideView.findViewById(R.id.gesture_arrow_hand);
