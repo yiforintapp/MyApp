@@ -4,14 +4,12 @@ package com.leo.appmaster.fragment;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyLevelChangeEvent;
@@ -23,8 +21,6 @@ import com.leo.appmaster.privacy.PrivacyLevelView;
 import com.leo.appmaster.privacy.PrivacyProposalLayout;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 

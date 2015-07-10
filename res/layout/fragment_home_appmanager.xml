@@ -173,6 +173,7 @@
                 android:layout_height="match_parent"
                 android:divider="@color/flow_charts_gry"
                 android:dividerHeight="1dp"
+                android:overScrollMode="never"
                 android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>

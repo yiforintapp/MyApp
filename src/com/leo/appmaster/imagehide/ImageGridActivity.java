@@ -366,6 +366,10 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                         mBottomBar.setVisibility(View.VISIBLE);
                         mTtileBar.setOptionImage(R.drawable.mode_done);
                     }
+                    mSelectAll.setText(R.string.app_select_all);
+                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
                     mImageAdapter.notifyDataSetChanged();
                 }
                 break;

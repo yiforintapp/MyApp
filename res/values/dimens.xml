@@ -240,7 +240,7 @@
     <dimen name="quick_white_float_width">40dp</dimen>
     <dimen name="apple_watch_layout_margin_bottom">73dp</dimen>
     <dimen name="apple_watch_title_margin_bottom">312dp</dimen>
-    <dimen name="apple_watch_title_bg_margin_bottom">310dp</dimen>
+    <dimen name="apple_watch_title_bg_margin_bottom">312dp</dimen>
         <dimen name="apple_watch_top_title_margin_top">50dp</dimen>
     <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
     <!-- quick gesutre end -->
