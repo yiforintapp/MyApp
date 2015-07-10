@@ -23,6 +23,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.NotificationUtil;
 
@@ -41,9 +42,10 @@ public class PrivacyContactManager {
     // private boolean mSysMessageLoaded = false;
     // private boolean mSysContactsLoaded = false;
     // private boolean mSysCallLogLoaded = false;
-    public  boolean deleteCallLogDatebaseFlag;// 用来做隐私联系人通话删除时的通话标志
+    public boolean deleteCallLogDatebaseFlag;// 用来做隐私联系人通话删除时的通话标志
     public boolean deleteMsmDatebaseFlag;// 用来做隐私联系人短信删除时的标志
-    public int messageSize;//对红米未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
+    public int messageSize;// 对红米未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
+
     private PrivacyContactManager(Context context) {
         this.mContext = context.getApplicationContext();
         mContacts = new ArrayList<ContactBean>();
@@ -200,10 +202,9 @@ public class PrivacyContactManager {
                     pre.setMessageNoReadCount(1);
                 }
                 /*
-                 * 
-                 * 记录最后隐私短信和隐私通话哪个最后来电(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)       
+                 * 记录最后隐私短信和隐私通话哪个最后来电(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)
                  */
-                QuickGestureManager.getInstance(mContext).privacyLastRecord=QuickGestureManager.RECORD_MSM;
+                QuickGestureManager.getInstance(mContext).privacyLastRecord = QuickGestureManager.RECORD_MSM;
                 // 发送拦截通知
                 if (messageItemRuning) {
                     NotificationManager notificationManager = (NotificationManager) mContext
@@ -231,7 +232,7 @@ public class PrivacyContactManager {
                     notification.when = System.currentTimeMillis();
                     notificationManager.notify(20140901, notification);
                     AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
-                    
+
                 }
                 String dateFrom = sdf.format(new Date(sendDate));
                 message.setMessageTime(dateFrom);
@@ -294,5 +295,75 @@ public class PrivacyContactManager {
         message.setMessageTime(dateFrom);
         mMessage = message;
         mLastMessage = message;
+    }
+
+    /**
+     * 对快捷手势隐私联系人,消费(查看或者删除)隐私通话时，红点去除操作
+     */
+    public void deletePrivacyCallCancelRedTip(Context context) {
+        // 隐私通话
+        if (QuickGestureManager
+                .getInstance(context).isShowPrivacyCallLog) {
+            QuickGestureManager
+                    .getInstance(context).isShowPrivacyCallLog = false;
+            AppMasterPreference.getInstance(
+                    context)
+                    .setQuickGestureCallLogTip(
+                            false);
+            if ((QuickGestureManager
+                    .getInstance(context).mMessages == null || QuickGestureManager
+                    .getInstance(context).mMessages
+                    .size() <= 0)/* 未读短信 */
+                    && (QuickGestureManager
+                            .getInstance(context).mCallLogs == null || QuickGestureManager
+                            .getInstance(context).mCallLogs
+                            .size() <= 0)/* 未读通话 */
+                    && AppMasterPreference.getInstance(
+                            context)
+                            .getMessageNoReadCount() <= 0/* 隐私短信 */
+                    && AppMasterPreference
+                            .getInstance(context)
+                            .getLastBusinessRedTipShow()/* 运营 */) {
+                QuickGestureManager
+                        .getInstance(context).isShowSysNoReadMessage = false;
+            }
+        }
+        FloatWindowHelper
+                .removeShowReadTipWindow(context);
+    }
+
+    /**
+     * 对快捷手势隐私联系人,消费隐(查看或者删除)私短信时，红点去除操作
+     */
+    public void deletePrivacyMsmCancelRedTip(Context context) {
+        if (QuickGestureManager
+                .getInstance(context).isShowPrivacyMsm) {
+            // QuickGestureManager.getInstance(context).isShowSysNoReadMessage
+            // = false;
+            QuickGestureManager
+                    .getInstance(context).isShowPrivacyMsm = false;
+            AppMasterPreference.getInstance(
+                    context)
+                    .setQuickGestureMsmTip(false);
+            if ((QuickGestureManager
+                    .getInstance(context).mMessages == null || QuickGestureManager
+                    .getInstance(context).mMessages
+                    .size() <= 0)/* 未读短信 */
+                    && (QuickGestureManager
+                            .getInstance(context).mCallLogs == null || QuickGestureManager
+                            .getInstance(context).mCallLogs
+                            .size() <= 0)/* 未读通话 */
+                    && AppMasterPreference.getInstance(
+                            context)
+                            .getCallLogNoReadCount() <= 0/* 隐私通话 */
+                    && AppMasterPreference
+                            .getInstance(context)
+                            .getLastBusinessRedTipShow()/* 运营 */) {
+                QuickGestureManager
+                        .getInstance(context).isShowSysNoReadMessage = false;
+            }
+        }
+        FloatWindowHelper
+                .removeShowReadTipWindow(context);
     }
 }
