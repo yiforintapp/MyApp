@@ -165,7 +165,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mTitleBar.setTitle(R.string.pg_appmanager_quick_gesture_name);
         mTitleBar.setOptionImageVisibility(View.VISIBLE);
         mTitleBar.setOptionImage(R.drawable.setup);
-        mTitleBar.setOptionListener(this);
         if (mFromShortcut) {
             mTitleBar.setBackArrowImg(R.drawable.gesture_title_icon);
             mTitleBar.setBackArrawImgSize(DipPixelUtil.dip2px(this, 24));
