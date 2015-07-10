@@ -349,7 +349,7 @@
     <dimen name="quick_first_tip_dialog_content_text_size">12sp</dimen>
     <dimen name="apple_watch_layout_margin_bottom">70dp</dimen>
     <dimen name="apple_watch_title_margin_bottom">305dp</dimen>
-    <dimen name="apple_watch_title_bg_margin_bottom">303dp</dimen>
+    <dimen name="apple_watch_title_bg_margin_bottom">305dp</dimen>
     <dimen name="apple_watch_top_title_margin_top">10dp</dimen>
     <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
     <!-- quick gesutre end -->
