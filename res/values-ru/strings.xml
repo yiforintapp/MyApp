@@ -710,9 +710,9 @@
  	<string name="new_guide_page3_title">белое пятнышко</string>
  	<string name="new_guide_page3_content">вызовете быстрый и удобный жест быстро</string>
  	<string name="quick_open_tip">Быстрый и удобный жест еще закрытый</string>
- 	<string name="quick_setting_title">Установка быстрого и удобного жеста</string>
- 	<string name="quick_no_msm_annotation">Непрочитанное сообщение будет подсказано в жесте</string>
-    <string name="quick_no_call_log_annotation">неотвеченный звонок будет подсказан в жесте</string>
-    <string name="quick_no_pricay_contact_annotation">сообщение будет подсказано в виде инфо. Системы</string>
+ 	<string name="quick_setting_title">Установка жеста</string>
+ 	<string name="quick_no_msm_annotation">Непрочитанное сообщение в жесте</string>
+    <string name="quick_no_call_log_annotation">неотвеченный звонок в жесте</string>
+    <string name="quick_no_pricay_contact_annotation">сообщение в виде инфо. системы</string>
     <!-- version 2.5 huangqili part -->
 </resources>
