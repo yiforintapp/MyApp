@@ -2,7 +2,6 @@
 package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
-import java.util.Locale;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -166,6 +165,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mTitleBar.setTitle(R.string.pg_appmanager_quick_gesture_name);
         mTitleBar.setOptionImageVisibility(View.VISIBLE);
         mTitleBar.setOptionImage(R.drawable.setup);
+        mTitleBar.setOptionListener(this);
         if (mFromShortcut) {
             mTitleBar.setBackArrowImg(R.drawable.gesture_title_icon);
             mTitleBar.setBackArrawImgSize(DipPixelUtil.dip2px(this, 24));
@@ -183,15 +183,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         mGestureSwitch = (TextView) findViewById(R.id.gesture_switch_text);
         mGestureSwitch.setOnClickListener(this);
         mSlideAreaSetBtn = (Button) findViewById(R.id.slide_setting_button);
-        
-        Locale locale =getResources().getConfiguration().locale;
-        String language = locale.getLanguage();
-        //俄文环境的适配
-        if(language.endsWith("ru"))
-        {
-            mSlideAreaSetBtn.setTextSize(11);
-        }
-        
+
         mSlideGuideView = (RelativeLayout) findViewById(R.id.slide_guide_show);
         mSlideGuideView.setOnClickListener(this);
         mSlideGuidehand = (ImageView) mSlideGuideView.findViewById(R.id.gesture_arrow_hand);
