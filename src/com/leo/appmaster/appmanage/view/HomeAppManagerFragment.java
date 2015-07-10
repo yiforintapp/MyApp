@@ -388,7 +388,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 break;
             case R.id.bg_show_quick_gesture:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qssetting", "home");
-                startQuickGestureActivity();
                 if(mGestureIconBg.getVisibility() == View.VISIBLE){
                     Log.i("value", "pop_y");
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_guide", "pop_y");
