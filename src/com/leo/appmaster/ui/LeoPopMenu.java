@@ -259,11 +259,39 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
+        
+        
+        
+        
+//不改动上面的代码，对最终结果再做适配
+        
         Locale locale = mContext.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
 //        Log.e("poha", language);
         if(language.endsWith("en"))
         {
+            
+            if(H<=480)
+            {
+                newSmallWidth=newSmallWidth+(10*480/H);
+                newLongWidth=newSmallWidth+(10*480/H);
+            }
+            else if(H<=800)
+            {         
+                newSmallWidth=newSmallWidth-(18*H/800);
+                newLongWidth=newSmallWidth-(18*H/800);
+            }
+            else if(H<=1280)
+            {
+                newSmallWidth=newSmallWidth-(20*H/1280);
+                newLongWidth=newSmallWidth-(20*H/1280);
+            }
+            else if(H<=1920)
+            {
+                newSmallWidth=newSmallWidth-(20*H/1280);
+                newLongWidth=newSmallWidth-(20*H/1280);
+            }
+            
 //            Log.e("poha", "done");
             newSmallWidth-=20*H/1280;
             newLongWidth-=20*H/1280;
@@ -278,13 +306,13 @@ public class LeoPopMenu {
            
             if(H<=480)
             {
-                newSmallWidth=newSmallWidth+(12*480/H);
-                newLongWidth=newSmallWidth+(12*480/H);
+                newSmallWidth=newSmallWidth+(18*480/H);
+                newLongWidth=newSmallWidth+(18*480/H);
             }
             else if(H<=800)
             {         
-                newSmallWidth=newSmallWidth-(11*H/800);
-                newLongWidth=newSmallWidth-(11*H/800);
+                newSmallWidth=newSmallWidth+(5*800/H);
+                newLongWidth=newSmallWidth+(5*800/H);
             }
             else if(H<=1280)
             {
