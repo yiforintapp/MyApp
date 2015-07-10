@@ -732,5 +732,10 @@
  	<string name="new_guide_page2_content">คลิคก็เปลี่ยน</string>
  	<string name="new_guide_page3_title">จุดขาวเล็กท่ามือ</string>
  	<string name="new_guide_page3_content">คลิคท่ามือก็แสดง</string>
-
+	<string name="quick_open_tip">การแสดงท่าทางด่วนยังไม่เปิด</string>
+	<string name="quick_setting_title">การตั้งค่าท่าทางด่วน</string>
+ 	<string name="quick_no_msm_annotation">ท่าทางด่วนจะเตือนSMSที่ยังไม่อ่าน</string>
+    <string name="quick_no_call_log_annotation">ท่าทางด่วนจะเตือนสายที่ไม่ได้รับ</string>
+    <string name="quick_no_pricay_contact_annotation">ข้อมูลจะเตือนแบบระบบข้อมูล</string>
+	<!-- 2.5 end -->
 </resources>

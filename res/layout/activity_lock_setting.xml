@@ -45,34 +45,29 @@
             android:layout_width="wrap_content"
             android:layout_height="23dp"
             android:layout_alignParentBottom="true"
-           
             android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
             android:background="@drawable/reset_pass_frame"
-			android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
-   			android:paddingTop="3dp"
-   			android:paddingBottom="3dp"
-   			android:paddingLeft="9dp"
-   			android:paddingRight="9dp"
-            >
+            android:paddingBottom="3dp"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:paddingTop="3dp" >
 
             <ImageView
                 android:id="@+id/iv_reset_icon"
                 android:layout_width="13dp"
                 android:layout_height="13dp"
-                android:layout_centerVertical="true"
-               />        
-		<!-- w h20 -->
-		
+                android:layout_centerVertical="true" />
+
             <TextView
                 android:id="@+id/switch_bottom"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-             	android:layout_marginLeft="4dp"
-				 android:layout_centerVertical="true"
-                android:maxLines="1"
-          
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
                 android:layout_toRightOf="@id/iv_reset_icon"
+                android:gravity="center"
+                android:maxLines="1"
                 android:textColor="@color/common_button_selecter"
                 android:textSize="13sp" />
         </RelativeLayout>

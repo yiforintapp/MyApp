@@ -4,14 +4,12 @@ package com.leo.appmaster.appmanage.view;
 import java.io.File;
 import java.util.ArrayList;
 
-import android.R.integer;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -28,11 +26,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.ScaleAnimation;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
@@ -42,7 +38,6 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
@@ -393,6 +388,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 break;
             case R.id.bg_show_quick_gesture:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qssetting", "home");
+                startQuickGestureActivity();
+                if(mGestureIconBg.getVisibility() == View.VISIBLE){
+                    Log.i("value", "pop_y");
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_guide", "pop_y");
+                    mGestureIconBg.setVisibility(View.GONE);
+                }
                 startQuickGestureActivity();
 //                Intent intent1 = new Intent(Intent.ACTION_VIEW);
 //                intent1.setType("vnd.android.cursor.dir/calls");
@@ -761,5 +762,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         AnimatorSet set = new AnimatorSet();
         set.playTogether(alphaAnimator, gestureSmall);
         set.start();
+    }
+    
+    public void setGestureTabBgVisibility(int visiable){
+        if(null != mGestureIconBg){
+            if(mGestureIconBg.getVisibility() == View.VISIBLE){
+                mGestureIconBg.setVisibility(visiable);
+            }
+        }
     }
 }

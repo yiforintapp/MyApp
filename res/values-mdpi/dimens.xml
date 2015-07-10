@@ -205,6 +205,7 @@
     <dimen name="apple_watch_item_icon_size">74dp</dimen>
     <dimen name="apple_watch_item_size">90dp</dimen>
     <!-- 2.5 ql part -->
+    <dimen name="lock_setting_item_title_des_width">190dp</dimen>
     <dimen name="lock_setting_item_des_width">170dp</dimen>
     <dimen name="gesture_item_readtips_offsetx">15dp</dimen>
     <dimen name="gesture_app_manager_bg_width">52dp</dimen>

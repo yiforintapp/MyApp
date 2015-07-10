@@ -3,6 +3,8 @@ package com.leo.appmaster.quickgestures.ui;
 
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -24,6 +25,7 @@ import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 public class QuickGesturePopupActivity extends BaseActivity {
@@ -58,7 +60,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     public boolean isFromSelfApp() {
         return mFromSelfApp;
     }
-    
+
     private void initIU() {
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
@@ -73,15 +75,20 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private void checkFirstWhiteClick() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        if (mFromWhiteDot && !amp.hasEverCloseWhiteDot()) {
+        if (mFromWhiteDot && !amp.hasEverCloseWhiteDot() && !BuildProperties.isGTS5282()) {
             int clickCount = amp.getUseStrengthenModeTimes();
             if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
-                mGestureTipTitle.setVisibility(View.GONE);
                 mGestureTipContent.setText(R.string.white_dot_click_tip);
                 Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
                 final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView,
                         "alpha", 1.0f, 0f).setDuration(200);
+                alphaAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        mSuccessTipView.setVisibility(View.GONE);
+                    }
+                });
                 mKnowbButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -306,20 +313,28 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
 
     private void showSuccessTip() {
-        AppMasterPreference pref = AppMasterPreference.getInstance(getApplicationContext());
-        if (pref.getQuickGestureSuccSlideTiped())
-            return;
+        if (!BuildProperties.isGTS5282()) {
+            AppMasterPreference pref = AppMasterPreference.getInstance(getApplicationContext());
+            if (pref.getQuickGestureSuccSlideTiped())
+                return;
 
-        mSuccessTipView.setVisibility(View.VISIBLE);
-        final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView, "alpha",
-                1.0f, 0f).setDuration(200);
-        Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
-        mKnowbButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alphaAnimator.start();
-            }
-        });
-        pref.setQuickGestureSuccSlideTiped(true);
+            mSuccessTipView.setVisibility(View.VISIBLE);
+            final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView, "alpha",
+                    1.0f, 0f).setDuration(200);
+            alphaAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mSuccessTipView.setVisibility(View.GONE);
+                }
+            });
+            Button mKnowbButton = (Button) mSuccessTipView.findViewById(R.id.know_button);
+            mKnowbButton.setOnClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    alphaAnimator.start();
+                }
+            });
+            pref.setQuickGestureSuccSlideTiped(true);
+        }
     }
 }

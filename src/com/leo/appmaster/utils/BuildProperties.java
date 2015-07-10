@@ -39,7 +39,7 @@ public class BuildProperties {
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";
     // 跳转通话记录特别处理机型数组
     public static final String[] filterPhoneMode = {
-            "SM-N9150","SM-G9250"
+            "SM-N9150", "SM-G9250"
     };
     private final Properties properties;
 
@@ -261,9 +261,13 @@ public class BuildProperties {
     }
 
     public static boolean isLava504Q() {
-        return  TextUtils.equals("504Q+", android.os.Build.MODEL);
+        return TextUtils.equals("504Q+", android.os.Build.MODEL);
     }
-    
+
+    public static boolean isGTS5282() {
+        return TextUtils.equals("GT-S5282", android.os.Build.MODEL);
+    }
+
     public static boolean isOppoOs() {
         //说明：一加手机在4.4系统以下，无需手动开启悬浮窗
         if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom"))) ||  Build.VERSION.SDK_INT < 19)

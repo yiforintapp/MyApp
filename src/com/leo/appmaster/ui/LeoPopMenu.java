@@ -2,6 +2,7 @@
 package com.leo.appmaster.ui;
 
 import java.util.List;
+import java.util.Locale;
 
 import android.app.Activity;
 import android.content.Context;
@@ -24,6 +25,8 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -256,22 +259,50 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
-        //特殊处理一下只有一个item的情况,以免换行不好看或空白太多
+        //特殊处理一下只有一个item的情况,以免换行不好看或空白太多，目前只有忘记密码部分
         
         if(items.size()==1)
         {
+            Locale locale = mContext.getResources().getConfiguration().locale;
+            String language = locale.getLanguage();
+    
+           Log.e("poha", H+"");
+           
             if(H<=480)
             {
-                newSmallWidth+=10;
-                newLongWidth+=10;
+                newSmallWidth=newSmallWidth+(12*480/H);
+                newLongWidth=newSmallWidth+(12*480/H);
             }
-            else
+            else if(H<=800)
             {         
-                newSmallWidth-=W/720*30;
-                newLongWidth-=W/720*30;
+                newSmallWidth=newSmallWidth-(11*H/800);
+                newLongWidth=newSmallWidth-(11*H/800);
+            }
+            else if(H<=1280)
+            {
+                newSmallWidth=newSmallWidth-(0*H/1280);
+                newLongWidth=newSmallWidth-(0*H/1280);
+            }
+            else if(H<=1920)
+            {
+                newSmallWidth=newSmallWidth-(20*H/1280);
+                newLongWidth=newSmallWidth-(20*H/1280);
+            }
+            
+            
+            
+            //Toast.makeText(mContext, language, 0).show();
+            //部分机型上泰文没法显示，item宽度只有一小段，特殊处理
+            
+            if(language.endsWith("th"))
+            {
+                newSmallWidth=120;
+                newLongWidth=120;
             }
         }    
-       
+    
+        
+            
     }
 
     public List<String> getPopMenuItems() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -197,6 +198,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_NEED_WHITE_DOT_SLIDE_TIP = "need_white_dot_slide_tip";
     public static final String PREF_QUICK_CALL_LOG_IS_RED_TIP = "quick_call_log_is_red_tip";
     public static final String PREF_QUICK_REMOVE_ICON = "quick_remove_icon";
+    public static final String PREF_QUICK_SLIDE_ANIM_SHOW_TIMES = "quick_slide_anim_show_times";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -255,7 +257,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
     private int mEnterHomeTimes = -1;
-    private int mUseStrengthModeTimes = -1;
+    private int mUseStrengthModeTimes,mGestureSlideAnimShowTimes = -1;
     private boolean mHasEverCloseWhiteDot;
     private boolean mNeedShowWhiteDotSlideTip;
 
@@ -1939,5 +1941,28 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getRemoveQuickGestureIcon() {
         return mPref.getBoolean(PREF_QUICK_REMOVE_ICON, false);
+    }
+    
+    /**
+     * add the show time of  gesture slide animation 
+     */
+    public void addGestureSlideAnimTimes(){
+        if(mGestureSlideAnimShowTimes < 0){
+            mGestureSlideAnimShowTimes = getGestureSlideAnimTimes();
+        }
+        if(mGestureSlideAnimShowTimes <2){
+            mGestureSlideAnimShowTimes ++;
+            mPref.edit().putInt(PREF_QUICK_SLIDE_ANIM_SHOW_TIMES, mGestureSlideAnimShowTimes);
+        }
+    }
+    /**
+     * get the show times of  gesture slide animation 
+     * @return
+     */
+    public int getGestureSlideAnimTimes() {
+        if (mGestureSlideAnimShowTimes < 0) {
+            mGestureSlideAnimShowTimes = mPref.getInt(PREF_QUICK_SLIDE_ANIM_SHOW_TIMES, 0);
+        }
+        return mGestureSlideAnimShowTimes;
     }
 }

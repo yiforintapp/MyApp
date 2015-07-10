@@ -254,12 +254,13 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     }
 
     private void unSetOnClickListener() {
-        mSlidingArea.setOnClickListener(null);
-        mSlidingTime.setOnClickListener(null);
-        mNoReadMessageOpen.setOnClickListener(null);
-        mRecentlyContactOPen.setOnClickListener(null);
-        mPrivacyContactOpen.setOnClickListener(null);
-        mStrengthenModeView.setOnClickListener(null);
+        DisableClickListener disableClickListener = new DisableClickListener();
+        mSlidingArea.setOnClickListener(disableClickListener);
+        mSlidingTime.setOnClickListener(disableClickListener);
+        mNoReadMessageOpen.setOnClickListener(disableClickListener);
+        mRecentlyContactOPen.setOnClickListener(disableClickListener);
+        mPrivacyContactOpen.setOnClickListener(disableClickListener);
+        mStrengthenModeView.setOnClickListener(disableClickListener);
     }
 
     @Override
@@ -804,10 +805,16 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                     mPre.setSwitchOpenStrengthenMode(false);
                     mStrengthenModeFlag = false;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
+                            "point_close");
                 } else {
                     mPre.setSwitchOpenStrengthenMode(true);
                     mStrengthenModeFlag = true;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
+                            "point_open");
                 }
                 switchStrengthMode();
                 //通知更新滑动区域红点显示状况
@@ -879,6 +886,15 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         } else {
             FloatWindowHelper.removeWhiteFloatView(this);
             mPre.setWhiteFloatViewCoordinate(0, 0);
+        }
+    }
+    
+    class DisableClickListener implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            Toast toast = Toast.makeText(QuickGestureSettingActivity.this,getResources().getString(R.string.quick_open_tip),
+                    Toast.LENGTH_SHORT);
+            toast.show();
         }
     }
 }
