@@ -805,10 +805,16 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                     mPre.setSwitchOpenStrengthenMode(false);
                     mStrengthenModeFlag = false;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
+                            "point_close");
                 } else {
                     mPre.setSwitchOpenStrengthenMode(true);
                     mStrengthenModeFlag = true;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
+                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+                            "qssetting",
+                            "point_open");
                 }
                 switchStrengthMode();
                 //通知更新滑动区域红点显示状况

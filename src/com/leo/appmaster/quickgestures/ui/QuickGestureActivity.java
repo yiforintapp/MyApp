@@ -1,10 +1,8 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
-import java.io.IOException;
 import java.util.List;
 
-import android.R.integer;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -15,8 +13,6 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.AssetFileDescriptor;
-import android.content.res.AssetManager;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
@@ -32,7 +28,6 @@ import android.view.WindowManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.AnimationSet;
-import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -125,6 +120,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                     QuickGestureManager.getInstance(getApplicationContext()).init();
                 }
             });
+            mPre.addGestureSlideAnimTimes();
         }
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "qtset");
     }
@@ -148,7 +144,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
                 .equals(event.editModel)) {
-            FloatWindowHelper.initSlidingArea(AppMasterPreference.getInstance(this));
+            FloatWindowHelper.initSlidingArea(mPre);
             setShowSlideAllArea();
         }
     }
@@ -267,6 +263,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             // mAlarmDialogFlag = false;
             updateFloatWindowBackGroudColor();
             mAlarmDialog.dismiss();
+        }
+        
+        if(!mPre.getFristSlidingTip() && mPre.getGestureSlideAnimTimes() ==1){
+            Log.i("value","firstslide_n");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_guide", "firstslide_n");
         }
     }
 
@@ -442,7 +443,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 float moveY = Math.abs(event.getY() - downY);
                 if (moveX > width / 50 || moveY > width / 50) {
                     if (!mFlag) {
-                        AppMasterPreference.getInstance(this).setRootViewAndWindowHeighSpace(
+                        mPre.setRootViewAndWindowHeighSpace(
                                 screenSpace());
                         QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
                         mTipRL.clearAnimation();
@@ -452,7 +453,11 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         QuickGestureManager.getInstance(AppMasterApplication.getInstance()).onTuchGestureFlag = -2;
                         SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1,
                                 "qssetting", "qs_open");
-                        AppMasterPreference.getInstance(this).setFristSlidingTip(true);
+                        if(mPre.getGestureSlideAnimTimes() ==1){
+                            Log.i("value","firstslide_y");
+                            SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_guide", "firstslide_y");
+                        }
+                        mPre.setFristSlidingTip(true);
                         Intent intent;
                         intent = new Intent(AppMasterApplication.getInstance(),
                                 QuickGesturePopupActivity.class);
@@ -587,8 +592,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
     private void gestureSwitch() {
         if (mOpenQuickFlag) {
-            SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
-                    "qs_close");
+            SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qs_home",
+                    "close");
             if (!isRoating) {
                 closeQuickGestureAnimation();
             }
@@ -596,8 +601,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mOpenQuickFlag = false;
             QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = 0;
         } else {
-            SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
-                    "qs_open");
+            SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qs_home",
+                    "open");
             if (!isRoating) {
                 openQuickGestureAnimation();
             }
@@ -609,19 +614,17 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     }
 
     private void updateSlideView() {
-        SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qssetting",
+        SDKWrapper.addEvent(QuickGestureActivity.this, SDKWrapper.P1, "qs_home",
                 "area_cli");
         FloatWindowHelper.mEditQuickAreaFlag = true;
         showSettingDialog(true);
-        AppMasterPreference.getInstance(QuickGestureActivity.this)
-                .setRootViewAndWindowHeighSpace(screenSpace());
+        mPre.setRootViewAndWindowHeighSpace(screenSpace());
         QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
         mActivityRootView.getViewTreeObserver()
                 .addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
                     @Override
                     public void onGlobalLayout() {
-                        AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                .setRootViewAndWindowHeighSpace(screenSpace());
+                        mPre.setRootViewAndWindowHeighSpace(screenSpace());
                         QuickGestureManager.getInstance(QuickGestureActivity.this).screenSpace = screenSpace();
                         int value = QuickGestureManager
                                 .getInstance(getApplicationContext()).mSlidAreaSize;
@@ -662,8 +665,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                         QuickGestureManager.getInstance(QuickGestureActivity.this)
                                 .stopFloatWindow();
                         FloatWindowHelper.removeAllFloatWindow(QuickGestureActivity.this);
-                        if (AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                .getSwitchOpenStrengthenMode()) {
+                        if (mPre.getSwitchOpenStrengthenMode()) {
                             FloatWindowHelper.removeWhiteFloatView(QuickGestureActivity.this);
                             mPre.setWhiteFloatViewCoordinate(0, 0);
                         }
@@ -709,8 +711,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
                         QuickGestureManager.getInstance(QuickGestureActivity.this)
                                 .startFloatWindow();
-                        if (AppMasterPreference.getInstance(QuickGestureActivity.this)
-                                .getSwitchOpenStrengthenMode()) {
+                        if (mPre.getSwitchOpenStrengthenMode()) {
                             FloatWindowHelper.createWhiteFloatView(getApplicationContext());
                         }
                     }

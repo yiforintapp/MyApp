@@ -128,6 +128,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
+        Log.i("value", "home onDestroy");
+    }
+    
+    @Override
+    protected void onPause() {
+        Log.i("value", "home onPause");
+        removeAppFragmentGestureBg();
+        super.onPause();
     }
 
     public void onEventMainThread(BackupEvent event) {
@@ -907,6 +915,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void onPageSelected(int arg0) {
         if (mFragmentHolders[arg0].fragment instanceof Selectable) {
             ((Selectable) mFragmentHolders[arg0].fragment).onSelected(arg0);
+        }else{
+            
         }
     }
 
@@ -1032,5 +1042,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         LeoLog.d("shodonghua", "set true");
         mPagerTab.setCurrentItem(2);
         fragment.playQuickGestureEnterAnim();
+    }
+    
+    /**
+     * when leave the home page,remove the  gesture tab background of app manager fragment
+     */
+    private void removeAppFragmentGestureBg(){
+        HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
+        fragment.setGestureTabBgVisibility(View.GONE);
     }
 }
