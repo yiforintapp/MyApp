@@ -246,6 +246,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             QuickGestureManager.getInstance(mContext).mMessages.clear();
                         }
                         FloatWindowHelper.removeShowReadTipWindow(mContext);
+                        //努比亚机型特别处理
+                        if(BuildProperties.checkPhoneBrand("nubia")){
+                        PrivacyContactManager.getInstance(mContext).messageSize = 0;
+                        }
                     } else {
                         if (PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag) {
                             // Log.e(FloatWindowHelper.RUN_TAG, "隐私联系人赋值");
@@ -282,11 +286,14 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
 
             private void restoreRedTipValueForMIUI(final ContentResolver cr) {
+                //小米，努比亚机型特别处理
                 if (BuildProperties.isMIUI() || BuildProperties.checkPhoneBrand("nubia")) {
                     List<MessageBean> messageList = PrivacyContactUtils
                             .getSysMessage(mContext, cr,
                                     "read=0 AND type=1", null, true);
                     if (messageList != null) {
+                        int count=PrivacyContactManager
+                                .getInstance(mContext).messageSize;
                         if (messageList.size() > PrivacyContactManager
                                 .getInstance(mContext).messageSize) {
                             if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
