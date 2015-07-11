@@ -756,28 +756,19 @@ public class AppleWatchLayout extends ViewGroup {
                                 smsToUri);
             } else {
                 if (BuildProperties.isHuaWeiTipPhone(mContext)) {
-                    mIntent = new Intent();
+                    mIntent = new Intent(Intent.ACTION_MAIN);
                     mIntent.setType("vnd.android-dir/mms-sms");
                     mIntent.setComponent(new ComponentName("com.android.contacts",
                             "com.android.mms.ui.ConversationList"));
                 } else {
-                    // mIntent = new Intent(Intent.ACTION_VIEW);
-                    mIntent = new Intent();
+                    mIntent = new Intent(Intent.ACTION_MAIN);
                     mIntent.setType("vnd.android-dir/mms-sms");
-                    mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
+                    // mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
                 }
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
             try {
                 mContext.startActivity(mIntent);
-                // if (QuickGestureManager.getInstance(mContext).mMessages !=
-                // null
-                // && QuickGestureManager.getInstance(mContext).mMessages.size()
-                // > 0) {
-                // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(bean);
-                // }
-                // FloatWindowHelper.cancelAllRedTip(getContext());
-                // FloatWindowHelper.removeShowReadTipWindow(getContext());
             } catch (Exception e) {
             }
             /*
@@ -810,16 +801,9 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
-                // FloatWindowHelper.cancelAllRedTip(getContext());
-                // FloatWindowHelper.removeShowReadTipWindow(getContext());
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // if (QuickGestureManager.getInstance(mContext).mCallLogs != null
-            // && QuickGestureManager.getInstance(mContext).mCallLogs.size() >
-            // 0) {
-            // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(callLog);
-            // }
             new Handler().postDelayed(new Runnable() {
 
                 @Override
@@ -848,24 +832,6 @@ public class AppleWatchLayout extends ViewGroup {
             }
             try {
                 mContext.startActivity(intent);
-                // FloatWindowHelper.cancelAllRedTip(getContext());
-                // FloatWindowHelper.removeShowReadTipWindow(getContext());
-                // if
-                // (QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog)
-                // {
-                // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
-                // new QuickGestureContactTipInfo());
-                // QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog
-                // = false;
-                // }
-                // if
-                // (QuickGestureManager.getInstance(mContext).isShowPrivacyMsm)
-                // {
-                // QuickGestureManager.getInstance(getContext()).checkEventItemRemoved(
-                // new QuickGestureContactTipInfo());
-                // QuickGestureManager.getInstance(mContext).isShowPrivacyMsm =
-                // false;
-                // }
                 LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                         mContext.getPackageName(), false, null);
             } catch (Exception e) {
