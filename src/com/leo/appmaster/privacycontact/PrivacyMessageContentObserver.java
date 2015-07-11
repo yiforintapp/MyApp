@@ -47,7 +47,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     @Override
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
-        // Log.e(FloatWindowHelper.RUN_TAG, "监控系统数据库改变");
+//         Log.e(FloatWindowHelper.RUN_TAG, "监控系统数据库改变");
         int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
@@ -282,7 +282,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
 
             private void restoreRedTipValueForMIUI(final ContentResolver cr) {
-                if (BuildProperties.isMIUI()) {
+                if (BuildProperties.isMIUI() || BuildProperties.checkPhoneBrand("nubia")) {
                     List<MessageBean> messageList = PrivacyContactUtils
                             .getSysMessage(mContext, cr,
                                     "read=0 AND type=1", null, true);

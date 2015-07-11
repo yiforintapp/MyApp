@@ -41,6 +41,7 @@ public class BuildProperties {
     public static final String[] filterPhoneMode = {
             "SM-N9150", "SM-G9250"
     };
+    public static final String ZTEU817="ZTE U817";
     private final Properties properties;
 
     private BuildProperties() throws IOException {

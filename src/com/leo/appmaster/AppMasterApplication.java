@@ -173,6 +173,7 @@ public class AppMasterApplication extends Application {
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
+//        Log.e(FloatWindowHelper.RUN_TAG, "品牌："+BuildProperties.getPoneModel());
     }
 
     private String getUserSerial() {

@@ -750,10 +750,16 @@ public class AppleWatchLayout extends ViewGroup {
             Intent mIntent = null;
             if (QuickGestureManager.getInstance(mContext).mMessages != null
                     && QuickGestureManager.getInstance(mContext).mMessages.size() <= 1) {
-                Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
-                mIntent = new
-                        Intent(android.content.Intent.ACTION_SENDTO,
-                                smsToUri);
+                if (!BuildProperties.ZTEU817.equals(BuildProperties.getPoneModel())) {
+                    Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
+                    mIntent = new
+                            Intent(android.content.Intent.ACTION_SENDTO,
+                                    smsToUri);
+                } else {
+                    mIntent = new Intent(Intent.ACTION_MAIN);
+                    mIntent.setType("vnd.android-dir/mms-sms");
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                }
             } else {
                 if (BuildProperties.isHuaWeiTipPhone(mContext)) {
                     mIntent = new Intent(Intent.ACTION_MAIN);

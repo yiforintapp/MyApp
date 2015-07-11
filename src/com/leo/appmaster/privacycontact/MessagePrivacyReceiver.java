@@ -56,7 +56,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, final Intent intent) {
-
+//        Log.e(FloatWindowHelper.RUN_TAG, "接受短信");
         String action = intent.getAction();
         mContext = context;
         if (mSimpleDateFormate == null) {
