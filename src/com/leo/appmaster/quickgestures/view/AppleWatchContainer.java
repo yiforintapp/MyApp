@@ -763,7 +763,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
         targetLayout.fillItems(infos, loadExtra);
     }
-    
+
     private List<BaseInfo> fixInfoRight(List<BaseInfo> infos) {
         QuickSwitcherInfo sInfo = null;
         List<BaseInfo> mSwitchList = new ArrayList<BaseInfo>();
@@ -1494,9 +1494,9 @@ public class AppleWatchContainer extends FrameLayout {
 
         cachedThreadPool = AppMasterApplication.getInstance().getExecutorService();
 
-        if (cachedThreadPool == null) {
-            cachedThreadPool = Executors.newCachedThreadPool();
-        }
+        // if (cachedThreadPool == null) {
+        // cachedThreadPool = Executors.newCachedThreadPool();
+        // }
 
         cachedThreadPool.execute(new Runnable() {
             @Override
@@ -1620,7 +1620,7 @@ public class AppleWatchContainer extends FrameLayout {
         TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
         String mToast;
         if (!isClean) {
-            if(isCleanFinish){
+            if (isCleanFinish) {
                 if (mCleanMem <= 0) {
                     LeoLog.d("testspeed", "CleanMem <= 0");
                     mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
@@ -1629,7 +1629,7 @@ public class AppleWatchContainer extends FrameLayout {
                     mToast = mContext.getString(R.string.home_app_manager_mem_clean,
                             TextFormater.dataSizeFormat(mCleanMem));
                 }
-            }else {
+            } else {
                 mToast = mContext.getString(R.string.home_app_manager_mem_clean,
                         TextFormater.dataSizeFormat(230));
             }

@@ -114,7 +114,7 @@ public class AppMasterApplication extends Application {
     public static int densityDpi;
     public static String densityString;
     public static int MAX_OUTER_BLUR_RADIUS;
-    public ExecutorService cachedThreadPool;
+    // public ExecutorService cachedThreadPool;
     static {
         // For android L and above, daemon service is not work, so disable it
         if (PhoneInfo.getAndroidVersion() < 20) {
@@ -131,7 +131,7 @@ public class AppMasterApplication extends Application {
         mActivityList = new ArrayList<Activity>();
         mInstance = this;
         mExecutorService = Executors.newScheduledThreadPool(3);
-        cachedThreadPool = Executors.newCachedThreadPool();
+        // cachedThreadPool = Executors.newCachedThreadPool();
         mHandler = new Handler();
         mAppsEngine = AppLoadEngine.getInstance(this);
         mBackupManager = new AppBackupRestoreManager(this);
@@ -169,7 +169,8 @@ public class AppMasterApplication extends Application {
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
-//        Log.e(FloatWindowHelper.RUN_TAG, "品牌："+BuildProperties.getPoneModel());
+        // Log.e(FloatWindowHelper.RUN_TAG,
+        // "品牌："+BuildProperties.getPoneModel());
     }
 
     private String getUserSerial() {
@@ -189,7 +190,8 @@ public class AppMasterApplication extends Application {
     }
 
     public ExecutorService getExecutorService() {
-        return cachedThreadPool;
+        // return cachedThreadPool;
+        return mExecutorService;
     }
 
     /**
