@@ -2,6 +2,7 @@
 package com.leo.appmaster.privacycontact;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -47,7 +48,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     @Override
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
-//         Log.e(FloatWindowHelper.RUN_TAG, "监控系统数据库改变");
+        // Log.e(FloatWindowHelper.RUN_TAG, "监控系统数据库改变");
         int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
@@ -78,6 +79,18 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 // 快捷手势隐私短信未读提醒
                 noReadPrivacyMsmTipForQuickGesture(pref);
             }
+            boolean flag = PrivacyContactManager.getInstance(mContext).testValue;
+            if (!flag) {
+                Log.e(Constants.RUN_TAG, "onReceive没有执行");
+                /*
+                 * 因为联系人没有执行onReceive取拦截短信，通过onChanage查找拦截，并删除记录，（支持5.0以下系统，5.0
+                 * 以上不能对短信操作）
+                 */
+                // filterPrivacyContactMsm(cr);
+            } else {
+                Log.e(FloatWindowHelper.RUN_TAG, "onReceive执行");
+                PrivacyContactManager.getInstance(mContext).testValue = false;
+            }
             // 快捷手势未读短信提醒
             noReadMsmTipForQuickGesture(cr);
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
@@ -89,6 +102,48 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             // 快捷手势未读通话记录提醒
             noReadCallForQuickGesture(call);
         }
+    }
+
+    private void filterPrivacyContactMsm(final ContentResolver cr) {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            @Override
+            public void run() {
+                List<MessageBean> messages = PrivacyContactUtils
+                        .getSysMessage(mContext, cr,
+                                "read=0 AND type=1", null, false);
+                if (messages != null && messages.size() > 0) {
+                    ContactBean contact = PrivacyContactManager.getInstance(mContext)
+                            .getLastMessageContact();
+                    Iterator<MessageBean> iter = messages.iterator();
+                    while (iter.hasNext()) {
+                        if (contact != null
+                                && !Utilities.isEmpty(contact.getContactNumber())) {
+                            String number = contact.getContactNumber();
+                            // 查询短信中未读的号码是否为隐私联系人
+                            ContactBean privacyContact = MessagePrivacyReceiver.getPrivateMessage(
+                                    number,
+                                    mContext);
+                            if (privacyContact != null) {
+                                /*
+                                 * 该联系人的所有未读短信添加到到隐私列表
+                                 */
+                                // TODO
+                                /*
+                                 * 删除所有的短信
+                                 */
+                                PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
+                                        new String[] {
+                                            number
+                                        }, mContext);
+                                // 过滤监控短信记录数据库，隐私联系人删除未读短信记录时引发数据库变化而做的操作（要在执行删除操作之前去赋值）
+                                // PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag
+                                // = true;
+                            }
+                        }
+                    }
+                }
+            }
+        });
     }
 
     private void noReadPrivacyMsmTipForQuickGesture(AppMasterPreference pref) {
@@ -109,25 +164,27 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     String[] selectionArgs = new String[] {
                             String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
                     };
-                    List<ContactCallLog> callLogs = PrivacyContactUtils
+                    ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
                             .getSysCallLog(mContext,
                                     mContext.getContentResolver(), selection,
                                     selectionArgs);
-                    Iterator<ContactCallLog> ite = callLogs.iterator();
-                    while (ite.hasNext()) {
-                        if (call != null && !Utilities.isEmpty(call
-                                .getContactNumber())) {
-                            ContactCallLog contactCallLog = ite.next();
-                            String formateLastCall = PrivacyContactUtils
-                                    .formatePhoneNumber(call
-                                            .getContactNumber());
-                            String contactCallFromate = PrivacyContactUtils
-                                    .formatePhoneNumber(contactCallLog.getCallLogNumber());
-                            if (formateLastCall.equals(contactCallFromate)) {
-                                callLogs.remove(contactCallLog);
+                    ArrayList<ContactCallLog> cloneCallLog = (ArrayList<ContactCallLog>) callLogs
+                            .clone();
+                    if (cloneCallLog != null && cloneCallLog.size() > 0) {
+                        Iterator<ContactCallLog> ite = cloneCallLog.iterator();
+                        while (ite.hasNext()) {
+                            if (call != null && !Utilities.isEmpty(call
+                                    .getContactNumber())) {
+                                ContactCallLog contactCallLog = ite.next();
+                                String formateLastCall = PrivacyContactUtils
+                                        .formatePhoneNumber(call
+                                                .getContactNumber());
+                                String contactCallFromate = PrivacyContactUtils
+                                        .formatePhoneNumber(contactCallLog.getCallLogNumber());
+                                if (formateLastCall.equals(contactCallFromate)) {
+                                    callLogs.remove(contactCallLog);
+                                }
                             }
-                        } else {
-                            break;
                         }
                     }
                     // 查看通话记录时，清除未读操作（包括第三方，或者系统自带通话记录列表查看）
@@ -193,13 +250,14 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             @Override
             public void run() {
                 if (AppMasterPreference.getInstance(mContext).getSwitchOpenNoReadMessageTip()) {
-                    List<MessageBean> messages = PrivacyContactUtils
+                    ArrayList<MessageBean> messages = (ArrayList<MessageBean>) PrivacyContactUtils
                             .getSysMessage(mContext, cr,
                                     "read=0 AND type=1", null, false);
-                    if (messages != null && messages.size() > 0) {
+                    ArrayList<MessageBean> cloneMessage = (ArrayList<MessageBean>) messages.clone();
+                    if (cloneMessage != null && cloneMessage.size() > 0) {
                         ContactBean contact = PrivacyContactManager.getInstance(mContext)
                                 .getLastMessageContact();
-                        Iterator<MessageBean> ite = messages.iterator();
+                        Iterator<MessageBean> ite = cloneMessage.iterator();
                         while (ite.hasNext()) {
                             if (contact != null
                                     && !Utilities.isEmpty(contact.getContactNumber())) {
@@ -212,8 +270,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     // 过略掉隐私联系人，留下非隐私联系人
                                     messages.remove(message);
                                 }
-                            } else {
-                                break;
                             }
                         }
                         /*
@@ -246,9 +302,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             QuickGestureManager.getInstance(mContext).mMessages.clear();
                         }
                         FloatWindowHelper.removeShowReadTipWindow(mContext);
-                        //努比亚机型特别处理
-                        if(BuildProperties.checkPhoneBrand("nubia")){
-                        PrivacyContactManager.getInstance(mContext).messageSize = 0;
+                        // 努比亚机型特别处理
+                        if (BuildProperties.checkPhoneBrand("nubia")) {
+                            PrivacyContactManager.getInstance(mContext).messageSize = 0;
                         }
                     } else {
                         if (PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag) {
@@ -286,13 +342,13 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
 
             private void restoreRedTipValueForMIUI(final ContentResolver cr) {
-                //小米，努比亚机型特别处理
+                // 小米，努比亚机型特别处理
                 if (BuildProperties.isMIUI() || BuildProperties.checkPhoneBrand("nubia")) {
                     List<MessageBean> messageList = PrivacyContactUtils
                             .getSysMessage(mContext, cr,
                                     "read=0 AND type=1", null, true);
                     if (messageList != null) {
-                        int count=PrivacyContactManager
+                        int count = PrivacyContactManager
                                 .getInstance(mContext).messageSize;
                         if (messageList.size() > PrivacyContactManager
                                 .getInstance(mContext).messageSize) {
