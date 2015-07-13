@@ -120,6 +120,7 @@ public class FloatWindowHelper {
     private static boolean beComingDark = false;
     private static boolean isControling = false;
     private static CountDownTimer nowCount;
+    private static Handler handler;
 
     /**
      * left bottom must call in UI thread
@@ -1701,31 +1702,29 @@ public class FloatWindowHelper {
             WindowManager windowManager = getWindowManager(mContext);
             AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
             int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
-            int H = windowManager.getDefaultDisplay().getHeight() / 2;
+            int halfH = windowManager.getDefaultDisplay().getHeight() / 2;
             int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
 
             createWhiteFloatParams(mContext);
-            // get the last coordinate,if 0 then appear in last swipe
-            // orientation
+            // get the last coordinate,if 0 then appear in last swipe orientation
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
-                // if is the upgrade user and first time create white float,then
-                // show int the left center
+                // if is the upgrade user and first time create white float,then  show int the left center
                 if (pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()) {
                     lastSlideOrientation = -2;
                 }
                 if (lastSlideOrientation < 0) {
                     mWhiteFloatParams.x = -halfW;
                     if (lastSlideOrientation == -1) {
-                        mWhiteFloatParams.y = H - mWhiteFloatParams.height / 2;
+                        mWhiteFloatParams.y = halfH - mWhiteFloatParams.height / 2;
                     } else if (lastSlideOrientation == -2) {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
                 } else {
                     mWhiteFloatParams.x = halfW;
                     if (lastSlideOrientation == 1) {
-                        mWhiteFloatParams.y = H - mWhiteFloatParams.height / 2;
+                        mWhiteFloatParams.y = halfH - mWhiteFloatParams.height / 2;
                     } else if (lastSlideOrientation == 2) {
                         mWhiteFloatParams.y = mWhiteFloatParams.height;
                     }
@@ -1735,13 +1734,9 @@ public class FloatWindowHelper {
                 mWhiteFloatParams.x = coordinate[0];
                 mWhiteFloatParams.y = coordinate[1];
             }
-            Log.i("######", "mWhiteFloatParams.y = " + mWhiteFloatParams.y);
 
             mWhiteFloatView = new ImageView(mContext);
-            // mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
-
             goToChangeLight();
-
             setWhiteFloatOnTouchEvent(mContext);
             registerWhiteFlaotOnScreenListener(mContext);
             try {
@@ -1761,18 +1756,19 @@ public class FloatWindowHelper {
                     mWhiteFloatView.getBackground();
             animationDarkDrawable.start();
 
-            int duration = 0;
-            for (int i = 0; i < animationDarkDrawable.getNumberOfFrames(); i++) {
-                duration += animationDarkDrawable.getDuration(i);
-            }
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    beComingDark = false;
-                }
-            }, duration);
+            // int duration = 0;
+            // for (int i = 0; i < animationDarkDrawable.getNumberOfFrames();
+            // i++) {
+            // duration += animationDarkDrawable.getDuration(i);
+            // }
+            // handler = new Handler();
+            // handler.postDelayed(new Runnable() {
+            //
+            // @Override
+            // public void run() {
+            // beComingDark = false;
+            // }
+            // }, duration);
         }
     }
 
@@ -1795,22 +1791,20 @@ public class FloatWindowHelper {
             for (int i = 0; i < animationLightDrawable.getNumberOfFrames(); i++) {
                 duration += animationLightDrawable.getDuration(i);
             }
-            Handler handler = new Handler();
+            if(handler == null){
+                handler = new Handler();
+            }
+            
             handler.postDelayed(new Runnable() {
 
                 @Override
                 public void run() {
-
                     nowCount = new CountDownTimer(5000, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            LeoLog.d("testAnimation", "millisUntilFinished : "
-                                    + millisUntilFinished);
                         }
-
                         @Override
                         public void onFinish() {
-                            LeoLog.d("testAnimation", "Finish!");
                             goToChangeDark();
                         }
                     };
@@ -1862,7 +1856,6 @@ public class FloatWindowHelper {
                 mWhiteFloatView.setVisibility(View.GONE);
                 try {
                     windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
-                    Log.i("null", "hideWhiteFloatView");
                 } catch (Exception e) {
                 }
             }
@@ -1898,10 +1891,10 @@ public class FloatWindowHelper {
             pref.setLastTimeLayout(1);
             mWhiteFloatView.setImageResource(0);
             SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                    "qssetting","point_notice");
-        }else{
+                    "qs_page", "point_notice");
+        } else {
             SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                    "qssetting","point_user");
+                    "qs_page", "point_user");
         }
         pref.addUseStrengthenModeTimes();
         pref.setNeedShowWhiteDotSlideTip(false);
@@ -1938,14 +1931,12 @@ public class FloatWindowHelper {
                             nowCount = null;
                         }
                         mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
-
                         startX = event.getRawX();
                         startY = event.getRawY();
                         downTime = System.currentTimeMillis();
                         Log.i("tag", "startX =" + startX + "startY = " + startY);
                         break;
                     case MotionEvent.ACTION_MOVE:
-                        LeoLog.d("", "");
                         moveX = Math.abs(startX - event.getRawX());
                         moveY = Math.abs(startY - event.getRawY());
                         if (moveX > 10 || moveY > 10) {
@@ -1956,26 +1947,18 @@ public class FloatWindowHelper {
                             windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
                             ifMove = true;
                         }
-                        Log.i("tag", "x = " + x + " y = " + y);
-                        Log.i("tag", "event.getRawX() = " + event.getRawX());
-                        Log.i("tag", "moveX = " + moveX);
                         break;
                     case MotionEvent.ACTION_UP:
                         isControling = false;
                         goToChangeLight();
-
-                        upX = event.getRawX() < halfW ? -halfW : halfW;
+                        
+                     // the x must  be both sides
+                        upX = event.getRawX() < halfW ? -halfW : halfW; 
                         upY = (int) (event.getRawY() - halfH);
-                        Log.i("tag", System.currentTimeMillis() - downTime + " ");
                         if (System.currentTimeMillis() - downTime < 150) {
                             onWhiteFloatClick(mContext);
                         } else if (ifMove) {
-                            if (x < 0) {
-                                animator = ValueAnimator.ofInt((int) x, -halfW);
-                            } else {
-                                animator = ValueAnimator.ofInt((int) x, halfW);
-                            }
-                            Log.i("tag", "up then  x = " + x);
+                            animator = ValueAnimator.ofInt((int) x, upX);
                             animator.addUpdateListener(new AnimatorUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(ValueAnimator animation) {
@@ -1986,8 +1969,6 @@ public class FloatWindowHelper {
                                 }
                             });
                             animator.start();
-                        }
-                        if (moveY > 10) {
                             AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(
                                     upX, upY);
                         }
@@ -2032,14 +2013,17 @@ public class FloatWindowHelper {
                 @Override
                 public void onScreenChanged(Intent intent) {
                     if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
+                        Log.i("null","锁屏啦");
                         hideWhiteFloatView(mContext);
                         AppMasterPreference.getInstance(mContext)
                                 .setSwitchOpenStrengthenMode(false);
                     } else if (!AppUtil.isScreenLocked(mContext)
                             && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+                        Log.i("null","开屏啦");
                         AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
                         showWhiteFloatView(mContext);
                     } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+                        Log.i("null","解锁啦");
                         AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
                         showWhiteFloatView(mContext);
                     }
@@ -2076,8 +2060,8 @@ public class FloatWindowHelper {
 
     // 去除热区红点，未读，运营icon和红点
     public static void cancelAllRedTip(Context context) {
-//        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
-//                + QuickGestureManager.getInstance(context).isShowSysNoReadMessage);
+        // Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
+        // + QuickGestureManager.getInstance(context).isShowSysNoReadMessage);
         // 隐私通话
         if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
             QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;

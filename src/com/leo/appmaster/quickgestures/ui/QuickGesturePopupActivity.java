@@ -185,7 +185,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        Log.i("null", "QuickGesturePopupActivity onPause() + " + FloatWindowHelper.mGestureShowing);
         if (!ifCreateWhiteFloat && !FloatWindowHelper.mGestureShowing) {
             mContainer.post(new Runnable() {
                 @Override
