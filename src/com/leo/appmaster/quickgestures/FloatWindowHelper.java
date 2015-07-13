@@ -1898,10 +1898,10 @@ public class FloatWindowHelper {
             pref.setLastTimeLayout(1);
             mWhiteFloatView.setImageResource(0);
             SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                    "qssetting","point_notice");
+                    "qs_page","point_notice");
         }else{
             SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                    "qssetting","point_user");
+                    "qs_page","point_user");
         }
         pref.addUseStrengthenModeTimes();
         pref.setNeedShowWhiteDotSlideTip(false);

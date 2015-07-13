@@ -23,18 +23,15 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.BuildProperties;
