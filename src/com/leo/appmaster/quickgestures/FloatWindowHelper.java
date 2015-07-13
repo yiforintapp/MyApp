@@ -120,6 +120,7 @@ public class FloatWindowHelper {
     private static boolean beComingDark = false;
     private static boolean isControling = false;
     private static CountDownTimer nowCount;
+    private static Handler handler;
 
     /**
      * left bottom must call in UI thread
@@ -1761,18 +1762,19 @@ public class FloatWindowHelper {
                     mWhiteFloatView.getBackground();
             animationDarkDrawable.start();
 
-            int duration = 0;
-            for (int i = 0; i < animationDarkDrawable.getNumberOfFrames(); i++) {
-                duration += animationDarkDrawable.getDuration(i);
-            }
-            Handler handler = new Handler();
-            handler.postDelayed(new Runnable() {
-
-                @Override
-                public void run() {
-                    beComingDark = false;
-                }
-            }, duration);
+            // int duration = 0;
+            // for (int i = 0; i < animationDarkDrawable.getNumberOfFrames();
+            // i++) {
+            // duration += animationDarkDrawable.getDuration(i);
+            // }
+            // handler = new Handler();
+            // handler.postDelayed(new Runnable() {
+            //
+            // @Override
+            // public void run() {
+            // beComingDark = false;
+            // }
+            // }, duration);
         }
     }
 
@@ -1795,7 +1797,10 @@ public class FloatWindowHelper {
             for (int i = 0; i < animationLightDrawable.getNumberOfFrames(); i++) {
                 duration += animationLightDrawable.getDuration(i);
             }
-            Handler handler = new Handler();
+            if(handler == null){
+                handler = new Handler();
+            }
+            
             handler.postDelayed(new Runnable() {
 
                 @Override
@@ -1804,13 +1809,10 @@ public class FloatWindowHelper {
                     nowCount = new CountDownTimer(5000, 1000) {
                         @Override
                         public void onTick(long millisUntilFinished) {
-                            LeoLog.d("testAnimation", "millisUntilFinished : "
-                                    + millisUntilFinished);
                         }
 
                         @Override
                         public void onFinish() {
-                            LeoLog.d("testAnimation", "Finish!");
                             goToChangeDark();
                         }
                     };
@@ -1898,10 +1900,10 @@ public class FloatWindowHelper {
             pref.setLastTimeLayout(1);
             mWhiteFloatView.setImageResource(0);
             SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                    "qs_page","point_notice");
-        }else{
+                    "qs_page", "point_notice");
+        } else {
             SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                    "qs_page","point_user");
+                    "qs_page", "point_user");
         }
         pref.addUseStrengthenModeTimes();
         pref.setNeedShowWhiteDotSlideTip(false);
@@ -2076,8 +2078,8 @@ public class FloatWindowHelper {
 
     // 去除热区红点，未读，运营icon和红点
     public static void cancelAllRedTip(Context context) {
-//        Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
-//                + QuickGestureManager.getInstance(context).isShowSysNoReadMessage);
+        // Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
+        // + QuickGestureManager.getInstance(context).isShowSysNoReadMessage);
         // 隐私通话
         if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
             QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
