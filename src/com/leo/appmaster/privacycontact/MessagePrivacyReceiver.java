@@ -56,7 +56,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, final Intent intent) {
-//        Log.e(FloatWindowHelper.RUN_TAG, "接受短信");
         String action = intent.getAction();
         mContext = context;
         if (mSimpleDateFormate == null) {
@@ -66,6 +65,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
+//            PrivacyContactManager.getInstance(mContext).testValue = true;
             /*
              * 有新短信来时恢复该短信是否经过红点提示标记的默认值false
              */
@@ -88,9 +88,12 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     mSendDate = message.getTimestampMillis();
                     if (!Utilities.isEmpty(mPhoneNumber)) {
                         String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
+                        // 查询来的号码是否为隐私联系人，如果返回值为空则说明不是
                         ContactBean contact = getPrivateMessage(formateNumber, mContext);
+                        // 设置每次来的号码，方便在Observer的onChanage中去使用
                         PrivacyContactManager.getInstance(mContext).setLastMessageContact(contact);
                         if (contact != null) {
+                            // 拦截短信
                             abortBroadcast();
                             String sendTime = mSimpleDateFormate.format(System.currentTimeMillis());
                             final MessageBean messageBean = new MessageBean();
@@ -177,18 +180,9 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             }
                             // 恢复正常铃声
                             mAudioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-                            // 通知更新通话记录
-                            // LeoEventBus
-                            // .getDefaultBus()
-                            // .post(
-                            // new PrivacyDeletEditEvent(
-                            // PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
                         }
                     }
                 }
-                // if (privacyConatact != null) {
-                //
-                // }
             }
         } else if (PrivacyContactUtils.SENT_SMS_ACTION.equals(action)) {
             switch (getResultCode()) {
