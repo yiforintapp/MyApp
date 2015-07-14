@@ -756,8 +756,8 @@ public class AppleWatchLayout extends ViewGroup {
             QuickGestureManager.getInstance(mContext).mToMsmFlag = true;
             MessageBean bean = (MessageBean) info;
             Intent mIntent = null;
-            if (QuickGestureManager.getInstance(mContext).mMessages != null
-                    && QuickGestureManager.getInstance(mContext).mMessages.size() <= 1) {
+            if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage()  != null
+                    && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() .size() <= 1) {
                 if (!BuildProperties.ZTEU817.equals(BuildProperties.getPoneModel())) {
                     Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
                     mIntent = new

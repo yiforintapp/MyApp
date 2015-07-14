@@ -834,12 +834,12 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
-                QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mMessages = PrivacyContactUtils
+                QuickGestureManager.getInstance(QuickGestureSettingActivity.this).addQuickNoReadMessage(PrivacyContactUtils
                         .getSysMessage(QuickGestureSettingActivity.this,
                                 QuickGestureSettingActivity.this.getContentResolver(),
-                                "read=0 AND type=1", null, false);
-                if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mMessages != null
-                        && QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mMessages
+                                "read=0 AND type=1", null, false));
+                if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).getQuiQuickNoReadMessage() != null
+                        && QuickGestureManager.getInstance(QuickGestureSettingActivity.this).getQuiQuickNoReadMessage()
                                 .size() > 0) {
                     QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isShowSysNoReadMessage = true;
                     FloatWindowHelper
@@ -858,13 +858,13 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                 String[] selectionArgs = new String[] {
                         String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
                 };
-                QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mCallLogs = PrivacyContactUtils
+                QuickGestureManager.getInstance(QuickGestureSettingActivity.this).addQuickNoReadCall(PrivacyContactUtils
                         .getSysCallLog(QuickGestureSettingActivity.this,
                                 QuickGestureSettingActivity.this.getContentResolver(),
                                 selection,
-                                selectionArgs);
-                if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mCallLogs != null
-                        && QuickGestureManager.getInstance(QuickGestureSettingActivity.this).mCallLogs
+                                selectionArgs));
+                if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).getQuickNoReadCall() != null
+                        && QuickGestureManager.getInstance(QuickGestureSettingActivity.this).getQuickNoReadCall()
                                 .size() > 0) {
                     QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isShowSysNoReadMessage = true;
                     FloatWindowHelper

@@ -1082,10 +1082,10 @@ public class PrivacyContactUtils {
                             // = false;
                             QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
                             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
-                            if ((QuickGestureManager.getInstance(context).mMessages == null || QuickGestureManager
-                                    .getInstance(context).mMessages.size() <= 0)/* 未读短信 */
-                                    && (QuickGestureManager.getInstance(context).mCallLogs == null || QuickGestureManager
-                                            .getInstance(context).mCallLogs.size() <= 0)/* 未读通话 */
+                            if ((QuickGestureManager.getInstance(context).getQuiQuickNoReadMessage() == null || QuickGestureManager
+                                    .getInstance(context).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
+                                    && (QuickGestureManager.getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
+                                            .getInstance(context).getQuickNoReadCall().size() <= 0)/* 未读通话 */
                                     && AppMasterPreference.getInstance(context)
                                             .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                     && AppMasterPreference.getInstance(context)

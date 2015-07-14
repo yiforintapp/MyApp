@@ -617,10 +617,10 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
                             AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
                                     false);
-                            if ((QuickGestureManager.getInstance(context).mCallLogs == null || QuickGestureManager
-                                    .getInstance(context).mCallLogs.size() <= 0)/* 未读通话 */
-                                    && (QuickGestureManager.getInstance(context).mMessages == null || QuickGestureManager
-                                            .getInstance(context).mMessages.size() <= 0)/* 未读短信 */
+                            if ((QuickGestureManager.getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
+                                    .getInstance(context).getQuickNoReadCall().size() <= 0)/* 未读通话 */
+                                    && (QuickGestureManager.getInstance(context).getQuiQuickNoReadMessage() == null || QuickGestureManager
+                                            .getInstance(context).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
                                     && AppMasterPreference.getInstance(context)
                                             .getMessageNoReadCount() <= 0/* 隐私短信 */
                                     && AppMasterPreference.getInstance(context)

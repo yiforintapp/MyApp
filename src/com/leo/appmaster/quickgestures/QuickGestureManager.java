@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
@@ -19,8 +18,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.Intent.ShortcutIconResource;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -47,11 +46,11 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
+import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -85,7 +84,7 @@ public class QuickGestureManager {
     public boolean mToCallFlag;
     public static String QUICK_GESTURE_SETTING_EVENT = "quick_gesture_setting_event";
     public boolean isDialogShowing = false;
-    
+
     /*
      * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
      */
@@ -227,18 +226,12 @@ public class QuickGestureManager {
         boolean isShowPrivacyContactTip = AppMasterPreference.getInstance(mContext)
                 .getSwitchOpenPrivacyContactMessageTip();
         if (isShowMsmTip) {
-            if (QuickGestureManager.getInstance(mContext).mMessages != null
-                    && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
-                // List<MessageBean> messages =
-                // QuickGestureManager.getInstance(mContext).mMessages;
-                // for (MessageBean message : messages) {
-                MessageBean message = QuickGestureManager.getInstance(mContext).mMessages.get(0);
+            if (getQuiQuickNoReadMessage() != null
+                    && getQuiQuickNoReadMessage().size() > 0) {
+                MessageBean message = getQuiQuickNoReadMessage().get(0);
                 message.gesturePosition = -1000;
                 message.icon = mContext.getResources().getDrawable(
                         R.drawable.gesture_message);
-                // if
-                // (QuickGestureManager.getInstance(mContext).mMessages.size() >
-                // 1) {
                 message.label = mContext.getResources().getString(
                         R.string.privacy_contact_message);
                 // } else {
@@ -258,37 +251,19 @@ public class QuickGestureManager {
         }
 
         // no read sys_call
-        
+
         if (isShowCallLogTip) {
-//            Log.e(FloatWindowHelper.RUN_TAG, "通话数量："+QuickGestureManager.getInstance(mContext).mCallLogs.size());
-            if (QuickGestureManager.getInstance(mContext).mCallLogs != null
-                    && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
-                // List<ContactCallLog> baseInfos =
-                // QuickGestureManager.getInstance(mContext).mCallLogs;
-                // for (ContactCallLog baseInfo : baseInfos) {
-                ContactCallLog baseInfo = QuickGestureManager.getInstance(mContext).mCallLogs
+            if (QuickGestureManager.getInstance(mContext).getQuickNoReadCall() != null
+                    && QuickGestureManager.getInstance(mContext).getQuickNoReadCall().size() > 0) {
+                ContactCallLog baseInfo = QuickGestureManager.getInstance(mContext).getQuickNoReadCall()
                         .get(0);
                 baseInfo.gesturePosition = -1000;
                 baseInfo.icon = mContext.getResources().getDrawable(
                         R.drawable.gesture_call);
-                // if
-                // (QuickGestureManager.getInstance(mContext).mCallLogs.size() >
-                // 1) {
                 baseInfo.label = mContext.getResources().getString(
                         R.string.privacy_contact_calllog);
-                // } else {
-                // if (baseInfo.getCallLogName() != null
-                // && !"".equals(baseInfo.getCallLogName())) {
-                // baseInfo.label = baseInfo.getCallLogName();
-                // } else {
-                // baseInfo.label = baseInfo.getCallLogNumber();
-                // }
-                // }
                 baseInfo.isShowReadTip = true;
                 dynamicList.add(baseInfo);
-                // if (dynamicList.size() >= 11)
-                // break;
-                // }
             }
         }
         // privacy contact
@@ -701,17 +676,13 @@ public class QuickGestureManager {
     public void checkEventItemRemoved(BaseInfo info) {
         if (info instanceof MessageBean) {
             MessageBean bean = (MessageBean) info;
-            if (mMessages != null && mMessages.size() > 0) {
-                // for (int i = 0; i < mMessages.size(); i++) {
-                // Log.e("#########", "***"+mMessages.get(i).label);
-                // }
-                mMessages.remove(bean);
-                // Log.e("#########", "***"+mMessages.size());
+            if (getQuiQuickNoReadMessage() != null && getQuiQuickNoReadMessage().size() > 0) {
+                removeQuickNoReadMessage(bean);
             }
         } else if (info instanceof ContactCallLog) {
             ContactCallLog callLog = (ContactCallLog) info;
-            if (mCallLogs != null && mCallLogs.size() > 0) {
-                mCallLogs.remove(callLog);
+            if (getQuickNoReadCall() != null && getQuickNoReadCall().size() > 0) {
+                removeQuickNoReadCall(callLog);
             }
         } else if (info instanceof QuickGestureContactTipInfo) {
             if (isShowPrivacyCallLog) {
@@ -723,8 +694,8 @@ public class QuickGestureManager {
                 AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(false);
             }
         }
-        if ((mMessages == null || mMessages.size() <= 0)
-                && (mCallLogs == null || mCallLogs.size() <= 0) && !isShowPrivacyCallLog
+        if ((getQuiQuickNoReadMessage() == null || getQuiQuickNoReadMessage().size() <= 0)
+                && (getQuickNoReadCall() == null || getQuickNoReadCall().size() <= 0) && !isShowPrivacyCallLog
                 && !isShowPrivacyMsm) {
             QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
         }
@@ -954,7 +925,7 @@ public class QuickGestureManager {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 isDialogShowing = false;
-                Log.i("null", "commonApp dialog "+ isDialogShowing);
+                Log.i("null", "commonApp dialog " + isDialogShowing);
             }
         });
         isDialogShowing = true;
@@ -1115,7 +1086,7 @@ public class QuickGestureManager {
             @Override
             public void onDismiss(DialogInterface dialog) {
                 isDialogShowing = false;
-                Log.i("null", "quickSwitch dialog "+ isDialogShowing);
+                Log.i("null", "quickSwitch dialog " + isDialogShowing);
             }
         });
         isDialogShowing = true;
@@ -1226,8 +1197,9 @@ public class QuickGestureManager {
             Intent quickGestureShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
             ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
                     mContext, R.drawable.gesture_desktopo_icon);
-//            ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
-//                    mContext, R.drawable.gesture_arrow_tips);
+            // ShortcutIconResource quickGestureIconRes =
+            // Intent.ShortcutIconResource.fromContext(
+            // mContext, R.drawable.gesture_arrow_tips);
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mContext.getResources()
                     .getString(R.string.pg_appmanager_quick_gesture_name));
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, quickGestureIconRes);
@@ -1238,4 +1210,51 @@ public class QuickGestureManager {
             prefernece.edit().putBoolean("shortcut_quickGesture", true).commit();
         }
     }
+
+    public synchronized List<MessageBean> getQuiQuickNoReadMessage() {
+        return mMessages;
+    }
+
+    public void addQuickNoReadMessage(List<MessageBean> messages) {
+        getQuiQuickNoReadMessage();
+        mMessages = messages;
+    }
+
+    public void removeQuickNoReadMessage(MessageBean messageBean) {
+        getQuiQuickNoReadMessage();
+        if (mMessages != null) {
+            mMessages.remove(messageBean);
+        }
+    }
+
+    public void clearQuickNoReadMessage() {
+        getQuiQuickNoReadMessage();
+        if (mMessages != null) {
+            mMessages.clear();
+        }
+    }
+
+    public synchronized List<ContactCallLog> getQuickNoReadCall() {
+        return mCallLogs;
+    }
+
+    public void addQuickNoReadCall(List<ContactCallLog> call) {
+        getQuickNoReadCall();
+        mCallLogs = call;
+    }
+
+    public void removeQuickNoReadCall(ContactCallLog call) {
+        getQuickNoReadCall();
+        if (mCallLogs != null) {
+            mCallLogs.remove(call);
+        }
+    }
+
+    public void clearQuickNoReadCall() {
+        getQuickNoReadCall();
+        if (mCallLogs != null) {
+            mCallLogs.clear();
+        }
+    }
+
 }
