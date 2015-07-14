@@ -257,7 +257,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
     private int mEnterHomeTimes = -1;
-    private int mUseStrengthModeTimes,mGestureSlideAnimShowTimes = -1;
+    private int mUseStrengthModeTimes,mGestureSlideAnimShowTimes,mLastTimeLayout = -1;
     private boolean mHasEverCloseWhiteDot;
     private boolean mNeedShowWhiteDotSlideTip;
 
@@ -1746,10 +1746,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getLastTimeLayout() {
-        return mPref.getInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT, 3);
+        if(mLastTimeLayout < 0){
+            mLastTimeLayout = mPref.getInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT, 3);
+        }
+        return mLastTimeLayout;
     }
 
     public void setLastTimeLayout(int mLayoutNum) {
+        mLastTimeLayout = mLayoutNum;
         mPref.edit().putInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT,
                 mLayoutNum).commit();
     }
@@ -1888,7 +1892,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         if (mUseStrengthModeTimes < 0) {
             mUseStrengthModeTimes = getUseStrengthenModeTimes();
         }
-        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, mUseStrengthModeTimes++).commit();
+        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, ++mUseStrengthModeTimes).commit();
     }
 
     public int getUseStrengthenModeTimes() {
