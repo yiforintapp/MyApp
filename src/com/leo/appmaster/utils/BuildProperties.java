@@ -116,7 +116,12 @@ public class BuildProperties {
     public static Object invokePrivateMethod(Object obj, String methodName) throws Exception {
         Object value = null;
         Class<?> cls = obj.getClass();
-        Method method = cls.getDeclaredMethod(methodName, (Class[]) null);
+        Method method=null;
+        try {
+            method = cls.getDeclaredMethod(methodName, (Class[]) null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         method.setAccessible(true);
         value = method.invoke(obj, (Object[]) null);
         return value;

@@ -834,9 +834,9 @@ public class AppleWatchContainer extends FrameLayout {
             boolean isShowPrivacyContactTip = AppMasterPreference.getInstance(getContext())
                     .getSwitchOpenPrivacyContactMessageTip();
             if (isShowMsmTip) {
-                if (QuickGestureManager.getInstance(mContext).mMessages != null
-                        && QuickGestureManager.getInstance(mContext).mMessages.size() > 0) {
-                    for (MessageBean message : QuickGestureManager.getInstance(mContext).mMessages) {
+                if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage()  != null
+                        && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() .size() > 0) {
+                    for (MessageBean message : QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() ) {
                         message.icon = getContext().getResources().getDrawable(
                                 R.drawable.gesture_message);
                         if (message.getMessageName() != null
@@ -852,9 +852,9 @@ public class AppleWatchContainer extends FrameLayout {
             }
             // 快捷手势未读通话提醒
             if (isShowCallLogTip) {
-                if (QuickGestureManager.getInstance(mContext).mCallLogs != null
-                        && QuickGestureManager.getInstance(mContext).mCallLogs.size() > 0) {
-                    for (ContactCallLog baseInfo : QuickGestureManager.getInstance(mContext).mCallLogs) {
+                if (QuickGestureManager.getInstance(mContext).getQuickNoReadCall() != null
+                        && QuickGestureManager.getInstance(mContext).getQuickNoReadCall().size() > 0) {
+                    for (ContactCallLog baseInfo : QuickGestureManager.getInstance(mContext).getQuickNoReadCall()) {
                         baseInfo.icon = getContext().getResources().getDrawable(
                                 R.drawable.gesture_call);
                         if (baseInfo.getCallLogName() != null

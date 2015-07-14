@@ -2076,14 +2076,14 @@ public class FloatWindowHelper {
             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
         }
         // 短信，通话记录
-        if (QuickGestureManager.getInstance(context).mCallLogs != null) {
-            QuickGestureManager.getInstance(context).mCallLogs.clear();
+        if (QuickGestureManager.getInstance(context).getQuickNoReadCall() != null) {
+            QuickGestureManager.getInstance(context).clearQuickNoReadCall();;
             if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
             }
         }
-        if (QuickGestureManager.getInstance(context).mMessages != null) {
-            QuickGestureManager.getInstance(context).mMessages.clear();
+        if (QuickGestureManager.getInstance(context).getQuiQuickNoReadMessage() != null) {
+            QuickGestureManager.getInstance(context).clearQuickNoReadMessage();
             if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
             }

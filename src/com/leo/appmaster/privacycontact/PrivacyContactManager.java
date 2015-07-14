@@ -308,12 +308,12 @@ public class PrivacyContactManager {
                     .setQuickGestureCallLogTip(
                             false);
             if ((QuickGestureManager
-                    .getInstance(context).mMessages == null || QuickGestureManager
-                    .getInstance(context).mMessages
+                    .getInstance(context).getQuiQuickNoReadMessage()  == null || QuickGestureManager
+                    .getInstance(context).getQuiQuickNoReadMessage() 
                     .size() <= 0)/* 未读短信 */
                     && (QuickGestureManager
-                            .getInstance(context).mCallLogs == null || QuickGestureManager
-                            .getInstance(context).mCallLogs
+                            .getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
+                            .getInstance(context).getQuickNoReadCall()
                             .size() <= 0)/* 未读通话 */
                     && AppMasterPreference.getInstance(
                             context)
@@ -343,12 +343,12 @@ public class PrivacyContactManager {
                     context)
                     .setQuickGestureMsmTip(false);
             if ((QuickGestureManager
-                    .getInstance(context).mMessages == null || QuickGestureManager
-                    .getInstance(context).mMessages
+                    .getInstance(context).getQuiQuickNoReadMessage()  == null || QuickGestureManager
+                    .getInstance(context).getQuiQuickNoReadMessage() 
                     .size() <= 0)/* 未读短信 */
                     && (QuickGestureManager
-                            .getInstance(context).mCallLogs == null || QuickGestureManager
-                            .getInstance(context).mCallLogs
+                            .getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
+                            .getInstance(context).getQuickNoReadCall()
                             .size() <= 0)/* 未读通话 */
                     && AppMasterPreference.getInstance(
                             context)
