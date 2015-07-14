@@ -222,7 +222,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         new Thread() {
             public void run() {
                 if (isGestureAnimating) {
-                    roundProgressBar.setProgress( mProgress);
+                    if(roundProgressBar != null) {
+                        roundProgressBar.setProgress( mProgress);
+                    }
                     Message msg = Message.obtain();
                     msg.what = DONGHUA_CHANGE_TEXT;
                     msg.obj = mProgress;
@@ -240,7 +242,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         }
                         startProgress += 1;
                         mNowDongHuaWhere = startProgress;
-                        roundProgressBar.setProgress(startProgress);
+                        if(roundProgressBar != null) {
+                            roundProgressBar.setProgress(startProgress);
+                        }
                         Message msg = Message.obtain();
                         msg.what = DONGHUA_CHANGE_TEXT;
                         msg.obj = startProgress;
@@ -431,7 +435,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         e.printStackTrace();
                     }
                     mProgress -= 1;
-                    roundProgressBar.setProgress(mProgress);
+                    if(roundProgressBar != null) {
+                        roundProgressBar.setProgress(mProgress);
+                    }
                     Message msg = Message.obtain();
                     msg.what = DONGHUA_SHOW_BEGIN;
                     msg.obj = mProgress;
