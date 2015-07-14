@@ -1738,7 +1738,7 @@ public class FloatWindowHelper {
             mWhiteFloatView = new ImageView(mContext);
             goToChangeLight();
             setWhiteFloatOnTouchEvent(mContext);
-            registerWhiteFlaotOnScreenListener(mContext);
+            registerWhiteFloatOnScreenListener(mContext);
             try {
                 windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
             } catch (Exception e) {
@@ -2007,7 +2007,7 @@ public class FloatWindowHelper {
         FloatWindowHelper.removeAllFloatWindow(context);
     }
 
-    private static void registerWhiteFlaotOnScreenListener(final Context mContext) {
+    private static void registerWhiteFloatOnScreenListener(final Context mContext) {
         if (null == mScreenListener) {
             mScreenListener = new ScreenOnOffListener() {
                 @Override

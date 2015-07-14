@@ -124,9 +124,9 @@ public class AppUtil {
         return TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
     }
 
-    public static boolean isScreenLocked(Context mcContext) {
-        KeyguardManager mKeyguardManager = (KeyguardManager) mcContext
-                .getSystemService(mcContext.KEYGUARD_SERVICE);
+    public static boolean isScreenLocked(Context mContext) {
+        KeyguardManager mKeyguardManager = (KeyguardManager) mContext
+                .getSystemService(mContext.KEYGUARD_SERVICE);
         return mKeyguardManager.inKeyguardRestrictedInputMode();
     }
 }

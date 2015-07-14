@@ -85,13 +85,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mFromShortcut = intent.getBooleanExtra(FROME_STATUSBAR, false);
         }
         initUi();
+        initQuickSwitch();
         LeoEventBus.getDefaultBus().register(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        initQuickSwitch();
         if (!mPre.getSwitchOpenQuickGesture()) {
             // 初始化快捷手势数据
             AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
@@ -806,7 +806,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         });
 
         int version = Build.VERSION.SDK_INT;
-        if (version == 14 || version == 15) {
+        if (version <= 15) {
             handAlpha.setDuration(1500);
             handTranslate.setDuration(1500);
             arrowAlpha.setDuration(1500);
