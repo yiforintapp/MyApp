@@ -716,14 +716,22 @@ public class AppleWatchLayout extends ViewGroup {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setComponent(new ComponentName(appInfo.packageName,
                             appInfo.activityName));
-                    getContext().startActivity(intent);
+                    try {
+                        getContext().startActivity(intent);
+                    } catch (Exception e) {
+                        // Not Found Exception
+                    }
                 }
             } else {
                 Intent intent = new Intent();
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setComponent(new ComponentName(appInfo.packageName,
                         appInfo.activityName));
-                getContext().startActivity(intent);
+                try {
+                    getContext().startActivity(intent);
+                } catch (Exception e) {
+                    // Not Found Exception
+                }
             }
 
             if (mMyType == GType.DymicLayout) {
@@ -857,14 +865,22 @@ public class AppleWatchLayout extends ViewGroup {
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setComponent(new ComponentName(appInfo.packageName,
                             appInfo.activityName));
-                    getContext().startActivity(intent);
+                    try {
+                        getContext().startActivity(intent);
+                    } catch (Exception e) {
+                        // Not Found Exception
+                    }
                 }
             } else {
                 Intent intent = new Intent();
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setComponent(new ComponentName(appInfo.packageName,
                         appInfo.activityName));
-                getContext().startActivity(intent);
+                try {
+                    getContext().startActivity(intent);
+                } catch (Exception e) {
+                    // Not Found Exception
+                }
             }
 
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
