@@ -1,0 +1,135 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical" >
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/flow_set__title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/commonbar_background" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/all_backgroud"
+        android:padding="@dimen/new_app_manager_padding" >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical" >
+
+            <RelativeLayout
+                android:id="@+id/first_content"
+                android:layout_width="match_parent"
+                android:layout_height="72dp" >
+
+                <TextView
+                    android:id="@+id/first_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/flow_settting_fist"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:id="@+id/iv_show_on"
+                    android:layout_width="42dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/switch_on" />
+
+                <ImageView
+                    android:id="@+id/iv_show_off"
+                    android:layout_width="42dp"
+                    android:layout_height="24dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:src="@drawable/switch_off"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:src="@color/flow_charts_gry" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/second_content"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:background="@drawable/manager_backup_list_selecter" >
+
+                <TextView
+                    android:id="@+id/second_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/flow_settting_dialog"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/second_tv_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/commonbar_background"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:src="@color/flow_charts_gry" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/thrid_content"
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:background="@drawable/manager_backup_list_selecter" >
+
+                <TextView
+                    android:id="@+id/thrid_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/flow_settting_thrid"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/thrid_tv_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="16dp"
+                    android:textColor="@color/commonbar_background"
+                    android:textSize="18dp" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_alignParentBottom="true"
+                    android:src="@color/flow_charts_gry" />
+            </RelativeLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</LinearLayout>

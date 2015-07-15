@@ -1,0 +1,59 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3f3f3" >
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/add_privacy_contact_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_background" />
+
+    <ListView
+        android:id="@+id/add_messageLV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/add_privacy_contact_title_bar"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/white_bg"
+        android:divider="@null"
+        android:listSelector="@drawable/manager_backup_list_selecter"
+        android:scrollbars="none" >
+    </ListView>
+
+    <ProgressBar
+        android:id="@+id/progressbar_loading"
+        style="@style/theme_loading"
+        android:layout_width="30dp"
+        android:layout_height="110dp"
+        android:layout_centerInParent="true"
+        android:paddingBottom="80dp"
+        android:visibility="gone" />
+
+    <LinearLayout
+        android:id="@+id/add_message_default_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="@dimen/privacy_default_image_width"
+            android:layout_height="@dimen/privacy_default_image_height"
+            android:src="@drawable/sms_default" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/privacy_default_text_margin_top"
+            android:text="@string/privacy_add_message_default_text"
+            android:textColor="#d3d3d4"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>

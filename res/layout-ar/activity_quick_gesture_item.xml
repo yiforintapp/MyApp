@@ -1,0 +1,96 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <!--
+         android:layout_height="@dimen/quick_gesture_setting_item_height"
+            android:listSelector="@drawable/manager_backup_list_selecter"
+    -->
+
+    <RelativeLayout
+        android:id="@+id/quick_gesture_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg" >
+
+        <ImageView
+            android:id="@+id/quick_gesture_option_IV"
+            android:layout_width="@dimen/privacy_contact_icon_size"
+            android:layout_height="@dimen/privacy_contact_icon_size"
+            android:layout_centerVertical="true"
+            android:src="@drawable/default_user_avatar"
+            android:visibility="gone" />
+
+        <RelativeLayout
+            android:id="@+id/message_itemLT"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/contactIV" >
+
+            <LinearLayout
+                android:id="@+id/message_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="40dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/quick_gesture_item_nameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="理奥网络"
+                    android:textColor="#414141"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/quick_gesture_item_cotentTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:textSize="10dp"
+                    android:textColor="#999999"
+                    android:visibility="gone" />
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/quick_gesture_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="16dp"
+                android:button="@drawable/quick_gesture_switch_selector"
+                android:focusable="false"
+                android:visibility="gone"
+               />
+
+            <ImageView
+                android:id="@+id/quick_gesture_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:paddingRight="25dp"
+                android:src="@drawable/privacy_proposals_arrow"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/segmentation_tv"
+        android:layout_width="match_parent"
+        android:layout_height="6dp"
+        android:layout_below="@id/quick_gesture_content"
+        android:layout_marginTop="10dp"
+        android:background="#f3f3f3"
+        android:visibility="gone" />
+
+</RelativeLayout>

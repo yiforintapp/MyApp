@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp"
+    android:background="@drawable/manager_backup_list_selecter"
+    android:gravity="center_vertical" >
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15.0dip"
+        android:layout_marginRight="6.0dip"
+        android:layout_weight="1.0" >
+
+        <TextView
+            android:id="@android:id/title"
+            android:layout_width="@dimen/lock_setting_item_title_des_width"
+            android:layout_height="wrap_content"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:gravity="center_vertical"
+            android:textColor="@color/option_text_color"
+            android:textSize="16.0sp" />
+
+        <TextView
+            android:id="@android:id/summary"
+            android:layout_width="@dimen/lock_setting_item_des_width"
+            android:layout_height="wrap_content"
+            android:layout_below="@android:id/title"
+            android:layout_marginTop="5dp"
+            android:ellipsize="marquee"
+            android:fadingEdge="horizontal"
+            android:gravity="center_vertical"
+            android:textColor="#999999"
+            android:textSize="10sp" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@android:id/widget_frame"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical" />
+
+</LinearLayout>

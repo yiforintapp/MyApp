@@ -512,18 +512,19 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             break;
                         try {
                             newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
-                            // TODO
+                            if (newFileName.indexOf(".leotmv") > 0) {
                                 newFileName = newFileName.substring(1,
                                         newFileName.indexOf(".leotmv"));
-                                if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
-                                    FileOperationUtil.saveImageMediaEntry(FileOperationUtil
-                                            .makePath(
-                                                    FileOperationUtil.getDirPathFromFilepath(item
-                                                            .getPath()),
-                                                    newFileName), context);
-                                    FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
-                                    mVideoItems.remove(item);
-                                }
+                            }
+                            if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
+                                FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+                                        .makePath(
+                                                FileOperationUtil.getDirPathFromFilepath(item
+                                                        .getPath()),
+                                                newFileName), context);
+                                FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
+                                mVideoItems.remove(item);
+                            }
                         } catch (Exception e) {
                             isSuccess = false;
                         }

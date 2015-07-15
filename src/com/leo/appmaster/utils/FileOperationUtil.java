@@ -81,12 +81,12 @@ public class FileOperationUtil {
                 if (filename.startsWith(".")) {
                     filename = filename.substring(1);
                     int index = filename.indexOf(".");
-                    if (index > 0) {
+                    if (index >=0) {
                         filename = filename.substring(0, index);
                     }
                 } else {
                     int index = filename.indexOf(".");
-                    if (index > 0) {
+                    if (index >= 0) {
                         filename = filename.substring(0, index);
                     }
                 }
@@ -99,7 +99,7 @@ public class FileOperationUtil {
     public static String getDirPathFromFilepath(String filepath) {
         if (filepath != null) {
             int pos = filepath.lastIndexOf('/');
-            if (pos != -1) {
+            if (pos >= 0) {
                 return filepath.substring(0, pos);
             }
         }
@@ -124,7 +124,7 @@ public class FileOperationUtil {
         if (path != null) {
             String dirName;
             int pos = path.lastIndexOf('/');
-            if (pos != -1) {
+            if (pos>= 0) {
                 dirName = path.substring(0, pos);
                 pos = dirName.lastIndexOf('/');
                 dirName = dirName.substring(pos + 1);
@@ -230,7 +230,7 @@ public class FileOperationUtil {
             if (file.isFile()) {
                 int pos = newPath.lastIndexOf(File.separator);
                 String newFileDir = null;
-                if (pos > -1) {
+                if (pos >= 0) {
                     newFileDir = newPath.substring(0, pos);
                 }
                 File temp = new File(newFileDir);
@@ -310,16 +310,20 @@ public class FileOperationUtil {
             String newFileDir = null;
             if (newHided) {
                 try {
-                    newFileDir = newPath.substring(0,
-                            newPath.lastIndexOf(File.separator)).replace(
-                            SDCARD_DIR_NAME + File.separator, "");
+                    if (newPath.lastIndexOf(File.separator) >= 0) {
+                        newFileDir = newPath.substring(0,
+                                newPath.lastIndexOf(File.separator)).replace(
+                                SDCARD_DIR_NAME + File.separator, "");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
                 try {
-                    newFileDir = newPath.substring(0,
-                            newPath.lastIndexOf(File.separator));
+                    if (newPath.lastIndexOf(File.separator) >=0) {
+                        newFileDir = newPath.substring(0,
+                                newPath.lastIndexOf(File.separator));
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -600,7 +604,9 @@ public class FileOperationUtil {
     {
         String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
         try {
-            String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
+            if (str.length() >= str.lastIndexOf("/") + 1) {
+                String dirName = str.substring(str.lastIndexOf("/") + 1, str.length());
+            }
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -628,7 +634,7 @@ public class FileOperationUtil {
         if (file.isFile()) {
             String newFileDir = null;
             try {
-                if (newPath.lastIndexOf(File.separator) > -1) {
+                if (newPath.lastIndexOf(File.separator) >= 0) {
                     newFileDir = newPath.substring(0,
                             newPath.lastIndexOf(File.separator));
                 }
@@ -726,7 +732,7 @@ public class FileOperationUtil {
         if (file.isFile()) {
             String newFileDir = null;
             try {
-                if (newPath.lastIndexOf(File.separator) > -1) {
+                if (newPath.lastIndexOf(File.separator) >= 0) {
                     newFileDir = newPath.substring(0,
                             newPath.lastIndexOf(File.separator));
                 }

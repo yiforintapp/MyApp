@@ -1,0 +1,164 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:android_custom="http://schemas.android.com/apk/res/com.leo.appmaster"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white" >
+
+    <RelativeLayout
+        android:id="@+id/content_four_tv"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_manager_headview_total_height" >
+
+        <RelativeLayout
+            android:id="@+id/content_donghua"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/app_manager_headview_iv_icon_margin_left" >
+
+            <ImageView
+                android:id="@+id/iv_donghua"
+                android:layout_width="@dimen/app_manager_headview_iv_icon_width_height"
+                android:layout_height="@dimen/app_manager_headview_iv_icon_width_height"
+                android:src="@drawable/app_run_bg" />
+
+            <RelativeLayout
+                android:id="@+id/content_donghua_ok"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/iv_donghua_ok"
+                    android:layout_width="@dimen/app_manager_headview_iv_icon_width_height"
+                    android:layout_height="@dimen/app_manager_headview_iv_icon_width_height"
+                    android:src="@drawable/app_tick_icon" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/two_text_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" >
+
+                <TextView
+                    android:id="@+id/tv_from_big_donghua"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:textColor="@color/white"
+                    android:textSize="18dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_from_big_donghua"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="5dp"
+                    android:text="@string/home_appmanager_donghua_tv"
+                    android:textColor="@color/white"
+                    android:textSize="8dp" />
+            </RelativeLayout>
+
+            <com.leo.appmaster.ui.MulticolorRoundProgressBar
+                android:id="@+id/mProgressBar"
+                android:layout_width="@dimen/app_manager_home_logo_width_height"
+                android:layout_height="@dimen/app_manager_home_logo_width_height"
+                android:layout_centerInParent="true"
+                android_custom:roundColor="#00000000"
+                android_custom:roundProgressColor="#CD3333"
+                android_custom:roundWidth="8dip"
+                android_custom:textIsDisplayable="false" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_four_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/app_manager_headview_fourtext_margin_left"
+            android:layout_toRightOf="@id/content_donghua"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/flow_item_total"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/myapp_details"
+                android:textColor="@color/flow_item_total"
+                android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/tv_installed_app"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_manager_headview_fourtext_margin_top"
+                android:textColor="@color/flow_item_small"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/tv_ap_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_manager_headview_fourtext_margin_top"
+                android:textColor="@color/flow_item_small"
+                android:textSize="12dp" />
+
+            <TextView
+                android:id="@+id/tv_backup_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/app_manager_headview_fourtext_margin_top"
+                android:textColor="@color/flow_item_small"
+                android:textSize="12dp" />
+        </LinearLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/app_manager_headview_grey_button_text_height"
+        android:layout_below="@id/content_four_tv"
+        android:background="@color/flow_charts_gry" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:singleLine="true"
+            android:text="@string/home_app_manager_apps_delete"
+            android:textColor="@color/first_bottom_text"
+            android:textSize="14dp" />
+        <!--
+        <TextView
+            android:id="@+id/tv_app_manager_installed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/first_bottom_text"
+            android:textSize="12dp" />
+
+        <TextView
+            android:layout_width="3dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="|"
+            android:textColor="@color/first_bottom_text"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/tv_app_manager_space"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:singleLine="true"
+            android:textColor="@color/first_bottom_text"
+            android:textSize="12dp" />
+        -->
+    </RelativeLayout>
+
+</RelativeLayout>

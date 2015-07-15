@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+     android:id="@+id/lv_content"
+    android:layout_width="fill_parent"
+    android:layout_height="@dimen/dialog_list_item_height"
+    android:background="@color/white" >
+
+    <TextView
+        android:id="@+id/tv_showday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:textColor="#a7a7a7"
+        android:textSize="14sp" />
+
+    <ImageView
+        android:id="@+id/iv_showday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:paddingLeft="5dp"
+        android:paddingRight="16dp"
+        android:src="@drawable/unradio_buttons" />
+
+</RelativeLayout>

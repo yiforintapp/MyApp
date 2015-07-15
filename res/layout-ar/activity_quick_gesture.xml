@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/quick_gesture_helping"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3f3f3" >
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/layout_quick_gesture_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/gesture_title_bg" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_quick_gesture_title_bar"
+        android:overScrollMode="never"
+        android:scrollbars="none" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <!-- gesture switch -->
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="109dp"
+                    android:background="@drawable/gesture_top_bg" >
+                </ImageView>
+
+                <FrameLayout
+                    android:id="@+id/gesure_switch"
+                    android:layout_width="218dp"
+                    android:layout_height="218dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/gesture_open_bg" >
+
+                    <ImageView
+                        android:id="@+id/gesture_rotation_iv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/gesture_rotation_open" />
+
+                    <ImageView
+                        android:id="@+id/rotaion_close_bg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/rotation_close_bg" />
+
+                    <ImageView
+                        android:id="@+id/rotaion_open_bg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/rotation_open_bg" />
+
+                    <TextView
+                        android:id="@+id/gesture_switch_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:background="@drawable/gesture_open_selecter"
+                        android:gravity="center"
+                        android:text="@string/quick_gesture_open_text"
+                        android:textColor="@color/quick_open_text_color"
+                        android:textSize="14dp"
+                        android:textStyle="bold" />
+                </FrameLayout>
+            </FrameLayout>
+
+            <!-- gesture  introduction -->
+
+            <LinearLayout
+                android:id="@+id/gesture_introduction"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="174dp"
+                android:background="@drawable/bg"
+                android:orientation="vertical"
+                android:padding="16dp" >
+
+                <TextView
+                    android:id="@+id/gesture_intro_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/quick_gesture_introduction_title"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/gesture_intro_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/quick_gesture_introduction_content"
+                    android:textColor="@color/quick_intro_color"
+                    android:textSize="12dp" />
+
+                <ImageView
+                    android:id="@+id/gesture_intro_iv"
+                    android:layout_width="296dp"
+                    android:layout_height="190dp"
+                    android:layout_marginTop="8dp"
+                    android:src="@drawable/pic1" />
+            </LinearLayout>
+
+            <!-- gesture slide guide -->
+
+            <RelativeLayout
+                android:id="@+id/gesture_slide_guide"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gesture_introduction"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg"
+                android:padding="16dp" >
+
+                <TextView
+                    android:id="@+id/slide_guide_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/quick_gesture_slide_guide_title"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/slide_guide_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/slide_guide_title"
+                    android:layout_marginTop="8dp"
+                    android:layout_centerHorizontal="true"
+                    android:text="@string/quick_gesture_slide_guide_content"
+                    android:textColor="@color/quick_intro_color"
+                    android:textSize="12dp" />
+
+                <RelativeLayout
+                    android:id="@+id/slide_guide_show"
+                    android:layout_width="296dp"
+                    android:layout_height="190dp"
+                    android:layout_below="@id/slide_guide_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/gesture_silde_bg" >
+
+                    <ImageView
+                        android:id="@+id/gesture_arrow_iv"
+                        android:layout_width="84dp"
+                        android:layout_height="80dp"
+                        android:layout_alignParentBottom="true"
+                        android:src="@drawable/gesture_arrow_right_tips" />
+
+                    <ImageView
+                        android:id="@+id/gesture_arrow_hand"
+                        android:layout_width="37dp"
+                        android:layout_height="37dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="60dp"
+                        android:layout_marginLeft="123dp"
+                        android:src="@drawable/gesture_right_hand" />
+
+                    <ImageView
+                        android:id="@+id/slide_stop_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/play" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/slide_guide_setting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/slide_guide_show"
+                    android:layout_marginRight="68dp"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/quick_gesture_slide_setting_content"
+                    android:textColor="@color/quick_intro_color"
+                    android:textSize="12dp" />
+
+                <Button
+                    android:id="@+id/slide_setting_button"
+                    android:layout_width="60dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignTop="@+id/slide_guide_setting"
+                    android:background="@drawable/manager_done_button_selecter"
+                    android:text="@string/setting"
+                    android:textColor="@color/white"
+                    android:textSize="12sp" />
+            </RelativeLayout>
+
+            <!-- gesture edit guide -->
+
+            <RelativeLayout
+                android:id="@+id/gesture_edit_guide"
+                android:layout_width="328dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gesture_slide_guide"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="16dp"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/bg"
+                android:padding="16dp" >
+
+                <TextView
+                    android:id="@+id/edit_guide_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/quick_gesture_edit_guide_title"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textSize="16dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/edit_guide_content"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edit_guide_title"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/quick_gesture_edit_guide_content"
+                    android:textColor="@color/quick_intro_color"
+                    android:textSize="12dp" />
+
+                <RelativeLayout
+                    android:id="@+id/edit_guide_show"
+                    android:layout_width="296dp"
+                    android:layout_height="190dp"
+                    android:layout_below="@id/edit_guide_content"
+                    android:layout_marginTop="8dp" >
+
+                    <VideoView
+                        android:id="@+id/edit_video"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false"
+                        android:visibility="gone"
+                        >
+                    </VideoView>
+
+                    <ImageView
+                        android:id="@+id/edit_video_bg_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/edit_anim_bg" />
+
+                    <ImageView
+                        android:id="@+id/edit_stop_iv"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/play" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/edit_guide_extra"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/edit_guide_show"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/quick_gesture_edit_extra_content"
+                    android:textColor="@color/quick_intro_color"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/quick_tipRL"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/quick_gesture_miui_tip_color"
+        android:visibility="gone"
+        >
+
+        <ImageView
+            android:id="@+id/gesture_handIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="100dp"
+            android:src="@drawable/gesture_hand" />
+
+        <ImageView
+            android:id="@+id/gesture_arrowIV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/gesture_arrow_tips" />
+
+        <ImageView
+            android:id="@+id/gesture_introductIV"
+            android:layout_width="314dp"
+            android:layout_height="224dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="64dp"
+            android:src="@drawable/gesture_guide_phone" />
+
+        <TextView
+            android:id="@+id/quick_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/gesture_introductIV"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:text="@string/pg_appmanager_quick_gesture_name"
+            android:textColor="#ffffff"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/quick_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/quick_title"
+            android:layout_marginTop="15dp"
+            android:gravity="center"
+            android:layout_centerHorizontal="true"
+            android:paddingLeft="50dp"
+            android:paddingRight="50dp"
+            android:text="@string/pg_appmanager_quick_gesture_first_tip_text"
+            android:textColor="@color/white"
+            android:textSize="14dp" />
+
+        <LinearLayout
+            android:id="@+id/quick_sliding_left_tip_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/gesture_left_tips_top_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gesture_left_tips_top" />
+
+            <TextView
+                android:id="@+id/gesture_left_tips_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/gesture_left_tips_bottom" />
+        </LinearLayout>
+
+        <RelativeLayout
+            android:id="@+id/quick_sliding_right_tip_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true" >
+
+            <TextView
+                android:id="@+id/gesture_right_tips_top_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/quick_gesture_right_top_area_margin_left"
+                android:background="@drawable/gesture_right_tips_top" />
+
+            <TextView
+                android:id="@+id/gesture_right_tips_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gesture_right_tips_top_tv"
+                android:background="@drawable/gesture_right_tips_bottom" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

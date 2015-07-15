@@ -1,0 +1,226 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D9000000" >
+
+    <!-- about the watch view -->
+
+    <com.leo.appmaster.quickgestures.view.AppleWatchContainer
+        android:id="@+id/gesture_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:hapticFeedbackEnabled="true"
+        android:layerType="hardware" >
+
+        <ImageView
+            android:id="@+id/tv_type_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:scaleType="centerCrop"
+            android:layout_marginBottom="@dimen/apple_watch_title_bg_margin_bottom"
+            android:gravity="center"
+            android:src="@drawable/gesture_title_bar" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="@dimen/apple_watch_title_margin_bottom" >
+
+            <TextView
+                android:id="@+id/tv_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:padding="3dp"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tv_left_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/tv_type_name"
+                android:layout_alignBottom="@id/tv_type_name"
+                android:layout_toLeftOf="@+id/tv_type_name"
+                android:gravity="center"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:textSize="16dp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/tv_right_type_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@+id/tv_type_name"
+                android:layout_alignBottom="@id/tv_type_name"
+                android:layout_toRightOf="@id/tv_type_name"
+                android:gravity="center"
+                android:padding="3dp"
+                android:singleLine="true"
+                android:textSize="16dp"
+                android:visibility="invisible" />
+        </RelativeLayout>
+
+        <com.leo.appmaster.quickgestures.view.AppleWatchTabs
+            android:id="@+id/applewatchtab"
+            android:layout_width="145dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/gesture_select_circle"
+            android:visibility="invisible" />
+
+        <com.leo.appmaster.quickgestures.view.AppleWatchLayout
+            android:id="@+id/qg_dymic_layout"
+            android:layout_width="match_parent"
+            android:layout_height="235dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/apple_watch_layout_margin_bottom"
+            android:layout_marginTop="40dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layerType="hardware"
+            android:visibility="invisible" />
+
+        <com.leo.appmaster.quickgestures.view.AppleWatchLayout
+            android:id="@+id/qg_mostused_layout"
+            android:layout_width="match_parent"
+            android:layout_height="235dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/apple_watch_layout_margin_bottom"
+            android:layout_marginTop="40dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layerType="hardware"
+            android:visibility="invisible" />
+
+        <com.leo.appmaster.quickgestures.view.AppleWatchLayout
+            android:id="@+id/qg_switcher_layout"
+            android:layout_width="match_parent"
+            android:layout_height="235dp"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/apple_watch_layout_margin_bottom"
+            android:layout_marginTop="40dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:layerType="hardware"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_rocket"
+            android:layout_width="37dp"
+            android:layout_height="72dp"
+            android:background="@drawable/gesture_rocket"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_pingtai"
+            android:layout_width="145dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/gesture_launcher"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_yun"
+            android:layout_width="230dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center|bottom"
+            android:background="@drawable/rocket_cloud"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:visibility="invisible" />
+    </com.leo.appmaster.quickgestures.view.AppleWatchContainer>
+
+    <!-- about the success tip -->
+
+    <RelativeLayout
+        android:id="@+id/gesture_success_tip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/apple_watch_top_title_margin_top"
+        android:visibility="invisible" >
+
+        <RelativeLayout
+            android:id="@+id/gesture_success_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center" >
+
+            <ImageView
+                android:id="@+id/success_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginRight="16dp"
+                android:layout_toLeftOf="@+id/success_title"
+                android:src="@drawable/gesture_success" />
+
+            <TextView
+                android:id="@+id/success_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:text="@string/quick_gesture_success_title"
+                android:textColor="@color/quick_success_title_color"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/gesture_success_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gesture_success_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:maxWidth="300dp"
+            android:text="@string/quick_gesture_success_content"
+            android:textColor="@color/white"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/gesture_success_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/apple_watch_top_btn_margin_top"
+            android:gravity="center"
+            android:orientation="horizontal" >
+
+            <Button
+                android:id="@+id/know_button"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/manager_done_button_selecter"
+                android:text="@string/lock_mode_guide_button_text"
+                android:textColor="@color/white"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/set_button"
+                android:layout_width="100dp"
+                android:layout_height="36dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/manager_done_button_selecter"
+                android:text="@string/go_set"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:visibility="gone" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

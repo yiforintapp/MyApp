@@ -1,0 +1,64 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/success_lockRT"
+        android:gravity="center_horizontal"
+        android:orientation="vertical" >
+
+        <com.leo.appmaster.ui.CommonTitleBar
+            android:id="@+id/layout_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:background="@color/app_background" />
+
+        <TextView
+            android:id="@+id/recommentList_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/default_lock_recomment_title_top"
+            android:layout_marginLeft="80dp"
+            android:layout_marginRight="80dp"
+            android:layout_marginTop="@dimen/default_lock_recomment_title_top"
+            android:gravity="center"
+            android:text="@string/recomment_list_title"
+            android:textColor="#646464"
+            android:textSize="16dp" />
+
+        <com.leo.appmaster.ui.PagedGridView
+            android:id="@+id/recomment_pager_unlock"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/default_lock_recomment_pagedgrideview_top"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@id/success_lockRT"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/default_lock_recomment_bottom"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/toolbar_bg"
+        android:gravity="center" >
+
+        <TextView
+            android:id="@+id/recomment_lock"
+            android:layout_width="@dimen/default_lock_recomment_bottom_text_width"
+            android:layout_height="@dimen/default_lock_recomment_bottom_text_height"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/mycheck_button_selecter"
+            android:gravity="center"
+            android:text="@string/lock"
+            android:textColor="@drawable/manager_backup_text_selecter"
+            android:textSize="18dp" />
+    </RelativeLayout>
+
+</RelativeLayout>

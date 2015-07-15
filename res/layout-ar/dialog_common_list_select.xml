@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialog_list_width"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/bg"
+    android:gravity="center" >
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/list_container"
+        android:background="@drawable/line" />
+
+    <RelativeLayout
+        android:id="@+id/list_container"
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:layout_below="@+id/dlg_title"
+        android:layout_centerHorizontal="true" >
+
+        <ListView
+            android:id="@+id/item_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:divider="@drawable/line"
+             android:listSelector="@drawable/manager_backup_list_selecter"
+            android:dividerHeight="1dp"
+            android:overScrollMode="never"
+            android:paddingLeft="16dp"
+            android:scrollbars="none" />
+
+        <TextView
+            android:id="@+id/no_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/position_lock_no_wifi" />
+    </RelativeLayout>
+
+        <TextView
+            android:id="@+id/dlg_bottom_btn"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dialog_list_btn_height"
+            android:layout_below="@+id/list_container"
+            android:background="@drawable/manager_cancel_single_button_selecter"
+            android:gravity="center"
+            android:text="@string/cancel"
+            android:textSize="16dp"
+            android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/dlg_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="18dp"
+        android:ellipsize="end"
+        android:gravity="center"
+        android:text="title"
+        android:textColor="#676767"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:visibility="visible" />
+
+</RelativeLayout>

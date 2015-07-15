@@ -1,0 +1,25 @@
+<com.leo.appmaster.quickgestures.view.GestureItemView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/apple_watch_item_size"
+    android:layout_height="@dimen/apple_watch_item_size"
+    android:gravity="center"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:id="@+id/iv_app_icon"
+        android:layout_width="@dimen/apple_watch_item_icon_size"
+        android:layout_height="@dimen/apple_watch_item_icon_size"
+        android:padding="@dimen/gesture_item_imageview_padding"
+        android:scaleType="fitCenter" />
+
+    <TextView
+        android:id="@+id/tv_app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="marquee"
+        android:gravity="center"
+        android:singleLine="true"
+        android:textColor="#f1f1f1"
+        android:textSize="@dimen/gesture_item_text_size" />
+
+</com.leo.appmaster.quickgestures.view.GestureItemView>

@@ -1,0 +1,54 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="${relativePackage}.${activityClass}" >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <com.leo.appmaster.ui.CommonTitleBar
+            android:id="@+id/traffic_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/commonbar_background" />
+
+        <RelativeLayout
+            android:id="@+id/trffic_setting_iv"
+            android:layout_width="@dimen/app_manager_flowactivity_small_icon_width_height"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/traffic_small_icon_selector"
+            android:visibility="gone" >
+
+            <ImageView
+                android:layout_width="@dimen/app_manager_lv_item_delete_button_w_h"
+                android:layout_height="@dimen/app_manager_lv_item_delete_button_w_h"
+                android:layout_centerInParent="true"
+                android:background="@drawable/data_usage_settings_icon" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/home_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/commonbar_background"
+        android:orientation="vertical" >
+
+        <com.leo.appmaster.ui.LeoPagerTab
+            android:id="@+id/traffic_app_tab_indicator"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_manager_backup_head_back" />
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/traffic_app_viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" />
+    </LinearLayout>
+
+</LinearLayout>

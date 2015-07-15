@@ -1,0 +1,181 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/all_backgroud"
+    android:orientation="vertical"
+    android:padding="@dimen/new_app_manager_padding" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <LinearLayout
+                android:id="@+id/four_teb"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/app_manager_four_icon_total_height"
+                android:orientation="horizontal" >
+
+                <RelativeLayout
+                    android:id="@+id/bg_show_xz_bf"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/manager_small_backup_selecter" >
+
+                    <ImageView
+                        android:id="@+id/app_back_icon"
+                        android:layout_width="@dimen/app_manager_four_icon_width_height"
+                        android:layout_height="@dimen/app_manager_four_icon_width_height"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/app_manager_four_icon_margin_top"
+                        android:src="@drawable/app_backup_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/app_back_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/app_manager_four_icon_margin_bottom_text"
+                        android:text="@string/first_backup"
+                        android:textColor="@color/app_backup_text"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bg_show_ll"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/manager_small_usage_selecter" >
+
+                    <ImageView
+                        android:id="@+id/app_usage_icon"
+                        android:layout_width="@dimen/app_manager_four_icon_width_height"
+                        android:layout_height="@dimen/app_manager_four_icon_width_height"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/app_manager_four_icon_margin_top"
+                        android:src="@drawable/app_data_usage_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/app_usage_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/app_manager_four_icon_margin_bottom_text"
+                        android:text="@string/first_usage"
+                        android:textColor="@color/app_usage_text"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/bg_show_dl"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@drawable/manager_small_battery_selecter" >
+
+                    <ImageView
+                        android:id="@+id/app_battery_icon"
+                        android:layout_width="@dimen/app_manager_four_icon_width_height"
+                        android:layout_height="@dimen/app_manager_four_icon_width_height"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/app_manager_four_icon_margin_top"
+                        android:src="@drawable/app_battery_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/app_battery_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/app_manager_four_icon_margin_bottom_text"
+                        android:text="@string/first_battery"
+                        android:textColor="@color/app_battery_text"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/bg_show_quick_gesture"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@color/manager_quick_gesture" >
+
+                    <ImageView
+                        android:id="@+id/quick_gesture_tip_icon"
+                        android:layout_width="@dimen/app_manager_hotapp_rep_tip_width_height"
+                        android:layout_height="@dimen/app_manager_hotapp_rep_tip_width_height"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginRight="@dimen/app_manager_hotapp_rep_tip_margin_right"
+                        android:layout_marginTop="@dimen/app_manager_hotapp_rep_tip_margin"
+                        android:src="@drawable/red_tip"
+                        android:visibility="gone" />
+
+                      <ImageView
+                        android:id="@+id/gesture_icon_bg"
+                        android:layout_width="@dimen/gesture_app_manager_bg_width"
+                        android:layout_height="@dimen/gesture_app_manager_bg_width"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/gesture_purple_light"
+                        android:visibility="gone"
+                         />
+                    
+                    <ImageView
+                        android:id="@+id/quick_gesture_icon"
+                        android:layout_width="@dimen/app_manager_four_icon_width_height"
+                        android:layout_height="@dimen/app_manager_four_icon_width_height"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/app_manager_four_icon_margin_top"
+                        android:src="@drawable/gesture_tab_icon" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/quick_gesture_icon"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="@dimen/app_manager_four_icon_margin_bottom_text"
+                        android:text="@string/pg_appmanager_quick_gesture_name"
+                        android:textColor="#9658f4"
+                        android:textSize="12dp" />
+                </RelativeLayout>
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/four_teb"
+                android:src="@color/flow_charts_gry" />
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white" >
+
+            <ProgressBar
+                android:id="@+id/pb_loading"
+                style="@style/ProgressBarCricle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+            <ListView
+                android:id="@+id/list_backup_home_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/flow_charts_gry"
+                android:dividerHeight="1dp"
+                android:overScrollMode="never"
+                android:visibility="gone" />
+        </FrameLayout>
+    </LinearLayout>
+
+</LinearLayout>

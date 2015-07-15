@@ -1,0 +1,83 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <RelativeLayout
+        android:id="@+id/activity_lock_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/app_background" >
+
+        <com.leo.appmaster.ui.CommonTitleBar
+            android:id="@+id/layout_title_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true" />
+
+        <FrameLayout
+            android:id="@+id/fragment_contain"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/layout_title_bar" >
+        </FrameLayout>
+
+        <RelativeLayout
+            android:id="@+id/lockerGuide"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/layout_title_bar"
+            android:layout_marginRight="62dp"
+            android:background="@drawable/lock_tutorails_button"
+            android:gravity="center"
+            android:visibility="gone" >
+
+            <TextView
+                android:id="@+id/lock_guide_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/switch_bottom_content"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
+            android:background="@drawable/reset_pass_frame"
+            android:paddingBottom="3dp"
+            android:paddingLeft="9dp"
+            android:paddingRight="9dp"
+            android:paddingTop="3dp" >
+
+            <ImageView
+                android:id="@+id/iv_reset_icon"
+                android:layout_width="13dp"
+                android:layout_height="13dp"
+                android:layout_centerVertical="true" />
+
+            <TextView
+                android:id="@+id/switch_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/iv_reset_icon"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/common_button_selecter"
+                android:textSize="13sp" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/pretend_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center" >
+    </RelativeLayout>
+
+</FrameLayout>

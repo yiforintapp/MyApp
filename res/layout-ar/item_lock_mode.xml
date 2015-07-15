@@ -1,0 +1,38 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="72dp"
+    android:descendantFocusability="blocksDescendants" >
+
+    <TextView
+        android:id="@+id/tv_lock_mode_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:ellipsize="end"
+        android:maxWidth="@dimen/mode_name_max_width"
+        android:singleLine="true"
+        android:text="@string/vistor_mode"
+        android:textColor="#414141"
+        android:textSize="16dp" />
+
+    <ImageView
+        android:id="@+id/iv_sort_select"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16dp"
+        android:padding="8dp"
+        android:src="@drawable/unradio_buttons" />
+
+    <ImageView
+        android:id="@+id/img_mode_link"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/iv_sort_select"
+        android:padding="8dp"
+        android:src="@drawable/mode_link_selector" />
+
+</RelativeLayout>

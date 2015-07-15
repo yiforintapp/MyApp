@@ -1,0 +1,76 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f3f3f3" >
+
+    <ListView
+        android:id="@+id/contactLV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/white_bg"
+        android:divider="@null"
+        android:listSelector="@drawable/manager_backup_list_selecter"
+        android:scrollbars="none" >
+    </ListView>
+
+    <RelativeLayout
+        android:id="@+id/message_send_edit_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="#FFFFFF"
+        android:gravity="bottom"
+        android:visibility="gone" >
+
+        <EditText
+            android:id="@+id/message_send_edit_text"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <Button
+            android:id="@+id/message_send_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/message_send_edit_text"
+            android:layout_weight="1"
+            android:text="发送" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/call_log_default_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="gone" >
+
+        <ImageView
+            android:layout_width="@dimen/privacy_default_image_width"
+            android:layout_height="@dimen/privacy_default_image_height"
+            android:src="@drawable/call_log_default" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/privacy_default_text_margin_top"
+            android:text="@string/privacy_contact_default_text"
+            android:textColor="#d3d3d4"
+            android:textSize="18sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/privacy_default_text_margin_top"
+            android:text="@string/privacy_call_log_default_text"
+            android:textColor="#d3d3d4"
+            android:textSize="18sp" />
+    </LinearLayout>
+
+</RelativeLayout>
