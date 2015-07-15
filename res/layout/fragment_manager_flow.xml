@@ -8,13 +8,13 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="match_parent" 
+        android:background="@color/white">
 
         <RelativeLayout
             android:id="@+id/flow_all_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/white"
+            android:layout_height="wrap_content"
             android:visibility="gone" >
 
             <RelativeLayout
@@ -165,9 +165,9 @@
                     android:layout_width="@dimen/app_manager_flowactivity_usage_set_flow_button_width"
                     android:layout_height="@dimen/app_manager_flowactivity_usage_set_flow_button_height"
                     android:layout_below="@id/content_three"
+                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/app_manager_headview_three_text_margin_top"
                     android:background="@drawable/manager_traffic_button_selecter"
-                    android:layout_centerHorizontal="true"
                     android:gravity="center"
                     android:text="@string/traff_first_page_small_set"
                     android:textColor="@drawable/manager_traffic_text_selecter"

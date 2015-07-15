@@ -8,6 +8,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
 
 public class HomeBoostActivity extends Activity {
     private static final String TAG = "HomeBoostActivity";
@@ -29,6 +31,10 @@ public class HomeBoostActivity extends Activity {
 
     private void initUI() {
 
+    }
+
+    public void onClick(View view) {
+        Toast.makeText(this, mBoundsRect.toString(), Toast.LENGTH_SHORT).show();
     }
 
 }
