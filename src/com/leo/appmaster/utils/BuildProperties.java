@@ -33,15 +33,15 @@ public class BuildProperties {
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
-    private static final String sMake = Build.MANUFACTURER.toLowerCase();
-    private static final String mModel = Build.MODEL.toLowerCase();
+    // private static final String sMake = Build.MANUFACTURER.toLowerCase();
+    // private static final String mModel = Build.MODEL.toLowerCase();
     // 解锁等待界面动画执行过快机型
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";
     // 跳转通话记录特别处理机型数组
     public static final String[] filterPhoneMode = {
             "SM-N9150", "SM-G9250"
     };
-    public static final String ZTEU817="ZTE U817";
+    public static final String ZTEU817 = "ZTE U817";
     private final Properties properties;
 
     private BuildProperties() throws IOException {
@@ -116,7 +116,7 @@ public class BuildProperties {
     public static Object invokePrivateMethod(Object obj, String methodName) throws Exception {
         Object value = null;
         Class<?> cls = obj.getClass();
-        Method method=null;
+        Method method = null;
         try {
             method = cls.getDeclaredMethod(methodName, (Class[]) null);
         } catch (Exception e) {
@@ -160,6 +160,22 @@ public class BuildProperties {
         }
     }
 
+    // 是否为MIUIV5系统
+    public static boolean isMiuiV5() {
+        String string = getSystemProperty("ro.miui.ui.version.name");
+        if ((string == null) || (!(string.equalsIgnoreCase("V5"))))
+            return false;
+        return true;
+    }
+
+    // 是否为MIUIV6系统
+    public static boolean isMiuiV6() {
+        String string = getSystemProperty("ro.miui.ui.version.name");
+        if ((string == null) || (!(string.equalsIgnoreCase("V6"))))
+            return false;
+        return true;
+    }
+
     /**
      * 本机品牌名称识别
      * 
@@ -167,7 +183,7 @@ public class BuildProperties {
      * @return
      */
     public static boolean checkPhoneBrand(String brandName) {
-        return sMake.equalsIgnoreCase(brandName);
+        return Build.MANUFACTURER.toLowerCase().equalsIgnoreCase(brandName);
     }
 
     /**
@@ -178,8 +194,8 @@ public class BuildProperties {
      * @return
      */
     public static boolean detailMdelDistinguish(String brandName, String phone) {
-        if ((!(sMake.equalsIgnoreCase(brandName)))
-                || (!(mModel.contains((CharSequence) (phone))))) {
+        if ((!(Build.MANUFACTURER.toLowerCase().equalsIgnoreCase(brandName)))
+                || (!(Build.MODEL.toLowerCase().contains((CharSequence) (phone))))) {
             return false;
         }
         return true;
@@ -223,7 +239,6 @@ public class BuildProperties {
     }
 
     // HUAWEI
-
     public static boolean checkIsHuaWeiPhone() {
         if ((!(checkIsAppointPhone((Object) (getSystemProperty("ro.build.version.emui")),
                 (Object) ("EmotionUI_2.3")))) && (!(Build.DISPLAY.startsWith("EMUI2.3"))))
@@ -275,8 +290,9 @@ public class BuildProperties {
     }
 
     public static boolean isOppoOs() {
-        //说明：一加手机在4.4系统以下，无需手动开启悬浮窗
-        if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom"))) ||  Build.VERSION.SDK_INT < 19)
+        // 说明：一加手机在4.4系统以下，无需手动开启悬浮窗
+        if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom")))
+                || Build.VERSION.SDK_INT < 19)
             return false;
         return true;
     }
