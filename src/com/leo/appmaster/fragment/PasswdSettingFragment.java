@@ -1,14 +1,9 @@
 
 package com.leo.appmaster.fragment;
 
-import java.util.List;
-
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -24,8 +19,10 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -333,8 +330,8 @@ public class PasswdSettingFragment extends BaseFragment implements
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        int type = ((LockSettingActivity) mActivity).getFromDeskId();
         Intent intent;
-
         if (mGotoPasswdProtect) {
             if (((LockSettingActivity) mActivity).mToLockList) {
                 intent = new Intent(mActivity, PasswdProtectActivity.class);
@@ -372,6 +369,11 @@ public class PasswdSettingFragment extends BaseFragment implements
                  * modeList) { if (lockMode.modeId == modeId) {
                  * showModeActiveTip(lockMode); break; } } }
                  */
+            } else if (type != StatusBarEventService.EVENT_EMPTY) {
+                // from desk
+                if (type == ((LockSettingActivity) mActivity).mAppLockType) {
+                    goToAppLock();
+                }
             } else {
                 intent = new Intent(mActivity, HomeActivity.class);
                 mActivity.startActivity(intent);
@@ -407,6 +409,26 @@ public class PasswdSettingFragment extends BaseFragment implements
         if (which == 0) {
         } else if (which == 1) {
             mGotoPasswdProtect = true;
+        }
+    }
+
+    private void goToAppLock() {
+        LockManager lm = LockManager.getInstatnce();
+        LockMode curMode = lm.getCurLockMode();
+        Intent intent;
+        if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
+            intent = new Intent(mActivity, RecommentAppLockListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("target", 0);
+            startActivity(intent);
+            curMode.haveEverOpened = true;
+            lm.updateMode(curMode);
+        } else {
+            intent = new Intent(mActivity, AppLockListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 }

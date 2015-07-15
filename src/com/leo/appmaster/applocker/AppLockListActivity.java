@@ -26,6 +26,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.home.HomeActivity;
@@ -37,6 +38,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AppLockListActivity extends BaseActivity implements
         AppChangeListener, OnItemClickListener, OnClickListener {
@@ -57,16 +59,24 @@ public class AppLockListActivity extends BaseActivity implements
     public static final int NAME_SORT = 1;
     public static final int INSTALL_TIME_SORT = 2;
     private int mCurSortType = DEFAULT_SORT;
-
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
 
+    private int mType = -1;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_app_list);
         AppLoadEngine.getInstance(this).registerAppChangeListener(this);
+        handleIntent();
         initUI();
         loadData();
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        mType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                StatusBarEventService.EVENT_EMPTY);
     }
 
     @Override
@@ -92,18 +102,26 @@ public class AppLockListActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
-            mMaskLayer.setVisibility(View.GONE);
-        } else {
+        LeoLog.d("testgettype", "click back in applockListActivity");
+        LeoLog.d("testgettype", "Type is : " + mType);
+        //如果不是来自于桌面 走以前逻辑
+        if(mType == StatusBarEventService.EVENT_EMPTY){
+            if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
+                mMaskLayer.setVisibility(View.GONE);
+            } else {
 
-            boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", true);
-            if (fromLockMore) {
-                LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
-                Intent intent = new Intent(this, HomeActivity.class);
-                startActivity(intent);
+                boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", true);
+                if (fromLockMore) {
+                    LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    startActivity(intent);
+                }
+                super.onBackPressed();
             }
+        }else {
             super.onBackPressed();
         }
+        
     }
 
     @Override

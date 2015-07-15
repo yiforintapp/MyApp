@@ -24,12 +24,14 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -235,6 +237,7 @@ public class GestureSettingFragment extends BaseFragment implements
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        int type = ((LockSettingActivity) mActivity).getFromDeskId();
         Intent intent;
         if (mGotoPasswdProtect) {
             if (((LockSettingActivity) mActivity).mToLockList) {
@@ -258,6 +261,7 @@ public class GestureSettingFragment extends BaseFragment implements
             }
         } else {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "first", "setpwdp_cancel");
+
             if (((LockSettingActivity) mActivity).mToLockList) {
                 // to lock list
                 intent = new Intent(mActivity, AppLockListActivity.class);
@@ -272,6 +276,11 @@ public class GestureSettingFragment extends BaseFragment implements
                  * modeList) { if (lockMode.modeId == modeId) {
                  * showModeActiveTip(lockMode); break; } } }
                  */
+            } else if (type != StatusBarEventService.EVENT_EMPTY) {
+                // from desk
+                if (type == ((LockSettingActivity) mActivity).mAppLockType) {
+                    goToAppLock();
+                }
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
                 intent = new Intent(mActivity, HomeActivity.class);
@@ -306,6 +315,26 @@ public class GestureSettingFragment extends BaseFragment implements
         if (which == 0) {
         } else if (which == 1) {
             mGotoPasswdProtect = true;
+        }
+    }
+
+    private void goToAppLock() {
+        LockManager lm = LockManager.getInstatnce();
+        LockMode curMode = lm.getCurLockMode();
+        Intent intent;
+        if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
+            intent = new Intent(mActivity, RecommentAppLockListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("target", 0);
+            startActivity(intent);
+            curMode.haveEverOpened = true;
+            lm.updateMode(curMode);
+        } else {
+            intent = new Intent(mActivity, AppLockListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 }

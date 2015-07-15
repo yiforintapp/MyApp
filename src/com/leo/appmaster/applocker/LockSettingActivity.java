@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
@@ -29,6 +30,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
     public static final int LOCK_TYPE_PASSWD = 1;
     public static final int LOCK_TYPE_GESTURE = 2;
+    public final int mAppLockType = 1;
     // private int mLockType = LOCK_TYPE_PASSWD;
     private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
@@ -47,6 +49,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public boolean mJustFinish;
     public boolean mFromQuickMode;
     public int mModeId;
+    public int mFromDeskId = -1;
+    
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -77,6 +81,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     private void handleIntent() {
         Intent intent = getIntent();
+        mFromDeskId = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                StatusBarEventService.EVENT_EMPTY);
         mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
         mIsRotateFragment = intent.getBooleanExtra(ROTATE_FRAGMENT, false);
         mToLockList = intent.getBooleanExtra("to_lock_list", false);
@@ -144,10 +150,10 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     private void initUI() {
         res = getResources();
-   
+
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         //
-       
+
         //
         if (mResetFlag) {
             mTitleBar.openBackView();
@@ -156,14 +162,14 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         } else {
             // mTitleBar.openBackView();
             // mTitleBar.setTitle(R.string.passwd_setting);
-            
-           // mTitleBar.setVisibility(View.INVISIBLE);
-            
+
+            // mTitleBar.setVisibility(View.INVISIBLE);
+
             Display mDisplay = getWindowManager().getDefaultDisplay();
             int W = mDisplay.getWidth();
             int H = mDisplay.getHeight();
-            //使得小尺寸机型在此时去除titlebar，而不是隐藏，否则下方位置不够
-            if(H>900)
+            // 使得小尺寸机型在此时去除titlebar，而不是隐藏，否则下方位置不够
+            if (H > 900)
             {
                 mTitleBar.setVisibility(View.INVISIBLE);
             }
@@ -171,7 +177,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             {
                 mTitleBar.setVisibility(View.GONE);
             }
-            
+
         }
 
         mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
@@ -212,5 +218,9 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     public boolean isResetPasswd() {
         return mResetFlag;
+    }
+    
+    public int getFromDeskId(){
+        return mFromDeskId;
     }
 }

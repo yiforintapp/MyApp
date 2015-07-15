@@ -359,8 +359,8 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.privacycontact.PrivacyContactActivity"
-            android:exported="true"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
@@ -485,8 +485,8 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -496,17 +496,16 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity"
-            android:screenOrientation="portrait"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
-        
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity"
             android:excludeFromRecents="true"
-            android:noHistory="true"
             android:finishOnTaskLaunch="true"
             android:launchMode="singleInstance"
+            android:noHistory="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
@@ -518,6 +517,15 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.QuickGestureProxyActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity="com.leo.appmaster.proxy"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.home.DeskProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"

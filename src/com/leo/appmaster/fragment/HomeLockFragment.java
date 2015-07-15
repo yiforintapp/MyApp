@@ -191,7 +191,6 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         Intent intent = null;
         intent = new Intent(mActivity, AppLockListActivity.class);
         startActivity(intent);
-
     }
 
     private void startRcommendLock(int target) {
