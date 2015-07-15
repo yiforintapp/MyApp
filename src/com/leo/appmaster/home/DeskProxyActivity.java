@@ -10,14 +10,15 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.WeiZhuangActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.LeoLog;
 
 public class DeskProxyActivity extends Activity {
     public static final int mAppLockType = 1;
+    public static final int mAppWeiZhuang = 2;
     private boolean mDelayFinish = false;
     private Handler mHandler;
 
@@ -41,10 +42,19 @@ public class DeskProxyActivity extends Activity {
             } else {
                 if (type == mAppLockType) {
                     goToAppLock(type);
+                } else if (type == mAppWeiZhuang) {
+                    goToAppWeiZhuang(type);
                 }
             }
             finish();
         }
+    }
+
+    private void goToAppWeiZhuang(int type) {
+        Intent intent = new Intent(this, WeiZhuangActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void goToAppLock(int type) {

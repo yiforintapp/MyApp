@@ -20,6 +20,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.WeiZhuangActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -373,6 +374,8 @@ public class PasswdSettingFragment extends BaseFragment implements
                 // from desk
                 if (type == ((LockSettingActivity) mActivity).mAppLockType) {
                     goToAppLock();
+                }else if(type == ((LockSettingActivity) mActivity).mAppWeiZhuang){
+                    goToAppWeiZhuang();
                 }
             } else {
                 intent = new Intent(mActivity, HomeActivity.class);
@@ -412,6 +415,13 @@ public class PasswdSettingFragment extends BaseFragment implements
         }
     }
 
+    private void goToAppWeiZhuang() {
+        Intent intent = new Intent(mActivity, WeiZhuangActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    
     private void goToAppLock() {
         LockManager lm = LockManager.getInstatnce();
         LockMode curMode = lm.getCurLockMode();

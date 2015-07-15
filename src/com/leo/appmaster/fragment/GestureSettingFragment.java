@@ -25,6 +25,7 @@ import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.WeiZhuangActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
@@ -280,6 +281,8 @@ public class GestureSettingFragment extends BaseFragment implements
                 // from desk
                 if (type == ((LockSettingActivity) mActivity).mAppLockType) {
                     goToAppLock();
+                }else if(type == ((LockSettingActivity) mActivity).mAppWeiZhuang){
+                    goToAppWeiZhuang();
                 }
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
@@ -295,6 +298,7 @@ public class GestureSettingFragment extends BaseFragment implements
         }, 2000);
         mActivity.finish();
     }
+
 
     /**
      * show the tip when mode success activating
@@ -318,6 +322,13 @@ public class GestureSettingFragment extends BaseFragment implements
         }
     }
 
+    private void goToAppWeiZhuang() {
+        Intent intent = new Intent(mActivity, WeiZhuangActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    
     private void goToAppLock() {
         LockManager lm = LockManager.getInstatnce();
         LockMode curMode = lm.getCurLockMode();
