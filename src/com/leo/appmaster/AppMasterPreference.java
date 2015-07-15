@@ -1257,7 +1257,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getPretendLock() {
         if (mPretendLock < 0) {
-            mPretendLock = mPref.getInt(PREF_CUR_PRETNED_LOCK, 1);
+            mPretendLock = mPref.getInt(PREF_CUR_PRETNED_LOCK, 0);
         }
         return mPretendLock;
     }

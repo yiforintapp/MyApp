@@ -31,9 +31,8 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 public class WeiZhuangActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
-    //这个是没有伪装的选项对应的position
-    private final static int noMode = 1;
-    private Drawable[] mIcon = new Drawable[5];
+    private final static int noMode = 0;
+    private Drawable[] mIcon = new Drawable[4];
     private String[] mName;
     private List<WeiZhuangInfo> mList;
     private WeiZhuangAdapt mAdapt;
@@ -41,7 +40,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private GridView mGridView;
     private Resources mThemeRes;
     private AppMasterPreference sp_weizhuang;
-    private int selected = 1;
+    private int selected = 0;
     private ImageView weizhuang_ask;
     private View trffic_setting_iv;
     private LinearLayout mWeizhuangHelp;
@@ -94,11 +93,10 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 
     private void fillData() {
         mName = getResources().getStringArray(R.array.weizhuang_type_num);
-        mIcon[0]= mThemeRes.getDrawable(R.drawable.disguise_icon_no);
-        mIcon[1] = mThemeRes.getDrawable(R.drawable.disguise_icon_no);
-        mIcon[2] = mThemeRes.getDrawable(R.drawable.disguise_iocn_error);
-        mIcon[3] = mThemeRes.getDrawable(R.drawable.disguise_icon_call);
-        mIcon[4] = mThemeRes.getDrawable(R.drawable.disguise_iocn_finger);
+        mIcon[0] = mThemeRes.getDrawable(R.drawable.disguise_icon_no);
+        mIcon[1] = mThemeRes.getDrawable(R.drawable.disguise_iocn_error);
+        mIcon[2] = mThemeRes.getDrawable(R.drawable.disguise_icon_call);
+        mIcon[3] = mThemeRes.getDrawable(R.drawable.disguise_iocn_finger);
 
         // list
         mList = new ArrayList<WeiZhuangInfo>();
@@ -190,27 +188,20 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         switch (position) {
             case 0:
                 if (selected != 0) {
-                    // 美女
-                    Intent mIntent = new Intent(this, BeautyWeiZhuang.class);
-                    this.startActivity(mIntent);
-                }
-                break;
-            case 1:
-                if (selected != 1) {
                     // 无
                     sp_weizhuang.setPretendLock(noMode);
                     mAdapt.notifyDataSetChanged();
                 }
                 break;
-            case 2:
-                if (selected != 2) {
+            case 1:
+                if (selected != 1) {
                     // 应用错误
                     Intent mIntent = new Intent(this, ErrorWeiZhuang.class);
                     this.startActivity(mIntent);
                 }
                 break;
-            case 3:
-                if (selected != 3) {
+            case 2:
+                if (selected != 2) {
                     // 未知来电
                     // Intent intent = new
                     // Intent(this,UnknowCallActivity.class);
@@ -219,8 +210,8 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                     this.startActivity(intent);
                 }
                 break;
-            case 4:
-                if (selected != 4) {
+            case 3:
+                if (selected != 3) {
                     // 指纹解锁
                     Intent zhiWenIntent = new Intent(this, ZhiWenActivity.class);
                     this.startActivity(zhiWenIntent);

@@ -439,12 +439,6 @@
             android:theme="@style/Theme" >
         </activity>
         <activity
-            android:name="com.leo.appmaster.applocker.BeautyWeiZhuang"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme" >
-        </activity>
-        <activity
             android:name="com.leo.appmaster.applocker.ZhiWenActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"

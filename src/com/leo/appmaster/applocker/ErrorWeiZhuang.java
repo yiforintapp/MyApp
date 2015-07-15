@@ -17,7 +17,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 public class ErrorWeiZhuang extends BaseActivity implements OnTouchListener {
-    private final static int ERRORWEIZHUANG = 2;
+    private final static int ERRORWEIZHUANG = 1;
     private TextView tv_make_sure_error;
     private AppMasterPreference sp_error_weizhuang;
     private float mDownX;
