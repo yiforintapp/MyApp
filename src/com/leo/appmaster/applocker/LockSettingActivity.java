@@ -9,19 +9,16 @@ import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
-import android.view.DisplayInfo;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
@@ -32,6 +29,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public static final int LOCK_TYPE_GESTURE = 2;
     public final int mAppLockType = 1;
     public final int mAppWeiZhuang = 2;
+    public final int mPicHide = 3;
     // private int mLockType = LOCK_TYPE_PASSWD;
     private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
@@ -51,7 +49,6 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public boolean mFromQuickMode;
     public int mModeId;
     public int mFromDeskId = -1;
-    
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -220,8 +217,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public boolean isResetPasswd() {
         return mResetFlag;
     }
-    
-    public int getFromDeskId(){
+
+    public int getFromDeskId() {
         return mFromDeskId;
     }
 }

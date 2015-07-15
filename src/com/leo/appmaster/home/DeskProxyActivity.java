@@ -14,11 +14,13 @@ import com.leo.appmaster.applocker.WeiZhuangActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 
 public class DeskProxyActivity extends Activity {
     public static final int mAppLockType = 1;
     public static final int mAppWeiZhuang = 2;
+    public static final int mPicHide = 3;
     private boolean mDelayFinish = false;
     private Handler mHandler;
 
@@ -44,10 +46,19 @@ public class DeskProxyActivity extends Activity {
                     goToAppLock(type);
                 } else if (type == mAppWeiZhuang) {
                     goToAppWeiZhuang(type);
+                } else if (type == mPicHide) {
+                    goToHidePic(type);
                 }
             }
             finish();
         }
+    }
+
+    private void goToHidePic(int type) {
+        Intent intent = new Intent(this, ImageHideMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void goToAppWeiZhuang(int type) {

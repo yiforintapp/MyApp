@@ -34,6 +34,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -281,8 +282,10 @@ public class GestureSettingFragment extends BaseFragment implements
                 // from desk
                 if (type == ((LockSettingActivity) mActivity).mAppLockType) {
                     goToAppLock();
-                }else if(type == ((LockSettingActivity) mActivity).mAppWeiZhuang){
+                } else if (type == ((LockSettingActivity) mActivity).mAppWeiZhuang) {
                     goToAppWeiZhuang();
+                } else if (type == ((LockSettingActivity) mActivity).mPicHide) {
+                    goToAppHidePic();
                 }
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
@@ -298,7 +301,6 @@ public class GestureSettingFragment extends BaseFragment implements
         }, 2000);
         mActivity.finish();
     }
-
 
     /**
      * show the tip when mode success activating
@@ -322,13 +324,20 @@ public class GestureSettingFragment extends BaseFragment implements
         }
     }
 
+    private void goToAppHidePic() {
+        Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
     private void goToAppWeiZhuang() {
         Intent intent = new Intent(mActivity, WeiZhuangActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-    
+
     private void goToAppLock() {
         LockManager lm = LockManager.getInstatnce();
         LockMode curMode = lm.getCurLockMode();
