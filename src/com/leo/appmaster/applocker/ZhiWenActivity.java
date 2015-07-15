@@ -25,7 +25,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.DipPixelUtil;
 
 public class ZhiWenActivity extends BaseActivity implements OnClickListener {
-    private final static int ZHIWENWEIZHUANG = 4;
+    private final static int ZHIWENWEIZHUANG = 3;
     private final static int SHOWALPHA = 1;
     private final static int SHOWTRANS = 2;
     private TextView tv_zhiwen_title, tv_zhiwen_jieshao;
