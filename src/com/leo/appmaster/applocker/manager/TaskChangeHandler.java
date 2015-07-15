@@ -25,6 +25,7 @@ public class TaskChangeHandler {
     public static final String WAITNAME = "WaitActivity";
     public static final String GESTURE = "QuickGesturePopupActivity";
     // public static final String GESTURESETTING = "QuickGestureActivity";
+    public static final String LAUNCHERBOOST = "HomeBoostActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
     private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
@@ -100,6 +101,7 @@ public class TaskChangeHandler {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
                                 && (activity
+                                        .contains(LAUNCHERBOOST) || activity
                                         .contains(SPLASHNAME) || activity
                                         .contains(GESTURE)/*
                                                            * ||
@@ -118,6 +120,7 @@ public class TaskChangeHandler {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
                                 && (activity
+                                        .contains(LAUNCHERBOOST) || activity
                                         .contains(SPLASHNAME) || activity
                                         .contains(GESTURE)/*
                                                            * ||
