@@ -40,6 +40,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.LockPatternUtils;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 public class GestureSettingFragment extends BaseFragment implements
         OnClickListener, OnPatternListener, OnDismissListener,
@@ -286,6 +287,8 @@ public class GestureSettingFragment extends BaseFragment implements
                     goToAppWeiZhuang();
                 } else if (type == ((LockSettingActivity) mActivity).mPicHide) {
                     goToAppHidePic();
+                } else if (type == ((LockSettingActivity) mActivity).mVioHide) {
+                    goToAppHideVio();
                 }
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
@@ -322,6 +325,13 @@ public class GestureSettingFragment extends BaseFragment implements
         } else if (which == 1) {
             mGotoPasswdProtect = true;
         }
+    }
+
+    private void goToAppHideVio() {
+        Intent intent = new Intent(mActivity, VideoHideMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void goToAppHidePic() {

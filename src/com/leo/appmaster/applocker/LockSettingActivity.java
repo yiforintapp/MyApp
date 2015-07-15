@@ -30,6 +30,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public final int mAppLockType = 1;
     public final int mAppWeiZhuang = 2;
     public final int mPicHide = 3;
+    public final int mVioHide = 4;
     // private int mLockType = LOCK_TYPE_PASSWD;
     private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
