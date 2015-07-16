@@ -262,6 +262,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             return;
         }
 
+        mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
+        if (mQuickLockMode) {
+            mQuickModeName = intent.getStringExtra("lock_mode_name");
+            mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
+            // home mode replace unlock-all mode
+            if (mQuiclModeId == 0) {
+                mQuiclModeId = 3;
+            }
+        }
+        if (mQuickLockMode) {
+            mLockedPackage = getPackageName();
+        } else {
+            mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
+        }
+        
+        
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
             mLockedPackage = newLockedPkg;
@@ -343,13 +359,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mQuiclModeId = 3;
             }
         }
-        mLockMode = intent.getIntExtra(EXTRA_LOCK_MODE,
-                LockManager.LOCK_MODE_FULL);
         if (mQuickLockMode) {
             mLockedPackage = getPackageName();
         } else {
             mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         }
+        
+        mLockMode = intent.getIntExtra(EXTRA_LOCK_MODE,
+                LockManager.LOCK_MODE_FULL);
 
         int type = AppMasterPreference.getInstance(this).getLockType();
 
