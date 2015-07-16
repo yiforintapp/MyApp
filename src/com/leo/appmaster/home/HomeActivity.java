@@ -41,15 +41,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.BeautyWeiZhuang;
 import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
+import com.leo.appmaster.applocker.WeiZhuangActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
@@ -73,6 +76,8 @@ import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.ui.LeoPopMenu;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -95,6 +100,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private View mBgStatusbar, mFgStatusbar;
     private HomeShadeView mShadeView;
     private LeoPopMenu mLeoPopMenu;
+    private LEOAlarmDialog mAlarmDialog;
     private QuickGestureTipDialog mQuickGestureSettingDialog;
     private QuickGestureTipDialog mQuickGestureTip;
     private float mDrawerOffset;
@@ -112,6 +118,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         initUI();
         tryTransStatusbar();
         // installShortcut();
+
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
@@ -119,6 +126,37 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
         // TODO
+    }
+
+    //伪装的引导，当第一次将应用加了所后返回home，弹出提示。
+    private void showWeiZhuangTip() {
+
+        if(AppMasterPreference.getInstance(this).getIsNeedPretendTips()&&LockManager.getInstatnce().getLockedAppCount()>0)     
+        {
+            AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
+            if (mAlarmDialog == null)
+            {
+                mAlarmDialog = new LEOAlarmDialog(this);
+                mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        // ok
+                        if (which == 1)
+                        {
+                            mAlarmDialog.dismiss();
+                            Intent intent=new Intent(HomeActivity.this,WeiZhuangActivity.class);
+                            startActivity(intent);
+                        }
+
+                    }
+                });
+            }
+            mAlarmDialog.setSureButtonText("立刻试试");
+           
+            
+            mAlarmDialog.setContent("其实我是个图片");
+            mAlarmDialog.show();
+        }
     }
 
     @Override
@@ -270,6 +308,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         type = AppMasterPreference.getInstance(this).getLockType();
 
         judgeShowGradeTip();
+        showWeiZhuangTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
@@ -300,6 +339,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         } else {
             app_hot_tip_icon.setVisibility(View.GONE);
         }
+        
+        
+        
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
     }

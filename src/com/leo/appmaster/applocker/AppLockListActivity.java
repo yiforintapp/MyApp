@@ -13,6 +13,7 @@ import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -49,7 +50,7 @@ public class AppLockListActivity extends BaseActivity implements
     private List<AppInfo> mUnlockList;
     private PagedGridView mAppPager;
     private LeoPopMenu mLeoPopMenu;
-
+    
     private AppInfo mLastSelectApp;
     private String[] mSortType;
 
@@ -57,7 +58,8 @@ public class AppLockListActivity extends BaseActivity implements
     public static final int NAME_SORT = 1;
     public static final int INSTALL_TIME_SORT = 2;
     private int mCurSortType = DEFAULT_SORT;
-
+    
+    
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
 
     @Override
@@ -100,7 +102,11 @@ public class AppLockListActivity extends BaseActivity implements
             if (fromLockMore) {
                 LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
                 Intent intent = new Intent(this, HomeActivity.class);
-                startActivity(intent);
+          
+                    startActivity(intent);                
+       
+                
+                
             }
             super.onBackPressed();
         }
@@ -162,6 +168,8 @@ public class AppLockListActivity extends BaseActivity implements
             if (lockList.contains(appDetailInfo.packageName)) {
                 appDetailInfo.isLocked = true;
                 mLockedList.add(appDetailInfo);
+           
+                
             } else {
                 appDetailInfo.isLocked = false;
                 mUnlockList.add(appDetailInfo);
@@ -215,6 +223,7 @@ public class AppLockListActivity extends BaseActivity implements
                 }
             }
             mUnlockList.add(info);
+           
             mLockedList.remove(info);
             List<String> list = new LinkedList<String>();
             list.add(info.packageName);
