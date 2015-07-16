@@ -49,7 +49,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_THEME_LOCK_GUIDE = "theme_locker_guide";
     public static final String PREF_USE_LOCK_THEME_GUIDE = "use_lock_theme_guid";
     public static final String PREF_LAUNCH_OTHER_APP = "launch_other_app";
-
+    public static final String PREF_APPLOCK_LIST_FIRST_IN="applock_list_first_in";
+    
     public static final String PREF_UNLOCK_ALL_APP = "lock_setting_unlock_all";
     public static final String PREF_LOCK_SETTING = "lock_setting";
     public static final String PREF_LOCK_SETTING_CHANGE_PASSWORD = "lock_setting_chanage_password";
@@ -1254,6 +1255,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getWeiZhuang() {
         return mPref.getBoolean(PREF_WEIZHUANG_FIRST_IN, true);
     }
+    
+    public boolean getIsFirstEnterAppLockList()
+    {
+        return mPref.getBoolean(PREF_APPLOCK_LIST_FIRST_IN, true);
+    }
+    
+    public void setIsFirstEnterAppLockList(boolean isfirstin) {
+        mPref.edit().putBoolean(PREF_APPLOCK_LIST_FIRST_IN, isfirstin).commit();
+    }
+    
 
     public int getPretendLock() {
         if (mPretendLock < 0) {
