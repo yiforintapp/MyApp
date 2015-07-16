@@ -189,8 +189,6 @@ public class TaskDetectService extends Service {
                 .getCallLogIsRedTip();
     }
 
-
-
     private void startFloatWindowTask() {
         stopFloatWindowTask();
         mFloatWindowTask = new FloatWindowTask();
@@ -452,7 +450,8 @@ public class TaskDetectService extends Service {
                                 && AppMasterPreference.getInstance(getApplicationContext())
                                         .getFristSlidingTip()) {
                             boolean isHomeFlag = false;
-                            AppMasterPreference amp = AppMasterPreference.getInstance(getApplicationContext());
+                            AppMasterPreference amp = AppMasterPreference
+                                    .getInstance(getApplicationContext());
                             if (amp.getNeedShowWhiteDotSlideTip()) {
                                 isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if (isHomeFlag) {
@@ -471,13 +470,15 @@ public class TaskDetectService extends Service {
                                     .getInstance(AppMasterApplication.getInstance()).isJustHome;
                             boolean isAppsAndHome = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isAppsAndHome;
-                            //when the dialog is showing ,the window view not create
-                            boolean isDialogingShowing =  QuickGestureManager
+                            // when the dialog is showing ,the window view not
+                            // create
+                            boolean isDialogingShowing = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isDialogShowing;
                             if (isAppsAndHome) {
                                 boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
                                 if ((!isFilterApp
-                                        || FloatWindowHelper.mEditQuickAreaFlag) && !isDialogingShowing) {
+                                        || FloatWindowHelper.mEditQuickAreaFlag)
+                                        && !isDialogingShowing) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                 } else {
@@ -485,9 +486,10 @@ public class TaskDetectService extends Service {
                                 }
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
-                                    if (!isFilterApp && !FloatWindowHelper.mEditQuickAreaFlag  && !isDialogingShowing) {
-                                            FloatWindowHelper
-                                                    .showWhiteFloatView(TaskDetectService.this);
+                                    if (!isFilterApp && !FloatWindowHelper.mEditQuickAreaFlag
+                                            && !isDialogingShowing) {
+                                        FloatWindowHelper
+                                                .showWhiteFloatView(TaskDetectService.this);
                                     } else {
                                         FloatWindowHelper
                                                 .hideWhiteFloatView(TaskDetectService.this);
@@ -496,7 +498,8 @@ public class TaskDetectService extends Service {
                             } else if (isJustHome) {
                                 if (!isHomeFlag)
                                     isHomeFlag = Utilities.isHome(getApplicationContext());
-                                if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag) && !isDialogingShowing) {
+                                if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag)
+                                        && !isDialogingShowing) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                 } else {
@@ -504,9 +507,10 @@ public class TaskDetectService extends Service {
                                 }
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
-                                    if (isHomeFlag && !FloatWindowHelper.mEditQuickAreaFlag && !isDialogingShowing) {
-                                            FloatWindowHelper
-                                                    .showWhiteFloatView(TaskDetectService.this);
+                                    if (isHomeFlag && !FloatWindowHelper.mEditQuickAreaFlag
+                                            && !isDialogingShowing) {
+                                        FloatWindowHelper
+                                                .showWhiteFloatView(TaskDetectService.this);
                                     } else {
                                         FloatWindowHelper
                                                 .hideWhiteFloatView(TaskDetectService.this);
@@ -615,32 +619,5 @@ public class TaskDetectService extends Service {
             sNotification.setLatestEventInfo(context, title, title, pi);
         }
         return sNotification;
-    }
-
-    // 检测悬浮窗打开发送通知
-    private void sendQuickPermissionOpenNotification(final Context context) {
-        boolean flag = AppMasterPreference.getInstance(context)
-                .getQuickPermissonOpenFirstNotificatioin();
-        // if(!flag){
-        // Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"进去执行");
-        // }else{
-        // Log.e("######", "快捷开关权限是否已经发过通知：" + flag+"不去下面执行");
-        // }
-        if (!flag) {
-            // boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(context);
-            boolean checkMiui = BuildProperties.isMIUI();
-            boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(context);
-            // Log.e("#######", "是否为MIUI：" + checkMiui);
-            // Log.e("######", "是否为HUAWEI：" + checkHuaWei);
-            // Log.e("####", "悬浮窗权限是否打开：" + checkFloatWindow);
-            if (checkMiui && checkFloatWindow) {
-                if (AppMasterPreference.getInstance(context).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-
-                    QuickGestureManager.getInstance(context)
-                            .sendPermissionOpenNotification(context);
-
-                }
-            }
-        }
     }
 }
