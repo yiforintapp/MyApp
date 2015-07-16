@@ -619,6 +619,7 @@
     <string name="open_weizhuang_dialog_sure">开启</string>
 
     <string-array name="weizhuang_type_num">
+        <item >美女伪装</item>
         <item>无</item>
         <item>应用错误</item>
         <item>未知来电</item>
@@ -753,4 +754,6 @@
     <string name="quick_no_pricay_contact_annotation">信息会以系统信息的形式提示</string>
     <!-- version 2.5 huangqili part -->
 
+	<!-- 2.6 start -->
+	<!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译-->
 </resources>

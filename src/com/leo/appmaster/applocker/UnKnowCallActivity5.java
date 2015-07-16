@@ -30,7 +30,7 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener {
-    private final static int UnknowCallMode = 2;
+    private final static int UnknowCallMode = 3;
     private final static int SHOWGUABIG = 3;
     private final static int SHOWDUANBIG = 4;
     private final static int SHOWJIEBIG = 5;

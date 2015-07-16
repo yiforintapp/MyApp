@@ -521,8 +521,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.d("whatisthis", "mLockedPackage : " + mLockedPackage);
         if (!mPrivateLockPck.equals(mLockedPackage)) {
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
-            // pretendLock = 1;
-            if (pretendLock == 1) { /* app error */
+            
+            
+            
+            
+            
+            
+            // pretendLock = 2;
+            if (pretendLock == 2) { /* app error */
                 PretendAppErrorFragment paf = new PretendAppErrorFragment();
                 String tip = "";
                 PackageManager pm = this.getPackageManager();
@@ -537,10 +543,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
                 paf.setErrorTip(tip);
                 return paf;
-            } else if (pretendLock == 2) {/* unknow call */
+            } else if (pretendLock == 3) {/* unknow call */
                 PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
                 return unknowcall;
-            } else if (pretendLock == 3) {/* fingerprint */
+            } else if (pretendLock == 4) {/* fingerprint */
+                PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
+                return weizhuang;
+            }
+            else if(pretendLock==0)
+            {
+                //美女伪装，暂时用指纹伪装
                 PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
                 return weizhuang;
             }
