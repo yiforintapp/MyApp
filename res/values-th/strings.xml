@@ -607,6 +607,7 @@
     <string name="open_weizhuang_dialog_sure">เปิด</string>
 
     <string-array name="weizhuang_type_num">
+        <item >美女伪装</item>
         <item>ไม่มี</item>
         <item>ผิดปกติ</item>
         <item>โทรเข้า</item>
@@ -738,4 +739,15 @@
     <string name="quick_no_call_log_annotation">ท่าทางด่วนจะเตือนสายที่ไม่ได้รับ</string>
     <string name="quick_no_pricay_contact_annotation">ข้อมูลจะเตือนแบบระบบข้อมูล</string>
 	<!-- 2.5 end -->
+	
+	<!-- 2.6 start -->
+	<!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译-->
+	
+	
+	
+	
+	
+	
+	
+	
 </resources>

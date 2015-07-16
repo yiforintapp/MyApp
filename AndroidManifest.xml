@@ -433,6 +433,12 @@
             android:theme="@style/Theme" >
         </activity>
         <activity
+            android:name="com.leo.appmaster.applocker.BeautyWeiZhuang"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+        <activity
             android:name="com.leo.appmaster.applocker.ErrorWeiZhuang"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
