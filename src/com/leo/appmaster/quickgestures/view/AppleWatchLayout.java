@@ -756,8 +756,8 @@ public class AppleWatchLayout extends ViewGroup {
             QuickGestureManager.getInstance(mContext).mToMsmFlag = true;
             MessageBean bean = (MessageBean) info;
             Intent mIntent = null;
-            if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage()  != null
-                    && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() .size() <= 1) {
+            if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null
+                    && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage().size() <= 1) {
                 if (!BuildProperties.ZTEU817.equals(BuildProperties.getPoneModel())) {
                     Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
                     mIntent = new
@@ -2226,6 +2226,7 @@ public class AppleWatchLayout extends ViewGroup {
         Animator firstAnim = null, lastAnim = null;
 
         GestureItemView targetItem;
+        Animator temp;
         for (int i = 0; i < 11; i++) {
             if (i < 4) {
                 targetItem = mHoriChildren[0][i + 4];
@@ -2234,8 +2235,10 @@ public class AppleWatchLayout extends ViewGroup {
             } else {
                 targetItem = mHoriChildren[2][i - 3];
             }
-            if (iconAppearAnimator(targetItem) != null) {
-                iconAnimators[i] = iconAppearAnimator(targetItem);
+
+            temp = iconAppearAnimator(targetItem);
+            if (temp != null) {
+                iconAnimators[i] = temp;
             }
         }
 
@@ -2264,12 +2267,23 @@ public class AppleWatchLayout extends ViewGroup {
             firstAnim = iconAnimators[10];
             lastAnim = iconAnimators[0];
         }
-        firstAnim.setDuration(240);
+
+        List<Animator> animators = new ArrayList<Animator>();
+        if (firstAnim != null) {
+            firstAnim.setDuration(240);
+            animators.add(firstAnim);
+        }
         partOneSet.setDuration(240).setStartDelay(60);
+        animators.add(partOneSet);
         partTwoSet.setDuration(240).setStartDelay(120);
+        animators.add(partTwoSet);
         partThreeSet.setDuration(240).setStartDelay(180);
-        lastAnim.setDuration(240).setStartDelay(240);
-        set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
+        animators.add(partThreeSet);
+        if (lastAnim != null) {
+            lastAnim.setDuration(240).setStartDelay(240);
+            animators.add(lastAnim);
+        }
+        set.playTogether(animators);
         return set;
     }
 
