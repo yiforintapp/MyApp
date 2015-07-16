@@ -49,7 +49,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_THEME_LOCK_GUIDE = "theme_locker_guide";
     public static final String PREF_USE_LOCK_THEME_GUIDE = "use_lock_theme_guid";
     public static final String PREF_LAUNCH_OTHER_APP = "launch_other_app";
-    public static final String PREF_APPLOCK_LIST_FIRST_IN="applock_list_first_in";
+    public static final String PREF_PRETEND_TIPS="pretend_tips";
     
     public static final String PREF_UNLOCK_ALL_APP = "lock_setting_unlock_all";
     public static final String PREF_LOCK_SETTING = "lock_setting";
@@ -1256,13 +1256,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_WEIZHUANG_FIRST_IN, true);
     }
     
-    public boolean getIsFirstEnterAppLockList()
+    public boolean getIsNeedPretendTips()
     {
-        return mPref.getBoolean(PREF_APPLOCK_LIST_FIRST_IN, true);
+        return mPref.getBoolean(PREF_PRETEND_TIPS, true);
     }
     
-    public void setIsFirstEnterAppLockList(boolean isfirstin) {
-        mPref.edit().putBoolean(PREF_APPLOCK_LIST_FIRST_IN, isfirstin).commit();
+    public void setIsNeedPretendTips(boolean isfirstin) {
+        mPref.edit().putBoolean(PREF_PRETEND_TIPS, isfirstin).commit();
     }
     
 

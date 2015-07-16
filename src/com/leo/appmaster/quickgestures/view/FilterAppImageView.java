@@ -91,7 +91,7 @@ public class FilterAppImageView extends ImageView {
                             true);
                     int red, green, blue, alpha;
                     int pixel;
-                    if(!isFromSwitch){
+                    if (!isFromSwitch) {
                         for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
                             for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
                                 pixel = mGaryBitmap.getPixel(i, j);
@@ -263,6 +263,15 @@ public class FilterAppImageView extends ImageView {
                 rightIcon = mContext.getResources().getDrawable(
                         R.drawable.switch_data);
             }
+        } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.LOCKMODE)) {
+            // 情景模式
+            if (mDefaultRecommend) {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.lock_mode_default);
+            } else {
+                rightIcon = mContext.getResources().getDrawable(
+                        R.drawable.lock_mode_default);
+            }
         } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
             // 桌面
             if (mDefaultRecommend) {
@@ -301,7 +310,7 @@ public class FilterAppImageView extends ImageView {
     }
 
     public void makeFlag(int quickSwitchMode) {
-        if(quickSwitchMode == 2){
+        if (quickSwitchMode == 2) {
             isFromSwitch = true;
         }
     }
