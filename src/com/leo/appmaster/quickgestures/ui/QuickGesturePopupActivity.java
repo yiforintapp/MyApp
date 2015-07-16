@@ -248,7 +248,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
                         public void run() {
                             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                             createFloatView();
-                        }
+                        }          
                     });
                 }
             });
