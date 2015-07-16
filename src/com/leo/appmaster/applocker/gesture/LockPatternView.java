@@ -417,7 +417,6 @@ public class LockPatternView extends ViewGroup {
         if (mOnPatternListener != null) {
             mOnPatternListener.onPatternCellAdded(mPattern);
         }
-        sendAccessEvent();
         if (mPattern.size() == 1) {
             mLastParten = mCurrParten = mPattern.get(0);
         } else if (mPattern.size() > 1) {
@@ -430,22 +429,18 @@ public class LockPatternView extends ViewGroup {
         if (mOnPatternListener != null) {
             mOnPatternListener.onPatternStart();
         }
-        sendAccessEvent();
-
     }
 
     private void notifyPatternDetected() {
         if (mOnPatternListener != null) {
             mOnPatternListener.onPatternDetected(mPattern);
         }
-        sendAccessEvent();
     }
 
     private void notifyPatternCleared() {
         if (mOnPatternListener != null) {
             mOnPatternListener.onPatternCleared();
         }
-        sendAccessEvent();
     }
 
     /**
@@ -974,10 +969,6 @@ public class LockPatternView extends ViewGroup {
 
     }
 
-    private void sendAccessEvent() {
-        sendAccessibilityEvent(AccessibilityEvent.TYPE_VIEW_SELECTED);
-        setContentDescription(null);
-    }
 
     private void handleActionUp(MotionEvent event) {
         // report pattern detected
