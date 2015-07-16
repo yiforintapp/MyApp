@@ -15,6 +15,8 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
@@ -23,6 +25,7 @@ public class DeskProxyActivity extends Activity {
     public static final int mAppWeiZhuang = 2;
     public static final int mPicHide = 3;
     public static final int mVioHide = 4;
+    public static final int mPrivateSms = 5;
     private boolean mDelayFinish = false;
     private Handler mHandler;
 
@@ -52,10 +55,22 @@ public class DeskProxyActivity extends Activity {
                     goToHidePic(type);
                 } else if (type == mVioHide) {
                     goToHideVio(type);
+                } else if (type == mPrivateSms) {
+                    goToPrivateSms(type);
                 }
             }
             finish();
         }
+    }
+
+    private void goToPrivateSms(int type) {
+        Intent intent = new Intent(this,
+                PrivacyContactActivity.class);
+        intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void goToHideVio(int type) {

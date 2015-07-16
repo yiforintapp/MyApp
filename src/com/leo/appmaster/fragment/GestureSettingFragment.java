@@ -5,10 +5,7 @@ import java.util.List;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.content.res.Resources;
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -35,6 +32,8 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -289,6 +288,8 @@ public class GestureSettingFragment extends BaseFragment implements
                     goToAppHidePic();
                 } else if (type == ((LockSettingActivity) mActivity).mVioHide) {
                     goToAppHideVio();
+                } else if (type == ((LockSettingActivity) mActivity).mPrivateSms) {
+                    goToPrivateSms();
                 }
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
@@ -325,6 +326,16 @@ public class GestureSettingFragment extends BaseFragment implements
         } else if (which == 1) {
             mGotoPasswdProtect = true;
         }
+    }
+
+    private void goToPrivateSms() {
+        Intent intent = new Intent(mActivity,
+                PrivacyContactActivity.class);
+        intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void goToAppHideVio() {

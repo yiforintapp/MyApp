@@ -9,6 +9,7 @@ import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
+import android.R.integer;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -31,6 +32,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public final int mAppWeiZhuang = 2;
     public final int mPicHide = 3;
     public final int mVioHide = 4;
+    public final int mPrivateSms = 5;
     // private int mLockType = LOCK_TYPE_PASSWD;
     private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
