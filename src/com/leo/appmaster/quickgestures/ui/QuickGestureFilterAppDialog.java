@@ -604,6 +604,15 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 switchInfoN.icon = mContext.getResources().getDrawable(
                         R.drawable.switch_data);
             }
+        }else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.LOCKMODE)) {
+            // 情景模式
+            if (hasSame) {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.lock_mode_default);
+            } else {
+                switchInfoN.icon = mContext.getResources().getDrawable(
+                        R.drawable.lock_mode_default);
+            }
         } else if (switchInfoN.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
             // 桌面
             if (hasSame) {

@@ -655,9 +655,11 @@ public class SectorQuickGestureContainer extends FrameLayout {
             boolean isShowPrivacyContactTip = AppMasterPreference.getInstance(getContext())
                     .getSwitchOpenPrivacyContactMessageTip();
             if (isShowMsmTip) {
-                if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage()  != null
-                        && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() .size() > 0) {
-                    for (MessageBean message : QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() ) {
+                if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null
+                        && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage()
+                                .size() > 0) {
+                    for (MessageBean message : QuickGestureManager.getInstance(mContext)
+                            .getQuiQuickNoReadMessage()) {
                         message.icon = getContext().getResources().getDrawable(
                                 R.drawable.gesture_message);
                         if (message.getMessageName() != null
@@ -675,7 +677,8 @@ public class SectorQuickGestureContainer extends FrameLayout {
             if (isShowCallLogTip) {
                 if (QuickGestureManager.getInstance(mContext).getQuickNoReadCall() != null
                         && QuickGestureManager.getInstance(mContext).getQuickNoReadCall().size() > 0) {
-                    for (ContactCallLog baseInfo : QuickGestureManager.getInstance(mContext).getQuickNoReadCall()) {
+                    for (ContactCallLog baseInfo : QuickGestureManager.getInstance(mContext)
+                            .getQuickNoReadCall()) {
                         baseInfo.icon = getContext().getResources().getDrawable(
                                 R.drawable.gesture_call);
                         if (baseInfo.getCallLogName() != null
@@ -824,8 +827,13 @@ public class SectorQuickGestureContainer extends FrameLayout {
                 } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
                         .getLabelFromName(
                                 QuickSwitchManager.ROTATION))) {
-                    // 飞行模式
+                    // 屏幕旋转
                     checkRotation(sInfo, iconSize, tv);
+                } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
+                        .getLabelFromName(
+                                QuickSwitchManager.LOCKMODE))) {
+                    // 情景模式
+                    checkLockMode(sInfo, iconSize, tv);
                 } else if (sInfo.label.equals(QuickSwitchManager.getInstance(mContext)
                         .getLabelFromName(
                                 QuickSwitchManager.MOBILEDATA))) {
@@ -849,6 +857,11 @@ public class SectorQuickGestureContainer extends FrameLayout {
                 targetLayout.addView(tv);
             }
         }
+    }
+
+    private void checkLockMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+        sInfo.switchIcon[0].setBounds(0, 0, iconSize, iconSize);
+        tv.setItemIcon(sInfo.switchIcon[0], false);
     }
 
     private void checkXuKuang(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
