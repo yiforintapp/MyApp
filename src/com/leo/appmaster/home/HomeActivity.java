@@ -2,7 +2,9 @@
 package com.leo.appmaster.home;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -84,6 +86,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     private final static String KEY_ROOT_CHECK = "root_check";
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
+    public static String[] mLanguageFliter = {
+            "ar"
+    };
     private ViewStub mViewStub;
     private MultiModeView mMultiModeView;
     private DrawerLayout mDrawerLayout;
@@ -126,7 +131,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
     }
-    
+
     @Override
     protected void onPause() {
         removeAppFragmentGestureBg();
@@ -600,19 +605,23 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 .getFristDialogTip();
                         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getIsUpdateQuickGestureUser();
-                        Log.i("######", "firstDilaogTip:"+firstDilaogTip);
-                         Log.i("######", "是否为升级用户：" + updateUser);
+                        Log.i("######", "firstDilaogTip:" + firstDilaogTip);
+                        Log.i("######", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
                             boolean isMiui = BuildProperties.isMIUI();
-                            boolean isOpenWindow = BuildProperties.isFloatWindowOpAllowed(HomeActivity.this);
-                            // new user,enter home  >=2 times
-                            if(!firstDilaogTip && AppMasterPreference.getInstance(HomeActivity.this).getEnterHomeTimes() ==2){
-                                    if(isMiui && isOpenWindow){
-                                        AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
-                                    }else {
-                                        showFirstOpenQuickGestureTipDialog();
-                                        Log.i("######", "新用户提示！");
-                                    }
+                            boolean isOpenWindow = BuildProperties
+                                    .isFloatWindowOpAllowed(HomeActivity.this);
+                            // new user,enter home >=2 times
+                            if (!firstDilaogTip
+                                    && AppMasterPreference.getInstance(HomeActivity.this)
+                                            .getEnterHomeTimes() == 2) {
+                                if (isMiui && isOpenWindow) {
+                                    AppMasterPreference.getInstance(HomeActivity.this)
+                                            .setFristDialogTip(true);
+                                } else {
+                                    showFirstOpenQuickGestureTipDialog();
+                                    Log.i("######", "新用户提示！");
+                                }
                             }
                         } else {
                             // update user
@@ -873,9 +882,27 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
             /* some item not HTML styled text, such as "check update" item */
             tv.setText(Html.fromHtml(items.get(arg0).itemName));
-            tv.setCompoundDrawablesWithIntrinsicBounds(
-                    getResources().getDrawable(items.get(arg0).iconId), null, null,
-                    null);
+
+            // TODO
+            /**
+             * 类似于阿拉伯语等从右往左显示的处理
+             */
+            List<String> languageFliter = Arrays.asList(mLanguageFliter);
+            if (languageFliter != null && languageFliter.size() > 0) {
+                if (languageFliter.contains(Locale.getDefault().getLanguage())) {
+                    // Log.e(Constants.RUN_TAG, "阿拉伯语");
+                    tv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources()
+                            .getDrawable(items.get(arg0).iconId), null);
+                } else {
+                    tv.setCompoundDrawablesWithIntrinsicBounds(
+                            getResources().getDrawable(items.get(arg0).iconId), null, null,
+                            null);
+                }
+            } else {
+                tv.setCompoundDrawablesWithIntrinsicBounds(
+                        getResources().getDrawable(items.get(arg0).iconId), null, null,
+                        null);
+            }
             return layout;
         }
 
@@ -910,8 +937,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void onPageSelected(int arg0) {
         if (mFragmentHolders[arg0].fragment instanceof Selectable) {
             ((Selectable) mFragmentHolders[arg0].fragment).onSelected(arg0);
-        }else{
-            
+        } else {
+
         }
     }
 
@@ -1019,30 +1046,31 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    public void recordEnterHomeTimes(){
+    public void recordEnterHomeTimes() {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        int times = pref.getEnterHomeTimes(); 
-        if(times <2){
+        int times = pref.getEnterHomeTimes();
+        if (times < 2) {
             pref.setEnterHomeTimes(++times);
         }
-        Log.i("######", "times = "+times);
+        Log.i("######", "times = " + times);
     }
-    
+
     /**
      * show the animation when click try in the dialog
      */
-    private void startQuickGestureEnterTip(){
+    private void startQuickGestureEnterTip() {
         HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
-        fragment.isGestureAnimating  = true;
+        fragment.isGestureAnimating = true;
         LeoLog.d("shodonghua", "set true");
         mPagerTab.setCurrentItem(2);
         fragment.playQuickGestureEnterAnim();
     }
-    
+
     /**
-     * when leave the home page,remove the  gesture tab background of app manager fragment
+     * when leave the home page,remove the gesture tab background of app manager
+     * fragment
      */
-    private void removeAppFragmentGestureBg(){
+    private void removeAppFragmentGestureBg() {
         HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
         fragment.setGestureTabBgVisibility(View.GONE);
     }

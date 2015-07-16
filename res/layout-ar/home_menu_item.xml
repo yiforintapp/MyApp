@@ -6,10 +6,11 @@
 
     <TextView
         android:id="@+id/menu_item_tv"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:drawablePadding="16dp"
+        android:gravity="right"
         android:textColor="#636363"
         android:textSize="16dp" />
 
