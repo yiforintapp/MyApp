@@ -607,8 +607,8 @@
     <string name="open_weizhuang_dialog_sure">เปิด</string>
 
     <string-array name="weizhuang_type_num">
-        <item >美女伪装</item>
         <item>ไม่มี</item>
+        <item >美女伪装</item>
         <item>ผิดปกติ</item>
         <item>โทรเข้า</item>
         <item>ลายนิ้วมือ</item>

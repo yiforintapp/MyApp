@@ -61,6 +61,7 @@ import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
+import com.leo.appmaster.fragment.PretendAppBeautyFragment;
 import com.leo.appmaster.fragment.PretendAppErrorFragment;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
@@ -550,10 +551,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
                 return weizhuang;
             }
-            else if(pretendLock==0)
+            else if(pretendLock==1)
             {
                 //美女伪装，暂时用指纹伪装
-                PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
+                PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;
             }
         }

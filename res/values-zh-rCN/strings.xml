@@ -619,8 +619,8 @@
     <string name="open_weizhuang_dialog_sure">开启</string>
 
     <string-array name="weizhuang_type_num">
-        <item >美女伪装</item>
         <item>无</item>
+        <item >美女伪装</item>
         <item>应用错误</item>
         <item>未知来电</item>
         <item>指纹解锁</item>

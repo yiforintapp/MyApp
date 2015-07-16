@@ -613,8 +613,8 @@
     <string name="open_weizhuang_dialog_sure">Start</string>
 
     <string-array name="weizhuang_type_num">
-        <item>美女伪装</item>
         <item>No Cover</item>
+        <item>美女伪装</item>
         <item>Error</item>
         <item>Unknown Caller</item>
         <item>Fingerprint</item>

@@ -588,8 +588,8 @@
     <string name="open_weizhuang_dialog_sure">открыть</string>
 
     <string-array name="weizhuang_type_num">
-        <item>美女伪装</item>
         <item>нет</item>
+        <item>美女伪装</item>
         <item>ошибка</item>
         <item>входящий</item>
         <item>отпечаток</item>

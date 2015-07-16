@@ -12,7 +12,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 
 public class BeautyWeiZhuang extends BaseActivity
 {
-    private final static int BEAUTYWEIZHUANG = 0;
+    private final static int BEAUTYWEIZHUANG = 1;
     private LEOAlarmDialog mAlarmDialog;
     private AppMasterPreference mAppMasterSP;
     

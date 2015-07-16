@@ -31,7 +31,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 public class WeiZhuangActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
-    private final static int noMode = 1;
+    private final static int noMode = 0;
     private Drawable[] mIcon = new Drawable[5];
     private String[] mName;
     private List<WeiZhuangInfo> mList;
@@ -40,7 +40,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private GridView mGridView;
     private Resources mThemeRes;
     private AppMasterPreference sp_weizhuang;
-    private int selected = 1;
+    private int selected = 0;
     private ImageView weizhuang_ask;
     private View trffic_setting_iv;
     private LinearLayout mWeizhuangHelp;
@@ -187,15 +187,15 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
-            case 0:
-                if (selected != 0) {
+            case 1:
+                if (selected != 1) {
                     //美女伪装
                     Intent mIntent = new Intent(this, BeautyWeiZhuang.class);
                     this.startActivity(mIntent);
                 }
                 break;
-            case 1:
-                if (selected != 1) {
+            case 0:
+                if (selected != 0) {
                     // 无
                     sp_weizhuang.setPretendLock(noMode);
                     mAdapt.notifyDataSetChanged();
