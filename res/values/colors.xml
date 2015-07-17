@@ -39,12 +39,12 @@
     <color name="flow_blue">#4285f4</color>
     <color name="flow_item_total">#646464</color>
     <color name="flow_item_small">#a7a7a7</color>
-    <color name="flow_charts_gry">#e6e6e6</color>
+    <color name="flow_charts_gry">#e3e3e3</color>
     <color name="app_backup_text">#fa9e1f</color>
     <color name="app_usage_text">#01bafd</color>
     <color name="app_battery_text">#78d70b</color>
     <color name="app_hot_text">#f21c7b</color>
-    <color name="first_bottom_text">#c2c2c2</color>
+    <color name="first_bottom_text">#4285f4</color>
     <color name="commonbar_background">#4285f4</color>
     <color name="progress_bar_show">#dedede</color>
     <color name="flow_setting_tv">#414141</color>

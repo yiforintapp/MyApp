@@ -297,7 +297,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     public void setListView() {
-        list_delete.addHeaderView(mHeadView, null, false);
+        list_delete.addHeaderView(mHeadView);
         list_delete.setAdapter(mDeleteAdapter);
     }
 
