@@ -4,9 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 
 public class ProxyActivity extends Activity {
     
@@ -25,8 +27,11 @@ public class ProxyActivity extends Activity {
         } else {
             Intent intentService = new Intent(this, StatusBarEventService.class);
             intentService.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
+         /*   if(type == StatusBarEventService.EVENT_APP_WEBVIEW_NOTIFICATION){
+                String url = intent.getStringExtra(WebViewActivity.WEB_URL);
+                intentService.putExtra(WebViewActivity.WEB_URL, url);
+            }*/
             startService(intentService);
-
             finish();
         }
         

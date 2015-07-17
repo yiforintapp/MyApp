@@ -51,6 +51,7 @@ import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -69,6 +70,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureTipDialog;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoPagerTab;
@@ -108,6 +110,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+        
+        Intent intent = new Intent();
+        intent.setClass(HomeActivity.this, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.WEB_URL, "http://www.jd.com/");
+        Log.i("######",intent.toUri(0));
+        
         // lockType , num or guesture
         initUI();
         tryTransStatusbar();

@@ -24,6 +24,7 @@ public class TaskChangeHandler {
     public static final String PROXYNAME = "ProxyActivity";
     public static final String WAITNAME = "WaitActivity";
     public static final String GESTURE = "QuickGesturePopupActivity";
+    public static final String WEBVIEW="WebViewActivity";
     // public static final String GESTURESETTING = "QuickGestureActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
@@ -106,7 +107,8 @@ public class TaskChangeHandler {
                                                            * activity.contains
                                                            * (GESTURESETTING)
                                                            */|| activity.contains(PROXYNAME) || activity
-                                            .contains(WAITNAME))
+                                            .contains(WAITNAME)
+                                            || activity.contains(WEBVIEW))
                                 || (!unlocked && activity.contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
@@ -124,7 +126,7 @@ public class TaskChangeHandler {
                                                            * activity.contains
                                                            * (GESTURESETTING)
                                                            */|| activity.contains(PROXYNAME) || activity
-                                            .contains(WAITNAME)) || (activity
+                                            .contains(WAITNAME) || activity.contains(WEBVIEW)) || (activity
                                     .contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
