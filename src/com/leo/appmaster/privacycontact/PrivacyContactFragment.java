@@ -502,7 +502,12 @@ public class PrivacyContactFragment extends BaseFragment {
                                         ContentValues values = new ContentValues();
                                         values.put("address", messageBean.getPhoneNumber());
                                         values.put("body", messageBean.getMessageBody());
-                                        Long date = Date.parse(messageBean.getMessageTime());
+                                        Long date=null;
+                                        try {
+                                            date = Date.parse(messageBean.getMessageTime());
+                                        } catch (Exception e1) {
+                                            e1.printStackTrace();
+                                        }
                                         values.put("date", date);
                                         values.put("read", 1);
                                         values.put("type", messageBean.getMessageType());
@@ -713,7 +718,7 @@ public class PrivacyContactFragment extends BaseFragment {
 
     private void showProgressDialog(int maxValue, int currentValue) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEORoundProgressDialog(mContext);
+            mProgressDialog = new LEORoundProgressDialog(getActivity());
         }
         String title = getResources().getString(R.string.privacy_contact_progress_dialog_title);
         String content = getResources().getString(R.string.privacy_contact_progress_dialog_content);
