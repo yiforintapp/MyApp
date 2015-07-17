@@ -1,6 +1,12 @@
 
 package com.leo.appmaster.fragment;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -214,5 +220,44 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         }
 
     }
+    
+    public void playPretendEnterAnim() {
+        if (null == mLockSettingBtn ) {
+            return;
+        }
+        final ObjectAnimator lastAlphaAnimator = ObjectAnimator.ofFloat(mLockSettingBtn, "alpha", 0f, 1.0f).setDuration(300);
+        
+        ObjectAnimator alphaAnimator = ObjectAnimator
+                .ofFloat(mLockSettingBtn, "alpha", 0f, 1.0f, 0f).setDuration(800);
+        alphaAnimator.setRepeatCount(2);
+        alphaAnimator.setRepeatMode(ValueAnimator.RESTART);
+        alphaAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                mLockSettingBtn.setVisibility(View.VISIBLE);
+            }
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                lastAlphaAnimator.start();
+       
+            }
+        });
+
+        PropertyValuesHolder smallX = PropertyValuesHolder
+                .ofFloat("scaleX", 1.0f, 1.2f, 1.0f);
+        PropertyValuesHolder smallY = PropertyValuesHolder
+                .ofFloat("scaleY", 1.0f, 1.2f, 1.0f);
+        ObjectAnimator gestureSmall = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(
+                mLockSettingBtn, smallX, smallY);
+        gestureSmall.setDuration(800);
+        gestureSmall.setRepeatCount(2);
+        gestureSmall.setRepeatMode(ValueAnimator.RESTART);
+        AnimatorSet set = new AnimatorSet();
+        set.playTogether(alphaAnimator, gestureSmall);
+        set.start();
+    }
+    
+    
+    
 
 }

@@ -145,12 +145,19 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 mAlarmDialog.setOnClickListener(new OnDiaogClickListener() {
                     @Override
                     public void onClick(int which) {
-                        // ok
+                        // 点击立刻试试播放提示动画，
                         if (which == 1)
                         {
-                            mAlarmDialog.dismiss();
-                            Intent intent=new Intent(HomeActivity.this,WeiZhuangActivity.class);
-                            startActivity(intent);
+                            mAlarmDialog.dismiss();  
+                            if(mFragmentHolders[0].fragment!=null)
+                            {
+
+                                HomeLockFragment fragment = (HomeLockFragment) mFragmentHolders[0].fragment;
+    
+                                mPagerTab.setCurrentItem(0);
+                                fragment.playPretendEnterAnim();
+                            }
+                            
                         }
 
                     }
@@ -1108,6 +1115,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         fragment.playQuickGestureEnterAnim();
     }
 
+    
+    
+    
     /**
      * when leave the home page,remove the gesture tab background of app manager
      * fragment
