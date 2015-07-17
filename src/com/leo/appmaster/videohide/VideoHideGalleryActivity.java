@@ -43,6 +43,7 @@ import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -386,6 +387,18 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             if (isHide) {
                 hideVideos = getVideoInfo();
             }
+            
+            for (int i = 0; i < hideVideos.size(); i++) {
+                VideoBean info = hideVideos.get(i);
+                String mName = info.getName();
+                String mDirPath = info.getDirPath();
+                String mPath = info.getPath();
+                LeoLog.d("testVio", "name is : " + mName);
+                LeoLog.d("testVio", "mDirPath is : " + mDirPath);
+                LeoLog.d("testVio", "mPath is : " + mPath);
+                LeoLog.d("testVio", "-----------------------------------------");
+            }
+            
             return hideVideos;
 
         }

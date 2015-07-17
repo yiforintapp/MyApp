@@ -48,6 +48,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -150,6 +151,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private void getVideoPath() {
         for (VideoItemBean videoItem : mVideoItems) {
             String path = videoItem.getPath();
+            LeoLog.d("testVio", "mPath is : " + path);
             mAllPath.add(path);
         }
     }
