@@ -10,6 +10,7 @@ import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -27,7 +28,8 @@ public class StatusBarEventService extends IntentService {
     public static final int EVENT_BUSINESS_GAME = 2;
     public static final int EVENT_BUSINESS_QUICK_GUESTURE = 3;
     public static final int EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION = 4;
-
+    public static final int EVENT_APP_WEBVIEW_NOTIFICATION = 5;
+    
     public StatusBarEventService() {
         super("");
     }
@@ -78,7 +80,15 @@ public class StatusBarEventService extends IntentService {
             targetIntent.putExtra(QuickGestureActivity.FROME_STATUSBAR, true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        } else {
+        }else if(eventType == EVENT_APP_WEBVIEW_NOTIFICATION){
+           /* LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+            String url = intent.getStringExtra(WebViewActivity.WEB_URL);
+            targetIntent = new Intent(this, WebViewActivity.class);
+            targetIntent.putExtra(WebViewActivity.WEB_URL, url);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);*/
+        }
+        else {
             return;
         }
 
