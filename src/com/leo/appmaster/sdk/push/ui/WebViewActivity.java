@@ -6,10 +6,12 @@ import com.leo.appmaster.sdk.BaseActivity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -73,6 +75,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setCacheMode(WebSettings.LOAD_NORMAL);
 
         mWebviewClient = new MyWebviewClient();
+        mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebViewClient(mWebviewClient);
         mWebView.setWebChromeClient(new WebChromeClient() {
             // set progress
@@ -101,32 +104,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                 mTitleView.setText(title);
             }
         });
-    }
-
-    public class MyWebviewClient extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return false;
-        }
-
-        @Override
-        public void onPageFinished(WebView view, String url) {
-            if (view.canGoBack()) {
-                enableBackBtn();
-                Log.i("######", "back show");
-            } else {
-                disableBackBtn();
-                Log.i("######", "back hide");
-            }
-            if (view.canGoForward()) {
-                enableNextBtn();
-                Log.i("######", "forward show");
-            } else {
-                disableNextBtn();
-                Log.i("######", "forward hide");
-            }
-            super.onPageFinished(view, url);
-        }
     }
 
     @Override
@@ -179,6 +156,43 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             mWebView.goBack();
         } else {
             super.onBackPressed();
+        }
+    }
+    
+    private class MyWebviewClient extends WebViewClient {
+        @Override
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
+            return false;
+        }
+
+        @Override
+        public void onPageFinished(WebView view, String url) {
+            if (view.canGoBack()) {
+                enableBackBtn();
+                Log.i("######", "back show");
+            } else {
+                disableBackBtn();
+                Log.i("######", "back hide");
+            }
+            if (view.canGoForward()) {
+                enableNextBtn();
+                Log.i("######", "forward show");
+            } else {
+                disableNextBtn();
+                Log.i("######", "forward hide");
+            }
+            super.onPageFinished(view, url);
+        }
+    }
+    
+    private class MyWebViewDownLoadListener implements DownloadListener{
+        @Override
+        public void onDownloadStart(String url, String userAgent, String contentDisposition,
+                String mimetype, long contentLength) {
+            Uri uri = Uri.parse(url);
+            Log.i(TAG, "downlaod url: "+uri );
+            Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+            startActivity(intent);
         }
     }
 }
