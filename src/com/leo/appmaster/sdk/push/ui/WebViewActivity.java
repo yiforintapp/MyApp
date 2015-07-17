@@ -159,7 +159,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     }
 
     private void disableBackBtn() {
-        mBackView.setImageResource(R.drawable.back_icon_disable);
+        mBackView.setImageResource(R.drawable.webview_back_icon_disable);
         mBackView.setOnClickListener(null);
     }
 
