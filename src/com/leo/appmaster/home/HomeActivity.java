@@ -82,6 +82,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.RootChecker;
 
@@ -91,9 +92,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     private final static String KEY_ROOT_CHECK = "root_check";
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
-    public static String[] mLanguageFliter = {
-            "ar"
-    };
     private ViewStub mViewStub;
     private MultiModeView mMultiModeView;
     private DrawerLayout mDrawerLayout;
@@ -133,10 +131,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // TODO
     }
 
-    //伪装的引导，当第一次将应用加了所后返回home，弹出提示。
+    // 伪装的引导，当第一次将应用加了所后返回home，弹出提示。
     private void showWeiZhuangTip() {
 
-        if(AppMasterPreference.getInstance(this).getIsNeedPretendTips()&&LockManager.getInstatnce().getLockedAppCount()>0)     
+        if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
+                && LockManager.getInstatnce().getLockedAppCount() > 0)
         {
             AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
             if (mAlarmDialog == null)
@@ -149,7 +148,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         if (which == 1)
                         {
                             mAlarmDialog.dismiss();
-                            Intent intent=new Intent(HomeActivity.this,WeiZhuangActivity.class);
+                            Intent intent = new Intent(HomeActivity.this, WeiZhuangActivity.class);
                             startActivity(intent);
                         }
 
@@ -157,8 +156,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 });
             }
             mAlarmDialog.setSureButtonText("立刻试试");
-           
-            
+
             mAlarmDialog.setContent("其实我是个图片");
             mAlarmDialog.show();
         }
@@ -344,9 +342,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         } else {
             app_hot_tip_icon.setVisibility(View.GONE);
         }
-        
-        
-        
+
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
     }
@@ -925,21 +921,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             /* some item not HTML styled text, such as "check update" item */
             tv.setText(Html.fromHtml(items.get(arg0).itemName));
 
-            // TODO
             /**
              * 类似于阿拉伯语等从右往左显示的处理
              */
-            List<String> languageFliter = Arrays.asList(mLanguageFliter);
-            if (languageFliter != null && languageFliter.size() > 0) {
-                if (languageFliter.contains(Locale.getDefault().getLanguage())) {
-                    // Log.e(Constants.RUN_TAG, "阿拉伯语");
-                    tv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources()
-                            .getDrawable(items.get(arg0).iconId), null);
-                } else {
-                    tv.setCompoundDrawablesWithIntrinsicBounds(
-                            getResources().getDrawable(items.get(arg0).iconId), null, null,
-                            null);
-                }
+            if (LanguageUtils.isRightToLeftLanguage(null)) {
+                // Log.e(Constants.RUN_TAG, "阿拉伯语");
+                tv.setCompoundDrawablesWithIntrinsicBounds(null, null, getResources()
+                        .getDrawable(items.get(arg0).iconId), null);
             } else {
                 tv.setCompoundDrawablesWithIntrinsicBounds(
                         getResources().getDrawable(items.get(arg0).iconId), null, null,
