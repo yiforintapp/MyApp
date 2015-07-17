@@ -98,4 +98,6 @@
 	<color name="quick_intro_color">#9b9b9b</color>
 	<color name="guide_more_color">#06c4a7</color>
 	<color name="guide_more_select_color">#00967f</color>
+	<color name="webview_pro_bg">#e4e4e4</color>
+	<color name="webview_pro">#28b1ff</color>
 </resources>

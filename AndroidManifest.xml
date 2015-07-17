@@ -58,7 +58,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- LEO push: end -->
 
-
     <!-- quickSwitch -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -520,6 +519,14 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+             android:launchMode="singleInstance"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.QuickGestureProxyActivity"

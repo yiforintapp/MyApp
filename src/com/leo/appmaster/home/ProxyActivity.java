@@ -26,7 +26,6 @@ public class ProxyActivity extends Activity {
             Intent intentService = new Intent(this, StatusBarEventService.class);
             intentService.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
             startService(intentService);
-
             finish();
         }
         
