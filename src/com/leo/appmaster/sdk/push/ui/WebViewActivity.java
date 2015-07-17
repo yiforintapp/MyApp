@@ -134,7 +134,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         int id = arg0.getId();
         switch (id) {
             case R.id.back_iv:
-                Log.i("######", "canGoBack = " + mWebView.canGoBack());
                 if (mWebView.canGoBack()) {
                     mWebView.goBack();
                 }
