@@ -100,4 +100,5 @@
 	<color name="guide_more_select_color">#00967f</color>
 	<color name="webview_pro_bg">#e4e4e4</color>
 	<color name="webview_pro">#28b1ff</color>
+	<color name="sort_select_color">#4584f5</color>
 </resources>

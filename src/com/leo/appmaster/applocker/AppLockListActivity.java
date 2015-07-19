@@ -35,6 +35,7 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.LeoLockSortPopMenu;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
@@ -50,6 +51,7 @@ public class AppLockListActivity extends BaseActivity implements
     private List<AppInfo> mUnlockList;
     private PagedGridView mAppPager;
     private LeoPopMenu mLeoPopMenu;
+    private LeoLockSortPopMenu mLeoLockSortPopMenu;
     
     private AppInfo mLastSelectApp;
     private String[] mSortType;
@@ -287,44 +289,32 @@ public class AppLockListActivity extends BaseActivity implements
                 onBackPressed();
                 break;
             case R.id.iv_sort_select:
-                if (mLeoPopMenu == null) {
-                    mLeoPopMenu = new LeoPopMenu();
+                if (mLeoLockSortPopMenu == null) {
+                    mLeoLockSortPopMenu = new LeoLockSortPopMenu();
                 }
-                mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
-                mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
+                mLeoLockSortPopMenu.setAnimation(R.style.RightEnterAnim);
+                mLeoLockSortPopMenu.setPopItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
-                        if (mCurSortType == DEFAULT_SORT) {
-                            if (position == 0) {
-                                mCurSortType = NAME_SORT;
-                            } else if (position == 1) {
-                                mCurSortType = INSTALL_TIME_SORT;
-                            }
-                        } else if (mCurSortType == NAME_SORT) {
                             if (position == 0) {
                                 mCurSortType = DEFAULT_SORT;
-                            } else if (position == 1) {
+                            }else if(position == 1){
+                                mCurSortType = NAME_SORT;
+                            }else if(position == 2){
                                 mCurSortType = INSTALL_TIME_SORT;
                             }
-                        } else {
-                            if (position == 0) {
-                                mCurSortType = DEFAULT_SORT;
-                            } else if (position == 1) {
-                                mCurSortType = NAME_SORT;
-                            }
-                        }
                         loadData();
                         AppMasterPreference.getInstance(
                                 AppLockListActivity.this).setSortType(
                                 mCurSortType);
-                        if(mLeoPopMenu != null) {
-                            mLeoPopMenu.dismissSnapshotList();
+                        if(mLeoLockSortPopMenu != null) {
+                            mLeoLockSortPopMenu.dismissSnapshotList();
                         }
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this,getSortMenuItems());
-                mLeoPopMenu.showPopMenu(this,
+                mLeoLockSortPopMenu.setPopMenuItems(this,getSortMenuItems(),mCurSortType);
+                mLeoLockSortPopMenu.showPopMenu(this,
                         mIvSortSelected, null, null);
                 break;
             case R.id.mode_select_layout:
@@ -395,17 +385,9 @@ public class AppLockListActivity extends BaseActivity implements
 
     private List<String> getSortMenuItems() {
         List<String> listItems = new ArrayList<String>();
-
-        if (mCurSortType == DEFAULT_SORT) {
-            listItems.add(mSortType[NAME_SORT]);
-            listItems.add(mSortType[INSTALL_TIME_SORT]);
-        } else if (mCurSortType == NAME_SORT) {
-            listItems.add(mSortType[DEFAULT_SORT]);
-            listItems.add(mSortType[INSTALL_TIME_SORT]);
-        } else {
-            listItems.add(mSortType[DEFAULT_SORT]);
-            listItems.add(mSortType[NAME_SORT]);
-        }
+        listItems.add(mSortType[DEFAULT_SORT]);
+        listItems.add(mSortType[NAME_SORT]);
+        listItems.add(mSortType[INSTALL_TIME_SORT]);
         return listItems;
     }
 
