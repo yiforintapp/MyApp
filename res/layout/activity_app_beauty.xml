@@ -1,13 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <Button
+    <com.leo.appmaster.applocker.ZipperView
+        android:id="@+id/zipperview_beauty_guide"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
+        android:id="@+id/iv_gesture"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试用，点击就设置完成"
-        android:onClick="click" />
-		
-</LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="170dp"
+        android:src="@drawable/beauty_guide_gesture" />
+
+    <TextView
+        android:id="@+id/tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:text="@string/beauty_guide_content"
+        android:textColor="@color/white"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="20dp"
+        android:text="@string/beauty_guide_title"
+        android:textColor="@color/white"
+        android:textSize="20sp" />
+
+</RelativeLayout>
