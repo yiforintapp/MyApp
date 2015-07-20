@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -33,15 +34,30 @@ public class ZipperView extends View {
     private int[] bgbyte;
     private int[] cowbyte;
     private int[] newbg;
-    private boolean isUnlock=false;
+
     private OnGestureSuccessListener mSuccess = null;
     
-    public boolean isUnlock() {
-        return isUnlock;
-    }
-    public void setUnlock(boolean isUnlock) {
-        this.isUnlock = isUnlock;
-    }
+    private Handler mhandler=new Handler();
+    private Runnable animGoBack =new Runnable()
+    {
+       public void run()
+       {
+           if(mYp>0)
+           {
+               mYp-=100;          
+               ZipperView.this.mhandler.postDelayed(ZipperView.this.animGoBack,15l);
+               ZipperView.this.invalidate();
+           }
+           else
+           {
+               mYp=0;
+               ZipperView.this.invalidate();
+               mhandler.removeCallbacks(animGoBack);
+           }
+           
+       }
+    };
+    
 
 
     private boolean isZipperTouched=false;
@@ -101,9 +117,7 @@ private float py02;
         drawleft(canvas);
         drawright(canvas);
         
-        
-        
-       
+
 //      Paint p = new Paint();
 //      p.setColor(Color.RED);
 //      canvas.drawPath(mPath, p);
@@ -165,9 +179,8 @@ private float py02;
                         {
                             Toast.makeText(getContext(), "太快啦！", 0).show();
                         }
-                    
-                                mYp=0;
-                               invalidate();
+                    this.mhandler.postDelayed(animGoBack, 1l);
+                          
                     }
                     
                 }
@@ -250,7 +263,7 @@ private float py02;
                 
                 if(((py01<=py02&&ay01>py01+70&&ay02<py02-70)||(py01>py02&&ay01<py01-70&&ay02>py02+70))&&((px01<=px02&&ax01>px01+50&&ax02<px02-50)||(px01>px02&&ax01<px01-50&&ax02>px02+50)))//
                 {
-                    Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
+//                    Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
                     mSuccess.OnGestureSuccess();
                 }
                 
@@ -274,7 +287,7 @@ private float py02;
                 
                 if(((py01<=py02&&ay0100>py01+10&&ay0200<py02-10)||(py01>py02&&ay0100<py01-10&&ay0200>py02+10))&&((px01<=px02&&ax0100>px01+10&&ax0200<px02-10)||(px01>px02&&ax0100<px01-10&&ax0200>px02+10)))
                 {
-                    Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();                   
+//                    Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();                   
                     mSuccess.OnGestureSuccess();       
                 }
 
