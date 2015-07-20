@@ -747,6 +747,7 @@
 
     <!-- 2.6 start -->
     <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
+    <string name="change_lock_mode">Change Lock Mode</string>
     <string name="beauty_guide_title">使用介绍</string>
     <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
     <string name="flash_light_open_toast">请不要重复操作闪光灯</string>

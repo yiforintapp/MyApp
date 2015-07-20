@@ -1,9 +1,12 @@
 
 package com.leo.appmaster.fragment;
 
+import java.util.List;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.MotionEvent;
@@ -21,6 +24,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
@@ -154,26 +158,47 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     + passwdtip);
         }
 
-        if (mLockMode == LockManager.LOCK_MODE_FULL && mPackageName != null) {
-            mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
-            mAppIcon.setImageDrawable(AppUtil.getDrawable(
-                    mActivity.getPackageManager(), mPackageName));
+        mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
+        if (mLockMode == LockManager.LOCK_MODE_FULL) {
             mAppIcon.setVisibility(View.VISIBLE);
-
-            if (needChangeTheme()) {
-                mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
-                mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
-                mAppIconTop.setVisibility(View.VISIBLE);
-                mAppIconBottom.setVisibility(View.VISIBLE);
-                if (mThemeRes != null) {
-                    if (mTopIconRes > 0) {
-                        mAppIconTop.setBackgroundDrawable(mThemeRes.getDrawable(mTopIconRes));
+            LockScreenActivity lsa = (LockScreenActivity) mActivity;
+            if (lsa.mQuickLockMode) {
+                LockManager lm = LockManager.getInstatnce();
+                List<LockMode> modes = lm.getLockMode();
+                LockMode targetMode = null;
+                for (LockMode lockMode : modes) {
+                    if (lockMode.modeId == lsa.mQuiclModeId) {
+                        targetMode = lockMode;
+                        break;
                     }
-                    if (mBottomIconRes > 0) {
-                        mAppIconBottom.setBackgroundDrawable(mThemeRes.getDrawable(mBottomIconRes));
+                }
+                if (targetMode != null) {
+                    mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
+                            targetMode.modeIcon));
+                } else {
+                    mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                            mActivity.getPackageManager(), mActivity.getPackageName()));
+                }
+            } else if (mPackageName != null) {
+                mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                        mActivity.getPackageManager(), mPackageName));
+                if (needChangeTheme()) {
+                    mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
+                    mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
+                    mAppIconTop.setVisibility(View.VISIBLE);
+                    mAppIconBottom.setVisibility(View.VISIBLE);
+                    if (mThemeRes != null) {
+                        if (mTopIconRes > 0) {
+                            mAppIconTop.setBackgroundDrawable(mThemeRes.getDrawable(mTopIconRes));
+                        }
+                        if (mBottomIconRes > 0) {
+                            mAppIconBottom.setBackgroundDrawable(mThemeRes
+                                    .getDrawable(mBottomIconRes));
+                        }
                     }
                 }
             }
+
         }
 
         clearPasswd();
