@@ -25,7 +25,6 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -36,17 +35,18 @@ import com.leo.appmaster.R;
 public class LeoPopMenu {
 
     public final static int DIRECTION_DOWN = 1;
-    //public final static float SMALLWidth = 160.0f;
+    // public final static float SMALLWidth = 160.0f;
     public final static float SMALLWidth = 160.0f;
     public final static float LongWidth = 230.0f;
 
     public final static float OVERPX = 220.0f;
     public static boolean isOverWidth = false;
 
-    private static float newSmallWidth;
-    private static float newLongWidth;
-    private boolean isShowIcon = false;
-    
+    protected static float newSmallWidth;
+    protected static float newLongWidth;
+    protected static int mIconOffest = 0;
+    protected Context mContext;
+
     public static class LayoutStyles {
         public int width;
         public int height;
@@ -54,19 +54,19 @@ public class LeoPopMenu {
         public int direction;
     }
 
-    private PopupWindow mLeoPopMenu;
+    protected PopupWindow mLeoPopMenu;
 
-    private List<String> mItems;
-    private List<Integer> mIcons;
+    protected List<String> mItems;
+    protected List<Integer> mIcons;
 
-    private OnItemClickListener mPopItemClickListener;
+    protected OnItemClickListener mPopItemClickListener;
 
-    private ListView listView;
-    private MenuListAdapter mAdapter;
-    private LayoutStyles mStyles = new LayoutStyles();
-    private boolean mIsItemHTMLFormatted = false;
-    
-    private int mAnimaStyle = -1;
+    protected ListView mListView;
+    protected BaseAdapter mAdapter;
+    protected LayoutStyles mStyles = new LayoutStyles();
+    protected boolean mIsItemHTMLFormatted = false;
+
+    protected int mAnimaStyle = -1;
 
     /**
      * @param aContext
@@ -81,39 +81,9 @@ public class LeoPopMenu {
             mLeoPopMenu = null;
         }
 
-        if (styles == null) {
-            float popWidth = 0;
-            if (!isOverWidth) {
-                if(isShowIcon){
-                    newSmallWidth +=DipPixelUtil.dip2px(activity, 12f);
-                }
-                popWidth = newSmallWidth;
-            } else {
-                if(isShowIcon){
-                    newLongWidth +=DipPixelUtil.dip2px(activity, 12f);
-                }
-                popWidth = newLongWidth;
-            }
-                Log.i("tag","popWidth="+popWidth);
-            
-            LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth);
-            mStyles.width = DipPixelUtil.dip2px((Context) activity, popWidth);
-            // LeoLog.d("LeoPopMenu", "dip2px popWidth is : " + mStyles.width);
-            mStyles.height = LayoutParams.WRAP_CONTENT;
-            if (mAnimaStyle != -1) {
-                mStyles.animation = mAnimaStyle;
-            } else {
-                mStyles.animation = R.style.PopupListAnimUpDown;
-            }
-        } else {
-            mStyles.width = styles.width;
-            mStyles.height = styles.height;
-            mStyles.animation = styles.animation;
-            mStyles.direction = styles.direction;
-        }
+        setWindowStyle(styles);
 
         View convertView = buildTabListLayout();
-
         mLeoPopMenu = new PopupWindow(convertView, mStyles.width, mStyles.height, true);
         mLeoPopMenu.setFocusable(true);
         mLeoPopMenu.setOutsideTouchable(true);
@@ -129,6 +99,35 @@ public class LeoPopMenu {
             mLeoPopMenu.showAtLocation(anchorView, Gravity.NO_GRAVITY, 0, 0);
         } else {
             mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
+        }
+    }
+
+    private void setWindowStyle(LayoutStyles styles) {
+        if (styles == null) {
+            float popWidth = 0;
+            if (!isOverWidth) {
+                LeoLog.d("LeoPopMenu", "newSmallWidth is : " + newSmallWidth);
+                newSmallWidth += DipPixelUtil.dip2px(mContext, mIconOffest);
+                popWidth = newSmallWidth;
+            } else {
+                LeoLog.d("LeoPopMenu", "newLongWidth is : " + newLongWidth);
+                newLongWidth += DipPixelUtil.dip2px(mContext, mIconOffest);
+                popWidth = newLongWidth;
+            }
+            LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth);
+            mStyles.width = DipPixelUtil.dip2px((Context) mContext, popWidth);
+            // LeoLog.d("LeoPopMenu", "dip2px popWidth is : " + mStyles.width);
+            mStyles.height = LayoutParams.WRAP_CONTENT;
+            if (mAnimaStyle != -1) {
+                mStyles.animation = mAnimaStyle;
+            } else {
+                mStyles.animation = R.style.PopupListAnimUpDown;
+            }
+        } else {
+            mStyles.width = styles.width;
+            mStyles.height = styles.height;
+            mStyles.animation = styles.animation;
+            mStyles.direction = styles.direction;
         }
     }
 
@@ -162,33 +161,26 @@ public class LeoPopMenu {
                 .getInstance());
         LinearLayout convertView = (LinearLayout) inflater.inflate(
                 R.layout.popmenu_window_list_layout, null);
-        listView = (ListView) convertView.findViewById(R.id.menu_list);
+        mListView = (ListView) convertView.findViewById(R.id.menu_list);
 
-        listView.setOnItemClickListener(mPopItemClickListener);
-
-        mAdapter = new MenuListAdapter(mItems);
-        listView.setAdapter(mAdapter);
+        mListView.setOnItemClickListener(mPopItemClickListener);
+        if (null == mAdapter) {
+            mAdapter = new MenuListAdapter(mItems);
+        }
+        mListView.setAdapter(mAdapter);
         return convertView;
     }
-    
-    public void setPopMenuItems(Context mContext, List<String> items,List<Integer> icons,boolean isShowicon){
-        this.isShowIcon = isShowicon;
-        mIcons = icons;
-        setPopMenuItems(mContext,items);
-    }
 
-    public void setPopMenuItems(Context mContext, List<String> items) {
+    public void setPopMenuItems(Context context, List<String> items) {
         mItems = items;
-        
+        mContext = context;
+
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         int W = mDisplay.getWidth();
         int H = mDisplay.getHeight();
-        Log.i("Main", "Width = " + W);
-        Log.i("Main", "Height = " + H);
         LeoLog.d("LeoPopMenu", "Width = " + W);
         LeoLog.d("LeoPopMenu", "Height = " + H);
-        
-        
+
         float mMaxLength = 0;
         TextView testTextView = new TextView(mContext);
         for (int i = 0; i < mItems.size(); i++) {
@@ -200,32 +192,32 @@ public class LeoPopMenu {
             }
         }
 
-        if (W >=1080) {
+        if (W >= 1080) {
             if (mMaxLength > OVERPX) {
                 isOverWidth = true;
-                if(mMaxLength > 260){
+                if (mMaxLength > 260) {
                     newLongWidth = mMaxLength - 120;
-                }else {
+                } else {
                     newLongWidth = mMaxLength - 100;
                 }
-                if(newLongWidth > 210){
+                if (newLongWidth > 210) {
                     newLongWidth = 210;
                 }
             } else {
                 isOverWidth = false;
                 if (mMaxLength < SMALLWidth) {
                     newSmallWidth = mMaxLength - 20;
-                } else if(mMaxLength < 180){
+                } else if (mMaxLength < 180) {
                     newSmallWidth = mMaxLength - 40;
-                }else {
+                } else {
                     newSmallWidth = mMaxLength - 60;
                 }
             }
-        } else if(W >= 720){
+        } else if (W >= 720) {
             if (mMaxLength > OVERPX) {
                 isOverWidth = true;
                 newLongWidth = LongWidth - 20;
-                if(newLongWidth > 210){
+                if (newLongWidth > 210) {
                     newLongWidth = 210;
                 }
             } else {
@@ -236,22 +228,22 @@ public class LeoPopMenu {
                     newSmallWidth = mMaxLength - 20;
                 }
             }
-        } else if(W >= 480){
+        } else if (W >= 480) {
             if (mMaxLength > OVERPX) {
                 isOverWidth = true;
                 newLongWidth = LongWidth + 30;
-                if(newLongWidth > 210){
+                if (newLongWidth > 210) {
                     newLongWidth = 210;
                 }
             } else {
                 isOverWidth = false;
                 newSmallWidth = mMaxLength + 40;
             }
-        }else{
+        } else {
             if (mMaxLength > OVERPX) {
                 isOverWidth = true;
                 newLongWidth = LongWidth + 50;
-                if(newLongWidth > 210){
+                if (newLongWidth > 210) {
                     newLongWidth = 210;
                 }
             } else {
@@ -259,88 +251,78 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
-        
-        
-        
-        
-//不改动上面的代码，对最终结果再做适配
-        
+        // 不改动上面的代码，对最终结果再做适配
         Locale locale = mContext.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
-//        Log.e("poha", language);
-           Log.e("poha", H+"");
-        if(language.endsWith("en"))
+        // Log.e("poha", language);
+        Log.e("poha", H + "");
+        if (language.endsWith("en"))
         {
-            
-            if(H<=480)
+
+            if (H <= 480)
             {
-                newSmallWidth=newSmallWidth+(10*480/H);
-                newLongWidth=newLongWidth+(10*480/H);
+                newSmallWidth = newSmallWidth + (10 * 480 / H);
+                newLongWidth = newLongWidth + (10 * 480 / H);
             }
-            else if(H<=800)
-            {         
-                newSmallWidth=newSmallWidth-(18*H/800);
-                newLongWidth=newLongWidth-(18*H/800);
-            }
-            else if(H<=1280)
+            else if (H <= 800)
             {
-                newSmallWidth=newSmallWidth-(5*H/1280);
-                newLongWidth=newLongWidth-(5*H/1280);
+                newSmallWidth = newSmallWidth - (18 * H / 800);
+                newLongWidth = newLongWidth - (18 * H / 800);
             }
-//            else if(H<=1920)
-//            {
-//                newSmallWidth=newSmallWidth+(100*1920/H);
-//                newLongWidth=newLongWidth+(100*1920/H);
-//            }
-            
-//            Log.e("poha", "done");
-//            newSmallWidth-=20*H/1280;
-//            newLongWidth-=20*H/1280;
+            else if (H <= 1280)
+            {
+                newSmallWidth = newSmallWidth - (5 * H / 1280);
+                newLongWidth = newLongWidth - (5 * H / 1280);
+            }
+            // else if(H<=1920)
+            // {
+            // newSmallWidth=newSmallWidth+(100*1920/H);
+            // newLongWidth=newLongWidth+(100*1920/H);
+            // }
+
+            // Log.e("poha", "done");
+            // newSmallWidth-=20*H/1280;
+            // newLongWidth-=20*H/1280;
         }
-        //特殊处理一下只有一个item的情况,以免换行不好看或空白太多，目前只有忘记密码部分
-        
-        if(items.size()==1)
+        // 特殊处理一下只有一个item的情况,以免换行不好看或空白太多，目前只有忘记密码部分
+
+        if (items.size() == 1)
         {
-           
-            
-//           Log.e("poha", H+"");
-           
-            if(H<=480)
+
+            // Log.e("poha", H+"");
+
+            if (H <= 480)
             {
-                newSmallWidth=newSmallWidth+(18*480/H);
-                newLongWidth=newLongWidth+(18*480/H);
+                newSmallWidth = newSmallWidth + (18 * 480 / H);
+                newLongWidth = newLongWidth + (18 * 480 / H);
             }
-            else if(H<=800)
-            {         
-                newSmallWidth=newSmallWidth+(5*800/H);
-                newLongWidth=newLongWidth+(5*800/H);
-            }
-            else if(H<=1280)
+            else if (H <= 800)
             {
-                newSmallWidth=newSmallWidth-(0*H/1280);
-                newLongWidth=newLongWidth-(0*H/1280);
+                newSmallWidth = newSmallWidth + (5 * 800 / H);
+                newLongWidth = newLongWidth + (5 * 800 / H);
             }
-            else if(H<=1920)
+            else if (H <= 1280)
             {
-                newSmallWidth=newSmallWidth-(20*H/1280);
-                newLongWidth=newLongWidth-(20*H/1280);
+                newSmallWidth = newSmallWidth - (0 * H / 1280);
+                newLongWidth = newLongWidth - (0 * H / 1280);
             }
-            
-            
-            
-            //Toast.makeText(mContext, language, 0).show();
-            //部分机型上泰文没法显示，item宽度只有一小段，特殊处理
-            
-            if(language.endsWith("th"))
+            else if (H <= 1920)
             {
-                newSmallWidth=120;
-                newLongWidth=120;
+                newSmallWidth = newSmallWidth - (20 * H / 1280);
+                newLongWidth = newLongWidth - (20 * H / 1280);
             }
-          
-        }    
-    
-        
-            
+
+            // Toast.makeText(mContext, language, 0).show();
+            // 部分机型上泰文没法显示，item宽度只有一小段，特殊处理
+
+            if (language.endsWith("th"))
+            {
+                newSmallWidth = 120;
+                newLongWidth = 120;
+            }
+
+        }
+
     }
 
     public List<String> getPopMenuItems() {
@@ -399,13 +381,8 @@ public class LeoPopMenu {
                 mHolder = (Holder) convertView.getTag();
             } else {
                 mHolder = new Holder();
-                if(isShowIcon){
-                    convertView = inflater.inflate(R.layout.popmenu_window_home_list_item, null);
-                    mHolder.mItemIcon = (ImageView) convertView.findViewById(R.id.menu_icon);
-                }else{
-                    convertView = inflater.inflate(R.layout.popmenu_window_list_item, null);
-                }
-                mHolder.mItemName = (TextView) convertView .findViewById(R.id.menu_text);
+                convertView = inflater.inflate(R.layout.popmenu_window_list_item, null);
+                mHolder.mItemName = (TextView) convertView.findViewById(R.id.menu_text);
                 convertView.setTag(mHolder);
             }
 
@@ -414,9 +391,6 @@ public class LeoPopMenu {
                 mHolder.mItemName.setText(itemText);
             } else {
                 mHolder.mItemName.setText(mListItems.get(position));
-                if(isShowIcon){
-                    mHolder.mItemIcon.setImageResource(mIcons.get(position));
-                }
             }
             return convertView;
         }
@@ -429,9 +403,9 @@ public class LeoPopMenu {
         return textLength;
     }
 
-    public void setListViewDivider(Drawable divider){
-        if(null != listView){
-            listView.setDivider(divider);
+    public void setListViewDivider(Drawable divider) {
+        if (null != mListView) {
+            mListView.setDivider(divider);
         }
     }
 }

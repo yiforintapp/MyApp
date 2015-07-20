@@ -78,8 +78,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/app_manager_headview_fourtext_margin_left"
-            android:layout_toRightOf="@id/content_donghua"
+            android:layout_alignParentRight="true"
+            android:gravity="right"
+            android:layout_marginRight="@dimen/app_manager_headview_fourtext_margin_left"
             android:orientation="vertical" >
 
             <TextView

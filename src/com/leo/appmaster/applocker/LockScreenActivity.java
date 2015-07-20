@@ -73,6 +73,7 @@ import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoCircleView;
+import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
@@ -98,7 +99,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private CommonTitleBar mTtileBar;
     private LockFragment mLockFragment;
     private Bitmap mAppBaseInfoLayoutbg;
-    private LeoPopMenu mLeoPopMenu;
+    private LeoHomePopMenu mLeoPopMenu;
     private LeoDoubleLinesInputDialog mDialog;
     private LEOAlarmDialog mTipDialog;
     private EditText mEtQuestion, mEtAnwser;
@@ -713,7 +714,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         switch (v.getId()) {
             case R.id.tv_option_image:
                 if (mLeoPopMenu == null) {
-                    mLeoPopMenu = new LeoPopMenu();
+                    mLeoPopMenu = new LeoHomePopMenu();
                     mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view,
@@ -728,7 +729,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     });
                 }
 
-                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getRightMenuIcons(), true);
+                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getRightMenuIcons());
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
 

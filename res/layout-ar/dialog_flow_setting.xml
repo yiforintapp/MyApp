@@ -25,25 +25,25 @@
 
             <TextView
                 android:id="@+id/seekbar_text_progress"
-                android:layout_width="30dp" 
+                android:layout_width="30dp"
                 android:layout_height="35dp"
                 android:background="@drawable/lock_settings_icon"
                 android:gravity="center"
-                android:textSize="12sp"
-                android:textColor="@color/white"
                 android:text="50"
-                />
-            
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
             <com.leo.appmaster.ui.LeoSeekBar
                 android:id="@+id/mSeekBar"
                 style="@style/Widget.SeekBar.Normal"
                 android:layout_width="@dimen/app_manager_hotactivity_list_item_text_des_width"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/seekbar_text_progress"
-                 android:layout_marginTop="5dp"
+                android:layout_marginTop="5dp"
                 android:max="100" />
 
-            <!-- <TextView
+            <!--
+                 <TextView
                 android:id="@+id/seekbar_text_progress"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -51,7 +51,8 @@
                 android:layout_toRightOf="@+id/mSeekBar"
                 android:text="50%"
                 android:textColor="@color/flow_item_small"
-                android:textSize="12dp" /> -->
+                android:textSize="12dp" />
+            -->
 
         </RelativeLayout>
 

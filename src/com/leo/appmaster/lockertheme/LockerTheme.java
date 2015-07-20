@@ -16,6 +16,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -205,7 +206,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             for (int i = 0; i < mLocalThemes.size(); i++) {
                 if (mLocalThemes.get(i).packageName.equals(mFromTheme)) {
                     number = i;
-                    showAlarmDialog(mLocalThemes.get(i).themeName, View.VISIBLE);
+                    showAlarmDialog (mLocalThemes.get(i).themeName, mLocalThemes.get(i).themeLogo,View.VISIBLE);
                     lastSelectedItem = mLocalThemes.get(i);
                 }
             }
@@ -429,7 +430,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 }
                 bean.label = (String) this.getResources().getText(
                         R.string.localtheme);
-
+                int themeLogo = themeContext.getResources().getIdentifier("ic_launcher","drawable", themeContext.getPackageName());
+                if(themeLogo > 0){
+                    bean.themeLogo = themeContext.getResources().getDrawable(themeLogo);
+                }else{
+                    bean.themeLogo = this.getResources().getDrawable(R.drawable.default_theme_logo);
+                }
+                
                 if (AppMasterApplication.usedThemePackage.equals(themePackage)) {
                     bean.curUsedTheme = true;
                 } else {
@@ -740,8 +747,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         }
     }
 
-    public void showAlarmDialog(String packageName, int rightVisible) {
+    public void showAlarmDialog(String packageName,Drawable themeImage, int rightVisible) {
         dialog = new LEOThreeButtonDialog(this);
+        dialog.setDialogIconDrawable(themeImage);
         dialog.setTitle(packageName);
         dialog.setMiddleBtnStr(getString(R.string.locker_apply));
         dialog.setRightBtnStr(getString(R.string.locker_uninstall));
@@ -937,9 +945,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     .equals(AppMasterApplication.usedThemePackage)) {
                 if (lastSelectedItem.packageName
                         .equals("com.leo.theme.default")) {
-                    showAlarmDialog(lastSelectedItem.themeName, View.GONE);
+                    showAlarmDialog(lastSelectedItem.themeName, lastSelectedItem.themeLogo,View.GONE);
                 } else {
-                    showAlarmDialog(lastSelectedItem.themeName, View.VISIBLE);
+                    showAlarmDialog(lastSelectedItem.themeName,lastSelectedItem.themeLogo, View.VISIBLE);
                 }
             }
         }
@@ -982,7 +990,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         for (int i = 0; i < mLocalThemes.size(); i++) {
                             if (mLocalThemes.get(i).packageName.equals(mFromTheme)) {
                                 number = i;
-                                showAlarmDialog(mLocalThemes.get(i).themeName, View.VISIBLE);
+                                showAlarmDialog(mLocalThemes.get(i).themeName, mLocalThemes.get(i).themeLogo,View.VISIBLE);
                                 lastSelectedItem = mLocalThemes.get(i);
                             }
                         }

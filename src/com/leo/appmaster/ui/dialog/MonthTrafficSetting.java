@@ -6,8 +6,6 @@ import android.content.DialogInterface;
 import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.widget.RelativeLayout;
@@ -17,10 +15,11 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoSeekBar;
-import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LanguageUtils;
 
 public class MonthTrafficSetting extends LEOBaseDialog {
     private Context mContext;
@@ -52,6 +51,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
         seekbar_text_progress = (TextView) dlgView.findViewById(R.id.seekbar_text_progress);
         progressInt = sp_notice_flow.getFlowSettingBar();
         seekbar_text_progress.setText(progressInt + "%");
+
         // 得到seekbar_text_progress 大小，初始化位置
         ViewTreeObserver vto = seekbar_text_progress.getViewTreeObserver();
         vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
@@ -70,14 +70,30 @@ public class MonthTrafficSetting extends LEOBaseDialog {
         sure_button = (TextView) dlgView.findViewById(R.id.sure_button);
 
         mSeekBar = (LeoSeekBar) dlgView.findViewById(R.id.mSeekBar);
-        mSeekBar.setProgress(progressInt);
+        // 设置seekbar显示位置
+        setSeeBarProgress(progressInt);
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if (progress == 0) {
-                    seekbar_text_progress.setText(1 + "%");
+                    if (!LanguageUtils.isRightToLeftLanguage(null)) {
+                        seekbar_text_progress.setText(1 + "%");
+                    } else {
+                        seekbar_text_progress.setText(100 + "%");
+                    }
                 } else {
-                    seekbar_text_progress.setText(progress + "%");
+                    if (!LanguageUtils.isRightToLeftLanguage(null)) {
+                        // 系统语言为从左到右显示的语言
+                        seekbar_text_progress.setText(progress + "%");
+                    } else {
+                        // 系统语言为从右到左显示的语言
+                        if (progress == 100) {
+                            seekbar_text_progress.setText(AppBusinessManager.mRtToLtSeeBarMin + "%");
+                        } else {
+                            seekbar_text_progress.setText((AppBusinessManager.mRtToLtSeeBarMax - progress) + "%");
+                        }
+
+                    }
                 }
                 resetSeekbarTextMargin(((LeoSeekBar) seekBar).getSeekBarThumb().getBounds()
                         .centerX());
@@ -89,7 +105,12 @@ public class MonthTrafficSetting extends LEOBaseDialog {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                progressInt = seekBar.getProgress();
+                if (!LanguageUtils.isRightToLeftLanguage(null)) {
+                    progressInt = seekBar.getProgress();
+                }else{
+                    // 系统语言为从右到左显示的语言
+                progressInt = AppBusinessManager.mRtToLtSeeBarMax - (seekBar.getProgress());
+                }
             }
         });
 
@@ -109,6 +130,17 @@ public class MonthTrafficSetting extends LEOBaseDialog {
         setCanceledOnTouchOutside(true);
     }
 
+    /*
+     * 显示方向处理
+     */
+    private void setSeeBarProgress(int value) {
+        if (!LanguageUtils.isRightToLeftLanguage(null)) {
+            mSeekBar.setProgress(value);
+        } else {
+            mSeekBar.setProgress(AppBusinessManager.mRtToLtSeeBarMax - value);
+        }
+    }
+
     public void setOnClickListener(OnDiaogClickListener listener) {
         mListener = listener;
     }
@@ -125,7 +157,6 @@ public class MonthTrafficSetting extends LEOBaseDialog {
             }
         });
     }
-
 
     /**
      * reset the posotion of seekbar_text_progress

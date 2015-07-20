@@ -3,6 +3,7 @@ package com.leo.appmaster.ui;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
@@ -333,7 +335,8 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
             invalidate();
         }
 
-        @Override
+        @SuppressLint("DrawAllocation")
+		@Override
         protected void onDraw(Canvas canvas) {
             super.onDraw(canvas);
             if (mIsRedTip) {
@@ -366,17 +369,15 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
                     }
                 }
                 canvas.translate(x, y);
-                Paint paint = new Paint();
-                paint.setAntiAlias(true);
-                paint.setStyle(Paint.Style.FILL);
-                Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_tip);
-
+                canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
+                Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_dot);
                 float scaleX = (float) tabTextwdth / redTip.getWidth();
                 float scaleY = (float) tabTexteight / redTip.getHeight();
                 Matrix matrix = new Matrix();
+                Log.i("######", "tabTextwdth = "+tabTextwdth+", redTip.getWidth() = "+redTip.getWidth());
                 matrix.setScale(scaleX, scaleY, redTip.getWidth() / 2,
                         redTip.getHeight() / 2);
-                canvas.drawBitmap(redTip, matrix, paint);
+                canvas.drawBitmap(redTip, matrix, null);
                 canvas.save();
             }
         }

@@ -116,7 +116,7 @@
                         android:layout_alignParentTop="true"
                         android:layout_marginRight="@dimen/app_manager_hotapp_rep_tip_margin_right"
                         android:layout_marginTop="@dimen/app_manager_hotapp_rep_tip_margin"
-                        android:src="@drawable/red_tip"
+                        android:src="@drawable/red_dot"
                         android:visibility="gone" />
 
                       <ImageView
