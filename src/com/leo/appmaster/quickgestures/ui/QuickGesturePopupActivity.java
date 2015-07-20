@@ -63,6 +63,12 @@ public class QuickGesturePopupActivity extends BaseActivity {
         return mFromSelfApp;
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        // TODO Auto-generated method stub
+        super.onNewIntent(intent);
+    }
+
     private void initIU() {
         mContainer = (AppleWatchContainer) findViewById(R.id.gesture_container);
         int showOrientation = getIntent().getIntExtra("show_orientation", 0);
@@ -78,6 +84,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void checkFirstWhiteClick() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot() && !BuildProperties.isGTS5282()) {
+            amp.setEverCloseWhiteDot(true);
             int clickCount = amp.getUseStrengthenModeTimes();
             if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
