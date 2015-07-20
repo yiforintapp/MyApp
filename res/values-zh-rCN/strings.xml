@@ -138,7 +138,7 @@
     <string name="grade">五星好评</string>
     <string name="grade_tip">您已经使用隐私卫士很多次了，喜欢我们吗，给5星鼓励下吧！</string>
     <string name="app_setting_about">关于</string>
-     <string name="forbid_uninstall">高级保护</string>
+    <string name="forbid_uninstall">高级保护</string>
     <string name="auto_lock">锁屏后自动锁定</string>
     <string name="change_lock_time">更改锁定时间</string>
     <string name="recom_lock_tip">推荐应用加锁提醒</string>
@@ -620,7 +620,7 @@
 
     <string-array name="weizhuang_type_num">
         <item>无</item>
-        <item >美女伪装</item>
+        <item>美女伪装</item>
         <item>应用错误</item>
         <item>未知来电</item>
         <item>指纹解锁</item>
@@ -709,12 +709,13 @@
     <string name="grade_tip_feedback">我要吐槽</string>
     <string name="quick_first_tip_dialog_right_bt">立即体验</string>
     <string name="quick_first_tip_dialog_left_bt">稍后再试</string>
-    
+
     <!-- quick gesture -->
- <!-- version 2.4 end -->
- 
+    <!-- version 2.4 end -->
+
+
     <!-- version 2.5 huangqili part -->
-   <string name="forbid_uninstall_off">开启高级保护，防止隐私卫士被恶意卸载，更好地保护您的隐私</string>
+    <string name="forbid_uninstall_off">开启高级保护，防止隐私卫士被恶意卸载，更好地保护您的隐私</string>
     <string name="forbid_uninstall_on">高级保护开启成功！</string>
     <string name="setting_hide_lockline">隐藏解锁轨迹</string>
     <string name="change_to_gesture">切换为手势密码</string>
@@ -725,40 +726,40 @@
     <string name="summary_setting_locker">选择应用锁定设置</string>
     <string name="summary_hide_lockline">将应用解锁轨迹隐藏，更安全地保护您的隐私</string>
     <string name="quick_gesture_strengthen_mode_title">小白点</string>
- 	<string name="quick_gesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
- 	<string name="quick_gesture_success_title">开启快捷手势成功!</string>
- 	<string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
+    <string name="quick_gesture_strengthen_mode_content">点击小白点即可打开快捷手势</string>
+    <string name="quick_gesture_success_title">开启快捷手势成功!</string>
+    <string name="quick_gesture_success_content">您可以点击下方快速的打开/关闭蓝牙、wifi等系统开关，以及常用的应用，赶快试试吧!</string>
     <string name="go_set">去设置</string>
- 	<string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭。</string>
- 	<string name="quick_gesture_open_text">已开启</string>
- 	<string name="quick_gesture_close_text">已关闭</string>
- 	<string name="quick_gesture_introduction_title">什么是快捷手势?</string>
- 	<string name="quick_gesture_introduction_content">快捷手势是隐士卫士推出的一款高效插件，通过他你可以很方便的管理手机中的系统开关，以及快速打开应用</string>
- 	<string name="quick_gesture_slide_guide_title">如何开启划出手势?</string>
- 	<string name="quick_gesture_slide_guide_content">您只需在手机的角落轻轻划出，就可以开启快捷手势</string>
- 	<string name="quick_gesture_slide_setting_content">如果您的手机难以划出，可以点击这里设置划出区域</string>
- 	<string name="quick_gesture_edit_guide_title">如何编辑快捷手势的开关或应用?</string>
- 	<string name="quick_gesture_edit_guide_content">在任何一个快捷手势的tap类别中长按应用/开关，即可以进入编辑界面，您可以删除应用/开关，也可以在常用应用和快捷开关中添加应用/开关</string>
- 	<string name="quick_gesture_edit_extra_content">注:最近使用的应用是系统生成的，所以不可以主动添加</string>
- 	<string name="can_not_add_more">不能添加更多</string>
- 	 	<string name="new_guide_page1_title">快捷手势</string>
- 	<string name="new_guide_page1_content">一划即现，简单方便</string>
- 	<string name="new_guide_page2_title">应用伪装</string>
- 	<string name="new_guide_page2_content">一点即变，趣味无限</string>
- 	<string name="new_guide_page3_title">快捷手势小白点</string>
- 	<string name="new_guide_page3_content">轻轻一点，手势即现</string>
- 	<string name="quick_open_tip">您还没有开启快捷手势</string>
- 	<string name="quick_setting_title">快捷手势设置</string>
- 	<string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
+    <string name="white_dot_click_tip">恭喜您成功通过小白点开启快捷手势！如果您觉得打扰，可以在快捷手势设置中关闭。</string>
+    <string name="quick_gesture_open_text">已开启</string>
+    <string name="quick_gesture_close_text">已关闭</string>
+    <string name="quick_gesture_introduction_title">什么是快捷手势?</string>
+    <string name="quick_gesture_introduction_content">快捷手势是隐士卫士推出的一款高效插件，通过他你可以很方便的管理手机中的系统开关，以及快速打开应用</string>
+    <string name="quick_gesture_slide_guide_title">如何开启划出手势?</string>
+    <string name="quick_gesture_slide_guide_content">您只需在手机的角落轻轻划出，就可以开启快捷手势</string>
+    <string name="quick_gesture_slide_setting_content">如果您的手机难以划出，可以点击这里设置划出区域</string>
+    <string name="quick_gesture_edit_guide_title">如何编辑快捷手势的开关或应用?</string>
+    <string name="quick_gesture_edit_guide_content">在任何一个快捷手势的tap类别中长按应用/开关，即可以进入编辑界面，您可以删除应用/开关，也可以在常用应用和快捷开关中添加应用/开关</string>
+    <string name="quick_gesture_edit_extra_content">注:最近使用的应用是系统生成的，所以不可以主动添加</string>
+    <string name="can_not_add_more">不能添加更多</string>
+    <string name="new_guide_page1_title">快捷手势</string>
+    <string name="new_guide_page1_content">一划即现，简单方便</string>
+    <string name="new_guide_page2_title">应用伪装</string>
+    <string name="new_guide_page2_content">一点即变，趣味无限</string>
+    <string name="new_guide_page3_title">快捷手势小白点</string>
+    <string name="new_guide_page3_content">轻轻一点，手势即现</string>
+    <string name="quick_open_tip">您还没有开启快捷手势</string>
+    <string name="quick_setting_title">快捷手势设置</string>
+    <string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
     <string name="quick_no_call_log_annotation">未接来电会在快捷手势中提示</string>
     <string name="quick_no_pricay_contact_annotation">信息会以系统信息的形式提示</string>
     <!-- version 2.5 huangqili part -->
 
 	<!-- 2.6 start -->
 	<!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译-->
-	<string name="beauty_guide_title">使用介绍</string>
-	<string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
-	
-	
-	
+	  <string name="beauty_guide_title">使用介绍</string>
+    <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
+    <string name="flash_light_open_toast">请不要重复操作闪光灯</string>
+	<string name="privacy_auto_add_text">手动添加</string>
+	<!--  2.6 end -->
 </resources>

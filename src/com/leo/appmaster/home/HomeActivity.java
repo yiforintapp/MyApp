@@ -1095,7 +1095,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (times < 2) {
             pref.setEnterHomeTimes(++times);
         }
-        Log.i("######", "times = " + times);
     }
 
     /**

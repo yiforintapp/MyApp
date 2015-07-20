@@ -68,7 +68,17 @@
             android:visibility="gone"
             android:text="MORE >"
             />
-
     </RelativeLayout>
 
+       <ImageView
+        android:id="@+id/skip_img"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginRight="@dimen/guide_skip_margin"
+        android:layout_marginTop="@dimen/guide_skip_margin"
+        android:background="@drawable/gridview_list_selecter" 
+        android:visibility="gone"
+        />
 </RelativeLayout>

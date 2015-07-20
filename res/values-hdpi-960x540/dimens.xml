@@ -147,7 +147,7 @@
     <dimen name="privacy_contact_circleimage_red_tip_y">4dp</dimen>
     <dimen name="privacy_default_image_width">150dp</dimen>
     <dimen name="privacy_default_image_height">150dp</dimen>
-    <dimen name="privacy_default_text_margin_top">22dp</dimen>
+    <dimen name="privacy_default_text_margin_top">10dp</dimen>
     <dimen name="privacy_message_item_date_tv_width">75dp</dimen>
     <dimen name="privacy_message_item_date_tv_height">16dp</dimen>
 
@@ -344,6 +344,7 @@
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">70dp</dimen>
      <dimen name="webview_title_width">252dp</dimen>
+     <dimen name="guide_skip_margin">10dp</dimen>
     <!-- 2.6 end -->
 
 </resources>

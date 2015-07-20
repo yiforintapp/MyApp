@@ -8,7 +8,6 @@ import java.util.Locale;
 /**
  * 语言工具类
  * 
- * @author run
  */
 /*
  * 从右到左显示的语言

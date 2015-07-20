@@ -105,7 +105,12 @@ public class MonthTrafficSetting extends LEOBaseDialog {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                if (!LanguageUtils.isRightToLeftLanguage(null)) {
+                    progressInt = seekBar.getProgress();
+                }else{
+                    // 系统语言为从右到左显示的语言
                 progressInt = AppBusinessManager.mRtToLtSeeBarMax - (seekBar.getProgress());
+                }
             }
         });
 

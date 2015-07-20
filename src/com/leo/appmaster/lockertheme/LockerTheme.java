@@ -434,7 +434,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 if(themeLogo > 0){
                     bean.themeLogo = themeContext.getResources().getDrawable(themeLogo);
                 }else{
-                    
+                    bean.themeLogo = this.getResources().getDrawable(R.drawable.default_theme_logo);
                 }
                 
                 if (AppMasterApplication.usedThemePackage.equals(themePackage)) {

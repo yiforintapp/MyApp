@@ -17,6 +17,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.NinePatch;
 import android.graphics.drawable.NinePatchDrawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -34,6 +35,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -356,6 +358,7 @@ public class SplashActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.guide_page1_title));
         tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.guide_page1_content));
+        setSkipClickListener(page1);
         mPageViews.add(page1);
         /* page2 */
         ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
@@ -365,6 +368,7 @@ public class SplashActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.guide_page2_title));
         tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.guide_page2_content));
+        setSkipClickListener(page2);
         mPageViews.add(page2);
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
@@ -374,6 +378,7 @@ public class SplashActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.guide_page3_title));
         tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.guide_page3_content));
+        setSkipClickListener(page3);
         mPageViews.add(page3);
         /* page4 */
         ViewGroup page4 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
@@ -406,16 +411,11 @@ public class SplashActivity extends BaseActivity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
-                startHome();
-                String currentVersionName = SplashActivity.this
-                        .getString(R.string.version_name);
-                AppMasterPreference.getInstance(SplashActivity.this).setAppVersionName(
-                        currentVersionName);
+                enterHome();
             }
         });
     }
-
+    
     class GuidePageAdapter extends PagerAdapter {
         List<View> pageViews;
         
@@ -490,6 +490,30 @@ public class SplashActivity extends BaseActivity {
         return flag;
     }
     
+    /*
+     * set  click listener of skip btn in  guide page
+     */
+    private void setSkipClickListener(ViewGroup page){
+        ImageView skipImage;
+        skipImage = (ImageView)page.findViewById(R.id.skip_img);
+        skipImage.setVisibility(View.VISIBLE);
+        skipImage.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               enterHome();
+            }
+        });
+    }
+    
+    private void  enterHome(){
+        AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
+        startHome();
+        String currentVersionName = SplashActivity.this
+                .getString(R.string.version_name);
+        AppMasterPreference.getInstance(SplashActivity.this).setAppVersionName(
+                currentVersionName);
+    }
+    
     private void showNewFuncGuide(){
         mNewFuncPageViews = new ArrayList<View>();
         LayoutInflater inflater = getLayoutInflater();
@@ -510,6 +534,7 @@ public class SplashActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.new_guide_page1_title));
         tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.new_guide_page1_content));
+        setSkipClickListener(page1);
         mNewFuncPageViews.add(page1);
         
         /* page2 */
@@ -520,6 +545,7 @@ public class SplashActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.new_guide_page2_title));
         tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.new_guide_page2_content));
+        setSkipClickListener(page2);
         mNewFuncPageViews.add(page2);
         
         /* page3 */
@@ -561,15 +587,9 @@ public class SplashActivity extends BaseActivity {
         enterAppButton.setTextColor(getResources().getColor(R.color.new_guide_page3_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
-            
             @Override
             public void onClick(View v) {
-                AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
-                startHome();
-                String currentVersionName = SplashActivity.this
-                        .getString(R.string.version_name);
-                AppMasterPreference.getInstance(SplashActivity.this).setAppVersionName(
-                        currentVersionName);
+               enterHome();
             }
         });
     }
