@@ -186,7 +186,7 @@ public class PrivacyLevelView extends View {
         mScanningIconEndRect.top = mScanningIconCenterRect.top;
         mScanningIconEndRect.bottom =  mScanningIconCenterRect.top + scanningIconSize;
         
-        if(!mLastIconDrawBount.equals(mIconDrawBount) && getVisibility() == View.VISIBLE) {
+        if(!mLastIconDrawBount.equals(mIconDrawBount) && isShown()) {
             int maxTextWidth = (int)(drawW * SMALL_TEXT_WIDTH_PERCENT);
             int textSize = computeTextSize(mLevelText, mSmallTextSize, maxTextWidth, mPaint);
             mRealSmallTextSize = (int)mPaint.getTextSize();
