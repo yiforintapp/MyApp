@@ -6,6 +6,7 @@ import android.view.View;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.ZipperView.OnGestureSuccessListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -15,7 +16,7 @@ public class BeautyWeiZhuang extends BaseActivity
     private final static int BEAUTYWEIZHUANG = 1;
     private LEOAlarmDialog mAlarmDialog;
     private AppMasterPreference mAppMasterSP;
-    
+    private ZipperView mZipperView;
     
     
     @Override
@@ -28,15 +29,19 @@ public class BeautyWeiZhuang extends BaseActivity
 
     private void init() {
         mAppMasterSP=AppMasterPreference.getInstance(this);
+        mZipperView=(ZipperView) findViewById(R.id.zipperview_beauty_guide);
+        mZipperView.setOnGestureSuccessListener(new OnGestureSuccessListener() {
+            
+            @Override
+            public void OnGestureSuccess() {
+                // TODO Auto-generated method stub
+                showAlarmDialog("标题啦","呵呵","确定");
+            }
+        });
         
     }
     
-    public void click(View v)
-    {
-        showAlarmDialog("标题啦","呵呵","确定");
-    }
     
-
     private void showAlarmDialog(String title, String content, String sureText)
     {
         if (mAlarmDialog == null)

@@ -111,8 +111,8 @@ public class AppleWatchContainer extends FrameLayout {
 
         mPref = AppMasterPreference.getInstance(context);
         mCurrentLayout = mPref.getLastTimeLayout();
-        Log.i("tag", "刚来！show 出的是：" + mCurrentLayout);
-        LeoLog.d("AppleWatchContainer", "刚来！show 出的是：" + mCurrentLayout);
+//        Log.i("tag", "刚来！show 出的是：" + mCurrentLayout);
+//        LeoLog.d("AppleWatchContainer", "刚来！show 出的是：" + mCurrentLayout);
         makeNowLayout();
 
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
@@ -1693,6 +1693,10 @@ public class AppleWatchContainer extends FrameLayout {
     public int getNowLayout() {
         return mCurrentLayout;
     }
+    
+    public void setNowLayout(int nowLayout){
+        mCurrentLayout = nowLayout;
+    }
 
     /**
      * translate the layout title
@@ -1774,4 +1778,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
+    public void setCanNotTouch(boolean mFlag){
+        isAnimating = mFlag;
+    }
 }

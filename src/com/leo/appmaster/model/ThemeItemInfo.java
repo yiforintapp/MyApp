@@ -48,6 +48,8 @@ public class ThemeItemInfo {
 	
 	public long installTime = Long.MAX_VALUE;
 
+	public Drawable themeLogo;
+	
 	@Override
 	public String toString() {
 		return "ThemeInfo: themeName = " + themeName + "   packageName = "
