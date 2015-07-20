@@ -17,7 +17,7 @@ public class LeoLockSortPopMenu extends LeoPopMenu{
     private static int mCrrentIndex;
     
     public LeoLockSortPopMenu() {
-        mIconOffest = 12;
+        mIconOffest = 10;
     }
     
     public void setPopMenuItems(Context context, List<String> items, int currentIndex) {

@@ -163,13 +163,11 @@ public class LeoPopMenu {
 
         mListView.setOnItemClickListener(mPopItemClickListener);
         if (null == mAdapter) {
-            Log.i("######", "null adpater");
             mAdapter = new MenuListAdapter(mItems);
         }
         mListView.setAdapter(mAdapter);
         return convertView;
     }
-
 
     public void setPopMenuItems(Context context, List<String> items) {
         mItems = items;
@@ -384,7 +382,7 @@ public class LeoPopMenu {
                 mHolder = (Holder) convertView.getTag();
             } else {
                 mHolder = new Holder();
-                    convertView = inflater.inflate(R.layout.popmenu_window_list_item, null);
+                convertView = inflater.inflate(R.layout.popmenu_window_list_item, null);
                 mHolder.mItemName = (TextView) convertView.findViewById(R.id.menu_text);
                 convertView.setTag(mHolder);
             }
