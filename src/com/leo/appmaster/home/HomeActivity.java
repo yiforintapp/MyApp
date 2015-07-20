@@ -2,9 +2,7 @@
 package com.leo.appmaster.home;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -1097,7 +1095,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (times < 2) {
             pref.setEnterHomeTimes(++times);
         }
-        Log.i("######", "times = " + times);
     }
 
     /**

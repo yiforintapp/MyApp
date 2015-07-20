@@ -747,7 +747,8 @@
 
 	<!-- 2.6 start -->
 	<!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译-->
-
+	<string name="privacy_auto_add_text">手动添加</string>
+	<!-- 2.6 end -->
 
 
 

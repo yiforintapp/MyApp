@@ -349,6 +349,7 @@
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">60dp</dimen>
     <dimen name="webview_title_width">252dp</dimen>
+    <dimen name="guide_skip_margin">10dp</dimen>
     <!-- 2.6 end -->
 
 </resources>
