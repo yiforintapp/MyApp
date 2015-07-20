@@ -1,13 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
-    <Button
+    <com.leo.appmaster.applocker.ZipperView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="测试用，点击就设置完成"
-        android:onClick="click" />
-		
-</LinearLayout>
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/beauty_guide_gesture" 
+        android:layout_marginTop="170dp"
+        />
+	<TextView 
+	     android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/"
+	    
+	    />
+</RelativeLayout>
