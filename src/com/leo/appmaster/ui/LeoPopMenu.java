@@ -106,9 +106,11 @@ public class LeoPopMenu {
         if (styles == null) {
             float popWidth = 0;
             if (!isOverWidth) {
+                LeoLog.d("LeoPopMenu", "newSmallWidth is : " + newSmallWidth);
                 newSmallWidth += DipPixelUtil.dip2px(mContext, mIconOffest);
                 popWidth = newSmallWidth;
             } else {
+                LeoLog.d("LeoPopMenu", "newLongWidth is : " + newLongWidth);
                 newLongWidth += DipPixelUtil.dip2px(mContext, mIconOffest);
                 popWidth = newLongWidth;
             }
@@ -176,8 +178,6 @@ public class LeoPopMenu {
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         int W = mDisplay.getWidth();
         int H = mDisplay.getHeight();
-        Log.i("Main", "Width = " + W);
-        Log.i("Main", "Height = " + H);
         LeoLog.d("LeoPopMenu", "Width = " + W);
         LeoLog.d("LeoPopMenu", "Height = " + H);
 

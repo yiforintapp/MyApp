@@ -18,11 +18,13 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.privacy.PrivacyHelper.Level;
 
 public class PrivacyLevelView extends View {
     private final static int SCANNING_ANIM_DURATION = 3200;
@@ -59,6 +61,7 @@ public class PrivacyLevelView extends View {
     private int mRealBigTextSize;
 
     private String mLevelText;
+    private Level mLastLevel;
     
     private int mColor = -1;
     
@@ -183,7 +186,7 @@ public class PrivacyLevelView extends View {
         mScanningIconEndRect.top = mScanningIconCenterRect.top;
         mScanningIconEndRect.bottom =  mScanningIconCenterRect.top + scanningIconSize;
         
-        if(!mLastIconDrawBount.equals(mIconDrawBount)) {
+        if(!mLastIconDrawBount.equals(mIconDrawBount) && getVisibility() == View.VISIBLE) {
             int maxTextWidth = (int)(drawW * SMALL_TEXT_WIDTH_PERCENT);
             int textSize = computeTextSize(mLevelText, mSmallTextSize, maxTextWidth, mPaint);
             mRealSmallTextSize = (int)mPaint.getTextSize();
@@ -248,12 +251,17 @@ public class PrivacyLevelView extends View {
             // big text
             int drawW = mIconDrawBount.width();
             int maxTextWidth = (int)(drawW * BIG_TEXT_WIDTH_PERCENT);
-            String text = ph.getLevelDescription(ph.getPrivacyLevel());
-            int textSize = computeTextSize(text, mBigTextSize, maxTextWidth, mPaint);
-            mRealBigTextSize = (int)mPaint.getTextSize();
-            mPaint.getFontMetrics(mFontMetrics);
-            int offset =  (int) Math.abs(mFontMetrics.ascent) - 2;
-            mBigTextPoint.set(mIconDrawBount.left + (drawW - textSize) / 2, mSepratorBound.top + mSepratorPadding + offset);
+            Level level = ph.getPrivacyLevel();
+            String text = ph.getLevelDescription(level);
+            if(mLastLevel != level) {
+                mLastLevel = level;
+                int textSize = computeTextSize(text, mBigTextSize, maxTextWidth, mPaint);
+                mRealBigTextSize = (int)mPaint.getTextSize();
+                mPaint.getFontMetrics(mFontMetrics);
+                int offset =  (int) Math.abs(mFontMetrics.ascent) - 2;
+                mBigTextPoint.set(mIconDrawBount.left + (drawW - textSize) / 2, mSepratorBound.top + mSepratorPadding + offset);
+            }
+
             mPaint.setTextSize(mRealBigTextSize);
             mPaint.setStyle(Style.FILL);
             mPaint.setColor(Color.WHITE);
@@ -267,13 +275,11 @@ public class PrivacyLevelView extends View {
     }
 
     private int computeTextSize(String text, int maxTextSize, int maxWidth, Paint paint) {
-        int count = 0;
         int textSize = maxTextSize;
         paint.setTextSize(textSize);
         int textWidth = (int) paint.measureText(text);
-        while (textWidth > maxWidth && count < 10) {
-            count ++;
-            textSize = textSize - 1;
+        while (textWidth > maxWidth) {
+            textSize = textSize - 3;
             paint.setTextSize(textSize);
             textWidth = (int) paint.measureText(text);
         }

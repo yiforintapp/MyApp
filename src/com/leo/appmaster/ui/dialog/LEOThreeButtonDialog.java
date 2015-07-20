@@ -1,11 +1,13 @@
 package com.leo.appmaster.ui.dialog;
 
+import android.R.integer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -15,11 +17,8 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 
 	private Context mContext;
 
-	private TextView mTitle;
-	private TextView mContent;
-	private TextView mLeftBtn;
-	private TextView mRightBtn;
-	private TextView mMidBtn;
+	private TextView mTitle,mContent, mLeftBtn,mRightBtn,mMidBtn;
+	private ImageView mHeadIcon;
 	private Object mUserData;
 
 	private OnDiaogClickListener mListener;
@@ -165,6 +164,7 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 		View dlgView = LayoutInflater.from(mContext).inflate(
 				R.layout.dialog_alarm_three_button, null);
 
+		mHeadIcon = (ImageView)dlgView.findViewById(R.id.dlg_icon);
 		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
 		mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
 
@@ -199,5 +199,9 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 
 	public void setSecondBtnBackground(int background){
 	    mMidBtn.setBackgroundResource(background);
+	}
+	
+	public void setDialogIconDrawable(Drawable drawable){
+	    mHeadIcon.setImageDrawable(drawable);
 	}
 }
