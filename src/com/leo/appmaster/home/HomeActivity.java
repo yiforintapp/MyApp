@@ -78,6 +78,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.IconPagerAdapter;
+import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -104,7 +105,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private ViewPager mViewPager;
     private View mBgStatusbar, mFgStatusbar;
     private HomeShadeView mShadeView;
-    private LeoPopMenu mLeoPopMenu;
+    private LeoHomePopMenu mLeoPopMenu;
     private LEOAlarmDialog mAlarmDialog;
     private QuickGestureTipDialog mQuickGestureSettingDialog;
     private QuickGestureTipDialog mQuickGestureTip;
@@ -416,7 +417,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 }
 
                 if (mLeoPopMenu == null) {
-                    mLeoPopMenu = new LeoPopMenu();
+                    mLeoPopMenu = new LeoHomePopMenu();
                 }
 
                 mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
@@ -462,7 +463,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         mLeoPopMenu.dismissSnapshotList();
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(), getRightMenuIcons(), true);
+                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(), getRightMenuIcons());
                 mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.iv_option_image), null,
                         null);
                 mLeoPopMenu.setListViewDivider(null);
