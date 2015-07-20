@@ -25,7 +25,8 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone" >
+        android:visibility="gone"
+        >
 
         <ImageView
             android:layout_width="@dimen/privacy_default_image_width"
@@ -35,10 +36,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/privacy_default_text_margin_top"
             android:text="@string/privacy_contact_default_text"
             android:textColor="#d3d3d4"
-            android:textSize="18sp" />
+            android:textSize="17dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -46,7 +46,7 @@
             android:layout_marginTop="@dimen/privacy_default_text_margin_top"
             android:text="@string/privacy_message_default_text"
             android:textColor="#d3d3d4"
-            android:textSize="18sp" />
+            android:textSize="15dp" />
     </LinearLayout>
 
     <RelativeLayout
