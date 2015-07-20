@@ -33,13 +33,30 @@ public class ZipperView extends View {
     private int[] bgbyte;
     private int[] cowbyte;
     private int[] newbg;
+    private boolean isUnlock=false;
+    private OnGestureSuccessListener mSuccess = null;
     
+    public boolean isUnlock() {
+        return isUnlock;
+    }
+    public void setUnlock(boolean isUnlock) {
+        this.isUnlock = isUnlock;
+    }
+
+
     private boolean isZipperTouched=false;
 //  private float zipX;
 //  private float zipY;
     
+    public interface OnGestureSuccessListener {
+        public void OnGestureSuccess();
+      }
     
-    private boolean zipperBeTouched;
+    public void setOnGestureSuccessListener(OnGestureSuccessListener success) {
+        mSuccess = success;
+      }
+    
+private boolean zipperBeTouched;
 private boolean isGesture;
 private float px01;
 private float py01;
@@ -55,7 +72,7 @@ private float py02;
         mZipper = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper);
         mLeft = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_left);
         mRight = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_right);
-        mPath = new Path();
+      
     }
     @Override
     protected void onLayout(boolean changed, int left, int top, int right,
@@ -148,22 +165,9 @@ private float py02;
                         {
                             Toast.makeText(getContext(), "太快啦！", 0).show();
                         }
-                        new Thread(new Runnable() {
-                            
-                            @Override
-                            public void run() {
-                                // TODO Auto-generated method stub
-                                while(mYp>0)
-                                {
-                                    mYp-=100;
-                                    refresh();
-                                }
+                    
                                 mYp=0;
-                                postInvalidate();
-                            }
-                        });
-                        
-                        
+                               invalidate();
                     }
                     
                 }
@@ -171,10 +175,7 @@ private float py02;
                 {
 //                  float aftX = event.getX();
 //                  float aftY = event.getY();
-                    
-                    
-                    
-                    
+       
                 }
                 isZipperTouched=false;  
                 isGesture=false;
@@ -250,6 +251,7 @@ private float py02;
                 if(((py01<=py02&&ay01>py01+70&&ay02<py02-70)||(py01>py02&&ay01<py01-70&&ay02>py02+70))&&((px01<=px02&&ax01>px01+50&&ax02<px02-50)||(px01>px02&&ax01<px01-50&&ax02>px02+50)))//
                 {
                     Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
+                    mSuccess.OnGestureSuccess();
                 }
                 
                 break;
@@ -272,16 +274,10 @@ private float py02;
                 
                 if(((py01<=py02&&ay0100>py01+10&&ay0200<py02-10)||(py01>py02&&ay0100<py01-10&&ay0200>py02+10))&&((px01<=px02&&ax0100>px01+10&&ax0200<px02-10)||(px01>px02&&ax0100<px01-10&&ax0200>px02+10)))
                 {
-                    Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
+                    Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();                   
+                    mSuccess.OnGestureSuccess();       
                 }
-                
-                
-                
-                
-                
-                
-                
-                
+
                 
             default:
                 break;
@@ -299,53 +295,11 @@ private float py02;
 
     private void refresh() {
         
-        postInvalidate();
-        SystemClock.sleep(100);
-        Log.e("poha", "refresh!");
+//        postInvalidate();
+//        SystemClock.sleep(100);
+//        Log.e("poha", "refresh!");
     
-//      ObjectAnimator anim = ObjectAnimator.ofFloat(mYp, "YYY", mYp, 0f);
-//      anim.setDuration(1000);
-//      anim.start();
-//      anim.addListener(new AnimatorListener() {
-//          
-//          @Override
-//          public void onAnimationStart(Animator animation) {
-//              // TODO Auto-generated method stub
-//              invalidate();
-//              Log.e("poha", "invalidate");
-//              
-//          }
-//          
-//          @Override
-//          public void onAnimationRepeat(Animator animation) {
-//              // TODO Auto-generated method stub
-//              
-//          }
-//          
-//          @Override
-//          public void onAnimationEnd(Animator animation) {
-//              // TODO Auto-generated method stub
-//              
-//          }
-//          
-//          @Override
-//          public void onAnimationCancel(Animator animation) {
-//              // TODO Auto-generated method stub
-//              
-//          }
-//      });
-        
-        
-//      
-        
-//      (mYp/1000);
-//      setEnabled(false);
-//      boolean enabled = isEnabled();
-//      SystemClock.sleep(1000);
-//      Log.e("poha", enabled+"");
-//      setEnabled(true);
-//      isZipperTouched=false;
-//      invalidate();
+//  
 //      
     }
     private void drawzipper(Canvas canvas) {
