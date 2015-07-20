@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
@@ -57,6 +58,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 
@@ -91,7 +93,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private ListView list_delete;
     private AppBackupRestoreManager mDeleteManager;
     private AppDeleteAdapter mDeleteAdapter;
-    private ImageView iv_donghua, mQuickGestureRedTip,mGestureIconBg,mGestureIcon;
+    private ImageView iv_donghua, mQuickGestureRedTip, mGestureIconBg, mGestureIcon;
     private TextView tv_installed_app, tv_ap_data, tv_backup_num,
             tv_from_big_donghua;
     // private int InstalledApps = 0;
@@ -222,8 +224,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         new Thread() {
             public void run() {
                 if (isGestureAnimating) {
-                    if(roundProgressBar != null) {
-                        roundProgressBar.setProgress( mProgress);
+                    if (roundProgressBar != null) {
+                        roundProgressBar.setProgress(mProgress);
                     }
                     Message msg = Message.obtain();
                     msg.what = DONGHUA_CHANGE_TEXT;
@@ -242,7 +244,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         }
                         startProgress += 1;
                         mNowDongHuaWhere = startProgress;
-                        if(roundProgressBar != null) {
+                        if (roundProgressBar != null) {
                             roundProgressBar.setProgress(startProgress);
                         }
                         Message msg = Message.obtain();
@@ -285,8 +287,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         resources = AppMasterApplication.getInstance().getResources();
         mQuickGesture = findViewById(R.id.bg_show_quick_gesture);
         mQuickGesture.setOnClickListener(this);
-        mGestureIconBg = (ImageView)mQuickGesture.findViewById(R.id.gesture_icon_bg);
-        mGestureIcon = (ImageView)mQuickGesture.findViewById(R.id.quick_gesture_icon);
+        mGestureIconBg = (ImageView) mQuickGesture.findViewById(R.id.gesture_icon_bg);
+        mGestureIcon = (ImageView) mQuickGesture.findViewById(R.id.quick_gesture_icon);
     }
 
     public void fillData() {
@@ -297,7 +299,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     public void setListView() {
-        list_delete.addHeaderView(mHeadView, null, false);
+        list_delete.addHeaderView(mHeadView);
         list_delete.setAdapter(mDeleteAdapter);
     }
 
@@ -306,27 +308,44 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         // bottom two TextView
         forTextList = DeleteDataList = mDeleteManager.getDeleteList();
         deleteDataAllSize = countTotalSpace(DeleteDataList);
+        if (!LanguageUtils.isRightToLeftLanguage(null)) {
+            installedAppsSpan = setTextColor(
+                    resources.getString(R.string.first_user_app), ""
+                            + forTextList.size(),
+                    resources.getString(R.string.first_user_app) + forTextList.size());
+            allAppsSizeSpan = setTextColor(resources.getString(R.string.first_used_space),
+                    deleteDataAllSize,
+                    resources.getString(R.string.first_used_space)
+                            + deleteDataAllSize);
 
-        installedAppsSpan = setTextColor(
-                resources.getString(R.string.first_user_app), ""
-                        + forTextList.size(),
-                resources.getString(R.string.first_user_app) + forTextList.size());
+            AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
+                    mActivity.getApplicationContext());
+            int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
 
-        allAppsSizeSpan = setTextColor(resources.getString(R.string.first_used_space),
-                deleteDataAllSize,
-                resources.getString(R.string.first_used_space)
-                        + deleteDataAllSize);
+            backUpSpan = setTextColor(
+                    resources.getString(R.string.first_backups_app), ""
+                            + RestoreListSize, resources.getString(R.string.first_backups_app)
+                            + RestoreListSize);
+        } else {
+            installedAppsSpan = setTextColor(
+                    "" + forTextList.size(), resources.getString(R.string.first_user_app),
+                    forTextList.size() + resources.getString(R.string.first_user_app));
+            allAppsSizeSpan = setTextColor(deleteDataAllSize,
+                    resources.getString(R.string.first_used_space),
+                    deleteDataAllSize + resources.getString(R.string.first_used_space)
+                    );
 
-        AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
-                mActivity.getApplicationContext());
-        int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
+            AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
+                    mActivity.getApplicationContext());
+            int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
 
-        backUpSpan = setTextColor(
-                resources.getString(R.string.first_backups_app), ""
-                        + RestoreListSize, resources.getString(R.string.first_backups_app)
-                        + RestoreListSize);
+            backUpSpan = setTextColor(""
+                    + RestoreListSize,
+                    resources.getString(R.string.first_backups_app),
+                    RestoreListSize + resources.getString(R.string.first_backups_app)
+                    );
+        }
 
-        LeoLog.d("HomeAppManagerFragment", "loadData() finish");
     }
 
     private void cleanView() {
@@ -342,10 +361,17 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         String str = totalWord;
         SpannableStringBuilder style = new SpannableStringBuilder(str);
         // SpannableStringBuilder实现CharSequence接口
-        style.setSpan(new ForegroundColorSpan(Color.parseColor("#a7a7a7")), 0, start,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        style.setSpan(new ForegroundColorSpan(Color.parseColor("#4285f4")), start, start + end,
-                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        if (!LanguageUtils.isRightToLeftLanguage(null)) {
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#a7a7a7")), 0, start,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#4285f4")), start, start + end,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        } else {
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#4285f4")), 0, start,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+            style.setSpan(new ForegroundColorSpan(Color.parseColor("#a7a7a7")), start, start + end,
+                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }
         return style;
     }
 
@@ -392,20 +418,20 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 break;
             case R.id.bg_show_quick_gesture:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qssetting", "home");
-                if(mGestureIconBg.getVisibility() == View.VISIBLE){
+                if (mGestureIconBg.getVisibility() == View.VISIBLE) {
                     Log.i("value", "pop_y");
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_guide", "pop_y");
                     mGestureIconBg.setVisibility(View.GONE);
                 }
                 startQuickGestureActivity();
-//                Intent intent1 = new Intent(Intent.ACTION_VIEW);
-//                intent1.setType("vnd.android.cursor.dir/calls");
-//                intent1.setAction(Intent.ACTION_CALL_BUTTON);
-//                try {
-//                    startActivity(intent1);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
+                // Intent intent1 = new Intent(Intent.ACTION_VIEW);
+                // intent1.setType("vnd.android.cursor.dir/calls");
+                // intent1.setAction(Intent.ACTION_CALL_BUTTON);
+                // try {
+                // startActivity(intent1);
+                // } catch (Exception e) {
+                // e.printStackTrace();
+                // }
                 break;
         }
     }
@@ -435,7 +461,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                         e.printStackTrace();
                     }
                     mProgress -= 1;
-                    if(roundProgressBar != null) {
+                    if (roundProgressBar != null) {
                         roundProgressBar.setProgress(mProgress);
                     }
                     Message msg = Message.obtain();
@@ -737,8 +763,9 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         if (null == mGestureIcon || null == mGestureIconBg) {
             return;
         }
-        final ObjectAnimator lastAlphaAnimator = ObjectAnimator.ofFloat(mGestureIconBg, "alpha", 0f, 1.0f).setDuration(300);
-        
+        final ObjectAnimator lastAlphaAnimator = ObjectAnimator.ofFloat(mGestureIconBg, "alpha",
+                0f, 1.0f).setDuration(300);
+
         ObjectAnimator alphaAnimator = ObjectAnimator
                 .ofFloat(mGestureIconBg, "alpha", 0f, 1.0f, 0f).setDuration(800);
         alphaAnimator.setRepeatCount(2);
@@ -748,6 +775,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             public void onAnimationStart(Animator animation) {
                 mGestureIconBg.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 lastAlphaAnimator.start();
@@ -768,10 +796,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         set.playTogether(alphaAnimator, gestureSmall);
         set.start();
     }
-    
-    public void setGestureTabBgVisibility(int visiable){
-        if(null != mGestureIconBg){
-            if(mGestureIconBg.getVisibility() == View.VISIBLE){
+
+    public void setGestureTabBgVisibility(int visiable) {
+        if (null != mGestureIconBg) {
+            if (mGestureIconBg.getVisibility() == View.VISIBLE) {
                 mGestureIconBg.setVisibility(visiable);
             }
         }

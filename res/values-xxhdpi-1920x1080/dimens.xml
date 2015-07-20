@@ -188,5 +188,10 @@
     <dimen name="gesture_app_manager_bg_width">54dp</dimen>
     <dimen name="lock_setting_title_margintop">22dp</dimen>
     <!-- 2.5 end -->
+    
+    <!-- 2.6 start -->
+    <dimen name="webview_icon_margin">70dp</dimen>
+    <dimen name="webview_title_width">262dp</dimen>
+    <!-- 2.6 end -->
 		 
 </resources>

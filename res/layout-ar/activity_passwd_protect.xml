@@ -53,8 +53,8 @@
                     android:ems="10"
                     android:maxLength="40"
                     android:singleLine="true"
-                    android:gravity="right|center_vertical"
-                    android:paddingRight="12dp"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="12dp"
                     android:textSize="14sp" >
                 </EditText>
 

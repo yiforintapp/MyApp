@@ -39,19 +39,19 @@
     <color name="flow_blue">#4285f4</color>
     <color name="flow_item_total">#646464</color>
     <color name="flow_item_small">#a7a7a7</color>
-    <color name="flow_charts_gry">#e6e6e6</color>
-    <color name="app_backup_text">#00ddc0</color>
-    <color name="app_usage_text">#39a9e3</color>
-    <color name="app_battery_text">#c8cf00</color>
+    <color name="flow_charts_gry">#e3e3e3</color>
+    <color name="app_backup_text">#fa9e1f</color>
+    <color name="app_usage_text">#01bafd</color>
+    <color name="app_battery_text">#78d70b</color>
     <color name="app_hot_text">#f21c7b</color>
-    <color name="first_bottom_text">#c2c2c2</color>
+    <color name="first_bottom_text">#4285f4</color>
     <color name="commonbar_background">#4285f4</color>
     <color name="progress_bar_show">#dedede</color>
     <color name="flow_setting_tv">#414141</color>
     <color name="message_item_backgroud_blue">#dfebff</color>
-    <color name="manager_small_backup_selector">#d9faf6</color>
-    <color name="manager_small_usage_selector">#e1f2fb</color>
-    <color name="manager_small_battery_selector">#f7f8d9</color>
+    <color name="manager_small_backup_selector">#fff1de</color>
+    <color name="manager_small_usage_selector">#d5f3fe</color>
+    <color name="manager_small_battery_selector">#effedd</color>
     <color name="manager_small_hotapp_selector">#fdddeb</color>
     <color name="manager_hot_app_game_text">#55e300</color>
     <color name="selector_done_text">#0084ff</color>
@@ -100,4 +100,5 @@
 	<color name="guide_more_select_color">#00967f</color>
 	<color name="webview_pro_bg">#e4e4e4</color>
 	<color name="webview_pro">#28b1ff</color>
+	<color name="sort_select_color">#4584f5</color>
 </resources>

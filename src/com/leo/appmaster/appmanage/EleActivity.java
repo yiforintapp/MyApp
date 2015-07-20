@@ -26,11 +26,13 @@ import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
 
 public class EleActivity extends BaseFragmentActivity {
@@ -225,10 +227,19 @@ public class EleActivity extends BaseFragmentActivity {
             double percentOfTotal = sipper.getPercentOfTotal();
             if (percentOfTotal <= 1) {
                 holder.txtProgress.setText(format(1));
-                holder.progress.setProgress((int) 1);
+                if (!LanguageUtils.isRightToLeftLanguage(null)) {
+                    holder.progress.setProgress((int) 1);
+                } else {
+                    holder.progress.setProgress((int) (AppBusinessManager.mRtToLtSeeBarMax-1));
+                }
             } else {
                 holder.txtProgress.setText(format(percentOfTotal));
-                holder.progress.setProgress((int) percentOfTotal);
+                if (!LanguageUtils.isRightToLeftLanguage(null)) {
+                    holder.progress.setProgress((int) percentOfTotal);
+                } else {
+                    holder.progress
+                            .setProgress((int) (AppBusinessManager.mRtToLtSeeBarMax - percentOfTotal));
+                }
             }
 
             holder.stopView.setTag("" + position);

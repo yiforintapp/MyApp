@@ -267,10 +267,12 @@ public class PrivacyLevelView extends View {
     }
 
     private int computeTextSize(String text, int maxTextSize, int maxWidth, Paint paint) {
+        int count = 0;
         int textSize = maxTextSize;
         paint.setTextSize(textSize);
         int textWidth = (int) paint.measureText(text);
-        while (textWidth > maxWidth) {
+        while (textWidth > maxWidth && count < 10) {
+            count ++;
             textSize = textSize - 1;
             paint.setTextSize(textSize);
             textWidth = (int) paint.measureText(text);

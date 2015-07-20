@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white" >
+    android:background="@color/all_backgroud" >
 
     <RelativeLayout
         android:id="@+id/content_four_tv"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_manager_headview_total_height" >
+        android:layout_height="@dimen/app_manager_headview_total_height"
+        android:background="@color/white" >
 
         <RelativeLayout
             android:id="@+id/content_donghua"
@@ -116,49 +117,41 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <!-- android:layout_height="@dimen/app_manager_headview_grey_button_text_height" -->
+
     <RelativeLayout
+        android:id="@+id/uninstall_titile"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_manager_headview_grey_button_text_height"
+        android:layout_height="38dp"
         android:layout_below="@id/content_four_tv"
-        android:background="@color/flow_charts_gry" >
+        android:layout_marginTop="12dp"
+        android:background="@color/white" >
+
+        <TextView
+            android:id="@+id/title_flag"
+            android:layout_width="3dp"
+            android:layout_height="12dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/app_manager_lv_item_icon_margin_left"
+            android:background="#4385f5" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:singleLine="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="7dp"
+            android:layout_toRightOf="@id/title_flag"
             android:text="@string/home_app_manager_apps_delete"
             android:textColor="@color/first_bottom_text"
-            android:textSize="14dp" />
-        <!--
-        <TextView
-            android:id="@+id/tv_app_manager_installed"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textColor="@color/first_bottom_text"
-            android:textSize="12dp" />
-
-        <TextView
-            android:layout_width="3dp"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="|"
-            android:textColor="@color/first_bottom_text"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/tv_app_manager_space"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:singleLine="true"
-            android:textColor="@color/first_bottom_text"
-            android:textSize="12dp" />
-        -->
+            android:textSize="14dp"
+            android:textStyle="bold" />
     </RelativeLayout>
+
+    <!-- <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/uninstall_titile"
+        android:background="@color/flow_charts_gry" /> -->
 
 </RelativeLayout>
