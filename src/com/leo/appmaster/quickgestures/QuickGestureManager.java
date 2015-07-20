@@ -790,6 +790,7 @@ public class QuickGestureManager {
      * @param context
      */
     public void showCommonAppDialog(final Context context) {
+        isFromDialog = true;
         final QuickGestureFilterAppDialog commonApp = new QuickGestureFilterAppDialog(
                 context.getApplicationContext(), 3);
         final AppMasterPreference pref = AppMasterPreference.getInstance(context);
@@ -902,6 +903,7 @@ public class QuickGestureManager {
                 } else if (onTuchGestureFlag == 1 || onTuchGestureFlag == 2) {
                     intent.putExtra("show_orientation", 2);
                 }
+                isClickSure = true;
                 AppMasterApplication.getInstance().startActivity(intent);
             }
         });

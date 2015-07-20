@@ -65,6 +65,10 @@ public class AppleWatchLayout extends ViewGroup {
     public static final int NORMALINFO = 0;
     public static final int APPITEMINFO = 1;
 
+    public static final int mLastTimeDymic = 1;
+    public static final int mLastTimeMost = 2;
+    public static final int mLastTimeSwitch = 3;
+
     private AppleWatchContainer mContainer;
     private AnimatorSet mReorderAnimator;
     private AppMasterPreference mPref;
@@ -213,14 +217,14 @@ public class AppleWatchLayout extends ViewGroup {
         }
         requestLayout();
 
-        //添加新开关，600MS不能触摸，若影响之前逻辑请修改回800MS
+        // 添加新开关，600MS不能触摸，若影响之前逻辑请修改回800MS
         if (loadExtra) {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     fillExtraChildren();
                 }
-//            }, 800);
+                // }, 800);
             }, 600);
         }
     }
@@ -988,13 +992,20 @@ public class AppleWatchLayout extends ViewGroup {
         if (type == GType.MostUsedLayout) {
             qgm.showCommonAppDialog(getContext());
             // ((Activity) getContext()).finish();
-            mPref.setLastTimeLayout(2);
+            // mPref.setLastTimeLayout(mLastTimeMost);
+            mContainer.setNowLayout(mLastTimeMost);
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
             qgm.showQuickSwitchDialog(getContext());
             // ((Activity) getContext()).finish();
-            mPref.setLastTimeLayout(3);
+            // mPref.setLastTimeLayout(mLastTimeSwitch);
+            mContainer.setNowLayout(mLastTimeSwitch);
         }
+        
+        if (mContainer.isEditing()){
+            mContainer.leaveEditMode();
+        }
+        
     }
 
     private void replaceEmptyIcon(GestureItemView hitView) {

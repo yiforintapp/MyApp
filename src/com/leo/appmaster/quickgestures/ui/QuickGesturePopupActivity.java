@@ -40,7 +40,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private int mNowLayout;
     private boolean isCloseWindow, ifCreateWhiteFloat;
     private View mSuccessTipView;
-    /** 
+    /**
      * 弹窗点击确定后刷新界面，但不走动画，在onResume内不走
      */
     private boolean isCanNotDoAnimation = false;
@@ -53,7 +53,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         handleIntent();
         initIU();
         checkFirstWhiteClick();
-        fillWhichLayoutFitst(mNowLayout);
+        fillWhichLayoutFitst(mNowLayout,false);
         overridePendingTransition(0, 0);
     }
 
@@ -119,13 +119,13 @@ public class QuickGesturePopupActivity extends BaseActivity {
         }
     }
 
-    private void fillWhichLayoutFitst(int mNowLayout) {
+    private void fillWhichLayoutFitst(int mNowLayout,boolean mFalg) {
         if (mNowLayout == 1) {
-            fillDynamicLayout(false);
+            fillDynamicLayout(mFalg);
         } else if (mNowLayout == 2) {
-            fillMostUsedLayout(false);
+            fillMostUsedLayout(mFalg);
         } else {
-            fillSwitcherLayout(false);
+            fillSwitcherLayout(mFalg);
         }
     }
 
@@ -159,10 +159,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onNewIntent(Intent intent) {
+        int nowLayout = mContainer.getNowLayout();
         isCanNotDoAnimation = true;
         if (QuickGestureManager.isClickSure) {
-            LeoLog.d("testActivity", "onNewIntent");
-            fillSwitcherLayout(true);
+             LeoLog.d("testActivity", "onNewIntent && nowLayout is : " + mNowLayout);
+             fillWhichLayoutFitst(nowLayout,true);
         }
         super.onNewIntent(intent);
     }
@@ -170,7 +171,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onResume() {
         Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
-        LeoLog.d("testActivity", "onResume");
+        // LeoLog.d("testActivity", "onResume");
         FloatWindowHelper.mGestureShowing = true;
         isCloseWindow = false; // 动画结束是否执行去除红点标识
         if (!isCanNotDoAnimation) {
