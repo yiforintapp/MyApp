@@ -114,6 +114,7 @@ public class QuickSwitchManager {
     private List<BaseInfo> mAllList;
     private int mVersion;
     private boolean isSIMready = true;
+    private long lastOpenTime = 0;
 
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
@@ -845,6 +846,20 @@ public class QuickSwitchManager {
 
     public void toggleFlashLight(QuickSwitcherInfo mInfo) {
 
+        long currentTime = System.currentTimeMillis();
+        // 10s one click logistic
+        if (!isFlashLightOpen) {
+            // LeoLog.d("testflashlight", "ChaZhi is : " + (currentTime -
+            // lastOpenTime));
+            if (currentTime - lastOpenTime > 10000) {
+                lastOpenTime = System.currentTimeMillis();
+            } else {
+                Toast.makeText(mContext, mContext.getString(R.string.flash_light_open_toast), 0)
+                        .show();
+                return;
+            }
+        }
+
         if (!BuildProperties.isMIUI()) {
             try {
                 LeoLog.d("testflashlight", "come to toggle");
@@ -895,8 +910,8 @@ public class QuickSwitchManager {
                     mCamera.setParameters(params);
                     mCamera.startPreview();
 
-                    String nowStatus = params.getFlashMode();
-                    LeoLog.d("flashlight", "now status is : " + nowStatus);
+                    // String nowStatus = params.getFlashMode();
+                    // LeoLog.d("flashlight", "now status is : " + nowStatus);
                 } catch (Exception ee) {
                     return;
                 }
@@ -908,8 +923,8 @@ public class QuickSwitchManager {
                     mCamera.stopPreview();
                     mCamera.release();
 
-                    String nowStatus = params.getFlashMode();
-                    LeoLog.d("flashlight", "now status is : " + nowStatus);
+                    // String nowStatus = params.getFlashMode();
+                    // LeoLog.d("flashlight", "now status is : " + nowStatus);
                 } catch (Exception e) {
                     isFlashLightOpen = false;
                     return;
