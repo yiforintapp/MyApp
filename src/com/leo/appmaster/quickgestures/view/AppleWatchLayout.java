@@ -111,6 +111,14 @@ public class AppleWatchLayout extends ViewGroup {
     }
 
     public void fillItems(List<BaseInfo> infos, boolean loadExtra) {
+        if (QuickGestureManager.isClickSure) {
+            LeoLog.d("testActivity", "fillItems and cannot touch!");
+            mContainer.setCanNotTouch(true);
+        }
+        // LeoLog.d("testActivity", "infos size is : " + infos.size());
+        // LeoLog.d("testActivity", "come to  fillItems: ");
+        // LeoLog.d("testActivity", "now viewchild num is  " + getChildCount());
+
         BaseInfo info = null;
         if (infos.size() > 11) {
             infos = infos.subList(0, 11);
@@ -197,7 +205,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
 
             gestureItem.setTag(info);
-            if (isCurrentLayout()) {
+            if (isCurrentLayout() && !QuickGestureManager.isClickSure) {
                 gestureItem.setVisibility(View.INVISIBLE);
             }
             addView(gestureItem);
@@ -205,13 +213,15 @@ public class AppleWatchLayout extends ViewGroup {
         }
         requestLayout();
 
+        //添加新开关，600MS不能触摸，若影响之前逻辑请修改回800MS
         if (loadExtra) {
             postDelayed(new Runnable() {
                 @Override
                 public void run() {
                     fillExtraChildren();
                 }
-            }, 800);
+//            }, 800);
+            }, 600);
         }
     }
 
@@ -348,6 +358,10 @@ public class AppleWatchLayout extends ViewGroup {
         }
 
         mHasFillExtraItems = true;
+        if (QuickGestureManager.isClickSure) {
+            mContainer.setCanNotTouch(false);
+            QuickGestureManager.isClickSure = false;
+        }
     }
 
     private void init() {
@@ -973,12 +987,12 @@ public class AppleWatchLayout extends ViewGroup {
         QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
             qgm.showCommonAppDialog(getContext());
-            ((Activity) getContext()).finish();
+            // ((Activity) getContext()).finish();
             mPref.setLastTimeLayout(2);
         } else if (type == GType.SwitcherLayout) {
             // get list from sp
             qgm.showQuickSwitchDialog(getContext());
-            ((Activity) getContext()).finish();
+            // ((Activity) getContext()).finish();
             mPref.setLastTimeLayout(3);
         }
     }

@@ -61,6 +61,8 @@ public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
 
     protected static final String AppLauncherRecorder = null;
+    public static boolean isFromDialog = false;
+    public static boolean isClickSure = false;
     public static final int APPITEMINFO = 1;
     public static final int NORMALINFO = 0;
     public static final String RECORD_CALL = "call";
@@ -255,7 +257,8 @@ public class QuickGestureManager {
         if (isShowCallLogTip) {
             if (QuickGestureManager.getInstance(mContext).getQuickNoReadCall() != null
                     && QuickGestureManager.getInstance(mContext).getQuickNoReadCall().size() > 0) {
-                ContactCallLog baseInfo = QuickGestureManager.getInstance(mContext).getQuickNoReadCall()
+                ContactCallLog baseInfo = QuickGestureManager.getInstance(mContext)
+                        .getQuickNoReadCall()
                         .get(0);
                 baseInfo.gesturePosition = -1000;
                 baseInfo.icon = mContext.getResources().getDrawable(
@@ -695,7 +698,8 @@ public class QuickGestureManager {
             }
         }
         if ((getQuiQuickNoReadMessage() == null || getQuiQuickNoReadMessage().size() <= 0)
-                && (getQuickNoReadCall() == null || getQuickNoReadCall().size() <= 0) && !isShowPrivacyCallLog
+                && (getQuickNoReadCall() == null || getQuickNoReadCall().size() <= 0)
+                && !isShowPrivacyCallLog
                 && !isShowPrivacyMsm) {
             QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
         }
@@ -940,6 +944,7 @@ public class QuickGestureManager {
      * @param activity
      */
     public void showQuickSwitchDialog(final Context context) {
+        isFromDialog = true;
         final QuickGestureFilterAppDialog quickSwitch = new QuickGestureFilterAppDialog(
                 context.getApplicationContext(), 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
@@ -1058,6 +1063,7 @@ public class QuickGestureManager {
                 } else if (onTuchGestureFlag == 1 || onTuchGestureFlag == 2) {
                     intent.putExtra("show_orientation", 2);
                 }
+                isClickSure = true;
                 AppMasterApplication.getInstance().startActivity(intent);
             }
         });

@@ -1774,4 +1774,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
+    public void setCanNotTouch(boolean mFlag){
+        isAnimating = mFlag;
+    }
 }

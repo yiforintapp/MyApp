@@ -40,6 +40,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private int mNowLayout;
     private boolean isCloseWindow, ifCreateWhiteFloat;
     private View mSuccessTipView;
+    /** 
+     * 弹窗点击确定后刷新界面，但不走动画，在onResume内不走
+     */
+    private boolean isCanNotDoAnimation = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,7 +137,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
         Log.i("null", "onWindowFocusChanged");
-        if (!hasFocus) {
+
+        if (!hasFocus && !QuickGestureManager.isFromDialog) {
             if (!isItemClick) {
                 LockManager.getInstatnce().filterAllOneTime(1000);
                 LeoLog.d("testiconclick", "go filterAllOneTime");
@@ -143,6 +148,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
             mContainer.saveGestureType();
             finish();
         }
+
+        QuickGestureManager.isFromDialog = false;
         super.onWindowFocusChanged(hasFocus);
     }
 
@@ -151,21 +158,35 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent intent) {
+        isCanNotDoAnimation = true;
+        if (QuickGestureManager.isClickSure) {
+            LeoLog.d("testActivity", "onNewIntent");
+            fillSwitcherLayout(true);
+        }
+        super.onNewIntent(intent);
+    }
+
+    @Override
     protected void onResume() {
         Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
+        LeoLog.d("testActivity", "onResume");
         FloatWindowHelper.mGestureShowing = true;
         isCloseWindow = false; // 动画结束是否执行去除红点标识
-        mContainer.post(new Runnable() {
-            @Override
-            public void run() {
-                mContainer.showOpenAnimation(new Runnable() {
-                    @Override
-                    public void run() {
-                        fillTwoLayout(mNowLayout);
-                    }
-                });
-            }
-        });
+        if (!isCanNotDoAnimation) {
+            mContainer.post(new Runnable() {
+                @Override
+                public void run() {
+                    mContainer.showOpenAnimation(new Runnable() {
+                        @Override
+                        public void run() {
+                            fillTwoLayout(mNowLayout);
+                        }
+                    });
+                }
+            });
+        }
+        isCanNotDoAnimation = false;
         FloatWindowHelper.hideWhiteFloatView(getApplicationContext());
         showSuccessTip();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "qt");
