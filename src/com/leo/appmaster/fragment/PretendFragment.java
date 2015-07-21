@@ -16,7 +16,10 @@ public abstract class PretendFragment extends BaseFragment {
     public void onUnlockPretendFailed() {
         if (mActivity instanceof LockScreenActivity) {
             LockScreenActivity lsa = (LockScreenActivity) mActivity;
-            lsa.onBackPressed();
+            try {
+                lsa.onBackPressed();
+            } catch (Exception e) {                
+            }
         }
     }
 
