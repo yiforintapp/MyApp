@@ -12,6 +12,7 @@ import android.os.Message;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.leo.appmaster.ui.MulticolorRoundProgressBar;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class ManagerFlowFragment extends BaseFragment implements OnClickListener{
@@ -34,7 +36,8 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     private int bili = 0;
     private MulticolorRoundProgressBar roundProgressBar;
     private HorizontalScrollView horizontalScroll;
-    private TextView tv_total_ll, tv_normal_ll, tv_remainder_ll, tv_from_donghua;
+    private TextView tv_total_ll, tv_normal_ll, tv_remainder_ll, tv_from_donghua,mFlowUseTipText;
+    private ImageView mProgressBg;
     private LineView lineView;
     private View flow_all_content;
     private TextView flow_setting;
@@ -80,7 +83,10 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         tv_normal_ll = (TextView) findViewById(R.id.tv_normal_ll);
         tv_remainder_ll = (TextView) findViewById(R.id.tv_remainder_ll);
         pb_loading.setVisibility(View.VISIBLE);
-
+        
+        mProgressBg = (ImageView)findViewById(R.id.iv_donghua_flow);
+        mFlowUseTipText = (TextView)findViewById(R.id.flow_use_tip_tv);
+        
         preferences = AppMasterPreference.getInstance(mActivity);
 
         test = new ArrayList<String>();
@@ -147,30 +153,43 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         } else {
             if(MonthUsedItSelf > 0){
                 bili = (int) (MonthUsedItSelf * 100 / TaoCanTrafficKb);
-//                LeoLog.d("testfuckflow", "MonthUsedItSelf > 0 : " + bili);
+                LeoLog.d("testfuckflow", "MonthUsedItSelf > 0 : " + bili);
             }else {
                 bili = (int) (MonthUsedRecord * 100 / TaoCanTrafficKb);
-//                LeoLog.d("testfuckflow", "else : " + bili);
+                LeoLog.d("testfuckflow", "else : " + bili);
             }
         }
+        checkOverFlowSetting();
         updateProgress();
     }
     
     private void updateProgress() {
-        if(progress > bili) {
+        if(progress >= bili && bili!=0) {
             return;
         }
         progress++;
         if (bili == 0) {
             progress = 0;
         }
-        if(progress > 100){
-            return;
-        }
+        
         Message msg = Message.obtain();
         msg.what = CHANGE_TEXT;
         msg.obj = progress;
         handler.sendMessageDelayed(msg, 10);
+    }
+    
+    /**
+     * check if over flow
+     */
+    private void checkOverFlowSetting(){
+        if(bili>100){
+            bili = bili -100;
+            mProgressBg.setImageResource(R.drawable.flow_over_bg);
+            mFlowUseTipText.setText(getResources().getString(R.string.traffic_over_text));
+        }else{
+            mProgressBg.setImageResource(R.drawable.app_run_bg);
+            mFlowUseTipText.setText(getResources().getString(R.string.traffic_progress_bar));
+        }
     }
 
     protected void initDate() {

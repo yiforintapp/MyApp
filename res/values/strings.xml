@@ -754,6 +754,7 @@
     <string name="privacy_auto_add_text">手动添加</string>
      <string name="button_disguise_guide_select">立刻试试</string>
     <string name="button_disguise_guide_cancel">立刻试试</string>
+    <string name="traffic_over_text">已超额</string>
     <!-- 2.6 end -->
 
 </resources>
