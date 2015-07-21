@@ -278,8 +278,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } else {
             mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         }
-        
-        
+
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         if (!TextUtils.equals(newLockedPkg, mLockedPackage)) {
             mLockedPackage = newLockedPkg;
@@ -366,7 +365,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } else {
             mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
         }
-        
+
         mLockMode = intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL);
 
@@ -472,7 +471,25 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mTtileBar.setHelpSettingListener(this);
 
             mTtileBar.setBackArrowVisibility(View.GONE);
-            mTtileBar.setTitle(R.string.app_name);
+
+            if (mQuickLockMode) {
+                LockManager lm = LockManager.getInstatnce();
+                List<LockMode> modes = lm.getLockMode();
+                LockMode targetMode = null;
+                for (LockMode lockMode : modes) {
+                    if (lockMode.modeId == mQuiclModeId) {
+                        targetMode = lockMode;
+                        break;
+                    }
+                }
+                if (targetMode != null) {
+                    mTtileBar.setTitle(R.string.change_lock_mode);
+                } else {
+                    mTtileBar.setTitle(R.string.app_name);
+                }
+            } else {
+                mTtileBar.setTitle(R.string.app_name);
+            }
         } else {
             mTtileBar.setBackViewListener(this);
             if (TextUtils.isEmpty(mLockTitle)) {
@@ -523,12 +540,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.d("whatisthis", "mLockedPackage : " + mLockedPackage);
         if (!mPrivateLockPck.equals(mLockedPackage)) {
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
-            
-            
-            
-            
-            
-            
             // pretendLock = 2;
             if (pretendLock == 2) { /* app error */
                 PretendAppErrorFragment paf = new PretendAppErrorFragment();
@@ -552,9 +563,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
                 return weizhuang;
             }
-            else if(pretendLock==1)
+            else if (pretendLock == 1)
             {
-                //美女伪装，暂时用指纹伪装
+                // 美女伪装，暂时用指纹伪装
                 PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;
             }

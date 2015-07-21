@@ -58,6 +58,7 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <!-- LEO push: end -->
 
+
     <!-- quickSwitch -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -523,8 +524,8 @@
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
             android:excludeFromRecents="true"
+            android:launchMode="singleInstance"
             android:noHistory="true"
-             android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
@@ -575,8 +576,8 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.cleanmemory.HomeBoostActivity"
-            android:icon="@drawable/gesture_rocket"
-            android:label="隐私卫士加速"
+            android:icon="@drawable/switch_speed_up"
+            android:label="@string/accelerate"
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
