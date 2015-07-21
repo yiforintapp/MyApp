@@ -14,9 +14,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp"
+        android:layout_alignParentBottom="true"
         android:src="@drawable/beauty_guide_gesture" />
-
+    
     <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
@@ -40,5 +40,13 @@
         android:text="@string/beauty_guide_title"
         android:textColor="@color/white"
         android:textSize="20sp" />
+
+    <ImageView
+        android:id="@+id/iv_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/beauty_guide_shadow" />
 
 </RelativeLayout>

@@ -752,6 +752,8 @@
     <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
     <string name="flash_light_open_toast">请不要重复操作闪光灯</string>
     <string name="privacy_auto_add_text">手动添加</string>
+     <string name="button_disguise_guide_select">立刻试试</string>
+    <string name="button_disguise_guide_cancel">立刻试试</string>
     <!-- 2.6 end -->
 
 </resources>

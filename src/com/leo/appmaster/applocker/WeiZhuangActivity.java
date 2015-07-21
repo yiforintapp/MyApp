@@ -94,7 +94,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private void fillData() {
         mName = getResources().getStringArray(R.array.weizhuang_type_num);
         mIcon[0] = mThemeRes.getDrawable(R.drawable.disguise_icon_no);
-        mIcon[1] = mThemeRes.getDrawable(R.drawable.disguise_icon_no);
+        mIcon[1] = mThemeRes.getDrawable(R.drawable.disguise_icon_beauty);
         mIcon[2] = mThemeRes.getDrawable(R.drawable.disguise_iocn_error);
         mIcon[3] = mThemeRes.getDrawable(R.drawable.disguise_icon_call);
         mIcon[4] = mThemeRes.getDrawable(R.drawable.disguise_iocn_finger);
