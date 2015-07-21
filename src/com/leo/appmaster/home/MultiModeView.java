@@ -12,18 +12,14 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -403,9 +399,11 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                             post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    modeIcon.setBackgroundDrawable((new BitmapDrawable(
-                                            getResources(),
-                                            BitmapUtils.createGaryBitmap(mode.modeIcon))));
+                                    if(mode != null && mode.modeIcon != null) {
+                                        modeIcon.setBackgroundDrawable((new BitmapDrawable(
+                                                getResources(),
+                                                BitmapUtils.createGaryBitmap(mode.modeIcon))));
+                                    }
                                     selectedImg.setVisibility(View.VISIBLE);
                                 }
                             });
