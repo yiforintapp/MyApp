@@ -576,6 +576,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.cleanmemory.HomeBoostActivity"
+            android:excludeFromRecents="true"
             android:icon="@drawable/switch_speed_up"
             android:label="@string/accelerate"
             android:launchMode="singleInstance"

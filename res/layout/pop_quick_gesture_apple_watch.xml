@@ -21,9 +21,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|center"
-            android:scaleType="centerCrop"
             android:layout_marginBottom="@dimen/apple_watch_title_bg_margin_bottom"
             android:gravity="center"
+            android:scaleType="centerCrop"
             android:src="@drawable/gesture_title_bar" />
 
         <RelativeLayout
@@ -222,5 +222,11 @@
                 android:visibility="gone" />
         </LinearLayout>
     </RelativeLayout>
+
+    <com.leo.appmaster.quickgestures.view.QgLockModeSelectView
+        android:id="@+id/mode_select_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
 
 </RelativeLayout>

@@ -4,7 +4,6 @@ package com.leo.appmaster.quickgestures.view;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -16,7 +15,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.net.wifi.WifiManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -25,11 +23,9 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -63,7 +59,6 @@ public class AppleWatchContainer extends FrameLayout {
     private AppMasterPreference mPref;
     private int mCurrentLayout = 3;
     private List<QuickSwitcherInfo> mSwitchList;
-    private WifiManager mWifimanager;
     private ExecutorService cachedThreadPool;
     private boolean isCleanFinish = false;
 
@@ -96,10 +91,9 @@ public class AppleWatchContainer extends FrameLayout {
     private long mLastUsedMem;
     private long mCleanMem;
     private boolean isAnimating;
-    private boolean mHasRelayout;
     private boolean mMoving;
     protected long mStartShowingTime;
-    private int screenH, screenW;
+    private int screenH;
 
     public AppleWatchContainer(Context context) {
         super(context);
@@ -108,17 +102,11 @@ public class AppleWatchContainer extends FrameLayout {
     public AppleWatchContainer(Context context, AttributeSet attrs) {
         super(context, attrs);
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.GestureDirection);
-
         mPref = AppMasterPreference.getInstance(context);
         mCurrentLayout = mPref.getLastTimeLayout();
-//        Log.i("tag", "刚来！show 出的是：" + mCurrentLayout);
-//        LeoLog.d("AppleWatchContainer", "刚来！show 出的是：" + mCurrentLayout);
         makeNowLayout();
-
         Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
         screenH = mDisplay.getHeight();
-        screenW = mDisplay.getWidth();
-
         int derictor = typedArray.getInt(R.styleable.GestureDirection_Direction, 0);
         if (derictor == 0) {
             mOrientation = Orientation.Left;
@@ -127,6 +115,51 @@ public class AppleWatchContainer extends FrameLayout {
         }
         typedArray.recycle();
         init();
+    }
+
+    public void enterModeSelect() {
+        mTvCurName.setText(R.string.choose_mode);
+        AppleWatchLayout targetLayout;
+        if (mCurrentGestureType == GType.DymicLayout) {
+            targetLayout = mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            targetLayout = mMostUsedLayout;
+        } else {
+            targetLayout = mSwitcherLayout;
+        }
+        ObjectAnimator layoutAnimator = ObjectAnimator.ofFloat(targetLayout, "alpha", 1.0f, 0f);
+        layoutAnimator.setDuration(300);
+        ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
+                0, mCornerTabs.getHeight());
+        tabAnimator.setDuration(300);
+
+        AnimatorSet as = new AnimatorSet();
+        as.playTogether(layoutAnimator, tabAnimator);
+        as.start();
+    }
+
+    public void leaveModeSelect() {
+        AppleWatchLayout targetLayout;
+        if (mCurrentGestureType == GType.DymicLayout) {
+            mTvCurName.setText(R.string.quick_gesture_most_used);
+            targetLayout = mDymicLayout;
+        } else if (mCurrentGestureType == GType.MostUsedLayout) {
+            mTvCurName.setText(R.string.quick_gesture_switcher);
+            targetLayout = mMostUsedLayout;
+        } else {
+            mTvCurName.setText(R.string.quick_gesture_dynamic);
+            targetLayout = mSwitcherLayout;
+        }
+        ObjectAnimator layoutAnimator = ObjectAnimator.ofFloat(targetLayout, "alpha", 0.0f, 1f);
+        layoutAnimator.setDuration(400);
+
+        ObjectAnimator tabAnimator = ObjectAnimator.ofFloat(mCornerTabs, "translationY",
+                mCornerTabs.getHeight(), 0);
+        tabAnimator.setDuration(200);
+
+        AnimatorSet as = new AnimatorSet();
+        as.playTogether(layoutAnimator, tabAnimator);
+        as.start();
     }
 
     private void makeNowLayout() {
@@ -809,7 +842,7 @@ public class AppleWatchContainer extends FrameLayout {
                 // 移动数据
                 checkMobileData(sInfo, mGetIcon, null);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.LOCKMODE)) {
-                //TODO  情景模式
+                // TODO 情景模式
                 checkLockMode(sInfo, mGetIcon, null);
             }
             else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
@@ -1026,7 +1059,7 @@ public class AppleWatchContainer extends FrameLayout {
             sInfo.icon = sInfo.switchIcon[0];
         }
     }
-    
+
     private void checkLockMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (iconSize != mGetIcon) {
             sInfo.icon = sInfo.switchIcon[0];
@@ -1693,8 +1726,8 @@ public class AppleWatchContainer extends FrameLayout {
     public int getNowLayout() {
         return mCurrentLayout;
     }
-    
-    public void setNowLayout(int nowLayout){
+
+    public void setNowLayout(int nowLayout) {
         mCurrentLayout = nowLayout;
     }
 
@@ -1778,7 +1811,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
-    public void setCanNotTouch(boolean mFlag){
+    public void setCanNotTouch(boolean mFlag) {
         isAnimating = mFlag;
     }
 }

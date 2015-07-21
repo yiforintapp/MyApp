@@ -25,6 +25,7 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
+import com.leo.appmaster.quickgestures.view.QgLockModeSelectView;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
@@ -34,12 +35,13 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private AppleWatchContainer mContainer;
     public boolean isItemClick = false;
-    private View mGestureTipTitle;
     private TextView mGestureTipContent;
     private boolean mFromWhiteDot, mFromSelfApp;
     private int mNowLayout;
     private boolean isCloseWindow, ifCreateWhiteFloat;
     private View mSuccessTipView;
+
+    private QgLockModeSelectView mModeSelectView;
     /**
      * 弹窗点击确定后刷新界面，但不走动画，在onResume内不走
      */
@@ -53,7 +55,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         handleIntent();
         initIU();
         checkFirstWhiteClick();
-        fillWhichLayoutFitst(mNowLayout,false);
+        fillWhichLayoutFitst(mNowLayout, false);
         overridePendingTransition(0, 0);
     }
 
@@ -75,8 +77,9 @@ public class QuickGesturePopupActivity extends BaseActivity {
         mNowLayout = mContainer.getNowLayout();
 
         mSuccessTipView = findViewById(R.id.gesture_success_tip);
-        mGestureTipTitle = findViewById(R.id.gesture_success_title);
         mGestureTipContent = (TextView) findViewById(R.id.gesture_success_content);
+
+        mModeSelectView = (QgLockModeSelectView) findViewById(R.id.mode_select_view);
     }
 
     private void checkFirstWhiteClick() {
@@ -120,7 +123,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
         }
     }
 
-    private void fillWhichLayoutFitst(int mNowLayout,boolean mFalg) {
+    private void fillWhichLayoutFitst(int mNowLayout, boolean mFalg) {
         if (mNowLayout == 1) {
             fillDynamicLayout(mFalg);
         } else if (mNowLayout == 2) {
@@ -163,8 +166,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
         int nowLayout = mContainer.getNowLayout();
         isCanNotDoAnimation = true;
         if (QuickGestureManager.isClickSure) {
-             LeoLog.d("testActivity", "onNewIntent && nowLayout is : " + mNowLayout);
-             fillWhichLayoutFitst(nowLayout,true);
+            LeoLog.d("testActivity", "onNewIntent && nowLayout is : " + mNowLayout);
+            fillWhichLayoutFitst(nowLayout, true);
         }
         super.onNewIntent(intent);
     }
@@ -366,6 +369,12 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
 
     public void showLockMode() {
-        Toast.makeText(this, "展示情景模式", Toast.LENGTH_SHORT).show();
+        mModeSelectView.show();
+        mContainer.enterModeSelect();
     }
+
+    public void onModeSelectViewClosed() {
+        mContainer.leaveModeSelect();
+    }
+
 }

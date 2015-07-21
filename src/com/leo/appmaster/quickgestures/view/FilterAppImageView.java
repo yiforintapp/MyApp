@@ -270,7 +270,7 @@ public class FilterAppImageView extends ImageView {
                         R.drawable.lock_mode_default);
             } else {
                 rightIcon = mContext.getResources().getDrawable(
-                        R.drawable.lock_mode_default);
+                        R.drawable.lock_mode_default_dis);
             }
         } else if (changeInfo.swtichIdentiName.equals(QuickSwitchManager.HOME)) {
             // 桌面
