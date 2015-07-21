@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.baidu.mobstat.e;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -50,14 +52,19 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private LEOAlarmDialog mAddCallLogDialog;
     private TextView mPhoneNumberShow;
     private Handler mHandler;
+    
+    public static final String TO_CONTACT_LIST = "to_contact_list";
+    private boolean mToContactList = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_contact_input);
         initUI();
+        Intent intent = getIntent();
+        mToContactList = intent.getBooleanExtra(TO_CONTACT_LIST, false);
+        
         mRadioNormal.setOnCheckedChangeListener(new OnCheckedChangeListener() {
-
             @Override
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 /* sdk */
@@ -70,7 +77,6 @@ public class PrivacyContactInputActivity extends BaseActivity {
         });
         mRadioHangup.setOnCheckedChangeListener(new OnCheckedChangeListener()
         {
-
             @Override
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 mPhoneState = 0;
@@ -79,7 +85,6 @@ public class PrivacyContactInputActivity extends BaseActivity {
             }
         });
         mTtileBar.setOptionListener(new OnClickListener() {
-
             @Override
             public void onClick(View arg0) {
                 if (!"".equals(mPhoneNumber) && mPhoneNumber != null) {
@@ -170,7 +175,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                                         R.string.privacy_contact_add_log_dialog_dialog_content);
                                 showAddContactLogDialog(title, content);
                             } else {
-                                PrivacyContactInputActivity.this.finish();
+                                toContactList();
                             }
                         }
                         // "添加成功！",
@@ -268,7 +273,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                                 int currentValue = msg.what;
                                 if (currentValue >= privacyTotal) {
                                     mProgressDialog.cancel();
-                                    PrivacyContactInputActivity.this.finish();
+                                    toContactList();
                                 } else {
                                     mProgressDialog.setProgress(currentValue);
                                 }
@@ -286,7 +291,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                     if (mAddCallLogDialog != null) {
                         mAddCallLogDialog.cancel();
                     }
-                    PrivacyContactInputActivity.this.finish();
+                    toContactList();
                 }
             }
         });
@@ -413,6 +418,19 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private void checkEditTextAdd() {
         mPhoneName = mNameEt.getText().toString();
         mPhoneNumber = mNumberEt.getText().toString().trim();
-
+    }
+    
+    /**
+     * 跳转联系人列表
+     */
+    private void toContactList(){
+        if(mToContactList){
+            Intent intent = new Intent(this, PrivacyContactActivity.class);
+            intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT, PrivacyContactUtils.TO_PRIVACY_CONTACT_FLAG);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            startActivity(intent);
+        }else {
+            PrivacyContactInputActivity.this.finish();
+        }
     }
 }

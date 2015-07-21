@@ -248,5 +248,10 @@
     <dimen name="webview_icon_margin">50dp</dimen>
      <dimen name="webview_title_width">222dp</dimen>
      <dimen name="guide_skip_margin">6dp</dimen>
+     <dimen name="privacy_default_title_margin_top">28dp</dimen>
+     <dimen name="privacy_default_image_width">80dp</dimen>
+    <dimen name="privacy_default_image_height">80dp</dimen>
+    <dimen name="privacy_default_text_margin_top">6dp</dimen>
+    <dimen name="privacy_auto_add_btn_margin_top">38dp</dimen>
     <!-- 2.6 end -->
 </resources>

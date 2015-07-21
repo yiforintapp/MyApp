@@ -28,6 +28,7 @@ public class ZipperView extends View {
     private Bitmap mZipper;
     private Bitmap mLeft;
     private Bitmap mRight;
+    private Bitmap mMask;
     private int mWidth;
     private int mHeight;
     private float mYp = 0;
@@ -38,10 +39,11 @@ public class ZipperView extends View {
     private int[] newbg;
     private Context mContext;
     private DisplayMetrics mDisplayMetrics;
-
     private OnGestureSuccessListener mSuccess = null;
-
     private Handler mhandler = new Handler();
+    private boolean mIsZipperTouched = false;
+    
+    
     private Runnable animGoBack = new Runnable()
     {
         public void run()
@@ -62,7 +64,7 @@ public class ZipperView extends View {
         }
     };
 
-    private boolean isZipperTouched = false;
+
 
     // private float zipX;
     // private float zipY;
@@ -89,6 +91,7 @@ public class ZipperView extends View {
     }
 
     private void init() {
+        mMask=BitmapFactory.decodeResource(getResources(), R.drawable.zipper_bg_mask);
         mDrawbleBg = BitmapFactory.decodeResource(getResources(), R.drawable.bg_beauty);
         mDrawbleCowBoy = BitmapFactory.decodeResource(getResources(), R.drawable.bg_cowboy);
         mZipper = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper);
@@ -112,22 +115,15 @@ public class ZipperView extends View {
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         Log.d(TAG, "onDraw");
-        // drawbg(canvas);//背景：美女
-        // drawCowboy(canvas);//拉链衣服
-        // drawzipper(canvas);//拉链头
-        // drawleft(canvas);//左边内容
-        // drawright(canvas);//右边内容
+   
 
-        // drawCowboy(canvas);//1
-        // drawbg(canvas);//2 应该选取一个三角形来
+   
         drawCowboyandBeaty(canvas);
         drawzipper(canvas);
         drawleft(canvas);
         drawright(canvas);
 
-        // Paint p = new Paint();
-        // p.setColor(Color.RED);
-        // canvas.drawPath(mPath, p);
+      
     }
 
     private void drawleft(Canvas canvas) {
@@ -136,8 +132,7 @@ public class ZipperView extends View {
         
         
 //        Bitmap left = Bitmap.createBitmap(mLeft);
-        // Log.i(TAG, "left.wdh = " + left.getWidth() +
-        // "  left.hgt = "+left.getHeight());
+
 //        canvas.drawBitmap(left, 0, mYp - mLeft.getHeight(), new Paint());
         canvas.drawBitmap(left, 0, mYp - left.getHeight(), new Paint());
     }
@@ -162,14 +157,11 @@ public class ZipperView extends View {
         {
             float x = event.getX();
             float y = event.getY();
-            // mPath.moveTo(30, 0);
-            // mPath.lineTo(mWidth-30,0);
-            // mPath.lineTo(mWidth/2,y);
-            // mPath.close();
+         
 
             switch (event.getAction()) {
                 case MotionEvent.ACTION_MOVE: {
-                    if (isZipperTouched)
+                    if (mIsZipperTouched)
                     // if(event.getX()>(mWidth-mZipper.getWidth())/2&&event.getX()<(mWidth+mZipper.getWidth())/2&&event.getY()>mYp&&event.getY()<mYp+mZipper.getHeight())
                     {
                         mYp = y;
@@ -181,7 +173,7 @@ public class ZipperView extends View {
                     break;
                 case MotionEvent.ACTION_UP: {
                     // if(event.getX()>(mWidth-mZipper.getWidth())/2&&event.getX()<(mWidth+mZipper.getWidth())/2&&event.getY()>mYp&&event.getY()<mYp+mZipper.getHeight())
-                    if (isZipperTouched)
+                    if (mIsZipperTouched)
                     {
                         long durationTime = System.currentTimeMillis() - downtime;
                         Log.e("poha", durationTime + "");
@@ -206,7 +198,7 @@ public class ZipperView extends View {
                         // float aftY = event.getY();
 
                     }
-                    isZipperTouched = false;
+                    mIsZipperTouched = false;
                     isGesture = false;
                 }
                     break;
@@ -218,7 +210,7 @@ public class ZipperView extends View {
                             && event.getY() < mYp + mZipper.getHeight() + 8)
                     {
                         downtime = System.currentTimeMillis();
-                        isZipperTouched = true;
+                        mIsZipperTouched = true;
                     }
                     else
                     {
@@ -273,10 +265,8 @@ public class ZipperView extends View {
                     Log.e("poha", "ax02:" + ax02);
                     Log.e("poha", "ay02:" + ay02);
 
-                    // float theTop=(py01>=py02)?py01:py02;
-                    // float thebottom=(py01<py02)?py01:py02;
-                    //
-                    // flo
+                   
+                  
 
                     if (((py01 <= py02 && ay01 > py01 + 70 && ay02 < py02 - 70) || (py01 > py02
                             && ay01 < py01 - 70 && ay02 > py02 + 70))
@@ -421,4 +411,6 @@ public class ZipperView extends View {
         Bitmap bmp = Bitmap.createBitmap(newbg, mWidth, mHeight, Config.ARGB_8888);
         canvas.drawBitmap(bmp, 0, 0, new Paint());
     }
+    
+    
 }

@@ -22,7 +22,7 @@
         android:divider="@null"
         android:listSelector="@drawable/manager_backup_list_selecter"
         android:scrollbars="none"
-        android:visibility="gone"  >
+        >
     </ListView>
 
     <ProgressBar
@@ -41,6 +41,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
+        android:visibility="gone"
         >
 
         <ImageView
@@ -53,13 +54,13 @@
             android:layout_height="wrap_content"
             android:text="@string/privacy_add_message_default_text"
             android:textColor="#d3d3d4"
-            android:textSize="18sp" />
+            android:textSize="17dp" />
         
          <Button
             android:id="@+id/moto_add_btn"
             android:layout_width="120dp"
             android:layout_height="38dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="@dimen/privacy_auto_add_btn_margin_top"
             android:background="@drawable/manager_done_button_selecter" 
             android:textColor="@color/white"
              android:textSize="17dp"
