@@ -169,9 +169,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         });
                 //
             }
-            mSelfIconDialog.setSureButtonText("立刻试试");
-            mSelfIconDialog.setLeftBtnStr("稍后");
-            mSelfIconDialog.setContent("加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全");// poha to
+            mSelfIconDialog.setSureButtonText(getString(R.string.button_disguise_guide_select));
+            mSelfIconDialog.setLeftBtnStr(getString(R.string.button_disguise_guide_cancel));
+            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha to
                                                                      // du
             mSelfIconDialog.show();
         }

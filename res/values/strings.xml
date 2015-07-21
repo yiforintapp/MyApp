@@ -753,8 +753,13 @@
     <string name="flash_light_open_toast">请不要频繁操作闪光灯，可能造成硬件损坏</string>
     <string name="privacy_auto_add_text">手动添加</string>
      <string name="button_disguise_guide_select">立刻试试</string>
-    <string name="button_disguise_guide_cancel">立刻试试</string>
+    <string name="button_disguise_guide_cancel">稍后</string>
     <string name="choose_lock_mode">选择情景模式</string>
+    
+    
+    <string name="button_disguise_guide_content">加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全</string>
+    
+    
     <!-- 2.6 end -->
 
 </resources>
