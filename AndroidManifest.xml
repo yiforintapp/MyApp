@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="40"
+    android:versionCode="41"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -581,12 +581,8 @@
             android:label="@string/accelerate"
             android:launchMode="singleInstance"
             android:noHistory="true"
+            android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
         <service

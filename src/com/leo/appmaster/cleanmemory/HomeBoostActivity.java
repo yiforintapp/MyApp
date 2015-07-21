@@ -2,6 +2,7 @@
 package com.leo.appmaster.cleanmemory;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
@@ -73,14 +74,13 @@ public class HomeBoostActivity extends Activity {
             }
         });
         mRocketHeight = mIvRocket.getMeasuredHeight();
-        LeoLog.e("xxxx", "mRocketHeight = " + mRocketHeight);
         ObjectAnimator rocketAnimator1 = ObjectAnimator.ofFloat(mIvRocket, "translationY",
                 mRocketHeight, mRocketHeight * 0.18f, mRocketHeight * 0.26f, mRocketHeight * 0.30f);
         rocketAnimator1.setDuration(800);
         ObjectAnimator rocketAnimator2 = ObjectAnimator.ofFloat(mIvRocket,
                 "translationY",
                 mRocketHeight * 0.30f, -mScreenH);
-        rocketAnimator2.setDuration(1000);
+        rocketAnimator2.setDuration(800);
 
         rocketAnimator2.addListener(new AnimatorListenerAdapter() {
             @Override
@@ -124,13 +124,24 @@ public class HomeBoostActivity extends Activity {
     }
 
     private void cleanMemory() {
-        isCleanFinish = false;
-        mCleaner = ProcessCleaner.getInstance(this);
-        mLastUsedMem = mCleaner.getUsedMem();
-        mCleaner.tryClean(this);
-        long curUsedMem = mCleaner.getUsedMem();
-        mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-        isCleanFinish = true;
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        long currentTime = System.currentTimeMillis();
+        long lastBoostTime = amp.getLastBoostTime();
+        LeoLog.e("xxxx", "currentTime = " + currentTime + "     lastBoostTime = " + lastBoostTime
+                + ":   " + (currentTime - lastBoostTime));
+        if ((currentTime - lastBoostTime) < 5 * 1000) {
+            isClean = false;
+        } else {
+            isClean = true;
+            isCleanFinish = false;
+            mCleaner = ProcessCleaner.getInstance(this);
+            mLastUsedMem = mCleaner.getUsedMem();
+            mCleaner.tryClean(this);
+            long curUsedMem = mCleaner.getUsedMem();
+            mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+            isCleanFinish = true;
+            amp.setLastBoostTime(currentTime);
+        }
     }
 
     public void showCleanResault() {
@@ -138,7 +149,8 @@ public class HomeBoostActivity extends Activity {
         View view = inflater.inflate(R.layout.toast_self_make, null);
         TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
         String mToast;
-        if (!isClean) {
+
+        if (isClean) {
             if (isCleanFinish) {
                 if (mCleanMem <= 0) {
                     LeoLog.d("testspeed", "CleanMem <= 0");

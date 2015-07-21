@@ -1205,9 +1205,6 @@ public class QuickGestureManager {
             Intent quickGestureShortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
             ShortcutIconResource quickGestureIconRes = Intent.ShortcutIconResource.fromContext(
                     mContext, R.drawable.gesture_desktopo_icon);
-            // ShortcutIconResource quickGestureIconRes =
-            // Intent.ShortcutIconResource.fromContext(
-            // mContext, R.drawable.gesture_arrow_tips);
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mContext.getResources()
                     .getString(R.string.pg_appmanager_quick_gesture_name));
             quickGestureShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, quickGestureIconRes);

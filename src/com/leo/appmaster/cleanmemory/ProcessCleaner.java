@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.cleanmemory;
 
 import java.util.ArrayList;
@@ -11,127 +12,129 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.utils.ProcessUtils;
 
 public class ProcessCleaner {
 
-	private Context mContext;
-	private ActivityManager mAm;
-	private static ProcessCleaner mInstance;
+    private Context mContext;
+    private ActivityManager mAm;
+    private static ProcessCleaner mInstance;
 
-	private long mLastCleanTime;
+    private long mLastCleanTime;
 
-	private long mMemTotal;
-	private long mLastCleanMem;
+    private long mMemTotal;
+    private long mLastCleanMem;
 
-	private long mLastMemUsed;
-	private long mCurUsedMem;
+    private long mLastMemUsed;
+    private long mCurUsedMem;
 
-	private static int CLEAN_INTERVAL = 30 * 1000;
-//	private static int CLEAN_INTERVAL = 1000;
-	
-	public static synchronized ProcessCleaner getInstance(Context ctx) {
-		if (mInstance == null) {
-			mInstance = new ProcessCleaner(ctx);
-		}
+    private static int CLEAN_INTERVAL = 30 * 1000;
 
-		return mInstance;
-	}
+    // private static int CLEAN_INTERVAL = 1000;
 
-	public long getTotalMem() {
-		if (mMemTotal == 0) {
-			mMemTotal = ProcessUtils.getTotalMem();
-		}
-		return mMemTotal;
-	}
+    public static synchronized ProcessCleaner getInstance(Context ctx) {
+        if (mInstance == null) {
+            mInstance = new ProcessCleaner(ctx);
+        }
 
-	public long getLastCleanMem() {
-		return mLastCleanMem;
-	}
+        return mInstance;
+    }
 
-	public long getUsedMem() {
-		long curTime = System.currentTimeMillis();
-		if ((curTime - mLastCleanTime) > CLEAN_INTERVAL) {
-			mLastMemUsed = ProcessUtils.getUsedMem(mContext);
-		}
-		return mLastMemUsed;
-	}
+    public long getTotalMem() {
+        if (mMemTotal == 0) {
+            mMemTotal = ProcessUtils.getTotalMem();
+        }
+        return mMemTotal;
+    }
 
-	public long getCurUsedMem() {
-		return mCurUsedMem;
-	}
+    public long getLastCleanMem() {
+        return mLastCleanMem;
+    }
 
-	public boolean allowClean() {
-		long curTime = System.currentTimeMillis();
-		return (curTime - mLastCleanTime) > CLEAN_INTERVAL;
-	}
+    public long getUsedMem() {
+        long curTime = System.currentTimeMillis();
+        if ((curTime - mLastCleanTime) > CLEAN_INTERVAL) {
+            mLastMemUsed = ProcessUtils.getUsedMem(mContext);
+        }
+        return mLastMemUsed;
+    }
 
-	public ProcessCleaner(Context ctx) {
-		this.mContext = ctx.getApplicationContext();
-	    this.mAm = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
-	}
+    public long getCurUsedMem() {
+        return mCurUsedMem;
+    }
 
-	public long tryClean(Context ctx) {
-		long resault = -1;
-		long curTime = System.currentTimeMillis();
-		if ((curTime - mLastCleanTime) > CLEAN_INTERVAL) {
-			mLastCleanTime = curTime;
-			cleanAllProcess(ctx);
-			resault = mLastCleanMem = Math.abs(mCurUsedMem - mLastMemUsed);
-			mLastMemUsed = mCurUsedMem;
-		}
-		return resault;
-	}
+    public boolean allowClean() {
+        long curTime = System.currentTimeMillis();
+        return (curTime - mLastCleanTime) > CLEAN_INTERVAL;
+    }
 
-	/**
-	 * clean one process
-	 * 
-	 * @param pkg
-	 */
-	public void cleanProcess(String pkg) {
-		mAm.killBackgroundProcesses(pkg);
-	}
+    public ProcessCleaner(Context ctx) {
+        this.mContext = ctx.getApplicationContext();
+        this.mAm = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
+    }
 
-	/**
-	 * clean multi processes
-	 * 
-	 * @param pkg
-	 */
-	public void cleanProcess(List<String> pkgs) {
-		if (pkgs != null) {
-			for (String pkg : pkgs) {
-				mAm.killBackgroundProcesses(pkg);
-			}
-		}
-	}
+    public long tryClean(Context ctx) {
+        long resault = -1;
+        long curTime = System.currentTimeMillis();
+        if ((curTime - mLastCleanTime) > CLEAN_INTERVAL) {
+            mLastCleanTime = curTime;
+            cleanAllProcess(ctx);
+            resault = mLastCleanMem = Math.abs(mCurUsedMem - mLastMemUsed);
+            mLastMemUsed = mCurUsedMem;
+        }
+        return resault;
+    }
 
-	/**
-	 * clean all running process
-	 */
-	public void cleanAllProcess(Context cxt) {
-		List<RunningAppProcessInfo> list = mAm.getRunningAppProcesses();
-		List<String> launchers = getLauncherPkgs(cxt);
-		for (RunningAppProcessInfo runningAppProcessInfo : list) {
-			if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
-				if (!launchers.contains(runningAppProcessInfo.processName)) {
-					mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
-				}
-			}
-		}
-		mCurUsedMem = ProcessUtils.getUsedMem(cxt);
-	}
+    /**
+     * clean one process
+     * 
+     * @param pkg
+     */
+    public void cleanProcess(String pkg) {
+        mAm.killBackgroundProcesses(pkg);
+    }
 
-	private List<String> getLauncherPkgs(Context ctx) {
-		PackageManager pm = ctx.getPackageManager();
-		List<String> pkgs = new ArrayList<String>();
-		Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory(Intent.CATEGORY_HOME);
-		List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
-		for (ResolveInfo resolveInfo : apps) {
-			ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
-			String packageName = applicationInfo.packageName;
-			pkgs.add(packageName);
-		}
-		return pkgs;
-	}
+    /**
+     * clean multi processes
+     * 
+     * @param pkg
+     */
+    public void cleanProcess(List<String> pkgs) {
+        if (pkgs != null) {
+            for (String pkg : pkgs) {
+                mAm.killBackgroundProcesses(pkg);
+            }
+        }
+    }
+
+    /**
+     * clean all running process
+     */
+    public void cleanAllProcess(Context cxt) {
+        List<RunningAppProcessInfo> list = mAm.getRunningAppProcesses();
+        List<String> launchers = getLauncherPkgs(cxt);
+        for (RunningAppProcessInfo runningAppProcessInfo : list) {
+            if (runningAppProcessInfo.importance > RunningAppProcessInfo.IMPORTANCE_CANT_SAVE_STATE) {
+                if (!launchers.contains(runningAppProcessInfo.processName)) {
+                    mAm.killBackgroundProcesses(runningAppProcessInfo.processName);
+                }
+            }
+        }
+        mCurUsedMem = ProcessUtils.getUsedMem(cxt);
+    }
+
+    private List<String> getLauncherPkgs(Context ctx) {
+        PackageManager pm = ctx.getPackageManager();
+        List<String> pkgs = new ArrayList<String>();
+        Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+        mainIntent.addCategory(Intent.CATEGORY_HOME);
+        List<ResolveInfo> apps = pm.queryIntentActivities(mainIntent, 0);
+        for (ResolveInfo resolveInfo : apps) {
+            ApplicationInfo applicationInfo = resolveInfo.activityInfo.applicationInfo;
+            String packageName = applicationInfo.packageName;
+            pkgs.add(packageName);
+        }
+        return pkgs;
+    }
 }
