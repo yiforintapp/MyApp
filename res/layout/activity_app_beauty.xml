@@ -14,10 +14,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"
+        android:layout_marginTop="170dp"
         android:src="@drawable/beauty_guide_gesture" />
     
-    <TextView
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="256dp"   
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/beauty_guide_shadow"
+        >
+        <TextView
         android:id="@+id/tv_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,12 +47,14 @@
         android:textColor="@color/white"
         android:textSize="20sp" />
 
-    <ImageView
-        android:id="@+id/iv_shadow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:src="@drawable/beauty_guide_shadow" />
+<!--         android:layout_alignParentBottom="true" -->
+
+  
+        
+    </RelativeLayout>
+    
+    
+    
+    
 
 </RelativeLayout>
