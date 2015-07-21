@@ -5,6 +5,7 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
@@ -53,17 +55,38 @@ public class GestureLockFragment extends LockFragment implements
         mLockPatternView.setIsFromLockScreenActivity(true);
         mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
         mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
-        if (mLockMode == LockManager.LOCK_MODE_FULL && mPackageName != null) {
+        
+        if (mLockMode == LockManager.LOCK_MODE_FULL) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
-            mAppIcon.setImageDrawable(AppUtil.getDrawable(
-                    mActivity.getPackageManager(), mPackageName));
             mAppIcon.setVisibility(View.VISIBLE);
-            if (needChangeTheme()) {
-                mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
-                mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
-                mAppIconTop.setVisibility(View.VISIBLE);
-                mAppIconBottom.setVisibility(View.VISIBLE);
-                changeActivityBgAndIconByTheme();
+            LockScreenActivity lsa = (LockScreenActivity) mActivity;
+            if (lsa.mQuickLockMode) {
+                LockManager lm = LockManager.getInstatnce();
+                List<LockMode> modes = lm.getLockMode();
+                LockMode targetMode = null;
+                for (LockMode lockMode : modes) {
+                    if (lockMode.modeId == lsa.mQuiclModeId) {
+                        targetMode = lockMode;
+                        break;
+                    }
+                }
+                if (targetMode != null) {
+                    mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
+                            targetMode.modeIcon));
+                } else {
+                    mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                            mActivity.getPackageManager(), mActivity.getPackageName()));
+                }
+            } else if (mPackageName != null) {
+                mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                        mActivity.getPackageManager(), mPackageName));
+                if (needChangeTheme()) {
+                    mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
+                    mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
+                    mAppIconTop.setVisibility(View.VISIBLE);
+                    mAppIconBottom.setVisibility(View.VISIBLE);
+                    changeActivityBgAndIconByTheme();
+                }
             }
         }
 

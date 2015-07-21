@@ -82,6 +82,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void checkFirstWhiteClick() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot() && !BuildProperties.isGTS5282()) {
+            amp.setEverCloseWhiteDot(true);
             int clickCount = amp.getUseStrengthenModeTimes();
             if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);

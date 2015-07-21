@@ -35,7 +35,9 @@ public class BeautyWeiZhuang extends BaseActivity
             @Override
             public void OnGestureSuccess() {
                 // TODO Auto-generated method stub
-                showAlarmDialog("标题啦","呵呵","确定");
+                showAlarmDialog(getString(R.string.open_weizhuang_dialog_title),
+                        getString(R.string.open_weizhuang_dialog_content),
+                        getString(R.string.open_weizhuang_dialog_sure));
             }
         });
         
@@ -52,10 +54,8 @@ public class BeautyWeiZhuang extends BaseActivity
                 public void onClick(int which) {
                     // ok
                     if (which == 1)
-                    {
-                        
-                        mAppMasterSP.setPretendLock(BEAUTYWEIZHUANG);
-                       
+                    {               
+                        mAppMasterSP.setPretendLock(BEAUTYWEIZHUANG);             
                         BeautyWeiZhuang.this.finish();
                     }
 
