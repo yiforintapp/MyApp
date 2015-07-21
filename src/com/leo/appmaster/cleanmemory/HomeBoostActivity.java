@@ -127,8 +127,6 @@ public class HomeBoostActivity extends Activity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         long currentTime = System.currentTimeMillis();
         long lastBoostTime = amp.getLastBoostTime();
-        LeoLog.e("xxxx", "currentTime = " + currentTime + "     lastBoostTime = " + lastBoostTime
-                + ":   " + (currentTime - lastBoostTime));
         if ((currentTime - lastBoostTime) < 5 * 1000) {
             isClean = false;
         } else {
