@@ -12,6 +12,7 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -26,6 +27,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -62,12 +64,26 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
     private int mAnswerType = 1;
     private boolean mLogFlag = false;
     private LinearLayout mDefaultText;
+    private Button mAutoDddBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_message);
         mDefaultText = (LinearLayout) findViewById(R.id.add_message_default_tv);
+        mAutoDddBtn = (Button)mDefaultText.findViewById(R.id.moto_add_btn);
+        mAutoDddBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* SDK */
+                SDKWrapper.addEvent(AddFromMessageListActivity.this, SDKWrapper.P1, "contactsadd",
+                        "handadd");
+                Intent intent = new Intent(AddFromMessageListActivity.this,
+                        PrivacyContactInputActivity.class);
+                intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
+                startActivity(intent);
+            }
+        });
         mTtileBar = (CommonTitleBar) findViewById(R.id.add_privacy_contact_title_bar);
         mTtileBar.openBackView();
         mTtileBar.setOptionImage(R.drawable.mode_done);

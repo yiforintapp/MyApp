@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -102,6 +103,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             SDKWrapper.addEvent(this, SDKWrapper.P1, "privacyview", "statuscall");
         } else {
             mTtileBar.setTitle(R.string.privacy_contacts);
+            pagerPosition = 2;
             mPrivacyContactPagerTab.setCurrentItem(2);
             updateTitle();
         }
@@ -599,5 +601,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         });
         mAddPrivacyContact.show();
     }
-
+    
+    private void scrollToContactList(){
+    }
 }

@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -57,12 +59,26 @@ public class AddFromCallLogListActivity extends BaseActivity {
     private boolean mLogFlag = false;
     private ProgressBar mProgressBar;
     private LinearLayout mDefaultText;
+    private Button mAutoDddBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_call_log);
         mDefaultText = (LinearLayout) findViewById(R.id.add_call_log_default_tv);
+        mAutoDddBtn = (Button)mDefaultText.findViewById(R.id.moto_add_btn);
+        mAutoDddBtn.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* SDK */
+                SDKWrapper.addEvent(AddFromCallLogListActivity.this, SDKWrapper.P1, "contactsadd",
+                        "handadd");
+                Intent intent = new Intent(AddFromCallLogListActivity.this,
+                        PrivacyContactInputActivity.class);
+                intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
+                startActivity(intent);
+            }
+        });
         mComBar = (CommonTitleBar) findViewById(R.id.add_privacy_call_log_title_bar);
         mComBar.setTitle(R.string.privacy_contact_popumenus_from_call_log);
         mListCallLog = (ListView) findViewById(R.id.add_privacy_call_logLV);
