@@ -82,6 +82,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         return R.layout.fragment_lock_passwd;
     }
 
+    @SuppressWarnings("deprecation")
     @Override
     protected void onInitUI() {
 
@@ -182,23 +183,21 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             } else if (mPackageName != null) {
                 mAppIcon.setImageDrawable(AppUtil.getDrawable(
                         mActivity.getPackageManager(), mPackageName));
-                if (needChangeTheme()) {
-                    mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
-                    mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
-                    mAppIconTop.setVisibility(View.VISIBLE);
-                    mAppIconBottom.setVisibility(View.VISIBLE);
-                    if (mThemeRes != null) {
-                        if (mTopIconRes > 0) {
-                            mAppIconTop.setBackgroundDrawable(mThemeRes.getDrawable(mTopIconRes));
-                        }
-                        if (mBottomIconRes > 0) {
-                            mAppIconBottom.setBackgroundDrawable(mThemeRes
-                                    .getDrawable(mBottomIconRes));
-                        }
+            }
+            if (needChangeTheme()) {
+                mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
+                mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
+                mAppIconTop.setVisibility(View.VISIBLE);
+                mAppIconBottom.setVisibility(View.VISIBLE);
+                if (mThemeRes != null) {
+                    if (mTopIconRes > 0) {
+                        mAppIconTop.setBackgroundDrawable(mThemeRes.getDrawable(mTopIconRes));
+                    }
+                    if (mBottomIconRes > 0) {
+                        mAppIconBottom.setBackgroundDrawable(mThemeRes.getDrawable(mBottomIconRes));
                     }
                 }
             }
-
         }
 
         clearPasswd();
