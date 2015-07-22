@@ -109,7 +109,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private View switch_bottom_content;
 
     private boolean mNewTheme;
-    private RelativeLayout mLockerGuide;
     private RelativeLayout mPretendLayout;
     private PretendFragment mPretendFragment;
 
@@ -195,12 +194,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
-                if (!lockThemeGuid) {
-                    mLockerGuide.setVisibility(View.VISIBLE);
-                    themeGuide(mLockerGuide, mAnim);
-                } else {
-                    mLockerGuide.setVisibility(View.GONE);
-                }
                 /*
                  * tell PushUIHelper than do not show dialog when lockscreen is
                  * shown
@@ -461,12 +454,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void initUI() {
         mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
-        mLockerGuide = (RelativeLayout) findViewById(R.id.lockerGuide);
         mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         switch_bottom_content = findViewById(R.id.switch_bottom_content);
         switch_bottom_content.setVisibility(View.INVISIBLE);
-        TextView lockGuideTv = (TextView) mLockerGuide.findViewById(R.id.lock_guide_tv);
-        lockGuideTv.setText(getString(R.string.help_setting_guide));
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
             mTtileBar.setBackArrowVisibility(View.GONE);

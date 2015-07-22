@@ -31,7 +31,8 @@
             android:layout_marginRight="62dp"
             android:background="@drawable/lock_tutorails_button"
             android:gravity="center"
-            android:visibility="gone" >
+            android:visibility="gone"
+             >
 
             <TextView
                 android:id="@+id/lock_guide_tv"

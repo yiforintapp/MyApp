@@ -9,6 +9,7 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
@@ -36,7 +37,8 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private TipTextView mLockThemeBtn;
     private TextView mLockModeBtn;
     private TextView mLockSettingBtn;
-
+    private boolean isFromAppLockList=false;
+    
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_home_lock;
@@ -54,6 +56,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         mLockModeBtn.setOnClickListener(this);
         mLockSettingBtn = (TextView) findViewById(R.id.lock_setting);
         mLockSettingBtn.setOnClickListener(this);
+        
 
         mLockModeCircle.startAnimation();
     }
@@ -196,9 +199,12 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private void enterLockList() {
         Intent intent = null;
         intent = new Intent(mActivity, AppLockListActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,100);
 
     }
+    
+    
+  
 
     private void startRcommendLock(int target) {
         Intent intent = new Intent(mActivity, RecommentAppLockListActivity.class);
