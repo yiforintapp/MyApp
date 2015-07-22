@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/img_cancel"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="13dp"
         android:padding="10dip"
         leoindicator:fillColor="#4285f4"
         leoindicator:pageColor="#4285f4"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/indicator"
         android:layout_alignParentLeft="true"
-        android:layout_marginBottom="22dp"
+        android:layout_marginBottom="13dp"
         android:clipChildren="false"
         android:gravity="center"
         android:layerType="software" >
