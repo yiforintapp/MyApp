@@ -3,13 +3,17 @@ package com.leo.appmaster.videohide;
 
 import java.util.ArrayList;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.support.v4.view.PagerAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +25,7 @@ import android.widget.ImageView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -31,8 +36,10 @@ import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
+import com.leo.appmaster.videohide.VideoGriActivity.AdditionServiceConnection;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -58,6 +65,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     public static final int JUMP_URL = 1;
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
+
+    private mInterface mService;
+    private ServiceConnection mConnection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +115,30 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             viewPager.setCurrentItem(mPosition, true);
         }
         getResultValue();
+
+        // coolbrowser aidl
+        gotoBindService();
+
+    }
+
+    private void gotoBindService() {
+        mConnection = new AdditionServiceConnection();
+        Intent intent = new Intent("com.appmater.aidl.service");
+        LeoLog.d("testBindService", "bindService");
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    class AdditionServiceConnection implements ServiceConnection {
+        public void onServiceConnected(ComponentName name, IBinder boundService) {
+            mService = mInterface.Stub.asInterface((IBinder) boundService);
+            LeoLog.d("testBindService", "connect service");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mService = null;
+            LeoLog.d("testBindService", "disconnect service");
+        }
     }
 
     @Override
@@ -368,6 +402,20 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             flag = true;
         } catch (Exception e) {
         }
+
+        // int mProcessType = -1;
+        // try {
+        // mProcessType =
+        // mService.deleteVideo(filePath);
+        //
+        // LeoLog.d("testBindService", "mProcessType is : " + mProcessType);
+        // if (mProcessType == 0) {
+        // mAllPath.remove(mPosition);
+        // flag = true;
+        // }
+        // } catch (RemoteException e) {
+        // }
+
         if (flag) {
             int number = mAllPath.size();
             if (number == 0) {
@@ -416,24 +464,43 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             Boolean flag = params[0];
             if (flag && mPosition < mAllPath.size()) {
                 String path = mAllPath.get(mPosition);
+
+                // int mProcessType = -1;
+                // try {
+                // mProcessType =
+                // mService.cancelHide(path);
+                // LeoLog.d("testBindService", "mProcessType is : " +
+                // mProcessType);
+                // if (mProcessType == 0) {
+                // mResultPath.add(path);
+                // mAllPath.remove(mPosition);
+                // } else if (mProcessType == -1) {
+                // isSuccess = false;
+                // }
+                // } catch (RemoteException e) {
+                // isSuccess = false;
+                // }
+
                 newFileName = FileOperationUtil.getNameFromFilepath(path);
                 try {
-                        newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
-                        if (!FileOperationUtil.renameFile(path, newFileName)) {
-                            return isSuccess = false;
-                        } else {
-                            mResultPath.add(path);
-                            FileOperationUtil.saveFileMediaEntry(
-                                    FileOperationUtil.makePath(
-                                            FileOperationUtil.getDirPathFromFilepath(path),
-                                            newFileName),
-                                    context);
-                            FileOperationUtil.deleteFileMediaEntry(path, context);
-                            mAllPath.remove(mPosition);
-                        }
+                    newFileName = newFileName.substring(1,
+                            newFileName.indexOf(".leotmv"));
+                    if (!FileOperationUtil.renameFile(path, newFileName)) {
+                        return isSuccess = false;
+                    } else {
+                        mResultPath.add(path);
+                        FileOperationUtil.saveFileMediaEntry(
+                                FileOperationUtil.makePath(
+                                        FileOperationUtil.getDirPathFromFilepath(path),
+                                        newFileName),
+                                context);
+                        FileOperationUtil.deleteFileMediaEntry(path, context);
+                        mAllPath.remove(mPosition);
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+
             }
             return isSuccess;
         }

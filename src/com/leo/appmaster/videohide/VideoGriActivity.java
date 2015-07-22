@@ -10,8 +10,10 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.ServiceConnection;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.database.Cursor;
@@ -19,6 +21,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
+import android.os.RemoteException;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
@@ -40,6 +44,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -58,6 +63,7 @@ import com.leo.imageloader.core.ImageScaleType;
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
+    private static final String TAG = "VideoGriActivity";
     private GridView mHideVideo;
     private List<VideoItemBean> mVideoItems;
     private CommonTitleBar mCommonTtileBar;
@@ -81,6 +87,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private ArrayList<String> mUnhidePath;
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
+
+    private mInterface mService;
+    private ServiceConnection mConnection;
 
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
@@ -140,6 +149,33 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mHideButton.setOnClickListener(this);
         getResultValue();
         initImageLoder();
+        // coolbrowser aidl
+        gotoBindService();
+    }
+
+    private void gotoBindService() {
+        mConnection = new AdditionServiceConnection();
+        // Bundle args = new Bundle();
+        Intent intent = new Intent("com.appmater.aidl.service");
+        // intent.putExtras(args);
+        LeoLog.d("testBindService", "bindService");
+        bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
+    }
+
+    /*
+     * This inner class is used to connect to the service
+     */
+    class AdditionServiceConnection implements ServiceConnection {
+        public void onServiceConnected(ComponentName name, IBinder boundService) {
+            mService = mInterface.Stub.asInterface((IBinder) boundService);
+            LeoLog.d("testBindService", "connect service");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mService = null;
+            LeoLog.d("testBindService", "disconnect service");
+        }
     }
 
     @Override
@@ -151,6 +187,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private void getVideoPath() {
         for (VideoItemBean videoItem : mVideoItems) {
             String path = videoItem.getPath();
+            String name = videoItem.getName();
+            LeoLog.d("testVio", "name is : " + name);
             LeoLog.d("testVio", "mPath is : " + path);
             mAllPath.add(path);
         }
@@ -463,6 +501,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
+        if (mService != null) {
+            unbindService(mConnection);
+        }
     }
 
     /**
@@ -494,13 +535,34 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                         if (!mIsBackgoundRunning)
                             break;
                         mUnhidePath.add(item.getPath());
-                        newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
+
+                        // int mProcessType = -1;
+                        // try {
+                        // mProcessType = mService.hideVideo(item.getPath());
+                        // } catch (RemoteException e) {
+                        // isSuccess = false;
+                        // }
+                        //
+                        // LeoLog.d("testBindService", "mProcessType is : " +
+                        // mProcessType);
+                        // if (mProcessType == 0) {
+                        // mVideoItems.remove(item);
+                        // } else if (mProcessType == -1) {
+                        // mUnhidePath.remove(item.getPath());
+                        // isSuccess = false;
+                        // }
+
+                        newFileName =
+                                FileOperationUtil.getNameFromFilepath(item.getPath());
                         newFileName = newFileName + ".leotmv";
-                        if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
+                        if (FileOperationUtil.renameFile(item.getPath(),
+                                newFileName)) {
                             FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
                                     FileOperationUtil.getDirPathFromFilepath(item.getPath()),
                                     newFileName), context);
-                            FileOperationUtil.deleteVideoMediaEntry(item.getPath(), context);
+                            FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
+                                    context);
+
                             mVideoItems.remove(item);
                         } else {
                             mUnhidePath.remove(item.getPath());
@@ -513,19 +575,40 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                         if (!mIsBackgoundRunning)
                             break;
                         try {
-                            newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
-                            // TODO
-                                newFileName = newFileName.substring(1,
-                                        newFileName.indexOf(".leotmv"));
-                                if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
-                                    FileOperationUtil.saveImageMediaEntry(FileOperationUtil
-                                            .makePath(
-                                                    FileOperationUtil.getDirPathFromFilepath(item
-                                                            .getPath()),
-                                                    newFileName), context);
-                                    FileOperationUtil.deleteFileMediaEntry(item.getPath(), context);
-                                    mVideoItems.remove(item);
-                                }
+
+                            // int mProcessType = -1;
+                            // try {
+                            // mProcessType =
+                            // mService.cancelHide(item.getPath());
+                            // } catch (RemoteException e) {
+                            // isSuccess = false;
+                            // }
+                            //
+                            // LeoLog.d("testBindService", "mProcessType is : "
+                            // +
+                            // mProcessType);
+                            // if (mProcessType == 0) {
+                            // mVideoItems.remove(item);
+                            // } else if (mProcessType == -1) {
+                            // isSuccess = false;
+                            // }
+
+                            newFileName =
+                                    FileOperationUtil.getNameFromFilepath(item.getPath());
+                            newFileName = newFileName.substring(1,
+                                    newFileName.indexOf(".leotmv"));
+                            if (FileOperationUtil.renameFile(item.getPath(),
+                                    newFileName)) {
+                                FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+                                        .makePath(
+                                                FileOperationUtil.getDirPathFromFilepath(item
+                                                        .getPath()),
+                                                newFileName), context);
+                                FileOperationUtil.deleteFileMediaEntry(item.getPath(),
+                                        context);
+                                mVideoItems.remove(item);
+                            }
+
                         } catch (Exception e) {
                             isSuccess = false;
                         }
