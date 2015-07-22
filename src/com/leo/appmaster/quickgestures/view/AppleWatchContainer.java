@@ -1527,15 +1527,33 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void cleanMem() {
-        isCleanFinish = false;
-        // 清理内存
-        mCleaner = ProcessCleaner.getInstance(mContext);
-        mLastUsedMem = mCleaner.getUsedMem();
-        // clean
-        mCleaner.tryClean(mContext);
-        long curUsedMem = mCleaner.getUsedMem();
-        mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
-        isCleanFinish = true;
+//        isCleanFinish = false;
+//        // 清理内存
+//        mCleaner = ProcessCleaner.getInstance(mContext);
+//        mLastUsedMem = mCleaner.getUsedMem();
+//        // clean
+//        mCleaner.tryClean(mContext);
+//        long curUsedMem = mCleaner.getUsedMem();
+//        mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+//        isCleanFinish = true;
+        
+        
+        AppMasterPreference amp = AppMasterPreference.getInstance(this.getContext());
+        long currentTime = System.currentTimeMillis();
+        long lastBoostTime = amp.getLastBoostTime();
+        if ((currentTime - lastBoostTime) < 10 * 1000) {
+            isClean = false;
+        } else {
+            isClean = true;
+            isCleanFinish = false;
+            mCleaner = ProcessCleaner.getInstance(this.getContext());
+            mLastUsedMem = mCleaner.getUsedMem();
+            mCleaner.tryClean(this.getContext());
+            long curUsedMem = mCleaner.getUsedMem();
+            mCleanMem = Math.abs(mLastUsedMem - curUsedMem);
+            isCleanFinish = true;
+            amp.setLastBoostTime(currentTime);
+        }
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
@@ -1649,7 +1667,7 @@ public class AppleWatchContainer extends FrameLayout {
                                 returnAnimation.setDuration(300);
                                 returnAnimation.start();
                                 // make normal iCon
-                                makeNormalIcon(info);
+                                showBoostResault(info);
                             }
                         });
                         animMoveGoSet.start();
@@ -1661,13 +1679,13 @@ public class AppleWatchContainer extends FrameLayout {
         animSet.start();
     }
 
-    public void makeNormalIcon(QuickSwitcherInfo info) {
+    public void showBoostResault(QuickSwitcherInfo info) {
         // show Toast
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.toast_self_make, null);
         TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
         String mToast;
-        if (!isClean) {
+        if (isClean) {
             if (isCleanFinish) {
                 if (mCleanMem <= 0) {
                     LeoLog.d("testspeed", "CleanMem <= 0");
@@ -1702,7 +1720,6 @@ public class AppleWatchContainer extends FrameLayout {
         }
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
         toast.show();
-        isClean = true;
 
         // make Normal Icon
         GestureItemView tv = null;
