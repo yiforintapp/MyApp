@@ -136,9 +136,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     // 伪装的引导，当第一次将应用加了所后返回home，弹出提示。
     private void showWeiZhuangTip() {
-
+        
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
-                && LockManager.getInstatnce().getLockedAppCount() > 0)
+                && LockManager.getInstatnce().getLockedAppCount() > 0&&AppMasterPreference.getInstance(this).getPretendLock()==0)
         {
             AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
             if (mSelfIconDialog == null)
