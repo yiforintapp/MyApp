@@ -198,15 +198,15 @@ public class ZipperView extends View {
                     {
                         long durationTime = System.currentTimeMillis() - downtime;
                         Log.e("poha", durationTime + "");
-                        if (event.getY() >= mHeight/2)
+                        if (event.getY() >0)
                         {
-                            if (durationTime > 1000)
+                            if (event.getY()/durationTime*1000 < mHeight*1.5)
                             {
-                                Toast.makeText(getContext(), "太慢啦！", 0).show();
+                                Toast.makeText(getContext(), mContext.getResources().getString(R.string.zipper_too_slow), 0).show();
                             }
                             else
                             {
-                                Toast.makeText(getContext(), "太快啦！", 0).show();
+                                Toast.makeText(getContext(), mContext.getResources().getString(R.string.zipper_too_fast), 0).show();
                             }
                             this.mhandler.postDelayed(animGoBack, 1l);
 
@@ -227,8 +227,8 @@ public class ZipperView extends View {
                     // 4是让识别区域变大点
                     if (event.getX() > (mWidth - mZipper.getWidth() - 8) / 2
                             && event.getX() < (mWidth + mZipper.getWidth() + 8) / 2
-                            && event.getY() > mYp - 8
-                            && event.getY() < mYp + mZipper.getHeight() + 10)
+                            && event.getY() > mYp - 15
+                            && event.getY() < mYp + mZipper.getHeight() + 15)
                     {
                         downtime = System.currentTimeMillis();
                         mIsZipperTouched = true;
