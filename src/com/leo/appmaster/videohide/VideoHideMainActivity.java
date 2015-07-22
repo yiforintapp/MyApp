@@ -65,7 +65,7 @@ public class VideoHideMainActivity extends BaseActivity implements
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
     private boolean isCbHere = false;
-    private int mCbVersionCode = 0;
+    private int mCbVersionCode = -1;
     private boolean isHaveCbFloder = false;
 
     @Override
@@ -357,21 +357,8 @@ public class VideoHideMainActivity extends BaseActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         VideoBean video = hideVideos.get(position);
-        if (isHaveCbFloder && position == 0) {
-            if (isCbHere) {
-                Intent intent = new Intent(this, VideoGriActivity.class);
-                Bundle bundle = new Bundle();
-                bundle.putSerializable("data", video);
-                bundle.putInt("mode", Constants.CANCLE_HIDE_MODE);
-                bundle.putInt("cbversion", mCbVersionCode);
-                intent.putExtras(bundle);
-                try {
-                    startActivityForResult(intent, REQUEST_CODE_OPTION);
-                } catch (Exception e) {
-                }
-            } else {
-                // showDialog to download CB
-            }
+        if (isHaveCbFloder && position == 0 && !isCbHere) {
+            // showDialog to download CB
         } else {
             Intent intent = new Intent(this, VideoGriActivity.class);
             Bundle bundle = new Bundle();

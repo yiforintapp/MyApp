@@ -2,11 +2,14 @@
 package com.leo.appmaster.videohide;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -22,6 +25,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -68,6 +72,10 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
     private mInterface mService;
     private ServiceConnection mConnection;
+    private int mCbVersionCode = -1;
+    private boolean isCbHere = false;
+    private String mLastName;
+    private String mSecondName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,7 +151,27 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
     @Override
     protected void onResume() {
+
+        checkCbAndVersion();
+        mLastName = FileOperationUtil.getDirNameFromFilepath(mPath);
+        mSecondName = FileOperationUtil
+                .getSecondDirNameFromFilepath(mPath);
+
         super.onResume();
+    }
+
+    private void checkCbAndVersion() {
+        PackageManager packageManager = getPackageManager();
+        List<PackageInfo> list = packageManager
+                .getInstalledPackages(PackageManager.GET_PERMISSIONS);
+
+        for (PackageInfo packageInfo : list) {
+            String packNameString = packageInfo.packageName;
+            if (packNameString.equals(VideoHideMainActivity.CB_PACKAGENAME)) {
+                isCbHere = true;
+                mCbVersionCode = packageInfo.versionCode;
+            }
+        }
     }
 
     @Override
@@ -328,10 +356,26 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             public void onClick(int which) {
                 if (which == 1) {
                     if (flag == DIALOG_CANCLE_VIDEO) {
-                        BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
-                        backgoundTask.execute(true);
+                        if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)
+                                && mCbVersionCode != -1
+                                && mCbVersionCode < VideoHideMainActivity.TARGET_VERSION) {
+                            Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
+                            backgoundTask.execute(true);
+                        }
                     } else if (flag == DIALOG_DELECTE_VIDEO) {
-                        deleteVideo();
+                        if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)
+                                && mCbVersionCode != -1
+                                && mCbVersionCode < VideoHideMainActivity.TARGET_VERSION) {
+                            Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+                            deleteVideo();
+                        }
                     }
                 }
             }
