@@ -9,13 +9,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -40,7 +38,6 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -59,6 +56,10 @@ public class VideoHideMainActivity extends BaseActivity implements
     private HideVideoAdapter adapter;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
+    public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
+    public static final int TARGET_VERSION = 14;
+    public static final String SENDCOND_CATALOG = "Coolbrowser";
+    public static final String LAST_CATALOG = "Download";
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
 
@@ -188,7 +189,7 @@ public class VideoHideMainActivity extends BaseActivity implements
         }
 
         class ViewHolder {
-            ImageView imageView;
+            ImageView imageView, mImageCbIcon;
             TextView text;
         }
 
@@ -201,6 +202,7 @@ public class VideoHideMainActivity extends BaseActivity implements
                 viewHolder = new ViewHolder();
                 viewHolder.imageView = (ImageView) convertView
                         .findViewById(R.id.video_item_album);
+                viewHolder.mImageCbIcon = (ImageView) convertView.findViewById(R.id.iv_cb_icon);
                 viewHolder.text = (TextView) convertView
                         .findViewById(R.id.txt_item_album);
                 convertView.setTag(viewHolder);
@@ -210,12 +212,21 @@ public class VideoHideMainActivity extends BaseActivity implements
             VideoBean video = videos.get(position);
             // final String path = video.getPath();
             String path = video.getPath();
+            String name = video.getName();
+            String secondName = FileOperationUtil.getSecondDirNameFromFilepath(path);
             // final ImageView imageView = viewHolder.imageView;
             // imageView.setTag(path);
-            viewHolder.text.setText(video.getName() + "(" + video.getCount()
+            viewHolder.text.setText(name + "(" + video.getCount()
                     + ")");
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
                     .getDrawable(R.drawable.video_loading));
+
+            if (name.equals(LAST_CATALOG) && secondName.equals(SENDCOND_CATALOG)) {
+                viewHolder.mImageCbIcon.setVisibility(View.VISIBLE);
+            } else {
+                viewHolder.mImageCbIcon.setVisibility(View.GONE);
+            }
+
             // Drawable drawableCache = asyncLoadImage.loadImage(imageView,
             // path,
             // new ImageCallback() {

@@ -3,6 +3,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:paddingTop="16dp" >
+
     <FrameLayout
         android:id="@+id/fralay_top"
         android:layout_width="@dimen/hide_album_frame_width"
@@ -34,6 +35,16 @@
             android:layout_marginLeft="70dp"
             android:layout_marginTop="60dp"
             android:src="@drawable/play_icon" />
+
+        <ImageView
+            android:id="@+id/iv_cb_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="7dp"
+            android:layout_marginTop="7dp"
+            android:src="@drawable/disguise_icon"
+            android:visibility="gone" />
     </FrameLayout>
 
     <FrameLayout

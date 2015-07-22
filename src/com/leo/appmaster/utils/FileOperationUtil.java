@@ -134,6 +134,26 @@ public class FileOperationUtil {
         return "";
     }
 
+    public static String getSecondDirNameFromFilepath(String path) {
+        if (path != null) {
+            String dirName;
+            int pos = path.lastIndexOf('/');
+            if (pos != -1) {
+                dirName = path.substring(0, pos);
+                pos = dirName.lastIndexOf('/');
+                if (pos != -1) {
+                    dirName = path.substring(0, pos);
+                    pos = dirName.lastIndexOf("/");
+                    if (pos != -1) {
+                        dirName = dirName.substring(pos + 1);
+                        return dirName;
+                    }
+                }
+            }
+        }
+        return "";
+    }
+
     /**
      * rename a file
      * 
