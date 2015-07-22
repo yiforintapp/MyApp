@@ -12,6 +12,8 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -58,10 +60,13 @@ public class VideoHideMainActivity extends BaseActivity implements
     public static final int REQUEST_CODE_OPTION = 1001;
     public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
     public static final int TARGET_VERSION = 14;
-    public static final String SENDCOND_CATALOG = "Coolbrowser";
+    public static final String SECOND_CATALOG = "Coolbrowser";
     public static final String LAST_CATALOG = "Download";
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
+    private boolean isCbHere = false;
+    private int mCbVersionCode = 0;
+    private boolean isHaveCbFloder = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,17 +79,23 @@ public class VideoHideMainActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+
+        checkCbAndVersion();
+
         hideVideos = getVideoInfo();
-        for (int i = 0; i < hideVideos.size(); i++) {
-            VideoBean info = hideVideos.get(i);
-            String mName = info.getName();
-            String mDirPath = info.getDirPath();
-            String mPath = info.getPath();
-            LeoLog.d("testVio", "name is : " + mName);
-            LeoLog.d("testVio", "mDirPath is : " + mDirPath);
-            LeoLog.d("testVio", "mPath is : " + mPath);
-            LeoLog.d("testVio", "-----------------------------------------");
-        }
+        // for (int i = 0; i < hideVideos.size(); i++) {
+        // VideoBean info = hideVideos.get(i);
+        // String mName = info.getName();
+        // String mDirPath = info.getDirPath();
+        // String mPath = info.getPath();
+        // // LeoLog.d("testVio", "name is : " + mName);
+        // // LeoLog.d("testVio", "mDirPath is : " + mDirPath);
+        // // LeoLog.d("testVio", "mPath is : " + mPath);
+        // // LeoLog.d("testVio", "-----------------------------------------");
+        // }
+
+        makeCbFloderFirst();
+
         adapter = new HideVideoAdapter(this, hideVideos);
         mGridView.setAdapter(adapter);
         if (hideVideos != null) {
@@ -95,6 +106,26 @@ public class VideoHideMainActivity extends BaseActivity implements
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
                 mGridView.setVisibility(View.GONE);
                 mNohideVideo.setText(getString(R.string.app_no_video_hide));
+            }
+        }
+    }
+
+    /**
+     * 判断是否有cb的文件夹，有的话排第一位
+     */
+    private void makeCbFloderFirst() {
+        for (int i = 0; i < hideVideos.size(); i++) {
+            VideoBean info = hideVideos.get(i);
+            String mName = info.getName();
+            String mPath = info.getPath();
+            String mSecondName = FileOperationUtil.getSecondDirNameFromFilepath(mPath);
+            if (mName.equals(LAST_CATALOG) && mSecondName.equals(SECOND_CATALOG)) {
+                isHaveCbFloder = true;
+                if (i != 0) {
+                    hideVideos.remove(i);
+                    hideVideos.add(0, info);
+                    break;
+                }
             }
         }
     }
@@ -221,7 +252,7 @@ public class VideoHideMainActivity extends BaseActivity implements
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
                     .getDrawable(R.drawable.video_loading));
 
-            if (name.equals(LAST_CATALOG) && secondName.equals(SENDCOND_CATALOG)) {
+            if (name.equals(LAST_CATALOG) && secondName.equals(SECOND_CATALOG)) {
                 viewHolder.mImageCbIcon.setVisibility(View.VISIBLE);
             } else {
                 viewHolder.mImageCbIcon.setVisibility(View.GONE);
@@ -326,14 +357,47 @@ public class VideoHideMainActivity extends BaseActivity implements
     public void onItemClick(AdapterView<?> parent, View view, int position,
             long id) {
         VideoBean video = hideVideos.get(position);
-        Intent intent = new Intent(this, VideoGriActivity.class);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("data", video);
-        bundle.putInt("mode", Constants.CANCLE_HIDE_MODE);
-        intent.putExtras(bundle);
-        try {
-            startActivityForResult(intent, REQUEST_CODE_OPTION);
-        } catch (Exception e) {
+        if (isHaveCbFloder && position == 0) {
+            if (isCbHere) {
+                Intent intent = new Intent(this, VideoGriActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable("data", video);
+                bundle.putInt("mode", Constants.CANCLE_HIDE_MODE);
+                bundle.putInt("cbversion", mCbVersionCode);
+                intent.putExtras(bundle);
+                try {
+                    startActivityForResult(intent, REQUEST_CODE_OPTION);
+                } catch (Exception e) {
+                }
+            } else {
+                // showDialog to download CB
+            }
+        } else {
+            Intent intent = new Intent(this, VideoGriActivity.class);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable("data", video);
+            bundle.putInt("mode", Constants.CANCLE_HIDE_MODE);
+            intent.putExtras(bundle);
+            try {
+                startActivityForResult(intent, REQUEST_CODE_OPTION);
+            } catch (Exception e) {
+            }
+        }
+
+    }
+
+    private void checkCbAndVersion() {
+        PackageManager packageManager = getPackageManager();
+        List<PackageInfo> list = packageManager
+                .getInstalledPackages(PackageManager.GET_PERMISSIONS);
+
+        for (PackageInfo packageInfo : list) {
+            String packNameString = packageInfo.packageName;
+            if (packNameString.equals(VideoHideMainActivity.CB_PACKAGENAME)) {
+                isCbHere = true;
+                mCbVersionCode = packageInfo.versionCode;
+                LeoLog.d("testCb", "Cb is here!! version is : " + mCbVersionCode);
+            }
         }
     }
 
