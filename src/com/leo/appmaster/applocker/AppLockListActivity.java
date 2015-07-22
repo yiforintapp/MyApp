@@ -52,7 +52,7 @@ public class AppLockListActivity extends BaseActivity implements
     private PagedGridView mAppPager;
     private LeoPopMenu mLeoPopMenu;
     private LeoLockSortPopMenu mLeoLockSortPopMenu;
-    
+
     private AppInfo mLastSelectApp;
     private String[] mSortType;
 
@@ -60,8 +60,7 @@ public class AppLockListActivity extends BaseActivity implements
     public static final int NAME_SORT = 1;
     public static final int INSTALL_TIME_SORT = 2;
     private int mCurSortType = DEFAULT_SORT;
-    
-    
+
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
 
     @Override
@@ -100,17 +99,27 @@ public class AppLockListActivity extends BaseActivity implements
             mMaskLayer.setVisibility(View.GONE);
         } else {
 
-            boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", true);
-            if (fromLockMore) {
+            boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
+            if (fromLockMore) 
+            {
                 LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
+
                 Intent intent = new Intent(this, HomeActivity.class);
-          
-                    startActivity(intent);                
-       
-                
-                
+                intent.putExtra("isFromAppLockList", true);
+
+                startActivity(intent);
+                super.onBackPressed();
+            }else {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.putExtra("isFromAppLockList", true);
+                Log.e("poha", "to finish as result");
+                setResult(RESULT_OK,intent);
+                finish();
             }
-            super.onBackPressed();
+
+            // Intent intent = new Intent(this, HomeActivity.class);
+            // intent.putExtra("isFromAppLockList", true);
+
         }
     }
 
@@ -144,7 +153,7 @@ public class AppLockListActivity extends BaseActivity implements
         mLyoutModeName.setOnClickListener(this);
         mIvSortSelected.setOnClickListener(this);
         LockMode lm = LockManager.getInstatnce().getCurLockMode();
-        if(lm != null) {
+        if (lm != null) {
             mTvModeName.setText(lm.modeName);
         }
 
@@ -170,8 +179,7 @@ public class AppLockListActivity extends BaseActivity implements
             if (lockList.contains(appDetailInfo.packageName)) {
                 appDetailInfo.isLocked = true;
                 mLockedList.add(appDetailInfo);
-           
-                
+
             } else {
                 appDetailInfo.isLocked = false;
                 mUnlockList.add(appDetailInfo);
@@ -225,7 +233,7 @@ public class AppLockListActivity extends BaseActivity implements
                 }
             }
             mUnlockList.add(info);
-           
+
             mLockedList.remove(info);
             List<String> list = new LinkedList<String>();
             list.add(info.packageName);
@@ -234,7 +242,8 @@ public class AppLockListActivity extends BaseActivity implements
             // to set view unlocked
             ((LockImageView) view.findViewById(R.id.iv_app_icon))
                     .setLocked(false);
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock_"+curMode.modeName+"_"+mLastSelectApp.packageName);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock_" + curMode.modeName + "_"
+                    + mLastSelectApp.packageName);
         } else {
             mLastSelectApp.isLocked = true;
             for (AppInfo baseInfo : mUnlockList) {
@@ -255,7 +264,8 @@ public class AppLockListActivity extends BaseActivity implements
             ((LockImageView) view.findViewById(R.id.iv_app_icon))
                     .setLocked(true);
 
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "lock_"+curMode.modeName+"_"+mLastSelectApp.packageName);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "lock_" + curMode.modeName + "_"
+                    + mLastSelectApp.packageName);
         }
         // saveLockList();
     }
@@ -297,23 +307,23 @@ public class AppLockListActivity extends BaseActivity implements
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
-                            if (position == 0) {
-                                mCurSortType = DEFAULT_SORT;
-                            }else if(position == 1){
-                                mCurSortType = NAME_SORT;
-                            }else if(position == 2){
-                                mCurSortType = INSTALL_TIME_SORT;
-                            }
+                        if (position == 0) {
+                            mCurSortType = DEFAULT_SORT;
+                        } else if (position == 1) {
+                            mCurSortType = NAME_SORT;
+                        } else if (position == 2) {
+                            mCurSortType = INSTALL_TIME_SORT;
+                        }
                         loadData();
                         AppMasterPreference.getInstance(
                                 AppLockListActivity.this).setSortType(
                                 mCurSortType);
-                        if(mLeoLockSortPopMenu != null) {
+                        if (mLeoLockSortPopMenu != null) {
                             mLeoLockSortPopMenu.dismissSnapshotList();
                         }
                     }
                 });
-                mLeoLockSortPopMenu.setPopMenuItems(this,getSortMenuItems(),mCurSortType);
+                mLeoLockSortPopMenu.setPopMenuItems(this, getSortMenuItems(), mCurSortType);
                 mLeoLockSortPopMenu.showPopMenu(this,
                         mIvSortSelected, null, null);
                 break;
@@ -331,7 +341,8 @@ public class AppLockListActivity extends BaseActivity implements
                         String selectMode = list.get(position);
                         if (TextUtils.equals(selectMode, getString(R.string.add_new_mode))) {
                             addLockMode();
-                            SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modesadd", "applock");
+                            SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modesadd",
+                                    "applock");
                             mLeoPopMenu.dismissSnapshotList();
                         } else {
                             LockManager lm = LockManager.getInstatnce();
@@ -341,13 +352,15 @@ public class AppLockListActivity extends BaseActivity implements
                                     if (lockMode.defaultFlag == 1
                                             && !lockMode.haveEverOpened) {
                                         lm.setCurrentLockMode(lockMode, true);
-                                        SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modeschage", "applock");
+                                        SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
+                                                "modeschage", "applock");
                                         startRcommendLock();
                                         lockMode.haveEverOpened = true;
                                         lm.updateMode(lockMode);
                                     } else {
                                         lm.setCurrentLockMode(lockMode, true);
-                                        SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modeschage", "applock");
+                                        SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
+                                                "modeschage", "applock");
                                         Toast.makeText(
                                                 AppLockListActivity.this,
                                                 AppLockListActivity.this.getString(
@@ -361,14 +374,14 @@ public class AppLockListActivity extends BaseActivity implements
 
                             loadData();
                             LockMode lockMode = lm.getCurLockMode();
-                            if(lockMode != null) {
+                            if (lockMode != null) {
                                 mTvModeName.setText(lockMode.modeName);
                             }
                             mLeoPopMenu.dismissSnapshotList();
                         }
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this,getLockModeMenuItems());
+                mLeoPopMenu.setPopMenuItems(this, getLockModeMenuItems());
                 mLeoPopMenu.showPopMenu(this, mIvBack, null, null);
                 break;
             case R.id.mask_layer:
@@ -395,7 +408,7 @@ public class AppLockListActivity extends BaseActivity implements
         List<String> listItems = new ArrayList<String>();
         List<LockMode> lockModes = LockManager.getInstatnce().getLockMode();
         LockMode curMode = LockManager.getInstatnce().getCurLockMode();
-        if(curMode != null) {
+        if (curMode != null) {
             for (LockMode lockMode : lockModes) {
                 if (!TextUtils.equals(lockMode.modeName, curMode.modeName)) {
                     listItems.add(lockMode.modeName);
@@ -439,7 +452,7 @@ public class AppLockListActivity extends BaseActivity implements
         }
 
     }
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);

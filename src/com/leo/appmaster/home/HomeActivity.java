@@ -109,22 +109,26 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
     private ImageView app_hot_tip_icon;
     private int type;
+    private int REQUEST_IS_FROM_APP_LOCK_LIST=1;
+    private boolean mIsFromAppLockList=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
+        
         Intent intent = new Intent();
         intent.setClass(HomeActivity.this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, "http://www.jd.com/");
         Log.i("######", intent.toUri(0));
-
+        
         // lockType , num or guesture
         initUI();
         tryTransStatusbar();
         // installShortcut();
-
+        
+        AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
+        
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
@@ -137,10 +141,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     // 伪装的引导，当第一次将应用加了所后返回home，弹出提示。
     private void showWeiZhuangTip() {
         
+     Log.e("poha", "isfromlist"+mIsFromAppLockList);
+        
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
-                && LockManager.getInstatnce().getLockedAppCount() > 0&&AppMasterPreference.getInstance(this).getPretendLock()==0)
+                && LockManager.getInstatnce().getLockedAppCount() > 0&&AppMasterPreference.getInstance(this).getPretendLock()==0&&mIsFromAppLockList)
         {
-            AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
+       
+            
             if (mSelfIconDialog == null)
             {
                 mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
@@ -173,9 +180,38 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha to
                                                                      // du
             mSelfIconDialog.show();
+            AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
         }
     }
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // TODO Auto-generated method stub
+        Log.e("poha","resultCode"+resultCode);
+        Log.e("poha","reqCode"+requestCode);
+        if(resultCode==RESULT_OK)
+        {
+            Log.e("poha","in if");
+//            switch (requestCode) {
+//                           
+//                   case 0:
+            mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
+                    
+                    
+                    
+                    
+                    
+                    
+                    Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======" +data.getBooleanExtra("isFromAppLockList", false));
+//                    break;
+//              
+//                default:
+//                    break;
+//            }
+        }
+        
+    }
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
