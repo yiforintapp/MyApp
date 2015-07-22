@@ -26,8 +26,10 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -492,10 +494,26 @@ public class SplashActivity extends BaseActivity {
      * set  click listener of skip btn in  guide page
      */
     private void setSkipClickListener(ViewGroup page){
-        ImageView skipImage;
-        skipImage = (ImageView)page.findViewById(R.id.skip_img);
-        skipImage.setVisibility(View.VISIBLE);
-        skipImage.setOnClickListener(new OnClickListener() {
+        final TextView skipText;
+        skipText = (TextView)page.findViewById(R.id.skip_tv);
+        skipText.setVisibility(View.VISIBLE);
+     /*   skipText.setOnTouchListener(new OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        skipText.setAlpha(0.6f);
+                        break;
+                     
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });*/
+        
+        skipText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                enterHome();
@@ -515,7 +533,7 @@ public class SplashActivity extends BaseActivity {
     private void showNewFuncGuide(){
         mNewFuncPageViews = new ArrayList<View>();
         LayoutInflater inflater = getLayoutInflater();
-        TextView  tvTitle, tvContent ,tvModeFunc;
+        TextView  tvTitle, tvContent ,tvMoreFunc;
         Button enterAppButton;
         ImageView bigImage = null;
         mPageColors[4] = getResources().getColor(R.color.new_guide_page1_background_color);
@@ -570,9 +588,9 @@ public class SplashActivity extends BaseActivity {
         mIndicator.setViewPager(mNewFuncViewPager);
         mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews,4));
         
-        tvModeFunc = (TextView) page3.findViewById(R.id.more_func);
-        tvModeFunc.setVisibility(View.VISIBLE);
-        tvModeFunc.setOnClickListener(new OnClickListener() {
+        tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
+        tvMoreFunc.setVisibility(View.VISIBLE);
+        tvMoreFunc.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mNewGuideMain.setVisibility(View.INVISIBLE);

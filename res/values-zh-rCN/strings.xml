@@ -770,6 +770,8 @@
     <string name="traffic_over_text">已超额</string>
     <string name="lock_line_hide">解锁轨迹已隐藏</string>
     <string name="lock_line_visiable">解锁轨迹已显示</string>
+    <string name="guide_more_text">更多 ></string>
+    <string name="guide_skip_text">跳过 ></string>
     <!-- 2.6 end -->
 
 </resources>

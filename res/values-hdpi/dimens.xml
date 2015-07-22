@@ -374,7 +374,7 @@
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">60dp</dimen>
     <dimen name="webview_title_width">232dp</dimen>
-    <dimen name="guide_skip_margin">8dp</dimen>
+    <dimen name="guide_skip_margin">10dp</dimen>
         <dimen name="privacy_default_title_margin_top">30dp</dimen>
     <dimen name="privacy_default_image_width">100dp</dimen>
     <dimen name="privacy_default_image_height">100dp</dimen>
