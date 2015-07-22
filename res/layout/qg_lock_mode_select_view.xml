@@ -23,6 +23,8 @@
         android:layout_above="@+id/img_cancel"
         android:layout_alignParentLeft="true"
         android:layout_marginBottom="13dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
         android:padding="10dip"
         leoindicator:fillColor="#4285f4"
         leoindicator:pageColor="#4285f4"
