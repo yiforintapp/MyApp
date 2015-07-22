@@ -84,7 +84,6 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     public void onEventMainThread(LockModeEvent event) {
         LeoLog.d("testMultiModeView", "event.eventMsg : " + event.eventMsg);
         if (event.eventMsg.equals(SHOW_NOW)) {
-            LeoLog.d("testMultiModeView", "copy that!!");
             show();
         }
         // fillUI(false);
