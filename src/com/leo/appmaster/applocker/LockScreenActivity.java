@@ -56,6 +56,8 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
+import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
@@ -274,8 +276,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         if (mQuickLockMode) {
             mLockedPackage = getPackageName();
+            mTtileBar.setTitle(R.string.change_lock_mode);
         } else {
             mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
+            mTtileBar.setTitle(R.string.app_name);
         }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
@@ -331,6 +335,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
         }
+        
+        mLockFragment.onNewIntent();
         checkOutcount();
         super.onNewIntent(intent);
     }
@@ -493,7 +499,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             mTtileBar.setHelpSettingVisiblity(View.INVISIBLE);
         }
-        
+
         if (AppMasterPreference.getInstance(this).getLockScreenMenuClicked()) {
             mTtileBar.setOptionImage(R.drawable.menu_item_btn);
         } else {
@@ -502,7 +508,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
         mTtileBar.setOptionListener(this);
-            
+
         mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         ((View) mThemeView.getParent()).setVisibility(View.VISIBLE);
         mThemeView.setVisibility(View.VISIBLE);
@@ -564,7 +570,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             else if (pretendLock == 1)
             {
-                // 美女伪装，暂时用指纹伪装
                 PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;
             }
@@ -603,6 +608,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 if (null != lockMode) {
                     int currentModeFlag = lockMode.defaultFlag;
                     showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
+                    LeoEventBus.getDefaultBus().post(
+                            new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
+
                 } else {
                     showModeActiveTip(willLaunch);
                 }
@@ -714,7 +722,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view,
                                 int position, long id) {
-                           setPopWindowItemClick(position);
+                            setPopWindowItemClick(position);
                             mLeoPopMenu.dismissSnapshotList();
                         }
                     });
@@ -723,7 +731,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
                 mLeoPopMenu.setListViewDivider(null);
-                AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(true);
+                AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
+                        true);
                 mTtileBar.setOptionImage(R.drawable.menu_item_btn);
                 break;
             case R.id.layout_title_back:
@@ -753,7 +762,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private List<String> getPopMenuItems() {
         List<String> listItems = new ArrayList<String>();
         Resources resources = AppMasterApplication.getInstance().getResources();
-        if (AppMasterPreference.getInstance(this).hasPswdProtect()){
+        if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
             if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
                 listItems.add(resources.getString(R.string.find_gesture));
             } else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
@@ -762,25 +771,25 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         listItems.add(resources.getString(R.string.setting_hide_lockline));
         listItems.add(resources.getString(R.string.help_setting_tip_title));
-       
+
         return listItems;
     }
 
     private List<Integer> getMenuIcons() {
         List<Integer> icons = new ArrayList<Integer>();
-        if (AppMasterPreference.getInstance(this).hasPswdProtect()){
+        if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
             icons.add(R.drawable.forget_password_icon);
         }
-        if(AppMasterPreference.getInstance(this).getIsHideLine()){
-            icons.add(R.drawable.show_locus_icon);  
-        }else {
+        if (AppMasterPreference.getInstance(this).getIsHideLine()) {
+            icons.add(R.drawable.show_locus_icon);
+        } else {
             icons.add(R.drawable.hide_locus_icon);
         }
         icons.add(R.drawable.help_tip_icon);
         return icons;
     }
 
-    private void setPopWindowItemClick(int position){
+    private void setPopWindowItemClick(int position) {
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
             if (position == 0) {
                 findPasswd();
@@ -794,17 +803,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 onHideLockLineClicked(position);
             } else if (position == 1) {
                 onHelpItemClicked();
-            } 
+            }
         }
     }
     
-    private void onHideLockLineClicked(int position){
+    private void onHideLockLineClicked(int position) {
         String tip;
-        if(AppMasterPreference.getInstance(this).getIsHideLine()){
+        if (AppMasterPreference.getInstance(this).getIsHideLine()) {
             mLeoPopMenu.updateItemIcon(position, R.drawable.hide_locus_icon);
             AppMasterPreference.getInstance(this).setHideLine(false);
             tip = getString(R.string.lock_line_visiable);
-        }else {
+        } else {
             mLeoPopMenu.updateItemIcon(position, R.drawable.show_locus_icon);
             AppMasterPreference.getInstance(this).setHideLine(true);
             tip = getString(R.string.lock_line_hide);
@@ -814,8 +823,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
     }
-    
-    private void onHelpItemClicked(){
+
+    private void onHelpItemClicked() {
         AppMasterPreference ampp = AppMasterPreference.getInstance(this);
         ampp.setLockerScreenThemeGuide(true);
         ampp.setUnlocked(true);
@@ -830,7 +839,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         /* SDK Event Mark */
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
     }
-    
+
     @Override
     public void onClick(int which) {
         if (which == 1) {// make sure
@@ -953,6 +962,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
         mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
         mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
+        mActiveText.setMaxLines(2);
         bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
         modeIconIn = (ImageView) mTipView.findViewById(R.id.mode_active_in);
         modeIconOut = (ImageView) mTipView.findViewById(R.id.mode_active_out);
@@ -1103,6 +1113,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         modeIconDown.setVisibility(View.VISIBLE);
         bgView.setColor(Color.parseColor(willLaunchMap.get("bgColor").toString()));
         mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+        mActiveText.setMaxLines(2);
 
         Toast toast = new Toast(this);
         toast.setView(mTipView);

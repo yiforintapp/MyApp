@@ -1901,14 +1901,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void addUseStrengthenModeTimes() {
-        if (mUseStrengthModeTimes < 0) {
+        if (mUseStrengthModeTimes <= 0) {
             mUseStrengthModeTimes = getUseStrengthenModeTimes();
         }
-        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, ++mUseStrengthModeTimes).commit();
+        mUseStrengthModeTimes++;
+        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, mUseStrengthModeTimes).commit();
     }
 
     public int getUseStrengthenModeTimes() {
-        if (mUseStrengthModeTimes < 0) {
+        if (mUseStrengthModeTimes <= 0) {
             mUseStrengthModeTimes = mPref.getInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, 0);
         }
         return mUseStrengthModeTimes;
@@ -1920,7 +1921,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setEverCloseWhiteDot(boolean b) {
         mHasEverCloseWhiteDot = b;
-        mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b);
+        mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b).commit();
     }
 
     /**

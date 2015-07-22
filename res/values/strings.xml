@@ -752,15 +752,16 @@
     <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
     <string name="flash_light_open_toast">请不要频繁操作闪光灯，可能造成硬件损坏</string>
     <string name="privacy_auto_add_text">手动添加</string>
-     <string name="button_disguise_guide_select">立刻试试</string>
-        <string name="button_disguise_guide_cancel">稍后</string>
+    <string name="button_disguise_guide_select">立刻试试</string>
+    <string name="button_disguise_guide_cancel">稍后</string>
     <string name="choose_lock_mode">选择情景模式</string>
     <string name="button_disguise_guide_content">加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全</string>
     <string name="traffic_over_text">已超额</string>
-      <string name="lock_line_hide">解锁轨迹已隐藏</string>
+    <string name="lock_line_hide">解锁轨迹已隐藏</string>
     <string name="lock_line_visiable">解锁轨迹已显示</string>
    <string name="guide_more_text">MORE></string>
    <string name="guide_skip_text">SKIP ></string>
+    <string name="video_hide_need_cb"> 由于系统原因，取消隐藏这些视频需要COOL Browser。请安装后才可使用</string>
     <!-- 2.6 end -->
 
 </resources>
