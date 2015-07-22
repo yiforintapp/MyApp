@@ -101,4 +101,7 @@
 	<color name="webview_pro_bg">#e4e4e4</color>
 	<color name="webview_pro">#28b1ff</color>
 	<color name="sort_select_color">#4584f5</color>
+	<color name="home_mode_text_color">#ffa71c</color>
+	<color name="custom_mode_text_color">#44c4f5</color>
+	<color name="vistor_mode_text_color">#5653b4</color>
 </resources>

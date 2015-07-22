@@ -2,6 +2,7 @@
 package com.leo.appmaster.ui;
 
 import java.util.List;
+
 import android.content.Context;
 import android.text.Html;
 import android.text.Spanned;
@@ -28,7 +29,7 @@ public class LeoHomePopMenu extends LeoPopMenu {
 
         super.setPopMenuItems(context, items);
     }
-
+    
     private class MenuListAdapter extends BaseAdapter {
         private LayoutInflater inflater;
         private Holder mHolder;
@@ -77,6 +78,19 @@ public class LeoHomePopMenu extends LeoPopMenu {
                 mHolder.mItemIcon.setImageResource(mIcons.get(position));
             }
             return convertView;
+        }
+    }
+    
+    /**
+     * update the icon of this item
+     * @param position
+     * @param drawable
+     */
+    public void updateItemIcon(int position,int drawable){
+     View childView = mListView.getChildAt(position);
+        if(null != childView){
+            ImageView    itemIcon = (ImageView) childView.findViewById(R.id.menu_icon);
+            itemIcon.setImageDrawable(mContext.getResources().getDrawable(drawable));
         }
     }
 }
