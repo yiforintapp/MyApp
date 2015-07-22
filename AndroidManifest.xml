@@ -86,6 +86,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
+        android:excludeFromRecents="true"
         android:theme="@style/activity_theme" >
         <activity
             android:name="com.leo.appmaster.home.SplashActivity"
@@ -239,6 +240,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.imagehide.ImageHideMainActivity"
+            android:exported="true"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
@@ -320,6 +322,7 @@
             android:theme="@style/activity_theme" />
         <activity
             android:name="com.leo.appmaster.videohide.VideoHideMainActivity"
+            android:exported="true"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" />
@@ -410,6 +413,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.appmanage.FlowActivity"
+            android:exported="true"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
@@ -422,6 +426,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.WeiZhuangActivity"
+            android:exported="true"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme" >
@@ -491,6 +496,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
