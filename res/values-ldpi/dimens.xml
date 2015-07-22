@@ -106,10 +106,9 @@
     <dimen name="locker_theme_guide_height">258dp</dimen>
     <dimen name="locker_theme_guide_tv_save_width">200dp</dimen>
     <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
-    <dimen name="locker_theme_guide_guideImageIV_marginTop">1dp</dimen>
+    <dimen name="locker_theme_guide_guideImageIV_marginTop">20dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_marginTop">18dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_textsize">12dp</dimen>
-    <dimen name="locker_theme_guide_tv_save_textsize">18sp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
     <dimen name="memery_dialog_button_height">35dp</dimen>
     <dimen name="privacy_level_seprator_padding">10dp</dimen>

@@ -66,7 +66,6 @@
             android:text="@string/guide_more_text"
             android:textColor="@color/guide_more_text_color"
             android:textSize="14dp"
-            android:textStyle="bold"
             android:visibility="gone" />
     </RelativeLayout>
 
