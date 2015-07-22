@@ -167,7 +167,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         initUI();
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
-
         checkOutcount();
     }
 

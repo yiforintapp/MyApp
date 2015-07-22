@@ -80,13 +80,13 @@ public class GestureLockFragment extends LockFragment implements
             } else if (mPackageName != null) {
                 mAppIcon.setImageDrawable(AppUtil.getDrawable(
                         mActivity.getPackageManager(), mPackageName));
-                if (needChangeTheme()) {
-                    mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
-                    mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
-                    mAppIconTop.setVisibility(View.VISIBLE);
-                    mAppIconBottom.setVisibility(View.VISIBLE);
-                    changeActivityBgAndIconByTheme();
-                }
+            }
+            if (needChangeTheme()) {
+                mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
+                mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
+                mAppIconTop.setVisibility(View.VISIBLE);
+                mAppIconBottom.setVisibility(View.VISIBLE);
+                checkApplyTheme();
             }
         }
     }
@@ -117,7 +117,7 @@ public class GestureLockFragment extends LockFragment implements
         }
     }
 
-    private void changeActivityBgAndIconByTheme() {
+    private void checkApplyTheme() {
         String pkgName = AppMasterApplication.getSelectedTheme();
         Context themeContext = LeoResources.getThemeContext(getActivity(), pkgName);// com.leo.appmaster:drawable/multi_theme_lock_bg
         Resources themeRes = themeContext.getResources();
