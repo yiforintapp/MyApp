@@ -158,8 +158,9 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
-            fillUI(true);
         }
+        
+        fillUI(true);
     }
 
     private void backgroundAnimtion() {

@@ -567,7 +567,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             else if (pretendLock == 1)
             {
-                
                 PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;
             }
