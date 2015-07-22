@@ -489,7 +489,6 @@ public class QuickSwitchManager {
 
     public synchronized List<BaseInfo> getSwitchList(int switchNum) {
         if (mSwitcherLoaded) {
-            LeoLog.e("xxxx", "0,  mSaveList.size() = " + mSaveList.size());
             if (mSaveList.size() > 11) {
                 return mSaveList.subList(0, 11);
             } else {
@@ -499,10 +498,8 @@ public class QuickSwitchManager {
             AppMasterPreference apf = AppMasterPreference.getInstance(mContext);
             String restoredData = apf.getSwitchList();
             if (restoredData.isEmpty() && !apf.getLoadedSwitchList()) {
-                LeoLog.e("xxxx", "1");
                 mSaveList = new ArrayList<BaseInfo>();
                 // 加速，手电筒，亮度，声音，数据，情景模式，手势设置，蓝牙，wifi，gps，相机，设置
-
                 // 加速
                 QuickSwitcherInfo speedUpInfo = new QuickSwitcherInfo();
                 speedUpInfo.swtichIdentiName = SPEEDUP;
@@ -661,14 +658,11 @@ public class QuickSwitchManager {
                 mSaveList = QuickSwitchManager.getInstance(mContext).StringToList(
                         restoredData);
                 mSwitcherLoaded = true;
-                LeoLog.e("xxxx", "2");
             }
         }
         if (mSaveList.size() > 11) {
-            LeoLog.e("xxxx", "3");
             return mSaveList.subList(0, 11);
         } else {
-            LeoLog.e("xxxx", "4");
             return mSaveList;
         }
     }

@@ -49,8 +49,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_THEME_LOCK_GUIDE = "theme_locker_guide";
     public static final String PREF_USE_LOCK_THEME_GUIDE = "use_lock_theme_guid";
     public static final String PREF_LAUNCH_OTHER_APP = "launch_other_app";
-    public static final String PREF_PRETEND_TIPS="pretend_tips";
-    
+    public static final String PREF_PRETEND_TIPS = "pretend_tips";
+
     public static final String PREF_UNLOCK_ALL_APP = "lock_setting_unlock_all";
     public static final String PREF_LOCK_SETTING = "lock_setting";
     public static final String PREF_LOCK_SETTING_CHANGE_PASSWORD = "lock_setting_chanage_password";
@@ -201,6 +201,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_REMOVE_ICON = "quick_remove_icon";
     public static final String PREF_QUICK_SLIDE_ANIM_SHOW_TIMES = "quick_slide_anim_show_times";
     public static final String PREF_IF_LOCK_SCREEN_MENU_CLICKED = "if_menu_clicked"; 
+    public static final String PREF_LAST_BOOST_TIMES = "last_boost_times";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -259,7 +260,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
     private int mEnterHomeTimes = -1;
-    private int mUseStrengthModeTimes,mGestureSlideAnimShowTimes,mLastTimeLayout = -1;
+    private int mUseStrengthModeTimes, mGestureSlideAnimShowTimes, mLastTimeLayout = -1;
     private boolean mHasEverCloseWhiteDot;
     private boolean mNeedShowWhiteDotSlideTip;
 
@@ -1256,16 +1257,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getWeiZhuang() {
         return mPref.getBoolean(PREF_WEIZHUANG_FIRST_IN, true);
     }
-    
+
     public boolean getIsNeedPretendTips()
     {
         return mPref.getBoolean(PREF_PRETEND_TIPS, true);
     }
-    
+
     public void setIsNeedPretendTips(boolean isfirstin) {
         mPref.edit().putBoolean(PREF_PRETEND_TIPS, isfirstin).commit();
     }
-    
 
     public int getPretendLock() {
         if (mPretendLock < 0) {
@@ -1758,7 +1758,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getLastTimeLayout() {
-        if(mLastTimeLayout < 0){
+        if (mLastTimeLayout < 0) {
             mLastTimeLayout = mPref.getInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT, 3);
         }
         return mLastTimeLayout;
@@ -1958,21 +1958,23 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getRemoveQuickGestureIcon() {
         return mPref.getBoolean(PREF_QUICK_REMOVE_ICON, false);
     }
-    
+
     /**
-     * add the show time of  gesture slide animation 
+     * add the show time of gesture slide animation
      */
-    public void addGestureSlideAnimTimes(){
-        if(mGestureSlideAnimShowTimes < 0){
+    public void addGestureSlideAnimTimes() {
+        if (mGestureSlideAnimShowTimes < 0) {
             mGestureSlideAnimShowTimes = getGestureSlideAnimTimes();
         }
-        if(mGestureSlideAnimShowTimes <2){
-            mGestureSlideAnimShowTimes ++;
+        if (mGestureSlideAnimShowTimes < 2) {
+            mGestureSlideAnimShowTimes++;
             mPref.edit().putInt(PREF_QUICK_SLIDE_ANIM_SHOW_TIMES, mGestureSlideAnimShowTimes);
         }
     }
+
     /**
-     * get the show times of  gesture slide animation 
+     * get the show times of gesture slide animation
+     * 
      * @return
      */
     public int getGestureSlideAnimTimes() {
@@ -1988,5 +1990,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     
     public boolean getLockScreenMenuClicked(){
         return mPref.getBoolean(PREF_IF_LOCK_SCREEN_MENU_CLICKED, false);
+    }
+
+    public long getLastBoostTime() {
+        return mPref.getLong(PREF_LAST_BOOST_TIMES, 0);
+    }
+
+    public void setLastBoostTime(long lastBoostTime) {
+        mPref.edit().putLong(PREF_LAST_BOOST_TIMES, lastBoostTime).commit();
     }
 }

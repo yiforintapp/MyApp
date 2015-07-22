@@ -54,13 +54,19 @@ import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
+import com.leo.appmaster.applocker.FamilyModeProxyActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.OfficeModeProxyActivity;
+import com.leo.appmaster.applocker.UnlockAllModeProxyActivity;
+import com.leo.appmaster.applocker.VisitorModeProxyActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -172,8 +178,9 @@ public class AppMasterApplication extends Application {
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
-//        Log.e(FloatWindowHelper.RUN_TAG,
-//                "是否V6：" +BuildProperties.isMiuiV6()+",是否为V5："+BuildProperties.isMiuiV5());
+        // Log.e(FloatWindowHelper.RUN_TAG,
+        // "是否V6："
+        // +BuildProperties.isMiuiV6()+",是否为V5："+BuildProperties.isMiuiV5());
     }
 
     private String getUserSerial() {
@@ -402,6 +409,8 @@ public class AppMasterApplication extends Application {
             if (Integer.parseInt(versionCode) == 34) {
                 // remove unlock-all shortcut v2.1
                 tryRemoveUnlockAllShortcut(this);
+            } else if (Integer.parseInt(versionCode) == 41) {
+                installBoostShortcut();
             }
             pref.setIsUpdateQuickGestureUser(false);
         } else {
@@ -410,6 +419,8 @@ public class AppMasterApplication extends Application {
                 if (Integer.parseInt(versionCode) == 34) {
                     // remove unlock-all shortcut v2.1
                     tryRemoveUnlockAllShortcut(this);
+                } else if (Integer.parseInt(versionCode) == 41) {
+                    installBoostShortcut();
                 }
                 pref.setIsUpdateQuickGestureUser(true);
             }
@@ -1184,6 +1195,20 @@ public class AppMasterApplication extends Application {
             }
         }
         return null;
+    }
+
+    private void installBoostShortcut() {
+        Intent shortcutIntent = new Intent(this, HomeBoostActivity.class);
+        ShortcutIconResource iconRes = Intent.ShortcutIconResource
+                .fromContext(this, R.drawable.switch_speed_up);
+        Intent shortcut = new Intent(
+                "com.android.launcher.action.INSTALL_SHORTCUT");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.accelerate));
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+        shortcut.putExtra("duplicate", false);
+        shortcut.putExtra("from_shortcut", true);
+        sendBroadcast(shortcut);
     }
 
 }

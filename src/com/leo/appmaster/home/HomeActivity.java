@@ -114,12 +114,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
+
         Intent intent = new Intent();
         intent.setClass(HomeActivity.this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, "http://www.jd.com/");
-        Log.i("######",intent.toUri(0));
-        
+        Log.i("######", intent.toUri(0));
+
         // lockType , num or guesture
         initUI();
         tryTransStatusbar();
@@ -145,31 +145,33 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             {
                 mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
                 mSelfIconDialog.setIcon(R.drawable.pretend_guide);
-                
-                mSelfIconDialog.setOnClickListener(new LEOSelfIconAlarmDialog.OnDiaogClickListener() {
-                    
-                    @Override
-                    public void onClick(int which) {
-                        // TODO Auto-generated method stub
-                        if (which == 1)
-                          {
-                              mSelfIconDialog.dismiss();  
-                              if(mFragmentHolders[0].fragment!=null)
-                              {
-  
-                                  HomeLockFragment fragment = (HomeLockFragment) mFragmentHolders[0].fragment;
-      
-                                  mPagerTab.setCurrentItem(0);
-                                  fragment.playPretendEnterAnim();
-                              }
-                          }
-                    }
-                } );
-//               
+
+                mSelfIconDialog
+                        .setOnClickListener(new LEOSelfIconAlarmDialog.OnDiaogClickListener() {
+
+                            @Override
+                            public void onClick(int which) {
+                                // TODO Auto-generated method stub
+                                if (which == 1)
+                                {
+                                    mSelfIconDialog.dismiss();
+                                    if (mFragmentHolders[0].fragment != null)
+                                    {
+
+                                        HomeLockFragment fragment = (HomeLockFragment) mFragmentHolders[0].fragment;
+
+                                        mPagerTab.setCurrentItem(0);
+                                        fragment.playPretendEnterAnim();
+                                    }
+                                }
+                            }
+                        });
+                //
             }
-            mSelfIconDialog.setSureButtonText("立刻试试");
-            mSelfIconDialog.setLeftBtnStr("稍后");
-            mSelfIconDialog.setContent("加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全");//poha to du 
+            mSelfIconDialog.setSureButtonText(getString(R.string.button_disguise_guide_select));
+            mSelfIconDialog.setLeftBtnStr(getString(R.string.button_disguise_guide_cancel));
+            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha to
+                                                                     // du
             mSelfIconDialog.show();
         }
     }
@@ -1107,9 +1109,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         fragment.playQuickGestureEnterAnim();
     }
 
-    
-    
-    
     /**
      * when leave the home page,remove the gesture tab background of app manager
      * fragment

@@ -31,7 +31,6 @@ import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
@@ -116,8 +115,6 @@ public class FloatWindowHelper {
     public static final String RUN_TAG = "RUN_TAG";
     private static AnimationDrawable animationLightDrawable;
     private static AnimationDrawable animationDarkDrawable;
-    private static int otherStep = 0;
-    private static boolean beComingDark = false;
     private static boolean isControling = false;
     private static CountDownTimer nowCount;
     private static Handler handler;
@@ -149,7 +146,6 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            float pressure = event.getPressure();
                             if (-moveX > 0 && moveY > 0) {
                                 if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
@@ -202,7 +198,6 @@ public class FloatWindowHelper {
                 temp = QuickGestureManager.getInstance(mContext).screenSpace;
             }
             int height = windowManager.getDefaultDisplay().getHeight() + temp;
-            int flag = Utilities.isScreenType(mContext);
             if (mLeftBottomParams == null) {
                 mLeftBottomParams = new LayoutParams();
                 mLeftBottomParams.width = (int) ((DipPixelUtil.dip2px(mContext, mLeftBottomWidth) / 2) + (value / 2)) * 2;
@@ -271,7 +266,6 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            float presssure = event.getPressure();
                             if (-moveX > 0 && moveY > 0) {
                                 if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
@@ -401,7 +395,6 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            float presssure = event.getPressure();
                             if (-moveX > 0 && moveY > 0) {
                                 if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
@@ -534,7 +527,6 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            float presssure = event.getPressure();
                             if (-moveX > 0 && moveY > 0) {
                                 if (((-moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
@@ -636,7 +628,6 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            float presssure = event.getPressure();
                             if (moveX > 0 && moveY > 0) {
                                 if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
@@ -773,7 +764,6 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            float presssure = event.getPressure();
                             if (moveX > 0 && moveY > 0) {
                                 if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
@@ -905,7 +895,6 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            float presssure = event.getPressure();
                             if (moveX > 0 && moveY > 0) {
                                 if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
@@ -1041,7 +1030,6 @@ public class FloatWindowHelper {
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
                             moveY = startY - event.getRawY();
-                            float presssure = event.getPressure();
                             if (moveX > 0 && moveY > 0) {
                                 if (((moveX > ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5
                                 || moveY > ViewConfiguration.get(mContext)
@@ -1733,7 +1721,6 @@ public class FloatWindowHelper {
 
     private static void goToChangeDark() {
         if (mWhiteFloatView != null && !isControling) {
-            beComingDark = true;
             mWhiteFloatView.setBackgroundResource(R.drawable.whitedotanimation2);
             animationDarkDrawable = (AnimationDrawable)
                     mWhiteFloatView.getBackground();

@@ -1241,7 +1241,7 @@ public class LockManager {
     }
 
     public void setCurrentLockMode(final LockMode mode, boolean fromUser) {
-        if (mCurrentMode == mode)
+        if (mCurrentMode == mode || mode == null)
             return;
         mCurrentMode.isCurrentUsed = false;
         final LockMode lastMode = mCurrentMode;

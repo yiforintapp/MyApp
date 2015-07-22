@@ -758,11 +758,15 @@
 
     <!-- 2.6 start -->
     <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
-    <string name="change_lock_mode">Change Lock Mode</string>
+    <string name="change_lock_mode">切换情景模式</string>
     <string name="beauty_guide_title">使用介绍</string>
     <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
     <string name="flash_light_open_toast">请不要频繁操作闪光灯，可能造成硬件损坏</string>
     <string name="privacy_auto_add_text">手动添加</string>
+    <string name="choose_lock_mode">选择情景模式</string>
+    <string name="button_disguise_guide_select">立刻试试</string>
+    <string name="button_disguise_guide_cancel">稍后</string>
+    <string name="button_disguise_guide_content">加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全</string>
     <string name="traffic_over_text">已超额</string>
     <string name="lock_line_hide">解锁轨迹已隐藏</string>
     <string name="lock_line_visiable">解锁轨迹已显示</string>

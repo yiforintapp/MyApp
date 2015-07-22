@@ -7,7 +7,6 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -21,7 +20,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
@@ -33,7 +31,6 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.utils.LeoLog;
 
 public class LockModeFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
         OnItemLongClickListener, Editable {
