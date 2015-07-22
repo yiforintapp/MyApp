@@ -369,7 +369,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 LockManager.LOCK_MODE_FULL);
 
         int type = AppMasterPreference.getInstance(this).getLockType();
-
         if (type == LockFragment.LOCK_TYPE_PASSWD) {
             mLockFragment = new PasswdLockFragment();
         } else {
@@ -747,6 +746,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
     }
 
+    /**
+     * setting the menu item,if has password protect then add find password item
+     * @return
+     */
     private List<String> getPopMenuItems() {
         List<String> listItems = new ArrayList<String>();
         Resources resources = AppMasterApplication.getInstance().getResources();
@@ -782,20 +785,20 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (position == 0) {
                 findPasswd();
             } else if (position == 1) {
-                onHideLockLindeClicked(position);
+                onHideLockLineClicked(position);
             } else {
                 onHelpItemClicked();
             }
         } else {
             if (position == 0) {
-                onHideLockLindeClicked(position);
+                onHideLockLineClicked(position);
             } else if (position == 1) {
                 onHelpItemClicked();
             } 
         }
     }
     
-    private void onHideLockLindeClicked(int position){
+    private void onHideLockLineClicked(int position){
         String tip;
         if(AppMasterPreference.getInstance(this).getIsHideLine()){
             mLeoPopMenu.updateItemIcon(position, R.drawable.hide_locus_icon);
@@ -805,6 +808,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLeoPopMenu.updateItemIcon(position, R.drawable.show_locus_icon);
             AppMasterPreference.getInstance(this).setHideLine(true);
             tip = getString(R.string.lock_line_hide);
+        }
+        if(mLockFragment instanceof GestureLockFragment){
+            ((GestureLockFragment) mLockFragment).reInvalideGestureView();
         }
         Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
     }

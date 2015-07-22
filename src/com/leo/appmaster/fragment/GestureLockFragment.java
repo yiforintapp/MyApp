@@ -211,4 +211,8 @@ public class GestureLockFragment extends LockFragment implements
                 mActivity.getPackageManager(), mPackageName));
         mAppIcon.setVisibility(View.VISIBLE);
     }
+    
+    public void reInvalideGestureView(){
+        mLockPatternView.resetIfHideLine();
+    }
 }
