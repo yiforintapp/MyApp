@@ -122,12 +122,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         intent.putExtra(WebViewActivity.WEB_URL, "http://www.jd.com/");
         Log.i("######", intent.toUri(0));
         
+        
+        
         // lockType , num or guesture
         initUI();
         tryTransStatusbar();
         // installShortcut();
         
-        AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
+       
         
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
@@ -138,21 +140,29 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // TODO
     }
 
+    private void tryIsFromLockMore() {
+        // TODO Auto-generated method stub
+        Intent intent = getIntent();
+        
+        mIsFromAppLockList= intent.getBooleanExtra("isFromAppLockList", false);            
+        Log.e("lockmore", "isfromlist"+intent.getBooleanExtra("isFromAppLockList", false));
+    }
+
     // 伪装的引导，当第一次将应用加了所后返回home，弹出提示。
     private void showWeiZhuangTip() {
         
-     Log.e("poha", "isfromlist"+mIsFromAppLockList);
-        
+     Log.e("isshow", "isfromlist"+mIsFromAppLockList);
+     Log.e("isshow", "isneed"+AppMasterPreference.getInstance(this).getIsNeedPretendTips()+"");
+     Log.e("isshow", "lockedcount"+ LockManager.getInstatnce().getLockedAppCount()+"");   
+     Log.e("isshow", "getpretendtype"+AppMasterPreference.getInstance(this).getPretendLock()+"");
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 && LockManager.getInstatnce().getLockedAppCount() > 0&&AppMasterPreference.getInstance(this).getPretendLock()==0&&mIsFromAppLockList)
         {
-       
-            
+
             if (mSelfIconDialog == null)
             {
                 mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
                 mSelfIconDialog.setIcon(R.drawable.pretend_guide);
-
                 mSelfIconDialog
                         .setOnClickListener(new LEOSelfIconAlarmDialog.OnDiaogClickListener() {
 
@@ -361,6 +371,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         type = AppMasterPreference.getInstance(this).getLockType();
 
         judgeShowGradeTip();
+        
+        tryIsFromLockMore();
         showWeiZhuangTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.

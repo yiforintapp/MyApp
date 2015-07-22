@@ -106,9 +106,10 @@ public class AppLockListActivity extends BaseActivity implements
 
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("isFromAppLockList", true);
-
+                Log.e("lockmore", "done");
                 startActivity(intent);
-                super.onBackPressed();
+                finish();
+//                super.onBackPressed();
             }else {
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.putExtra("isFromAppLockList", true);
