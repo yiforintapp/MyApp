@@ -276,8 +276,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         if (mQuickLockMode) {
             mLockedPackage = getPackageName();
+            mTtileBar.setTitle(R.string.change_lock_mode);
         } else {
             mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
+            mTtileBar.setTitle(R.string.app_name);
         }
 
         String newLockedPkg = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
@@ -333,6 +335,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
         }
+        
+        mLockFragment.onNewIntent();
         checkOutcount();
         super.onNewIntent(intent);
     }

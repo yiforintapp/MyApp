@@ -205,6 +205,32 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     }
 
+    @Override
+    public void onNewIntent() {
+        LockScreenActivity lsa = (LockScreenActivity) mActivity;
+        if (lsa.mQuickLockMode) {
+            LockManager lm = LockManager.getInstatnce();
+            List<LockMode> modes = lm.getLockMode();
+            LockMode targetMode = null;
+            for (LockMode lockMode : modes) {
+                if (lockMode.modeId == lsa.mQuiclModeId) {
+                    targetMode = lockMode;
+                    break;
+                }
+            }
+            if (targetMode != null) {
+                mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
+                        targetMode.modeIcon));
+            } else {
+                mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                        mActivity.getPackageManager(), mActivity.getPackageName()));
+            }
+        } else {
+            mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                    mActivity.getPackageManager(), mActivity.getPackageName()));
+        }
+    }
+
     private void initPasswdIcon() {
         // mTvPasswd1.setBackgroundDrawable(mPasswdNormalDrawable);
         // mTvPasswd2.setBackgroundDrawable(mPasswdNormalDrawable);
