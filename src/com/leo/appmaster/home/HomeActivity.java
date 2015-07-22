@@ -75,7 +75,6 @@ import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOSelfIconAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;

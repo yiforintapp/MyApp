@@ -77,6 +77,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
@@ -233,10 +234,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         if (mNewTheme) {
             mThemeView.setImageDrawable(this.getResources().getDrawable(
-                    R.drawable.themetip_spiner_press));
+                    R.drawable.theme_active_icon));
         } else {
             mThemeView.setImageDrawable(this.getResources().getDrawable(
-                    R.drawable.theme_spiner_press));
+                    R.drawable.theme_icon));
         }
         return lockThemeGuid;
     }
@@ -464,10 +465,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         lockGuideTv.setText(getString(R.string.help_setting_guide));
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
-            mTtileBar.setHelpSettingImage(R.drawable.selector_help_icon);
-            mTtileBar.setHelpSettingVisiblity(View.VISIBLE);
-            mTtileBar.setHelpSettingListener(this);
-
             mTtileBar.setBackArrowVisibility(View.GONE);
 
             if (mQuickLockMode) {
@@ -497,11 +494,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             mTtileBar.setHelpSettingVisiblity(View.INVISIBLE);
         }
-        if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-            mTtileBar.setOptionImage(R.drawable.setting_selector);
-            mTtileBar.setOptionImageVisibility(View.VISIBLE);
-            mTtileBar.setOptionListener(this);
+        
+        if (AppMasterPreference.getInstance(this).getLockScreenMenuClicked()) {
+            mTtileBar.setOptionImage(R.drawable.menu_item_btn);
+        } else {
+            mTtileBar.setOptionImage(R.drawable.menu_item_red_tip_btn);
         }
+        mTtileBar.setOptionImageVisibility(View.VISIBLE);
+        mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
+        mTtileBar.setOptionListener(this);
+            
         mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         ((View) mThemeView.getParent()).setVisibility(View.VISIBLE);
         mThemeView.setVisibility(View.VISIBLE);
@@ -695,10 +697,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
         startActivity(intent);
-        // } else {
-        //
-        // }
-
         /**
          * notify LockManager
          */
@@ -717,20 +715,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view,
                                 int position, long id) {
-                            if (position == 0) {
-                                findPasswd();
-                            } else if (position == 1) {
-
-                            }
+                           setPopWindowItemClick(position);
                             mLeoPopMenu.dismissSnapshotList();
                         }
                     });
                 }
-
-                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getRightMenuIcons());
+                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
-
+                mLeoPopMenu.setListViewDivider(null);
+                AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(true);
+                mTtileBar.setOptionImage(R.drawable.menu_item_btn);
                 break;
             case R.id.layout_title_back:
                 onBackPressed();
@@ -747,22 +742,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 startActivityForResult(intent, 0);
                 amp.setLockerScreenThemeGuide(true);
                 break;
-            case R.id.setting_help_tip:
-                AppMasterPreference ampp = AppMasterPreference.getInstance(this);
-                ampp.setLockerScreenThemeGuide(true);
-                ampp.setUnlocked(true);
-                ampp.setDoubleCheck(null);
-                Intent helpSettingIntent = new Intent(LockScreenActivity.this,
-                        LockHelpSettingTip.class);
-                helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-                try {
-                    LockScreenActivity.this.startActivity(helpSettingIntent);
-                } catch (Exception e) {
-                }
-                /* SDK Event Mark */
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
-                break;
             default:
                 break;
         }
@@ -771,20 +750,81 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private List<String> getPopMenuItems() {
         List<String> listItems = new ArrayList<String>();
         Resources resources = AppMasterApplication.getInstance().getResources();
-        if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
-            listItems.add(resources.getString(R.string.find_gesture));
-        } else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            listItems.add(resources.getString(R.string.find_passwd));
+        if (AppMasterPreference.getInstance(this).hasPswdProtect()){
+            if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
+                listItems.add(resources.getString(R.string.find_gesture));
+            } else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
+                listItems.add(resources.getString(R.string.find_passwd));
+            }
         }
+        listItems.add(resources.getString(R.string.setting_hide_lockline));
+        listItems.add(resources.getString(R.string.help_setting_tip_title));
+       
         return listItems;
     }
 
-    private List<Integer> getRightMenuIcons() {
+    private List<Integer> getMenuIcons() {
         List<Integer> icons = new ArrayList<Integer>();
-        icons.add(R.drawable.forget_password_icon);
+        if (AppMasterPreference.getInstance(this).hasPswdProtect()){
+            icons.add(R.drawable.forget_password_icon);
+        }
+        if(AppMasterPreference.getInstance(this).getIsHideLine()){
+            icons.add(R.drawable.show_locus_icon);  
+        }else {
+            icons.add(R.drawable.hide_locus_icon);
+        }
+        icons.add(R.drawable.help_tip_icon);
         return icons;
     }
 
+    private void setPopWindowItemClick(int position){
+        if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
+            if (position == 0) {
+                findPasswd();
+            } else if (position == 1) {
+                onHideLockLindeClicked(position);
+            } else {
+                onHelpItemClicked();
+            }
+        } else {
+            if (position == 0) {
+                onHideLockLindeClicked(position);
+            } else if (position == 1) {
+                onHelpItemClicked();
+            } 
+        }
+    }
+    
+    private void onHideLockLindeClicked(int position){
+        String tip;
+        if(AppMasterPreference.getInstance(this).getIsHideLine()){
+            mLeoPopMenu.updateItemIcon(position, R.drawable.hide_locus_icon);
+            AppMasterPreference.getInstance(this).setHideLine(false);
+            tip = getString(R.string.lock_line_visiable);
+        }else {
+            mLeoPopMenu.updateItemIcon(position, R.drawable.show_locus_icon);
+            AppMasterPreference.getInstance(this).setHideLine(true);
+            tip = getString(R.string.lock_line_hide);
+        }
+        Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+    }
+    
+    private void onHelpItemClicked(){
+        AppMasterPreference ampp = AppMasterPreference.getInstance(this);
+        ampp.setLockerScreenThemeGuide(true);
+        ampp.setUnlocked(true);
+        ampp.setDoubleCheck(null);
+        Intent helpSettingIntent = new Intent(LockScreenActivity.this,
+                LockHelpSettingTip.class);
+        helpSettingIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        try {
+            LockScreenActivity.this.startActivity(helpSettingIntent);
+        } catch (Exception e) {
+        }
+        /* SDK Event Mark */
+        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "help", "help_tip");
+    }
+    
     @Override
     public void onClick(int which) {
         if (which == 1) {// make sure

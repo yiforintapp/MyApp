@@ -464,7 +464,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 mModeNameTv.setAlpha(value);
             }
         });
-        ObjectAnimator thisViewAlpha = ObjectAnimator.ofFloat(MultiModeView.this, "alpha", 0f)
+        ObjectAnimator thisViewAlpha = ObjectAnimator.ofFloat(MultiModeView.this, "alpha",0f)
                 .setDuration(400);
         ObjectAnimator selectImgAlpha = ObjectAnimator.ofFloat(selectedImg, "alpha", 0f)
                 .setDuration(400);

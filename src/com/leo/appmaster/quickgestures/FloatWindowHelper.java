@@ -1691,32 +1691,15 @@ public class FloatWindowHelper {
             AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
             int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
             int halfH = windowManager.getDefaultDisplay().getHeight() / 2;
-            int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
 
             createWhiteFloatParams(mContext);
-            // get the last coordinate,if 0 then appear in last swipe orientation
+            // get the last coordinate,if 0 then appear in default swipe orientation
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
-                // if is the upgrade user and first time create white float,then  show int the left center
-                if (pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()) {
-                    lastSlideOrientation = -2;
-                }
-                if (lastSlideOrientation < 0) {
-                    mWhiteFloatParams.x = -halfW;
-                    if (lastSlideOrientation == -1) {
-                        mWhiteFloatParams.y = halfH - mWhiteFloatParams.height / 2;
-                    } else if (lastSlideOrientation == -2) {
-                        mWhiteFloatParams.y = mWhiteFloatParams.height;
-                    }
-                } else {
-                    mWhiteFloatParams.x = halfW;
-                    if (lastSlideOrientation == 1) {
-                        mWhiteFloatParams.y = halfH - mWhiteFloatParams.height / 2;
-                    } else if (lastSlideOrientation == 2) {
-                        mWhiteFloatParams.y = mWhiteFloatParams.height;
-                    }
-                }
+                //first open default appear in left center
+                mWhiteFloatParams.x = -halfW;
+                mWhiteFloatParams.y = mWhiteFloatParams.height;
                 pref.setWhiteFloatViewCoordinate(mWhiteFloatParams.x, mWhiteFloatParams.y);
             } else {
                 mWhiteFloatParams.x = coordinate[0];

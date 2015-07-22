@@ -200,6 +200,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_CALL_LOG_IS_RED_TIP = "quick_call_log_is_red_tip";
     public static final String PREF_QUICK_REMOVE_ICON = "quick_remove_icon";
     public static final String PREF_QUICK_SLIDE_ANIM_SHOW_TIMES = "quick_slide_anim_show_times";
+    public static final String PREF_IF_LOCK_SCREEN_MENU_CLICKED = "if_menu_clicked"; 
     public static final String PREF_LAST_BOOST_TIMES = "last_boost_times";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -1981,6 +1982,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             mGestureSlideAnimShowTimes = mPref.getInt(PREF_QUICK_SLIDE_ANIM_SHOW_TIMES, 0);
         }
         return mGestureSlideAnimShowTimes;
+    }
+    
+    public void setLockScreenMenuClicked(boolean flag){
+        mPref.edit().putBoolean(PREF_IF_LOCK_SCREEN_MENU_CLICKED, flag).commit();
+    }
+    
+    public boolean getLockScreenMenuClicked(){
+        return mPref.getBoolean(PREF_IF_LOCK_SCREEN_MENU_CLICKED, false);
     }
 
     public long getLastBoostTime() {

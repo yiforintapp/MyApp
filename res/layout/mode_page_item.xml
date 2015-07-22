@@ -34,11 +34,26 @@
         android:id="@+id/tv_mode_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:layout_above="@+id/tv_mode_lock_account"
         android:maxLines="2"
        android:ellipsize="end" 
         android:text="@string/lock_mode"
+        android:textColor="@color/home_mode_text_color"
+        android:textSize="14sp" />
+    
+    <TextView
+        android:id="@+id/tv_mode_lock_account"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="6dp"
+        android:layout_centerHorizontal="true"
+        android:drawableLeft="@drawable/mode_lock_icon"
+        android:drawablePadding="5dp"
+        android:maxLines="1"
+       android:ellipsize="end" 
+        android:text="4APP"
         android:textColor="@color/white"
         android:textSize="14sp" />
 
