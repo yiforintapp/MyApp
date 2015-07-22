@@ -22,6 +22,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.MotionEvent;
 import android.view.View;
@@ -159,7 +160,8 @@ public class LockPatternView extends ViewGroup {
     private Cell mCurrParten;
 
     private int mLockMode = LockManager.LOCK_MODE_PURE;
-
+    private Context mContext;
+    
     /**
      * Represents a cell in the 3 X 3 matrix of the unlock pattern view.
      */
@@ -276,7 +278,7 @@ public class LockPatternView extends ViewGroup {
 
     public LockPatternView(Context context, AttributeSet attrs) {
         super(context, attrs);
-
+        mContext = context;
         isHideLine = AppMasterPreference.getInstance(context).getIsHideLine();
 
         TypedArray a = context.obtainStyledAttributes(attrs,
@@ -1499,6 +1501,10 @@ public class LockPatternView extends ViewGroup {
 
     public void setIsFromLockScreenActivity(boolean isture) {
         this.isFromLockScreenActivity = isture;
+    }
+    
+    public void resetIfHideLine(){
+        isHideLine = AppMasterPreference.getInstance(mContext).getIsHideLine();
     }
 
 }

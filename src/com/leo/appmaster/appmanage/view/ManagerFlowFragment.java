@@ -163,29 +163,35 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         updateProgress();
     }
     
+    /**
+     * if over flow,show over percent 
+     */
     private void updateProgress() {
-        if(progress >= bili && bili!=0) {
-            return;
+        if(bili > 100){
+            tv_from_donghua.setText(bili-100 + "%");
+        }else{
+            if(progress >= bili && bili!=0) {
+                return;
+            }
+            progress++;
+            if (bili == 0) {
+                progress = 0;
+            }
+            Message msg = Message.obtain();
+            msg.what = CHANGE_TEXT;
+            msg.obj = progress;
+            handler.sendMessageDelayed(msg, 10);
         }
-        progress++;
-        if (bili == 0) {
-            progress = 0;
-        }
-        
-        Message msg = Message.obtain();
-        msg.what = CHANGE_TEXT;
-        msg.obj = progress;
-        handler.sendMessageDelayed(msg, 10);
     }
     
     /**
-     * check if over flow
+     * check if over flow,if over then change bg and text , and hide the roudProgressBar
      */
     private void checkOverFlowSetting(){
         if(bili>100){
-            bili = bili -100;
             mProgressBg.setImageResource(R.drawable.flow_over_bg);
             mFlowUseTipText.setText(getResources().getString(R.string.traffic_over_text));
+            roundProgressBar.setProgress(0);
         }else{
             mProgressBg.setImageResource(R.drawable.app_run_bg);
             mFlowUseTipText.setText(getResources().getString(R.string.traffic_progress_bar));

@@ -225,7 +225,7 @@
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">70dp</dimen>
     <dimen name="webview_title_width">262dp</dimen>
-    <dimen name="guide_skip_margin">10dp</dimen>
+    <dimen name="guide_skip_margin">12dp</dimen>
     <dimen name="privacy_default_title_margin_top">42dp</dimen>
     <dimen name="privacy_default_image_width">120dp</dimen>
     <dimen name="privacy_default_image_height">120dp</dimen>
