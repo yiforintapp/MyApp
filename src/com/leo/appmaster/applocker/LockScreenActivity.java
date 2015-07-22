@@ -907,6 +907,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
         mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
         mActiveText.setText(this.getString(R.string.mode_change, mQuickModeName));
+        mActiveText.setMaxLines(2);
         bgView = (LeoCircleView) mTipView.findViewById(R.id.mode_active_bg);
         modeIconIn = (ImageView) mTipView.findViewById(R.id.mode_active_in);
         modeIconOut = (ImageView) mTipView.findViewById(R.id.mode_active_out);
@@ -1057,6 +1058,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         modeIconDown.setVisibility(View.VISIBLE);
         bgView.setColor(Color.parseColor(willLaunchMap.get("bgColor").toString()));
         mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+        mActiveText.setMaxLines(2);
 
         Toast toast = new Toast(this);
         toast.setView(mTipView);
