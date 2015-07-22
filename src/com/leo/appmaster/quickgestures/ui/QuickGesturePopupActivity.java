@@ -84,9 +84,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private void checkFirstWhiteClick() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        int clickCount = amp.getUseStrengthenModeTimes();
+        LeoLog.e("xxxx", "clickCount = " + clickCount
+                + "             amp.hasEverCloseWhiteDot() = " + amp.hasEverCloseWhiteDot());
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot() && !BuildProperties.isGTS5282()) {
             amp.setEverCloseWhiteDot(true);
-            int clickCount = amp.getUseStrengthenModeTimes();
             if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
                 mGestureTipContent.setText(R.string.white_dot_click_tip);
