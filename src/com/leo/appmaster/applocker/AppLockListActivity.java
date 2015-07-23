@@ -111,6 +111,7 @@ public class AppLockListActivity extends BaseActivity implements
 //                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                if(AppMasterPreference.getInstance(this).getIsHomeToLockList())
                {
+                   Log.e("lockmore", "inif is home");
                    AppMasterPreference.getInstance(this).setIsFromLockList(true);                   
                }
                 Log.e("lockmore", "settrue");
@@ -121,6 +122,7 @@ public class AppLockListActivity extends BaseActivity implements
             {
                 if(AppMasterPreference.getInstance(this).getIsHomeToLockList())
                 {                
+                    Log.e("lockmore", "inif is home");
                     Log.e("lockmore", "settrue");
                     AppMasterPreference.getInstance(this).setIsFromLockList(true);
                 }
