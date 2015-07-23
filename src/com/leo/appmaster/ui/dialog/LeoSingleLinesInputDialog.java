@@ -86,7 +86,9 @@ public class LeoSingleLinesInputDialog extends LEOBaseDialog {
             public void onClick(View arg0) {
                 DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mLeftBtn
                         .getTag();
-                lListener.onClick(LeoSingleLinesInputDialog.this, 0);
+                if (lListener != null) {
+                    lListener.onClick(LeoSingleLinesInputDialog.this, 0);
+                }
             }
         });
     }
@@ -99,7 +101,9 @@ public class LeoSingleLinesInputDialog extends LEOBaseDialog {
             public void onClick(View arg0) {
                 DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRightBtn
                         .getTag();
-                lListener.onClick(LeoSingleLinesInputDialog.this, 1);
+                if (lListener != null) {
+                    lListener.onClick(LeoSingleLinesInputDialog.this, 1);
+                }
             }
         });
     }
