@@ -125,8 +125,11 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             mList.remove(1);
             mIsRemoveBeauty = true;
             
-            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(true);
-            
+            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(true);          
+        }
+        else
+        {
+            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);       
         }
 
         // set adapter
