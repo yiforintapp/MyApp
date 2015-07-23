@@ -38,6 +38,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
@@ -68,6 +70,7 @@ public class VideoHideMainActivity extends BaseActivity implements
     private boolean isCbHere = false;
     private int mCbVersionCode = -1;
     private boolean isHaveCbFloder = false;
+    private LEOAlarmDialog mDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -346,6 +349,22 @@ public class VideoHideMainActivity extends BaseActivity implements
         VideoBean video = hideVideos.get(position);
         if (isHaveCbFloder && position == 0 && !isCbHere) {
             // showDialog to download CB
+            if (mDialog == null) {
+                mDialog = new LEOAlarmDialog(this);
+            }
+            mDialog.setOnClickListener(new OnDiaogClickListener() {
+                @Override
+                public void onClick(int which) {
+                    if (which == 1) {
+                        //getURL and go browser
+                        
+                    }
+                }
+            });
+            mDialog.setCanceledOnTouchOutside(false);
+            mDialog.setContent(getString(R.string.video_hide_need_cb));
+            mDialog.setSureButtonText(getString(R.string.button_install));
+            mDialog.show();
         } else {
             Intent intent = new Intent(this, VideoGriActivity.class);
             Bundle bundle = new Bundle();

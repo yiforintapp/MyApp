@@ -221,12 +221,43 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     public void onClick(View arg0) {
         switch (arg0.getId()) {
             case R.id.unhide_video:
-                String cancleHideVideoText = getString(R.string.app_unhide_dialog_content_video);
-                showAlarmDialog(cancleHideVideoText, DIALOG_CANCLE_VIDEO);
+
+                if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                        && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                    if (isCbHere
+                            && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
+                        isServiceDo = true;
+                        String cancleHideVideoText = getString(R.string.app_unhide_dialog_content_video);
+                        showAlarmDialog(cancleHideVideoText, DIALOG_CANCLE_VIDEO);
+                    } else {
+                        String mContentString = getString(R.string.video_hide_need_new_cb);
+                        showDownLoadNewCbDialog(mContentString);
+                    }
+                } else {
+                    String cancleHideVideoText = getString(R.string.app_unhide_dialog_content_video);
+                    showAlarmDialog(cancleHideVideoText, DIALOG_CANCLE_VIDEO);
+                }
+
                 break;
             case R.id.delete_video:
-                String deleteHideVideoText = getString(R.string.app_delete_dialog_content_video);
-                showAlarmDialog(deleteHideVideoText, DIALOG_DELECTE_VIDEO);
+
+                if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                        && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                    if (isCbHere
+                            && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
+                        // bindservice to do
+                        isServiceDo = true;
+                        String deleteHideVideoText = getString(R.string.app_delete_dialog_content_video);
+                        showAlarmDialog(deleteHideVideoText, DIALOG_DELECTE_VIDEO);
+                    } else {
+                        String mContentString = getString(R.string.video_delete_need_new_cb);
+                        showDownLoadNewCbDialog(mContentString);
+                    }
+                } else {
+                    String deleteHideVideoText = getString(R.string.app_delete_dialog_content_video);
+                    showAlarmDialog(deleteHideVideoText, DIALOG_DELECTE_VIDEO);
+                }
+
                 break;
             default:
                 break;
@@ -352,38 +383,55 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 if (which == 1) {
                     if (flag == DIALOG_CANCLE_VIDEO) {
 
-                        if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
-                            if (isCbHere
-                                    && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
-                                // bindservice to do
-                                isServiceDo = true;
-                                BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
-                                backgoundTask.execute(true);
-                            } else {
-                                Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
-                            backgoundTask.execute(true);
-                        }
+                        // if
+                        // (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                        // &&
+                        // mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG))
+                        // {
+                        // if (isCbHere
+                        // && mCbVersionCode >=
+                        // VideoHideMainActivity.TARGET_VERSION) {
+                        // // bindservice to do
+                        // isServiceDo = true;
+                        // BackgoundTask backgoundTask = new
+                        // BackgoundTask(VideoViewPager.this);
+                        // backgoundTask.execute(true);
+                        // } else {
+                        // // Toast.makeText(VideoViewPager.this,
+                        // // "不好意思，你的CB版本太低！",
+                        // // Toast.LENGTH_SHORT).show();
+                        // String mContentString =
+                        // getString(R.string.video_hide_need_new_cb);
+                        // showDownLoadNewCbDialog(mContentString);
+                        // }
+                        // } else {
+                        BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
+                        backgoundTask.execute(true);
+                        // }
                     } else if (flag == DIALOG_DELECTE_VIDEO) {
 
-                        if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
-                            if (isCbHere
-                                    && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
-                                // bindservice to do
-                                isServiceDo = true;
-                                deleteVideo();
-                            } else {
-                                Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        } else {
-                            deleteVideo();
-                        }
+                        // if
+                        // (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                        // &&
+                        // mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG))
+                        // {
+                        // if (isCbHere
+                        // && mCbVersionCode >=
+                        // VideoHideMainActivity.TARGET_VERSION) {
+                        // // bindservice to do
+                        // isServiceDo = true;
+                        // deleteVideo();
+                        // } else {
+                        // // Toast.makeText(VideoViewPager.this,
+                        // // "不好意思，你的CB版本太低！",
+                        // // Toast.LENGTH_SHORT).show();
+                        // String mContentString =
+                        // getString(R.string.video_delete_need_new_cb);
+                        // showDownLoadNewCbDialog(mContentString);
+                        // }
+                        // } else {
+                        deleteVideo();
+                        // }
                     }
                 }
             }
@@ -391,6 +439,25 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.setTitle(R.string.app_cancel_hide_image);
         mDialog.setContent(string);
+        mDialog.show();
+    }
+
+    public void showDownLoadNewCbDialog(String mContentString) {
+        if (mDialog == null) {
+            mDialog = new LEOAlarmDialog(this);
+        }
+        mDialog.setOnClickListener(new OnDiaogClickListener() {
+            @Override
+            public void onClick(int which) {
+                if (which == 1) {
+                    // getURL and go browser
+
+                }
+            }
+        });
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setContent(mContentString);
+        mDialog.setSureButtonText(getString(R.string.button_install));
         mDialog.show();
     }
 

@@ -415,7 +415,36 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 mHideVideoAdapter.notifyDataSetChanged();
                 break;
             case R.id.hide_image:
-                showAlarmDialog();
+
+                if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
+                    if (mClickList.size() > 0) {
+                        VideoItemBean item = mClickList.get(0);
+                        String mPath = item.getPath();
+                        String mLastName = FileOperationUtil.getDirNameFromFilepath(mPath);
+                        String mSecondName = FileOperationUtil
+                                .getSecondDirNameFromFilepath(mPath);
+                        if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                            if (isCbHere
+                                    && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
+                                // bindservice to do
+                                isServiceDo = true;
+                                showAlarmDialog();
+                            } else {
+                                mSelectAll.setText(R.string.app_select_all);
+                                mClickList.clear();
+                                updateRightButton();
+                                mHideVideoAdapter.notifyDataSetChanged();
+                                showDownLoadNewCbDialog();
+                            }
+                        } else {
+                            showAlarmDialog();
+                        }
+                    }
+                } else {
+                    showAlarmDialog();
+                }
+
                 break;
             case R.id.tv_option_image:
                 if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
@@ -515,62 +544,16 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                         "used");
                             }
                         } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-                            if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                                    && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
-                                if (isCbHere
-                                        && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
-                                    // bindservice to do
-                                    isServiceDo = true;
-                                    showProgressDialog(getString(R.string.tips),
-                                            getString(R.string.app_cancel_hide_image) + "...",
-                                            true,
-                                            true);
-                                    BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
-                                    task.execute(false);
-                                    mHideVideoAdapter.notifyDataSetChanged();
-                                } else {
-                                    Toast.makeText(VideoGriActivity.this, "不好意思，你的CB版本太低！",
-                                            Toast.LENGTH_SHORT).show();
-                                    mSelectAll.setText(R.string.app_select_all);
-                                    mClickList.clear();
-                                    updateRightButton();
-                                    mHideVideoAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                showProgressDialog(getString(R.string.tips),
-                                        getString(R.string.app_cancel_hide_image) + "...",
-                                        true,
-                                        true);
-                                BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
-                                task.execute(false);
-                                mHideVideoAdapter.notifyDataSetChanged();
-                            }
-
-                            // if (mCbVersionCode != -1
-                            // && mCbVersionCode <
-                            // VideoHideMainActivity.TARGET_VERSION) {
-                            // Toast.makeText(VideoGriActivity.this,
-                            // "不好意思，你的CB版本太低！",
-                            // Toast.LENGTH_SHORT).show();
-                            // mSelectAll.setText(R.string.app_select_all);
-                            // mClickList.clear();
-                            // updateRightButton();
-                            // mHideVideoAdapter.notifyDataSetChanged();
-                            // } else {
-                            // showProgressDialog(getString(R.string.tips),
-                            // getString(R.string.app_cancel_hide_image) +
-                            // "...", true,
-                            // true);
-                            // BackgoundTask task = new
-                            // BackgoundTask(VideoGriActivity.this);
-                            // task.execute(false);
-                            // mHideVideoAdapter.notifyDataSetChanged();
-                            // }
+                            showProgressDialog(getString(R.string.tips),
+                                    getString(R.string.app_cancel_hide_image) + "...",
+                                    true,
+                                    true);
+                            BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
+                            task.execute(false);
+                            mHideVideoAdapter.notifyDataSetChanged();
                         }
                     }
-
                 }
-
             }
         });
         mDialog.setCanceledOnTouchOutside(false);
@@ -582,6 +565,25 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             mDialog.setTitle(R.string.app_cancel_hide_image);
             mDialog.setContent(getString(R.string.app_unhide_video_dialog_content));
         }
+        mDialog.show();
+    }
+
+    protected void showDownLoadNewCbDialog() {
+        if (mDialog == null) {
+            mDialog = new LEOAlarmDialog(this);
+        }
+        mDialog.setOnClickListener(new OnDiaogClickListener() {
+            @Override
+            public void onClick(int which) {
+                if (which == 1) {
+                    // getURL and go browser
+
+                }
+            }
+        });
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setContent(getString(R.string.video_hide_need_new_cb));
+        mDialog.setSureButtonText(getString(R.string.button_install));
         mDialog.show();
     }
 
