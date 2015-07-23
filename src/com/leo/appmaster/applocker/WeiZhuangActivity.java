@@ -183,16 +183,16 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             // 这里position和lock的编号不是一一对应的，需要重新对应
             switch (selected) {               
                 case 1:
-                    selected=3;
+                    selected=2;
                     break;
                 case 2:
-                    selected=4;
+                    selected=3;
                     break;
                 case 3:
-                    
+                    selected=4;
                     break;
                 case 4:
-
+                    selected=1;
                     break;
                 default:
                     break;
