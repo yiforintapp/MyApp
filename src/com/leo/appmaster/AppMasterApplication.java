@@ -1200,7 +1200,7 @@ public class AppMasterApplication extends Application {
     private void installBoostShortcut() {
         Intent shortcutIntent = new Intent(this, HomeBoostActivity.class);
         ShortcutIconResource iconRes = Intent.ShortcutIconResource
-                .fromContext(this, R.drawable.switch_speed_up);
+                .fromContext(this, R.drawable.booster_icon);
         Intent shortcut = new Intent(
                 "com.android.launcher.action.INSTALL_SHORTCUT");
         shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.accelerate));

@@ -101,13 +101,12 @@
 
     <dimen name="help_icon_width_parent">50dp</dimen>
     <dimen name="locker_theme_guide_width">267dp</dimen>
-    <dimen name="locker_theme_guide_height">320dp</dimen>
-    <dimen name="locker_theme_guide_tv_save_width">300dp</dimen>
+    <dimen name="locker_theme_guide_height">300dp</dimen>
+    <dimen name="locker_theme_guide_tv_save_width">290dp</dimen>
     <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
-    <dimen name="locker_theme_guide_guideImageIV_marginTop">20dp</dimen>
+    <dimen name="locker_theme_guide_guideImageIV_marginTop">28dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_marginTop">26dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
-    <dimen name="locker_theme_guide_tv_save_textsize">22sp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
     <dimen name="memery_dialog_button_height">35dp</dimen>
     <dimen name="privacy_level_seprator_padding">10dp</dimen>
@@ -374,7 +373,7 @@
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">60dp</dimen>
     <dimen name="webview_title_width">232dp</dimen>
-    <dimen name="guide_skip_margin">8dp</dimen>
+    <dimen name="guide_skip_margin">10dp</dimen>
         <dimen name="privacy_default_title_margin_top">30dp</dimen>
     <dimen name="privacy_default_image_width">100dp</dimen>
     <dimen name="privacy_default_image_height">100dp</dimen>

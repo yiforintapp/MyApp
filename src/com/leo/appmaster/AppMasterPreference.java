@@ -137,6 +137,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
     public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
+    public static final String PREF_HOME_TO_LOCKLIST="home_to_lock_list";
+    public static final String PREF_FROM_LOCKLIST="from_lock_list";
     public static final String PREF_WEIZHUANG_FIRST_IN = "weizhuang_first_in";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
 
@@ -428,6 +430,25 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setMessageRedTip(boolean flag) {
         mPref.edit().putBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, flag).commit();
+    }
+    
+    public boolean getIsFromLockList()
+    {
+        return mPref.getBoolean(PREF_FROM_LOCKLIST, false);
+    }
+    
+    public void setIsFromLockList(boolean flag)
+    {
+        mPref.edit().putBoolean(PREF_FROM_LOCKLIST, flag).commit();
+    }
+    public boolean getIsHomeToLockList()
+    {
+        return mPref.getBoolean(PREF_HOME_TO_LOCKLIST, false);
+    }
+    
+    public void setIsHomeToLockList(boolean flag)
+    {
+        mPref.edit().putBoolean(PREF_HOME_TO_LOCKLIST, flag).commit();
     }
 
     public boolean getCallLogRedTip() {
@@ -1901,14 +1922,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void addUseStrengthenModeTimes() {
-        if (mUseStrengthModeTimes < 0) {
+        if (mUseStrengthModeTimes <= 0) {
             mUseStrengthModeTimes = getUseStrengthenModeTimes();
         }
-        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, ++mUseStrengthModeTimes).commit();
+        mUseStrengthModeTimes++;
+        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, mUseStrengthModeTimes).commit();
     }
 
     public int getUseStrengthenModeTimes() {
-        if (mUseStrengthModeTimes < 0) {
+        if (mUseStrengthModeTimes <= 0) {
             mUseStrengthModeTimes = mPref.getInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, 0);
         }
         return mUseStrengthModeTimes;
@@ -1920,7 +1942,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setEverCloseWhiteDot(boolean b) {
         mHasEverCloseWhiteDot = b;
-        mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b);
+        mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b).commit();
     }
 
     /**

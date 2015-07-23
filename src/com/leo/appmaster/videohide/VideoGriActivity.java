@@ -382,6 +382,10 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mBottomBar.setVisibility(View.GONE);
         mCommonTtileBar.setOptionImage(R.drawable.edit_mode_name);
         mSelectImage.setVisibility(View.GONE);
+        mSelectAll.setText(R.string.app_select_all);
+        mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                getResources().getDrawable(R.drawable.select_all_selector), null,
+                null);
         updateRightButton();
     }
 

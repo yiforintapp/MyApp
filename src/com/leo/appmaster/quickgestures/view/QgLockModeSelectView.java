@@ -103,7 +103,7 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         List<LockMode> list = LockManager.getInstatnce().getLockMode();
         for (LockMode lockMode : list) {
-            View view = mInflater.inflate(R.layout.mode_page_item, mViewPager, false);
+            View view = mInflater.inflate(R.layout.qg_mode_page_item, mViewPager, false);
             mHolder = view.findViewById(R.id.mode_holder);
             TextView modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
             ImageView selectedImg = (ImageView) view.findViewById(R.id.img_selected);
@@ -336,7 +336,7 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
                             } else {
                                 Intent intent = null;
                                 intent = new Intent(getContext(), LockScreenActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("quick_lock_mode", true);
                                 intent.putExtra("lock_mode_id", mode.modeId);
                                 intent.putExtra("lock_mode_name", mode.modeName);

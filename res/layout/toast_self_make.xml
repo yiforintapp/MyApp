@@ -2,11 +2,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:background="@color/white"
+    android:paddingBottom="10dp"
     android:paddingLeft="13dp"
     android:paddingRight="13dp"
-    android:paddingTop="10dp"
-    android:paddingBottom="10dp"
-    android:background="@color/white" >
+    android:paddingTop="10dp" >
 
     <ImageView
         android:id="@+id/iv_icon"
@@ -20,9 +21,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/iv_icon"
         android:layout_marginLeft="30dp"
-        android:text="Freed 74MB Ram!"
+        android:layout_toRightOf="@id/iv_icon"
         android:textColor="@color/black"
         android:textSize="14dp" />
 

@@ -24,6 +24,7 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -431,6 +432,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 bean.label = (String) this.getResources().getText(
                         R.string.localtheme);
                 int themeLogo = themeContext.getResources().getIdentifier("ic_launcher","drawable", themeContext.getPackageName());
+                Log.i("######","themeLogo = "+themeLogo);
                 if(themeLogo > 0){
                     bean.themeLogo = themeContext.getResources().getDrawable(themeLogo);
                 }else{
@@ -750,7 +752,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     public void showAlarmDialog(String packageName,Drawable themeImage, int rightVisible) {
         dialog = new LEOThreeButtonDialog(this);
         dialog.setDialogIconDrawable(themeImage);
-        dialog.setTitle(packageName);
+        dialog.setTitle(getResources().getString(R.string.theme_apply_title, packageName));
         dialog.setMiddleBtnStr(getString(R.string.locker_apply));
         dialog.setRightBtnStr(getString(R.string.locker_uninstall));
         dialog.setRightBtnVisiable(rightVisible);
@@ -817,6 +819,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         ThemeItemInfo defaultTheme = new ThemeItemInfo();
         defaultTheme.themeImage = getResources().getDrawable(
                 R.drawable.default_theme);
+        defaultTheme.themeLogo = getResources().getDrawable(R.drawable.default_theme_logo);
         defaultTheme.themeName = (String) this.getResources().getText(
                 R.string.ParadoxTheme);
         defaultTheme.packageName = "com.leo.theme.default";

@@ -3,16 +3,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:clipChildren="false"
-    android:layerType="software" 
-   >
+    android:layerType="software" >
 
     <FrameLayout
         android:id="@+id/mode_holder"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true" 
-        android:paddingTop="5dp"
-        >
+        android:layout_centerHorizontal="true"
+        android:paddingTop="5dp" >
 
         <TextView
             android:id="@+id/tv_lock_mode_icon"
@@ -30,17 +28,16 @@
             android:src="@drawable/lock_mode_select_button" />
     </FrameLayout>
 
-   <TextView
+    <TextView
         android:id="@+id/tv_mode_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
+        android:ellipsize="end"
         android:maxLines="2"
-       android:ellipsize="end" 
         android:text="@string/lock_mode"
         android:textColor="@color/white"
         android:textSize="14sp" />
-    
-  
+
 </RelativeLayout>
