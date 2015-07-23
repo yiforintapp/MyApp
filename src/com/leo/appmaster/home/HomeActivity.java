@@ -140,25 +140,26 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // TODO
     }
 
-    private void tryIsFromLockMore() {
-        // TODO Auto-generated method stub
-        Intent intent = getIntent();
-        
-        mIsFromAppLockList= intent.getBooleanExtra("isFromAppLockList", false);            
-        Log.e("lockmore", "isfromlist"+intent.getBooleanExtra("isFromAppLockList", false));
-    }
+//    private void tryIsFromLockMore() {
+//        // TODO Auto-generated method stub
+//        Intent intent = getIntent();
+//        
+//        mIsFromAppLockList= intent.getBooleanExtra("isFromAppLockList", false);            
+//        Log.e("lockmore", "isfromlist"+intent.getBooleanExtra("isFromAppLockList", false));
+//    }
 
     // 伪装的引导，当第一次将应用加了所后返回home，弹出提示。
     private void showWeiZhuangTip() {
         
-     Log.e("isshow", "isfromlist"+mIsFromAppLockList);
+//     Log.e("isshow", "isfromlist"+mIsFromAppLockList);
      Log.e("isshow", "isneed"+AppMasterPreference.getInstance(this).getIsNeedPretendTips()+"");
      Log.e("isshow", "lockedcount"+ LockManager.getInstatnce().getLockedAppCount()+"");   
      Log.e("isshow", "getpretendtype"+AppMasterPreference.getInstance(this).getPretendLock()+"");
+     Log.e("isshow", "getisfromAppList"+AppMasterPreference.getInstance(this).getIsFromLockList()+"");
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
-                && LockManager.getInstatnce().getLockedAppCount() > 0&&AppMasterPreference.getInstance(this).getPretendLock()==0&&mIsFromAppLockList)
-        {
-
+                && LockManager.getInstatnce().getLockedAppCount() > 0&&AppMasterPreference.getInstance(this).getPretendLock()==0&&
+                AppMasterPreference.getInstance(this).getIsFromLockList()==true)
+            {
             if (mSelfIconDialog == null)
             {
                 mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
@@ -192,34 +193,39 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mSelfIconDialog.show();
             AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
         }
-    }
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // TODO Auto-generated method stub
-        Log.e("poha","resultCode"+resultCode);
-        Log.e("poha","reqCode"+requestCode);
-        if(resultCode==RESULT_OK)
+        else
         {
-            Log.e("poha","in if");
-//            switch (requestCode) {
-//                           
-//                   case 0:
-            mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
-                    
-                    
-                    
-                    
-                    
-                    
-                    Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======" +data.getBooleanExtra("isFromAppLockList", false));
-//                    break;
-//              
-//                default:
-//                    break;
-//            }
+            
+            AppMasterPreference.getInstance(this).setIsFromLockList(false);
         }
-        
     }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        // TODO Auto-generated method stub
+//        Log.e("poha","resultCode"+resultCode);
+//        Log.e("poha","reqCode"+requestCode);
+//        if(resultCode==RESULT_OK)
+//        {
+//            Log.e("poha","in if");
+////            switch (requestCode) {
+////                           
+////                   case 0:
+//            mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
+//                    
+//                    
+//                    
+//                    
+//                    
+//                    
+//                    Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======" +data.getBooleanExtra("isFromAppLockList", false));
+////                    break;
+////              
+////                default:
+////                    break;
+////            }
+//        }
+        
+//    }
     
     
     @Override
@@ -372,7 +378,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         judgeShowGradeTip();
         
-        tryIsFromLockMore();
+//        tryIsFromLockMore();
         showWeiZhuangTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.

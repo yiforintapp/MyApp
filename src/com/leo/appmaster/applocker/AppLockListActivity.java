@@ -62,7 +62,9 @@ public class AppLockListActivity extends BaseActivity implements
     private int mCurSortType = DEFAULT_SORT;
 
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
-
+    
+    
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,25 +100,29 @@ public class AppLockListActivity extends BaseActivity implements
         if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
             mMaskLayer.setVisibility(View.GONE);
         } else {
-
+            
             boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
+            Log.e("lockmore", "fromLockMore=="+fromLockMore);
             if (fromLockMore) 
             {
                 LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
-
                 Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra("isFromAppLockList", true);
-                Log.e("lockmore", "done");
+//                intent.putExtra("isFromAppLockList", true);
+//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+               
+                AppMasterPreference.getInstance(this).setIsFromLockList(true);
+                Log.e("lockmore", "settrue");
                 startActivity(intent);
                 finish();
 //                super.onBackPressed();
-            }else {
-                Intent intent = new Intent(this, HomeActivity.class);
-                intent.putExtra("isFromAppLockList", true);
-                Log.e("poha", "to finish as result");
-                setResult(RESULT_OK,intent);
-                finish();
             }
+//            else {
+//                Intent intent = new Intent(this, HomeActivity.class);
+//                intent.putExtra("isFromAppLockList", true);
+//                Log.e("poha", "to finish as result");
+//                setResult(RESULT_OK,intent);
+//                finish();
+//            }
 
             // Intent intent = new Intent(this, HomeActivity.class);
             // intent.putExtra("isFromAppLockList", true);
@@ -134,6 +140,7 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private void initUI() {
+        
         mSortType = getResources().getStringArray(R.array.sort_type);
         mCurSortType = AppMasterPreference.getInstance(this).getSortType();
 
