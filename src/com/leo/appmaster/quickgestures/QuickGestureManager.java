@@ -100,6 +100,10 @@ public class QuickGestureManager {
 
     public boolean isCallLogRead;
 
+    private QuickGestureFilterAppDialog quickSwitch;
+
+    private QuickGestureFilterAppDialog commonApp;
+
     private QuickGestureManager(Context ctx) {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);
@@ -791,7 +795,7 @@ public class QuickGestureManager {
      */
     public void showCommonAppDialog(final Context context) {
         isFromDialog = true;
-        final QuickGestureFilterAppDialog commonApp = new QuickGestureFilterAppDialog(
+        commonApp = new QuickGestureFilterAppDialog(
                 context.getApplicationContext(), 3);
         final AppMasterPreference pref = AppMasterPreference.getInstance(context);
         commonApp.setIsShowCheckBox(true);
@@ -947,7 +951,7 @@ public class QuickGestureManager {
      */
     public void showQuickSwitchDialog(final Context context) {
         isFromDialog = true;
-        final QuickGestureFilterAppDialog quickSwitch = new QuickGestureFilterAppDialog(
+        quickSwitch = new QuickGestureFilterAppDialog(
                 context.getApplicationContext(), 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
         quickSwitch.setRightBt(new OnClickListener() {
@@ -1099,6 +1103,15 @@ public class QuickGestureManager {
         });
         isDialogShowing = true;
         quickSwitch.show();
+    }
+    
+    public void makeDialogDimiss(){
+        if(quickSwitch != null){
+            quickSwitch.dismiss();
+        }
+        if(commonApp != null){
+            commonApp.dismiss();
+        }
     }
 
     public class AppLauncherRecorder implements Comparable<AppLauncherRecorder> {

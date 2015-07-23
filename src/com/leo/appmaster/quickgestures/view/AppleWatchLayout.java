@@ -117,8 +117,11 @@ public class AppleWatchLayout extends ViewGroup {
     public void fillItems(List<BaseInfo> infos, boolean loadExtra) {
         if (QuickGestureManager.isClickSure) {
             LeoLog.d("testActivity", "fillItems and cannot touch!");
-            mContainer.setCanNotTouch(true);
+            if(mContainer != null){
+                mContainer.setCanNotTouch(true);
+            }
         }
+        
         // LeoLog.d("testActivity", "infos size is : " + infos.size());
         // LeoLog.d("testActivity", "come to  fillItems: ");
         // LeoLog.d("testActivity", "now viewchild num is  " + getChildCount());

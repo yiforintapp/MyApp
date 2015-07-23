@@ -230,6 +230,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onStop() {
+        LeoLog.d("testtest", "onStop");
+        QuickGestureManager.getInstance(this).makeDialogDimiss();
         Log.i("null", "QuickGesturePopupActivity onStop()");
         super.onStop();
     }
