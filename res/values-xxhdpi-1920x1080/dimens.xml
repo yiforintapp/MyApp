@@ -197,6 +197,7 @@
     <dimen name="privacy_default_image_height">120dp</dimen>
     <dimen name="privacy_default_text_margin_top">10dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">52dp</dimen>
+    <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
     <!-- 2.6 end -->
 		 
 </resources>

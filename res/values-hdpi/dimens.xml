@@ -350,7 +350,7 @@
     <dimen name="apple_watch_title_margin_bottom">305dp</dimen>
     <dimen name="apple_watch_title_bg_margin_bottom">305dp</dimen>
     <dimen name="apple_watch_top_title_margin_top">10dp</dimen>
-    <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
+    <dimen name="apple_watch_top_btn_margin_top">14dp</dimen>
     <!-- quick gesutre end -->
     <dimen name="privacy_contact_red_tip_x">97dp</dimen>
     <dimen name="privacy_contact_red_tip_y">8dp</dimen>
