@@ -752,7 +752,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     public void showAlarmDialog(String packageName,Drawable themeImage, int rightVisible) {
         dialog = new LEOThreeButtonDialog(this);
         dialog.setDialogIconDrawable(themeImage);
-        dialog.setTitle(packageName);
+        dialog.setTitle(getResources().getString(R.string.theme_apply_title, packageName));
         dialog.setMiddleBtnStr(getString(R.string.locker_apply));
         dialog.setRightBtnStr(getString(R.string.locker_uninstall));
         dialog.setRightBtnVisiable(rightVisible);
@@ -790,9 +790,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         dialog.cancel();
                         mGuideFlag = AppMasterPreference.getInstance(LockerTheme.this)
                                 .getUseThemeGuide();
-                     /*   if (!mGuideFlag) {*/
+                        if (!mGuideFlag) {
                             setLockerGuideShare();
-                       // }
+                        }
                     } else {
                         AppMasterApplication
                                 .setSharedPreferencesValue(lastSelectedItem.packageName);
