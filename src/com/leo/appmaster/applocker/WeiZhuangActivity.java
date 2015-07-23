@@ -48,7 +48,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private TextView mKnowBt;
     private Animation mGuidAnimation;
     private boolean mIsOpenHelp = false;
-    private boolean mIsRemoveBeauty=false;
+    private boolean mIsRemoveBeauty = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +100,9 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         mIcon[2] = mThemeRes.getDrawable(R.drawable.disguise_iocn_error);
         mIcon[3] = mThemeRes.getDrawable(R.drawable.disguise_icon_call);
         mIcon[4] = mThemeRes.getDrawable(R.drawable.disguise_iocn_finger);
-        
-//        getResources().getStringArray(R.string.c)
-   
-        
+
+        // getResources().getStringArray(R.string.c)
+
         // list
         mList = new ArrayList<WeiZhuangInfo>();
         int size = mName.length;
@@ -113,17 +112,19 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             info.setIcon(mIcon[i]);
             mList.add(info);
         }
-        
-        //pohatodo
-        if("09999".equals(getResources().getString(R.string.channel_code))||"09999".equals(getResources().getString(R.string.channel_code)))
+
+        // pohatodo
+        if ("0001z".equals(getResources().getString(R.string.channel_code))
+                || "0002z".equals(getResources().getString(R.string.channel_code)) ||
+                "0003z".equals(getResources().getString(R.string.channel_code)) ||
+                "0004z".equals(getResources().getString(R.string.channel_code)) ||
+                "0005z".equals(getResources().getString(R.string.channel_code)) ||
+                "0006z".equals(getResources().getString(R.string.channel_code)) ||
+                "0007z".equals(getResources().getString(R.string.channel_code)))
         {
             mList.remove(1);
-            mIsRemoveBeauty=true;
+            mIsRemoveBeauty = true;
         }
-        
-        
-        
-        
 
         // set adapter
         mAdapt = new WeiZhuangAdapt(this, mList);
@@ -179,6 +180,24 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             }
 
             selected = sp_weizhuang.getPretendLock();
+            // 这里position和lock的编号不是一一对应的，需要重新对应
+            switch (selected) {               
+                case 1:
+                    selected=3;
+                    break;
+                case 2:
+                    selected=4;
+                    break;
+                case 3:
+                    
+                    break;
+                case 4:
+
+                    break;
+                default:
+                    break;
+            }
+
             // who selected
             if (position == selected) {
                 viewHolder.iv_selected.setVisibility(View.VISIBLE);
@@ -202,11 +221,11 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        
-        if(mIsRemoveBeauty)
+
+        if (mIsRemoveBeauty)
         {
             switch (position) {
-              
+
                 case 0:
                     if (selected != 0) {
                         // 无
@@ -247,7 +266,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             switch (position) {
                 case 1:
                     if (selected != 1) {
-                        //美女伪装
+                        // 美女伪装
                         Intent mIntent = new Intent(this, BeautyWeiZhuang.class);
                         this.startActivity(mIntent);
                     }
@@ -287,7 +306,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                     break;
             }
         }
-        
+
     }
 
     @Override

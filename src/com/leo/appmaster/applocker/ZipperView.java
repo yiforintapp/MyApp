@@ -337,7 +337,6 @@ public class ZipperView extends View {
         // postInvalidate();
         // SystemClock.sleep(100);
         // Log.e("poha", "refresh!");
-
         //
         //
     }
