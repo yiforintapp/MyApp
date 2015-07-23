@@ -11,14 +11,12 @@ import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -27,7 +25,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -41,9 +38,6 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
-import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
-import com.leo.appmaster.videohide.VideoGriActivity.AdditionServiceConnection;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -76,6 +70,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private boolean isCbHere = false;
     private String mLastName;
     private String mSecondName;
+    private boolean isServiceDo = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -362,7 +357,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             if (isCbHere
                                     && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
                                 // bindservice to do
-
+                                isServiceDo = true;
+                                BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
+                                backgoundTask.execute(true);
                             } else {
                                 Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
                                         Toast.LENGTH_SHORT).show();
@@ -378,7 +375,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             if (isCbHere
                                     && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
                                 // bindservice to do
-
+                                isServiceDo = true;
+                                deleteVideo();
                             } else {
                                 Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
                                         Toast.LENGTH_SHORT).show();
@@ -450,25 +448,27 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         }
         mResultPath.add(filePath);
 
-        try {
-            FileOperationUtil.deleteFileMediaEntry(filePath, this);
-            mAllPath.remove(mPosition);
-            flag = true;
-        } catch (Exception e) {
-        }
+        if (isServiceDo) {
+            int mProcessType = -1;
+            try {
+                mProcessType =
+                        mService.deleteVideo(filePath);
 
-        // int mProcessType = -1;
-        // try {
-        // mProcessType =
-        // mService.deleteVideo(filePath);
-        //
-        // LeoLog.d("testBindService", "mProcessType is : " + mProcessType);
-        // if (mProcessType == 0) {
-        // mAllPath.remove(mPosition);
-        // flag = true;
-        // }
-        // } catch (RemoteException e) {
-        // }
+                if (mProcessType == 0) {
+                    mAllPath.remove(mPosition);
+                    flag = true;
+                }
+            } catch (RemoteException e) {
+            }
+        } else {
+            try {
+                FileOperationUtil.deleteFileMediaEntry(filePath, this);
+                mAllPath.remove(mPosition);
+                flag = true;
+            } catch (Exception e) {
+            }
+        }
+        isServiceDo = false;
 
         if (flag) {
             int number = mAllPath.size();
@@ -518,43 +518,42 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             Boolean flag = params[0];
             if (flag && mPosition < mAllPath.size()) {
                 String path = mAllPath.get(mPosition);
-
-                // int mProcessType = -1;
-                // try {
-                // mProcessType =
-                // mService.cancelHide(path);
-                // LeoLog.d("testBindService", "mProcessType is : " +
-                // mProcessType);
-                // if (mProcessType == 0) {
-                // mResultPath.add(path);
-                // mAllPath.remove(mPosition);
-                // } else if (mProcessType == -1) {
-                // isSuccess = false;
-                // }
-                // } catch (RemoteException e) {
-                // isSuccess = false;
-                // }
-
-                newFileName = FileOperationUtil.getNameFromFilepath(path);
-                try {
-                    newFileName = newFileName.substring(1,
-                            newFileName.indexOf(".leotmv"));
-                    if (!FileOperationUtil.renameFile(path, newFileName)) {
-                        return isSuccess = false;
-                    } else {
-                        mResultPath.add(path);
-                        FileOperationUtil.saveFileMediaEntry(
-                                FileOperationUtil.makePath(
-                                        FileOperationUtil.getDirPathFromFilepath(path),
-                                        newFileName),
-                                context);
-                        FileOperationUtil.deleteFileMediaEntry(path, context);
-                        mAllPath.remove(mPosition);
+                if (isServiceDo) {
+                    int mProcessType = -1;
+                    try {
+                        mProcessType =
+                                mService.cancelHide(path);
+                        if (mProcessType == 0) {
+                            mResultPath.add(path);
+                            mAllPath.remove(mPosition);
+                        } else if (mProcessType == -1) {
+                            isSuccess = false;
+                        }
+                    } catch (RemoteException e) {
+                        isSuccess = false;
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
+                } else {
+                    newFileName = FileOperationUtil.getNameFromFilepath(path);
+                    try {
+                        newFileName = newFileName.substring(1,
+                                newFileName.indexOf(".leotmv"));
+                        if (!FileOperationUtil.renameFile(path, newFileName)) {
+                            return isSuccess = false;
+                        } else {
+                            mResultPath.add(path);
+                            FileOperationUtil.saveFileMediaEntry(
+                                    FileOperationUtil.makePath(
+                                            FileOperationUtil.getDirPathFromFilepath(path),
+                                            newFileName),
+                                    context);
+                            FileOperationUtil.deleteFileMediaEntry(path, context);
+                            mAllPath.remove(mPosition);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-
+                isServiceDo = false;
             }
             return isSuccess;
         }

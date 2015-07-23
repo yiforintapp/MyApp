@@ -15,14 +15,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,8 +41,6 @@ import com.leo.appmaster.applocker.LockOptionActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -388,18 +384,18 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             if (isHide) {
                 hideVideos = getVideoInfo();
             }
-            
-            for (int i = 0; i < hideVideos.size(); i++) {
-                VideoBean info = hideVideos.get(i);
-                String mName = info.getName();
-                String mDirPath = info.getDirPath();
-                String mPath = info.getPath();
-                LeoLog.d("testVio", "name is : " + mName);
-                LeoLog.d("testVio", "mDirPath is : " + mDirPath);
-                LeoLog.d("testVio", "mPath is : " + mPath);
-                LeoLog.d("testVio", "-----------------------------------------");
-            }
-            
+
+            // for (int i = 0; i < hideVideos.size(); i++) {
+            // VideoBean info = hideVideos.get(i);
+            // String mName = info.getName();
+            // String mDirPath = info.getDirPath();
+            // String mPath = info.getPath();
+            // LeoLog.d("testVio", "name is : " + mName);
+            // LeoLog.d("testVio", "mDirPath is : " + mDirPath);
+            // LeoLog.d("testVio", "mPath is : " + mPath);
+            // LeoLog.d("testVio", "-----------------------------------------");
+            // }
+
             return hideVideos;
 
         }

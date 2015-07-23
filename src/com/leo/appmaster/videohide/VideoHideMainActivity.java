@@ -58,7 +58,8 @@ public class VideoHideMainActivity extends BaseActivity implements
     private HideVideoAdapter adapter;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
-    public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
+    // public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
+    public static final String CB_PACKAGENAME = "com.example.appmaster_service";
     public static final int TARGET_VERSION = 14;
     public static final String SECOND_CATALOG = "Coolbrowser";
     public static final String LAST_CATALOG = "Download";
@@ -79,23 +80,9 @@ public class VideoHideMainActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-
-        checkCbAndVersion();
-
         hideVideos = getVideoInfo();
-        // for (int i = 0; i < hideVideos.size(); i++) {
-        // VideoBean info = hideVideos.get(i);
-        // String mName = info.getName();
-        // String mDirPath = info.getDirPath();
-        // String mPath = info.getPath();
-        // LeoLog.d("testVio", "name is : " + mName);
-        // LeoLog.d("testVio", "mDirPath is : " + mDirPath);
-        // LeoLog.d("testVio", "mPath is : " + mPath);
-        // LeoLog.d("testVio", "-----------------------------------------");
-        // }
-
+        checkCbAndVersion();
         makeCbFloderFirst();
-
         adapter = new HideVideoAdapter(this, hideVideos);
         mGridView.setAdapter(adapter);
         if (hideVideos != null) {
