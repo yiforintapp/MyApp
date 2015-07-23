@@ -141,7 +141,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_FROM_LOCKLIST = "from_lock_list";
     public static final String PREF_WEIZHUANG_FIRST_IN = "weizhuang_first_in";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
-
+    public static final String PREF_NEED_CLOSE_BEAUTY="need_close_beauty";
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
     private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED = "time_lock_mode_guide_user_clicked";
@@ -460,6 +460,24 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setCallLogRedTip(boolean flag) {
         mPref.edit().putBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, flag).commit();
     }
+    
+    
+    
+    
+    public boolean getIsNeedCloseBeauty() {
+        return mPref.getBoolean(PREF_NEED_CLOSE_BEAUTY, false);
+    }
+
+    public void setIsNeedCloseBeauty(boolean flag) {
+        mPref.edit().putBoolean(PREF_NEED_CLOSE_BEAUTY, flag).commit();
+    }
+    
+    
+    
+    
+    
+    
+    
 
     public boolean getHomeFragmentRedTip() {
         return mPref.getBoolean(PREF_APP_HOME_APP_FRAGMENT_RED_TIP, false);

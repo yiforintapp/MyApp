@@ -124,6 +124,9 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         {
             mList.remove(1);
             mIsRemoveBeauty = true;
+            
+            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(true);
+            
         }
 
         // set adapter
@@ -181,22 +184,29 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 
             selected = sp_weizhuang.getPretendLock();
             // 这里position和lock的编号不是一一对应的，需要重新对应
-            switch (selected) {               
-                case 1:
-                    selected=2;
-                    break;
-                case 2:
-                    selected=3;
-                    break;
-                case 3:
-                    selected=4;
-                    break;
-                case 4:
-                    selected=1;
-                    break;
-                default:
-                    break;
+            if(!AppMasterPreference.getInstance(WeiZhuangActivity.this).getIsNeedCloseBeauty())
+            {               
+                switch (selected) {               
+                    case 1:
+                        selected=2;
+                        break;
+                    case 2:
+                        selected=3;
+                        break;
+                    case 3:
+                        selected=4;
+                        break;
+                    case 4:
+                        selected=1;
+                        break;
+                    default:
+                        break;
+                }
+            }else{
+                
             }
+            
+           
 
             // who selected
             if (position == selected) {
