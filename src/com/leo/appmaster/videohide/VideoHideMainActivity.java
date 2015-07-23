@@ -88,10 +88,10 @@ public class VideoHideMainActivity extends BaseActivity implements
         // String mName = info.getName();
         // String mDirPath = info.getDirPath();
         // String mPath = info.getPath();
-        // // LeoLog.d("testVio", "name is : " + mName);
-        // // LeoLog.d("testVio", "mDirPath is : " + mDirPath);
-        // // LeoLog.d("testVio", "mPath is : " + mPath);
-        // // LeoLog.d("testVio", "-----------------------------------------");
+        // LeoLog.d("testVio", "name is : " + mName);
+        // LeoLog.d("testVio", "mDirPath is : " + mDirPath);
+        // LeoLog.d("testVio", "mPath is : " + mPath);
+        // LeoLog.d("testVio", "-----------------------------------------");
         // }
 
         makeCbFloderFirst();
@@ -364,6 +364,7 @@ public class VideoHideMainActivity extends BaseActivity implements
             Bundle bundle = new Bundle();
             bundle.putSerializable("data", video);
             bundle.putInt("mode", Constants.CANCLE_HIDE_MODE);
+            bundle.putInt("fromwhere", 1);
             intent.putExtras(bundle);
             try {
                 startActivityForResult(intent, REQUEST_CODE_OPTION);

@@ -356,23 +356,33 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             public void onClick(int which) {
                 if (which == 1) {
                     if (flag == DIALOG_CANCLE_VIDEO) {
+
                         if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)
-                                && mCbVersionCode != -1
-                                && mCbVersionCode < VideoHideMainActivity.TARGET_VERSION) {
-                            Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
-                                    Toast.LENGTH_SHORT).show();
+                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                            if (isCbHere
+                                    && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
+                                // bindservice to do
+
+                            } else {
+                                Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
                             backgoundTask.execute(true);
                         }
                     } else if (flag == DIALOG_DELECTE_VIDEO) {
+
                         if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)
-                                && mCbVersionCode != -1
-                                && mCbVersionCode < VideoHideMainActivity.TARGET_VERSION) {
-                            Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
-                                    Toast.LENGTH_SHORT).show();
+                                && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                            if (isCbHere
+                                    && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
+                                // bindservice to do
+
+                            } else {
+                                Toast.makeText(VideoViewPager.this, "不好意思，你的CB版本太低！",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         } else {
                             deleteVideo();
                         }

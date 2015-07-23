@@ -66,6 +66,8 @@ import com.leo.imageloader.core.ImageScaleType;
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private static final String TAG = "VideoGriActivity";
+    private static final int FROM_VIDEOHIDEMAIN_ACTIVITY = 1;
+    private static final int FROM_VIDEOHIDEGALLER_ACTIVITY = 2;
     private GridView mHideVideo;
     private List<VideoItemBean> mVideoItems;
     private CommonTitleBar mCommonTtileBar;
@@ -94,6 +96,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private ServiceConnection mConnection;
     private int mCbVersionCode = -1;
     private boolean isCbHere = false;
+    private int mFromWhere = 0;
 
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
@@ -104,6 +107,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mCommonTtileBar.openBackView();
         Intent intent = getIntent();
         mActivityMode = intent.getIntExtra("mode", Constants.SELECT_HIDE_MODE);
+        mFromWhere = intent.getIntExtra("fromwhere", 0);
         VideoBean video = (VideoBean) intent.getExtras().getSerializable("data");
         mVideoItems = video.getBitList();
         getVideoPath();
@@ -201,7 +205,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             }
         }
     }
-    
+
     private void getVideoPath() {
         for (VideoItemBean videoItem : mVideoItems) {
             String path = videoItem.getPath();
@@ -472,43 +476,63 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             public void onClick(int which) {
                 if (which == 1) {
                     if (mClickList.size() > 0) {
+                        VideoItemBean item = mClickList.get(0);
+                        String mPath = item.getPath();
+                        String mLastName = FileOperationUtil.getDirNameFromFilepath(mPath);
+                        String mSecondName = FileOperationUtil
+                                .getSecondDirNameFromFilepath(mPath);
+
                         if (mActivityMode == Constants.SELECT_HIDE_MODE) {
 
-                            showProgressDialog(getString(R.string.tips),
-                                    getString(R.string.app_hide_image) + "...", true, true);
-                            BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
-                            task.execute(true);
-                            mHideVideoAdapter.notifyDataSetChanged();
-                            /* SDK:use hide video */
-                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hide_Video",
-                                    "used");
+                            if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                                    && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                                if (isCbHere
+                                        && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
+                                    // bindservice to do
+                                    
+                                } else {
+                                    Toast.makeText(VideoGriActivity.this,
+                                            getString(R.string.app_hide_video_fail),
+                                            Toast.LENGTH_SHORT).show();
+                                    mSelectAll.setText(R.string.app_select_all);
+                                    mClickList.clear();
+                                    updateRightButton();
+                                    mHideVideoAdapter.notifyDataSetChanged();
+                                }
+                            } else {
+                                showProgressDialog(getString(R.string.tips),
+                                        getString(R.string.app_hide_image) + "...", true, true);
+                                BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
+                                task.execute(true);
+                                mHideVideoAdapter.notifyDataSetChanged();
+                                /* SDK:use hide video */
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                        "hide_Video",
+                                        "used");
+                            }
                         } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-
-                            if (mClickList.size() > 0) {
-                                VideoItemBean item = mClickList.get(0);
-                                String mPath = item.getPath();
-                                String mLastName = FileOperationUtil.getDirNameFromFilepath(mPath);
-                                String mSecondName = FileOperationUtil
-                                        .getSecondDirNameFromFilepath(mPath);
-                                if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                                        && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)
-                                        && mCbVersionCode != -1
-                                        && mCbVersionCode < VideoHideMainActivity.TARGET_VERSION) {
+                            if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                                    && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                                if (isCbHere
+                                        && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
+                                    // bindservice to do
+                                    
+                                }else {
                                     Toast.makeText(VideoGriActivity.this, "不好意思，你的CB版本太低！",
                                             Toast.LENGTH_SHORT).show();
                                     mSelectAll.setText(R.string.app_select_all);
                                     mClickList.clear();
                                     updateRightButton();
                                     mHideVideoAdapter.notifyDataSetChanged();
-                                } else {
-                                    showProgressDialog(getString(R.string.tips),
-                                            getString(R.string.app_cancel_hide_image) + "...",
-                                            true,
-                                            true);
-                                    BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
-                                    task.execute(false);
-                                    mHideVideoAdapter.notifyDataSetChanged();
                                 }
+                            } else {
+                                showProgressDialog(getString(R.string.tips),
+                                        getString(R.string.app_cancel_hide_image) + "...",
+                                        true,
+                                        true);
+                                BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
+                                task.execute(false);
+                                mHideVideoAdapter.notifyDataSetChanged();
                             }
 
                             // if (mCbVersionCode != -1

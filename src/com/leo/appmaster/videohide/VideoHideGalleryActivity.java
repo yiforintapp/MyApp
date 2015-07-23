@@ -314,6 +314,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         Intent intent = new Intent(this, VideoGriActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("data", video);
+        bundle.putInt("fromwhere", 2);
         bundle.putInt("mode", Constants.SELECT_HIDE_MODE);
         intent.putExtras(bundle);
         try {
