@@ -742,11 +742,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_FIRST_USE_LOCKER, false).commit();
     }
 
-    public boolean getFirstUse() {
+    public boolean getGuidePageFirstUse() {
         return mPref.getBoolean(PREF_FIRST_USE_APP, true);
     }
 
-    public void setFirstUse(boolean flag) {
+    public void setGuidePageFirstUse(boolean flag) {
         mPref.edit().putBoolean(PREF_FIRST_USE_APP, flag).commit();
     }
 
