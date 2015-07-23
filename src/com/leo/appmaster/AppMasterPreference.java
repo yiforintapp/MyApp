@@ -137,6 +137,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
     public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
+    public static final String PREF_HOME_TO_LOCKLIST = "home_to_lock_list";
     public static final String PREF_FROM_LOCKLIST = "from_lock_list";
     public static final String PREF_WEIZHUANG_FIRST_IN = "weizhuang_first_in";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
@@ -440,6 +441,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setIsFromLockList(boolean flag)
     {
         mPref.edit().putBoolean(PREF_FROM_LOCKLIST, flag).commit();
+    }
+
+    public boolean getIsHomeToLockList()
+    {
+        return mPref.getBoolean(PREF_HOME_TO_LOCKLIST, false);
+    }
+
+    public void setIsHomeToLockList(boolean flag)
+    {
+        mPref.edit().putBoolean(PREF_HOME_TO_LOCKLIST, flag).commit();
     }
 
     public boolean getCallLogRedTip() {

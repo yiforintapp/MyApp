@@ -199,7 +199,8 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private void enterLockList() {
         Intent intent = null;
         intent = new Intent(mActivity, AppLockListActivity.class);
-        startActivityForResult(intent,100);
+        AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
+        startActivity(intent);
 
     }
     

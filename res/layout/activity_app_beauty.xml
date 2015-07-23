@@ -10,12 +10,32 @@
         android:layout_height="match_parent" />
 
     <ImageView
-        android:id="@+id/iv_gesture"
+        android:id="@+id/iv_hand_beauty_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="170dp"
-        android:src="@drawable/beauty_guide_gesture" />
+        android:src="@drawable/beauty_guide_hand" />
+    
+    <ImageView 
+        android:id="@+id/iv_leftarrow_beauty_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/beauty_guide_leftarrow"
+        android:layout_toLeftOf="@id/iv_hand_beauty_guide"
+        android:layout_marginTop="130dp"
+        />
+    
+    <ImageView 
+        android:id="@+id/iv_rightarrow_beauty_guide"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/beauty_guide_rightarrow"
+        android:layout_toRightOf="@id/iv_hand_beauty_guide"
+        android:layout_marginTop="130dp"
+        
+        
+        />
     
     <RelativeLayout
         android:layout_width="wrap_content"
@@ -24,7 +44,7 @@
         android:background="@drawable/beauty_guide_shadow"
         >
         <TextView
-        android:id="@+id/tv_content"
+        android:id="@+id/tv_content_beauty_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -37,10 +57,10 @@
         android:textSize="14sp" />
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_title_beauty_guide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_content"
+        android:layout_above="@+id/tv_content_beauty_guide"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:text="@string/beauty_guide_title"
