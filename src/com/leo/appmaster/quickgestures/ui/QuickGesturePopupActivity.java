@@ -370,7 +370,15 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     public void showLockMode() {
         if (mSuccessTipView.getVisibility() == View.VISIBLE) {
-            mSuccessTipView.setVisibility(View.GONE);
+            final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView, "alpha",
+                    1.0f, 0f).setDuration(200);
+            alphaAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mSuccessTipView.setVisibility(View.GONE);
+                }
+            });
+            alphaAnimator.start();
         }
         mModeSelectView.show();
         mContainer.enterModeSelect();
