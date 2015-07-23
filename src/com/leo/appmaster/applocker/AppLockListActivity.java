@@ -413,6 +413,7 @@ public class AppLockListActivity extends BaseActivity implements
             for (LockMode lockMode : lockModes) {
                 if (!TextUtils.equals(lockMode.modeName, curMode.modeName)) {
                     listItems.add(lockMode.modeName);
+                    Log.i("null", lockMode.modeName);
                 }
             }
         }

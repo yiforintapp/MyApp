@@ -165,7 +165,7 @@ public class LeoPopMenu {
 
         mListView.setOnItemClickListener(mPopItemClickListener);
         if (null == mAdapter) {
-            mAdapter = new MenuListAdapter(mItems);
+            mAdapter = new MenuListAdapter();
         }
         mListView.setAdapter(mAdapter);
         return convertView;
@@ -344,18 +344,16 @@ public class LeoPopMenu {
 
     private class MenuListAdapter extends BaseAdapter {
         private LayoutInflater inflater;
-        private List<String> mListItems;
         private Holder mHolder;
 
-        private MenuListAdapter(List<String> itemList) {
-            mListItems = itemList;
+        private MenuListAdapter() {
             inflater = LayoutInflater.from(AppMasterApplication.getInstance());
         }
 
         @Override
         public int getCount() {
-            if (mListItems != null) {
-                return mListItems.size();
+            if (mItems != null) {
+                return mItems.size();
             } else {
                 return 0;
             }
@@ -387,10 +385,10 @@ public class LeoPopMenu {
             }
 
             if (mIsItemHTMLFormatted) {
-                Spanned itemText = Html.fromHtml(mListItems.get(position));
+                Spanned itemText = Html.fromHtml(mItems.get(position));
                 mHolder.mItemName.setText(itemText);
             } else {
-                mHolder.mItemName.setText(mListItems.get(position));
+                mHolder.mItemName.setText(mItems.get(position));
             }
             return convertView;
         }
