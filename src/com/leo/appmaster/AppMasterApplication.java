@@ -422,6 +422,8 @@ public class AppMasterApplication extends Application {
                 } else if (Integer.parseInt(versionCode) == 41) {
                     installBoostShortcut();
                 }
+                
+                pref.setGuidePageFirstUse(true);
                 pref.setIsUpdateQuickGestureUser(true);
             }
         }
