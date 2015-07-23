@@ -137,11 +137,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
     public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
-    public static final String PREF_HOME_TO_LOCKLIST="home_to_lock_list";
-    public static final String PREF_FROM_LOCKLIST="from_lock_list";
+    public static final String PREF_HOME_TO_LOCKLIST = "home_to_lock_list";
+    public static final String PREF_FROM_LOCKLIST = "from_lock_list";
     public static final String PREF_WEIZHUANG_FIRST_IN = "weizhuang_first_in";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
-
+    public static final String PREF_NEED_CLOSE_BEAUTY="need_close_beauty";
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
     private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED = "time_lock_mode_guide_user_clicked";
@@ -202,7 +202,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_CALL_LOG_IS_RED_TIP = "quick_call_log_is_red_tip";
     public static final String PREF_QUICK_REMOVE_ICON = "quick_remove_icon";
     public static final String PREF_QUICK_SLIDE_ANIM_SHOW_TIMES = "quick_slide_anim_show_times";
-    public static final String PREF_IF_LOCK_SCREEN_MENU_CLICKED = "if_menu_clicked"; 
+    public static final String PREF_IF_LOCK_SCREEN_MENU_CLICKED = "if_menu_clicked";
     public static final String PREF_LAST_BOOST_TIMES = "last_boost_times";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
@@ -265,6 +265,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mUseStrengthModeTimes, mGestureSlideAnimShowTimes, mLastTimeLayout = -1;
     private boolean mHasEverCloseWhiteDot;
     private boolean mNeedShowWhiteDotSlideTip;
+    private boolean mShowWhiteDot;
 
     private AppMasterPreference(Context context) {
         mPref = PreferenceManager.getDefaultSharedPreferences(context);
@@ -431,21 +432,22 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setMessageRedTip(boolean flag) {
         mPref.edit().putBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, flag).commit();
     }
-    
+
     public boolean getIsFromLockList()
     {
         return mPref.getBoolean(PREF_FROM_LOCKLIST, false);
     }
-    
+
     public void setIsFromLockList(boolean flag)
     {
         mPref.edit().putBoolean(PREF_FROM_LOCKLIST, flag).commit();
     }
+
     public boolean getIsHomeToLockList()
     {
         return mPref.getBoolean(PREF_HOME_TO_LOCKLIST, false);
     }
-    
+
     public void setIsHomeToLockList(boolean flag)
     {
         mPref.edit().putBoolean(PREF_HOME_TO_LOCKLIST, flag).commit();
@@ -458,6 +460,24 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setCallLogRedTip(boolean flag) {
         mPref.edit().putBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, flag).commit();
     }
+    
+    
+    
+    
+    public boolean getIsNeedCloseBeauty() {
+        return mPref.getBoolean(PREF_NEED_CLOSE_BEAUTY, false);
+    }
+
+    public void setIsNeedCloseBeauty(boolean flag) {
+        mPref.edit().putBoolean(PREF_NEED_CLOSE_BEAUTY, flag).commit();
+    }
+    
+    
+    
+    
+    
+    
+    
 
     public boolean getHomeFragmentRedTip() {
         return mPref.getBoolean(PREF_APP_HOME_APP_FRAGMENT_RED_TIP, false);
@@ -740,11 +760,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putBoolean(PREF_FIRST_USE_LOCKER, false).commit();
     }
 
-    public boolean getFirstUse() {
+    public boolean getGuidePageFirstUse() {
         return mPref.getBoolean(PREF_FIRST_USE_APP, true);
     }
 
-    public void setFirstUse(boolean flag) {
+    public void setGuidePageFirstUse(boolean flag) {
         mPref.edit().putBoolean(PREF_FIRST_USE_APP, flag).commit();
     }
 
@@ -877,6 +897,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
         mHasEverCloseWhiteDot = mPref.getBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, false);
         mNeedShowWhiteDotSlideTip = mPref.getBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, false);
+
+        mShowWhiteDot = mPref.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, true);
     }
 
     @Override
@@ -1892,12 +1914,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mEnterHomeTimes;
     }
 
-    public void setSwitchOpenStrengthenMode(boolean flag) {
-        mPref.edit().putBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, flag).commit();
+    public void setSwitchOpenStrengthenMode(boolean flag, boolean persistence) {
+        mShowWhiteDot = flag;
+        if (persistence) {
+            mPref.edit().putBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, flag).commit();
+        }
     }
 
     public boolean getSwitchOpenStrengthenMode() {
-        return mPref.getBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, true);
+        return mShowWhiteDot;
     }
 
     public void setMessageIsRedTip(boolean flag) {
@@ -2005,12 +2030,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         }
         return mGestureSlideAnimShowTimes;
     }
-    
-    public void setLockScreenMenuClicked(boolean flag){
+
+    public void setLockScreenMenuClicked(boolean flag) {
         mPref.edit().putBoolean(PREF_IF_LOCK_SCREEN_MENU_CLICKED, flag).commit();
     }
-    
-    public boolean getLockScreenMenuClicked(){
+
+    public boolean getLockScreenMenuClicked() {
         return mPref.getBoolean(PREF_IF_LOCK_SCREEN_MENU_CLICKED, false);
     }
 

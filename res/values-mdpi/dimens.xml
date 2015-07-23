@@ -198,7 +198,7 @@
     <dimen name="quick_white_float_width">36dp</dimen>
     <dimen name="apple_watch_layout_margin_bottom">65dp</dimen>
     <dimen name="apple_watch_top_title_margin_top">10dp</dimen>
-    <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
+    <dimen name="apple_watch_top_btn_margin_top">12dp</dimen>
     <!-- quick gesutre end -->
     <dimen name="dialog_btn_height">48dp</dimen>
     <dimen name="apple_watch_item_icon_size">74dp</dimen>
