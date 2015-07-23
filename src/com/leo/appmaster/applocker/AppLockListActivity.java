@@ -113,9 +113,9 @@ public class AppLockListActivity extends BaseActivity implements
                 AppMasterPreference.getInstance(this).setIsFromLockList(true);
                 Log.e("lockmore", "settrue");
                 startActivity(intent);
-                finish();
-//                super.onBackPressed();
+      
             }
+            super.onBackPressed();
 //            else {
 //                Intent intent = new Intent(this, HomeActivity.class);
 //                intent.putExtra("isFromAppLockList", true);
