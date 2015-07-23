@@ -802,14 +802,14 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             case R.id.strengthen_slid_mode:
                 if (mStrengthenModeFlag) {
                     mPre.setEverCloseWhiteDot(true);
-                    mPre.setSwitchOpenStrengthenMode(false);
+                    mPre.setSwitchOpenStrengthenMode(false, true);
                     mStrengthenModeFlag = false;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
                     SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
                             "qssetting",
                             "point_close");
                 } else {
-                    mPre.setSwitchOpenStrengthenMode(true);
+                    mPre.setSwitchOpenStrengthenMode(true, true);
                     mStrengthenModeFlag = true;
                     mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
                     SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,

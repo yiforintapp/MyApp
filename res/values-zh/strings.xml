@@ -1,0 +1,787 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="app_name">PrivacyGuard</string>
+    <string name="app_count">應用數量</string>
+    <string name="used_memory">使用記憶體</string>
+    <string name="used_flow">使用流量</string>
+    <string name="app_detail">應用詳情</string>
+    <string name="app_lock">"應用鎖"</string>
+    <string name="app_add_lock">"應用加鎖"</string>
+    <string name="lock_tab">"應用鎖   "</string>
+    <string name="app_backup">應用備份</string>
+    <string name="app_restore">應用恢復</string>
+    <string name="button_backup">備份</string>
+    <string name="button_install">安裝</string>
+    <string name="button_delete">删除</string>
+    <string name="app_use_info">使用情况</string>
+    <string name="app_permission_info">許可權監控</string>
+    <string name="uninstall">卸載</string>
+    <string name="set_gesture_suc">手勢設定成功</string>
+    <string name="set_passwd_suc">密碼設定成功</string>
+    <string name="reset_passwd_successful">重設成功！</string>
+    <string name="stop">停止</string>
+    <string name="reinput_anwser">"答案不正確，請重新輸入"</string>
+    <string name="please_input_pswd">輸入密碼</string>
+    <string name="please_input_pswd_again">再次輸入密碼</string>
+    <string name="makesure">確認</string>
+    <string name="cancel">取消</string>
+    <string name="delete">删除</string>
+    <string name="passwd_set_passwd_tip">首次使用請設置密碼</string>
+    <string name="passwd_set_gesture_tip">請至少連接4個點</string>
+    <string name="passwd_hint">請輸入四位數密碼</string>
+    <string name="tip_no_the_same_pswd">輸入密碼不一致，請重新輸入</string>
+    <string name="input_error_tip">您已輸錯<xliff:g>%1$s</xliff:g>次，還剩<xliff:g>%2$s</xliff:g>次機會</string>
+    <string name="use_gesture">使用手勢</string>
+    <string name="use_passwd">使用密碼</string>
+    <string name="reset_passwd">更改密碼</string>
+    <string name="app_locked">已加鎖</string>
+    <string name="app_unlock">未加鎖</string>
+    <string name="find_passwd">密碼找回</string>
+    <string name="please_wait">請稍候再試</string>
+    <string name="passwd_question">問題：</string>
+    <string name="passwd_anwser">答案：</string>
+    <string name="accelerate">加速</string>
+    <string name="used_mem">使用記憶體</string>
+    <string name="passwd_tip">請輸入密碼提示</string>
+    <string name="save">保存</string>
+    <string name="passwd_protect_setting">密保問題設定</string>
+    <string name="input_qusetion">請輸入密保問題</string>
+    <string name="qusetion_cant_null">問題不能為空</string>
+    <string name="aneser_cant_null">答案不能為空</string>
+    <string name="pleas_input_anwser">請輸入密保問題的答案</string>
+    <string name="not_set">未設定</string>
+    <string name="anwser">答案：</string>
+    <string name="not_unistall">防止被卸載</string>
+    <string name="lock_screen_auto_lock">鎖屏後自動鎖定</string>
+    <string name="tips">提示</string>
+    <string name="compeletely">完成</string>
+    <!-- acceralate -->
+    <string name="clean_memory">一鍵加速</string>
+    <string name="clean_result">清理記憶體</string>
+    <string name="best_mem">已經是最佳狀態，無需再次加速</string>
+    <string name="lock_count">"已加鎖"</string>
+    <string name="unlock_count">"未加鎖"</string>
+    <string name="lockscreen_access_pattern_detected">"圖案繪製完成"</string>
+    <string name="please_input_gesture">請繪製解鎖圖案</string>
+    <string name="input_passwd_tip">請輸入密碼提示</string>
+    <string name="switch_gesture">使用手勢密碼</string>
+    <string name="switch_passwd">使用數位密碼</string>
+    <string name="setting">設定</string>
+    <string name="passwd_hint_tip">密碼提示：</string>
+    <string name="set_protect_or_not">"密保問題"</string>
+    <string name="set_protect_message">"為了避免忘記密碼而無法進入應用鎖，建議設定密保問題，是否設定？"</string>
+   <!-- TODO -->
+    <string name="find_gesture">忘记密码</string>
+    
+    <string name="pp_success">密碼保護設定成功</string>
+    <string name="passwd_setting">密碼設定</string>
+    <string name="set_success">設定成功</string>
+    <string name="passwd_hint_cant_null">"密碼提示不能為空"</string>
+    <string name="set_gesture">設定手勢密碼</string>
+    <string name="set_passwd">設定數位密碼</string>
+    <string name="please_input_gesture_again">請再次繪製解鎖圖案</string>
+    <string name="reset_gesture_passwd">重設手勢密碼</string>
+    <string name="reset_digital_passwd">重設數位密碼</string>
+    <string name="gesture_hint">請連接至少4個點</string>
+    <string name="first_set_passwd_hint">請設定密碼保護隱私安全</string>
+    <string name="make_passwd">確認密碼</string>
+    <string name="input_again">請再次輸入</string>
+    <string name="gestur_passwd_function_hint">請連接至少4個點</string>
+    <string name="digital_passwd_function_hint">請輸入4比特密碼</string>
+    <string name="gesture_start_hint">畫完後鬆開手指</string>
+    <string name="lock_right_now">立即鎖定</string>
+    <string name="lock_15_sec">15秒</string>
+    <string name="lock_30_sec">30秒</string>
+    <string name="lock_1_min">1分鐘</string>
+    <string name="lock_3_min">3分鐘</string>
+    <string name="lock_5_min">5分鐘</string>
+    <string name="app_version">版本：%1$s</string>
+    <string name="backuping">正在備份：%1$s</string>
+    <string name="no_application_selected">沒有選擇任何應用</string>
+    <string name="backup_finish">備份成功！</string>
+    <string name="delete_fail">删除失敗！</string>
+    <string name="deleting_app">正在删除：%1$s</string>
+    <string name="installed_app_size">已安裝應用：%1$d</string>
+    <string name="apk_size">大小：%1$s</string>
+    <string name="storage_size">剩餘存儲空間：%1$s</string>
+    <string name="use_storage_size">已用空間：%1$s</string>
+    <string name="unavailable">不可用</string>
+    <string name="bakup_fail_cancel">備份已取消</string>
+    <string name="bakup_fail_full">存儲空間不足</string>
+    <string name="bakup_fail_unavailable">存儲卡不可用</string>
+    <string name="no_app_backuped">您還沒有備份應用</string>
+
+    <string-array name="lock_time_entrys">
+        <item>@string/lock_right_now</item>
+        <item>@string/lock_15_sec</item>
+        <item>@string/lock_30_sec</item>
+        <item>@string/lock_1_min</item>
+        <item>@string/lock_3_min</item>
+        <item>@string/lock_5_min</item>
+    </string-array>
+    <string-array name="lock_time_items">
+        <item>0</item>
+        <item>15</item>
+        <item>30</item>
+        <item>60</item>
+        <item>180</item>
+        <item>300</item>
+    </string-array>
+
+    <string name="app_details">應用詳情</string>
+    <string name="app_memory">"系統佔用&#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_cache_size">"佔用緩存&#058;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_permission1">危險許可權</string>
+    <string name="app_permission2">普通許可權</string>
+    <string name="app_permission3">重要許可權</string>
+    <string name="app_setting_update">檢查陞級</string>
+    <string name="feedback">用戶回饋</string>
+    <string name="grade">五星好評</string>
+    <string name="grade_tip">您已經使用隱私衛士很多次了，喜歡我們嗎，給5星鼓勵下吧！</string>
+    <string name="app_setting_about">關於</string>
+    <!--TODO  -->
+    <string name="forbid_uninstall">高级保护</string>
+    
+    
+    <string name="auto_lock">鎖屏後自動鎖定</string>
+    <string name="change_lock_time">更改鎖定時間</string>
+    <string name="recom_lock_tip">推薦應用加鎖提醒</string>
+    <string name="new_app_lock_tip">新裝應用加鎖提醒</string>
+    <string name="passwd_protect">密保問題</string>
+    <string name="change_passwd">更改密碼</string>
+    <string name="passwd_notify">密碼提示</string>
+    <string name="no_lock_item_tip">暫無加鎖應用</string>
+    <string name="lock_remind">隱私衛士提醒您對應用加鎖</string>
+    <string name="new_install_lock_remind">檢測到您安裝了%1$s，建議加鎖</string>
+    <string name="no_unlocked_item_tip">沒有未加鎖應用</string>
+    <string name="app_setting_has_update">檢查陞級 <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="question_charsize_tip">密保問題不能超過40個字元，請重新輸入</string>
+    <string name="anwser_charsize_tip">密保答案不能超過40個字元，請重新輸入</string>
+    <string name="query_delete">是否删除%1$s的備份檔案，删除後不可恢復！</string>
+    <string name="backuped_count">成功備份%1$d個檔案。存放位置：%2$s</string>
+    <string name="feedback_commit">提交</string>
+    <string name="feedback_content_tip">您遇到了什麼問題？</string>
+    <string name="feedback_email_tip">您的常用郵箱</string>
+    <string name="feedback_category_tip">請選擇問題類型</string>
+    <string name="category_lock">應用鎖</string>
+    <string name="category_backup_uninstall">卸載與備份</string>
+    <string name="category_hide_image">圖片隱藏</string>
+    <string name="category_hide_video">視頻隱藏</string>
+    <string name="category_other">其他問題</string>
+    <string name="category_suggest">給我們建議</string>
+    <string name="feedback_success_title">提交成功</string>
+    <string name="feedback_success_content">感謝您的迴響，我們會儘快處理您的問題</string>
+    <string name="app_image_hide">圖片隱藏</string>
+    <string name="app_no_image_hide">請點擊添加按鈕，添加需要隱藏的圖片</string>
+    <string name="app_no_image">沒有可添加的圖片</string>
+    <string name="app_image_gallery">圖片庫</string>
+    <string name="app_select_all">全選</string>
+    <string name="app_select_none">取消全選</string>
+    <string name="app_hide_image">隱藏</string>
+    <string name="app_cancel_hide_image">取消隱藏</string>
+    <string name="app_hide_image_edit">編輯</string>
+    <string name="app_add_hide_image">添加</string>
+    <string name="app_share_hide_image">分享</string>
+    <string name="app_unhide_dialog_content">是否取消隱藏此圖片？</string>
+    <string name="app_delete_dialog_content">是否删除此圖片？</string>
+    <string name="app_unhide_pictures_dialog_content">是否取消隱藏你所選的圖片？</string>
+    <string name="app_hide_pictures_dialog_content">是否隱藏你所選的圖片？</string>
+    <string name="app_hide_image_fail">該圖片沒有寫入許可權，隱藏失敗！</string>
+    <string name="lock_guide">點擊應用，輕鬆加鎖</string>
+    <string name="start_guide">常用應用，推薦加鎖</string>
+
+    <!-- App lock -->
+    <string-array name="sort_type">
+        <item>默認排序</item>
+        <item>應用名稱排序</item>
+        <item>安裝時間排序</item>
+    </string-array>
+
+    <!-- 版权 -->
+    <string name="about_copy">Copyright©2015LEONetworkTechnology.AllRightsReserved</string>
+    <!-- 应用墙 -->
+    <string name="app_wall">應用推薦</string>
+    <string name="app_wall_network">網絡或服務器异常請重新嘗試！</string>
+    <string name="app_wall_click">點擊重試</string>
+    <!-- 隐私策略 -->
+    <string name="protocolBar">隱私保護協定</string>
+    <string name="lock_more">更多</string>
+    <string name="lock">加鎖</string>
+    <string name="det_change_lock_time">發現您的應用被頻繁鎖定，是否更改鎖定時間？</string>
+
+    <string-array name="det_lock_time_items">
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+    <!-- LockerTheme -->
+    <string name="localtheme">本地</string>
+    <string name="onlinetheme">線上</string>
+    <string name="lockerThemePoit">應用鎖主題<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="lockerTheme">應用鎖主題</string>
+    <string name="defaultTheme">默認</string>
+    <string name="moonightTheme">夜晚</string>
+    <string name="orangeTheme">切水果</string>
+    <string name="ParadoxTheme">空間衝突</string>
+    <string name="locker_apply">應用</string>
+    <string name="locker_uninstall">卸載</string>
+    <string name="locker_cancel">取消</string>
+    <string name="christmas_theme">耶誕節</string>
+    <string name="pull_to_refresh_pull_label">上拉重繪</string>
+    <string name="pull_to_refresh_release_label">放開重繪</string>
+    <string name="pull_to_refresh_refreshing_label">正在載入</string>
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+    <string name="no_more_theme">沒有更多主題</string>
+    <string name="no_more_onlinetheme">已下載所有主題，我們會儘快新增新主題</string>
+    <string name="find_new_theme">發現新主題</string>
+    <string name="find_new_theme_content">您的應用鎖有新主題，點擊查看</string>
+    <string name="theme_tag_new">最新</string>
+    <string name="theme_tag_hot">最熱</string>
+    <string name="about_group">加入粉絲團</string>
+    <string name="about_praise">Facebook</string>
+    <string name="locker_guide">點擊更換解鎖主題</string>
+    <string name="locker_theme_guide">恭喜！您的主題會使用在應用解鎖介面</string>
+    <string name="locker_clean">優化成功，已提速&#160;%1$s</string>
+    <string name="setting_locker_clean">解鎖後加速</string>
+    <string name="app_no_video_hide">請點擊添加按鈕，添加需要隱藏的視頻</string>
+    <string name="app_no_video_gallery_hide">沒有可隱藏的視頻</string>
+    <string name="app_video_hide">視頻隱藏</string>
+    <string name="app_video_gallery">視頻庫</string>
+    <string name="app_unhide_dialog_content_video">是否取消隱藏此視頻？</string>
+    <string name="app_delete_dialog_content_video">是否删除此視頻？</string>
+    <string name="app_unhide_video_dialog_content">是否取消隱藏你所選的視頻？</string>
+    <string name="app_hide_video_dialog_content">是否隱藏你所選的視頻？</string>
+    <string name="hide_video_dialog_title">播放視頻</string>
+    <string name="hide_video_dialog_content">為了保護您的隱私播放隱藏視頻需要使用Video&#160;Plus，是否安裝？</string>
+    <string name="app_hide_video_fail">該視頻沒有寫入許可權，隱藏失敗！</string>
+    <string name="hide_pic_text">已隱藏圖片</string>
+    <string name="hide_pic_empty_text">&#160;&#160;沒有隱藏圖片</string>
+    <string name="hide_video_text">已隱藏視頻</string>
+    <string name="hide_video_empty_text">&#160;&#160;沒有隱藏視頻</string>
+    <string name="app_backup_uninstall">卸載與備份</string>
+    <string name="circle_lock_tip_text">已加鎖應用</string>
+    <string name="circle_lock_empty_tip_text">沒有加鎖應用</string>
+    <string name="feedback_error">郵箱錯誤，請重新輸入</string>
+    <string name="googlePlayGuide">請向下拉動給我們評分</string>
+    <string name="folder_backup_restore">應用恢復</string>
+    <string name="folder_sort_flow">最耗流量</string>
+    <string name="folder_sort_capacity">最占空間</string>
+    <string name="folder_recommend">新品速遞</string>
+    <!--
+    <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>
+    <string name="toast_download_fail_storage">"下载失败，SD卡空间不足!"</string>
+    <string name="toast_exit_when_storagemode">"当前正在使用大存储模式，主题部分功能可能无法使用。"</string>
+    <string name="toast_download_failstart">"没有可用网络，请稍后再试。"</string>
+    <string name="toast_download_fail_sdcard_unmount">"当前正在使用大存储模式,下载功能暂时不可使用。"</string>
+    <string name="download_sdcard_status_error">下载失败,SD卡无法访问。</string>
+    <string name="download_failed_toast">"下载失败"</string>
+    <string name="download_network_invalid_toast">"没有可用网络，请稍候重试。"</string>
+    <string name="download_success_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载成功</string>
+    <string name="downloaded_success">下载成功，点击应用</string>
+    <string name="download_failure_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载失败</string>
+    <string name="downloaded_failure">下载失败</string>
+    -->
+    <string name="backup">備份</string>
+    <string name="restore">恢復</string>
+    <string name="backuped">已備份</string>
+    <string name="delete_successfully">删除成功！</string>
+    <string name="no_more_business_app">沒有新應用了，過段時間再來看看吧 </string>
+    <string name="no_business_app">沒有新應用了，過段時間再來看看吧 </string>
+    <string name="space_consumption">空間佔用：</string>
+    <string name="cache_size">緩存大小： </string>
+    <string name="power_consumption">電量消耗： </string>
+    <string name="flow_consumption">流量消耗： </string>
+    <string name="memory_consumption">記憶體佔用： </string>
+    <string name="backup_path">備份路徑： </string>
+    <string name="backup_time">備份時間： </string>
+    <string name="app_size">APP大小： </string>
+    <string name="version">版本號： </string>
+    <string name="install_time">%1$s天前</string>
+    <string name="folder_new">新</string>
+    <string name="new_app_tip_content">有好玩的新應用，快看看吧</string>
+    <string name="new_app_tip_title">發現新應用</string>
+    <string name="no_backup_app_tip">您還沒有備份應用</string>
+    <string name="other_people_use_tip">其他人正在使用</string>
+    <string name="recomment_list_title">歡迎首次使用訪客模式，請選擇您想加鎖的應用</string>
+    <string name="lock_success">加鎖成功！</string>
+    <string name="lcok_success_tip">您選擇的應用已加鎖</string>
+    <string name="success_finish">完成</string>
+    <string name="app_lock_theme">應用鎖主題</string>
+    <string name="business_rating">評分：</string>
+    <string name="app_desc">簡介：</string>
+    <string name="app_download_count">下載量：</string>
+    <string name="business_size">大小： </string>
+    <string name="app_download">高速下載</string>
+    <string name="app_google_download">免費下載</string>
+    <string name="help_setting_tip_title">幫助小貼士</string>
+    <string name="lock_help_password_setting_content_gesture">點擊設定，輸入密碼驗證身份後，再重新設置密碼即可。（在設置密碼介面您也可以點擊右上角使用手勢密碼）</string>
+    <string name="lock_help_password_setting_content_password">點擊設定，輸入密碼驗證身份後，再重新設置密碼即可。（在設置密碼介面您也可以點擊右上角使用數位密碼）</string>
+    <string name="lock_help_lock_setting_content">進入鎖定設定，您可以選擇鎖定的時間。</string>
+    <string name="lock_help_lock_theme_content">我們現在有很多應用鎖主題，趕快去試試一些更好看的主題吧！</string>
+
+    <string-array name="lock_help_setting_title">
+        <item> 如何更改密碼？</item>
+        <item>覺得應用鎖定太頻繁？</item>
+        <item> 更改應用鎖主題</item>
+    </string-array>
+
+    <string name="lock_help_password_setting_button">設定</string>
+    <string name="lock_help_lock_setting_button">鎖定設定</string>
+    <string name="lock_setting_button">鎖定設定</string>
+    <string name="lock_help_lock_theme_setting_button">更換主題</string>
+    <string name="help_setting_guide">幫助小貼士</string>
+
+    <!-- V2.0 -->
+    <string name="pravicy_protect">"隱私防護"</string>
+    <string name="privacy_level">隱私等級</string>
+    <string name="privacy_contacts">隱私連絡人</string>
+    <string name="privacy_sms">隱私簡訊</string>
+    <string name="privacy_call">隱私通話</string>
+    <!-- privacy_contact_v2.0 start -->
+    <string name="privacy_contact_message">簡訊</string>
+    <string name="privacy_contact_calllog">通話記錄</string>
+    <string name="privacy_contact_contact">連絡人</string>
+    <string name="privacy_contact_popumenus_add_new_privacy_contact">添加新隱私連絡人</string>
+    <string name="privacy_contact_popumenus_from_message">從簡訊記錄添加</string>
+    <string name="privacy_contact_popumenus_from_call_log">從通話記錄添加</string>
+    <string name="privacy_contact_popumenus_from_contact">從連絡人添加</string>
+    <string name="privacy_contact_popumenus_input_phone_number">手工輸入號碼</string>
+    <string name="privacy_message_dialog_title">是否導入記錄？</string>
+    <string name="privacy_message_dialog_content">是否導入這些號碼的簡訊和通話記錄，導入成功後將删除系統中的記錄</string>
+    <string name="privacy_message_progress_dialog_title">導入記錄中</string>
+    <string name="privacy_message_progress_dialog_content">正在導入記錄</string>
+    <string name="privacy_contact_activity_input_edit_name">名稱</string>
+    <string name="privacy_contact_activity_input_edit_number">電話號碼<Data><![CDATA[<b><font color="#ff0000">＊</font></b>]]></Data></string>
+    <string name="privacy_contact_activity_input_checkbox_normal">正常接聽</string>
+    <string name="privacy_contact_activity_input_checkbox_hangup">立即掛斷</string>
+    <string name="privacy_contact_notification_title_big">系統消息</string>
+    <string name="privacy_contact_notification_title_small">您有新的系統消息</string>
+    <string name="privacy_add_contact_toast">該號碼已存在</string>
+    <string name="privacy_contact_edittext_hint">點擊輸入內容</string>
+    <string name="privacy_contact_add_log_dialog_title">是否導入記錄？</string>
+    <string name="privacy_contact_add_log_dialog_dialog_content">是否導入這些號碼的簡訊和通話記錄？導入成功後將删除系統中的記錄</string>
+    <string name="privacy_contact_progress_dialog_title">導入記錄中</string>
+    <string name="privacy_contact_progress_dialog_content">正在導入記錄</string>
+    <string name="privacy_contact_callog_out">呼出</string>
+    <string name="privacy_contact_callog_in">呼入</string>
+    <string name="privacy_contact_callog_no">未接</string>
+    <string name="input_toast_no_number_tip">請輸入電話號碼</string>
+    <string name="privacy_contact_checkbox_dlg_title">移出連絡人？</string>
+    <string name="privacy_contact_checkbox_dlg_content">確定將連絡人移出隱私空間？</string>
+    <string name="privacy_contact_checkbox_dlg_checktext">恢復連絡人的資訊</string>
+    <string name="privacy_contact_edit_contact">編輯隱私連絡人</string>
+    <string name="privacy_contact_edit_content">是否保存所做修改？</string>
+    <string name="privacy_contact_edit_left_btn">是</string>
+    <string name="privacy_contact_edit_right_btn">否</string>
+    <string name="privacy_message_delete_message">確定將簡訊删除？</string>
+    <string name="privacy_message_resotre_message">確定將簡訊記錄恢復到系統？</string>
+    <string name="privacy_call_delete_call_log">確認將通話記錄删除？</string>
+    <string name="privacy_contact_default_text">添加隱私連絡人</string>
+    <string name="privacy_call_log_default_text">加密你和TA的通話</string>
+    <string name="privacy_message_default_text">加密你和TA的簡訊</string>
+    <string name="privacy_add_contact_default_text">您沒有可顯示的連絡人</string>
+    <string name="privacy_add_message_default_text">簡訊清單為空</string>
+    <string name="privacy_add_call_log_default_text">通話記錄為空</string>
+    <string name="privacy_contact_text">私密通訊拒絕窺視</string>
+    <string name="privacy_contact_dialog_texts">發短信</string>
+    <string name="privacy_caontact_dialog_call">打電話</string>
+    <string name="privacy_contact_toast_no_choose">請選擇電話號碼</string>
+    <string name="privacy_message_item_send_message_fail">短信發送失敗！</string>
+    <string name="privacy_message_not_privacy_tip">由於Android4.4以上的系統限制，隱私簡訊功能可能無法正常使用</string>
+    <!-- privacy_contact_v2.0 end -->
+    <!-- ImageHide -->
+    <string name="no_image_hide_dialog_title">請删除原圖片</string>
+    <string name="no_image_hide_dialog_content">圖片導入隱私衛士成功，因系統許可權限制，請您删除原圖片，您可以在隱私衛士中查看隱藏圖片</string>
+    <string name="no_image_hide_dialog_button">知道了</string>
+    <string name="image_hide_memery_insuficient_dialog_title">容量不足</string>
+    <string name="image_hide_memery_insuficient_dialog_content">SD卡容量不足，無法隱藏圖片，請釋放空間</string>
+    <string name="image_unhide_memery_insuficient_dialog_content">SD卡容量不足，無法恢復圖片，請釋放空間</string>
+    <string name="image_hide_memery_insuficient_dialog_button">我知道了</string>
+    <string name="appwall_name">遊戲中心</string>
+    <string name="unlock_theme">解鎖主題</string>
+    <string name="lock_setting">應用鎖設定</string>
+
+    <!-- Lock Mode -->
+    <string name="lock_mode">情景模式</string>
+    <string name="vistor_mode">訪客模式</string>
+    <string name="unlock_all_mode">無鎖模式</string>
+    <string name="office_mode">辦公室模式</string>
+    <string name="family_mode">家庭模式</string>
+    <string name="unlock_all_mode_tip">解鎖全部模式下不能加鎖應用，請選擇其他模式</string>
+    <string name="add_new_mode">添加新情景模式</string>
+    <string name="lock_mode_all">所有模式</string>
+    <string name="new_mode">新模式</string>
+    <string name="lock_mode_location">位置鎖</string>
+    <string name="hot_on_facebook">Facebook(活動)</string>
+    <string name="lock_mode_time">時間鎖</string>
+    <string name="add">添加</string>
+    <string name="please_input_mode_name">請輸入情景模式名稱</string>
+    <string name="mode_name">情景模式名稱</string>
+    <string name="cont_edit_visitor_name">無法更改訪客模式名稱</string>
+    <string name="aready_lock">已加鎖</string>
+    <string name="choose_mode">選擇情景模式</string>
+    <string name="create_mode_shortcut_title">創建快捷方式</string>
+    <string name="create_mode_shortcut_tip">添加%1$s到案頭快捷方式</string>
+    <string name="create_mode_shortcut_content">創建快捷方式，即可在案頭快速啟用這個模式，點擊確認建立快捷方式</string>
+    <string name="mode_change">已啟用<xliff:g id="mode">%1$s</xliff:g></string>
+    <string name="lock_change">已啟用<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
+    <string name="position_lock_no_wifi">沒有wifi清單</string>
+    <!-- Privacy Protection -->
+    <string name="privacy_level_1">危險</string>
+    <string name="privacy_level_2">警惕</string>
+    <string name="privacy_level_3">普通</string>
+    <string name="privacy_level_4">良好</string>
+    <string name="privacy_level_5">完美</string>
+    <string name="privacy_title_applcok">應用加鎖</string>
+    <string name="privacy_title_hide_pic">隱藏圖片</string>
+    <string name="privacy_title_hide_video">隱藏視頻</string>
+    <string name="privacy_title_privacy_contact">隱私連絡人</string>
+    <string name="privacy_suggest_title">隱私防護建議</string>
+    <string name="privacy_no_app_lock">您還沒有加鎖應用</string>
+    <string name="privacy_no_pic_hide">您還沒有隱藏圖片</string>
+    <string name="privacy_no_video_hide">您還沒有隱藏視頻</string>
+    <string name="privacy_no_privacy_contact">您還沒有添加隱私連絡人</string>
+    <string name="privacy_no_app_lock_des">您可能有很多應用不希望被別人打開，隱私衛士建議您加鎖這些應用，保護您的隱私</string>
+    <string name="privacy_no_pic_hide_des">如果您有一些私密照片不希望被其他人發現，我們建議您使用隱藏圖片功能</string>
+    <string name="privacy_no_video_hide_des">有些視頻是不適合被分享或對他人播放的，為了避免一些尷尬，建議您隱藏它們</string>
+    <string name="privacy_no_privacy_contact_des">添加隱私連絡人可以保護您和TA的通話記錄，簡訊通訊記錄不被他人發現，隱私衛士強烈建議您使用該功能</string>
+    <string name="privacy_more_app_lock">建議您加鎖更多應用</string>
+    <string name="privacy_more_pic_hide">建議您隱藏更多圖片</string>
+    <string name="privacy_more_video_hide">建議您隱藏更多視頻</string>
+    <string name="privacy_more_privacy_contact">建議您添加更多隱私連絡人</string>
+    <string name="privacy_more_app_lock_des">恭喜您開始使用應用鎖，但有更多的應用需要被加鎖，建議您加鎖更多的應用</string>
+    <string name="privacy_more_pic_hide_des">您可以用隱藏圖片來隱藏一些私密照片，例如您的信用卡照片，ID照片</string>
+    <string name="privacy_more_video_hide_des">有些視頻是不適合被分享或對他人播放的，為了避免一些尷尬，建議您隱藏它們</string>
+    <string name="privacy_more_privacy_contact_des">添加隱私連絡人可以保護您和TA的通話記錄，簡訊通訊記錄不被他人發現，隱私衛士強烈建議您添加他們</string>
+    <string name="privacy_suggest_perfect_toast">隱私防護已達到最佳狀態！</string>
+
+    <!-- elec manager -->
+    <string name="battery_history_days"><xliff:g id="DAYS">%1$d</xliff:g> 天 <xliff:g id="HOURS">%2$d</xliff:g> 小時 <xliff:g id="MINUTES">%3$d</xliff:g> 分 <xliff:g id="SECONDS">%4$d</xliff:g> 秒</string>
+    <string name="battery_history_hours"><xliff:g id="HOURS">%1$d</xliff:g> 小時 <xliff:g id="MINUTES">%2$d</xliff:g> 分 <xliff:g id="SECONDS">%3$d</xliff:g> 秒</string>
+    <string name="battery_history_minutes"><xliff:g id="MINUTES">%1$d</xliff:g> 分 <xliff:g id="SECONDS">%2$d</xliff:g> 秒</string>
+    <string name="battery_history_seconds"><xliff:g id="SECONDS">%1$d</xliff:g> 秒</string>
+    <string name="battery_info_status_charging_ac">（交流電）</string>
+    <string name="battery_info_status_charging_usb">（USB）</string>
+    <string name="battery_info_status_discharging">正在耗電</string>
+    <string name="battery_info_status_not_charging">未在充電</string>
+    <string name="battery_info_status_full">電量充足</string>
+    <string name="battery_info_status_unknown">未知</string>
+    <string name="battery_info_status_charging">正在充電</string>
+    <string name="power_usage_level_and_status"><xliff:g id="LEVEL">%1$s</xliff:g> - <xliff:g id="STATUS">%2$s</xliff:g></string>
+    <string name="power_screen">顯示幕</string>
+    <string name="power_wifi">Wi-Fi</string>
+    <string name="power_bluetooth">藍牙</string>
+    <string name="power_cell">手機信號</string>
+    <string name="power_phone">語音通話</string>
+    <string name="power_idle">手機待機</string>
+    <string name="process_kernel_label">Android OS</string>
+    <string name="process_mediaserver_label">媒體服務器</string>
+    <string name="battery_cannot_do">此功能不能關閉</string>
+
+    <!-- Backup and Restore -->
+    <string name="app_backup_back">備份與恢復</string>
+    <string name="app_backup_v2">備份</string>
+    <string name="app_restore_v2">恢復</string>
+    <string name="app_delete_v2">删除</string>
+    <string name="app_game">遊戲</string>
+    <string name="app_application">應用</string>
+    <string name="app_hot_app">精品</string>
+    <string name="back_backed">已備份</string>
+    <string name="the_best_status_toast">已是最佳狀態，請稍後再試</string>
+
+    <!-- My Apps -->
+    <string name="myapp_details">應用資訊</string>
+    <string name="app_manager">"應用管理"</string>
+    <string name="first_backup">備份</string>
+    <string name="first_usage">流量</string>
+    <string name="first_battery">電量</string>
+    <string name="first_hotapp">精品</string>
+    <string name="first_installed_app">已安裝：</string>
+    <string name="first_appdata_app">應用及數據佔用：</string>
+    <string name="first_backups_app">已備份應用：</string>
+    <string name="first_dataflow_app">本月流量消耗：</string>
+    <string name="first_user_app">用戶應用：</string>
+    <string name="first_used_space">佔用空間：</string>
+    <string name="first_list_uninstall">卸載</string>
+
+    <!-- Data Usage / Battery -->
+    <string name="home_appmanager_donghua_tv">記憶體</string>
+    <string name="traffic_progress_bar">本月已用</string>
+    <string name="traff_first_page_small_set_month_used">本月已使用(MB)</string>
+    <string name="traff_first_page_small_set_low">您可以輸入您的套餐流量和本月已使用的流量</string>
+    <string name="traff_first_page_small_set">設定流量套餐</string>
+    <string name="no_used_traffic">暫無流量排行數據，請稍後查看</string>
+    <string name="traffic_used_lot_stop_network">關閉網絡</string>
+    <string name="traffic_used_lot_cancel">繼續使用</string>
+    <string name="traffic_used_lot_text">您的本月流量已超%1$s%%，請注意使用，避免流量超出給你帶來的額外消費</string>
+    <string name="traffic_used_finish_text">您的本月流量已經用盡，建議關閉網絡連接</string>
+    <string name="traffic_used_lot">流量報警</string>
+    <string name="flow_settting_fist">超額提醒</string>
+    <string name="flow_settting_name">流量設定</string>
+    <string name="flow_settting_second">月剩餘流量預警</string>
+    <string name="flow_settting_sure_bg">完成設定</string>
+    <string name="flow_settting_dialog">月已用流量</string>
+    <string name="flow_settting_dialog_remain">當每月已用流量達到設定值時，啟動提醒</string>
+    <string name="flow_settting_thrid">每月結算日</string>
+    <string name="flow_settting_thrid_first_tv">月結日</string>
+    <string name="flow_settting_thrid_second_tv">每月套餐(MB)</string>
+    <string name="flow_settting_thrid_month_used_data">本月已使用(MB)</string>
+    <string name="app_elec_aca">電量</string>
+    <string name="app_elec_stop">停止</string>
+    <string name="app_elec_zhuyi">注意！</string>
+    <string name="app_flow_elec">流量消耗</string>
+    <string name="app_flow">流量</string>
+    <string name="app_elec">統計排行</string>
+    <string name="today_triffic">今日流量</string>
+    <string name="month_remainder_triffic">本月剩餘</string>
+    <string name="month_triffic">本月已用</string>
+    <string name="flow_charts_this_month">日流量使用情况</string>
+    <string name="home_app_manager_apps_delete">應用卸載</string>
+    <string name="home_app_manager_mem_clean">為您清理了%1$s記憶體</string>
+    <string name="home_app_manager_mem_clean_one">為您清理了1MB記憶體</string>
+
+    <!-- What's Hot -->
+    <string name="hot_app_free">免費</string>
+
+    <string-array name="default_psw_protect_entrys">
+        <item>我母親的姓名是？</item>
+        <item>我父親的姓名是？</item>
+        <item>我最喜歡的老師名字？</item>
+        <item>我的身份證後六比特？</item>
+    </string-array>
+
+    <string name="mode_save_hint">保存情景模式</string>
+    <string name="time_lock_save_hint">保存時間鎖</string>
+    <string name="location_lock_save_hint">保存位置鎖</string>
+    <string name="mode_save_ask">是否保存%1$s？</string>
+    <string name="repeat">重複</string>
+    <string name="no_repeat">不重複</string>
+
+    <string-array name="days_of_week">
+        <item>週一</item>
+        <item>週二</item>
+        <item>週三</item>
+        <item>週四</item>
+        <item>週五</item>
+        <item>週六</item>
+        <item>週日</item>
+    </string-array>
+
+    <string name="select_mode">選擇情景模式</string>
+    <string name="select_wifi_mode">選擇wifi</string>
+    <string name="choose_ssid">請選擇wifi熱點</string>
+    <string name="choose_enter_mode">進入時操作</string>
+    <string name="choose_quit_mode">離開時操作</string>
+
+    <!-- guide page begin -->
+    <string name="guide_page1_title">情景模式</string>
+    <string name="guide_page1_content">基於場景智慧切換應用加鎖方案</string>
+    <string name="guide_page2_title">隱私防護等級</string>
+    <string name="guide_page2_content">全球首創隱私等級，手機隱私狀況全知曉</string>
+    <string name="guide_page3_title">隱私連絡人</string>
+    <string name="guide_page3_content">保護我和TA的通訊隱私</string>
+    <string name="guide_page4_title">應用消耗監控</string>
+    <string name="guide_page4_content">輕鬆查看流量/電量消耗</string>
+    <string name="guide_button_text">立即體驗</string>
+    <!-- guide page end -->
+
+    <string name="lock_mode_name_cant_empty">情景模式名稱不能為空</string>
+    <string name="lock_mode_delete_tip_title">删除情景模式</string>
+    <string name="lock_mode_delete_tip_both">您所選擇的模式被應用在時間鎖/位置鎖中，删除該情景模式將會删除對應的鎖定設定</string>
+    <string name="lock_mode_delete_tip_time">您所選擇的模式被應用在時間鎖中，删除該情景模式將會删除對應的鎖定設定</string>
+    <string name="lock_mode_delete_tip_location">您所選擇的模式被應用在位置鎖中，删除該情景模式將會删除對應的鎖定設定</string>
+    <string name="please_input_name">請輸入名稱</string>
+    <string name="please_selset_wifi">請選擇wifi熱點</string>
+    <string name="cur_mode_delete_tip">%1$s正在使用，删除後會使用訪客模式，確定删除該模式？</string>
+    <string name="mode_delete_tip">是否删除情景模式？</string>
+    <string name="add_mode">添加情景模式</string>
+    <string name="add_new_time_lock">添加時間鎖</string>
+    <string name="add_new_location_lock">添加位置鎖</string>
+    <string name="save_successful">保存成功</string>
+
+    <!-- version 2.1 begin -->
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">應用偽裝</string>
+    <string name="weizhuang_first_in_text">打開被鎖的應用時出現偽裝介面，只有你知道要如何跳過偽裝頁打開應用</string>
+    <string name="first_in_sure_button">知道了</string>
+    <string name="unknow_call_first_title">未知號碼</string>
+    <string name="unknow_call_second_title">來電</string>
+    <string name="unknow_call_thrid_first_title">使用介紹</string>
+    <string name="unknow_call_all_content">來電顯示是假像哦，按順序劃過掛斷，簡訊，接聽來解鎖吧</string>
+    <string name="weizhuang_setting_ok">未知來電模式已開啟</string>
+    <string name="error_mode_ok">應用錯誤模式已開啟</string>
+    <string name="zhiwen_mode_ok">指紋識別模式已開啟</string>
+    <string name="weizhuang_error_title">手機荧幕上的“關閉”按鈕是假像哦，在“關閉“按鈕上從左向右滑動設定解鎖吧</string>
+    <string name="weizhuang_error_notice">抱歉，“隱私衛士“已停止使用</string>
+    <string name="weizhuang_error_notice_set_false">哎喲！滑動距離再大一點</string>
+    <string name="weizhuang_zhiwen_notice">指紋識別是假像哦，一秒內快速在指紋解鎖處點擊三次來設定解鎖吧</string>
+    <string name="error_cancel_button">關閉</string>
+    <string name="open_weizhuang_dialog_title">啟動偽裝</string>
+    <string name="open_weizhuang_dialog_content">恭喜！您已學會使用此偽裝，是否開啟？</string>
+    <string name="open_weizhuang_dialog_sure">開啟</string>
+
+    <string-array name="weizhuang_type_num">
+        <item>無</item>
+        <!-- TODO -->
+        <item>美女伪装</item>
+
+        
+        <item>應用錯誤</item>
+        <item>未知來電</item>
+        <item>指紋解鎖</item>
+    </string-array>
+
+    <string name="pretend_app_error">抱歉，\“%1$s\”已停止使用</string>
+    <!-- weizhuang -->
+
+    <string name="time_location_lock_tip_title">更智慧的情景模式切換</string>
+    <string name="time_location_lock_tip_content">我們發現您頻繁切換情景模式，您可以設定通過時間鎖或者位置鎖自動切換情景模式，是否設定？</string>
+    <string name="time_lock_mode_guide_content">時間鎖可以在您指定的時間點擊啟動某個情景模式，建議您添加屬於您自己的時間鎖</string>
+    <string name="location_lock_mode_guide_content">位置鎖可以在您指定的地點觸發情景模式，比如啟動訪客模式等，位置通過wifi熱點來標注。這非常適合在您的家庭和公司之間建立不同的位置鎖</string>
+    <string name="lock_mode_guide_button_text">知道了</string>
+    <string name="mode_missing">"你還沒創建該情景模式，請删除此快捷方式"</string>
+
+    <!-- version 2.1 end -->
+
+
+    <!-- version 2.2 start -->
+    <string name="feedback_content_guide">您遇到的問題</string>
+    <string name="feedback_email_guide">郵箱</string>
+    <string name="feedback_category_guide">問題類型</string>
+    <string name="privacy_proposal_tip">您的隱私等級為%1$s，建議您進行以下操作，以提高您的隱私等級</string>
+    <string name="lock_mode_name_maxlength">18</string>
+    <!-- version 2.2 end -->
+
+
+    <!-- version 2.4 begin -->
+    <!-- quick gesture -->
+    <string name="pg_appmanager_quick_gesture_name">快捷手勢</string>
+    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">開啟快捷手勢</string>
+    <string name="pg_appmanager_quick_gesture_option_switch_setting">開關設定</string>
+    <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">手勢主題</string>
+    <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">當前：%1$s</string>
+    <string name="pg_appmanager_quick_gesture_option_sliding_area_location_title">劃出區域位置</string>
+    <string name="pg_appmanager_quick_gesture_option_no_read_message_tip">未讀短信提示</string>
+    <string name="pg_appmanager_quick_gesture_option_recently_contact">最近連絡人</string>
+    <string name="pg_appmanager_quick_gesture_option_privacy_contact_message_tip">隱私連絡人資訊提示</string>
+    <string name="pg_appmanager_quick_gesture_option_able_sliding_time">可劃出時機</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">左側底部</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">右側底部</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">左側中部</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">右側中部</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_just_home_text">僅案頭</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_home_and_all_app_text">案頭和所有應用</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_no_disturb_text">免干擾應用</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">請至少選擇一個區域</string>
+    <string name="pg_appmanager_quick_gesture_select_free_disturb_app_text">請選擇免干擾應用</string>
+    <string name="pg_appmanager_quick_gesture_no_free_add_free_disturb_app_text">添加免干擾應用</string>
+    <string name="pg_appmanager_quick_gesture_miui_open_float_window_tip_text">請找到開啟懸浮窗選項並開啟，然後再次啟動快捷手勢</string>
+    <string name="pg_appmanager_quick_gesture_first_tip_text">歡迎使用快捷手勢從示意區任意一側劃出，開啟便捷之旅</string>
+    <string name="pg_appmanager_quick_switch_dialog_title">請選擇快捷開關</string>
+    <string name="quick_gesture_change_common_app_dialog_title">請選擇應用</string>
+    <string name="quick_gesture_change_common_app_dialog_checkbox_text">根據使用習慣，自動填充/更換應用</string>
+    
+    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">系統資訊</string>
+    <string name="quick_gesture_dialog_tip_contniue_title">繼續設定快捷手勢</string>
+    <string name="quick_gesture_dialog_tip_contniue_cotent">檢測到您已經開啟了懸浮窗設定，是否繼續設定快捷手勢？</string>
+    <string name="quick_gesture_dialog_tip_contniue_left_bt">繼續</string>
+    <string name="quick_gesture_dialog_tip_contniue_right_bt">稍後設定</string>
+    <string name="quick_gesture_miui_tip_button_text">知道了</string>
+    <string name="quick_gesture_dynamic">最近使用</string>
+    <string name="quick_gesture_switcher">快捷開關</string>
+    <string name="quick_gesture_most_used">最常使用</string>
+    <string name="quick_gesture_first_open_sliding_toast">開啟便捷之旅</string>
+    <string name="quick_guesture_bluetooth">藍牙</string>
+    <string name="quick_guesture_flashlight">手電筒</string>
+    <string name="quick_guesture_wlan">WLAN</string>
+    <string name="quick_guesture_carme">相機</string>
+    <string name="quick_guesture_sound">聲音</string>
+    <string name="quick_guesture_light">荧幕亮度</string>
+    <string name="quick_guesture_speedup">加速</string>
+    <string name="quick_guesture_changemode">情景模式切換</string>
+    <string name="quick_guesture_switchset">手勢設定</string>
+    <string name="quick_guesture_setting">系統設置</string>
+    <string name="quick_guesture_gps">GPS</string>
+    <string name="quick_guesture_flymode">飛行模式</string>
+    <string name="quick_guesture_rotation">荧幕旋轉</string>
+    <string name="quick_guesture_mobliedata">移動數據</string>
+    <string name="quick_guesture_home">案頭</string>
+    <string name="quick_guesture_lockscreen">鎖屏</string>
+    <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
+    <string name="pass_gesture_change">切換密碼管道</string>
+    <string name="permission_open_tip_notification_title">設定快捷手勢</string>
+    <string name="permission_open_tip_notification_content">點擊立刻開啟快捷手勢！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">還在用老辦法管理應用和快捷開關嗎？趕快試試和apple watch一樣的快捷開關管理吧，讓你成為朋友中最cool的人！</string>
+    <string name="grade_tip_feedback">我要吐槽</string>
+    <string name="quick_first_tip_dialog_right_bt">立即體驗</string>
+    <string name="quick_first_tip_dialog_left_bt">稍後再試</string>
+
+    <!-- quick gesture -->
+    <!-- version 2.4 end -->
+
+
+    <!-- version 2.5 huangqili part -->
+    <string name="forbid_uninstall_off">開啟高級保護，防止隱私衛士被惡意卸載，更好地保護您的隱私</string>
+    <string name="forbid_uninstall_on">高級保護開啟成功！</string>
+    <string name="setting_hide_lockline">隱藏解鎖軌跡</string>
+    <string name="change_to_gesture">切換為手勢密碼</string>
+    <string name="change_to_password">切換為數位密碼</string>
+    <string name="summary_newapp_lock">新安裝應用時，一鍵快速加鎖</string>
+    <string name="summary_aacelerate_after_unlock">解鎖應用時清理記憶體，自動提速</string>
+    <string name="summary_autolock_after_lockscreen">鎖屏後所有應用重新鎖定</string>
+    <string name="summary_setting_locker">選擇應用鎖定設定</string>
+    <string name="summary_hide_lockline">將應用解鎖軌跡隱藏，更安全地保護您的隱私</string>
+    <string name="quick_gesture_strengthen_mode_title">小白點</string>
+    <string name="quick_gesture_strengthen_mode_content">點擊小白點即可打開快捷手勢</string>
+    <string name="quick_gesture_success_title">開啟快捷手勢成功！</string>
+    <string name="quick_gesture_success_content">您可以點擊下方快速的打開/關閉藍牙、wifi等系統開關，以及常用的應用，趕快試試吧！</string>
+    <string name="go_set">去設定</string>
+    <string name="white_dot_click_tip">恭喜您成功通過小白點開啟快捷手勢！如果您覺得打擾，可以在快捷手勢設定中關閉。</string>
+    <string name="quick_gesture_open_text">已開啟</string>
+    <string name="quick_gesture_close_text">已關閉</string>
+    <string name="quick_gesture_introduction_title">什麼是快捷手勢？</string>
+    <string name="quick_gesture_introduction_content">快捷手勢是隱士衛士推出的一款高效挿件，通過他你可以很方便的管理手機中的系統開關，以及快速打開應用程式</string>
+    <string name="quick_gesture_slide_guide_title">如何開啟劃出手勢？</string>
+    <string name="quick_gesture_slide_guide_content">您只需在手機的角落輕輕劃出，就可以開啟快捷手勢</string>
+    <string name="quick_gesture_slide_setting_content">如果您的手機難以劃出，可以點擊這裡設定劃出區域</string>
+    <string name="quick_gesture_edit_guide_title">如何編輯快捷手勢的開關或應用程式？</string>
+    <string name="quick_gesture_edit_guide_content">在任何一個快捷手勢的tap類別中長按應用/開關，即可以進入編輯介面，您可以删除應用/開關，也可以在常用應用和快捷開關中添加應用/開關</string>
+    <string name="quick_gesture_edit_extra_content">注：最近使用的應用是系統生成的，所以不可以主動添加</string>
+    <string name="can_not_add_more">不能添加更多</string>
+    <string name="new_guide_page1_title">快捷手勢</string>
+    <string name="new_guide_page1_content">一劃即現，簡單方便</string>
+    <string name="new_guide_page2_title">應用偽裝</string>
+    <string name="new_guide_page2_content">一點即變，趣味無限</string>
+    <string name="new_guide_page3_title">快捷手勢小白點</string>
+    <string name="new_guide_page3_content">輕輕一點，手勢即現</string>
+    <string name="quick_open_tip">您還沒有開啟快捷手勢</string>
+    
+    <!-- TODO -->
+    <string name="quick_setting_title">快捷手势设置</string>
+    <string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
+    <string name="quick_no_call_log_annotation">未接来电会在快捷手势中提示</string>
+    <string name="quick_no_pricay_contact_annotation">信息会以系统信息的形式提示</string>
+    <!-- version 2.5 huangqili part -->
+
+
+    <!-- 2.6 start -->
+    <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
+    <string name="change_lock_mode">切换情景模式</string>
+    <string name="beauty_guide_title">使用介绍</string>
+    <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
+    <string name="flash_light_open_toast">请不要频繁操作闪光灯，可能造成硬件损坏</string>
+    <string name="privacy_auto_add_text">手动添加</string>
+    <string name="choose_lock_mode">选择情景模式</string>
+    <string name="button_disguise_guide_select">立刻试试</string>
+    <string name="button_disguise_guide_cancel">稍后</string>
+    <string name="button_disguise_guide_content">加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全</string>
+    <string name="traffic_over_text">已超额</string>
+    <string name="lock_line_hide">解锁轨迹已隐藏</string>
+    <string name="lock_line_visiable">解锁轨迹已显示</string>
+    <string name="video_hide_need_cb"> 由于系统原因，取消隐藏这些视频需要COOL Browser。请安装后才可使用</string>
+    <!-- 2.6 end -->
+
+</resources>

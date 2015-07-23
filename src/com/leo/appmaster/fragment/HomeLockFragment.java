@@ -132,10 +132,14 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 LockMode curMode = lm.getCurLockMode();
                 if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
                     startRcommendLock(0);
+                    AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
+                    Log.e("lockmore", "enter lock lis tand set home to list true");
                     curMode.haveEverOpened = true;
                     lm.updateMode(curMode);
                 } else {
                     enterLockList();
+                    AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
+                    Log.e("lockmore", "enter lock lis tand set home to list true");
                 }
                 break;
             case R.id.lock_theme:
@@ -199,7 +203,8 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private void enterLockList() {
         Intent intent = null;
         intent = new Intent(mActivity, AppLockListActivity.class);
-        startActivityForResult(intent,100);
+    
+        startActivity(intent);
 
     }
     

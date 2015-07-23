@@ -222,7 +222,7 @@ public class SplashActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LAUNCH_HOME_ACTIVITY:
-                    if (AppMasterPreference.getInstance(SplashActivity.this).getFirstUse()) {
+                    if (AppMasterPreference.getInstance(SplashActivity.this).getGuidePageFirstUse()) {
                         boolean guidNotShown = mNewGuideMain == null
                                 || mNewGuideMain.getVisibility() != View.VISIBLE;
                         if (guidNotShown) {
@@ -522,7 +522,7 @@ public class SplashActivity extends BaseActivity {
     }
     
     private void  enterHome(){
-        AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
+        AppMasterPreference.getInstance(SplashActivity.this).setGuidePageFirstUse(false);
         startHome();
         String currentVersionName = SplashActivity.this
                 .getString(R.string.version_name);

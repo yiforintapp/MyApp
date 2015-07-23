@@ -188,14 +188,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             }
             mSelfIconDialog.setSureButtonText(getString(R.string.button_disguise_guide_select));
             mSelfIconDialog.setLeftBtnStr(getString(R.string.button_disguise_guide_cancel));
-            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha to
-                                                                     // du
+            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha to  du
+            mSelfIconDialog.setCanceledOnTouchOutside(false);
             mSelfIconDialog.show();
             AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
         }
         else
-        {
-            
+        {          
+            AppMasterPreference.getInstance(this).setIsHomeToLockList(false);
             AppMasterPreference.getInstance(this).setIsFromLockList(false);
         }
     }

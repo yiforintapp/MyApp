@@ -535,7 +535,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (!mPrivateLockPck.equals(mLockedPackage)) {
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
-            if (pretendLock == 2) { /* app error */
+            if (pretendLock == 1) { /* app error */
                 PretendAppErrorFragment paf = new PretendAppErrorFragment();
                 String tip = "";
                 PackageManager pm = this.getPackageManager();
@@ -550,14 +550,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
                 paf.setErrorTip(tip);
                 return paf;
-            } else if (pretendLock == 3) {/* unknow call */
+            } else if (pretendLock == 2) {/* unknow call */
                 PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
                 return unknowcall;
-            } else if (pretendLock == 4) {/* fingerprint */
+            } else if (pretendLock == 3) {/* fingerprint */
                 PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
                 return weizhuang;
             }
-            else if (pretendLock == 1)
+            else if (pretendLock == 4)
             {
                 PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;

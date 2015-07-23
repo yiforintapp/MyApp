@@ -79,7 +79,9 @@ public class LeoLockSortPopMenu extends LeoPopMenu{
                 ImageView mImageView = (ImageView) convertView.findViewById(R.id.menu_icon);
                 mItemName.setTextColor(mContext.getResources().getColor(
                         (R.color.sort_select_color)));
+                if(mImageView!=null){
                 mImageView.setVisibility(View.VISIBLE);
+                }
             }
             return convertView;
         }
