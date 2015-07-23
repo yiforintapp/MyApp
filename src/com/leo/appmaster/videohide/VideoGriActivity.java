@@ -516,8 +516,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             break;
                         try {
                             newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
-                            if (newFileName.indexOf(".leotmv") > 0) {
-                                newFileName = newFileName.substring(1,
+                            if (newFileName.indexOf(".leotmv") >=0) {
+                                newFileName = newFileName.substring(0,
                                         newFileName.indexOf(".leotmv"));
                             }
                             if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {

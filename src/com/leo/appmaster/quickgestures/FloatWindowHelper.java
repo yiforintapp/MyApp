@@ -1986,15 +1986,15 @@ public class FloatWindowHelper {
                         Log.i("null","锁屏啦");
                         hideWhiteFloatView(mContext);
                         AppMasterPreference.getInstance(mContext)
-                                .setSwitchOpenStrengthenMode(false);
+                                .setSwitchOpenStrengthenMode(false, false);
                     } else if (!AppUtil.isScreenLocked(mContext)
                             && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
                         Log.i("null","开屏啦");
-                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
+                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true, false);
                         showWhiteFloatView(mContext);
                     } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
                         Log.i("null","解锁啦");
-                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
+                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true, false);
                         showWhiteFloatView(mContext);
                     }
                     super.onScreenChanged(intent);
