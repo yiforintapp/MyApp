@@ -36,7 +36,7 @@ public class LockModeView extends View {
 
     private final static float LOCK_COUNT_TEXT_POS_PERCENT = 0.22f;
     private final static float LOCK_MODE_TEXT_POS_PERCENT = 0.82f;
-    private final static float TEXT_WIDTH_PERCENT = 0.5f;
+    private final static float TEXT_WIDTH_PERCENT = 0.4f;
 
     private Paint mPaint;
     private FontMetrics mFontMetrics = new FontMetrics();
@@ -238,7 +238,12 @@ public class LockModeView extends View {
 
         // mode text
         if (!Utilities.isEmpty(mModeText)) {
-            textWidth = computeTextSize(mModeText, mLockModeTextSize, maxTextWidth, mPaint);
+            mPaint.setTextSize(mLockModeTextSize);
+            textWidth = (int) mPaint.measureText(mModeText);
+            if(textWidth > maxTextWidth){
+                mModeText = subStringModetext(mModeText,mLockModeTextSize,maxTextWidth,mPaint);
+                textWidth = (int) mPaint.measureText(mModeText);
+            }
             realSize = (int) mPaint.getTextSize();
             mPaint.setTextSize(realSize);
             mPaint.setStyle(Style.FILL);
@@ -265,6 +270,47 @@ public class LockModeView extends View {
         }
     }
 
+    /**
+     * use to cut off the over width mode name,and contact "..." 
+     * @param text
+     * @param maxTextSize
+     * @param maxWidth
+     * @param paint
+     * @return
+     */
+    private String subStringModetext(String text, int maxTextSize, int maxWidth, Paint paint) {
+        int textSize = maxTextSize,textLength;
+        String omission = "...";
+        paint.setTextSize(textSize);
+        text.concat(omission);
+        int textWidth = (int) paint.measureText(text);
+        while (textWidth > maxWidth) {
+            textLength = text.length();
+            text = text.substring(0, textLength-4);
+            text = text.concat(omission);
+            textWidth = (int) paint.measureText(text);
+            Log.i("tag",text);
+        }
+       /* int textSize = maxTextSize,textLength,omissionWidth,textWidth,maxLength;
+        String omission = "...";
+        paint.setTextSize(textSize);
+        textLength = text.length();
+        
+        omissionWidth = (int) paint.measureText(omission);
+        maxWidth = maxWidth -omissionWidth;
+        textWidth  = (int) paint.measureText(text);
+        maxLength = (maxWidth*textLength)/textWidth;
+        Log.i("tag","maxWidth = "+maxWidth +"  textWidth = "+textWidth+ " textLength = "+textLength);
+        
+        text = text.substring(0, maxLength);
+        textWidth = (int) paint.measureText(text.concat(omission));
+        if(textWidth > maxWidth){
+            text = text.substring(0, maxLength-2);
+        }
+        text = text.concat(omission);
+        Log.i("tag","text : ="+text +" maxLength = "+maxLength);*/
+        return text;
+    }
     
     private int computeTextSize(String text, int maxTextSize, int maxWidth, Paint paint) {
         int textSize = maxTextSize;
