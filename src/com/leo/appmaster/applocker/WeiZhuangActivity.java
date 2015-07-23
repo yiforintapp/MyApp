@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.WeiZhuangInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -114,13 +115,13 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         }
 
         // pohatodo
-        if ("0001z".equals(getResources().getString(R.string.channel_code))
+        if ((AppMasterPreference.getInstance(this).getPretendLock()!=4)&&("0001z".equals(getResources().getString(R.string.channel_code))
                 || "0002z".equals(getResources().getString(R.string.channel_code)) ||
                 "0003z".equals(getResources().getString(R.string.channel_code)) ||
                 "0004z".equals(getResources().getString(R.string.channel_code)) ||
                 "0005z".equals(getResources().getString(R.string.channel_code)) ||
                 "0006z".equals(getResources().getString(R.string.channel_code)) ||
-                "0007z".equals(getResources().getString(R.string.channel_code)))
+                "0007z".equals(getResources().getString(R.string.channel_code))))
         {
             mList.remove(1);
             mIsRemoveBeauty = true;
