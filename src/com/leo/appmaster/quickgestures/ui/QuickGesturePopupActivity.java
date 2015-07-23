@@ -85,8 +85,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void checkFirstWhiteClick() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         int clickCount = amp.getUseStrengthenModeTimes();
-        LeoLog.e("xxxx", "clickCount = " + clickCount
-                + "             amp.hasEverCloseWhiteDot() = " + amp.hasEverCloseWhiteDot());
         if (mFromWhiteDot && !amp.hasEverCloseWhiteDot() && !BuildProperties.isGTS5282()) {
             amp.setEverCloseWhiteDot(true);
             if (clickCount == 1) {
@@ -371,6 +369,17 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
 
     public void showLockMode() {
+        if (mSuccessTipView.getVisibility() == View.VISIBLE) {
+            final ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mSuccessTipView, "alpha",
+                    1.0f, 0f).setDuration(200);
+            alphaAnimator.addListener(new AnimatorListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animator animation) {
+                    mSuccessTipView.setVisibility(View.GONE);
+                }
+            });
+            alphaAnimator.start();
+        }
         mModeSelectView.show();
         mContainer.enterModeSelect();
     }
