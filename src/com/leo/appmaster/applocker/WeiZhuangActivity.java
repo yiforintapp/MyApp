@@ -2,6 +2,7 @@
 package com.leo.appmaster.applocker;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.content.Context;
@@ -47,6 +48,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private TextView mKnowBt;
     private Animation mGuidAnimation;
     private boolean mIsOpenHelp = false;
+    private boolean mIsRemoveBeauty=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +101,9 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         mIcon[3] = mThemeRes.getDrawable(R.drawable.disguise_icon_call);
         mIcon[4] = mThemeRes.getDrawable(R.drawable.disguise_iocn_finger);
         
+//        getResources().getStringArray(R.string.c)
+   
+        
         // list
         mList = new ArrayList<WeiZhuangInfo>();
         int size = mName.length;
@@ -108,6 +113,17 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             info.setIcon(mIcon[i]);
             mList.add(info);
         }
+        
+        //pohatodo
+        if("09999".equals(getResources().getString(R.string.channel_code))||"09999".equals(getResources().getString(R.string.channel_code)))
+        {
+            mList.remove(1);
+            mIsRemoveBeauty=true;
+        }
+        
+        
+        
+        
 
         // set adapter
         mAdapt = new WeiZhuangAdapt(this, mList);
@@ -186,48 +202,92 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 1:
-                if (selected != 1) {
-                    //美女伪装
-                    Intent mIntent = new Intent(this, BeautyWeiZhuang.class);
-                    this.startActivity(mIntent);
-                }
-                break;
-            case 0:
-                if (selected != 0) {
-                    // 无
-                    sp_weizhuang.setPretendLock(noMode);
-                    mAdapt.notifyDataSetChanged();
-                }
-                break;
-            case 2:
-                if (selected != 2) {
-                    // 应用错误
-                    Intent mIntent = new Intent(this, ErrorWeiZhuang.class);
-                    this.startActivity(mIntent);
-                }
-                break;
-            case 3:
-                if (selected != 3) {
-                    // 未知来电
-                    // Intent intent = new
-                    // Intent(this,UnknowCallActivity.class);
-                    // this.startActivity(intent);
-                    Intent intent = new Intent(this, UnKnowCallActivity5.class);
-                    this.startActivity(intent);
-                }
-                break;
-            case 4:
-                if (selected != 4) {
-                    // 指纹解锁
-                    Intent zhiWenIntent = new Intent(this, ZhiWenActivity.class);
-                    this.startActivity(zhiWenIntent);
-                }
-                break;
-            default:
-                break;
+        
+        if(mIsRemoveBeauty)
+        {
+            switch (position) {
+              
+                case 0:
+                    if (selected != 0) {
+                        // 无
+                        sp_weizhuang.setPretendLock(noMode);
+                        mAdapt.notifyDataSetChanged();
+                    }
+                    break;
+                case 1:
+                    if (selected != 1) {
+                        // 应用错误
+                        Intent mIntent = new Intent(this, ErrorWeiZhuang.class);
+                        this.startActivity(mIntent);
+                    }
+                    break;
+                case 2:
+                    if (selected != 2) {
+                        // 未知来电
+                        // Intent intent = new
+                        // Intent(this,UnknowCallActivity.class);
+                        // this.startActivity(intent);
+                        Intent intent = new Intent(this, UnKnowCallActivity5.class);
+                        this.startActivity(intent);
+                    }
+                    break;
+                case 3:
+                    if (selected != 3) {
+                        // 指纹解锁
+                        Intent zhiWenIntent = new Intent(this, ZhiWenActivity.class);
+                        this.startActivity(zhiWenIntent);
+                    }
+                    break;
+                default:
+                    break;
+            }
         }
+        else
+        {
+            switch (position) {
+                case 1:
+                    if (selected != 1) {
+                        //美女伪装
+                        Intent mIntent = new Intent(this, BeautyWeiZhuang.class);
+                        this.startActivity(mIntent);
+                    }
+                    break;
+                case 0:
+                    if (selected != 0) {
+                        // 无
+                        sp_weizhuang.setPretendLock(noMode);
+                        mAdapt.notifyDataSetChanged();
+                    }
+                    break;
+                case 2:
+                    if (selected != 2) {
+                        // 应用错误
+                        Intent mIntent = new Intent(this, ErrorWeiZhuang.class);
+                        this.startActivity(mIntent);
+                    }
+                    break;
+                case 3:
+                    if (selected != 3) {
+                        // 未知来电
+                        // Intent intent = new
+                        // Intent(this,UnknowCallActivity.class);
+                        // this.startActivity(intent);
+                        Intent intent = new Intent(this, UnKnowCallActivity5.class);
+                        this.startActivity(intent);
+                    }
+                    break;
+                case 4:
+                    if (selected != 4) {
+                        // 指纹解锁
+                        Intent zhiWenIntent = new Intent(this, ZhiWenActivity.class);
+                        this.startActivity(zhiWenIntent);
+                    }
+                    break;
+                default:
+                    break;
+            }
+        }
+        
     }
 
     @Override
