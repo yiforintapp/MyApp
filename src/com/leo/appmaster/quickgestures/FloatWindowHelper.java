@@ -112,7 +112,6 @@ public class FloatWindowHelper {
     private static final int RIGHT_CENTER_FLAG = -2;
     private static final int RIGHT_CENTER_CENTER_FLAG = -3;
     private static final int RIGHT_TOP_FLAG = -4;
-    public static final String RUN_TAG = "RUN_TAG";
     private static AnimationDrawable animationLightDrawable;
     private static AnimationDrawable animationDarkDrawable;
     private static boolean isControling = false;

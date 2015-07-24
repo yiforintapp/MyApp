@@ -168,7 +168,7 @@ public class AppMasterApplication extends Application {
         }, 10, TimeUnit.SECONDS);
         if (AppMasterPreference.getInstance(getApplicationContext()).getIsFirstInstallApp()) {
             SplashActivity.deleteImage();
-            AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false);
+            AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false); 
         }
         // For android L and above, daemon service is not work, so disable it
         if (PhoneInfo.getAndroidVersion() < 20) {
@@ -181,6 +181,8 @@ public class AppMasterApplication extends Application {
         // Log.e(FloatWindowHelper.RUN_TAG,
         // "是否V6："
         // +BuildProperties.isMiuiV6()+",是否为V5："+BuildProperties.isMiuiV5());
+//            Log.e(Constants.RUN_TAG, "是否为指定的系统："+!TextUtils.isEmpty((CharSequence) (BuildProperties.getSystemProperty("ro.sony.fota.encrypteddata"))));
+        
     }
 
     private String getUserSerial() {

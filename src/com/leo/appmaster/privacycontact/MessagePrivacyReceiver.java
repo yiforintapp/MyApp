@@ -56,6 +56,8 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, final Intent intent) {
+        // 测试
+//        printTestReceiverLog(intent);
         String action = intent.getAction();
         mContext = context;
         if (mSimpleDateFormate == null) {
@@ -65,7 +67,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
-//            PrivacyContactManager.getInstance(mContext).testValue = true;
+            PrivacyContactManager.getInstance(mContext).testValue = true;
             /*
              * 有新短信来时恢复该短信是否经过红点提示标记的默认值false
              */
@@ -112,7 +114,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                             mSimpleDateFormate, messageBean, mContext,
                                             mSendDate);
                                     if (Build.VERSION.SDK_INT < 19 && !BuildProperties.isMIUI()) {
-                                        // 对于4.0的系统由于可以直接拦截，拦截后不会触发数据库变化，所以再此处通知快捷手势有新消息
+                                        // 对于4.4的系统由于可以直接拦截，拦截后不会触发数据库变化，所以再此处通知快捷手势有新消息
                                         noReadPrivacyMsmTipForQuickGesture(AppMasterPreference
                                                 .getInstance(mContext));
                                     }
@@ -132,7 +134,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
             // 通话判断来电号码是否存在来判断是，拨出还是呼入，进行isCallLogRead值的初始化
             if (!Utilities.isEmpty(phoneNumber)) {
-                // Log.e(Constants.RUN_TAG, "" + "更新电话");
                 if (QuickGestureManager.getInstance(mContext).isCallLogRead) {
                     QuickGestureManager.getInstance(mContext).isCallLogRead = false;
                     AppMasterPreference.getInstance(mContext)
@@ -201,6 +202,18 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             Toast.LENGTH_SHORT).show();
                     break;
             }
+        }
+    }
+
+    // 测试来新短信或者来电能否接收到广播
+    private void printTestReceiverLog(Intent intent) {
+        String action = intent.getAction();
+        if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
+                || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
+                || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
+            Log.e(Constants.RUN_TAG, "接收到新短信广播");
+        } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
+            Log.e(Constants.RUN_TAG, "接收到来电广播");
         }
     }
 
