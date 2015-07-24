@@ -63,9 +63,9 @@
                     android:id="@+id/close_image"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentLeft="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginRight="16dp"
+                    android:layout_marginLeft="16dp"
                     android:src="@drawable/ic_close_circle"
                     android:visibility="gone" />
             </RelativeLayout>
@@ -90,11 +90,11 @@
                 android:layout_marginRight="16dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/message_item_text_box_selecter"
+                android:gravity="right|center_vertical"
                 android:hint="@string/privacy_contact_edittext_hint"
                 android:inputType="phone"
                 android:paddingRight="10dp"
                 android:selectAllOnFocus="true"
-                 android:gravity="right|center_vertical"
                 android:textColor="@drawable/privacy_contact_edit_edittext_selecter"
                 android:textColorHighlight="#0084ff"
                 android:textSize="14dp" />
