@@ -44,11 +44,7 @@ public class ZipperView extends View {
     private Canvas mCanvas;
     
     private Bitmap mFBitmap;
-    
-    
-    
-    
-    
+  
     
     private int mWidth;
     private int mHeight;
@@ -278,7 +274,15 @@ public class ZipperView extends View {
                     if (mIsZipperTouched)
                     // if(event.getX()>(mWidth-mZipper.getWidth())/2&&event.getX()<(mWidth+mZipper.getWidth())/2&&event.getY()>mYp&&event.getY()<mYp+mZipper.getHeight())
                     {
-                        mYp = y;
+                        if(mYp>mFMask.getHeight())
+                        {
+                            mYp=mFMask.getHeight();
+                        }
+                        else
+                        {
+                            mYp = y;
+                        }
+                       
                         invalidate();
 
                     }
