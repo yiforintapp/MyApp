@@ -63,7 +63,6 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
     private ImageView mIvClose;
     private View mSelected;
     private View mHolder;
-    private LockManager mLockManager;
     private int currModePosition;
 
     public QgLockModeSelectView(Context context) {
@@ -72,7 +71,6 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
 
     public QgLockModeSelectView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mLockManager = LockManager.getInstatnce();
     }
 
     @Override
@@ -136,15 +134,18 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
     public void show() {
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
-            animteCloseBtn();
+            animteViews();
             fillUI(true);
         }
     }
 
-    private void animteCloseBtn() {
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mIvClose, "alpha", 0, 1.0f);
-        alphaAnimator.setDuration(400);
-        alphaAnimator.start();
+    private void animteViews() {
+        ObjectAnimator alphaAnimator1 = ObjectAnimator.ofFloat(mIvClose, "alpha", 0, 1.0f);
+        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(mIndicator, "alpha", 0, 1.0f);
+        AnimatorSet as = new AnimatorSet();
+        as.playTogether(alphaAnimator1, alphaAnimator2);
+        as.setDuration(400);
+        as.start();
     }
 
     private void moveToCurItem() {
@@ -336,7 +337,7 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
                             } else {
                                 Intent intent = null;
                                 intent = new Intent(getContext(), LockScreenActivity.class);
-//                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("quick_lock_mode", true);
                                 intent.putExtra("lock_mode_id", mode.modeId);
                                 intent.putExtra("lock_mode_name", mode.modeName);
