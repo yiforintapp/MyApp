@@ -59,9 +59,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         mProgressBar.setMax(100);
 
         mCloseView.setOnClickListener(this);
-        mBackView.setOnClickListener(this);
-        mNextView.setOnClickListener(this);
         mFlushView.setOnClickListener(this);
+        disableNextBtn();
+        disableBackBtn();
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -148,6 +148,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private void disableNextBtn() {
         mNextView.setImageResource(R.drawable.next_icon_disable);
         mNextView.setOnClickListener(null);
+        Log.i(TAG,"disableNextBtn");
     }
 
     @Override

@@ -155,7 +155,7 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
