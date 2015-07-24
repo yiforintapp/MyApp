@@ -274,15 +274,16 @@ public class ZipperView extends View {
                     if (mIsZipperTouched)
                     // if(event.getX()>(mWidth-mZipper.getWidth())/2&&event.getX()<(mWidth+mZipper.getWidth())/2&&event.getY()>mYp&&event.getY()<mYp+mZipper.getHeight())
                     {
-                        if(mYp>mFMask.getHeight())
-                        {
-                            mYp=mFMask.getHeight();
-                        }
-                        else
-                        {
-                            mYp = y;
-                        }
-                       
+//                        if(mYp>mFMask.getHeight())
+//                        {
+//                            mYp=mFMask.getHeight();
+//                        }
+//                        else
+//                        {
+//                            mYp = y;
+//                        }
+                        mYp=Math.min(y, mFMask.getHeight());//解决虚拟键盘时mask露出的bug
+                        Log.i("zipper", "mFMask.height=="+mFMask.getHeight()+"and now mYp=="+mYp);
                         invalidate();
 
                     }
