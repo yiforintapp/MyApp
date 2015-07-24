@@ -1,8 +1,11 @@
 
 package com.leo.appmaster.applocker;
 
+import android.app.Service;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -17,7 +20,7 @@ public class BeautyWeiZhuang extends BaseActivity
     private LEOAlarmDialog mAlarmDialog;
     private AppMasterPreference mAppMasterSP;
     private ZipperView mZipperView;
-    
+    private Vibrator vib;
     
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +43,7 @@ public class BeautyWeiZhuang extends BaseActivity
                         getString(R.string.open_weizhuang_dialog_sure));
             }
         });
-        
+        vib = (Vibrator) this.getSystemService(Service.VIBRATOR_SERVICE);
     }
         
     private void showAlarmDialog(String title, String content, String sureText)
@@ -54,8 +57,10 @@ public class BeautyWeiZhuang extends BaseActivity
                     // ok
                     if (which == 1)
                     {               
-                        mAppMasterSP.setPretendLock(BEAUTYWEIZHUANG);             
+                        mAppMasterSP.setPretendLock(BEAUTYWEIZHUANG);       
+                        vib.vibrate(150);
                         BeautyWeiZhuang.this.finish();
+//                        Toast.makeText(this, getString(R.string.beauty_mode_ok), 0).show();
                     }
 
                 }
@@ -65,5 +70,12 @@ public class BeautyWeiZhuang extends BaseActivity
         mAlarmDialog.setTitle(title);
         mAlarmDialog.setContent(content);
         mAlarmDialog.show();
+    }
+    protected void onDestroy() {
+        if (mAlarmDialog != null) {
+            mAlarmDialog.dismiss();
+            mAlarmDialog = null;
+        }
+        super.onDestroy();
     }
 }
