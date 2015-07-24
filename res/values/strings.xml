@@ -767,6 +767,7 @@
     <string name="zipper_too_fast">哎呀，拉慢一点 </string>
     <string name="zipper_too_slow">哎哟，拉快一点嘛</string>
     <string name="theme_apply_title">是否应用解锁主题:%1$s ?</string>
+     <string name="input_toast_no_number_tip">Please enter the phone number</string>
     <!-- 2.6 end -->
 
 </resources>
