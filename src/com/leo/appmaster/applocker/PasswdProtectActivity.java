@@ -180,7 +180,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                         .getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.showSoftInput(mAnwser, InputMethodManager.SHOW_IMPLICIT);
             }
-        }, 300);
+        }, 200);
 
         mAnwser.setOnClickListener(this);
         mAnwser.setOnFocusChangeListener(new OnFocusChangeListener() {
