@@ -96,6 +96,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private boolean isCbHere = false;
     private int mFromWhere = 0;
     private boolean isServiceDo = false;
+    private boolean isBindServiceOK = false;
+    private boolean isHaveServiceToBind = false;
 
     private void init() {
         mSelectAll = (Button) findViewById(R.id.select_all);
@@ -175,12 +177,16 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     class AdditionServiceConnection implements ServiceConnection {
         public void onServiceConnected(ComponentName name, IBinder boundService) {
             mService = mInterface.Stub.asInterface((IBinder) boundService);
+            isHaveServiceToBind = true;
+            isBindServiceOK = true;
             LeoLog.d("testBindService", "connect service");
         }
 
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mService = null;
+            isHaveServiceToBind = true;
+            isBindServiceOK = false;
             LeoLog.d("testBindService", "disconnect service");
         }
     }
@@ -415,7 +421,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 mHideVideoAdapter.notifyDataSetChanged();
                 break;
             case R.id.hide_image:
-
                 if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                     if (mClickList.size() > 0) {
                         VideoItemBean item = mClickList.get(0);
@@ -425,17 +430,29 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                 .getSecondDirNameFromFilepath(mPath);
                         if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
                                 && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
-                            if (isCbHere
-                                    && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
-                                // bindservice to do
-                                isServiceDo = true;
-                                showAlarmDialog();
+                            if (isCbHere) {
+                                if (isHaveServiceToBind) {
+                                    if (isBindServiceOK) {
+                                        isServiceDo = true;
+                                    }
+                                    showAlarmDialog();
+                                } else {
+                                    // need new cb
+                                    mSelectAll.setText(R.string.app_select_all);
+                                    mClickList.clear();
+                                    updateRightButton();
+                                    mHideVideoAdapter.notifyDataSetChanged();
+                                    String mContent = getString(R.string.video_hide_need_new_cb);
+                                    showDownLoadNewCbDialog(mContent);
+                                }
                             } else {
                                 mSelectAll.setText(R.string.app_select_all);
                                 mClickList.clear();
                                 updateRightButton();
                                 mHideVideoAdapter.notifyDataSetChanged();
-                                showDownLoadNewCbDialog();
+                                // no cb , goto download
+                                String mContentString = getString(R.string.video_hide_need_cb);
+                                showDownLoadNewCbDialog(mContentString);
                             }
                         } else {
                             showAlarmDialog();
@@ -444,7 +461,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 } else {
                     showAlarmDialog();
                 }
-
                 break;
             case R.id.tv_option_image:
                 if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
@@ -512,37 +528,23 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
 
                         if (mActivityMode == Constants.SELECT_HIDE_MODE) {
 
+                            // new
                             if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                                    && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
-                                if (isCbHere
-                                        && mCbVersionCode >= VideoHideMainActivity.TARGET_VERSION) {
-                                    // bindservice to do
-                                    isServiceDo = true;
-                                    showProgressDialog(getString(R.string.tips),
-                                            getString(R.string.app_hide_image) + "...", true, true);
-                                    BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
-                                    task.execute(true);
-                                    mHideVideoAdapter.notifyDataSetChanged();
-                                } else {
-                                    Toast.makeText(VideoGriActivity.this,
-                                            getString(R.string.app_hide_video_fail),
-                                            Toast.LENGTH_SHORT).show();
-                                    mSelectAll.setText(R.string.app_select_all);
-                                    mClickList.clear();
-                                    updateRightButton();
-                                    mHideVideoAdapter.notifyDataSetChanged();
-                                }
-                            } else {
-                                showProgressDialog(getString(R.string.tips),
-                                        getString(R.string.app_hide_image) + "...", true, true);
-                                BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
-                                task.execute(true);
-                                mHideVideoAdapter.notifyDataSetChanged();
-                                /* SDK:use hide video */
-                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                        "hide_Video",
-                                        "used");
+                                    && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)
+                                    && isCbHere && isHaveServiceToBind && isBindServiceOK) {
+                                isServiceDo = true;
                             }
+                            
+                            showProgressDialog(getString(R.string.tips),
+                                    getString(R.string.app_hide_image) + "...", true, true);
+                            BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
+                            task.execute(true);
+                            mHideVideoAdapter.notifyDataSetChanged();
+                            /* SDK:use hide video */
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                    "hide_Video",
+                                    "used");
+
                         } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_cancel_hide_image) + "...",
@@ -568,7 +570,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mDialog.show();
     }
 
-    protected void showDownLoadNewCbDialog() {
+    protected void showDownLoadNewCbDialog(String mContent) {
         if (mDialog == null) {
             mDialog = new LEOAlarmDialog(this);
         }
@@ -582,7 +584,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             }
         });
         mDialog.setCanceledOnTouchOutside(false);
-        mDialog.setContent(getString(R.string.video_hide_need_new_cb));
+        mDialog.setContent(mContent);
         mDialog.setSureButtonText(getString(R.string.button_install));
         mDialog.show();
     }
@@ -640,6 +642,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             break;
                         mUnhidePath.add(item.getPath());
                         if (isServiceDo) {
+                            
                             int mProcessType = -1;
                             try {
                                 mProcessType = mService.hideVideo(item.getPath());
@@ -652,6 +655,27 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                 mUnhidePath.remove(item.getPath());
                                 isSuccess = false;
                             }
+                            
+                            // if cb can not do this , pg do this
+                            if(!isSuccess){
+                                newFileName =
+                                        FileOperationUtil.getNameFromFilepath(item.getPath());
+                                newFileName = newFileName + ".leotmv";
+                                if (FileOperationUtil.renameFile(item.getPath(),
+                                        newFileName)) {
+                                    FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
+                                            FileOperationUtil.getDirPathFromFilepath(item.getPath()),
+                                            newFileName), context);
+                                    FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
+                                            context);
+
+                                    mVideoItems.remove(item);
+                                } else {
+                                    mUnhidePath.remove(item.getPath());
+                                    isSuccess = false;
+                                }
+                            }
+                            
                         } else {
                             newFileName =
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
@@ -690,6 +714,31 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             } else if (mProcessType == -1) {
                                 isSuccess = false;
                             }
+
+                            // if cb can not do this , pg do this
+                            if (!isSuccess) {
+                                try {
+                                    newFileName =
+                                            FileOperationUtil.getNameFromFilepath(item.getPath());
+                                    newFileName = newFileName.substring(1,
+                                            newFileName.indexOf(".leotmv"));
+                                    if (FileOperationUtil.renameFile(item.getPath(),
+                                            newFileName)) {
+                                        FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+                                                .makePath(
+                                                        FileOperationUtil
+                                                                .getDirPathFromFilepath(item
+                                                                        .getPath()),
+                                                        newFileName), context);
+                                        FileOperationUtil.deleteFileMediaEntry(item.getPath(),
+                                                context);
+                                        mVideoItems.remove(item);
+                                    }
+                                } catch (Exception e) {
+                                    isSuccess = false;
+                                }
+                            }
+
                         } else {
                             try {
                                 newFileName =
@@ -723,8 +772,14 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             mClickList.clear();
             if (!isSuccess) {
                 mSelectAll.setText(R.string.app_select_all);
-                Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_video_fail),
-                        Toast.LENGTH_SHORT).show();
+                if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
+                    Toast.makeText(VideoGriActivity.this,
+                            getString(R.string.video_cencel_hide_fail),
+                            Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_video_fail),
+                            Toast.LENGTH_SHORT).show();
+                }
             }
             dismissProgressDialog();
             if (mVideoItems.size() > 0) {

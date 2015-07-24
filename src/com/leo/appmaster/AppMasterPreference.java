@@ -139,6 +139,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_WEIZHUANG_FIRST_IN = "weizhuang_first_in";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
 
+    // hideVideo
+    public static final String PREF_HIDE_VIDEO_LAST_DIR = "hide_video_last_dir";
+    public static final String PREF_HIDE_VIDEO_SECOND_DIR = "hide_video_second_dir";
+
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
     private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED = "time_lock_mode_guide_user_clicked";
@@ -257,7 +261,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private SharedPreferences mPref;
     private static AppMasterPreference mInstance;
     private int mEnterHomeTimes = -1;
-    private int mUseStrengthModeTimes,mGestureSlideAnimShowTimes,mLastTimeLayout = -1;
+    private int mUseStrengthModeTimes, mGestureSlideAnimShowTimes, mLastTimeLayout = -1;
     private boolean mHasEverCloseWhiteDot;
     private boolean mNeedShowWhiteDotSlideTip;
 
@@ -1594,6 +1598,26 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
                 .commit();
     }
 
+    public String getLastDir() {
+        return mPref.getString(PREF_HIDE_VIDEO_LAST_DIR,
+                "");
+    }
+
+    public void setLastDir(String path) {
+        mPref.edit().putString(PREF_HIDE_VIDEO_LAST_DIR, path)
+                .commit();
+    }
+
+    public String getSecondDir() {
+        return mPref.getString(PREF_HIDE_VIDEO_SECOND_DIR,
+                "");
+    }
+
+    public void setSecondDi(String path) {
+        mPref.edit().putString(PREF_HIDE_VIDEO_SECOND_DIR, path)
+                .commit();
+    }
+
     public boolean getLoadedSwitchList() {
         return mPref.getBoolean(PREF_QUICK_GESTURE_LOADED_QUICKSWITCH_LIST,
                 false);
@@ -1746,7 +1770,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getLastTimeLayout() {
-        if(mLastTimeLayout < 0){
+        if (mLastTimeLayout < 0) {
             mLastTimeLayout = mPref.getInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT, 3);
         }
         return mLastTimeLayout;
@@ -1946,21 +1970,23 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getRemoveQuickGestureIcon() {
         return mPref.getBoolean(PREF_QUICK_REMOVE_ICON, false);
     }
-    
+
     /**
-     * add the show time of  gesture slide animation 
+     * add the show time of gesture slide animation
      */
-    public void addGestureSlideAnimTimes(){
-        if(mGestureSlideAnimShowTimes < 0){
+    public void addGestureSlideAnimTimes() {
+        if (mGestureSlideAnimShowTimes < 0) {
             mGestureSlideAnimShowTimes = getGestureSlideAnimTimes();
         }
-        if(mGestureSlideAnimShowTimes <2){
-            mGestureSlideAnimShowTimes ++;
+        if (mGestureSlideAnimShowTimes < 2) {
+            mGestureSlideAnimShowTimes++;
             mPref.edit().putInt(PREF_QUICK_SLIDE_ANIM_SHOW_TIMES, mGestureSlideAnimShowTimes);
         }
     }
+
     /**
-     * get the show times of  gesture slide animation 
+     * get the show times of gesture slide animation
+     * 
      * @return
      */
     public int getGestureSlideAnimTimes() {

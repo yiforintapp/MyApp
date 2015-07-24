@@ -36,6 +36,7 @@ import android.util.Log;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 public class FileOperationUtil {
 
@@ -153,6 +154,21 @@ public class FileOperationUtil {
         }
         return "";
     }
+    
+    public static String getLastDirNameFromCb(String path){
+        if (path != null) {
+            String dirName = path;
+            int pos = path.lastIndexOf('/');
+            if(pos != -1){
+                dirName = dirName.substring(pos + 1);
+                return dirName;
+            }
+        }
+         return "";
+    }
+    
+    
+    
 
     /**
      * rename a file

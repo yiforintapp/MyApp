@@ -38,12 +38,12 @@
 
         <ImageView
             android:id="@+id/iv_cb_icon"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_gravity="right"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="7dp"
-            android:src="@drawable/disguise_icon"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_gravity="left"
+            android:layout_marginLeft="12dp"
+            android:layout_marginTop="12dp"
+            android:src="@drawable/cool_browser_icon"
             android:visibility="gone" />
     </FrameLayout>
 
