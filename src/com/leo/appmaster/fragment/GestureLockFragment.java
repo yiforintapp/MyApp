@@ -111,9 +111,6 @@ public class GestureLockFragment extends LockFragment implements
                 mAppIcon.setImageDrawable(AppUtil.getDrawable(
                         mActivity.getPackageManager(), mActivity.getPackageName()));
             }
-        } else {
-            mAppIcon.setImageDrawable(AppUtil.getDrawable(
-                    mActivity.getPackageManager(), mActivity.getPackageName()));
         }
     }
 
@@ -221,7 +218,7 @@ public class GestureLockFragment extends LockFragment implements
 
     @Override
     public void onLockPackageChanged(String lockedPackage) {
-        if (!TextUtils.equals(lockedPackage, mPackageName)) {
+        if (!TextUtils.equals(lockedPackage, mPackageName) && !TextUtils.isEmpty(lockedPackage)) {
             mPackageName = lockedPackage;
             mInputCount = 0;
             mGestureTip.setText(R.string.please_input_gesture);
@@ -232,12 +229,10 @@ public class GestureLockFragment extends LockFragment implements
                     mActivity.getPackageManager(), mPackageName));
         }
 
-        mAppIcon.setImageDrawable(AppUtil.getDrawable(
-                mActivity.getPackageManager(), mPackageName));
         mAppIcon.setVisibility(View.VISIBLE);
     }
-    
-    public void reInvalideGestureView(){
+
+    public void reInvalideGestureView() {
         mLockPatternView.resetIfHideLine();
     }
 }

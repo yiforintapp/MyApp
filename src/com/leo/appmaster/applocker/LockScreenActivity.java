@@ -270,7 +270,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockedPackage = getPackageName();
             mTtileBar.setTitle(R.string.change_lock_mode);
         } else {
-            mLockedPackage = intent.getStringExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG);
             mTtileBar.setTitle(R.string.app_name);
         }
 
