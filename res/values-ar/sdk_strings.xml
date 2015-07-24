@@ -36,8 +36,7 @@
 <!--         <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>更新了</string>
     <string name="version_found">发现最新版本<xliff:g id="new_version">%1$s</xliff:g>点击更新</string> -->
     <string name="update_available">تم تحديث<xliff:g id="app_name">%1$s</xliff:g> </string>
-    <string name="version_found">توجد أحدث نسخة <xliff:g id="new_version">%1$s</xliff:g>  انقر تحديث</string>
-      انقر تحديث
+    <string name="version_found"><xliff:g id="new_version">%1$s</xliff:g>توجد أحدث نسخة انقر تحديث</string>
     <!--  -->
     
     <string name="click_to_update">انقر التحديث</string>
