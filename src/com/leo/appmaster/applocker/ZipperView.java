@@ -61,6 +61,8 @@ public class ZipperView extends View {
     private Context mContext;
     private DisplayMetrics mDisplayMetrics;
     private OnGestureSuccessListener mSuccess = null;
+    private OnGestureTooFastListener mTooFast=null;
+    private OnGestureTooSlowListener mTooSlow=null;
     private Handler mhandler = new Handler();
     private boolean mIsZipperTouched = false;
     private Paint mPaint;
@@ -107,7 +109,31 @@ public class ZipperView extends View {
     public void setOnGestureSuccessListener(OnGestureSuccessListener success) {
         mSuccess = success;
     }
-
+    
+    public interface OnGestureTooFastListener
+    {
+        public void OnGestureTooFast();
+    }
+    
+    public void setOnGestureTooFastListener(OnGestureTooFastListener tooFast)
+    {
+        mTooFast=tooFast;
+    }
+    
+    public interface OnGestureTooSlowListener
+    {
+        public void OnGestureTooSlow();
+    }
+    
+    public void setOnGestureTooSlowListener(OnGestureTooSlowListener tooSlow)
+    {
+        mTooSlow=tooSlow;
+    }
+    
+    
+    
+    
+    
     private boolean zipperBeTouched;
     private boolean isGesture;
     private float px01;
@@ -269,11 +295,19 @@ public class ZipperView extends View {
                         {
                             if (event.getY()/durationTime*1000 < mHeight*1.5)
                             {
-                                Toast.makeText(getContext(), mContext.getResources().getString(R.string.zipper_too_slow), 0).show();
+                                if(mTooSlow!=null)
+                                {
+                                    mTooSlow.OnGestureTooSlow();                                    
+                                }
+//                                Toast.makeText(getContext(), mContext.getResources().getString(R.string.zipper_too_slow), 0).show();
                             }
                             else
                             {
-                                Toast.makeText(getContext(), mContext.getResources().getString(R.string.zipper_too_fast), 0).show();
+                                if(mTooFast!=null)
+                                {
+                                    mTooFast.OnGestureTooFast();                                    
+                                }
+//                                Toast.makeText(getContext(), mContext.getResources().getString(R.string.zipper_too_fast), 0).show();
                             }
                             this.mhandler.postDelayed(animGoBack, 1l);
 
@@ -359,8 +393,12 @@ public class ZipperView extends View {
                             ||(py01>py02&&ay01<py01-50&&ay02>py02+50))                   
                     
                     {
+                        if(mSuccess!=null)
+                        {
+                            mSuccess.OnGestureSuccess();
+                            
+                        }
                         // Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
-                        mSuccess.OnGestureSuccess();
                     }
 
                     break;
