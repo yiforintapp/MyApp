@@ -7,8 +7,7 @@
    <com.leo.appmaster.applocker.ZipperView
            android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/zipperview_unlock"
-       
+    android:id="@+id/zipperview_unlock"       
        />
 
 </RelativeLayout>

@@ -42,8 +42,7 @@ public class BeautyWeiZhuang extends BaseActivity
         });
         
     }
-    
-    
+        
     private void showAlarmDialog(String title, String content, String sureText)
     {
         if (mAlarmDialog == null)
