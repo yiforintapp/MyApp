@@ -181,6 +181,7 @@
                 android:layout_height="match_parent"
                 android:layout_below="@id/flow_contain"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/app_manager_flow_chart_margin_top"
                 android:orientation="vertical" >
 
                 <com.leo.appmaster.ui.MyHorizontalScrollView
@@ -199,7 +200,7 @@
                     android:id="@+id/tv_below_chart"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginBottom="@dimen/app_manager_lineview_margin_bottom"
+                    android:layout_marginTop="@dimen/app_manager_lineview_margin_top"
                     android:background="@color/white"
                     android:gravity="center"
                     android:text="@string/flow_charts_this_month"
