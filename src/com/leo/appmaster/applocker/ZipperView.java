@@ -158,17 +158,17 @@ public class ZipperView extends View {
         if(mFLeft==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFLeft=Bitmap.createScaledBitmap(mLeft, (int)(mLeft.getWidth()*mDisplayMetrics.density), (int)(mLeft.getHeight()*mDisplayMetrics.density), false);
+            mFLeft=Bitmap.createScaledBitmap(mLeft, (int)((float)(mLeft.getWidth()*mScaleW)), (int)((float)(mLeft.getHeight()*mScaleH)), false);
         }
         if(mFRight==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFRight=Bitmap.createScaledBitmap(mRight, (int)(mRight.getWidth()*mDisplayMetrics.density), (int)(mRight.getHeight()*mDisplayMetrics.density), false);
+            mFRight=Bitmap.createScaledBitmap(mRight,(int)((float)(mRight.getWidth()*mScaleW)), (int)((float)(mRight.getHeight()*mScaleH)), false);
         }
         if(mFZipper==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFZipper= Bitmap.createScaledBitmap(mZipper, (int)(mZipper.getWidth()*mDisplayMetrics.density), (int)(mZipper.getHeight()*mDisplayMetrics.density), false);
+            mFZipper= Bitmap.createScaledBitmap(mZipper, (int)((float)(mZipper.getWidth()*mScaleW)), ((int)(float)(mZipper.getHeight()*mScaleH)), false);
         }
         if(mFCowBoy==null)
         {
@@ -202,8 +202,8 @@ public class ZipperView extends View {
 //        canvas.drawBitmap(mDrawbleBg, 0, 0, mPaint);
         mCanvas.drawBitmap(mFCowBoy, 0, 0, mPaint);
         mCanvas.drawBitmap(mFMask, 0, mYp-mFMask.getHeight(), mSpecialPaint);    
-        mCanvas.drawBitmap(mFLeft, -(mFLeft.getWidth()-mCenterX)+(int)(mDisplayMetrics.density*0.5),mYp-mFLeft.getHeight() , mPaint);
-        mCanvas.drawBitmap(mFRight, mCenterX-(int)(mDisplayMetrics.density*1.5), mYp-mFRight.getHeight(), mPaint);
+        mCanvas.drawBitmap(mFLeft, -(mFLeft.getWidth()-mCenterX)+(int)(mDisplayMetrics.density*5.5),mYp-mFLeft.getHeight() , mPaint);
+        mCanvas.drawBitmap(mFRight, mCenterX-(int)(mDisplayMetrics.density*7.5), mYp-mFRight.getHeight(), mPaint);
         mCanvas.drawBitmap(mFZipper, mCenterX-mFZipper.getWidth()/2, (int)(mYp-25.0*mScaleH), mPaint);
         
         canvas.drawBitmap(mFBitmap, 0, 0, mPaint);
@@ -292,10 +292,10 @@ public class ZipperView extends View {
                     break;
                 case MotionEvent.ACTION_DOWN: {
                     // 4是让识别区域变大点
-                    if (event.getX() > (mWidth - mZipper.getWidth() - 8) / 2
-                            && event.getX() < (mWidth + mZipper.getWidth() + 8) / 2
-                            && event.getY() > mYp - 15
-                            && event.getY() < mYp + mZipper.getHeight() + 15)
+                    if (event.getX() > (mWidth - mFZipper.getWidth() - 0) / 2
+                            && event.getX() < (mWidth + mFZipper.getWidth() + 0) / 2
+                            && event.getY() > mYp - 0
+                            && event.getY() < mYp + mFZipper.getHeight() + 0)
                     {
                         downtime = System.currentTimeMillis();
                         mIsZipperTouched = true;
@@ -353,13 +353,33 @@ public class ZipperView extends View {
                     Log.e("poha", "ax02:" + ax02);
                     Log.e("poha", "ay02:" + ay02);
 
-                   
-                  
+                    if ( (px01 <= px02 && ax01 > px01 + 50 && ax02 < px02 - 50)                   //01点在左，则需要抬起时01点往右移了30，02点往左移了30
+                            || (px01 > px02&& ax01 < px01 - 50 && ax02 > px02 + 50)              //或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30
+                            ||(py01 <= py02 && ay01 > py01 + 50&&ay02<py02-50)                  //或者 01点在上，则需要抬起时01点往下移了30，02点往上移了30   
+                            ||(py01>py02&&ay01<py01-50&&ay02>py02+50))                   
+                    
+                    {
+                        // Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
+                        mSuccess.OnGestureSuccess();
+                    }
 
-                    if ( (px01 <= px02 && ax01 > px01 + 20 && ax02 < px02 - 20)                   //01点在左，则需要抬起时01点往右移了30，02点往左移了30
-                            || (px01 > px02&& ax01 < px01 - 20 && ax02 > px02 + 20)              //或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30
-                            ||(py01 <= py02 && ay01 > py01 + 30&&ay02<py02-30)                  //或者 01点在上，则需要抬起时01点往下移了30，02点往上移了30   
-                            ||(py01>py02&&ay01<py01-30&&ay02>py02+30))                   
+                    break;
+                case MotionEvent.ACTION_POINTER_2_UP:
+
+                    float aax01 = event.getX(0);
+                    float aay01 = event.getY(0);
+                    float aax02 = event.getX(1);
+                    float aay02 = event.getY(1);
+
+                    Log.e("poha", "ax01:" + aax01);
+                    Log.e("poha", "ay01:" + aay01);
+                    Log.e("poha", "ax02:" + aax02);
+                    Log.e("poha", "ay02:" + aay02);
+
+                    if ( (px01 <= px02 && aax01 > px01 + 50 && aax02 < px02 - 50)                   //01点在左，则需要抬起时01点往右移了30，02点往左移了30
+                            || (px01 > px02&& aax01 < px01 - 50 && aax02 > px02 + 50)              //或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30
+                            ||(py01 <= py02 && aay01 > py01 + 50&&aay02<py02-50)                  //或者 01点在上，则需要抬起时01点往下移了30，02点往上移了30   
+                            ||(py01>py02&&aay01<py01-50&&aay02>py02+50))                   
                     
                     {
                         // Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
