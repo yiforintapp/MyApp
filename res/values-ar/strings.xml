@@ -198,7 +198,7 @@
     <!--  <string name="query_delete">是否删除%1$s的备份文件，删除后不可恢复！</string>
     <string name="backuped_count">成功备份%1$d个文件。存放位置：%2$s</string> -->
     <string name="query_delete"><xliff:g>%1$s</xliff:g>هل تحذف ملف محفوظ، لا يمكن استعادة بعد حذف!</string>
-    <string name="backuped_count"  > <xliff:g>%1$d</xliff:g>  تم حفظ ملف  . <xliff:g>%2$d</xliff:g> مكان تخزين: </string>
+    <string name="backuped_count"  > <xliff:g>%1$d</xliff:g>  تم حفظ ملف  . <xliff:g>%2$s</xliff:g> مكان تخزين: </string>
     <!--  -->
     
     <string name="feedback_commit">تقديم</string>
