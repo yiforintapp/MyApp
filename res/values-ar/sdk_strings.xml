@@ -9,7 +9,7 @@
 
     <!-- TODO -->
     <!-- <string name="downloading"><xliff:g id="app_name">%1$s</xliff:g>正在下载</string> -->
-    <string name="downloading"><xliff:g id="app_name">%1$s</xliff:g>جاري التحميل</string>
+    <string name="downloading">جاري التحميل<xliff:g id="app_name">%1$s</xliff:g></string>
     <string name="downloading_notification"><xliff:g id="app_name">%1$s</xliff:g>&#160;&#160;&#160;&#160;<xliff:g id="percentage">%2$d</xliff:g>جاري التحميل</string>
     <string name="downloaded_size"><xliff:g id="done">%1$1.2f</xliff:g>MB/<xliff:g id="total">%2$1.2f</xliff:g>MB</string>
     <string name="update_datail_msg">  
@@ -35,8 +35,9 @@
     <!-- TODO -->
 <!--         <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>更新了</string>
     <string name="version_found">发现最新版本<xliff:g id="new_version">%1$s</xliff:g>点击更新</string> -->
-    <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>تم تحديث </string>
-    <string name="version_found"><xliff:g id="new_version">%1$s</xliff:g>توجد أحدث نسخة انقر تحديث</string>
+    <string name="update_available">تم تحديث<xliff:g id="app_name">%1$s</xliff:g> </string>
+    <string name="version_found">توجد أحدث نسخة <xliff:g id="new_version">%1$s</xliff:g>  انقر تحديث</string>
+      انقر تحديث
     <!--  -->
     
     <string name="click_to_update">انقر التحديث</string>
