@@ -61,6 +61,7 @@ public class VideoHideMainActivity extends BaseActivity implements
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     // public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
+    public static final String URL_CB = "http://www.baidu.com";
     public static final String CB_PACKAGENAME = "com.example.appmaster_service";
     public static final int TARGET_VERSION = 14;
     public static final String SECOND_CATALOG = "Coolbrowser";
@@ -72,6 +73,7 @@ public class VideoHideMainActivity extends BaseActivity implements
     private boolean isHaveCbFloder = false;
     private LEOAlarmDialog mDialog;
 
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -357,7 +359,7 @@ public class VideoHideMainActivity extends BaseActivity implements
                 public void onClick(int which) {
                     if (which == 1) {
                         //getURL and go browser
-                        
+                        requestUrl();
                     }
                 }
             });
@@ -378,6 +380,12 @@ public class VideoHideMainActivity extends BaseActivity implements
             }
         }
 
+    }
+
+    private void requestUrl() {
+        Uri uri = Uri.parse(URL_CB);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        this.startActivity(intent);
     }
 
     private void checkCbAndVersion() {

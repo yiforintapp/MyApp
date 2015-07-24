@@ -577,7 +577,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             public void onClick(int which) {
                 if (which == 1) {
                     // getURL and go browser
-
+                    requestUrl();
                 }
             }
         });
@@ -585,6 +585,12 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mDialog.setContent(getString(R.string.video_hide_need_new_cb));
         mDialog.setSureButtonText(getString(R.string.button_install));
         mDialog.show();
+    }
+
+    private void requestUrl() {
+        Uri uri = Uri.parse(VideoHideMainActivity.URL_CB);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        this.startActivity(intent);
     }
 
     @Override
