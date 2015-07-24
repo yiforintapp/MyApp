@@ -264,6 +264,9 @@
     <dimen name="privacy_default_image_width">100dp</dimen>
     <dimen name="privacy_default_image_height">100dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">42dp</dimen>
+    <dimen name="app_manager_headview_three_text_margin_top">3dp</dimen>
+    <dimen name="app_manager_flow_chart_margin_top">12dp</dimen>
+     <dimen name="app_manager_lineview_margin_top">10dp</dimen> 
     <!-- 2.6 end -->
 
 </resources>

@@ -44,7 +44,7 @@ public class LeoPopMenu {
 
     protected static float newSmallWidth;
     protected static float newLongWidth;
-    protected static int mIconOffest = 0;
+    protected  int mIconOffest = 0;
     protected Context mContext;
 
     public static class LayoutStyles {
@@ -114,7 +114,7 @@ public class LeoPopMenu {
                 newLongWidth += DipPixelUtil.dip2px(mContext, mIconOffest);
                 popWidth = newLongWidth;
             }
-            LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth);
+            LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth+" mIconOffest = "+mIconOffest);
             mStyles.width = DipPixelUtil.dip2px((Context) mContext, popWidth);
             // LeoLog.d("LeoPopMenu", "dip2px popWidth is : " + mStyles.width);
             mStyles.height = LayoutParams.WRAP_CONTENT;
@@ -196,13 +196,15 @@ public class LeoPopMenu {
             if (mMaxLength > OVERPX) {
                 isOverWidth = true;
                 if (mMaxLength > 260) {
-                    newLongWidth = mMaxLength - 120;
+                    newLongWidth = mMaxLength - 130;
                 } else {
-                    newLongWidth = mMaxLength - 100;
+                    newLongWidth = mMaxLength - 110;
                 }
                 if (newLongWidth > 210) {
                     newLongWidth = 210;
                 }
+                Log.i("tag","OVERPX mMaxLength = "+mMaxLength);
+                Log.i("tag"," OVERPX newLongWidth = "+newLongWidth);
             } else {
                 isOverWidth = false;
                 if (mMaxLength < SMALLWidth) {
@@ -212,11 +214,13 @@ public class LeoPopMenu {
                 } else {
                     newSmallWidth = mMaxLength - 60;
                 }
+                Log.i("tag","SMALLWidth mMaxLength = "+mMaxLength);
+                Log.i("tag"," SMALLWidth newSmallWidth = "+newSmallWidth);
             }
         } else if (W >= 720) {
             if (mMaxLength > OVERPX) {
                 isOverWidth = true;
-                newLongWidth = LongWidth - 20;
+                newLongWidth = LongWidth - 30;
                 if (newLongWidth > 210) {
                     newLongWidth = 210;
                 }
@@ -322,7 +326,7 @@ public class LeoPopMenu {
             }
 
         }
-
+        Log.i("tag","  newLongWidth = "+newLongWidth);
     }
 
     public List<String> getPopMenuItems() {

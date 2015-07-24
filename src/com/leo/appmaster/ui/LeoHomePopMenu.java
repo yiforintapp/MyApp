@@ -18,7 +18,7 @@ import com.leo.appmaster.R;
 public class LeoHomePopMenu extends LeoPopMenu {
 
     public LeoHomePopMenu() {
-        mIconOffest = 12;
+        mIconOffest = 8;
     }
 
     public void setPopMenuItems(Context context, List<String> items, List<Integer> icons) {
