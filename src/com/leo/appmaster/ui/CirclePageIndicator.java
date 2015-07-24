@@ -19,6 +19,7 @@ package com.leo.appmaster.ui;
 
 import com.leo.appmaster.R;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -44,6 +45,7 @@ import static android.widget.LinearLayout.VERTICAL;
  * Draws circles (one for each view). The current view position is filled and
  * others are only stroked.
  */
+@SuppressLint("ClickableViewAccessibility")
 public class CirclePageIndicator extends View implements PagerIndicator {
     private static final int INVALID_POINTER = -1;
 
@@ -241,7 +243,7 @@ public class CirclePageIndicator extends View implements PagerIndicator {
         }
 
         final float threeRadius = mRadius * 5;
-        final float shortOffset = shortPaddingBefore + mRadius+getStrokeWidth();
+        final float shortOffset = shortPaddingBefore + mRadius + getStrokeWidth();
         float longOffset = longPaddingBefore + mRadius;
         if (mCentered) {
             longOffset += ((longSize - longPaddingBefore - longPaddingAfter) / 2.0f)
@@ -292,91 +294,91 @@ public class CirclePageIndicator extends View implements PagerIndicator {
         canvas.drawCircle(dX, dY, mRadius, mPaintFill);
     }
 
-    public boolean onTouchEvent(android.view.MotionEvent ev) {
-        if (super.onTouchEvent(ev)) {
-            return true;
-        }
-        if ((mViewPager == null) || (mViewPager.getAdapter().getCount() == 0)) {
-            return false;
-        }
-
-        final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
-        switch (action) {
-            case MotionEvent.ACTION_DOWN:
-                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
-                mLastMotionX = ev.getX();
-                break;
-
-            case MotionEvent.ACTION_MOVE: {
-                final int activePointerIndex = MotionEventCompat.findPointerIndex(ev,
-                        mActivePointerId);
-                final float x = MotionEventCompat.getX(ev, activePointerIndex);
-                final float deltaX = x - mLastMotionX;
-
-                if (!mIsDragging) {
-                    if (Math.abs(deltaX) > mTouchSlop) {
-                        mIsDragging = true;
-                    }
-                }
-
-                if (mIsDragging) {
-                    mLastMotionX = x;
-                    if (mViewPager.isFakeDragging() || mViewPager.beginFakeDrag()) {
-                        mViewPager.fakeDragBy(deltaX);
-                    }
-                }
-
-                break;
-            }
-
-            case MotionEvent.ACTION_CANCEL:
-            case MotionEvent.ACTION_UP:
-                if (!mIsDragging) {
-                    final int count = mViewPager.getAdapter().getCount();
-                    final int width = getWidth();
-                    final float halfWidth = width / 2f;
-                    final float sixthWidth = width / 6f;
-
-                    if ((mCurrentPage > 0) && (ev.getX() < halfWidth - sixthWidth)) {
-                        if (action != MotionEvent.ACTION_CANCEL) {
-                            mViewPager.setCurrentItem(mCurrentPage - 1);
-                        }
-                        return true;
-                    } else if ((mCurrentPage < count - 1) && (ev.getX() > halfWidth + sixthWidth)) {
-                        if (action != MotionEvent.ACTION_CANCEL) {
-                            mViewPager.setCurrentItem(mCurrentPage + 1);
-                        }
-                        return true;
-                    }
-                }
-
-                mIsDragging = false;
-                mActivePointerId = INVALID_POINTER;
-                if (mViewPager.isFakeDragging())
-                    mViewPager.endFakeDrag();
-                break;
-
-            case MotionEventCompat.ACTION_POINTER_DOWN: {
-                final int index = MotionEventCompat.getActionIndex(ev);
-                mLastMotionX = MotionEventCompat.getX(ev, index);
-                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
-                break;
-            }
-
-            case MotionEventCompat.ACTION_POINTER_UP:
-                final int pointerIndex = MotionEventCompat.getActionIndex(ev);
-                final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
-                if (pointerId == mActivePointerId) {
-                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
-                    mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
-                }
-                mLastMotionX = MotionEventCompat.getX(ev,
-                        MotionEventCompat.findPointerIndex(ev, mActivePointerId));
-                break;
-        }
-
-        return true;
-    }
+//    public boolean onTouchEvent(android.view.MotionEvent ev) {
+//        if (super.onTouchEvent(ev)) {
+//            return true;
+//        }
+//        if ((mViewPager == null) || (mViewPager.getAdapter().getCount() == 0)) {
+//            return false;
+//        }
+//
+//        final int action = ev.getAction() & MotionEventCompat.ACTION_MASK;
+//        switch (action) {
+//            case MotionEvent.ACTION_DOWN:
+//                mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+//                mLastMotionX = ev.getX();
+//                break;
+//
+//            case MotionEvent.ACTION_MOVE: {
+//                final int activePointerIndex = MotionEventCompat.findPointerIndex(ev,
+//                        mActivePointerId);
+//                final float x = MotionEventCompat.getX(ev, activePointerIndex);
+//                final float deltaX = x - mLastMotionX;
+//
+//                if (!mIsDragging) {
+//                    if (Math.abs(deltaX) > mTouchSlop) {
+//                        mIsDragging = true;
+//                    }
+//                }
+//
+//                if (mIsDragging) {
+//                    mLastMotionX = x;
+//                    if (mViewPager.isFakeDragging() || mViewPager.beginFakeDrag()) {
+//                        mViewPager.fakeDragBy(deltaX);
+//                    }
+//                }
+//
+//                break;
+//            }
+//
+//            case MotionEvent.ACTION_CANCEL:
+//            case MotionEvent.ACTION_UP:
+//                if (!mIsDragging) {
+//                    final int count = mViewPager.getAdapter().getCount();
+//                    final int width = getWidth();
+//                    final float halfWidth = width / 2f;
+//                    final float sixthWidth = width / 6f;
+//
+//                    if ((mCurrentPage > 0) && (ev.getX() < halfWidth - sixthWidth)) {
+//                        if (action != MotionEvent.ACTION_CANCEL) {
+//                            mViewPager.setCurrentItem(mCurrentPage - 1);
+//                        }
+//                        return true;
+//                    } else if ((mCurrentPage < count - 1) && (ev.getX() > halfWidth + sixthWidth)) {
+//                        if (action != MotionEvent.ACTION_CANCEL) {
+//                            mViewPager.setCurrentItem(mCurrentPage + 1);
+//                        }
+//                        return true;
+//                    }
+//                }
+//
+//                mIsDragging = false;
+//                mActivePointerId = INVALID_POINTER;
+//                if (mViewPager.isFakeDragging())
+//                    mViewPager.endFakeDrag();
+//                break;
+//
+//            case MotionEventCompat.ACTION_POINTER_DOWN: {
+//                final int index = MotionEventCompat.getActionIndex(ev);
+//                mLastMotionX = MotionEventCompat.getX(ev, index);
+//                mActivePointerId = MotionEventCompat.getPointerId(ev, index);
+//                break;
+//            }
+//
+//            case MotionEventCompat.ACTION_POINTER_UP:
+//                final int pointerIndex = MotionEventCompat.getActionIndex(ev);
+//                final int pointerId = MotionEventCompat.getPointerId(ev, pointerIndex);
+//                if (pointerId == mActivePointerId) {
+//                    final int newPointerIndex = pointerIndex == 0 ? 1 : 0;
+//                    mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
+//                }
+//                mLastMotionX = MotionEventCompat.getX(ev,
+//                        MotionEventCompat.findPointerIndex(ev, mActivePointerId));
+//                break;
+//        }
+//
+//        return true;
+//    }
 
     @Override
     public void setViewPager(ViewPager view) {
@@ -510,7 +512,7 @@ public class CirclePageIndicator extends View implements PagerIndicator {
             result = specSize;
         } else {
             // Measure the height
-            result = (int) (2 * mRadius + getPaddingTop() + getPaddingBottom() + getStrokeWidth()*2);
+            result = (int) (2 * mRadius + getPaddingTop() + getPaddingBottom() + getStrokeWidth() * 2);
             // Respect AT_MOST value if that was what is called for by
             // measureSpec
             if (specMode == MeasureSpec.AT_MOST) {
@@ -529,7 +531,7 @@ public class CirclePageIndicator extends View implements PagerIndicator {
             mSnapPage = savedState.currentPage;
             requestLayout();
         } catch (Exception e) {
-            
+
         }
     }
 
