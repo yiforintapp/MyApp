@@ -665,7 +665,6 @@ public class AppBackupRestoreManager implements AppChangeListener {
         }
         return null;
     }
-
     public String getDisplayPath() {
         return getFailMessage(FAIL_TYPE_NONE);
     }

@@ -2,30 +2,32 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:gravity="right"
+    android:orientation="vertical"
     android:padding="10dp" >
- <TextView
+
+    <TextView
         android:id="@+id/menu_text"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
+        android:layout_toLeftOf="@id/menu_icon"
         android:layout_centerVertical="true"
-        android:paddingRight="7dp"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:maxLines="3"
-        android:text="dfd"
+        android:paddingRight="7dp"
+        android:text="test"
         android:textColor="#969696"
         android:textSize="14sp" />
+
     <ImageView
         android:id="@+id/menu_icon"
         android:layout_width="18dp"
         android:layout_height="18dp"
+        android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-           android:layout_toRightOf="@id/menu_text"
         android:src="@drawable/reset_pasword_icon" />
 
-        <!-- android:layout_marginLeft="16dp" -->
-   
+    <!-- android:layout_marginLeft="16dp" -->
 
 </RelativeLayout>

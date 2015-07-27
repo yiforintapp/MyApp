@@ -719,7 +719,8 @@
     <string name="forbid_uninstall_on">高级保护开启成功！</string>
     <string name="setting_hide_lockline">隐藏解锁轨迹</string>
     <string name="change_to_gesture">切换为手势密码</string>
-    <string name="change_to_password">切换为数字密码</string>
+   <!--  <string name="change_to_password">切换为数字密码</string> -->
+   <string name="change_to_password">切换为数字密字密字密字密字密字密字密字密字密字密字密字密字密码</string>
     <string name="summary_newapp_lock">新安装应用时，一键快速加锁</string>
     <string name="summary_aacelerate_after_unlock">解锁应用时清理内存，自动提速</string>
     <string name="summary_autolock_after_lockscreen">锁屏后所有应用重新锁定</string>
