@@ -138,13 +138,11 @@ public class QuickGestureManager {
     }
 
     private void preloadIconMatcherColor() {
-        long startTime = System.currentTimeMillis();
         AppLoadEngine engine = AppLoadEngine.getInstance(mContext);
         ArrayList<AppItemInfo> allApps = engine.getAllPkgInfo();
         for (AppItemInfo appItemInfo : allApps) {
             getMatchedColor(appItemInfo.icon);
         }
-        long endTime = System.currentTimeMillis();
     }
 
     public List<String> getDeletedBusinessList() {
