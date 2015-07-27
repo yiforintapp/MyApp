@@ -79,7 +79,7 @@
     <string name="set_protect_message">"من أجل تجنب نسيان كلمة المرور وعدم إمكان دخول قفل التطبيق، يقترح إعداد سؤال الحماية، هل تجهزه؟"</string>
 
     <!-- TODO -->
-    <string name="find_gesture">忘记密码</string>
+    <string name="find_gesture">نسيت كلمة المرور</string>
     <!--  -->
 
     <string name="pp_success">تم إعداد حماية كلمة المرور</string>
@@ -126,7 +126,7 @@
     <string name="storage_size">剩余存储空间: %1$s</string>
     <string name="use_storage_size">已用空间: %1$s</string>
     -->
-    <string name="deleting_app"> جاري حذف:<xliff:g>%1$s</xliff:g> </string>
+    <string name="deleting_app"> جاري حذف:<xliff:g>%1$s</xliff:g></string>
     <string name="installed_app_size"> تطبيق مثبت:<xliff:g>%1$d</xliff:g></string>
     <string name="apk_size">حجم:<xliff:g>%1$s</xliff:g></string>
     <string name="storage_size"> حيز التخزبن الباقي: <xliff:g>%1$s</xliff:g></string>
@@ -177,7 +177,7 @@
     <string name="app_setting_about">حولنا</string>
 
     <!-- TODO -->
-    <string name="forbid_uninstall">高级保护</string>
+    <string name="forbid_uninstall">الحماية المتقدمة</string>
     <!--  -->
 
     <string name="auto_lock">يقفل بعد الإغلاق</string>
@@ -193,7 +193,7 @@
     <!-- TODO -->
     <!-- <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string> -->
     <string name="new_install_lock_remind">تم فحص أنكم ثبتت <xliff:g>%1$s</xliff:g>، نقترح لكم قفله</string>
-    
+
     <!--  -->
 
     <string name="no_unlocked_item_tip">لا يوجد تطبيق غير مقفل</string>
@@ -358,7 +358,7 @@
 
     <!-- TODO -->
     <!-- <string name="install_time">%1$s天前</string> -->
-    <string name="install_time">قبل أيام<xliff:g>%1$s</xliff:g> </string>
+    <string name="install_time">قبل أيام<xliff:g>%1$s</xliff:g></string>
     <!--  -->
 
     <string name="folder_new">جديد</string>
@@ -498,7 +498,7 @@
     <string name="mode_change">已启用<xliff:g id="mode">%1$s</xliff:g></string>
     <string name="lock_change">已启用<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
     -->
-    <string name="mode_change">تم تشغيل <xliff:g id="mode">%1$s</xliff:g> </string>
+    <string name="mode_change">تم تشغيل <xliff:g id="mode">%1$s</xliff:g></string>
     <string name="lock_change">تم تشغيل<xliff:g id="mode">%2$s</xliff:g><xliff:g>%1$s</xliff:g></string>
     <!--  -->
 
@@ -736,7 +736,7 @@
         <item>دون</item>
 
         <!-- TODO -->
-        <item>美女伪装</item>
+        <item>تمويه الجمال</item>
         <!--  -->
 
         <item>خطأ</item>
@@ -882,28 +882,36 @@
     <string name="new_guide_page3_title">إشارة سريع بيضاء</string>
     <string name="new_guide_page3_content">نقرة واحدة، عرض الإشارة</string>
     <string name="quick_open_tip">لم تشغل إشارة سريعة</string>
-    <string name="quick_setting_title">快捷手势设置</string>
-    <string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
-    <string name="quick_no_call_log_annotation">未接来电会在快捷手势中提示</string>
-    <string name="quick_no_pricay_contact_annotation">信息会以系统信息的形式提示</string>
+    <string name="quick_setting_title">إعدادات اللفتة السريعة</string>
+    <string name="quick_no_msm_annotation">تذكر الرسائل غير المقروءة في اللفتة السريعة </string>
+    <string name="quick_no_call_log_annotation">تذكر مكالمات لم يرد عليها في اللفتة السريعة </string>
+    <string name="quick_no_pricay_contact_annotation">تذكر الرسائل بشكل معلومات النظام </string>
     <!-- version 2.5 huangqili part -->
-
-
     <!-- 2.6 start -->
     <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
-    <string name="change_lock_mode">切换情景模式</string>
-    <string name="beauty_guide_title">使用介绍</string>
-    <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
-    <string name="flash_light_open_toast">请不要频繁操作闪光灯，可能造成硬件损坏</string>
-    <string name="privacy_auto_add_text">手动添加</string>
-    <string name="choose_lock_mode">选择情景模式</string>
-    <string name="button_disguise_guide_select">立刻试试</string>
-    <string name="button_disguise_guide_cancel">稍后</string>
-    <string name="button_disguise_guide_content">加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全</string>
-    <string name="traffic_over_text">已超额</string>
-    <string name="lock_line_hide">解锁轨迹已隐藏</string>
-    <string name="lock_line_visiable">解锁轨迹已显示</string>
-    <string name="video_hide_need_cb"> 由于系统原因，取消隐藏这些视频需要COOL Browser。请安装后才可使用</string>
+    <string name="beauty_mode_ok">تم بدء تشغيل وضع تمويه الجمال </string>
+    <string name="change_lock_mode">تغيير الوضع</string>
+    <string name="beauty_guide_title">تعليمات الاستخدام</string>
+    <string name="beauty_guide_content">السستة على شاشة الهاتف المحمول هي الوهم، و يقوم بتقليص الإصبعين على الشاشة للمحاولة</string>
+    <string name="flash_light_open_toast">يرجي عدم تشغيل فلاش بشكل متكرر، الا قد يؤدي الي تلف الأجهزة</string>
+    <string name="privacy_auto_add_text">أضاف يدويا</string>
+    <string name="choose_lock_mode">اختر الوضع</string>
+    <string name="button_disguise_guide_select">حاول الان</string>
+    <string name="button_disguise_guide_cancel">لاحقا</string>
+    <string name="button_disguise_guide_content">حاول وظيفة التمويه بعد تطبيق القفل لجعل التطبيق الخاص بكم أكثر أمنا</string>
+    <string name="traffic_over_text">قد تجاوز الحد</string>
+    <string name="lock_line_hide">تم اخفاء مسار الفتح</string>
+    <string name="lock_line_visiable">تم اخفاء مسار الفتح</string>
+    <string name="guide_more_text"> المزيد من الوظائف ></string>
+    <string name="guide_skip_text">القفز فوق ></string>
+    <string name="video_hide_need_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب COOLBrowser. و يرجي الاستخدام بعد التركيب.</string>
+    <string name="video_hide_need_new_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب أحدث COOLBrowser. و يرجي الغاء الاخفاء بعد التركيب.</string>
+    <string name="video_delete_need_new_cb">بسبب أسباب النظام، حذف هذا الفيديو يتطلب أحدث COOLBrowser. و يرجي الحذف بعد التركيب.</string>
+    <string name="video_cencel_hide_fail">فشل في الغاء الاخفاء</string>
+    <string name="video_delete_fail">فشل في حذف الملف</string>
+    <string name="zipper_too_fast">اسحب ببطء </string>
+    <string name="zipper_too_slow">اسحب بسرعة </string>
+    <string name="theme_apply_title">هل تريد في تطبيق موضوع الغاء القفل: s$1% ؟ </string>
     <!-- 2.6 end -->
 
 </resources>
