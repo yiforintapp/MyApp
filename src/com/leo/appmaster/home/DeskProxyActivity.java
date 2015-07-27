@@ -42,6 +42,7 @@ public class DeskProxyActivity extends Activity {
     public static final int mLockThem = 10;
     private boolean mDelayFinish = false;
     private Handler mHandler;
+    private String mCoolBrwoserString;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +51,7 @@ public class DeskProxyActivity extends Activity {
         Intent intent = getIntent();
         int type = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                 StatusBarEventService.EVENT_EMPTY);
+        mCoolBrwoserString = intent.getStringExtra("cb_download_path");
         if (type == StatusBarEventService.EVENT_EMPTY) {
             mDelayFinish = true;
             mHandler = new Handler();
@@ -59,6 +61,7 @@ public class DeskProxyActivity extends Activity {
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                         Intent.FLAG_ACTIVITY_NEW_TASK);
                 mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
+                mIntent.putExtra("cb_download_path", mCoolBrwoserString);
                 startActivity(mIntent);
             } else {
                 if (type == mAppLockType) {
@@ -156,7 +159,7 @@ public class DeskProxyActivity extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (isOppoOs && !isOpenWindow) {
+        } else if (isOppoOs && !isOpenWindow) {
             boolean backFlag = BuildProperties.startOppoManageIntent(this);
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
@@ -209,6 +212,7 @@ public class DeskProxyActivity extends Activity {
 
     private void goToHideVio(int type) {
         Intent intent = new Intent(this, VideoHideMainActivity.class);
+        intent.putExtra("cb_download_path", mCoolBrwoserString);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

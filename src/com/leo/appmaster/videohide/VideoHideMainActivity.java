@@ -31,6 +31,7 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -57,8 +58,8 @@ public class VideoHideMainActivity extends BaseActivity implements
     private HideVideoAdapter adapter;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
-    // public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
-    public static final String CB_PACKAGENAME = "com.example.appmaster_service";
+     public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
+//    public static final String CB_PACKAGENAME = "com.example.appmaster_service";
     public static final String URL_CB = "http://www.baidu.com";
     public static final int TARGET_VERSION = 14;
     public static String SECOND_CATALOG;
@@ -67,7 +68,6 @@ public class VideoHideMainActivity extends BaseActivity implements
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
     private AppMasterPreference mSpSaveDir;
-
     // private boolean isCbHere = false;
     // private boolean isHaveCbFloder = false;
 
@@ -111,7 +111,8 @@ public class VideoHideMainActivity extends BaseActivity implements
 
     private void handleIntent() {
         Intent intent = this.getIntent();
-        String mPath = intent.getStringExtra("cb_path");
+        String mPath = intent.getStringExtra("cb_download_path");
+        LeoLog.d("testIntent", "mPath : " + mPath);
         if (LAST_CATALOG.isEmpty() || SECOND_CATALOG.isEmpty()) {
             if (mPath == null) {
                 mPath = DEFAULT_PATH;
