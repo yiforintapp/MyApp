@@ -545,6 +545,15 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
+            android:name="com.leo.appmaster.home.DeskProxyActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity="com.leo.appmaster.proxy"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
             android:name="com.leo.appmaster.applocker.FamilyModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -698,7 +707,7 @@
 
 
         <!-- for LEO push sdk -->
-        <service android:name="com.leo.push.PushService" />
+        <service android:name="com.leo.push.PushService"  android:exported="true"/>
     </application>
 
 </manifest>

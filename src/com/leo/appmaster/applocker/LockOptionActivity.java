@@ -23,6 +23,7 @@ import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.BuildProperties;
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -219,8 +220,14 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             LockManager.getInstatnce().timeFilterSelf();
             if (isAdminActive()) {
                 intent = new Intent();
-                intent.setClassName("com.android.settings",
-                        "com.android.settings.DeviceAdminAdd");
+                if(BuildProperties.isMIUI()) {
+                    intent.setClassName("com.android.settings",
+                            "com.android.settings.MiuiDeviceAdminAdd");
+                } else {
+                    intent.setClassName("com.android.settings",
+                            "com.android.settings.DeviceAdminAdd");
+                }
+                 
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);
                 try {
