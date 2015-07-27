@@ -283,6 +283,8 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         // 美女伪装
                         Intent mIntent = new Intent(this, BeautyWeiZhuang.class);
                         this.startActivity(mIntent);
+                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, 
+                                "coverguide", "cover_Beauty");
                     }
                     break;
                 case 0:
@@ -297,6 +299,8 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         // 应用错误
                         Intent mIntent = new Intent(this, ErrorWeiZhuang.class);
                         this.startActivity(mIntent);
+                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, 
+                                "coverguide", "cover_AppError");
                     }
                     break;
                 case 3:
@@ -307,6 +311,8 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         // this.startActivity(intent);
                         Intent intent = new Intent(this, UnKnowCallActivity5.class);
                         this.startActivity(intent);
+                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, 
+                                "coverguide", "cover_UnknowCall");
                     }
                     break;
                 case 4:
@@ -314,6 +320,8 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         // 指纹解锁
                         Intent zhiWenIntent = new Intent(this, ZhiWenActivity.class);
                         this.startActivity(zhiWenIntent);
+                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, 
+                                "coverguide", "cover_FingerPrint");
                     }
                     break;
                 default:

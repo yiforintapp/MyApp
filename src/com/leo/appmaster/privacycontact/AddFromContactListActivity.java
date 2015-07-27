@@ -77,7 +77,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
             public void onClick(View v) {
                 /* SDK */
                 SDKWrapper.addEvent(AddFromContactListActivity.this, SDKWrapper.P1, "contactsadd",
-                        "handadd");
+                        "contactsemptyadd");
                 Intent intent = new Intent(AddFromContactListActivity.this,
                         PrivacyContactInputActivity.class);
                 intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);

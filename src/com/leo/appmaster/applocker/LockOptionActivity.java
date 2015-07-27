@@ -151,21 +151,21 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     @Override
     protected void onResume() {
-        //等待半秒去激活设备管理器
+        // 等待半秒去激活设备管理器
         SystemClock.sleep(500);
         if (isAdminActive()) {
-            
+
             mForbidUninstall.setChecked(true);
             mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
         } else {
             mForbidUninstall.setChecked(false);
             mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
         }
-//        Log.e("poha", isAdminActive()+"");
-//        mChangeLockTime.setSummary(R.string.summary_setting_locker);
-//        mHideLockLine.setSummary(R.string.summary_hide_lockline);
-//        mLockerClean.setSummary(R.string.summary_aacelerate_after_unlock);
-        
+        // Log.e("poha", isAdminActive()+"");
+        // mChangeLockTime.setSummary(R.string.summary_setting_locker);
+        // mHideLockLine.setSummary(R.string.summary_hide_lockline);
+        // mLockerClean.setSummary(R.string.summary_aacelerate_after_unlock);
+
         if (haveProtect()) {
             mSetProtect.setTitle(R.string.passwd_protect);
         } else {
@@ -220,14 +220,14 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             LockManager.getInstatnce().timeFilterSelf();
             if (isAdminActive()) {
                 intent = new Intent();
-                if(BuildProperties.isMIUI()) {
+                if (BuildProperties.isMIUI()) {
                     intent.setClassName("com.android.settings",
                             "com.android.settings.MiuiDeviceAdminAdd");
                 } else {
                     intent.setClassName("com.android.settings",
                             "com.android.settings.DeviceAdminAdd");
                 }
-                 
+
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);
                 try {
@@ -262,6 +262,11 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "lockboost");
             }
         } else if (AppMasterPreference.PREF_HIDE_LOCK_LINE.equals(key)) {
+            if ((Boolean) newValue) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "setting_on");
+            } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "setting_off");
+            }
             mHideLockLine.setChecked((Boolean) newValue);
             AppMasterPreference.getInstance(LockOptionActivity.this)
                     .setHideLine((Boolean) newValue);

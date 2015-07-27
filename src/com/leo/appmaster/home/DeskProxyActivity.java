@@ -62,28 +62,38 @@ public class DeskProxyActivity extends Activity {
                 startActivity(mIntent);
             } else {
                 if (type == mAppLockType) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "appLock");
                     goToAppLock(type);
                 } else if (type == mAppWeiZhuang) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "appDisguise");
                     goToAppWeiZhuang(type);
                 } else if (type == mPicHide) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "picHide");
                     goToHidePic(type);
                 } else if (type == mVioHide) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "videoHide");
                     goToHideVio(type);
                 } else if (type == mPrivateSms) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "privaceSms");
                     goToPrivateSms(type);
                 } else if (type == mFlow) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
                     LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     goToFlow(type);
                 } else if (type == mElec) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
                     LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoEle(type);
                 } else if (type == mBackup) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
                     LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoBackUp(type);
                 } else if (type == mQuickGues) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
                     LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoQuickGues(type);
                 } else if (type == mLockThem) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
                     LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoLockThem(type);
                 }
@@ -156,7 +166,7 @@ public class DeskProxyActivity extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (isOppoOs && !isOpenWindow) {
+        } else if (isOppoOs && !isOpenWindow) {
             boolean backFlag = BuildProperties.startOppoManageIntent(this);
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
