@@ -540,7 +540,7 @@ public class FileOperationUtil {
     }
 
     /*
-     * 需要防止读取到videoCache文件，需要过略的视频格式(使用时注意，返回值不能为空)
+     * 防止读取图片时读取到类似于系统Android/data等videoCache文件里的视频，需要过略的视频格式(使用时注意，返回值不能为空)
      */
     private static List<String> getFilterVideoType() {
         String[] filterVideoType = {
