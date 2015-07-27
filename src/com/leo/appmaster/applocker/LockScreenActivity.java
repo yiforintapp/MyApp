@@ -79,6 +79,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
@@ -190,7 +191,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -516,6 +516,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         FragmentTransaction tans;
         mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
         mPretendFragment = getPretendFragment();
+   
+
         if (mPretendFragment != null && !mRestartForThemeChanged) {
             mLockLayout.setVisibility(View.GONE);
             mPretendLayout.setVisibility(View.VISIBLE);
@@ -536,6 +538,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
                 PretendAppErrorFragment paf = new PretendAppErrorFragment();
+                
+
+                
                 String tip = "";
                 PackageManager pm = this.getPackageManager();
                 try {

@@ -2,6 +2,7 @@
 package com.leo.appmaster.fragment;
 
 import android.R.integer;
+import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -162,6 +163,10 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
 
     @Override
     public void onResume() {
+        
+//        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
+//                "appcover ", "unknowcall");
+        
         if (!isScreenOff) {
             isStop = false;
         } else {
@@ -334,6 +339,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     // onUnlockPretendFailed();
                     // vib.cancel();
                     if (!isControlDuan || !isControlGua || !isControlJie) {
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
+                                "appcover", "fail_unknowcall");
                         onUnlockPretendFailed();
                         vib.cancel();
                     } else {
@@ -352,7 +359,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     private void GlobalLayoutListener() {
         ViewTreeObserver contentObserver = mViewContent.getViewTreeObserver();
         contentObserver.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
-            public void onGlobalLayout() {
+            @SuppressLint("NewApi")
+			public void onGlobalLayout() {
                 // 圆心在？
                 mYuanX = mViewContent.getPointX();
                 mYuanY = mViewContent.getPointY();

@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.GestureTextView;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -29,6 +30,21 @@ public class PretendAppErrorFragment extends PretendFragment {
     protected int layoutResourceId() {
         return R.layout.fragment_pretend_app_error;
     }
+    
+    @Override
+    public void onResume() {
+        // TODO Auto-generated method stub
+        super.onResume();
+        
+//        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
+//                "appcover ", "error");
+ 
+    }
+    
+    
+    
+    
+    
 
     @Override
     protected void onInitUI() {
