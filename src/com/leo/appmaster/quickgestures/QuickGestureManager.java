@@ -11,6 +11,7 @@ import java.util.Vector;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
+import android.app.Dialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -35,6 +36,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -926,9 +928,9 @@ public class QuickGestureManager {
             }
         });
 
-        // commonApp.getWindow().setType(
-        // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-        commonApp.getWindow().setType(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        commonApp.getWindow().setType(
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        // commonApp.getWindow().setType(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         commonApp.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -1088,10 +1090,10 @@ public class QuickGestureManager {
                 AppMasterApplication.getInstance().startActivity(intent);
             }
         });
-        // quickSwitch.getWindow().setType(
-        // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         quickSwitch.getWindow().setType(
-                WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        // quickSwitch.getWindow().setType(
+        // WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         quickSwitch.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -1102,12 +1104,12 @@ public class QuickGestureManager {
         isDialogShowing = true;
         quickSwitch.show();
     }
-    
-    public void makeDialogDimiss(){
-        if(quickSwitch != null){
+
+    public void makeDialogDimiss() {
+        if (quickSwitch != null) {
             quickSwitch.dismiss();
         }
-        if(commonApp != null){
+        if (commonApp != null) {
             commonApp.dismiss();
         }
     }
