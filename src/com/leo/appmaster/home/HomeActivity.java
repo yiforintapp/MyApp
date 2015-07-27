@@ -195,6 +195,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         {          
             AppMasterPreference.getInstance(this).setIsHomeToLockList(false);
             AppMasterPreference.getInstance(this).setIsFromLockList(false);
+            AppMasterPreference.getInstance(this).setIsClockToLockList(false);
         }
     }
 //    @Override

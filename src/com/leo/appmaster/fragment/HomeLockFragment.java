@@ -8,6 +8,7 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -37,8 +38,8 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private TipTextView mLockThemeBtn;
     private TextView mLockModeBtn;
     private TextView mLockSettingBtn;
-    private boolean isFromAppLockList=false;
-    
+    private boolean isFromAppLockList = false;
+
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_home_lock;
@@ -56,7 +57,6 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         mLockModeBtn.setOnClickListener(this);
         mLockSettingBtn = (TextView) findViewById(R.id.lock_setting);
         mLockSettingBtn.setOnClickListener(this);
-        
 
         mLockModeCircle.startAnimation();
     }
@@ -179,16 +179,27 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     }
 
     private void enterAppWeiZhuang() {
+     
+        if(AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
+        {
+            Drawable drawable = getResources().getDrawable(
+                    R.drawable.disguise_icon);
+            
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
+            AppMasterPreference.getInstance(mActivity).setIsNeedDisguiseTip(false);
+        }       
         Intent intent;
         intent = new Intent(mActivity, WeiZhuangActivity.class);
         mActivity.startActivity(intent);
     }
 
-//    private void enterLockSetting() {
-//        Intent intent = new Intent(mActivity, LockOptionActivity.class);
-//        intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_HOME);
-//        mActivity.startActivity(intent);
-//    }
+    // private void enterLockSetting() {
+    // Intent intent = new Intent(mActivity, LockOptionActivity.class);
+    // intent.putExtra(LockOptionActivity.TAG_COME_FROM,
+    // LockOptionActivity.FROM_HOME);
+    // mActivity.startActivity(intent);
+    // }
 
     private void enterLockMode() {
         Intent intent = new Intent(mActivity, LockModeActivity.class);
@@ -203,12 +214,9 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private void enterLockList() {
         Intent intent = null;
         intent = new Intent(mActivity, AppLockListActivity.class);
-    
+
         startActivity(intent);
     }
-    
-    
-  
 
     private void startRcommendLock(int target) {
         Intent intent = new Intent(mActivity, RecommentAppLockListActivity.class);
@@ -230,13 +238,14 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         }
 
     }
-    
+
     public void playPretendEnterAnim() {
-        if (null == mLockSettingBtn ) {
+        if (null == mLockSettingBtn) {
             return;
         }
-        final ObjectAnimator lastAlphaAnimator = ObjectAnimator.ofFloat(mLockSettingBtn, "alpha", 0f, 1.0f).setDuration(300);
-        
+        final ObjectAnimator lastAlphaAnimator = ObjectAnimator.ofFloat(mLockSettingBtn, "alpha",
+                0f, 1.0f).setDuration(300);
+
         ObjectAnimator alphaAnimator = ObjectAnimator
                 .ofFloat(mLockSettingBtn, "alpha", 0f, 1.0f, 0f).setDuration(800);
         alphaAnimator.setRepeatCount(2);
@@ -246,10 +255,19 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
             public void onAnimationStart(Animator animation) {
                 mLockSettingBtn.setVisibility(View.VISIBLE);
             }
+
             @Override
             public void onAnimationEnd(Animator animation) {
                 lastAlphaAnimator.start();
-       
+                AppMasterPreference.getInstance(mActivity).setIsNeedDisguiseTip(true);
+                if(AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
+                {                 
+                    Drawable drawable = getResources().getDrawable(
+                            R.drawable.buttonleft_disguise_after_guide);
+                    
+                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+                    mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
+                }
             }
         });
 
@@ -266,8 +284,5 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         set.playTogether(alphaAnimator, gestureSmall);
         set.start();
     }
-    
-    
-    
 
 }
