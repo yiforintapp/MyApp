@@ -116,20 +116,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        
-        Intent intent = new Intent();
-        intent.setClass(HomeActivity.this, WebViewActivity.class);
-        intent.putExtra(WebViewActivity.WEB_URL, "http://www.jd.com/");
-        Log.i("######", intent.toUri(0));
-        
-        
-        
         // lockType , num or guesture
         initUI();
         tryTransStatusbar();
         // installShortcut();
-        
-       
         
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();

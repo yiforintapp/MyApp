@@ -111,6 +111,14 @@ public class GestureLockFragment extends LockFragment implements
                 mAppIcon.setImageDrawable(AppUtil.getDrawable(
                         mActivity.getPackageManager(), mActivity.getPackageName()));
             }
+        } else {
+            if(!TextUtils.isEmpty(mPackageName)) {
+                mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                        mActivity.getPackageManager(), mPackageName));
+            } else {
+                mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                        mActivity.getPackageManager(), mActivity.getPackageName()));
+            }
         }
     }
 
