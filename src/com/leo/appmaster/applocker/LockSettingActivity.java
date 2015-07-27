@@ -3,24 +3,23 @@ package com.leo.appmaster.applocker;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
-import android.app.Activity;
+import android.R.integer;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.view.Display;
-import android.view.DisplayInfo;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
@@ -29,6 +28,16 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
     public static final int LOCK_TYPE_PASSWD = 1;
     public static final int LOCK_TYPE_GESTURE = 2;
+    public final int mAppLockType = 1;
+    public final int mAppWeiZhuang = 2;
+    public final int mPicHide = 3;
+    public final int mVioHide = 4;
+    public final int mPrivateSms = 5;
+    public final int mFlow = 6;
+    public  final int mElec = 7;
+    public  final int mBackup = 8;
+    public  final int mQuickGues = 9;
+    public  final int mLockThem = 10;
     // private int mLockType = LOCK_TYPE_PASSWD;
     private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
@@ -47,6 +56,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public boolean mJustFinish;
     public boolean mFromQuickMode;
     public int mModeId;
+    public int mFromDeskId = -1;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -77,6 +87,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     private void handleIntent() {
         Intent intent = getIntent();
+        mFromDeskId = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                StatusBarEventService.EVENT_EMPTY);
         mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
         mIsRotateFragment = intent.getBooleanExtra(ROTATE_FRAGMENT, false);
         mToLockList = intent.getBooleanExtra("to_lock_list", false);
@@ -144,10 +156,10 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     private void initUI() {
         res = getResources();
-   
+
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         //
-       
+
         //
         if (mResetFlag) {
             mTitleBar.openBackView();
@@ -156,14 +168,14 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         } else {
             // mTitleBar.openBackView();
             // mTitleBar.setTitle(R.string.passwd_setting);
-            
-           // mTitleBar.setVisibility(View.INVISIBLE);
-            
+
+            // mTitleBar.setVisibility(View.INVISIBLE);
+
             Display mDisplay = getWindowManager().getDefaultDisplay();
             int W = mDisplay.getWidth();
             int H = mDisplay.getHeight();
-            //使得小尺寸机型在此时去除titlebar，而不是隐藏，否则下方位置不够
-            if(H>900)
+            // 使得小尺寸机型在此时去除titlebar，而不是隐藏，否则下方位置不够
+            if (H > 900)
             {
                 mTitleBar.setVisibility(View.INVISIBLE);
             }
@@ -171,7 +183,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             {
                 mTitleBar.setVisibility(View.GONE);
             }
-            
+
         }
 
         mSwitchBottom = (TextView) this.findViewById(R.id.switch_bottom);
@@ -212,5 +224,9 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     public boolean isResetPasswd() {
         return mResetFlag;
+    }
+
+    public int getFromDeskId() {
+        return mFromDeskId;
     }
 }

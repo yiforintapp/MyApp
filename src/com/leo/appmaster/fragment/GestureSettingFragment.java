@@ -5,10 +5,9 @@ import java.util.List;
 
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.content.res.Resources;
 import android.content.Intent;
-import android.view.Gravity;
-import android.view.LayoutInflater;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -24,18 +23,32 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.WeiZhuangActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.appmanage.BackUpActivity;
+import com.leo.appmaster.appmanage.EleActivity;
+import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
+import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LockPatternUtils;
+import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 public class GestureSettingFragment extends BaseFragment implements
         OnClickListener, OnPatternListener, OnDismissListener,
@@ -235,6 +248,7 @@ public class GestureSettingFragment extends BaseFragment implements
 
     @Override
     public void onDismiss(DialogInterface dialog) {
+        int type = ((LockSettingActivity) mActivity).getFromDeskId();
         Intent intent;
         if (mGotoPasswdProtect) {
             if (((LockSettingActivity) mActivity).mToLockList) {
@@ -258,6 +272,7 @@ public class GestureSettingFragment extends BaseFragment implements
             }
         } else {
             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "first", "setpwdp_cancel");
+
             if (((LockSettingActivity) mActivity).mToLockList) {
                 // to lock list
                 intent = new Intent(mActivity, AppLockListActivity.class);
@@ -272,6 +287,31 @@ public class GestureSettingFragment extends BaseFragment implements
                  * modeList) { if (lockMode.modeId == modeId) {
                  * showModeActiveTip(lockMode); break; } } }
                  */
+            } else if (type != StatusBarEventService.EVENT_EMPTY) {
+                // from desk
+                if (type == ((LockSettingActivity) mActivity).mAppLockType) {
+                    goToAppLock();
+                } else if (type == ((LockSettingActivity) mActivity).mAppWeiZhuang) {
+                    goToAppWeiZhuang();
+                } else if (type == ((LockSettingActivity) mActivity).mPicHide) {
+                    goToAppHidePic();
+                } else if (type == ((LockSettingActivity) mActivity).mVioHide) {
+                    goToAppHideVio();
+                } else if (type == ((LockSettingActivity) mActivity).mPrivateSms) {
+                    goToPrivateSms();
+                } else if (type == ((LockSettingActivity) mActivity).mFlow) {
+                    goToFlow();
+                } else if (type == ((LockSettingActivity) mActivity).mElec) {
+                    gotoEle(type);
+                } else if (type == ((LockSettingActivity) mActivity).mBackup) {
+                    gotoBackUp(type);
+                } else if (type == ((LockSettingActivity) mActivity).mQuickGues) {
+                    gotoQuickGues(type);
+                }else if (type == ((LockSettingActivity) mActivity).mLockThem) {
+                    gotoLockThem(type);
+                }else {
+                    gotoHome();
+                }
             } else {
                 LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
                 intent = new Intent(mActivity, HomeActivity.class);
@@ -306,6 +346,164 @@ public class GestureSettingFragment extends BaseFragment implements
         if (which == 0) {
         } else if (which == 1) {
             mGotoPasswdProtect = true;
+        }
+    }
+
+    private void gotoHome() {
+        Intent intent = new Intent(mActivity, HomeActivity.class);
+        mActivity.startActivity(intent);
+    }
+    
+    private void gotoLockThem(int type) {
+        Intent intent = new Intent(mActivity, LockerTheme.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+    
+    private void gotoQuickGues(int type) {
+        boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(mActivity);
+        boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(mActivity);
+        boolean checkMiui = BuildProperties.isMIUI();
+        boolean isOppoOs = BuildProperties.isOppoOs();
+        boolean isOpenWindow =
+                BuildProperties.isFloatWindowOpAllowed(mActivity);
+
+        if (checkMiui && !isOpenWindow) {
+            // MIUI
+            Intent intentv6 = new
+                    Intent("miui.intent.action.APP_PERM_EDITOR");
+            intentv6.setClassName("com.miui.securitycenter",
+                    "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
+            intentv6.putExtra("extra_pkgname", mActivity.getPackageName());
+            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            try {
+                LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
+                        false);
+                LockManager.getInstatnce().filterAllOneTime(2000);
+                startActivity(intentv6);
+            } catch (Exception e) {
+                LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
+                        false);
+                LockManager.getInstatnce().filterAllOneTime(1000);
+                Intent intentv5 = new Intent(
+                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                Uri uri = Uri
+                        .fromParts("package", mActivity.getPackageName(), null);
+                intentv5.setData(uri);
+                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                try {
+                    startActivity(intentv5);
+                } catch (Exception e1) {
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "reason_"
+                            + BuildProperties.getPoneModel());
+                }
+            }
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+            LockManager.getInstatnce().filterAllOneTime(1000);
+            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(quickIntent);
+        } else if (checkHuaWei && !checkFloatWindow) {
+            BuildProperties.isToHuaWeiSystemManager(mActivity);
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.putExtra("sys_name", "huawei");
+            try {
+                startActivity(quickIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (isOppoOs && !isOpenWindow) {
+            boolean backFlag = BuildProperties.startOppoManageIntent(mActivity);
+            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
+            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.putExtra("sys_name", "huawei");
+            try {
+                startActivity(quickIntent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
+            this.startActivity(quickIntent);
+        }
+    }
+
+    private void gotoBackUp(int type) {
+        Intent intent = new Intent(mActivity, BackUpActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void gotoEle(int type) {
+        Intent dlIntent = new Intent(mActivity, EleActivity.class);
+        dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(dlIntent);
+    }
+
+    private void goToFlow() {
+        Intent mIntent = new Intent(mActivity, FlowActivity.class);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(mIntent);
+    }
+
+    private void goToPrivateSms() {
+        Intent intent = new Intent(mActivity,
+                PrivacyContactActivity.class);
+        intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void goToAppHideVio() {
+        Intent intent = new Intent(mActivity, VideoHideMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void goToAppHidePic() {
+        Intent intent = new Intent(mActivity, ImageHideMainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void goToAppWeiZhuang() {
+        Intent intent = new Intent(mActivity, WeiZhuangActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private void goToAppLock() {
+        LockManager lm = LockManager.getInstatnce();
+        LockMode curMode = lm.getCurLockMode();
+        Intent intent;
+        if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
+            intent = new Intent(mActivity, RecommentAppLockListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra("target", 0);
+            startActivity(intent);
+            curMode.haveEverOpened = true;
+            lm.updateMode(curMode);
+        } else {
+            intent = new Intent(mActivity, AppLockListActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
         }
     }
 }
