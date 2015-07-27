@@ -707,7 +707,7 @@
 
 
         <!-- for LEO push sdk -->
-        <service android:name="com.leo.push.PushService" />
+        <service android:name="com.leo.push.PushService"  android:exported="true"/>
     </application>
 
 </manifest>

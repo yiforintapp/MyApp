@@ -23,6 +23,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
@@ -117,11 +118,11 @@ public class AppleWatchLayout extends ViewGroup {
     public void fillItems(List<BaseInfo> infos, boolean loadExtra) {
         if (QuickGestureManager.isClickSure) {
             LeoLog.d("testActivity", "fillItems and cannot touch!");
-            if(mContainer != null){
+            if (mContainer != null) {
                 mContainer.setCanNotTouch(true);
             }
         }
-        
+
         // LeoLog.d("testActivity", "infos size is : " + infos.size());
         // LeoLog.d("testActivity", "come to  fillItems: ");
         // LeoLog.d("testActivity", "now viewchild num is  " + getChildCount());
@@ -729,9 +730,9 @@ public class AppleWatchLayout extends ViewGroup {
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
         } else if (info instanceof AppItemInfo) {
+            //最近使用
             LeoLog.d("TestLayout", "AppItemInfo");
             final AppItemInfo appInfo = (AppItemInfo) info;
-
             List<String> lockList = LockManager.getInstatnce().getCurLockList();
             if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
                 QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
@@ -739,6 +740,7 @@ public class AppleWatchLayout extends ViewGroup {
                     LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                             appInfo.packageName, false, null);
                 } else {
+//                    Log.e(Constants.RUN_TAG, "最近使用，名称：" + appInfo.activityName + "_会走这里的");
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setComponent(new ComponentName(appInfo.packageName,
@@ -879,6 +881,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGsturebAppInfo) {
+            // 最常使用
             LeoLog.d("TestLayout", "QuickGsturebAppInfo");
             final QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
             List<String> lockList = LockManager.getInstatnce().getCurLockList();
@@ -888,6 +891,7 @@ public class AppleWatchLayout extends ViewGroup {
                     LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                             appInfo.packageName, false, null);
                 } else {
+//                    Log.e(Constants.RUN_TAG, "最常使用，名称：" + appInfo.activityName + "_会走这里的");
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setComponent(new ComponentName(appInfo.packageName,
@@ -1004,11 +1008,11 @@ public class AppleWatchLayout extends ViewGroup {
             // mPref.setLastTimeLayout(mLastTimeSwitch);
             mContainer.setNowLayout(mLastTimeSwitch);
         }
-        
-        if (mContainer.isEditing()){
+
+        if (mContainer.isEditing()) {
             mContainer.leaveEditMode();
         }
-        
+
     }
 
     private void replaceEmptyIcon(GestureItemView hitView) {
