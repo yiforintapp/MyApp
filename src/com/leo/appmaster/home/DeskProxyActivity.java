@@ -55,45 +55,68 @@ public class DeskProxyActivity extends Activity {
             mHandler = new Handler();
         } else {
             if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-                Intent mIntent = new Intent(this, LockSettingActivity.class);
-                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
-                startActivity(mIntent);
-            } else {
-                if (type == mAppLockType) {
-                    goToAppLock(type);
-                } else if (type == mAppWeiZhuang) {
-                    goToAppWeiZhuang(type);
-                } else if (type == mPicHide) {
-                    goToHidePic(type);
-                } else if (type == mVioHide) {
-                    goToHideVio(type);
-                } else if (type == mPrivateSms) {
-                    goToPrivateSms(type);
-                } else if (type == mFlow) {
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                if (type == mFlow) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
+
                     goToFlow(type);
                 } else if (type == mElec) {
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
                     gotoEle(type);
                 } else if (type == mBackup) {
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
                     gotoBackUp(type);
                 } else if (type == mQuickGues) {
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
                     gotoQuickGues(type);
                 } else if (type == mLockThem) {
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
+                    gotoLockThem(type);
+                } else {
+                    Intent mIntent = new Intent(this, LockSettingActivity.class);
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                            Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
+                    startActivity(mIntent);
+                }
+            } else {
+                if (type == mAppLockType) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "appLock");
+                    goToAppLock(type);
+                } else if (type == mAppWeiZhuang) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "appDisguise");
+                    goToAppWeiZhuang(type);
+                } else if (type == mPicHide) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "picHide");
+                    goToHidePic(type);
+                } else if (type == mVioHide) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "videoHide");
+                    goToHideVio(type);
+                } else if (type == mPrivateSms) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "privaceSms");
+                    goToPrivateSms(type);
+                } else if (type == mFlow) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
+                    goToFlow(type);
+                } else if (type == mElec) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
+                    gotoEle(type);
+                } else if (type == mBackup) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
+                    gotoBackUp(type);
+                } else if (type == mQuickGues) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
+                    gotoQuickGues(type);
+                } else if (type == mLockThem) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
                     gotoLockThem(type);
                 }
-
             }
             finish();
         }
     }
 
     private void gotoLockThem(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent intent = new Intent(this, LockerTheme.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -101,6 +124,7 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoQuickGues(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(this);
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(this);
         boolean checkMiui = BuildProperties.isMIUI();
@@ -156,7 +180,7 @@ public class DeskProxyActivity extends Activity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }else if (isOppoOs && !isOpenWindow) {
+        } else if (isOppoOs && !isOpenWindow) {
             boolean backFlag = BuildProperties.startOppoManageIntent(this);
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
@@ -177,6 +201,7 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoBackUp(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent intent = new Intent(this, BackUpActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -184,6 +209,7 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoEle(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent dlIntent = new Intent(this, EleActivity.class);
         dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -191,9 +217,11 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void goToFlow(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent mIntent = new Intent(this, FlowActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
+        mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
         startActivity(mIntent);
     }
 

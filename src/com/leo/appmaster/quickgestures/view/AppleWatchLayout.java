@@ -14,6 +14,7 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -688,6 +689,7 @@ public class AppleWatchLayout extends ViewGroup {
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
                         + sInfo.swtichIdentiName);
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "boost", "shortcuts");
                 QuickSwitchManager.getInstance(getContext()).speedUp(sInfo);
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.CHANGEMODE)) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
@@ -722,15 +724,17 @@ public class AppleWatchLayout extends ViewGroup {
                         + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).goHome();
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.LOCKMODE)) {
-                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_"
-                        + sInfo.swtichIdentiName);
+                // SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch",
+                // "cli_"
+                // + sInfo.swtichIdentiName);
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_mode");
                 // TODO
                 QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
                 activity.showLockMode();
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
         } else if (info instanceof AppItemInfo) {
-            //最近使用
+            // 最近使用
             LeoLog.d("TestLayout", "AppItemInfo");
             final AppItemInfo appInfo = (AppItemInfo) info;
             List<String> lockList = LockManager.getInstatnce().getCurLockList();
@@ -740,7 +744,8 @@ public class AppleWatchLayout extends ViewGroup {
                     LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                             appInfo.packageName, false, null);
                 } else {
-//                    Log.e(Constants.RUN_TAG, "最近使用，名称：" + appInfo.activityName + "_会走这里的");
+                    // Log.e(Constants.RUN_TAG, "最近使用，名称：" +
+                    // appInfo.activityName + "_会走这里的");
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setComponent(new ComponentName(appInfo.packageName,
@@ -891,7 +896,8 @@ public class AppleWatchLayout extends ViewGroup {
                     LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                             appInfo.packageName, false, null);
                 } else {
-//                    Log.e(Constants.RUN_TAG, "最常使用，名称：" + appInfo.activityName + "_会走这里的");
+                    // Log.e(Constants.RUN_TAG, "最常使用，名称：" +
+                    // appInfo.activityName + "_会走这里的");
                     Intent intent = new Intent();
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     intent.setComponent(new ComponentName(appInfo.packageName,
@@ -1014,6 +1020,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
 
     }
+    
 
     private void replaceEmptyIcon(GestureItemView hitView) {
         GType type = mContainer.getCurrentGestureType();

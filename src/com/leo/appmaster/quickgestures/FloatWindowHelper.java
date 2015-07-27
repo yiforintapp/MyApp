@@ -1899,7 +1899,11 @@ public class FloatWindowHelper {
                             nowCount.cancel();
                             nowCount = null;
                         }
-                        mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
+                        if(mWhiteFloatView != null) {
+                            mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
+                        } else {
+                            return false;
+                        }
                         startX = event.getRawX();
                         startY = event.getRawY();
                         downTime = System.currentTimeMillis();
