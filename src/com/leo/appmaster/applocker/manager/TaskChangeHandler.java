@@ -22,9 +22,10 @@ public class TaskChangeHandler {
     public static final String HOMENAME = "HomeActivity";
     public static final String SPLASHNAME = "SplashActivity";
     public static final String PROXYNAME = "ProxyActivity";
+    public static final String DESKPROXYNAME = "DeskProxyActivity";
     public static final String WAITNAME = "WaitActivity";
     public static final String GESTURE = "QuickGesturePopupActivity";
-    public static final String WEBVIEW="WebViewActivity";
+    public static final String WEBVIEW = "WebViewActivity";
     // public static final String GESTURESETTING = "QuickGestureActivity";
     public static final String LAUNCHERBOOST = "HomeBoostActivity";
 
@@ -101,16 +102,17 @@ public class TaskChangeHandler {
             if (doubleCheck) {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
-                                && (activity
+                                && (activity.contains(DESKPROXYNAME) || activity
                                         .contains(LAUNCHERBOOST) || activity
                                         .contains(SPLASHNAME) || activity
                                         .contains(GESTURE)/*
                                                            * ||
                                                            * activity.contains
                                                            * (GESTURESETTING)
-                                                           */|| activity.contains(PROXYNAME) || activity
-                                            .contains(WAITNAME)
-                                            || activity.contains(WEBVIEW))
+                                                           */|| activity.contains(PROXYNAME)
+                                        || activity
+                                                .contains(WAITNAME)
+                                        || activity.contains(WEBVIEW))
                                 || (!unlocked && activity.contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
@@ -121,15 +123,16 @@ public class TaskChangeHandler {
             } else {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
-                                && (activity
+                                && (activity.contains(DESKPROXYNAME) || activity
                                         .contains(LAUNCHERBOOST) || activity
                                         .contains(SPLASHNAME) || activity
                                         .contains(GESTURE)/*
                                                            * ||
                                                            * activity.contains
                                                            * (GESTURESETTING)
-                                                           */|| activity.contains(PROXYNAME) || activity
-                                            .contains(WAITNAME) || activity.contains(WEBVIEW)) || (activity
+                                                           */|| activity.contains(PROXYNAME)
+                                        || activity
+                                                .contains(WAITNAME) || activity.contains(WEBVIEW)) || (activity
                                     .contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {

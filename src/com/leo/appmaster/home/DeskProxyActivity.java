@@ -57,7 +57,6 @@ public class DeskProxyActivity extends Activity {
             if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                 if (type == mFlow) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
-
                     goToFlow(type);
                 } else if (type == mElec) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
