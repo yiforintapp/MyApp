@@ -72,7 +72,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
             public void onClick(View v) {
                 /* SDK */
                 SDKWrapper.addEvent(AddFromCallLogListActivity.this, SDKWrapper.P1, "contactsadd",
-                        "handadd");
+                        "callsemptyadd");
                 Intent intent = new Intent(AddFromCallLogListActivity.this,
                         PrivacyContactInputActivity.class);
                 intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
