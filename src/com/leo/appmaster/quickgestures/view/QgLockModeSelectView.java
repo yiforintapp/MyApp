@@ -325,7 +325,7 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
                             } else {
                                 Intent intent = null;
                                 intent = new Intent(getContext(), LockScreenActivity.class);
-                                 intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
+//                                 intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                                 intent.putExtra("quick_lock_mode", true);
                                 intent.putExtra("lock_mode_id", mode.modeId);
                                 intent.putExtra("lock_mode_name", mode.modeName);
