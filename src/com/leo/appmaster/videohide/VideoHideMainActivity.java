@@ -116,19 +116,21 @@ public class VideoHideMainActivity extends BaseActivity implements
         if (LAST_CATALOG.isEmpty() || SECOND_CATALOG.isEmpty()) {
             if (mPath == null) {
                 mPath = DEFAULT_PATH;
-                LAST_CATALOG = FileOperationUtil.getLastDirNameFromCb(mPath);
-                SECOND_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
+//                LAST_CATALOG = FileOperationUtil.getLastDirNameFromCb(mPath);
+//                SECOND_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
+                LAST_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
+                SECOND_CATALOG = FileOperationUtil.getSecondDirNameFromFilepath(mPath);
             } else {
-                LAST_CATALOG = FileOperationUtil.getLastDirNameFromCb(mPath);
-                SECOND_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
+                LAST_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
+                SECOND_CATALOG = FileOperationUtil.getSecondDirNameFromFilepath(mPath);
                 // save to sp
                 mSpSaveDir.setLastDir(LAST_CATALOG);
                 mSpSaveDir.setSecondDi(SECOND_CATALOG);
             }
         } else {
             if (mPath != null) {
-                LAST_CATALOG = FileOperationUtil.getLastDirNameFromCb(mPath);
-                SECOND_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
+                LAST_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
+                SECOND_CATALOG = FileOperationUtil.getSecondDirNameFromFilepath(mPath);
                 // save to sp
                 mSpSaveDir.setLastDir(LAST_CATALOG);
                 mSpSaveDir.setSecondDi(SECOND_CATALOG);
