@@ -137,11 +137,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
     public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
+    public static final String PREF_CLOCK_TO_LOCKLIST="clock_to_lock_list";
     public static final String PREF_HOME_TO_LOCKLIST = "home_to_lock_list";
     public static final String PREF_FROM_LOCKLIST = "from_lock_list";
     public static final String PREF_WEIZHUANG_FIRST_IN = "weizhuang_first_in";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
     public static final String PREF_NEED_CLOSE_BEAUTY="need_close_beauty";
+    public static final String PREF_NEED_DISGUISE_TIP="need_disguise_tip";
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
     private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED = "time_lock_mode_guide_user_clicked";
@@ -452,7 +454,35 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     {
         mPref.edit().putBoolean(PREF_HOME_TO_LOCKLIST, flag).commit();
     }
+    
+    public boolean getIsNeedDisguiseTip()
+    {
+        return mPref.getBoolean(PREF_NEED_DISGUISE_TIP, false);
+    }
 
+    public void setIsNeedDisguiseTip(boolean flag)
+    {
+        mPref.edit().putBoolean(PREF_NEED_DISGUISE_TIP, flag).commit();
+    }
+    
+  
+    
+    
+    
+
+    public boolean getIsClockToLockList()
+    {
+        return mPref.getBoolean(PREF_CLOCK_TO_LOCKLIST, false);
+    }
+
+    public void setIsClockToLockList(boolean flag)
+    {
+        mPref.edit().putBoolean(PREF_CLOCK_TO_LOCKLIST, flag).commit();
+    }
+    
+    
+    
+    
     public boolean getCallLogRedTip() {
         return mPref.getBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, false);
     }
