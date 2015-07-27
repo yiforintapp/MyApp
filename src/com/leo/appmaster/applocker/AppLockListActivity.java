@@ -27,6 +27,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.home.HomeActivity;
@@ -39,6 +40,7 @@ import com.leo.appmaster.ui.LeoLockSortPopMenu;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AppLockListActivity extends BaseActivity implements
         AppChangeListener, OnItemClickListener, OnClickListener {
@@ -60,18 +62,24 @@ public class AppLockListActivity extends BaseActivity implements
     public static final int NAME_SORT = 1;
     public static final int INSTALL_TIME_SORT = 2;
     private int mCurSortType = DEFAULT_SORT;
-
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
-    
-    
-    
+
+    private int mType = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_app_list);
         AppLoadEngine.getInstance(this).registerAppChangeListener(this);
+        handleIntent();
         initUI();
         loadData();
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        mType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                StatusBarEventService.EVENT_EMPTY);
     }
 
     @Override
@@ -97,48 +105,39 @@ public class AppLockListActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
-            mMaskLayer.setVisibility(View.GONE);
-        } else {
-            
-            boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
-            Log.e("lockmore", "fromLockMore=="+fromLockMore);
-            if (fromLockMore) 
-            {
-                LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
-                Intent intent = new Intent(this, HomeActivity.class);
-//                intent.putExtra("isFromAppLockList", true);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-               if(AppMasterPreference.getInstance(this).getIsHomeToLockList())
-               {
-                   Log.e("lockmore", "inif is home");
-                   AppMasterPreference.getInstance(this).setIsFromLockList(true);                   
-               }
-                Log.e("lockmore", "settrue");
-                startActivity(intent);
-      
-            }
-            else
-            {
-                if(AppMasterPreference.getInstance(this).getIsHomeToLockList())
-                {                
-                    Log.e("lockmore", "inif is home");
+        if (mType == StatusBarEventService.EVENT_EMPTY) {
+            if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
+                mMaskLayer.setVisibility(View.GONE);
+            } else {
+
+                boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
+                Log.e("lockmore", "fromLockMore==" + fromLockMore);
+                if (fromLockMore)
+                {
+                    LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList())
+                    {
+                        Log.e("lockmore", "inif is home");
+                        AppMasterPreference.getInstance(this).setIsFromLockList(true);
+                    }
                     Log.e("lockmore", "settrue");
-                    AppMasterPreference.getInstance(this).setIsFromLockList(true);
+                    startActivity(intent);
+
                 }
+                else
+                {
+                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList())
+                    {
+                        Log.e("lockmore", "inif is home");
+                        Log.e("lockmore", "settrue");
+                        AppMasterPreference.getInstance(this).setIsFromLockList(true);
+                    }
+                }
+                super.onBackPressed();
             }
+        } else {
             super.onBackPressed();
-//            else {
-//                Intent intent = new Intent(this, HomeActivity.class);
-//                intent.putExtra("isFromAppLockList", true);
-//                Log.e("poha", "to finish as result");
-//                setResult(RESULT_OK,intent);
-//                finish();
-//            }
-
-            // Intent intent = new Intent(this, HomeActivity.class);
-            // intent.putExtra("isFromAppLockList", true);
-
         }
     }
 
@@ -152,7 +151,7 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private void initUI() {
-        
+
         mSortType = getResources().getStringArray(R.array.sort_type);
         mCurSortType = AppMasterPreference.getInstance(this).getSortType();
 
