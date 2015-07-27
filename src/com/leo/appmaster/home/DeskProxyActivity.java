@@ -55,11 +55,33 @@ public class DeskProxyActivity extends Activity {
             mHandler = new Handler();
         } else {
             if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
-                Intent mIntent = new Intent(this, LockSettingActivity.class);
-                mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
-                startActivity(mIntent);
+                if (type == mFlow) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
+                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    goToFlow(type);
+                } else if (type == mElec) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
+                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    gotoEle(type);
+                } else if (type == mBackup) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
+                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    gotoBackUp(type);
+                } else if (type == mQuickGues) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
+                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    gotoQuickGues(type);
+                } else if (type == mLockThem) {
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
+                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+                    gotoLockThem(type);
+                }else {
+                    Intent mIntent = new Intent(this, LockSettingActivity.class);
+                    mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                            Intent.FLAG_ACTIVITY_NEW_TASK);
+                    mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
+                    startActivity(mIntent);
+                }
             } else {
                 if (type == mAppLockType) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "appLock");
