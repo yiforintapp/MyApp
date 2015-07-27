@@ -135,9 +135,13 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public void onResume() {
         super.onResume();
         if (sp_homeAppManager.getQuickGestureRedTip()) {
-            mQuickGestureRedTip.setVisibility(View.VISIBLE);
+            
+            mGestureIcon.setImageResource(R.drawable.quick_gesture_icon_withtip);
+            
+//            mQuickGestureRedTip.setVisibility(View.VISIBLE);
         } else {
-            mQuickGestureRedTip.setVisibility(View.GONE);
+            mGestureIcon.setImageResource(R.drawable.gesture_tab_icon);
+//            mQuickGestureRedTip.setVisibility(View.GONE);
         }
     }
 

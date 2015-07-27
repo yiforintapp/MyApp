@@ -23,6 +23,7 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -380,12 +381,15 @@ public class LockModeView extends View {
                         Intent intent = new Intent(ctx, RecommentAppLockListActivity.class);
                         intent.putExtra("target", 0);
                         ctx.startActivity(intent);
+                        
+                        AppMasterPreference.getInstance(ctx).setIsClockToLockList(true);
                         curMode.haveEverOpened = true;
                         lm.updateMode(curMode);
                     } else {
                         Intent intent = null;
                         intent = new Intent(ctx, AppLockListActivity.class);
                         ctx.startActivity(intent);
+                        AppMasterPreference.getInstance(ctx).setIsClockToLockList(true);
                     }
                 } else if (bottom.contains(upX, upY)) {
                     // to lock mode

@@ -126,7 +126,7 @@ public class AppLockListActivity extends BaseActivity implements
                 {
                     LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
                     Intent intent = new Intent(this, HomeActivity.class);
-                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList())
+                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList()||AppMasterPreference.getInstance(this).getIsClockToLockList())
                     {
                         Log.e("lockmore", "inif is home");
                         AppMasterPreference.getInstance(this).setIsFromLockList(true);
@@ -137,7 +137,7 @@ public class AppLockListActivity extends BaseActivity implements
                 }
                 else
                 {
-                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList())
+                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList()||AppMasterPreference.getInstance(this).getIsClockToLockList())
                     {
                         Log.e("lockmore", "inif is home");
                         Log.e("lockmore", "settrue");
