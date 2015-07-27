@@ -114,6 +114,14 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
             }
         });
     }
+    @Override
+    public boolean onBackPressed() {
+        // TODO Auto-generated method stub
+        SDKWrapper
+        .addEvent(mActivity, SDKWrapper.P1, "appcover", "fail_FingerPrint");
+        return super.onBackPressed();
+    }
+    
 
     private void showDongHuaAlpha(final float i, final float j) {
         // zhiwen
@@ -184,8 +192,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
 
                     showFeedBack();
 
-                    SDKWrapper
-                            .addEvent(mActivity, SDKWrapper.P1, "appcover", "done_FingerPrint");
+                    
                 }
                 break;
             default:

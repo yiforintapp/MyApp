@@ -74,7 +74,9 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         super.onDestroy();
         mLockList.clear();
     }
-
+    
+    
+    @SuppressLint("Override")
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
@@ -142,7 +144,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                 if (target == 0) {
                     intent = new Intent(SuccessAppLockListActivity.this,
                             AppLockListActivity.class);
-//                    intent.putExtra("from_lock_more", true);
+                    intent.putExtra("from_lock_more", true);
                     intent.putExtra("enter_from_lockmode", true);
                     this.startActivity(intent);
                 } else if (target == 1) {
