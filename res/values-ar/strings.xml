@@ -852,9 +852,7 @@
     <string name="forbid_uninstall_on">تم شغل حماية عالبة مستوى</string>
     <string name="setting_hide_lockline">كمن مسار فتح قفل</string>
     <string name="change_to_gesture">إلى إشارة</string>
- <!--    <string name="change_to_password">إلى كلمة رقمية</string> -->
-   <string name="change_to_password">إلى كلمة رقميةلى كلمة رقميةلى كلمة رقميةلى كلمة رقمية</string>
- 
+    <string name="change_to_password">إلى كلمة رقمية</string>
     <string name="summary_newapp_lock">تجهيز قفل بزر واحد</string>
     <string name="summary_aacelerate_after_unlock">نظف ذاكرة، يرفع سرعة</string>
     <string name="summary_autolock_after_lockscreen">بعد قفل شاشة أعد قفل</string>
