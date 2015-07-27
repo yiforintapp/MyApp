@@ -56,6 +56,8 @@ public class PretendAppBeautyFragment extends PretendFragment {
             public void OnGestureTooFast() {
                 // TODO Auto-generated method stub
                 Toast.makeText(mActivity, mActivity.getResources().getString(R.string.zipper_too_fast), 0).show();
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
+                        "appcover", "fail_Beauty");
             }
         });
         mZipperView.setOnGestureTooSlowListener(new OnGestureTooSlowListener() {
@@ -64,6 +66,8 @@ public class PretendAppBeautyFragment extends PretendFragment {
             public void OnGestureTooSlow() {
                 // TODO Auto-generated method stub
                 Toast.makeText(mActivity, mActivity.getResources().getString(R.string.zipper_too_slow), 0).show();
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
+                        "appcover", "fail_Beauty");
             }
         });
     }

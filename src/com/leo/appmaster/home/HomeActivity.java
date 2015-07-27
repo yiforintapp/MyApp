@@ -162,6 +162,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 // TODO Auto-generated method stub
                                 if (which == 1)
                                 {
+                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, 
+                                            "coverguide", "cli_y");
+                                    
                                     mSelfIconDialog.dismiss();
                                     if (mFragmentHolders[0].fragment != null)
                                     {
@@ -171,6 +174,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                         mPagerTab.setCurrentItem(0);
                                         fragment.playPretendEnterAnim();
                                     }
+                                }
+                                else if(which==0)
+                                {
+                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, 
+                                            "coverguide", "cli_n");
                                 }
                             }
                         });
