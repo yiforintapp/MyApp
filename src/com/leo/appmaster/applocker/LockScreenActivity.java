@@ -79,6 +79,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
@@ -190,7 +191,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -326,7 +326,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
         }
-        
+        mLockFragment.setPackage(mLockedPackage);
         mLockFragment.onNewIntent();
         checkOutcount();
         super.onNewIntent(intent);
@@ -516,6 +516,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         FragmentTransaction tans;
         mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
         mPretendFragment = getPretendFragment();
+   
+
         if (mPretendFragment != null && !mRestartForThemeChanged) {
             mLockLayout.setVisibility(View.GONE);
             mPretendLayout.setVisibility(View.VISIBLE);
@@ -536,6 +538,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
                 PretendAppErrorFragment paf = new PretendAppErrorFragment();
+                
+
+                
                 String tip = "";
                 PackageManager pm = this.getPackageManager();
                 try {
@@ -598,6 +603,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
                     LeoEventBus.getDefaultBus().post(
                             new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage", "shortcuts");
 
                 } else {
                     showModeActiveTip(willLaunch);
@@ -640,6 +646,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             pref.setUnlocked(true);
             pref.setDoubleCheck(null);
+
+            SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "done");
+
         }
         LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
         mTtileBar.postDelayed(new Runnable() {
@@ -661,14 +670,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
          */
         LeoEventBus.getDefaultBus().post(
                 new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_OUTCOUNT));
-
         AppMasterPreference.getInstance(this).setDoubleCheck(null);
         LockManager.getInstatnce().recordOutcountTask(mLockedPackage);
-
         Intent intent = new Intent(this, WaitActivity.class);
         intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
         startActivity(intent);
-
+        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "fail");
     }
 
     private void findPasswd() {
@@ -745,6 +752,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /**
      * setting the menu item,if has password protect then add find password item
+     * 
      * @return
      */
     private List<String> getPopMenuItems() {
@@ -794,7 +802,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         }
     }
-    
+
     private void onHideLockLineClicked(int position) {
         String tip;
         if (AppMasterPreference.getInstance(this).getIsHideLine()) {
@@ -808,7 +816,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             AppMasterPreference.getInstance(this).setHideLine(true);
             tip = getString(R.string.lock_line_hide);
         }
-        if(mLockFragment instanceof GestureLockFragment){
+        if (mLockFragment instanceof GestureLockFragment) {
             ((GestureLockFragment) mLockFragment).reInvalideGestureView();
         }
         Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();

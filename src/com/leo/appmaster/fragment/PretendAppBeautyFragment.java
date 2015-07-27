@@ -9,6 +9,7 @@ import com.leo.appmaster.applocker.ZipperView;
 import com.leo.appmaster.applocker.ZipperView.OnGestureSuccessListener;
 import com.leo.appmaster.applocker.ZipperView.OnGestureTooFastListener;
 import com.leo.appmaster.applocker.ZipperView.OnGestureTooSlowListener;
+import com.leo.appmaster.sdk.SDKWrapper;
 
 public class PretendAppBeautyFragment extends PretendFragment {
 
@@ -20,9 +21,23 @@ public class PretendAppBeautyFragment extends PretendFragment {
         return R.layout.fragment_pretend_beauty;
     }
 
+  
+    
+    
+    
+    
+    
+    
+    
+    
     @Override
     protected void onInitUI() {
         // TODO Auto-generated method stub
+        
+        SDKWrapper
+        .addEvent(mActivity, SDKWrapper.P1, "appcover", "Beauty");
+        
+  
         mZipperView = (ZipperView) findViewById(R.id.zipperview_unlock);
 
         mZipperView.setOnGestureSuccessListener(new OnGestureSuccessListener() {
@@ -31,6 +46,8 @@ public class PretendAppBeautyFragment extends PretendFragment {
             public void OnGestureSuccess() {
                 // TODO Auto-generated method stub
                 onUnlockPretendSuccessfully();
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
+                        "appcover", "done_Beauty");
             }
         });
         mZipperView.setOnGestureTooFastListener(new OnGestureTooFastListener() {

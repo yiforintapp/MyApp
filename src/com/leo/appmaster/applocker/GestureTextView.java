@@ -117,6 +117,11 @@ public class GestureTextView extends TextView implements OnClickListener {
     public void onClick(View v) {
         if (mPf != null) {
             mPf.onUnlockPretendFailed();
+            
+            SDKWrapper
+            .addEvent(mContext, SDKWrapper.P1, "appcover", "fail_AppError");
+            
+            
         }
     }
 
