@@ -57,25 +57,21 @@ public class DeskProxyActivity extends Activity {
             if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                 if (type == mFlow) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+
                     goToFlow(type);
                 } else if (type == mElec) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoEle(type);
                 } else if (type == mBackup) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoBackUp(type);
                 } else if (type == mQuickGues) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoQuickGues(type);
                 } else if (type == mLockThem) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoLockThem(type);
-                }else {
+                } else {
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -100,32 +96,27 @@ public class DeskProxyActivity extends Activity {
                     goToPrivateSms(type);
                 } else if (type == mFlow) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "dataUsage");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     goToFlow(type);
                 } else if (type == mElec) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "battery");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoEle(type);
                 } else if (type == mBackup) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoBackUp(type);
                 } else if (type == mQuickGues) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoQuickGues(type);
                 } else if (type == mLockThem) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
-                    LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                     gotoLockThem(type);
                 }
-
             }
             finish();
         }
     }
 
     private void gotoLockThem(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent intent = new Intent(this, LockerTheme.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -133,6 +124,7 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoQuickGues(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(this);
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(this);
         boolean checkMiui = BuildProperties.isMIUI();
@@ -209,6 +201,7 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoBackUp(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent intent = new Intent(this, BackUpActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -216,6 +209,7 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoEle(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent dlIntent = new Intent(this, EleActivity.class);
         dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -223,9 +217,11 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void goToFlow(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent mIntent = new Intent(this, FlowActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
+        mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
         startActivity(mIntent);
     }
 
