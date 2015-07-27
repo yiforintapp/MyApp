@@ -10,6 +10,7 @@ import java.io.OutputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -40,7 +41,6 @@ import com.leo.appmaster.imagehide.PhotoItem;
 public class FileOperationUtil {
 
     public static final String SDCARD_DIR_NAME = "PravicyLock";
-
     public static final String[] STORE_IMAGES = {
             MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID, //
@@ -81,7 +81,7 @@ public class FileOperationUtil {
                 if (filename.startsWith(".")) {
                     filename = filename.substring(1);
                     int index = filename.indexOf(".");
-                    if (index >=0) {
+                    if (index >= 0) {
                         filename = filename.substring(0, index);
                     }
                 } else {
@@ -124,7 +124,7 @@ public class FileOperationUtil {
         if (path != null) {
             String dirName;
             int pos = path.lastIndexOf('/');
-            if (pos>= 0) {
+            if (pos >= 0) {
                 dirName = path.substring(0, pos);
                 pos = dirName.lastIndexOf('/');
                 dirName = dirName.substring(pos + 1);
@@ -320,7 +320,7 @@ public class FileOperationUtil {
                 }
             } else {
                 try {
-                    if (newPath.lastIndexOf(File.separator) >=0) {
+                    if (newPath.lastIndexOf(File.separator) >= 0) {
                         newFileDir = newPath.substring(0,
                                 newPath.lastIndexOf(File.separator));
                     }
@@ -479,6 +479,7 @@ public class FileOperationUtil {
      * get image folder list
      */
     public static List<PhotoAibum> getPhotoAlbum(Context context) {
+        List<String> filterVideoTypes = getFilterVideoType();
         List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
         Cursor cursor = MediaStore.Images.Media.query(
                 context.getContentResolver(),
@@ -492,6 +493,16 @@ public class FileOperationUtil {
                     String path = cursor.getString(1);
                     String dir_id = cursor.getString(3);
                     String dir = cursor.getString(4);
+                    if (dir.contains("videoCache")) {
+                        Log.d(Constants.RUN_TAG, "Image Path：" + path);
+                    }
+                    boolean isFilterVideoType = false;
+                    for (String videoType : filterVideoTypes) {
+                        isFilterVideoType = isFilterVideoType(path, videoType);
+                    }
+                    if (isFilterVideoType) {
+                        continue;
+                    }
                     // 过滤闪屏图
                     if (FileOperationUtil.getSplashPath() != null
                             && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
@@ -526,6 +537,26 @@ public class FileOperationUtil {
         }
 
         return aibumList;
+    }
+
+    /*
+     * 需要防止读取到videoCache文件，需要过略的视频格式(使用时注意，返回值不能为空)
+     */
+    private static List<String> getFilterVideoType() {
+        String[] filterVideoType = {
+                ".mp4"
+        };
+        if (filterVideoType != null) {
+            return Arrays.asList(filterVideoType);
+        }
+        return null;
+    }
+
+    /*
+     * 过略掉视频格式（在有些类似于Android/data/的目录下的videoCache目录中的视频也会在媒体的图像数据库中读取出来，过略掉这些）
+     */
+    public static boolean isFilterVideoType(String path, String videoType) {
+        return path.endsWith(videoType);
     }
 
     // 获取所有内置/外置SDCARD路径
