@@ -2,14 +2,19 @@
 package com.leo.appmaster.http;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.filterfw.core.FinalPort;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
@@ -22,6 +27,7 @@ import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -219,6 +225,40 @@ public class HttpRequestAgent {
             Listener<File> listener, ErrorListener eListener) {
         FileRequest request = new FileRequest(url, dir, listener, eListener);
         request.setShouldCache(true);
+        mRequestQueue.add(request);
+    }
+    
+    /**
+     * 提交用户反馈
+     * @param listener
+     * @param errorListener
+     * @param params
+     * @param device
+     */
+    public void commitFeedback(Listener<JSONObject> listener,
+            ErrorListener errorListener, final Map<String, String> params, final String device) {
+        String bodyString = null;
+        String url = Utilities.getURL(FeedbackHelper.FEEDBACK_URL);
+        int method = Method.POST;
+        JsonObjectRequest request = new JsonObjectRequest(method, url, bodyString, listener, errorListener) {
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("device", device);
+                return headers;
+            }
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return params;
+            }
+        };
+        // 最多重试3次
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         mRequestQueue.add(request);
     }
 
