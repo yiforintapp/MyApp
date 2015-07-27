@@ -3,6 +3,7 @@ package com.leo.appmaster.sdk.push.ui;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -42,10 +44,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             finish();
         }
         mURL = intent.getStringExtra(WEB_URL);
-        Log.i("TAG", "mURL = " + mURL);
 
         initUI();
         intWebView();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "webview", " statusbar");
     }
 
     private void initUI() {
@@ -73,6 +75,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setCacheMode(WebSettings.LOAD_NORMAL);
+        settings.setPluginState(PluginState.ON);
 
         mWebviewClient = new MyWebviewClient();
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());

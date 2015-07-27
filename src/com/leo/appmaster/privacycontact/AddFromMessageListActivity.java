@@ -77,7 +77,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
             public void onClick(View v) {
                 /* SDK */
                 SDKWrapper.addEvent(AddFromMessageListActivity.this, SDKWrapper.P1, "contactsadd",
-                        "handadd");
+                        "smsemptyadd");
                 Intent intent = new Intent(AddFromMessageListActivity.this,
                         PrivacyContactInputActivity.class);
                 intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
