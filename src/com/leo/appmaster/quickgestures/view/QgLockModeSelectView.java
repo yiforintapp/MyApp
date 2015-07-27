@@ -321,23 +321,11 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
                                     }
                                 });
                                 selectedImg = (ImageView) view.findViewById(R.id.img_selected);
-                                // mLockManager.setCurrentLockMode(mode, true);
-                                // SDKWrapper.addEvent(getContext(),
-                                // SDKWrapper.P1, "modeschage", "home");
-                                // new Thread(new Runnable() {
-                                // @Override
-                                // public void run() {
-                                // LeoEventBus.getDefaultBus().post(
-                                // new LockModeEvent(EventId.EVENT_MODE_CHANGE,
-                                // "multi mode page selectd"));
-                                // }
-                                // }).start();
-
                                 disappearAnim(curPosition, selectedImg);
                             } else {
                                 Intent intent = null;
                                 intent = new Intent(getContext(), LockScreenActivity.class);
-                                // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                 intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                                 intent.putExtra("quick_lock_mode", true);
                                 intent.putExtra("lock_mode_id", mode.modeId);
                                 intent.putExtra("lock_mode_name", mode.modeName);
