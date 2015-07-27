@@ -112,7 +112,15 @@ public class AppLockListActivity extends BaseActivity implements
 
                 boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
                 Log.e("lockmore", "fromLockMore==" + fromLockMore);
-                if (fromLockMore)
+                boolean isStartFromLockmode=getIntent().getBooleanExtra("enter_from_lockmode", false);
+                Log.e("lockmore", "isStartFromLockmode==" + isStartFromLockmode);
+                if(isStartFromLockmode)
+                {
+//                    Intent intent = new Intent(this, LockModeActivity.class);
+//                    startActivity(intent);
+                    this.finish();
+                }                
+                else if (fromLockMore)
                 {
                     LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
                     Intent intent = new Intent(this, HomeActivity.class);
