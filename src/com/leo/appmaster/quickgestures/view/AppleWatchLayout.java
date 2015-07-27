@@ -14,6 +14,7 @@ import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -1019,6 +1020,7 @@ public class AppleWatchLayout extends ViewGroup {
         }
 
     }
+    
 
     private void replaceEmptyIcon(GestureItemView hitView) {
         GType type = mContainer.getCurrentGestureType();
