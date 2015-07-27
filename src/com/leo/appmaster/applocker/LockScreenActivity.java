@@ -798,10 +798,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void onHideLockLineClicked(int position) {
         String tip;
         if (AppMasterPreference.getInstance(this).getIsHideLine()) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "unlock_off");
             mLeoPopMenu.updateItemIcon(position, R.drawable.hide_locus_icon);
             AppMasterPreference.getInstance(this).setHideLine(false);
             tip = getString(R.string.lock_line_visiable);
         } else {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "unlock_on");
             mLeoPopMenu.updateItemIcon(position, R.drawable.show_locus_icon);
             AppMasterPreference.getInstance(this).setHideLine(true);
             tip = getString(R.string.lock_line_hide);
