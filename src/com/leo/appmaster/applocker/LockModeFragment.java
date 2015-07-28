@@ -279,7 +279,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                 if (!lockMode.haveEverOpened) {
                     Intent intent = new Intent(mActivity, RecommentAppLockListActivity.class);
                     intent.putExtra("target", 0);
-                    
+//                    intent.putExtra("isFromHomeToLockModeAn", true);
                     startActivity(intent);
                     lockMode.haveEverOpened = true;
                     LockManager.getInstatnce().updateMode(lockMode);

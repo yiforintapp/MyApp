@@ -313,6 +313,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
                     intent.putExtra("target", getIntent().getIntExtra("target", 2));
                 } else {
                     intent.putExtra("target", getIntent().getIntExtra("target", 0));
+//                    intent.putExtra("isFromHomeToLockMode", true);
                 }
                 startActivity(intent);
                 this.finish();
