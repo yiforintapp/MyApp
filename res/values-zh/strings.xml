@@ -71,9 +71,8 @@
     <string name="passwd_hint_tip">密碼提示：</string>
     <string name="set_protect_or_not">"密保問題"</string>
     <string name="set_protect_message">"為了避免忘記密碼而無法進入應用鎖，建議設定密保問題，是否設定？"</string>
-   <!-- TODO -->
-    <string name="find_gesture">忘记密码</string>
-    
+    <!-- TODO -->
+    <string name="find_gesture">忘記密碼</string>
     <string name="pp_success">密碼保護設定成功</string>
     <string name="passwd_setting">密碼設定</string>
     <string name="set_success">設定成功</string>
@@ -140,10 +139,8 @@
     <string name="grade">五星好評</string>
     <string name="grade_tip">您已經使用隱私衛士很多次了，喜歡我們嗎，給5星鼓勵下吧！</string>
     <string name="app_setting_about">關於</string>
-    <!--TODO  -->
-    <string name="forbid_uninstall">高级保护</string>
-    
-    
+    <!-- TODO -->
+    <string name="forbid_uninstall">高級保護</string>
     <string name="auto_lock">鎖屏後自動鎖定</string>
     <string name="change_lock_time">更改鎖定時間</string>
     <string name="recom_lock_tip">推薦應用加鎖提醒</string>
@@ -626,9 +623,7 @@
     <string-array name="weizhuang_type_num">
         <item>無</item>
         <!-- TODO -->
-        <item>美女伪装</item>
-
-        
+        <item>美女偽裝</item>
         <item>應用錯誤</item>
         <item>未知來電</item>
         <item>指紋解鎖</item>
@@ -683,7 +678,6 @@
     <string name="pg_appmanager_quick_switch_dialog_title">請選擇快捷開關</string>
     <string name="quick_gesture_change_common_app_dialog_title">請選擇應用</string>
     <string name="quick_gesture_change_common_app_dialog_checkbox_text">根據使用習慣，自動填充/更換應用</string>
-    
     <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">系統資訊</string>
     <string name="quick_gesture_dialog_tip_contniue_title">繼續設定快捷手勢</string>
     <string name="quick_gesture_dialog_tip_contniue_cotent">檢測到您已經開啟了懸浮窗設定，是否繼續設定快捷手勢？</string>
@@ -758,30 +752,40 @@
     <string name="new_guide_page3_title">快捷手勢小白點</string>
     <string name="new_guide_page3_content">輕輕一點，手勢即現</string>
     <string name="quick_open_tip">您還沒有開啟快捷手勢</string>
-    
+
     <!-- TODO -->
-    <string name="quick_setting_title">快捷手势设置</string>
-    <string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
-    <string name="quick_no_call_log_annotation">未接来电会在快捷手势中提示</string>
-    <string name="quick_no_pricay_contact_annotation">信息会以系统信息的形式提示</string>
+    <string name="quick_setting_title">快捷手勢設定</string>
+    <string name="quick_no_msm_annotation">未讀簡訊會在快捷手勢中提示</string>
+    <string name="quick_no_call_log_annotation">未接來電會在快捷手勢中提示</string>
+    <string name="quick_no_pricay_contact_annotation">資訊會以系統資訊的形式提示</string>
     <!-- version 2.5 huangqili part -->
 
 
     <!-- 2.6 start -->
     <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
-    <string name="change_lock_mode">切换情景模式</string>
-    <string name="beauty_guide_title">使用介绍</string>
-    <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
-    <string name="flash_light_open_toast">请不要频繁操作闪光灯，可能造成硬件损坏</string>
-    <string name="privacy_auto_add_text">手动添加</string>
-    <string name="choose_lock_mode">选择情景模式</string>
-    <string name="button_disguise_guide_select">立刻试试</string>
-    <string name="button_disguise_guide_cancel">稍后</string>
-    <string name="button_disguise_guide_content">加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全</string>
-    <string name="traffic_over_text">已超额</string>
-    <string name="lock_line_hide">解锁轨迹已隐藏</string>
-    <string name="lock_line_visiable">解锁轨迹已显示</string>
-    <string name="video_hide_need_cb"> 由于系统原因，取消隐藏这些视频需要COOL Browser。请安装后才可使用</string>
+    <string name="beauty_mode_ok">美女偽裝模式已開啟</string>
+    <string name="change_lock_mode">切換情景模式</string>
+    <string name="beauty_guide_title">使用介紹</string>
+    <string name="beauty_guide_content">手機荧幕上的拉鍊是假像哦，在荧幕上雙指收縮試試吧</string>
+    <string name="flash_light_open_toast">請不要頻繁操作閃光燈，可能造成硬體損壞</string>
+    <string name="privacy_auto_add_text">手動添加</string>
+    <string name="choose_lock_mode">選擇情景模式</string>
+    <string name="button_disguise_guide_select">立刻試試</string>
+    <string name="button_disguise_guide_cancel">稍後</string>
+    <string name="button_disguise_guide_content">加鎖應用後試試應用偽裝功能吧，讓你的應用隱私更加安全</string>
+    <string name="traffic_over_text">已超額</string>
+    <string name="lock_line_hide">解鎖軌跡已隱藏</string>
+    <string name="lock_line_visiable">解鎖軌跡已顯示</string>
+    <string name="guide_more_text">更多 ></string>
+    <string name="guide_skip_text">跳過 ></string>
+    <string name="video_hide_need_cb">由於系統原因，取消隱藏這些視頻需要COOLBrowser。請安裝後才可使用</string>
+    <string name="video_hide_need_new_cb"> 由於系統原因，取消隱藏這些視頻需要最新版的COOLBrowser。請安裝後才可取消隱藏</string>
+    <string name="video_delete_need_new_cb"> 由於系統原因，删除這些視頻需要最新版的COOLBrowser。請安裝後才可删除</string>
+    <string name="video_cencel_hide_fail">取消隱藏失敗</string>
+    <string name="video_delete_fail">刪除檔失敗</string>
+    <string name="zipper_too_fast">哎呀，拉慢一點 </string>
+    <string name="zipper_too_slow">哎喲，拉快一點嘛</string>
+    <string name="theme_apply_title">是否應用解鎖主題：%1$s？</string>
     <!-- 2.6 end -->
 
 </resources>
