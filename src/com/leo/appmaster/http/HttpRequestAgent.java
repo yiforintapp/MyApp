@@ -103,12 +103,13 @@ public class HttpRequestAgent {
 
     public void checkNewTheme(Listener<JSONObject> listener,
             ErrorListener eListener) {
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
         String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalThemeSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
-                + AppwallHttpUtil.getLanguage() + "&app_ver="
+                + requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
         url += body;
@@ -120,12 +121,13 @@ public class HttpRequestAgent {
 
     public void checkNewBusinessData(Listener<JSONObject> listener,
             ErrorListener eListener) {
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
         String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalBusinessSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
-                + AppwallHttpUtil.getLanguage() + "&app_ver="
+                +requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
         url += body;
@@ -143,9 +145,10 @@ public class HttpRequestAgent {
      */
     public void loadRecomApp(int type, Listener<JSONObject> listener,
             ErrorListener eListener) {
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.APP_RECOMMEND_URL) + "?re_position=" + type;
         String body = "&market_id=" + mContext.getString(R.string.channel_code)
-                + "&language=" + AppwallHttpUtil.getLanguage();
+                + "&language=" + requestLanguage;
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 body, listener, eListener);
         request.setShouldCache(true);
@@ -160,10 +163,10 @@ public class HttpRequestAgent {
      */
     public void loadGestureRecomApp(int type, Listener<JSONObject> listener,
             ErrorListener eListener) {
-
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.GESTURE_RECOMMEND_URL + "/"
                 + mContext.getString(R.string.version_name) + "/"
-                + Utilities.getCountryID(mContext) + "/" + AppwallHttpUtil.getLanguage() + "/"
+                + Utilities.getCountryID(mContext) + "/" + requestLanguage + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
 
         LeoLog.d("loadGestureRecomApp", "url = " + url);
@@ -181,12 +184,13 @@ public class HttpRequestAgent {
      */
     public void loadBusinessRecomApp(int page, int number, Listener<JSONObject> listener,
             ErrorListener eListener) {
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.APP_RECOMMEND_URL) + "?re_position=4"
                 + "&pgcurrent=" + page;
         // String url =
         // "http://192.168.1.201:8080/leo/appmaster/apprecommend/list?re_position=4&pgcurrent="+page;
         String body = "&market_id=" + mContext.getString(R.string.channel_code)
-                + "&language=" + AppwallHttpUtil.getLanguage() + "&pgsize="
+                + "&language=" + requestLanguage + "&pgsize="
                 + number;
         // String body = "&market_id=" +
         // mContext.getString(R.string.channel_code);
@@ -219,6 +223,7 @@ public class HttpRequestAgent {
      */
     public void loadSplashDate(Listener<JSONObject> listener,
             ErrorListener errorListener) {
+        String requestLanguage = getPostLanguage();
         String object = "";
         String url = Utilities.getURL(Constants.SPLASH_URL
                 + mContext.getString(R.string.version_name) + "/"
