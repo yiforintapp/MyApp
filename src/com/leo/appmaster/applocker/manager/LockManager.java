@@ -1262,7 +1262,7 @@ public class LockManager {
 
         // check show time/location lock tip
         if (fromUser) {
-            checkLockTip();
+//            checkLockTip();
         }
     }
 

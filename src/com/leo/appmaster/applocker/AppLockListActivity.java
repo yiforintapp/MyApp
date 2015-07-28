@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -26,7 +27,9 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
@@ -40,6 +43,9 @@ import com.leo.appmaster.ui.LeoLockSortPopMenu;
 import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.LeoLog;
 
 public class AppLockListActivity extends BaseActivity implements
@@ -381,6 +387,7 @@ public class AppLockListActivity extends BaseActivity implements
                                     if (lockMode.defaultFlag == 1
                                             && !lockMode.haveEverOpened) {
                                         lm.setCurrentLockMode(lockMode, true);
+                                        checkLockTip();
                                         SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
                                                 "modeschage", "applock");
                                         startRcommendLock();
@@ -388,6 +395,7 @@ public class AppLockListActivity extends BaseActivity implements
                                         lm.updateMode(lockMode);
                                     } else {
                                         lm.setCurrentLockMode(lockMode, true);
+                                        checkLockTip();
                                         SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
                                                 "modeschage", "applock");
                                         Toast.makeText(
@@ -420,6 +428,120 @@ public class AppLockListActivity extends BaseActivity implements
         }
     }
 
+    
+    private void checkLockTip() {
+        int switchCount = AppMasterPreference.getInstance(this).getSwitchModeCount();
+        switchCount++;
+        AppMasterPreference.getInstance(this).setSwitchModeCount(switchCount);
+        LockManager lm = LockManager.getInstatnce();
+        List<TimeLock> timeLockList = lm.getTimeLock();
+        List<LocationLock> locationLockList = lm.getLocationLock();
+        if (switchCount == 6) {
+            // TODO show tip
+            int timeLockCount = timeLockList.size();
+            int locationLockCount = locationLockList.size();
+
+            if (timeLockCount == 0 && locationLockCount == 0) {
+                // show three btn dialog
+                LEOThreeButtonDialog dialog = new LEOThreeButtonDialog(
+                        this);
+                dialog.setTitle(R.string.time_location_lock_tip_title);
+                String tip = this.getString(R.string.time_location_lock_tip_content);
+                dialog.setContent(tip);
+                dialog.setLeftBtnStr(this.getString(R.string.cancel));
+                dialog.setMiddleBtnStr(this.getString(R.string.lock_mode_time));
+                dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
+                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
+                dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        Intent intent = null;
+                        if (which == 0) {
+                            // cancel
+                        } else if (which == 1) {
+                            // new time lock
+                            intent = new Intent(AppLockListActivity.this, TimeLockEditActivity.class);
+                            intent.putExtra("new_time_lock", true);
+                            intent.putExtra("from_dialog", true);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            AppLockListActivity.this.startActivity(intent);
+                        } else if (which == 2) {
+                            // new location lock
+                            intent = new Intent(AppLockListActivity.this, LocationLockEditActivity.class);
+                            intent.putExtra("new_location_lock", true);
+                            intent.putExtra("from_dialog", true);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            AppLockListActivity.this.startActivity(intent);
+                        }
+                    }
+                });
+//                dialog.getWindow().setType(
+//                        WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                dialog.show();
+            } else {
+                if (timeLockCount == 0 && locationLockCount != 0) {
+                    // show time lock btn dialog
+                    LEOAlarmDialog dialog = new LEOAlarmDialog(this);
+                    dialog.setTitle(R.string.time_location_lock_tip_title);
+                    String tip = this.getString(R.string.time_location_lock_tip_content);
+                    dialog.setContent(tip);
+                    dialog.setRightBtnStr(this.getString(R.string.lock_mode_time));
+                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
+                    dialog.setLeftBtnStr(this.getString(R.string.cancel));
+                    dialog.setOnClickListener(new OnDiaogClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            Intent intent = null;
+                            if (which == 0) {
+                                // cancel
+                            } else if (which == 1) {
+                                // new time lock
+                                intent = new Intent(AppLockListActivity.this, TimeLockEditActivity.class);
+                                intent.putExtra("new_time_lock", true);
+                                intent.putExtra("from_dialog", true);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                AppLockListActivity.this.startActivity(intent);
+                            }
+
+                        }
+                    });
+                    dialog.getWindow().setType(
+                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    dialog.show();
+
+                } else if (timeLockCount != 0 && locationLockCount == 0) {
+                    // show lcaotion btn dialog
+                    LEOAlarmDialog dialog = new LEOAlarmDialog(this);
+                    dialog.setTitle(R.string.time_location_lock_tip_title);
+                    String tip = this.getString(R.string.time_location_lock_tip_content);
+                    dialog.setContent(tip);
+                    dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
+                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
+                    dialog.setLeftBtnStr(this.getString(R.string.cancel));
+                    dialog.setOnClickListener(new OnDiaogClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            if (which == 0) {
+                                // cancel
+                            } else if (which == 1) {
+                                // new time lock
+                                Intent intent = new Intent(AppLockListActivity.this, LocationLockEditActivity.class);
+                                intent.putExtra("new_location_lock", true);
+                                intent.putExtra("from_dialog", true);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                AppLockListActivity.this.startActivity(intent);
+                            }
+
+                        }
+                    });
+//                    dialog.getWindow().setType(
+//                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    dialog.show();
+                }
+            }
+        }
+    }
+    
     private void startRcommendLock() {
         Intent intent = new Intent(this, RecommentAppLockListActivity.class);
         startActivity(intent);
