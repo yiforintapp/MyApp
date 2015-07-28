@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
@@ -45,7 +46,8 @@ public class EleActivity extends BaseFragmentActivity {
     private static final String Tag = "testCase";
     private ActivityManager am;
     private static final String SCHEME = "package";
-
+    private int mDeskType;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +72,15 @@ public class EleActivity extends BaseFragmentActivity {
         getBatteryStats();
     }
 
+    @Override
+    protected void onResume() {
+        Intent intent = getIntent();
+        mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE, -1);
+        LeoLog.d("testActivityGo", "EleActivity onResume");
+        LeoLog.d("testActivityGo", "mDeskType is : " + mDeskType);
+        super.onResume();
+    }
+    
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);
