@@ -97,7 +97,7 @@ public class HttpRequestAgent {
         } else {
             requestLanguage = language;
         }
-        Log.e(Constants.RUN_TAG, "sys_language:" +requestLanguage);
+//        Log.d(Constants.RUN_TAG, "sys_language:" +requestLanguage);
         return requestLanguage;
     }
 
