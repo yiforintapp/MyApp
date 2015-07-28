@@ -8,7 +8,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -36,7 +34,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private ProgressBar mProgressBar;
     public static final String WEB_URL = "url";
     private String mURL;
-    
+
     private FrameLayout mVideoFullLayout;
     private MyWebviewClient mWebviewClient;
     private MyWebChromeClient myWebChromeClient;
@@ -52,25 +50,25 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         if (TextUtils.isEmpty(mURL)) {
             finish();
         }
-        Log.i(TAG,"URL = "+mURL);
-        
+        Log.i(TAG, "URL = " + mURL);
+
         initUI();
         intWebView();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "webview", " statusbar");
     }
-    
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        
-        String newUrl  = intent.getStringExtra(WEB_URL);
+
+        String newUrl = intent.getStringExtra(WEB_URL);
         if (TextUtils.isEmpty(newUrl)) {
             return;
-        }else{
+        } else {
             mURL = newUrl;
             mWebView.loadUrl(mURL);
         }
-        Log.i(TAG,"URL = "+mURL);
+        Log.i(TAG, "URL = " + mURL);
     }
 
     private void initUI() {
@@ -84,7 +82,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         mProgressBar.setMax(100);
         mProgressBar.setProgress(5);
 
-        mVideoFullLayout = (FrameLayout)findViewById(R.id.video_fullView);
+        mVideoFullLayout = (FrameLayout) findViewById(R.id.video_fullView);
         mCloseView.setOnClickListener(this);
         mFlushView.setOnClickListener(this);
         disableNextBtn();
@@ -95,14 +93,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private void intWebView() {
         mWebView.loadUrl(mURL);
         WebSettings settings = mWebView.getSettings();
-        settings.setJavaScriptEnabled(true);        // support javaScript
-        settings.setSupportZoom(true);    //是否可以缩放，默认true
-        settings.setBuiltInZoomControls(true);   //是否显示缩放按钮，默认false
+        settings.setJavaScriptEnabled(true); // support javaScript
+        settings.setSupportZoom(true); // 是否可以缩放，默认true
+        settings.setBuiltInZoomControls(true); // 是否显示缩放按钮，默认false
         settings.setLoadWithOverviewMode(true);
         settings.setUseWideViewPort(true); // 网页自适应
-       settings.setAppCacheEnabled(true); //启动缓存
+        settings.setAppCacheEnabled(true); // 启动缓存
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-       
+
         mWebviewClient = new MyWebviewClient();
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebViewClient(mWebviewClient);
@@ -152,38 +150,38 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private void disableNextBtn() {
         mNextView.setImageResource(R.drawable.next_icon_disable);
         mNextView.setOnClickListener(null);
-        Log.i(TAG,"disableNextBtn");
+        Log.i(TAG, "disableNextBtn");
     }
 
     @Override
     public void onBackPressed() {
-        Log.i(TAG,"mPlayView  = "+mPlayView);
-        if(mPlayView != null){
-            Log.i(TAG,"onBackPressed  onHideCustomView");
-                  hideCustomView();
-          }else{
-              if (mWebView.canGoBack()) {
-                  mWebView.goBack();
-              } else {
-                  super.onBackPressed();
-              }
-          }
+        Log.i(TAG, "mPlayView  = " + mPlayView);
+        if (mPlayView != null) {
+            Log.i(TAG, "onBackPressed  onHideCustomView");
+            hideCustomView();
+        } else {
+            if (mWebView.canGoBack()) {
+                mWebView.goBack();
+            } else {
+                super.onBackPressed();
+            }
+        }
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
         mWebView.onResume();
         mWebView.resumeTimers();
-        
-        Log.i(TAG,"onResume  ");
+
+        Log.i(TAG, "onResume  ");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        
-        Log.i(TAG,"onPause  ");
+
+        Log.i(TAG, "onPause  ");
         mWebView.onPause();
         mWebView.pauseTimers();
     }
@@ -191,8 +189,8 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG,"onDestroy  ");
-        
+        Log.i(TAG, "onDestroy  ");
+
         mVideoFullLayout.removeAllViews();
         mWebView.loadUrl("about:blank");
         mWebView.stopLoading();
@@ -201,7 +199,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         mWebView.destroy();
         mWebView = null;
     }
-    
+
     /**
      * 全屏时按返加键执行退出全屏方法
      */
@@ -209,25 +207,27 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         myWebChromeClient.onHideCustomView();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-    
+
     private class MyWebviewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if(Uri.parse(url).getScheme().equals("market")){
+            if (Uri.parse(url).getScheme().equals("market")) {
                 try {
                     Intent intent = new Intent(Intent.ACTION_VIEW);
                     intent.setData(Uri.parse(url));
                     startActivity(intent);
                     return true;
-              } catch (Exception e) {
-                   // Google Play app is not installed, you may want to open the app store link
-                  Uri uri = Uri.parse(url);
-                  view.loadUrl("http://play.google.com/store/apps/" + uri.getHost() + "?" + uri.getQuery());
-                  return false;
-              }
-            }else {
+                } catch (Exception e) {
+                    // Google Play app is not installed, you may want to open
+                    // the app store link
+                    Uri uri = Uri.parse(url);
+                    view.loadUrl("http://play.google.com/store/apps/" + uri.getHost() + "?"
+                            + uri.getQuery());
+                    return false;
+                }
+            } else {
                 return false;
-          }
+            }
         }
 
         @Override
@@ -249,11 +249,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             super.onPageFinished(view, url);
         }
     }
-    
-    private class MyWebChromeClient extends WebChromeClient{
-        
+
+    private class MyWebChromeClient extends WebChromeClient {
+
         CustomViewCallback customViewCallback;
-        
+
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             if (newProgress == 100) {
@@ -278,46 +278,46 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             super.onReceivedTitle(view, title);
             mTitleView.setText(title);
         }
-        
+
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
-            Log.i(TAG,"onShowCustomView");
-            //设置为横屏
+            Log.i(TAG, "onShowCustomView");
+            // 设置为横屏
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mPlayView = view;
             customViewCallback = callback;
-            
+
             mWebView.setVisibility(View.INVISIBLE);
             mVideoFullLayout.addView(view);
             mVideoFullLayout.setVisibility(View.VISIBLE);
-            
+
             super.onShowCustomView(view, callback);
         }
-        
+
         @Override
         public void onHideCustomView() {
-            Log.i(TAG,"onHideCustomView");
-         // 用户当前的首选方向  
+            Log.i(TAG, "onHideCustomView");
+            // 用户当前的首选方向
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
-            if(customViewCallback != null){
+            if (customViewCallback != null) {
                 customViewCallback.onCustomViewHidden();
             }
             mVideoFullLayout.removeView(mPlayView);
             mPlayView = null;
             mVideoFullLayout.setVisibility(View.GONE);
             mWebView.setVisibility(View.VISIBLE);
-            
+
             super.onHideCustomView();
         }
     }
-    
-    private class MyWebViewDownLoadListener implements DownloadListener{
+
+    private class MyWebViewDownLoadListener implements DownloadListener {
         @Override
         public void onDownloadStart(String url, String userAgent, String contentDisposition,
                 String mimetype, long contentLength) {
             Uri uri = Uri.parse(url);
-            Log.i(TAG, "downlaod url: "+uri );
-            Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+            Log.i(TAG, "downlaod url: " + uri);
+            Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
     }
