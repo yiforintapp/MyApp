@@ -83,11 +83,10 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
     public void onEventMainThread(LockModeEvent event) {
         LeoLog.d("testMultiModeView", "event.eventMsg : " + event.eventMsg);
-        if (event.eventMsg.equals(SHOW_NOW)) {
-            show();
+        if (event.eventMsg.equals(SHOW_NOW) && getVisibility() == View.VISIBLE) {
+            backgroundAnimtion();
+            fillUI(true);
         }
-        // fillUI(false);
-        // mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -155,11 +154,9 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         mModeNameTv.setVisibility(View.INVISIBLE);
         mIvAdd.setVisibility(View.INVISIBLE);
         backgroundAnimtion();
-
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
         }
-        
         fillUI(true);
     }
 
@@ -399,7 +396,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                             post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if(mode != null && mode.modeIcon != null) {
+                                    if (mode != null && mode.modeIcon != null) {
                                         modeIcon.setBackgroundDrawable((new BitmapDrawable(
                                                 getResources(),
                                                 BitmapUtils.createGaryBitmap(mode.modeIcon))));
@@ -464,7 +461,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                 mModeNameTv.setAlpha(value);
             }
         });
-        ObjectAnimator thisViewAlpha = ObjectAnimator.ofFloat(MultiModeView.this, "alpha",0f)
+        ObjectAnimator thisViewAlpha = ObjectAnimator.ofFloat(MultiModeView.this, "alpha", 0f)
                 .setDuration(400);
         ObjectAnimator selectImgAlpha = ObjectAnimator.ofFloat(selectedImg, "alpha", 0f)
                 .setDuration(400);
