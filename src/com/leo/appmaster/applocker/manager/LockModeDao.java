@@ -78,7 +78,7 @@ public class LockModeDao {
         return modeList;
     }
 
-    public void insertLockMode(LockMode lockMode) {
+    public synchronized void insertLockMode(LockMode lockMode) {
         if (lockMode == null)
             return;
         ContentValues values = new ContentValues();
@@ -102,7 +102,7 @@ public class LockModeDao {
         lockMode.modeId = (int) ContentUris.parseId(uri);
     }
 
-    public void updateLockMode(LockMode lockMode) {
+    public synchronized void updateLockMode(LockMode lockMode) {
         if (lockMode == null)
             return;
         ContentValues values = new ContentValues();
