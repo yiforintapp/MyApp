@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -51,34 +52,15 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         setContentView(R.layout.activity_privacy_contact_main);
         initUI();
         LeoEventBus.getDefaultBus().register(this);
-//        initLoadData();
-    }
-
-    private void initLoadData() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-            @Override
-            public void run() {
-                PrivacyContactManager.getInstance(PrivacyContactActivity.this).destroyCalls();
-                PrivacyContactManager.getInstance(PrivacyContactActivity.this).getSysCalls();
-            }
-        });
+        // PrivacyContactManager.getInstance(mContext).mIsOpenPrivacyContact =
+        // true;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
-//        uninitLoadData();
-    }
-
-    private void uninitLoadData() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-
-            @Override
-            public void run() {
-                PrivacyContactManager.getInstance(PrivacyContactActivity.this).destroyCalls();
-            }
-        });
+        // uninitLoadData();
     }
 
     private void initUI() {
@@ -473,6 +455,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     @Override
     protected void onResume() {
         super.onResume();
+        PrivacyContactManager.getInstance(PrivacyContactActivity.this).mIsOpenPrivacyContact = true;
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
