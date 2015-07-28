@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -44,6 +45,7 @@ public class PrivacyContactManager {
     public int messageSize;// 对红米未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
     private boolean mCallsLoaded;
     private ArrayList<ContactCallLog> mSysCalls;
+    public boolean mIsOpenPrivacyContact;// 当前页是否为PrivacyContactActivity
     /* 用来做测试 */
     public boolean testValue;
 
@@ -381,7 +383,7 @@ public class PrivacyContactManager {
     }
 
     public ArrayList<ContactCallLog> getSysCalls() {
-        Log.e(Constants.RUN_TAG, "预加载通话记录");
+        // Log.e(Constants.RUN_TAG, "预加载通话记录");
         loadCallLogs();
         return (ArrayList<ContactCallLog>) mSysCalls.clone();
     }
@@ -409,7 +411,27 @@ public class PrivacyContactManager {
             mSysCalls = null;
         }
         mCallsLoaded = false;
-        Log.e(Constants.RUN_TAG, "销毁内存中的通话记录");
+        // Log.e(Constants.RUN_TAG, "销毁内存中的通话记录");
     }
 
+    public void initLoadData() {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyContactManager.getInstance(mContext).destroyCalls();
+                PrivacyContactManager.getInstance(mContext).getSysCalls();
+            }
+        });
+    }
+
+    private void uninitLoadData() {
+        mIsOpenPrivacyContact = false;
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+            @Override
+            public void run() {
+                destroyCalls();
+            }
+        });
+    }
 }
