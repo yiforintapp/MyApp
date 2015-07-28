@@ -589,7 +589,7 @@
 
     <string-array name="weizhuang_type_num">
         <item>нет</item>
-        <item>美女伪装</item>
+        <item>камуфляж </item>
         <item>ошибка</item>
         <item>входящий</item>
         <item>отпечаток</item>
@@ -600,20 +600,22 @@
     <string name="time_location_lock_tip_content">вы можете установить автоматический обмен режима по времени и месту, установить?</string>
     <string name="time_lock_mode_guide_content">замок времени может активировать режим сцены в указанное вам время, рекомендуем добавить собственный замок времени</string>
     <string name="location_lock_mode_guide_content">замок положения можеи запустить режим сцены в указанном вам месте,WiFi отмечает местоположение</string>
-    <string name="lock_mode_guide_button_text">понял</string> 
+    <string name="lock_mode_guide_button_text">понял</string>
     <string name="mode_missing">Ты не создать режим этой сцены , пожалуйста, удалить этот ярлык</string>
     <!-- version 2.1 end -->
-    
-           <!-- version 2.2 start -->
+
+
+    <!-- version 2.2 start -->
     <string name="feedback_content_guide">Проблема, которую вы встретили</string>
     <string name="feedback_email_guide">Эл.почта</string>
     <string name="feedback_category_guide">Тип проблемы</string>
-     <string name="privacy_proposal_tip">Ваш интим. класс %1$s. Просим выполнять такое управл., чтобы повыс. интим. Класс</string>
-     <string name="lock_mode_name_maxlength">30</string>
+    <string name="privacy_proposal_tip">Ваш интим. класс %1$s. Просим выполнять такое управл., чтобы повыс. интим. Класс</string>
+    <string name="lock_mode_name_maxlength">30</string>
     <!-- version 2.2 end -->
-    
+
+
     <!-- version 2.4 start -->
-      <string name="pg_appmanager_quick_gesture_name">быстрый жест</string>
+    <string name="pg_appmanager_quick_gesture_name">быстрый жест</string>
     <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">откройте быстрый  жест</string>
     <string name="pg_appmanager_quick_gesture_option_switch_setting">Установка выключателя</string>
     <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">Жестовая тема</string>
@@ -672,12 +674,13 @@
     <string name="grade_tip_feedback">Проблемы</string>
     <string name="quick_first_tip_dialog_right_bt">Пользование</string>
     <string name="quick_first_tip_dialog_left_bt">позже</string>
-     <!-- quick gesture -->
-    <!--  version 2.4 end -->
-    
-        <!-- version 2.5 huangqili part -->
-        
-   <string name="forbid_uninstall_off">откройте высшую защиту, чтобы караула не злостно отгрузить и лучше сохранить ваши личные данные.  </string>
+    <!-- quick gesture -->
+    <!-- version 2.4 end -->
+
+
+    <!-- version 2.5 huangqili part -->
+
+    <string name="forbid_uninstall_off">откройте высшую защиту, чтобы караула не злостно отгрузить и лучше сохранить ваши личные данные.  </string>
     <string name="forbid_uninstall_on">успешно открыта высшая защита!</string>
     <string name="setting_hide_lockline">скройте след отмыкания</string>
     <string name="change_to_gesture">переключите на код жеста</string>
@@ -688,39 +691,61 @@
     <string name="summary_setting_locker">выберите заарретированную установку</string>
     <string name="summary_hide_lockline">скройте след отмыкания</string>
     <string name="quick_gesture_strengthen_mode_title">белое пятнышко</string>
- 	<string name="quick_gesture_strengthen_mode_content">кликните белое пятнышко и можете открыть быстрый и удобный жест </string>
- 	<string name="quick_gesture_success_title">успешно открыт быстрый и удобный жест!</string>
- 	<string name="quick_gesture_success_content">вы можете кликнуть внизу и  использовать быстрый и удобный жест, давайте попробуйте!</string>
+    <string name="quick_gesture_strengthen_mode_content">кликните белое пятнышко и можете открыть быстрый и удобный жест </string>
+    <string name="quick_gesture_success_title">успешно открыт быстрый и удобный жест!</string>
+    <string name="quick_gesture_success_content">вы можете кликнуть внизу и  использовать быстрый и удобный жест, давайте попробуйте!</string>
     <string name="go_set">установите</string>
- 	<string name="white_dot_click_tip">поздравляю вас с успешным открытием быстрого и удобного жеста через белое пятнышко. Если вам мешает, его закройте в установке.</string>
- 	<string name="quick_gesture_open_text">открыто</string>
- 	<string name="quick_gesture_close_text">закрыто</string>
- 	<string name="quick_gesture_introduction_title">Что это за Быстрый и удобный жест?</string>
- 	<string name="quick_gesture_introduction_content">Быстрым и удобным жестом является высокоэффективный вставной блок из Караула, через его вам можно удобно управлять включателей системы, и быстро включать программы.</string>
- 	<string name="quick_gesture_slide_guide_title">Как быстро открыть скольжение жеста?</string>
- 	<string name="quick_gesture_slide_guide_content">Только полегоньку  скользните на угол мобильника и можете открыть быстрый и удобный жест </string>
- 	<string name="quick_gesture_slide_setting_content">Если трудно скользните жест, тогда можно кликнить здесь и настройть зону скольжения.</string>
- 	<string name="quick_gesture_edit_guide_title">Как составлять включатель и приложения быстрого и удобного жеста?</string>
- 	<string name="quick_gesture_edit_guide_content">В любом классе tap быстрого и удобного жеста долгим нажатием Приложения/включатели можно доступить к интерфейсу редактора, вы можете исключить приложения/включатель, так и можете добавить приложение/включатель в часто употребляемые приложения и удобные и быстрые включатели</string>
- 	<string name="quick_gesture_edit_extra_content">Примечание:  Недавно используемые приложения формируется системой,  поэтому активно добавить невозможно.</string>
- 	<string name="can_not_add_more">нельзя добавить больше</string>
- 	 	<string name="new_guide_page1_title">быстрый и удобный жест</string>
- 	<string name="new_guide_page1_content">откройте применение быстро</string>
- 	<string name="new_guide_page2_title">применение маскировки</string>
- 	<string name="new_guide_page2_content">интересное отмыкание</string>
- 	<string name="new_guide_page3_title">белое пятнышко</string>
- 	<string name="new_guide_page3_content">вызовете быстрый и удобный жест быстро</string>
- 	<string name="quick_open_tip">Быстрый и удобный жест еще закрытый</string>
- 	<string name="quick_setting_title">Установка жеста</string>
- 	<string name="quick_no_msm_annotation">Непрочитанное сообщение в жесте</string>
+    <string name="white_dot_click_tip">поздравляю вас с успешным открытием быстрого и удобного жеста через белое пятнышко. Если вам мешает, его закройте в установке.</string>
+    <string name="quick_gesture_open_text">открыто</string>
+    <string name="quick_gesture_close_text">закрыто</string>
+    <string name="quick_gesture_introduction_title">Что это за Быстрый и удобный жест?</string>
+    <string name="quick_gesture_introduction_content">Быстрым и удобным жестом является высокоэффективный вставной блок из Караула, через его вам можно удобно управлять включателей системы, и быстро включать программы.</string>
+    <string name="quick_gesture_slide_guide_title">Как быстро открыть скольжение жеста?</string>
+    <string name="quick_gesture_slide_guide_content">Только полегоньку  скользните на угол мобильника и можете открыть быстрый и удобный жест </string>
+    <string name="quick_gesture_slide_setting_content">Если трудно скользните жест, тогда можно кликнить здесь и настройть зону скольжения.</string>
+    <string name="quick_gesture_edit_guide_title">Как составлять включатель и приложения быстрого и удобного жеста?</string>
+    <string name="quick_gesture_edit_guide_content">В любом классе tap быстрого и удобного жеста долгим нажатием Приложения/включатели можно доступить к интерфейсу редактора, вы можете исключить приложения/включатель, так и можете добавить приложение/включатель в часто употребляемые приложения и удобные и быстрые включатели</string>
+    <string name="quick_gesture_edit_extra_content">Примечание:  Недавно используемые приложения формируется системой,  поэтому активно добавить невозможно.</string>
+    <string name="can_not_add_more">нельзя добавить больше</string>
+    <string name="new_guide_page1_title">быстрый и удобный жест</string>
+    <string name="new_guide_page1_content">откройте применение быстро</string>
+    <string name="new_guide_page2_title">применение маскировки</string>
+    <string name="new_guide_page2_content">интересное отмыкание</string>
+    <string name="new_guide_page3_title">белое пятнышко</string>
+    <string name="new_guide_page3_content">вызовете быстрый и удобный жест быстро</string>
+    <string name="quick_open_tip">Быстрый и удобный жест еще закрытый</string>
+    <string name="quick_setting_title">Установка жеста</string>
+    <string name="quick_no_msm_annotation">Непрочитанное сообщение в жесте</string>
     <string name="quick_no_call_log_annotation">неотвеченный звонок в жесте</string>
     <string name="quick_no_pricay_contact_annotation">сообщение в виде инфо. системы</string>
     <!-- version 2.5 huangqili part -->
-    
+
+
     <!-- 2.6 start -->
-	<!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译-->
-    
-    
-    
-    
+    <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
+    <string name="beauty_mode_ok">модель камуляжа красотой открыт</string>
+    <string name="change_lock_mode">изменение модели</string>
+    <string name="beauty_guide_title">рекомендация использования</string>
+    <string name="beauty_guide_content">молния на экранеложное представление,попробовать стягивать пальцами на экране</string>
+    <string name="flash_light_open_toast">нельзя многократко использовать  вспышку для защиты  материального обеспечения</string>
+    <string name="privacy_auto_add_text">добавить </string>
+    <string name="choose_lock_mode">выбор модели</string>
+    <string name="button_disguise_guide_select">пробовать</string>
+    <string name="button_disguise_guide_cancel">минуту</string>
+    <string name="button_disguise_guide_content">попробовать камуфляж после блока для защиты ващих предложений</string>
+    <string name="traffic_over_text">сверх нормы</string>
+    <string name="lock_line_hide">орбита деблокирови скрыта</string>
+    <string name="lock_line_visiable">орбита деблокирови показана</string>
+    <string name="guide_more_text">больше функции ></string>
+    <string name="guide_skip_text">перепрыгнуть ></string>
+    <string name="video_hide_need_cb">из-за системы,для отмены сокрытия этих видео нужно COOL Browser.использовать после  установки</string>
+    <string name="video_hide_need_new_cb">из-за системы,для отмены сокрытия этих видео нужно COOL Browser.отменить сокрытие после  установки</string>
+    <string name="video_delete_need_new_cb">из-за системы,для исключения этих видео нужно COOLBrowser.использовать после  установки</string>
+    <string name="video_cencel_hide_fail">отменить скрытие неудолось</string>
+    <string name="video_delete_fail">исключать документы неудолось</string>
+    <string name="zipper_too_fast">давайте помедленнее</string>
+    <string name="zipper_too_slow">давайте побыстрее</string>
+    <string name="theme_apply_title">использовать тон деблокирови%1$s?</string>
+    <!-- 2.6 end -->
+
 </resources>
