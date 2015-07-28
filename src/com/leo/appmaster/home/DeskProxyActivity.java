@@ -27,6 +27,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 public class DeskProxyActivity extends Activity {
@@ -232,6 +233,7 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToPrivateSms");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }
@@ -241,6 +243,7 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToHideVio");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }
@@ -250,6 +253,7 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToHidePic");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }
@@ -259,6 +263,7 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToAppWeiZhuang");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }
@@ -283,6 +288,7 @@ public class DeskProxyActivity extends Activity {
             intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
             startActivity(intent);
         }
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToAppLock");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }

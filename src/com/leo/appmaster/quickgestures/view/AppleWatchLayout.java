@@ -37,6 +37,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -734,55 +736,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
         } else if (info instanceof AppItemInfo) {
-            // 最近使用
-            LeoLog.d("TestLayout", "AppItemInfo");
-            final AppItemInfo appInfo = (AppItemInfo) info;
-            List<String> lockList = LockManager.getInstatnce().getCurLockList();
-            if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
-                QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
-                if (activity.isFromSelfApp()) {
-                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                            appInfo.packageName, false, null);
-                } else {
-                    // Log.e(Constants.RUN_TAG, "最近使用，名称：" +
-                    // appInfo.activityName + "_会走这里的");
-                    Intent intent = new Intent();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.setComponent(new ComponentName(appInfo.packageName,
-                            appInfo.activityName));
-                    try {
-                        getContext().startActivity(intent);
-                    } catch (Exception e) {
-                        // Not Found Exception
-                    }
-                }
-            } else {
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setComponent(new ComponentName(appInfo.packageName,
-                        appInfo.activityName));
-                try {
-                    getContext().startActivity(intent);
-                } catch (Exception e) {
-                    // Not Found Exception
-                }
-            }
-
-            if (mMyType == GType.DymicLayout) {
-                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
-            } else if (mMyType == GType.MostUsedLayout) {
-                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
-            } else {
-                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
-            }
-            if (lockList.contains(appInfo.packageName)) {
-                if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
-
-                } else {
-                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                            appInfo.packageName, false, null);
-                }
-            }
+            handleRecentUsedAppClicked(info);
         } else if (info instanceof MessageBean) {
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
             // 短信提醒
@@ -940,6 +894,59 @@ public class AppleWatchLayout extends ViewGroup {
 
     }
 
+    private void handleRecentUsedAppClicked(BaseInfo info) {
+        // 最近使用
+        LeoLog.d("TestLayout", "AppItemInfo");
+        final AppItemInfo appInfo = (AppItemInfo) info;
+        List<String> lockList = LockManager.getInstatnce().getCurLockList();
+        if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
+            QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
+            if (activity.isFromSelfApp()) {
+                LeoLog.d("Track Lock Screen",
+                        "apply lockscreen form AppleWatchLayout onItemClick");
+                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                        appInfo.packageName, false, null);
+            } else {
+                LeoLog.e("xxxx", "1");
+                Intent intent = new Intent();
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setComponent(new ComponentName(appInfo.packageName,
+                        appInfo.activityName));
+
+                try {
+                    getContext().startActivity(intent);
+                } catch (Exception e) {
+                }
+            }
+        } else {
+            Intent intent = new Intent();
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setComponent(new ComponentName(appInfo.packageName,
+                    appInfo.activityName));
+            try {
+                getContext().startActivity(intent);
+            } catch (Exception e) {
+            }
+        }
+
+        if (lockList.contains(appInfo.packageName)) {
+            if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
+
+            } else {
+                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                        appInfo.packageName, false, null);
+            }
+        }
+
+        if (mMyType == GType.DymicLayout) {
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
+        } else if (mMyType == GType.MostUsedLayout) {
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
+        } else {
+            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
+        }
+    }
+
     private void checkDownload(BusinessItemInfo bif) {
         if (bif.gpPriority == 1) {
             if (AppUtil.appInstalled(getContext(),
@@ -1020,7 +1027,6 @@ public class AppleWatchLayout extends ViewGroup {
         }
 
     }
-    
 
     private void replaceEmptyIcon(GestureItemView hitView) {
         GType type = mContainer.getCurrentGestureType();
