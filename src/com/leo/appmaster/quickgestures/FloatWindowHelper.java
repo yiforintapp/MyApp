@@ -53,6 +53,7 @@ public class FloatWindowHelper {
     public static final int ONTUCH_RIGHT_FLAG = 1;
     public static final String QUICK_GESTURE_MSM_TIP = "quick_gesture_msm_tip";
     public static final String QUICK_GESTURE_ADD_FREE_DISTURB_NOTIFICATION = "quick_gesture_add_free_disturb_notification";
+
     private static QuickGesturesAreaView mLeftBottomView, mLeftCenterView, mLeftTopView,
             mLeftCenterCenterView;
     private static QuickGesturesAreaView mRightBottomView, mRightCenterView, mRightTopView,
@@ -117,7 +118,7 @@ public class FloatWindowHelper {
     private static boolean isControling = false;
     private static CountDownTimer nowCount;
     private static Handler handler;
-
+//    public static boolean mIsWhiteFloatViewResponsing=false;
     /**
      * left bottom must call in UI thread
      * 
@@ -1853,7 +1854,11 @@ public class FloatWindowHelper {
         pref.setNeedShowWhiteDotSlideTip(false);
         checkDismissWhiteDotLuminescence(mContext);
         int oreatation = mWhiteFloatParams.x < 0 ? 0 : 2;
-        showQuickGuestureView(mContext, oreatation);
+//        if(!AppMasterPreference.getInstance(mContext).getIsWhiteDotResponsing())
+//        {
+//            mIsWhiteFloatViewResponsing=true;
+            showQuickGuestureView(mContext, oreatation);
+//        }
     }
 
     private static void setWhiteFloatOnTouchEvent(final Context mContext) {
@@ -1877,6 +1882,10 @@ public class FloatWindowHelper {
                     case MotionEvent.ACTION_OUTSIDE:
                         break;
                     case MotionEvent.ACTION_DOWN:
+                        
+                      
+                        
+                        
                         isControling = true;
                         // 取消上一次的持续效果
                         if (nowCount != null) {
@@ -1937,6 +1946,10 @@ public class FloatWindowHelper {
     }
 
     private static void showQuickGuestureView(Context mContext, int orientation) {
+        
+        Log.e("temp728", "to show");
+        
+        
         Intent intent = new Intent(mContext,
                 QuickGesturePopupActivity.class);
         intent.addFlags(/*Intent.FLAG_ACTIVITY_CLEAR_TASK | */Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -1946,7 +1959,11 @@ public class FloatWindowHelper {
                 .equals(mContext.getPackageName(), LockManager.getInstatnce().getLastPackage())) {
             intent.putExtra("from_self_app", true);
         }
-        mContext.startActivity(intent);
+        if(!AppMasterPreference.getInstance(mContext).getIsWhiteDotResponsing())//phtd
+        {
+            mContext.startActivity(intent);        
+            AppMasterPreference.getInstance(mContext).setIsWhiteDotResponsing(true);
+        }
     }
 
     private static boolean hasMessageTip(Context mContext) {
