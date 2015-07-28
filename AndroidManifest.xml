@@ -532,6 +532,7 @@
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
+            android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>

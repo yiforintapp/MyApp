@@ -7,6 +7,8 @@ import com.leo.appmaster.sdk.SDKWrapper;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -32,7 +35,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private ProgressBar mProgressBar;
     public static final String WEB_URL = "url";
     private String mURL;
+    
+    private FrameLayout mVideoFullLayout;
     private MyWebviewClient mWebviewClient;
+    private MyWebChromeClient myWebChromeClient;
+    private View mPlayView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         mProgressBar = (ProgressBar) findViewById(R.id.webView_pb);
         mProgressBar.setMax(100);
 
+        mVideoFullLayout = (FrameLayout)findViewById(R.id.video_fullView);
         mCloseView.setOnClickListener(this);
         mFlushView.setOnClickListener(this);
         disableNextBtn();
@@ -72,41 +80,17 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         WebSettings settings = mWebView.getSettings();
         // support javaScript
         settings.setJavaScriptEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
+        settings.setSupportZoom(true);    
+        settings.setBuiltInZoomControls(true);  
+        settings.setUseWideViewPort(true);// 可任意比例缩放
+        settings.setDisplayZoomControls(false);  
         settings.setCacheMode(WebSettings.LOAD_NORMAL);
-        settings.setPluginState(PluginState.ON);
-
+       
         mWebviewClient = new MyWebviewClient();
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebViewClient(mWebviewClient);
-        mWebView.setWebChromeClient(new WebChromeClient() {
-            // set progress
-            @Override
-            public void onProgressChanged(WebView view, int newProgress) {
-                if (newProgress == 100) {
-                    mProgressBar.setProgress(newProgress);
-                    mProgressBar.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    }, 100);
-                } else {
-                    if (mProgressBar.getVisibility() == View.GONE) {
-                        mProgressBar.setVisibility(View.VISIBLE);
-                    }
-                    mProgressBar.setProgress(newProgress);
-                }
-                super.onProgressChanged(view, newProgress);
-            }
-
-            @Override
-            public void onReceivedTitle(WebView view, String title) {
-                super.onReceivedTitle(view, title);
-                mTitleView.setText(title);
-            }
-        });
+        myWebChromeClient = new MyWebChromeClient();
+        mWebView.setWebChromeClient(myWebChromeClient);
     }
 
     @Override
@@ -156,11 +140,73 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     @Override
     public void onBackPressed() {
-        if (mWebView.canGoBack()) {
-            mWebView.goBack();
-        } else {
-            super.onBackPressed();
+        Log.i(TAG,"mPlayView  = "+mPlayView);
+        if(mPlayView != null){
+            Log.i(TAG,"onBackPressed  onHideCustomView");
+                  hideCustomView();
+          }else{
+              if (mWebView.canGoBack()) {
+                  mWebView.goBack();
+              } else {
+                  super.onBackPressed();
+              }
+          }
+    }
+    
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mWebView.onResume();
+        mWebView.resumeTimers();
+        
+        Log.i(TAG,"onResume  ");
+
+        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        
+        Log.i(TAG,"onPause  ");
+        mWebView.onPause();
+        mWebView.pauseTimers();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.i(TAG,"onDestroy  ");
+        
+        mVideoFullLayout.removeAllViews();
+        mWebView.loadUrl("about:blank");
+        mWebView.stopLoading();
+        mWebView.setWebChromeClient(null);
+        mWebView.setWebViewClient(null);
+        mWebView.destroy();
+        mWebView = null;
+    }
+    
+    /**
+     * 全屏时按返加键执行退出全屏方法
+     */
+    public void hideCustomView() {
+        myWebChromeClient.onHideCustomView();
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+    }
+    
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+
+        int type = this.getResources().getConfiguration().orientation;
+        if (type == Configuration.ORIENTATION_LANDSCAPE) {
+            Log.i(TAG,"切换到了横屏");
+        } else if (type == Configuration.ORIENTATION_PORTRAIT) {
+            Log.i(TAG,"切换到了竖屏");
+        }
+        super.onConfigurationChanged(newConfig);
     }
     
     private class MyWebviewClient extends WebViewClient {
@@ -186,6 +232,68 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                 Log.i("######", "forward hide");
             }
             super.onPageFinished(view, url);
+        }
+    }
+    
+    private class MyWebChromeClient extends WebChromeClient{
+        
+        CustomViewCallback customViewCallback;
+        
+        @Override
+        public void onProgressChanged(WebView view, int newProgress) {
+            if (newProgress == 100) {
+                mProgressBar.setProgress(newProgress);
+                mProgressBar.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mProgressBar.setVisibility(View.GONE);
+                    }
+                }, 100);
+            } else {
+                if (mProgressBar.getVisibility() == View.GONE) {
+                    mProgressBar.setVisibility(View.VISIBLE);
+                }
+                mProgressBar.setProgress(newProgress);
+            }
+            super.onProgressChanged(view, newProgress);
+        }
+
+        @Override
+        public void onReceivedTitle(WebView view, String title) {
+            super.onReceivedTitle(view, title);
+            mTitleView.setText(title);
+        }
+        
+        @Override
+        public void onShowCustomView(View view, CustomViewCallback callback) {
+            Log.i(TAG,"onShowCustomView");
+            //设置为横屏
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+            mPlayView = view;
+            customViewCallback = callback;
+            
+            mWebView.setVisibility(View.INVISIBLE);
+            mVideoFullLayout.addView(view);
+            mVideoFullLayout.setVisibility(View.VISIBLE);
+            
+            super.onShowCustomView(view, callback);
+        }
+        
+        @Override
+        public void onHideCustomView() {
+            Log.i(TAG,"onHideCustomView");
+         // 用户当前的首选方向  
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
+            if(customViewCallback != null){
+                customViewCallback.onCustomViewHidden();
+            }
+            
+            mVideoFullLayout.removeView(mPlayView);
+            mPlayView = null;
+            mVideoFullLayout.setVisibility(View.INVISIBLE);
+            mWebView.setVisibility(View.VISIBLE);
+            
+            super.onHideCustomView();
         }
     }
     
