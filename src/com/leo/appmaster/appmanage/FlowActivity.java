@@ -44,19 +44,8 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flow_trafficlist);
         initUI();
-        handleIntent();
     }
 
-    private void handleIntent() {
-        Intent intent = getIntent();
-        type = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE, -1);
-    }
-
-    @Override
-    protected void onResume() {
-        
-        super.onResume();
-    }
 
     private void initUI() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.traffic_title_bar);
