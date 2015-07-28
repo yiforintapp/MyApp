@@ -22,6 +22,7 @@ import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -51,16 +52,15 @@ public class PasswdProtectActivity extends BaseActivity implements
 
     private View mSpinnerQuestions;
     private EditText mQuestion, mAnwser;
-    private View  mSave;
+    private View mSave;
     private ScrollView mScrollView;
     private Handler mHandler = new Handler();
     private View mLayoutQues;
     private Dialog mQuesDialog;
     private ListView mQuesList;
-    
-    
+
     private List<String> mCategories;
-    private String  mSelectQues;
+    private String mSelectQues;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,7 +114,7 @@ public class PasswdProtectActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (mQuesDialog == null) {
-                    mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this,R.style.bt_dialog);
+                    mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this, R.style.bt_dialog);
                     mQuesDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
                     mQuesDialog.setContentView(R.layout.dialog_common_list_select);
                     mQuesDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
@@ -137,7 +137,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                         mQuesDialog.dismiss();
                     }
                 });
-                
+
                 TextView mTitle = (TextView) mQuesDialog.findViewById(R.id.dlg_title);
                 mTitle.setText(getResources().getString(R.string.input_qusetion));
                 ListAdapter adapter = new QuesListAdapter(PasswdProtectActivity.this);
@@ -146,7 +146,7 @@ public class PasswdProtectActivity extends BaseActivity implements
                 mQuesDialog.show();
             }
         });
-      
+
         mLayoutQues = findViewById(R.id.layout_questions);
         mQuestion = (EditText) findViewById(R.id.et_question);
         mQuestion.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -160,16 +160,28 @@ public class PasswdProtectActivity extends BaseActivity implements
                         }
                     }, 100);
                 }
-                mLayoutQues.setBackgroundResource(isFucus ? R.drawable.text_box_active : R.drawable.text_box_normal);
+                mLayoutQues.setBackgroundResource(isFucus ? R.drawable.text_box_active
+                        : R.drawable.text_box_normal);
             }
         });
-        
+
         mAnwser = (EditText) findViewById(R.id.et_anwser);
-        //使得密保问题获得焦点，弹出键盘，并使光标置于最后
-        PasswdProtectActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+        // 使得密保问题获得焦点，弹出键盘，并使光标置于最后
+        // PasswdProtectActivity.this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
         mAnwser.requestFocus();
-                  
-        
+        /**
+         * delayed show the softinput ,because the page may not finished loading
+         * ,and the above method will up the titlebar ,so conflict
+         */
+        mAnwser.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                InputMethodManager imm = (InputMethodManager) PasswdProtectActivity.this
+                        .getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.showSoftInput(mAnwser, InputMethodManager.SHOW_IMPLICIT);
+            }
+        }, 200);
+
         mAnwser.setOnClickListener(this);
         mAnwser.setOnFocusChangeListener(new OnFocusChangeListener() {
             @Override
@@ -198,13 +210,12 @@ public class PasswdProtectActivity extends BaseActivity implements
         if (question != null) {
             mAnwser.setText(answer);
             CharSequence astext = mAnwser.getText();
-            if(astext instanceof Spannable)
+            if (astext instanceof Spannable)
             {
-                Spannable spanText=(Spannable)astext;
+                Spannable spanText = (Spannable) astext;
                 Selection.setSelection(spanText, astext.length());
             }
-            
-            
+
         }
 
     }
@@ -290,41 +301,37 @@ public class PasswdProtectActivity extends BaseActivity implements
             Intent intent = new Intent(this,
                     AppLockListActivity.class);
             this.startActivity(intent);
-        } /*else if (quickMode) {
-            LockManager lm = LockManager.getInstatnce();
-            List<LockMode> modeList = lm.getLockMode();
-            for (LockMode lockMode : modeList) {
-                if (lockMode.modeId == quickModeId) {
-                    showModeActiveTip(lockMode);
-                    break;
-                }
-            }
-        }*/
+        } /*
+           * else if (quickMode) { LockManager lm = LockManager.getInstatnce();
+           * List<LockMode> modeList = lm.getLockMode(); for (LockMode lockMode
+           * : modeList) { if (lockMode.modeId == quickModeId) {
+           * showModeActiveTip(lockMode); break; } } }
+           */
         super.onBackPressed();
     }
 
     /**
      * show the tip when mode success activating
      */
-    /*private void showModeActiveTip(LockMode mode) {
-        View mTipView = LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
-        TextView mActiveText = (TextView) mTipView.findViewById(R.id.active_text);
-        mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
-        Toast toast = new Toast(this);
-        toast.setView(mTipView);
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
-        toast.setDuration(Toast.LENGTH_SHORT);
-        toast.show();
-    }*/
-    
-    class QuesListAdapter extends BaseAdapter{
+    /*
+     * private void showModeActiveTip(LockMode mode) { View mTipView =
+     * LayoutInflater.from(this).inflate(R.layout.lock_mode_active_tip, null);
+     * TextView mActiveText = (TextView)
+     * mTipView.findViewById(R.id.active_text);
+     * mActiveText.setText(this.getString(R.string.mode_change, mode.modeName));
+     * Toast toast = new Toast(this); toast.setView(mTipView);
+     * toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0,
+     * 0); toast.setDuration(Toast.LENGTH_SHORT); toast.show(); }
+     */
+
+    class QuesListAdapter extends BaseAdapter {
 
         private LayoutInflater inflater;
-        
+
         public QuesListAdapter(Context ctx) {
             inflater = LayoutInflater.from(ctx);
         }
-        
+
         @Override
         public int getCount() {
             return mCategories.size();
@@ -354,15 +361,17 @@ public class PasswdProtectActivity extends BaseActivity implements
             }
 
             holder.name.setText(mCategories.get(position));
-            
-            if(mSelectQues != null ){
-                if(mCategories.get(position).equals(mSelectQues)){
+
+            if (mSelectQues != null) {
+                if (mCategories.get(position).equals(mSelectQues)) {
                     holder.selecte.setVisibility(View.VISIBLE);
-                }else{
+                } else {
                     holder.selecte.setVisibility(View.GONE);
                 }
-            }else{
-                if (mCategories.get(position).equals( AppMasterPreference.getInstance(PasswdProtectActivity.this).getPpQuestion())) {
+            } else {
+                if (mCategories.get(position)
+                        .equals(AppMasterPreference.getInstance(PasswdProtectActivity.this)
+                                .getPpQuestion())) {
                     holder.selecte.setVisibility(View.VISIBLE);
                 } else {
                     holder.selecte.setVisibility(View.GONE);
@@ -371,9 +380,10 @@ public class PasswdProtectActivity extends BaseActivity implements
             return convertView;
         }
     }
+
     public static class Holder {
         TextView name;
         ImageView selecte;
     }
-    
+
 }

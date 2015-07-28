@@ -742,12 +742,12 @@
     <string name="quick_gesture_edit_guide_content">在任何一个快捷手势的tap类别中长按应用/开关，即可以进入编辑界面，您可以删除应用/开关，也可以在常用应用和快捷开关中添加应用/开关</string>
     <string name="quick_gesture_edit_extra_content">注:最近使用的应用是系统生成的，所以不可以主动添加</string>
     <string name="can_not_add_more">不能添加更多</string>
-    <string name="new_guide_page1_title">快捷手势</string>
-    <string name="new_guide_page1_content">一划即现，简单方便</string>
-    <string name="new_guide_page2_title">应用伪装</string>
-    <string name="new_guide_page2_content">一点即变，趣味无限</string>
-    <string name="new_guide_page3_title">快捷手势小白点</string>
-    <string name="new_guide_page3_content">轻轻一点，手势即现</string>
+    <string name="new_guide_page1_title">手机加速更方便</string>
+    <string name="new_guide_page1_content">在桌面也可以使用加速功能啦</string>
+    <string name="new_guide_page2_title">应用伪装更好玩</string>
+    <string name="new_guide_page2_content">新的伪装方式，出乎你意料</string>
+    <string name="new_guide_page3_title">情景模式切换更方便！</string>
+    <string name="new_guide_page3_content">划开快捷手势，轻松切换！</string>
     <string name="quick_open_tip">您还没有开启快捷手势</string>
     <string name="quick_setting_title">快捷手势设置</string>
     <string name="quick_no_msm_annotation">未读短信会在快捷手势中提示</string>
@@ -758,21 +758,29 @@
 
     <!-- 2.6 start -->
     <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
+    <string name="beauty_mode_ok">美女伪装模式已开启</string>
     <string name="change_lock_mode">切换情景模式</string>
     <string name="beauty_guide_title">使用介绍</string>
     <string name="beauty_guide_content">手机屏幕上的拉链是假象哦，在屏幕上双指收缩试试吧</string>
     <string name="flash_light_open_toast">请不要频繁操作闪光灯，可能造成硬件损坏</string>
     <string name="privacy_auto_add_text">手动添加</string>
     <string name="choose_lock_mode">选择情景模式</string>
-    
     <string name="button_disguise_guide_select">立刻试试</string>
     <string name="button_disguise_guide_cancel">稍后</string>
     <string name="button_disguise_guide_content">加锁应用后试试应用伪装功能吧，让你的应用隐私更加安全</string>
-    
-    
-    
-    
-    
+    <string name="traffic_over_text">已超额</string>
+    <string name="lock_line_hide">解锁轨迹已隐藏</string>
+    <string name="lock_line_visiable">解锁轨迹已显示</string>
+    <string name="guide_more_text">更多 ></string>
+    <string name="guide_skip_text">跳过 ></string>
+    <string name="video_hide_need_cb"> 由于系统原因，取消隐藏这些视频需要COOL Browser。请安装后才可使用</string>
+    <string name="video_hide_need_new_cb"> 由于系统原因，取消隐藏这些视频需要最新版的COOL Browser。请安装后才可取消隐藏</string>
+    <string name="video_delete_need_new_cb"> 由于系统原因，删除这些视频需要最新版的COOL Browser。请安装后才可删除</string>
+    <string name="video_cencel_hide_fail">取消隐藏失败</string>
+    <string name="video_delete_fail">删除文件失败</string>
+    <string name="zipper_too_fast">哎呀，拉慢一点 </string>
+    <string name="zipper_too_slow">哎哟，拉快一点嘛</string>
+    <string name="theme_apply_title">是否应用解锁主题:%1$s ?</string>
     <!-- 2.6 end -->
 
 </resources>

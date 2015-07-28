@@ -1,60 +1,48 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- auto check update -->
-    <string name="update_title">Update tip</string>
-    <string name="do_update">Update Now</string>
-    <string name="ignore_update">Later</string>
-    <string name="cancel_download">Cancel</string>
-    <string name="hide_download_window">Close</string>
-    <string name="downloading"><xliff:g id="app_name">%1$s</xliff:g>&#160;downloading</string>
-    <string name="downloading_notification"><xliff:g id="app_name">%1$s</xliff:g>&#160;downloading&#160;&#160;&#160;&#160;&#160;<xliff:g id="percentage">%2$d</xliff:g></string>
+    <string name="update_title">ملاحظة تحديث</string>
+    <string name="do_update">تحديث فورا</string>
+    <string name="ignore_update">لا يحدث</string>
+    <string name="cancel_download">إلغاء تحميل</string>
+    <string name="hide_download_window">إغلاق نافذة</string>
+
+    <!-- TODO -->
+    <!-- <string name="downloading"><xliff:g id="app_name">%1$s</xliff:g>正在下载</string> -->
+    <string name="downloading">جاري التحميل<xliff:g id="app_name">%1$s</xliff:g></string>
+    <string name="downloading_notification"><xliff:g id="app_name">%1$s</xliff:g>&#160;&#160;&#160;&#160;<xliff:g id="percentage">%2$d</xliff:g>جاري التحميل</string>
     <string name="downloaded_size"><xliff:g id="done">%1$1.2f</xliff:g>MB/<xliff:g id="total">%2$1.2f</xliff:g>MB</string>
-    <string name="update_datail_msg"><xliff:g id="app_name">%1$s</xliff:g>&#160;New Version Available\nNew Version:&#160;<xliff:g id="version">%2$s</xliff:g>&#160;&#160;Size:&#160;<xliff:g id="size">%3$2.2f</xliff:g>MB\nFeatures:\n<xliff:g id="features">%4$s</xliff:g></string>
+    <string name="update_datail_msg">  
+  <xliff:g id="app_name">%1$s</xliff:g>فحص تحديث\n نسخة جديدة:&#160;<xliff:g id="version">%2$s</xliff:g>&#160;&#160;حجم:&#160;<xliff:g id="size">%3$2.2f</xliff:g>fMB\nخصائص النسخة:\n<xliff:g id="features">%4$s</xliff:g></string>
+    
     <!-- user check update -->
-    <string name="tips_title">Tip</string>
-    <string name="download_error">Download failed, please check the network and try again</string>
-    <string name="network_error_msg">Connection failed. Please check your network settings.</string>
-    <string name="check_update">Checking</string>
-    <string name="checking_update_msg">Checking for Updates &#8230;</string>
-    <string name="check_failed">Check Failed</string>
-    <string name="network_busy_msg">The network is busy. Please try again later</string>
-    <string name="retry">Reload</string>
-    <string name="commit">Cancel</string>
-    <string name="update_no_need">You already have the latest version installed</string>
-    <string name="find_update">New Version Available</string>
-    <string name="new_version">New Version</string>
-    <string name="features">Features</string>
-    <string name="size">Size</string>
+    <string name="tips_title">ملاحظة</string>
+    <string name="download_error">فشل التحميل، افحص الشبكة وحاول لاحقا</string>
+    <string name="network_error_msg">لا يمكن استعمال الشبكة الحالية، افحص إعداد الشبكة!</string>
+    <string name="check_update">فحص التحديث</string>
+    <string name="checking_update_msg">&#8230;جاري فحص تحديث </string>
+    <string name="check_failed">فشل فحص</string>
+    <string name="network_busy_msg">الشبكة مشغولة، حاول لاحقا!</string>
+    <string name="retry">إعادة محاولة</string>
+    <string name="commit">موافق</string>
+    <string name="update_no_need">يكون أحدث نسخة، لا حاجة إلى ترقية!</string>
+    <string name="find_update">يوجد تحديث</string>
+    <string name="new_version">نسخة جديدة</string>
+    <string name="features">خصائص نسخة</string>
+    <string name="size">حجم</string>
     <!-- notification -->
-    <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>&#160;has new version</string>
-    <string name="version_found">New version&#160;<xliff:g id="new_version">%1$s</xliff:g>&#160;available, click to update</string>
-    <string name="click_to_update">Click to update</string>
+    
+    <!-- TODO -->
+<!--         <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>更新了</string>
+    <string name="version_found">发现最新版本<xliff:g id="new_version">%1$s</xliff:g>点击更新</string> -->
+    <string name="update_available">تم تحديث<xliff:g id="app_name">%1$s</xliff:g> </string>
+    <string name="version_found"><xliff:g id="new_version">%1$s</xliff:g>توجد أحدث نسخة انقر تحديث</string>
+    <!--  -->
+    
+    <string name="click_to_update">انقر التحديث</string>
     <!-- push -->
-    <string name="phone_number">Phone number</string>
-    <string name="india_only">India Only</string>
-    <string name="invalid_number">Please enter the correct phone number</string>
+    <string name="phone_number">رقم الجوال</string>
+    <string name="india_only">للهند فقط</string>
+    <string name="invalid_number">أدخل رقم الجوال الصحيح</string>
     <string name="goto_gp">5-Star</string>
-    <!-- push - added in Version 1.5 -->
-    <string name="send_sms">Send</string>
-    <string name="friend_phone_number">Your friend’s number: +91</string>
-    <string name="wish_msg1">Let’s leave behind sadness &#38; regrets and have a new start full of joy in 2015!</string>
-    <string name="wish_msg2">Wish you a super-duper extra luck Happy New Year &#38; all your dreams come true!</string>
-    <string name="wish_msg3">3, 2, 1, wait, what am I supposed to write afterwards? Oh yes, HAPPY NEW YEAR!</string>
-    <string name="wish_msg4">Wish you and your lovely family a very happy joyous New Year, my dear friend!</string>
-    <string name="wish_msg5">May Dec 31st be the end of sorrows and Jan 1st 2015 be the beginning of joys!</string>
-    <string name="wish_msg6">Wish you a Happy 2015 with hope that you’ll be lucky in the year to come.</string>
-    <string name="wish_msg7">Counting my blessings, wishing you more. Hope you enjoy the New Year in store! </string>
-    <string name="wish_msg8">Wish all the negativity end with this year and 2015 brings success to you!</string>
-    <string name="wish_msg9">May God spread prosperity and joy in your life on this New Year!</string>
-    <string name="wish_msg10">Embrace simplicity &#38; sincerity and you shall have a wonderful New Year ahead.</string>
-    <string name="wish_custom">Write your own greetings…</string>
-    <string name="invalid_wish_msg">Your wish message is empty</string>
-    <string name="wish_sms_sent">Greetings sent successfully!</string>
-    <string name="wish_char_hint">%1$d characters available</string>
-    <string name="key_info">free 10 Rs</string>
-    <string name="newyear_act_info">Give your best greetings to your loved one &#38; a chance to win iphone6! Enter your friend’s number below and select a greeting, this greeting will be sent directly to him/her PLUS a free 10 Rs recharge!</string>
-    <string name="sms_tail">&#160;Free 10 Rs recharge was sent to you by http://goo.gl/xVw6F8 , check your message!</string>
-    <string name="newyear_status_title">Free new year gift!</string>
-    <string name="newyear_status_body">Free 10 Rs recharge &#38; chance to win iPhone6!</string>
-    <string name="sms_fee_hint">Message fee will be charged by your telecom provider.</string>
 </resources>

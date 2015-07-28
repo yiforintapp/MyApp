@@ -371,10 +371,11 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
                 canvas.translate(x, y);
                 canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
                 Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_dot);
-                float scaleX = (float) tabTextwdth / redTip.getWidth();
-                float scaleY = (float) tabTexteight / redTip.getHeight();
+          /*      float scaleX = (float) tabTextwdth / redTip.getWidth();
+                float scaleY = (float) tabTexteight / redTip.getHeight();*/
+                float scaleX = 1.6f;
+                float scaleY = 1.6f;
                 Matrix matrix = new Matrix();
-                Log.i("######", "tabTextwdth = "+tabTextwdth+", redTip.getWidth() = "+redTip.getWidth());
                 matrix.setScale(scaleX, scaleY, redTip.getWidth() / 2,
                         redTip.getHeight() / 2);
                 canvas.drawBitmap(redTip, matrix, null);

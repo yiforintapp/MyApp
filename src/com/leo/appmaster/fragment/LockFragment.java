@@ -40,4 +40,6 @@ public abstract class LockFragment extends BaseFragment {
 
     public abstract void onLockPackageChanged(String mLockedPackage);
 
+    public abstract void onNewIntent();
+
 }

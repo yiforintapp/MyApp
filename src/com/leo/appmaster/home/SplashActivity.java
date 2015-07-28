@@ -26,8 +26,10 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -62,13 +64,13 @@ public class SplashActivity extends BaseActivity {
     private Handler mEventHandler;
 
     /* Guide page stuff begin */
-    private ViewPager mViewPager,mNewFuncViewPager;
+    private ViewPager mViewPager, mNewFuncViewPager;
     /* pages */
-    private ArrayList<View> mPageViews,mNewFuncPageViews;
-    private GuideItemView mPageBackgroundView,mNewPageBackgroundView;
+    private ArrayList<View> mPageViews, mNewFuncPageViews;
+    private GuideItemView mPageBackgroundView, mNewPageBackgroundView;
     /* footer indicators */
     private CirclePageIndicator mIndicator;
-    private ViewGroup mMain,mNewGuideMain;
+    private ViewGroup mMain, mNewGuideMain;
     /* color for each page */
     private int[] mPageColors = new int[7];
     private EdgeEffectCompat leftEdge;
@@ -220,7 +222,7 @@ public class SplashActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LAUNCH_HOME_ACTIVITY:
-                    if (AppMasterPreference.getInstance(SplashActivity.this).getFirstUse()) {
+                    if (AppMasterPreference.getInstance(SplashActivity.this).getGuidePageFirstUse()) {
                         boolean guidNotShown = mNewGuideMain == null
                                 || mNewGuideMain.getVisibility() != View.VISIBLE;
                         if (guidNotShown) {
@@ -256,13 +258,13 @@ public class SplashActivity extends BaseActivity {
     private void startHome() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
             if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             } else {
+                LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
                 LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                         getPackageName(), true, null);
                 amp.setDoubleCheck(null);
@@ -339,8 +341,8 @@ public class SplashActivity extends BaseActivity {
         mPageColors[2] = getResources().getColor(R.color.guide_page3_background_color);
         mPageColors[3] = getResources().getColor(R.color.guide_page4_background_color);
 
-        Log.i("tag", mPageColors[0] +"  "+ mPageColors[3]);
-        
+        Log.i("tag", mPageColors[0] + "  " + mPageColors[3]);
+
         LayoutInflater inflater = getLayoutInflater();
         mPageViews = new ArrayList<View>();
         mPageBackgroundView = (GuideItemView) findViewById(R.id.guide_bg_view);
@@ -393,9 +395,10 @@ public class SplashActivity extends BaseActivity {
         initViewPagerEdges(mViewPager);
 
         mMain.setVisibility(View.VISIBLE);
-     /*   AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
-        aa.setDuration(500);
-        mMain.startAnimation(aa);*/
+        /*
+         * AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
+         * aa.setDuration(500); mMain.startAnimation(aa);
+         */
 
         mViewPager.setAdapter(new GuidePageAdapter(mPageViews));
         mIndicator = (CirclePageIndicator) findViewById(R.id.splash_indicator);
@@ -413,18 +416,19 @@ public class SplashActivity extends BaseActivity {
             }
         });
     }
-    
+
     class GuidePageAdapter extends PagerAdapter {
         List<View> pageViews;
-        
+
         public GuidePageAdapter(List<View> pageViews) {
             this.pageViews = pageViews;
         }
-        
+
         @Override
         public int getCount() {
             return pageViews.size();
         }
+
         @Override
         public boolean isViewFromObject(View arg0, Object arg1) {
             return arg0 == arg1;
@@ -487,41 +491,49 @@ public class SplashActivity extends BaseActivity {
         }
         return flag;
     }
-    
+
     /*
-     * set  click listener of skip btn in  guide page
+     * set click listener of skip btn in guide page
      */
-    private void setSkipClickListener(ViewGroup page){
-        ImageView skipImage;
-        skipImage = (ImageView)page.findViewById(R.id.skip_img);
-        skipImage.setVisibility(View.VISIBLE);
-        skipImage.setOnClickListener(new OnClickListener() {
+    private void setSkipClickListener(ViewGroup page) {
+        final TextView skipText;
+        skipText = (TextView) page.findViewById(R.id.skip_tv);
+        skipText.setVisibility(View.VISIBLE);
+        /*
+         * skipText.setOnTouchListener(new OnTouchListener() {
+         * @Override public boolean onTouch(View v, MotionEvent event) { int
+         * action = event.getAction(); switch (action) { case
+         * MotionEvent.ACTION_DOWN: skipText.setAlpha(0.6f); break; default:
+         * break; } return false; } });
+         */
+
+        skipText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-               enterHome();
+                enterHome();
             }
         });
     }
-    
-    private void  enterHome(){
-        AppMasterPreference.getInstance(SplashActivity.this).setFirstUse(false);
+
+    private void enterHome() {
+        AppMasterPreference.getInstance(SplashActivity.this).setGuidePageFirstUse(false);
         startHome();
         String currentVersionName = SplashActivity.this
                 .getString(R.string.version_name);
         AppMasterPreference.getInstance(SplashActivity.this).setAppVersionName(
                 currentVersionName);
     }
-    
-    private void showNewFuncGuide(){
+
+    private void showNewFuncGuide() {
         mNewFuncPageViews = new ArrayList<View>();
         LayoutInflater inflater = getLayoutInflater();
-        TextView  tvTitle, tvContent ,tvModeFunc;
+        TextView tvTitle, tvContent, tvMoreFunc;
         Button enterAppButton;
         ImageView bigImage = null;
         mPageColors[4] = getResources().getColor(R.color.new_guide_page1_background_color);
         mPageColors[5] = getResources().getColor(R.color.new_guide_page2_background_color);
         mPageColors[6] = getResources().getColor(R.color.new_guide_page3_background_color);
-        
+
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
         mNewPageBackgroundView.initBackgroundColor(mPageColors[4]);
         /* page1 */
@@ -534,7 +546,7 @@ public class SplashActivity extends BaseActivity {
         tvContent.setText(getResources().getString(R.string.new_guide_page1_content));
         setSkipClickListener(page1);
         mNewFuncPageViews.add(page1);
-        
+
         /* page2 */
         ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page2.findViewById(R.id.guide_image);
@@ -545,7 +557,7 @@ public class SplashActivity extends BaseActivity {
         tvContent.setText(getResources().getString(R.string.new_guide_page2_content));
         setSkipClickListener(page2);
         mNewFuncPageViews.add(page2);
-        
+
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
@@ -555,7 +567,7 @@ public class SplashActivity extends BaseActivity {
         tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.new_guide_page3_content));
         mNewFuncPageViews.add(page3);
-        
+
         mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
         mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
         initViewPagerEdges(mNewFuncViewPager);
@@ -566,61 +578,62 @@ public class SplashActivity extends BaseActivity {
         mNewGuideMain.startAnimation(aa);
 
         mNewFuncViewPager.setAdapter(new GuidePageAdapter(mNewFuncPageViews));
-        mIndicator = (CirclePageIndicator)mNewGuideMain.findViewById(R.id.new_splash_indicator);
+        mIndicator = (CirclePageIndicator) mNewGuideMain.findViewById(R.id.new_splash_indicator);
         mIndicator.setViewPager(mNewFuncViewPager);
-        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews,4));
-        
-        tvModeFunc = (TextView) page3.findViewById(R.id.more_func);
-        tvModeFunc.setVisibility(View.VISIBLE);
-        tvModeFunc.setOnClickListener(new OnClickListener() {
+        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 4));
+
+        tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
+        tvMoreFunc.setVisibility(View.VISIBLE);
+        tvMoreFunc.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 mNewGuideMain.setVisibility(View.INVISIBLE);
                 showGuide();
             }
         });
-        
-        enterAppButton = (Button)page3.findViewById(R.id.button_guide);
+
+        enterAppButton = (Button) page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
-        enterAppButton.setTextColor(getResources().getColor(R.color.new_guide_page3_background_color));
+        enterAppButton.setTextColor(getResources().getColor(
+                R.color.new_guide_page3_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-               enterHome();
+                enterHome();
             }
         });
     }
-    
+
     @Override
     public void onBackPressed() {
-        if(mMain != null && mMain.getVisibility() == View.VISIBLE){
+        if (mMain != null && mMain.getVisibility() == View.VISIBLE) {
             mMain.setVisibility(View.INVISIBLE);
             mNewGuideMain.setVisibility(View.VISIBLE);
-            mNewFuncViewPager.setCurrentItem(mNewFuncPageViews.size()-1);
+            mNewFuncViewPager.setCurrentItem(mNewFuncPageViews.size() - 1);
             initViewPagerEdges(mNewFuncViewPager);
-        }else {
+        } else {
             super.onBackPressed();
         }
     }
-    
-    class GuidePageChangeListener implements OnPageChangeListener{
+
+    class GuidePageChangeListener implements OnPageChangeListener {
 
         List<View> pageViews;
         int startColorIndex = 0;
         GuideItemView backGroundView;
-        
-        GuidePageChangeListener(List<View> pageViews){
+
+        GuidePageChangeListener(List<View> pageViews) {
             this.pageViews = pageViews;
             initBackGroundView();
         }
-        
-        GuidePageChangeListener(List<View> pageViews,int startColorIndex){
+
+        GuidePageChangeListener(List<View> pageViews, int startColorIndex) {
             this.pageViews = pageViews;
             this.startColorIndex = startColorIndex;
             initBackGroundView();
         }
-       
+
         @Override
         public void onPageScrollStateChanged(int arg0) {
         }
@@ -629,7 +642,8 @@ public class SplashActivity extends BaseActivity {
         public void onPageScrolled(int arg0, float arg1, int arg2) {
             if (arg1 > 0.0f && arg0 + 1 < pageViews.size()) {
                 int newColor = caculateNewColor(
-                mPageColors[arg0+startColorIndex], mPageColors[arg0 + 1+startColorIndex], arg1);
+                        mPageColors[arg0 + startColorIndex],
+                        mPageColors[arg0 + 1 + startColorIndex], arg1);
                 backGroundView.setCurrentColor(newColor);
             }
             /* disable edges scrolling effect */
@@ -639,12 +653,12 @@ public class SplashActivity extends BaseActivity {
                 leftEdge.setSize(0, 0);
                 rightEdge.setSize(0, 0);
             }
-            if (startColorIndex ==0) {
-                if(mViewPager != null){
+            if (startColorIndex == 0) {
+                if (mViewPager != null) {
                     mViewPager.invalidate();
                 }
-            }else {
-                if(mNewFuncViewPager != null){
+            } else {
+                if (mNewFuncViewPager != null) {
                     mNewFuncViewPager.invalidate();
                 }
             }
@@ -653,11 +667,11 @@ public class SplashActivity extends BaseActivity {
         @Override
         public void onPageSelected(int arg0) {
         }
-        
-        private void initBackGroundView(){
-            if(startColorIndex == 0){
+
+        private void initBackGroundView() {
+            if (startColorIndex == 0) {
                 backGroundView = mPageBackgroundView;
-            }else {
+            } else {
                 backGroundView = mNewPageBackgroundView;
             }
         }

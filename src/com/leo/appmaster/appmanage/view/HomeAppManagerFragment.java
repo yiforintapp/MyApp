@@ -37,7 +37,6 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
@@ -78,6 +77,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public boolean isGestureAnimating = false;
     private int mNowDongHuaWhere = 0;
     private int lastPosition = -1;
+    private boolean mIsGestureIconWithShadowTip=false;
 
     // private boolean isReNewFragment = false;
 
@@ -135,9 +135,18 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onResume() {
         super.onResume();
+        if(mIsGestureIconWithShadowTip)
+        {
+            mGestureIcon.setImageResource(R.drawable.gesture_tab_icon);
+            mIsGestureIconWithShadowTip=false;
+        }
+        
         if (sp_homeAppManager.getQuickGestureRedTip()) {
+            
+          
             mQuickGestureRedTip.setVisibility(View.VISIBLE);
         } else {
+
             mQuickGestureRedTip.setVisibility(View.GONE);
         }
     }
@@ -308,44 +317,31 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         // bottom two TextView
         forTextList = DeleteDataList = mDeleteManager.getDeleteList();
         deleteDataAllSize = countTotalSpace(DeleteDataList);
+
+        installedAppsSpan = setTextColor(
+                resources.getString(R.string.first_user_app), ""
+                        + forTextList.size(),
+                resources.getString(R.string.first_user_app) + forTextList.size());
         if (!LanguageUtils.isRightToLeftLanguage(null)) {
-            installedAppsSpan = setTextColor(
-                    resources.getString(R.string.first_user_app), ""
-                            + forTextList.size(),
-                    resources.getString(R.string.first_user_app) + forTextList.size());
             allAppsSizeSpan = setTextColor(resources.getString(R.string.first_used_space),
                     deleteDataAllSize,
                     resources.getString(R.string.first_used_space)
                             + deleteDataAllSize);
 
-            AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
-                    mActivity.getApplicationContext());
-            int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
-
-            backUpSpan = setTextColor(
-                    resources.getString(R.string.first_backups_app), ""
-                            + RestoreListSize, resources.getString(R.string.first_backups_app)
-                            + RestoreListSize);
         } else {
-            installedAppsSpan = setTextColor(
-                    "" + forTextList.size(), resources.getString(R.string.first_user_app),
-                    forTextList.size() + resources.getString(R.string.first_user_app));
-            allAppsSizeSpan = setTextColor(deleteDataAllSize,
+            allAppsSizeSpan = setRtToLtTextColor(deleteDataAllSize,
                     resources.getString(R.string.first_used_space),
                     deleteDataAllSize + resources.getString(R.string.first_used_space)
                     );
-
-            AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
-                    mActivity.getApplicationContext());
-            int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
-
-            backUpSpan = setTextColor(""
-                    + RestoreListSize,
-                    resources.getString(R.string.first_backups_app),
-                    RestoreListSize + resources.getString(R.string.first_backups_app)
-                    );
         }
+        AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
+                mActivity.getApplicationContext());
+        int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
 
+        backUpSpan = setTextColor(
+                resources.getString(R.string.first_backups_app), ""
+                        + RestoreListSize, resources.getString(R.string.first_backups_app)
+                        + RestoreListSize);
     }
 
     private void cleanView() {
@@ -361,17 +357,24 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         String str = totalWord;
         SpannableStringBuilder style = new SpannableStringBuilder(str);
         // SpannableStringBuilder实现CharSequence接口
-        if (!LanguageUtils.isRightToLeftLanguage(null)) {
-            style.setSpan(new ForegroundColorSpan(Color.parseColor("#a7a7a7")), 0, start,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(new ForegroundColorSpan(Color.parseColor("#4285f4")), start, start + end,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        } else {
-            style.setSpan(new ForegroundColorSpan(Color.parseColor("#4285f4")), 0, start,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-            style.setSpan(new ForegroundColorSpan(Color.parseColor("#a7a7a7")), start, start + end,
-                    Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
-        }
+        style.setSpan(new ForegroundColorSpan(Color.parseColor("#a7a7a7")), 0, start,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(new ForegroundColorSpan(Color.parseColor("#4285f4")), start, start + end,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        return style;
+    }
+
+    private SpannableStringBuilder setRtToLtTextColor(String startWord, String endWord,
+            String totalWord) {
+        int start = startWord.length();
+        int end = endWord.length();
+        String str = totalWord;
+        SpannableStringBuilder style = new SpannableStringBuilder(str);
+        // SpannableStringBuilder实现CharSequence接口
+        style.setSpan(new ForegroundColorSpan(Color.parseColor("#4285f4")), 0, start,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+        style.setSpan(new ForegroundColorSpan(Color.parseColor("#a7a7a7")), start, start + end,
+                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         return style;
     }
 
@@ -406,11 +409,12 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 startActivity(mIntent);
                 break;
             case R.id.bg_show_dl:
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "battery");
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "boost", "home");
                 Intent dlIntent = new Intent(mActivity, EleActivity.class);
                 startActivity(dlIntent);
                 break;
             case R.id.iv_donghua:
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "newboost");
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "newboost");
                 if (!isCleanning) {
                     cleanMem();
@@ -780,6 +784,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             public void onAnimationEnd(Animator animation) {
                 lastAlphaAnimator.start();
                 isGestureAnimating = false;
+//                mGestureIcon.setImageResource(R.drawable.quick_gesture_icon_withtip);
+//                mIsGestureIconWithShadowTip=true;
             }
         });
 

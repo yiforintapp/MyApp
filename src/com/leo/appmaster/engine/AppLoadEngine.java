@@ -250,6 +250,7 @@ public class AppLoadEngine extends BroadcastReceiver {
     }
 
     public Drawable getAppIcon(String pkg) {
+        if(pkg == null) return null;
         if (mAppDetails != null) {
             AppItemInfo info = mAppDetails.get(pkg);
             if (info != null) {

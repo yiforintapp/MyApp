@@ -4,6 +4,8 @@ package com.leo.appmaster.cleanmemory;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 
@@ -13,10 +15,12 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Build.VERSION;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +28,7 @@ import android.widget.Toast;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
+    private View mStatusBar;
     private int mRocketHeight;
 
     private boolean isClean = false;
@@ -39,6 +44,7 @@ public class HomeBoostActivity extends Activity {
         setContentView(R.layout.launcher_boost_activity);
         initUI();
         overridePendingTransition(0, 0);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "boost", "launcher");
     }
 
     @Override
@@ -62,8 +68,11 @@ public class HomeBoostActivity extends Activity {
         Display mDisplay = getWindowManager().getDefaultDisplay();
         mScreenH = mDisplay.getHeight();
 
+        mStatusBar = findViewById(R.id.bg_statusbar);
         mIvRocket = (ImageView) findViewById(R.id.iv_rocket);
         mIvCloud = (ImageView) findViewById(R.id.iv_cloud);
+
+        tryTransStatusbar();
     }
 
     private void startClean() {
@@ -127,7 +136,7 @@ public class HomeBoostActivity extends Activity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         long currentTime = System.currentTimeMillis();
         long lastBoostTime = amp.getLastBoostTime();
-        if ((currentTime - lastBoostTime) < 5 * 1000) {
+        if ((currentTime - lastBoostTime) < 10 * 1000) {
             isClean = false;
         } else {
             isClean = true;
@@ -184,6 +193,14 @@ public class HomeBoostActivity extends Activity {
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
         toast.show();
         isClean = true;
+    }
+
+    private void tryTransStatusbar() {
+        if (VERSION.SDK_INT >= 19) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        } else {
+            mStatusBar.setVisibility(View.GONE);
+        }
     }
 
 }

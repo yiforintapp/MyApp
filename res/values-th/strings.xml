@@ -608,7 +608,7 @@
 
     <string-array name="weizhuang_type_num">
         <item>ไม่มี</item>
-        <item >美女伪装</item>
+        <item >อำพรางสาวงาม</item>
         <item>ผิดปกติ</item>
         <item>โทรเข้า</item>
         <item>ลายนิ้วมือ</item>
@@ -727,12 +727,12 @@
  	<string name="quick_gesture_edit_guide_content">กดซอฟต์แวร์หรือสวิตซ์ที่อยู่ในtapอันใดอันหนึ่งของท่าทางด่วน ก็สามารถเข้าสู่อินเตอร์เฟซการแก้ไข คุณสามารถลบหรือเพิ่มซอฟต์แวร์หรือสวิตซ์อันนี้ </string>
  	<string name="quick_gesture_edit_extra_content">บันทึก ซอฟต์แวร์ที่เพิ่งใช้เกิดมาจากระบบ ไม่สามารถเพิ่มได้</string>
  	<string name="can_not_add_more">เพิ่มไม่ได้</string>
- 	 	<string name="new_guide_page1_title">ท่ามือ</string>
- 	<string name="new_guide_page1_content">ขีดก็แสดง</string>
- 	<string name="new_guide_page2_title">ปลอมตัวการใช้</string>
- 	<string name="new_guide_page2_content">คลิคก็เปลี่ยน</string>
- 	<string name="new_guide_page3_title">จุดขาวเล็กท่ามือ</string>
- 	<string name="new_guide_page3_content">คลิคท่ามือก็แสดง</string>
+ 	 	<string name="new_guide_page1_title">มือถือเร่งสะดวก</string>
+ 	<string name="new_guide_page1_content">ใช้ฟังก์ชันเร่งเดสก์ท็อป</string>
+ 	<string name="new_guide_page2_title">การใช้อำพรางสนุก</string>
+ 	<string name="new_guide_page2_content">วิธีการปลอมตัวใหม่</string>
+ 	<string name="new_guide_page3_title">เปลี่ยนโปรไฟล์</string>
+ 	<string name="new_guide_page3_content">ท่าทางลัด สลับได้สะดวก</string>
 	<string name="quick_open_tip">การแสดงท่าทางด่วนยังไม่เปิด</string>
 	<string name="quick_setting_title">การตั้งค่าท่าทางด่วน</string>
  	<string name="quick_no_msm_annotation">ท่าทางด่วนจะเตือนSMSที่ยังไม่อ่าน</string>
@@ -740,9 +740,33 @@
     <string name="quick_no_pricay_contact_annotation">ข้อมูลจะเตือนแบบระบบข้อมูล</string>
 	<!-- 2.5 end -->
 	
-	<!-- 2.6 start -->
-	<!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译-->
-	
+	 <!-- 2.6 start -->
+    <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
+    <string name="beauty_mode_ok">รูปแบบอำพรางสาวงามเปิดแล้ว</string>
+    <string name="change_lock_mode">คำแนะนำการใช้งาน</string>
+    <string name="beauty_guide_title">คำแนะนำการใช้งาน</string>
+    <string name="beauty_guide_content">ซิปบนหน้าจอโทรศัพท์เป็นภาพลวงตาโอ้ หดตัวด้วยสองนิ้วบนหน้าจอลองดูซิ</string>
+    <string name="flash_light_open_toast">กรุณาอย่าใช้งานแฟลชบ่อยๆ อาจทำให้ฮาร์ดแวร์เสียหาย</string>
+    <string name="privacy_auto_add_text">แมนวล</string>
+    <string name="choose_lock_mode">เลือกโปรไฟล์</string>
+    <string name="button_disguise_guide_select">ลองทันที</string>
+    <string name="button_disguise_guide_cancel">ต่อมา</string>
+    <string name="button_disguise_guide_content">หลังจากล็อกแล้ว ลองใช้ฟังก์ชันปลอมตัว ให้ความเป็นส่วนตัวปลอดภัยมากขึ้น</string>
+    <string name="traffic_over_text">เกินจำนวน</string>
+    <string name="lock_line_hide">รอยปลดล็อคแอบซ่อนแล้ว</string>
+    <string name="lock_line_visiable">รอยปลดล็อคแสดงออก</string>
+    <string name="guide_more_text">ฟังก์ชันมากขึ้น ></string>
+    <string name="guide_skip_text">ข้ามไป ></string>
+    <string name="video_hide_need_cb">เหตุผลระบบ ยกเลิกการซ่อน วิดีโอนี้ต้องการCOOLBrowserล่าสุด โปรดติดตั้งก่อนใช้</string>
+    <string name="video_hide_need_new_cb">เหตุผลระบบ ลบการซ่อม วิดีโอนี้ต้องการ COOLBrowser ล่าสุด  ติดตั้งก่อนลบการซ่อน</string>
+    <string name="video_delete_need_new_cb">เหตุผลระบบ ลบการซ่อม วิดีโอนี้ต้องการ COOLBrowser ล่าสุด  โปรดติดตั้งก่อนการลบ</string>
+    <string name="video_cencel_hide_fail">ยกเลิกการซ่อนไม่ได้</string>
+    <string name="video_delete_fail">ไม่สามารถลบไฟล์ได้</string>
+    <string name="zipper_too_fast">โอ้ ดึงช้าๆหน่อย </string>
+    <string name="zipper_too_slow">โอ้ ดึงเร็วๆหน่อย</string>
+    <string name="theme_apply_title">จะใช้รูปแบบการปลดล็อคหรือ:%1$ s?</string>
+    <!-- 2.6 end -->
+
 	
 	
 	

@@ -112,7 +112,6 @@ public class FloatWindowHelper {
     private static final int RIGHT_CENTER_FLAG = -2;
     private static final int RIGHT_CENTER_CENTER_FLAG = -3;
     private static final int RIGHT_TOP_FLAG = -4;
-    public static final String RUN_TAG = "RUN_TAG";
     private static AnimationDrawable animationLightDrawable;
     private static AnimationDrawable animationDarkDrawable;
     private static boolean isControling = false;
@@ -1691,32 +1690,15 @@ public class FloatWindowHelper {
             AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
             int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
             int halfH = windowManager.getDefaultDisplay().getHeight() / 2;
-            int lastSlideOrientation = QuickGestureManager.getInstance(mContext).onTuchGestureFlag;
 
             createWhiteFloatParams(mContext);
-            // get the last coordinate,if 0 then appear in last swipe orientation
+            // get the last coordinate,if 0 then appear in default swipe orientation
             int[] coordinate = AppMasterPreference.getInstance(mContext)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
-                // if is the upgrade user and first time create white float,then  show int the left center
-                if (pref.getUseStrengthenModeTimes() == 0 && pref.getIsUpdateQuickGestureUser()) {
-                    lastSlideOrientation = -2;
-                }
-                if (lastSlideOrientation < 0) {
-                    mWhiteFloatParams.x = -halfW;
-                    if (lastSlideOrientation == -1) {
-                        mWhiteFloatParams.y = halfH - mWhiteFloatParams.height / 2;
-                    } else if (lastSlideOrientation == -2) {
-                        mWhiteFloatParams.y = mWhiteFloatParams.height;
-                    }
-                } else {
-                    mWhiteFloatParams.x = halfW;
-                    if (lastSlideOrientation == 1) {
-                        mWhiteFloatParams.y = halfH - mWhiteFloatParams.height / 2;
-                    } else if (lastSlideOrientation == 2) {
-                        mWhiteFloatParams.y = mWhiteFloatParams.height;
-                    }
-                }
+                //first open default appear in left center
+                mWhiteFloatParams.x = -halfW;
+                mWhiteFloatParams.y = mWhiteFloatParams.height;
                 pref.setWhiteFloatViewCoordinate(mWhiteFloatParams.x, mWhiteFloatParams.y);
             } else {
                 mWhiteFloatParams.x = coordinate[0];
@@ -1742,32 +1724,16 @@ public class FloatWindowHelper {
             animationDarkDrawable = (AnimationDrawable)
                     mWhiteFloatView.getBackground();
             animationDarkDrawable.start();
-
-            // int duration = 0;
-            // for (int i = 0; i < animationDarkDrawable.getNumberOfFrames();
-            // i++) {
-            // duration += animationDarkDrawable.getDuration(i);
-            // }
-            // handler = new Handler();
-            // handler.postDelayed(new Runnable() {
-            //
-            // @Override
-            // public void run() {
-            // beComingDark = false;
-            // }
-            // }, duration);
         }
     }
 
     private static void goToChangeLight() {
         if (mWhiteFloatView != null) {
-
             // 取消上一次的持续效果
             if (nowCount != null) {
                 nowCount.cancel();
                 nowCount = null;
             }
-
             mWhiteFloatView.setBackgroundResource(R.drawable.whitedotanimation1);
             animationLightDrawable = (AnimationDrawable)
                     mWhiteFloatView.getBackground();
@@ -1917,7 +1883,11 @@ public class FloatWindowHelper {
                             nowCount.cancel();
                             nowCount = null;
                         }
-                        mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
+                        if(mWhiteFloatView != null) {
+                            mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
+                        } else {
+                            return false;
+                        }
                         startX = event.getRawX();
                         startY = event.getRawY();
                         downTime = System.currentTimeMillis();
@@ -1969,7 +1939,7 @@ public class FloatWindowHelper {
     private static void showQuickGuestureView(Context mContext, int orientation) {
         Intent intent = new Intent(mContext,
                 QuickGesturePopupActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(/*Intent.FLAG_ACTIVITY_CLEAR_TASK | */Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("show_orientation", orientation);
         intent.putExtra("from_white_dot", true);
         if (TextUtils
@@ -2003,15 +1973,15 @@ public class FloatWindowHelper {
                         Log.i("null","锁屏啦");
                         hideWhiteFloatView(mContext);
                         AppMasterPreference.getInstance(mContext)
-                                .setSwitchOpenStrengthenMode(false);
+                                .setSwitchOpenStrengthenMode(false, false);
                     } else if (!AppUtil.isScreenLocked(mContext)
                             && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
                         Log.i("null","开屏啦");
-                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
+                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true, false);
                         showWhiteFloatView(mContext);
                     } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
                         Log.i("null","解锁啦");
-                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true);
+                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true, false);
                         showWhiteFloatView(mContext);
                     }
                     super.onScreenChanged(intent);

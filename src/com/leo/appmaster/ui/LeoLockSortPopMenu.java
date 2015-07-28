@@ -2,7 +2,11 @@
 package com.leo.appmaster.ui;
 
 import java.util.List;
+
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +21,7 @@ public class LeoLockSortPopMenu extends LeoPopMenu{
     private static int mCrrentIndex;
     
     public LeoLockSortPopMenu() {
-        mIconOffest = 10;
+        mIconOffest = 9;
     }
     
     public void setPopMenuItems(Context context, List<String> items, int currentIndex) {
@@ -25,10 +29,19 @@ public class LeoLockSortPopMenu extends LeoPopMenu{
         mCrrentIndex = currentIndex;
         mItems = items;
         mAdapter = new MenuSortListAdapter();
+        setIconOffect();
         
         super.setPopMenuItems(context, items);
     }
 
+    private void setIconOffect(){
+        Display mDisplay = ((Activity) mContext).getWindowManager().getDefaultDisplay();
+        int W = mDisplay.getWidth();
+        if(W == 240){
+            mIconOffest = 40;
+        }
+    }
+    
     private class MenuSortListAdapter extends BaseAdapter {
         private LayoutInflater inflater;
 
@@ -79,9 +92,13 @@ public class LeoLockSortPopMenu extends LeoPopMenu{
                 ImageView mImageView = (ImageView) convertView.findViewById(R.id.menu_icon);
                 mItemName.setTextColor(mContext.getResources().getColor(
                         (R.color.sort_select_color)));
+                if(mImageView!=null){
                 mImageView.setVisibility(View.VISIBLE);
+                }
             }
             return convertView;
         }
     }
+    
+    
 }

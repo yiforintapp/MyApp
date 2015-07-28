@@ -16,6 +16,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.view.ManagerFlowFragment;
 import com.leo.appmaster.appmanage.view.ManagerFlowListFragment;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -23,8 +25,10 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
+import com.leo.appmaster.utils.LeoLog;
 
-public class FlowActivity extends BaseFragmentActivity implements OnClickListener, OnPageChangeListener {
+public class FlowActivity extends BaseFragmentActivity implements OnClickListener,
+        OnPageChangeListener {
     public static final String MESSAGE_MONTH_TRAFFI_SMALL_SETTING = "month_traffic_small_setting";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
@@ -32,8 +36,10 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     private View trffic_setting_iv;
     private ManagerFlowListFragment trifficListFragment;
     private ManagerFlowFragment trifficFragment;
-    
+
     private ManagerFlowFragmentHoler[] mFragmentHolders = new ManagerFlowFragmentHoler[2];
+
+    // private int mDeskType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,10 +53,10 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         mTtileBar.setTitle(R.string.app_flow_elec);
         mTtileBar.openBackView();
 
-        trffic_setting_iv =  findViewById(R.id.trffic_setting_iv);
+        trffic_setting_iv = findViewById(R.id.trffic_setting_iv);
         trffic_setting_iv.setVisibility(View.VISIBLE);
         trffic_setting_iv.setOnClickListener(this);
-        
+
         mPagerTab = (LeoPagerTab) findViewById(R.id.traffic_app_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);
         mViewPager = (ViewPager) findViewById(R.id.traffic_app_viewpager);
@@ -61,6 +67,14 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         mPagerTab.setViewPager(mViewPager);
     }
 
+    // @Override
+    // protected void onResume() {
+    // Intent intent = getIntent();
+    // mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+    // -1);
+    // super.onResume();
+    // }
+
     private void initFragment() {
         ManagerFlowFragmentHoler holder = new ManagerFlowFragmentHoler();
         holder.title = this.getString(R.string.app_flow);
@@ -68,28 +82,28 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         holder.fragment = trifficFragment;
         mFragmentHolders[0] = holder;
 
-      holder = new ManagerFlowFragmentHoler();
-      holder.title = this.getString(R.string.app_elec);
-      trifficListFragment = new ManagerFlowListFragment();
-      holder.fragment = trifficListFragment;
-      mFragmentHolders[1] = holder;
-      
-      // AM-614, remove cached fragments
-      FragmentManager fm = getSupportFragmentManager();
-      try {
-          FragmentTransaction ft = fm.beginTransaction();
-          List<Fragment> list = fm.getFragments();
-          if (list != null) {
-              for (Fragment f : fm.getFragments()) {
-                  ft.remove(f);
-              }
-          }
-          ft.commit();
-      } catch (Exception e) {
+        holder = new ManagerFlowFragmentHoler();
+        holder.title = this.getString(R.string.app_elec);
+        trifficListFragment = new ManagerFlowListFragment();
+        holder.fragment = trifficListFragment;
+        mFragmentHolders[1] = holder;
 
-      }
+        // AM-614, remove cached fragments
+        FragmentManager fm = getSupportFragmentManager();
+        try {
+            FragmentTransaction ft = fm.beginTransaction();
+            List<Fragment> list = fm.getFragments();
+            if (list != null) {
+                for (Fragment f : fm.getFragments()) {
+                    ft.remove(f);
+                }
+            }
+            ft.commit();
+        } catch (Exception e) {
+
+        }
     }
-    
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
@@ -97,7 +111,7 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         } catch (Exception e) {
         }
     }
-    
+
     @Override
     public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
         try {
@@ -105,7 +119,7 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         } catch (Exception e) {
         }
     }
-    
+
     class ManagerFlowAdapter extends FragmentPagerAdapter {
         public ManagerFlowAdapter(FragmentManager fm) {
             super(fm);
@@ -136,28 +150,27 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.trffic_setting_iv:
-              Intent intent = new Intent(this, TrafficSetting.class);
-              startActivity(intent);
+                Intent intent = new Intent(this, TrafficSetting.class);
+                startActivity(intent);
                 break;
         }
     }
 
     @Override
     public void onPageScrollStateChanged(int arg0) {
-        
+
     }
 
     @Override
     public void onPageScrolled(int arg0, float arg1, int arg2) {
-        
+
     }
 
     @Override
     public void onPageSelected(int arg0) {
-        if(arg0 == 1){
+        if (arg0 == 1) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "datapage", "usagelist");
         }
     }
 
-    
 }

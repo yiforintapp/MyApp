@@ -103,10 +103,9 @@
     <dimen name="locker_theme_guide_height">428dp</dimen>
     <dimen name="locker_theme_guide_tv_save_width">300dp</dimen>
     <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
-    <dimen name="locker_theme_guide_guideImageIV_marginTop">30dp</dimen>
-    <dimen name="locker_theme_guide_guideTitleTV_marginTop">41dp</dimen>
+    <dimen name="locker_theme_guide_guideImageIV_marginTop">35dp</dimen>
+    <dimen name="locker_theme_guide_guideTitleTV_marginTop">26dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
-    <dimen name="locker_theme_guide_tv_save_textsize">22sp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
     <dimen name="memery_dialog_button_height">35dp</dimen>
     <!-- PrivacyContact -->
@@ -202,10 +201,9 @@
     <dimen name="app_manager_lv_item_text_margin_top">10dp</dimen> <!-- 10 -->
     <dimen name="app_manager_lv_item_delete_button_w_h">24dp</dimen> <!-- 30 -->
     <dimen name="app_manager_lv_item_delete_button_margin_right">20dp</dimen> <!-- 16 -->
-    <dimen name="app_manager_headview_three_text_margin_top">8dp</dimen> <!-- 8dp -->
+    <dimen name="app_manager_headview_three_text_margin_top">16dp</dimen> <!-- 8dp -->
     <dimen name="app_manager_headview_two_text_margin_top">5dp</dimen> <!-- 3 -->
-    <dimen name="app_manager_lineview_margin_bottom">8dp</dimen> <!-- 4 -->
-    <dimen name="app_manager_hotapp_rep_tip_width_height">13dp</dimen> <!-- 11 -->
+    <dimen name="app_manager_hotapp_rep_tip_width_height">10dp</dimen> <!-- 11 -->
     <dimen name="app_manager_hotapp_rep_tip_margin">8dp</dimen> <!-- 2 -->
     <dimen name="app_manager_hotapp_rep_tip_margin_right">13dp</dimen> <!-- 7 -->
     <dimen name="hot_app_tab_red_tip_margin_left">115dp</dimen> <!-- 110 -->
@@ -398,5 +396,7 @@
     <dimen name="guide_skip_margin">14dp</dimen>
     <dimen name="privacy_default_title_margin_top">48dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">52dp</dimen>
+    <dimen name="app_manager_flow_chart_margin_top">20dp</dimen>
+     <dimen name="app_manager_lineview_margin_top">12dp</dimen> 
     <!-- 2.6 end -->
 </resources>

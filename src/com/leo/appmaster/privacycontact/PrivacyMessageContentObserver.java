@@ -48,7 +48,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     @Override
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
-        // Log.e(FloatWindowHelper.RUN_TAG, "监控系统数据库改变");
+        // 测试打印系统据库变化情况
+//        printTestObserverLog();
         int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
@@ -88,7 +89,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                  */
                 // filterPrivacyContactMsm(cr);
             } else {
-                Log.e(FloatWindowHelper.RUN_TAG, "onReceive执行");
+                Log.e(Constants.RUN_TAG, "onReceive执行");
                 PrivacyContactManager.getInstance(mContext).testValue = false;
             }
             // 快捷手势未读短信提醒
@@ -101,6 +102,15 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
             // 快捷手势未读通话记录提醒
             noReadCallForQuickGesture(call);
+        }
+    }
+
+    // 测试来新短信或者来电能否触发系统数据库变化
+    private void printTestObserverLog() {
+        if (MESSAGE_MODEL.equals(mFlag)) {
+            Log.e(Constants.RUN_TAG, "短信变化引起系统短信数据库改变");
+        } else if (CALL_LOG_MODEL.equals(mFlag)) {
+            Log.e(Constants.RUN_TAG, "有来电引起系统通话数据库改变");
         }
     }
 
@@ -227,7 +237,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 .getSwitchOpenRecentlyContact()) {
                             if (!QuickGestureManager.getInstance(mContext).mToCallFlag
                                     && !QuickGestureManager.getInstance(mContext).isCallLogRead) {
-                                QuickGestureManager.getInstance(mContext).addQuickNoReadCall(callLogs);
+                                QuickGestureManager.getInstance(mContext).addQuickNoReadCall(
+                                        callLogs);
                                 QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
                                 FloatWindowHelper.removeShowReadTipWindow(mContext);
                                 if (PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {

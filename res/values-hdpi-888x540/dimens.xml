@@ -104,9 +104,8 @@
     <dimen name="locker_theme_guide_tv_save_width">300dp</dimen>
     <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
     <dimen name="locker_theme_guide_guideImageIV_marginTop">30dp</dimen>
-    <dimen name="locker_theme_guide_guideTitleTV_marginTop">41dp</dimen>
+    <dimen name="locker_theme_guide_guideTitleTV_marginTop">26dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
-    <dimen name="locker_theme_guide_tv_save_textsize">22sp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
     <dimen name="memery_dialog_button_height">35dp</dimen>
     <!-- PrivacyContact -->
@@ -201,7 +200,7 @@
     <dimen name="app_manager_lv_item_delete_button_margin_right">20dp</dimen> <!-- 16 -->
     <dimen name="app_manager_headview_three_text_margin_top">8dp</dimen> <!-- 8dp -->
     <dimen name="app_manager_headview_two_text_margin_top">5dp</dimen> <!-- 3 -->
-    <dimen name="app_manager_lineview_margin_bottom">8dp</dimen> <!-- 10 -->
+
 
 
     <!-- BackupActivity -->
@@ -352,6 +351,8 @@
     <dimen name="guide_skip_margin">10dp</dimen>
     <dimen name="privacy_default_title_margin_top">34dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">50dp</dimen>
+     <dimen name="app_manager_flow_chart_margin_top">4dp</dimen>
+     <dimen name="app_manager_lineview_margin_top">2dp</dimen> 
     <!-- 2.6 end -->
 
 </resources>

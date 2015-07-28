@@ -191,7 +191,26 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
         LoadGameLisener listener = new LoadGameLisener(this);
         HttpRequestAgent.getInstance(mActivity).loadGameData(listener, listener);
     }
-
+    /*
+     * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）
+     *"zh":中文简体，”zh_(地区)“：繁体中文
+     */
+        private String getPostLanguage() {
+            String requestLanguage;
+            String language = AppwallHttpUtil.getLanguage();
+            String country = AppwallHttpUtil.getCountry();
+            if ("zh".equalsIgnoreCase(language)) {
+                if ("CN".equalsIgnoreCase(country)) {
+                    requestLanguage = language;
+                } else {
+                    requestLanguage = language + "_" + country;
+                }
+            } else {
+                requestLanguage = language;
+            }
+//            Log.d(Constants.RUN_TAG, "sys_language:" +requestLanguage);
+            return requestLanguage;
+        }
     private void initUI() {
         all = new ArrayList<AppWallBean>();
         temp = new ArrayList<AppWallBean>();

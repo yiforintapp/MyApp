@@ -418,8 +418,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 String path = mAllPath.get(mPosition);
                 newFileName = FileOperationUtil.getNameFromFilepath(path);
                 try {
-                    if (newFileName.indexOf(".leotmv") >0) {
-                        newFileName = newFileName.substring(1, newFileName.indexOf(".leotmv"));
+                    if (newFileName.indexOf(".leotmv") >=0) {
+                        newFileName = newFileName.substring(0, newFileName.indexOf(".leotmv"));
                     }
                     if (!FileOperationUtil.renameFile(path, newFileName)) {
                         return isSuccess = false;

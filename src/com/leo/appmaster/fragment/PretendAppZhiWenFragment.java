@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.fragment;
 
+import android.annotation.SuppressLint;
 import android.content.pm.VerifierInfo;
 import android.os.Handler;
 import android.os.SystemClock;
@@ -50,12 +51,28 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
             }
         };
     };
+    
+    
+
+    
 
     @Override
     protected int layoutResourceId() {
         return R.layout.activity_weizhuang_zhiwen;
     }
 
+    @Override
+    public void onResume() {
+        // TODO Auto-generated method stub
+        
+//        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
+//                "appcover ", "fingerprint");
+        
+        
+        super.onResume();
+    }
+    
+    
     @Override
     protected void onInitUI() {
         zhiwen_content = findViewById(R.id.zhiwen_content);
@@ -78,7 +95,8 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
         getZhiWen();
     }
 
-    private void getZhiWen() {
+    @SuppressLint("NewApi")
+	private void getZhiWen() {
         ViewTreeObserver guaduan = iv_zhiwen_click.getViewTreeObserver();
         guaduan.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             public void onGlobalLayout() {
@@ -96,6 +114,14 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
             }
         });
     }
+    @Override
+    public boolean onBackPressed() {
+        // TODO Auto-generated method stub
+        SDKWrapper
+        .addEvent(mActivity, SDKWrapper.P1, "appcover", "fail_FingerPrint");
+        return super.onBackPressed();
+    }
+    
 
     private void showDongHuaAlpha(final float i, final float j) {
         // zhiwen
@@ -166,8 +192,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
 
                     showFeedBack();
 
-                    SDKWrapper
-                            .addEvent(mActivity, SDKWrapper.P1, "appcover", "done_FingerPrint");
+                    
                 }
                 break;
             default:

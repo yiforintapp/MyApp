@@ -75,7 +75,6 @@ import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.LeoPagerTab;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOSelfIconAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
@@ -110,22 +109,18 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
     private ImageView app_hot_tip_icon;
     private int type;
+    private int REQUEST_IS_FROM_APP_LOCK_LIST=1;
+    private boolean mIsFromAppLockList=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        Intent intent = new Intent();
-        intent.setClass(HomeActivity.this, WebViewActivity.class);
-        intent.putExtra(WebViewActivity.WEB_URL, "http://www.jd.com/");
-        Log.i("######", intent.toUri(0));
-
         // lockType , num or guesture
         initUI();
         tryTransStatusbar();
         // installShortcut();
-
+        
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
@@ -135,18 +130,30 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // TODO
     }
 
+//    private void tryIsFromLockMore() {
+//        // TODO Auto-generated method stub
+//        Intent intent = getIntent();
+//        
+//        mIsFromAppLockList= intent.getBooleanExtra("isFromAppLockList", false);            
+//        Log.e("lockmore", "isfromlist"+intent.getBooleanExtra("isFromAppLockList", false));
+//    }
+
     // 伪装的引导，当第一次将应用加了所后返回home，弹出提示。
     private void showWeiZhuangTip() {
-
+        
+//     Log.e("isshow", "isfromlist"+mIsFromAppLockList);
+     Log.e("isshow", "isneed"+AppMasterPreference.getInstance(this).getIsNeedPretendTips()+"");
+     Log.e("isshow", "lockedcount"+ LockManager.getInstatnce().getLockedAppCount()+"");   
+     Log.e("isshow", "getpretendtype"+AppMasterPreference.getInstance(this).getPretendLock()+"");
+     Log.e("isshow", "getisfromAppList"+AppMasterPreference.getInstance(this).getIsFromLockList()+"");
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
-                && LockManager.getInstatnce().getLockedAppCount() > 0)
-        {
-            AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
+                && LockManager.getInstatnce().getLockedAppCount() > 0&&AppMasterPreference.getInstance(this).getPretendLock()==0&&
+                AppMasterPreference.getInstance(this).getIsFromLockList()==true)
+            {
             if (mSelfIconDialog == null)
             {
                 mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
                 mSelfIconDialog.setIcon(R.drawable.pretend_guide);
-
                 mSelfIconDialog
                         .setOnClickListener(new LEOSelfIconAlarmDialog.OnDiaogClickListener() {
 
@@ -155,6 +162,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 // TODO Auto-generated method stub
                                 if (which == 1)
                                 {
+                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, 
+                                            "coverguide", "cli_y");
+                                    
                                     mSelfIconDialog.dismiss();
                                     if (mFragmentHolders[0].fragment != null)
                                     {
@@ -165,18 +175,58 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                         fragment.playPretendEnterAnim();
                                     }
                                 }
+                                else if(which==0)
+                                {
+                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, 
+                                            "coverguide", "cli_n");
+                                }
                             }
                         });
                 //
             }
             mSelfIconDialog.setSureButtonText(getString(R.string.button_disguise_guide_select));
             mSelfIconDialog.setLeftBtnStr(getString(R.string.button_disguise_guide_cancel));
-            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha to
-                                                                     // du
+            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha to  du
+            mSelfIconDialog.setCanceledOnTouchOutside(false);
             mSelfIconDialog.show();
+            AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
+        }
+        else
+        {          
+            AppMasterPreference.getInstance(this).setIsHomeToLockList(false);
+            AppMasterPreference.getInstance(this).setIsFromLockList(false);
+            AppMasterPreference.getInstance(this).setIsClockToLockList(false);
         }
     }
-
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        // TODO Auto-generated method stub
+//        Log.e("poha","resultCode"+resultCode);
+//        Log.e("poha","reqCode"+requestCode);
+//        if(resultCode==RESULT_OK)
+//        {
+//            Log.e("poha","in if");
+////            switch (requestCode) {
+////                           
+////                   case 0:
+//            mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
+//                    
+//                    
+//                    
+//                    
+//                    
+//                    
+//                    Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======" +data.getBooleanExtra("isFromAppLockList", false));
+////                    break;
+////              
+////                default:
+////                    break;
+////            }
+//        }
+        
+//    }
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -326,6 +376,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         type = AppMasterPreference.getInstance(this).getLockType();
 
         judgeShowGradeTip();
+        
+//        tryIsFromLockMore();
         showWeiZhuangTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.

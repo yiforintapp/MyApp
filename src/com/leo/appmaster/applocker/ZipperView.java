@@ -10,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.util.AttributeSet;
@@ -29,6 +31,21 @@ public class ZipperView extends View {
     private Bitmap mLeft;
     private Bitmap mRight;
     private Bitmap mMask;
+    private Bitmap mFZipper=null;
+    private Bitmap mFLeft=null;
+    private Bitmap mFRight=null;
+    private Bitmap mFBg=null;
+    private Bitmap mFCowBoy=null;
+    private Bitmap mFMask=null;
+    private float mScaleW=1.0f;
+    private float mScaleH=1.0f;
+    private float mCenterX;
+    private Paint mSpecialPaint;
+    private Canvas mCanvas;
+    
+    private Bitmap mFBitmap;
+  
+    
     private int mWidth;
     private int mHeight;
     private float mYp = 0;
@@ -40,28 +57,40 @@ public class ZipperView extends View {
     private Context mContext;
     private DisplayMetrics mDisplayMetrics;
     private OnGestureSuccessListener mSuccess = null;
+    private OnGestureTooFastListener mTooFast=null;
+    private OnGestureTooSlowListener mTooSlow=null;
     private Handler mhandler = new Handler();
     private boolean mIsZipperTouched = false;
-    
+    private Paint mPaint;
     
     private Runnable animGoBack = new Runnable()
     {
         public void run()
         {
-            if (mYp > 0)
-            {
-                mYp -= 100;
-                ZipperView.this.mhandler.postDelayed(ZipperView.this.animGoBack, 15l);
-                ZipperView.this.invalidate();
+           
+                if(mYp-380<0)
+                {
+                    mYp=0;
+                    ZipperView.this.mhandler.postDelayed(ZipperView.this.animGoBack, 15l);
+                    ZipperView.this.invalidate();
+                    mhandler.removeCallbacks(animGoBack);
+                }
+                else
+                {
+                    mYp -= 380;
+                    ZipperView.this.mhandler.postDelayed(ZipperView.this.animGoBack, 15l);
+                    ZipperView.this.invalidate();    
+                }
+                
             }
-            else
-            {
-                mYp = 0;
-                ZipperView.this.invalidate();
-                mhandler.removeCallbacks(animGoBack);
-            }
+//            else
+//            {
+//                mYp = 0;
+//                ZipperView.this.invalidate();
+//                mhandler.removeCallbacks(animGoBack);
+//            }
 
-        }
+        
     };
 
 
@@ -76,7 +105,31 @@ public class ZipperView extends View {
     public void setOnGestureSuccessListener(OnGestureSuccessListener success) {
         mSuccess = success;
     }
-
+    
+    public interface OnGestureTooFastListener
+    {
+        public void OnGestureTooFast();
+    }
+    
+    public void setOnGestureTooFastListener(OnGestureTooFastListener tooFast)
+    {
+        mTooFast=tooFast;
+    }
+    
+    public interface OnGestureTooSlowListener
+    {
+        public void OnGestureTooSlow();
+    }
+    
+    public void setOnGestureTooSlowListener(OnGestureTooSlowListener tooSlow)
+    {
+        mTooSlow=tooSlow;
+    }
+    
+    
+    
+    
+    
     private boolean zipperBeTouched;
     private boolean isGesture;
     private float px01;
@@ -91,6 +144,10 @@ public class ZipperView extends View {
     }
 
     private void init() {
+        mPaint=new Paint();
+        mPaint.setAntiAlias(true);
+        mSpecialPaint=new Paint();
+        mSpecialPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
         mMask=BitmapFactory.decodeResource(getResources(), R.drawable.zipper_bg_mask);
         mDrawbleBg = BitmapFactory.decodeResource(getResources(), R.drawable.bg_beauty);
         mDrawbleCowBoy = BitmapFactory.decodeResource(getResources(), R.drawable.bg_cowboy);
@@ -103,12 +160,53 @@ public class ZipperView extends View {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right,
             int bottom) {
-        super.onLayout(changed, left, top, right, bottom);
+       
         mWidth = getWidth();
+        mCenterX=mWidth/2;
         mHeight = getHeight();
-
+        initScaleBitmap();
         getBgByte();
         getCowByte();
+    }
+
+    private void initScaleBitmap() {
+//        int width = getWidth();
+//        int height = getHeight();
+        mScaleH=(float)mHeight/(float)mDrawbleCowBoy.getHeight();
+        mScaleW=(float)mWidth/(float)mDrawbleCowBoy.getWidth();
+        
+        Log.e("zipper", "mScaleH="+mScaleH+",mScaleW="+mScaleW);
+        
+        if(mFLeft==null)
+        {
+            Log.e("zipper", "mfleft=null,to create now");
+            mFLeft=Bitmap.createScaledBitmap(mLeft, (int)((float)(mLeft.getWidth()*mScaleW)), (int)((float)(mLeft.getHeight()*mScaleH)), false);
+        }
+        if(mFRight==null)
+        {
+            Log.e("zipper", "mfleft=null,to create now");
+            mFRight=Bitmap.createScaledBitmap(mRight,(int)((float)(mRight.getWidth()*mScaleW)), (int)((float)(mRight.getHeight()*mScaleH)), false);
+        }
+        if(mFZipper==null)
+        {
+            Log.e("zipper", "mfleft=null,to create now");
+            mFZipper= Bitmap.createScaledBitmap(mZipper, (int)((float)(mZipper.getWidth()*mScaleW)), ((int)(float)(mZipper.getHeight()*mScaleH)), false);
+        }
+        if(mFCowBoy==null)
+        {
+            mFCowBoy=Bitmap.createScaledBitmap(mDrawbleCowBoy, mWidth, mHeight, false);
+        }
+        if(mFMask==null)
+        {
+            mFMask=Bitmap.createScaledBitmap(mMask, mWidth, mHeight, false);
+        }
+        mFBitmap=Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
+        
+        
+        mCanvas=new Canvas(mFBitmap);
+//        this.drawBmp = Bitmap.createBitmap(this.bg.width, this.bg.height, Bitmap.Config.ARGB_8888);
+        
+        
     }
 
     @Override
@@ -118,34 +216,46 @@ public class ZipperView extends View {
    
 
    
-        drawCowboyandBeaty(canvas);
-        drawzipper(canvas);
-        drawleft(canvas);
-        drawright(canvas);
-
-      
+//        drawCowboyandBeaty(canvas);
+   
+//        drawleft(canvas);
+//        drawright(canvas);
+//        drawzipper(canvas);
+//        canvas.drawBitmap(mDrawbleBg, 0, 0, mPaint);
+        mCanvas.drawBitmap(mFCowBoy, 0, 0, mPaint);
+        mCanvas.drawBitmap(mFMask, 0, mYp-mFMask.getHeight(), mSpecialPaint);    
+        mCanvas.drawBitmap(mFLeft, -(mFLeft.getWidth()-mCenterX)+(int)(mDisplayMetrics.density*5.5),mYp-mFLeft.getHeight() , mPaint);
+        mCanvas.drawBitmap(mFRight, mCenterX-(int)(mDisplayMetrics.density*7.5), mYp-mFRight.getHeight(), mPaint);
+        mCanvas.drawBitmap(mFZipper, mCenterX-mFZipper.getWidth()/2, (int)(mYp-25.0*mScaleH), mPaint);
+        
+        canvas.drawBitmap(mFBitmap, 0, 0, mPaint);
+        
     }
 
     private void drawleft(Canvas canvas) {
-        Bitmap left = Bitmap.createScaledBitmap(mLeft, mWidth/2, mHeight, false);
+        
+    
+            
+            Bitmap mFLeft = Bitmap.createScaledBitmap(mLeft, (int)(mWidth/2*1.013f), (int)(mHeight*1.013f), false);
+ 
    
         
         
 //        Bitmap left = Bitmap.createBitmap(mLeft);
 
 //        canvas.drawBitmap(left, 0, mYp - mLeft.getHeight(), new Paint());
-        canvas.drawBitmap(left, 0, mYp - left.getHeight(), new Paint());
+        canvas.drawBitmap(mFLeft, -27, mYp - mFLeft.getHeight(), new Paint());
     }
 
-    private void drawright(Canvas canvas) {
-         Bitmap right = Bitmap.createScaledBitmap(mRight, mWidth/2, mHeight, false);
-//        Bitmap right = Bitmap.createBitmap(mRight);
-        // canvas.drawBitmap(right, right.getWidth(), mYp-right.getHeight(), new
-        // Paint());
-//        canvas.drawBitmap(right, right.getWidth(), mYp - right.getHeight(), new Paint());
-        canvas.drawBitmap(right, right.getWidth(), mYp - right.getHeight(), new Paint());
-        
-    }
+//    private void drawright(Canvas canvas) {
+//         Bitmap mFRight = Bitmap.createScaledBitmap(mRight, (int)(mWidth/2*1.012f), (int)(mHeight*1.012f), false);
+////        Bitmap right = Bitmap.createBitmap(mRight);
+//        // canvas.drawBitmap(right, right.getWidth(), mYp-right.getHeight(), new
+//        // Paint());
+////        canvas.drawBitmap(right, right.getWidth(), mYp - right.getHeight(), new Paint());
+//        canvas.drawBitmap(mFRight, mFRight.getWidth()+12.5f, mYp - mFRight.getHeight(), mPaint);
+//        
+//    }
 
     @SuppressLint("NewApi")
     @Override
@@ -164,7 +274,16 @@ public class ZipperView extends View {
                     if (mIsZipperTouched)
                     // if(event.getX()>(mWidth-mZipper.getWidth())/2&&event.getX()<(mWidth+mZipper.getWidth())/2&&event.getY()>mYp&&event.getY()<mYp+mZipper.getHeight())
                     {
-                        mYp = y;
+//                        if(mYp>mFMask.getHeight())
+//                        {
+//                            mYp=mFMask.getHeight();
+//                        }
+//                        else
+//                        {
+//                            mYp = y;
+//                        }
+                        mYp=Math.min(y, mFMask.getHeight());//解决虚拟键盘时mask露出的bug
+                        Log.i("zipper", "mFMask.height=="+mFMask.getHeight()+"and now mYp=="+mYp);
                         invalidate();
 
                     }
@@ -177,15 +296,23 @@ public class ZipperView extends View {
                     {
                         long durationTime = System.currentTimeMillis() - downtime;
                         Log.e("poha", durationTime + "");
-                        if (event.getY() >= mHeight - mZipper.getHeight())
+                        if (event.getY() >0)
                         {
-                            if (durationTime > 1000)
+                            if (event.getY()/durationTime*1000 < mHeight*1.5)
                             {
-                                Toast.makeText(getContext(), "太慢啦！", 0).show();
+                                if(mTooSlow!=null)
+                                {
+                                    mTooSlow.OnGestureTooSlow();                                    
+                                }
+//                                Toast.makeText(getContext(), mContext.getResources().getString(R.string.zipper_too_slow), 0).show();
                             }
                             else
                             {
-                                Toast.makeText(getContext(), "太快啦！", 0).show();
+                                if(mTooFast!=null)
+                                {
+                                    mTooFast.OnGestureTooFast();                                    
+                                }
+//                                Toast.makeText(getContext(), mContext.getResources().getString(R.string.zipper_too_fast), 0).show();
                             }
                             this.mhandler.postDelayed(animGoBack, 1l);
 
@@ -204,10 +331,10 @@ public class ZipperView extends View {
                     break;
                 case MotionEvent.ACTION_DOWN: {
                     // 4是让识别区域变大点
-                    if (event.getX() > (mWidth - mZipper.getWidth() - 8) / 2
-                            && event.getX() < (mWidth + mZipper.getWidth() + 8) / 2
-                            && event.getY() > mYp - 8
-                            && event.getY() < mYp + mZipper.getHeight() + 8)
+                    if (event.getX() > (mWidth - mFZipper.getWidth() - 0) / 2
+                            && event.getX() < (mWidth + mFZipper.getWidth() + 0) / 2
+                            && event.getY() > mYp - 0
+                            && event.getY() < mYp + mFZipper.getHeight() + 0)
                     {
                         downtime = System.currentTimeMillis();
                         mIsZipperTouched = true;
@@ -265,43 +392,68 @@ public class ZipperView extends View {
                     Log.e("poha", "ax02:" + ax02);
                     Log.e("poha", "ay02:" + ay02);
 
-                   
-                  
+                    if ( (px01 <= px02 && ax01 > px01 + 50 && ax02 < px02 - 50)                   //01点在左，则需要抬起时01点往右移了30，02点往左移了30
+                            || (px01 > px02&& ax01 < px01 - 50 && ax02 > px02 + 50)              //或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30
+                            ||(py01 <= py02 && ay01 > py01 + 50&&ay02<py02-50)                  //或者 01点在上，则需要抬起时01点往下移了30，02点往上移了30   
+                            ||(py01>py02&&ay01<py01-50&&ay02>py02+50))                   
+                    
+                    {
+                        if(mSuccess!=null)
+                        {
+                            mSuccess.OnGestureSuccess();
+                            
+                        }
+                        // Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
+                    }
 
-                    if (((py01 <= py02 && ay01 > py01 + 70 && ay02 < py02 - 70) || (py01 > py02
-                            && ay01 < py01 - 70 && ay02 > py02 + 70))
-                            && ((px01 <= px02 && ax01 > px01 + 50 && ax02 < px02 - 50) || (px01 > px02
-                                    && ax01 < px01 - 50 && ax02 > px02 + 50)))//
+                    break;
+                case MotionEvent.ACTION_POINTER_2_UP:
+
+                    float aax01 = event.getX(0);
+                    float aay01 = event.getY(0);
+                    float aax02 = event.getX(1);
+                    float aay02 = event.getY(1);
+
+                    Log.e("poha", "ax01:" + aax01);
+                    Log.e("poha", "ay01:" + aay01);
+                    Log.e("poha", "ax02:" + aax02);
+                    Log.e("poha", "ay02:" + aay02);
+
+                    if ( (px01 <= px02 && aax01 > px01 + 50 && aax02 < px02 - 50)                   //01点在左，则需要抬起时01点往右移了30，02点往左移了30
+                            || (px01 > px02&& aax01 < px01 - 50 && aax02 > px02 + 50)              //或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30
+                            ||(py01 <= py02 && aay01 > py01 + 50&&aay02<py02-50)                  //或者 01点在上，则需要抬起时01点往下移了30，02点往上移了30   
+                            ||(py01>py02&&aay01<py01-50&&aay02>py02+50))                   
+                    
                     {
                         // Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
                         mSuccess.OnGestureSuccess();
                     }
 
                     break;
-                case MotionEvent.ACTION_POINTER_2_UP:
-                    float ax0100 = event.getX(0);
-                    float ay0100 = event.getY(0);
-                    float ax0200 = event.getX(1);
-                    float ay0200 = event.getY(1);
-
-                    Log.e("poha", "ax0100:" + ax0100);
-                    Log.e("poha", "ay0100:" + ay0100);
-                    Log.e("poha", "ax0200:" + ax0200);
-                    Log.e("poha", "ay0200:" + ay0200);
-
-                    // float theTop=(py01>=py02)?py01:py02;
-                    // float thebottom=(py01<py02)?py01:py02;
-                    //
-                    // flo
-
-                    if (((py01 <= py02 && ay0100 > py01 + 10 && ay0200 < py02 - 10) || (py01 > py02
-                            && ay0100 < py01 - 10 && ay0200 > py02 + 10))
-                            && ((px01 <= px02 && ax0100 > px01 + 10 && ax0200 < px02 - 10) || (px01 > px02
-                                    && ax0100 < px01 - 10 && ax0200 > px02 + 10)))
-                    {
-                        // Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
-                        mSuccess.OnGestureSuccess();
-                    }
+//                case MotionEvent.ACTION_POINTER_2_UP:
+//                    float ax0100 = event.getX(0);
+//                    float ay0100 = event.getY(0);
+//                    float ax0200 = event.getX(1);
+//                    float ay0200 = event.getY(1);
+//
+//                    Log.e("poha", "ax0100:" + ax0100);
+//                    Log.e("poha", "ay0100:" + ay0100);
+//                    Log.e("poha", "ax0200:" + ax0200);
+//                    Log.e("poha", "ay0200:" + ay0200);
+//
+//                    // float theTop=(py01>=py02)?py01:py02;
+//                    // float thebottom=(py01<py02)?py01:py02;
+//                    //
+//                    // flo
+//
+//                    if (((py01 <= py02 && ay0100 > py01 + 10 && ay0200 < py02 - 10) || (py01 > py02
+//                            && ay0100 < py01 - 10 && ay0200 > py02 + 10))
+//                            && ((px01 <= px02 && ax0100 > px01 + 10 && ax0200 < px02 - 10) || (px01 > px02
+//                                    && ax0100 < px01 - 10 && ax0200 > px02 + 10)))
+//                    {
+//                        // Toast.makeText(getContext(), "缩放动作判定为成功", 0).show();
+//                        mSuccess.OnGestureSuccess();
+//                    }
 
                 default:
                     break;
@@ -318,16 +470,16 @@ public class ZipperView extends View {
         // postInvalidate();
         // SystemClock.sleep(100);
         // Log.e("poha", "refresh!");
-
         //
         //
     }
 
-    private void drawzipper(Canvas canvas) {
-        Log.e("poha", "drawing...,y is :" + mYp);
-        Bitmap zipperbitmap = Bitmap.createScaledBitmap(mZipper, 80, 250, false);
-        canvas.drawBitmap(mZipper, (mWidth - mZipper.getWidth()) / 2, mYp, new Paint());
-    }
+//    private void drawzipper(Canvas canvas) {
+//        Log.e("poha", "drawing...,y is :" + mYp);
+//        
+//        Bitmap mFZipper = Bitmap.createScaledBitmap(mZipper, (int)(mZipper.getWidth()*2.00),(int)(mZipper.getHeight()*2.00), false);
+//        canvas.drawBitmap(mFZipper, (mWidth - mFZipper.getWidth()) / 2, mYp-25.0f, mPaint);
+//    }
 
     private void drawCowboy(Canvas canvas) {
 //        int bmwidth = mDrawbleCowBoy.getWidth();
@@ -337,8 +489,9 @@ public class ZipperView extends View {
 //        Matrix mBgMatrix;
 //        mBgMatrix = new Matrix();
 //        mBgMatrix.postScale(scalewidth, scaleheight);
-        // canvas.drawBitmap(mDrawbleCowBoy,mBgMatrix,new Paint());
-        canvas.drawBitmap(mDrawbleCowBoy, 0, 0, new Paint());
+//   canvas.drawBitmap(mDrawbleCowBoy,mBgMatrix,new Paint());
+        mFCowBoy=Bitmap.createScaledBitmap(mDrawbleCowBoy, mWidth, mHeight, false);
+        canvas.drawBitmap(mFCowBoy, 0, 0, new Paint());
     }
 
     private void drawbg(Canvas canvas) {
@@ -399,9 +552,11 @@ public class ZipperView extends View {
             mYp = mHeight;
         }
         for (int i = 0; i < mYp; i++) {// 高度
-            int tempx = (int) (mWidth / 2 * (mYp - i) / mHeight);
-            int lx = mWidth / 2 - tempx;
-            int rx = mWidth / 2 + tempx;
+            int tempx = (int) (mWidth / 2 * (mYp - i) / (mHeight));
+//            int lx = mWidth / 2 - (int)(tempx*1);
+//            int rx = mWidth / 2 + (int)(tempx*1);
+            int lx = Math.min(0, mWidth / 2 - (int)(tempx*1.5));
+            int rx = Math.max(mWidth, mWidth / 2 + (int)(tempx*1.5));
             for (int j = lx; j <= rx; j++) {
                 int tempi = i * mWidth + j;
                 newbg[tempi] = bgbyte[tempi];

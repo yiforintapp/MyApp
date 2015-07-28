@@ -55,7 +55,7 @@ public class GestureLockFragment extends LockFragment implements
         mLockPatternView.setIsFromLockScreenActivity(true);
         mGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
         mIconLayout = (RelativeLayout) findViewById(R.id.iv_app_icon_layout);
-        
+
         if (mLockMode == LockManager.LOCK_MODE_FULL) {
             mAppIcon = (ImageView) findViewById(R.id.iv_app_icon);
             mAppIcon.setVisibility(View.VISIBLE);
@@ -80,19 +80,49 @@ public class GestureLockFragment extends LockFragment implements
             } else if (mPackageName != null) {
                 mAppIcon.setImageDrawable(AppUtil.getDrawable(
                         mActivity.getPackageManager(), mPackageName));
-                if (needChangeTheme()) {
-                    mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
-                    mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
-                    mAppIconTop.setVisibility(View.VISIBLE);
-                    mAppIconBottom.setVisibility(View.VISIBLE);
-                    changeActivityBgAndIconByTheme();
-                }
+            }
+            if (needChangeTheme()) {
+                mAppIconTop = (ImageView) findViewById(R.id.iv_app_icon_top);
+                mAppIconBottom = (ImageView) findViewById(R.id.iv_app_icon_bottom);
+                mAppIconTop.setVisibility(View.VISIBLE);
+                mAppIconBottom.setVisibility(View.VISIBLE);
+                checkApplyTheme();
             }
         }
-
     }
 
-    private void changeActivityBgAndIconByTheme() {
+    @Override
+    public void onNewIntent() {
+        LockScreenActivity lsa = (LockScreenActivity) mActivity;
+        if (lsa.mQuickLockMode) {
+            LockManager lm = LockManager.getInstatnce();
+            List<LockMode> modes = lm.getLockMode();
+            LockMode targetMode = null;
+            for (LockMode lockMode : modes) {
+                if (lockMode.modeId == lsa.mQuiclModeId) {
+                    targetMode = lockMode;
+                    break;
+                }
+            }
+            if (targetMode != null) {
+                mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
+                        targetMode.modeIcon));
+            } else {
+                mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                        mActivity.getPackageManager(), mActivity.getPackageName()));
+            }
+        } else {
+            if(!TextUtils.isEmpty(mPackageName)) {
+                mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                        mActivity.getPackageManager(), mPackageName));
+            } else {
+                mAppIcon.setImageDrawable(AppUtil.getDrawable(
+                        mActivity.getPackageManager(), mActivity.getPackageName()));
+            }
+        }
+    }
+
+    private void checkApplyTheme() {
         String pkgName = AppMasterApplication.getSelectedTheme();
         Context themeContext = LeoResources.getThemeContext(getActivity(), pkgName);// com.leo.appmaster:drawable/multi_theme_lock_bg
         Resources themeRes = themeContext.getResources();
@@ -196,7 +226,7 @@ public class GestureLockFragment extends LockFragment implements
 
     @Override
     public void onLockPackageChanged(String lockedPackage) {
-        if (!TextUtils.equals(lockedPackage, mPackageName)) {
+        if (!TextUtils.equals(lockedPackage, mPackageName) && !TextUtils.isEmpty(lockedPackage)) {
             mPackageName = lockedPackage;
             mInputCount = 0;
             mGestureTip.setText(R.string.please_input_gesture);
@@ -207,8 +237,10 @@ public class GestureLockFragment extends LockFragment implements
                     mActivity.getPackageManager(), mPackageName));
         }
 
-        mAppIcon.setImageDrawable(AppUtil.getDrawable(
-                mActivity.getPackageManager(), mPackageName));
         mAppIcon.setVisibility(View.VISIBLE);
+    }
+
+    public void reInvalideGestureView() {
+        mLockPatternView.resetIfHideLine();
     }
 }

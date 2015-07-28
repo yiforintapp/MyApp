@@ -47,7 +47,7 @@ public class EventAction implements DecorateAction {
     }
 
     public EventAction(Context context, int number) {
-        mNumBg = context.getResources().getDrawable(R.drawable.red_tip);
+        mNumBg = context.getResources().getDrawable(R.drawable.gesture_sms_red);
         mNumber = number;
         mContext=context;
     }

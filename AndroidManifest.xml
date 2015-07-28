@@ -14,8 +14,7 @@
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" >
-    </uses-permission>
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
@@ -82,6 +81,7 @@
 
     <application
         android:name="com.leo.appmaster.AppMasterApplication"
+        android:excludeFromRecents="true"
         android:hardwareAccelerated="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
@@ -155,7 +155,7 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
-            android:windowSoftInputMode="stateHidden|adjustResize" >
+            android:windowSoftInputMode="stateHidden|adjustResize">
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
@@ -240,6 +240,7 @@
         <activity
             android:name="com.leo.appmaster.imagehide.ImageHideMainActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
@@ -321,6 +322,7 @@
         <activity
             android:name="com.leo.appmaster.videohide.VideoHideMainActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" />
         <activity
@@ -411,6 +413,7 @@
         <activity
             android:name="com.leo.appmaster.appmanage.FlowActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
@@ -423,6 +426,7 @@
         <activity
             android:name="com.leo.appmaster.applocker.WeiZhuangActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme" >
         </activity>
@@ -491,6 +495,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
+            android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
@@ -523,14 +528,25 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
+            android:exported="true"
             android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
+            android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.QuickGestureProxyActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity="com.leo.appmaster.proxy"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.home.DeskProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleInstance"
@@ -577,11 +593,11 @@
         <activity
             android:name="com.leo.appmaster.cleanmemory.HomeBoostActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:icon="@drawable/switch_speed_up"
             android:label="@string/accelerate"
             android:launchMode="singleInstance"
             android:noHistory="true"
-            android:exported="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 
@@ -692,7 +708,7 @@
 
 
         <!-- for LEO push sdk -->
-        <service android:name="com.leo.push.PushService" />
+        <service android:name="com.leo.push.PushService"  android:exported="true"/>
     </application>
 
 </manifest>

@@ -30,7 +30,7 @@
             android:src="@drawable/lock_mode_select_button" />
     </FrameLayout>
 
-    <TextView
+   <TextView
         android:id="@+id/tv_mode_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,5 +41,6 @@
         android:text="@string/lock_mode"
         android:textColor="@color/white"
         android:textSize="14sp" />
-
+    
+  
 </RelativeLayout>

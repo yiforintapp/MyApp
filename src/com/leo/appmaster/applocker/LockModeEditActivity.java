@@ -70,6 +70,7 @@ public class LockModeEditActivity extends BaseActivity implements
     private List<String> mLockList;
     private boolean mNewMode;
     private boolean mEdited;
+    private boolean mSaveDialogClick;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -404,6 +405,10 @@ public class LockModeEditActivity extends BaseActivity implements
                                     R.string.lock_mode_name_cant_empty, 0)
                                     .show();
                         } else {
+                            if(mSaveDialogClick) {
+                                return;
+                            }
+                            mSaveDialogClick = true;
                             LockManager lm = LockManager.getInstatnce();
                             mEditMode.modeName = mModeName;
                             List<String> changedList = new ArrayList<String>();

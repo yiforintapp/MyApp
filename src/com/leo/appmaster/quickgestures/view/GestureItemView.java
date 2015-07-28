@@ -156,12 +156,18 @@ public class GestureItemView extends LinearLayout {
     }
 
     private boolean isDynamicItem() {
-        GType type = mHolderLayout.getContainer().getCurrentGestureType();
-        if (type == GType.DymicLayout) {
-            return true;
-        } else {
-            return false;
+        if(mHolderLayout != null) {
+            AppleWatchContainer container = mHolderLayout.getContainer();
+            if(container != null) {
+                GType type = container.getCurrentGestureType();
+                if (type == GType.DymicLayout) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }
         }
+        return false;
     }
 
     public void showReadTip() {

@@ -3,25 +3,16 @@
     android:layout_width="@dimen/locker_theme_guide_width"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    android:background="@drawable/bg" 
+    >
 
     <LinearLayout
         android:id="@+id/lockerThemeGuideLT"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/locker_theme_guide_height" 
-        android:background="#159fff"
+        android:layout_height="wrap_content" 
         android:gravity="center_horizontal"
         android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/guideTitleTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/locker_theme_guide_guideTitleTV_marginTop"
-            android:text="@string/locker_theme_guide"
-            android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/locker_theme_guide_guideTitleTV_textsize" />
 
         <ImageView
             android:id="@+id/guideImageIV"
@@ -29,26 +20,31 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/locker_theme_guide_guideImageIV_marginTop"
             android:src="@drawable/online_theme_tutorails_image" />
+        
+        <TextView
+            android:id="@+id/guideTitleTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/locker_theme_guide_guideTitleTV_marginTop"
+            android:layout_marginBottom="20dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@string/locker_theme_guide"
+            android:gravity="center"
+            android:textColor="#545454"
+            android:textSize="@dimen/locker_theme_guide_guideTitleTV_textsize" />
     </LinearLayout>
 
-    <RelativeLayout
-        android:id="@+id/lockerThemeGuideRT"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/white"
-        android:gravity="center" >
 
         <TextView
             android:id="@+id/tv_save"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/manager_middle_button_selecter"
+            android:layout_height="46dp"
+             style="@style/dlg_single_button_txt_ok"
             android:clickable="true"
             android:gravity="center"
             android:text="@string/makesure"
             android:textColor="#ffffff"
-            android:textSize="@dimen/locker_theme_guide_tv_save_textsize" />
-    </RelativeLayout>
+            android:textSize="16dp" />
 
 </LinearLayout>

@@ -14,22 +14,16 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.text.Html;
 import android.text.Spanned;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
-import com.leo.appmaster.backup.AppBackupItemView;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.BuildProperties;
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -157,21 +151,21 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     @Override
     protected void onResume() {
-        //等待半秒去激活设备管理器
+        // 等待半秒去激活设备管理器
         SystemClock.sleep(500);
         if (isAdminActive()) {
-            
+
             mForbidUninstall.setChecked(true);
             mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
         } else {
             mForbidUninstall.setChecked(false);
             mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
         }
-//        Log.e("poha", isAdminActive()+"");
-//        mChangeLockTime.setSummary(R.string.summary_setting_locker);
-//        mHideLockLine.setSummary(R.string.summary_hide_lockline);
-//        mLockerClean.setSummary(R.string.summary_aacelerate_after_unlock);
-        
+        // Log.e("poha", isAdminActive()+"");
+        // mChangeLockTime.setSummary(R.string.summary_setting_locker);
+        // mHideLockLine.setSummary(R.string.summary_hide_lockline);
+        // mLockerClean.setSummary(R.string.summary_aacelerate_after_unlock);
+
         if (haveProtect()) {
             mSetProtect.setTitle(R.string.passwd_protect);
         } else {
@@ -226,8 +220,14 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             LockManager.getInstatnce().timeFilterSelf();
             if (isAdminActive()) {
                 intent = new Intent();
-                intent.setClassName("com.android.settings",
-                        "com.android.settings.DeviceAdminAdd");
+                if (BuildProperties.isMIUI()) {
+                    intent.setClassName("com.android.settings",
+                            "com.android.settings.MiuiDeviceAdminAdd");
+                } else {
+                    intent.setClassName("com.android.settings",
+                            "com.android.settings.DeviceAdminAdd");
+                }
+
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);
                 try {
@@ -262,6 +262,11 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "lockboost");
             }
         } else if (AppMasterPreference.PREF_HIDE_LOCK_LINE.equals(key)) {
+            if ((Boolean) newValue) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "setting_on");
+            } else {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "trackhide", "setting_off");
+            }
             mHideLockLine.setChecked((Boolean) newValue);
             AppMasterPreference.getInstance(LockOptionActivity.this)
                     .setHideLine((Boolean) newValue);

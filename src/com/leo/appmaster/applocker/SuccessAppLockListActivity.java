@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -73,7 +74,9 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         super.onDestroy();
         mLockList.clear();
     }
-
+    
+    
+    @SuppressLint("Override")
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
@@ -83,7 +86,9 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         }
     }
 
-    @Override
+
+	@SuppressLint("Override")
+	@Override
     public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
         try {
             super.onRestoreInstanceState(savedInstanceState, persistentState);
@@ -140,6 +145,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                     intent = new Intent(SuccessAppLockListActivity.this,
                             AppLockListActivity.class);
                     intent.putExtra("from_lock_more", true);
+//                    intent.putExtra("enter_from_lockmode", true);
                     this.startActivity(intent);
                 } else if (target == 1) {
                     intent = new Intent(this,
@@ -172,6 +178,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         Intent intent;
         if (target == 0) {
             intent = new Intent(this, AppLockListActivity.class);
+         
             try {
                 this.startActivity(intent);
             } catch (Exception e) {

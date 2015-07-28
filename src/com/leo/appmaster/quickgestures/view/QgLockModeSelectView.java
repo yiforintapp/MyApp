@@ -63,7 +63,6 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
     private ImageView mIvClose;
     private View mSelected;
     private View mHolder;
-    private LockManager mLockManager;
     private int currModePosition;
 
     public QgLockModeSelectView(Context context) {
@@ -72,7 +71,6 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
 
     public QgLockModeSelectView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mLockManager = LockManager.getInstatnce();
     }
 
     @Override
@@ -103,7 +101,7 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
         LayoutInflater mInflater = LayoutInflater.from(getContext());
         List<LockMode> list = LockManager.getInstatnce().getLockMode();
         for (LockMode lockMode : list) {
-            View view = mInflater.inflate(R.layout.mode_page_item, mViewPager, false);
+            View view = mInflater.inflate(R.layout.qg_mode_page_item, mViewPager, false);
             mHolder = view.findViewById(R.id.mode_holder);
             TextView modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
             ImageView selectedImg = (ImageView) view.findViewById(R.id.img_selected);
@@ -136,15 +134,18 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
     public void show() {
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
-            animteCloseBtn();
+            animteViews();
             fillUI(true);
         }
     }
 
-    private void animteCloseBtn() {
-        ObjectAnimator alphaAnimator = ObjectAnimator.ofFloat(mIvClose, "alpha", 0, 1.0f);
-        alphaAnimator.setDuration(400);
-        alphaAnimator.start();
+    private void animteViews() {
+        ObjectAnimator alphaAnimator1 = ObjectAnimator.ofFloat(mIvClose, "alpha", 0, 1.0f);
+        ObjectAnimator alphaAnimator2 = ObjectAnimator.ofFloat(mIndicator, "alpha", 0, 1.0f);
+        AnimatorSet as = new AnimatorSet();
+        as.playTogether(alphaAnimator1, alphaAnimator2);
+        as.setDuration(400);
+        as.start();
     }
 
     private void moveToCurItem() {
@@ -320,23 +321,11 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
                                     }
                                 });
                                 selectedImg = (ImageView) view.findViewById(R.id.img_selected);
-                                // mLockManager.setCurrentLockMode(mode, true);
-                                // SDKWrapper.addEvent(getContext(),
-                                // SDKWrapper.P1, "modeschage", "home");
-                                // new Thread(new Runnable() {
-                                // @Override
-                                // public void run() {
-                                // LeoEventBus.getDefaultBus().post(
-                                // new LockModeEvent(EventId.EVENT_MODE_CHANGE,
-                                // "multi mode page selectd"));
-                                // }
-                                // }).start();
-
                                 disappearAnim(curPosition, selectedImg);
                             } else {
                                 Intent intent = null;
                                 intent = new Intent(getContext(), LockScreenActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                                 intent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME);
                                 intent.putExtra("quick_lock_mode", true);
                                 intent.putExtra("lock_mode_id", mode.modeId);
                                 intent.putExtra("lock_mode_name", mode.modeName);

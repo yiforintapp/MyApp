@@ -106,10 +106,9 @@
     <dimen name="locker_theme_guide_height">258dp</dimen>
     <dimen name="locker_theme_guide_tv_save_width">200dp</dimen>
     <dimen name="locker_theme_guide_tv_save_height">47dp</dimen>
-    <dimen name="locker_theme_guide_guideImageIV_marginTop">1dp</dimen>
+    <dimen name="locker_theme_guide_guideImageIV_marginTop">20dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_marginTop">18dp</dimen>
     <dimen name="locker_theme_guide_guideTitleTV_textsize">12dp</dimen>
-    <dimen name="locker_theme_guide_tv_save_textsize">18sp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
     <dimen name="memery_dialog_button_height">35dp</dimen>
     <dimen name="privacy_level_seprator_padding">10dp</dimen>
@@ -253,5 +252,8 @@
     <dimen name="privacy_default_image_height">80dp</dimen>
     <dimen name="privacy_default_text_margin_top">6dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">38dp</dimen>
+    <dimen name="apple_watch_top_btn_margin_top">12dp</dimen>
+    <dimen name="app_manager_flow_chart_margin_top">8dp</dimen>
+     <dimen name="app_manager_lineview_margin_top">8dp</dimen> 
     <!-- 2.6 end -->
 </resources>

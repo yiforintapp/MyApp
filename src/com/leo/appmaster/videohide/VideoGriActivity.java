@@ -382,6 +382,10 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mBottomBar.setVisibility(View.GONE);
         mCommonTtileBar.setOptionImage(R.drawable.edit_mode_name);
         mSelectImage.setVisibility(View.GONE);
+        mSelectAll.setText(R.string.app_select_all);
+        mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                getResources().getDrawable(R.drawable.select_all_selector), null,
+                null);
         updateRightButton();
     }
 
@@ -512,8 +516,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             break;
                         try {
                             newFileName = FileOperationUtil.getNameFromFilepath(item.getPath());
-                            if (newFileName.indexOf(".leotmv") > 0) {
-                                newFileName = newFileName.substring(1,
+                            if (newFileName.indexOf(".leotmv") >=0) {
+                                newFileName = newFileName.substring(0,
                                         newFileName.indexOf(".leotmv"));
                             }
                             if (FileOperationUtil.renameFile(item.getPath(), newFileName)) {
