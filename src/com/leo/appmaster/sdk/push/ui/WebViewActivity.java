@@ -52,10 +52,25 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         if (TextUtils.isEmpty(mURL)) {
             finish();
         }
+        Log.i(TAG,"URL = "+mURL);
         
         initUI();
         intWebView();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "webview", " statusbar");
+    }
+    
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        
+        String newUrl  = intent.getStringExtra(WEB_URL);
+        if (TextUtils.isEmpty(newUrl)) {
+            return;
+        }else{
+            mURL = newUrl;
+            mWebView.loadUrl(mURL);
+        }
+        Log.i(TAG,"URL = "+mURL);
     }
 
     private void initUI() {
