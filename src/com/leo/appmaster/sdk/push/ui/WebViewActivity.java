@@ -81,11 +81,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
-        settings.setUseWideViewPort(true);//自适应屏幕
+        settings.setUseWideViewPort(true);// 自适应屏幕
         settings.setLoadWithOverviewMode(true);
         settings.setDisplayZoomControls(false);
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
-
         mWebviewClient = new MyWebviewClient();
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebViewClient(mWebviewClient);
@@ -219,17 +218,17 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         public void onPageFinished(WebView view, String url) {
             if (view.canGoBack()) {
                 enableBackBtn();
-                Log.i("######", "back show");
+                Log.i(TAG, "back show");
             } else {
                 disableBackBtn();
-                Log.i("######", "back hide");
+                Log.i(TAG, "back hide");
             }
             if (view.canGoForward()) {
                 enableNextBtn();
-                Log.i("######", "forward show");
+                Log.i(TAG, "forward show");
             } else {
                 disableNextBtn();
-                Log.i("######", "forward hide");
+                Log.i(TAG, "forward hide");
             }
             super.onPageFinished(view, url);
         }
@@ -287,10 +286,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             if (customViewCallback != null) {
                 customViewCallback.onCustomViewHidden();
             }
-
             mVideoFullLayout.removeView(mPlayView);
             mPlayView = null;
-            mVideoFullLayout.setVisibility(View.INVISIBLE);
+            mVideoFullLayout.setVisibility(View.GONE);
             mWebView.setVisibility(View.VISIBLE);
 
             super.onHideCustomView();
