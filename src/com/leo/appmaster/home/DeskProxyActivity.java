@@ -27,6 +27,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 public class DeskProxyActivity extends Activity {
@@ -117,8 +118,10 @@ public class DeskProxyActivity extends Activity {
     private void gotoLockThem(int type) {
         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent intent = new Intent(this, LockerTheme.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -202,24 +205,31 @@ public class DeskProxyActivity extends Activity {
     private void gotoBackUp(int type) {
         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent intent = new Intent(this, BackUpActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
     private void gotoEle(int type) {
         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent dlIntent = new Intent(this, EleActivity.class);
-        dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+        // dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // Intent.FLAG_ACTIVITY_NEW_TASK);
+//        dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK  | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+        dlIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
         startActivity(dlIntent);
     }
 
     private void goToFlow(int type) {
         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent mIntent = new Intent(this, FlowActivity.class);
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+        // mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // Intent.FLAG_ACTIVITY_NEW_TASK);
+//        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
         mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
         startActivity(mIntent);
     }
@@ -229,36 +239,48 @@ public class DeskProxyActivity extends Activity {
                 PrivacyContactActivity.class);
         intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
                 PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToPrivateSms");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }
 
     private void goToHideVio(int type) {
         Intent intent = new Intent(this, VideoHideMainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToHideVio");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }
 
     private void goToHidePic(int type) {
         Intent intent = new Intent(this, ImageHideMainActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToHidePic");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }
 
     private void goToAppWeiZhuang(int type) {
         Intent intent = new Intent(this, WeiZhuangActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                Intent.FLAG_ACTIVITY_NEW_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToAppWeiZhuang");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }
@@ -269,8 +291,10 @@ public class DeskProxyActivity extends Activity {
         Intent intent;
         if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
             intent = new Intent(this, RecommentAppLockListActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                    Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("target", 0);
             intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
             startActivity(intent);
@@ -278,11 +302,14 @@ public class DeskProxyActivity extends Activity {
             lm.updateMode(curMode);
         } else {
             intent = new Intent(this, AppLockListActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+//                    Intent.FLAG_ACTIVITY_NEW_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
             startActivity(intent);
         }
+        LeoLog.d("Track Lock Screen", "apply lockscreen form goToAppLock");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
     }

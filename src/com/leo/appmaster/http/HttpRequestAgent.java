@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.util.Log;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -68,7 +69,8 @@ public class HttpRequestAgent {
             combined = combined + string + ";";
         }
         String body = null;
-        body = "language=" + AppwallHttpUtil.getLanguage() + "&market_id="
+        String requestLanguage = getPostLanguage();
+        body = "language=" + requestLanguage + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&loaded_theme="
                 + combined + "&pgsize=" + "6";
@@ -78,15 +80,36 @@ public class HttpRequestAgent {
         request.setShouldCache(false);
         mRequestQueue.add(request);
     }
+/*
+ * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）
+ *"zh":中文简体，”zh_(地区)“：繁体中文
+ */
+    private String getPostLanguage() {
+        String requestLanguage;
+        String language = AppwallHttpUtil.getLanguage();
+        String country = AppwallHttpUtil.getCountry();
+        if ("zh".equalsIgnoreCase(language)) {
+            if ("CN".equalsIgnoreCase(country)) {
+                requestLanguage = language;
+            } else {
+                requestLanguage = language + "_" + country;
+            }
+        } else {
+            requestLanguage = language;
+        }
+//        Log.d(Constants.RUN_TAG, "sys_language:" +requestLanguage);
+        return requestLanguage;
+    }
 
     public void checkNewTheme(Listener<JSONObject> listener,
             ErrorListener eListener) {
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
         String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalThemeSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
-                + AppwallHttpUtil.getLanguage() + "&app_ver="
+                + requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
         url += body;
@@ -98,12 +121,13 @@ public class HttpRequestAgent {
 
     public void checkNewBusinessData(Listener<JSONObject> listener,
             ErrorListener eListener) {
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
         String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalBusinessSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
-                + AppwallHttpUtil.getLanguage() + "&app_ver="
+                +requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
         url += body;
@@ -121,9 +145,10 @@ public class HttpRequestAgent {
      */
     public void loadRecomApp(int type, Listener<JSONObject> listener,
             ErrorListener eListener) {
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.APP_RECOMMEND_URL) + "?re_position=" + type;
         String body = "&market_id=" + mContext.getString(R.string.channel_code)
-                + "&language=" + AppwallHttpUtil.getLanguage();
+                + "&language=" + requestLanguage;
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 body, listener, eListener);
         request.setShouldCache(true);
@@ -138,10 +163,10 @@ public class HttpRequestAgent {
      */
     public void loadGestureRecomApp(int type, Listener<JSONObject> listener,
             ErrorListener eListener) {
-
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.GESTURE_RECOMMEND_URL + "/"
                 + mContext.getString(R.string.version_name) + "/"
-                + Utilities.getCountryID(mContext) + "/" + AppwallHttpUtil.getLanguage() + "/"
+                + Utilities.getCountryID(mContext) + "/" + requestLanguage + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
 
         LeoLog.d("loadGestureRecomApp", "url = " + url);
@@ -159,12 +184,13 @@ public class HttpRequestAgent {
      */
     public void loadBusinessRecomApp(int page, int number, Listener<JSONObject> listener,
             ErrorListener eListener) {
+        String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.APP_RECOMMEND_URL) + "?re_position=4"
                 + "&pgcurrent=" + page;
         // String url =
         // "http://192.168.1.201:8080/leo/appmaster/apprecommend/list?re_position=4&pgcurrent="+page;
         String body = "&market_id=" + mContext.getString(R.string.channel_code)
-                + "&language=" + AppwallHttpUtil.getLanguage() + "&pgsize="
+                + "&language=" + requestLanguage + "&pgsize="
                 + number;
         // String body = "&market_id=" +
         // mContext.getString(R.string.channel_code);
@@ -197,6 +223,7 @@ public class HttpRequestAgent {
      */
     public void loadSplashDate(Listener<JSONObject> listener,
             ErrorListener errorListener) {
+        String requestLanguage = getPostLanguage();
         String object = "";
         String url = Utilities.getURL(Constants.SPLASH_URL
                 + mContext.getString(R.string.version_name) + "/"

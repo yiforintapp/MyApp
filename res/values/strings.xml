@@ -769,7 +769,7 @@
     <string name="video_delete_fail">Fail to delete files</string>
     <string name="zipper_too_fast">Oops!Pull down slower </string>
     <string name="zipper_too_slow">Oops!Pull down faster</string>
-    <string name="theme_apply_title">Apply unlock theme or not%1$s ?</string>
+    <string name="theme_apply_title">Apply unlock theme or not %1$s ?</string>
     <string name="input_toast_no_number_tip">Please enter the phone number</string>
     <!-- 2.6 end -->
 

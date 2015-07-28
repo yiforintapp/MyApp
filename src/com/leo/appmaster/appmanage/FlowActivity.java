@@ -25,6 +25,7 @@ import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPagerTab;
+import com.leo.appmaster.utils.LeoLog;
 
 public class FlowActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
@@ -37,15 +38,15 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     private ManagerFlowFragment trifficFragment;
 
     private ManagerFlowFragmentHoler[] mFragmentHolders = new ManagerFlowFragmentHoler[2];
-    private int type;
+    private int mDeskType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flow_trafficlist);
         initUI();
+        handleIntent();
     }
-
 
     private void initUI() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.traffic_title_bar);
@@ -65,6 +66,20 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         mViewPager.setOffscreenPageLimit(2);
         mPagerTab.setViewPager(mViewPager);
     }
+
+    private void handleIntent() {
+
+    }
+    
+    @Override
+    protected void onResume() {
+        Intent intent = getIntent();
+        mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE, -1);
+        LeoLog.d("testActivityGo", "FlowActivity onResume");
+        LeoLog.d("testActivityGo", "mDeskType is : " + mDeskType);
+        super.onResume();
+    }
+
 
     private void initFragment() {
         ManagerFlowFragmentHoler holder = new ManagerFlowFragmentHoler();

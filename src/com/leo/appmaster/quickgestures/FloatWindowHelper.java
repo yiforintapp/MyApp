@@ -1724,32 +1724,16 @@ public class FloatWindowHelper {
             animationDarkDrawable = (AnimationDrawable)
                     mWhiteFloatView.getBackground();
             animationDarkDrawable.start();
-
-            // int duration = 0;
-            // for (int i = 0; i < animationDarkDrawable.getNumberOfFrames();
-            // i++) {
-            // duration += animationDarkDrawable.getDuration(i);
-            // }
-            // handler = new Handler();
-            // handler.postDelayed(new Runnable() {
-            //
-            // @Override
-            // public void run() {
-            // beComingDark = false;
-            // }
-            // }, duration);
         }
     }
 
     private static void goToChangeLight() {
         if (mWhiteFloatView != null) {
-
             // 取消上一次的持续效果
             if (nowCount != null) {
                 nowCount.cancel();
                 nowCount = null;
             }
-
             mWhiteFloatView.setBackgroundResource(R.drawable.whitedotanimation1);
             animationLightDrawable = (AnimationDrawable)
                     mWhiteFloatView.getBackground();
@@ -1955,7 +1939,7 @@ public class FloatWindowHelper {
     private static void showQuickGuestureView(Context mContext, int orientation) {
         Intent intent = new Intent(mContext,
                 QuickGesturePopupActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(/*Intent.FLAG_ACTIVITY_CLEAR_TASK | */Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("show_orientation", orientation);
         intent.putExtra("from_white_dot", true);
         if (TextUtils

@@ -911,7 +911,7 @@
     <string name="video_delete_fail">فشل في حذف الملف</string>
     <string name="zipper_too_fast">اسحب ببطء </string>
     <string name="zipper_too_slow">اسحب بسرعة </string>
-    <string name="theme_apply_title">هل تريد في تطبيق موضوع الغاء القفل: s$1% ؟ </string>
+    <string name="theme_apply_title">هل تريد في تطبيق موضوع الغاء القفل: <xliff:g>%1$s</xliff:g> ؟ </string>
     <!-- 2.6 end -->
 
 </resources>

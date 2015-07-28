@@ -97,7 +97,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setSupportZoom(true); // 是否可以缩放，默认true
         settings.setBuiltInZoomControls(true); // 是否显示缩放按钮，默认false
         settings.setLoadWithOverviewMode(true);
-        settings.setUseWideViewPort(true); // 网页自适应
+        settings.setUseWideViewPort(true); // 自适应屏幕
         settings.setAppCacheEnabled(true); // 启动缓存
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
@@ -207,7 +207,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         myWebChromeClient.onHideCustomView();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-
+    
     private class MyWebviewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {

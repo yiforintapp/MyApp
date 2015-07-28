@@ -906,6 +906,7 @@ public class AppListActivity extends BaseFragmentActivity implements
     }
 
     private void returnHomeActivity() {
+        LeoLog.d("Track Lock Screen", "apply lockscreen form AppListActivity returnHomeActivity");
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 getPackageName(), false, null);
     }

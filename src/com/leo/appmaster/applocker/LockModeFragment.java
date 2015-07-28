@@ -279,7 +279,6 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                 if (!lockMode.haveEverOpened) {
                     Intent intent = new Intent(mActivity, RecommentAppLockListActivity.class);
                     intent.putExtra("target", 0);
-                    
                     startActivity(intent);
                     lockMode.haveEverOpened = true;
                     LockManager.getInstatnce().updateMode(lockMode);
@@ -329,16 +328,16 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     .fromContext(mActivity, R.drawable.lock_mode_unlock);
         } else if (lockMode.defaultFlag == 1) {
             iconRes = Intent.ShortcutIconResource
-                    .fromContext(mActivity, R.drawable.lock_mode_visitor);
+                    .fromContext(mActivity, R.drawable.lock_mode_visitor_desktop);
         } else if (lockMode.defaultFlag == 2) {
             iconRes = Intent.ShortcutIconResource
                     .fromContext(mActivity, R.drawable.lock_mode_office);
         } else if (lockMode.defaultFlag == 3) {
             iconRes = Intent.ShortcutIconResource
-                    .fromContext(mActivity, R.drawable.lock_mode_family);
+                    .fromContext(mActivity, R.drawable.lock_mode_family_desktop);
         } else {
             iconRes = Intent.ShortcutIconResource
-                    .fromContext(mActivity, R.drawable.lock_mode_default);
+                    .fromContext(mActivity, R.drawable.lock_mode_default_desktop);
         }
         shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
         shortcut.putExtra("duplicate", false);
