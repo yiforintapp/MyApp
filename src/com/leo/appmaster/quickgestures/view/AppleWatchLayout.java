@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.quickgestures.view;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -726,13 +727,9 @@ public class AppleWatchLayout extends ViewGroup {
                         + sInfo.swtichIdentiName);
                 QuickSwitchManager.getInstance(getContext()).goHome();
             } else if (sInfo.swtichIdentiName.equals(QuickSwitchManager.LOCKMODE)) {
-                // SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch",
-                // "cli_"
-                // + sInfo.swtichIdentiName);
-                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_mode");
-                // TODO
                 QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
                 activity.showLockMode();
+                SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_switch", "cli_mode");
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "switch_cli");
         } else if (info instanceof AppItemInfo) {
@@ -840,48 +837,7 @@ public class AppleWatchLayout extends ViewGroup {
             }
             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "dynamic_cli");
         } else if (info instanceof QuickGsturebAppInfo) {
-            // 最常使用
-            LeoLog.d("TestLayout", "QuickGsturebAppInfo");
-            final QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
-            List<String> lockList = LockManager.getInstatnce().getCurLockList();
-            if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
-                QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
-                if (activity.isFromSelfApp()) {
-                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                            appInfo.packageName, false, null);
-                } else {
-                    // Log.e(Constants.RUN_TAG, "最常使用，名称：" +
-                    // appInfo.activityName + "_会走这里的");
-                    Intent intent = new Intent();
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.setComponent(new ComponentName(appInfo.packageName,
-                            appInfo.activityName));
-                    try {
-                        getContext().startActivity(intent);
-                    } catch (Exception e) {
-                        // Not Found Exception
-                    }
-                }
-            } else {
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setComponent(new ComponentName(appInfo.packageName,
-                        appInfo.activityName));
-                try {
-                    getContext().startActivity(intent);
-                } catch (Exception e) {
-                    // Not Found Exception
-                }
-            }
-
-            SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
-            if (lockList.contains(appInfo.packageName)) {
-                if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
-                } else {
-                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                            appInfo.packageName, false, null);
-                }
-            }
+            handleMostUsedAppClicked(info);
         } else if (info instanceof GestureEmptyItemInfo) {
             GType type = mContainer.getCurrentGestureType();
             if (type == GType.MostUsedLayout || type == GType.SwitcherLayout) {
@@ -892,6 +848,52 @@ public class AppleWatchLayout extends ViewGroup {
         QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
         activity.setItemClick(true);
 
+    }
+
+    private void handleMostUsedAppClicked(BaseInfo info) {
+        // 最常使用
+        LeoLog.d("TestLayout", "QuickGsturebAppInfo");
+        final QuickGsturebAppInfo appInfo = (QuickGsturebAppInfo) info;
+        List<String> lockList = LockManager.getInstatnce().getCurLockList();
+        if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
+            QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
+            if (activity.isFromSelfApp()) {
+                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                        appInfo.packageName, false, null);
+            } else {
+                Intent intent = makeSelfAppIntent();
+                try {
+                    getContext().startActivity(intent);
+                } catch (Exception e) {
+                }
+            }
+        } else {
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setComponent(new ComponentName(appInfo.packageName,
+                    appInfo.activityName));
+            try {
+                getContext().startActivity(intent);
+            } catch (Exception e) {
+            }
+        }
+
+        SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "qs_tab", "common_cli");
+        if (lockList.contains(appInfo.packageName)) {
+            LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                    appInfo.packageName, false, null);
+        }
+    }
+
+    private Intent makeSelfAppIntent() {
+        Intent intent = null;
+        intent = new Intent(getContext(), SplashActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        return intent;
     }
 
     private void handleRecentUsedAppClicked(BaseInfo info) {
@@ -907,12 +909,7 @@ public class AppleWatchLayout extends ViewGroup {
                 LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                         appInfo.packageName, false, null);
             } else {
-                LeoLog.e("xxxx", "1");
-                Intent intent = new Intent();
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                intent.setComponent(new ComponentName(appInfo.packageName,
-                        appInfo.activityName));
-
+                Intent intent = makeSelfAppIntent();
                 try {
                     getContext().startActivity(intent);
                 } catch (Exception e) {
@@ -921,6 +918,8 @@ public class AppleWatchLayout extends ViewGroup {
         } else {
             Intent intent = new Intent();
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_LAUNCHER);
             intent.setComponent(new ComponentName(appInfo.packageName,
                     appInfo.activityName));
             try {
@@ -930,12 +929,8 @@ public class AppleWatchLayout extends ViewGroup {
         }
 
         if (lockList.contains(appInfo.packageName)) {
-            if (TextUtils.equals(appInfo.packageName, mContext.getPackageName())) {
-
-            } else {
-                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                        appInfo.packageName, false, null);
-            }
+            LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                    appInfo.packageName, false, null);
         }
 
         if (mMyType == GType.DymicLayout) {
