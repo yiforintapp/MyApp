@@ -23,6 +23,7 @@ import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -259,6 +260,31 @@ public class HttpRequestAgent {
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
+        mRequestQueue.add(request);
+    }
+    
+    /**
+     * 加载游戏推荐
+     * @param listener
+     * @param errorListener
+     */
+    public void loadGameData(Listener<JSONObject> listener, ErrorListener errorListener) {
+        String url = Utilities.getURL(Constants.PATH_GAME_DATA); 
+        String language = AppwallHttpUtil.getLanguage();
+        String code = AppMasterApplication.getInstance().getString(R.string.channel_code);
+        final Map<String, String> map = new HashMap<String, String>();
+        map.put("language_type", language);
+        map.put("market_id", code);
+        
+        String body = null;
+        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url, body, listener, errorListener) {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                return map;
+            }
+            
+        };
         mRequestQueue.add(request);
     }
 

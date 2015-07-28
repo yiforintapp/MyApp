@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import android.provider.MediaStore.MediaColumns;
+import android.R.string;
 import android.net.Uri;
 
 public class Constants {
@@ -147,6 +148,11 @@ public class Constants {
      */
     public static final String ONLINE_THEME_URL = "/appmaster/themes";
     public static final String CHECK_NEW_THEME = "/appmaster/themesupdatecheck";
+    
+    /**
+     * 应用推荐游戏
+     */
+    public static final String PATH_GAME_DATA = "/appmaster/appwall";
 
     /**
      * for compat first version theme preview url
