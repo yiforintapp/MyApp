@@ -39,7 +39,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private TextView mLockModeBtn;
     private TextView mLockSettingBtn;
     private boolean isFromAppLockList = false;
-
+    private boolean isDisguiseIconWithShadow=false;
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_home_lock;
@@ -69,6 +69,17 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
 
     @Override
     public void onResume() {
+        if(isDisguiseIconWithShadow)
+        {
+            Drawable drawable = getResources().getDrawable(
+                    R.drawable.disguise_icon);
+            
+            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+            mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
+            
+            isDisguiseIconWithShadow=false;
+        }
+        
         updateModeUI();
         checkNewTheme();
         super.onResume();
@@ -203,11 +214,14 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
 
     private void enterLockMode() {
         Intent intent = new Intent(mActivity, LockModeActivity.class);
+        intent.putExtra("isFromHomeToLockMode", true);
+        
         mActivity.startActivity(intent);
     }
 
     private void enterLockTheme() {
         Intent intent = new Intent(mActivity, LockerTheme.class);
+    
         mActivity.startActivity(intent);
     }
 
@@ -259,14 +273,15 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
             @Override
             public void onAnimationEnd(Animator animation) {
                 lastAlphaAnimator.start();
-                AppMasterPreference.getInstance(mActivity).setIsNeedDisguiseTip(true);
-                if(AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
+//                AppMasterPreference.getInstance(mActivity).setIsNeedDisguiseTip(true);
+//                if(AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
                 {                 
                     Drawable drawable = getResources().getDrawable(
                             R.drawable.buttonleft_disguise_after_guide);
                     
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                     mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
+                    isDisguiseIconWithShadow=true;
                 }
             }
         });

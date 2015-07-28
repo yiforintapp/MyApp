@@ -88,10 +88,14 @@ public class AppwallHttpUtil {
 		return info;
 	}
 
-	// 获取系统当前语言
+	// 获取系统当前语言代码
 	public static String getLanguage() { 
 		return Locale.getDefault().getLanguage();
 	}
+	//获取系统当前国家代码
+	public static String getCountry() { 
+        return Locale.getDefault().getCountry();
+    }
 
 	// 重命名路径
 	public static boolean RenameFilePath(String filePath, String newFileName) {

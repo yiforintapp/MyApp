@@ -875,12 +875,12 @@
     <string name="quick_gesture_edit_guide_content">اضغط تطبيق/مفتاح في صنف tap لإشارة سريعة لدخول واجهة تحرير ويمكن حذفه، كما يضيفه في تطبيق ومفتاح</string>
     <string name="quick_gesture_edit_extra_content">ملاحظة: ينشأ التطبيق المستعمل مؤخرا بالنظام، لا يمكن الإضافة</string>
     <string name="can_not_add_more">لا يمكن إضافة المزيد</string>
-    <string name="new_guide_page1_title">إشارة سريعة</string>
-    <string name="new_guide_page1_content">حركة واحدة، تيسير للغاية</string>
-    <string name="new_guide_page2_title">تطبيق مزور</string>
-    <string name="new_guide_page2_content">نقرة واحدة، سعادة كثيرة</string>
-    <string name="new_guide_page3_title">إشارة سريع بيضاء</string>
-    <string name="new_guide_page3_content">نقرة واحدة، عرض الإشارة</string>
+    <string name="new_guide_page1_title">تسريع الهاتف أسهلا</string>
+    <string name="new_guide_page1_content">يمكن أيضا استخدام وظيفة التسريع علي سطح المكتب</string>
+    <string name="new_guide_page2_title">  التمويه أكثر متعة</string>
+    <string name="new_guide_page2_content">طربقة التمويه الجديدة تتجاوز المتوقع الخاص بكم</string>
+    <string name="new_guide_page3_title">تغيير الوضع أسهلا !</string>
+    <string name="new_guide_page3_content">اللفتة السريعة للفتح، و يقوم بالتحول بسهولة!</string>
     <string name="quick_open_tip">لم تشغل إشارة سريعة</string>
     <string name="quick_setting_title">إعدادات اللفتة السريعة</string>
     <string name="quick_no_msm_annotation">تذكر الرسائل غير المقروءة في اللفتة السريعة </string>
@@ -911,7 +911,7 @@
     <string name="video_delete_fail">فشل في حذف الملف</string>
     <string name="zipper_too_fast">اسحب ببطء </string>
     <string name="zipper_too_slow">اسحب بسرعة </string>
-    <string name="theme_apply_title">هل تريد في تطبيق موضوع الغاء القفل: s$1% ؟ </string>
+    <string name="theme_apply_title">هل تريد في تطبيق موضوع الغاء القفل: <xliff:g>%1$s</xliff:g> ؟ </string>
     <!-- 2.6 end -->
 
 </resources>
