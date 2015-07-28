@@ -8,22 +8,19 @@
     android:paddingTop="10dp" >
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="6.0dip"
         android:layout_marginLeft="15.0dip"
         android:layout_marginRight="6.0dip"
-        android:layout_marginTop="6.0dip"
         android:layout_weight="1.0" >
 
         <TextView
             android:id="@android:id/title"
-            android:layout_width="match_parent"
+            android:layout_width="@dimen/lock_setting_item_title_des_width"
             android:layout_height="wrap_content"
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
-            android:singleLine="true"
-            android:paddingRight="15dp"
+            android:gravity="center_vertical"
             android:textColor="@color/option_text_color"
             android:textSize="16.0sp" />
 
@@ -36,9 +33,8 @@
             android:ellipsize="marquee"
             android:fadingEdge="horizontal"
             android:gravity="center_vertical"
-            android:maxLines="2"
             android:textColor="#999999"
-            android:textSize="10sp" />
+            android:textSize="10.0sp" />
     </RelativeLayout>
 
     <LinearLayout

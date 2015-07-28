@@ -541,9 +541,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(String... arg0) {
-            // mCallLogList =
-            // PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this,
-            // getContentResolver(), null, null);
+//             mCallLogList =PrivacyContactManager.getInstance(AddFromCallLogListActivity.this).getSysCalls();
             mCallLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this,
                     getContentResolver(), null, null);
             if (mCallLogList != null && mCallLogList.size() > 0) {

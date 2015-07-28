@@ -46,8 +46,9 @@ public class EleActivity extends BaseFragmentActivity {
     private static final String Tag = "testCase";
     private ActivityManager am;
     private static final String SCHEME = "package";
-    private int mDeskType;
-    
+
+    // private int mDeskType;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,15 +73,16 @@ public class EleActivity extends BaseFragmentActivity {
         getBatteryStats();
     }
 
-    @Override
-    protected void onResume() {
-        Intent intent = getIntent();
-        mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE, -1);
-        LeoLog.d("testActivityGo", "EleActivity onResume");
-        LeoLog.d("testActivityGo", "mDeskType is : " + mDeskType);
-        super.onResume();
-    }
-    
+    // @Override
+    // protected void onResume() {
+    // Intent intent = getIntent();
+    // mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+    // -1);
+    // LeoLog.d("testActivityGo", "EleActivity onResume");
+    // LeoLog.d("testActivityGo", "mDeskType is : " + mDeskType);
+    // super.onResume();
+    // }
+
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);
@@ -241,7 +243,7 @@ public class EleActivity extends BaseFragmentActivity {
                 if (!LanguageUtils.isRightToLeftLanguage(null)) {
                     holder.progress.setProgress((int) 1);
                 } else {
-                    holder.progress.setProgress((int) (AppBusinessManager.mRtToLtSeeBarMax-1));
+                    holder.progress.setProgress((int) (AppBusinessManager.mRtToLtSeeBarMax - 1));
                 }
             } else {
                 holder.txtProgress.setText(format(percentOfTotal));
