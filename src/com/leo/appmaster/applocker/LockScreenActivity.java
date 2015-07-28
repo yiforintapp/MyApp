@@ -295,7 +295,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
 
             mPretendFragment = getPretendFragment();
-            if (mPretendFragment != null) {
+            if (mPretendFragment != null) {                    //ph
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction tans;
                 mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
@@ -533,7 +533,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private PretendFragment getPretendFragment() {
         LeoLog.d("whatisthis", "mLockedPackage : " + mLockedPackage);
-        if (!mPrivateLockPck.equals(mLockedPackage)) {
+        if (!mPrivateLockPck.equals(mLockedPackage)&&!mQuickLockMode) {
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
