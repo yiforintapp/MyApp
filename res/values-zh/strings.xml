@@ -745,12 +745,12 @@
     <string name="quick_gesture_edit_guide_content">在任何一個快捷手勢的tap類別中長按應用/開關，即可以進入編輯介面，您可以删除應用/開關，也可以在常用應用和快捷開關中添加應用/開關</string>
     <string name="quick_gesture_edit_extra_content">注：最近使用的應用是系統生成的，所以不可以主動添加</string>
     <string name="can_not_add_more">不能添加更多</string>
-    <string name="new_guide_page1_title">快捷手勢</string>
-    <string name="new_guide_page1_content">一劃即現，簡單方便</string>
-    <string name="new_guide_page2_title">應用偽裝</string>
-    <string name="new_guide_page2_content">一點即變，趣味無限</string>
-    <string name="new_guide_page3_title">快捷手勢小白點</string>
-    <string name="new_guide_page3_content">輕輕一點，手勢即現</string>
+    <string name="new_guide_page1_title">手機加速更方便</string>
+    <string name="new_guide_page1_content">在案頭也可以使用加速功能啦</string>
+    <string name="new_guide_page2_title">應用偽裝更好玩</string>
+    <string name="new_guide_page2_content">新的偽裝管道，出乎你意料</string>
+    <string name="new_guide_page3_title">情景模式切換更方便！</string>
+    <string name="new_guide_page3_content">劃開快捷手勢，輕鬆切換！</string>
     <string name="quick_open_tip">您還沒有開啟快捷手勢</string>
 
     <!-- TODO -->
