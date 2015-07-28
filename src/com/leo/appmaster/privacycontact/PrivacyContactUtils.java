@@ -271,7 +271,6 @@ public class PrivacyContactUtils {
                             cb.setSortLetter(sortLetter);
                         }
                     }
-
                     if (phoneNumber != null) {
                         contacts.add(cb);
                     } else {

@@ -529,7 +529,6 @@
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
             android:exported="true"
-            android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:configChanges="orientation|screenSize"

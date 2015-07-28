@@ -31,7 +31,6 @@ import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.Utilities;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 
@@ -1939,7 +1938,7 @@ public class FloatWindowHelper {
     private static void showQuickGuestureView(Context mContext, int orientation) {
         Intent intent = new Intent(mContext,
                 QuickGesturePopupActivity.class);
-        intent.addFlags(/*Intent.FLAG_ACTIVITY_CLEAR_TASK | */Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("show_orientation", orientation);
         intent.putExtra("from_white_dot", true);
         if (TextUtils

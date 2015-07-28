@@ -288,6 +288,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
                         getPackageManager(),
                         mLockedPackage);
+                if (bd == null) {
+                    bd = (BitmapDrawable) AppUtil.getDrawable(
+                            getPackageManager(),
+                            getPackageName());
+                }
                 setAppInfoBackground(bd);
             }
 
@@ -295,7 +300,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
 
             mPretendFragment = getPretendFragment();
-            if (mPretendFragment != null) {                    //ph
+            if (mPretendFragment != null) { // ph
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction tans;
                 mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
@@ -516,7 +521,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         FragmentTransaction tans;
         mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
         mPretendFragment = getPretendFragment();
-   
 
         if (mPretendFragment != null && !mRestartForThemeChanged) {
             mLockLayout.setVisibility(View.GONE);
@@ -533,14 +537,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private PretendFragment getPretendFragment() {
         LeoLog.d("whatisthis", "mLockedPackage : " + mLockedPackage);
-        if (!mPrivateLockPck.equals(mLockedPackage)&&!mQuickLockMode) {
+        if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
                 PretendAppErrorFragment paf = new PretendAppErrorFragment();
-                
 
-                
                 String tip = "";
                 PackageManager pm = this.getPackageManager();
                 try {
@@ -603,7 +605,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
                     LeoEventBus.getDefaultBus().post(
                             new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
-                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage", "shortcuts");
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage",
+                            "shortcuts");
 
                 } else {
                     showModeActiveTip(willLaunch);

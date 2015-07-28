@@ -15,6 +15,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -358,6 +359,9 @@ public class AddFromCallLogListActivity extends BaseActivity {
                     count = count + 1;
                     messge.what = count;
                     mHandler.sendMessage(messge);
+                    //TODO TEST
+//                    Log.e(Constants.RUN_TAG, "电话号码："+message.getCallLogNumber());
+//                    pcm.removeCallLog(message);
                     }
                     flagContact = false;
                     if (added) {
@@ -541,9 +545,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(String... arg0) {
-            // mCallLogList =
-            // PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this,
-            // getContentResolver(), null, null);
+//             mCallLogList =PrivacyContactManager.getInstance(AddFromCallLogListActivity.this).getSysCalls();
             mCallLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this,
                     getContentResolver(), null, null);
             if (mCallLogList != null && mCallLogList.size() > 0) {
