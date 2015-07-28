@@ -38,14 +38,14 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     private ManagerFlowFragment trifficFragment;
 
     private ManagerFlowFragmentHoler[] mFragmentHolders = new ManagerFlowFragmentHoler[2];
-    private int mDeskType;
+
+    // private int mDeskType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_flow_trafficlist);
         initUI();
-        handleIntent();
     }
 
     private void initUI() {
@@ -67,19 +67,13 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         mPagerTab.setViewPager(mViewPager);
     }
 
-    private void handleIntent() {
-
-    }
-    
-    @Override
-    protected void onResume() {
-        Intent intent = getIntent();
-        mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE, -1);
-        LeoLog.d("testActivityGo", "FlowActivity onResume");
-        LeoLog.d("testActivityGo", "mDeskType is : " + mDeskType);
-        super.onResume();
-    }
-
+    // @Override
+    // protected void onResume() {
+    // Intent intent = getIntent();
+    // mDeskType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+    // -1);
+    // super.onResume();
+    // }
 
     private void initFragment() {
         ManagerFlowFragmentHoler holder = new ManagerFlowFragmentHoler();

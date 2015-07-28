@@ -117,10 +117,10 @@ public class DeskProxyActivity extends Activity {
     private void gotoLockThem(int type) {
         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent intent = new Intent(this, LockerTheme.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // Intent.FLAG_ACTIVITY_NEW_TASK);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -140,8 +140,7 @@ public class DeskProxyActivity extends Activity {
             intentv6.setClassName("com.miui.securitycenter",
                     "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
             intentv6.putExtra("extra_pkgname", this.getPackageName());
-            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             try {
                 LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
                         false);
@@ -156,7 +155,7 @@ public class DeskProxyActivity extends Activity {
                 Uri uri = Uri
                         .fromParts("package", this.getPackageName(), null);
                 intentv5.setData(uri);
-                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 try {
                     startActivity(intentv5);
                 } catch (Exception e1) {
@@ -167,7 +166,7 @@ public class DeskProxyActivity extends Activity {
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             LockManager.getInstatnce().filterAllOneTime(1000);
             Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(quickIntent);
         } else if (checkHuaWei && !checkFloatWindow) {
             BuildProperties.isToHuaWeiSystemManager(this);
@@ -185,8 +184,7 @@ public class DeskProxyActivity extends Activity {
             boolean backFlag = BuildProperties.startOppoManageIntent(this);
             LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
             Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             quickIntent.putExtra("sys_name", "huawei");
             try {
                 startActivity(quickIntent);
@@ -195,8 +193,7 @@ public class DeskProxyActivity extends Activity {
             }
         } else {
             Intent quickIntent = new Intent(this, QuickGestureActivity.class);
-            quickIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            quickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             this.startActivity(quickIntent);
         }
     }
@@ -206,8 +203,8 @@ public class DeskProxyActivity extends Activity {
         Intent intent = new Intent(this, BackUpActivity.class);
         // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
         // Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -216,8 +213,8 @@ public class DeskProxyActivity extends Activity {
         Intent dlIntent = new Intent(this, EleActivity.class);
         // dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
         // Intent.FLAG_ACTIVITY_NEW_TASK);
-//        dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK  | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+        // dlIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         dlIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
         startActivity(dlIntent);
     }
@@ -227,8 +224,8 @@ public class DeskProxyActivity extends Activity {
         Intent mIntent = new Intent(this, FlowActivity.class);
         // mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
         // Intent.FLAG_ACTIVITY_NEW_TASK);
-//        mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_LAUNCHED_FROM_HISTORY);
+        // mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
         startActivity(mIntent);
     }
@@ -238,10 +235,10 @@ public class DeskProxyActivity extends Activity {
                 PrivacyContactActivity.class);
         intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
                 PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // Intent.FLAG_ACTIVITY_NEW_TASK);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
@@ -249,10 +246,10 @@ public class DeskProxyActivity extends Activity {
 
     private void goToHideVio(int type) {
         Intent intent = new Intent(this, VideoHideMainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // Intent.FLAG_ACTIVITY_NEW_TASK);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
@@ -260,10 +257,10 @@ public class DeskProxyActivity extends Activity {
 
     private void goToHidePic(int type) {
         Intent intent = new Intent(this, ImageHideMainActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // Intent.FLAG_ACTIVITY_NEW_TASK);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
@@ -271,10 +268,10 @@ public class DeskProxyActivity extends Activity {
 
     private void goToAppWeiZhuang(int type) {
         Intent intent = new Intent(this, WeiZhuangActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+        // Intent.FLAG_ACTIVITY_NEW_TASK);
+         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                 this.getPackageName(), false, null);
@@ -286,10 +283,10 @@ public class DeskProxyActivity extends Activity {
         Intent intent;
         if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
             intent = new Intent(this, RecommentAppLockListActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                    Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+            // Intent.FLAG_ACTIVITY_NEW_TASK);
+             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("target", 0);
             intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
             startActivity(intent);
@@ -297,10 +294,10 @@ public class DeskProxyActivity extends Activity {
             lm.updateMode(curMode);
         } else {
             intent = new Intent(this, AppLockListActivity.class);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-//                    Intent.FLAG_ACTIVITY_NEW_TASK);
-//            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+            // Intent.FLAG_ACTIVITY_NEW_TASK);
+             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
             startActivity(intent);
         }
