@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -40,11 +41,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.activity_webview_layout);
 
         Intent intent = getIntent();
-        if (null == intent) {
+        mURL = intent.getStringExtra(WEB_URL);
+        if (TextUtils.isEmpty(mURL)) {
             finish();
         }
-        mURL = intent.getStringExtra(WEB_URL);
-
         initUI();
         intWebView();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "webview", " statusbar");
@@ -74,7 +74,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setJavaScriptEnabled(true);
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
-        settings.setCacheMode(WebSettings.LOAD_NORMAL);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
         settings.setPluginState(PluginState.ON);
 
         mWebviewClient = new MyWebviewClient();
