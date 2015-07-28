@@ -16,8 +16,11 @@
 
 package com.android.volley.toolbox;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.util.Collections;
@@ -27,6 +30,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
+import java.util.zip.GZIPInputStream;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -37,6 +41,7 @@ import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.impl.cookie.DateUtils;
 
 import android.os.SystemClock;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Cache;
@@ -52,6 +57,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.leo.appmaster.Constants;
+import com.leo.imageloader.utils.IoUtils;
 
 /**
  * A network performing Volley requests over an {@link HttpStack}.
@@ -125,7 +131,17 @@ public class BasicNetwork implements Network {
 				// Some responses such as 204s do not have content. We must
 				// check.
 				if (httpResponse.getEntity() != null) {
-					responseContents = entityToBytes(httpResponse.getEntity());
+				    String contentEncoding = responseHeaders.get("Content-Encoding");
+				    boolean supportGzip = contentEncoding != null && contentEncoding.equalsIgnoreCase("gzip");
+					responseContents = entityToBytes(httpResponse.getEntity(), supportGzip);
+					
+					// 这部分代码仅仅用来统计压缩比率, 所以注释掉
+//					String contentEncoding = responseHeaders.get("Content-Encoding");
+//					if (contentEncoding != null && contentEncoding.equalsIgnoreCase("gzip")) {
+//					    int srcSize = responseContents.length;
+//	                    responseContents = uncompressForGzip(responseContents);
+//	                    Log.d("Gzip", "gzip-uncompress  " + srcSize + "  " + responseContents.length + "  " + request.getUrl());
+//	                }
 				} else {
 					// Add 0 byte response as a way of honestly representing a
 					// no-content request.
@@ -241,13 +257,16 @@ public class BasicNetwork implements Network {
 	}
 
 	/** Reads the contents of HttpEntity into a byte[]. */
-	private byte[] entityToBytes(HttpEntity entity) throws IOException,
+	private byte[] entityToBytes(HttpEntity entity, boolean supportGzip) throws IOException,
 			ServerError {
 		PoolingByteArrayOutputStream bytes = new PoolingByteArrayOutputStream(
 				mPool, (int) entity.getContentLength());
 		byte[] buffer = null;
 		try {
 			InputStream in = entity.getContent();
+			if (supportGzip) {
+			    in = new GZIPInputStream(in);
+			}
 			if (in == null) {
 				throw new ServerError();
 			}
@@ -284,4 +303,35 @@ public class BasicNetwork implements Network {
 		}
 		return result;
 	}
+	
+	// gzip 解压缩
+    private byte[] uncompressForGzip(byte[] data) {
+        int bufferSize = 1024;
+        ByteArrayInputStream bais = null;
+        GZIPInputStream gzip = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            bais = new ByteArrayInputStream(data);
+            gzip = new GZIPInputStream(bais);
+            baos = new ByteArrayOutputStream();
+
+            byte[] buf = new byte[bufferSize];
+            int len = 0;
+            while ((len = gzip.read(buf, 0, bufferSize)) != -1) {
+                baos.write(buf, 0, len);
+            }
+            baos.flush();
+            return baos.toByteArray();
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.closeSilently(baos);
+            IoUtils.closeSilently(gzip);
+            IoUtils.closeSilently(bais);
+        }
+
+        return data; 
+    }
 }
