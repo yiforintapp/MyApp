@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.util.Log;
 
 import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
@@ -68,7 +69,8 @@ public class HttpRequestAgent {
             combined = combined + string + ";";
         }
         String body = null;
-        body = "language=" + AppwallHttpUtil.getLanguage() + "&market_id="
+        String requestLanguage = getPostLanguage();
+        body = "language=" + requestLanguage + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&loaded_theme="
                 + combined + "&pgsize=" + "6";
@@ -77,6 +79,26 @@ public class HttpRequestAgent {
                 body, listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
+    }
+/*
+ * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）
+ *"zh":中文简体，”zh_(地区)“：繁体中文
+ */
+    private String getPostLanguage() {
+        String requestLanguage;
+        String language = AppwallHttpUtil.getLanguage();
+        String country = AppwallHttpUtil.getCountry();
+        if ("zh".equalsIgnoreCase(language)) {
+            if ("CN".equalsIgnoreCase(country)) {
+                requestLanguage = language;
+            } else {
+                requestLanguage = language + "_" + country;
+            }
+        } else {
+            requestLanguage = language;
+        }
+        Log.e(Constants.RUN_TAG, "sys_language:" +requestLanguage);
+        return requestLanguage;
     }
 
     public void checkNewTheme(Listener<JSONObject> listener,
