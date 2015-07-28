@@ -72,7 +72,7 @@
     </Preference>
     <Preference
         android:key="relock_time"
-        android:layout="@layout/pref_list_item_bot_lock_time"
+        android:layout="@layout/pref_list_item_mid"
         android:summary="@string/lock_right_now"
         android:title="@string/change_lock_time"
         android:widgetLayout="@layout/pref_widget_more" />

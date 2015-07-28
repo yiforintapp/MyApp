@@ -18,7 +18,9 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -50,12 +52,15 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         setContentView(R.layout.activity_privacy_contact_main);
         initUI();
         LeoEventBus.getDefaultBus().register(this);
+        // PrivacyContactManager.getInstance(mContext).mIsOpenPrivacyContact =
+        // true;
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
+        // uninitLoadData();
     }
 
     private void initUI() {
@@ -450,6 +455,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     @Override
     protected void onResume() {
         super.onResume();
+        PrivacyContactManager.getInstance(PrivacyContactActivity.this).mIsOpenPrivacyContact = true;
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -601,7 +607,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         });
         mAddPrivacyContact.show();
     }
-    
-    private void scrollToContactList(){
+
+    private void scrollToContactList() {
     }
 }

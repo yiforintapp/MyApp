@@ -49,7 +49,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
         // 测试打印系统据库变化情况
-//        printTestObserverLog();
+        // printTestObserverLog();
         int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
@@ -102,6 +102,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
             // 快捷手势未读通话记录提醒
             noReadCallForQuickGesture(call);
+            // TODO 
+//            if (pcm.mIsOpenPrivacyContact) {
+//                pcm.updateCalls();
+//            }
         }
     }
 

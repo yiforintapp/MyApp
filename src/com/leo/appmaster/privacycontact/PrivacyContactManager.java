@@ -4,6 +4,7 @@ package com.leo.appmaster.privacycontact;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -40,13 +43,16 @@ public class PrivacyContactManager {
     public boolean deleteCallLogDatebaseFlag;// 用来做隐私联系人通话删除时的通话标志
     public boolean deleteMsmDatebaseFlag;// 用来做隐私联系人短信删除时的标志
     public int messageSize;// 对红米未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
-    /*用来做测试*/
+    private boolean mCallsLoaded;
+    private ArrayList<ContactCallLog> mSysCalls;
+    public boolean mIsOpenPrivacyContact;// 当前页是否为PrivacyContactActivity
+    /* 用来做测试 */
     public boolean testValue;
 
     private PrivacyContactManager(Context context) {
         this.mContext = context.getApplicationContext();
         mContacts = new ArrayList<ContactBean>();
-        // mSysCallLogs = new ArrayList<ContactCallLog>();
+        mSysCalls = new ArrayList<ContactCallLog>();
 
     }
 
@@ -308,8 +314,8 @@ public class PrivacyContactManager {
                     .setQuickGestureCallLogTip(
                             false);
             if ((QuickGestureManager
-                    .getInstance(context).getQuiQuickNoReadMessage()  == null || QuickGestureManager
-                    .getInstance(context).getQuiQuickNoReadMessage() 
+                    .getInstance(context).getQuiQuickNoReadMessage() == null || QuickGestureManager
+                    .getInstance(context).getQuiQuickNoReadMessage()
                     .size() <= 0)/* 未读短信 */
                     && (QuickGestureManager
                             .getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
@@ -343,8 +349,8 @@ public class PrivacyContactManager {
                     context)
                     .setQuickGestureMsmTip(false);
             if ((QuickGestureManager
-                    .getInstance(context).getQuiQuickNoReadMessage()  == null || QuickGestureManager
-                    .getInstance(context).getQuiQuickNoReadMessage() 
+                    .getInstance(context).getQuiQuickNoReadMessage() == null || QuickGestureManager
+                    .getInstance(context).getQuiQuickNoReadMessage()
                     .size() <= 0)/* 未读短信 */
                     && (QuickGestureManager
                             .getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
@@ -362,5 +368,70 @@ public class PrivacyContactManager {
         }
         FloatWindowHelper
                 .removeShowReadTipWindow(context);
+    }
+
+    // 通话记录预加载
+    private synchronized void loadCallLogs() {
+        if (!mCallsLoaded) {
+            mSysCalls = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,
+                    mContext.getContentResolver(), null, null);
+            if (mSysCalls != null && mSysCalls.size() > 0) {
+                Collections.sort(mSysCalls, PrivacyContactUtils.mCallLogCamparator);
+            }
+            mCallsLoaded = true;
+        }
+    }
+
+    public ArrayList<ContactCallLog> getSysCalls() {
+        // Log.e(Constants.RUN_TAG, "预加载通话记录");
+        loadCallLogs();
+        return (ArrayList<ContactCallLog>) mSysCalls.clone();
+    }
+
+    public void removeCallLog(ContactCallLog callLog) {
+        loadCallLogs();
+        mSysCalls.remove(callLog);
+    }
+
+    public void addCallLog(ContactCallLog callLog) {
+        loadCallLogs();
+        mSysCalls.add(callLog);
+    }
+
+    public void updateCalls() {
+        if (mSysCalls != null && mSysCalls.size() > 0) {
+            mSysCalls.clear();
+            mCallsLoaded = false;
+            loadCallLogs();
+        }
+    }
+
+    public void destroyCalls() {
+        if (mSysCalls != null) {
+            mSysCalls = null;
+        }
+        mCallsLoaded = false;
+        // Log.e(Constants.RUN_TAG, "销毁内存中的通话记录");
+    }
+
+    public void initLoadData() {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyContactManager.getInstance(mContext).destroyCalls();
+                PrivacyContactManager.getInstance(mContext).getSysCalls();
+            }
+        });
+    }
+
+    private void uninitLoadData() {
+        mIsOpenPrivacyContact = false;
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+            @Override
+            public void run() {
+                destroyCalls();
+            }
+        });
     }
 }
