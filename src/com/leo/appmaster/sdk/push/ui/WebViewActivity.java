@@ -11,6 +11,7 @@ import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -47,11 +48,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.activity_webview_layout);
 
         Intent intent = getIntent();
-        if (null == intent) {
+        mURL = intent.getStringExtra(WEB_URL);
+        if (TextUtils.isEmpty(mURL)) {
             finish();
         }
-        mURL = intent.getStringExtra(WEB_URL);
-
+        
         initUI();
         intWebView();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "webview", " statusbar");
@@ -84,7 +85,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setBuiltInZoomControls(true);  
         settings.setUseWideViewPort(true);// 可任意比例缩放
         settings.setDisplayZoomControls(false);  
-        settings.setCacheMode(WebSettings.LOAD_NORMAL);
+        settings.setCacheMode(WebSettings.LOAD_DEFAULT);
        
         mWebviewClient = new MyWebviewClient();
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
@@ -219,17 +220,17 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         public void onPageFinished(WebView view, String url) {
             if (view.canGoBack()) {
                 enableBackBtn();
-                Log.i("######", "back show");
+                Log.i(TAG, "back show");
             } else {
                 disableBackBtn();
-                Log.i("######", "back hide");
+                Log.i(TAG, "back hide");
             }
             if (view.canGoForward()) {
                 enableNextBtn();
-                Log.i("######", "forward show");
+                Log.i(TAG, "forward show");
             } else {
                 disableNextBtn();
-                Log.i("######", "forward hide");
+                Log.i(TAG, "forward hide");
             }
             super.onPageFinished(view, url);
         }
@@ -287,10 +288,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             if(customViewCallback != null){
                 customViewCallback.onCustomViewHidden();
             }
-            
             mVideoFullLayout.removeView(mPlayView);
             mPlayView = null;
-            mVideoFullLayout.setVisibility(View.INVISIBLE);
+            mVideoFullLayout.setVisibility(View.GONE);
             mWebView.setVisibility(View.VISIBLE);
             
             super.onHideCustomView();
