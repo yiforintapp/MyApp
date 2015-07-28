@@ -145,7 +145,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                     intent = new Intent(SuccessAppLockListActivity.this,
                             AppLockListActivity.class);
                     intent.putExtra("from_lock_more", true);
-                    intent.putExtra("enter_from_lockmode", true);
+//                    intent.putExtra("enter_from_lockmode", true);
                     this.startActivity(intent);
                 } else if (target == 1) {
                     intent = new Intent(this,
@@ -178,6 +178,7 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         Intent intent;
         if (target == 0) {
             intent = new Intent(this, AppLockListActivity.class);
+         
             try {
                 this.startActivity(intent);
             } catch (Exception e) {
