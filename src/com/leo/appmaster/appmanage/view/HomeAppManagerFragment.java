@@ -77,6 +77,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public boolean isGestureAnimating = false;
     private int mNowDongHuaWhere = 0;
     private int lastPosition = -1;
+    private boolean mIsGestureIconWithShadowTip=false;
 
     // private boolean isReNewFragment = false;
 
@@ -134,14 +135,19 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onResume() {
         super.onResume();
+        if(mIsGestureIconWithShadowTip)
+        {
+            mGestureIcon.setImageResource(R.drawable.gesture_tab_icon);
+            mIsGestureIconWithShadowTip=false;
+        }
+        
         if (sp_homeAppManager.getQuickGestureRedTip()) {
             
-            mGestureIcon.setImageResource(R.drawable.quick_gesture_icon_withtip);
-            
-//            mQuickGestureRedTip.setVisibility(View.VISIBLE);
+          
+            mQuickGestureRedTip.setVisibility(View.VISIBLE);
         } else {
-            mGestureIcon.setImageResource(R.drawable.gesture_tab_icon);
-//            mQuickGestureRedTip.setVisibility(View.GONE);
+
+            mQuickGestureRedTip.setVisibility(View.GONE);
         }
     }
 
@@ -778,6 +784,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             public void onAnimationEnd(Animator animation) {
                 lastAlphaAnimator.start();
                 isGestureAnimating = false;
+//                mGestureIcon.setImageResource(R.drawable.quick_gesture_icon_withtip);
+//                mIsGestureIconWithShadowTip=true;
             }
         });
 
