@@ -169,7 +169,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         }
 
-        initUI();
+//        initUI();
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
@@ -196,6 +196,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        initUI();
+        
+        
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {

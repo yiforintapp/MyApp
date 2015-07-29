@@ -747,7 +747,7 @@ public class AppleWatchLayout extends ViewGroup {
                     mIntent = new Intent(Intent.ACTION_MAIN);
                     mIntent.setType("vnd.android-dir/mms-sms");
                 } else {
-                    Uri smsToUri = Uri.parse("smsto://" + bean.getPhoneNumber());
+                    Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
                     mIntent = new
                             Intent(android.content.Intent.ACTION_SENDTO,
                                     smsToUri);
@@ -762,7 +762,6 @@ public class AppleWatchLayout extends ViewGroup {
                 } else {
                     mIntent = new Intent(Intent.ACTION_MAIN);
                     mIntent.setType("vnd.android-dir/mms-sms");
-                    // mIntent.setData(Uri.parse("content://mms-sms/conversations/"));
                 }
                 mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             }
@@ -770,8 +769,8 @@ public class AppleWatchLayout extends ViewGroup {
                 mContext.startActivity(mIntent);
             } catch (Exception e) {
             }
-            /*
-             * mToMsmFlag用来解决：点击icon进入短信列表是部分手机会触发短信数据库改变而重新让红点显示出来的问题
+            /**
+             * mToMsmFlag用来解决：点击icon进入短信列表是部分手机会触 发短信数据库改变而重新让红点显示出来的问题
              * ，延迟两秒初始化该值为了解决，该值任务完成再来短信时恢复正常流程
              */
             new Handler().postDelayed(new Runnable() {
@@ -790,10 +789,8 @@ public class AppleWatchLayout extends ViewGroup {
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setType("vnd.android.cursor.dir/calls");
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            List<String> filterPhoneMode = Arrays.asList(BuildProperties.filterPhoneMode);
-            // Log.e(Constants.RUN_TAG, "机型："+BuildProperties.getPoneModel());
-            // Log.e(Constants.RUN_TAG,
-            // "是否为过滤机型："+filterPhoneMode.contains(BuildProperties.getPoneModel()));
+            List<String> filterPhoneMode = Arrays.asList(PrivacyContactManager
+                    .getInstance(mContext).filterPhoneMode);
             if (filterPhoneMode.contains(BuildProperties.getPoneModel())) {
                 intent.setComponent(new ComponentName("com.android.contacts",
                         "com.android.dialer.DialtactsActivity"));

@@ -436,7 +436,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         holder.fragment = appManagerFragment;
         mFragmentHolders[2] = holder;
 
-        // AM-614, remove cached fragments
         FragmentManager fm = getSupportFragmentManager();
         try {
             FragmentTransaction ft = fm.beginTransaction();
@@ -522,13 +521,11 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
         @Override
         public int getIconResId(int index) {
-            // TODO Auto-generated method stub
             return 0;
         }
 
         @Override
         public boolean getRedTip(int position) {
-            // TODO Auto-generated method stub
             return mFragmentHolders[position].redTip;
         }
 

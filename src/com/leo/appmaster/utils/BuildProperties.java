@@ -35,14 +35,7 @@ public class BuildProperties {
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
-    // private static final String sMake = Build.MANUFACTURER.toLowerCase();
-    // private static final String mModel = Build.MODEL.toLowerCase();
-    // 解锁等待界面动画执行过快机型
-    public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";
-    // 跳转通话记录特别处理机型数组
-    public static final String[] filterPhoneMode = {
-            "SM-N9150", "SM-G9250"
-    };
+    public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";// 解锁等待界面动画执行过快机型
     private final Properties properties;
 
     private BuildProperties() throws IOException {
@@ -323,7 +316,8 @@ public class BuildProperties {
 
     // 判断本机是否为指定机型
     public static boolean checkPhoneModel(String phoneModel) {
-//        Log.e(Constants.RUN_TAG, "传入机型："+phoneModel.toLowerCase()+",本机："+getPoneModel().toLowerCase());
+        // Log.e(Constants.RUN_TAG,
+        // "传入机型："+phoneModel.toLowerCase()+",本机："+getPoneModel().toLowerCase());
         return getPoneModel().toLowerCase().equalsIgnoreCase(phoneModel.toLowerCase());
     }
 }
