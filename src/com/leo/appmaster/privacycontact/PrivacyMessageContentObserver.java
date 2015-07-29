@@ -319,11 +319,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         }
                         if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null) {
                             QuickGestureManager.getInstance(mContext).clearQuickNoReadMessage();
-                            ;
                         }
                         FloatWindowHelper.removeShowReadTipWindow(mContext);
-                        // 努比亚机型特别处理
-                        if (BuildProperties.checkPhoneBrand("nubia")) {
+                        // 努比亚，酷派YuLong机型特别处理
+                        if (BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
+                                || BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG)) {
                             PrivacyContactManager.getInstance(mContext).messageSize = 0;
                         }
                     } else {
@@ -370,8 +370,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     if (messageList != null) {
                         int count = PrivacyContactManager
                                 .getInstance(mContext).messageSize;
-                        int currentCount=messageList.size();
-                        Log.d(Constants.RUN_TAG, "上一次数量："+count+",当前数量："+currentCount);
+                        int currentCount = messageList.size();
+                        // Log.d(Constants.RUN_TAG,
+                        // "上一次数量："+count+",当前数量："+currentCount);
                         if (currentCount > count) {
                             if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
                                 QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
@@ -379,7 +380,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                         .setMessageIsRedTip(false);
                             }
                         }
-                        PrivacyContactManager.getInstance(mContext).messageSize =currentCount;
+                        PrivacyContactManager.getInstance(mContext).messageSize = currentCount;
                     }
                 }
             }
@@ -388,8 +389,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
 
     // 检查是否为需要这里恢复红点的机型
     private boolean checkPhoneModelForRestoreRedTip() {
-        return BuildProperties.isMIUI() || BuildProperties.checkPhoneBrand("nubia")
-                || BuildProperties.checkPhoneBrand("YuLong");
+        return BuildProperties.isMIUI() || BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
+                || BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG);
     }
 
     // 通话记录异步处理

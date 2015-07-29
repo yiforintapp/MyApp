@@ -47,6 +47,7 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
@@ -744,9 +745,10 @@ public class AppleWatchLayout extends ViewGroup {
             if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null
                     && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage().size() <= 1) {
                 if (!BuildProperties.ZTEU817.equals(BuildProperties.getPoneModel())) {
-                    if(BuildProperties.checkPhoneBrand("YuLong")){
+                    if(BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG)){
                         mIntent = new Intent(Intent.ACTION_MAIN);
                         mIntent.setType("vnd.android-dir/mms-sms");
+                        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     }else{
                         Uri smsToUri = Uri.parse("smsto://" + bean.getPhoneNumber());
                         mIntent = new

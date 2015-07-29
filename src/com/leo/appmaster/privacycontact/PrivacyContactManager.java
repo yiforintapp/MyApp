@@ -31,7 +31,9 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.NotificationUtil;
 
 public class PrivacyContactManager {
-
+    // 手机名称
+    public static String COOLPAD_YULONG = "YuLong";
+    public static String NUBIA = "nubia";
     private static PrivacyContactManager sInstance;
     private Context mContext;
     private ArrayList<ContactBean> mContacts;
