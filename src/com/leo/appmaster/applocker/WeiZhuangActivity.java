@@ -113,10 +113,10 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             info.setIcon(mIcon[i]);
             mList.add(info);
         }
-
+//        (AppMasterPreference.getInstance(this).getPretendLock() != 4)
         // pohatodo   //判断成功一次就true，
-        if ((AppMasterPreference.getInstance(this).getPretendLock() != 4)
-                && ("0001z".equals(getResources().getString(R.string.channel_code))
+        if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty()&&
+                 ("0001z".equals(getResources().getString(R.string.channel_code))
                         || "0002z".equals(getResources().getString(R.string.channel_code)) ||
                         "0003z".equals(getResources().getString(R.string.channel_code)) ||
                         "0004z".equals(getResources().getString(R.string.channel_code)) ||
