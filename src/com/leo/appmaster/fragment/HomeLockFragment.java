@@ -30,6 +30,7 @@ import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 public class HomeLockFragment extends BaseFragment implements OnClickListener, Selectable {
 
@@ -278,9 +279,11 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 {                 
                     Drawable drawable = getResources().getDrawable(
                             R.drawable.buttonleft_disguise_after_guide);
-                    
+               
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                     mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
+                    mLockSettingBtn.setPadding(DipPixelUtil.dip2px(mActivity, 26)-23, 0, DipPixelUtil.dip2px(mActivity, 18), 0);
+//                    mLockSettingBtn.setCompoundDrawablePadding(pad)
                     isDisguiseIconWithShadow=true;
                 }
             }
