@@ -23,6 +23,7 @@ import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer;
 import com.leo.appmaster.quickgestures.view.AppleWatchContainer.GType;
 import com.leo.appmaster.quickgestures.view.QgLockModeSelectView;
@@ -135,7 +136,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
     }
 
     public void setItemClick(boolean set) {
-        LeoLog.d("testiconclick", "setItemClick is true");
         isItemClick = set;
     }
 
@@ -146,7 +146,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
         if (!hasFocus && !QuickGestureManager.isFromDialog) {
             if (!isItemClick) {
                 LockManager.getInstatnce().filterAllOneTime(1000);
-                LeoLog.d("testiconclick", "go filterAllOneTime");
             }
             isItemClick = false;
             FloatWindowHelper.mGestureShowing = false;
@@ -167,7 +166,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
         int nowLayout = mContainer.getNowLayout();
         isCanNotDoAnimation = true;
         if (QuickGestureManager.isClickSure) {
-            LeoLog.d("testActivity", "onNewIntent && nowLayout is : " + mNowLayout);
             fillWhichLayoutFitst(nowLayout, true);
         }
         super.onNewIntent(intent);
@@ -250,6 +248,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private void fillSwitcherLayout(boolean loadExtra) {
         List<BaseInfo> items = QuickGestureManager.getInstance(this).getSwitcherList();
+        String testString  = QuickSwitchManager.getInstance(this).listToString(items, items.size(), false);
+        LeoLog.d("testSwitchList", "fillSwitcherLayout and the String is : " + testString);
         mContainer.fillGestureItem(GType.SwitcherLayout, items, loadExtra);
     }
 
