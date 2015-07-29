@@ -95,6 +95,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final String EXTRA_LOCK_MODE = "extra_lock_type";
     public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
     public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
+    public static final String SHOW_NOW = "mode changed_show_now";
 
     private int mLockMode;
     private String mLockedPackage;
@@ -603,14 +604,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 if (null != lockMode) {
                     int currentModeFlag = lockMode.defaultFlag;
                     showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
-                    LeoEventBus.getDefaultBus().post(
-                            new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage",
                             "shortcuts");
-
                 } else {
                     showModeActiveTip(willLaunch);
                 }
+                LeoEventBus.getDefaultBus().post(
+                        new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
             } else {
                 // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
                 // 0).show();

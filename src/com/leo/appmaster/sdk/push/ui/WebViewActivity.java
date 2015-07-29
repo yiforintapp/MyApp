@@ -96,6 +96,8 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setJavaScriptEnabled(true); // support javaScript
         settings.setSupportZoom(true); // 是否可以缩放，默认true
         settings.setBuiltInZoomControls(true); // 是否显示缩放按钮，默认false
+        /*settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true); // 自适应屏幕*/       
         settings.setAppCacheEnabled(true); // 启动缓存
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
@@ -284,7 +286,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mPlayView = view;
             customViewCallback = callback;
-
+            
             mWebView.setVisibility(View.INVISIBLE);
             mVideoFullLayout.addView(view);
             mVideoFullLayout.setVisibility(View.VISIBLE);

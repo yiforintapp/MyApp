@@ -30,6 +30,8 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
@@ -71,6 +73,7 @@ public class AppLockListActivity extends BaseActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_app_list);
         AppLoadEngine.getInstance(this).registerAppChangeListener(this);
+        LeoEventBus.getDefaultBus().register(this);
         handleIntent();
         initUI();
         loadData();
@@ -417,6 +420,15 @@ public class AppLockListActivity extends BaseActivity implements
                 mMaskLayer.setVisibility(View.INVISIBLE);
                 AppMasterPreference.getInstance(this).setLockerUsed();
                 break;
+        }
+    }
+    
+    public void onEventMainThread(LockModeEvent event) {
+        LockManager lm = LockManager.getInstatnce();
+        LockMode lockMode = lm.getCurLockMode();
+        loadData();
+        if (lockMode != null) {
+            mTvModeName.setText(lockMode.modeName);
         }
     }
 
