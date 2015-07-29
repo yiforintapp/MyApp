@@ -324,10 +324,9 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
                                 disappearAnim(curPosition, selectedImg);
                             } else {
                                 Intent intent = null;
-                               ((Activity)getContext()).finish();
                                 intent = new Intent(getContext(), LockScreenActivity.class);
                                 intent.setAction(Intent.ACTION_MAIN);
-//                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.putExtra("quick_lock_mode", true);
                                 intent.putExtra("lock_mode_id", mode.modeId);
                                 intent.putExtra("lock_mode_name", mode.modeName);
