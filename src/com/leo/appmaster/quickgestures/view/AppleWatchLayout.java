@@ -121,7 +121,6 @@ public class AppleWatchLayout extends ViewGroup {
 
     public void fillItems(List<BaseInfo> infos, boolean loadExtra) {
         if (QuickGestureManager.isClickSure) {
-            LeoLog.d("testActivity", "fillItems and cannot touch!");
             if (mContainer != null) {
                 mContainer.setCanNotTouch(true);
             }
@@ -1006,13 +1005,10 @@ public class AppleWatchLayout extends ViewGroup {
         QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
         if (type == GType.MostUsedLayout) {
             qgm.showCommonAppDialog(getContext());
-            // ((Activity) getContext()).finish();
             // mPref.setLastTimeLayout(mLastTimeMost);
             mContainer.setNowLayout(mLastTimeMost);
         } else if (type == GType.SwitcherLayout) {
-            // get list from sp
             qgm.showQuickSwitchDialog(getContext());
-            // ((Activity) getContext()).finish();
             // mPref.setLastTimeLayout(mLastTimeSwitch);
             mContainer.setNowLayout(mLastTimeSwitch);
         }

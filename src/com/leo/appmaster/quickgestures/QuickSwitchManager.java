@@ -839,6 +839,7 @@ public class QuickSwitchManager {
                 new ClickQuickItemEvent(SOUND, mInfo));
     }
 
+    @SuppressWarnings("deprecation")
     public void toggleFlashLight(QuickSwitcherInfo mInfo) {
 
         long currentTime = System.currentTimeMillis();
