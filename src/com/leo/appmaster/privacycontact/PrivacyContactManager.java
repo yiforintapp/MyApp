@@ -28,10 +28,14 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.NotificationUtil;
 
 public class PrivacyContactManager {
-
+    // 手机名称
+    public static String COOLPAD_YULONG = "YuLong";
+    public static String NUBIA = "nubia";
+    public static final String ZTEU817 = "ZTE U817";
     private static PrivacyContactManager sInstance;
     private Context mContext;
     private ArrayList<ContactBean> mContacts;
@@ -424,7 +428,7 @@ public class PrivacyContactManager {
         });
     }
 
-    private void uninitLoadData() {
+    public void uninitLoadData() {
         mIsOpenPrivacyContact = false;
         AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
 
@@ -433,5 +437,24 @@ public class PrivacyContactManager {
                 destroyCalls();
             }
         });
+    }
+
+    // 检查是否为不能接受短信广播的机型
+    public boolean clearMsmForNoReceiver() {
+        return BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
+                || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
+
+    // 检查是否为需要这里恢复红点的机型
+    public boolean checkPhoneModelForRestoreRedTip() {
+        return BuildProperties.isMIUI()
+                || BuildProperties.checkPhoneBrand(NUBIA)
+                || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
+
+    // 检查是否为不能直接跳到短信详情的机型
+    public boolean noToMsmDetail() {
+        return BuildProperties.checkPhoneModel(ZTEU817)
+                || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
     }
 }

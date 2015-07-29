@@ -52,6 +52,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_apple_watch);
+//        FloatWindowHelper.mIsWhiteFloatViewResponsing=false;
         LeoEventBus.getDefaultBus().register(this);
         handleIntent();
         initIU();
@@ -173,6 +174,9 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onResume() {
         Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
+        
+        AppMasterPreference.getInstance(this).setIsWhiteDotResponsing(false);
+        
         // LeoLog.d("testActivity", "onResume");
         FloatWindowHelper.mGestureShowing = true;
         isCloseWindow = false; // 动画结束是否执行去除红点标识
