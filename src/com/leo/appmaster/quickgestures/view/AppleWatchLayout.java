@@ -744,22 +744,16 @@ public class AppleWatchLayout extends ViewGroup {
             Intent mIntent = null;
             if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null
                     && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage().size() <= 1) {
-                if (!BuildProperties.ZTEU817.equals(BuildProperties.getPoneModel())) {
-                    if(BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG)){
-                        mIntent = new Intent(Intent.ACTION_MAIN);
-                        mIntent.setType("vnd.android-dir/mms-sms");
-                        mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    }else{
-                        Uri smsToUri = Uri.parse("smsto://" + bean.getPhoneNumber());
-                        mIntent = new
-                                Intent(android.content.Intent.ACTION_SENDTO,
-                                        smsToUri);
-                    }
-                } else {
+                if (noToMsmDetail()) {
                     mIntent = new Intent(Intent.ACTION_MAIN);
                     mIntent.setType("vnd.android-dir/mms-sms");
-                    mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                } else {
+                    Uri smsToUri = Uri.parse("smsto://" + bean.getPhoneNumber());
+                    mIntent = new
+                            Intent(android.content.Intent.ACTION_SENDTO,
+                                    smsToUri);
                 }
+                mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             } else {
                 if (BuildProperties.isHuaWeiTipPhone(mContext)) {
                     mIntent = new Intent(Intent.ACTION_MAIN);
@@ -855,6 +849,12 @@ public class AppleWatchLayout extends ViewGroup {
         QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
         activity.setItemClick(true);
 
+    }
+
+    // 不能直接跳到短信详情的机型
+    private boolean noToMsmDetail() {
+        return BuildProperties.ZTEU817.equals(BuildProperties.getPoneModel())
+                || BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG);
     }
 
     private void handleMostUsedAppClicked(BaseInfo info) {
