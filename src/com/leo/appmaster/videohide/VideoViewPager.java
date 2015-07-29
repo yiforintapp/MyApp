@@ -436,7 +436,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void requestUrl() {
-        Uri uri = Uri.parse(VideoHideMainActivity.URL_CB);
+        String CB_FINAL_URL = VideoHideMainActivity.URL_CB+"?id="+this.getString(R.string.channel_code);
+        Uri uri = Uri.parse(CB_FINAL_URL);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         this.startActivity(intent);
     }
