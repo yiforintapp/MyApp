@@ -113,22 +113,48 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             info.setIcon(mIcon[i]);
             mList.add(info);
         }
-//        (AppMasterPreference.getInstance(this).getPretendLock() != 4)
-        // pohatodo   //判断成功一次就true，
-        if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty()&&
-                 ("0001z".equals(getResources().getString(R.string.channel_code))
+        // (AppMasterPreference.getInstance(this).getPretendLock() != 4)
+        // pohatodo
+          
+        if (!AppMasterPreference.getInstance(this).getIsDeterminCloseBeautyFirstly() &&
+                ("0001z".equals(getResources().getString(R.string.channel_code))
                         || "0002z".equals(getResources().getString(R.string.channel_code)) ||
                         "0003z".equals(getResources().getString(R.string.channel_code)) ||
                         "0004z".equals(getResources().getString(R.string.channel_code)) ||
                         "0005z".equals(getResources().getString(R.string.channel_code)) ||
                         "0006z".equals(getResources().getString(R.string.channel_code)) ||
                 "0007z".equals(getResources().getString(R.string.channel_code))))
-        {
-            mList.remove(1);
-            mIsRemoveBeauty = true;
-
+        {  
+            AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
             AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(true);
         }
+        else
+        {
+            AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
+        }
+
+        
+        if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty() &&
+                ("0001z".equals(getResources().getString(R.string.channel_code))
+                        || !"0002z".equals(getResources().getString(R.string.channel_code)) ||
+                        !"0003z".equals(getResources().getString(R.string.channel_code)) ||
+                        !"0004z".equals(getResources().getString(R.string.channel_code)) ||
+                        !"0005z".equals(getResources().getString(R.string.channel_code)) ||
+                        !"0006z".equals(getResources().getString(R.string.channel_code)) ||
+                !"0007z".equals(getResources().getString(R.string.channel_code))))
+        {
+            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);
+        }
+        
+        
+        
+        
+        if(AppMasterPreference.getInstance(this).getIsNeedCloseBeauty())
+        {
+            mList.remove(1);
+            mIsRemoveBeauty = true;            
+        }
+
         // else
         // {
         // AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);
