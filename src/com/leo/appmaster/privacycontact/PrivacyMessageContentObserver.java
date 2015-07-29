@@ -321,18 +321,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             QuickGestureManager.getInstance(mContext).clearQuickNoReadMessage();
                         }
                         FloatWindowHelper.removeShowReadTipWindow(mContext);
-                        // 努比亚，酷派YuLong机型特别处理
-                        if (BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
-                                || BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG)) {
+                        // 对于不能接受短信广播的机型在这里取清空记录的未读短信数量
+                        if (PrivacyContactManager.getInstance(mContext).clearMsmForNoReceiver()) {
                             PrivacyContactManager.getInstance(mContext).messageSize = 0;
                         }
-                    } else {
-                        if (PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag) {
-                            // Log.e(FloatWindowHelper.RUN_TAG, "隐私联系人赋值");
-                            // QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage
-                            // = true;
-                        }
-
                     }
                     // 有未读短信时操作
                     if (messages != null && messages.size() > 0) {
@@ -363,7 +355,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
 
             private void restoreRedTipValueForMIUI(final ContentResolver cr) {
-                if (checkPhoneModelForRestoreRedTip()) {
+                if (PrivacyContactManager.getInstance(mContext).checkPhoneModelForRestoreRedTip()) {
                     List<MessageBean> messageList = PrivacyContactUtils
                             .getSysMessage(mContext, cr,
                                     "read=0 AND type=1", null, true);
@@ -385,12 +377,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
             }
         });
-    }
-
-    // 检查是否为需要这里恢复红点的机型
-    private boolean checkPhoneModelForRestoreRedTip() {
-        return BuildProperties.isMIUI() || BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
-                || BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG);
     }
 
     // 通话记录异步处理

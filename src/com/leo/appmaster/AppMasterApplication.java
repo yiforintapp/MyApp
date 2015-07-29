@@ -178,7 +178,7 @@ public class AppMasterApplication extends Application {
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
-//         Log.e(Constants.RUN_TAG, "机型："+BuildProperties.checkPhoneBrand("YuLong"));
+//         Log.e(Constants.RUN_TAG, "机型："+BuildProperties.checkPhoneModel("l36H"));
     }
 
     private String getUserSerial() {

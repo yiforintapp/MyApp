@@ -744,7 +744,7 @@ public class AppleWatchLayout extends ViewGroup {
             Intent mIntent = null;
             if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null
                     && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage().size() <= 1) {
-                if (noToMsmDetail()) {
+                if (PrivacyContactManager.getInstance(mContext).noToMsmDetail()) {
                     mIntent = new Intent(Intent.ACTION_MAIN);
                     mIntent.setType("vnd.android-dir/mms-sms");
                 } else {
@@ -849,12 +849,6 @@ public class AppleWatchLayout extends ViewGroup {
         QuickGesturePopupActivity activity = (QuickGesturePopupActivity) getContext();
         activity.setItemClick(true);
 
-    }
-
-    // 不能直接跳到短信详情的机型
-    private boolean noToMsmDetail() {
-        return BuildProperties.ZTEU817.equals(BuildProperties.getPoneModel())
-                || BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG);
     }
 
     private void handleMostUsedAppClicked(BaseInfo info) {

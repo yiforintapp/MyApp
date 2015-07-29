@@ -43,7 +43,6 @@ public class BuildProperties {
     public static final String[] filterPhoneMode = {
             "SM-N9150", "SM-G9250"
     };
-    public static final String ZTEU817 = "ZTE U817";
     private final Properties properties;
 
     private BuildProperties() throws IOException {
@@ -187,11 +186,13 @@ public class BuildProperties {
     public static boolean checkPhoneBrand(String brandName) {
         return Build.MANUFACTURER.toLowerCase().equalsIgnoreCase(brandName);
     }
-    //检查本机是否为指定品牌
-    public static boolean checkPhoneBrandForSelf(String brandName){
-//        Log.e(Constants.RUN_TAG, "手机品牌："+Build.BRAND.toLowerCase());
+
+    // 检查本机是否为指定品牌
+    public static boolean checkPhoneBrandForSelf(String brandName) {
+        // Log.e(Constants.RUN_TAG, "手机品牌："+Build.BRAND.toLowerCase());
         return Build.BRAND.toLowerCase().equalsIgnoreCase(brandName);
     }
+
     /**
      * 详细机型识别
      * 
@@ -320,4 +321,9 @@ public class BuildProperties {
         }
     }
 
+    // 判断本机是否为指定机型
+    public static boolean checkPhoneModel(String phoneModel) {
+//        Log.e(Constants.RUN_TAG, "传入机型："+phoneModel.toLowerCase()+",本机："+getPoneModel().toLowerCase());
+        return getPoneModel().toLowerCase().equalsIgnoreCase(phoneModel.toLowerCase());
+    }
 }
