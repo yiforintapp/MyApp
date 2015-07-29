@@ -3,7 +3,7 @@
     android:id="@+id/rl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/temp111" >
+    android:background="@drawable/bg_beauty" >
 
     <com.leo.appmaster.applocker.ZipperView
         android:id="@+id/zipperview_beauty_guide"

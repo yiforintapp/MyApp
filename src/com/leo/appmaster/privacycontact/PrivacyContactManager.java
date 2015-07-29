@@ -46,7 +46,8 @@ public class PrivacyContactManager {
     private boolean mContactLoaded = false;
     public boolean deleteCallLogDatebaseFlag;// 用来做隐私联系人通话删除时的通话标志
     public boolean deleteMsmDatebaseFlag;// 用来做隐私联系人短信删除时的标志
-    public int messageSize;// 对红米未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
+    public int messageSize;// 对不能接受短信广播未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
+    public int mUnCalls;// 对不能接受来电广播未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
     private boolean mCallsLoaded;
     private ArrayList<ContactCallLog> mSysCalls;
     public boolean mIsOpenPrivacyContact;// 当前页是否为PrivacyContactActivity
@@ -444,12 +445,21 @@ public class PrivacyContactManager {
         return BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
                 || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
     }
+    // 检查是否为不能接受来电广播的机型
+    public boolean clearCallForNoReceiver() {
+        return BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
 
-    // 检查是否为需要这里恢复红点的机型
+    // 检查是否为需要这里恢复红点的机型（不能接受短信广播的机型）
     public boolean checkPhoneModelForRestoreRedTip() {
         return BuildProperties.isMIUI()
                 || BuildProperties.checkPhoneBrand(NUBIA)
                 || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
+
+    // 检查是否为需要这里恢复红点的机型（不能接受来电广播的机型）
+    public boolean checkPhoneModelForCallRestoreRedTip() {
+        return BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
     }
 
     // 检查是否为不能直接跳到短信详情的机型

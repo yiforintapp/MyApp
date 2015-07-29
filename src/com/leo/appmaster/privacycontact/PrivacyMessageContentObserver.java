@@ -49,7 +49,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
         // 测试打印系统据库变化情况
-        // printTestObserverLog();
+        printTestObserverLog();
         int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
@@ -201,11 +201,13 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     callLogs.remove(contactCallLog);
                                 }
                             }
-                            // else{
-                            // break;
-                            // }
-                            // }
                         }
+                        /*
+                         * 用于解决系统无法接收系统来电广播恢复isCallLogRead的默认值，用此来恢复 目前解决方法
+                         * ：每次去记录上次未读数量，用当前未读数量与上次相比如果大于则有新的未读，如果小于则读取了一些未读
+                         * ，如果等于则没有未读被读
+                         */
+                        restoreRedTipValueForCall();
                     }
                     // 查看通话记录时，清除未读操作（包括第三方，或者系统自带通话记录列表查看）
                     /*
@@ -234,6 +236,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             QuickGestureManager.getInstance(mContext).clearQuickNoReadCall();
                         }
                         FloatWindowHelper.removeShowReadTipWindow(mContext);
+                        // 对于不能接受来电广播的机型在这里取清空记录的未读短信数量
+                        if (PrivacyContactManager.getInstance(mContext).clearCallForNoReceiver()) {
+                            PrivacyContactManager.getInstance(mContext).mUnCalls = 0;
+                        }
                     }
                     // 有未读通话时操作
                     if (callLogs != null && callLogs.size() > 0) {
@@ -273,10 +279,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if (contact != null
                                 && !Utilities.isEmpty(contact.getContactNumber())) {
                             for (MessageBean message : cloneMessage) {
-                                // Iterator<MessageBean> ite =
-                                // cloneMessage.iterator();
-                                // while (ite.hasNext()) {
-                                // MessageBean message = ite.next();
                                 String formateLastMessage = PrivacyContactUtils
                                         .formatePhoneNumber(contact.getContactNumber());
                                 String contactMessageFromate = PrivacyContactUtils
@@ -285,10 +287,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     // 过略掉隐私联系人，留下非隐私联系人
                                     messages.remove(message);
                                 }
-                                // }else{
-                                // break;
-                                // }
-                                // }
                             }
                         }
                         /*
@@ -297,7 +295,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                          * ：每次去记录上次未读数量，用当前未读数量与上次相比如果大于则有新的未读，如果小于则读取了一些未读
                          * ，如果等于则没有未读被读
                          */
-                        restoreRedTipValueForMIUI(cr);
+                        restoreRedTipValueForMsm();
                     }
                     // 查看未读短信时，清除未读操作（包括第三方，或者系统自带短信列表查看）
                     if (messages == null
@@ -354,7 +352,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
             }
 
-            private void restoreRedTipValueForMIUI(final ContentResolver cr) {
+            private void restoreRedTipValueForMsm() {
+                ContentResolver cr = mContext.getContentResolver();
                 if (PrivacyContactManager.getInstance(mContext).checkPhoneModelForRestoreRedTip()) {
                     List<MessageBean> messageList = PrivacyContactUtils
                             .getSysMessage(mContext, cr,
@@ -377,6 +376,36 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
             }
         });
+    }
+
+    // TODO
+    private void restoreRedTipValueForCall() {
+        ContentResolver cr = mContext.getContentResolver();
+        if (PrivacyContactManager.getInstance(mContext).checkPhoneModelForCallRestoreRedTip()) {
+            String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
+            String[] selectionArgs = new String[] {
+                    String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
+            };
+            ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
+                    .getSysCallLog(mContext,
+                            mContext.getContentResolver(), selection,
+                            selectionArgs);
+            if (callLogs != null) {
+                int count = PrivacyContactManager
+                        .getInstance(mContext).mUnCalls;
+                int currentCount = callLogs.size();
+                // Log.d(Constants.RUN_TAG,
+                // "上一次数量："+count+",当前数量："+currentCount);
+                if (currentCount > count) {
+                    if (QuickGestureManager.getInstance(mContext).isCallLogRead) {
+                        QuickGestureManager.getInstance(mContext).isCallLogRead = false;
+                        AppMasterPreference.getInstance(mContext)
+                                .setCallLogIsRedTip(false);
+                    }
+                }
+                PrivacyContactManager.getInstance(mContext).mUnCalls = currentCount;
+            }
+        }
     }
 
     // 通话记录异步处理
