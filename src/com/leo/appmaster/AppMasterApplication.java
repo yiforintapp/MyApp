@@ -29,6 +29,7 @@ import android.app.Application;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -45,6 +46,7 @@ import android.os.UserManager;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
+import android.text.BoringLayout;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
@@ -168,7 +170,7 @@ public class AppMasterApplication extends Application {
         }, 10, TimeUnit.SECONDS);
         if (AppMasterPreference.getInstance(getApplicationContext()).getIsFirstInstallApp()) {
             SplashActivity.deleteImage();
-            AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false); 
+            AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false);
         }
         // For android L and above, daemon service is not work, so disable it
         if (PhoneInfo.getAndroidVersion() < 20) {
@@ -178,7 +180,9 @@ public class AppMasterApplication extends Application {
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
-//         Log.e(Constants.RUN_TAG, "机型："+BuildProperties.checkPhoneModel("l36H"));
+        registerLanguageChangeReceiver();
+        // Log.e(Constants.RUN_TAG,
+        // "机型："+BuildProperties.checkPhoneModel("l36H"));
     }
 
     private String getUserSerial() {
@@ -420,7 +424,7 @@ public class AppMasterApplication extends Application {
                 } else if (Integer.parseInt(versionCode) == 41) {
                     installBoostShortcut();
                 }
-                
+
                 pref.setGuidePageFirstUse(true);
                 pref.setIsUpdateQuickGestureUser(true);
             }
@@ -1209,6 +1213,27 @@ public class AppMasterApplication extends Application {
         shortcut.putExtra("duplicate", false);
         shortcut.putExtra("from_shortcut", true);
         sendBroadcast(shortcut);
+    }
+
+    // 本地语言改变监听
+    private void registerLanguageChangeReceiver() {
+        BroadcastReceiver receiv = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)) {
+                    // Log.e(Constants.RUN_TAG, "语言变化");
+                    // 初始化快捷手势数据
+                    if (AppMasterPreference.getInstance(getApplicationContext())
+                            .getSwitchOpenQuickGesture()) {
+                        QuickGestureManager.getInstance(AppMasterApplication.this).unInit();
+                        QuickGestureManager.getInstance(AppMasterApplication.this).init();
+                    }
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_LOCALE_CHANGED);
+        registerReceiver(receiv, filter);
     }
 
 }
