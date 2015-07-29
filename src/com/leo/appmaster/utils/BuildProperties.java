@@ -20,7 +20,9 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 
@@ -177,7 +179,7 @@ public class BuildProperties {
     }
 
     /**
-     * 本机品牌名称识别
+     * 本机制造商名称识别
      * 
      * @param brandName品牌名称
      * @return
@@ -185,7 +187,11 @@ public class BuildProperties {
     public static boolean checkPhoneBrand(String brandName) {
         return Build.MANUFACTURER.toLowerCase().equalsIgnoreCase(brandName);
     }
-
+    //检查本机是否为指定品牌
+    public static boolean checkPhoneBrandForSelf(String brandName){
+//        Log.e(Constants.RUN_TAG, "手机品牌："+Build.BRAND.toLowerCase());
+        return Build.BRAND.toLowerCase().equalsIgnoreCase(brandName);
+    }
     /**
      * 详细机型识别
      * 
