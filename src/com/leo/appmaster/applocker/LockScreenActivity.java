@@ -125,6 +125,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     public boolean mRestartForThemeChanged;
     public boolean mQuickLockMode;
+    public boolean mFromHome;
     public String mQuickModeName;
     public int mQuiclModeId;
 
@@ -168,7 +169,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         }
 
-        initUI();
+//        initUI();
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
@@ -195,6 +196,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        initUI();
+        
+        
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -356,6 +360,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         Intent intent = getIntent();
         mRestartForThemeChanged = intent.getBooleanExtra("from_theme_change", false);
         mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
+        mFromHome = intent.getBooleanExtra("from_home", false);
         if (mQuickLockMode) {
             mQuickModeName = intent.getStringExtra("lock_mode_name");
             mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
@@ -663,7 +668,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             @Override
             public void run() {
-                finish();
+                if(mFromHome) { //for fix bug: AM-1904
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    startActivity(intent);
+                } else {
+                    finish();
+                }
+                
             }
         }, 100);
 
@@ -763,7 +776,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
                     dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(this.getString(R.string.cancel));
-                    
+
                     dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
                         @Override
                         public void onClick(int which) {
