@@ -806,98 +806,99 @@ public class QuickGestureManager {
         commonApp.setRightBt(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                // 避免线程内跑的比线程外快，避免数据不同步
                 // 确认按钮
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        // 添加的应用包名
-                        List<BaseInfo> addCommonApp = commonApp.getAddFreePackageName();
-                        // 移除的应用包名
-                        List<BaseInfo> removeCommonApp = commonApp.getRemoveFreePackageName();
-                        List<BaseInfo> mDefineList = new ArrayList<BaseInfo>();
+                // new Thread(new Runnable() {
+                // @Override
+                // public void run() {
+                // 添加的应用包名
+                List<BaseInfo> addCommonApp = commonApp.getAddFreePackageName();
+                // 移除的应用包名
+                List<BaseInfo> removeCommonApp = commonApp.getRemoveFreePackageName();
+                List<BaseInfo> mDefineList = new ArrayList<BaseInfo>();
 
-                        // 是否选择使用习惯自动填充
-                        boolean flag = commonApp.getCheckValue();
-                        // if (!flag) {
-                        List<BaseInfo> comList = loadCommonAppInfo();
-                        List<BaseInfo> tempList = new ArrayList<BaseInfo>();
+                // 是否选择使用习惯自动填充
+                boolean flag = commonApp.getCheckValue();
+                // if (!flag) {
+                List<BaseInfo> comList = loadCommonAppInfo();
+                List<BaseInfo> tempList = new ArrayList<BaseInfo>();
 
-                        if (removeCommonApp != null && removeCommonApp.size() > 0) {
-                            boolean isHasSameName = false;
-                            for (BaseInfo info : comList) {
-                                for (BaseInfo baseInfo : removeCommonApp) {
-                                    if (baseInfo.label.equals(info.label)) {
-                                        isHasSameName = true;
-                                    }
-                                }
-                                if (!isHasSameName) {
-                                    mDefineList.add(info);
-                                }
-                                isHasSameName = false;
+                if (removeCommonApp != null && removeCommonApp.size() > 0) {
+                    boolean isHasSameName = false;
+                    for (BaseInfo info : comList) {
+                        for (BaseInfo baseInfo : removeCommonApp) {
+                            if (baseInfo.label.equals(info.label)) {
+                                isHasSameName = true;
                             }
                         }
+                        if (!isHasSameName) {
+                            mDefineList.add(info);
+                        }
+                        isHasSameName = false;
+                    }
+                }
 
-                        if (removeCommonApp != null && addCommonApp.size() > 0) {
-                            if (removeCommonApp.size() == 0) {
-                                mDefineList = comList;
-                            }
+                if (removeCommonApp != null && addCommonApp.size() > 0) {
+                    if (removeCommonApp.size() == 0) {
+                        mDefineList = comList;
+                    }
 
-                            // 记录现有的Icon位置
-                            LeoLog.d("QuickGestureManager", "有货要加");
-                            List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
-                            List<Integer> sPosition = new ArrayList<Integer>();
-                            for (int i = 0; i < mDefineList.size(); i++) {
-                                sPosition.add(mDefineList.get(i).gesturePosition);
-                                LeoLog.d("QuickGestureManager",
-                                        "已有货的位置 :" + mDefineList.get(i).gesturePosition);
-                            }
+                    // 记录现有的Icon位置
+                    LeoLog.d("QuickGestureManager", "有货要加");
+                    List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
+                    List<Integer> sPosition = new ArrayList<Integer>();
+                    for (int i = 0; i < mDefineList.size(); i++) {
+                        sPosition.add(mDefineList.get(i).gesturePosition);
+                        LeoLog.d("QuickGestureManager",
+                                "已有货的位置 :" + mDefineList.get(i).gesturePosition);
+                    }
 
-                            int k = 0;
-                            for (int i = 0; i < 11; i++) {
-                                boolean isHasIcon = false;
-                                for (int j = 0; j < mDefineList.size(); j++) {
-                                    if (i == mDefineList.get(j).gesturePosition) {
-                                        isHasIcon = true;
-                                    }
-                                }
-                                if (!isHasIcon && addCommonApp.size() > k) {
-                                    LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
-                                    BaseInfo mInfo = addCommonApp.get(k);
-                                    mInfo.gesturePosition = i;
-                                    mfixPostionList.add(mInfo);
-                                    k++;
-                                }
-                            }
-
-                            LeoLog.d("QuickGestureManager",
-                                    "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
-                            for (int i = 0; i < mfixPostionList.size(); i++) {
-                                BaseInfo mInfo = mfixPostionList.get(i);
-                                mDefineList.add(mInfo);
-                                LeoLog.d("QuickGestureManager", "霸占了 "
-                                        + mInfo.gesturePosition + "号位");
+                    int k = 0;
+                    for (int i = 0; i < 11; i++) {
+                        boolean isHasIcon = false;
+                        for (int j = 0; j < mDefineList.size(); j++) {
+                            if (i == mDefineList.get(j).gesturePosition) {
+                                isHasIcon = true;
                             }
                         }
-
-                        if (addCommonApp.size() == 0 && removeCommonApp.size() == 0) {
-                            mDefineList = comList;
-                        }
-
-                        String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                .listToPackString(mDefineList, mDefineList.size(), NORMALINFO);
-                        LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
-                        pref.setCommonAppPackageName(mChangeList);
-
-                        if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
-                            pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
-                            if (flag) {
-                                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_tab",
-                                        "common_auto");
-                            }
+                        if (!isHasIcon && addCommonApp.size() > k) {
+                            LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
+                            BaseInfo mInfo = addCommonApp.get(k);
+                            mInfo.gesturePosition = i;
+                            mfixPostionList.add(mInfo);
+                            k++;
                         }
                     }
 
-                }).start();
+                    LeoLog.d("QuickGestureManager",
+                            "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
+                    for (int i = 0; i < mfixPostionList.size(); i++) {
+                        BaseInfo mInfo = mfixPostionList.get(i);
+                        mDefineList.add(mInfo);
+                        LeoLog.d("QuickGestureManager", "霸占了 "
+                                + mInfo.gesturePosition + "号位");
+                    }
+                }
+
+                if (addCommonApp.size() == 0 && removeCommonApp.size() == 0) {
+                    mDefineList = comList;
+                }
+
+                String mChangeList = QuickSwitchManager.getInstance(mContext)
+                        .listToPackString(mDefineList, mDefineList.size(), NORMALINFO);
+                LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
+                pref.setCommonAppPackageName(mChangeList);
+
+                if (pref.getQuickGestureCommonAppDialogCheckboxValue() != flag) {
+                    pref.setQuickGestureCommonAppDialogCheckboxValue(flag);
+                    if (flag) {
+                        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_tab",
+                                "common_auto");
+                    }
+                }
+                // }
+
+                // }).start();
                 commonApp.dismiss();
                 Intent intent = new Intent(AppMasterApplication.getInstance(),
                         QuickGesturePopupActivity.class);
@@ -957,109 +958,109 @@ public class QuickGestureManager {
         quickSwitch.setRightBt(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
+                // 线程外比线程内跑的快，数据不同步
                 // 确认按钮
-                AppMasterApplication.getInstance().postInAppThreadPool(new
-                        Runnable() {
-                            @Override
-                            public void run() {
-                                // 添加的应用包名
-                                boolean addSwitch = false;
-                                boolean removeSwitch = false;
-                                List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
+                // AppMasterApplication.getInstance().postInAppThreadPool(new
+                // Runnable() {
+                // @Override
+                // public void run() {
+                // 添加的应用包名
+                boolean addSwitch = false;
+                boolean removeSwitch = false;
+                List<BaseInfo> addQuickSwitch = quickSwitch.getAddFreePackageName();
 
-                                for (int i = 0; i < addQuickSwitch.size(); i++) {
-                                    BaseInfo mInfo = addQuickSwitch.get(i);
-                                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_switch",
-                                            "add_" + mInfo.swtichIdentiName);
-                                    LeoLog.d("testSp", "mInfo.swtichIdentiName : "
-                                            + mInfo.swtichIdentiName);
-                                }
+                for (int i = 0; i < addQuickSwitch.size(); i++) {
+                    BaseInfo mInfo = addQuickSwitch.get(i);
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "qs_switch",
+                            "add_" + mInfo.swtichIdentiName);
+                    LeoLog.d("testSp", "mInfo.swtichIdentiName : "
+                            + mInfo.swtichIdentiName);
+                }
 
-                                // 移除的应用包名
-                                List<BaseInfo> removeQuickSwitch = quickSwitch
-                                        .getRemoveFreePackageName();
-                                // 正确添加或删除的list
-                                String mListString = mSpSwitch.getSwitchList();
-                                List<BaseInfo> rightQuickSwitch =
-                                        QuickSwitchManager.getInstance(mContext).StringToList(
-                                                mListString);
-                                List<BaseInfo> mDefineList = new ArrayList<BaseInfo>();
-                                LeoLog.d("QuickGestureManager", "rightQuickSwitch.size is : "
-                                        + rightQuickSwitch.size());
-                                if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
-                                    addSwitch = true;
-                                }
-                                if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
-                                    for (int i = 0; i < rightQuickSwitch.size(); i++) {
-                                        boolean isHasSameName = false;
-                                        BaseInfo nInfo = rightQuickSwitch.get(i);
-                                        String rightName = nInfo.label;
-                                        for (int j = 0; j < removeQuickSwitch.size(); j++) {
-                                            BaseInfo mInfo = removeQuickSwitch.get(j);
-                                            String removeName = mInfo.label;
-                                            if (rightName.equals(removeName)) {
-                                                isHasSameName = true;
-                                            }
-                                        }
-                                        if (!isHasSameName) {
-                                            mDefineList.add(nInfo);
-                                        }
-                                    }
-                                    removeSwitch = true;
-                                }
-
-                                if (addSwitch) {
-                                    if (!removeSwitch) {
-                                        mDefineList = rightQuickSwitch;
-                                    }
-                                    // 记录现有的Icon位置
-                                    LeoLog.d("QuickGestureManager", "有货要加");
-                                    List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
-                                    List<Integer> sPosition = new ArrayList<Integer>();
-                                    for (int i = 0; i < mDefineList.size(); i++) {
-                                        sPosition.add(mDefineList.get(i).gesturePosition);
-                                        LeoLog.d("QuickGestureManager",
-                                                "已有货的位置 :" + mDefineList.get(i).gesturePosition);
-                                    }
-
-                                    int k = 0;
-                                    for (int i = 0; i < 11; i++) {
-                                        boolean isHasIcon = false;
-                                        for (int j = 0; j < mDefineList.size(); j++) {
-                                            if (i == mDefineList.get(j).gesturePosition) {
-                                                isHasIcon = true;
-                                            }
-                                        }
-
-                                        if (!isHasIcon && addQuickSwitch.size() > k) {
-                                            LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
-                                            BaseInfo mInfo = addQuickSwitch.get(k);
-                                            mInfo.gesturePosition = i;
-                                            mfixPostionList.add(mInfo);
-                                            k++;
-                                        }
-                                    }
-
-                                    LeoLog.d("QuickGestureManager",
-                                            "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
-                                    for (int i = 0; i < mfixPostionList.size(); i++) {
-                                        BaseInfo mInfo = mfixPostionList.get(i);
-                                        mDefineList.add(mInfo);
-                                        LeoLog.d("QuickGestureManager", "霸占了 "
-                                                + mInfo.gesturePosition + "号位");
-                                    }
-                                }
-
-                                if (!addSwitch && !removeSwitch) {
-                                    mDefineList = rightQuickSwitch;
-                                }
-
-                                String mChangeList = QuickSwitchManager.getInstance(mContext)
-                                        .listToString(mDefineList, mDefineList.size(), true);
-                                LeoLog.d("QuickGestureManager", "mChangeList ： " + mChangeList);
-                                mSpSwitch.setSwitchList(mChangeList);
+                // 移除的应用包名
+                List<BaseInfo> removeQuickSwitch = quickSwitch
+                        .getRemoveFreePackageName();
+                // 正确添加或删除的list
+                String mListString = mSpSwitch.getSwitchList();
+                List<BaseInfo> rightQuickSwitch =
+                        QuickSwitchManager.getInstance(mContext).StringToList(
+                                mListString);
+                List<BaseInfo> mDefineList = new ArrayList<BaseInfo>();
+                LeoLog.d("QuickGestureManager", "rightQuickSwitch.size is : "
+                        + rightQuickSwitch.size());
+                if (addQuickSwitch != null && addQuickSwitch.size() > 0) {
+                    addSwitch = true;
+                }
+                if (removeQuickSwitch != null && removeQuickSwitch.size() > 0) {
+                    for (int i = 0; i < rightQuickSwitch.size(); i++) {
+                        boolean isHasSameName = false;
+                        BaseInfo nInfo = rightQuickSwitch.get(i);
+                        String rightName = nInfo.label;
+                        for (int j = 0; j < removeQuickSwitch.size(); j++) {
+                            BaseInfo mInfo = removeQuickSwitch.get(j);
+                            String removeName = mInfo.label;
+                            if (rightName.equals(removeName)) {
+                                isHasSameName = true;
                             }
-                        });
+                        }
+                        if (!isHasSameName) {
+                            mDefineList.add(nInfo);
+                        }
+                    }
+                    removeSwitch = true;
+                }
+
+                if (addSwitch) {
+                    if (!removeSwitch) {
+                        mDefineList = rightQuickSwitch;
+                    }
+                    // 记录现有的Icon位置
+                    LeoLog.d("QuickGestureManager", "有货要加");
+                    List<BaseInfo> mfixPostionList = new ArrayList<BaseInfo>();
+                    List<Integer> sPosition = new ArrayList<Integer>();
+                    for (int i = 0; i < mDefineList.size(); i++) {
+                        sPosition.add(mDefineList.get(i).gesturePosition);
+                        LeoLog.d("QuickGestureManager",
+                                "已有货的位置 :" + mDefineList.get(i).gesturePosition);
+                    }
+
+                    int k = 0;
+                    for (int i = 0; i < 11; i++) {
+                        boolean isHasIcon = false;
+                        for (int j = 0; j < mDefineList.size(); j++) {
+                            if (i == mDefineList.get(j).gesturePosition) {
+                                isHasIcon = true;
+                            }
+                        }
+
+                        if (!isHasIcon && addQuickSwitch.size() > k) {
+                            LeoLog.d("QuickGestureManager", i + "号位没人坐，收藏起来");
+                            BaseInfo mInfo = addQuickSwitch.get(k);
+                            mInfo.gesturePosition = i;
+                            mfixPostionList.add(mInfo);
+                            k++;
+                        }
+                    }
+
+                    LeoLog.d("QuickGestureManager",
+                            "收藏完毕，霸占了" + mfixPostionList.size() + "个位置");
+                    for (int i = 0; i < mfixPostionList.size(); i++) {
+                        BaseInfo mInfo = mfixPostionList.get(i);
+                        mDefineList.add(mInfo);
+                        LeoLog.d("QuickGestureManager", "霸占了 "
+                                + mInfo.gesturePosition + "号位");
+                    }
+                }
+
+                if (!addSwitch && !removeSwitch) {
+                    mDefineList = rightQuickSwitch;
+                }
+
+                String mChangeList = QuickSwitchManager.getInstance(mContext)
+                        .listToString(mDefineList, mDefineList.size(), true);
+                mSpSwitch.setSwitchList(mChangeList);
+                // }
+                // });
                 quickSwitch.dismiss();
                 Intent intent = new Intent(AppMasterApplication.getInstance(),
                         QuickGesturePopupActivity.class);

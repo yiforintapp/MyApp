@@ -124,7 +124,7 @@
                         android:layout_width="@dimen/gesture_app_manager_bg_width"
                         android:layout_height="@dimen/gesture_app_manager_bg_width"
                         android:layout_centerHorizontal="true"
-                        android:src="@drawable/gesture_purple_light"
+                        android:src="@drawable/gesture_purple_light_new"
                         android:visibility="gone"
                          />
                     
