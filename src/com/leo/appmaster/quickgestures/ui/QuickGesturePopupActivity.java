@@ -145,7 +145,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
         if (!hasFocus && !QuickGestureManager.isFromDialog) {
             if (!isItemClick) {
-                LockManager.getInstatnce().filterAllOneTime(1000);
+//                LockManager.getInstatnce().filterAllOneTime(500);
             }
             isItemClick = false;
             FloatWindowHelper.mGestureShowing = false;

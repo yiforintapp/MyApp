@@ -1569,6 +1569,7 @@ public class LockManager {
 
         if (mFilterAll) {
             mFilterAll = false;
+            LeoLog.d(TAG, "mFilterAll");
             return false;
         }
 
@@ -1578,6 +1579,7 @@ public class LockManager {
             long curTime = System.currentTimeMillis();
             if (filterTime != 0 && (curTime - filterTime) <= 60 * 1000) {
                 amp.setLastFilterSelfTime(0);
+                LeoLog.d(TAG, "Filter self 1 min");
                 return false;
             }
 
