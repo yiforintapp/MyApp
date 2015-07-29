@@ -747,7 +747,7 @@ public class AppleWatchLayout extends ViewGroup {
                     mIntent = new Intent(Intent.ACTION_MAIN);
                     mIntent.setType("vnd.android-dir/mms-sms");
                 } else {
-                    Uri smsToUri = Uri.parse("smsto://" + bean.getPhoneNumber());
+                    Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
                     mIntent = new
                             Intent(android.content.Intent.ACTION_SENDTO,
                                     smsToUri);
