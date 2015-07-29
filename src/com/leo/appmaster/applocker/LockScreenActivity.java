@@ -125,6 +125,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     public boolean mRestartForThemeChanged;
     public boolean mQuickLockMode;
+    public boolean mFromHome;
     public String mQuickModeName;
     public int mQuiclModeId;
 
@@ -356,6 +357,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         Intent intent = getIntent();
         mRestartForThemeChanged = intent.getBooleanExtra("from_theme_change", false);
         mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
+        mFromHome = intent.getBooleanExtra("from_home", false);
         if (mQuickLockMode) {
             mQuickModeName = intent.getStringExtra("lock_mode_name");
             mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
@@ -663,7 +665,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             @Override
             public void run() {
-                finish();
+                if(mFromHome) { //for fix bug: AM-1904
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    startActivity(intent);
+                } else {
+                    finish();
+                }
+                
             }
         }, 100);
 
@@ -763,7 +773,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
                     dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(this.getString(R.string.cancel));
-                    
+
                     dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
                         @Override
                         public void onClick(int which) {
