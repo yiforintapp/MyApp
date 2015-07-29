@@ -744,10 +744,15 @@ public class AppleWatchLayout extends ViewGroup {
             if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null
                     && QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage().size() <= 1) {
                 if (!BuildProperties.ZTEU817.equals(BuildProperties.getPoneModel())) {
-                    Uri smsToUri = Uri.parse("smsto:" + bean.getPhoneNumber());
-                    mIntent = new
-                            Intent(android.content.Intent.ACTION_SENDTO,
-                                    smsToUri);
+                    if(BuildProperties.checkPhoneBrand("YuLong")){
+                        mIntent = new Intent(Intent.ACTION_MAIN);
+                        mIntent.setType("vnd.android-dir/mms-sms");
+                    }else{
+                        Uri smsToUri = Uri.parse("smsto://" + bean.getPhoneNumber());
+                        mIntent = new
+                                Intent(android.content.Intent.ACTION_SENDTO,
+                                        smsToUri);
+                    }
                 } else {
                     mIntent = new Intent(Intent.ACTION_MAIN);
                     mIntent.setType("vnd.android-dir/mms-sms");
