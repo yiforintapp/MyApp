@@ -99,6 +99,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final String EXTRA_LOCK_MODE = "extra_lock_type";
     public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
     public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
+    public static final String SHOW_NOW = "mode changed_show_now";
 
     private int mLockMode;
     private String mLockedPackage;
@@ -169,7 +170,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         }
 
-        // initUI();
+        initUI();
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
@@ -196,7 +197,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        initUI();
+        handlePretendLock();
 
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
@@ -257,10 +258,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
 
+        Log.e("a729", "onNewIntent");
+
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
             finish();
             startActivity(intent);
+
             return;
         }
 
@@ -285,6 +289,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockedPackage = newLockedPkg;
 
             if (mPretendFragment != null) {
+
+                Log.e("a729", "!=null");
                 mPretendLayout.setVisibility(View.GONE);
                 mLockLayout.setVisibility(View.VISIBLE);
             }
@@ -305,7 +311,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             mLockFragment.onLockPackageChanged(mLockedPackage);
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
-
+            Log.e("a729", "onNewIntent===========getpre frag");
             mPretendFragment = getPretendFragment();
             if (mPretendFragment != null) { // ph
                 FragmentManager fm = getSupportFragmentManager();
@@ -521,6 +527,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         tans.commit();
 
         handlePretendLock();
+
     }
 
     // handle pretend lock
@@ -612,14 +619,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 if (null != lockMode) {
                     int currentModeFlag = lockMode.defaultFlag;
                     showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
-                    LeoEventBus.getDefaultBus().post(
-                            new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
                     SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage",
                             "shortcuts");
-
                 } else {
                     showModeActiveTip(willLaunch);
                 }
+                LeoEventBus.getDefaultBus().post(
+                        new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
             } else {
                 // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
                 // 0).show();

@@ -114,7 +114,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                             mSimpleDateFormate, messageBean, mContext,
                                             mSendDate);
                                     if (Build.VERSION.SDK_INT < 19 && !BuildProperties.isMIUI()) {
-                                        // 对于4.4的系统由于可以直接拦截，拦截后不会触发数据库变化，所以再此处通知快捷手势有新消息
+                                        // 对于4.4以下的系统由于可以直接拦截，拦截后不会触发数据库变化，所以再此处通知快捷手势有新消息
                                         noReadPrivacyMsmTipForQuickGesture(AppMasterPreference
                                                 .getInstance(mContext));
                                     }

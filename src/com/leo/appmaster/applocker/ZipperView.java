@@ -190,7 +190,7 @@ public class ZipperView extends View {
         if(mFZipper==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFZipper= Bitmap.createScaledBitmap(mZipper, (int)((float)(mZipper.getWidth()*mScaleW)), ((int)(float)(mZipper.getHeight()*mScaleH)), false);
+            mFZipper= Bitmap.createScaledBitmap(mZipper, (int)((float)(mZipper.getWidth()*mScaleW*0.8f)), ((int)(float)(mZipper.getHeight()*mScaleH*0.8)), false);
         }
         if(mFCowBoy==null)
         {
@@ -226,7 +226,7 @@ public class ZipperView extends View {
         mCanvas.drawBitmap(mFMask, 0, mYp-mFMask.getHeight(), mSpecialPaint);    
         mCanvas.drawBitmap(mFLeft, -(mFLeft.getWidth()-mCenterX)+(int)(mDisplayMetrics.density*5.5),mYp-mFLeft.getHeight() , mPaint);
         mCanvas.drawBitmap(mFRight, mCenterX-(int)(mDisplayMetrics.density*7.5), mYp-mFRight.getHeight(), mPaint);
-        mCanvas.drawBitmap(mFZipper, mCenterX-mFZipper.getWidth()/2, (int)(mYp-25.0*mScaleH), mPaint);
+        mCanvas.drawBitmap(mFZipper, mCenterX-mFZipper.getWidth()/2-(int)(mDisplayMetrics.density*1.5), (int)(mYp-20.0*mScaleH), mPaint);
         
         canvas.drawBitmap(mFBitmap, 0, 0, mPaint);
         
