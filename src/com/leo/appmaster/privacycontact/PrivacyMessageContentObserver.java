@@ -102,10 +102,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
             // 快捷手势未读通话记录提醒
             noReadCallForQuickGesture(call);
-            // TODO 
-//            if (pcm.mIsOpenPrivacyContact) {
-//                pcm.updateCalls();
-//            }
+            // TODO
+            // if (pcm.mIsOpenPrivacyContact) {
+            // pcm.updateCalls();
+            // }
         }
     }
 
@@ -319,11 +319,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         }
                         if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null) {
                             QuickGestureManager.getInstance(mContext).clearQuickNoReadMessage();
-                            ;
                         }
                         FloatWindowHelper.removeShowReadTipWindow(mContext);
-                        // 努比亚机型特别处理
-                        if (BuildProperties.checkPhoneBrand("nubia")) {
+                        // 努比亚，酷派YuLong机型特别处理
+                        if (BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
+                                || BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG)) {
                             PrivacyContactManager.getInstance(mContext).messageSize = 0;
                         }
                     } else {
@@ -363,28 +363,34 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
 
             private void restoreRedTipValueForMIUI(final ContentResolver cr) {
-                // 小米，努比亚机型特别处理
-                if (BuildProperties.isMIUI() || BuildProperties.checkPhoneBrand("nubia")) {
+                if (checkPhoneModelForRestoreRedTip()) {
                     List<MessageBean> messageList = PrivacyContactUtils
                             .getSysMessage(mContext, cr,
                                     "read=0 AND type=1", null, true);
                     if (messageList != null) {
                         int count = PrivacyContactManager
                                 .getInstance(mContext).messageSize;
-                        if (messageList.size() > PrivacyContactManager
-                                .getInstance(mContext).messageSize) {
+                        int currentCount = messageList.size();
+                        // Log.d(Constants.RUN_TAG,
+                        // "上一次数量："+count+",当前数量："+currentCount);
+                        if (currentCount > count) {
                             if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
                                 QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
                                 AppMasterPreference.getInstance(mContext)
                                         .setMessageIsRedTip(false);
                             }
                         }
-                        PrivacyContactManager.getInstance(mContext).messageSize = messageList
-                                .size();
+                        PrivacyContactManager.getInstance(mContext).messageSize = currentCount;
                     }
                 }
             }
         });
+    }
+
+    // 检查是否为需要这里恢复红点的机型
+    private boolean checkPhoneModelForRestoreRedTip() {
+        return BuildProperties.isMIUI() || BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
+                || BuildProperties.checkPhoneBrand(PrivacyContactManager.COOLPAD_YULONG);
     }
 
     // 通话记录异步处理

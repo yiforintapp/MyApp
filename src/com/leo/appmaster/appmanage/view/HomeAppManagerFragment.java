@@ -355,6 +355,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private SpannableStringBuilder setTextColor(String startWord, String endWord, String totalWord) {
         int start = startWord.length();
         int end = endWord.length();
+        int total = totalWord.length();
+        if(end > total) {
+            end = total;
+        }
         String str = totalWord;
         SpannableStringBuilder style = new SpannableStringBuilder(str);
         // SpannableStringBuilder实现CharSequence接口
@@ -369,6 +373,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             String totalWord) {
         int start = startWord.length();
         int end = endWord.length();
+        int total = totalWord.length();
+        if(end > total) {
+            end = total;
+        }
         String str = totalWord;
         SpannableStringBuilder style = new SpannableStringBuilder(str);
         // SpannableStringBuilder实现CharSequence接口

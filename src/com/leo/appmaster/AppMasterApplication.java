@@ -178,11 +178,7 @@ public class AppMasterApplication extends Application {
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
-        // Log.e(FloatWindowHelper.RUN_TAG,
-        // "是否V6："
-        // +BuildProperties.isMiuiV6()+",是否为V5："+BuildProperties.isMiuiV5());
-//            Log.e(Constants.RUN_TAG, "是否为指定的系统："+!TextUtils.isEmpty((CharSequence) (BuildProperties.getSystemProperty("ro.sony.fota.encrypteddata"))));
-        
+//         Log.e(Constants.RUN_TAG, "机型："+BuildProperties.checkPhoneBrand("YuLong"));
     }
 
     private String getUserSerial() {
