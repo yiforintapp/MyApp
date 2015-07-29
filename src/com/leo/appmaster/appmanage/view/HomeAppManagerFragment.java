@@ -5,6 +5,7 @@ import java.io.File;
 import java.util.ArrayList;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -135,11 +136,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-        if(mIsGestureIconWithShadowTip)
-        {
-            mGestureIcon.setImageResource(R.drawable.gesture_tab_icon);
-            mIsGestureIconWithShadowTip=false;
-        }
+//        if(mIsGestureIconWithShadowTip)
+//        {
+//            mGestureIcon.setImageResource(R.drawable.gesture_tab_icon);
+//            mIsGestureIconWithShadowTip=false;
+//        }
         
         if (sp_homeAppManager.getQuickGestureRedTip()) {
             
@@ -801,6 +802,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         AnimatorSet set = new AnimatorSet();
         set.playTogether(alphaAnimator, gestureSmall);
         set.start();
+        
     }
 
     public void setGestureTabBgVisibility(int visiable) {
