@@ -197,9 +197,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-//        initUI();
-        
-        
+        // initUI();
+         handlePretendLock();
+
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -260,12 +260,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onNewIntent(Intent intent) {
 
         Log.e("a729", "onNewIntent");
-        
+
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
             finish();
             startActivity(intent);
-            
+
             return;
         }
 
@@ -290,7 +290,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockedPackage = newLockedPkg;
 
             if (mPretendFragment != null) {
-                
+
                 Log.e("a729", "!=null");
                 mPretendLayout.setVisibility(View.GONE);
                 mLockLayout.setVisibility(View.VISIBLE);
@@ -527,7 +527,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         tans.replace(R.id.fragment_contain, mLockFragment);
         tans.commit();
 
-        handlePretendLock();
+         handlePretendLock();
+
     }
 
     // handle pretend lock
@@ -673,7 +674,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             @Override
             public void run() {
-                if(mFromHome) { //for fix bug: AM-1904
+                if (mFromHome) { // for fix bug: AM-1904
                     Intent intent = new Intent();
                     intent.setAction(Intent.ACTION_MAIN);
                     intent.addCategory(Intent.CATEGORY_HOME);
@@ -681,7 +682,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 } else {
                     finish();
                 }
-                
+
             }
         }, 100);
 
