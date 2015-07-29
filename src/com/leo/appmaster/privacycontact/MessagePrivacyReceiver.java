@@ -57,7 +57,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, final Intent intent) {
         // 测试
-//        printTestReceiverLog(intent);
+        printTestReceiverLog(intent);
         String action = intent.getAction();
         mContext = context;
         if (mSimpleDateFormate == null) {
