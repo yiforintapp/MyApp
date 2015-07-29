@@ -531,6 +531,7 @@
             android:exported="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
+            android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >

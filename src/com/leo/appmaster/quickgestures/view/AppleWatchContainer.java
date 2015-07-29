@@ -1404,7 +1404,7 @@ public class AppleWatchContainer extends FrameLayout {
                 QuickGesturePopupActivity activity = (QuickGesturePopupActivity) AppleWatchContainer.this
                         .getContext();
                 isAnimating = false;
-                LockManager.getInstatnce().filterAllOneTime(1000);
+//                LockManager.getInstatnce().filterAllOneTime(500);
                 activity.finish();
                 if (runnable != null) {
                     runnable.run();

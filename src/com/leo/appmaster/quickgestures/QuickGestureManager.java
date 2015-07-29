@@ -88,11 +88,7 @@ public class QuickGestureManager {
     public boolean mToCallFlag;
     public static String QUICK_GESTURE_SETTING_EVENT = "quick_gesture_setting_event";
     public boolean isDialogShowing = false;
-
-    /*
-     * -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
-     */
-    public int onTuchGestureFlag = -1;
+    public int onTuchGestureFlag = -1;// -1:左侧底，-2：左侧中，1：右侧底，2：右侧中
     public boolean isJustHome;
     public boolean isAppsAndHome;
     public boolean isLeftBottom, isRightBottom, isLeftCenter, isRightCenter;
