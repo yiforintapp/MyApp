@@ -168,7 +168,9 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
      */
     private void updateProgress() {
         if(bili > 100){
-            tv_from_donghua.setText(bili-100 + "%");
+            if(tv_from_donghua != null) {
+                tv_from_donghua.setText(bili-100 + "%");
+            }
         }else{
             if(progress >= bili && bili!=0) {
                 return;
