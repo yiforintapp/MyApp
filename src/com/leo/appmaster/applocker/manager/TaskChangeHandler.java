@@ -147,7 +147,6 @@ public class TaskChangeHandler {
             AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,
                     System.currentTimeMillis());
 
-            LeoLog.i("LockManager", "pkg = " + pkg);
             List<String> lockList = LockManager.getInstatnce().getCurLockList();
             boolean lock = false;
             if (lockList != null) {
