@@ -12,7 +12,6 @@ import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -24,7 +23,6 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -114,20 +112,20 @@ public class TaskDetectService extends Service {
         if (!mServiceStarted) {
             startDetect();
         }
-        // As native process is not work for android 5.0 and above, use AlarmManager instead.
-        triggerForLollipop();
+//        // As native process is not work for android 5.0 and above, use AlarmManager instead.
+//        triggerForLollipop();
         return START_STICKY;
     }
     
-    private void triggerForLollipop() {
-        if(PhoneInfo.getAndroidVersion() > 19) {
-            Context context = getApplicationContext();
-            Intent localIntent = new Intent(context, getClass());
-            localIntent.setPackage(getPackageName());
-            PendingIntent pi = PendingIntent.getService(context, 1, localIntent, PendingIntent.FLAG_ONE_SHOT);
-            ((AlarmManager)context.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME, 5000 + SystemClock.elapsedRealtime(), pi);
-        }
-    }
+//    private void triggerForLollipop() {
+//        if(PhoneInfo.getAndroidVersion() > 19) {
+//            Context context = getApplicationContext();
+//            Intent localIntent = new Intent(context, getClass());
+//            localIntent.setPackage(getPackageName());
+//            PendingIntent pi = PendingIntent.getService(context, 1, localIntent, PendingIntent.FLAG_ONE_SHOT);
+//            ((AlarmManager)context.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME, 5000 + SystemClock.elapsedRealtime(), pi);
+//        }
+//    }
 
     public String getLastRunningPackage() {
         return mLockHandler.getLastRunningPackage();
