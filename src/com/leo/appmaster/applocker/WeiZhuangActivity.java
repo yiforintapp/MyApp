@@ -117,13 +117,13 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         // pohatodo
           
         if (!AppMasterPreference.getInstance(this).getIsDeterminCloseBeautyFirstly() &&
-                ("0001z".equals(getResources().getString(R.string.channel_code))
-                        || "0002z".equals(getResources().getString(R.string.channel_code)) ||
-                        "0003z".equals(getResources().getString(R.string.channel_code)) ||
-                        "0004z".equals(getResources().getString(R.string.channel_code)) ||
-                        "0005z".equals(getResources().getString(R.string.channel_code)) ||
-                        "0006z".equals(getResources().getString(R.string.channel_code)) ||
-                "0007z".equals(getResources().getString(R.string.channel_code))))
+                ("[][]0001z[][]".equals(getResources().getString(R.string.channel_code))
+                        || "[][]0002z[][]".equals(getResources().getString(R.string.channel_code)) ||
+                        "[][]0003z[][]".equals(getResources().getString(R.string.channel_code)) ||
+                        "[][]0004z[][]".equals(getResources().getString(R.string.channel_code)) ||
+                        "[][]0005z[][]".equals(getResources().getString(R.string.channel_code)) ||
+                        "[][]0006z[][]".equals(getResources().getString(R.string.channel_code)) ||
+                "[][]0007z[][]".equals(getResources().getString(R.string.channel_code))))
         {  
             Log.e("730", "firstly--need hexie");
             AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
