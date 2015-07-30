@@ -126,7 +126,7 @@ public class LockModeEditActivity extends BaseActivity implements
             mEditMode.defaultFlag = -1;
             mEditMode.isCurrentUsed = false;
             mEditMode.modeName = mModeName;
-            mEditMode.lockList = new LinkedList<String>();
+            mEditMode.lockList = Collections.synchronizedList(new LinkedList<String>());
         } else {
             LockManager lm = LockManager.getInstatnce();
             List<LockMode> modeList = lm.getLockMode();
@@ -411,7 +411,7 @@ public class LockModeEditActivity extends BaseActivity implements
                             mSaveDialogClick = true;
                             LockManager lm = LockManager.getInstatnce();
                             mEditMode.modeName = mModeName;
-                            List<String> changedList = new ArrayList<String>();
+                            List<String> changedList = Collections.synchronizedList(new LinkedList<String>());
                             for (AppInfo appInfo : mLockedList) {
                                 changedList.add(new String(appInfo.packageName));
                             }
@@ -453,7 +453,7 @@ public class LockModeEditActivity extends BaseActivity implements
         } else {
             LockManager lm = LockManager.getInstatnce();
             mEditMode.modeName = mModeName;
-            List<String> changedList = new ArrayList<String>();
+            List<String> changedList = Collections.synchronizedList(new LinkedList<String>());
             for (AppInfo appInfo : mLockedList) {
                 changedList.add(new String(appInfo.packageName));
             }

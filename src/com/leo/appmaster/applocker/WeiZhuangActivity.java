@@ -113,22 +113,66 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             info.setIcon(mIcon[i]);
             mList.add(info);
         }
-
-        // pohatodo   //判断成功一次就true，
-        if ((AppMasterPreference.getInstance(this).getPretendLock() != 4)
-                && ("0001z".equals(getResources().getString(R.string.channel_code))
-                        || "0002z".equals(getResources().getString(R.string.channel_code)) ||
-                        "0003z".equals(getResources().getString(R.string.channel_code)) ||
-                        "0004z".equals(getResources().getString(R.string.channel_code)) ||
-                        "0005z".equals(getResources().getString(R.string.channel_code)) ||
-                        "0006z".equals(getResources().getString(R.string.channel_code)) ||
-                "0007z".equals(getResources().getString(R.string.channel_code))))
-        {
-            mList.remove(1);
-            mIsRemoveBeauty = true;
-
+        // (AppMasterPreference.getInstance(this).getPretendLock() != 4)
+        // pohatodo
+          
+        if (!AppMasterPreference.getInstance(this).getIsDeterminCloseBeautyFirstly() &&
+                (       
+//                        "[][]0001z[][]".equals(getResources().getString(R.string.channel_code)) || 
+//                        "[][]0002z[][]".equals(getResources().getString(R.string.channel_code)) ||
+//                        "[][]0003z[][]".equals(getResources().getString(R.string.channel_code)) ||
+//                        "[][]0004z[][]".equals(getResources().getString(R.string.channel_code)) ||
+//                        "[][]0005z[][]".equals(getResources().getString(R.string.channel_code)) ||
+//                        "[][]0006z[][]".equals(getResources().getString(R.string.channel_code)) ||
+                        "[*][*]0007z[*][*]".equals(getResources().getString(R.string.channel_code))
+                  )
+               )
+        {  
+            Log.e("730", "firstly--need hexie");
+            AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
             AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(true);
         }
+        else
+        {
+            AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
+            Log.e("730", "firstly--no  need hexie");
+        }
+
+        
+        if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty() &&
+                (
+                              ("0001z".equals(getResources().getString(R.string.channel_code))==false)
+                        && ("0002z".equals(getResources().getString(R.string.channel_code))==false)
+                        && ("0003z".equals(getResources().getString(R.string.channel_code))==false)
+                        && ("0004z".equals(getResources().getString(R.string.channel_code))==false)
+                        && ("0005z".equals(getResources().getString(R.string.channel_code))==false)
+                        && ("0006z".equals(getResources().getString(R.string.channel_code))==false)
+                        && ("0007z".equals(getResources().getString(R.string.channel_code))==false)
+                )
+             )
+        {
+            Log.e("730", ("0001z".equals(getResources().getString(R.string.channel_code))==false)+"");
+            Log.e("730", ("0002z".equals(getResources().getString(R.string.channel_code))==false)+"");
+            Log.e("730", ("0003z".equals(getResources().getString(R.string.channel_code))==false)+"");
+            Log.e("730", ("0004z".equals(getResources().getString(R.string.channel_code))==false)+"");
+            Log.e("730", ("0005z".equals(getResources().getString(R.string.channel_code))==false)+"");
+            Log.e("730", ("0006z".equals(getResources().getString(R.string.channel_code))==false)+"");
+            Log.e("730", ("0007z".equals(getResources().getString(R.string.channel_code))==false)+"");
+            
+            Log.e("730", "secondly--no need hexie");
+            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);
+        }
+        
+        
+        
+        
+        if(AppMasterPreference.getInstance(this).getIsNeedCloseBeauty())
+        {
+            Log.e("730", "finally--need hexie");
+            mList.remove(1);
+            mIsRemoveBeauty = true;            
+        }
+
         // else
         // {
         // AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);
