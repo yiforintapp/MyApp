@@ -269,6 +269,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
+        mFromHome = intent.getBooleanExtra("from_home", false);
         if (mQuickLockMode) {
             mQuickModeName = intent.getStringExtra("lock_mode_name");
             mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
