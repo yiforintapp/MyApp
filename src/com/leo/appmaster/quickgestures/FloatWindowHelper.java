@@ -1953,13 +1953,14 @@ public class FloatWindowHelper {
         intent.putExtra("from_white_dot", true);
         if (TextUtils
                 .equals(mContext.getPackageName(), LockManager.getInstatnce().getLastPackage())) {
+            
             intent.putExtra("from_self_app", true);
         }
         
 //        
 //        if(!AppMasterPreference.getInstance(mContext).getIsWhiteDotResponsing())//phtd
 //        {
-//            mContext.startActivity(intent);        
+           mContext.startActivity(intent);        
 //            AppMasterPreference.getInstance(mContext).setIsWhiteDotResponsing(true);           
 //        }
 //        
