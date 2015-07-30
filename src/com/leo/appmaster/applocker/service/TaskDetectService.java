@@ -43,6 +43,8 @@ public class TaskDetectService extends Service {
 
     public static final String EXTRA_STARTUP_FROM = "start_from";
 
+    public static final String PRETEND_PACKAGE = "pretent_pkg";
+    
     public static final String SYSTEMUI_PKG = "com.android.systemui";
     private static final String ES_UNINSTALL_ACTIVITY = ".app.UninstallMonitorActivity";
     private static final String STATE_NORMAL = "normal";
@@ -105,6 +107,10 @@ public class TaskDetectService extends Service {
 
     private void startPhantomService() {
         startService(new Intent(this, PhantomService.class));
+    }
+    
+    public void callPretendAppLaunch() {
+        mLockHandler.handleAppLaunch(PRETEND_PACKAGE, PRETEND_PACKAGE);
     }
 
     @Override

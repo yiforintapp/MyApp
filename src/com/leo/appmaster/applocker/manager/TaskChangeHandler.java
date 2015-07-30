@@ -9,10 +9,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.LeoLog;
 
 public class TaskChangeHandler {
@@ -83,7 +81,7 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-        // LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
 
         // for gesture check
         if (activity.contains(GESTURE)) {

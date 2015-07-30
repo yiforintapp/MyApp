@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.ClickQuickItemEvent;
 import com.leo.appmaster.model.BaseInfo;
@@ -261,6 +262,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
             createFloatView();
         }
+        TaskDetectService.getService().callPretendAppLaunch();
         super.onDestroy();
     }
 
