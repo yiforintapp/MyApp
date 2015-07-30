@@ -92,10 +92,12 @@ public class TaskChangeHandler {
         boolean unlocked = amp.getUnlocked();
         String checkPkg = amp.getDoubleCheck();
         boolean doubleCheck = checkPkg != null && checkPkg.equals(pkg);
-        if (((doubleCheck && !unlocked) || !pkg.equals(mLastRunningPkg))
+        boolean isCurrentSelf = pkg.equals(myPackage);
+        boolean isLastSelf = mLastRunningPkg.equals(myPackage);
+        boolean selfUnlock = isCurrentSelf && isLastSelf && !unlocked;
+        boolean packageCheck =  !pkg.equals(mLastRunningPkg) || selfUnlock;
+        if (((doubleCheck && !unlocked) || packageCheck)
                 && !TextUtils.isEmpty(mLastRunningPkg)) {
-            boolean isCurrentSelf = pkg.equals(myPackage);
-            boolean isLastSelf = mLastRunningPkg.equals(myPackage);
             if (isCurrentSelf && !isLastSelf) {
                 amp.setFromOther(true);
             }

@@ -663,8 +663,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 pref.setNewUserUnlockCount(pref.getNewUserUnlockCount() + 1);
             } else if (mLockMode == LockManager.LOCK_MODE_PURE) {
             }
-            pref.setUnlocked(true);
-            pref.setDoubleCheck(null);
 
             SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "done");
 
@@ -687,7 +685,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         AppMasterPreference amp = AppMasterPreference.getInstance(LockScreenActivity.this);
         amp.setLockerScreenThemeGuide(true);
-
+        amp.setUnlocked(true);
+        amp.setDoubleCheck(null);
     }
 
     private void checkLockTip() {
