@@ -35,6 +35,7 @@ import android.view.WindowManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -1241,6 +1242,17 @@ public class LockManager {
         return mCurrentMode.lockList;
     }
 
+    public boolean isPackageLocked(String packageName) {
+        if (TextUtils.isEmpty(packageName))
+            return false;
+        List<String> pkgList = getCurLockList();
+        if (pkgList.contains(packageName)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public void setCurrentLockMode(final LockMode mode, boolean fromUser) {
         if (mCurrentMode == mode || mode == null)
             return;
@@ -1550,6 +1562,17 @@ public class LockManager {
                     checkScreenOn();
                 }
             }, 500);
+        } else if (PhoneInfo.getPhoneDeviceModel().contains("Nokia") && Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+                final String lastRunningPkg = getLastPackage();
+                final String lastRunningActivity = getLastActivity();
+
+                if (isPackageLocked(lastRunningPkg)
+                        && !QuickGesturePopupActivity.class.getName().contains(lastRunningActivity)
+                        && !LockScreenActivity.class.getName().contains(lastRunningActivity)
+                        && !WaitActivity.class.getName().contains(lastRunningActivity)
+                        && !ProxyActivity.class.getName().contains(lastRunningActivity)) {
+                    applyLock(LOCK_MODE_FULL, lastRunningPkg, false, null);
+                }
         }
     }
 
