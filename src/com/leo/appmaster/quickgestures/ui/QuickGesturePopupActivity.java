@@ -175,7 +175,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onResume() {
         Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
         
-        AppMasterPreference.getInstance(this).setIsWhiteDotResponsing(false);
+//        AppMasterPreference.getInstance(this).setIsWhiteDotResponsing(false);
         
         // LeoLog.d("testActivity", "onResume");
         FloatWindowHelper.mGestureShowing = true;

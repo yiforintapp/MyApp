@@ -139,7 +139,7 @@ public class ZipperView extends View {
         mSpecialPaint=new Paint();
         mSpecialPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
         mMask=BitmapFactory.decodeResource(getResources(), R.drawable.zipper_bg_mask);
-        mDrawbleBg = BitmapFactory.decodeResource(getResources(), R.drawable.bg_beauty);
+//        mDrawbleBg = BitmapFactory.decodeResource(getResources(), R.drawable.bg_beauty);
         mDrawbleCowBoy = BitmapFactory.decodeResource(getResources(), R.drawable.bg_cowboy);
         mZipper = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper);
         mLeft = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_left);

@@ -1853,11 +1853,8 @@ public class FloatWindowHelper {
         pref.setNeedShowWhiteDotSlideTip(false);
         checkDismissWhiteDotLuminescence(mContext);
         int oreatation = mWhiteFloatParams.x < 0 ? 0 : 2;
-//        if(!AppMasterPreference.getInstance(mContext).getIsWhiteDotResponsing())
-//        {
-//            mIsWhiteFloatViewResponsing=true;
             showQuickGuestureView(mContext, oreatation);
-//        }
+
     }
 
     private static void setWhiteFloatOnTouchEvent(final Context mContext) {
@@ -1956,13 +1953,18 @@ public class FloatWindowHelper {
         intent.putExtra("from_white_dot", true);
         if (TextUtils
                 .equals(mContext.getPackageName(), LockManager.getInstatnce().getLastPackage())) {
+            
             intent.putExtra("from_self_app", true);
         }
-        if(!AppMasterPreference.getInstance(mContext).getIsWhiteDotResponsing())//phtd
-        {
-            mContext.startActivity(intent);        
-            AppMasterPreference.getInstance(mContext).setIsWhiteDotResponsing(true);
-        }
+        
+//        
+//        if(!AppMasterPreference.getInstance(mContext).getIsWhiteDotResponsing())//phtd
+//        {
+           mContext.startActivity(intent);        
+//            AppMasterPreference.getInstance(mContext).setIsWhiteDotResponsing(true);           
+//        }
+//        
+        
     }
 
     private static boolean hasMessageTip(Context mContext) {
