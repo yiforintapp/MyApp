@@ -146,6 +146,7 @@ public class ZipperView extends View {
     private void init() {
         mPaint=new Paint();
         mPaint.setAntiAlias(true);
+        
         mSpecialPaint=new Paint();
         mSpecialPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
         mMask=BitmapFactory.decodeResource(getResources(), R.drawable.zipper_bg_mask);
@@ -180,25 +181,25 @@ public class ZipperView extends View {
         if(mFLeft==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFLeft=Bitmap.createScaledBitmap(mLeft, (int)((float)(mLeft.getWidth()*mScaleW)), (int)((float)(mLeft.getHeight()*mScaleH)), false);
+            mFLeft=Bitmap.createScaledBitmap(mLeft, (int)((float)(mLeft.getWidth()*mScaleW)), (int)((float)(mLeft.getHeight()*mScaleH)), true);
         }
         if(mFRight==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFRight=Bitmap.createScaledBitmap(mRight,(int)((float)(mRight.getWidth()*mScaleW)), (int)((float)(mRight.getHeight()*mScaleH)), false);
+            mFRight=Bitmap.createScaledBitmap(mRight,(int)((float)(mRight.getWidth()*mScaleW)), (int)((float)(mRight.getHeight()*mScaleH)), true);
         }
         if(mFZipper==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFZipper= Bitmap.createScaledBitmap(mZipper, (int)((float)(mZipper.getWidth()*mScaleW*0.8f)), ((int)(float)(mZipper.getHeight()*mScaleH*0.8)), false);
+            mFZipper= Bitmap.createScaledBitmap(mZipper, (int)((float)(mZipper.getWidth()*mScaleW*0.8f)), ((int)(float)(mZipper.getHeight()*mScaleH*0.8)), true);
         }
         if(mFCowBoy==null)
         {
-            mFCowBoy=Bitmap.createScaledBitmap(mDrawbleCowBoy, mWidth, mHeight, false);
+            mFCowBoy=Bitmap.createScaledBitmap(mDrawbleCowBoy, mWidth, mHeight, true);
         }
         if(mFMask==null)
         {
-            mFMask=Bitmap.createScaledBitmap(mMask, mWidth, mHeight, false);
+            mFMask=Bitmap.createScaledBitmap(mMask, mWidth, mHeight, true);
         }
         mFBitmap=Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
         
