@@ -50,16 +50,22 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private Animation mGuidAnimation;
     private boolean mIsOpenHelp = false;
     private boolean mIsRemoveBeauty = false;
-
+    private List<String> mNeedCloseBeautyChannelCode=new ArrayList<String>();
+   
+//        {"fg65d4sf5g6","546465","56456456"};
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_weizhuang_girdview);
+       
         init();
         fillData();
     }
 
     private void init() {
+        
+        
         mTtileBar = (CommonTitleBar) findViewById(R.id.weizhuang_title_bar);
         mTtileBar.setTitle(R.string.title_bar_weizhuang);
         mTtileBar.openBackView();
@@ -113,18 +119,19 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             info.setIcon(mIcon[i]);
             mList.add(info);
         }
-        // (AppMasterPreference.getInstance(this).getPretendLock() != 4)
-        // pohatodo
-          
+   
+        //在这里添加需要和谐美女伪装的渠道号
+        //mNeedCloseBeautyChannelCode.add("0001a");
+
         if (!AppMasterPreference.getInstance(this).getIsDeterminCloseBeautyFirstly() &&
-                (       
+                (       mNeedCloseBeautyChannelCode.contains(getResources().getString(R.string.channel_code))
 //                        "[][]0001z[][]".equals(getResources().getString(R.string.channel_code)) || 
 //                        "[][]0002z[][]".equals(getResources().getString(R.string.channel_code)) ||
 //                        "[][]0003z[][]".equals(getResources().getString(R.string.channel_code)) ||
 //                        "[][]0004z[][]".equals(getResources().getString(R.string.channel_code)) ||
 //                        "[][]0005z[][]".equals(getResources().getString(R.string.channel_code)) ||
-//                        "[][]0006z[][]".equals(getResources().getString(R.string.channel_code)) ||
-                        "[*][*]0007z[*][*]".equals(getResources().getString(R.string.channel_code))
+//                        "[][]0006z[][]".equals(getResources().getString(R.string.channel_code)) ||                    
+//                        "[*][*]0007z[*][*]".equals(getResources().getString(R.string.channel_code))
                   )
                )
         {  
@@ -139,26 +146,9 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         }
 
         
-        if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty() &&
-                (
-                              ("0001z".equals(getResources().getString(R.string.channel_code))==false)
-                        && ("0002z".equals(getResources().getString(R.string.channel_code))==false)
-                        && ("0003z".equals(getResources().getString(R.string.channel_code))==false)
-                        && ("0004z".equals(getResources().getString(R.string.channel_code))==false)
-                        && ("0005z".equals(getResources().getString(R.string.channel_code))==false)
-                        && ("0006z".equals(getResources().getString(R.string.channel_code))==false)
-                        && ("0007z".equals(getResources().getString(R.string.channel_code))==false)
-                )
-             )
-        {
-            Log.e("730", ("0001z".equals(getResources().getString(R.string.channel_code))==false)+"");
-            Log.e("730", ("0002z".equals(getResources().getString(R.string.channel_code))==false)+"");
-            Log.e("730", ("0003z".equals(getResources().getString(R.string.channel_code))==false)+"");
-            Log.e("730", ("0004z".equals(getResources().getString(R.string.channel_code))==false)+"");
-            Log.e("730", ("0005z".equals(getResources().getString(R.string.channel_code))==false)+"");
-            Log.e("730", ("0006z".equals(getResources().getString(R.string.channel_code))==false)+"");
-            Log.e("730", ("0007z".equals(getResources().getString(R.string.channel_code))==false)+"");
-            
+        if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty() &&               
+                        mNeedCloseBeautyChannelCode.contains(getResources().getString(R.string.channel_code))==false)
+        {          
             Log.e("730", "secondly--no need hexie");
             AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);
         }
