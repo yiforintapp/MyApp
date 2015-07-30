@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -1040,7 +1041,7 @@ public class LockManager {
             homeMode.modeIcon =
                     BitmapFactory.decodeResource(mContext.getResources(),
                             R.drawable.lock_mode_family);
-            LinkedList<String> list = new LinkedList<String>();
+            List<String> list = Collections.synchronizedList(new LinkedList<String>());
             list.add(mContext.getPackageName());
             for (String pkg : Constants.sDefaultHomeModeList) {
                 if (AppUtil.appInstalled(mContext, pkg)) {
@@ -1148,7 +1149,7 @@ public class LockManager {
                     lockMode.defaultFlag = 1;
                     lockMode.modeIcon = BitmapFactory.decodeResource(mContext.getResources(),
                             R.drawable.lock_mode_visitor);
-                    LinkedList<String> list = new LinkedList<String>();
+                    List<String> list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     lockMode.lockList = list;
                     mLockModeList.add(lockMode);
@@ -1191,7 +1192,7 @@ public class LockManager {
                     lockMode.modeIcon =
                             BitmapFactory.decodeResource(mContext.getResources(),
                                     R.drawable.lock_mode_family);
-                    list = new LinkedList<String>();
+                    list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {
                         // AM-1765 联想K2110Aandroid]testin测试运行失败
@@ -1233,7 +1234,7 @@ public class LockManager {
     public synchronized List<String> getCurLockList() {
         if (mCurrentMode == null || mCurrentMode.lockList == null
                 || mCurrentMode.lockList.isEmpty()) {
-            ArrayList<String> list = new ArrayList<String>(1);
+            List<String> list = Collections.synchronizedList(new ArrayList<String>(1));
             list.add(mContext.getPackageName());
             return list;
         }
@@ -1262,7 +1263,7 @@ public class LockManager {
 
         // check show time/location lock tip
         if (fromUser) {
-//            checkLockTip();
+            // checkLockTip();
         }
     }
 
