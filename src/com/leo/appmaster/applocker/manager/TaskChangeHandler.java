@@ -77,7 +77,7 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+//         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
 
         // for gesture check
         if (activity.contains(GESTURE)) {
@@ -118,7 +118,6 @@ public class TaskChangeHandler {
                                 || (!unlocked && activity.contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
-                    LeoLog.i("handleAppLaunch"," doubleCheck  mLastRuningActivity = "+mLastRuningActivity);
                     mLastRunningPkg = pkg;
                     mLastRuningActivity = activity;
                     return;
@@ -139,7 +138,6 @@ public class TaskChangeHandler {
                                     .contains(LOCKSCREENNAME)))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
-                    LeoLog.i("handleAppLaunch","   mLastRuningActivity = "+mLastRuningActivity);
                     mLastRunningPkg = pkg;
                     mLastRuningActivity = activity;
                     return;
