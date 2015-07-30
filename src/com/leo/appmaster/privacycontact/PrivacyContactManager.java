@@ -20,6 +20,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -27,10 +28,18 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.NotificationUtil;
 
 public class PrivacyContactManager {
-
+    /* 手机名称 */
+    public static String COOLPAD_YULONG = "YuLong";
+    public static String NUBIA = "nubia";
+    public static final String ZTEU817 = "ZTE U817";
+    /* 跳转通话记录特别处理机型数组 */
+    public static final String[] filterPhoneMode = {
+            "SM-N9150", "SM-G9250"
+    };
     private static PrivacyContactManager sInstance;
     private Context mContext;
     private ArrayList<ContactBean> mContacts;
@@ -39,11 +48,18 @@ public class PrivacyContactManager {
     private ContactBean mLastCallContact;
     private ContactBean mLastMessageContact;
     private boolean mContactLoaded = false;
-    public boolean deleteCallLogDatebaseFlag;// 用来做隐私联系人通话删除时的通话标志
-    public boolean deleteMsmDatebaseFlag;// 用来做隐私联系人短信删除时的标志
-    public int messageSize;// 对红米未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false
+    /* 用来做隐私联系人通话删除时的通话标志 */
+    public boolean deleteCallLogDatebaseFlag;
+    /* 用来做隐私联系人短信删除时的标志 */
+    public boolean deleteMsmDatebaseFlag;
+    /* 对不能接受短信广播未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false */
+    public int messageSize;
+    /* 对不能接受来电广播未读短信数量统计，与下次来短信进行对比，如果增加则将显示是否显示过红点的标志为变为false */
+    public int mUnCalls;
     private boolean mCallsLoaded;
     private ArrayList<ContactCallLog> mSysCalls;
+    /* 当前页是否为PrivacyContactActivity */
+    public boolean mIsOpenPrivacyContact;
     /* 用来做测试 */
     public boolean testValue;
 
@@ -169,7 +185,7 @@ public class PrivacyContactManager {
         return message;
     }
 
-    // 拦截短信处理
+    /* 拦截短信处理 */
     public synchronized void synMessage(SimpleDateFormat sdf, MessageBean message,
             Context mContext, Long sendDate) {
         AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
@@ -206,7 +222,7 @@ public class PrivacyContactManager {
                  * 记录最后隐私短信和隐私通话哪个最后来电(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)
                  */
                 QuickGestureManager.getInstance(mContext).privacyLastRecord = QuickGestureManager.RECORD_MSM;
-                // 发送拦截通知
+                /* 发送拦截通知 */
                 if (messageItemRuning) {
                     NotificationManager notificationManager = (NotificationManager) mContext
                             .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -257,7 +273,7 @@ public class PrivacyContactManager {
             } else {
                 pre.setMessageNoReadCount(1);
             }
-            // 发送拦截通知
+            /* 发送拦截通知 */
             if (messageItemRuning) {
                 NotificationManager notificationManager = (NotificationManager) mContext
                         .getSystemService(Context.NOTIFICATION_SERVICE);
@@ -285,7 +301,7 @@ public class PrivacyContactManager {
                 AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
             }
         }
-        // 通知更新短信记录
+        /* 通知更新短信记录 */
         LeoEventBus.getDefaultBus().post(
                 new PrivacyEditFloatEvent(
                         PrivacyContactUtils.PRIVACY_RECEIVER_MESSAGE_NOTIFICATION));
@@ -298,11 +314,9 @@ public class PrivacyContactManager {
         mLastMessage = message;
     }
 
-    /**
-     * 对快捷手势隐私联系人,消费(查看或者删除)隐私通话时，红点去除操作
-     */
+    /* 对快捷手势隐私联系人,消费(查看或者删除)隐私通话时，红点去除操作 */
     public void deletePrivacyCallCancelRedTip(Context context) {
-        // 隐私通话
+        /* 隐私通话 */
         if (QuickGestureManager
                 .getInstance(context).isShowPrivacyCallLog) {
             QuickGestureManager
@@ -333,9 +347,7 @@ public class PrivacyContactManager {
                 .removeShowReadTipWindow(context);
     }
 
-    /**
-     * 对快捷手势隐私联系人,消费隐(查看或者删除)私短信时，红点去除操作
-     */
+    /* 对快捷手势隐私联系人,消费隐(查看或者删除)私短信时，红点去除操作 */
     public void deletePrivacyMsmCancelRedTip(Context context) {
         if (QuickGestureManager
                 .getInstance(context).isShowPrivacyMsm) {
@@ -368,7 +380,7 @@ public class PrivacyContactManager {
                 .removeShowReadTipWindow(context);
     }
 
-    // 通话记录预加载
+    /* 通话记录预加载 */
     private synchronized void loadCallLogs() {
         if (!mCallsLoaded) {
             mSysCalls = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,
@@ -381,7 +393,7 @@ public class PrivacyContactManager {
     }
 
     public ArrayList<ContactCallLog> getSysCalls() {
-        Log.e(Constants.RUN_TAG, "预加载通话记录");
+        // Log.e(Constants.RUN_TAG, "预加载通话记录");
         loadCallLogs();
         return (ArrayList<ContactCallLog>) mSysCalls.clone();
     }
@@ -409,7 +421,56 @@ public class PrivacyContactManager {
             mSysCalls = null;
         }
         mCallsLoaded = false;
-        Log.e(Constants.RUN_TAG, "销毁内存中的通话记录");
+        // Log.e(Constants.RUN_TAG, "销毁内存中的通话记录");
     }
 
+    public void initLoadData() {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            @Override
+            public void run() {
+                PrivacyContactManager.getInstance(mContext).destroyCalls();
+                PrivacyContactManager.getInstance(mContext).getSysCalls();
+            }
+        });
+    }
+
+    public void uninitLoadData() {
+        mIsOpenPrivacyContact = false;
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+
+            @Override
+            public void run() {
+                destroyCalls();
+            }
+        });
+    }
+
+    /* 检查是否为不能接受短信广播的机型 */
+    public boolean clearMsmForNoReceiver() {
+        return BuildProperties.checkPhoneBrand(PrivacyContactManager.NUBIA)
+                || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
+
+    /* 检查是否为不能接受来电广播的机型 */
+    public boolean clearCallForNoReceiver() {
+        return BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
+
+    /* 检查是否为需要这里恢复红点的机型(不能接受短信广播的机型) */
+    public boolean checkPhoneModelForRestoreRedTip() {
+        return BuildProperties.isMIUI()
+                || BuildProperties.checkPhoneBrand(NUBIA)
+                || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
+
+    /* 检查是否为需要这里恢复红点的机型(不能接受来电广播的机型) */
+    public boolean checkPhoneModelForCallRestoreRedTip() {
+        return BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
+
+    /* 检查是否为不能直接跳到短信详情的机型 */
+    public boolean noToMsmDetail() {
+        return BuildProperties.checkPhoneModel(ZTEU817)
+                || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
+    }
 }

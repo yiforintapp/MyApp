@@ -529,9 +529,9 @@
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
             android:exported="true"
-            android:excludeFromRecents="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
+            android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
@@ -558,36 +558,32 @@
             android:name="com.leo.appmaster.applocker.FamilyModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleInstance"
             android:noHistory="true"
-            android:taskAffinity="com.leo.appmaster.proxy"
+            android:taskAffinity="com.leo.appmaster.lockscreen"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.OfficeModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleInstance"
             android:noHistory="true"
-            android:taskAffinity="com.leo.appmaster.proxy"
+            android:taskAffinity="com.leo.appmaster.lockscreen"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.UnlockAllModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleInstance"
             android:noHistory="true"
-            android:taskAffinity="com.leo.appmaster.proxy"
+            android:taskAffinity="com.leo.appmaster.lockscreen"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.VisitorModeProxyActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleInstance"
             android:noHistory="true"
-            android:taskAffinity="com.leo.appmaster.proxy"
+            android:taskAffinity="com.leo.appmaster.lockscreen"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity

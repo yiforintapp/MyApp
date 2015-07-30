@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
@@ -78,15 +77,17 @@ public class LockModeDao {
         return modeList;
     }
 
-    public void insertLockMode(LockMode lockMode) {
+    public synchronized void insertLockMode(LockMode lockMode) {
         if (lockMode == null)
             return;
         ContentValues values = new ContentValues();
         values.put(Constants.COLUMN_LOCK_MODE_NAME, lockMode.modeName);
         String lockList = "";
-        if (lockMode.lockList != null) {
-            for (String pkg : lockMode.lockList) {
-                lockList += pkg + ";";
+        synchronized (lockMode.lockList) {
+            if (lockMode.lockList != null) {
+                for (String pkg : lockMode.lockList) {
+                    lockList += pkg + ";";
+                }
             }
         }
         byte[] bitmap = null;
@@ -108,8 +109,10 @@ public class LockModeDao {
         ContentValues values = new ContentValues();
         values.put(Constants.COLUMN_LOCK_MODE_NAME, lockMode.modeName);
         String lockList = "";
-        for (String pkg : lockMode.lockList) {
-            lockList += pkg + ";";
+        synchronized (lockMode.lockList) {
+            for (String pkg : lockMode.lockList) {
+                lockList += pkg + ";";
+            }
         }
         values.put(Constants.COLUMN_LOCKED_LIST, lockList);
         values.put(Constants.COLUMN_DEFAULT_MODE_FLAG, lockMode.defaultFlag);

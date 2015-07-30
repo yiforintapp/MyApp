@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.utils;
 
 import java.io.File;
@@ -20,7 +19,9 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
+import android.util.Log;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 
@@ -33,15 +34,7 @@ public class BuildProperties {
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
-    // private static final String sMake = Build.MANUFACTURER.toLowerCase();
-    // private static final String mModel = Build.MODEL.toLowerCase();
-    // 解锁等待界面动画执行过快机型
-    public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";
-    // 跳转通话记录特别处理机型数组
-    public static final String[] filterPhoneMode = {
-            "SM-N9150", "SM-G9250"
-    };
-    public static final String ZTEU817 = "ZTE U817";
+    public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";// 解锁等待界面动画执行过快机型
     private final Properties properties;
 
     private BuildProperties() throws IOException {
@@ -177,13 +170,19 @@ public class BuildProperties {
     }
 
     /**
-     * 本机品牌名称识别
+     * 本机制造商名称识别
      * 
      * @param brandName品牌名称
      * @return
      */
     public static boolean checkPhoneBrand(String brandName) {
         return Build.MANUFACTURER.toLowerCase().equalsIgnoreCase(brandName);
+    }
+
+    // 检查本机是否为指定品牌
+    public static boolean checkPhoneBrandForSelf(String brandName) {
+        // Log.e(Constants.RUN_TAG, "手机品牌："+Build.BRAND.toLowerCase());
+        return Build.BRAND.toLowerCase().equalsIgnoreCase(brandName);
     }
 
     /**
@@ -314,4 +313,10 @@ public class BuildProperties {
         }
     }
 
+    // 判断本机是否为指定机型
+    public static boolean checkPhoneModel(String phoneModel) {
+        // Log.e(Constants.RUN_TAG,
+        // "传入机型："+phoneModel.toLowerCase()+",本机："+getPoneModel().toLowerCase());
+        return getPoneModel().toLowerCase().equalsIgnoreCase(phoneModel.toLowerCase());
+    }
 }

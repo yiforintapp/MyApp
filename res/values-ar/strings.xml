@@ -298,7 +298,7 @@
 
     <!-- TODO -->
     <!-- <string name="locker_clean">优化成功，已提速&#160;%1$s</string> -->
-    <string name="locker_clean"><xliff:g>%1$s</xliff:g>&#160; تم التحسن، ترفع السرعة إلى </string>
+    <string name="locker_clean">    تم التحسن، ترفع السرعة إلى &#160;<xliff:g>%1$s</xliff:g> </string>
     <!--  -->
 
     <string name="setting_locker_clean">يسرع بعد فتح قفل</string>

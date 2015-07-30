@@ -113,25 +113,53 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
             info.setIcon(mIcon[i]);
             mList.add(info);
         }
-
+        // (AppMasterPreference.getInstance(this).getPretendLock() != 4)
         // pohatodo
-        if ((AppMasterPreference.getInstance(this).getPretendLock()!=4)&&("0001z".equals(getResources().getString(R.string.channel_code))
-                || "0002z".equals(getResources().getString(R.string.channel_code)) ||
-                "0003z".equals(getResources().getString(R.string.channel_code)) ||
-                "0004z".equals(getResources().getString(R.string.channel_code)) ||
-                "0005z".equals(getResources().getString(R.string.channel_code)) ||
-                "0006z".equals(getResources().getString(R.string.channel_code)) ||
+          
+        if (!AppMasterPreference.getInstance(this).getIsDeterminCloseBeautyFirstly() &&
+                ("0001z".equals(getResources().getString(R.string.channel_code))
+                        || "0002z".equals(getResources().getString(R.string.channel_code)) ||
+                        "0003z".equals(getResources().getString(R.string.channel_code)) ||
+                        "0004z".equals(getResources().getString(R.string.channel_code)) ||
+                        "0005z".equals(getResources().getString(R.string.channel_code)) ||
+                        "0006z".equals(getResources().getString(R.string.channel_code)) ||
                 "0007z".equals(getResources().getString(R.string.channel_code))))
-        {
-            mList.remove(1);
-            mIsRemoveBeauty = true;
-            
-            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(true);          
+        {  
+            AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
+            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(true);
         }
         else
         {
-            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);       
+            AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
         }
+
+        
+        if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty() &&
+                ("0001z".equals(getResources().getString(R.string.channel_code))
+                        || !"0002z".equals(getResources().getString(R.string.channel_code)) ||
+                        !"0003z".equals(getResources().getString(R.string.channel_code)) ||
+                        !"0004z".equals(getResources().getString(R.string.channel_code)) ||
+                        !"0005z".equals(getResources().getString(R.string.channel_code)) ||
+                        !"0006z".equals(getResources().getString(R.string.channel_code)) ||
+                !"0007z".equals(getResources().getString(R.string.channel_code))))
+        {
+            AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);
+        }
+        
+        
+        
+        
+        if(AppMasterPreference.getInstance(this).getIsNeedCloseBeauty())
+        {
+            mList.remove(1);
+            mIsRemoveBeauty = true;            
+        }
+
+        // else
+        // {
+        // AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);
+        //
+        // }
 
         // set adapter
         mAdapt = new WeiZhuangAdapt(this, mList);
@@ -188,29 +216,27 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 
             selected = sp_weizhuang.getPretendLock();
             // 这里position和lock的编号不是一一对应的，需要重新对应
-            if(!AppMasterPreference.getInstance(WeiZhuangActivity.this).getIsNeedCloseBeauty())
-            {               
-                switch (selected) {               
+            if (!AppMasterPreference.getInstance(WeiZhuangActivity.this).getIsNeedCloseBeauty())
+            {
+                switch (selected) {
                     case 1:
-                        selected=2;
+                        selected = 2;
                         break;
                     case 2:
-                        selected=3;
+                        selected = 3;
                         break;
                     case 3:
-                        selected=4;
+                        selected = 4;
                         break;
                     case 4:
-                        selected=1;
+                        selected = 1;
                         break;
                     default:
                         break;
                 }
-            }else{
-                
+            } else {
+
             }
-            
-           
 
             // who selected
             if (position == selected) {
@@ -283,7 +309,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         // 美女伪装
                         Intent mIntent = new Intent(this, BeautyWeiZhuang.class);
                         this.startActivity(mIntent);
-                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, 
+                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1,
                                 "coverguide", "cover_Beauty");
                     }
                     break;
@@ -299,7 +325,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         // 应用错误
                         Intent mIntent = new Intent(this, ErrorWeiZhuang.class);
                         this.startActivity(mIntent);
-                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, 
+                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1,
                                 "coverguide", "cover_AppError");
                     }
                     break;
@@ -311,7 +337,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         // this.startActivity(intent);
                         Intent intent = new Intent(this, UnKnowCallActivity5.class);
                         this.startActivity(intent);
-                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, 
+                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1,
                                 "coverguide", "cover_UnknowCall");
                     }
                     break;
@@ -320,7 +346,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         // 指纹解锁
                         Intent zhiWenIntent = new Intent(this, ZhiWenActivity.class);
                         this.startActivity(zhiWenIntent);
-                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1, 
+                        SDKWrapper.addEvent(WeiZhuangActivity.this, SDKWrapper.P1,
                                 "coverguide", "cover_FingerPrint");
                     }
                     break;

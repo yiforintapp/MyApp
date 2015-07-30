@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.fragment;
 
 import android.app.Activity;
@@ -8,6 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -20,6 +20,7 @@ import com.leo.appmaster.privacy.PrivacyHelper.Level;
 import com.leo.appmaster.privacy.PrivacyLevelView;
 import com.leo.appmaster.privacy.PrivacyProposalLayout;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
@@ -181,6 +182,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                     startActivity(intent);
                     /* sdk market */
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "privacyview", "mesg");
+//                    PrivacyContactManager.getInstance(getActivity()).initLoadData();
                 } catch (Exception e) {
                 } finally {
                     intent = null;
@@ -196,6 +198,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                     startActivity(intent);
                     /* sdk market */
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "privacyview", "call");
+//                    PrivacyContactManager.getInstance(getActivity()).initLoadData();
                 } catch (Exception e) {
                 } finally {
                     intent = null;
@@ -224,7 +227,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                 break;
         }
     }
-
+   
     @Override
     public void onBackgroundChanged(int color) {
         super.onBackgroundChanged(color);

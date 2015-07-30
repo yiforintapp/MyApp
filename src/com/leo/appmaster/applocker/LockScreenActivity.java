@@ -34,6 +34,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -53,7 +54,9 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
+import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -76,6 +79,7 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoCircleView;
 import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
@@ -95,6 +99,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final String EXTRA_LOCK_MODE = "extra_lock_type";
     public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
     public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
+    public static final String SHOW_NOW = "mode changed_show_now";
 
     private int mLockMode;
     private String mLockedPackage;
@@ -121,6 +126,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     public boolean mRestartForThemeChanged;
     public boolean mQuickLockMode;
+    public boolean mFromHome;
     public String mQuickModeName;
     public int mQuiclModeId;
 
@@ -191,6 +197,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+        handlePretendLock();
+
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -250,10 +258,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onNewIntent(Intent intent) {
 
+        Log.e("a729", "onNewIntent");
+
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
             finish();
             startActivity(intent);
+
             return;
         }
 
@@ -278,6 +289,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockedPackage = newLockedPkg;
 
             if (mPretendFragment != null) {
+
+                Log.e("a729", "!=null");
                 mPretendLayout.setVisibility(View.GONE);
                 mLockLayout.setVisibility(View.VISIBLE);
             }
@@ -288,14 +301,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
                         getPackageManager(),
                         mLockedPackage);
+                if (bd == null) {
+                    bd = (BitmapDrawable) AppUtil.getDrawable(
+                            getPackageManager(),
+                            getPackageName());
+                }
                 setAppInfoBackground(bd);
             }
 
             mLockFragment.onLockPackageChanged(mLockedPackage);
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
-
+            Log.e("a729", "onNewIntent===========getpre frag");
             mPretendFragment = getPretendFragment();
-            if (mPretendFragment != null) {                    //ph
+            if (mPretendFragment != null) { // ph
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction tans;
                 mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
@@ -347,6 +365,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         Intent intent = getIntent();
         mRestartForThemeChanged = intent.getBooleanExtra("from_theme_change", false);
         mQuickLockMode = intent.getBooleanExtra("quick_lock_mode", false);
+        mFromHome = intent.getBooleanExtra("from_home", false);
         if (mQuickLockMode) {
             mQuickModeName = intent.getStringExtra("lock_mode_name");
             mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
@@ -508,6 +527,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         tans.commit();
 
         handlePretendLock();
+
     }
 
     // handle pretend lock
@@ -516,7 +536,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         FragmentTransaction tans;
         mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
         mPretendFragment = getPretendFragment();
-   
 
         if (mPretendFragment != null && !mRestartForThemeChanged) {
             mLockLayout.setVisibility(View.GONE);
@@ -533,14 +552,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private PretendFragment getPretendFragment() {
         LeoLog.d("whatisthis", "mLockedPackage : " + mLockedPackage);
-        if (!mPrivateLockPck.equals(mLockedPackage)&&!mQuickLockMode) {
+        if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
                 PretendAppErrorFragment paf = new PretendAppErrorFragment();
-                
 
-                
                 String tip = "";
                 PackageManager pm = this.getPackageManager();
                 try {
@@ -596,18 +613,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (willLaunch != null) {
                 LockMode lockMode = LockManager.getInstatnce().getCurLockMode();
                 lm.setCurrentLockMode(willLaunch, true);
+                checkLockTip();
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
                 /** mode change tip **/
                 if (null != lockMode) {
                     int currentModeFlag = lockMode.defaultFlag;
                     showModeActiveTip(willLaunch.defaultFlag, currentModeFlag);
-                    LeoEventBus.getDefaultBus().post(
-                            new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
-                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage", "shortcuts");
-
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "modeschage",
+                            "shortcuts");
                 } else {
                     showModeActiveTip(willLaunch);
                 }
+                LeoEventBus.getDefaultBus().post(
+                        new LockModeEvent(EventId.EVENT_MODE_CHANGE, "mode changed_show_now"));
             } else {
                 // Toast.makeText(this, mQuickModeName + "模式不存在, 请重试",
                 // 0).show();
@@ -655,6 +673,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             @Override
             public void run() {
+                if (mFromHome) { // for fix bug: AM-1904
+                    Intent intent = new Intent();
+                    intent.setAction(Intent.ACTION_MAIN);
+                    intent.addCategory(Intent.CATEGORY_HOME);
+                    startActivity(intent);
+                }
+                // finish self
                 finish();
             }
         }, 100);
@@ -662,6 +687,123 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         AppMasterPreference amp = AppMasterPreference.getInstance(LockScreenActivity.this);
         amp.setLockerScreenThemeGuide(true);
 
+    }
+
+    private void checkLockTip() {
+        int switchCount = AppMasterPreference.getInstance(this).getSwitchModeCount();
+        switchCount++;
+        AppMasterPreference.getInstance(this).setSwitchModeCount(switchCount);
+        LockManager lm = LockManager.getInstatnce();
+        List<TimeLock> timeLockList = lm.getTimeLock();
+        List<LocationLock> locationLockList = lm.getLocationLock();
+        if (switchCount == 6) {
+            // TODO show tip
+            int timeLockCount = timeLockList.size();
+            int locationLockCount = locationLockList.size();
+
+            if (timeLockCount == 0 && locationLockCount == 0) {
+                // show three btn dialog
+                LEOThreeButtonDialog dialog = new LEOThreeButtonDialog(
+                        this);
+                dialog.setTitle(R.string.time_location_lock_tip_title);
+                String tip = this.getString(R.string.time_location_lock_tip_content);
+                dialog.setContent(tip);
+                dialog.setLeftBtnStr(this.getString(R.string.cancel));
+                dialog.setMiddleBtnStr(this.getString(R.string.lock_mode_time));
+                dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
+                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
+                dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
+                    @Override
+                    public void onClick(int which) {
+                        Intent intent = null;
+                        if (which == 0) {
+                            // cancel
+                        } else if (which == 1) {
+                            // new time lock
+                            intent = new Intent(LockScreenActivity.this, TimeLockEditActivity.class);
+                            intent.putExtra("new_time_lock", true);
+                            intent.putExtra("from_dialog", true);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            LockScreenActivity.this.startActivity(intent);
+                        } else if (which == 2) {
+                            // new location lock
+                            intent = new Intent(LockScreenActivity.this,
+                                    LocationLockEditActivity.class);
+                            intent.putExtra("new_location_lock", true);
+                            intent.putExtra("from_dialog", true);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            LockScreenActivity.this.startActivity(intent);
+                        }
+                    }
+                });
+                dialog.getWindow().setType(
+                        WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                dialog.show();
+            } else {
+                if (timeLockCount == 0 && locationLockCount != 0) {
+                    // show time lock btn dialog
+                    LEOAlarmDialog dialog = new LEOAlarmDialog(this);
+                    dialog.setTitle(R.string.time_location_lock_tip_title);
+                    String tip = this.getString(R.string.time_location_lock_tip_content);
+                    dialog.setContent(tip);
+                    dialog.setRightBtnStr(this.getString(R.string.lock_mode_time));
+                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
+                    dialog.setLeftBtnStr(this.getString(R.string.cancel));
+                    dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            Intent intent = null;
+                            if (which == 0) {
+                                // cancel
+                            } else if (which == 1) {
+                                // new time lock
+                                intent = new Intent(LockScreenActivity.this,
+                                        TimeLockEditActivity.class);
+                                intent.putExtra("new_time_lock", true);
+                                intent.putExtra("from_dialog", true);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                LockScreenActivity.this.startActivity(intent);
+                            }
+
+                        }
+                    });
+                    dialog.getWindow().setType(
+                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    dialog.show();
+
+                } else if (timeLockCount != 0 && locationLockCount == 0) {
+                    // show lcaotion btn dialog
+                    LEOAlarmDialog dialog = new LEOAlarmDialog(this);
+                    dialog.setTitle(R.string.time_location_lock_tip_title);
+                    String tip = this.getString(R.string.time_location_lock_tip_content);
+                    dialog.setContent(tip);
+                    dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
+                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
+                    dialog.setLeftBtnStr(this.getString(R.string.cancel));
+
+                    dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
+                        @Override
+                        public void onClick(int which) {
+                            if (which == 0) {
+                                // cancel
+                            } else if (which == 1) {
+                                // new time lock
+                                Intent intent = new Intent(LockScreenActivity.this,
+                                        LocationLockEditActivity.class);
+                                intent.putExtra("new_location_lock", true);
+                                intent.putExtra("from_dialog", true);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                LockScreenActivity.this.startActivity(intent);
+                            }
+
+                        }
+                    });
+                    dialog.getWindow().setType(
+                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    dialog.show();
+                }
+            }
+        }
     }
 
     public void onUnlockOutcount() {

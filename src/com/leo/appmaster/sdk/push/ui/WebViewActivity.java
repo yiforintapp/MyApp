@@ -8,7 +8,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -18,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebSettings.PluginState;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
@@ -52,9 +50,25 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         if (TextUtils.isEmpty(mURL)) {
             finish();
         }
+        Log.i(TAG, "URL = " + mURL);
+
         initUI();
         intWebView();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "webview", " statusbar");
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+
+        String newUrl = intent.getStringExtra(WEB_URL);
+        if (TextUtils.isEmpty(newUrl)) {
+            return;
+        } else {
+            mURL = newUrl;
+            mWebView.loadUrl(mURL);
+        }
+        Log.i(TAG, "URL = " + mURL);
     }
 
     private void initUI() {
@@ -66,6 +80,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         mFlushView = (ImageView) findViewById(R.id.flush_iv);
         mProgressBar = (ProgressBar) findViewById(R.id.webView_pb);
         mProgressBar.setMax(100);
+        mProgressBar.setProgress(5);
 
         mVideoFullLayout = (FrameLayout) findViewById(R.id.video_fullView);
         mCloseView.setOnClickListener(this);
@@ -78,13 +93,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private void intWebView() {
         mWebView.loadUrl(mURL);
         WebSettings settings = mWebView.getSettings();
-        settings.setJavaScriptEnabled(true);
-        settings.setSupportZoom(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setUseWideViewPort(true);// 自适应屏幕
-        settings.setLoadWithOverviewMode(true);
-        settings.setDisplayZoomControls(false);
+        settings.setJavaScriptEnabled(true); // support javaScript
+        settings.setSupportZoom(true); // 是否可以缩放，默认true
+        settings.setBuiltInZoomControls(true); // 是否显示缩放按钮，默认false
+        /*settings.setLoadWithOverviewMode(true);
+        settings.setUseWideViewPort(true); // 自适应屏幕*/       
+        settings.setAppCacheEnabled(true); // 启动缓存
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
+
         mWebviewClient = new MyWebviewClient();
         mWebView.setDownloadListener(new MyWebViewDownLoadListener());
         mWebView.setWebViewClient(mWebviewClient);
@@ -159,10 +175,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         mWebView.resumeTimers();
 
         Log.i(TAG, "onResume  ");
-
-        if (getRequestedOrientation() != ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
-            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }
     }
 
     @Override
@@ -195,23 +207,27 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         myWebChromeClient.onHideCustomView();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-
-        int type = this.getResources().getConfiguration().orientation;
-        if (type == Configuration.ORIENTATION_LANDSCAPE) {
-            Log.i(TAG, "切换到了横屏");
-        } else if (type == Configuration.ORIENTATION_PORTRAIT) {
-            Log.i(TAG, "切换到了竖屏");
-        }
-        super.onConfigurationChanged(newConfig);
-    }
-
+    
     private class MyWebviewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            return false;
+            if (Uri.parse(url).getScheme().equals("market")) {
+                try {
+                    Intent intent = new Intent(Intent.ACTION_VIEW);
+                    intent.setData(Uri.parse(url));
+                    startActivity(intent);
+                    return true;
+                } catch (Exception e) {
+                    // Google Play app is not installed, you may want to open
+                    // the app store link
+                    Uri uri = Uri.parse(url);
+                    view.loadUrl("http://play.google.com/store/apps/" + uri.getHost() + "?"
+                            + uri.getQuery());
+                    return false;
+                }
+            } else {
+                return false;
+            }
         }
 
         @Override
@@ -270,7 +286,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mPlayView = view;
             customViewCallback = callback;
-
+            
             mWebView.setVisibility(View.INVISIBLE);
             mVideoFullLayout.addView(view);
             mVideoFullLayout.setVisibility(View.VISIBLE);

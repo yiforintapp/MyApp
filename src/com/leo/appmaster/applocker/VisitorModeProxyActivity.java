@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker;
 
 import android.app.Activity;
@@ -19,10 +18,11 @@ public class VisitorModeProxyActivity extends Activity {
         String mQuickModeName = intent.getStringExtra("lock_mode_name");
         int mQuiclModeId = intent.getIntExtra("lock_mode_id", -1);
         Intent shortcutIntent = new Intent(this, LockScreenActivity.class);
-        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_TASK_ON_HOME | Intent.FLAG_ACTIVITY_NEW_TASK);
         shortcutIntent.putExtra("quick_lock_mode", mQuickLockMode);
         shortcutIntent.putExtra("lock_mode_id", mQuiclModeId);
         shortcutIntent.putExtra("lock_mode_name", mQuickModeName);
+        shortcutIntent.putExtra("from_home", true);
         startActivity(shortcutIntent);
         finish();
     }

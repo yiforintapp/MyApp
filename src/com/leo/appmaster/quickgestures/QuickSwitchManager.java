@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.quickgestures;
 
 import java.lang.reflect.Method;
@@ -115,6 +114,7 @@ public class QuickSwitchManager {
     private int mVersion;
     private boolean isSIMready = true;
     private long lastOpenTime = 0;
+    private String mFailToOpenLightPhone = "iris_504Q+";
 
     public static synchronized QuickSwitchManager getInstance(Context context) {
         if (mInstance == null) {
@@ -838,6 +838,7 @@ public class QuickSwitchManager {
                 new ClickQuickItemEvent(SOUND, mInfo));
     }
 
+    @SuppressWarnings("deprecation")
     public void toggleFlashLight(QuickSwitcherInfo mInfo) {
 
         long currentTime = System.currentTimeMillis();
@@ -855,6 +856,12 @@ public class QuickSwitchManager {
         }
 
         if (!BuildProperties.isMIUI()) {
+            
+            String mCanNotOpenPhone = android.os.Build.BRAND+"_"+android.os.Build.MODEL;
+            if(mCanNotOpenPhone.equals(mFailToOpenLightPhone)){
+                return;
+            }
+            
             try {
                 LeoLog.d("testflashlight", "come to toggle");
                 mCamera = Camera.open();
