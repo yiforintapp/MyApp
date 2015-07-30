@@ -745,16 +745,13 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             // play
             mSlideStopImage.setVisibility(View.INVISIBLE);
             mSlideGuideAnim.start();
+            isTranslating = true;
         } else {
             // stop
             mSlideStopImage.setVisibility(View.VISIBLE);
-            List<Animator> throbbers = mSlideGuideAnim.getChildAnimations();
-            for (Animator animator : throbbers) {
-                ((ObjectAnimator) animator).setRepeatCount(0);
-                ((ObjectAnimator) animator).setRepeatMode(0);
-            }
-            mSlideGuideAnim.cancel();
+            mSlideGuideAnim.end();
             mSlideGuideAnim = null;
+            isTranslating = false;
         }
     }
 
@@ -844,15 +841,16 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     }
 
     private void stopAnimation() {
+        Log.i("tag", "stopAnimation");
         // stop the slide guide animation
         if (null != mSlideGuideAnim && isTranslating) {
             mSlideStopImage.setVisibility(View.VISIBLE);
-            List<Animator> throbbers = mSlideGuideAnim.getChildAnimations();
+          /*  List<Animator> throbbers = mSlideGuideAnim.getChildAnimations();
             for (Animator animator : throbbers) {
                 ((ObjectAnimator) animator).setRepeatCount(0);
                 ((ObjectAnimator) animator).setRepeatMode(0);
-            }
-            mSlideGuideAnim.cancel();
+            }*/
+            mSlideGuideAnim.end();
             mSlideGuideAnim = null;
         }
         // stop the edit video
