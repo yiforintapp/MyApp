@@ -9,6 +9,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -81,7 +82,7 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+        // LeoLog.i("handleAppLaunch", pkg + "/" + activity);
 
         // for gesture check
         if (activity.contains(GESTURE)) {
@@ -98,7 +99,7 @@ public class TaskChangeHandler {
         boolean doubleCheck = checkPkg != null && checkPkg.equals(pkg);
         boolean isCurrentSelf = pkg.equals(myPackage);
         boolean isLastSelf = mLastRunningPkg.equals(myPackage);
-        boolean selfUnlock = isCurrentSelf && isLastSelf && !unlocked;
+        boolean selfUnlock = isCurrentSelf && isLastSelf && !unlocked && !LockScreenActivity.sLockFilterFlag;
         boolean packageCheck = !pkg.equals(mLastRunningPkg) || selfUnlock;
         if (((doubleCheck && !unlocked) || packageCheck)
                 && !TextUtils.isEmpty(mLastRunningPkg)) {
@@ -130,8 +131,8 @@ public class TaskChangeHandler {
                                         .contains(SPLASHNAME) || activity
                                         .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
-                                                .contains(WAITNAME) || activity.contains(WEBVIEW)) || (activity
-                                    .contains(LOCKSCREENNAME)))
+                                                .contains(WAITNAME) || activity.contains(WEBVIEW)) || activity
+                                    .contains(LOCKSCREENNAME))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
@@ -141,7 +142,12 @@ public class TaskChangeHandler {
             }
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
-
+            
+          //reset this filter flag
+            if(LockScreenActivity.sLockFilterFlag) {
+                LockScreenActivity.sLockFilterFlag = false;
+            }
+            
             // remocde app launch recoder
             LockManager.getInstatnce().recordAppLaunch(mLastRunningPkg);
             AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,
@@ -163,8 +169,6 @@ public class TaskChangeHandler {
                     amp.setUnlocked(false);
                 }
             }
-            LeoLog.i("handleAppLaunch", "lock = " + lock + "   mLastRuningActivity = "
-                    + mLastRuningActivity);
         } else {
             mLastRuningActivity = activity;
         }
