@@ -2,6 +2,7 @@
 package com.leo.appmaster.http;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -68,8 +70,27 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
-    public void loadOnlineTheme(List<String> loadedTheme,
-            Listener<JSONObject> listener, ErrorListener eListener) {
+//    public void loadOnlineTheme(List<String> loadedTheme,
+//            Listener<JSONObject> listener, ErrorListener eListener) {
+//        String url = Utilities.getURL(Constants.ONLINE_THEME_URL);
+//        String combined = "";
+//        for (String string : loadedTheme) {
+//            combined = combined + string + ";";
+//        }
+//        String body = null;
+//        String requestLanguage = getPostLanguage();
+//        body = "language=" + requestLanguage + "&market_id="
+//                + mContext.getString(R.string.channel_code) + "&app_ver="
+//                + mContext.getString(R.string.version_name) + "&loaded_theme="
+//                + combined + "&pgsize=" + "6";
+//
+//        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+//                body, listener, eListener);
+//        request.setShouldCache(false);
+//        mRequestQueue.add(request);
+//    }
+    
+    public void loadOnlineTheme(List<String> loadedTheme, RequestListener listener) {
         String url = Utilities.getURL(Constants.ONLINE_THEME_URL);
         String combined = "";
         for (String string : loadedTheme) {
@@ -83,10 +104,11 @@ public class HttpRequestAgent {
                 + combined + "&pgsize=" + "6";
 
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
-                body, listener, eListener);
+                body, listener, listener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
     }
+    
 /*
  * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）
  *"zh":中文简体，”zh_(地区)“：繁体中文
@@ -314,5 +336,18 @@ public class HttpRequestAgent {
         };
         mRequestQueue.add(request);
     }
+    
+    public abstract static class RequestListener<T> implements Listener<JSONObject>, ErrorListener {
+        private WeakReference<T> outerContextRef;
+        
+        public RequestListener(T outerContext) {
+            outerContextRef = new WeakReference<T>(outerContext);
+        }
 
+        protected T getOuterContext() {
+            return outerContextRef.get();
+        }
+        
+    }
+    
 }

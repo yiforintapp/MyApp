@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.quickgestures.ui;
 
+import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Locale;
 
@@ -140,6 +141,9 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
         LeoEventBus.getDefaultBus().unregister(this);
         Log.i("null", "onDestroy()");
+        
+        // 解决内存泄露this->VideoView->SubtitleController->内部类Handler
+        mEditVideoView = null;
     }
 
     public void onEventMainThread(PrivacyEditFloatEvent event) {

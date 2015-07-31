@@ -272,7 +272,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private boolean mShowWhiteDot;
 
     private AppMasterPreference(Context context) {
-        mPref = PreferenceManager.getDefaultSharedPreferences(context);
+        Context ctx = context.getApplicationContext();
+        mPref = PreferenceManager.getDefaultSharedPreferences(ctx);
         mPref.registerOnSharedPreferenceChangeListener(this);
         loadPreferences();
     }

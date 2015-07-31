@@ -84,12 +84,13 @@ public class SDKWrapper {
      * @param eventID event type of this event
      * @param eventDescription detail of this event
      */
-    public static void addEvent(Context ctx, int level, String id, String description) {
+    public static void addEvent(Context context, int level, String id, String description) {
         // AM-727
 //        LeoLog.d(TAG, "addEvent: id=" + id + ";   desc=" + description);
         // leo
 //        LeoAgent.addEvent(id, description);
         // baidu
+        Context ctx = context.getApplicationContext();
         StatService.onEvent(ctx, id, description);
         // TalkingData
         TCAgent.onEvent(ctx, id, description);

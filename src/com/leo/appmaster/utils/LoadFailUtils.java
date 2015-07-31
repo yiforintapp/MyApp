@@ -8,8 +8,9 @@ import com.leo.appmaster.sdk.SDKWrapper;
 public class LoadFailUtils {
     
     public static void sendLoadFail(Context context, String category) {
-        if(NetWorkUtil.isNetworkAvailable(context)) {
-            SDKWrapper.addEvent(context, SDKWrapper.P1, "load_failed", category);
+        Context ctx = context.getApplicationContext();
+        if(NetWorkUtil.isNetworkAvailable(ctx)) {
+            SDKWrapper.addEvent(ctx, SDKWrapper.P1, "load_failed", category);
         }
     }
 
