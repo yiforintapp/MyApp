@@ -282,7 +282,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                
                     drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
                     mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
-                    mLockSettingBtn.setPadding(DipPixelUtil.dip2px(mActivity, 26)-23, 0, DipPixelUtil.dip2px(mActivity, 18), 0);
+                    mLockSettingBtn.setPadding(DipPixelUtil.dip2px(mActivity, 26), 0, DipPixelUtil.dip2px(mActivity, 18), 0);
 //                    mLockSettingBtn.setCompoundDrawablePadding(pad)
                     isDisguiseIconWithShadow=true;
                 }
