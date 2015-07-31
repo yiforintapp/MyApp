@@ -2,6 +2,7 @@ package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +34,7 @@ import android.view.WindowManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -1039,7 +1041,7 @@ public class LockManager {
             homeMode.modeIcon =
                     BitmapFactory.decodeResource(mContext.getResources(),
                             R.drawable.lock_mode_family);
-            LinkedList<String> list = new LinkedList<String>();
+            List<String> list = Collections.synchronizedList(new LinkedList<String>());
             list.add(mContext.getPackageName());
             for (String pkg : Constants.sDefaultHomeModeList) {
                 if (AppUtil.appInstalled(mContext, pkg)) {
@@ -1147,7 +1149,7 @@ public class LockManager {
                     lockMode.defaultFlag = 1;
                     lockMode.modeIcon = BitmapFactory.decodeResource(mContext.getResources(),
                             R.drawable.lock_mode_visitor);
-                    LinkedList<String> list = new LinkedList<String>();
+                    List<String> list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     lockMode.lockList = list;
                     mLockModeList.add(lockMode);
@@ -1190,7 +1192,7 @@ public class LockManager {
                     lockMode.modeIcon =
                             BitmapFactory.decodeResource(mContext.getResources(),
                                     R.drawable.lock_mode_family);
-                    list = new LinkedList<String>();
+                    list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {
                         // AM-1765 联想K2110Aandroid]testin测试运行失败
@@ -1232,11 +1234,22 @@ public class LockManager {
     public synchronized List<String> getCurLockList() {
         if (mCurrentMode == null || mCurrentMode.lockList == null
                 || mCurrentMode.lockList.isEmpty()) {
-            ArrayList<String> list = new ArrayList<String>(1);
+            List<String> list = Collections.synchronizedList(new ArrayList<String>(1));
             list.add(mContext.getPackageName());
             return list;
         }
         return mCurrentMode.lockList;
+    }
+
+    public boolean isPackageLocked(String packageName) {
+        if (TextUtils.isEmpty(packageName))
+            return false;
+        List<String> pkgList = getCurLockList();
+        if (pkgList.contains(packageName)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public void setCurrentLockMode(final LockMode mode, boolean fromUser) {
@@ -1261,7 +1274,7 @@ public class LockManager {
 
         // check show time/location lock tip
         if (fromUser) {
-//            checkLockTip();
+            // checkLockTip();
         }
     }
 
@@ -1548,6 +1561,17 @@ public class LockManager {
                     checkScreenOn();
                 }
             }, 500);
+        } else if (PhoneInfo.getPhoneDeviceModel().contains("Nokia") && Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+                final String lastRunningPkg = getLastPackage();
+                final String lastRunningActivity = getLastActivity();
+
+                if (isPackageLocked(lastRunningPkg)
+                        && !QuickGesturePopupActivity.class.getName().contains(lastRunningActivity)
+                        && !LockScreenActivity.class.getName().contains(lastRunningActivity)
+                        && !WaitActivity.class.getName().contains(lastRunningActivity)
+                        && !ProxyActivity.class.getName().contains(lastRunningActivity)) {
+                    applyLock(LOCK_MODE_FULL, lastRunningPkg, false, null);
+                }
         }
     }
 

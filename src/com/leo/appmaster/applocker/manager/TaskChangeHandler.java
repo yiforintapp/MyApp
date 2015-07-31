@@ -9,9 +9,9 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.LeoLog;
 
 public class TaskChangeHandler {
@@ -70,6 +70,11 @@ public class TaskChangeHandler {
     public void handleAppLaunch(String pkg, String activity) {
         if (pkg == null || activity == null)
             return;
+        // For android 5.0, download package changed
+        if (pkg.equals(DOWNLAOD_PKG_21)) {
+            pkg = DOWNLAOD_PKG;
+        }
+
         if (mIsFirstDetect) {
             LeoLog.d("Track Lock Screen", "is first lock,so we ignor this time");
             mLastRunningPkg = pkg;
@@ -77,7 +82,7 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-//         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+        // LeoLog.i("handleAppLaunch", pkg + "/" + activity);
 
         // for gesture check
         if (activity.contains(GESTURE)) {
@@ -92,10 +97,12 @@ public class TaskChangeHandler {
         boolean unlocked = amp.getUnlocked();
         String checkPkg = amp.getDoubleCheck();
         boolean doubleCheck = checkPkg != null && checkPkg.equals(pkg);
-        if (((doubleCheck && !unlocked) || !pkg.equals(mLastRunningPkg))
+        boolean isCurrentSelf = pkg.equals(myPackage);
+        boolean isLastSelf = mLastRunningPkg.equals(myPackage);
+        boolean selfUnlock = isCurrentSelf && isLastSelf && !unlocked && !LockScreenActivity.sLockFilterFlag;
+        boolean packageCheck = !pkg.equals(mLastRunningPkg) || selfUnlock;
+        if (((doubleCheck && !unlocked) || packageCheck)
                 && !TextUtils.isEmpty(mLastRunningPkg)) {
-            boolean isCurrentSelf = pkg.equals(myPackage);
-            boolean isLastSelf = mLastRunningPkg.equals(myPackage);
             if (isCurrentSelf && !isLastSelf) {
                 amp.setFromOther(true);
             }
@@ -105,11 +112,7 @@ public class TaskChangeHandler {
                                 && (activity.contains(DESKPROXYNAME) || activity
                                         .contains(LAUNCHERBOOST) || activity
                                         .contains(SPLASHNAME) || activity
-                                        .contains(GESTURE)/*
-                                                           * ||
-                                                           * activity.contains
-                                                           * (GESTURESETTING)
-                                                           */|| activity.contains(PROXYNAME)
+                                        .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
                                                 .contains(WAITNAME)
                                         || activity.contains(WEBVIEW))
@@ -126,14 +129,10 @@ public class TaskChangeHandler {
                                 && (activity.contains(DESKPROXYNAME) || activity
                                         .contains(LAUNCHERBOOST) || activity
                                         .contains(SPLASHNAME) || activity
-                                        .contains(GESTURE)/*
-                                                           * ||
-                                                           * activity.contains
-                                                           * (GESTURESETTING)
-                                                           */|| activity.contains(PROXYNAME)
+                                        .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
-                                                .contains(WAITNAME) || activity.contains(WEBVIEW)) || (activity
-                                    .contains(LOCKSCREENNAME)))
+                                                .contains(WAITNAME) || activity.contains(WEBVIEW)) || activity
+                                    .contains(LOCKSCREENNAME))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
@@ -143,16 +142,17 @@ public class TaskChangeHandler {
             }
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
-
+            
+          //reset this filter flag
+            if(LockScreenActivity.sLockFilterFlag) {
+                LockScreenActivity.sLockFilterFlag = false;
+            }
+            
             // remocde app launch recoder
             LockManager.getInstatnce().recordAppLaunch(mLastRunningPkg);
             AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,
                     System.currentTimeMillis());
 
-            // For android 5.0, download package changed
-            if (pkg.equals(DOWNLAOD_PKG_21)) {
-                pkg = DOWNLAOD_PKG;
-            }
             List<String> lockList = LockManager.getInstatnce().getCurLockList();
             boolean lock = false;
             if (lockList != null) {

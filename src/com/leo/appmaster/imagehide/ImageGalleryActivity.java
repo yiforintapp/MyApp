@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.imagehide;
 
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -21,6 +21,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -68,15 +69,24 @@ public class ImageGalleryActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        cancelDialog();
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
         }
     }
 
+    private void cancelDialog() {
+        if (mImageDialog != null) {
+            mImageDialog.dismiss();
+            mImageDialog = null;
+        }
+    }
+
     @Override
     public void finish() {
         super.finish();
+        cancelDialog();
         if (mImageLoader != null) {
             mImageLoader.stop();
         }
@@ -187,7 +197,9 @@ public class ImageGalleryActivity extends BaseActivity {
 
         @Override
         protected void onPreExecute() {
-            mImageDialog.show();
+            if (mImageDialog != null) {
+                mImageDialog.show();
+            }
         }
 
         @Override
@@ -198,7 +210,9 @@ public class ImageGalleryActivity extends BaseActivity {
 
         @Override
         protected void onPostExecute(Integer integer) {
-            mImageDialog.dismiss();
+            if (mImageDialog != null) {
+                mImageDialog.dismiss();
+            }
             if (mAlbumList != null) {
                 if (mAlbumList.size() > 0) {
                     mNoPictureHint.setVisibility(View.GONE);

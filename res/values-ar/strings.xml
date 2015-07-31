@@ -441,8 +441,8 @@
     <string name="privacy_message_resotre_message">هل تستعيد سجل الرسال إلى النظام؟</string>
     <string name="privacy_call_delete_call_log">هل تحذف سجل المكالمة؟</string>
     <string name="privacy_contact_default_text">إضافة الشخص السري</string>
-    <string name="privacy_call_log_default_text">سرية المكالمة بينك وهو</string>
-    <string name="privacy_message_default_text">سرية المكالمة بينك وهو</string>
+    <string name="privacy_call_log_default_text">كتم سرية المكالمة</string>
+    <string name="privacy_message_default_text">كتم سرية الرسالة</string>
     <string name="privacy_add_contact_default_text">لا يوجد شخص اتصال مكشوف</string>
     <string name="privacy_add_message_default_text">قائمة رسائل خالية</string>
     <string name="privacy_add_call_log_default_text">سجل مكالمة خالية</string>

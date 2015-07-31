@@ -2,6 +2,7 @@ package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,9 +47,9 @@ public class LockModeDao {
                             .getColumnIndex(Constants.COLUMN_LOCKED_LIST));
                     List<String> lockList;
                     if (lockPacks.equals("")) {
-                        lockList = new ArrayList<String>(0);
+                        lockList = Collections.synchronizedList(new ArrayList<String>(0));
                     } else {
-                        lockList = new ArrayList<String>(Arrays.asList(lockPacks.split(";")));
+                        lockList = Collections.synchronizedList(new ArrayList<String>(Arrays.asList(lockPacks.split(";"))));
                     }
 
                     byte[] bytes = cursor.getBlob(cursor
@@ -83,11 +84,9 @@ public class LockModeDao {
         ContentValues values = new ContentValues();
         values.put(Constants.COLUMN_LOCK_MODE_NAME, lockMode.modeName);
         String lockList = "";
-        synchronized (lockMode.lockList) {
-            if (lockMode.lockList != null) {
-                for (String pkg : lockMode.lockList) {
-                    lockList += pkg + ";";
-                }
+        if (lockMode.lockList != null) {
+            for (String pkg : lockMode.lockList) {
+                lockList += pkg + ";";
             }
         }
         byte[] bitmap = null;
@@ -109,10 +108,8 @@ public class LockModeDao {
         ContentValues values = new ContentValues();
         values.put(Constants.COLUMN_LOCK_MODE_NAME, lockMode.modeName);
         String lockList = "";
-        synchronized (lockMode.lockList) {
-            for (String pkg : lockMode.lockList) {
-                lockList += pkg + ";";
-            }
+        for (String pkg : lockMode.lockList) {
+            lockList += pkg + ";";
         }
         values.put(Constants.COLUMN_LOCKED_LIST, lockList);
         values.put(Constants.COLUMN_DEFAULT_MODE_FLAG, lockMode.defaultFlag);
