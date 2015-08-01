@@ -489,7 +489,7 @@
     <string name="app_manager">My Apps</string>
     <string name="first_backup">Backup</string>
     <string name="first_usage">Data Usage</string>
-    <string name="first_battery">Battery Percentage</string>
+    <string name="first_battery">Battery</string>
     <string name="first_hotapp">What\'s Hot</string>
     <string name="first_installed_app">Installed:</string>
     <string name="first_appdata_app">RAM Usage:</string>
