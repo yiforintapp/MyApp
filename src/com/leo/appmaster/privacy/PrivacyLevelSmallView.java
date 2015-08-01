@@ -40,4 +40,8 @@ public class PrivacyLevelSmallView extends PrivacyLevelView {
         return true;
     }
     
+    protected boolean needScanning() {
+        return false;
+    }
+    
 }

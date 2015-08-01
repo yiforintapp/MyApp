@@ -18,12 +18,10 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.privacy.PrivacyHelper.Level;
 
@@ -108,19 +106,21 @@ public class PrivacyLevelView extends View {
         mSepratorPadding = getSepratorPadding(res);
         mSmallTextSize = getSmallTextSize(res);
         mBigTextSize = getBigTextSize(res);
-        mScanningOffset = res.getDimensionPixelSize(R.dimen.privacy_scanning_offset);
 
         mLevelText = res.getString(R.string.privacy_level);
 
         mIcon = res.getDrawable(R.drawable.privacy_level_bg);
         mAnim = BitmapFactory.decodeResource(res, R.drawable.privacy_level_bg_anim);
         mSeprator = res.getDrawable(R.drawable.privacy_level_bg_line);
-
-        mScanning = res.getDrawable(R.drawable.scanning);
-        mScanningAppIcon = res.getDrawable(R.drawable.privacy_app_scanning_icon);
-        mScanningPicIcon = res.getDrawable(R.drawable.privacy_pictures_scanning_icon);
-        mScanningVideoIcon = res.getDrawable(R.drawable.privacy_video_scanning_icon);
-        mScanningContactIcon = res.getDrawable(R.drawable.privacy_contact_scanning_icon);
+        
+        if(needScanning()) {
+            mScanningOffset = res.getDimensionPixelSize(R.dimen.privacy_scanning_offset);
+            mScanning = res.getDrawable(R.drawable.scanning);
+            mScanningAppIcon = res.getDrawable(R.drawable.privacy_app_scanning_icon);
+            mScanningPicIcon = res.getDrawable(R.drawable.privacy_pictures_scanning_icon);
+            mScanningVideoIcon = res.getDrawable(R.drawable.privacy_video_scanning_icon);
+            mScanningContactIcon = res.getDrawable(R.drawable.privacy_contact_scanning_icon);
+        }
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
@@ -170,21 +170,23 @@ public class PrivacyLevelView extends View {
         mIconDrawBount.top = centerY - drawH / 2;
         mIconDrawBount.bottom = mIconDrawBount.top + drawH;
 
-        int scanningIconSize = drawH / 4;
-        mScanningIconCenterRect.left = centerX - scanningIconSize / 2;
-        mScanningIconCenterRect.right = mScanningIconCenterRect.left + scanningIconSize;
-        mScanningIconCenterRect.top = centerY - scanningIconSize / 2;
-        mScanningIconCenterRect.bottom = mScanningIconCenterRect.top + scanningIconSize;
+        if(needScanning()) {
+            int scanningIconSize = drawH / 4;
+            mScanningIconCenterRect.left = centerX - scanningIconSize / 2;
+            mScanningIconCenterRect.right = mScanningIconCenterRect.left + scanningIconSize;
+            mScanningIconCenterRect.top = centerY - scanningIconSize / 2;
+            mScanningIconCenterRect.bottom = mScanningIconCenterRect.top + scanningIconSize;
 
-        mScanningIconStartRect.right = mIconDrawBount.right;
-        mScanningIconStartRect.left = mScanningIconStartRect.right - scanningIconSize;
-        mScanningIconStartRect.top = mScanningIconCenterRect.top;
-        mScanningIconStartRect.bottom = mScanningIconCenterRect.top + scanningIconSize;
+            mScanningIconStartRect.right = mIconDrawBount.right;
+            mScanningIconStartRect.left = mScanningIconStartRect.right - scanningIconSize;
+            mScanningIconStartRect.top = mScanningIconCenterRect.top;
+            mScanningIconStartRect.bottom = mScanningIconCenterRect.top + scanningIconSize;
 
-        mScanningIconEndRect.left = mIconDrawBount.left;
-        mScanningIconEndRect.right = mScanningIconEndRect.left + scanningIconSize;
-        mScanningIconEndRect.top = mScanningIconCenterRect.top;
-        mScanningIconEndRect.bottom =  mScanningIconCenterRect.top + scanningIconSize;
+            mScanningIconEndRect.left = mIconDrawBount.left;
+            mScanningIconEndRect.right = mScanningIconEndRect.left + scanningIconSize;
+            mScanningIconEndRect.top = mScanningIconCenterRect.top;
+            mScanningIconEndRect.bottom =  mScanningIconCenterRect.top + scanningIconSize;
+        }
         
         if(!mLastIconDrawBount.equals(mIconDrawBount)) {
             int maxTextWidth = (int)(drawW * SMALL_TEXT_WIDTH_PERCENT);
@@ -226,7 +228,7 @@ public class PrivacyLevelView extends View {
         mIcon.setBounds(mIconDrawBount);
         mIcon.draw(canvas);
 
-        if (mScannAnimating) {
+        if (needScanning() && mScannAnimating) {
             canvas.save();
             canvas.rotate(mScanDegree, mIconDrawBount.centerX(), mIconDrawBount.centerY());
             mScanning.setBounds(mIconDrawBount.left - mScanningOffset, mIconDrawBount.top
@@ -342,6 +344,10 @@ public class PrivacyLevelView extends View {
 
     protected boolean hasNoAnmation() {
         return false;
+    }
+    
+    protected boolean needScanning() {
+        return true;
     }
 
     public void cancelAnim(boolean both) {
