@@ -1105,9 +1105,11 @@ public class QuickGestureManager {
     public void makeDialogDimiss() {
         if (quickSwitch != null) {
             quickSwitch.dismiss();
+            quickSwitch = null;
         }
         if (commonApp != null) {
             commonApp.dismiss();
+            commonApp = null;
         }
     }
 
