@@ -23,6 +23,7 @@
             android:layout_marginRight="10dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/white_bg"
+            android:overScrollMode="never"
             android:divider="@null"
             android:listSelector="@drawable/manager_backup_list_selecter"
             android:scrollbars="none" />

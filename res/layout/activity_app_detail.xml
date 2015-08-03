@@ -138,6 +138,7 @@
 
     <com.leo.appmaster.ui.CustomViewPager
         android:id="@+id/pager_app_detail"
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

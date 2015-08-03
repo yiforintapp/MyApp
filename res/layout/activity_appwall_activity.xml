@@ -22,6 +22,7 @@
         android:dividerHeight="1dp"
         android:fadingEdge="horizontal"
         android:listSelector="@null"
+        android:overScrollMode="never"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="none"
         android:visibility="gone" >

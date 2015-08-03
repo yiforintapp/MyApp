@@ -15,6 +15,7 @@
         <ListView
             android:id="@+id/lv_flow_list"
             android:layout_width="match_parent"
+	        android:overScrollMode="never"
             android:layout_height="match_parent"
             android:divider="@drawable/app_data_usage_list_line"
             android:listSelector="#00000000" >

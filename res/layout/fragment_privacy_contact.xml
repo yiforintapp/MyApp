@@ -13,6 +13,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/white_bg"
         android:divider="@null"
+        android:overScrollMode="never"
         android:listSelector="@drawable/manager_backup_list_selecter"
         android:scrollbars="none" >
     </ListView>

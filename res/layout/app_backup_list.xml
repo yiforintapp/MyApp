@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/white"
+		        android:overScrollMode="never"
                 android:divider="@drawable/app_data_usage_list_line"
                 android:listSelector="@drawable/manager_backup_list_selecter"
                 android:visibility="gone" />
@@ -59,7 +60,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/iv_check_backup"
+            android:id="@+id/iv_check_backup_layout"
             android:layout_width="@dimen/app_manager_backup_item_checkbox_width_height"
             android:layout_height="@dimen/app_manager_backup_item_checkbox_width_height"
             android:layout_gravity="right|center_vertical"

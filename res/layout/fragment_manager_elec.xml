@@ -29,6 +29,7 @@
             android:id="@+id/listview_ele"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+	        android:overScrollMode="never"
             android:background="@color/white"
             android:divider="@drawable/app_data_usage_list_line"
             android:visibility="gone" />

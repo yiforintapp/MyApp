@@ -106,6 +106,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="24dp"
+			        android:overScrollMode="never"
                     android:scrollbars="none" >
                 </com.leo.appmaster.quickgestures.ui.LeoHorizontalListView>
 
