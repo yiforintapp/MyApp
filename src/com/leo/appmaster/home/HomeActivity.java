@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -196,7 +197,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
                             @Override
                             public void onClick(int which) {
-                                // TODO Auto-generated method stub
                                 if (which == 1)
                                 {
                                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, 
@@ -217,6 +217,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, 
                                             "coverguide", "cli_n");
                                 }
+                                dismissDialog(mSelfIconDialog);
                             }
                         });
                 //
@@ -1107,24 +1108,22 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             public void onClick(View v) {
                 AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
                         true);
-                if (mQuickGestureSettingDialog != null) {
-                    mQuickGestureSettingDialog.dismiss();
-                }
                 SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
                         "continued_n");
+                dismissDialog(mQuickGestureSettingDialog);
             }
         });
         mQuickGestureSettingDialog.setRightOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-                mQuickGestureSettingDialog.dismiss();
                 AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
                         true);
                 Intent inten = new Intent(HomeActivity.this, QuickGestureActivity.class);
                 startActivity(inten);
                 SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
                         "continued_y");
+                dismissDialog(mQuickGestureSettingDialog);
             }
         });
         mQuickGestureSettingDialog.show();
@@ -1137,12 +1136,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mQuickGestureTip.setLeftOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
-                if (mQuickGestureTip != null) {
-                    mQuickGestureTip.dismiss();
-                }
                 SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
                         "firsd_n");
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
+                dismissDialog(mQuickGestureTip);
             }
         });
         mQuickGestureTip.setRightOnClickListener(new OnClickListener() {
@@ -1152,10 +1149,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         "firstd_y");
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
                 startQuickGestureEnterTip();
-                if (mQuickGestureTip != null) {
-                    mQuickGestureTip.dismiss();
-                }
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
+                dismissDialog(mQuickGestureTip);
             }
         });
         mQuickGestureTip.setCanceledOnTouchOutside(false);
@@ -1206,5 +1201,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private void removeAppFragmentGestureBg() {
         HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
         fragment.setGestureTabBgVisibility(View.GONE);
+    }
+    
+    private void dismissDialog(Dialog dlg) {
+        if (dlg != null) {
+            // 消失后释放相关图片资源
+            dlg.dismiss();
+            dlg = null;
+        }
     }
 }

@@ -73,6 +73,8 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     private boolean mFromShortcut, isRoating, isTranslating;
     public static boolean isSureBt;
     private AnimatorSet mSlideGuideAnim;
+    // 首次打开动画
+    private AnimatorSet mInitAnim;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +103,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             });
         }
         if (!mPre.getFristSlidingTip()) {
-            gestureTranslationAnim(mHandImage, mArrowImage);
+            mInitAnim = gestureTranslationAnim(mHandImage, mArrowImage);
             mTipRL.setVisibility(View.VISIBLE);
             mTipRL.setOnClickListener(new OnClickListener() {
                 @Override
@@ -139,8 +141,15 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         }
         LeoEventBus.getDefaultBus().unregister(this);
         Log.i("null", "onDestroy()");
+        // 解决内存泄露
+        if (mInitAnim != null) {
+            mInitAnim.end();
+        }
+        if (mSlideGuideAnim != null) {
+            mSlideGuideAnim.end();
+        }
     }
-
+    
     public void onEventMainThread(PrivacyEditFloatEvent event) {
         if (QuickGestureManager.getInstance(this).QUICK_GESTURE_SETTING_EVENT
                 .equals(event.editModel)) {
@@ -548,6 +557,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 .ofFloat("translationX", 0, 0, -translation);
         PropertyValuesHolder arrowHolderY = PropertyValuesHolder
                 .ofFloat("translationY", 0, 0, -translation);
+        
         ObjectAnimator translateArrow = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(
                 view2, arrowHolderX, arrowHolderY);
         translateArrow.setDuration(2000);
@@ -559,6 +569,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
                 .ofFloat("translationX", 0, 270, 0);
         PropertyValuesHolder valuesHolderY = PropertyValuesHolder
                 .ofFloat("translationY", 0, 300, 0);
+        
         ObjectAnimator translate = (ObjectAnimator) ObjectAnimator.ofPropertyValuesHolder(view1,
                 valuesHolderX, valuesHolderY);
         translate.setRepeatCount(-1);
