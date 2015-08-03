@@ -764,7 +764,7 @@
     <string name="video_delete_fail">ไม่สามารถลบไฟล์ได้</string>
     <string name="zipper_too_fast">โอ้ ดึงช้าๆหน่อย </string>
     <string name="zipper_too_slow">โอ้ ดึงเร็วๆหน่อย</string>
-    <string name="theme_apply_title">จะใช้รูปแบบการปลดล็อคหรือ:%1$ s?</string>
+    <string name="theme_apply_title">จะใช้รูปแบบการปลดล็อคหรือ:%1$s?</string>
     <!-- 2.6 end -->
 
 	
