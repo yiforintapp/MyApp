@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -50,6 +51,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
@@ -288,47 +290,8 @@ public class SplashActivity extends BaseActivity {
                 long interval = pref.getPullInterval();
                 if (interval < (System.currentTimeMillis() - lastPull)
                         && NetWorkUtil.isNetworkAvailable(SplashActivity.this)) {
-                    HttpRequestAgent.getInstance(getApplicationContext())
-                            .getAppLockList(new Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response, boolean noModify) {
-                                    JSONArray list;
-                                    ArrayList<String> lockList = new ArrayList<String>();
-                                    long next_pull;
-                                    JSONObject data;
-                                    try {
-                                        data = response.getJSONObject("data");
-                                        list = data.getJSONArray("list");
-                                        for (int i = 0; i < list.length(); i++) {
-                                            lockList.add(list.getString(i));
-                                        }
-                                        next_pull = data.getLong("next_pull");
-                                        LeoLog.d("next_pull = " + next_pull
-                                                + " lockList = ",
-                                                lockList.toString());
-
-                                        pref.setPullInterval(next_pull * 24
-                                                * 60 * 60 * 1000);
-                                        pref.setLastLocklistPullTime(System
-                                                .currentTimeMillis());
-                                        Intent intent = new Intent(
-                                                AppLoadEngine.ACTION_RECOMMEND_LIST_CHANGE);
-                                        intent.putStringArrayListExtra(
-                                                Intent.EXTRA_PACKAGES, lockList);
-                                        SplashActivity.this
-                                                .sendBroadcast(intent);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        return;
-                                    }
-                                }
-                            }, new ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    LeoLog.d("Pull Lock list",
-                                            error.getMessage());
-                                }
-                            });
+                    AppLockListener listener = new AppLockListener(SplashActivity.this);
+                    HttpRequestAgent.getInstance(getApplicationContext()).getAppLockList(listener, listener);
                 }
             }
         }).start();
@@ -675,5 +638,46 @@ public class SplashActivity extends BaseActivity {
                 backGroundView = mNewPageBackgroundView;
             }
         }
+    }
+    
+    private static class AppLockListener extends RequestListener<SplashActivity> {
+
+        public AppLockListener(SplashActivity outerContext) {
+            super(outerContext);
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            Context ctx = AppMasterApplication.getInstance();
+            AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
+            
+            JSONArray list;
+            ArrayList<String> lockList = new ArrayList<String>();
+            long next_pull;
+            JSONObject data;
+            try {
+                data = response.getJSONObject("data");
+                list = data.getJSONArray("list");
+                for (int i = 0; i < list.length(); i++) {
+                    lockList.add(list.getString(i));
+                }
+                next_pull = data.getLong("next_pull");
+                LeoLog.d("next_pull = " + next_pull + " lockList = ", lockList.toString());
+
+                pref.setPullInterval(next_pull * 24 * 60 * 60 * 1000);
+                pref.setLastLocklistPullTime(System .currentTimeMillis());
+                Intent intent = new Intent(AppLoadEngine.ACTION_RECOMMEND_LIST_CHANGE);
+                intent.putStringArrayListExtra(Intent.EXTRA_PACKAGES, lockList);
+                ctx.sendBroadcast(intent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            } 
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            LeoLog.d("Pull Lock list", error.getMessage()); 
+        }
+        
     }
 }
