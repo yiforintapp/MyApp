@@ -99,7 +99,8 @@ public class TaskChangeHandler {
         boolean doubleCheck = checkPkg != null && checkPkg.equals(pkg);
         boolean isCurrentSelf = pkg.equals(myPackage);
         boolean isLastSelf = mLastRunningPkg.equals(myPackage);
-        boolean selfUnlock = isCurrentSelf && isLastSelf && !unlocked && !LockScreenActivity.sLockFilterFlag;
+        boolean selfUnlock = isCurrentSelf && isLastSelf && !unlocked
+                && !LockScreenActivity.sLockFilterFlag;
         boolean packageCheck = !pkg.equals(mLastRunningPkg) || selfUnlock;
         if (((doubleCheck && !unlocked) || packageCheck)
                 && !TextUtils.isEmpty(mLastRunningPkg)) {
@@ -142,12 +143,12 @@ public class TaskChangeHandler {
             }
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
-            
-          //reset this filter flag
-            if(LockScreenActivity.sLockFilterFlag) {
+
+            // reset this filter flag
+            if (LockScreenActivity.sLockFilterFlag) {
                 LockScreenActivity.sLockFilterFlag = false;
             }
-            
+
             // remocde app launch recoder
             LockManager.getInstatnce().recordAppLaunch(mLastRunningPkg);
             AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,

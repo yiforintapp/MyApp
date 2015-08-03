@@ -6,7 +6,7 @@
     <string name="used_memory">Memory Used</string>
     <string name="used_flow">Traffic Used</string>
     <string name="app_detail">Details</string>
-    <string name="lock_tab">"Lock   "</string>
+    <string name="lock_tab">"Lock"</string>
     <string name="app_lock">"App Lock"</string>
     <string name="app_add_lock">"App Lock"</string>
     <string name="lock">Lock</string>
@@ -19,11 +19,11 @@
     <string name="app_use_info">Usage</string>
     <string name="app_permission_info">Privacy Control Monitor</string>
     <string name="uninstall">Uninstall</string>
-    <string name="set_gesture_suc">Pattern Recorded!</string>
+    <string name="set_gesture_suc">Pattern lock set successfully</string>
     <string name="set_passwd_suc">Password has been set successfully.</string>
     <string name="reset_passwd_successful">Reset Successfully</string>
     <string name="stop">Stop</string>
-    <string name="reinput_anwser">The answer was incorrect. Please try again.</string>
+    <string name="reinput_anwser">Wrong answer. Try again</string>
     <string name="please_input_pswd">Enter Passcode</string>
     <string name="please_input_pswd_again">Confirm Password</string>
     <string name="makesure">Ok</string>
@@ -33,12 +33,12 @@
     <string name="passwd_hint">Enter Passcode</string>
     <string name="tip_no_the_same_pswd">Wrong passcode, please try again.</string>
     <string name="input_error_tip">You have used %1$s login attempt(s), %2$s remaining.</string>
-    <string name="use_gesture">Pattern Lock</string>
-    <string name="use_passwd">Password Lock</string>
-    <string name="reset_passwd">Reset a password</string>
+    <string name="use_gesture">Pattern</string>
+    <string name="use_passwd">Password</string>
+    <string name="reset_passwd">Reset password</string>
     <string name="app_locked">Locked</string>
     <string name="app_unlock">Unlocked</string>
-    <string name="find_passwd">Forget passwd</string>
+    <string name="find_passwd">Forget password</string><!-- 变长 -->
     <string name="please_wait">Please try again later</string>
     <string name="passwd_question">Question: </string>
     <string name="passwd_anwser">Answer:</string>
@@ -54,29 +54,31 @@
     <string name="not_set">Unset</string>
     <string name="anwser">Answer: </string>
     <string name="not_unistall">Uninstall prevention</string>
-    <string name="lock_screen_auto_lock">Auto-lock after screen turns off</string>
-    <string name="tips">Hint</string>
+    <string name="lock_screen_auto_lock">Lock after screen-off</string>
+    <string name="tips">Tips</string>
     <string name="compeletely">Complete</string>
 
     <!-- acceralate -->
     <string name="clean_memory">Boost</string>
-    <string name="clean_result">Cleaned Memory</string>
+    <string name="clean_result">Clean Memory</string>
     <string name="best_mem">Maximum Boost!</string>
 
     <!-- App lock -->
     <string name="lock_count">Locked</string>
     <string name="unlock_count">Unlocked</string>
-    <string name="lockscreen_access_pattern_detected">Pattern Recorded</string>
+    <string name="lockscreen_access_pattern_detected">Done</string>
     <string name="please_input_gesture">Draw pattern to unlock</string>
     <string name="input_passwd_tip">Please enter a password hint</string>
-    <string name="switch_gesture">Pattern</string>
-    <string name="switch_passwd">Password</string>
+    <string name="switch_gesture">Change to pattern</string>
+    <string name="switch_passwd">Change to PIN code</string>
+    
     <string name="setting">Settings</string>
     <string name="passwd_hint_tip">Password Hint: </string>
     <string name="set_protect_or_not">Security Question</string>
     <string name="set_protect_message">Create a security question in case you forgot your password. Continue?</string>
     <string name="find_gesture">Forget passwd</string>
-    <string name="pp_success">Security question set!</string>
+    <string name="pp_success">Password set successfully</string>
+
     <string name="passwd_setting">Password Settings</string>
     <string name="set_success">Set successfully</string>
     <string name="passwd_hint_cant_null">Please enter your password hint</string>
@@ -102,7 +104,7 @@
     <string name="bakup_fail_cancel">Backup Canceled</string>
     <string name="bakup_fail_full">Storage space too low</string>
     <string name="bakup_fail_unavailable">SD card not available</string>
-    <string name="no_app_backuped">No backup app found</string>
+    <string name="no_app_backuped">No backup app</string>
 
     <string-array name="lock_time_entrys">
         <item>@string/lock_right_now</item>
@@ -123,13 +125,15 @@
 
     <string name="app_details">App Info</string>
     <string name="app_memory">Space taken %1$s</string>
+
     <string name="app_cache_size">Cache Occupied %1$s</string>
     <string name="app_permission1">Top-secret Privacy Control</string>
     <string name="app_permission2">Common Privacy Control</string>
     <string name="app_permission3">Important Privacy Control</string>
     <string name="app_setting_update">Check for updates</string>
     <string name="app_setting_about">About</string>
-    <string name="forbid_uninstall">Uninstall prevention</string>
+    <string name="forbid_uninstall">Advanced protection</string>
+
     <string name="auto_lock">Lock after screen-off</string>
     <string name="change_lock_time">Auto-lock Time Settings</string>
     <string name="passwd_protect">Security Question</string>
@@ -156,9 +160,9 @@
     <string name="feedback_success_content">Thank you for your feedback, we\'ll follow up ASAP!</string>
     <string name="app_image_hide">Hide Image</string>
     <string name="app_no_image">No image available</string>
-    <string name="app_image_gallery">All images</string>
+    <string name="app_image_gallery">Gallery</string>
     <string name="app_select_all">Select All</string>
-    <string name="app_select_none">Unselect All</string>
+    <string name="app_select_none">Cancel</string>
     <string name="app_hide_image">Hide</string>
     <string name="app_cancel_hide_image">Unhide</string>
     <string name="app_hide_image_edit">Edit</string>
@@ -168,7 +172,7 @@
     <string name="app_delete_dialog_content">Delete this image ?</string>
     <string name="app_unhide_pictures_dialog_content">Unhide selected images?</string>
     <string name="app_hide_pictures_dialog_content">Hide selected images?</string>
-    <string name="app_hide_image_fail">Image not selectable! Hide failed !</string>
+    <string name="app_hide_image_fail">Image not selectable</string>
 
     <string-array name="sort_type">
         <item>Default Order</item>
@@ -176,7 +180,8 @@
         <item>By Time</item>
     </string-array>
 
-    <string name="recom_lock_tip">Reminder of most-used Apps</string>
+    <string name="recom_lock_tip">Reminder of favorite Apps</string>
+
     <string name="new_app_lock_tip">Reminder of new Apps</string>
     <string name="feedback">Give us feedbacks</string>
     <string name="first_set_passwd_hint">Enter your password</string>
@@ -191,17 +196,17 @@
     <!-- AppWall -->
     <string name="app_wall">Hot Apps</string>
     <string name="app_wall_network">Network Error. Please try again later.</string>
-    <string name="app_wall_click">Refresh</string>
+    <string name="app_wall_click">Try again</string>
 
     <!-- 隐私策略 -->
     <string name="protocolBar">Privacy Policy</string>
     <string name="passwd_set_gesture_tip">Connect at least 4 dots</string>
     <string name="set_gesture">Pattern lock setting</string>
-    <string name="set_passwd">Passcode lock setting</string>
+    <string name="set_passwd">PIN code setting</string>
     <string name="lock_remind">Privacy Guard reminder: set a lock for your new App?</string>
     <string name="new_install_lock_remind">You have installed %1$s. Set a lock for it?</string>
     <string name="lock_guide">Tap Apps to lock</string>
-    <string name="start_guide">Most-used Apps</string>
+    <string name="start_guide">Lock favorite Apps</string>
 
     <!-- Theme -->
     <string name="localtheme">Local</string>
@@ -212,7 +217,8 @@
     <string name="grade">Worth a 5-Star?</string>
     <string name="grade_tip">Do you like us? Rate 5 stars!</string>
     <string name="lock_more">More</string>
-    <string name="det_change_lock_time">Do you wish to change your Auto-lock time?</string>
+    <string name="det_change_lock_time">You\'ve locked Apps frequently. Reset locking time?</string>
+
     <string name="moonightTheme">Night</string>
     <string name="orangeTheme">Fruit</string>
     <string name="ParadoxTheme">Spatial</string>
@@ -255,7 +261,7 @@
     <string name="app_hide_video_dialog_content">Hide selected videos?</string>
     <string name="hide_video_dialog_title">Play</string>
     <string name="hide_video_dialog_content">Video+ is required to play \"Private\" videos, continue to install?</string>
-    <string name="app_hide_video_fail">Video not selectable! Hide failed !</string>
+    <string name="app_hide_video_fail">Video is not selectable</string>
     <string name="hide_pic_text">Images Hidden</string>
     <string name="hide_pic_empty_text">&#160;&#160;No Images Hidden</string>
     <string name="hide_video_text">Videos Hidden</string>
@@ -267,15 +273,15 @@
     <string name="googlePlayGuide">Pull down to rate</string>
     <string name="folder_backup_restore">App Restore</string>
     <string name="folder_sort_flow">Most Data</string>
-    <string name="folder_sort_capacity">Most Space</string>
+    <string name="folder_sort_capacity">Most used</string>
     <string name="folder_recommend">New Arrival</string>
     <string name="backup">Backup</string>
     <string name="restore">Restore</string>
-    <string name="backuped">Backuped</string>
+    <string name="backuped">Backed-up</string>
     <string name="no_more_business_app">This is the end of the app list.</string>
     <string name="no_business_app">No new applications, look back over time.</string>
     <string name="delete_successfully">Delete Successfully!</string>
-    <string name="space_consumption">Space used: </string>
+    <string name="space_consumption">Used:  </string>
     <string name="cache_size">Cache： </string>
     <string name="power_consumption">Battery Usage: </string>
     <string name="flow_consumption">Data usage: </string>
@@ -289,8 +295,8 @@
     <string name="new_app_tip_content">Find hot apps here!</string>
     <string name="new_app_tip_title">New Apps!</string>
     <string name="no_backup_app_tip">No backed up App</string>
-    <string name="other_people_use_tip">Other people use</string>
-    <string name="recomment_list_title">Guest Mode enabled! These apps may need locks.</string>
+    <string name="other_people_use_tip">Other people is using</string>
+    <string name="recomment_list_title">Guest Mode enabled! Lock your Apps.</string>
     <string name="lock_success">Lock successfully!</string>
     <string name="lcok_success_tip">Selected Apps were successfully locked.</string>
     <string name="success_finish">Finish</string>
@@ -303,20 +309,20 @@
     <string name="app_google_download">Free Download</string>
     <!-- AM-667 -->
     <string name="help_setting_tip_title">Tips</string>
-    <string name="lock_help_password_setting_content_gesture"> Hit the Settings icon at the bottom right of \"Lock\" page, tap \"Change password\" to reset. (Same page to switch to pattern lock.)</string>
-    <string name="lock_help_password_setting_content_password">Hit the Settings icon at the bottom right of \"Lock\" page, tap \"Change password\" to reset. (Same page to switch to passcode lock.)</string>
-    <string name="lock_help_lock_setting_content">Go to Auto-lock setting to change the idle time period required to lock the screen automatically.</string>
-    <string name="lock_help_lock_theme_content">Bunch of hot themes just arrived, put it on to customize your lock screen!</string>
+    <string name="lock_help_password_setting_content_gesture"> Click the Settings icon at the bottom right of \"Lock\" page, tap \"Change password\" to reset. (Same page to switch to pattern lock.)</string>
+    <string name="lock_help_password_setting_content_password">Click the Settings icon at the bottom right of \"Lock\" page, tap \"Change password\" to reset. (Same page to switch to passcode lock.)</string>
+    <string name="lock_help_lock_setting_content">Go Auto-lock setting to set time of locking screen.</string>
+    <string name="lock_help_lock_theme_content">Stunning themes for your choice. Try our new ones.</string>
 
     <string-array name="lock_help_setting_title">
-        <item> Change my password?</item>
+        <item>How to change password?</item>
         <item>Lock too fast?</item>
         <item>Change a theme</item>
     </string-array>
 
     <string name="lock_help_password_setting_button">Settings</string>
     <string name="lock_help_lock_setting_button">Auto-lock setting</string>
-    <string name="lock_setting_button">Auto-lock time setting</string>
+    <string name="lock_setting_button">Auto-lock setting</string>
     <string name="lock_help_lock_theme_setting_button">Change a theme</string>
     <string name="help_setting_guide">Helpful tips</string>
     <string name="app_no_image_hide">"Press \"Add\" to select images"</string>
@@ -342,28 +348,28 @@
     <string name="privacy_message_progress_dialog_title">Data import</string>
     <string name="privacy_message_progress_dialog_content">Importing…Please wait.</string>
     <string name="privacy_contact_activity_input_edit_name">Name</string>
-    <string name="privacy_contact_activity_input_edit_number">Phone<Data><![CDATA[<b><font color="#ff0000">＊</font></b>]]></Data></string>
+    <string name="privacy_contact_activity_input_edit_number">Phone Number<Data><![CDATA[<b><font color="#ff0000">＊</font></b>]]></Data></string>
     <string name="privacy_contact_activity_input_checkbox_normal">Answer</string>
     <string name="privacy_contact_activity_input_checkbox_hangup">Decline</string>
-    <string name="privacy_contact_notification_title_big">Notification</string>
+    <string name="privacy_contact_notification_title_big">System Info</string>
     <string name="privacy_contact_notification_title_small">You got a new message</string>
     <string name="privacy_add_contact_toast">This number already existed!</string>
     <string name="privacy_contact_edittext_hint">&#160;&#160;Type here...</string>
     <string name="privacy_contact_add_log_dialog_title">Import data?</string>
     <string name="privacy_contact_add_log_dialog_dialog_content">Import SMS and call log from these numbers? Data will be erased from previous location.</string>
-    <string name="privacy_contact_progress_dialog_title">Data import</string>
+    <string name="privacy_contact_progress_dialog_title">Data importing</string>
     <string name="privacy_contact_progress_dialog_content">Importing…Please wait.</string>
-    <string name="privacy_contact_callog_out">Outgoing call</string>
-    <string name="privacy_contact_callog_in">Incoming call</string>
+    <string name="privacy_contact_callog_out">Call out</string>
+    <string name="privacy_contact_callog_in">Call in</string>
     <string name="privacy_contact_checkbox_dlg_title">Remove contact?</string>
     <string name="privacy_contact_checkbox_dlg_content">Are you sure to remove this person from Private Conacts?</string>
-    <string name="privacy_contact_checkbox_dlg_checktext">Restore his/her SMS and call log</string>
+    <string name="privacy_contact_checkbox_dlg_checktext">Restore Contact Info</string>
     <string name="privacy_contact_edit_contact">Edit private contact</string>
     <string name="privacy_contact_edit_content">Save?</string>
     <string name="privacy_contact_edit_left_btn">Yes</string>
     <string name="privacy_contact_edit_right_btn">No</string>
-    <string name="privacy_message_delete_message">Are you sure to delete the selected SMS messages?</string>
-    <string name="privacy_message_resotre_message">Are you sure to recover the SMS messages back to your phone?</string>
+    <string name="privacy_message_delete_message">Are you sure to delete the message?</string>
+    <string name="privacy_message_resotre_message">Are you sure to recover the messages back to your phone?</string>
     <string name="privacy_call_delete_call_log">Are you sure to delete the call log?</string>
     <string name="privacy_contact_default_text">Add a private contact</string>
     <string name="privacy_call_log_default_text">Hide your call log</string>
@@ -375,18 +381,18 @@
     <string name="privacy_caontact_dialog_call">Call</string>
     <string name="privacy_contact_toast_no_choose">Select a number</string>
     <string name="privacy_message_item_send_message_fail">Failed to send SMS!</string>
-    <string name="privacy_message_not_privacy_tip">Android 4.4 due to system limitations above,privacy messageing functions may not work properly.</string>
-    <string name="privacy_contact_text">Protect from snoops</string>
+    <string name="privacy_message_not_privacy_tip">Due to system limit of Android 4.4 above,privacy SMS may not work properly..</string>
+    <string name="privacy_contact_text">Hide your SMS</string>
     <!-- privacy_contact_v2.0 end -->
     <!-- ImageHide -->
     <string name="no_image_hide_dialog_title">Delete original files?</string>
     <string name="no_image_hide_dialog_content">Images successfully imported to Privacy Guard! Please delete the original images to proceed.</string>
     <string name="no_image_hide_dialog_button">OK</string>
     <string name="image_hide_memery_insuficient_dialog_title">Low storage!</string>
-    <string name="image_hide_memery_insuficient_dialog_content">SD card storage is full! Delete some files to free space before “Hide”.</string>
-    <string name="image_unhide_memery_insuficient_dialog_content">SD card storage is full! Delete some files to free space before RESTORE.</string>
+    <string name="image_hide_memery_insuficient_dialog_content">SD card storage run out! Free space to hide photos.</string>
+    <string name="image_unhide_memery_insuficient_dialog_content">SD card storage run out! Free space to restore photos.</string>
     <string name="image_hide_memery_insuficient_dialog_button">OK</string>
-    <string name="appwall_name">Game Center</string>
+    <string name="appwall_name">Games</string>
     <string name="unlock_theme">Themes</string>
     <string name="lock_setting">Settings</string>
 
@@ -397,11 +403,11 @@
     <string name="battery_history_seconds"><xliff:g id="SECONDS">%1$d</xliff:g> Second</string>
     <string name="battery_info_status_charging_ac">（Alternating current）</string>
     <string name="battery_info_status_charging_usb">(USB)</string>
-    <string name="battery_info_status_discharging">Is power</string>
+    <string name="battery_info_status_discharging">Using</string>
     <string name="battery_info_status_not_charging">Not charging</string>
     <string name="battery_info_status_full">Sufficient power</string>
     <string name="battery_info_status_unknown">Unkonow</string>
-    <string name="battery_info_status_charging">Is charging</string>
+    <string name="battery_info_status_charging">Charging</string>
     <string name="power_usage_level_and_status"><xliff:g id="LEVEL">%1$s</xliff:g> - <xliff:g id="STATUS">%2$s</xliff:g></string>
     <string name="power_screen">Screen</string>
     <string name="power_wifi">Wi-Fi</string>
@@ -415,7 +421,7 @@
 
     <!-- Lock Mode -->
     <string name="lock_mode">Modes</string>
-    <string name="unlock_all_mode">Unlock All</string>
+    <string name="unlock_all_mode">Unlock Mode</string>
     <string name="vistor_mode">Guest Mode</string>
     <string name="office_mode">Office Mode</string>
     <string name="family_mode">Home Mode</string>
@@ -423,7 +429,7 @@
     <string name="add_new_mode">Add new mode</string>
     <string name="lock_mode_all">All Modes</string>
     <string name="hot_on_facebook">Hot on Facebook</string>
-    <string name="new_mode">My new mode</string>
+    <string name="new_mode">New Mode</string>
     <string name="lock_mode_location">Position Lock</string>
     <string name="lock_mode_time">Time Lock</string>
     <string name="add">Add</string>
@@ -453,14 +459,14 @@
     <string name="privacy_no_pic_hide">No hidden images</string>
     <string name="privacy_no_video_hide">No hidden videos</string>
     <string name="privacy_no_privacy_contact">No contact added</string>
-    <string name="privacy_no_app_lock_des">Your most-used apps are at a low privacy level, use AppLock to reduce the risk of snooping.</string>
-    <string name="privacy_no_pic_hide_des">Hide any of your private image by a secret password, keep them out of reach of nosy people.</string>
-    <string name="privacy_no_video_hide_des">Manage your personal videos, protect them under a safe lock and keep them from prying eyes.</string>
-    <string name="privacy_no_privacy_contact_des">Protect important messages and call log, keep your private communication underground.</string>
-    <string name="privacy_more_app_lock">You may need to lock more?</string>
-    <string name="privacy_more_pic_hide">Any more personal images?</string>
-    <string name="privacy_more_video_hide">Did you leave out a few videos?</string>
-    <string name="privacy_more_privacy_contact">Forgot some important contacts?</string>
+    <string name="privacy_no_app_lock_des">Lock your private Apps to reduce the risk of snooping.</string>
+    <string name="privacy_no_pic_hide_des">Hide your private images to keep them away from nosy people.</string>
+    <string name="privacy_no_video_hide_des">Hide your personal videos to keep them away from prying eyes.</string>
+    <string name="privacy_no_privacy_contact_des">Add private contact to protect your SMS and call log.</string>
+    <string name="privacy_more_app_lock">Lock more Apps</string>
+    <string name="privacy_more_pic_hide">Hide more photos</string>
+    <string name="privacy_more_video_hide">Hide more videos</string>
+    <string name="privacy_more_privacy_contact">Add more contacts</string>
     <string name="privacy_more_app_lock_des">Level up successfully! Lock more to achieve a higher level of your privacy.</string>
     <string name="privacy_more_pic_hide_des">Tips: Photos of your credit cards or ID can be kept here in case of an emergency.</string>
     <string name="privacy_more_video_hide_des">Some of your private videos may have been left out, go lock them for their safety.</string>
@@ -476,10 +482,10 @@
     <string name="app_application">Apps</string>
     <string name="app_hot_app">What\'s hot</string>
     <string name="back_backed">Backed-up</string>
-    <string name="the_best_status_toast">It is the best status,Please try later</string>
+    <string name="the_best_status_toast">You phone is in perfect condition. Try it later</string>
 
     <!-- My Apps -->
-    <string name="myapp_details">APP DETAILS</string>
+    <string name="myapp_details">App Details</string>
     <string name="app_manager">My Apps</string>
     <string name="first_backup">Backup</string>
     <string name="first_usage">Data Usage</string>
@@ -498,9 +504,9 @@
      and used data(Month).
     -->
     <string name="home_appmanager_donghua_tv">Memory</string>
-    <string name="traffic_progress_bar">used this month</string>
+    <string name="traffic_progress_bar">Monthly Usage</string>
     <string name="traff_first_page_small_set_month_used">Used data(MB)</string>
-    <string name="traff_first_page_small_set_low">Type your data plan and used data(Month)</string>
+    <string name="traff_first_page_small_set_low">Type your data plan and monthly used data</string>
     <string name="traff_first_page_small_set">Set data plan</string>
     <string name="no_used_traffic">There is no app running.</string>
     <string name="traffic_used_lot_stop_network">Turn off</string>
@@ -512,13 +518,13 @@
     <string name="flow_settting_name">Data plan settings</string>
     <string name="flow_settting_second">Free data less than</string>
     <string name="flow_settting_sure_bg">Done</string>
-    <string name="flow_settting_dialog">Used data over</string>
-    <string name="flow_settting_dialog_remain">Alert on when data usage achieve monthly allowance</string>
-    <string name="flow_settting_thrid">Usage cycle reset date</string>
-    <string name="flow_settting_thrid_first_tv">Monthly billing date</string>
+    <string name="flow_settting_dialog">Monthly Usage</string>
+    <string name="flow_settting_dialog_remain">Alert on as data usage excess</string>
+    <string name="flow_settting_thrid">Settlement Date</string>
+    <string name="flow_settting_thrid_first_tv">Settlement Date</string>
     <string name="flow_settting_thrid_second_tv">Data plan(MB)</string>
     <string name="flow_settting_thrid_month_used_data">Used data(MB)</string>
-    <string name="app_elec_aca">Battery</string>
+    <string name="app_elec_aca">Battery Percentage</string>
     <string name="app_elec_stop">Stop</string>
     <string name="app_elec_zhuyi">Notice!</string>
     <string name="app_flow_elec">Data Usage</string>
@@ -559,35 +565,35 @@
         <item>Sun</item>
     </string-array>
 
-    <string name="select_mode">Selection mode</string>
+    <string name="select_mode">Select Mode</string>
     <string name="select_wifi_mode">Select WiFi</string>
-    <string name="choose_ssid">Please select a WIFI hot spot location</string>
+    <string name="choose_ssid">Select WiFi</string>
     <string name="choose_enter_mode">Enable when I\'m near this WiFi</string>
     <string name="choose_quit_mode">Enable when I\'m away from this WiFi</string>
 
     <!-- guide page begin -->
-    <string name="guide_page1_title">Modes Selection</string>
-    <string name="guide_page1_content">Automatically lock/unlock by desired time &amp; location</string>
+    <string name="guide_page1_title">Modes</string>
+    <string name="guide_page1_content">Automatically lock/unlock by desired time and location</string>
     <string name="guide_page2_title">Privacy Level</string>
     <string name="guide_page2_content">Be a know-it-all to your device’s safety with Privacy Levels</string>
     <string name="guide_page3_title">Private Contacts</string>
     <string name="guide_page3_content">Hide your private SMS and call log from nosy people</string>
     <string name="guide_page4_title">Usage Monitoring</string>
-    <string name="guide_page4_content">Keeping your data plan and battery usage under control</string>
-    <string name="guide_button_text">LET\'S GO!</string>
+    <string name="guide_page4_content">Easy control data plan and battery usage </string>
+    <string name="guide_button_text">Go!</string>
     <!-- guide page end -->
 
-    <string name="lock_mode_name_cant_empty">Name of the mode id required</string>
+    <string name="lock_mode_name_cant_empty">Enter a name of the mode</string>
     <string name="lock_mode_delete_tip_title">Delete mode</string>
     <string name="lock_mode_delete_tip_both">Deleting this mode will affect your mode options in Time Setting/Location Setting.</string>
     <string name="lock_mode_delete_tip_time">Deleting this mode will affect your mode options in Time Setting.</string>
     <string name="lock_mode_delete_tip_location">Deleting this mode will affect your mode options in Location Setting.</string>
-    <string name="please_input_name">Edit name</string>
-    <string name="please_selset_wifi">Select a WIFI hot spot</string>
-    <string name="cur_mode_delete_tip">%1$s is currently in use, Guest Mode will be applied after deleting it.</string>
-    <string name="add_mode">New setting</string>
-    <string name="add_new_time_lock">New setting</string>
-    <string name="add_new_location_lock">New setting</string>
+    <string name="please_input_name">Enter Name</string>
+    <string name="please_selset_wifi">Select WiFi</string>
+    <string name="cur_mode_delete_tip">%1$s is currently in use, Deleting it will enable guest mode.</string>
+    <string name="add_mode">Add Modes</string>
+    <string name="add_new_time_lock">Add Time Lock</string>
+    <string name="add_new_location_lock">Add Position Lock</string>
     <string name="mode_delete_tip">"Are you sure to delete this mode's profile?"</string>
     <string name="save_successful">Save Succefully</string>
 
@@ -608,9 +614,9 @@
     <string name="weizhuang_error_notice_set_false">Oops! Longer sliding distance</string>
     <string name="weizhuang_zhiwen_notice">Tap 3 times within 1 second to unlock</string>
     <string name="error_cancel_button">Close</string>
-    <string name="open_weizhuang_dialog_title">Start cover</string>
+    <string name="open_weizhuang_dialog_title">Enable App Cover</string>
     <string name="open_weizhuang_dialog_content">Congrats! You got this cover. Start it?</string>
-    <string name="open_weizhuang_dialog_sure">Start</string>
+    <string name="open_weizhuang_dialog_sure">Enable</string>
 
     <string-array name="weizhuang_type_num">
         <item>No Cover</item>
@@ -770,7 +776,9 @@
     <string name="zipper_too_fast">Oops!Pull down slower </string>
     <string name="zipper_too_slow">Oops!Pull down faster</string>
     <string name="theme_apply_title">Apply unlock theme or not %1$s ?</string>
-    <string name="input_toast_no_number_tip">Please enter the phone number</string>
+    <string name="input_toast_no_number_tip">Enter phone number</string>
+    <string name="privacy_contact_callog_no">Missed calls</string>
+    
     <!-- 2.6 end -->
 
 </resources>

@@ -140,8 +140,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/slide_guide_title"
-                    android:layout_marginTop="8dp"
-                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="8dp" 
                     android:text="@string/quick_gesture_slide_guide_content"
                     android:textColor="@color/quick_intro_color"
                     android:textSize="12dp" />

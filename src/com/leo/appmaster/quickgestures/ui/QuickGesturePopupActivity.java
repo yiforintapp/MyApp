@@ -262,7 +262,10 @@ public class QuickGesturePopupActivity extends BaseActivity {
             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
             createFloatView();
         }
-        TaskDetectService.getService().callPretendAppLaunch();
+        
+        if(!mFromSelfApp) {
+            TaskDetectService.getService().callPretendAppLaunch();
+        }
         super.onDestroy();
     }
 
