@@ -22,6 +22,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Environment;
@@ -35,6 +36,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 
 public class AppBackupRestoreManager implements AppChangeListener {
@@ -580,7 +582,10 @@ public class AppBackupRestoreManager implements AppChangeListener {
                             if (res != null) {
                                 try {
                                     label = res.getString(appInfo.labelRes);
-                                    icon = res.getDrawable(appInfo.icon);
+                                    Drawable d = res.getDrawable(appInfo.icon);
+                                    if (d != null) {
+                                    	icon = AppUtil.getScaledAppIcon((BitmapDrawable) d);
+                                    }
                                 } catch (Exception e) {
 
                                 }
@@ -590,8 +595,9 @@ public class AppBackupRestoreManager implements AppChangeListener {
                                         appInfo).toString();
                             }
                             if (icon == null) {
-                                icon = mPackageManager
-                                        .getApplicationIcon(appInfo);
+//                                icon = mPackageManager
+//                                        .getApplicationIcon(appInfo);
+                            	icon = AppUtil.loadAppIconDensity(appInfo.packageName);
                             }
                             app.label = label;
                             app.icon = icon;

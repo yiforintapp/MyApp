@@ -435,11 +435,12 @@ public class AppLoadEngine extends BroadcastReceiver {
         appInfo.packageName = packageName;
         appInfo.activityName = activityName;
         appInfo.label = applicationInfo.loadLabel(mPm).toString().trim();
-        try {
-            appInfo.icon = applicationInfo.loadIcon(mPm);
-        } catch (Exception e) {
-            appInfo.icon = mPm.getDefaultActivityIcon();
-        }
+        appInfo.icon = AppUtil.loadAppIconDensity(packageName);
+//        try {
+//            appInfo.icon = applicationInfo.loadIcon(mPm);
+//        } catch (Exception e) {
+//            appInfo.icon = mPm.getDefaultActivityIcon();
+//        }
         appInfo.systemApp = AppUtil.isSystemApp(applicationInfo);
         appInfo.inSdcard = AppUtil.isInstalledInSDcard(applicationInfo);
         try {

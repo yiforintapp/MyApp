@@ -3,6 +3,7 @@ package com.leo.appmaster.engine;
 import java.util.HashMap;
 
 import com.leo.appmaster.engine.BatteryInfoProvider.DrainType;
+import com.leo.appmaster.utils.AppUtil;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -115,7 +116,9 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 		PackageManager pm = mContext.getPackageManager();
 		try {
 			ApplicationInfo appInfo = pm.getApplicationInfo(pkgName, 0);
-			icon = appInfo.loadIcon(pm);// pm.getApplicationIcon(appInfo);
+			// 统一使用AppUtil.getDrawable获取app图标
+			// icon = appInfo.loadIcon(pm);// pm.getApplicationIcon(appInfo);
+			icon = AppUtil.getDrawable(pm, pkgName);
 			label = appInfo.loadLabel(pm).toString();// pm.getApplicationLabel(appInfo).toString();
 			defaultPackageName = pkgName;
 		} catch (NameNotFoundException e) {
@@ -176,7 +179,9 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 				}
 				if (ai.icon != 0) {
 					defaultPackageName = packages[i];
-					icon = ai.loadIcon(pm);
+					// 统一使用AppUtil.getDrawable获取app图标
+					// icon = ai.loadIcon(pm);
+					icon = AppUtil.getDrawable(pm, defaultPackageName);
 					break;
 				}
 			} catch (NameNotFoundException e) {
@@ -199,7 +204,9 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 							label = nm.toString();
 							if (pi.applicationInfo.icon != 0) {
 								defaultPackageName = pkgName;
-								icon = pi.applicationInfo.loadIcon(pm);
+								// 统一使用AppUtil.getDrawable获取app图标
+								// icon = pi.applicationInfo.loadIcon(pm);
+								icon = AppUtil.getDrawable(pm, pkgName);
 							}
 							break;
 						}

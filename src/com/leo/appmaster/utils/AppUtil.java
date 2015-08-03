@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 
@@ -17,6 +18,8 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 import android.net.Uri;
@@ -112,12 +115,53 @@ public class AppUtil {
     public static Drawable getDrawable(PackageManager pm, String pkg) {
         Drawable d = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppIcon(pkg);
         if (d == null) {
-            try {
-                d = pm.getApplicationIcon(pkg);
-            } catch (NameNotFoundException e) {
-            }
+            d = loadAppIconDensity(pkg);
         }
         return d;
+    }
+    
+    /**
+     * 获取app图标并缩放至app指定大小
+     * @param pkg
+     * @return
+     */
+    public static Drawable loadAppIconDensity(String pkg) {
+        Context ctx = AppMasterApplication.getInstance();
+        
+        PackageManager pm = ctx.getPackageManager();
+        Drawable appicon = null;
+        try {
+            appicon = pm.getApplicationIcon(pkg);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        
+        if (appicon == null || !BitmapDrawable.class.isInstance(appicon)) {
+            return null;
+        }
+        
+        BitmapDrawable drawable = (BitmapDrawable) appicon;
+        return getScaledAppIcon(drawable);
+    }
+    
+    /**
+     * 缩放appicon到指定大小
+     * @param src
+     * @return
+     */
+    public static Drawable getScaledAppIcon(BitmapDrawable src) {
+        Context ctx = AppMasterApplication.getInstance();
+        
+        Bitmap bitmap = src.getBitmap();
+        
+        int size = ctx.getResources().getDimensionPixelSize(R.dimen.app_size);
+        if (bitmap.getWidth() > size || bitmap.getHeight() > size) {
+            bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
+        } else {
+            return src;
+        }
+        
+        return new BitmapDrawable(ctx.getResources(), bitmap);
     }
 
     public static long getTotalTriffic() {
