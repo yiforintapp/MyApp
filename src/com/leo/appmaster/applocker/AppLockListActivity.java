@@ -109,6 +109,8 @@ public class AppLockListActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         AppLoadEngine.getInstance(this).unregisterAppChangeListener(this);
+        // 解决内存泄露
+        LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
     }
 
