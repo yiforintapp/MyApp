@@ -50,6 +50,7 @@
 
                 <com.leo.appmaster.ui.LeoPagerTab
                     android:id="@+id/tab_indicator"
+		            android:overScrollMode="never"
                     android:layout_width="match_parent"
                     android:layout_height="56dp" />
 

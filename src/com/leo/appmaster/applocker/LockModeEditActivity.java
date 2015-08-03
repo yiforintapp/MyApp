@@ -417,8 +417,9 @@ public class LockModeEditActivity extends BaseActivity implements
                             }
                             mEditMode.lockList = changedList;
                             if (mNewMode) {
-                                mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
-                                        R.drawable.lock_mode_default);
+                                // mEditMode.modeIconId = R.drawable.lock_mode_default;
+                                // mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
+                                //        R.drawable.lock_mode_default);
                                 lm.addLockMode(mEditMode);
                             } else {
                                 lm.updateMode(mEditMode);
@@ -459,8 +460,9 @@ public class LockModeEditActivity extends BaseActivity implements
             }
             mEditMode.lockList = changedList;
             if (mNewMode) {
-                mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.lock_mode_default);
+//                mEditMode.modeIconId = R.drawable.lock_mode_default;
+                // mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
+                //        R.drawable.lock_mode_default);
                 lm.addLockMode(mEditMode);
             } else {
                 lm.updateMode(mEditMode);

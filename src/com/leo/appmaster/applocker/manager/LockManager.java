@@ -1038,9 +1038,10 @@ public class LockManager {
             homeMode.modeName = mContext.getString(R.string.family_mode);
             homeMode.isCurrentUsed = false;
             homeMode.defaultFlag = 3;
-            homeMode.modeIcon =
-                    BitmapFactory.decodeResource(mContext.getResources(),
-                            R.drawable.lock_mode_family);
+//            homeMode.modeIcon =
+//                    BitmapFactory.decodeResource(mContext.getResources(),
+//                            R.drawable.lock_mode_family);
+//            homeMode.modeIconId = R.drawable.lock_mode_family;
             List<String> list = Collections.synchronizedList(new LinkedList<String>());
             list.add(mContext.getPackageName());
             for (String pkg : Constants.sDefaultHomeModeList) {
@@ -1147,8 +1148,9 @@ public class LockManager {
                     lockMode.modeName = mContext.getString(R.string.vistor_mode);
                     lockMode.isCurrentUsed = true;
                     lockMode.defaultFlag = 1;
-                    lockMode.modeIcon = BitmapFactory.decodeResource(mContext.getResources(),
-                            R.drawable.lock_mode_visitor);
+                    // lockMode.modeIcon = BitmapFactory.decodeResource(mContext.getResources(),
+                    //        R.drawable.lock_mode_visitor);
+                    // lockMode.modeIconId = R.drawable.lock_mode_visitor;
                     List<String> list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     lockMode.lockList = list;
@@ -1189,9 +1191,10 @@ public class LockManager {
                     lockMode.modeName = mContext.getString(R.string.family_mode);
                     lockMode.isCurrentUsed = false;
                     lockMode.defaultFlag = 3;
-                    lockMode.modeIcon =
-                            BitmapFactory.decodeResource(mContext.getResources(),
-                                    R.drawable.lock_mode_family);
+//                    lockMode.modeIcon =
+//                            BitmapFactory.decodeResource(mContext.getResources(),
+//                                    R.drawable.lock_mode_family);
+//                    lockMode.modeIconId = R.drawable.lock_mode_family;
                     list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {

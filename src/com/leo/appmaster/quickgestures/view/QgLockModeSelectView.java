@@ -111,13 +111,17 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
             if (lockMode.isCurrentUsed) {
                 mSelected = mHolder;
                 currModePosition = list.indexOf(lockMode);
-                Bitmap grayBitmap = BitmapUtils.createGaryBitmap(lockMode.modeIcon);
+//                Bitmap grayBitmap = BitmapUtils.createGaryBitmap(lockMode.modeIcon);
+                
+                BitmapDrawable drawable = (BitmapDrawable) lockMode.getModeDrawable();
+                Bitmap grayBitmap = BitmapUtils.createGaryBitmap(drawable.getBitmap());
                 modeIcon.setBackgroundDrawable(new BitmapDrawable(getResources(),
                         grayBitmap));
                 selectedImg.setVisibility(View.VISIBLE);
             } else {
-                modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
-                        lockMode.modeIcon)));
+//                modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
+//                        lockMode.modeIcon)));
+                modeIcon.setBackgroundDrawable(lockMode.getModeDrawable());
                 selectedImg.setVisibility(View.GONE);
             }
             mHolder.setTag(lockMode);
@@ -307,16 +311,20 @@ public class QgLockModeSelectView extends RelativeLayout implements OnClickListe
                                         .findViewById(R.id.tv_lock_mode_icon);
                                 selectedImg = (ImageView) mSelected.findViewById(R.id.img_selected);
                                 selectedImg.setVisibility(View.GONE);
-                                modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
-                                        lastSelectedMode.modeIcon)));
+//                                modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
+//                                        lastSelectedMode.modeIcon)));
+                                modeIcon.setBackgroundDrawable(lastSelectedMode.getModeDrawable());
 
                                 modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
                                 post(new Runnable() {
                                     @Override
                                     public void run() {
-                                        modeIcon.setBackgroundDrawable((new BitmapDrawable(
-                                                getResources(),
-                                                BitmapUtils.createGaryBitmap(mode.modeIcon))));
+//                                        modeIcon.setBackgroundDrawable((new BitmapDrawable(
+//                                                getResources(),
+//                                                BitmapUtils.createGaryBitmap(mode.modeIcon))));
+                                        BitmapDrawable drawable = (BitmapDrawable) mode.getModeDrawable();
+                                        Bitmap bitmap = BitmapUtils.createGaryBitmap(drawable.getBitmap());
+                                        modeIcon.setBackgroundDrawable(new BitmapDrawable(getResources(), bitmap));
                                         selectedImg.setVisibility(View.VISIBLE);
                                     }
                                 });

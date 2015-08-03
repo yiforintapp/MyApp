@@ -71,8 +71,9 @@ public class GestureLockFragment extends LockFragment implements
                     }
                 }
                 if (targetMode != null) {
-                    mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
-                            targetMode.modeIcon));
+                    mAppIcon.setImageDrawable(targetMode.getModeDrawable());
+//                    mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
+//                            targetMode.modeIcon));
                 } else {
                     mAppIcon.setImageDrawable(AppUtil.getDrawable(
                             mActivity.getPackageManager(), mActivity.getPackageName()));
@@ -105,8 +106,9 @@ public class GestureLockFragment extends LockFragment implements
                 }
             }
             if (targetMode != null) {
-                mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
-                        targetMode.modeIcon));
+//                mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
+//                        targetMode.modeIcon));
+                mAppIcon.setImageDrawable(targetMode.getModeDrawable());
             } else {
                 mAppIcon.setImageDrawable(AppUtil.getDrawable(
                         mActivity.getPackageManager(), mActivity.getPackageName()));

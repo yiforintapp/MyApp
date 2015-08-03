@@ -37,6 +37,7 @@
 
         <com.leo.appmaster.ui.LeoPagerTab
             android:id="@+id/backup_app_tab_indicator"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="@dimen/app_manager_backup_head_back" />
 
