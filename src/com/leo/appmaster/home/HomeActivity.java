@@ -1,10 +1,12 @@
 
 package com.leo.appmaster.home;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.ComponentName;
@@ -13,7 +15,9 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +31,7 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
 import android.util.Log;
+import android.util.LongSparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,6 +93,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     private final static String KEY_ROOT_CHECK = "root_check";
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
+    
+    // 释放系统预加载资源使用
+    private static LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawables = 
+            new LongSparseArray[2];
+    
     private ViewStub mViewStub;
     private MultiModeView mMultiModeView;
     private DrawerLayout mDrawerLayout;
@@ -128,6 +138,33 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
         // TODO
+        
+        releaseSysResources();
+    }
+    
+    /**
+     * 释放系统预加载资源，完全无用，占用内存约10M
+     */
+    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
+	private void releaseSysResources() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            sPreloadedDrawables[0] = new LongSparseArray<Drawable.ConstantState>();
+            sPreloadedDrawables[1] = new LongSparseArray<Drawable.ConstantState>();
+            
+            Resources res = getResources();
+            
+            try {
+                Field field = res.getClass().getDeclaredField("sPreloadedDrawables");
+                field.setAccessible(true);
+                field.set(res, sPreloadedDrawables);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            } 
+        }
     }
 
 //    private void tryIsFromLockMore() {
