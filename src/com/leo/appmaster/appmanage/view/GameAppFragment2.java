@@ -41,6 +41,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.extra.AppWallBean;
 import com.leo.appmaster.model.extra.AppWallUrlBean;
@@ -477,39 +478,45 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
         }.start();
     }
     
-    private static class LoadGameLisener implements Listener<JSONObject>, ErrorListener {
-        
-        private WeakReference<GameAppFragment2> mOuterContextRef;
+    private static class LoadGameLisener extends RequestListener<GameAppFragment2> {
         
         public LoadGameLisener(GameAppFragment2 outerContext) {
-            mOuterContextRef = new WeakReference<GameAppFragment2>(outerContext);
+            super(outerContext);
         }
 
         @Override
         public void onErrorResponse(VolleyError error) {
             LeoLog.d(TAG, "load game error." + error == null ? "" : error.getMessage());
-            GameAppFragment2 outerContext = mOuterContextRef.get();
+            GameAppFragment2 outerContext = getOuterContext();
+            
+            Context context = AppMasterApplication.getInstance();
+            LoadFailUtils.sendLoadFail(context, "games");
+
             if (outerContext == null) return;
             
             outerContext.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
-            LoadFailUtils.sendLoadFail(outerContext.mActivity, "games");
         }
 
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
             LeoLog.d(TAG, "load game success. response: " + (response == null ? "" : response.toString()) +
                     " | noMidify: " + noMidify);
-            GameAppFragment2 outerContext = mOuterContextRef.get();
-            if (outerContext == null) return;
-            
+
+            GameAppFragment2 outerContext = getOuterContext();
             if (response == null) {
-                outerContext.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
-                LoadFailUtils.sendLoadFail(outerContext.mActivity, "games");
+                Context context = AppMasterApplication.getInstance();
+                LoadFailUtils.sendLoadFail(context, "games");
+                if (outerContext != null) {
+                    outerContext.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+                }
                 return;
+            } else {
+                if (outerContext == null) return;
+
+                List<AppWallBean> apps = outerContext.getJson(response.toString());
+                Message msg = outerContext.mHandler.obtainMessage( MSG_LOAD_INIT_SUCCESSED, apps);
+                outerContext.mHandler.sendMessage(msg);
             }
-            List<AppWallBean> apps = outerContext.getJson(response.toString());
-            Message msg = outerContext.mHandler.obtainMessage( MSG_LOAD_INIT_SUCCESSED, apps);
-            outerContext.mHandler.sendMessage(msg);
         }
         
     }
