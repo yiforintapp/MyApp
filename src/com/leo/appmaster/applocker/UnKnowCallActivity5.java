@@ -58,6 +58,9 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     private AppMasterPreference sp_unknowcall;
     private Vibrator vib;
     private Timer mTimer;
+    
+    private ObjectAnimator mMoveX;
+    private ObjectAnimator mMoveY;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -151,22 +154,24 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
         if (!isLunXun) {
             setTimerTask();
         }
-        ObjectAnimator moveX = ObjectAnimator.ofFloat(iv_hands, "translationX", 0, mBanJing,
-                mBanJing, mZhiJing);
-        moveX.setDuration(2500);
+        if (mMoveX == null) {
+            mMoveX = ObjectAnimator.ofFloat(iv_hands, "translationX", 0, mBanJing, mBanJing, mZhiJing);
+            mMoveX.setDuration(2500);
+        }
 
-        ObjectAnimator moveY = ObjectAnimator.ofFloat(iv_hands, "translationY", 0, -mBanJing,
-                -mBanJing, 0);
-        moveY.setDuration(2500);
+        if (mMoveY == null) {
+            mMoveY = ObjectAnimator.ofFloat(iv_hands, "translationY", 0, -mBanJing, -mBanJing, 0);
+            mMoveY.setDuration(2500);
+        }
 
-        moveX.start();
-        moveY.addListener(new AnimatorListenerAdapter() {
+        mMoveX.start();
+        mMoveY.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 showTransDonghua();
             }
         });
-        moveY.start();
+        mMoveY.start();
     }
 
     private void setTimerTask() {
@@ -433,6 +438,14 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
             mTimer.cancel();
             mTimer.purge();
             mTimer = null;
+        }
+        
+        // 解决内存泄露
+        if (mMoveX != null) {
+            mMoveX.end();
+        }
+        if (mMoveY != null) {
+            mMoveY.end();
         }
         mViewContent.mFilterLayout = false;
         super.onDestroy();
