@@ -2,12 +2,14 @@
 package com.leo.appmaster;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -103,7 +105,7 @@ public class AppMasterApplication extends Application {
     private MessagePrivacyReceiver mPrivacyReceiver;
 
     private static AppMasterApplication mInstance;
-    private static List<Activity> mActivityList;
+    private static List<WeakReference<Activity>> mActivityList;
 
     public Handler mHandler;
     public static SharedPreferences sharedPreferences;
@@ -133,7 +135,7 @@ public class AppMasterApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initDensity(this);
-        mActivityList = new ArrayList<Activity>();
+        mActivityList = new ArrayList<WeakReference<Activity>>();
         mInstance = this;
         mExecutorService = Executors.newScheduledThreadPool(3);
         // cachedThreadPool = Executors.newCachedThreadPool();
@@ -1163,17 +1165,48 @@ public class AppMasterApplication extends Application {
 
     // for force update strategy to exit application completely
     public synchronized void addActivity(Activity activity) {
-        mActivityList.add(activity);
+//        mActivityList.add(activity);
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Activity> reference = iterator.next();
+            Activity ac = reference.get();
+            if (ac != null && ac == activity) {
+                return;
+            } else if (ac == null) {
+                // 存放的activity已经被释放掉，移除引用
+                iterator.remove();
+            }
+        }
+        
+        mActivityList.add(new WeakReference<Activity>(activity));
     }
 
     public synchronized void removeActivity(Activity activity) {
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Activity> reference = iterator.next();
+            Activity ac = reference.get();
+            if (ac == null || ac == activity) {
+                // 移除掉已经被释放掉的ref
+                iterator.remove();
+            }
+        }
         mActivityList.remove(activity);
     }
 
     public synchronized void exitApplication() {
-        for (Activity activity : mActivityList) {
-            activity.finish();
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Activity> reference = iterator.next();
+            Activity ac = reference.get();
+            if (ac != null) {
+                ac.finish();
+            }
+            iterator.remove();
         }
+//        for (Activity activity : mActivityList) {
+//            activity.finish();
+//        }
     }
 
     public static void setSharedPreferencesValue(String lockerTheme) {

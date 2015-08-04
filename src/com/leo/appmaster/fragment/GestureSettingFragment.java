@@ -467,7 +467,9 @@ public class GestureSettingFragment extends BaseFragment implements
     }
 
     private void goToAppHideVio() {
+        String mPathString = ((LockSettingActivity) mActivity).getCoolBrowserPath();
         Intent intent = new Intent(mActivity, VideoHideMainActivity.class);
+        intent.putExtra("cb_download_path", mPathString);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
