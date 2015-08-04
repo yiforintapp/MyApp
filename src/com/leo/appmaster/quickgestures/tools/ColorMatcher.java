@@ -28,8 +28,8 @@ public class ColorMatcher {
         this.colorBase = new ArrayList<BaseColorItem>();
     }
 
-    public void addBitmapSample(Bitmap bmp) {
-        this.colorBase.add(new BaseColorItem(bmp));
+    public void addBitmapSample(int resId) {
+        this.colorBase.add(new BaseColorItem(resId));
     }
 
     public void clearItem() {
@@ -37,26 +37,26 @@ public class ColorMatcher {
         clearCachedTargetLab();
     }
 
-    public Bitmap getMatchedBitmap(Bitmap target) {
+//    public Bitmap getMatchedBitmap(Bitmap target) {
+//
+//        BaseColorItem item = this.getMatchedItem(target);
+//
+//        return item.getBitmap();
+//
+//    }
 
-        BaseColorItem item = this.getMatchedItem(target);
-
-        return item.getBitmap();
-
-    }
-
-    public Bitmap getMatchedBitmap(Drawable target) {
+    public int getMatchedDrawableId(Drawable target) {
         Bitmap targetBmp = drawableToBitmap(target);
         if (targetBmp == null) {
-            return null;
+            return 0;
         }
         BaseColorItem item = this.getMatchedItem(targetBmp);
 
         if (item != null) {
-            return item.getBitmap();
+            return item.getDrawableId();
         }
         // targetBmp.recycle();
-        return null;
+        return 0;
 
     }
 

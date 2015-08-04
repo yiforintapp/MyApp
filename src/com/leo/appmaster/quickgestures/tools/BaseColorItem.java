@@ -1,29 +1,44 @@
 package com.leo.appmaster.quickgestures.tools;
 
+import com.leo.appmaster.AppMasterApplication;
+
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 
 public class BaseColorItem {
-	private Bitmap mBmp;
+//	private Bitmap mBmp;
 	private int mAvgColorR;
 	private int mAvgColorG;
 	private int mAvgColorB;
+	
+	private int mResId;
 
 	private int mAvgColorLab[];
 
-	public BaseColorItem(Bitmap bmp) {
-		genAverageColor(bmp);
-		// hold this bitmap???
-		this.mBmp = bmp;
+	public BaseColorItem(int resId) {
+	    mResId = resId;
+		genAverageColor();
+	}
+	
+	public Drawable getDrawable() {
+	    if (mResId > 0) {
+	        Context ctx = AppMasterApplication.getInstance();
+	        return ctx.getResources().getDrawable(mResId);
+	    }
+	    
+	    return null;
+	}
+	
+	public int getDrawableId() {
+	    return mResId;
 	}
 
-	public Bitmap getBitmap() {
-		return this.mBmp;
-	}
-
-	private void genAverageColor(Bitmap bmp) {
-
-		int rgb[] = bmp2rgb(bmp);
+	private void genAverageColor() {
+	    BitmapDrawable drawable = (BitmapDrawable) getDrawable();
+		int rgb[] = bmp2rgb(drawable.getBitmap());
 		this.mAvgColorR = rgb[0];
 		this.mAvgColorG = rgb[1];
 		this.mAvgColorB = rgb[2];
