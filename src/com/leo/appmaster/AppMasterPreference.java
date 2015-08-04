@@ -146,6 +146,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
     public static final String PREF_NEED_CLOSE_BEAUTY="need_close_beauty";
     public static final String PREF_NEED_DISGUISE_TIP="need_disguise_tip";
+    
+    // hideVideo
+    public static final String PREF_HIDE_VIDEO_LAST_DIR = "hide_video_last_dir";
+    public static final String PREF_HIDE_VIDEO_SECOND_DIR = "hide_video_second_dir";
+    
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
     private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED = "time_lock_mode_guide_user_clicked";
@@ -1310,6 +1315,26 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_MESSAGE_ITEM_RUNING, true);
     }
 
+    public String getLastDir() {
+        return mPref.getString(PREF_HIDE_VIDEO_LAST_DIR,
+                "");
+    }
+
+    public void setLastDir(String path) {
+        mPref.edit().putString(PREF_HIDE_VIDEO_LAST_DIR, path)
+                .commit();
+    }
+
+    public String getSecondDir() {
+        return mPref.getString(PREF_HIDE_VIDEO_SECOND_DIR,
+                "");
+    }
+
+    public void setSecondDi(String path) {
+        mPref.edit().putString(PREF_HIDE_VIDEO_SECOND_DIR, path)
+                .commit();
+    }
+    
     public void setMessageItemRuning(boolean flag) {
         mPref.edit().putBoolean(PREF_MESSAGE_ITEM_RUNING, flag).commit();
     }
