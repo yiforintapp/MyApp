@@ -1,6 +1,11 @@
 
 package com.leo.appmaster.fragment;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.graphics.drawable.BitmapDrawable;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
@@ -70,6 +75,13 @@ public class PretendAppBeautyFragment extends PretendFragment {
                         "appcover", "fail_Beauty");
             }
         });
+        
+        // 背景使用565, 减少内存占用
+        Options ops = new Options();
+        ops.inPreferredConfig = Config.RGB_565;
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.bg_beauty, ops);
+        BitmapDrawable drawable = new BitmapDrawable(getResources(), bitmap);
+        mRootView.setBackgroundDrawable(drawable);
     }
 
     public void onUnlockPretendSuccessfully() {
