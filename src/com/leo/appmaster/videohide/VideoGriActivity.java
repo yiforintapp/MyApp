@@ -392,7 +392,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                         getResources().getDrawable(R.drawable.no_select_all_selector), null,
                         null);
                 mSelectAll.setText(R.string.app_select_none);
-
             }
             updateRightButton();
         }
