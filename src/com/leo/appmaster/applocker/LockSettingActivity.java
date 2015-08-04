@@ -34,10 +34,10 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public final int mVioHide = 4;
     public final int mPrivateSms = 5;
     public final int mFlow = 6;
-    public  final int mElec = 7;
-    public  final int mBackup = 8;
-    public  final int mQuickGues = 9;
-    public  final int mLockThem = 10;
+    public final int mElec = 7;
+    public final int mBackup = 8;
+    public final int mQuickGues = 9;
+    public final int mLockThem = 10;
     // private int mLockType = LOCK_TYPE_PASSWD;
     private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
@@ -57,6 +57,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public boolean mFromQuickMode;
     public int mModeId;
     public int mFromDeskId = -1;
+    public String mCoolBrowserPath;
 
     @Override
     protected void onCreate(Bundle arg0) {
@@ -89,6 +90,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         Intent intent = getIntent();
         mFromDeskId = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                 StatusBarEventService.EVENT_EMPTY);
+        mCoolBrowserPath = intent.getStringExtra("cb_download_path");
         mResetFlag = intent.getBooleanExtra(RESET_PASSWD_FLAG, false);
         mIsRotateFragment = intent.getBooleanExtra(ROTATE_FRAGMENT, false);
         mToLockList = intent.getBooleanExtra("to_lock_list", false);
@@ -228,5 +230,9 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
     public int getFromDeskId() {
         return mFromDeskId;
+    }
+    
+    public String getCoolBrowserPath(){
+        return mCoolBrowserPath;
     }
 }

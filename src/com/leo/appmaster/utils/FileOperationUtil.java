@@ -106,6 +106,26 @@ public class FileOperationUtil {
         return "";
     }
 
+    public static String getSecondDirNameFromFilepath(String path) {
+        if (path != null) {
+            String dirName;
+            int pos = path.lastIndexOf('/');
+            if (pos != -1) {
+                dirName = path.substring(0, pos);
+                pos = dirName.lastIndexOf('/');
+                if (pos != -1) {
+                    dirName = path.substring(0, pos);
+                    pos = dirName.lastIndexOf("/");
+                    if (pos != -1) {
+                        dirName = dirName.substring(pos + 1);
+                        return dirName;
+                    }
+                }
+            }
+        }
+        return "";
+    }
+    
     public static String makePath(String path1, String path2) {
         if (path1 != null && path2 != null) {
             if (path1.endsWith(File.separator)) {
