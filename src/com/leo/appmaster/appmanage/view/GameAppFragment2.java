@@ -396,8 +396,8 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     public String toUrlgetPackageName(String url) {
         return url.substring(url.lastIndexOf("?id=") + 4);
     }
-
     private List<AppWallBean> getJson(String data) {
+
         List<AppWallBean> all = new ArrayList<AppWallBean>();
 
         String appIcon = null;
