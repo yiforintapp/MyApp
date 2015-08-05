@@ -104,6 +104,7 @@ public class SplashActivity extends BaseActivity {
 
     @SuppressLint("NewApi")
     private void initSplash() {
+        AppMasterPreference pre = AppMasterPreference.getInstance(this);
         mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
         mSplashIcon = (ImageView) findViewById(R.id.image_view_splash_center);
         mSplashName = (ImageView) findViewById(R.id.iv_back);
@@ -111,7 +112,6 @@ public class SplashActivity extends BaseActivity {
         mSkipToPgButton = (ImageView) findViewById(R.id.skip_to_pg_bt);
         mSkipUrlButton.setOnClickListener(new SkipUrlOnClickListener());
         mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
-        AppMasterPreference pre = AppMasterPreference.getInstance(this);
         mIsEmptyForSplashUrl = checkSplashUrlIsEmpty();
         showSkipUrlButton();
         showSkipEnterHomeButton();
@@ -147,7 +147,7 @@ public class SplashActivity extends BaseActivity {
             }
         } else {
             /* 没有开始，没有结束时间，默认 */
-            Log.d("splash_end&start_time", "No time!");
+            Log.d(Constants.RUN_TAG, "splash_end&start_time：No time!");
             clearSpSplashFlagDate();
             if (mSplashIcon.getVisibility() == View.INVISIBLE) {
                 mSplashIcon.setVisibility(View.VISIBLE);
@@ -165,40 +165,49 @@ public class SplashActivity extends BaseActivity {
         PrivacyHelper.getInstance(this).setDirty(true);
     }
 
+    /* 对后台配置的过期闪屏数据初始化 */
     private void clearSpSplashFlagDate() {
-        String splashUriFlag = AppMasterPreference.getInstance(getApplicationContext())
-                .getSplashUriFlag();
-        if (!Constants.SPLASH_FLAG.equals(splashUriFlag)) {
+        if (AppMasterApplication.mSplashFlag) {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashUriFlag(
                     Constants.SPLASH_FLAG);
+            AppMasterApplication.mSplashFlag = false;
         }
+        if (AppMasterApplication.mSplashDelayTime != Constants.SPLASH_DELAY_TIME) {
+            AppMasterPreference.getInstance(this).setSplashDelayTime(Constants.SPLASH_DELAY_TIME);
+            AppMasterApplication.mSplashDelayTime = Constants.SPLASH_DELAY_TIME;
+        }
+        if (!AppMasterApplication.mIsEmptyForSplashUrl) {
+            AppMasterPreference.getInstance(this).setSplashSkipUrl(null);
+            AppMasterApplication.mIsEmptyForSplashUrl = true;
+        }
+        deleteImage();
     }
 
     private void showSkipEnterHomeButton() {
-        if (!Constants.SPLASH_FLAG.equals(AppMasterApplication.getInstance().mSplashFlag)) {
+        if (AppMasterApplication.mSplashFlag) {
             mSkipToPgButton.setVisibility(View.VISIBLE);
         }
     }
 
     /* 如果url存在则显示按钮 */
     private void showSkipUrlButton() {
-        if (mIsEmptyForSplashUrl) {
+        if (!mIsEmptyForSplashUrl) {
             mSkipUrlButton.setVisibility(View.VISIBLE);
         }
     }
 
-    /* "立即设置"按钮单击监听 */
+    /* 闪屏链接跳转按钮单击监听 */
     private class SkipUrlOnClickListener implements OnClickListener {
         @Override
         public void onClick(View v) {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.url_skip_bt:
-                    // Log.e(Constants.RUN_TAG, "立即设置");
+//                    Log.e(Constants.RUN_TAG, "立即设置");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
-                    // Log.e(Constants.RUN_TAG, "跳过");
+//                    Log.e(Constants.RUN_TAG, "跳过");
                     startHome();
                     break;
                 default:
@@ -250,7 +259,8 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
-        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 2000);
+        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
+                AppMasterApplication.mSplashDelayTime);
         LockManager lm = LockManager.getInstatnce();
         lm.clearFilterList();
         super.onResume();
@@ -746,7 +756,7 @@ public class SplashActivity extends BaseActivity {
         return AppMasterApplication.getInstance().mIsEmptyForSplashUrl;
     }
 
-    /* "立即体验",点击跳转处理 */
+    /* 闪屏链接跳转按钮,点击跳转处理 */
     private void skipModeHandle() {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String skipMode = pref.getSplashSkipMode();

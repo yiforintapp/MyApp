@@ -90,7 +90,9 @@ public class TaskDetectService extends Service {
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         flowDetecTask = new FlowTask();
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
+//        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
+//                TimeUnit.MILLISECONDS);
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 1000,
                 TimeUnit.MILLISECONDS);
         mHandler = new Handler();
         sService = this;
@@ -242,19 +244,22 @@ public class TaskDetectService extends Service {
             int mVersion = PhoneInfo.getAndroidVersion();
             String network_state = whatState();
 
-            if (!network_state.equals(STATE_NO_NETWORK)) {
-                Traffic traffic = Traffic.getInstance(getApplicationContext());
-                tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
-                new TrafficInfoPackage(getApplicationContext()).getRunningProcess(false);
-            }
-
-            if (network_state.equals(STATE_NORMAL)) {
-                long TotalTraffic = sp_traffic.getTotalTraffic() * 1024;
-                // 设置了流量套餐才去检测
-                if (TotalTraffic > 0) {
-                    TrafficNote(TotalTraffic);
-                }
-            }
+            //2min check memory is over 80%
+            checkMemory();
+            
+//            if (!network_state.equals(STATE_NO_NETWORK)) {
+//                Traffic traffic = Traffic.getInstance(getApplicationContext());
+//                tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
+//                new TrafficInfoPackage(getApplicationContext()).getRunningProcess(false);
+//            }
+//
+//            if (network_state.equals(STATE_NORMAL)) {
+//                long TotalTraffic = sp_traffic.getTotalTraffic() * 1024;
+//                // 设置了流量套餐才去检测
+//                if (TotalTraffic > 0) {
+//                    TrafficNote(TotalTraffic);
+//                }
+//            }
         }
     }
 
@@ -303,6 +308,14 @@ public class TaskDetectService extends Service {
                 }
             }
         }
+    }
+
+    public void checkMemory() {
+//        long mLastUsedMem = mCleaner.getUsedMem();
+//        long mTotalMem = mCleaner.getTotalMem();
+//        
+//         
+//        int mProgress = (int) (mLastUsedMem * 100 / mTotalMem);
     }
 
     public String whatState() {

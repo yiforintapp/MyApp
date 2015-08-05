@@ -2128,12 +2128,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     /* 保存闪屏延迟时间 */
-    public void setSplashDelayTime(Float delayTime) {
-        mPref.edit().putFloat(PREF_SPLASH_DElAY_TIME, delayTime).commit();
+    public void setSplashDelayTime(int delayTime) {
+        mPref.edit().putInt(PREF_SPLASH_DElAY_TIME, delayTime).commit();
     }
 
-    public Float getSplashDelayTime() {
-        return mPref.getFloat(PREF_SPLASH_DElAY_TIME, (float) 1.5);
+    public int getSplashDelayTime() {
+        return mPref.getInt(PREF_SPLASH_DElAY_TIME, Constants.SPLASH_DELAY_TIME);
     }
 
     /* 保存闪屏跳转的客户端的包名 */
