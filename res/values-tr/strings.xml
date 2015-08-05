@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
-    <string name="app_name">Gizlilik Koruması</string>
+    <string name="app_name">Privacy Guard</string>
     <string name="app_count">Yüklenen Uygulamalar</string>
     <string name="used_memory">Kullanılan Bellek</string>
     <string name="used_flow">Kullanılan Akış</string>
@@ -194,7 +194,7 @@
     </string-array>
 
     <!-- 版权 -->
-    <string name="about_copy">Copyrightォ2015LEONetworkTechnology.AllRightsReserved</string>
+    <string name="about_copy">Copyright©2015LEONetworkTechnology.AllRightsReserved</string>
     <!-- 应用墙 -->
     <string name="app_wall">Popüler Uygulamalar</string>
     <string name="app_wall_network">Ağ Hatası. Lütfen daha sonra tekrar deneyiniz.</string>
