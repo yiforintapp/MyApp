@@ -119,8 +119,9 @@ public class AppMasterApplication extends Application {
     public static int densityDpi;
     public static String densityString;
     public static int MAX_OUTER_BLUR_RADIUS;
-    public static String mSplashFlag;
-    public static boolean mIsEmptyForSplashUrl;
+    public static volatile boolean mSplashFlag;
+    public static volatile boolean mIsEmptyForSplashUrl;
+    public static volatile int mSplashDelayTime;
     // public ExecutorService cachedThreadPool;
     static {
         // For android L and above, daemon service is not work, so disable it
@@ -311,9 +312,13 @@ public class AppMasterApplication extends Application {
             }
 
         });
-        mSplashFlag = AppMasterPreference.getInstance(getApplicationContext()).getSplashUriFlag();
-        mIsEmptyForSplashUrl = Utilities.isEmpty(AppMasterPreference.getInstance(this)
-                .getSplashSkipUrl());
+        /* 闪屏是否发生变化 */
+        mSplashFlag = splashChanageFlag();
+        /* 闪屏跳转连接 */
+        mIsEmptyForSplashUrl = isEmptySplashUrl();
+        /* 闪屏延时时间 */
+        mSplashDelayTime = AppMasterPreference.getInstance(getApplicationContext())
+                .getSplashDelayTime();
     }
 
     private void quickGestureTipInit() {
@@ -953,6 +958,7 @@ public class AppMasterApplication extends Application {
                         if (!prefStringUri.equals(splashUriFlag)) {
                             if (!Utilities.isEmpty(splashUriFlag)) {
                                 pref.setSplashUriFlag(splashUriFlag);
+                                mSplashFlag = true;
                                 /* 初始化显示时间段 */
                                 if (pref.getSplashStartShowTime() != -1) {
                                     pref.setSplashStartShowTime(-1);
@@ -992,6 +998,7 @@ public class AppMasterApplication extends Application {
                         /* 闪屏跳转链接 */
                         if (!Utilities.isEmpty(splashSkipUrl)) {
                             pref.setSplashSkipUrl(splashSkipUrl);
+                            mIsEmptyForSplashUrl = false;
                         }
                         /* 闪屏跳转方式标志 */
                         if (!Utilities.isEmpty(splashSkipFlag)) {
@@ -999,8 +1006,9 @@ public class AppMasterApplication extends Application {
                         }
                         /* 闪屏显示时间 */
                         if (!Utilities.isEmpty(splashDelayTime)) {
-                            Float delayTime = Float.valueOf(splashSkipFlag);
+                            int delayTime = Integer.valueOf(splashSkipFlag);
                             pref.setSplashDelayTime(delayTime);
+                            mSplashDelayTime = delayTime;
                         }
                         /* 指定需要跳转的客户端的包名 */
                         if (!Utilities.isEmpty(splashSkipToClient)) {
@@ -1081,6 +1089,18 @@ public class AppMasterApplication extends Application {
             timer.schedule(recheckTask, delay);
         }
 
+    }
+
+    /* 闪屏跳转连接是否为空 */
+    private boolean isEmptySplashUrl() {
+        return Utilities.isEmpty(AppMasterPreference.getInstance(this)
+                .getSplashSkipUrl());
+    }
+
+    /* 后台是否有新的闪屏 */
+    private boolean splashChanageFlag() {
+        return !AppMasterPreference.getInstance(getApplicationContext()).getSplashUriFlag()
+                .equals(Constants.SPLASH_FLAG);
     }
 
     /* 加载闪屏图 */
@@ -1165,7 +1185,7 @@ public class AppMasterApplication extends Application {
 
     // for force update strategy to exit application completely
     public synchronized void addActivity(Activity activity) {
-//        mActivityList.add(activity);
+        // mActivityList.add(activity);
         Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
@@ -1177,7 +1197,7 @@ public class AppMasterApplication extends Application {
                 iterator.remove();
             }
         }
-        
+
         mActivityList.add(new WeakReference<Activity>(activity));
     }
 
@@ -1204,9 +1224,9 @@ public class AppMasterApplication extends Application {
             }
             iterator.remove();
         }
-//        for (Activity activity : mActivityList) {
-//            activity.finish();
-//        }
+        // for (Activity activity : mActivityList) {
+        // activity.finish();
+        // }
     }
 
     public static void setSharedPreferencesValue(String lockerTheme) {

@@ -96,10 +96,12 @@ public class SplashActivity extends BaseActivity {
         // findViewById(R.id.image_view_splash_center);
         // mSplashName = (ImageView) findViewById(R.id.iv_back);
         // showSplash();
+        // TODO
         initSplash();
         mEventHandler = new EventHandler();
         startInitTask();
         LeoEventBus.getDefaultBus().register(this, 2);
+        Log.e(Constants.RUN_TAG, "闪屏延跳转连接：" + AppMasterApplication.mIsEmptyForSplashUrl);
     }
 
     @SuppressLint("NewApi")
@@ -165,24 +167,36 @@ public class SplashActivity extends BaseActivity {
         PrivacyHelper.getInstance(this).setDirty(true);
     }
 
+    /* 对后台配置的过期闪屏数据初始化 */
     private void clearSpSplashFlagDate() {
         String splashUriFlag = AppMasterPreference.getInstance(getApplicationContext())
                 .getSplashUriFlag();
         if (!Constants.SPLASH_FLAG.equals(splashUriFlag)) {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashUriFlag(
                     Constants.SPLASH_FLAG);
+            AppMasterApplication.mSplashFlag = false;
         }
+        int splashDelay = AppMasterPreference.getInstance(this).getSplashDelayTime();
+        if (splashDelay != Constants.SPLASH_DELAY_TIME) {
+            AppMasterPreference.getInstance(this).setSplashDelayTime(Constants.SPLASH_DELAY_TIME);
+            AppMasterApplication.mSplashDelayTime = Constants.SPLASH_DELAY_TIME;
+        }
+        if (AppMasterPreference.getInstance(this).getSplashSkipUrl() != null) {
+            AppMasterPreference.getInstance(this).setSplashSkipUrl(null);
+            AppMasterApplication.mIsEmptyForSplashUrl = true;
+        }
+        deleteImage();
     }
 
     private void showSkipEnterHomeButton() {
-        if (!Constants.SPLASH_FLAG.equals(AppMasterApplication.getInstance().mSplashFlag)) {
+        if (AppMasterApplication.mSplashFlag) {
             mSkipToPgButton.setVisibility(View.VISIBLE);
         }
     }
 
     /* 如果url存在则显示按钮 */
     private void showSkipUrlButton() {
-        if (mIsEmptyForSplashUrl) {
+        if (!mIsEmptyForSplashUrl) {
             mSkipUrlButton.setVisibility(View.VISIBLE);
         }
     }
@@ -194,11 +208,11 @@ public class SplashActivity extends BaseActivity {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.url_skip_bt:
-                    // Log.e(Constants.RUN_TAG, "立即设置");
+                    Log.e(Constants.RUN_TAG, "立即设置");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
-                    // Log.e(Constants.RUN_TAG, "跳过");
+                    Log.e(Constants.RUN_TAG, "跳过");
                     startHome();
                     break;
                 default:
@@ -250,7 +264,8 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
-        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 2000);
+        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
+                AppMasterApplication.getInstance().mSplashDelayTime);
         LockManager lm = LockManager.getInstatnce();
         lm.clearFilterList();
         super.onResume();
