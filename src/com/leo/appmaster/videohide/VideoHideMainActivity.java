@@ -50,7 +50,7 @@ public class VideoHideMainActivity extends BaseActivity implements
         OnClickListener, OnItemClickListener {
     private GridView mGridView;
     private CommonTitleBar mTtileBar;
-    private Button mAddButton;
+    private Button mAddButton,mSwitchButton;
     private RelativeLayout mNoHidePictureHint;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
@@ -58,7 +58,7 @@ public class VideoHideMainActivity extends BaseActivity implements
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
 //     public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
-    public static final String CB_PACKAGENAME = "com.example.appmaster_service";
+    public static String CB_PACKAGENAME = "com.example.appmaster_service";
     public static String URL_CB = "http://m.coobrowser.com/";
     public static final int TARGET_VERSION = 14;
     public static String SECOND_CATALOG;
@@ -186,6 +186,8 @@ public class VideoHideMainActivity extends BaseActivity implements
         // mTtileBar.setOptionListener(this);
         mAddButton = (Button) findViewById(R.id.add_hide_image);
         mAddButton.setOnClickListener(this);
+        mSwitchButton = (Button) findViewById(R.id.switch_no_cb);
+        mSwitchButton.setOnClickListener(this);
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
         mNohideVideo = (TextView) findViewById(R.id.nohideTV);
         mGridView = (GridView) findViewById(R.id.Video_hide_folder);
@@ -208,6 +210,15 @@ public class VideoHideMainActivity extends BaseActivity implements
                 Intent intent = new Intent(VideoHideMainActivity.this,
                         VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
+                break;
+            case R.id.switch_no_cb:
+                if(CB_PACKAGENAME.equals("com.example.appmaster_service")){
+                    CB_PACKAGENAME = "com.cool.coolbrowser";
+                    mSwitchButton.setText("目标包为CB");
+                }else {
+                    CB_PACKAGENAME = "com.example.appmaster_service";
+                    mSwitchButton.setText("目标包为非CB");
+                }
                 break;
             // case R.id.tv_option_image:
             // intent = new Intent(this, LockOptionActivity.class);
