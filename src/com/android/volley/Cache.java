@@ -87,8 +87,7 @@ public interface Cache {
 
         /** True if the entry is expired. */
         public boolean isExpired() {
-//            return this.ttl < System.currentTimeMillis();
-            return true;
+            return this.ttl < System.currentTimeMillis();
         }
 
         /** True if a refresh is needed from the original data source. */

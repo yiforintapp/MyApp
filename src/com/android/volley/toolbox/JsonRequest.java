@@ -16,6 +16,9 @@
 
 package com.android.volley.toolbox;
 
+import android.text.TextUtils;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -24,6 +27,8 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyLog;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
 
 /**
  * A request for retrieving a T type response body at a given URL that also
@@ -92,11 +97,44 @@ public abstract class JsonRequest<T> extends Request<T> {
     @Override
     public byte[] getBody() {
         try {
+            if (TextUtils.isEmpty(mRequestBody)) {
+                Map<String, String> params = getParams();
+                if (params != null && params.size() > 0) {
+                    return encodeParameters(params, getParamsEncoding());
+                }
+            }
             return mRequestBody == null ? null : mRequestBody.getBytes(PROTOCOL_CHARSET);
         } catch (UnsupportedEncodingException uee) {
             VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s",
                     mRequestBody, PROTOCOL_CHARSET);
             return null;
+        } catch (AuthFailureError e) {
+            VolleyLog.wtf("AuthFailureError occur get params.", PROTOCOL_CHARSET);
+            return null;
         }
     }
+    
+    /**
+     * Converts <code>params</code> into an application/x-www-form-urlencoded
+     * encoded string.
+     */
+    private byte[] encodeParameters(Map<String, String> params,
+            String paramsEncoding) {
+        StringBuilder encodedParams = new StringBuilder();
+        try {
+            for (Map.Entry<String, String> entry : params.entrySet()) {
+                encodedParams.append(URLEncoder.encode(entry.getKey(),
+                        paramsEncoding));
+                encodedParams.append('=');
+                encodedParams.append(URLEncoder.encode(entry.getValue(),
+                        paramsEncoding));
+                encodedParams.append('&');
+            }
+            return encodedParams.toString().getBytes(paramsEncoding);
+        } catch (UnsupportedEncodingException uee) {
+            throw new RuntimeException("Encoding not supported: "
+                    + paramsEncoding, uee);
+        }
+    }
+    
 }
