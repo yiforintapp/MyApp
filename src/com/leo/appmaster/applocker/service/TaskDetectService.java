@@ -311,7 +311,11 @@ public class TaskDetectService extends Service {
     }
 
     public void checkMemory() {
-        
+//        long mLastUsedMem = mCleaner.getUsedMem();
+//        long mTotalMem = mCleaner.getTotalMem();
+//        
+//         
+//        int mProgress = (int) (mLastUsedMem * 100 / mTotalMem);
     }
 
     public String whatState() {

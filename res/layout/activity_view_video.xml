@@ -13,11 +13,11 @@
 
     <com.leo.appmaster.ui.LeoPictureViewPager
         android:id="@+id/picture_view_pager"
-        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_bar_video"
-        android:layout_marginBottom="66dp" >
+        android:layout_marginBottom="66dp"
+        android:overScrollMode="never" >
     </com.leo.appmaster.ui.LeoPictureViewPager>
 
     <LinearLayout
@@ -55,6 +55,7 @@
             android:drawableTop="@drawable/delete_picture_selector"
             android:text="@string/button_delete"
             android:textColor="@drawable/selector_button_text" />
+
     </LinearLayout>
 
 </RelativeLayout>

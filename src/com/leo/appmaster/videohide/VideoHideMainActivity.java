@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.videohide;
 
 import java.io.File;
@@ -11,6 +12,8 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -50,26 +53,28 @@ public class VideoHideMainActivity extends BaseActivity implements
         OnClickListener, OnItemClickListener {
     private GridView mGridView;
     private CommonTitleBar mTtileBar;
-    private Button mAddButton,mSwitchButton;
+    private Button mAddButton, mSwitchButton, let_pg_fail;
     private RelativeLayout mNoHidePictureHint;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
     private HideVideoAdapter adapter;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
-//     public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
+    // public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
     public static String CB_PACKAGENAME = "com.example.appmaster_service";
     public static String URL_CB = "http://m.coobrowser.com/";
     public static final int TARGET_VERSION = 14;
     public static String SECOND_CATALOG;
     public static String LAST_CATALOG;
-//    public static final String DEFAULT_PATH = "xxx/xxx/Coolbrowser/Download/";
+    // public static final String DEFAULT_PATH =
+    // "xxx/xxx/Coolbrowser/Download/";
     public static final String DEFAULT_PATH = "xxx/xxx/DCIM/Camera/";
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
     private AppMasterPreference mSpSaveDir;
-    // private boolean isCbHere = false;
     // private boolean isHaveCbFloder = false;
+    public static boolean isLetPgFail = false;
+    private int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,8 +121,9 @@ public class VideoHideMainActivity extends BaseActivity implements
         if (LAST_CATALOG.isEmpty() || SECOND_CATALOG.isEmpty()) {
             if (mPath == null) {
                 mPath = DEFAULT_PATH;
-//                LAST_CATALOG = FileOperationUtil.getLastDirNameFromCb(mPath);
-//                SECOND_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
+                // LAST_CATALOG = FileOperationUtil.getLastDirNameFromCb(mPath);
+                // SECOND_CATALOG =
+                // FileOperationUtil.getDirNameFromFilepath(mPath);
                 LAST_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
                 SECOND_CATALOG = FileOperationUtil.getSecondDirNameFromFilepath(mPath);
             } else {
@@ -136,7 +142,7 @@ public class VideoHideMainActivity extends BaseActivity implements
                 mSpSaveDir.setSecondDi(SECOND_CATALOG);
             }
         }
-        
+
         LeoLog.d("testIntent", "mLastName is : " + LAST_CATALOG);
         LeoLog.d("testIntent", "mSecondName is : " + SECOND_CATALOG);
     }
@@ -186,6 +192,8 @@ public class VideoHideMainActivity extends BaseActivity implements
         // mTtileBar.setOptionListener(this);
         mAddButton = (Button) findViewById(R.id.add_hide_image);
         mAddButton.setOnClickListener(this);
+        let_pg_fail = (Button) findViewById(R.id.let_pg_fail);
+        let_pg_fail.setOnClickListener(this);
         mSwitchButton = (Button) findViewById(R.id.switch_no_cb);
         mSwitchButton.setOnClickListener(this);
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
@@ -212,12 +220,23 @@ public class VideoHideMainActivity extends BaseActivity implements
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
             case R.id.switch_no_cb:
-                if(CB_PACKAGENAME.equals("com.example.appmaster_service")){
+                if (CB_PACKAGENAME.equals("com.example.appmaster_service")) {
                     CB_PACKAGENAME = "com.cool.coolbrowser";
                     mSwitchButton.setText("目标包为CB");
-                }else {
+                } else {
                     CB_PACKAGENAME = "com.example.appmaster_service";
                     mSwitchButton.setText("目标包为非CB");
+                }
+                break;
+            case R.id.let_pg_fail:
+                if (i == 0) {
+                    let_pg_fail.setText("PG正常状态");
+                    isLetPgFail = false;
+                    i = 1;
+                } else {
+                    let_pg_fail.setText("让PG失常");
+                    isLetPgFail = true;
+                    i = 0;
                 }
                 break;
             // case R.id.tv_option_image:
@@ -448,8 +467,6 @@ public class VideoHideMainActivity extends BaseActivity implements
     // String packNameString = packageInfo.packageName;
     // if (packNameString.equals(VideoHideMainActivity.CB_PACKAGENAME)) {
     // isCbHere = true;
-    // mCbVersionCode = packageInfo.versionCode;
-    // LeoLog.d("testCb", "Cb is here!! version is : " + mCbVersionCode);
     // }
     // }
     // }
