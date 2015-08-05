@@ -1,0 +1,786 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+
+    <string name="app_name">Privacy Guard</string>
+    <string name="app_count">Yüklenen Uygulamalar</string>
+    <string name="used_memory">Kullanılan Bellek</string>
+    <string name="used_flow">Kullanılan Akış</string>
+    <string name="app_detail">Detaylar</string>
+    <string name="app_lock">"Kilit"</string>
+    <string name="app_add_lock">"Uygulama Kilidi"</string>
+    <string name="lock_tab">"Kilit"</string>
+    <string name="app_backup">Uygulama Yedekleme</string>
+    <string name="app_restore">Uygulama Geri Yükleme</string>
+    <string name="button_backup">Yedekle</string>
+    <string name="button_install">Yükle</string>
+    <string name="button_delete">Sil</string>
+    <string name="app_use_info">Kullanım</string>
+    <string name="app_permission_info">Gizlilik Kontrol Ekranı</string>
+    <string name="uninstall">Kaldır</string>
+    <string name="set_gesture_suc">Model Kaydedildi!</string>
+    <string name="set_passwd_suc">Parola başarıyla oluşturuldu.</string>
+    <string name="reset_passwd_successful">Başarıyla sıfırlandı</string>
+    <string name="stop">Durdur</string>
+    <string name="reinput_anwser">"Lütfen tekrar deneyiniz."</string>
+    <string name="please_input_pswd">Şifreyi Giriniz</string>
+    <string name="please_input_pswd_again">Lütfen tekrar deneyiniz.</string>
+    <string name="makesure">Tamam</string>
+    <string name="cancel">İptal</string>
+    <string name="delete">Sil</string>
+    <string name="passwd_set_passwd_tip">Parolanızı ayarlayınız</string>
+    <string name="passwd_set_gesture_tip">En az 4 nokta birleştiriniz</string>
+    <string name="passwd_hint">Şifreyi Giriniz</string>
+    <string name="tip_no_the_same_pswd">lütfen tekrar deneyiniz.</string>
+    <string name="input_error_tip">yanlış<xliff:g>%1$s</xliff:g>giriş，kalan<xliff:g>%2$s</xliff:g>sgiriş</string>
+    <string name="use_gesture">Model Kilidi</string>
+    <string name="use_passwd">Parola Kilidi</string>
+    <string name="reset_passwd">Parola sıfırla</string>
+    <string name="app_locked">Kilitli</string>
+    <string name="app_unlock">Kilitsiz</string>
+    <string name="find_passwd">Parolayı Unuttum</string>
+    <string name="please_wait">Lütfen daha sonra tekrar deneyiniz</string>
+    <string name="passwd_question">Soru:</string>
+    <string name="passwd_anwser">Cevap:</string>
+    <string name="accelerate">Hızlandırma</string>
+    <string name="used_mem">Kullanılan Bellek</string>
+    <string name="passwd_tip">parola girme ipucu</string>
+    <string name="save">Kaydet</string>
+    <string name="passwd_protect_setting">Güvenlik Ayarı</string>
+    <string name="input_qusetion">soruyu giriniz</string>
+    <string name="qusetion_cant_null">boş´bırakılmamalı</string>
+    <string name="aneser_cant_null">boş´bırakılmamalı</string>
+    <string name="pleas_input_anwser">Güvenlik sorunuzu cevaplayınız</string>
+    <string name="not_set">Geri al</string>
+    <string name="anwser">Cevap:</string>
+    <string name="not_unistall">Engellemeyi kaldır</string>
+    <string name="lock_screen_auto_lock">Ekran kapandıktan sonra otomatik kilit</string>
+    <string name="tips">İpucu</string>
+    <string name="compeletely">Tamamla</string>
+    <!-- acceralate -->
+    <string name="clean_memory">Hızlandırma</string>
+    <string name="clean_result">Boşaltılmış Bellek</string>
+    <string name="best_mem">zaten optimum duruma ulaşıldı.</string>
+    <string name="lock_count">"Kilitli"</string>
+    <string name="unlock_count">"Kilitsiz"</string>
+    <string name="lockscreen_access_pattern_detected">Model Kaydedildi"</string>
+    <string name="please_input_gesture">Kilidi açmak için modeli çiziniz</string>
+    <string name="input_passwd_tip">Lütfen bir parola ipucu giriniz</string>
+    <string name="switch_gesture">Model</string>
+    <string name="switch_passwd">Parola</string>
+    <string name="setting">Ayarlar</string>
+    <string name="passwd_hint_tip">Parola İpucu:</string>
+    <string name="set_protect_or_not">"Güvenlik Sorusu"</string>
+    <string name="set_protect_message">"güvenlik sorusu ayarlanmanyı tavsiye edilir"</string>
+    <string name="find_gesture">Parolayı Unuttum</string>
+    <string name="pp_success">ayarlama başarılı oldu</string>
+    <string name="passwd_setting">Parola Ayarları</string>
+    <string name="set_success">Başarıyla ayarlandı</string>
+    <string name="passwd_hint_cant_null">"ipuc yerinde boş olmamalı"</string>
+    <string name="set_gesture">Model kilidi ayarı</string>
+    <string name="set_passwd">Şifre kilidi ayarı</string>
+    <string name="please_input_gesture_again">tekrar onaylayınız</string>
+    <string name="reset_gesture_passwd">şefrenizi tekrar kurunuz</string>
+    <string name="reset_digital_passwd">şefrenizi tekrar kurunuz</string>
+    <string name="gesture_hint">En az 4 nokta birleştiriniz</string>
+    <string name="first_set_passwd_hint">şefrenizi tekrar kurunuz</string>
+    <string name="make_passwd">Onaylamak için tekrar giriniz</string>
+    <string name="input_again">Tekrar giriniz</string>
+    <string name="gestur_passwd_function_hint">En az dört nokta birleştiriniz</string>
+    <string name="digital_passwd_function_hint">4-haneli bir şifre giriniz</string>
+    <string name="gesture_start_hint">Bitirmek için parmağınızı kaldırınız</string>
+    <string name="lock_right_now">Hemen</string>
+    <string name="lock_15_sec">15 Saniye</string>
+    <string name="lock_30_sec">30 Saniye</string>
+    <string name="lock_1_min">1 Dakika</string>
+    <string name="lock_3_min">3 Dakika</string>
+    <string name="lock_5_min">5 Dakika</string>
+    <string name="app_version">Sürüm:</string>
+    <string name="backuping">Yedekleme:</string>
+    <string name="no_application_selected">Lütfen bir Uygulama seçiniz</string>
+    <string name="backup_finish">Yedekleme tamamlandı!</string>
+    <string name="delete_fail">Silinemedi</string>
+    <string name="deleting_app">Siliniyor: </string>
+    <string name="installed_app_size">Yüklenen Uygulamalar:</string>
+    <string name="apk_size">Boyut:</string>
+    <string name="storage_size">Boş alan:%1$s</string>
+    <string name="use_storage_size">Kullanılan Alan:%1$s</string>
+    <string name="unavailable">Geçersiz</string>
+    <string name="bakup_fail_cancel">Yedekleme İptal Edildi</string>
+    <string name="bakup_fail_full">Saklama alanı çok az</string>
+    <string name="bakup_fail_unavailable">SD kart mevcut değil</string>
+    <string name="no_app_backuped">Yedekleme uygulaması kaydedilmedi</string>
+
+    <string-array name="lock_time_entrys">
+        <item>@string/lock_right_now</item>
+        <item>@string/lock_15_sec</item>
+        <item>@string/lock_30_sec</item>
+        <item>@string/lock_1_min</item>
+        <item>@string/lock_3_min</item>
+        <item>@string/lock_5_min</item>
+    </string-array>
+    <string-array name="lock_time_items">
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+        <item></item>
+    </string-array>
+
+    <string name="app_details">Uygulama Bilgisi</string>
+    <string name="app_memory">"Alınan alan %1$s;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_cache_size">"Önbellek Doluluğu %1$s;<xliff:g>%1$s</xliff:g>"</string>
+    <string name="app_permission1">Çok gizli Gizlilik Kontrolü</string>
+    <string name="app_permission2">Genel Gizlilik Kontrolü</string>
+    <string name="app_permission3">Önemli Gizlilik Kontrolü</string>
+    <string name="app_setting_update">Güncellemeleri denetle</string>
+    <string name="feedback">Bize Geri bildirim yapın </string>
+    <string name="grade">olumlu yorum</string>
+    <string name="grade_tip">Bizden memnun olursunuz bize 5 yıldızlı yoroumu yapınız! </string>
+    <string name="app_setting_about">Hakkında</string>
+    <string name="forbid_uninstall">Engellemeyi kaldır</string>
+    <string name="auto_lock">Ekran kapandıktan sonra  kilitle</string>
+    <string name="change_lock_time">Zaman</string>
+    <string name="recom_lock_tip">En çok kullanılan Uygulama Anımsatıcısı</string>
+    <string name="new_app_lock_tip">Yeni Uygulama kilitlenmesi Anımsatıcısı</string>
+    <string name="passwd_protect">Güvenlik Sorusu</string>
+    <string name="change_passwd">Parolayı Değiştir</string>
+    <string name="passwd_notify">Parola İpucu</string>
+    <string name="no_lock_item_tip">Kilitli Uygulama bulunmuyor</string>
+    <string name="lock_remind">yeni uygulamaya bir kilit oluşturunuz</string>
+    <string name="new_install_lock_remind"> %1$s yüklediniz.kilitlenmeyi tavsiye edilir</string>
+    <string name="no_unlocked_item_tip">tüm olarak kililendi</string>
+    <string name="app_setting_has_update">Güncellemeleri denetle <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="question_charsize_tip">Maksimum 40 karakter.</string>
+    <string name="anwser_charsize_tip">Maksimum 40 karakter.</string>
+    <string name="query_delete"> %1$s dosyasının yedeği silinmesini onaylandı</string>
+    <string name="backuped_count">başarıyla yedeklendi. Yedekleme yolu:%2$s</string>
+    <string name="feedback_commit">Gönder</string>
+    <string name="feedback_content_tip">sorununuz:</string>
+    <string name="feedback_email_tip">E posta adresiniz</string>
+    <string name="feedback_category_tip">Bir soru seçiniz</string>
+    <string name="category_lock">Uygulama Kilidi</string>
+    <string name="category_backup_uninstall">Kaldır&#038;Yedekle</string>
+    <string name="category_hide_image">Görüntüyü gizle</string>
+    <string name="category_hide_video">Videoyu gizle</string>
+    <string name="category_other">Diğer</string>
+    <string name="category_suggest">telkif ediniz</string>
+    <string name="feedback_success_title">Gönderildi</string>
+    <string name="feedback_success_content">Geri bildiriminiz için teşekkür ederiz!</string>
+    <string name="app_image_hide">Görüntüyü gizle</string>
+    <string name="app_no_image_hide">ekleme butonunu basarak Görüntüleri eklenir</string>
+    <string name="app_no_image">Görüntü bulunmuyor</string>
+    <string name="app_image_gallery">Tüm görüntüler</string>
+    <string name="app_select_all">Tümünü Seç</string>
+    <string name="app_select_none">Tüm seçimi kaldır</string>
+    <string name="app_hide_image">Gizle</string>
+    <string name="app_cancel_hide_image">tümünü seçmeyiniz</string>
+    <string name="app_hide_image_edit">Düzenle</string>
+    <string name="app_add_hide_image">Ekle</string>
+    <string name="app_share_hide_image">Paylaş</string>
+    <string name="app_unhide_dialog_content">Bu görüntü gösterilsin mi?</string>
+    <string name="app_delete_dialog_content">Bu görüntü silinsin mi?</string>
+    <string name="app_unhide_pictures_dialog_content">Seçilen görüntüler gösterilsin mi?</string>
+    <string name="app_hide_pictures_dialog_content">Seçilen görüntüler gizlensin mi?</string>
+    <string name="app_hide_image_fail">Görüntü seçilemez. Gizleme başarısız!</string>
+    <string name="lock_guide">Uygulamaları kilitleyiniz</string>
+    <string name="start_guide">kilitlenmeyi tavsiye edilir</string>
+
+    <!-- App lock -->
+    <string-array name="sort_type">
+        <item>varsayılan sıralama</item>
+        <item>A-Z</item>
+        <item>zamanla sıralama</item>
+    </string-array>
+
+    <!-- 版权 -->
+    <string name="about_copy">Copyright©2015LEONetworkTechnology.AllRightsReserved</string>
+    <!-- 应用墙 -->
+    <string name="app_wall">Popüler Uygulamalar</string>
+    <string name="app_wall_network">Ağ Hatası. Lütfen daha sonra tekrar deneyiniz.</string>
+    <string name="app_wall_click">Yenile</string>
+    <!-- 隐私策略 -->
+    <string name="protocolBar">Gizlilik Politikası</string>
+    <string name="lock_more">Daha çok</string>
+    <string name="lock">Kilit</string>
+    <string name="det_change_lock_time">kilit zamanınızı değiştirmek ister misiniz?</string>
+
+    <string-array name="det_lock_time_items">
+        <item>30</item>
+        <item>60</item>
+    </string-array>
+    <!-- LockerTheme -->
+    <string name="localtheme">Yerel</string>
+    <string name="onlinetheme">Online</string>
+    <string name="lockerThemePoit">Tema<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
+    <string name="lockerTheme">Tema</string>
+    <string name="defaultTheme">Varsayılan</string>
+    <string name="moonightTheme">Gece</string>
+    <string name="orangeTheme">Meyve</string>
+    <string name="ParadoxTheme">Uzaysal</string>
+    <string name="locker_apply">Uygula</string>
+    <string name="locker_uninstall">Kaldır</string>
+    <string name="locker_cancel">İptal et</string>
+    <string name="christmas_theme">Noel</string>
+    <string name="pull_to_refresh_pull_label">Yenilemek için yukarıya çekiniz</string>
+    <string name="pull_to_refresh_release_label">Yenilemek için bırakınız</string>
+    <string name="pull_to_refresh_refreshing_label">Yükleniyor</string>
+    <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
+    <string name="pull_to_refresh_from_bottom_pull_label">@string/pull_to_refresh_pull_label</string>
+    <string name="pull_to_refresh_from_bottom_release_label">@string/pull_to_refresh_release_label</string>
+    <string name="pull_to_refresh_from_bottom_refreshing_label">@string/pull_to_refresh_refreshing_label</string>
+    <string name="no_more_theme">kalmamış</string>
+    <string name="no_more_onlinetheme">Tüm temalar indirildi</string>
+    <string name="find_new_theme">Yeni Temalar</string>
+    <string name="find_new_theme_content">Yeni temalar var</string>
+    <string name="theme_tag_new">Yeni</string>
+    <string name="theme_tag_hot">Popüler</string>
+    <string name="about_group">Test grubuna katıl</string>
+    <string name="about_praise">Facebook\'ta popüler</string>
+    <string name="locker_guide">Tema değiştirmek için tıklayınız</string>
+    <string name="locker_theme_guide">tema uygulanmış oldu</string>
+    <string name="locker_clean">başarıyla hızlandırıldı.&#160;%1$s</string>
+    <string name="setting_locker_clean">Hızlandırmak için kilidi aç</string>
+    <string name="app_no_video_hide">ekleme butonunu basarak videoleri gizleyin</string>
+    <string name="app_no_video_gallery_hide">Video bulunmuyor</string>
+    <string name="app_video_hide">Videoyu gizle</string>
+    <string name="app_video_gallery">Video galerisi</string>
+    <string name="app_unhide_dialog_content_video">Bu videoyu göster?</string>
+    <string name="app_delete_dialog_content_video">Bu videoyu sil?</string>
+    <string name="app_unhide_video_dialog_content">Seçilen videoları göster?</string>
+    <string name="app_hide_video_dialog_content">Seçilen videoları gizle?</string>
+    <string name="hide_video_dialog_title">Oynat</string>
+    <string name="hide_video_dialog_content">Video&#160; yükleyiniz,`Plus gizliliği korumuş oldu.</string>
+    <string name="app_hide_video_fail">yetkisi yok</string>
+    <string name="hide_pic_text">gizlendi</string>
+    <string name="hide_pic_empty_text">&#160;&#160;görüntüler yok</string>
+    <string name="hide_video_text">Gizlendi</string>
+    <string name="hide_video_empty_text">&#160;&#160; videoler yok</string>
+    <string name="app_backup_uninstall">Kaldır&#038;Yedekle</string>
+    <string name="circle_lock_tip_text">Uygulamalar kilitli</string>
+    <string name="circle_lock_empty_tip_text">Kilitli Uygulama bulunmuyor</string>
+    <string name="feedback_error">Yanlış, tekrar giriniz.</string>
+    <string name="googlePlayGuide">Değerlendirmek için aşağıya çekiniz</string>
+    <string name="folder_backup_restore">Uygulama Geri Yükleme</string>
+    <string name="folder_sort_flow">En çok Veri</string>
+    <string name="folder_sort_capacity">En çok Alan</string>
+    <string name="folder_recommend">Yeni gelen</string>
+    <!--
+    <string name="toast_download_fail_network">"Yükleme başarısız. İnternetinizi kontrol ediniz."</string>
+    <string name="toast_download_fail_storage">" SD kartı alanı çok az!"</string>
+    <string name="toast_exit_when_storagemode">"bir kısım fonksiyonlar büyük yedekleme modunda altında kullanılamıyor"</string>
+    <string name="toast_download_failstart">"ağ bağlantısı yok"</string>
+    <string name="toast_download_fail_sdcard_unmount">"büyük yedekleme modu indirilemiyor"</string>
+    <string name="download_sdcard_status_error">indirme başarısız oldu!</string>
+    <string name="download_failed_toast">"Yükleme başarısız!"</string>
+    <string name="download_network_invalid_toast">"Bağlantı başarısız.Lütfen ağ ayarlarınızı kontrol ediniz."</string>
+    <string name="download_success_notify_title">tema<xliff:g id="filename">%1$s</xliff:g>indirme başarılı</string>
+    <string name="downloaded_success">indirme başarılı</string>
+    <string name="download_failure_notify_title">tema<xliff:g id="filename">%1$s</xliff:g>yükleme başarısız</string>
+    <string name="downloaded_failure">Yükleme başarısız!</string>
+    -->
+    <string name="backup">Yedekle</string>
+    <string name="restore">Geri yükle</string>
+    <string name="backuped">Yedeklendi</string>
+    <string name="delete_successfully">Başarıyla silindi!</string>
+    <string name="no_more_business_app">yeni uygulama kalmadı</string>
+    <string name="no_business_app">yeni uygulama kalmadı</string>
+    <string name="space_consumption">Kullanılan alan:</string>
+    <string name="cache_size">Ön bellek:</string>
+    <string name="power_consumption">Batarya Kullanımı:</string>
+    <string name="flow_consumption">Veri kullanımı:</string>
+    <string name="memory_consumption">Kullanılan bellek:</string>
+    <string name="backup_path">Yedekleme yolu:</string>
+    <string name="backup_time">Yedekleme tarihi:</string>
+    <string name="app_size">APK dosya boyutu:</string>
+    <string name="version">Sürüm:</string>
+    <string name="install_time">%1$s gün önce</string>
+    <string name="folder_new">YENİ</string>
+    <string name="new_app_tip_content">Yeni Uygulamalar!</string>
+    <string name="new_app_tip_title">Yeni Uygulamalar!</string>
+    <string name="no_backup_app_tip">Yedeklenmiş Uygulama bulunmuyor</string>
+    <string name="other_people_use_tip">Başka kişi kullanımı</string>
+    <string name="recomment_list_title">kilitlenmeye gereken uygulamaları seçiniz</string>
+    <string name="lock_success">Başarıyla kilitlendi!</string>
+    <string name="lcok_success_tip">kilitlendi!</string>
+    <string name="success_finish">Bitir</string>
+    <string name="app_lock_theme">Tema</string>
+    <string name="business_rating">Derecelendirmeler:</string>
+    <string name="app_desc">Bilgi:</string>
+    <string name="app_download_count">Yüklemeler:</string>
+    <string name="business_size">Boyut:</string>
+    <string name="app_download">Hızlı Yükleme</string>
+    <string name="app_google_download">Ücretsiz Yükleme</string>
+    <string name="help_setting_tip_title">İpuçları</string>
+    <string name="lock_help_password_setting_content_gesture">tıklayarak ayarlayınız,şifreyi girerek kimlik onaylandıktan sonra,tekrar şifreyi kurursunuz tamamdır. </string>
+    <string name="lock_help_password_setting_content_password">tıklayarak ayarlayınız,şifreyi girerek kimlik onaylandıktan sonra,tekrar şifreyi kurursunuz tamamdır. </string>
+    <string name="lock_help_lock_setting_content">ayarlarda zamanı ayarlanabilir</string>
+    <string name="lock_help_lock_theme_content">temaları deneyin!</string>
+
+    <string-array name="lock_help_setting_title">
+        <item>Parola nasıl değişir?</item>
+        <item>Kilit zaman aşımı çok kısa?</item>
+        <item>Tema değiştir</item>
+    </string-array>
+
+    <string name="lock_help_password_setting_button">Ayarlar</string>
+    <string name="lock_help_lock_setting_button">Otomatik kilit ayarları</string>
+    <string name="lock_setting_button">Otomatik kilit zaman ayarları</string>
+    <string name="lock_help_lock_theme_setting_button">Tema değiştir</string>
+    <string name="help_setting_guide">Yardımcı İpuçları</string>
+
+    <!-- V2.0 -->
+    <string name="pravicy_protect">"Koruma"</string>
+    <string name="privacy_level">Seviye</string>
+    <string name="privacy_contacts">Özel Kontakt</string>
+    <string name="privacy_sms">Özel SMS</string>
+    <string name="privacy_call">Özel Aramalar</string>
+    <!-- privacy_contact_v2.0 start -->
+    <string name="privacy_contact_message">SMS</string>
+    <string name="privacy_contact_calllog">Aramalar</string>
+    <string name="privacy_contact_contact">Kontaktlar</string>
+    <string name="privacy_contact_popumenus_add_new_privacy_contact">ekleyin</string>
+    <string name="privacy_contact_popumenus_from_message">SMS</string>
+    <string name="privacy_contact_popumenus_from_call_log">Aramalar</string>
+    <string name="privacy_contact_popumenus_from_contact">Kontaktlar</string>
+    <string name="privacy_contact_popumenus_input_phone_number">elle girin</string>
+    <string name="privacy_message_dialog_title">içeriye aktarsın mı？</string>
+    <string name="privacy_message_dialog_content">mesajlar ve kayıtlar aktarılırsa, eski kayıtlar silinecek</string>
+    <string name="privacy_message_progress_dialog_title">içeriye aktarııyor</string>
+    <string name="privacy_message_progress_dialog_content">İçeriye aktarılıyor…Lütfen bekleyiniz.</string>
+    <string name="privacy_contact_activity_input_edit_name">İsim</string>
+    <string name="privacy_contact_activity_input_edit_number">Güncellemeleri kontrol et<Data><![CDATA[<b><font color="#ff0000">＊</font></b>]]></Data></string>
+    <string name="privacy_contact_activity_input_checkbox_normal">Cevap</string>
+    <string name="privacy_contact_activity_input_checkbox_hangup">Reddet</string>
+    <string name="privacy_contact_notification_title_big">Bildirim</string>
+    <string name="privacy_contact_notification_title_small">Yeni mesaj</string>
+    <string name="privacy_add_contact_toast">Bu numara kayıtlı!</string>
+    <string name="privacy_contact_edittext_hint">Buraya yazınız</string>
+    <string name="privacy_contact_add_log_dialog_title">içeriye aktarsın mı?</string>
+    <string name="privacy_contact_add_log_dialog_dialog_content">Bu numaralardan olan SMS ve arama günlüğü içeriye aktarılsın mı? Önceki lokasyondaki veri silinecektir.</string>
+    <string name="privacy_contact_progress_dialog_title">içeriye aktarıyor</string>
+    <string name="privacy_contact_progress_dialog_content">İçeriye aktarılıyor…Lütfen bekleyiniz.</string>
+    <string name="privacy_contact_callog_out">Giden arama</string>
+    <string name="privacy_contact_callog_in">Gelen arama</string>
+    <string name="privacy_contact_callog_no">Cevapsız</string>
+    <string name="input_toast_no_number_tip">Telefon numarasını girin</string>
+    <string name="privacy_contact_checkbox_dlg_title">Kontakt silinsin mi?</string>
+    <string name="privacy_contact_checkbox_dlg_content">kontaktlar silinecek için emin misin？</string>
+    <string name="privacy_contact_checkbox_dlg_checktext">mesajlar geri yükleyin</string>
+    <string name="privacy_contact_edit_contact">Özel kontaktı düzenle</string>
+    <string name="privacy_contact_edit_content">Kaydet?</string>
+    <string name="privacy_contact_edit_left_btn">Evet</string>
+    <string name="privacy_contact_edit_right_btn">Hayır</string>
+    <string name="privacy_message_delete_message">silmek istediğinizden emin misiniz?</string>
+    <string name="privacy_message_resotre_message">geri yüklemek istediğinizden emin misiniz?</string>
+    <string name="privacy_call_delete_call_log">silmek istediğinizden emin misiniz?</string>
+    <string name="privacy_contact_default_text">Özel kontakt ekle</string>
+    <string name="privacy_call_log_default_text">şifrelenen konuşma</string>
+    <string name="privacy_message_default_text">şifrelenen mesaj</string>
+    <string name="privacy_add_contact_default_text">Kontakt bulunmuyor</string>
+    <string name="privacy_add_message_default_text">SMS tarihçesi boş</string>
+    <string name="privacy_add_call_log_default_text">Arama günlüğü boş</string>
+    <string name="privacy_contact_text">Gözetlenmelerden koru</string>
+    <string name="privacy_contact_dialog_texts">SMS gönder</string>
+    <string name="privacy_caontact_dialog_call">Ara</string>
+    <string name="privacy_contact_toast_no_choose">Bir numara seç</string>
+    <string name="privacy_message_item_send_message_fail">SMS gönderilemedi!</string>
+    <string name="privacy_message_not_privacy_tip">özel mesaj sadece Android 4.4 altındaki sistemde çalışıyor </string>
+    <!-- privacy_contact_v2.0 end -->
+    <!-- ImageHide -->
+    <string name="no_image_hide_dialog_title">Orijinal dosyalar silinsin mi?</string>
+    <string name="no_image_hide_dialog_content">içeriye aktarma başarılı oldu, eski görüntüyü siliniz</string>
+    <string name="no_image_hide_dialog_button">Tamam</string>
+    <string name="image_hide_memery_insuficient_dialog_title">Az bellek!</string>
+    <string name="image_hide_memery_insuficient_dialog_content">SD kart belleği dolu! görüntüler gizlenemiyor</string>
+    <string name="image_unhide_memery_insuficient_dialog_content">SD kart belleği dolu!görüntüler geri aldırılamıyor</string>
+    <string name="image_hide_memery_insuficient_dialog_button">Tamam</string>
+    <string name="appwall_name">Oyun Merkezi</string>
+    <string name="unlock_theme">Temalar</string>
+    <string name="lock_setting">Ayarlar</string>
+
+    <!-- Lock Mode -->
+    <string name="lock_mode">Mod</string>
+    <string name="vistor_mode">Misafir Modu</string>
+    <string name="unlock_all_mode">Tümünün kilidini aç</string>
+    <string name="office_mode">Ofis Modu</string>
+    <string name="family_mode">Ev Modu</string>
+    <string name="unlock_all_mode_tip">kilitlenemiyor, başka modları seçiniz</string>
+    <string name="add_new_mode">ekleyiniz</string>
+    <string name="lock_mode_all">Tüm modlar</string>
+    <string name="new_mode">Yeni modum</string>
+    <string name="lock_mode_location">Pozisyon kilidi</string>
+    <string name="hot_on_facebook">Facebook\'ta popüler</string>
+    <string name="lock_mode_time">Zaman Kilidi</string>
+    <string name="add">Ekle</string>
+    <string name="please_input_mode_name">Yeni modunu adlandır</string>
+    <string name="mode_name">İsmi düzenle</string>
+    <string name="cont_edit_visitor_name">Misafir Modu ismi düzenlenemez</string>
+    <string name="aready_lock">Zaten Kilitli</string>
+    <string name="choose_mode">Mod seç</string>
+    <string name="create_mode_shortcut_title">Kısayollar yarat</string>
+    <string name="create_mode_shortcut_tip">ekrana %1$s ekleyin</string>
+    <string name="create_mode_shortcut_content">Masaüstüde modu oluşturan kısayol</string>
+    <string name="mode_change">Etkinleştirilmiş<xliff:g id="mode">%1$s</xliff:g></string>
+    <string name="lock_change">Etkinleştirilmiş<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
+    <string name="position_lock_no_wifi">WiFi listesi bulunmuyor</string>
+    <!-- Privacy Protection -->
+    <string name="privacy_level_1">Tehlikeli</string>
+    <string name="privacy_level_2">Ciddi</string>
+    <string name="privacy_level_3">Orta</string>
+    <string name="privacy_level_4">Yüksek</string>
+    <string name="privacy_level_5">Mükemmel</string>
+    <string name="privacy_title_applcok">Uygulama Kilidi</string>
+    <string name="privacy_title_hide_pic">Görüntüyü Gizle</string>
+    <string name="privacy_title_hide_video">Videoyu Gizle</string>
+    <string name="privacy_title_privacy_contact">Özel Kontaktlar</string>
+    <string name="privacy_suggest_title">Gizlilik Teklifleri</string>
+    <string name="privacy_no_app_lock">Kilitli uygulama yok</string>
+    <string name="privacy_no_pic_hide">Gizli fotograf yok</string>
+    <string name="privacy_no_video_hide">Gizli video yok</string>
+    <string name="privacy_no_privacy_contact">Kontakt eklenmemiş.</string>
+    <string name="privacy_no_app_lock_des">bu uygulamalar kilitlenmeyi tavsiye edilir</string>
+    <string name="privacy_no_pic_hide_des">bu görüntüler gizlenmeyi tavsiye edilir</string>
+    <string name="privacy_no_video_hide_des">bu videoler gizlenmeyi tavsiye edilir</string>
+    <string name="privacy_no_privacy_contact_des">gizlilik kontaktları eklenmeyi tavsiye edilir</string>
+    <string name="privacy_more_app_lock">Daha çok kilitlenmeyi tavsiye edilir</string>
+    <string name="privacy_more_pic_hide">Daha çok kişisel fotograf? </string>
+    <string name="privacy_more_video_hide">Birkaç videonuz daha mı kaldı? </string>
+    <string name="privacy_more_privacy_contact">Bazı önemli kontaktları mı unuttunuz? </string>
+    <string name="privacy_more_app_lock_des">dahah çok uygulamalar kilitlenmeyi tavsiye edilir</string>
+    <string name="privacy_more_pic_hide_des">gizli görüntüler gizlenmeyi tavsiye edilir</string>
+    <string name="privacy_more_video_hide_des">gizli videoler gizlenmeyi tavsiye edilir</string>
+    <string name="privacy_more_privacy_contact_des">gizlilik kontaktları eklenmeyi tavsiye edilir</string>
+    <string name="privacy_suggest_perfect_toast">En yüksek Güvenlik Seviyesindesiniz!</string>
+
+    <!-- elec manager -->
+    <string name="battery_history_days"><xliff:g id="DAYS">%1$d</xliff:g> GÜN <xliff:g id="HOURS">%2$d</xliff:g> SAAT <xliff:g id="MINUTES">%3$d</xliff:g> DAKİKA <xliff:g id="SECONDS">%4$d</xliff:g> En az</string>
+    <string name="battery_history_hours"><xliff:g id="HOURS">%1$d</xliff:g> SAAT <xliff:g id="MINUTES">%2$d</xliff:g> DAKİKA <xliff:g id="SECONDS">%3$d</xliff:g> En az</string>
+    <string name="battery_history_minutes"><xliff:g id="MINUTES">%1$d</xliff:g> DAKİKA <xliff:g id="SECONDS">%2$d</xliff:g> En az</string>
+    <string name="battery_history_seconds"><xliff:g id="SECONDS">%1$d</xliff:g> En az</string>
+    <string name="battery_info_status_charging_ac">(Alternatif akım)</string>
+    <string name="battery_info_status_charging_usb">(USB)</string>
+    <string name="battery_info_status_discharging">Güç</string>
+    <string name="battery_info_status_not_charging">Şarj olmuyor</string>
+    <string name="battery_info_status_full">Yeterli güç</string>
+    <string name="battery_info_status_unknown">Bilinmeyen</string>
+    <string name="battery_info_status_charging">Şarj oluyor</string>
+    <string name="power_usage_level_and_status"><xliff:g id="LEVEL">%1$s</xliff:g> - <xliff:g id="STATUS">%2$s</xliff:g></string>
+    <string name="power_screen">Ekran</string>
+    <string name="power_wifi">Wi-Fi</string>
+    <string name="power_bluetooth">Bluetooth</string>
+    <string name="power_cell">Mobil telefon sinyali</string>
+    <string name="power_phone">Sesli Aramalar</string>
+    <string name="power_idle">BEKLEME</string>
+    <string name="process_kernel_label">Android OS</string>
+    <string name="process_mediaserver_label">Medya Servisi</string>
+    <string name="battery_cannot_do">Bu fonksiyon kapatılamaz</string>
+
+    <!-- Backup and Restore -->
+    <string name="app_backup_back">Yedekle&#038;Geri Yükle</string>
+    <string name="app_backup_v2">Yedekle</string>
+    <string name="app_restore_v2">Geri yükle</string>
+    <string name="app_delete_v2">Sil</string>
+    <string name="app_game">Oyunlar</string>
+    <string name="app_application">Uygulamalar</string>
+    <string name="app_hot_app">Popüler neler var?</string>
+    <string name="back_backed">Yedeklendi</string>
+    <string name="the_best_status_toast">durum en optimum</string>
+
+    <!-- My Apps -->
+    <string name="myapp_details">UYGULAMA DETAYLARI</string>
+    <string name="app_manager">"Uygulamalarım"</string>
+    <string name="first_backup">Yedekleme</string>
+    <string name="first_usage">Veri Kullanımı</string>
+    <string name="first_battery">Batarya</string>
+    <string name="first_hotapp">Popüler neler var?</string>
+    <string name="first_installed_app">Yüklenen: </string>
+    <string name="first_appdata_app">RAM Kullanımı:</string>
+    <string name="first_backups_app">Yedeklemeler: </string>
+    <string name="first_dataflow_app">Veri Akışı:</string>
+    <string name="first_user_app">İndirilenlerim: </string>
+    <string name="first_used_space">Kullanılan Alan:</string>
+    <string name="first_list_uninstall">Kaldır</string>
+
+    <!-- Data Usage / Battery -->
+    <string name="home_appmanager_donghua_tv">Bellek</string>
+    <string name="traffic_progress_bar">bu ay kullanılan</string>
+    <string name="traff_first_page_small_set_month_used">Kullanılan veri (MB)</string>
+    <string name="traff_first_page_small_set_low">Veri planı ve kullanılan veriyi (ay) giriniz</string>
+    <string name="traff_first_page_small_set">ayarlama takımı</string>
+    <string name="no_used_traffic">şu anda veri yok</string>
+    <string name="traffic_used_lot_stop_network">Kapat</string>
+    <string name="traffic_used_lot_cancel">Tamam</string>
+    <string name="traffic_used_lot_text">Hücresel veri %1$s%%yi aştı, dikkat olarak kullanınız</string>
+    <string name="traffic_used_finish_text">Hücresel veri kullanım limitini aştı!</string>
+    <string name="traffic_used_lot">Veri kullanımı ikazı</string>
+    <string name="flow_settting_fist">Fazla kullanım ikazı</string>
+    <string name="flow_settting_name">Veri planı ayarları</string>
+    <string name="flow_settting_second">Hücresel veri alarmı</string>
+    <string name="flow_settting_sure_bg">Bitti</string>
+    <string name="flow_settting_dialog">Kullanılan fazla veri</string>
+    <string name="flow_settting_dialog_remain">hücresel veri kullanım limitini aşınca, otomatik olarak uyarı verilecek.</string>
+    <string name="flow_settting_thrid">Kullanım dönemi sıfırlama tarihi</string>
+    <string name="flow_settting_thrid_first_tv">Aylık faturalama tarihi</string>
+    <string name="flow_settting_thrid_second_tv">Veri planı(MB)</string>
+    <string name="flow_settting_thrid_month_used_data">Kullanılan veri(MB)</string>
+    <string name="app_elec_aca">Batarya</string>
+    <string name="app_elec_stop">Durdur</string>
+    <string name="app_elec_zhuyi">Uyarı!</string>
+    <string name="app_flow_elec">Veri Kullanımı</string>
+    <string name="app_flow">Veri Kullanımı</string>
+    <string name="app_elec">Uygulama Listesi</string>
+    <string name="today_triffic">Bugün</string>
+    <string name="month_remainder_triffic">Bu ay kalan</string>
+    <string name="month_triffic">Bu ay</string>
+    <string name="flow_charts_this_month">Günlük durum</string>
+    <string name="home_app_manager_apps_delete">Kaldırılan Uygulamalar </string>
+    <string name="home_app_manager_mem_clean">%1$s Belleği  temizlendi</string>
+    <string name="home_app_manager_mem_clean_one">1MB Belleği  temizlendi</string>
+
+    <!-- What\'s Hot -->
+    <string name="hot_app_free">Ücretsiz</string>
+
+    <string-array name="default_psw_protect_entrys">
+        <item>Annem kim?</item>
+        <item>Babam kim?</item>
+        <item>En sevdiğim öğretmen?</item>
+        <item>Kimliğimin son 6 rakamı</item>
+    </string-array>
+
+    <string name="mode_save_hint">Modu kaydet</string>
+    <string name="time_lock_save_hint">kaydet</string>
+    <string name="location_lock_save_hint">kaydet</string>
+    <string name="mode_save_ask">%1$s yedeklensin mi?</string>
+    <string name="repeat">Tekrar</string>
+    <string name="no_repeat">Tekrar yok</string>
+
+    <string-array name="days_of_week">
+        <item>Pzt</item>
+        <item>Sal</item>
+        <item>Çar</item>
+        <item>Per</item>
+        <item>Cum</item>
+        <item>Cmt</item>
+        <item>Paz</item>
+    </string-array>
+
+    <string name="select_mode">Mod seçimi</string>
+    <string name="select_wifi_mode">WiFi seç</string>
+    <string name="choose_ssid">Lütfen bir WIFI erişim noktası seçiniz</string>
+    <string name="choose_enter_mode">Bu WiFi yakınında olduğumda etkinleştir</string>
+    <string name="choose_quit_mode">Bu WiFi uzağında olduğumda etkinleştir</string>
+
+    <!-- guide page begin -->
+    <string name="guide_page1_title">Mod Seçimi</string>
+    <string name="guide_page1_content">her senaryo kilitlenme çözümü akıllı olarak değiştirilir </string>
+    <string name="guide_page2_title">koruma Seviyesi</string>
+    <string name="guide_page2_content">Gizlilik Seviyeleri ile cihazınızın güvenliğine dair herşeyini bilin.</string>
+    <string name="guide_page3_title">Özel Kontaktlar</string>
+    <string name="guide_page3_content">haberleşme gizliliğimizi korunacak</string>
+    <string name="guide_page4_title">Kullanım İzleme</string>
+    <string name="guide_page4_content">hücresel veri/güç tüketimini kontrol edin</string>
+    <string name="guide_button_text">ŞİMDİ DENE</string>
+    <!-- guide page end -->
+
+    <string name="lock_mode_name_cant_empty">Mod kimliği adı gereklidir</string>
+    <string name="lock_mode_delete_tip_title">sil</string>
+    <string name="lock_mode_delete_tip_both">mod silinince karşılıklı uygulama da silinir</string>
+    <string name="lock_mode_delete_tip_time">mod silinince karşılıklı uygulama da silinir</string>
+    <string name="lock_mode_delete_tip_location">mod silinince karşılıklı uygulama da silinir</string>
+    <string name="please_input_name">İsmi düzenle</string>
+    <string name="please_selset_wifi">WiFi yi seçiniz</string>
+    <string name="cur_mode_delete_tip">%1$s silmek istediğinizden emin misiniz？</string>
+    <string name="mode_delete_tip">Bu modun profilini silmek istediğinizden emin misiniz?</string>
+    <string name="add_mode">Yeni ayar</string>
+    <string name="add_new_time_lock">Yeni ayar</string>
+    <string name="add_new_location_lock">Yeni ayar</string>
+    <string name="save_successful">Başarıyla kaydedildi</string>
+
+    <!-- version 2.1 begin -->
+    <!-- weizhuang -->
+    <string name="title_bar_weizhuang">Uygulama Kapağı</string>
+    <string name="weizhuang_first_in_text">kamuflaj naıl açılacağını sadece siz bilirsiniz. </string>
+    <string name="first_in_sure_button">Tamam</string>
+    <string name="unknow_call_first_title">Bilinmeyen Numara</string>
+    <string name="unknow_call_second_title">Arıyor</string>
+    <string name="unknow_call_thrid_first_title">Komut</string>
+    <string name="unknow_call_all_content">sırayla çizilerek sahte görünüm kaldırılır.</string>
+    <string name="weizhuang_setting_ok">Bilinmeyen arama modu etkinleştirildi</string>
+    <string name="error_mode_ok">Hata Modu etkinleştirildi</string>
+    <string name="zhiwen_mode_ok">Parmak izi kimliği modu etkinleştirildi</string>
+    <string name="weizhuang_error_title">"kapatma" butonu çizilerek sahte görünüm kaldırılır.</string>
+    <string name="weizhuang_error_notice">Üzgünüz,  \"Gizlilik Koruması\" durdu.</string>
+    <string name="weizhuang_error_notice_set_false">Uzun kaydırma mesafesi.</string>
+    <string name="weizhuang_zhiwen_notice">parmak izini 3 kere tıklanınca sahte görünüm kaldırılır.</string>
+    <string name="error_cancel_button">Kapat</string>
+    <string name="open_weizhuang_dialog_title">Kapağı Başlat</string>
+    <string name="open_weizhuang_dialog_content">kamuflaj açsın mı？</string>
+    <string name="open_weizhuang_dialog_sure">Başlat</string>
+
+    <string-array name="weizhuang_type_num">
+        <item>Kapak yok</item>
+        <item>Güzellik Kamuflajı</item>
+        <item>Hata</item>
+        <item>Bilinmeyen Arama</item>
+        <item>Parmak izi</item>
+    </string-array>
+
+    <string name="pretend_app_error">Üzgünüz,\" %1$s \"durdu.</string>
+    <!-- weizhuang -->
+
+    <string name="time_location_lock_tip_title">Daha fazla Mod</string>
+    <string name="time_location_lock_tip_content">zaman veya konumu kilidi üzerinden otomatik olarak senaryo modları değiştirsin mi？</string>
+    <string name="time_lock_mode_guide_content"> Kendi zamanı belirlendiği zamana ayarlanınca belli bir mod etkinleştirebilir</string>
+    <string name="location_lock_mode_guide_content"> Kendi zamanı belirlendiği zamana ayarlanınca belli bir mod etkinleştirebilir</string>
+    <string name="lock_mode_guide_button_text">Tamam</string>
+    <string name="mode_missing">"karşılıklı mod bulunmadı, siliniz"</string>
+
+    <!-- version 2.1 end -->
+
+
+    <!-- version 2.2 start -->
+    <string name="feedback_content_guide">Merhaba,yardımcı olabilir miyim?</string>
+    <string name="feedback_email_guide">E-posta adresiniz</string>
+    <string name="feedback_category_guide">Bir soru seçiniz</string>
+    <string name="privacy_proposal_tip">aşağıdaki talimatları takip ederek gizlilik seviyesini yükseltiniz(şimdi %1$s) </string>
+    <string name="lock_mode_name_maxlength">18</string>
+    <!-- version 2.2 end -->
+
+
+    <!-- version 2.4 begin -->
+    <!-- quick gesture -->
+    <string name="pg_appmanager_quick_gesture_name">Kısayollar</string>
+    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">Kısayolları etkinleştir</string>
+    <string name="pg_appmanager_quick_gesture_option_switch_setting">Ayarları aç</string>
+    <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">Model teması</string>
+    <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">%1$s</string>
+    <string name="pg_appmanager_quick_gesture_option_sliding_area_location_title">Deklanşör Alanı Konumu</string>
+    <string name="pg_appmanager_quick_gesture_option_no_read_message_tip">Yeni Mesajlar</string>
+    <string name="pg_appmanager_quick_gesture_option_recently_contact">Son Kontaktlar</string>
+    <string name="pg_appmanager_quick_gesture_option_privacy_contact_message_tip">Özel Kontaktlar</string>
+    <string name="pg_appmanager_quick_gesture_option_able_sliding_time">Sürükleme için Zaman</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">Sol Alt</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">Sağ Alt</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">Sol Orta</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">Sağ Orta</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_just_home_text">Masaüstü</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_home_and_all_app_text">Masaüstü ve Tüm Uygulamalar</string>
+    <string name="pg_appmanager_quick_gesture_slide_time_no_disturb_text">Blok Uygulamalar</string>
+    <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">En az bir alan seç</string>
+    <string name="pg_appmanager_quick_gesture_select_free_disturb_app_text">Blok Uygulamaları seç</string>
+    <string name="pg_appmanager_quick_gesture_no_free_add_free_disturb_app_text">Blok Uygulamaları ekle</string>
+    <string name="pg_appmanager_quick_gesture_miui_open_float_window_tip_text">Açılır pencereyi açarak kısayollu el hareketi etkinleştirilecek</string>
+    <string name="pg_appmanager_quick_gesture_first_tip_text">her bir alandan dışarıya çizince, kısayollu el hareketi kullanılır</string>
+    <string name="pg_appmanager_quick_switch_dialog_title">Hızlı Anahtar seç</string>
+    <string name="quick_gesture_change_common_app_dialog_title">Uygulamaları seç</string>
+    <string name="quick_gesture_change_common_app_dialog_checkbox_text">Uygulamaları otomatik ekle veya değiştir</string>
+    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">sistem bilgisi</string>
+    <string name="quick_gesture_dialog_tip_contniue_title">el hareketi ayarlayınız</string>
+    <string name="quick_gesture_dialog_tip_contniue_cotent">kısayollu el hareketini ayarlamaya devam etsin mi？</string>
+    <string name="quick_gesture_dialog_tip_contniue_left_bt">Devam et</string>
+    <string name="quick_gesture_dialog_tip_contniue_right_bt">Sonra</string>
+    <string name="quick_gesture_miui_tip_button_text">Anlaşıldı</string>
+    <string name="quick_gesture_dynamic">Son Uygulamalar</string>
+    <string name="quick_gesture_switcher">Anahtar</string>
+    <string name="quick_gesture_most_used">Favoriler</string>
+    <string name="quick_gesture_first_open_sliding_toast">İnanılmaz Kısayollar!</string>
+    <string name="quick_guesture_bluetooth">Bluetooth</string>
+    <string name="quick_guesture_flashlight">Flaş</string>
+    <string name="quick_guesture_wlan">WLAN</string>
+    <string name="quick_guesture_carme">Kamera</string>
+    <string name="quick_guesture_sound">Ses</string>
+    <string name="quick_guesture_light">Parlaklık</string>
+    <string name="quick_guesture_speedup">Hızlandırma</string>
+    <string name="quick_guesture_changemode">Modları değiştir</string>
+    <string name="quick_guesture_switchset">Kısayollar</string>
+    <string name="quick_guesture_setting">Ayarlar</string>
+    <string name="quick_guesture_gps">GPS</string>
+    <string name="quick_guesture_flymode">Uçak Modu</string>
+    <string name="quick_guesture_rotation">Otomatik-döndür</string>
+    <string name="quick_guesture_mobliedata">Veri Kullanımı</string>
+    <string name="quick_guesture_home">Ana Ekran</string>
+    <string name="quick_guesture_lockscreen">Kilitli Ekran</string>
+    <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
+    <string name="pass_gesture_change">Parola modeli aç</string>
+    <string name="permission_open_tip_notification_title">el hareketini ayarlayın</string>
+    <string name="permission_open_tip_notification_content">el hareketini açın</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">yeni versiyonlu hoş kısayollu el hareketini açın</string>
+    <string name="grade_tip_feedback">Geri bildirim</string>
+    <string name="quick_first_tip_dialog_right_bt">Şimdi dene</string>
+    <string name="quick_first_tip_dialog_left_bt">Daha sonra</string>
+
+    <!-- quick gesture -->
+    <!-- version 2.4 end -->
+
+
+    <!-- version 2.5 huangqili part -->
+    <string name="forbid_uninstall_off">ileri korumayı etkinleştirerek gizlilik daha iyi bir şekilde korunacaktır.</string>
+    <string name="forbid_uninstall_on">İleri koruma etkinleştirildi.</string>
+    <string name="setting_hide_lockline">Görünmeyen modeller</string>
+    <string name="change_to_gesture">el hareketine değiştirin</string>
+    <string name="change_to_password">numaraya değiştirin</string>
+    <string name="summary_newapp_lock">yeni yüklenen uygulamalar hızlıca kilitleyin</string>
+    <string name="summary_aacelerate_after_unlock">Uygulamaların kilidi açıldığında telefonu hızlandır</string>
+    <string name="summary_autolock_after_lockscreen">kilitlenme kaldırılınca bellek temizlenir</string>
+    <string name="summary_setting_locker">kilitlenme ayarı</string>
+    <string name="summary_hide_lockline">Daha iyi koruma için görünmeyen model</string>
+    <string name="quick_gesture_strengthen_mode_title">Küçük beyaz nokta</string>
+    <string name="quick_gesture_strengthen_mode_content">Kısayolları açmak için tıklayınız.</string>
+    <string name="quick_gesture_success_title">el hareketi açılması başarılı oldu</string>
+    <string name="quick_gesture_success_content">aşağıdaki hızlı açma/kapatma sistemi anahtarını ve genel uygulamaları tıklayın</string>
+    <string name="go_set">Ayarlar</string>
+    <string name="white_dot_click_tip">ayarlarda kısayollu el hareketini kapatabilirsiniz</string>
+    <string name="quick_gesture_open_text">Etkinleştir</string>
+    <string name="quick_gesture_close_text">Kapat</string>
+    <string name="quick_gesture_introduction_title">Kolay Kısayollar nedir?</string>
+    <string name="quick_gesture_introduction_content">Kolay kısayollar, anahtarları rahatlıkla  yöneteceğiniz ve diğer uygulamaları açabileceğiniz yüksek verimli bir araçtır.</string>
+    <string name="quick_gesture_slide_guide_title">Kolay Kısayollar nasıl açılır?</string>
+    <string name="quick_gesture_slide_guide_content">köşeleri hafifce çizilince, kısayollu el hareketi açılır</string>
+    <string name="quick_gesture_slide_setting_content">burayı tıklayarak çizme alanını ayarlayınız</string>
+    <string name="quick_gesture_edit_guide_title">Anahtarlar veya uygulamalar nasıl düzenlenir?</string>
+    <string name="quick_gesture_edit_guide_content">uygulama/ anahtarı uzun basarak fonksiyon düzenlemeye girebilir</string>
+    <string name="quick_gesture_edit_extra_content">Sistem tarafından oluşturulduğundan son uygulamaları kendiniz ekleyemezsiniz.</string>
+    <string name="can_not_add_more">Daha fazla ekleme yapılamaz</string>
+    <string name="new_guide_page1_title">Kolay Kısayollar</string>
+    <string name="new_guide_page1_content">Sadece sürükleme ile hepsi elinizde</string>
+    <string name="new_guide_page2_title">App Kapak</string>
+    <string name="new_guide_page2_content">Uygulamaları maskeler, telefonu korur</string>
+    <string name="new_guide_page3_title">Küçük beyaz nokta</string>
+    <string name="new_guide_page3_content">Kolay kısayolları göstermek için tek tık</string>
+    <string name="quick_open_tip">Kolay kısayolları etkinleştirmediniz.</string>
+    <string name="quick_setting_title">Ayarlar</string>
+    <string name="quick_no_msm_annotation">Okunmamış SMS Bildirimi</string>
+    <string name="quick_no_call_log_annotation">Cevapsız Arama Bildirimi</string>
+    <string name="quick_no_pricay_contact_annotation">Sistem Bilgisi Bildirimi</string>
+    <!-- version 2.5 huangqili part -->
+
+
+    <!-- 2.6 start -->
+    <!-- <item>Güzellik Kamuflajı</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
+    <string name="change_lock_mode">Anahtar Modu</string>
+    <string name="beauty_guide_title">Kamuflaj nasıl etkinleştirilir?</string>
+    <string name="beauty_guide_content">iki parmak daralarak kilitlenme sahte görüntüsü kaldırılır</string>
+    <string name="flash_light_open_toast">flaş lambası sık sık kullanmayın</string>
+    <string name="privacy_auto_add_text">Elle Ekle</string>
+    <string name="choose_lock_mode">Dene</string>
+    <string name="button_disguise_guide_select">Daha Sonra</string>
+    <string name="button_disguise_guide_cancel">Mod Seç</string>
+    <string name="button_disguise_guide_content">uygulamayı kilitleyin, kamuflaj fonksiyonunu deneyin</string>
+    <string name="traffic_over_text">Aşırı Uyarısı</string>
+    <string name="lock_line_hide">izler gizlendi</string>
+    <string name="lock_line_visiable">izler gösterildi</string>
+    <string name="guide_more_text">klavuz_daha fazla_metin</string>
+    <string name="guide_skip_text">klavuz_atla_metin</string>
+    <string name="video_hide_need_cb">COOLBrowser yüklenince gizlenme kaldırılabilir</string>
+    <string name="video_hide_need_new_cb">COOLBrowser yüklenince gizlenme kaldırılabilir</string>
+    <string name="video_delete_need_new_cb">COOLBrowser yüklenince ancak silinebilir</string>
+    <string name="zipper_too_fast">Lütfen daha yavaş aşağıya çekiniz</string>
+    <string name="zipper_too_slow">Lütfen daha hızlı aşağıya çekiniz</string>
+    <string name="theme_apply_title">Temanın kilidini aç uygulansın mı %1$s?</string>
+    <string name="video_delete_fail">Dosyalar silinemedi</string>
+    <string name="video_cancel_hide_fail">Fotoğraflar gösterilemedi</string>
+    <string name="beauty_mode_ok">Güzellik Kamuflajı modu etkin olduğunda</string>
+    <!-- 2.6 end -->
+
+</resources>

@@ -106,6 +106,7 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="#E11E1E"
+        android:layout_marginTop="200dp"
         android:visibility="gone" />
 
 </FrameLayout>

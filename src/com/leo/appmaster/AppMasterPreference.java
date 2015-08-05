@@ -2119,6 +2119,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public String getSplashSkipUrl() {
         return mPref.getString(PREF_SPLASH_SKIP_URL, null);
+//        return mPref.getString(PREF_SPLASH_SKIP_URL, "market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
     }
 
     /* 保存闪屏跳转方式 */

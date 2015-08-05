@@ -314,6 +314,16 @@ public class AppMasterApplication extends Application {
 
         });
         initSplashData();
+        // TEST
+//        setSplashData();
+    }
+
+    private void setSplashData() {
+        mSplashFlag = true;
+        mIsEmptyForSplashUrl = false;
+        mSplashDelayTime = 10000;
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(Constants.SPLASH_SKIP_PG_CLIENT);
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("com.android.vending");
     }
 
     private void quickGestureTipInit() {
