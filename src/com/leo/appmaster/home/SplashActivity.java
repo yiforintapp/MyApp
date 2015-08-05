@@ -773,7 +773,7 @@ public class SplashActivity extends BaseActivity {
                     boolean existClient = checkExistClient(packageName);
                     if (existClient) {
                         /* 存在客户端 */
-                        Log.e(Constants.RUN_TAG, "存在客户端并进入");
+                        Log.e(Constants.RUN_TAG, "存在客户端并进入:"+packageName);
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri.parse(url);
                         intent.setData(uri);
