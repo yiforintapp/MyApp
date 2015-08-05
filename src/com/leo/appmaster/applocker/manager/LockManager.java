@@ -19,6 +19,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import android.R.integer;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -160,13 +161,13 @@ public class LockManager {
     private ExecutorService mTaskExecutor = Executors.newSingleThreadExecutor();
     private Future<Boolean> mLoadDefaultDataFuture;
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
-    public HashMap<Drawable, Bitmap> mDrawableColors;
+    private HashMap<Drawable, Integer> mDrawableColors;
     public ColorMatcher mMatcher;
     private TimerTask mFillterAllTask;
 
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
-        mDrawableColors = new HashMap<Drawable, Bitmap>();
+        mDrawableColors = new HashMap<Drawable, Integer>();
         loadAppLaunchReorder();
         mMatcher = new ColorMatcher();
         mLockPolicy = new TimeoutRelockPolicy(mContext);
@@ -1943,6 +1944,22 @@ public class LockManager {
             }
             AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
         }
+    }
+    
+    public void clearDrawableColor() {
+        mDrawableColors.clear();
+    }
+    
+    public int getDrawableColorId(Drawable drawable) {
+        Integer value = mDrawableColors.get(drawable);
+        if (value == null) {
+            return 0;
+        }
+        return value.intValue();
+    }
+    
+    public void putDrawableColorId(Drawable drawable, int id) {
+        mDrawableColors.put(drawable, id);
     }
 
 }
