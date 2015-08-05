@@ -14,7 +14,9 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.RemoteException;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -25,6 +27,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -45,6 +48,8 @@ import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 public class VideoViewPager extends BaseActivity implements OnClickListener {
+    private static final int SHOW_TOAST = 0;
+    private static final int SHOW_DIALOG = 1;
     private CommonTitleBar mTtileBar;
     private Button mUnhideVideo;
     private Button mCancelVideo;
@@ -73,6 +78,22 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private boolean isServiceDo = false;
     private boolean isBindServiceOK = false;
     private boolean isHaveServiceToBind = false;
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case SHOW_TOAST:
+                    Toast.makeText(VideoViewPager.this,
+                            getString(R.string.video_delete_fail), 0)
+                            .show();
+                    break;
+                case SHOW_DIALOG:
+                    String mContentString = (String) msg.obj;
+                    showDownLoadNewCbDialog(mContentString);
+                    break;
+            }
+        };
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -433,13 +454,19 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
                         backgoundTask.execute(true);
                     } else if (flag == DIALOG_DELECTE_VIDEO) {
-                        deleteVideo();
+                        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                            @Override
+                            public void run() {
+                                deleteVideo();
+                            }
+                        });
                     }
                 }
             }
         });
         mDialog.setCanceledOnTouchOutside(false);
         mDialog.setTitle(R.string.app_cancel_hide_image);
+        mDialog.setSureButtonText(getString(R.string.makesure));
         mDialog.setContent(string);
         mDialog.show();
     }
@@ -523,7 +550,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         // if (!FileOperationUtil.deleteFile(filePath)) {
         // return;
         // }
-        mResultPath.add(filePath);
 
         if (isServiceDo) {
             int mProcessType = -1;
@@ -577,12 +603,15 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             .get(mPosition)));
                 }
             }
+            mResultPath.add(filePath);
             mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
             viewPager.setAdapter(mPagerAdapter);
         } else {
             if (isServiceDo) {
-                Toast.makeText(VideoViewPager.this, getString(R.string.video_delete_fail), 0)
-                        .show();
+                Message msg = Message.obtain();
+                msg.what = SHOW_TOAST;
+                mHandler.sendMessage(msg);
+
             } else {
                 String mContentString;
                 if (!isCbHere) {// no cb
@@ -592,7 +621,11 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 } else {
                     mContentString = getString(R.string.video_hide_need_new_cb);
                 }
-                showDownLoadNewCbDialog(mContentString);
+
+                Message msg = Message.obtain();
+                msg.what = SHOW_DIALOG;
+                msg.obj = mContentString;
+                mHandler.sendMessage(msg);
             }
         }
         isServiceDo = false;
