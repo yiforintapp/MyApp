@@ -79,6 +79,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     private boolean isBindServiceOK = false;
     private boolean isHaveServiceToBind = false;
 
+
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -577,6 +578,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
         } else {
             try {
+                if(VideoHideMainActivity.isLetPgFail){
+                    int i =  10/0;
+                }
                 flag = FileOperationUtil.deleteFile(filePath);
                 FileOperationUtil.deleteFileMediaEntry(filePath, this);
                 mAllPath.remove(mPosition);
@@ -690,12 +694,15 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                                 mAllPath.remove(mPosition);
                             }
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            isSuccess = false;
                         }
                     }
                 } else {
                     newFileName = FileOperationUtil.getNameFromFilepath(path);
                     try {
+                        if(VideoHideMainActivity.isLetPgFail){
+                            int i =  10/0;
+                        }
                         newFileName = newFileName.substring(1,
                                 newFileName.indexOf(".leotmv"));
                         if (!FileOperationUtil.renameFile(path, newFileName)) {
@@ -711,7 +718,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             mAllPath.remove(mPosition);
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        isSuccess = false;
                     }
                 }
             }

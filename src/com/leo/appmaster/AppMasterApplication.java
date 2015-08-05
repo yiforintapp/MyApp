@@ -180,8 +180,9 @@ public class AppMasterApplication extends Application {
         registerLanguageChangeReceiver();
         // Log.e(Constants.RUN_TAG,
         // "机型："+BuildProperties.checkPhoneModel("l36H"));
-    }
 
+    }
+    
     private String getUserSerial() {
         String userSerial = null;
         if (PhoneInfo.getAndroidVersion() >= 17) {

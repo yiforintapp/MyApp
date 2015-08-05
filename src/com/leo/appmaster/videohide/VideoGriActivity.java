@@ -760,6 +760,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
 
                         } else {
                             try {
+                                if(VideoHideMainActivity.isLetPgFail){
+                                    int i =  10/0;
+                                }
                                 newFileName =
                                         FileOperationUtil.getNameFromFilepath(item.getPath());
                                 newFileName = newFileName.substring(1,
