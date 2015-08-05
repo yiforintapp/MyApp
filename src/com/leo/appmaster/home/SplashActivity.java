@@ -148,7 +148,7 @@ public class SplashActivity extends BaseActivity {
         } else {
             /* 没有开始，没有结束时间，默认 */
             Log.d(Constants.RUN_TAG, "splash_end&start_time：No time!");
-            clearSpSplashFlagDate();
+             clearSpSplashFlagDate();
             if (mSplashIcon.getVisibility() == View.INVISIBLE) {
                 mSplashIcon.setVisibility(View.VISIBLE);
             }
@@ -203,11 +203,11 @@ public class SplashActivity extends BaseActivity {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.url_skip_bt:
-//                    Log.e(Constants.RUN_TAG, "立即设置");
+                    // Log.e(Constants.RUN_TAG, "立即设置");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
-//                    Log.e(Constants.RUN_TAG, "跳过");
+                    // Log.e(Constants.RUN_TAG, "跳过");
                     startHome();
                     break;
                 default:
@@ -765,6 +765,7 @@ public class SplashActivity extends BaseActivity {
             if (!Utilities.isEmpty(skipMode)) {
                 if (Constants.SPLASH_SKIP_PG_WEBVIEW.equals(skipMode)) {
                     /* 跳转到pg内webview */
+                    Log.e(Constants.RUN_TAG, "进入WebView");
                     startIntentForWebViewActivity(url);
                 } else if (Constants.SPLASH_SKIP_PG_CLIENT.equals(skipMode)) {
                     /* 跳转到指定客户端 */
@@ -772,6 +773,7 @@ public class SplashActivity extends BaseActivity {
                     boolean existClient = checkExistClient(packageName);
                     if (existClient) {
                         /* 存在客户端 */
+                        Log.e(Constants.RUN_TAG, "存在客户端并进入");
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri.parse(url);
                         intent.setData(uri);
@@ -784,12 +786,13 @@ public class SplashActivity extends BaseActivity {
                         }
                     } else {
                         /* 不存在指定客户端 */
+                        Log.e(Constants.RUN_TAG, "不存在客户端进入进入到WebView");
                         startIntentForWebViewActivity(url);
                     }
                 }
             }
         }
-
+        finish();
     }
 
     /* 检查要跳转的客户端是否存在 */
@@ -812,6 +815,8 @@ public class SplashActivity extends BaseActivity {
     private void startIntentForWebViewActivity(String url) {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, url);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        finish();
     }
 }
