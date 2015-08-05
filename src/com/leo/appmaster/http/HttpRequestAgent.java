@@ -105,7 +105,12 @@ public class HttpRequestAgent {
 
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 body, listener, listener);
-        request.setShouldCache(false);
+        if (loadedTheme == null || loadedTheme.isEmpty()) {
+            // 本地未安装任何列表启用缓存
+            request.setShouldCache(true);
+        } else {
+            request.setShouldCache(false);
+        }
         mRequestQueue.add(request);
     }
     
@@ -226,7 +231,11 @@ public class HttpRequestAgent {
 
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 body, listener, eListener);
-        request.setShouldCache(false);
+        if (page == 1) {
+            request.setShouldCache(true);
+        } else {
+            request.setShouldCache(false);
+        }
         mRequestQueue.add(request);
     }
 

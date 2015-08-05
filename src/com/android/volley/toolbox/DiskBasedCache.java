@@ -357,6 +357,8 @@ public class DiskBasedCache implements Cache {
 
         /** Soft TTL for this record. */
         public long softTtl;
+        
+        public long lastModify;
 
         /** Headers from the response resulting in this cache entry. */
         public Map<String, String> responseHeaders;
@@ -375,6 +377,7 @@ public class DiskBasedCache implements Cache {
             this.serverDate = entry.serverDate;
             this.ttl = entry.ttl;
             this.softTtl = entry.softTtl;
+            this.lastModify = entry.lastModify;
             this.responseHeaders = entry.responseHeaders;
         }
 
@@ -398,6 +401,7 @@ public class DiskBasedCache implements Cache {
             entry.serverDate = readLong(is);
             entry.ttl = readLong(is);
             entry.softTtl = readLong(is);
+            entry.lastModify = readLong(is);
             entry.responseHeaders = readStringStringMap(is);
             return entry;
         }
@@ -412,6 +416,7 @@ public class DiskBasedCache implements Cache {
             e.serverDate = serverDate;
             e.ttl = ttl;
             e.softTtl = softTtl;
+            e.lastModify = lastModify;
             e.responseHeaders = responseHeaders;
             return e;
         }
@@ -428,6 +433,7 @@ public class DiskBasedCache implements Cache {
                 writeLong(os, serverDate);
                 writeLong(os, ttl);
                 writeLong(os, softTtl);
+                writeLong(os, lastModify);
                 writeStringStringMap(responseHeaders, os);
                 os.flush();
                 return true;

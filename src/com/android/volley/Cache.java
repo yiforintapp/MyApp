@@ -79,13 +79,16 @@ public interface Cache {
 
         /** Soft TTL for this record. */
         public long softTtl;
+        /** 上次修改时间 */
+        public long lastModify;
 
         /** Immutable response headers as received from server; must be non-null. */
         public Map<String, String> responseHeaders = Collections.emptyMap();
 
         /** True if the entry is expired. */
         public boolean isExpired() {
-            return this.ttl < System.currentTimeMillis();
+//            return this.ttl < System.currentTimeMillis();
+            return true;
         }
 
         /** True if a refresh is needed from the original data source. */

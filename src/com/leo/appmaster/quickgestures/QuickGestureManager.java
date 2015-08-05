@@ -29,6 +29,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
 import android.text.TextUtils;
@@ -129,6 +130,7 @@ public class QuickGestureManager {
 //                bmp = ((BitmapDrawable) drawable).getBitmap();
 //                lm.mMatcher.addBitmapSample(bmp);
 //            }
+            long start = SystemClock.elapsedRealtime();
             for (int drawableId : mColorBgIconIds) {
                 lm.mMatcher.addBitmapSample(drawableId);
             }
