@@ -72,8 +72,8 @@ public class GestureItemView extends LinearLayout {
     public void setItemIcon(Drawable icon, boolean needColor) {
         if (needColor) {
             QuickGestureManager qgm = QuickGestureManager.getInstance(getContext());
-            Bitmap target = qgm.getMatchedColor(icon);
-            mImageView.setBackgroundDrawable(new BitmapDrawable(getResources(), target));
+            Drawable target = qgm.getMatchedColor(icon);
+            mImageView.setBackgroundDrawable(target);
             mImageView.setImageDrawable(icon);
         } else {
             mImageView.setBackgroundDrawable(icon);
