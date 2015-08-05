@@ -92,6 +92,8 @@ public class TaskDetectService extends Service {
         flowDetecTask = new FlowTask();
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
+//        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 1000,
+//                TimeUnit.MILLISECONDS);
         mHandler = new Handler();
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
@@ -242,6 +244,9 @@ public class TaskDetectService extends Service {
             int mVersion = PhoneInfo.getAndroidVersion();
             String network_state = whatState();
 
+            //2min check memory is over 80%
+            checkMemory();
+            
             if (!network_state.equals(STATE_NO_NETWORK)) {
                 Traffic traffic = Traffic.getInstance(getApplicationContext());
                 tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
@@ -303,6 +308,10 @@ public class TaskDetectService extends Service {
                 }
             }
         }
+    }
+
+    public void checkMemory() {
+        
     }
 
     public String whatState() {
