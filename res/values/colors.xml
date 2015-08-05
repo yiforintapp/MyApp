@@ -104,4 +104,7 @@
 	<color name="home_mode_text_color">#ffa71c</color>
 	<color name="custom_mode_text_color">#44c4f5</color>
 	<color name="vistor_mode_text_color">#5653b4</color>
+		<color name="cool_black">#333333</color>
+				<color name="cool_grey">#999999</color>
+								<color name="cool_green">#00d592</color>
 </resources>
