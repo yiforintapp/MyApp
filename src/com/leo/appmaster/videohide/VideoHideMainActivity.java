@@ -63,12 +63,12 @@ public class VideoHideMainActivity extends BaseActivity implements
     // public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
     public static String CB_PACKAGENAME = "com.example.appmaster_service";
     public static String URL_CB = "http://m.coobrowser.com/";
-    public static final int TARGET_VERSION = 14;
+//    public static final int TARGET_VERSION = 14;
     public static String SECOND_CATALOG;
     public static String LAST_CATALOG;
-    // public static final String DEFAULT_PATH =
-    // "xxx/xxx/Coolbrowser/Download/";
-    public static final String DEFAULT_PATH = "xxx/xxx/DCIM/Camera/";
+    public static final String DEFAULT_PATH =
+            "xxx/xxx/Coolbrowser/Download/";
+    // public static final String DEFAULT_PATH = "xxx/xxx/DCIM/Camera/";
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
     private AppMasterPreference mSpSaveDir;
