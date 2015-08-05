@@ -28,11 +28,13 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 //import android.app.ActivityManager.AppTask;
@@ -68,6 +70,7 @@ public class TaskDetectService extends Service {
     private AppMasterPreference sp_traffic;
     private FloatWindowTask mFloatWindowTask;
     private Handler mHandler;
+    private ProcessCleaner mCleaner;
 
     private static TaskDetectService sService;
     private static Notification sNotification;
@@ -86,13 +89,15 @@ public class TaskDetectService extends Service {
     @Override
     public void onCreate() {
         mLockHandler = new TaskChangeHandler(getApplicationContext());
-
+        
+        mCleaner = ProcessCleaner.getInstance(getApplicationContext());
+        
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         flowDetecTask = new FlowTask();
 //        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
 //                TimeUnit.MILLISECONDS);
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 1000,
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 1000000,
                 TimeUnit.MILLISECONDS);
         mHandler = new Handler();
         sService = this;
@@ -311,11 +316,12 @@ public class TaskDetectService extends Service {
     }
 
     public void checkMemory() {
-//        long mLastUsedMem = mCleaner.getUsedMem();
-//        long mTotalMem = mCleaner.getTotalMem();
-//        
-//         
-//        int mProgress = (int) (mLastUsedMem * 100 / mTotalMem);
+        if(mCleaner != null){
+            long mLastUsedMem = mCleaner.getUsedMem();
+            long mTotalMem = mCleaner.getTotalMem();
+            int mProgress = (int) (mLastUsedMem * 100 / mTotalMem);
+            LeoLog.d("testServiceData", mLastUsedMem+"/"+mTotalMem + "--" + mProgress);
+        }
     }
 
     public String whatState() {

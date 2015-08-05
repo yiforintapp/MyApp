@@ -155,7 +155,7 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
@@ -528,11 +528,11 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
+            android:configChanges="orientation|screenSize"
             android:exported="true"
+            android:hardwareAccelerated="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
-            android:hardwareAccelerated="true"
-            android:configChanges="orientation|screenSize"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
@@ -704,7 +704,15 @@
 
 
         <!-- for LEO push sdk -->
-        <service android:name="com.leo.push.PushService"  android:exported="true"/>
+        <service
+            android:name="com.leo.push.PushService"
+            android:exported="true" />
+
+        <!-- mobvista ad activity -->
+        <activity
+            android:name="com.mobvista.sdk.m.core.AdMobvistaAct"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>
