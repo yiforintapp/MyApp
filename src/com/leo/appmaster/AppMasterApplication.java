@@ -2,12 +2,14 @@
 package com.leo.appmaster;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.Method;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -46,23 +48,16 @@ import android.os.UserManager;
 import android.preference.PreferenceManager;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
-import android.text.BoringLayout;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
-import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.leo.appmaster.applocker.FamilyModeProxyActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.OfficeModeProxyActivity;
-import com.leo.appmaster.applocker.UnlockAllModeProxyActivity;
-import com.leo.appmaster.applocker.VisitorModeProxyActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
@@ -76,18 +71,17 @@ import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureProxyActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -111,7 +105,7 @@ public class AppMasterApplication extends Application {
     private MessagePrivacyReceiver mPrivacyReceiver;
 
     private static AppMasterApplication mInstance;
-    private static List<Activity> mActivityList;
+    private static List<WeakReference<Activity>> mActivityList;
 
     public Handler mHandler;
     public static SharedPreferences sharedPreferences;
@@ -125,6 +119,9 @@ public class AppMasterApplication extends Application {
     public static int densityDpi;
     public static String densityString;
     public static int MAX_OUTER_BLUR_RADIUS;
+    public static volatile boolean mSplashFlag;
+    public static volatile boolean mIsEmptyForSplashUrl;
+    public static volatile int mSplashDelayTime;
     // public ExecutorService cachedThreadPool;
     static {
         // For android L and above, daemon service is not work, so disable it
@@ -139,7 +136,7 @@ public class AppMasterApplication extends Application {
     public void onCreate() {
         super.onCreate();
         initDensity(this);
-        mActivityList = new ArrayList<Activity>();
+        mActivityList = new ArrayList<WeakReference<Activity>>();
         mInstance = this;
         mExecutorService = Executors.newScheduledThreadPool(3);
         // cachedThreadPool = Executors.newCachedThreadPool();
@@ -315,6 +312,7 @@ public class AppMasterApplication extends Application {
             }
 
         });
+        initSplashData();
     }
 
     private void quickGestureTipInit() {
@@ -879,133 +877,24 @@ public class AppMasterApplication extends Application {
         if (lastLoadTime == 0
                 || (curTime - pref.getLastLoadSplashTime()) >
                 pref.getSplashCurrentStrategy()) {
-            if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())
+            if (Constants.SPLASH_REQUEST_FAIL_DATE.equals(pref.getSplashLoadFailDate())
                     || pref.getSplashLoadFailNumber() < 0
                     || !failDate.equals(pref.getSplashLoadFailDate())
                     || (failDate.equals(pref.getSplashLoadFailDate()) && pref
                             .getSplashLoadFailNumber() <= 2)) {
-                // 日期变化数据初始化
+                /* 日期变化数据初始化 */
                 if (!failDate.equals(pref.getSplashLoadFailDate())) {
                     if (pref.getSplashLoadFailNumber() != 0) {
                         pref.setSplashLoadFailNumber(0);
                     }
-                    if (!"splash_fail_default_date"
+                    if (!Constants.SPLASH_REQUEST_FAIL_DATE
                             .equals(pref.getSplashLoadFailDate())) {
-                        pref.setSplashLoadFailDate("splash_fail_default_date");
+                        pref.setSplashLoadFailDate(Constants.SPLASH_REQUEST_FAIL_DATE);
                     }
                 }
-                HttpRequestAgent.getInstance(this).loadSplashDate(new
-                        Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response, boolean noMidify) {
-                                if (response != null) {
-                                    try {
-                                        String startDate = response.getString("b");
-                                        String imageUrl = response.getString("a");
-                                        String endDate = response.getString("c");
-                                        String splashUriFlag = imageUrl + startDate + endDate;
-                                        String prefStringUri = pref.getSplashUriFlag();
-                                        int prefInt = pref.getSaveSplashIsMemeryEnough();
-                                        if (!prefStringUri.equals(splashUriFlag) || prefInt != -1) {
-                                            if (!prefStringUri.equals(splashUriFlag)) {
-                                                if (splashUriFlag != null
-                                                        && !"".equals(splashUriFlag)) {
-                                                    pref.setSplashUriFlag(splashUriFlag);
-                                                    // 初始化显示时间段
-                                                    if (pref.getSplashStartShowTime() != -1) {
-                                                        pref.setSplashStartShowTime(-1);
-                                                    }
-                                                    if (pref.getSplashEndShowTime() != -1) {
-                                                        pref.setSplashEndShowTime(-1);
-                                                    }
-                                                }
-                                            }
-                                            SplashActivity.deleteImage();
-                                            if (prefInt != -1) {
-                                                pref.setSaveSplashIsMemeryEnough(-1);
-                                            }
-                                            if (endDate != null && !"".equals(endDate)) {
-                                                long end = 0;
-                                                try {
-                                                    end = dateFormate.parse(endDate).getTime();
-                                                } catch (ParseException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                pref.setSplashEndShowTime(end);
-                                            }
-                                            if (startDate != null && !"".equals(startDate)) {
-                                                long start = 0;
-                                                try {
-                                                    start = dateFormate.parse(startDate).getTime();
-                                                } catch (ParseException e) {
-                                                    e.printStackTrace();
-                                                }
-                                                pref.setSplashStartShowTime(start);
-                                            }
-                                            if (imageUrl != null && !"".equals(imageUrl)) {
-                                                getSplashImage(imageUrl);
-                                            }
-                                        }
-                                        long successStrategy = pref.getThemeSuccessStrategy();
-                                        long failStrategy = pref.getThemeFailStrategy();
-                                        pref.setThemeStrategy(successStrategy, successStrategy,
-                                                failStrategy);
-                                        pref.setLoadSplashStrategy(successStrategy,
-                                                successStrategy, failStrategy);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                // 拉取成功数据初始化
-                                if (pref.getSplashLoadFailNumber() != 0) {
-                                    pref.setSplashLoadFailNumber(0);
-                                }
-                                if (!"splash_fail_default_date"
-                                        .equals(pref.getSplashLoadFailDate())) {
-                                    pref.setSplashLoadFailDate("splash_fail_default_date");
-                                }
-                                TimerTask recheckTask = new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        loadSplashDate();
-                                    }
-                                };
-                                Timer timer = new Timer();
-                                long delay = pref.getSplashCurrentStrategy();
-                                if (delay < 0) {
-                                    delay = AppMasterConfig.TIME_12_HOUR;
-                                }
-                                timer.schedule(recheckTask, delay);
-                            }
-                        }, new ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                LeoLog.e("loadSplash", error.getMessage());
-                                if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
-                                    pref.setSplashLoadFailDate(failDate);
-                                } else if (pref.getSplashLoadFailNumber() >= 0
-                                        && pref.getSplashLoadFailNumber() <= 2) {
-                                    pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
-                                }
-                                pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
-                                        pref.getSplashSuccessStrategy(),
-                                        pref.getSplashFailStrategy());
-                                pref.setLastLoadSplashTime(System
-                                        .currentTimeMillis());
-                                TimerTask recheckTask = new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        loadSplashDate();
-                                    }
-                                };
-                                Timer timer = new Timer();
-                                long delay = pref.getSplashCurrentStrategy();
-                                if (delay < 0) {
-                                    delay = AppMasterConfig.TIME_12_HOUR;
-                                }
-                                timer.schedule(recheckTask, delay);
-                            }
-                        });
+                SplashRequestListener splashListener = new SplashRequestListener(mInstance, pref,
+                        dateFormate);
+                HttpRequestAgent.getInstance(this).loadSplashDate(splashListener, splashListener);
             }
         } else {
             pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
@@ -1025,7 +914,209 @@ public class AppMasterApplication extends Application {
         }
     }
 
-    // 加载闪屏图
+    /* 闪屏网络请求监听 */
+    private class SplashRequestListener extends RequestListener<AppMasterApplication> {
+        AppMasterPreference pref = null;
+        SimpleDateFormat dateFormate = null;
+        long curTime = System.currentTimeMillis();
+        Date currentDate = new Date(curTime);
+        String failDate = dateFormate.format(currentDate);
+
+        public SplashRequestListener(AppMasterApplication outerContext,
+                AppMasterPreference preference, SimpleDateFormat formate) {
+            super(outerContext);
+            pref = preference;
+            dateFormate = formate;
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            if (response != null) {
+                try {
+                    /* 起始时间 */
+                    String startDate = response.getString(Constants.REQUEST_SPLASH_SHOW_STARTDATE);
+                    /* 图片url */
+                    String imageUrl = response.getString(Constants.REQUEST_SPLASH_IMAGEURL);
+                    /* 结束时间 */
+                    String endDate = response.getString(Constants.REQUEST_SPLASH_SHOW_ENDDATE);
+                    /* 闪屏延迟时间 */
+                    String splashDelayTime = response
+                            .getString(Constants.REQUEST_SPLASH_DELAY_TIME);
+                    /* 跳转链接 */
+                    String splashSkipUrl = response.getString(Constants.REQUEST_SPLASH_SKIP_URL);
+                    /* 跳转方式 */
+                    String splashSkipMode = response.getString(Constants.REQUEST_SPLASH_SKIP_FLAG);
+                    /* 跳转客户端类型 */
+                    String splashSkipToClient = response
+                            .getString(Constants.SPLASH_SKIP_TO_CLIENT_PACKAGENAME);
+                    StringBuilder stringBuilder = constructionSplashFlag(startDate, imageUrl,
+                            endDate, splashDelayTime, splashSkipUrl, splashSkipMode,
+                            splashSkipToClient);
+                    String splashUriFlag = stringBuilder.toString();
+                    String prefStringUri = pref.getSplashUriFlag();
+                    int prefInt = pref.getSaveSplashIsMemeryEnough();
+                    if (!prefStringUri.equals(splashUriFlag) || prefInt != -1) {
+                        if (!prefStringUri.equals(splashUriFlag)) {
+                            if (!Utilities.isEmpty(splashUriFlag)) {
+                                pref.setSplashUriFlag(splashUriFlag);
+                                /* 后台拉取成功更新缓存数据 */
+                                mSplashFlag = true;
+                                /* 初始化显示时间段 */
+                                if (pref.getSplashStartShowTime() != -1) {
+                                    pref.setSplashStartShowTime(-1);
+                                }
+                                if (pref.getSplashEndShowTime() != -1) {
+                                    pref.setSplashEndShowTime(-1);
+                                }
+                            }
+                        }
+                        SplashActivity.deleteImage();
+                        if (prefInt != -1) {
+                            pref.setSaveSplashIsMemeryEnough(-1);
+                        }
+                        if (!Utilities.isEmpty(endDate)) {
+                            long end = 0;
+                            try {
+                                end = dateFormate.parse(endDate).getTime();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            pref.setSplashEndShowTime(end);
+                        }
+                        if (!Utilities.isEmpty(startDate)) {
+                            long start = 0;
+                            try {
+                                start = dateFormate.parse(startDate).getTime();
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            pref.setSplashStartShowTime(start);
+                        }
+                        if (!Utilities.isEmpty(imageUrl)) {
+                            getSplashImage(imageUrl);
+                        }
+                        /* 闪屏跳转链接 */
+                        if (!Utilities.isEmpty(splashSkipUrl)) {
+                            pref.setSplashSkipUrl(splashSkipUrl);
+                            /* 后台拉取成功更新缓存数据 */
+                            mIsEmptyForSplashUrl = false;
+                        }
+                        /* 闪屏跳转方式标志 */
+                        if (!Utilities.isEmpty(splashDelayTime)) {
+                            pref.setSplashSkipMode(splashDelayTime);
+                        }
+                        /* 闪屏显示时间 */
+                        if (!Utilities.isEmpty(splashDelayTime)) {
+                            int delayTime = Integer.valueOf(splashDelayTime);
+                            pref.setSplashDelayTime(delayTime);
+                            /* 后台拉取成功更新缓存数据 */
+                            mSplashDelayTime = delayTime;
+                        }
+                        /* 指定需要跳转的客户端的包名 */
+                        if (!Utilities.isEmpty(splashSkipToClient)) {
+                            pref.setSplashSkipToClient(splashSkipToClient);
+                        }
+                    }
+                    long successStrategy = pref.getThemeSuccessStrategy();
+                    long failStrategy = pref.getThemeFailStrategy();
+                    pref.setThemeStrategy(successStrategy, successStrategy,
+                            failStrategy);
+                    pref.setLoadSplashStrategy(successStrategy,
+                            successStrategy, failStrategy);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            /* 拉取成功数据初始化 */
+            if (pref.getSplashLoadFailNumber() != 0) {
+                pref.setSplashLoadFailNumber(0);
+            }
+            if (!"splash_fail_default_date"
+                    .equals(pref.getSplashLoadFailDate())) {
+                pref.setSplashLoadFailDate("splash_fail_default_date");
+            }
+            TimerTask recheckTask = new TimerTask() {
+                @Override
+                public void run() {
+                    loadSplashDate();
+                }
+            };
+            Timer timer = new Timer();
+            long delay = pref.getSplashCurrentStrategy();
+            if (delay < 0) {
+                delay = AppMasterConfig.TIME_12_HOUR;
+            }
+            timer.schedule(recheckTask, delay);
+        }
+
+        private StringBuilder constructionSplashFlag(String startDate, String imageUrl,
+                String endDate, String splashDelayTime, String splashSkipUrl,
+                String splashSkipFlag, String splashSkipToClient) {
+            StringBuilder stringBuilder = new StringBuilder();
+            stringBuilder.append(imageUrl);
+            stringBuilder.append(startDate);
+            stringBuilder.append(endDate);
+            stringBuilder.append(splashDelayTime);
+            stringBuilder.append(splashSkipUrl);
+            stringBuilder.append(splashSkipFlag);
+            stringBuilder.append(splashSkipToClient);
+            return stringBuilder;
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            LeoLog.e("loadSplash", error.getMessage());
+            if ("splash_fail_default_date".equals(pref.getSplashLoadFailDate())) {
+                pref.setSplashLoadFailDate(failDate);
+            } else if (pref.getSplashLoadFailNumber() >= 0
+                    && pref.getSplashLoadFailNumber() <= 2) {
+                pref.setSplashLoadFailNumber(pref.getSplashLoadFailNumber() + 1);
+            }
+            pref.setLoadSplashStrategy(pref.getSplashFailStrategy(),
+                    pref.getSplashSuccessStrategy(),
+                    pref.getSplashFailStrategy());
+            pref.setLastLoadSplashTime(System
+                    .currentTimeMillis());
+            TimerTask recheckTask = new TimerTask() {
+                @Override
+                public void run() {
+                    loadSplashDate();
+                }
+            };
+            Timer timer = new Timer();
+            long delay = pref.getSplashCurrentStrategy();
+            if (delay < 0) {
+                delay = AppMasterConfig.TIME_12_HOUR;
+            }
+            timer.schedule(recheckTask, delay);
+        }
+
+    }
+
+    /* 闪屏跳转连接是否为空：true-链接为空，false-链接不为空 */
+    private boolean isEmptySplashUrl() {
+        return Utilities.isEmpty(AppMasterPreference.getInstance(this)
+                .getSplashSkipUrl());
+    }
+
+    /* 后台是否配置了新的闪屏:true-闪屏有更新，false-没有更新 */
+    private boolean splashIsChanageFlag() {
+        return !AppMasterPreference.getInstance(getApplicationContext()).getSplashUriFlag()
+                .equals(Constants.SPLASH_FLAG);
+    }
+
+    /* 初始化闪屏所需数据缓存 */
+    private void initSplashData() {
+        /* 闪屏是否发生变化 */
+        mSplashFlag = splashIsChanageFlag();
+        /* 闪屏跳转连接 */
+        mIsEmptyForSplashUrl = isEmptySplashUrl();
+        /* 闪屏延时时间 */
+        mSplashDelayTime = AppMasterPreference.getInstance(getApplicationContext())
+                .getSplashDelayTime();
+    }
+
+    /* 加载闪屏图 */
     private void getSplashImage(String url) {
         final SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         final AppMasterPreference pref = AppMasterPreference.getInstance(this);
@@ -1107,17 +1198,48 @@ public class AppMasterApplication extends Application {
 
     // for force update strategy to exit application completely
     public synchronized void addActivity(Activity activity) {
-        mActivityList.add(activity);
+        // mActivityList.add(activity);
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Activity> reference = iterator.next();
+            Activity ac = reference.get();
+            if (ac != null && ac == activity) {
+                return;
+            } else if (ac == null) {
+                // 存放的activity已经被释放掉，移除引用
+                iterator.remove();
+            }
+        }
+
+        mActivityList.add(new WeakReference<Activity>(activity));
     }
 
     public synchronized void removeActivity(Activity activity) {
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Activity> reference = iterator.next();
+            Activity ac = reference.get();
+            if (ac == null || ac == activity) {
+                // 移除掉已经被释放掉的ref
+                iterator.remove();
+            }
+        }
         mActivityList.remove(activity);
     }
 
     public synchronized void exitApplication() {
-        for (Activity activity : mActivityList) {
-            activity.finish();
+        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        while (iterator.hasNext()) {
+            WeakReference<Activity> reference = iterator.next();
+            Activity ac = reference.get();
+            if (ac != null) {
+                ac.finish();
+            }
+            iterator.remove();
         }
+        // for (Activity activity : mActivityList) {
+        // activity.finish();
+        // }
     }
 
     public static void setSharedPreferencesValue(String lockerTheme) {
@@ -1215,7 +1337,7 @@ public class AppMasterApplication extends Application {
         sendBroadcast(shortcut);
     }
 
-    // 本地语言改变监听
+    /* 本地语言改变监听 */
     private void registerLanguageChangeReceiver() {
         BroadcastReceiver receiv = new BroadcastReceiver() {
             @Override
@@ -1235,5 +1357,4 @@ public class AppMasterApplication extends Application {
         filter.addAction(Intent.ACTION_LOCALE_CHANGED);
         registerReceiver(receiv, filter);
     }
-
 }

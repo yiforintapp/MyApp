@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -26,11 +27,12 @@ import com.leo.appmaster.R;
 public class ZipperView extends View {
     private static final String TAG = "LalianView";
     private Bitmap mDrawbleBg;
-    private Bitmap mDrawbleCowBoy;
-    private Bitmap mZipper;
-    private Bitmap mLeft;
-    private Bitmap mRight;
-    private Bitmap mMask;
+    // 减少内存占用
+//    private Bitmap mDrawbleCowBoy;
+//    private Bitmap mZipper;
+//    private Bitmap mLeft;
+//    private Bitmap mRight;
+//    private Bitmap mMask;
     private Bitmap mFZipper=null;
     private Bitmap mFLeft=null;
     private Bitmap mFRight=null;
@@ -138,12 +140,12 @@ public class ZipperView extends View {
         mPaint.setAntiAlias(true);        
         mSpecialPaint=new Paint();
         mSpecialPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_ATOP));
-        mMask=BitmapFactory.decodeResource(getResources(), R.drawable.zipper_bg_mask);
+//        mMask=BitmapFactory.decodeResource(getResources(), R.drawable.zipper_bg_mask);
 //        mDrawbleBg = BitmapFactory.decodeResource(getResources(), R.drawable.bg_beauty);
-        mDrawbleCowBoy = BitmapFactory.decodeResource(getResources(), R.drawable.bg_cowboy);
-        mZipper = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper);
-        mLeft = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_left);
-        mRight = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_right);
+//        mDrawbleCowBoy = BitmapFactory.decodeResource(getResources(), R.drawable.bg_cowboy);
+//        mZipper = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper);
+//        mLeft = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_left);
+//        mRight = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_right);
         mDisplayMetrics = mContext.getResources().getDisplayMetrics();
     }
 
@@ -159,40 +161,52 @@ public class ZipperView extends View {
     }
 
     private void initScaleBitmap() {
-//    
-        mScaleH=(float)mHeight/(float)mDrawbleCowBoy.getHeight();
-        mScaleW=(float)mWidth/(float)mDrawbleCowBoy.getWidth();
+        Options options = new Options();
+        options.inPreferredConfig = Config.RGB_565;
+        // 大背景图没有必要使用8888，替换为565
+        Bitmap cowBoy = BitmapFactory.decodeResource(getResources(), R.drawable.bg_cowboy, options);
+        mScaleH = (float) mHeight / (float) cowBoy.getHeight();
+        mScaleW = (float) mWidth / (float) cowBoy.getWidth();
         
-        Log.e("zipper", "mScaleH="+mScaleH+",mScaleW="+mScaleW);
+        Log.e("zipper", "mScaleH=" + mScaleH + ",mScaleW=" + mScaleW);
         
         if(mFLeft==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFLeft=Bitmap.createScaledBitmap(mLeft, (int)((float)(mLeft.getWidth()*mScaleW)), (int)((float)(mLeft.getHeight()*mScaleH)), true);
+            Bitmap left = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_left);
+            int width = (int) (left.getWidth() * mScaleW);
+            int height = (int) (left.getHeight() * mScaleH);
+            mFLeft=Bitmap.createScaledBitmap(left, width, height, true);
         }
         if(mFRight==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFRight=Bitmap.createScaledBitmap(mRight,(int)((float)(mRight.getWidth()*mScaleW)), (int)((float)(mRight.getHeight()*mScaleH)), true);
+            Bitmap right = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper_right);
+            int width = (int) (right.getWidth() * mScaleW);
+            int height = (int) (right.getHeight() * mScaleH);
+            mFRight=Bitmap.createScaledBitmap(right, width, height, true);
         }
         if(mFZipper==null)
         {
             Log.e("zipper", "mfleft=null,to create now");
-            mFZipper= Bitmap.createScaledBitmap(mZipper, (int)((float)(mZipper.getWidth()*mScaleW*0.8f)), ((int)(float)(mZipper.getHeight()*mScaleH*0.8)), true);
+            Bitmap zipper = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper);
+            int width = (int) (zipper.getWidth() * mScaleW * 0.8f);
+            int height = (int) (zipper.getHeight() * mScaleH * 0.8f);
+            mFZipper= Bitmap.createScaledBitmap(zipper, width, height, true);
         }
         if(mFCowBoy==null)
         {
-            mFCowBoy=Bitmap.createScaledBitmap(mDrawbleCowBoy, mWidth, mHeight, true);
+            mFCowBoy=Bitmap.createScaledBitmap(cowBoy, mWidth, mHeight, true);
         }
         if(mFMask==null)
         {
-            mFMask=Bitmap.createScaledBitmap(mMask, mWidth, mHeight, true);
+            Bitmap mask=BitmapFactory.decodeResource(getResources(), R.drawable.zipper_bg_mask);
+            mFMask=Bitmap.createScaledBitmap(mask, mWidth, mHeight, true);
         }
         mFBitmap=Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
         
         
         mCanvas=new Canvas(mFBitmap);
-//        this.drawBmp = Bitmap.createBitmap(this.bg.width, this.bg.height, Bitmap.Config.ARGB_8888);
 
     }
 

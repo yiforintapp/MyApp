@@ -78,7 +78,8 @@ public class QuickGestureManager {
     public List<ContactCallLog> mCallLogs;
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
-    private Drawable[] mColorBgIcon;
+//    private Drawable[] mColorBgIcon;
+    private int[] mColorBgIconIds;
     private Drawable mEmptyIcon;
     public int mSlidAreaSize;
     public boolean isShowPrivacyMsm = false;
@@ -124,9 +125,12 @@ public class QuickGestureManager {
             preloadColorIcon();
             Bitmap bmp;
             LockManager lm = LockManager.getInstatnce();
-            for (Drawable drawable : mColorBgIcon) {
-                bmp = ((BitmapDrawable) drawable).getBitmap();
-                lm.mMatcher.addBitmapSample(bmp);
+//            for (Drawable drawable : mColorBgIcon) {
+//                bmp = ((BitmapDrawable) drawable).getBitmap();
+//                lm.mMatcher.addBitmapSample(bmp);
+//            }
+            for (int drawableId : mColorBgIconIds) {
+                lm.mMatcher.addBitmapSample(drawableId);
             }
             // todo load app icon matcher color
             preloadIconMatcherColor();
@@ -173,24 +177,30 @@ public class QuickGestureManager {
             mDynamicList = null;
             mMostUsedList = null;
             LockManager.getInstatnce().mAppLaunchRecorders.clear();
-            mColorBgIcon = null;
+//            mColorBgIcon = null;
+            mColorBgIconIds = null;
             LockManager.getInstatnce().mMatcher.clearItem();
-            LockManager.getInstatnce().mDrawableColors.clear();
+            LockManager.getInstatnce().clearDrawableColor();
             QuickSwitchManager.getInstance(mContext).unInit();
         }
     }
 
-    public Bitmap getMatchedColor(Drawable drawable) {
-        Bitmap target = null;
-        target = LockManager.getInstatnce().mDrawableColors.get(drawable);
-        if (target == null) {
-            target = LockManager.getInstatnce().mMatcher.getMatchedBitmap(drawable);
-            if (target != null) {
-                LockManager.getInstatnce().mDrawableColors.put(drawable, target);
+    public Drawable getMatchedColor(Drawable drawable) {
+        LockManager lm = LockManager.getInstatnce();
+        int drawableId = lm.getDrawableColorId(drawable);
+        if (drawableId <= 0) {
+            drawableId = lm.mMatcher.getMatchedDrawableId(drawable);
+            if (drawableId > 0) {
+                lm.putDrawableColorId(drawable, drawableId);
             }
-        } else {
         }
-        return target;
+
+        if (drawableId > 0) {
+            Context context = AppMasterApplication.getInstance();
+            return context.getResources().getDrawable(drawableId);
+        }
+        
+        return null;
     }
 
     public List<BaseInfo> getDynamicList() {
@@ -336,19 +346,18 @@ public class QuickGestureManager {
     }
 
     private void preloadColorIcon() {
-        Resources res = mContext.getResources();
-        mColorBgIcon = new Drawable[11];
-        mColorBgIcon[0] = res.getDrawable(R.drawable.switch_orange);
-        mColorBgIcon[1] = res.getDrawable(R.drawable.switch_green);
-        mColorBgIcon[2] = res.getDrawable(R.drawable.seitch_purple);
-        mColorBgIcon[3] = res.getDrawable(R.drawable.switch_red);
-        mColorBgIcon[4] = res.getDrawable(R.drawable.switch_blue);
-        mColorBgIcon[5] = res.getDrawable(R.drawable.switch_blue_2);
-        mColorBgIcon[6] = res.getDrawable(R.drawable.switch_blue_3);
-        mColorBgIcon[7] = res.getDrawable(R.drawable.switch_green_2);
-        mColorBgIcon[8] = res.getDrawable(R.drawable.switch_orange_2);
-        mColorBgIcon[9] = res.getDrawable(R.drawable.switch_purple_2);
-        mColorBgIcon[10] = res.getDrawable(R.drawable.switch_red_2);
+        mColorBgIconIds = new int[11];
+        mColorBgIconIds[0] = R.drawable.switch_orange;
+        mColorBgIconIds[1] = R.drawable.switch_green;
+        mColorBgIconIds[2] = R.drawable.seitch_purple;
+        mColorBgIconIds[3] = R.drawable.switch_red;
+        mColorBgIconIds[4] = R.drawable.switch_blue;
+        mColorBgIconIds[5] = R.drawable.switch_blue_2;
+        mColorBgIconIds[6] = R.drawable.switch_blue_3;
+        mColorBgIconIds[7] = R.drawable.switch_green_2;
+        mColorBgIconIds[8] = R.drawable.switch_orange_2;
+        mColorBgIconIds[9] = R.drawable.switch_purple_2;
+        mColorBgIconIds[10] = R.drawable.switch_red_2;
     }
 
     public void stopFloatWindow() {
@@ -1105,9 +1114,11 @@ public class QuickGestureManager {
     public void makeDialogDimiss() {
         if (quickSwitch != null) {
             quickSwitch.dismiss();
+            quickSwitch = null;
         }
         if (commonApp != null) {
             commonApp.dismiss();
+            commonApp = null;
         }
     }
 

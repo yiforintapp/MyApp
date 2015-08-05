@@ -100,6 +100,8 @@ public class LeoPopMenu {
         } else {
             mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
         }
+      
+        
     }
 
     private void setWindowStyle(LayoutStyles styles) {
@@ -192,141 +194,86 @@ public class LeoPopMenu {
             }
         }
 
-        if (W >= 1080) {
-            if (mMaxLength > OVERPX) {
+        int limitW = DipPixelUtil.dip2px(mContext, OVERPX);
+//        if (W >= 1080) {
+            if (mMaxLength > limitW)
+            {
                 isOverWidth = true;
-                if (mMaxLength > 260) {
-                    newLongWidth = mMaxLength - 130;
-                } else {
-                    newLongWidth = mMaxLength - 110;
-                }
-                if (newLongWidth > 210) {
-                    newLongWidth = 210;
-                }
-                Log.i("tag","OVERPX mMaxLength = "+mMaxLength);
-                Log.i("tag"," OVERPX newLongWidth = "+newLongWidth);
-            } else {
-                isOverWidth = false;
-                if (mMaxLength < SMALLWidth) {
-                    newSmallWidth = mMaxLength - 20;
-                } else if (mMaxLength < 180) {
-                    newSmallWidth = mMaxLength - 40;
-                } else {
-                    newSmallWidth = mMaxLength - 60;
-                }
-                Log.i("tag","SMALLWidth mMaxLength = "+mMaxLength);
-                Log.i("tag"," SMALLWidth newSmallWidth = "+newSmallWidth);
+                newLongWidth=limitW;
             }
-        } else if (W >= 720) {
-            if (mMaxLength > OVERPX) {
-                isOverWidth = true;
-                newLongWidth = LongWidth - 30;
-                if (newLongWidth > 210) {
-                    newLongWidth = 210;
-                }
-            } else {
+            else if(mMaxLength<DipPixelUtil.dip2px(mContext,100))
+            {
                 isOverWidth = false;
-                if (mMaxLength < SMALLWidth) {
-                    newSmallWidth = mMaxLength;
-                } else {
-                    newSmallWidth = mMaxLength - 20;
-                }
+                newSmallWidth=DipPixelUtil.dip2px(mContext,100);
             }
-        } else if (W >= 480) {
-            if (mMaxLength > OVERPX) {
-                isOverWidth = true;
-                newLongWidth = LongWidth + 30;
-                if (newLongWidth > 210) {
-                    newLongWidth = 210;
-                }
-            } else {
-                isOverWidth = false;
-                newSmallWidth = mMaxLength + 40;
-            }
-        } else {
-            if (mMaxLength > OVERPX) {
-                isOverWidth = true;
-                newLongWidth = LongWidth + 50;
-                if (newLongWidth > 210) {
-                    newLongWidth = 210;
-                }
-            } else {
-                isOverWidth = false;
-                newSmallWidth = mMaxLength + 60;
-            }
-        }
+            
+            
+            
+            
+//                if (mMaxLength > 260) {
+//                    newLongWidth = mMaxLength - 130;
+//                } else {
+//                    newLongWidth = mMaxLength - 110;
+//                }
+//                if (newLongWidth > 210) {
+//                    newLongWidth = 210;
+//                }
+//                Log.i("tag","OVERPX mMaxLength = "+mMaxLength);
+//                Log.i("tag"," OVERPX newLongWidth = "+newLongWidth);
+//            } else {
+//                isOverWidth = false;
+//                if (mMaxLength < SMALLWidth) {
+//                    newSmallWidth = mMaxLength - 20;
+//                } else if (mMaxLength < 180) {
+//                    newSmallWidth = mMaxLength - 40;
+//                } else {
+//                    newSmallWidth = mMaxLength - 60;
+//                }
+//                Log.i("tag","SMALLWidth mMaxLength = "+mMaxLength);
+//                Log.i("tag"," SMALLWidth newSmallWidth = "+newSmallWidth);
+//            }
+//        } else if (W >= 720) {
+//            if (mMaxLength > OVERPX) {
+//                isOverWidth = true;
+//                newLongWidth = LongWidth - 30;
+//                if (newLongWidth > 210) {
+//                    newLongWidth = 210;
+//                }
+//            } else {
+//                isOverWidth = false;
+//                if (mMaxLength < SMALLWidth) {
+//                    newSmallWidth = mMaxLength;
+//                } else {
+//                    newSmallWidth = mMaxLength - 20;
+//                }
+//            }
+//        } else if (W >= 480) {
+//            if (mMaxLength > OVERPX) {
+//                isOverWidth = true;
+//                newLongWidth = LongWidth + 30;
+//                if (newLongWidth > 210) {
+//                    newLongWidth = 210;
+//                }
+//            } else {
+//                isOverWidth = false;
+//                newSmallWidth = mMaxLength + 40;
+//            }
+//        } else {
+//            if (mMaxLength > OVERPX) {
+//                isOverWidth = true;
+//                newLongWidth = LongWidth + 50;
+//                if (newLongWidth > 210) {
+//                    newLongWidth = 210;
+//                }
+//            } else {
+//                isOverWidth = false;
+//                newSmallWidth = mMaxLength + 60;
+//            }
+//        }
         // 不改动上面的代码，对最终结果再做适配
         Locale locale = mContext.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
-        // Log.e("poha", language);
-        Log.e("poha", H + "");
-        if (language.endsWith("en"))
-        {
-
-            if (H <= 480)
-            {
-                newSmallWidth = newSmallWidth + (10 * 480 / H);
-                newLongWidth = newLongWidth + (10 * 480 / H);
-            }
-            else if (H <= 800)
-            {
-                newSmallWidth = newSmallWidth - (18 * H / 800);
-                newLongWidth = newLongWidth - (18 * H / 800);
-            }
-            else if (H <= 1280)
-            {
-                newSmallWidth = newSmallWidth - (5 * H / 1280);
-                newLongWidth = newLongWidth - (5 * H / 1280);
-            }
-            // else if(H<=1920)
-            // {
-            // newSmallWidth=newSmallWidth+(100*1920/H);
-            // newLongWidth=newLongWidth+(100*1920/H);
-            // }
-
-            // Log.e("poha", "done");
-            // newSmallWidth-=20*H/1280;
-            // newLongWidth-=20*H/1280;
-        }
-        // 特殊处理一下只有一个item的情况,以免换行不好看或空白太多，目前只有忘记密码部分
-
-        if (items.size() == 1)
-        {
-
-            // Log.e("poha", H+"");
-
-            if (H <= 480)
-            {
-                newSmallWidth = newSmallWidth + (18 * 480 / H);
-                newLongWidth = newLongWidth + (18 * 480 / H);
-            }
-            else if (H <= 800)
-            {
-                newSmallWidth = newSmallWidth + (5 * 800 / H);
-                newLongWidth = newLongWidth + (5 * 800 / H);
-            }
-            else if (H <= 1280)
-            {
-                newSmallWidth = newSmallWidth - (0 * H / 1280);
-                newLongWidth = newLongWidth - (0 * H / 1280);
-            }
-            else if (H <= 1920)
-            {
-                newSmallWidth = newSmallWidth - (20 * H / 1280);
-                newLongWidth = newLongWidth - (20 * H / 1280);
-            }
-
-            // Toast.makeText(mContext, language, 0).show();
-            // 部分机型上泰文没法显示，item宽度只有一小段，特殊处理
-
-            if (language.endsWith("th"))
-            {
-                newSmallWidth = 120;
-                newLongWidth = 120;
-            }
-
-        }
-        Log.i("tag","  newLongWidth = "+newLongWidth);
+       
     }
 
     public List<String> getPopMenuItems() {

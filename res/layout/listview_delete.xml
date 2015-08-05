@@ -54,6 +54,13 @@
             android:background="@drawable/manager_delete_list_selecter"
             android:clickable="true"
             android:focusable="true" />
+
+      <ImageView 
+        android:src="@drawable/ins"
+        android:layout_alignParentBottom="true"
+        android:layout_height="1dp"
+        android:layout_width="match_parent"
+        />
     </RelativeLayout>
 
 </com.leo.appmaster.backup.AppDeletetemView>
