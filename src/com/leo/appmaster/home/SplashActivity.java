@@ -96,16 +96,15 @@ public class SplashActivity extends BaseActivity {
         // findViewById(R.id.image_view_splash_center);
         // mSplashName = (ImageView) findViewById(R.id.iv_back);
         // showSplash();
-        // TODO
         initSplash();
         mEventHandler = new EventHandler();
         startInitTask();
         LeoEventBus.getDefaultBus().register(this, 2);
-        Log.e(Constants.RUN_TAG, "闪屏延跳转连接：" + AppMasterApplication.mIsEmptyForSplashUrl);
     }
 
     @SuppressLint("NewApi")
     private void initSplash() {
+        AppMasterPreference pre = AppMasterPreference.getInstance(this);
         mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
         mSplashIcon = (ImageView) findViewById(R.id.image_view_splash_center);
         mSplashName = (ImageView) findViewById(R.id.iv_back);
@@ -113,7 +112,6 @@ public class SplashActivity extends BaseActivity {
         mSkipToPgButton = (ImageView) findViewById(R.id.skip_to_pg_bt);
         mSkipUrlButton.setOnClickListener(new SkipUrlOnClickListener());
         mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
-        AppMasterPreference pre = AppMasterPreference.getInstance(this);
         mIsEmptyForSplashUrl = checkSplashUrlIsEmpty();
         showSkipUrlButton();
         showSkipEnterHomeButton();
@@ -149,7 +147,7 @@ public class SplashActivity extends BaseActivity {
             }
         } else {
             /* 没有开始，没有结束时间，默认 */
-            Log.d("splash_end&start_time", "No time!");
+            Log.d(Constants.RUN_TAG, "splash_end&start_time：No time!");
             clearSpSplashFlagDate();
             if (mSplashIcon.getVisibility() == View.INVISIBLE) {
                 mSplashIcon.setVisibility(View.VISIBLE);
@@ -169,19 +167,16 @@ public class SplashActivity extends BaseActivity {
 
     /* 对后台配置的过期闪屏数据初始化 */
     private void clearSpSplashFlagDate() {
-        String splashUriFlag = AppMasterPreference.getInstance(getApplicationContext())
-                .getSplashUriFlag();
-        if (!Constants.SPLASH_FLAG.equals(splashUriFlag)) {
+        if (AppMasterApplication.mSplashFlag) {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashUriFlag(
                     Constants.SPLASH_FLAG);
             AppMasterApplication.mSplashFlag = false;
         }
-        int splashDelay = AppMasterPreference.getInstance(this).getSplashDelayTime();
-        if (splashDelay != Constants.SPLASH_DELAY_TIME) {
+        if (AppMasterApplication.mSplashDelayTime != Constants.SPLASH_DELAY_TIME) {
             AppMasterPreference.getInstance(this).setSplashDelayTime(Constants.SPLASH_DELAY_TIME);
             AppMasterApplication.mSplashDelayTime = Constants.SPLASH_DELAY_TIME;
         }
-        if (AppMasterPreference.getInstance(this).getSplashSkipUrl() != null) {
+        if (!AppMasterApplication.mIsEmptyForSplashUrl) {
             AppMasterPreference.getInstance(this).setSplashSkipUrl(null);
             AppMasterApplication.mIsEmptyForSplashUrl = true;
         }
@@ -208,11 +203,11 @@ public class SplashActivity extends BaseActivity {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.url_skip_bt:
-                    Log.e(Constants.RUN_TAG, "立即设置");
+//                    Log.e(Constants.RUN_TAG, "立即设置");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
-                    Log.e(Constants.RUN_TAG, "跳过");
+//                    Log.e(Constants.RUN_TAG, "跳过");
                     startHome();
                     break;
                 default:
