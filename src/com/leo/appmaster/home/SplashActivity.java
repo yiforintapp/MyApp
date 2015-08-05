@@ -201,7 +201,7 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    /* "立即设置"按钮单击监听 */
+    /* 闪屏链接跳转按钮单击监听 */
     private class SkipUrlOnClickListener implements OnClickListener {
         @Override
         public void onClick(View v) {
@@ -265,7 +265,7 @@ public class SplashActivity extends BaseActivity {
     protected void onResume() {
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
-                AppMasterApplication.getInstance().mSplashDelayTime);
+                AppMasterApplication.mSplashDelayTime);
         LockManager lm = LockManager.getInstatnce();
         lm.clearFilterList();
         super.onResume();
@@ -761,7 +761,7 @@ public class SplashActivity extends BaseActivity {
         return AppMasterApplication.getInstance().mIsEmptyForSplashUrl;
     }
 
-    /* "立即体验",点击跳转处理 */
+    /* 闪屏链接跳转按钮,点击跳转处理 */
     private void skipModeHandle() {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String skipMode = pref.getSplashSkipMode();
