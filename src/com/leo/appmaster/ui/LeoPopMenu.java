@@ -194,86 +194,74 @@ public class LeoPopMenu {
             }
         }
 
-        int limitW = DipPixelUtil.dip2px(mContext, OVERPX);
-//        if (W >= 1080) {
-            if (mMaxLength > limitW)
-            {
+        if (W >= 1080) {
+            if (mMaxLength > OVERPX) {
                 isOverWidth = true;
-                newLongWidth=limitW;
-            }
-            else if(mMaxLength<DipPixelUtil.dip2px(mContext,100))
-            {
+                if (mMaxLength > 260) {
+                    newLongWidth = mMaxLength - 130;
+                } else {
+                    newLongWidth = mMaxLength - 110;
+                }
+                if (newLongWidth > 210) {
+                    newLongWidth = 210;
+                }
+                Log.i("tag","OVERPX mMaxLength = "+mMaxLength);
+                Log.i("tag"," OVERPX newLongWidth = "+newLongWidth);
+            } else {
                 isOverWidth = false;
-                newSmallWidth=DipPixelUtil.dip2px(mContext,100);
+                if (mMaxLength < SMALLWidth) {
+                    newSmallWidth = mMaxLength - 20;
+                } else if (mMaxLength < 180) {
+                    newSmallWidth = mMaxLength - 40;
+                } else {
+                    newSmallWidth = mMaxLength - 60;
+                }
+                Log.i("tag","SMALLWidth mMaxLength = "+mMaxLength);
+                Log.i("tag"," SMALLWidth newSmallWidth = "+newSmallWidth);
             }
-            
-            
-            
-            
-//                if (mMaxLength > 260) {
-//                    newLongWidth = mMaxLength - 130;
-//                } else {
-//                    newLongWidth = mMaxLength - 110;
-//                }
-//                if (newLongWidth > 210) {
-//                    newLongWidth = 210;
-//                }
-//                Log.i("tag","OVERPX mMaxLength = "+mMaxLength);
-//                Log.i("tag"," OVERPX newLongWidth = "+newLongWidth);
-//            } else {
-//                isOverWidth = false;
-//                if (mMaxLength < SMALLWidth) {
-//                    newSmallWidth = mMaxLength - 20;
-//                } else if (mMaxLength < 180) {
-//                    newSmallWidth = mMaxLength - 40;
-//                } else {
-//                    newSmallWidth = mMaxLength - 60;
-//                }
-//                Log.i("tag","SMALLWidth mMaxLength = "+mMaxLength);
-//                Log.i("tag"," SMALLWidth newSmallWidth = "+newSmallWidth);
-//            }
-//        } else if (W >= 720) {
-//            if (mMaxLength > OVERPX) {
-//                isOverWidth = true;
-//                newLongWidth = LongWidth - 30;
-//                if (newLongWidth > 210) {
-//                    newLongWidth = 210;
-//                }
-//            } else {
-//                isOverWidth = false;
-//                if (mMaxLength < SMALLWidth) {
-//                    newSmallWidth = mMaxLength;
-//                } else {
-//                    newSmallWidth = mMaxLength - 20;
-//                }
-//            }
-//        } else if (W >= 480) {
-//            if (mMaxLength > OVERPX) {
-//                isOverWidth = true;
-//                newLongWidth = LongWidth + 30;
-//                if (newLongWidth > 210) {
-//                    newLongWidth = 210;
-//                }
-//            } else {
-//                isOverWidth = false;
-//                newSmallWidth = mMaxLength + 40;
-//            }
-//        } else {
-//            if (mMaxLength > OVERPX) {
-//                isOverWidth = true;
-//                newLongWidth = LongWidth + 50;
-//                if (newLongWidth > 210) {
-//                    newLongWidth = 210;
-//                }
-//            } else {
-//                isOverWidth = false;
-//                newSmallWidth = mMaxLength + 60;
-//            }
-//        }
+        } else if (W >= 720) {
+            if (mMaxLength > OVERPX) {
+                isOverWidth = true;
+                newLongWidth = LongWidth - 30;
+                if (newLongWidth > 210) {
+                    newLongWidth = 210;
+                }
+            } else {
+                isOverWidth = false;
+                if (mMaxLength < SMALLWidth) {
+                    newSmallWidth = mMaxLength;
+                } else {
+                    newSmallWidth = mMaxLength - 20;
+                }
+            }
+        } else if (W >= 480) {
+            if (mMaxLength > OVERPX) {
+                isOverWidth = true;
+                newLongWidth = LongWidth + 30;
+                if (newLongWidth > 210) {
+                    newLongWidth = 210;
+                }
+            } else {
+                isOverWidth = false;
+                newSmallWidth = mMaxLength + 40;
+            }
+        } else {
+            if (mMaxLength > OVERPX) {
+                isOverWidth = true;
+                newLongWidth = LongWidth + 50;
+                if (newLongWidth > 210) {
+                    newLongWidth = 210;
+                }
+            } else {
+                isOverWidth = false;
+                newSmallWidth = mMaxLength + 60;
+            }
+        }
         // 不改动上面的代码，对最终结果再做适配
         Locale locale = mContext.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
-       
+        // Log.e("poha", language);
+        
     }
 
     public List<String> getPopMenuItems() {
