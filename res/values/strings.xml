@@ -781,4 +781,11 @@
     
     <!-- 2.6 end -->
 
+	<!-- 2.7 start -->
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">触发方式</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">触发方式</string>
+	<!-- 2.7 end -->
+
+
 </resources>

@@ -43,6 +43,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureSlideTimeDialog.UpdateFilt
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 /**
  * QuickGestureActivity
@@ -128,14 +129,14 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);
         mRecentlyContactOPen = (RelativeLayout) findViewById(R.id.recently_contact_content);
         mPrivacyContactOpen = (RelativeLayout) findViewById(R.id.privacy_contact_content);
-        mStrengthenModeView = (RelativeLayout) findViewById(R.id.strengthen_slid_mode);
+        mStrengthenModeView = (RelativeLayout) findViewById(R.id.trigger_type);
         mSlidingTimeTv = (TextView) findViewById(R.id.allow_slid_time_item_cotentTV);
         mSlidAreaTv = (TextView) findViewById(R.id.slid_area_item_cotentTV);
         mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
         mNoReadMessageOpenCK = (ImageView) findViewById(R.id.no_read_message_check);
         mRecentlyContactOpenCK = (ImageView) findViewById(R.id.recently_contact_check);
         mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
-        mStrengthModeOpenCk = (ImageView) findViewById(R.id.strengthen_mode_switch_check);
+//        mStrengthModeOpenCk = (ImageView) findViewById(R.id.strengthen_mode_switch_check);
     }
 
     private void initSlidingAreaText() {
@@ -799,27 +800,32 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                     mPrivacyContactFlag = false;
                 }
                 break;
-            case R.id.strengthen_slid_mode:
-                if (mStrengthenModeFlag) {
-                    mPre.setEverCloseWhiteDot(true);
-                    mPre.setSwitchOpenStrengthenMode(false, true);
-                    mStrengthenModeFlag = false;
-                    mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
-                            "qssetting",
-                            "point_close");
-                } else {
-                    mPre.setSwitchOpenStrengthenMode(true, true);
-                    mStrengthenModeFlag = true;
-                    mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
-                            "qssetting",
-                            "point_open");
-                }
-                switchStrengthMode();
-                //通知更新滑动区域红点显示状况
-                FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
-                break;
+//            case R.id.strengthen_slid_mode:
+//                if (mStrengthenModeFlag) {
+//                    mPre.setEverCloseWhiteDot(true);
+//                    mPre.setSwitchOpenStrengthenMode(false, true);
+//                    mStrengthenModeFlag = false;
+//                    mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
+//                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+//                            "qssetting",
+//                            "point_close");
+//                } else {
+//                    mPre.setSwitchOpenStrengthenMode(true, true);
+//                    mStrengthenModeFlag = true;
+//                    mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
+//                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+//                            "qssetting",
+//                            "point_open");
+//                }
+//                switchStrengthMode();
+//                //通知更新滑动区域红点显示状况
+//                FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
+//                break;
+            case R.id.trigger_type:
+                
+                
+                //todo
+                
         }
 
     }
