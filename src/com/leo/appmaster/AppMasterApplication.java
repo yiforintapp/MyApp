@@ -51,6 +51,7 @@ import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
+import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -322,10 +323,11 @@ public class AppMasterApplication extends Application {
         mSplashFlag = true;
         mIsEmptyForSplashUrl = false;
         mSplashDelayTime = 10000;
-//        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
-//                Constants.SPLASH_SKIP_PG_CLIENT);
-//         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("com.facebook.katana");
-        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl("fb://page/1709302419294051");
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
+                Constants.SPLASH_SKIP_PG_CLIENT);
+        // AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("com.facebook.katana");
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient(
+                "fb://page/1709302419294051");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         try {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashStartShowTime(
@@ -968,9 +970,9 @@ public class AppMasterApplication extends Application {
                     String splashSkipUrl = response.getString(Constants.REQUEST_SPLASH_SKIP_URL);
                     /* 跳转方式 */
                     String splashSkipMode = response.getString(Constants.REQUEST_SPLASH_SKIP_FLAG);
-                    /* 跳转客户端类型 */
+                    /* 跳转客户端的链接 */
                     String splashSkipToClient = response
-                            .getString(Constants.SPLASH_SKIP_TO_CLIENT_PACKAGENAME);
+                            .getString(Constants.SPLASH_SKIP_TO_CLIENT_URL);
                     StringBuilder stringBuilder = constructionSplashFlag(startDate, imageUrl,
                             endDate, splashDelayTime, splashSkipUrl, splashSkipMode,
                             splashSkipToClient);
@@ -991,6 +993,7 @@ public class AppMasterApplication extends Application {
                                     pref.setSplashEndShowTime(-1);
                                 }
                             }
+                            Log.e(Constants.RUN_TAG, "闪屏发起网络请求");
                         }
                         SplashActivity.deleteImage();
                         if (prefInt != -1) {
@@ -1034,7 +1037,7 @@ public class AppMasterApplication extends Application {
                             /* 后台拉取成功更新缓存数据 */
                             mSplashDelayTime = delayTime;
                         }
-                        /* 指定需要跳转的客户端的包名 */
+                        /* 指定需要跳转的客户端的链接 */
                         if (!Utilities.isEmpty(splashSkipToClient)) {
                             pref.setSplashSkipToClient(splashSkipToClient);
                         }
