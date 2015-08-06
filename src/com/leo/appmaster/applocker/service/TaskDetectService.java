@@ -104,7 +104,7 @@ public class TaskDetectService extends Service {
         // mflowDatectFuture =
         // mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
         // TimeUnit.MILLISECONDS);
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 3000,
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
                 TimeUnit.MILLISECONDS);
         mHandler = new Handler();
         sService = this;
