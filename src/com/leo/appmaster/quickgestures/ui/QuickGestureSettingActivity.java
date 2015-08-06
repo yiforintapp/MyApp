@@ -223,11 +223,11 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
         // strengthen mode
-        if (mStrengthenModeFlag) {
-            mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
-        } else {
-            mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
-        }
+//        if (mStrengthenModeFlag) {
+//            mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
+//        } else {
+//            mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
+//        }
     }
 
     private void closeQuickSetting() {
