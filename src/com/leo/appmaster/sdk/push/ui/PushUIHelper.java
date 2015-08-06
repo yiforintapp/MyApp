@@ -39,7 +39,7 @@ public class PushUIHelper {
     private boolean mIsLockScreen = false;
     private NewActListener mListener;
 
-    public static PushUIHelper getInstance(Context ctx) {
+    public static synchronized PushUIHelper getInstance(Context ctx) {
         if (sPushUIHelper == null) {
             sPushUIHelper = new PushUIHelper(ctx);
         }

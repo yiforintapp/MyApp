@@ -158,7 +158,7 @@ public class SplashActivity extends BaseActivity {
     private void showDefaultSplash() {
         /* 没有开始，没有结束时间，默认 */
         Log.d(Constants.RUN_TAG, "splash_end&start_time：No time!");
-        clearSpSplashFlagDate();
+        // clearSpSplashFlagDate();
         if (mSplashIcon.getVisibility() == View.INVISIBLE) {
             mSplashIcon.setVisibility(View.VISIBLE);
         }
@@ -192,6 +192,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void showSkipEnterHomeButton() {
+        Log.e(Constants.RUN_TAG, "跳过：" + AppMasterApplication.mSplashFlag);
         if (AppMasterApplication.mSplashFlag) {
             mSkipToPgButton.setVisibility(View.VISIBLE);
         }
@@ -199,6 +200,7 @@ public class SplashActivity extends BaseActivity {
 
     /* 如果url存在则显示按钮 */
     private void showSkipUrlButton() {
+        Log.e(Constants.RUN_TAG, "链接：" + mIsEmptyForSplashUrl);
         if (!mIsEmptyForSplashUrl) {
             mSkipUrlButton.setVisibility(View.VISIBLE);
         }
@@ -244,6 +246,7 @@ public class SplashActivity extends BaseActivity {
             option.inScaled = true;
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
+        mShowSplashFlag = true;
         if (splash != null) {
             byte[] chunk = splash.getNinePatchChunk();
             if (chunk != null && NinePatch.isNinePatchChunk(chunk)) {
@@ -251,7 +254,7 @@ public class SplashActivity extends BaseActivity {
                 mSplashName.setVisibility(View.INVISIBLE);
                 mSplashRL.setBackgroundDrawable(new NinePatchDrawable(getResources(),
                         splash, chunk, NinePatchChunk.deserialize(chunk).mPaddings, null));
-                mShowSplashFlag = true;
+                // mShowSplashFlag = true;
             }
         }
     }
@@ -778,24 +781,25 @@ public class SplashActivity extends BaseActivity {
                     startIntentForWebViewActivity(url);
                 } else if (Constants.SPLASH_SKIP_PG_CLIENT.equals(skipMode)) {
                     /* 跳转到指定客户端 */
-                    String packageName = pref.getSplashSkipToClient();
-                    boolean existClient = checkExistClient(packageName);
-                    if (existClient) {
-                        /* 存在客户端 */
-                        Log.e(Constants.RUN_TAG, "存在客户端并进入:" + packageName);
+                    String clientUrl = AppMasterPreference.getInstance(this)
+                            .getSplashSkipToClient();
+                    if (clientUrl != null) {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                        Uri uri = Uri.parse(url);
+                        Uri uri = Uri.parse(clientUrl);
                         intent.setData(uri);
-                        intent.setPackage(packageName);
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         try {
+                            /* 存在客户端 */
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
+                            Log.e(Constants.RUN_TAG, "存在客户端并进入");
                         } catch (Exception e) {
-                            e.printStackTrace();
+                            /* 不存在指定客户端 */
+                            Log.e(Constants.RUN_TAG, "不存在客户端进入进入到WebView");
+                            startIntentForWebViewActivity(url);
                         }
                     } else {
                         /* 不存在指定客户端 */
-                        Log.e(Constants.RUN_TAG, "不存在客户端进入进入到WebView");
+                        Log.e(Constants.RUN_TAG, "去客户端但是链接为空进入到WebView");
                         startIntentForWebViewActivity(url);
                     }
                 }
