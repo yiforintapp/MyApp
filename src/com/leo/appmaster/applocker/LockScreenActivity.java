@@ -88,6 +88,12 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
+import com.mobvista.sdk.m.core.AdListener;
+import com.mobvista.sdk.m.core.MobvistaAd;
+import com.mobvista.sdk.m.core.MobvistaAdNative;
+import com.mobvista.sdk.m.core.MobvistaAdWall;
+import com.mobvista.sdk.m.core.WallIconCallback;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener {
@@ -111,7 +117,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LEOAlarmDialog mTipDialog;
     private EditText mEtQuestion, mEtAnwser;
     private String mLockTitle;
-    private ImageView mThemeView;
+    private ImageView mThemeView, mAdIcon;
     private View switch_bottom_content;
 
     private boolean mNewTheme;
@@ -132,7 +138,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public int mQuiclModeId;
     private RelativeLayout mLockLayout;
     private boolean mMissingDialogShowing;
-    
+
+    private MobvistaAdNative nativeAd;
+    private MobvistaAdWall wallAd;
+
     public static boolean sLockFilterFlag = false;
 
     @Override
@@ -172,10 +181,67 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         }
 
+
         initUI();
+        mobvistaCheck();
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
+    }
+
+    private void mobvistaCheck() {
+        // mobvista ad
+        MobvistaAd.init(this, "19293", "e4797d7195de4d743e8d8220d4ddb219");
+        // -----------------Mobvista Sdk--------------------
+        // init native controller
+        // newNativeController(Context context,String unitid,String fbid)
+        nativeAd = MobvistaAd.newNativeController(this, "9",
+                "1611993839047594_1614040148842963");
+
+        // init wall controller
+        // newAdWallController(Context context,String unitid, String fbid)
+        wallAd = MobvistaAd.newAdWallController(this, "10",
+                "448464445332858_460157654163537");
+        // preload the wall data
+        wallAd.preloadWall();
+
+        setMobvistaIcon();
+        // AppMasterApplication.getInstance().postInAppThreadPool(new Runnable()
+        // {
+        // @Override
+        // public void run() {
+        // nativeAd.loadAd(new AdListener() {
+        // @Override
+        // public void onAdLoaded(Campaign campaign) {
+        // //加载图片显示等动作
+        // }
+        //
+        // @Override
+        // public void onAdLoadError(String msg) {
+        // }
+        //
+        // @Override
+        // public void onAdClick(Campaign campaign) {
+        // }
+        // });
+        // }
+        // });
+    }
+
+    private void setMobvistaIcon() {
+        Drawable drawable = wallAd.loadWallIcon(new WallIconCallback() {
+
+            @Override
+            public void loaded(Drawable drawable) {
+                mAdIcon.setImageDrawable(drawable);
+            }
+
+            @Override
+            public void failed() {
+
+            }
+        });
+        mAdIcon.setImageDrawable(drawable);
     }
 
     private void showModeMissedTip() {
@@ -448,6 +514,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
+        nativeAd.release();
+        MobvistaAd.release();
         LeoLog.d(TAG, "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
     }
@@ -525,6 +593,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
         mTtileBar.setOptionListener(this);
+
+        mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
+        ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
+        mAdIcon.setVisibility(View.VISIBLE);
+        mAdIcon.setOnClickListener(this);
 
         mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         ((View) mThemeView.getParent()).setVisibility(View.VISIBLE);
@@ -900,6 +973,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 amp.setDoubleCheck(null);
                 startActivityForResult(intent, 0);
                 amp.setLockerScreenThemeGuide(true);
+                break;
+            case R.id.icon_ad_layout:
+                sLockFilterFlag = true;
+                AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
+                mAmp.setUnlocked(true);
+                mAmp.setDoubleCheck(null);
+//                 wallAd.clickWall();
+                Intent mWallIntent = wallAd.getWallIntent();
+                startActivity(mWallIntent);
                 break;
             default:
                 break;

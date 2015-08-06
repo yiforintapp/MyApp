@@ -768,9 +768,9 @@
     <string name="lock_line_visiable">Pattern has been showed.</string>
     <string name="guide_more_text">More></string>
     <string name="guide_skip_text">Skip ></string>
-    <string name="video_hide_need_cb">Due to phone system, please install COOLBrowser to unhide videoes.</string>
-    <string name="video_hide_need_new_cb">Due to phone system, please install the lastest COOLBrowser to unhide videoes.</string>
-    <string name="video_delete_need_new_cb">Due to phone system, please install the lastest COOLBrowser to delete videoes.</string>
+    <string name="video_hide_need_cb">Due to phone system, please install Cool Browser to unhide videoes.</string>
+    <string name="video_hide_need_new_cb">Due to phone system, please install the lastest Cool Browser to unhide videoes.</string>
+    <string name="video_delete_need_new_cb">Due to phone system, please install the lastest Cool Browser to delete videoes.</string>
     <string name="video_cencel_hide_fail">Fail to unhide photos</string>
     <string name="video_delete_fail">Fail to delete files</string>
     <string name="zipper_too_fast">Oops!Pull down slower </string>
@@ -780,5 +780,17 @@
     <string name="privacy_contact_callog_no">Missed calls</string>
     
     <!-- 2.6 end -->
+
+	<!-- 2.7 start -->
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">触发方式</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底脚划出</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">从侧边/底角划出</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
+
+	
+	
+	<!-- 2.7 end -->
+
 
 </resources>

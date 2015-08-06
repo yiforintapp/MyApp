@@ -67,8 +67,8 @@
     <color name="guide_page4_background_color">#fca53d</color>
     <color name="guide_indicator_fill_color">#87a9dc</color>
     <color name="new_guide_page1_background_color">#279afc</color>
-     <color name="new_guide_page2_background_color">#8e61ff</color>
-      <color name="new_guide_page3_background_color">#06c4a7</color>
+    <color name="new_guide_page2_background_color">#8e61ff</color>
+    <color name="new_guide_page3_background_color">#06c4a7</color>
     <!-- guide page begin -->
 
     <color name="weisuo_text">#636363</color>
@@ -85,23 +85,28 @@
     <color name="home_btn_setting_pressed">#e7dcff</color>
     <color name="quick_gesture_switch_setting_show_color">#4DFFFFFF</color>
     <color name="quick_gesture_switch_setting_hidden_color">#00000000</color>
-   <!--  <color name="quick_gesture_switch_setting_hidden_color">#DD31EFE8</color> -->
+    <!-- <color name="quick_gesture_switch_setting_hidden_color">#DD31EFE8</color> -->
     <color name="quick_gesture_miui_tip_color">#CC000000</color>
     <color name="manage_quick_gesture_text_color">#f0e6ff</color>
     <color name="mode_familg_bg">#ffa71c</color>
     <color name="mode_visitor_bg">#5653b4</color>
     <color name="mode_default_bg">#44c4f5</color>
     <color name="accent_dark">#000000</color>
-	<color name="quick_success_title_color">#0095FF</color>
-	<color name="quick_open_text_color">#4a63e5</color>
-	<color name="quick_close_text_color">#666666</color>
-	<color name="quick_intro_color">#9b9b9b</color>
-	<color name="guide_more_color">#06c4a7</color>
-	<color name="guide_more_select_color">#00967f</color>
-	<color name="webview_pro_bg">#e4e4e4</color>
-	<color name="webview_pro">#28b1ff</color>
-	<color name="sort_select_color">#4584f5</color>
-	<color name="home_mode_text_color">#ffa71c</color>
-	<color name="custom_mode_text_color">#44c4f5</color>
-	<color name="vistor_mode_text_color">#5653b4</color>
+    <color name="quick_success_title_color">#0095FF</color>
+    <color name="quick_open_text_color">#4a63e5</color>
+    <color name="quick_close_text_color">#666666</color>
+    <color name="quick_intro_color">#9b9b9b</color>
+    <color name="guide_more_color">#06c4a7</color>
+    <color name="guide_more_select_color">#00967f</color>
+    <color name="webview_pro_bg">#e4e4e4</color>
+    <color name="webview_pro">#28b1ff</color>
+    <color name="sort_select_color">#4584f5</color>
+    <color name="home_mode_text_color">#ffa71c</color>
+    <color name="custom_mode_text_color">#44c4f5</color>
+    <color name="vistor_mode_text_color">#5653b4</color>
+    <color name="cool_black">#333333</color>
+    <color name="cool_grey">#999999</color>
+    <color name="cool_green">#00d592</color>
+    <color name="cool_red">#ff5035</color>
+
 </resources>

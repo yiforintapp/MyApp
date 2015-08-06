@@ -100,7 +100,7 @@ public class LeoPopMenu {
         } else {
             mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
         }
-      
+        mLeoPopMenu.update(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         
     }
 
@@ -193,6 +193,10 @@ public class LeoPopMenu {
                 mMaxLength = mOne;
             }
         }
+        
+        Log.e("hehe", "最长字符占的宽度px="+mMaxLength);
+        
+        
 
         if (W >= 1080) {
             if (mMaxLength > OVERPX) {
@@ -257,6 +261,15 @@ public class LeoPopMenu {
                 newSmallWidth = mMaxLength + 60;
             }
         }
+        
+        
+        Log.e("hehe", "是否超maxW="+isOverWidth);
+        Log.e("hehe", "最终的minW="+newSmallWidth);
+        Log.e("hehe", "最终的maxW="+newLongWidth);
+        
+        
+        
+        
         // 不改动上面的代码，对最终结果再做适配
         Locale locale = mContext.getResources().getConfiguration().locale;
         String language = locale.getLanguage();
