@@ -114,8 +114,6 @@ public class SplashActivity extends BaseActivity {
         mSkipUrlButton.setOnClickListener(new SkipUrlOnClickListener());
         mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
         mIsEmptyForSplashUrl = checkSplashUrlIsEmpty();
-        showSkipUrlButton();
-        showSkipEnterHomeButton();
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
@@ -173,31 +171,6 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    /* 对后台配置的过期闪屏数据初始化 */
-    private void clearSpSplashFlagDate() {
-        if (AppMasterApplication.mSplashFlag) {
-            AppMasterPreference.getInstance(getApplicationContext()).setSplashUriFlag(
-                    Constants.SPLASH_FLAG);
-            AppMasterApplication.mSplashFlag = false;
-        }
-        if (AppMasterApplication.mSplashDelayTime != Constants.SPLASH_DELAY_TIME) {
-            AppMasterPreference.getInstance(this).setSplashDelayTime(Constants.SPLASH_DELAY_TIME);
-            AppMasterApplication.mSplashDelayTime = Constants.SPLASH_DELAY_TIME;
-        }
-        if (!AppMasterApplication.mIsEmptyForSplashUrl) {
-            AppMasterPreference.getInstance(this).setSplashSkipUrl(null);
-            AppMasterApplication.mIsEmptyForSplashUrl = true;
-        }
-        deleteImage();
-    }
-
-    private void showSkipEnterHomeButton() {
-        Log.e(Constants.RUN_TAG, "跳过：" + AppMasterApplication.mSplashFlag);
-        if (AppMasterApplication.mSplashFlag) {
-            mSkipToPgButton.setVisibility(View.VISIBLE);
-        }
-    }
-
     /* 如果url存在则显示按钮 */
     private void showSkipUrlButton() {
         Log.e(Constants.RUN_TAG, "链接：" + mIsEmptyForSplashUrl);
@@ -247,6 +220,8 @@ public class SplashActivity extends BaseActivity {
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
         mShowSplashFlag = true;
+        mSkipToPgButton.setVisibility(View.VISIBLE);
+        showSkipUrlButton();
         if (splash != null) {
             byte[] chunk = splash.getNinePatchChunk();
             if (chunk != null && NinePatch.isNinePatchChunk(chunk)) {
@@ -254,7 +229,10 @@ public class SplashActivity extends BaseActivity {
                 mSplashName.setVisibility(View.INVISIBLE);
                 mSplashRL.setBackgroundDrawable(new NinePatchDrawable(getResources(),
                         splash, chunk, NinePatchChunk.deserialize(chunk).mPaddings, null));
-                // mShowSplashFlag = true;
+                mShowSplashFlag = true;
+                mSkipToPgButton.setVisibility(View.VISIBLE);
+                showSkipUrlButton();
+//                showSkipEnterHomeButton();
             }
         }
     }
@@ -271,11 +249,20 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
-        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
-                AppMasterApplication.mSplashDelayTime);
+        splashDelayShow();
         LockManager lm = LockManager.getInstatnce();
         lm.clearFilterList();
         super.onResume();
+    }
+
+    private void splashDelayShow() {
+        if (mShowSplashFlag) {
+            mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
+                    AppMasterApplication.mSplashDelayTime);
+        } else {
+            mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
+                    Constants.SPLASH_DELAY_TIME);
+        }
     }
 
     @Override
@@ -805,7 +792,6 @@ public class SplashActivity extends BaseActivity {
                 }
             }
         }
-        finish();
     }
 
     /* 检查要跳转的客户端是否存在 */
@@ -826,10 +812,10 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startIntentForWebViewActivity(String url) {
+        finish();
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, url);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        finish();
     }
 }

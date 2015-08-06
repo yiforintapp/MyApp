@@ -316,17 +316,17 @@ public class AppMasterApplication extends Application {
         });
         initSplashData();
         // TEST
-//         setSplashData();
+        setSplashData();
     }
 
     private void setSplashData() {
         mSplashFlag = true;
         mIsEmptyForSplashUrl = false;
-        mSplashDelayTime = 10000;
-        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
-                Constants.SPLASH_SKIP_PG_CLIENT);
+        mSplashDelayTime = 5000;
+        // AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
+        // Constants.SPLASH_SKIP_PG_CLIENT);
         // AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("com.facebook.katana");
-        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient(
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
                 "fb://page/1709302419294051");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         try {
@@ -984,7 +984,7 @@ public class AppMasterApplication extends Application {
                             if (!Utilities.isEmpty(splashUriFlag)) {
                                 pref.setSplashUriFlag(splashUriFlag);
                                 /* 后台拉取成功更新缓存数据 */
-                                mSplashFlag = true;
+                                // mSplashFlag = true;
                                 /* 初始化显示时间段 */
                                 if (pref.getSplashStartShowTime() != -1) {
                                     pref.setSplashStartShowTime(-1);
@@ -992,6 +992,7 @@ public class AppMasterApplication extends Application {
                                 if (pref.getSplashEndShowTime() != -1) {
                                     pref.setSplashEndShowTime(-1);
                                 }
+                                clearSpSplashFlagDate();
                             }
                             Log.e(Constants.RUN_TAG, "闪屏发起网络请求");
                         }
@@ -1118,10 +1119,27 @@ public class AppMasterApplication extends Application {
 
     }
 
+    /* 对后台配置的过期闪屏数据初始化 */
+    private void clearSpSplashFlagDate() {
+        if (AppMasterApplication.mSplashFlag) {
+            AppMasterPreference.getInstance(getApplicationContext()).setSplashUriFlag(
+                    Constants.SPLASH_FLAG);
+        }
+        if (mSplashDelayTime != Constants.SPLASH_DELAY_TIME) {
+            AppMasterPreference.getInstance(this).setSplashDelayTime(Constants.SPLASH_DELAY_TIME);
+            mSplashDelayTime = Constants.SPLASH_DELAY_TIME;
+        }
+        if (!mIsEmptyForSplashUrl) {
+            AppMasterPreference.getInstance(this).setSplashSkipUrl(null);
+            mIsEmptyForSplashUrl = true;
+        }
+    }
+
     /* 闪屏跳转连接是否为空：true-链接为空，false-链接不为空 */
     private boolean isEmptySplashUrl() {
         return Utilities.isEmpty(AppMasterPreference.getInstance(this)
-                .getSplashSkipUrl());
+                .getSplashSkipUrl()) && Utilities.isEmpty(AppMasterPreference.getInstance(this)
+                .getSplashSkipToClient());
     }
 
     /* 后台是否配置了新的闪屏:true-闪屏有更新，false-没有更新 */
@@ -1133,7 +1151,7 @@ public class AppMasterApplication extends Application {
     /* 初始化闪屏所需数据缓存 */
     private void initSplashData() {
         /* 闪屏是否发生变化 */
-        mSplashFlag = splashIsChanageFlag();
+        // mSplashFlag = splashIsChanageFlag();
         /* 闪屏跳转连接 */
         mIsEmptyForSplashUrl = isEmptySplashUrl();
         /* 闪屏延时时间 */

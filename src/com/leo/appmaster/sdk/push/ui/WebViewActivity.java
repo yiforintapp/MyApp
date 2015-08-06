@@ -2,6 +2,7 @@
 package com.leo.appmaster.sdk.push.ui;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -133,6 +134,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                 mWebView.reload();
                 break;
             case R.id.webView_close_iv:
+                startHome();
                 finish();
             default:
                 break;
@@ -170,6 +172,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             if (mWebView.canGoBack()) {
                 mWebView.goBack();
             } else {
+                startHome();
                 super.onBackPressed();
             }
         }
@@ -340,11 +343,15 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                 finish();
             } else {
                 LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
-                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                        getPackageName(), true, null);
-                amp.setDoubleCheck(null);
+//                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+//                        getPackageName(), true, null);
+//                amp.setDoubleCheck(null);
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         } else {
+            Log.e(Constants.RUN_TAG, "锁3");
             Intent intent = new Intent(this, LockSettingActivity.class);
             startActivity(intent);
             finish();
