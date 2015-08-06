@@ -12,6 +12,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -22,6 +23,9 @@ import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
+import android.widget.RemoteViews;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -51,7 +55,8 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-
+//    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+    public static final int SHOW_NOTI_PRE_DAY = 100000;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -97,7 +102,7 @@ public class TaskDetectService extends Service {
         flowDetecTask = new FlowTask();
 //        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
 //                TimeUnit.MILLISECONDS);
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 1000000,
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 3000,
                 TimeUnit.MILLISECONDS);
         mHandler = new Handler();
         sService = this;
@@ -321,7 +326,49 @@ public class TaskDetectService extends Service {
             long mTotalMem = mCleaner.getTotalMem();
             int mProgress = (int) (mLastUsedMem * 100 / mTotalMem);
             LeoLog.d("testServiceData", mLastUsedMem+"/"+mTotalMem + "--" + mProgress);
+            
+            long lastTime = sp_traffic.getLastShowNotifyTime();
+            long nowTime = System.currentTimeMillis();
+            if(mProgress > 20 && (nowTime - lastTime > SHOW_NOTI_PRE_DAY)){
+                shwoNotify();
+                sp_traffic.setLastShowNotifyTime(nowTime);    
+            }
         }
+    }
+
+    private void shwoNotify() {
+        NotificationManager mNotificationManager  = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        int notifyId = 101;
+        //先设定RemoteViews
+        RemoteViews view_custom = new RemoteViews(getPackageName(), R.layout.clean_mem_notify);
+        //设置对应IMAGEVIEW的ID的资源图片
+        view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
+//      view_custom.setInt(R.id.custom_icon,"setBackgroundResource",R.drawable.icon);
+        view_custom.setTextViewText(R.id.appwallNameTV, getApplicationContext().getString(R.string.clean_mem_notify_big));
+        view_custom.setTextViewText(R.id.appwallDescTV, getApplicationContext().getString(R.string.clean_mem_notify_small));
+//      view_custom.setTextViewText(R.id.tv_custom_time, String.valueOf(System.currentTimeMillis()));
+        //设置显示
+//      view_custom.setViewVisibility(R.id.tv_custom_time, View.VISIBLE);
+//      view_custom.setLong(R.id.tv_custom_time,"setTime", System.currentTimeMillis());//不知道为啥会报错，过会看看日志
+        //设置number
+//      NumberFormat num = NumberFormat.getIntegerInstance();
+//      view_custom.setTextViewText(R.id.tv_custom_num, num.format(this.number));
+        NotificationCompat.Builder mBuilder = new Builder(this);
+        mBuilder.setContent(view_custom)
+//                .setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL))
+                .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
+                .setTicker(getApplicationContext().getString(R.string.clean_mem_notify_big))
+                .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
+                .setOngoing(false)//不是正在进行的   true为正在进行  效果和.flag一样
+                .setSmallIcon(R.drawable.icon);
+//      mNotificationManager.notify(notifyId, mBuilder.build());
+        Notification notify = mBuilder.build();
+        notify.contentView = view_custom;
+//      Notification notify = new Notification();
+//      notify.icon = R.drawable.icon;
+//      notify.contentView = view_custom;
+//      notify.contentIntent = getDefalutIntent(Notification.FLAG_AUTO_CANCEL);
+        mNotificationManager.notify(notifyId, notify);
     }
 
     public String whatState() {
