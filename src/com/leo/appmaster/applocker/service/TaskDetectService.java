@@ -578,7 +578,10 @@ public class TaskDetectService extends Service {
                             // create
                             boolean isDialogingShowing = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isDialogShowing;
-                            if (isAppsAndHome) {
+                            
+                         //phtc
+                            
+                            if (isAppsAndHome&&sp_traffic.getIsOpenFloatWindows()) {
                                 boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
                                 if ((!isFilterApp
                                         || FloatWindowHelper.mEditQuickAreaFlag)
@@ -588,6 +591,8 @@ public class TaskDetectService extends Service {
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
+                                
+                                
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
                                     if (!isFilterApp && !FloatWindowHelper.mEditQuickAreaFlag
@@ -599,7 +604,7 @@ public class TaskDetectService extends Service {
                                                 .hideWhiteFloatView(TaskDetectService.this);
                                     }
                                 }
-                            } else if (isJustHome) {
+                            } else if (isJustHome&&sp_traffic.getIsOpenFloatWindows()) {
                                 if (!isHomeFlag)
                                     isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag)

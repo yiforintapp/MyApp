@@ -219,6 +219,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_SKIP_MODE = "splash_skip_mode";
     public static final String PREF_SPLASH_DElAY_TIME = "splash_delay_time";
     public static final String PREF_SPLASH_SKIP_TO_CLIENT = "splash_skip_to_client";
+    public static final String PREF_QUICK_SWITCH_FLOAT_WINDOWS="switch_float_windows";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1998,6 +1999,22 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getMessageIsRedTip() {
         return mPref.getBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, false);
     }
+    
+    public void setIsOpenFloatWindows(boolean flag) {
+   
+        mPref.edit().putBoolean(PREF_QUICK_SWITCH_FLOAT_WINDOWS, flag).commit();
+    }
+
+    public boolean getIsOpenFloatWindows() {
+        return mPref.getBoolean(PREF_QUICK_SWITCH_FLOAT_WINDOWS, true);
+    }
+    
+    
+  
+    
+    
+    
+    
 
     public void setWhiteFloatViewCoordinate(int x, int y) {
         mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x + ":" + y).commit();
@@ -2011,6 +2028,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return coordinate;
     }
 
+    
+    
+    
+    
+    
+    
+    
+    
+    
     public void addUseStrengthenModeTimes() {
         if (mUseStrengthModeTimes <= 0) {
             mUseStrengthModeTimes = getUseStrengthenModeTimes();
