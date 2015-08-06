@@ -785,7 +785,8 @@
 
 
     <!-- 2.7 start -->
-    <string name="clean_mem_notify_big">内存使用超过80%</string>
+    <string name="clean_mem_notify_big">内存使用超过</string>
+    <string name="clean_mem_notify_big_right">65%</string>
     <string name="clean_mem_notify_small">点击一键加速</string>
     <string name="clean_mem_notify_boost">立即加速</string>
     <!-- 2.7 end -->
