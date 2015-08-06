@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
@@ -179,7 +180,7 @@ public class LockManager {
         mTimeLockList = new ArrayList<TimeLock>();
         mLocationLockList = new ArrayList<LocationLock>();
         mTLMap = new HashMap<TimeLock, List<ScheduledFuture<?>>>();
-        mHandler = new Handler();
+        mHandler = new Handler(Looper.getMainLooper());
         mTimeChangeReceiver = new TimeChangeReceive();
         initFilterList();
     }
