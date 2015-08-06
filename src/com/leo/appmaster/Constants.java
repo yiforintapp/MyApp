@@ -309,12 +309,12 @@ public class Constants {
     public static final String SPLASH_FLAG = "splash_flag";
     public static final String SPLASH_REQUEST_FAIL_DATE = "splash_fail_default_date";
     public static final int SPLASH_DELAY_TIME = 2000;
-    public static final String REQUEST_SPLASH_DELAY_TIME = "闪屏延迟时间Key";
-    public static final String REQUEST_SPLASH_SKIP_URL = "闪屏跳转链接Key";
-    public static final String REQUEST_SPLASH_SKIP_FLAG = "链接跳转方式标志Key";
-    public static final String SPLASH_SKIP_TO_CLIENT_PACKAGENAME = "客户端的包名Key";
-    public static final String SPLASH_SKIP_PG_WEBVIEW = "跳转到webview";
-    public static final String SPLASH_SKIP_PG_CLIENT = "跳转到客户端";
+    public static final String REQUEST_SPLASH_DELAY_TIME = "d";
+    public static final String REQUEST_SPLASH_SKIP_URL = "e";
+    public static final String REQUEST_SPLASH_SKIP_FLAG = "f";
+    public static final String SPLASH_SKIP_TO_CLIENT_PACKAGENAME = "g";
+    public static final String SPLASH_SKIP_PG_WEBVIEW = "0";
+    public static final String SPLASH_SKIP_PG_CLIENT = "1";
     // ============== default home mode list =================
     public static String[] sDefaultHomeModeList = new String[] {
             "com.whatsapp",

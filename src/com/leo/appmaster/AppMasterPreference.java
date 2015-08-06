@@ -150,6 +150,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // hideVideo
     public static final String PREF_HIDE_VIDEO_LAST_DIR = "hide_video_last_dir";
     public static final String PREF_HIDE_VIDEO_SECOND_DIR = "hide_video_second_dir";
+    
+    //time to show notify that clean memory
+    public static final String PREF_SHOW_NOTIFY_CLEAN_MEMORY = "show_notify_clean_memory";
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
     private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED = "time_lock_mode_guide_user_clicked";
@@ -2116,6 +2119,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public String getSplashSkipUrl() {
         return mPref.getString(PREF_SPLASH_SKIP_URL, null);
+//        return mPref.getString(PREF_SPLASH_SKIP_URL, "market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
     }
 
     /* 保存闪屏跳转方式 */
@@ -2143,5 +2147,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public String getSplashSkipToClient() {
         return mPref.getString(PREF_SPLASH_SKIP_TO_CLIENT, null);
+    }
+
+    public void setLastShowNotifyTime(long savetime){
+        mPref.edit().putLong(PREF_SHOW_NOTIFY_CLEAN_MEMORY, savetime).commit();
+    }
+    
+    public long getLastShowNotifyTime() {
+        return mPref.getLong(PREF_SHOW_NOTIFY_CLEAN_MEMORY, 0);
     }
 }
