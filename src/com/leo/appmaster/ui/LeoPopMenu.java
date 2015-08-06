@@ -100,7 +100,7 @@ public class LeoPopMenu {
         } else {
             mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
         }
-      
+        mLeoPopMenu.update(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         
     }
 

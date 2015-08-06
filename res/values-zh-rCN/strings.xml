@@ -782,5 +782,13 @@
     <string name="zipper_too_slow">哎哟，拉快一点嘛</string>
     <string name="theme_apply_title">是否应用解锁主题:%1$s ?</string>
     <!-- 2.6 end -->
+    
+    <!-- 2.7 start -->
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">触发方式</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底角划出</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">从侧边/底角划出</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
+	<!-- 2.7 end -->
 
 </resources>
