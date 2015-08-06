@@ -10,10 +10,8 @@ import java.util.Map;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.filterfw.core.FinalPort;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
-import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -21,7 +19,6 @@ import com.android.volley.Request.Method;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -105,7 +102,12 @@ public class HttpRequestAgent {
 
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 body, listener, listener);
-        request.setShouldCache(false);
+        if (loadedTheme == null || loadedTheme.isEmpty()) {
+            // 本地未安装任何列表启用缓存
+            request.setShouldCache(true);
+        } else {
+            request.setShouldCache(false);
+        }
         mRequestQueue.add(request);
     }
     
@@ -226,7 +228,11 @@ public class HttpRequestAgent {
 
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 body, listener, eListener);
-        request.setShouldCache(false);
+        if (page == 1) {
+            request.setShouldCache(true);
+        } else {
+            request.setShouldCache(false);
+        }
         mRequestQueue.add(request);
     }
 

@@ -129,48 +129,6 @@ public class DeskProxyActivity extends Activity {
                         gotoLockThem(type);
                         break;
                 }
-
-                // if (type == mAppLockType) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "appLock");
-                // goToAppLock(type);
-                // } else if (type == mAppWeiZhuang) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "appDisguise");
-                // goToAppWeiZhuang(type);
-                // } else if (type == mPicHide) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "picHide");
-                // goToHidePic(type);
-                // } else if (type == mVioHide) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "videoHide");
-                // goToHideVio(type);
-                // } else if (type == mPrivateSms) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "privaceSms");
-                // goToPrivateSms(type);
-                // } else if (type == mFlow) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "dataUsage");
-                // goToFlow(type);
-                // } else if (type == mElec) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "battery");
-                // gotoEle(type);
-                // } else if (type == mBackup) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "backUp");
-                // gotoBackUp(type);
-                // } else if (type == mQuickGues) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "quickGesture");
-                // gotoQuickGues(type);
-                // } else if (type == mLockThem) {
-                // SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
-                // "lockThem");
-                // gotoLockThem(type);
-                // }
             }
             finish();
         }

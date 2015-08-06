@@ -182,6 +182,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void checkCbAndVersion() {
+        LeoLog.d("testBindService", "target Name : " + VideoHideMainActivity.CB_PACKAGENAME);
         PackageManager packageManager = getPackageManager();
         List<PackageInfo> list = packageManager
                 .getInstalledPackages(PackageManager.GET_PERMISSIONS);
@@ -252,6 +253,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG) && isCbHere
                         && isHaveServiceToBind && isBindServiceOK) {
                     isServiceDo = true;
+                    LeoLog.d("testBindService", "isServiceDo = true");
+                }else {
+                    LeoLog.d("testBindService", "isServiceDo = false");
                 }
 
                 String cancleHideVideoText = getString(R.string.app_unhide_dialog_content_video);

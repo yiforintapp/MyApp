@@ -60,8 +60,8 @@ public class VideoHideMainActivity extends BaseActivity implements
     private HideVideoAdapter adapter;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
-    // public static final String CB_PACKAGENAME = "com.cool.coolbrowser";
-    public static String CB_PACKAGENAME = "com.example.appmaster_service";
+     public static String CB_PACKAGENAME = "com.cool.coolbrowser";
+//    public static String CB_PACKAGENAME = "com.example.appmaster_service";
     public static String URL_CB = "http://m.coobrowser.com/";
 //    public static final int TARGET_VERSION = 14;
     public static String SECOND_CATALOG;

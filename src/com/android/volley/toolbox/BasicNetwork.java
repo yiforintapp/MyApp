@@ -244,8 +244,8 @@ public class BasicNetwork implements Network {
 			headers.put("If-None-Match", entry.etag);
 		}
 
-		if (entry.serverDate > 0) {
-			Date refTime = new Date(entry.serverDate);
+		if (entry.lastModify > 0) {
+			Date refTime = new Date(entry.lastModify);
 			headers.put("If-Modified-Since", DateUtils.formatDate(refTime));
 		}
 	}

@@ -738,9 +738,9 @@
     <string name="lock_line_visiable">орбита деблокирови показана</string>
     <string name="guide_more_text">больше функции ></string>
     <string name="guide_skip_text">перепрыгнуть ></string>
-    <string name="video_hide_need_cb">из-за системы,для отмены сокрытия этих видео нужно COOL Browser.использовать после  установки</string>
-    <string name="video_hide_need_new_cb">из-за системы,для отмены сокрытия этих видео нужно COOL Browser.отменить сокрытие после  установки</string>
-    <string name="video_delete_need_new_cb">из-за системы,для исключения этих видео нужно COOLBrowser.использовать после  установки</string>
+    <string name="video_hide_need_cb">из-за системы,для отмены сокрытия этих видео нужно Cool Browser.использовать после  установки</string>
+    <string name="video_hide_need_new_cb">из-за системы,для отмены сокрытия этих видео нужно Cool Browser.отменить сокрытие после  установки</string>
+    <string name="video_delete_need_new_cb">из-за системы,для исключения этих видео нужно Cool Browser.использовать после  установки</string>
     <string name="video_cencel_hide_fail">отменить скрытие неудолось</string>
     <string name="video_delete_fail">исключать документы неудолось</string>
     <string name="zipper_too_fast">давайте помедленнее</string>

@@ -53,6 +53,18 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="dialog_check_box" parent="@android:style/Widget.CompoundButton.CheckBox">
+        <item name="android:button">@drawable/checkbox_dialog_style</item>  
+    </style>
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <style name="LEOButton">
         <item name="android:layout_width">fill_parent</item>
         <item name="android:layout_height">43dp</item>
