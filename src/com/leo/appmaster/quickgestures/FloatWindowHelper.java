@@ -14,6 +14,7 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -21,6 +22,9 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -29,6 +33,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
@@ -103,6 +108,8 @@ public class FloatWindowHelper {
     // white float width and height
     private static int mWhiteFLoatWidth, mWhiteFloatHeight;
     private static long mLastClickTime;
+    
+    private static int areaClickAccount=0;
 
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
@@ -129,6 +136,7 @@ public class FloatWindowHelper {
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
             // // no read contact /message/privacycontact red tip
+          
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -141,6 +149,9 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
+                            
+                           
+                            
                             break;
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
@@ -180,6 +191,20 @@ public class FloatWindowHelper {
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 // cancel system no read message tip
+                                
+//                                areaClickAccount+=1;                        
+//                                Log.e("cou", "touched,count="+areaClickAccount);
+//                                if(areaClickAccount==3)
+//                                {
+//                                    areaClickAccount=0;
+//                                    mLeftBottomParams = new LayoutParams();
+//                                    mLeftBottomParams.width = 100;
+//                                    mLeftBottomParams.height =100;
+//                                    TextView tt=new TextView(mContext);
+//                                    tt.setText("hehelehelejef");
+//                                    windowManager.addView(tt, mLeftBottomParams);                                  
+//                                }
+                                
                                 removeSwipWindow(mContext, 1);
                             }
                             break;
@@ -1886,10 +1911,6 @@ public class FloatWindowHelper {
                     case MotionEvent.ACTION_OUTSIDE:
                         break;
                     case MotionEvent.ACTION_DOWN:
-                        
-                      
-                        
-                        
                         isControling = true;
                         // 取消上一次的持续效果
                         if (nowCount != null) {
