@@ -182,7 +182,7 @@ public class AppMasterApplication extends Application {
         // "机型："+BuildProperties.checkPhoneModel("l36H"));
 
     }
-    
+
     private String getUserSerial() {
         String userSerial = null;
         if (PhoneInfo.getAndroidVersion() >= 17) {
@@ -315,15 +315,26 @@ public class AppMasterApplication extends Application {
         });
         initSplashData();
         // TEST
-//        setSplashData();
+//         setSplashData();
     }
 
     private void setSplashData() {
         mSplashFlag = true;
         mIsEmptyForSplashUrl = false;
         mSplashDelayTime = 10000;
-        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(Constants.SPLASH_SKIP_PG_CLIENT);
-        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("com.android.vending");
+//        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
+//                Constants.SPLASH_SKIP_PG_CLIENT);
+//         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("com.facebook.katana");
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl("fb://page/1709302419294051");
+        SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            AppMasterPreference.getInstance(getApplicationContext()).setSplashStartShowTime(
+                    dateFormate.parse("2015-08-05").getTime());
+            AppMasterPreference.getInstance(getApplicationContext()).setSplashEndShowTime(
+                    dateFormate.parse("2015-08-08").getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     private void quickGestureTipInit() {
