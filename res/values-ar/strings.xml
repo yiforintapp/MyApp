@@ -904,9 +904,9 @@
     <string name="lock_line_visiable">تم اخفاء مسار الفتح</string>
     <string name="guide_more_text"> المزيد من الوظائف ></string>
     <string name="guide_skip_text">القفز فوق ></string>
-    <string name="video_hide_need_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب COOLBrowser. و يرجي الاستخدام بعد التركيب.</string>
-    <string name="video_hide_need_new_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب أحدث COOLBrowser. و يرجي الغاء الاخفاء بعد التركيب.</string>
-    <string name="video_delete_need_new_cb">بسبب أسباب النظام، حذف هذا الفيديو يتطلب أحدث COOLBrowser. و يرجي الحذف بعد التركيب.</string>
+    <string name="video_hide_need_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب Cool Browser. و يرجي الاستخدام بعد التركيب.</string>
+    <string name="video_hide_need_new_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب أحدث Cool Browser. و يرجي الغاء الاخفاء بعد التركيب.</string>
+    <string name="video_delete_need_new_cb">بسبب أسباب النظام، حذف هذا الفيديو يتطلب أحدث Cool Browser. و يرجي الحذف بعد التركيب.</string>
     <string name="video_cencel_hide_fail">فشل في الغاء الاخفاء</string>
     <string name="video_delete_fail">فشل في حذف الملف</string>
     <string name="zipper_too_fast">اسحب ببطء </string>

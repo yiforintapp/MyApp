@@ -757,9 +757,9 @@
     <string name="lock_line_visiable">รอยปลดล็อคแสดงออก</string>
     <string name="guide_more_text">ฟังก์ชันมากขึ้น ></string>
     <string name="guide_skip_text">ข้ามไป ></string>
-    <string name="video_hide_need_cb">เหตุผลระบบ ยกเลิกการซ่อน วิดีโอนี้ต้องการCOOLBrowserล่าสุด โปรดติดตั้งก่อนใช้</string>
-    <string name="video_hide_need_new_cb">เหตุผลระบบ ลบการซ่อม วิดีโอนี้ต้องการ COOLBrowser ล่าสุด  ติดตั้งก่อนลบการซ่อน</string>
-    <string name="video_delete_need_new_cb">เหตุผลระบบ ลบการซ่อม วิดีโอนี้ต้องการ COOLBrowser ล่าสุด  โปรดติดตั้งก่อนการลบ</string>
+    <string name="video_hide_need_cb">เหตุผลระบบ ยกเลิกการซ่อน วิดีโอนี้ต้องการCool Browserล่าสุด โปรดติดตั้งก่อนใช้</string>
+    <string name="video_hide_need_new_cb">เหตุผลระบบ ลบการซ่อม วิดีโอนี้ต้องการ Cool Browser ล่าสุด  ติดตั้งก่อนลบการซ่อน</string>
+    <string name="video_delete_need_new_cb">เหตุผลระบบ ลบการซ่อม วิดีโอนี้ต้องการ Cool Browser ล่าสุด  โปรดติดตั้งก่อนการลบ</string>
     <string name="video_cencel_hide_fail">ยกเลิกการซ่อนไม่ได้</string>
     <string name="video_delete_fail">ไม่สามารถลบไฟล์ได้</string>
     <string name="zipper_too_fast">โอ้ ดึงช้าๆหน่อย </string>

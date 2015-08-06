@@ -63,7 +63,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     private RelativeLayout mSlidingArea, mSlidingTime, mNoReadMessageOpen,
             mRecentlyContactOPen, mPrivacyContactOpen, mActivityRootView, mStrengthenModeView;
     private ImageView mNoReadMessageOpenCK,
-            mRecentlyContactOpenCK, mPrivacyContactOpenCK, mStrengthModeOpenCk;
+            mRecentlyContactOpenCK, mPrivacyContactOpenCK;//mStrengthModeOpenCk
     private boolean mNoReadMessageFlag, mRecentlyContactFlag,
             mPrivacyContactFlag, mStrengthenModeFlag;
     private String slidingArea = "";
@@ -240,9 +240,9 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         if (mPrivacyContactOpenCK != null) {
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
-        if (mStrengthModeOpenCk != null) {
-            mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
-        }
+//        if (mStrengthModeOpenCk != null) {
+//            mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
+//        }
     }
 
     private void setOnClickListener() {

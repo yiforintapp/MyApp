@@ -26,13 +26,27 @@
             android:layout_toRightOf="@id/appwallIV"
             android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/appwallNameTV"
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/clean_mem_notify_big"
-                android:textColor="@color/cool_black"
-                android:textSize="17dp" />
+                android:layout_height="wrap_content" >
+
+                <TextView
+                    android:id="@+id/appwallNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/clean_mem_notify_big"
+                    android:textColor="@color/cool_black"
+                    android:textSize="17dp" />
+
+                <TextView
+                    android:id="@+id/app_precent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/appwallNameTV"
+                    android:text="@string/clean_mem_notify_big_right"
+                    android:textColor="@color/cool_red"
+                    android:textSize="17dp" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/appwallDescTV"
