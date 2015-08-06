@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -44,6 +45,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.ui.dialog.LEODoubleChoicesDialog;
 
 /**
  * QuickGestureActivity
@@ -56,6 +58,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     private AppMasterPreference mPre;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
     private QuickGestureSlideTimeDialog mSlideTimeDialog;
+    private LEODoubleChoicesDialog mTriggerTypeDialog;
     public static boolean mAlarmDialogFlag = false;
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
@@ -817,17 +820,72 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
 //                            "qssetting",
 //                            "point_open");
 //                }
-//                switchStrengthMode();
+//                   switchStrengthMode();
 //                //通知更新滑动区域红点显示状况
 //                FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
 //                break;
             case R.id.trigger_type:
                 
-                
+                showTriggerTypeDialog();
                 //todo
-                
+               
+//              //通知更新滑动区域红点显示状况
+              FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
+              
         }
 
+    }
+
+    private void showTriggerTypeDialog() {
+        // TODO Auto-generated method stub
+        
+        if (mTriggerTypeDialog == null) {
+            mTriggerTypeDialog = new LEODoubleChoicesDialog(this);
+        }
+        final CheckBox fromCorner = (CheckBox) mTriggerTypeDialog.findViewById(R.id.cb_dialog_area);
+        final CheckBox whitedot = (CheckBox) mTriggerTypeDialog.findViewById(R.id.cb_dialog_whitedot);
+        whitedot.setChecked(mStrengthenModeFlag);
+        TextView TVSure = (TextView) mTriggerTypeDialog.findViewById(R.id.dlg_right_btn);
+        fromCorner.setChecked(mPre.getIsOpenFloatWindows());
+        TVSure.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                if(!whitedot.isChecked()&&!fromCorner.isChecked())
+                {
+                    Toast.makeText(QuickGestureSettingActivity.this, getResources().getString(R.string.pg_appmanager_quick_gesture_trigger_tips), 0).show();
+                    return;
+                }            
+                mPre.setSwitchOpenStrengthenMode(whitedot.isChecked(), true);
+                mPre.setIsOpenFloatWindows(fromCorner.isChecked());
+                mStrengthenModeFlag=whitedot.isChecked();
+            
+                if(mTriggerTypeDialog!=null)
+                {
+                    mTriggerTypeDialog.dismiss();                    
+                }
+                switchStrengthMode();
+                switchSlideWindow();
+            }
+        });
+        TextView TVCancel = (TextView) mTriggerTypeDialog.findViewById(R.id.dlg_left_btn);
+        TVCancel.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+            
+                if(mTriggerTypeDialog!=null)
+                {
+                    mTriggerTypeDialog.dismiss();                    
+                }
+            }
+        });
+        
+        
+        
+        mTriggerTypeDialog.show();
     }
 
     @Override
@@ -894,6 +952,18 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             mPre.setWhiteFloatViewCoordinate(0, 0);
         }
     }
+    
+    private void switchSlideWindow() {
+        if (mPre.getIsOpenFloatWindows()) {
+            int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
+            FloatWindowHelper.createFloatWindow(this,value);
+        } else {
+            FloatWindowHelper.removeAllFloatWindow(this);
+        }
+    }
+   
+
+    
     
     class DisableClickListener implements OnClickListener {
         @Override

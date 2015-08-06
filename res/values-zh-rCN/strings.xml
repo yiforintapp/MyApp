@@ -792,6 +792,7 @@
 	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底角划出</string>
 	<string name="pg_appmanager_quick_gesture_trigger_alide">从侧边/底角划出</string>
 	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
+	<string name="pg_appmanager_quick_gesture_trigger_tips">请至少选择一项</string>
 	<!-- 2.7 end -->
 
 </resources>
