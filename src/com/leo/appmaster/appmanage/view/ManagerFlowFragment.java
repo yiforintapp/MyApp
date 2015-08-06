@@ -9,6 +9,8 @@ import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
@@ -65,6 +67,10 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
     @Override
     protected int layoutResourceId() {
+        Display display = mActivity.getWindowManager().getDefaultDisplay(); //Activity#getWindowManager() 
+        int width = display.getWidth();
+        int height = display.getHeight();
+        Log.i("ManagerFlowFragment", width +" "+ height); 
         return R.layout.fragment_manager_flow;
     }
 

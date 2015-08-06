@@ -1886,10 +1886,6 @@ public class FloatWindowHelper {
                     case MotionEvent.ACTION_OUTSIDE:
                         break;
                     case MotionEvent.ACTION_DOWN:
-                        
-                      
-                        
-                        
                         isControling = true;
                         // 取消上一次的持续效果
                         if (nowCount != null) {
