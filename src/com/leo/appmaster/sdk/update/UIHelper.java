@@ -89,7 +89,7 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
         mContext.registerReceiver(receive, filter);
     }
 
-    public static UIHelper getInstance(Context ctx) {
+    public static synchronized UIHelper getInstance(Context ctx) {
         if (sUIHelper == null) {
             sUIHelper = new UIHelper(ctx);
         }

@@ -25,7 +25,7 @@ public class Traffic {
         this.mContext = context.getApplicationContext();
     }
 
-    public static Traffic getInstance(Context context) {
+    public static synchronized Traffic getInstance(Context context) {
         if (s_preferences == null) {
             s_preferences = AppMasterPreference.getInstance(context);
         }
