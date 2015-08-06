@@ -778,9 +778,9 @@
     <string name="lock_line_visiable">解鎖軌跡已顯示</string>
     <string name="guide_more_text">更多 ></string>
     <string name="guide_skip_text">跳過 ></string>
-    <string name="video_hide_need_cb">由於系統原因，取消隱藏這些視頻需要COOLBrowser。請安裝後才可使用</string>
-    <string name="video_hide_need_new_cb"> 由於系統原因，取消隱藏這些視頻需要最新版的COOLBrowser。請安裝後才可取消隱藏</string>
-    <string name="video_delete_need_new_cb"> 由於系統原因，删除這些視頻需要最新版的COOLBrowser。請安裝後才可删除</string>
+    <string name="video_hide_need_cb">由於系統原因，取消隱藏這些視頻需要Cool Browser。請安裝後才可使用</string>
+    <string name="video_hide_need_new_cb"> 由於系統原因，取消隱藏這些視頻需要最新版的Cool Browser。請安裝後才可取消隱藏</string>
+    <string name="video_delete_need_new_cb"> 由於系統原因，删除這些視頻需要最新版的Cool Browser。請安裝後才可删除</string>
     <string name="video_cencel_hide_fail">取消隱藏失敗</string>
     <string name="video_delete_fail">刪除檔失敗</string>
     <string name="zipper_too_fast">哎呀，拉慢一點 </string>
