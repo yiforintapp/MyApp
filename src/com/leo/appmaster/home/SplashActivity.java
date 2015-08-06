@@ -84,6 +84,7 @@ public class SplashActivity extends BaseActivity {
     private ImageView mSplashName;
     private boolean mIsEmptyForSplashUrl;
     private ImageView mSkipUrlButton, mSkipToPgButton;
+    private boolean mShowSplashFlag;
 
     /* Guide page stuff end */
     @Override
@@ -145,24 +146,31 @@ public class SplashActivity extends BaseActivity {
                     showSplash();
                 }
             }
+            if (!mShowSplashFlag) {
+                showDefaultSplash();
+            }
         } else {
-            /* 没有开始，没有结束时间，默认 */
-            Log.d(Constants.RUN_TAG, "splash_end&start_time：No time!");
-             clearSpSplashFlagDate();
-            if (mSplashIcon.getVisibility() == View.INVISIBLE) {
-                mSplashIcon.setVisibility(View.VISIBLE);
-            }
-            if (mSplashName.getVisibility() == View.INVISIBLE) {
-                mSplashName.setVisibility(View.VISIBLE);
-            }
-            if (mSkipUrlButton.getVisibility() == View.VISIBLE) {
-                mSkipUrlButton.setVisibility(View.GONE);
-            }
-            if (mSkipToPgButton.getVisibility() == View.VISIBLE) {
-                mSkipToPgButton.setVisibility(View.GONE);
-            }
+            showDefaultSplash();
         }
         PrivacyHelper.getInstance(this).setDirty(true);
+    }
+
+    private void showDefaultSplash() {
+        /* 没有开始，没有结束时间，默认 */
+        Log.d(Constants.RUN_TAG, "splash_end&start_time：No time!");
+        clearSpSplashFlagDate();
+        if (mSplashIcon.getVisibility() == View.INVISIBLE) {
+            mSplashIcon.setVisibility(View.VISIBLE);
+        }
+        if (mSplashName.getVisibility() == View.INVISIBLE) {
+            mSplashName.setVisibility(View.VISIBLE);
+        }
+        if (mSkipUrlButton.getVisibility() == View.VISIBLE) {
+            mSkipUrlButton.setVisibility(View.GONE);
+        }
+        if (mSkipToPgButton.getVisibility() == View.VISIBLE) {
+            mSkipToPgButton.setVisibility(View.GONE);
+        }
     }
 
     /* 对后台配置的过期闪屏数据初始化 */
@@ -243,6 +251,7 @@ public class SplashActivity extends BaseActivity {
                 mSplashName.setVisibility(View.INVISIBLE);
                 mSplashRL.setBackgroundDrawable(new NinePatchDrawable(getResources(),
                         splash, chunk, NinePatchChunk.deserialize(chunk).mPaddings, null));
+                mShowSplashFlag = true;
             }
         }
     }
@@ -773,7 +782,7 @@ public class SplashActivity extends BaseActivity {
                     boolean existClient = checkExistClient(packageName);
                     if (existClient) {
                         /* 存在客户端 */
-                        Log.e(Constants.RUN_TAG, "存在客户端并进入:"+packageName);
+                        Log.e(Constants.RUN_TAG, "存在客户端并进入:" + packageName);
                         Intent intent = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri.parse(url);
                         intent.setData(uri);
