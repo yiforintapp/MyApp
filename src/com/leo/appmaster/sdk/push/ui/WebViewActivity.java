@@ -1,9 +1,14 @@
 
 package com.leo.appmaster.sdk.push.ui;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -96,8 +101,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setJavaScriptEnabled(true); // support javaScript
         settings.setSupportZoom(true); // 是否可以缩放，默认true
         settings.setBuiltInZoomControls(true); // 是否显示缩放按钮，默认false
-        /*settings.setLoadWithOverviewMode(true);
-        settings.setUseWideViewPort(true); // 自适应屏幕*/       
+        /*
+         * settings.setLoadWithOverviewMode(true);
+         * settings.setUseWideViewPort(true); // 自适应屏幕
+         */
         settings.setAppCacheEnabled(true); // 启动缓存
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
@@ -207,7 +214,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         myWebChromeClient.onHideCustomView();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-    
+
     private class MyWebviewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -286,7 +293,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mPlayView = view;
             customViewCallback = callback;
-            
+
             mWebView.setVisibility(View.INVISIBLE);
             mVideoFullLayout.addView(view);
             mVideoFullLayout.setVisibility(View.VISIBLE);
@@ -319,6 +326,28 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             Log.i(TAG, "downlaod url: " + uri);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
+        }
+    }
+
+    /* 进入主页 */
+    private void startHome() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            } else {
+                LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
+                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                        getPackageName(), true, null);
+                amp.setDoubleCheck(null);
+            }
+        } else {
+            Intent intent = new Intent(this, LockSettingActivity.class);
+            startActivity(intent);
+            finish();
         }
     }
 }
