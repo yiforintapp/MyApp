@@ -772,9 +772,9 @@
     <string name="lock_line_visiable">izler gösterildi</string>
     <string name="guide_more_text">klavuz_daha fazla_metin</string>
     <string name="guide_skip_text">klavuz_atla_metin</string>
-    <string name="video_hide_need_cb">COOLBrowser yüklenince gizlenme kaldırılabilir</string>
-    <string name="video_hide_need_new_cb">COOLBrowser yüklenince gizlenme kaldırılabilir</string>
-    <string name="video_delete_need_new_cb">COOLBrowser yüklenince ancak silinebilir</string>
+    <string name="video_hide_need_cb">Cool Browser yüklenince gizlenme kaldırılabilir</string>
+    <string name="video_hide_need_new_cb">Cool Browser yüklenince gizlenme kaldırılabilir</string>
+    <string name="video_delete_need_new_cb">Cool Browser yüklenince ancak silinebilir</string>
     <string name="zipper_too_fast">Lütfen daha yavaş aşağıya çekiniz</string>
     <string name="zipper_too_slow">Lütfen daha hızlı aşağıya çekiniz</string>
     <string name="theme_apply_title">Temanın kilidini aç uygulansın mı %1$s?</string>
