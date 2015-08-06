@@ -2140,9 +2140,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_SPLASH_DElAY_TIME, Constants.SPLASH_DELAY_TIME);
     }
 
-    /* 保存闪屏跳转的客户端的包名 */
-    public void setSplashSkipToClient(String packageName) {
-        mPref.edit().putString(PREF_SPLASH_SKIP_TO_CLIENT, packageName).commit();
+    /* 保存闪屏跳转的客户端的链接 */
+    public void setSplashSkipToClient(String clientUrl) {
+        mPref.edit().putString(PREF_SPLASH_SKIP_TO_CLIENT, clientUrl).commit();
     }
 
     public String getSplashSkipToClient() {

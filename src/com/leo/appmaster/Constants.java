@@ -312,7 +312,7 @@ public class Constants {
     public static final String REQUEST_SPLASH_DELAY_TIME = "d";
     public static final String REQUEST_SPLASH_SKIP_URL = "e";
     public static final String REQUEST_SPLASH_SKIP_FLAG = "f";
-    public static final String SPLASH_SKIP_TO_CLIENT_PACKAGENAME = "g";
+    public static final String SPLASH_SKIP_TO_CLIENT_URL = "g";
     public static final String SPLASH_SKIP_PG_WEBVIEW = "0";
     public static final String SPLASH_SKIP_PG_CLIENT = "1";
     // ============== default home mode list =================
