@@ -784,19 +784,14 @@
     <!-- 2.6 end -->
     
     <!-- 2.7 start -->
-	
+	    <string name="clean_mem_notify_big">内存使用超过</string>
+    <string name="clean_mem_notify_big_right">65%</string>
+    <string name="clean_mem_notify_small">点击一键加速</string>
+    <string name="clean_mem_notify_boost">立即加速</string>
 	<string name="pg_appmanager_quick_gesture_option_trigger_type">触发方式</string>
 	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底角划出</string>
 	<string name="pg_appmanager_quick_gesture_trigger_alide">从侧边/底角划出</string>
 	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
 	<!-- 2.7 end -->
-
-
-    <!-- 2.7 start -->
-    <string name="clean_mem_notify_big">内存使用超过</string>
-    <string name="clean_mem_notify_big_right">65%</string>
-    <string name="clean_mem_notify_small">点击一键加速</string>
-    <string name="clean_mem_notify_boost">立即加速</string>
-    <!-- 2.7 end -->
 
 </resources>
