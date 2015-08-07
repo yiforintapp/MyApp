@@ -102,10 +102,10 @@ public class TaskDetectService extends Service {
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         flowDetecTask = new FlowTask();
         // mflowDatectFuture =
-        // mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
-        // TimeUnit.MILLISECONDS);
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
-                TimeUnit.MILLISECONDS);
+         mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
+         TimeUnit.MILLISECONDS);
+//        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
+//                TimeUnit.MILLISECONDS);
         mHandler = new Handler();
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
