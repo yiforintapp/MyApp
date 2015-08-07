@@ -50,6 +50,8 @@
             android:horizontalSpacing="1dp"
             android:listSelector="@android:color/transparent"
             android:numColumns="2"
+            android:overScrollMode="never"
+            android:scrollbars="none"
             android:stretchMode="columnWidth"
             android:verticalSpacing="1dp" />
 
