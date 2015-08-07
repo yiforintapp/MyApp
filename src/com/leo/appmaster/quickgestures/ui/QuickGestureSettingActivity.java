@@ -88,6 +88,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("null", "actiity onRes");
         if (mPre.getSwitchOpenQuickGesture()) {
             initChexkBox();
             setOnClickListener();
@@ -95,9 +96,14 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             unSetOnClickListener();
             closeQuickSetting();
         }
+        updateSlideAreaItem();
+        initSlidingAreaText();
+    }
+
+    public void updateSlideAreaItem()
+    {
         if(AppMasterPreference.getInstance(this).getIsOpenFloatWindows())
-        {
-           
+        {         
             mSlidingAreaName.setTextColor(0xff414141);
             mSlidingArea.setEnabled(true);             
         }
@@ -106,9 +112,9 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             mSlidingAreaName.setTextColor(0xff9b9b9b);
             mSlidingArea.setEnabled(false);   
         }
-        initSlidingAreaText();
     }
-
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -285,6 +291,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.i("null", "actiity onRes");
         // if (mAlarmDialogFlag) {
         // FloatWindowHelper.mEditQuickAreaFlag = true;
         // updateFloatWindowBackGroudColor();
@@ -293,6 +300,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
 
     @Override
     protected void onPause() {
+        Log.i("null", "actiity onPau");
         super.onPause();
         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
             FloatWindowHelper.mEditQuickAreaFlag = false;
@@ -860,7 +868,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         }
         final CheckBox fromCorner = (CheckBox) mTriggerTypeDialog.findViewById(R.id.cb_dialog_area);
         final CheckBox whitedot = (CheckBox) mTriggerTypeDialog.findViewById(R.id.cb_dialog_whitedot);
-        whitedot.setChecked(mStrengthenModeFlag);
+        whitedot.setChecked(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode());
         TextView TVSure = (TextView) mTriggerTypeDialog.findViewById(R.id.dlg_right_btn);
         fromCorner.setChecked(mPre.getIsOpenFloatWindows());
         TVSure.setOnClickListener(new OnClickListener() {
@@ -881,6 +889,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                 {
                     mTriggerTypeDialog.dismiss();                    
                 }
+                updateSlideAreaItem();
                 switchStrengthMode();
                 switchSlideWindow();
             }
@@ -958,7 +967,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
      * switch strength mode open
      */
     private void switchStrengthMode() {
-        if (mStrengthenModeFlag) {
+        if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()) {
             FloatWindowHelper.createWhiteFloatView(this);
             if (AppMasterPreference.getInstance(this).getSlideTimeJustHome()) {
                 FloatWindowHelper.hideWhiteFloatView(this);
