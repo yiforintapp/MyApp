@@ -56,6 +56,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         UpdateFilterAppClickListener {
     private CommonTitleBar mTitleBar;
     private AppMasterPreference mPre;
+    private TextView mSlidingAreaName;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
     private QuickGestureSlideTimeDialog mSlideTimeDialog;
     private LEODoubleChoicesDialog mTriggerTypeDialog;
@@ -71,6 +72,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             mPrivacyContactFlag, mStrengthenModeFlag;
     private String slidingArea = "";
     public static final String FROME_STATUSBAR = "from_statusbar";
+    
     private boolean leftBottomTemp, leftCenterTemp, rightBottomTemp, RightCenterTemp;
 
     @Override
@@ -92,6 +94,17 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         } else {
             unSetOnClickListener();
             closeQuickSetting();
+        }
+        if(AppMasterPreference.getInstance(this).getIsOpenFloatWindows())
+        {
+           
+            mSlidingAreaName.setTextColor(0xff414141);
+            mSlidingArea.setEnabled(true);             
+        }
+        else
+        {
+            mSlidingAreaName.setTextColor(0xff9b9b9b);
+            mSlidingArea.setEnabled(false);   
         }
         initSlidingAreaText();
     }
@@ -128,6 +141,8 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         mTitleBar.openBackView();
         mTitleBar.setTitle(R.string.quick_setting_title);
         mSlidingArea = (RelativeLayout) findViewById(R.id.slid_area);
+        
+        mSlidingAreaName = (TextView) mSlidingArea.findViewById(R.id.slid_area_item_nameTV);
         mSlidingTime = (RelativeLayout) findViewById(R.id.allow_slid_time);
         mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);
         mRecentlyContactOPen = (RelativeLayout) findViewById(R.id.recently_contact_content);
@@ -718,6 +733,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         int flag = arg0.getId();
         switch (flag) {
             case R.id.slid_area:
+                
                 SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
                         "area_cli");
                 FloatWindowHelper.mEditQuickAreaFlag = true;
