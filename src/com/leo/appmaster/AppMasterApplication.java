@@ -316,7 +316,7 @@ public class AppMasterApplication extends Application {
         });
         initSplashData();
         // TEST
-        setSplashData();
+        // setSplashData();
     }
 
     private void setSplashData() {
@@ -1121,18 +1121,12 @@ public class AppMasterApplication extends Application {
 
     /* 对后台配置的过期闪屏数据初始化 */
     private void clearSpSplashFlagDate() {
-        if (AppMasterApplication.mSplashFlag) {
-            AppMasterPreference.getInstance(getApplicationContext()).setSplashUriFlag(
-                    Constants.SPLASH_FLAG);
-        }
-        if (mSplashDelayTime != Constants.SPLASH_DELAY_TIME) {
-            AppMasterPreference.getInstance(this).setSplashDelayTime(Constants.SPLASH_DELAY_TIME);
-            mSplashDelayTime = Constants.SPLASH_DELAY_TIME;
-        }
-        if (!mIsEmptyForSplashUrl) {
-            AppMasterPreference.getInstance(this).setSplashSkipUrl(null);
-            mIsEmptyForSplashUrl = true;
-        }
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashUriFlag(
+                Constants.SPLASH_FLAG);
+        AppMasterPreference.getInstance(this).setSplashDelayTime(Constants.SPLASH_DELAY_TIME);
+        mSplashDelayTime = Constants.SPLASH_DELAY_TIME;
+        AppMasterPreference.getInstance(this).setSplashSkipUrl(null);
+        mIsEmptyForSplashUrl = true;
     }
 
     /* 闪屏跳转连接是否为空：true-链接为空，false-链接不为空 */
