@@ -420,7 +420,9 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
         mTitleBar.setBackgroundColor(color);
         mLevelView.invalidate(color);      
         mProposalStatus.invalidate(level, init);       
-        mProposalList.scrollTo(0, 0);
+        if(init){
+            mProposalList.scrollTo(0, 0);
+        }
         mProposalTip.setText(getResources().getString(R.string.privacy_proposal_tip,  ph.getLevelDescription(level)));
         
         boolean appLockActive = ph.isVariableActived(PrivacyHelper.VARABLE_APP_LOCK);
