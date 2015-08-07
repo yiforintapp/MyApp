@@ -316,7 +316,7 @@ public class AppMasterApplication extends Application {
         });
         initSplashData();
         // TEST
-        // setSplashData();
+//         setSplashData();
     }
 
     private void setSplashData() {

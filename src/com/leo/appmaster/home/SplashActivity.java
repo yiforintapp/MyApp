@@ -65,6 +65,7 @@ import com.leo.appmaster.utils.Utilities;
 public class SplashActivity extends BaseActivity {
 
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
+    public static final String SPLASH_TO_WEBVIEW="splash_to_webview";
     private Handler mEventHandler;
 
     /* Guide page stuff begin */
@@ -810,6 +811,7 @@ public class SplashActivity extends BaseActivity {
         finish();
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, url);
+        intent.putExtra(SPLASH_TO_WEBVIEW,SPLASH_TO_WEBVIEW);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
