@@ -98,12 +98,12 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         if(AppMasterPreference.getInstance(this).getIsOpenFloatWindows())
         {
            
-            mSlidingAreaName.setTextColor(0xff9b9b9b);
+            mSlidingAreaName.setTextColor(0xff414141);
             mSlidingArea.setEnabled(true);             
         }
         else
         {
-            mSlidingAreaName.setTextColor(0xff414141);
+            mSlidingAreaName.setTextColor(0xff9b9b9b);
             mSlidingArea.setEnabled(false);   
         }
         initSlidingAreaText();
