@@ -46,6 +46,7 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.browser.aidl.mInterface;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -587,6 +588,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     }
 
     protected void showDownLoadNewCbDialog(String mContent) {
+        SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb",
+                "cbdialogue");
         if (mDialog == null) {
             mDialog = new LEOAlarmDialog(this);
         }
@@ -596,6 +599,11 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 if (which == 1) {
                     // getURL and go browser
                     requestUrl();
+                    SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb",
+                            "cbdialogue_y");
+                }else {
+                    SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb",
+                            "cbdialogue_n");
                 }
             }
         });
@@ -690,6 +698,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                             context);
 
                                     mVideoItems.remove(item);
+                                    SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb",
+                                            "hide_done");
                                 } else {
                                     mUnhidePath.remove(item.getPath());
                                     isSuccess = false;
@@ -709,6 +719,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                         context);
 
                                 mVideoItems.remove(item);
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb",
+                                        "hide_done");
                             } else {
                                 mUnhidePath.remove(item.getPath());
                                 isSuccess = false;
@@ -810,9 +822,18 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                         }
                         showDownLoadNewCbDialog(mContentString);
                     }
+                    SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb ",
+                            "unhide_fail");
                 } else {
                     Toast.makeText(VideoGriActivity.this, getString(R.string.app_hide_video_fail),
                             Toast.LENGTH_SHORT).show();
+                    SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb",
+                            "hide_fail");
+                }
+            }else {
+                if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
+                    SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb ",
+                            "unhide_done");
                 }
             }
             dismissProgressDialog();

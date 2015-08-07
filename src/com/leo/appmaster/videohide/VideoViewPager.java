@@ -34,6 +34,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
@@ -477,6 +478,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     }
 
     public void showDownLoadNewCbDialog(String mContentString) {
+        SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb",
+                "cbdialogue");
         if (mDialog == null) {
             mDialog = new LEOAlarmDialog(this);
         }
@@ -486,6 +489,11 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 if (which == 1) {
                     // getURL and go browser
                     requestUrl();
+                    SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb",
+                            "cbdialogue_y");
+                }else {
+                    SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb",
+                            "cbdialogue_n");
                 }
             }
         });
@@ -720,6 +728,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                                     context);
                             FileOperationUtil.deleteFileMediaEntry(path, context);
                             mAllPath.remove(mPosition);
+
                         }
                     } catch (Exception e) {
                         isSuccess = false;
@@ -750,7 +759,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 }
                 mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
                 viewPager.setAdapter(mPagerAdapter);
-
+                SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb ",
+                        "unhide_done");
             } else {
                 if (isServiceDo) {
                     Toast.makeText(VideoViewPager.this, getString(R.string.video_cencel_hide_fail),
@@ -767,6 +777,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     }
                     showDownLoadNewCbDialog(mContentString);
                 }
+                SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb ",
+                        "unhide_fail");
             }
             isServiceDo = false;
             // video change, recompute privacy level

@@ -39,6 +39,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -60,10 +61,10 @@ public class VideoHideMainActivity extends BaseActivity implements
     private HideVideoAdapter adapter;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
-     public static String CB_PACKAGENAME = "com.cool.coolbrowser";
-//    public static String CB_PACKAGENAME = "com.example.appmaster_service";
+    public static String CB_PACKAGENAME = "com.cool.coolbrowser";
+    // public static String CB_PACKAGENAME = "com.example.appmaster_service";
     public static String URL_CB = "http://m.coobrowser.com/";
-//    public static final int TARGET_VERSION = 14;
+    // public static final int TARGET_VERSION = 14;
     public static String SECOND_CATALOG;
     public static String LAST_CATALOG;
     public static final String DEFAULT_PATH =
@@ -117,6 +118,10 @@ public class VideoHideMainActivity extends BaseActivity implements
     private void handleIntent() {
         Intent intent = this.getIntent();
         String mPath = intent.getStringExtra("cb_download_path");
+        if (mPath != null) {
+            SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1, "hidevd_cb",
+                    "hide");
+        }
         LeoLog.d("testIntent", "mPath : " + mPath);
         if (LAST_CATALOG.isEmpty() || SECOND_CATALOG.isEmpty()) {
             if (mPath == null) {
