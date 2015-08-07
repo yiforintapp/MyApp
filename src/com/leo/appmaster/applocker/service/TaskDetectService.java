@@ -57,7 +57,7 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-//    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+    // public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
     public static final int SHOW_NOTI_PRE_DAY = 60000;
     public static final int MAX_MEMORY = 20;
     private boolean mServiceStarted;
@@ -104,10 +104,10 @@ public class TaskDetectService extends Service {
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         flowDetecTask = new FlowTask();
         // mflowDatectFuture =
-         mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
-         TimeUnit.MILLISECONDS);
-//        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 10000,
-//                TimeUnit.MILLISECONDS);
+        // mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
+        // TimeUnit.MILLISECONDS);
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 60000,
+                TimeUnit.MILLISECONDS);
         mHandler = new Handler();
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
@@ -336,7 +336,7 @@ public class TaskDetectService extends Service {
 
             long lastTime = sp_traffic.getLastShowNotifyTime();
             long nowTime = System.currentTimeMillis();
-            if (mProgress > MAX_MEMORY && (nowTime - lastTime > SHOW_NOTI_PRE_DAY)) {//24hours
+            if (mProgress > MAX_MEMORY && (nowTime - lastTime > SHOW_NOTI_PRE_DAY)) {// 24hours
                 shwoNotify();
                 sp_traffic.setLastShowNotifyTime(nowTime);
             }
@@ -580,10 +580,10 @@ public class TaskDetectService extends Service {
                             // create
                             boolean isDialogingShowing = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isDialogShowing;
-                            
-                         //phtc
-                            
-                            if (isAppsAndHome&&sp_traffic.getIsOpenFloatWindows()) {
+
+                            // phtc
+
+                            if (isAppsAndHome && sp_traffic.getIsOpenFloatWindows()) {
                                 boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
                                 if ((!isFilterApp
                                         || FloatWindowHelper.mEditQuickAreaFlag)
@@ -593,8 +593,7 @@ public class TaskDetectService extends Service {
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
-                                
-                                
+
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
                                     if (!isFilterApp && !FloatWindowHelper.mEditQuickAreaFlag
@@ -606,7 +605,7 @@ public class TaskDetectService extends Service {
                                                 .hideWhiteFloatView(TaskDetectService.this);
                                     }
                                 }
-                            } else if (isJustHome&&sp_traffic.getIsOpenFloatWindows()) {
+                            } else if (isJustHome && sp_traffic.getIsOpenFloatWindows()) {
                                 if (!isHomeFlag)
                                     isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag)
