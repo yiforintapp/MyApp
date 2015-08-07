@@ -622,32 +622,38 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
             viewPager.setAdapter(mPagerAdapter);
         } else {
-            if (isServiceDo) {
-                Message msg = Message.obtain();
-                msg.what = SHOW_TOAST;
-                mHandler.sendMessage(msg);
-
-            } else {
-                String mContentString;
-                if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                        && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
-                    if (!isCbHere) {// no cb
-                        mContentString = getString(R.string.video_hide_need_cb);
-                    } else if (!isHaveServiceToBind) {
-                        mContentString = getString(R.string.video_hide_need_new_cb);
-                    } else {
-                        mContentString = getString(R.string.video_hide_need_new_cb);
-                    }
-                    Message msg = Message.obtain();
-                    msg.what = SHOW_DIALOG;
-                    msg.obj = mContentString;
-                    mHandler.sendMessage(msg);
-                } else {
+            String mContentString;
+            if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                    && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                if (isServiceDo) {
                     Message msg = Message.obtain();
                     msg.what = SHOW_TOAST;
                     mHandler.sendMessage(msg);
+                } else {
+                    if (!isCbHere) {// no cb
+                        mContentString = getString(R.string.video_hide_need_cb);
+                        Message msg = Message.obtain();
+                        msg.what = SHOW_DIALOG;
+                        msg.obj = mContentString;
+                        mHandler.sendMessage(msg);
+                    } else if (!isHaveServiceToBind) {
+                        mContentString = getString(R.string.video_hide_need_new_cb);
+                        Message msg = Message.obtain();
+                        msg.what = SHOW_DIALOG;
+                        msg.obj = mContentString;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        Message msg = Message.obtain();
+                        msg.what = SHOW_TOAST;
+                        mHandler.sendMessage(msg);
+                    }
                 }
+            } else {
+                Message msg = Message.obtain();
+                msg.what = SHOW_TOAST;
+                mHandler.sendMessage(msg);
             }
+
         }
         isServiceDo = false;
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
@@ -777,12 +783,16 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         String mContentString;
                         if (!isCbHere) {// no cb
                             mContentString = getString(R.string.video_hide_need_cb);
+                            showDownLoadNewCbDialog(mContentString);
                         } else if (!isHaveServiceToBind) {
                             mContentString = getString(R.string.video_hide_need_new_cb);
+                            showDownLoadNewCbDialog(mContentString);
                         } else {
-                            mContentString = getString(R.string.video_hide_need_new_cb);
+                            Toast.makeText(VideoViewPager.this,
+                                    getString(R.string.video_cencel_hide_fail),
+                                    0)
+                                    .show();
                         }
-                        showDownLoadNewCbDialog(mContentString);
                     }
                 } else {
                     Toast.makeText(VideoViewPager.this, getString(R.string.video_cencel_hide_fail),

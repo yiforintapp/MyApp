@@ -766,7 +766,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                     FileOperationUtil.deleteFileMediaEntry(item.getPath(),
                                             context);
                                     mVideoItems.remove(item);
-                                }else {
+                                } else {
                                     return isSuccess = false;
                                 }
                             } catch (Exception e) {
@@ -782,7 +782,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         @Override
         protected void onPostExecute(final Boolean isSuccess) {
             mClickList.clear();
-            
+
             if (isSuccess) {
                 LeoLog.d("testBindService", "isSuccess = true");
             } else {
@@ -802,12 +802,15 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             String mContentString;
                             if (!isCbHere) {// no cb
                                 mContentString = getString(R.string.video_hide_need_cb);
+                                showDownLoadNewCbDialog(mContentString);
                             } else if (!isHaveServiceToBind) {
                                 mContentString = getString(R.string.video_hide_need_new_cb);
+                                showDownLoadNewCbDialog(mContentString);
                             } else {
-                                mContentString = getString(R.string.video_hide_need_new_cb);
+                                Toast.makeText(VideoGriActivity.this,
+                                        getString(R.string.video_cencel_hide_fail),
+                                        Toast.LENGTH_SHORT).show();
                             }
-                            showDownLoadNewCbDialog(mContentString);
                         }
                     } else {
                         Toast.makeText(VideoGriActivity.this,
