@@ -92,9 +92,9 @@ public class LeoPopMenu {
         mLeoPopMenu = new PopupWindow(mContext);
         mLeoPopMenu.setContentView(convertView);
         mLeoPopMenu.setHeight(mStyles.height);
-        mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext, 66)));
+        mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext, 70)));
         
-        Log.e("hehe", newLongWidth+"final");
+        Log.e("hehe", finalWidth+"final///"+mLeoPopMenu.getWidth()+" true w");
         
 //      mLeoPopMenu.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
 //      mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -211,7 +211,7 @@ public class LeoPopMenu {
         TextView testTextView = (TextView) View.inflate(mContext, R.layout.popmenu_window_home_list_item, null).findViewById(R.id.menu_text);
 //        TextView testTextView = new TextView(mContext);
         for (int i = 0; i < mItems.size(); i++) {
-            testTextView.setText(mItems.get(i));
+            testTextView.setText(mItems.get(i));       
             float mOne = getTextViewLength(testTextView, mItems.get(i));
             LeoLog.d("LeoPopMenu", "字符：" + mItems.get(i) + "...长度：" + mOne);
             if (mOne > mMaxLength) {
@@ -294,24 +294,18 @@ public class LeoPopMenu {
 //        }
         newSmallWidth=W/3;
         newLongWidth=W/2;
-        
+        finalWidth=mMaxLength;
         if(mMaxLength>newLongWidth)
         {
-           finalWidth=newLongWidth;
+           finalWidth=newSmallWidth;
         }
-        else if(mMaxLength<newSmallWidth)
+        if(mMaxLength<newSmallWidth)
         {
             finalWidth=newSmallWidth;
         }
-        else
-        {
-            finalWidth=mMaxLength;
-        }
+
         
-        
-        
-        
-        
+        Log.e("hehe", "finalW="+finalWidth);
         Log.e("hehe", "是否超maxW="+isOverWidth);
         Log.e("hehe", "最终的minW="+newSmallWidth);
         Log.e("hehe", "最终的maxW="+newLongWidth);
