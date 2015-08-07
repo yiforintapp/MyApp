@@ -57,7 +57,9 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+//    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+    public static final int SHOW_NOTI_PRE_DAY = 60000;
+    public static final int MAX_MEMORY = 20;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -334,7 +336,7 @@ public class TaskDetectService extends Service {
 
             long lastTime = sp_traffic.getLastShowNotifyTime();
             long nowTime = System.currentTimeMillis();
-            if (mProgress > 65 && (nowTime - lastTime > SHOW_NOTI_PRE_DAY)) {//24hours
+            if (mProgress > MAX_MEMORY && (nowTime - lastTime > SHOW_NOTI_PRE_DAY)) {//24hours
                 shwoNotify();
                 sp_traffic.setLastShowNotifyTime(nowTime);
             }
