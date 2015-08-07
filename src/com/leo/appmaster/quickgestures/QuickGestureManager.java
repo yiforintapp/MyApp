@@ -936,9 +936,11 @@ public class QuickGestureManager {
             }
         });
 
-        commonApp.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//        commonApp.getWindow().setType(
+//                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         // commonApp.getWindow().setType(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        commonApp.getWindow().setType(
+                WindowManager.LayoutParams.TYPE_TOAST);
         commonApp.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -1098,10 +1100,12 @@ public class QuickGestureManager {
                 AppMasterApplication.getInstance().startActivity(intent);
             }
         });
-        quickSwitch.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+//        quickSwitch.getWindow().setType(
+//                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         // quickSwitch.getWindow().setType(
         // WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        quickSwitch.getWindow().setType(
+                WindowManager.LayoutParams.TYPE_TOAST);
         quickSwitch.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
