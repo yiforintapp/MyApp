@@ -97,8 +97,9 @@
         android:id="@+id/skip_to_pg_bt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="30dp"
         android:layout_gravity="right"
-        android:src="@drawable/closebotton" />
+        android:padding="@dimen/splash_skip_button_padding"
+        android:src="@drawable/closebotton"
+        android:visibility="invisible" />
 
 </FrameLayout>
