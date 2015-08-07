@@ -116,6 +116,8 @@ public class SplashActivity extends BaseActivity {
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
+        
+//        Log.d(Constants.RUN_TAG, "数据："+startShowSplashTime+", "+endShowSplashTime+",  跳转模式："+AppMasterPreference.getInstance(getApplicationContext()).getSplashSkipMode());
         /**
          * 可能存在的几种情况：
          * 
@@ -167,9 +169,9 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    /* 如果url存在则显示按钮 */
+    /* 如果url存在则设置点击跳转 */
     private void showSkipUrlButton() {
-        Log.e(Constants.RUN_TAG, "链接：" + mIsEmptyForSplashUrl);
+        Log.e(Constants.RUN_TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
         if (!mIsEmptyForSplashUrl) {
             mSplashRL.setOnClickListener(new SkipUrlOnClickListener());
         }
