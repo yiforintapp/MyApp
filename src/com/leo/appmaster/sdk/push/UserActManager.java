@@ -51,7 +51,7 @@ public class UserActManager {
         }
     }
 
-    public static UserActManager getInstance(Context ctx, PushUIHelper helper) {
+    public static synchronized UserActManager getInstance(Context ctx, PushUIHelper helper) {
         if (sInstance == null) {
             sInstance = new UserActManager(ctx, helper);
         }

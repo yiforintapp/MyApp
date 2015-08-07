@@ -1,9 +1,16 @@
 
 package com.leo.appmaster.sdk.push.ui;
 
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -27,7 +34,7 @@ import android.widget.TextView;
 public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     private static final String TAG = "WebViewActivity";
-
+    public static final String SPLASH_TO_WEBVIEW = "splash_to_webview";
     private WebView mWebView;
     private TextView mTitleView;
     private ImageView mCloseView, mBackView, mNextView, mFlushView;
@@ -39,6 +46,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private MyWebviewClient mWebviewClient;
     private MyWebChromeClient myWebChromeClient;
     private View mPlayView;
+    private boolean mIsFromSplash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +55,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
         Intent intent = getIntent();
         mURL = intent.getStringExtra(WEB_URL);
+        if (!Utilities.isEmpty(intent.getStringExtra(SPLASH_TO_WEBVIEW))) {
+            if (SPLASH_TO_WEBVIEW.equals(intent.getStringExtra(SPLASH_TO_WEBVIEW))) {
+                mIsFromSplash = true;
+            }
+        }
         if (TextUtils.isEmpty(mURL)) {
             finish();
         }
@@ -96,8 +109,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         settings.setJavaScriptEnabled(true); // support javaScript
         settings.setSupportZoom(true); // 是否可以缩放，默认true
         settings.setBuiltInZoomControls(true); // 是否显示缩放按钮，默认false
-        /*settings.setLoadWithOverviewMode(true);
-        settings.setUseWideViewPort(true); // 自适应屏幕*/       
+        /*
+         * settings.setLoadWithOverviewMode(true);
+         * settings.setUseWideViewPort(true); // 自适应屏幕
+         */
         settings.setAppCacheEnabled(true); // 启动缓存
         settings.setCacheMode(WebSettings.LOAD_DEFAULT);
 
@@ -126,6 +141,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                 mWebView.reload();
                 break;
             case R.id.webView_close_iv:
+                startHome();
                 finish();
             default:
                 break;
@@ -163,6 +179,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             if (mWebView.canGoBack()) {
                 mWebView.goBack();
             } else {
+                startHome();
                 super.onBackPressed();
             }
         }
@@ -207,7 +224,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         myWebChromeClient.onHideCustomView();
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
-    
+
     private class MyWebviewClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -286,7 +303,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mPlayView = view;
             customViewCallback = callback;
-            
+
             mWebView.setVisibility(View.INVISIBLE);
             mVideoFullLayout.addView(view);
             mVideoFullLayout.setVisibility(View.VISIBLE);
@@ -319,6 +336,34 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             Log.i(TAG, "downlaod url: " + uri);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
+        }
+    }
+
+    /* 进入主页 */
+    private void startHome() {
+        Log.e(Constants.RUN_TAG, "是否来自闪屏："+mIsFromSplash);
+        if (mIsFromSplash) {
+            AppMasterPreference amp = AppMasterPreference.getInstance(this);
+            if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
+                    // LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                    // getPackageName(), true, null);
+                    // amp.setDoubleCheck(null);
+                    Intent intent = new Intent(this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                }
+            } else {
+                Intent intent = new Intent(this, LockSettingActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
     }
 }

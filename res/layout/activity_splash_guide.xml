@@ -91,22 +91,15 @@
             leoindicator:radiu="4dp"
             leoindicator:strokeColor="@color/gray" />
     </FrameLayout>
-    <!-- 链接跳转按钮 -->
-
-    <ImageView
-        android:id="@+id/url_skip_bt"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:background="#E11E1E"
-        android:visibility="gone" />
     <!-- 跳过进入主页按钮 -->
 
     <ImageView
         android:id="@+id/skip_to_pg_bt"
-        android:layout_width="100dp"
-        android:layout_height="50dp"
-        android:background="#E11E1E"
-        android:layout_marginTop="200dp"
-        android:visibility="gone" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:padding="@dimen/splash_skip_button_padding"
+        android:src="@drawable/closebotton"
+        android:visibility="invisible" />
 
 </FrameLayout>

@@ -69,7 +69,7 @@ public class ProcessCleaner {
         return (curTime - mLastCleanTime) > CLEAN_INTERVAL;
     }
 
-    public ProcessCleaner(Context ctx) {
+    private ProcessCleaner(Context ctx) {
         this.mContext = ctx.getApplicationContext();
         this.mAm = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
     }
