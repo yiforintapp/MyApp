@@ -181,7 +181,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         }
 
-
         initUI();
         mobvistaCheck();
         checkCleanMem();
@@ -191,17 +190,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void mobvistaCheck() {
         // mobvista ad
-        MobvistaAd.init(this, "19293", "e4797d7195de4d743e8d8220d4ddb219");
+        MobvistaAd.init(this, "19242", "8c8f18965dfd4377892a458f3b854401");
         // -----------------Mobvista Sdk--------------------
         // init native controller
         // newNativeController(Context context,String unitid,String fbid)
-        nativeAd = MobvistaAd.newNativeController(this, "9",
-                "1611993839047594_1614040148842963");
+        nativeAd = MobvistaAd.newNativeController(this, "25",
+                "1060111710674878_1060603623959020");
 
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
-        wallAd = MobvistaAd.newAdWallController(this, "10",
-                "448464445332858_460157654163537");
+        wallAd = MobvistaAd.newAdWallController(this, "25",
+                "1060111710674878_1060603623959020");
         // preload the wall data
         wallAd.preloadWall();
 
@@ -979,7 +978,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
                 mAmp.setUnlocked(true);
                 mAmp.setDoubleCheck(null);
-//                 wallAd.clickWall();
+                // wallAd.clickWall();
                 Intent mWallIntent = wallAd.getWallIntent();
                 startActivity(mWallIntent);
                 break;

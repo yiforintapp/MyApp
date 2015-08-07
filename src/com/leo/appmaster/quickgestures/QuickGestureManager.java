@@ -79,7 +79,7 @@ public class QuickGestureManager {
     public List<ContactCallLog> mCallLogs;
     public List<BaseInfo> mDynamicList;
     public List<BaseInfo> mMostUsedList;
-//    private Drawable[] mColorBgIcon;
+    // private Drawable[] mColorBgIcon;
     private int[] mColorBgIconIds;
     private Drawable mEmptyIcon;
     public int mSlidAreaSize;
@@ -126,10 +126,10 @@ public class QuickGestureManager {
             preloadColorIcon();
             Bitmap bmp;
             LockManager lm = LockManager.getInstatnce();
-//            for (Drawable drawable : mColorBgIcon) {
-//                bmp = ((BitmapDrawable) drawable).getBitmap();
-//                lm.mMatcher.addBitmapSample(bmp);
-//            }
+            // for (Drawable drawable : mColorBgIcon) {
+            // bmp = ((BitmapDrawable) drawable).getBitmap();
+            // lm.mMatcher.addBitmapSample(bmp);
+            // }
             long start = SystemClock.elapsedRealtime();
             for (int drawableId : mColorBgIconIds) {
                 lm.mMatcher.addBitmapSample(drawableId);
@@ -179,7 +179,7 @@ public class QuickGestureManager {
             mDynamicList = null;
             mMostUsedList = null;
             LockManager.getInstatnce().mAppLaunchRecorders.clear();
-//            mColorBgIcon = null;
+            // mColorBgIcon = null;
             mColorBgIconIds = null;
             LockManager.getInstatnce().mMatcher.clearItem();
             LockManager.getInstatnce().clearDrawableColor();
@@ -201,7 +201,7 @@ public class QuickGestureManager {
             Context context = AppMasterApplication.getInstance();
             return context.getResources().getDrawable(drawableId);
         }
-        
+
         return null;
     }
 
@@ -936,11 +936,13 @@ public class QuickGestureManager {
             }
         });
 
-//        commonApp.getWindow().setType(
-//                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        // commonApp.getWindow().setType(
+        // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         // commonApp.getWindow().setType(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         commonApp.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_TOAST);
+                WindowManager.LayoutParams.TYPE_TOAST
+                        | WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         commonApp.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -1100,12 +1102,14 @@ public class QuickGestureManager {
                 AppMasterApplication.getInstance().startActivity(intent);
             }
         });
-//        quickSwitch.getWindow().setType(
-//                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        // quickSwitch.getWindow().setType(
+        // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         // quickSwitch.getWindow().setType(
         // WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         quickSwitch.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_TOAST);
+                WindowManager.LayoutParams.TYPE_TOAST
+                        | WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         quickSwitch.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
