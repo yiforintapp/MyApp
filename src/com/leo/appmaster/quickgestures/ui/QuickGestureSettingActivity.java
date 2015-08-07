@@ -99,7 +99,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         {
            
             mSlidingAreaName.setTextColor(0xff9b9b9b);
-            mSlidingArea.setEnabled(false);             
+            mSlidingArea.setEnabled(true);             
         }
         else
         {
