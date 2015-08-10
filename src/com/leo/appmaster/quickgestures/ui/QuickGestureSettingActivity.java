@@ -63,7 +63,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     public static boolean mAlarmDialogFlag = false;
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
-    private TextView mSlidingTimeTv, mSlidAreaTv;
+    private TextView mSlidingTimeTv, mSlidAreaTv,mTvTriggerTYpeSummary;
     private RelativeLayout mSlidingArea, mSlidingTime, mNoReadMessageOpen,
             mRecentlyContactOPen, mPrivacyContactOpen, mActivityRootView, mStrengthenModeView;
     private ImageView mNoReadMessageOpenCK,
@@ -98,6 +98,25 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         }
         updateSlideAreaItem();
         initSlidingAreaText();
+        updateTriggerTypeItem();
+        
+    }
+
+    private void updateTriggerTypeItem() {
+               
+        if(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()&&AppMasterPreference.getInstance(this).getIsOpenFloatWindows())
+        {
+            mTvTriggerTYpeSummary.setText(R.string.pg_appmanager_quick_gesture_option_trigger_type_summary);
+        }
+        else if(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode())
+        {
+            mTvTriggerTYpeSummary.setText(R.string.pg_appmanager_quick_gesture_trigger_wihtedot);
+        }
+        else
+        {
+            mTvTriggerTYpeSummary.setText(R.string.pg_appmanager_quick_gesture_trigger_alide);
+        }
+
     }
 
     public void updateSlideAreaItem()
@@ -147,7 +166,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         mTitleBar.openBackView();
         mTitleBar.setTitle(R.string.quick_setting_title);
         mSlidingArea = (RelativeLayout) findViewById(R.id.slid_area);
-        
+        mTvTriggerTYpeSummary=(TextView) findViewById(R.id.trigger_type_item_cotentTV);
         mSlidingAreaName = (TextView) mSlidingArea.findViewById(R.id.slid_area_item_nameTV);
         mSlidingTime = (RelativeLayout) findViewById(R.id.allow_slid_time);
         mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);
@@ -861,8 +880,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     }
 
     private void showTriggerTypeDialog() {
-        // TODO Auto-generated method stub
-        
+            
         if (mTriggerTypeDialog == null) {
             mTriggerTypeDialog = new LEODoubleChoicesDialog(this);
         }
@@ -889,6 +907,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                 {
                     mTriggerTypeDialog.dismiss();                    
                 }
+                updateTriggerTypeItem();
                 updateSlideAreaItem();
                 switchStrengthMode();
                 switchSlideWindow();
