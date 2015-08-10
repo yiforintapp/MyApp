@@ -229,8 +229,8 @@
     <dimen name="quick_white_float_width">36dp</dimen>
     <!-- quick gesutre end -->
 
-    <integer name="privacy_contact_red_tip_tabTextwdth">10</integer>
-    <integer name="privacy_contact_red_tip_tabTexteight">10</integer>
+    <integer name="privacy_contact_red_tip_tabTextwdth">6</integer>
+    <integer name="privacy_contact_red_tip_tabTexteight">6</integer>
 
     <dimen name="privacy_contact_red_tip_x">94dp</dimen>
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
@@ -259,6 +259,9 @@
     <!-- 2.6 end -->
     <!-- 2.7start -->
     <dimen name="splash_skip_button_padding">20dp</dimen>
+    <integer name="home_page_tab_text_size">16</integer>
     <!-- 2.7end -->
+	
+	
 
 </resources>
