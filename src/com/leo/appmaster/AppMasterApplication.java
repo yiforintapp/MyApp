@@ -439,7 +439,7 @@ public class AppMasterApplication extends Application {
             if (Integer.parseInt(versionCode) == 34) {
                 // remove unlock-all shortcut v2.1
                 tryRemoveUnlockAllShortcut(this);
-            } else if (Integer.parseInt(versionCode) == 41) {
+            } else if (Integer.parseInt(versionCode) >= 41) {
                 installBoostShortcut();
             }
             pref.setIsUpdateQuickGestureUser(false);
