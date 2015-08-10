@@ -71,28 +71,6 @@
             android:background="@drawable/check_update_button"
             android:text="@string/app_add_hide_image"
             android:textColor="@drawable/manager_backup_text_selecter" />
-
-        <Button
-            android:id="@+id/switch_no_cb"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="5dp"
-            android:layout_toRightOf="@id/add_hide_image"
-            android:background="@drawable/check_update_button"
-            android:text="切换！"
-            android:textColor="@drawable/manager_backup_text_selecter" />
-
-        <Button
-            android:id="@+id/let_pg_fail"
-            android:layout_width="60dp"
-            android:layout_height="50dp"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@id/add_hide_image"
-            android:background="@drawable/check_update_button"
-            android:text="PG正常状态"
-            android:textColor="@drawable/manager_backup_text_selecter" />
     </RelativeLayout>
 
 </LinearLayout>

@@ -54,6 +54,7 @@ import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -184,11 +185,15 @@ public class SplashActivity extends BaseActivity {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.splashRL:
-                    // Log.e(Constants.RUN_TAG, "立即设置");
+                    // Log.e(Constants.RUN_TAG, "立即体验");
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                            "screen_cli", "go");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
                     // Log.e(Constants.RUN_TAG, "跳过");
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                            "screen_cli", "skip");
                     startHome();
                     break;
                 default:
@@ -315,6 +320,8 @@ public class SplashActivity extends BaseActivity {
                         // }
                         startHome();
                     }
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                            "screen_cli", "none");
                     break;
 
                 default:

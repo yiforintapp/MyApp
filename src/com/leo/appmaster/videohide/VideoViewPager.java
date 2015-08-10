@@ -87,6 +87,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     Toast.makeText(VideoViewPager.this,
                             getString(R.string.video_delete_fail), 0)
                             .show();
+                    SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb ",
+                            "fail_toast");
                     break;
                 case SHOW_DIALOG:
                     String mContentString = (String) msg.obj;
@@ -589,9 +591,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
         } else {
             try {
-                if (VideoHideMainActivity.isLetPgFail) {
-                    int i = 10 / 0;
-                }
+                // if (VideoHideMainActivity.isLetPgFail) {
+                // int i = 10 / 0;
+                // }
                 flag = FileOperationUtil.deleteFile(filePath);
                 FileOperationUtil.deleteFileMediaEntry(filePath, this);
                 mAllPath.remove(mPosition);
@@ -723,9 +725,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 } else {
                     newFileName = FileOperationUtil.getNameFromFilepath(path);
                     try {
-                        if (VideoHideMainActivity.isLetPgFail) {
-                            int i = 10 / 0;
-                        }
+                        // if (VideoHideMainActivity.isLetPgFail) {
+                        // int i = 10 / 0;
+                        // }
                         newFileName = newFileName.substring(1,
                                 newFileName.indexOf(".leotmv"));
                         if (!FileOperationUtil.renameFile(path, newFileName)) {
@@ -779,6 +781,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                                 getString(R.string.video_cencel_hide_fail),
                                 0)
                                 .show();
+                        SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb ",
+                                "fail_toast");
                     } else {
                         String mContentString;
                         if (!isCbHere) {// no cb
@@ -792,12 +796,16 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                                     getString(R.string.video_cencel_hide_fail),
                                     0)
                                     .show();
+                            SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb ",
+                                    "fail_toast");
                         }
                     }
                 } else {
                     Toast.makeText(VideoViewPager.this, getString(R.string.video_cencel_hide_fail),
                             0)
                             .show();
+                    SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb ",
+                            "fail_toast");
                 }
                 SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb ",
                         "unhide_fail");

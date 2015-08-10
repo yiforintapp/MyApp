@@ -750,9 +750,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             newFileName =
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
                             try {
-                                if (VideoHideMainActivity.isLetPgFail) {
-                                    int i = 10 / 0;
-                                }
+//                                if (VideoHideMainActivity.isLetPgFail) {
+//                                    int i = 10 / 0;
+//                                }
                                 newFileName = newFileName.substring(1,
                                         newFileName.indexOf(".leotmv"));
                                 if (FileOperationUtil.renameFile(item.getPath(),
@@ -782,13 +782,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         @Override
         protected void onPostExecute(final Boolean isSuccess) {
             mClickList.clear();
-
-            if (isSuccess) {
-                LeoLog.d("testBindService", "isSuccess = true");
-            } else {
-                LeoLog.d("testBindService", "isSuccess = false");
-            }
-
             if (!isSuccess) {
                 mSelectAll.setText(R.string.app_select_all);
                 if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
@@ -798,6 +791,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             Toast.makeText(VideoGriActivity.this,
                                     getString(R.string.video_cencel_hide_fail),
                                     Toast.LENGTH_SHORT).show();
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb ",
+                                    "fail_toast");
                         } else {
                             String mContentString;
                             if (!isCbHere) {// no cb
@@ -810,12 +805,17 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                 Toast.makeText(VideoGriActivity.this,
                                         getString(R.string.video_cencel_hide_fail),
                                         Toast.LENGTH_SHORT).show();
+                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                        "hidevd_cb ",
+                                        "fail_toast");
                             }
                         }
                     } else {
                         Toast.makeText(VideoGriActivity.this,
                                 getString(R.string.video_cencel_hide_fail),
                                 Toast.LENGTH_SHORT).show();
+                        SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb ",
+                                "fail_toast");
                     }
                     SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1, "hidevd_cb ",
                             "unhide_fail");

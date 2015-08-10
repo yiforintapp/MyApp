@@ -58,9 +58,9 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-    // public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-    public static final int SHOW_NOTI_PRE_DAY = 60000;
-    public static final int MAX_MEMORY = 20;
+    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+    // public static final int SHOW_NOTI_PRE_DAY = 60000;
+    public static final int MAX_MEMORY = 65;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
