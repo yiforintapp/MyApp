@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -39,6 +40,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private TipTextView mLockThemeBtn;
     private TextView mLockModeBtn;
     private TextView mLockSettingBtn;
+    private ImageView mIvDisguiseIconShadow;
     private boolean isFromAppLockList = false;
     private boolean isDisguiseIconWithShadow=false;
     @Override
@@ -58,7 +60,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         mLockModeBtn.setOnClickListener(this);
         mLockSettingBtn = (TextView) findViewById(R.id.lock_setting);
         mLockSettingBtn.setOnClickListener(this);
-
+        mIvDisguiseIconShadow=(ImageView) findViewById(R.id.iv_home_lock_disguise_shadow);
         mLockModeCircle.startAnimation();
     }
 
@@ -72,11 +74,11 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     public void onResume() {
         if(isDisguiseIconWithShadow)
         {
-            Drawable drawable = getResources().getDrawable(
-                    R.drawable.disguise_icon);
-            
-            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-            mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
+            mIvDisguiseIconShadow.setVisibility(View.GONE);
+//            Drawable drawable = getResources().getDrawable(
+//                    R.drawable.disguise_icon);            
+//            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
+//            mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
             
             isDisguiseIconWithShadow=false;
         }
@@ -277,12 +279,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
 //                AppMasterPreference.getInstance(mActivity).setIsNeedDisguiseTip(true);
 //                if(AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
                 {                 
-                    Drawable drawable = getResources().getDrawable(
-                            R.drawable.buttonleft_disguise_after_guide);
-               
-                    drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-                    mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
-                    mLockSettingBtn.setPadding(DipPixelUtil.dip2px(mActivity, 26), 0, DipPixelUtil.dip2px(mActivity, 18), 0);
+                    mIvDisguiseIconShadow.setVisibility(View.VISIBLE);
 //                    mLockSettingBtn.setCompoundDrawablePadding(pad)
                     isDisguiseIconWithShadow=true;
                 }

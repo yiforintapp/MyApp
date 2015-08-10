@@ -157,7 +157,7 @@ public class AppMasterApplication extends Application {
 
         // init lock manager
         LockManager.getInstatnce().init();
-
+//        loadSplashDate();
         mExecutorService.schedule(new Runnable() {
             @Override
             public void run() {
@@ -898,6 +898,7 @@ public class AppMasterApplication extends Application {
         Date currentDate = new Date(curTime);
         final String failDate = dateFormate.format(currentDate);
         long lastLoadTime = pref.getLastLoadSplashTime();
+        Log.e(Constants.RUN_TAG, "开始拉取");
         if (lastLoadTime == 0
                 || (curTime - pref.getLastLoadSplashTime()) >
                 pref.getSplashCurrentStrategy()) {
@@ -934,6 +935,10 @@ public class AppMasterApplication extends Application {
             if (delay < 0) {
                 delay = AppMasterConfig.TIME_12_HOUR;
             }
+            //调试
+//            delay=2000;
+            
+            
             timer.schedule(recheckTask, delay);
         }
     }
@@ -941,7 +946,7 @@ public class AppMasterApplication extends Application {
     /* 闪屏网络请求监听 */
     private class SplashRequestListener extends RequestListener<AppMasterApplication> {
         AppMasterPreference pref = null;
-        SimpleDateFormat dateFormate = null;
+        SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         long curTime = System.currentTimeMillis();
         Date currentDate = new Date(curTime);
         String failDate = dateFormate.format(currentDate);
@@ -950,17 +955,20 @@ public class AppMasterApplication extends Application {
                 AppMasterPreference preference, SimpleDateFormat formate) {
             super(outerContext);
             pref = preference;
-            dateFormate = formate;
+//            dateFormate = formate;
         }
 
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
             if (response != null) {
+//                Log.e(Constants.RUN_TAG, "拉取成功:");
                 try {
                     /* 起始时间 */
                     String startDate = response.getString(Constants.REQUEST_SPLASH_SHOW_STARTDATE);
+//                    Log.e(Constants.RUN_TAG, "图片连接"+startDate);
                     /* 图片url */
                     String imageUrl = response.getString(Constants.REQUEST_SPLASH_IMAGEURL);
+//                    Log.e(Constants.RUN_TAG, "图片连接"+imageUrl);
                     /* 结束时间 */
                     String endDate = response.getString(Constants.REQUEST_SPLASH_SHOW_ENDDATE);
                     /* 闪屏延迟时间 */
@@ -994,7 +1002,7 @@ public class AppMasterApplication extends Application {
                                 }
                                 clearSpSplashFlagDate();
                             }
-                            Log.e(Constants.RUN_TAG, "闪屏发起网络请求");
+//                            Log.e(Constants.RUN_TAG, "闪屏发起网络请求");
                         }
                         SplashActivity.deleteImage();
                         if (prefInt != -1) {
@@ -1028,8 +1036,8 @@ public class AppMasterApplication extends Application {
                             mIsEmptyForSplashUrl = false;
                         }
                         /* 闪屏跳转方式标志 */
-                        if (!Utilities.isEmpty(splashDelayTime)) {
-                            pref.setSplashSkipMode(splashDelayTime);
+                        if (!Utilities.isEmpty(splashSkipMode)) {
+                            pref.setSplashSkipMode(splashSkipMode);
                         }
                         /* 闪屏显示时间 */
                         if (!Utilities.isEmpty(splashDelayTime)) {
@@ -1069,10 +1077,18 @@ public class AppMasterApplication extends Application {
             };
             Timer timer = new Timer();
             long delay = pref.getSplashCurrentStrategy();
-            if (delay < 0) {
+            
+            
+            
+             if (delay < 0) {
                 delay = AppMasterConfig.TIME_12_HOUR;
             }
-            timer.schedule(recheckTask, delay);
+             
+           //调试
+//             delay=2000;
+            
+             
+             timer.schedule(recheckTask, delay);
         }
 
         private StringBuilder constructionSplashFlag(String startDate, String imageUrl,
@@ -1106,14 +1122,21 @@ public class AppMasterApplication extends Application {
             TimerTask recheckTask = new TimerTask() {
                 @Override
                 public void run() {
+                    Log.e(Constants.RUN_TAG, "失败再次拉取");
                     loadSplashDate();
                 }
             };
             Timer timer = new Timer();
             long delay = pref.getSplashCurrentStrategy();
+            
             if (delay < 0) {
                 delay = AppMasterConfig.TIME_12_HOUR;
             }
+            
+          //调试
+//            delay=1000;
+            
+            
             timer.schedule(recheckTask, delay);
         }
 

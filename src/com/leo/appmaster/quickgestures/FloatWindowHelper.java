@@ -1826,17 +1826,11 @@ public class FloatWindowHelper {
                 {
                     FloatWindowHelper.createWhiteFloatView(AppMasterApplication
                                     .getInstance());
-                    if (AppMasterPreference.getInstance(
-                            AppMasterApplication.getInstance())
-                            .getSlideTimeJustHome()) {
+//                    if (AppMasterPreference.getInstance(AppMasterApplication.getInstance()) .getSlideTimeJustHome()) 
                         // FloatWindowHelper.hideWhiteFloatView(this);
                         // }
-                        AppMasterPreference
-                                .getInstance(
-                                        AppMasterApplication
-                                                .getInstance())
-                                .setSwitchOpenStrengthenMode(true, true);
-                    }
+                        AppMasterPreference .getInstance(AppMasterApplication.getInstance()).setSwitchOpenStrengthenMode(true, true);
+                    
                     // if (mStrengthenModeFlag) {
                     // FloatWindowHelper.createWhiteFloatView(this);
                     // if
@@ -1849,7 +1843,6 @@ public class FloatWindowHelper {
                     // mPre.setWhiteFloatViewCoordinate(0,
                     // 0);
                     // }
-
                 }
                 if (mConflictTipsDialog != null)
                 {
