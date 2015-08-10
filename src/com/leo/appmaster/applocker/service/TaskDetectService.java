@@ -60,9 +60,9 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-    // public static final int SHOW_NOTI_PRE_DAY = 60000;
-    public static final int MAX_MEMORY = 65;
+//    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+     public static final int SHOW_NOTI_PRE_DAY = 20000;
+    public static final int MAX_MEMORY = 10;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -368,20 +368,22 @@ public class TaskDetectService extends Service {
                 .setSmallIcon(R.drawable.boosticon)
                 .setAutoCancel(true);
 
-        Intent realIntent = new Intent(this, HomeBoostActivity.class);
-        realIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        Intent clickIntent = new Intent(this, showTrafficAlof.class);
-        clickIntent.putExtra("realIntent", realIntent);
-        clickIntent.setAction("com.leo.appmaster.boost.notification");
-        PendingIntent pi = PendingIntent.getBroadcast(this, 0, clickIntent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
+        // Intent realIntent = new Intent(this, HomeBoostActivity.class);
+        // realIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // Intent clickIntent = new Intent(this, showTrafficAlof.class);
+        // clickIntent.putExtra("realIntent", realIntent);
+        // clickIntent.setAction("com.leo.appmaster.boost.notification");
+        // PendingIntent pi = PendingIntent.getBroadcast(this, 0, clickIntent,
+        // PendingIntent.FLAG_UPDATE_CURRENT);
+        // mBuilder.setContentIntent(pi);
 
-        // Intent intent = new Intent(getApplicationContext(),
-        // HomeBoostActivity.class);
-        // PendingIntent pendingIntent =
-        // PendingIntent.getActivity(getApplicationContext(), 0, intent,
-        // 0);
-        mBuilder.setContentIntent(pi);
+        Intent intent = new Intent(this,
+                HomeBoostActivity.class);
+        intent.putExtra("for_sdk", "for_sdkfor_sdkfor_sdkfor_sdk");
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pendingIntent);
 
         // mNotificationManager.notify(notifyId, mBuilder.build());
         Notification notify = mBuilder.build();

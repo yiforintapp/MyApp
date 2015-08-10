@@ -634,7 +634,6 @@
             <intent-filter android:priority="1000" >
                 <action android:name="com.leo.appmaster.traffic.alot" />
                 <action android:name="com.leo.appmaster.traffic.finish" />
-                <action android:name="com.leo.appmaster.boost.notification" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>

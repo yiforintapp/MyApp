@@ -5,6 +5,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
@@ -44,20 +45,19 @@ public class HomeBoostActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launcher_boost_activity);
         initUI();
-//        handleIntent();
+        handleIntent();
         overridePendingTransition(0, 0);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "boost", "launcher");
     }
 
-//    private void handleIntent() {
-//        Intent intent = getIntent();
-//        String mFromWhere = intent.getStringExtra("for_sdk");
-//        if (mFromWhere.equals("for_sdk")) {
-//            LeoLog.d("testintent", "receive");
-//            SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1,
-//                    "boost", "statusbar");
-//        }
-//    }
+    private void handleIntent() {
+        Intent intent = getIntent();
+        String abc = intent.getStringExtra("for_sdk");
+        if (abc != null) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "boost", "statusbar");
+        }
+    }
 
     @Override
     protected void onResume() {
@@ -73,6 +73,7 @@ public class HomeBoostActivity extends Activity {
     @Override
     public void finish() {
         overridePendingTransition(0, 0);
+        LockManager.getInstatnce().filterAllOneTime(500);
         super.finish();
     }
 

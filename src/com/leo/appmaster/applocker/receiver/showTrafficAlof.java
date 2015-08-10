@@ -93,12 +93,13 @@ public class showTrafficAlof extends BroadcastReceiver {
         } else if ("com.leo.appmaster.traffic.finish".equals(action)) {
             // LeoLog.d("ServiceTraffic", "服务来通知咯，用完提示");
             showAlarmDialog("com.leo.appmaster.traffic.finish");
-        } else if ("com.leo.appmaster.boost.notification".equals(action)) {
-            Intent realIntent = intent.getParcelableExtra("realIntent");  
-            context.startActivity(realIntent);
-            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
-                    "boost", "statusbar");
         }
+//        else if ("com.leo.appmaster.boost.notification".equals(action)) {
+//            Intent realIntent = intent.getParcelableExtra("realIntent");  
+//            context.startActivity(realIntent);
+//            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+//                    "boost", "statusbar");
+//        }
     }
 
     private void showAlarmDialog(String action) {
