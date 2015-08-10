@@ -172,7 +172,7 @@ public class SplashActivity extends BaseActivity {
 
     /* 如果url存在则设置点击跳转 */
     private void showSkipUrlButton() {
-        Log.e(Constants.RUN_TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
+//        Log.e(Constants.RUN_TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
         if (!mIsEmptyForSplashUrl) {
             mSplashRL.setOnClickListener(new SkipUrlOnClickListener());
         }
