@@ -26,6 +26,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -582,17 +583,24 @@ public class TaskDetectService extends Service {
                                     .getInstance(AppMasterApplication.getInstance()).isDialogShowing;
 
                             // phtc
-
-                            if (isAppsAndHome && sp_traffic.getIsOpenFloatWindows()) {
+                            
+                         
+                            if (isAppsAndHome) {
                                 boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
-                                if ((!isFilterApp
-                                        || FloatWindowHelper.mEditQuickAreaFlag)
-                                        && !isDialogingShowing) {
-                                    FloatWindowHelper.createFloatWindow(getApplicationContext(),
-                                            value);
-                                } else {
-                                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                                }
+                               
+                                    if ((!isFilterApp
+                                            || FloatWindowHelper.mEditQuickAreaFlag)
+                                            && !isDialogingShowing&&sp_traffic.getIsOpenFloatWindows()) {
+                                        FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                                                value);
+                                        
+                                        //TODO
+                                        Log.e("iscreated", "appsandhome");
+                                        
+                                    } else {
+                                        FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                                    }                                    
+                                
 
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
@@ -605,13 +613,14 @@ public class TaskDetectService extends Service {
                                                 .hideWhiteFloatView(TaskDetectService.this);
                                     }
                                 }
-                            } else if (isJustHome && sp_traffic.getIsOpenFloatWindows()) {
+                            } else if (isJustHome) {
                                 if (!isHomeFlag)
                                     isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag)
-                                        && !isDialogingShowing) {
+                                        && !isDialogingShowing&&sp_traffic.getIsOpenFloatWindows()) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
+                                    Log.e("iscreated", "appsandhome");
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
