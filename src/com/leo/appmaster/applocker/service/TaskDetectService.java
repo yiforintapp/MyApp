@@ -28,6 +28,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -43,6 +44,7 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
@@ -60,9 +62,9 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-//    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-     public static final int SHOW_NOTI_PRE_DAY = 20000;
-    public static final int MAX_MEMORY = 10;
+     public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+//    public static final int SHOW_NOTI_PRE_DAY = 20000;
+    public static final int MAX_MEMORY = 65;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -349,8 +351,14 @@ public class TaskDetectService extends Service {
     private void shwoNotify() {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int notifyId = 101;
-        // 先设定RemoteViews
-        RemoteViews view_custom = new RemoteViews(getPackageName(), R.layout.clean_mem_notify);
+        RemoteViews view_custom;
+        if (!BuildProperties.checkIsHuaWeiEmotion31()) {
+            // 先设定RemoteViews
+            view_custom = new RemoteViews(getPackageName(), R.layout.clean_mem_notify);
+        } else {
+            // 先设定RemoteViews
+            view_custom = new RemoteViews(getPackageName(), R.layout.clean_mem_notify_huawei);
+        }
         // 设置对应IMAGEVIEW的ID的资源图片
         view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
         view_custom.setTextViewText(R.id.appwallNameTV,
@@ -365,7 +373,7 @@ public class TaskDetectService extends Service {
                 .setTicker(getApplicationContext().getString(R.string.clean_mem_notify_big))
                 .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
                 .setOngoing(false)// 不是正在进行的 true为正在进行 效果和.flag一样
-                .setSmallIcon(R.drawable.boosticon)
+                .setSmallIcon(R.drawable.statusbaricon)
                 .setAutoCancel(true);
 
         // Intent realIntent = new Intent(this, HomeBoostActivity.class);

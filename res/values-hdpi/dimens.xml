@@ -125,8 +125,8 @@
     <!-- privacyContact start -->
     <integer name="privacy_contact_red_tip_lockWidth">23</integer>
     <integer name="privacy_contact_red_tip_lockHeight">23</integer>
-    <integer name="privacy_contact_red_tip_tabTextwdth">15</integer>
-    <integer name="privacy_contact_red_tip_tabTexteight">15</integer>
+    <integer name="privacy_contact_red_tip_tabTextwdth">11</integer>
+    <integer name="privacy_contact_red_tip_tabTexteight">11</integer>
 
     <dimen name="activity_privacy_message_item_message_send_edit_parent_height">48dp</dimen>
     <dimen name="acticity_privacy_message_item_list_contactLV_layout_marginBottom">54dp</dimen>
@@ -190,7 +190,7 @@
     <dimen name="time_lock_name_max_width">140dp</dimen>
     <dimen name="app_manager_headview_three_text_margin_top">3dp</dimen> <!-- 3dp -->
     <dimen name="app_manager_headview_two_text_margin_top">2dp</dimen> <!-- 2 -->
-    <dimen name="app_manager_hotapp_rep_tip_width_height">10dp</dimen> <!-- 11 -->
+    <dimen name="app_manager_hotapp_rep_tip_width_height">8dp</dimen> <!-- 11 -->
     <dimen name="app_manager_hotapp_rep_tip_margin">6dp</dimen> <!-- 2 -->
     <dimen name="app_manager_hotapp_rep_tip_margin_right">10dp</dimen> <!-- 7 -->
     <dimen name="hot_app_tab_red_tip_margin_left">110dp</dimen> <!-- 110 -->
@@ -381,5 +381,8 @@
     <dimen name="app_manager_flow_chart_margin_top">4dp</dimen>
      <dimen name="app_manager_lineview_margin_top">2dp</dimen> 
     <!-- 2.6 end -->
+     <!-- 2.7 start -->
+    <integer name="home_page_tab_text_size">13</integer>
+    <!-- 2.7 end -->
 
 </resources>

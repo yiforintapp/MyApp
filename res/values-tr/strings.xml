@@ -782,5 +782,24 @@
     <string name="video_cancel_hide_fail">Fotoğraflar gösterilemedi</string>
     <string name="beauty_mode_ok">Güzellik Kamuflajı modu etkin olduğunda</string>
     <!-- 2.6 end -->
+    
+        <!-- 2.7 start -->
+    <string name="clean_mem_notify_big">Bellek kullanımı aşarsa</string>
+    <string name="clean_mem_notify_big_right">65%</string>
+    <string name="clean_mem_notify_small"> Tıklayın ve hızlandırın</string>
+    <string name="clean_mem_notify_boost">Hemen hızlandırın</string>
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">Tetik modu</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">Beyaz nokta tarafı/alt tabanı çizin</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">Yan tarafı/tabanından çizin</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">Beyaz nokta</string>
+	<string name="pg_appmanager_quick_gesture_trigger_tips">En az birini seçiniz</string>
+	
+	<string name="pg_appmanager_quick_gesture_conflict_content">Hızlı jest normal işlemlerinizi etkiler mi?Ayarları\'ı tıklayarak beyaz nokta modunu açmayı tercih edebilirsiniz</string>
+	<string name="pg_appmanager_quick_gesture_conflict_later">Daha sonra</string>
+	<string name="pg_appmanager_quick_gesture_conflict_open">Hemen açın</string>
+	
+	
+	<!-- 2.7 end -->
 
 </resources>

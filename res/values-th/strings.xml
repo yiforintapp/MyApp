@@ -767,6 +767,24 @@
     <string name="theme_apply_title">จะใช้รูปแบบการปลดล็อคหรือ:%1$s?</string>
     <!-- 2.6 end -->
 
+	    <!-- 2.7 start -->
+    <string name="clean_mem_notify_big">เกินนคจ.</string>
+    <string name="clean_mem_notify_big_right">65%</string>
+    <string name="clean_mem_notify_small">ให้เร็ว</string>
+    <string name="clean_mem_notify_boost">เร็ว ทท.</string>
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">วิธีสัมผัส</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">จุดขาว ขีดข้าง</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">ขีดจากข้าง</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">จุดขาว</string>
+	<string name="pg_appmanager_quick_gesture_trigger_tips">ขอเลือกรายการหนึ่งอย่างน้อย</string>
+	
+	<string name="pg_appmanager_quick_gesture_conflict_content">ท่ามือส่งผลประทบต่อการปฏิบัติธรรมดาของท่านหรือไม่ คุณเลือกแบบจุดขาวได้ กดกำหนด</string>
+	<string name="pg_appmanager_quick_gesture_conflict_later">รอเดี๋ยว</string>
+	<string name="pg_appmanager_quick_gesture_conflict_open">เปิด ทท.</string>
+	
+	
+	<!-- 2.7 end -->
 	
 	
 	

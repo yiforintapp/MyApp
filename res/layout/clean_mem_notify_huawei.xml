@@ -11,10 +11,10 @@
 
         <ImageView
             android:id="@+id/appwallIV"
-            android:layout_width="54dp"
-            android:layout_height="54dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="11dp"
+            android:layout_marginLeft="8dp"
             android:src="@drawable/boosticon" />
 
         <LinearLayout
@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/appwallIV"
             android:orientation="vertical" >
 
@@ -36,7 +36,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/clean_mem_notify_big"
                     android:textColor="@color/cool_red"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
 
                 <TextView
                     android:id="@+id/app_precent"
@@ -45,7 +45,7 @@
                     android:layout_toRightOf="@id/appwallNameTV"
                     android:text="@string/clean_mem_notify_big_right"
                     android:textColor="@color/cool_red"
-                    android:textSize="16sp" />
+                    android:textSize="15sp" />
             </RelativeLayout>
 
             <TextView
@@ -55,12 +55,12 @@
                 android:layout_marginTop="4dp"
                 android:text="@string/clean_mem_notify_small"
                 android:textColor="@color/quick_close_text_color"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
         </LinearLayout>
 
         <RelativeLayout
             android:id="@+id/appwall_left"
-            android:layout_width="80dp"
+            android:layout_width="73dp"
             android:layout_height="35dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
@@ -74,7 +74,7 @@
                 android:layout_centerInParent="true"
                 android:text="@string/clean_mem_notify_boost"
                 android:textColor="@color/white"
-                android:textSize="13sp" />
+                android:textSize="12sp" />
         </RelativeLayout>
     </RelativeLayout>
 

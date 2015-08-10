@@ -240,6 +240,12 @@ public class SplashActivity extends BaseActivity {
             }
         }
     }
+    
+    @Override
+    public void finish() {
+        super.finish();
+        LeoEventBus.getDefaultBus().unregister(this);
+    }
 
     @Override
     protected void onDestroy() {

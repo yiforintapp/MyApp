@@ -971,6 +971,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // wallAd.clickWall();
                 Intent mWallIntent = wallAd.getWallIntent();
                 startActivity(mWallIntent);
+                AppMasterPreference.getInstance(LockScreenActivity.this).setAdClickTime(
+                        System.currentTimeMillis());
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                         "ad_cli", "unlocktop");
                 break;
