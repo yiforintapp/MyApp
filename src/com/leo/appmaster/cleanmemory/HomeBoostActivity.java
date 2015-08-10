@@ -14,6 +14,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Build.VERSION;
 import android.view.Display;
@@ -43,9 +44,20 @@ public class HomeBoostActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launcher_boost_activity);
         initUI();
+//        handleIntent();
         overridePendingTransition(0, 0);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "boost", "launcher");
     }
+
+//    private void handleIntent() {
+//        Intent intent = getIntent();
+//        String mFromWhere = intent.getStringExtra("for_sdk");
+//        if (mFromWhere.equals("for_sdk")) {
+//            LeoLog.d("testintent", "receive");
+//            SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1,
+//                    "boost", "statusbar");
+//        }
+//    }
 
     @Override
     protected void onResume() {
