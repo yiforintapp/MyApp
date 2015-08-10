@@ -1,12 +1,12 @@
 package com.leo.appmaster.ui.dialog;
 
 
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 
 public class LEOBaseDialog extends Dialog {
 
-	
 	public LEOBaseDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
 		super(context, cancelable, cancelListener);
 	}
