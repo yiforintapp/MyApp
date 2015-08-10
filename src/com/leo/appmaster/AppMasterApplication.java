@@ -83,6 +83,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureProxyActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -185,8 +186,8 @@ public class AppMasterApplication extends Application {
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
         registerLanguageChangeReceiver();
-        // Log.e(Constants.RUN_TAG,
-        // "机型："+BuildProperties.checkPhoneModel("l36H"));
+//         Log.e(Constants.RUN_TAG,
+//         "悬浮窗权限："+BuildProperties.isFloatWindowOpAllowed(getApplicationContext()));
 
     }
 
