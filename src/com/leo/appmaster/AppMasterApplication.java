@@ -188,7 +188,6 @@ public class AppMasterApplication extends Application {
         registerLanguageChangeReceiver();
         // Log.e(Constants.RUN_TAG,
         // "悬浮窗权限："+BuildProperties.isFloatWindowOpAllowed(getApplicationContext()));
-
     }
 
     private String getUserSerial() {
@@ -323,7 +322,7 @@ public class AppMasterApplication extends Application {
         });
         initSplashData();
         // TEST
-         setSplashData();
+//         setSplashData();
     }
 
     private void setSplashData() {
