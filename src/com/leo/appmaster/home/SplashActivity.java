@@ -240,6 +240,12 @@ public class SplashActivity extends BaseActivity {
             }
         }
     }
+    
+    @Override
+    public void finish() {
+        super.finish();
+        LeoEventBus.getDefaultBus().unregister(this);
+    }
 
     @Override
     protected void onDestroy() {
@@ -784,6 +790,7 @@ public class SplashActivity extends BaseActivity {
                             /* 存在客户端 */
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
+                            finish();
                             Log.e(Constants.RUN_TAG, "存在客户端并进入");
                         } catch (Exception e) {
                             /* 不存在指定客户端 */
