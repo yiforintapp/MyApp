@@ -123,7 +123,6 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_double_choices, null);
-
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
 
