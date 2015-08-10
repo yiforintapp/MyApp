@@ -1782,7 +1782,7 @@ public class FloatWindowHelper {
 
         mConflictTipsDialog = new LEOAlarmDialog(AppMasterApplication
                 .getInstance());
-
+       
         mConflictTipsDialog.findViewById(R.id.dlg_title).setVisibility(View.GONE);
         TextView tv = (TextView) mConflictTipsDialog
                 .findViewById(R.id.dlg_content);
@@ -1847,7 +1847,7 @@ public class FloatWindowHelper {
                 }
             }
         });
-
+//        mConflictTipsDialog.setCanceledOnTouchOutside(false);
         mConflictTipsDialog.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         mConflictTipsDialog.show();
