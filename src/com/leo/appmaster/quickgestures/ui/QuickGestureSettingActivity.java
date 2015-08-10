@@ -884,6 +884,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         if (mTriggerTypeDialog == null) {
             mTriggerTypeDialog = new LEODoubleChoicesDialog(this);
         }
+        
         final CheckBox fromCorner = (CheckBox) mTriggerTypeDialog.findViewById(R.id.cb_dialog_area);
         final CheckBox whitedot = (CheckBox) mTriggerTypeDialog.findViewById(R.id.cb_dialog_whitedot);
         whitedot.setChecked(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode());

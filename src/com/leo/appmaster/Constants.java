@@ -315,6 +315,7 @@ public class Constants {
     public static final String SPLASH_SKIP_TO_CLIENT_URL = "g";
     public static final String SPLASH_SKIP_PG_WEBVIEW = "0";
     public static final String SPLASH_SKIP_PG_CLIENT = "1";
+    public static final String SPLASH_BUTTON_TEXT="h";
     // ============== default home mode list =================
     public static String[] sDefaultHomeModeList = new String[] {
             "com.whatsapp",

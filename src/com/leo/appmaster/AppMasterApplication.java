@@ -186,8 +186,8 @@ public class AppMasterApplication extends Application {
         QuickGestureManager.getInstance(getApplicationContext()).screenSpace = AppMasterPreference
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
         registerLanguageChangeReceiver();
-//         Log.e(Constants.RUN_TAG,
-//         "悬浮窗权限："+BuildProperties.isFloatWindowOpAllowed(getApplicationContext()));
+        // Log.e(Constants.RUN_TAG,
+        // "悬浮窗权限："+BuildProperties.isFloatWindowOpAllowed(getApplicationContext()));
 
     }
 
@@ -1004,7 +1004,16 @@ public class AppMasterApplication extends Application {
                     String splashSkipToClient = response
                             .getString(Constants.SPLASH_SKIP_TO_CLIENT_URL);
                     if (splashSkipToClient != null) {
-                        Log.e(Constants.RUN_TAG, "闪屏 跳转客户端的链接：" + splashSkipToClient);
+                        Log.e(Constants.RUN_TAG, "闪屏跳转客户端的链接：" + splashSkipToClient);
+                    }
+                    /**
+                     * 闪屏Button文案
+                     * 
+                     * @该字段目前未使用所以没有做保存只是打Log供测试测试用后续有使用的对该字段再作处理
+                     */
+                    String spalshBtText = response.getString(Constants.SPLASH_BUTTON_TEXT);
+                    if (spalshBtText != null) {
+                        Log.e(Constants.RUN_TAG, "闪屏Button的文案：" + spalshBtText);
                     }
                     StringBuilder stringBuilder = constructionSplashFlag(startDate, imageUrl,
                             endDate, splashDelayTime, splashSkipUrl, splashSkipMode,

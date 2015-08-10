@@ -87,7 +87,7 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
         mHolderLayout.addView(mTabLayout);
 
         lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, DipPixelUtil.dip2px(context,
-                4));
+                5));
         mUnderlineLayout = new LeoTabUnderline(context, attrs);
         mUnderlineLayout.setLayoutParams(lp);
         mHolderLayout.addView(mUnderlineLayout);
@@ -174,7 +174,7 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
         tabView.setFocusable(true);
         tabView.setOnClickListener(mTabClickListener);
         tabView.setText(text);
-        tabView.setTextSize(16);
+        tabView.setTextSize(getResources().getInteger(R.integer.home_page_tab_text_size));
         tabView.setGravity(Gravity.CENTER);
         tabView.setPadding(10, 0, 10, 0);
         tabView.setBackgroundResource(R.drawable.home_tab_button_selecter);
@@ -371,14 +371,18 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
                 canvas.translate(x, y);
                 canvas.setDrawFilter(new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG));
                 Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_dot);
-          /*      float scaleX = (float) tabTextwdth / redTip.getWidth();
-                float scaleY = (float) tabTexteight / redTip.getHeight();*/
-                float scaleX = 1.6f;
-                float scaleY = 1.6f;
+                float scaleX = (float) tabTextwdth / redTip.getWidth();
+                float scaleY = (float) tabTexteight / redTip.getHeight();
+                Log.i("LeoPagerTab", redTip.getWidth()+" "+scaleX);
+                Log.i("LeoPagerTab",redTip.getHeight()+ " "+scaleY);
+                Paint paint = new Paint();
+                paint.setAntiAlias(true);
+                paint.setStyle(Paint.Style.FILL);
                 Matrix matrix = new Matrix();
-                matrix.setScale(scaleX, scaleY, redTip.getWidth() / 2,
-                        redTip.getHeight() / 2);
-                canvas.drawBitmap(redTip, matrix, null);
+                matrix.setScale(scaleX, scaleY);
+              /*  matrix.setScale(scaleX, scaleY, redTip.getWidth() / 2,
+                        redTip.getHeight() / 2);*/
+                canvas.drawBitmap(redTip, matrix, paint);
                 canvas.save();
             }
         }
