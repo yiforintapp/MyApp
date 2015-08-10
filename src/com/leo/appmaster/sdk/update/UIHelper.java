@@ -19,9 +19,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Build;
-import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.text.BoringLayout;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -35,9 +33,9 @@ import com.leo.appmaster.utils.NotificationUtil;
 
 public class UIHelper extends BroadcastReceiver implements com.leo.analytics.update.IUIHelper {
 
-    private final static String TAG = UIHelper.class.getSimpleName();
+    private final static String TAG = "UIHelper";
 
-    private final static String ACTION_SHOW_REMIND_TIP = "action_show_remind_tip";
+    private final static String ACTION_SHOW_REMIND_TIP = "com.leo.appmaster.update.remind";
 
     public static final String KEY_LAST_SHOW_REMIND_TIME = "last_show_remind_time";
     public static final String KEY_CURRENT_REMIND_TIMES = "remind_count";
@@ -311,21 +309,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     }
                     // consider remind times and frequency
                     if ((currentTime - lastRemindTime) < remindInterval) {
-                        // if (mRemindTask == null) {
-                        // mRemindTask = new TimerTask() {
-                        // @Override
-                        // public void run() {
-                        // if (CommonUtil.isNetworkAvailable(mContext)) {
-                        // Debug.d(TAG, "send from remind task");
-                        // sendUpdateNotification();
-                        // }
-                        // mRemindTask = null;
-                        // }
-                        // };
-                        // mTimer.schedule(mRemindTask, remindInterval
-                        // - (currentTime - lastRemindTime));
-                        // }
-
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) < remindInterval, so dont show remind");
                         setRemidAlarm(0, currentTime + remindInterval
                                 - (currentTime - lastRemindTime));
                     } else {
@@ -336,21 +321,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 } else if (frequencyConfig > 0) { // only consider frequency
                     LeoLog.d(TAG, "only consider frequency");
                     if ((currentTime - lastRemindTime) < remindInterval) {
-                        // if (mRemindTask == null) {
-                        // mRemindTask = new TimerTask() {
-                        // @Override
-                        // public void run() {
-                        // if (CommonUtil.isNetworkAvailable(mContext)) {
-                        // Debug.d(TAG, "send from remind task");
-                        // sendUpdateNotification();
-                        // }
-                        // mRemindTask = null;
-                        // }
-                        // };
-                        // mTimer.schedule(mRemindTask, remindInterval
-                        // - (currentTime - lastRemindTime));
-                        // }
-
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) < remindInterval, so dont show remind");
                         setRemidAlarm(0, currentTime + remindInterval
                                 - (currentTime - lastRemindTime));
                     } else {
@@ -410,21 +382,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     }
                     // consider remind times and frequency
                     if ((currentTime - lastRemindTime) < remindInterval) {
-                        // if (mRemindTask == null) {
-                        // mRemindTask = new TimerTask() {
-                        // @Override
-                        // public void run() {
-                        // if (CommonUtil.isNetworkAvailable(mContext)) {
-                        // Debug.d(TAG, "send from remind task");
-                        // relaunchActivity(mUIType, mUIParam);
-                        // }
-                        // mRemindTask = null;
-                        // }
-                        // };
-                        // mTimer.schedule(mRemindTask, remindInterval
-                        // - (currentTime - lastRemindTime));
-                        // }
-
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) < remindInterval, so dont show remind");
                         setRemidAlarm(1, currentTime + remindInterval
                                 - (currentTime - lastRemindTime));
                     } else {
@@ -435,20 +394,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 } else if (frequencyConfig > 0) { // only consider frequency
                     LeoLog.d(TAG, "only consider frequency");
                     if ((currentTime - lastRemindTime) < remindInterval) {
-                        // if (mRemindTask == null) {
-                        // mRemindTask = new TimerTask() {
-                        // @Override
-                        // public void run() {
-                        // if (CommonUtil.isNetworkAvailable(mContext)) {
-                        // Debug.d(TAG, "send from remind task");
-                        // relaunchActivity(mUIType, mUIParam);
-                        // }
-                        // mRemindTask = null;
-                        // }
-                        // };
-                        // mTimer.schedule(mRemindTask, remindInterval
-                        // - (currentTime - lastRemindTime));
-                        // }
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) < remindInterval, so dont show remind");
                         setRemidAlarm(1, currentTime + remindInterval
                                 - (currentTime - lastRemindTime));
                     } else {
