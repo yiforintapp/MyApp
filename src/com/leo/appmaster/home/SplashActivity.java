@@ -783,9 +783,8 @@ public class SplashActivity extends BaseActivity {
                     String clientUrl = AppMasterPreference.getInstance(this)
                             .getSplashSkipToClient();
                     if (clientUrl != null) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri.parse(clientUrl);
-                        intent.setData(uri);
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
                         try {
                             /* 存在客户端 */
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

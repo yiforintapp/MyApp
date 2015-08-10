@@ -323,24 +323,24 @@ public class AppMasterApplication extends Application {
         });
         initSplashData();
         // TEST
-        // setSplashData();
+         setSplashData();
     }
 
     private void setSplashData() {
         mSplashFlag = true;
         mIsEmptyForSplashUrl = false;
         mSplashDelayTime = 5000;
-        // AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
-        // Constants.SPLASH_SKIP_PG_CLIENT);
-        // AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("com.facebook.katana");
-        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
-                "fb://page/1709302419294051");
+         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
+         Constants.SPLASH_SKIP_PG_CLIENT);
+         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("fb://page/1709302419294051");
+//        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
+//                "fb://page/1709302419294051");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         try {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashStartShowTime(
                     dateFormate.parse("2015-08-05").getTime());
             AppMasterPreference.getInstance(getApplicationContext()).setSplashEndShowTime(
-                    dateFormate.parse("2015-08-08").getTime());
+                    dateFormate.parse("2015-08-20").getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
