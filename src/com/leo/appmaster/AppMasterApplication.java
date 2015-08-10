@@ -162,10 +162,16 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 checkNew();
+            }
+        }, 10, TimeUnit.SECONDS);
+        postInAppThreadPool(new Runnable() {
+
+            @Override
+            public void run() {
                 // 获取闪屏数据
                 loadSplashDate();
             }
-        }, 10, TimeUnit.SECONDS);
+        });
         if (AppMasterPreference.getInstance(getApplicationContext()).getIsFirstInstallApp()) {
             SplashActivity.deleteImage();
             AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false);
