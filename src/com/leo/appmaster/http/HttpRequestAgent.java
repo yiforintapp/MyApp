@@ -282,6 +282,7 @@ public class HttpRequestAgent {
      */
     public void loadSplashImage(final String url, String dir,
             Listener<File> listener, ErrorListener eListener) {
+        Log.e(Constants.RUN_TAG, "闪屏图片的Url："+url);
         FileRequest request = new FileRequest(url, dir, listener, eListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);

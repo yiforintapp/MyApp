@@ -985,7 +985,6 @@ public class AppMasterApplication extends Application {
                             endDate, splashDelayTime, splashSkipUrl, splashSkipMode,
                             splashSkipToClient);
                     String splashUriFlag = stringBuilder.toString();
-                    Log.e(Constants.RUN_TAG, "Url："+splashUriFlag);
                     String prefStringUri = pref.getSplashUriFlag();
                     int prefInt = pref.getSaveSplashIsMemeryEnough();
                     if (!prefStringUri.equals(splashUriFlag) || prefInt != -1) {
