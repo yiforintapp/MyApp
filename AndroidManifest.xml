@@ -90,6 +90,7 @@
         <activity
             android:name="com.leo.appmaster.home.SplashActivity"
             android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
             android:taskAffinity="com.leo.appmaster.home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -499,6 +500,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
+            android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -512,6 +514,7 @@
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity"
             android:launchMode="singleTop"
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
@@ -540,6 +543,7 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
@@ -717,6 +721,7 @@
         <!-- mobvista ad activity -->
         <activity
             android:name="com.mobvista.sdk.m.core.AdMobvistaAct"
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait" >
         </activity>
     </application>
