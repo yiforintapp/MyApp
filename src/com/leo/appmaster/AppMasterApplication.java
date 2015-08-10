@@ -328,7 +328,7 @@ public class AppMasterApplication extends Application {
     private void setSplashData() {
         mSplashFlag = true;
         mIsEmptyForSplashUrl = false;
-        mSplashDelayTime = 5000;
+        mSplashDelayTime = 10000;
          AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
          Constants.SPLASH_SKIP_PG_CLIENT);
          AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("fb://page/1709302419294051");
