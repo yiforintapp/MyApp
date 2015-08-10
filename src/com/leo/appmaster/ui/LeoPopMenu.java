@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.text.Html;
 import android.text.Spanned;
 import android.text.TextPaint;
+import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
@@ -42,6 +43,8 @@ public class LeoPopMenu {
     public final static float OVERPX = 220.0f;
     public static boolean isOverWidth = false;
 
+    protected static float finalWidth;
+    
     protected static float newSmallWidth;
     protected static float newLongWidth;
     protected  int mIconOffest = 0;
@@ -82,14 +85,26 @@ public class LeoPopMenu {
         }
 
         setWindowStyle(styles);
-
+        
         View convertView = buildTabListLayout();
-        mLeoPopMenu = new PopupWindow(convertView, mStyles.width, mStyles.height, true);
+              
+//        mLeoPopMenu=new PopupWindow(convertView, (int) finalWidth, styles.height,true);
+        mLeoPopMenu = new PopupWindow(mContext);
+        mLeoPopMenu.setContentView(convertView);
+        mLeoPopMenu.setHeight(mStyles.height);
+        mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext, 70)));
+        
+        Log.e("hehe", finalWidth+"final///"+mLeoPopMenu.getWidth()+" true w");
+        
+//      mLeoPopMenu.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//      mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+        
         mLeoPopMenu.setFocusable(true);
         mLeoPopMenu.setOutsideTouchable(true);
-        mLeoPopMenu.setOnDismissListener(dimissListener);
         mLeoPopMenu.setBackgroundDrawable(AppMasterApplication.getInstance()
                 .getResources().getDrawable(R.drawable.popup_menu_bg));
+        mLeoPopMenu.setOnDismissListener(dimissListener);
+       
         mLeoPopMenu.setAnimationStyle(mAnimaStyle);
         mLeoPopMenu.update();
 
@@ -100,7 +115,10 @@ public class LeoPopMenu {
         } else {
             mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
         }
-        mLeoPopMenu.update(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+//        mLeoPopMenu.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
+//        mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
+//        temp
+        
         
     }
 
@@ -117,6 +135,7 @@ public class LeoPopMenu {
                 popWidth = newLongWidth;
             }
             LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth+" mIconOffest = "+mIconOffest);
+            
             mStyles.width = DipPixelUtil.dip2px((Context) mContext, popWidth);
             // LeoLog.d("LeoPopMenu", "dip2px popWidth is : " + mStyles.width);
             mStyles.height = LayoutParams.WRAP_CONTENT;
@@ -170,6 +189,10 @@ public class LeoPopMenu {
             mAdapter = new MenuListAdapter();
         }
         mListView.setAdapter(mAdapter);
+        
+        
+   
+        
         return convertView;
     }
 
@@ -184,9 +207,11 @@ public class LeoPopMenu {
         LeoLog.d("LeoPopMenu", "Height = " + H);
 
         float mMaxLength = 0;
-        TextView testTextView = new TextView(mContext);
+        
+        TextView testTextView = (TextView) View.inflate(mContext, R.layout.popmenu_window_home_list_item, null).findViewById(R.id.menu_text);
+//        TextView testTextView = new TextView(mContext);
         for (int i = 0; i < mItems.size(); i++) {
-            testTextView.setText(mItems.get(i));
+            testTextView.setText(mItems.get(i));       
             float mOne = getTextViewLength(testTextView, mItems.get(i));
             LeoLog.d("LeoPopMenu", "字符：" + mItems.get(i) + "...长度：" + mOne);
             if (mOne > mMaxLength) {
@@ -194,75 +219,93 @@ public class LeoPopMenu {
             }
         }
         
+        
+//        newLongWidth=Math.min( W/2, mMaxLength);
+        
+        
+        
+        
         Log.e("hehe", "最长字符占的宽度px="+mMaxLength);
         
         
-
-        if (W >= 1080) {
-            if (mMaxLength > OVERPX) {
-                isOverWidth = true;
-                if (mMaxLength > 260) {
-                    newLongWidth = mMaxLength - 130;
-                } else {
-                    newLongWidth = mMaxLength - 110;
-                }
-                if (newLongWidth > 210) {
-                    newLongWidth = 210;
-                }
-                Log.i("tag","OVERPX mMaxLength = "+mMaxLength);
-                Log.i("tag"," OVERPX newLongWidth = "+newLongWidth);
-            } else {
-                isOverWidth = false;
-                if (mMaxLength < SMALLWidth) {
-                    newSmallWidth = mMaxLength - 20;
-                } else if (mMaxLength < 180) {
-                    newSmallWidth = mMaxLength - 40;
-                } else {
-                    newSmallWidth = mMaxLength - 60;
-                }
-                Log.i("tag","SMALLWidth mMaxLength = "+mMaxLength);
-                Log.i("tag"," SMALLWidth newSmallWidth = "+newSmallWidth);
-            }
-        } else if (W >= 720) {
-            if (mMaxLength > OVERPX) {
-                isOverWidth = true;
-                newLongWidth = LongWidth - 30;
-                if (newLongWidth > 210) {
-                    newLongWidth = 210;
-                }
-            } else {
-                isOverWidth = false;
-                if (mMaxLength < SMALLWidth) {
-                    newSmallWidth = mMaxLength;
-                } else {
-                    newSmallWidth = mMaxLength - 20;
-                }
-            }
-        } else if (W >= 480) {
-            if (mMaxLength > OVERPX) {
-                isOverWidth = true;
-                newLongWidth = LongWidth + 30;
-                if (newLongWidth > 210) {
-                    newLongWidth = 210;
-                }
-            } else {
-                isOverWidth = false;
-                newSmallWidth = mMaxLength + 40;
-            }
-        } else {
-            if (mMaxLength > OVERPX) {
-                isOverWidth = true;
-                newLongWidth = LongWidth + 50;
-                if (newLongWidth > 210) {
-                    newLongWidth = 210;
-                }
-            } else {
-                isOverWidth = false;
-                newSmallWidth = mMaxLength + 60;
-            }
+//
+//        if (W >= 1080) {
+//            if (mMaxLength > OVERPX) {
+//                isOverWidth = true;
+//                if (mMaxLength > 260) {
+//                    newLongWidth = mMaxLength - 130;
+//                } else {
+//                    newLongWidth = mMaxLength - 110;
+//                }
+//                if (newLongWidth > 210) {
+//                    newLongWidth = 210;
+//                }
+//                Log.i("tag","OVERPX mMaxLength = "+mMaxLength);
+//                Log.i("tag"," OVERPX newLongWidth = "+newLongWidth);
+//            } else {
+//                isOverWidth = false;
+//                if (mMaxLength < SMALLWidth) {
+//                    newSmallWidth = mMaxLength - 20;
+//                } else if (mMaxLength < 180) {
+//                    newSmallWidth = mMaxLength - 40;
+//                } else {
+//                    newSmallWidth = mMaxLength - 60;
+//                }
+//                Log.i("tag","SMALLWidth mMaxLength = "+mMaxLength);
+//                Log.i("tag"," SMALLWidth newSmallWidth = "+newSmallWidth);
+//            }
+//        } else if (W >= 720) {
+//            if (mMaxLength > OVERPX) {
+//                isOverWidth = true;
+//                newLongWidth = LongWidth - 30;
+//                if (newLongWidth > 210) {
+//                    newLongWidth = 210;
+//                }
+//            } else {
+//                isOverWidth = false;
+//                if (mMaxLength < SMALLWidth) {
+//                    newSmallWidth = mMaxLength;
+//                } else {
+//                    newSmallWidth = mMaxLength - 20;
+//                }
+//            }
+//        } else if (W >= 480) {
+//            if (mMaxLength > OVERPX) {
+//                isOverWidth = true;
+//                newLongWidth = LongWidth + 30;
+//                if (newLongWidth > 210) {
+//                    newLongWidth = 210;
+//                }
+//            } else {
+//                isOverWidth = false;
+//                newSmallWidth = mMaxLength + 40;
+//            }
+//        } else {
+//            if (mMaxLength > OVERPX) {
+//                isOverWidth = true;
+//                newLongWidth = LongWidth + 50;
+//                if (newLongWidth > 210) {
+//                    newLongWidth = 210;
+//                }
+//            } else {
+//                isOverWidth = false;
+//                newSmallWidth = mMaxLength + 60;
+//            }
+//        }
+        newSmallWidth=W/3;
+        newLongWidth=W/2;
+        finalWidth=mMaxLength;
+        if(mMaxLength>newLongWidth)
+        {
+           finalWidth=newSmallWidth;
         }
+        if(mMaxLength<newSmallWidth)
+        {
+            finalWidth=newSmallWidth;
+        }
+
         
-        
+        Log.e("hehe", "finalW="+finalWidth);
         Log.e("hehe", "是否超maxW="+isOverWidth);
         Log.e("hehe", "最终的minW="+newSmallWidth);
         Log.e("hehe", "最终的maxW="+newLongWidth);
@@ -270,10 +313,10 @@ public class LeoPopMenu {
         
         
         
-        // 不改动上面的代码，对最终结果再做适配
-        Locale locale = mContext.getResources().getConfiguration().locale;
-        String language = locale.getLanguage();
-        // Log.e("poha", language);
+//        // 不改动上面的代码，对最终结果再做适配
+//        Locale locale = mContext.getResources().getConfiguration().locale;
+//        String language = locale.getLanguage();
+//        // Log.e("poha", language);
         
     }
 
@@ -331,7 +374,7 @@ public class LeoPopMenu {
                 mHolder = (Holder) convertView.getTag();
             } else {
                 mHolder = new Holder();
-                convertView = inflater.inflate(R.layout.popmenu_window_list_item, null);
+                convertView = inflater.inflate(R.layout.popmenu_window_home_list_item, null);
                 mHolder.mItemName = (TextView) convertView.findViewById(R.id.menu_text);
                 convertView.setTag(mHolder);
             }
@@ -358,4 +401,48 @@ public class LeoPopMenu {
             mListView.setDivider(divider);
         }
     }
+    
+    
+    
+    public class MyListView extends ListView
+    {
+
+        public MyListView(Context context, AttributeSet attrs) {
+            super(context, attrs);
+            // TODO Auto-generated constructor stub
+        }
+
+        public MyListView(Context context) {
+            super(context);
+            // TODO Auto-generated constructor stub
+        }
+        
+        @Override
+        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+            int maxWidth = meathureWidthByChilds() + getPaddingLeft() + getPaddingRight();
+            super.onMeasure(MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY), heightMeasureSpec);    
+        }
+     
+        public int meathureWidthByChilds() {
+            int maxWidth = 0;
+            View view = null;
+            for (int i = 0; i < getAdapter().getCount(); i++) {
+                view = getAdapter().getView(i, view, this);
+                view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+                if (view.getMeasuredWidth() > maxWidth){
+                    maxWidth = view.getMeasuredWidth();
+                }
+            }
+            return maxWidth;
+        }
+        
+        
+    }
+    
+    
+    
+    
+    
+    
+    
 }

@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.util.Log;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -67,26 +68,26 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
-//    public void loadOnlineTheme(List<String> loadedTheme,
-//            Listener<JSONObject> listener, ErrorListener eListener) {
-//        String url = Utilities.getURL(Constants.ONLINE_THEME_URL);
-//        String combined = "";
-//        for (String string : loadedTheme) {
-//            combined = combined + string + ";";
-//        }
-//        String body = null;
-//        String requestLanguage = getPostLanguage();
-//        body = "language=" + requestLanguage + "&market_id="
-//                + mContext.getString(R.string.channel_code) + "&app_ver="
-//                + mContext.getString(R.string.version_name) + "&loaded_theme="
-//                + combined + "&pgsize=" + "6";
-//
-//        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
-//                body, listener, eListener);
-//        request.setShouldCache(false);
-//        mRequestQueue.add(request);
-//    }
-    
+    // public void loadOnlineTheme(List<String> loadedTheme,
+    // Listener<JSONObject> listener, ErrorListener eListener) {
+    // String url = Utilities.getURL(Constants.ONLINE_THEME_URL);
+    // String combined = "";
+    // for (String string : loadedTheme) {
+    // combined = combined + string + ";";
+    // }
+    // String body = null;
+    // String requestLanguage = getPostLanguage();
+    // body = "language=" + requestLanguage + "&market_id="
+    // + mContext.getString(R.string.channel_code) + "&app_ver="
+    // + mContext.getString(R.string.version_name) + "&loaded_theme="
+    // + combined + "&pgsize=" + "6";
+    //
+    // JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+    // body, listener, eListener);
+    // request.setShouldCache(false);
+    // mRequestQueue.add(request);
+    // }
+
     public void loadOnlineTheme(List<String> loadedTheme, RequestListener listener) {
         String url = Utilities.getURL(Constants.ONLINE_THEME_URL);
         String combined = "";
@@ -110,11 +111,10 @@ public class HttpRequestAgent {
         }
         mRequestQueue.add(request);
     }
-    
-/*
- * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）
- *"zh":中文简体，”zh_(地区)“：繁体中文
- */
+
+    /*
+     * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）"zh":中文简体，”zh_(地区)“：繁体中文
+     */
     private String getPostLanguage() {
         String requestLanguage;
         String language = AppwallHttpUtil.getLanguage();
@@ -128,7 +128,7 @@ public class HttpRequestAgent {
         } else {
             requestLanguage = language;
         }
-//        Log.d(Constants.RUN_TAG, "sys_language:" +requestLanguage);
+        // Log.d(Constants.RUN_TAG, "sys_language:" +requestLanguage);
         return requestLanguage;
     }
 
@@ -158,7 +158,7 @@ public class HttpRequestAgent {
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalBusinessSerialNumber() + "&market_id="
                 + mContext.getString(R.string.channel_code) + "&language="
-                +requestLanguage + "&app_ver="
+                + requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
         url += body;
@@ -261,9 +261,12 @@ public class HttpRequestAgent {
         String requestLanguage = getPostLanguage();
         String object = "";
         String url = Utilities.getURL(Constants.SPLASH_URL
-                + mContext.getString(R.string.version_name) + "/"
                 + Utilities.getCountryID(mContext) + "/"
+                + requestLanguage + "/" +
+                mContext.getString(R.string.version_name) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
+//        url=Utilities.getURL("/appmaster/flushscreen/cn/zh/2.4/0085a.html");
+        Log.e(Constants.RUN_TAG,"闪屏请求访问url："+url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
         request.setShouldCache(true);
@@ -279,13 +282,15 @@ public class HttpRequestAgent {
      */
     public void loadSplashImage(final String url, String dir,
             Listener<File> listener, ErrorListener eListener) {
+        Log.e(Constants.RUN_TAG, "闪屏图片的Url："+url);
         FileRequest request = new FileRequest(url, dir, listener, eListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
     }
-    
+
     /**
      * 提交用户反馈
+     * 
      * @param listener
      * @param errorListener
      * @param params
@@ -296,7 +301,8 @@ public class HttpRequestAgent {
         String bodyString = null;
         String url = Utilities.getURL(FeedbackHelper.FEEDBACK_URL);
         int method = Method.POST;
-        JsonObjectRequest request = new JsonObjectRequest(method, url, bodyString, listener, errorListener) {
+        JsonObjectRequest request = new JsonObjectRequest(method, url, bodyString, listener,
+                errorListener) {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -317,35 +323,37 @@ public class HttpRequestAgent {
         request.setRetryPolicy(policy);
         mRequestQueue.add(request);
     }
-    
+
     /**
      * 加载游戏推荐
+     * 
      * @param listener
      * @param errorListener
      */
     public void loadGameData(Listener<JSONObject> listener, ErrorListener errorListener) {
-        String url = Utilities.getURL(Constants.PATH_GAME_DATA); 
+        String url = Utilities.getURL(Constants.PATH_GAME_DATA);
         String language = AppwallHttpUtil.getLanguage();
         String code = AppMasterApplication.getInstance().getString(R.string.channel_code);
         final Map<String, String> map = new HashMap<String, String>();
         map.put("language_type", language);
         map.put("market_id", code);
-        
+
         String body = null;
-        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url, body, listener, errorListener) {
+        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url, body, listener,
+                errorListener) {
 
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 return map;
             }
-            
+
         };
         mRequestQueue.add(request);
     }
-    
+
     public abstract static class RequestListener<T> implements Listener<JSONObject>, ErrorListener {
         private WeakReference<T> outerContextRef;
-        
+
         public RequestListener(T outerContext) {
             outerContextRef = new WeakReference<T>(outerContext);
         }
@@ -353,7 +361,7 @@ public class HttpRequestAgent {
         protected T getOuterContext() {
             return outerContextRef.get();
         }
-        
+
     }
-    
+
 }

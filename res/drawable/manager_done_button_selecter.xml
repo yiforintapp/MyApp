@@ -3,7 +3,7 @@
 
     <item android:drawable="@drawable/done_btn_sel" android:state_pressed="true"/>
     <item android:drawable="@drawable/done_btn_sel" android:state_focused="true"/>
+    <item android:drawable="@drawable/app_cancel_btn_sel" android:state_enabled="false"/>
     <item android:drawable="@drawable/app_done_btn"/>
     
 </selector>
-

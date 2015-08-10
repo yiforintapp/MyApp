@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_all_content"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:layout_marginBottom="15dp"
+    android:layout_marginTop="16dp"
     android:background="@drawable/wei_zhuang_gridview_list_selecter"
-    android:gravity="center" >
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="10dp"
+    android:paddingTop="10dp" >
 
     <FrameLayout
         android:id="@+id/item_icon_content"
@@ -15,7 +20,6 @@
             android:id="@+id/item_icon"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:layout_marginTop="26dp"
             android:adjustViewBounds="true" />
 
         <ImageView
@@ -32,11 +36,10 @@
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/item_icon_content"
-        android:gravity="center_horizontal"
-        android:layout_marginBottom="25dp"
         android:layout_marginTop="16dp"
-        android:singleLine="true"
+        android:gravity="center_horizontal"
+        android:singleLine="false"
         android:textColor="@color/weisuo_text"
         android:textSize="14dp" />
 
-</RelativeLayout>
+</LinearLayout>

@@ -107,6 +107,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     private static final int MSG_LOAD_PAGE_DATA_FAILED = 3;
     private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
 
+    private static final int LOAD_INIT = 100;
+    private static final int LOAD_MORE = 101;
+
     private EventHandler mHandler;
     private String mFromTheme;
     private int mHelpSettingCurrent;
@@ -464,7 +467,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     }
 
     private void loadInitOnlineTheme() {
-        ThemeListener listener = new ThemeListener(this);
+        ThemeListener listener = new ThemeListener(this, LOAD_INIT);
         HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemes, listener);
     }
 
@@ -603,7 +606,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             loadedTheme.add(info.packageName);
         }
         
-        ThemeListener listener = new ThemeListener(this);
+        ThemeListener listener = new ThemeListener(this, LOAD_MORE);
         HttpRequestAgent.getInstance(this).loadOnlineTheme(loadedTheme, listener);
     }
 
@@ -978,8 +981,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     
     private static class ThemeListener extends RequestListener<LockerTheme> {
 
-        public ThemeListener(LockerTheme outerContext) {
+        private int loadType;
+
+        public ThemeListener(LockerTheme outerContext, int loadType) {
             super(outerContext);
+            this.loadType = loadType;
         }
 
         @Override
@@ -990,7 +996,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             LockerTheme lockerTheme = getOuterContext();
             if (lockerTheme == null) return;
             
-            lockerTheme.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+            if (loadType == LOAD_INIT) {
+                lockerTheme.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+            } else {
+                lockerTheme.mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
+            }
         }
 
         @Override
@@ -999,8 +1009,14 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             if (lockerTheme == null) return;
             
             LeoLog.d("response", response.toString());
+            int msgId = 0;
+            if (loadType == LOAD_INIT) {
+                msgId = MSG_LOAD_INIT_SUCCESSED;
+            } else {
+                msgId = MSG_LOAD_PAGE_DATA_SUCCESS;
+            }
             List<ThemeItemInfo> list = ThemeJsonObjectParser.parserJsonObject(lockerTheme, response);
-            Message msg = lockerTheme.mHandler.obtainMessage(MSG_LOAD_INIT_SUCCESSED, list);
+            Message msg = lockerTheme.mHandler.obtainMessage(msgId, list);
             lockerTheme.mHandler.sendMessage(msg);
         }
         

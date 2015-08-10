@@ -54,6 +54,7 @@ import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -116,6 +117,8 @@ public class SplashActivity extends BaseActivity {
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
+        
+//        Log.d(Constants.RUN_TAG, "数据："+startShowSplashTime+", "+endShowSplashTime+",  跳转模式："+AppMasterPreference.getInstance(getApplicationContext()).getSplashSkipMode());
         /**
          * 可能存在的几种情况：
          * 
@@ -167,9 +170,9 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    /* 如果url存在则显示按钮 */
+    /* 如果url存在则设置点击跳转 */
     private void showSkipUrlButton() {
-        Log.e(Constants.RUN_TAG, "链接：" + mIsEmptyForSplashUrl);
+//        Log.e(Constants.RUN_TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
         if (!mIsEmptyForSplashUrl) {
             mSplashRL.setOnClickListener(new SkipUrlOnClickListener());
         }
@@ -182,11 +185,15 @@ public class SplashActivity extends BaseActivity {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.splashRL:
-                    // Log.e(Constants.RUN_TAG, "立即设置");
+                    // Log.e(Constants.RUN_TAG, "立即体验");
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                            "screen_cli", "go");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
                     // Log.e(Constants.RUN_TAG, "跳过");
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                            "screen_cli", "skip");
                     startHome();
                     break;
                 default:
@@ -313,6 +320,8 @@ public class SplashActivity extends BaseActivity {
                         // }
                         startHome();
                     }
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                            "screen_cli", "none");
                     break;
 
                 default:

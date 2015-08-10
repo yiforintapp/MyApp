@@ -150,8 +150,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // hideVideo
     public static final String PREF_HIDE_VIDEO_LAST_DIR = "hide_video_last_dir";
     public static final String PREF_HIDE_VIDEO_SECOND_DIR = "hide_video_second_dir";
-    
-    //time to show notify that clean memory
+
+    // time to show notify that clean memory
     public static final String PREF_SHOW_NOTIFY_CLEAN_MEMORY = "show_notify_clean_memory";
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
@@ -219,7 +219,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_SKIP_MODE = "splash_skip_mode";
     public static final String PREF_SPLASH_DElAY_TIME = "splash_delay_time";
     public static final String PREF_SPLASH_SKIP_TO_CLIENT = "splash_skip_to_client";
-    public static final String PREF_QUICK_SWITCH_FLOAT_WINDOWS="switch_float_windows";
+    public static final String PREF_QUICK_SWITCH_FLOAT_WINDOWS = "switch_float_windows";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1464,6 +1464,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mCurrentSplashStrategy;
     }
 
+    /* 加载闪屏失败的时间 */
     public void setLastLoadSplashTime(long lashTime) {
         mPref.edit().putLong(PREF_LAST_LOAD_SPLASH_TIME, lashTime).commit();
     }
@@ -1488,6 +1489,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);
     }
 
+    /* 加载闪屏首次失败的当天日期 */
     public void setSplashLoadFailDate(String date) {
         mPref.edit().putString(PREF_SPLASH_LOAD_FAIL_DATE, date).commit();
     }
@@ -1496,6 +1498,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getString(PREF_SPLASH_LOAD_FAIL_DATE, Constants.SPLASH_REQUEST_FAIL_DATE);
     }
 
+    /* 加载闪屏当天失败的次数 */
     public void setSplashLoadFailNumber(int number) {
         mPref.edit().putInt(PREF_SPLASH_LOAD_FAIL_NUMBER, number).commit();
     }
@@ -1999,22 +2002,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getMessageIsRedTip() {
         return mPref.getBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, false);
     }
-    
+
     public void setIsOpenFloatWindows(boolean flag) {
-   
+
         mPref.edit().putBoolean(PREF_QUICK_SWITCH_FLOAT_WINDOWS, flag).commit();
     }
 
     public boolean getIsOpenFloatWindows() {
         return mPref.getBoolean(PREF_QUICK_SWITCH_FLOAT_WINDOWS, true);
     }
-    
-    
-  
-    
-    
-    
-    
 
     public void setWhiteFloatViewCoordinate(int x, int y) {
         mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x + ":" + y).commit();
@@ -2028,15 +2024,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return coordinate;
     }
 
-    
-    
-    
-    
-    
-    
-    
-    
-    
     public void addUseStrengthenModeTimes() {
         if (mUseStrengthModeTimes <= 0) {
             mUseStrengthModeTimes = getUseStrengthenModeTimes();
@@ -2145,7 +2132,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public String getSplashSkipUrl() {
         return mPref.getString(PREF_SPLASH_SKIP_URL, null);
-//        return mPref.getString(PREF_SPLASH_SKIP_URL, "market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+        // return mPref.getString(PREF_SPLASH_SKIP_URL,
+        // "market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
     }
 
     /* 保存闪屏跳转方式 */
@@ -2175,10 +2163,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getString(PREF_SPLASH_SKIP_TO_CLIENT, null);
     }
 
-    public void setLastShowNotifyTime(long savetime){
+    public void setLastShowNotifyTime(long savetime) {
         mPref.edit().putLong(PREF_SHOW_NOTIFY_CLEAN_MEMORY, savetime).commit();
     }
-    
+
     public long getLastShowNotifyTime() {
         return mPref.getLong(PREF_SHOW_NOTIFY_CLEAN_MEMORY, 0);
     }

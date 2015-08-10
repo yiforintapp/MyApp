@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="42"
+    android:versionCode="43"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -89,6 +89,7 @@
         android:theme="@style/activity_theme" >
         <activity
             android:name="com.leo.appmaster.home.SplashActivity"
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home" >
             <intent-filter>
@@ -497,6 +498,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
+            android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -509,6 +511,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity"
+            android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
@@ -531,6 +534,7 @@
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
             android:configChanges="orientation|screenSize"
+            android:excludeFromRecents="true"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleInstance"
@@ -718,6 +722,7 @@
         <!-- mobvista ad activity -->
         <activity
             android:name="com.mobvista.sdk.m.core.AdMobvistaAct"
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait" >
         </activity>
     </application>

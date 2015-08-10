@@ -13,6 +13,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
@@ -125,6 +126,18 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mPre.addGestureSlideAnimTimes();
         }
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "qtset");
+        
+        updateSettingButtonEnable();
+       
+    }
+
+    private void updateSettingButtonEnable() {
+        // TODO Auto-generated method stub
+//        if(AppMasterPreference.getInstance(this).getIsOpenFloatWindows())
+//        {
+            mSlideAreaSetBtn.setEnabled(AppMasterPreference.getInstance(this).getIsOpenFloatWindows());
+      
+        
     }
 
     @Override
