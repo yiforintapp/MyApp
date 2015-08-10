@@ -777,13 +777,13 @@ public class SplashActivity extends BaseActivity {
                     String clientUrl = AppMasterPreference.getInstance(this)
                             .getSplashSkipToClient();
                     if (clientUrl != null) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri.parse(clientUrl);
-                        intent.setData(uri);
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
                         try {
                             /* 存在客户端 */
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
+                            finish();
                             Log.e(Constants.RUN_TAG, "存在客户端并进入");
                         } catch (Exception e) {
                             /* 不存在指定客户端 */
