@@ -5,6 +5,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
@@ -14,6 +15,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Build.VERSION;
 import android.view.Display;
@@ -43,8 +45,18 @@ public class HomeBoostActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launcher_boost_activity);
         initUI();
+        handleIntent();
         overridePendingTransition(0, 0);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "boost", "launcher");
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        String abc = intent.getStringExtra("for_sdk");
+        if (abc != null) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "boost", "statusbar");
+        }
     }
 
     @Override
@@ -61,6 +73,7 @@ public class HomeBoostActivity extends Activity {
     @Override
     public void finish() {
         overridePendingTransition(0, 0);
+        LockManager.getInstatnce().filterAllOneTime(500);
         super.finish();
     }
 

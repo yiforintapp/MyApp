@@ -239,10 +239,31 @@ public class BuildProperties {
 
     // HUAWEI
     public static boolean checkIsHuaWeiPhone() {
-        if ((!(checkIsAppointPhone((Object) (getSystemProperty("ro.build.version.emui")),
-                (Object) ("EmotionUI_2.3")))) && (!(Build.DISPLAY.startsWith("EMUI2.3"))))
+        String systemProperty = getSystemProperty("ro.build.version.emui");
+        String emotion23 = "EmotionUI_2.3";
+        
+        boolean isEmotion23 = checkIsAppointPhone(systemProperty, emotion23);
+        if (!isEmotion23 && !(Build.DISPLAY.startsWith("EMUI2.3"))) {
             return false;
+        }
+//        if ((!(checkIsAppointPhone((Object) (getSystemProperty("ro.build.version.emui")),
+//                (Object) ("EmotionUI_2.3")))) && (!(Build.DISPLAY.startsWith("EMUI2.3"))))
+//            return false;
         return true;
+    }
+    
+    /**
+     * 是否是华为EmotionUI_3.0以上系统
+     * @return
+     */
+    public static boolean checkIsHuaWeiEmotion31() {
+        String systemProperty = getSystemProperty("ro.build.version.emui"); 
+        String emotion3 = "EmotionUI_3.";
+        if (systemProperty != null && systemProperty.startsWith(emotion3)) {
+            return true;
+        }
+        
+        return false;
     }
 
     public static boolean isHuaWeiTipPhone(Context context) {
@@ -253,9 +274,18 @@ public class BuildProperties {
         try {
             LockManager.getInstatnce().timeFilterSelf();
             Intent intent = new Intent();
-            String string = (checkIsHuaWeiPhone()) ? ("com.huawei.systemmanager.SystemManagerMainActivity")
-                    : ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
-            intent.setClassName("com.huawei.systemmanager", string);
+//            String string = (checkIsHuaWeiPhone()) ? ("com.huawei.systemmanager.SystemManagerMainActivity")
+//                    : ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
+            
+            String className = null;
+            if (checkIsHuaWeiEmotion31()) {
+                className = "com.huawei.systemmanager.addviewmonitor.AddViewMonitorActivity";
+            } else if (checkIsHuaWeiPhone()) {
+                className = "com.huawei.systemmanager.SystemManagerMainActivity";
+            } else {
+                className = "com.huawei.notificationmanager.ui.NotificationManagmentActivity";
+            }
+            intent.setClassName("com.huawei.systemmanager", className);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 LockManager.getInstatnce().addFilterLockPackage("com.huawei.systemmanager", false);

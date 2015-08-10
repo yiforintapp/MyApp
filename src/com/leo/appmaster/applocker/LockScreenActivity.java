@@ -34,10 +34,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -83,17 +83,13 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
-import com.mobvista.sdk.m.core.AdListener;
 import com.mobvista.sdk.m.core.MobvistaAd;
-import com.mobvista.sdk.m.core.MobvistaAdNative;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 import com.mobvista.sdk.m.core.WallIconCallback;
-import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener {
@@ -139,7 +135,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private RelativeLayout mLockLayout;
     private boolean mMissingDialogShowing;
 
-    private MobvistaAdNative nativeAd;
     private MobvistaAdWall wallAd;
 
     public static boolean sLockFilterFlag = false;
@@ -192,10 +187,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // mobvista ad
         MobvistaAd.init(this, "19242", "8c8f18965dfd4377892a458f3b854401");
         // -----------------Mobvista Sdk--------------------
-        // init native controller
-        // newNativeController(Context context,String unitid,String fbid)
-        nativeAd = MobvistaAd.newNativeController(this, "25",
-                "1060111710674878_1060603623959020");
 
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
@@ -513,7 +504,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
-        nativeAd.release();
         MobvistaAd.release();
         LeoLog.d(TAG, "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
@@ -981,6 +971,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // wallAd.clickWall();
                 Intent mWallIntent = wallAd.getWallIntent();
                 startActivity(mWallIntent);
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                        "ad_cli", "unlocktop");
                 break;
             default:
                 break;

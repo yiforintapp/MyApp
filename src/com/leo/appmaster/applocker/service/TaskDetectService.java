@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
@@ -34,6 +35,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
+import com.leo.appmaster.applocker.receiver.showTrafficAlof;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.home.HomeActivity;
@@ -58,9 +60,9 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-    // public static final int SHOW_NOTI_PRE_DAY = 60000;
-    public static final int MAX_MEMORY = 65;
+//    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+     public static final int SHOW_NOTI_PRE_DAY = 20000;
+    public static final int MAX_MEMORY = 10;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -351,26 +353,14 @@ public class TaskDetectService extends Service {
         RemoteViews view_custom = new RemoteViews(getPackageName(), R.layout.clean_mem_notify);
         // 设置对应IMAGEVIEW的ID的资源图片
         view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
-        // view_custom.setInt(R.id.custom_icon,"setBackgroundResource",R.drawable.icon);
         view_custom.setTextViewText(R.id.appwallNameTV,
                 getApplicationContext().getString(R.string.clean_mem_notify_big));
         view_custom.setTextViewText(R.id.app_precent,
                 getApplicationContext().getString(R.string.clean_mem_notify_big_right));
         view_custom.setTextViewText(R.id.appwallDescTV,
                 getApplicationContext().getString(R.string.clean_mem_notify_small));
-        // view_custom.setTextViewText(R.id.tv_custom_time,
-        // String.valueOf(System.currentTimeMillis()));
-        // 设置显示
-        // view_custom.setViewVisibility(R.id.tv_custom_time, View.VISIBLE);
-        // view_custom.setLong(R.id.tv_custom_time,"setTime",
-        // System.currentTimeMillis());//不知道为啥会报错，过会看看日志
-        // 设置number
-        // NumberFormat num = NumberFormat.getIntegerInstance();
-        // view_custom.setTextViewText(R.id.tv_custom_num,
-        // num.format(this.number));
         NotificationCompat.Builder mBuilder = new Builder(this);
         mBuilder.setContent(view_custom)
-                // .setContentIntent(getDefalutIntent(Notification.FLAG_AUTO_CANCEL))
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
                 .setTicker(getApplicationContext().getString(R.string.clean_mem_notify_big))
                 .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
@@ -378,20 +368,26 @@ public class TaskDetectService extends Service {
                 .setSmallIcon(R.drawable.boosticon)
                 .setAutoCancel(true);
 
-        Intent intent = new Intent(getApplicationContext(), HomeBoostActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent,
-                0);
+        // Intent realIntent = new Intent(this, HomeBoostActivity.class);
+        // realIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // Intent clickIntent = new Intent(this, showTrafficAlof.class);
+        // clickIntent.putExtra("realIntent", realIntent);
+        // clickIntent.setAction("com.leo.appmaster.boost.notification");
+        // PendingIntent pi = PendingIntent.getBroadcast(this, 0, clickIntent,
+        // PendingIntent.FLAG_UPDATE_CURRENT);
+        // mBuilder.setContentIntent(pi);
+
+        Intent intent = new Intent(this,
+                HomeBoostActivity.class);
+        intent.putExtra("for_sdk", "for_sdkfor_sdkfor_sdkfor_sdk");
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(pendingIntent);
 
         // mNotificationManager.notify(notifyId, mBuilder.build());
         Notification notify = mBuilder.build();
         notify.contentView = view_custom;
-        // notify.flags = Notification.FLAG_AUTO_CANCEL;
-        // Notification notify = new Notification();
-        // notify.icon = R.drawable.icon;
-        // notify.contentView = view_custom;
-        // notify.contentIntent =
-        // getDefalutIntent(Notification.FLAG_AUTO_CANCEL);
         mNotificationManager.notify(notifyId, notify);
     }
 
@@ -583,24 +579,23 @@ public class TaskDetectService extends Service {
                                     .getInstance(AppMasterApplication.getInstance()).isDialogShowing;
 
                             // phtc
-                            
-                         
+
                             if (isAppsAndHome) {
                                 boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
-                               
-                                    if ((!isFilterApp
-                                            || FloatWindowHelper.mEditQuickAreaFlag)
-                                            && !isDialogingShowing&&sp_traffic.getIsOpenFloatWindows()) {
-                                        FloatWindowHelper.createFloatWindow(getApplicationContext(),
-                                                value);
-                                        
-                                        //TODO
-                                        Log.e("iscreated", "appsandhome");
-                                        
-                                    } else {
-                                        FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                                    }                                    
-                                
+
+                                if ((!isFilterApp
+                                        || FloatWindowHelper.mEditQuickAreaFlag)
+                                        && !isDialogingShowing
+                                        && sp_traffic.getIsOpenFloatWindows()) {
+                                    FloatWindowHelper.createFloatWindow(getApplicationContext(),
+                                            value);
+
+                                    // TODO
+                                    Log.e("iscreated", "appsandhome");
+
+                                } else {
+                                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
+                                }
 
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
@@ -617,7 +612,8 @@ public class TaskDetectService extends Service {
                                 if (!isHomeFlag)
                                     isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag)
-                                        && !isDialogingShowing&&sp_traffic.getIsOpenFloatWindows()) {
+                                        && !isDialogingShowing
+                                        && sp_traffic.getIsOpenFloatWindows()) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
                                     Log.e("iscreated", "appsandhome");

@@ -89,8 +89,8 @@
         android:theme="@style/activity_theme" >
         <activity
             android:name="com.leo.appmaster.home.SplashActivity"
-            android:screenOrientation="portrait"
             android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -238,10 +238,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
-        
-    
-        
-        
         <activity
             android:name="com.leo.appmaster.imagehide.ImageHideMainActivity"
             android:excludeFromRecents="true"
@@ -311,7 +307,9 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
-            <category android:name="android.intent.category.DEFAULT" />
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <!-- lockerThemeGuide -->
         <activity
@@ -513,8 +511,8 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity"
-            android:launchMode="singleTop"
             android:excludeFromRecents="true"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
@@ -527,8 +525,6 @@
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-        
-      
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip"
             android:excludeFromRecents="true"
@@ -538,12 +534,12 @@
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
             android:configChanges="orientation|screenSize"
+            android:excludeFromRecents="true"
             android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:screenOrientation="portrait"
-            android:excludeFromRecents="true"
             android:theme="@style/activity_theme" >
         </activity>
         <activity
@@ -716,6 +712,11 @@
         <!-- for LEO push sdk -->
         <service
             android:name="com.leo.push.PushService"
+            android:exported="true" />
+
+        <!-- for LEO update sdk -->
+        <receiver
+            android:name="com.leo.appmaster.sdk.update.UIHelper"
             android:exported="true" />
 
         <!-- mobvista ad activity -->
