@@ -898,7 +898,7 @@ public class AppMasterApplication extends Application {
         Date currentDate = new Date(curTime);
         final String failDate = dateFormate.format(currentDate);
         long lastLoadTime = pref.getLastLoadSplashTime();
-        Log.e(Constants.RUN_TAG, "开始拉取");
+//        Log.e(Constants.RUN_TAG, "开始拉取");
         if (lastLoadTime == 0
                 || (curTime - pref.getLastLoadSplashTime()) >
                 pref.getSplashCurrentStrategy()) {

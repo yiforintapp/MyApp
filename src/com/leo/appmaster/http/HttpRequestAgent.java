@@ -266,7 +266,7 @@ public class HttpRequestAgent {
                 mContext.getString(R.string.version_name) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
 //        url=Utilities.getURL("/appmaster/flushscreen/cn/zh/2.4/0085a.html");
-        Log.e(Constants.RUN_TAG,"访问连接："+url);
+        Log.e(Constants.RUN_TAG,"闪屏请求访问url："+url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
         request.setShouldCache(true);
