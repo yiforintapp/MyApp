@@ -307,7 +307,9 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
-            <category android:name="android.intent.category.DEFAULT" />
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <!-- lockerThemeGuide -->
         <activity
@@ -711,6 +713,15 @@
         <service
             android:name="com.leo.push.PushService"
             android:exported="true" />
+
+        <!-- for LEO update sdk -->
+        <receiver
+            android:name="com.leo.appmaster.sdk.update.UIHelper"
+            android:exported="true" >
+            <intent-filter android:priority="10000" >
+                <action android:name="com.leo.appmaster.update.remind" />
+            </intent-filter>
+        </receiver>
 
         <!-- mobvista ad activity -->
         <activity

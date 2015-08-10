@@ -83,6 +83,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.QuickGestureProxyActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -162,10 +163,16 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 checkNew();
+            }
+        }, 10, TimeUnit.SECONDS);
+        postInAppThreadPool(new Runnable() {
+
+            @Override
+            public void run() {
                 // 获取闪屏数据
                 loadSplashDate();
             }
-        }, 10, TimeUnit.SECONDS);
+        });
         if (AppMasterPreference.getInstance(getApplicationContext()).getIsFirstInstallApp()) {
             SplashActivity.deleteImage();
             AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false);
@@ -180,7 +187,7 @@ public class AppMasterApplication extends Application {
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
         registerLanguageChangeReceiver();
         // Log.e(Constants.RUN_TAG,
-        // "机型："+BuildProperties.checkPhoneModel("l36H"));
+        // "悬浮窗权限："+BuildProperties.isFloatWindowOpAllowed(getApplicationContext()));
 
     }
 
@@ -997,7 +1004,16 @@ public class AppMasterApplication extends Application {
                     String splashSkipToClient = response
                             .getString(Constants.SPLASH_SKIP_TO_CLIENT_URL);
                     if (splashSkipToClient != null) {
-                        Log.e(Constants.RUN_TAG, "闪屏 跳转客户端的链接：" + splashSkipToClient);
+                        Log.e(Constants.RUN_TAG, "闪屏跳转客户端的链接：" + splashSkipToClient);
+                    }
+                    /**
+                     * 闪屏Button文案
+                     * 
+                     * @该字段目前未使用所以没有做保存只是打Log供测试测试用后续有使用的对该字段再作处理
+                     */
+                    String spalshBtText = response.getString(Constants.SPLASH_BUTTON_TEXT);
+                    if (spalshBtText != null) {
+                        Log.e(Constants.RUN_TAG, "闪屏Button的文案：" + spalshBtText);
                     }
                     StringBuilder stringBuilder = constructionSplashFlag(startDate, imageUrl,
                             endDate, splashDelayTime, splashSkipUrl, splashSkipMode,

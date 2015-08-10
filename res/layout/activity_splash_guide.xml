@@ -99,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:padding="@dimen/splash_skip_button_padding"
-        android:src="@drawable/closebotton"
+        android:src="@drawable/splash_skip_button_select"
         android:visibility="invisible" />
 
 </FrameLayout>

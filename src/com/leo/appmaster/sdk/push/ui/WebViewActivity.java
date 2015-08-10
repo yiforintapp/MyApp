@@ -341,26 +341,17 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     /* 进入主页 */
     private void startHome() {
-        Log.e(Constants.RUN_TAG, "是否来自闪屏："+mIsFromSplash);
+        Log.e(Constants.RUN_TAG, "是否来自闪屏：" + mIsFromSplash);
         if (mIsFromSplash) {
             AppMasterPreference amp = AppMasterPreference.getInstance(this);
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
-                    // LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                    // getPackageName(), true, null);
-                    // amp.setDoubleCheck(null);
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                }
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
             } else {
                 Intent intent = new Intent(this, LockSettingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             }
