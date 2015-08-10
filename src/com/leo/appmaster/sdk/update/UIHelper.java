@@ -69,7 +69,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private int mUIParam = 0;
     private int mProgress = 0;
 
-    private UIHelper(Context ctx) {
+    public UIHelper(Context ctx) {
         mContext = ctx.getApplicationContext();
         /* new version found */
         IntentFilter filter = new IntentFilter();
@@ -268,7 +268,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
                 && !isAppOnTop(mContext)) {
             // || ui_type == IUIHelper.BACK_DOWNLOAD_DONE
-            sendUpdateNotification();
+            checkShowRemindNotification();
         } else {
             showUI(ui_type, param);
         }
@@ -665,14 +665,15 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     private void setRemidAlarm(int type, long trigger) {
         LeoLog.d(TAG, "setRemidAlarm type = " + type + "    trigger = " + trigger);
-        AlarmManager am = (AlarmManager) mContext
-                .getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(mContext, UIHelper.class);
-        intent.setAction(ACTION_SHOW_REMIND_TIP);
-        intent.putExtra("remind_type", type);
-        PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, 0);
-        am.cancel(pi);
-        am.set(AlarmManager.RTC_WAKEUP, trigger, pi);
+        //dont need this alarm
+//        AlarmManager am = (AlarmManager) mContext
+//                .getSystemService(Context.ALARM_SERVICE);
+//        Intent intent = new Intent(mContext, UIHelper.class);
+//        intent.setAction(ACTION_SHOW_REMIND_TIP);
+//        intent.putExtra("remind_type", type);
+//        PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, 0);
+//        am.cancel(pi);
+//        am.set(AlarmManager.RTC_WAKEUP, trigger, pi);
     }
 
     @Override
