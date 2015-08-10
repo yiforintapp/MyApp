@@ -6,6 +6,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -345,19 +346,13 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         if (mIsFromSplash) {
             AppMasterPreference amp = AppMasterPreference.getInstance(this);
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
-                    finish();
-                } else {
-                    LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
-                    // LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                    // getPackageName(), true, null);
-                    // amp.setDoubleCheck(null);
-                    Intent intent = new Intent(this, HomeActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(intent);
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+                TaskDetectService tds = TaskDetectService.getService();
+                if(tds != null) {
+                    tds.callPretendAppLaunch();
                 }
             } else {
                 Intent intent = new Intent(this, LockSettingActivity.class);
