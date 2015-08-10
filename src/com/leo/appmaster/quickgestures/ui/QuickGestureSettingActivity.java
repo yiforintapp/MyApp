@@ -1020,7 +1020,15 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         }
     }
    
-
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        if(hasFocus)
+        {
+            updateTriggerTypeItem();
+            updateSlideAreaItem();
+        }
+    }
     
     
     class DisableClickListener implements OnClickListener {

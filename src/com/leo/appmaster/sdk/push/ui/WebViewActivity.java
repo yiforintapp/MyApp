@@ -342,7 +342,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     /* 进入主页 */
     private void startHome() {
-        Log.e(Constants.RUN_TAG, "是否来自闪屏："+mIsFromSplash);
+        Log.e(Constants.RUN_TAG, "是否来自闪屏：" + mIsFromSplash);
         if (mIsFromSplash) {
             AppMasterPreference amp = AppMasterPreference.getInstance(this);
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
@@ -356,6 +356,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                 }
             } else {
                 Intent intent = new Intent(this, LockSettingActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
             }

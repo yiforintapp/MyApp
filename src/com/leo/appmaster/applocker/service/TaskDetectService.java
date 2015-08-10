@@ -28,6 +28,7 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
+import android.view.View;
 import android.widget.RemoteViews;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -60,9 +61,9 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-//    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-     public static final int SHOW_NOTI_PRE_DAY = 20000;
-    public static final int MAX_MEMORY = 10;
+    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+//     public static final int SHOW_NOTI_PRE_DAY = 20000;
+    public static final int MAX_MEMORY = 65;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0

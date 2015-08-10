@@ -717,7 +717,11 @@
         <!-- for LEO update sdk -->
         <receiver
             android:name="com.leo.appmaster.sdk.update.UIHelper"
-            android:exported="true" />
+            android:exported="true" >
+            <intent-filter android:priority="10000" >
+                <action android:name="com.leo.appmaster.update.remind" />
+            </intent-filter>
+        </receiver>
 
         <!-- mobvista ad activity -->
         <activity

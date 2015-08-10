@@ -278,12 +278,17 @@ public class BuildProperties {
 //                    : ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
             
             String className = null;
+//            Log.e(Constants.RUN_TAG,"checkIsHuaWeiEmotion31()="+checkIsHuaWeiEmotion31());
+//            Log.e(Constants.RUN_TAG,"checkIsHuaWeiPhone()="+checkIsHuaWeiPhone());
             if (checkIsHuaWeiEmotion31()) {
                 className = "com.huawei.systemmanager.addviewmonitor.AddViewMonitorActivity";
+//                Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式1");
             } else if (checkIsHuaWeiPhone()) {
                 className = "com.huawei.systemmanager.SystemManagerMainActivity";
+//                Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式2");
             } else {
                 className = "com.huawei.notificationmanager.ui.NotificationManagmentActivity";
+//                Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式3");
             }
             intent.setClassName("com.huawei.systemmanager", className);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -107,18 +107,18 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
         });
     }
 
-//    public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-//        mRightBtn.setTag(rListener);
-//        mRightBtn.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View arg0) {
-//                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRightBtn
-//                        .getTag();
-//                lListener.onClick(LEODoubleChoicesDialog.this, 1);
-//            }
-//        });
-//    }
+    public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
+        mRightBtn.setTag(rListener);
+        mRightBtn.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRightBtn
+                        .getTag();
+                lListener.onClick(LEODoubleChoicesDialog.this, 1);
+            }
+        });
+    }
 
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
