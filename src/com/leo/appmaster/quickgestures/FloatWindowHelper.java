@@ -1799,7 +1799,7 @@ public class FloatWindowHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub
-
+                SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_conflict", "dialog_n");
                 if (mConflictTipsDialog != null)
                 {
                     mConflictTipsDialog.dismiss();
@@ -1811,10 +1811,7 @@ public class FloatWindowHelper {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 // TODO Auto-generated method stub
-                // if
-                // (AppMasterPreference.getInstance(AppMasterApplication.getInstance()).getIsOpenFloatWindows())
-                // {
-
+                SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_conflict", "dialog_y");
                 FloatWindowHelper.removeAllFloatWindow(AppMasterApplication
                                 .getInstance());
                 AppMasterPreference.getInstance(
@@ -1854,7 +1851,8 @@ public class FloatWindowHelper {
         mConflictTipsDialog.getWindow().setType(
                 WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         mConflictTipsDialog.show();
-
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_conflict", "dialog");
+        
     }
 
     public static void createWhiteFloatView(Context ctx) {

@@ -911,6 +911,20 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                 updateSlideAreaItem();
                 switchStrengthMode();
                 switchSlideWindow();
+                
+                if(whitedot.isChecked()&&fromCorner.isChecked())
+                {
+                    SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_mode", "point+qs");
+                }
+                else if(fromCorner.isChecked())
+                {
+                    SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_mode", "qs_only");
+                }
+                else
+                {
+                    SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_mode", "point_only");
+                }
+               
             }
         });
         TextView TVCancel = (TextView) mTriggerTypeDialog.findViewById(R.id.dlg_left_btn);
