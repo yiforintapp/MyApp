@@ -279,17 +279,12 @@ public class BuildProperties {
         try {
             LockManager.getInstatnce().timeFilterSelf();
             Intent intent = new Intent();
-            // String string = (checkIsHuaWeiPhone()) ?
-            // ("com.huawei.systemmanager.SystemManagerMainActivity")
-            // :
-            // ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
-
             String className = null;
             // Log.e(Constants.RUN_TAG,"checkIsHuaWeiEmotion31()="+checkIsHuaWeiEmotion31());
             // Log.e(Constants.RUN_TAG,"checkIsHuaWeiPhone()="+checkIsHuaWeiPhone());
             if (checkIsHuaWeiEmotion31()) {
                 className = "com.huawei.systemmanager.addviewmonitor.AddViewMonitorActivity";
-                // Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式1");
+                // Log.e(Constants.RUN_TAG, "华为P8悬浮窗跳转方式1");
             } else if (checkIsHuaWeiPhone()) {
                 className = "com.huawei.systemmanager.SystemManagerMainActivity";
                 // Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式2");
@@ -302,10 +297,18 @@ public class BuildProperties {
             try {
                 LockManager.getInstatnce().addFilterLockPackage("com.huawei.systemmanager", false);
                 context.startActivity(intent);
+                // Log.e(Constants.RUN_TAG, "华为P6,P8进入权限管理界面");
             } catch (Exception e) {
-                e.printStackTrace();
                 SDKWrapper.addEvent(context, SDKWrapper.P1, "qs_open_error", "reason_"
                         + BuildProperties.getPoneModel());
+                className = "com.huawei.notificationmanager.ui.NotificationManagmentActivity";
+                intent.setClassName("com.huawei.systemmanager", className);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    context.startActivity(intent);
+                    // Log.e(Constants.RUN_TAG, "华为P7进入权限管理界面");
+                } catch (Exception e1) {
+                }
             }
             return;
         } catch (Exception e) {
