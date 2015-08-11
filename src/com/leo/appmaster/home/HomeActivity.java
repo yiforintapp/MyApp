@@ -140,7 +140,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         LeoEventBus.getDefaultBus().register(this);
         // TODO
         
-        releaseSysResources();
+        // AM-2128 偶现图片显示异常，先暂时注释掉
+        // releaseSysResources();
     }
     
     /**

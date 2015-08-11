@@ -68,7 +68,7 @@ import com.leo.appmaster.utils.Utilities;
 public class SplashActivity extends BaseActivity {
 
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
-    public static final String SPLASH_TO_WEBVIEW="splash_to_webview";
+    public static final String SPLASH_TO_WEBVIEW = "splash_to_webview";
     private Handler mEventHandler;
 
     /* Guide page stuff begin */
@@ -119,14 +119,12 @@ public class SplashActivity extends BaseActivity {
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
-        
-//        Log.d(Constants.RUN_TAG, "数据："+startShowSplashTime+", "+endShowSplashTime+",  跳转模式："+AppMasterPreference.getInstance(getApplicationContext()).getSplashSkipMode());
+
+        // Log.d(Constants.RUN_TAG,
+        // "数据："+startShowSplashTime+", "+endShowSplashTime+",  跳转模式："+AppMasterPreference.getInstance(getApplicationContext()).getSplashSkipMode());
         /**
-         * 可能存在的几种情况：
+         * 可能存在的几种情况： @ 1.只有开始时间 @ 2.只有结束时间 @ 3.没有配置时间
          * 
-         * @ 1.只有开始时间
-         * @ 2.只有结束时间
-         * @ 3.没有配置时间
          * @4.开始.结束时间都有
          */
         if (startShowSplashTime > 0 || endShowSplashTime > 0) {
@@ -174,7 +172,7 @@ public class SplashActivity extends BaseActivity {
 
     /* 如果url存在则设置点击跳转 */
     private void showSkipUrlButton() {
-//        Log.e(Constants.RUN_TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
+        // Log.e(Constants.RUN_TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
         if (!mIsEmptyForSplashUrl) {
             mSplashRL.setOnClickListener(new SkipUrlOnClickListener());
         }
@@ -187,14 +185,14 @@ public class SplashActivity extends BaseActivity {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.splashRL:
-//                     Log.e(Constants.RUN_TAG, "立即体验");
-                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                    // Log.e(Constants.RUN_TAG, "立即体验");
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "go");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
-//                     Log.e(Constants.RUN_TAG, "跳过");
-                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                    // Log.e(Constants.RUN_TAG, "跳过");
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "skip");
                     startHome();
                     break;
@@ -242,11 +240,20 @@ public class SplashActivity extends BaseActivity {
             }
         }
     }
-    
-    @Override
-    public void finish() {
-        super.finish();
+
+    /* 反初始化闪屏跳过按钮和Url跳转 */
+    private void cancelSplashSkipbtAndUrlbt() {
+        mSkipToPgButton.setVisibility(View.INVISIBLE);
+        mSkipToPgButton.setOnClickListener(null);
+        mSplashRL.setOnClickListener(null);
+    }
+
+    public void finishForSkip() {
+        finish();
         LeoEventBus.getDefaultBus().unregister(this);
+        if(mEventHandler != null) {
+            mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
+        }
     }
 
     @Override
@@ -308,6 +315,7 @@ public class SplashActivity extends BaseActivity {
                         boolean guidNotShown = mNewGuideMain == null
                                 || mNewGuideMain.getVisibility() != View.VISIBLE;
                         if (guidNotShown) {
+                            cancelSplashSkipbtAndUrlbt();
                             showNewFuncGuide();
                         }
                     } else {
@@ -329,7 +337,7 @@ public class SplashActivity extends BaseActivity {
                         // }
                         startHome();
                     }
-                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "none");
                     break;
 
@@ -786,12 +794,12 @@ public class SplashActivity extends BaseActivity {
                             .getSplashSkipToClient();
                     if (clientUrl != null) {
                         Uri uri = Uri.parse(clientUrl);
-                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
+                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
                         try {
                             /* 存在客户端 */
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
-                            finish();
+                            finishForSkip();
                             Log.e(Constants.RUN_TAG, "存在客户端并进入");
                         } catch (Exception e) {
                             /* 不存在指定客户端 */
@@ -826,10 +834,10 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startIntentForWebViewActivity(String url) {
-        finish();
+        finishForSkip();
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, url);
-        intent.putExtra(SPLASH_TO_WEBVIEW,SPLASH_TO_WEBVIEW);
+        intent.putExtra(SPLASH_TO_WEBVIEW, SPLASH_TO_WEBVIEW);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
