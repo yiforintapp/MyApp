@@ -248,9 +248,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } else {
             mAdIcon.setBackground(this.getResources().getDrawable(R.drawable.gift_1));
         }
-
         // mAdIcon.setImageDrawable(drawable);
-
     }
 
     private void showModeMissedTip() {
