@@ -163,16 +163,10 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 checkNew();
-            }
-        }, 10, TimeUnit.SECONDS);
-        postInAppThreadPool(new Runnable() {
-
-            @Override
-            public void run() {
                 // 获取闪屏数据
                 loadSplashDate();
             }
-        });
+        }, 10, TimeUnit.SECONDS);
         if (AppMasterPreference.getInstance(getApplicationContext()).getIsFirstInstallApp()) {
             SplashActivity.deleteImage();
             AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false);
@@ -322,19 +316,20 @@ public class AppMasterApplication extends Application {
 
         });
         initSplashData();
-//         setSplashData();
+//        setSplashData();
     }
 
+    /* 闪屏模拟数据测试 */
     private void setSplashData() {
         mSplashFlag = true;
         mIsEmptyForSplashUrl = false;
-        mSplashDelayTime = 10000;
+        mSplashDelayTime = 5000;
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
                 Constants.SPLASH_SKIP_PG_CLIENT);
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient(
-                "fb://page/1709302419294051");
-        // AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
-        // "fb://page/1709302419294051");
+                "fb://page/1709302419294051#Intent;action=android.intent.action.VIEW;launchFlags=0x10000000;end");
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
+                "www.baidu.com");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         try {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashStartShowTime(
