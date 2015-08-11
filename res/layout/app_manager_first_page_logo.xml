@@ -76,7 +76,7 @@
 
         <LinearLayout
             android:id="@+id/ll_four_tv"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="@dimen/app_manager_headview_fourtext_margin_left"
@@ -85,7 +85,7 @@
 
             <TextView
                 android:id="@+id/flow_item_total"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/myapp_details"
                 android:textColor="@color/flow_item_total"
@@ -93,7 +93,7 @@
 
             <TextView
                 android:id="@+id/tv_installed_app"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/app_manager_headview_fourtext_margin_top"
                 android:textColor="@color/flow_item_small"
@@ -101,7 +101,7 @@
 
             <TextView
                 android:id="@+id/tv_ap_data"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/app_manager_headview_fourtext_margin_top"
                 android:textColor="@color/flow_item_small"
@@ -109,7 +109,7 @@
 
             <TextView
                 android:id="@+id/tv_backup_num"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/app_manager_headview_fourtext_margin_top"
                 android:textColor="@color/flow_item_small"
