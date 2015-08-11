@@ -1862,7 +1862,6 @@ public class FloatWindowHelper {
             WindowManager windowManager = getWindowManager(context);
             AppMasterPreference pref = AppMasterPreference.getInstance(context);
             int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
-            int halfH = windowManager.getDefaultDisplay().getHeight() / 2;
 
             createWhiteFloatParams(context);
             // get the last coordinate,if 0 then appear in default swipe
@@ -2013,7 +2012,8 @@ public class FloatWindowHelper {
     private static void onWhiteFloatClick(Context mContext) {
         if (null == mWhiteFloatView)
             return;
-        if (System.currentTimeMillis() - mLastClickTime < 1000) {
+        long nowTime = System.currentTimeMillis();
+        if (Math.abs(nowTime - mLastClickTime) < 1500) {
             return;
         }
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
@@ -2031,6 +2031,7 @@ public class FloatWindowHelper {
         pref.setNeedShowWhiteDotSlideTip(false);
         checkDismissWhiteDotLuminescence(mContext);
         int oreatation = mWhiteFloatParams.x < 0 ? 0 : 2;
+        mLastClickTime = nowTime;
         showQuickGuestureView(mContext, oreatation);
 
     }

@@ -248,10 +248,12 @@ public class SplashActivity extends BaseActivity {
         mSplashRL.setOnClickListener(null);
     }
 
-    @Override
-    public void finish() {
-        super.finish();
+    public void finishForSkip() {
+        finish();
         LeoEventBus.getDefaultBus().unregister(this);
+        if(mEventHandler != null) {
+            mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
+        }
     }
 
     @Override
@@ -797,7 +799,7 @@ public class SplashActivity extends BaseActivity {
                             /* 存在客户端 */
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
-                            finish();
+                            finishForSkip();
                             Log.e(Constants.RUN_TAG, "存在客户端并进入");
                         } catch (Exception e) {
                             /* 不存在指定客户端 */
@@ -832,7 +834,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startIntentForWebViewActivity(String url) {
-        finish();
+        finishForSkip();
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, url);
         intent.putExtra(SPLASH_TO_WEBVIEW, SPLASH_TO_WEBVIEW);

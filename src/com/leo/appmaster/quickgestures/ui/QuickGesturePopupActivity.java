@@ -143,8 +143,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
-        Log.i("null", "onWindowFocusChanged");
-
         if (!hasFocus && !QuickGestureManager.isFromDialog) {
             if (!isItemClick) {
                 // LockManager.getInstatnce().filterAllOneTime(500);
@@ -154,7 +152,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
             mContainer.saveGestureType();
             finish();
         }
-
         QuickGestureManager.isFromDialog = false;
         super.onWindowFocusChanged(hasFocus);
     }
@@ -175,11 +172,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
-
         // AppMasterPreference.getInstance(this).setIsWhiteDotResponsing(false);
-
-        // LeoLog.d("testActivity", "onResume");
         FloatWindowHelper.mGestureShowing = true;
         isCloseWindow = false; // 动画结束是否执行去除红点标识
         if (!isCanNotDoAnimation) {
@@ -225,16 +218,13 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     ifCreateWhiteFloat = true;
                 }
             });
-            Log.i("null", "QuickGesturePopupActivity onPause  showWhiteFloatView");
         }
         super.onPause();
     }
 
     @Override
     protected void onStop() {
-        LeoLog.d("testtest", "onStop");
         QuickGestureManager.getInstance(this).makeDialogDimiss();
-        Log.i("null", "QuickGesturePopupActivity onStop()");
         super.onStop();
     }
 
@@ -258,7 +248,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        Log.i("null", "QuickGesturePopupActivity onDestroy()");
         LeoEventBus.getDefaultBus().unregister(this);
         if (!isCloseWindow) {
             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
@@ -351,7 +340,6 @@ public class QuickGesturePopupActivity extends BaseActivity {
             // FloatWindowHelper.showWhiteFloatView(QuickGesturePopupActivity.this);
             FloatWindowHelper.removeWhiteFloatView(QuickGesturePopupActivity.this);
             FloatWindowHelper.createWhiteFloatView(QuickGesturePopupActivity.this);
-            Log.i("null", "showWhiteFloatView");
         }
     }
 
