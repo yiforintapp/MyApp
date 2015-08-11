@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.utils;
 
 import java.io.File;
@@ -20,6 +21,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -241,28 +243,31 @@ public class BuildProperties {
     public static boolean checkIsHuaWeiPhone() {
         String systemProperty = getSystemProperty("ro.build.version.emui");
         String emotion23 = "EmotionUI_2.3";
-        
+
         boolean isEmotion23 = checkIsAppointPhone(systemProperty, emotion23);
         if (!isEmotion23 && !(Build.DISPLAY.startsWith("EMUI2.3"))) {
             return false;
         }
-//        if ((!(checkIsAppointPhone((Object) (getSystemProperty("ro.build.version.emui")),
-//                (Object) ("EmotionUI_2.3")))) && (!(Build.DISPLAY.startsWith("EMUI2.3"))))
-//            return false;
+        // if ((!(checkIsAppointPhone((Object)
+        // (getSystemProperty("ro.build.version.emui")),
+        // (Object) ("EmotionUI_2.3")))) &&
+        // (!(Build.DISPLAY.startsWith("EMUI2.3"))))
+        // return false;
         return true;
     }
-    
+
     /**
      * 是否是华为EmotionUI_3.0以上系统
+     * 
      * @return
      */
     public static boolean checkIsHuaWeiEmotion31() {
-        String systemProperty = getSystemProperty("ro.build.version.emui"); 
+        String systemProperty = getSystemProperty("ro.build.version.emui");
         String emotion3 = "EmotionUI_3.";
         if (systemProperty != null && systemProperty.startsWith(emotion3)) {
             return true;
         }
-        
+
         return false;
     }
 
@@ -274,21 +279,23 @@ public class BuildProperties {
         try {
             LockManager.getInstatnce().timeFilterSelf();
             Intent intent = new Intent();
-//            String string = (checkIsHuaWeiPhone()) ? ("com.huawei.systemmanager.SystemManagerMainActivity")
-//                    : ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
-            
+            // String string = (checkIsHuaWeiPhone()) ?
+            // ("com.huawei.systemmanager.SystemManagerMainActivity")
+            // :
+            // ("com.huawei.notificationmanager.ui.NotificationManagmentActivity");
+
             String className = null;
-//            Log.e(Constants.RUN_TAG,"checkIsHuaWeiEmotion31()="+checkIsHuaWeiEmotion31());
-//            Log.e(Constants.RUN_TAG,"checkIsHuaWeiPhone()="+checkIsHuaWeiPhone());
+            // Log.e(Constants.RUN_TAG,"checkIsHuaWeiEmotion31()="+checkIsHuaWeiEmotion31());
+            // Log.e(Constants.RUN_TAG,"checkIsHuaWeiPhone()="+checkIsHuaWeiPhone());
             if (checkIsHuaWeiEmotion31()) {
                 className = "com.huawei.systemmanager.addviewmonitor.AddViewMonitorActivity";
-//                Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式1");
+                // Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式1");
             } else if (checkIsHuaWeiPhone()) {
                 className = "com.huawei.systemmanager.SystemManagerMainActivity";
-//                Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式2");
+                // Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式2");
             } else {
                 className = "com.huawei.notificationmanager.ui.NotificationManagmentActivity";
-//                Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式3");
+                // Log.e(Constants.RUN_TAG, "华为悬浮窗跳转方式3");
             }
             intent.setClassName("com.huawei.systemmanager", className);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -353,5 +360,24 @@ public class BuildProperties {
         // Log.e(Constants.RUN_TAG,
         // "传入机型："+phoneModel.toLowerCase()+",本机："+getPoneModel().toLowerCase());
         return getPoneModel().toLowerCase().equalsIgnoreCase(phoneModel.toLowerCase());
+    }
+
+    /**
+     * 输入指定分辨率判断本机是否为指定分辨率
+     * 
+     * @param height 屏幕高
+     * @param width 屏幕宽
+     * @return
+     */
+    public static boolean phoneDensity(Context context, int height, int width) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        int windowHeight = wm.getDefaultDisplay().getHeight();
+        int windowWidth = wm.getDefaultDisplay().getWidth();
+        if (height > 0 && width > 0) {
+            if ((windowHeight == height) && (windowWidth == width)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

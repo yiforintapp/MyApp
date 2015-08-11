@@ -747,5 +747,24 @@
     <string name="zipper_too_slow">давайте побыстрее</string>
     <string name="theme_apply_title">использовать тон деблокирови%1$s?</string>
     <!-- 2.6 end -->
+    
+        <!-- 2.7 start -->
+    <string name="clean_mem_notify_big">памяти нет</string>
+    <string name="clean_mem_notify_big_right">65%</string>
+    <string name="clean_mem_notify_small">пуск</string>
+    <string name="clean_mem_notify_boost">ускорить</string>
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">метод запуска</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">белая точка боку / снизу</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">боку/ снизу</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">белая точка</string>
+	<string name="pg_appmanager_quick_gesture_trigger_tips">выбирай один,по минимуму</string>
+	
+	<string name="pg_appmanager_quick_gesture_conflict_content">жест вам мешает? Вы сможете открыть только бклую точкую для настройки</string>
+	<string name="pg_appmanager_quick_gesture_conflict_later">потом</string>
+	<string name="pg_appmanager_quick_gesture_conflict_open">включить</string>
+	
+	
+	<!-- 2.7 end -->
 
 </resources>

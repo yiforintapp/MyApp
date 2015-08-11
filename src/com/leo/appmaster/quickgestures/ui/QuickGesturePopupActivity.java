@@ -53,7 +53,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.pop_quick_gesture_apple_watch);
-//        FloatWindowHelper.mIsWhiteFloatViewResponsing=false;
+        // FloatWindowHelper.mIsWhiteFloatViewResponsing=false;
         LeoEventBus.getDefaultBus().register(this);
         handleIntent();
         initIU();
@@ -88,7 +88,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
     private void checkFirstWhiteClick() {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         int clickCount = amp.getUseStrengthenModeTimes();
-        if (mFromWhiteDot && !amp.hasEverCloseWhiteDot() && !BuildProperties.isGTS5282()) {
+        boolean isDensity320 = !BuildProperties.phoneDensity(getApplicationContext(), 320, 240);
+        if (mFromWhiteDot && !amp.hasEverCloseWhiteDot() && isDensity320) {
             amp.setEverCloseWhiteDot(true);
             if (clickCount == 1) {
                 mSuccessTipView.setVisibility(View.VISIBLE);
@@ -146,7 +147,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
         if (!hasFocus && !QuickGestureManager.isFromDialog) {
             if (!isItemClick) {
-//                LockManager.getInstatnce().filterAllOneTime(500);
+                // LockManager.getInstatnce().filterAllOneTime(500);
             }
             isItemClick = false;
             FloatWindowHelper.mGestureShowing = false;
@@ -175,9 +176,9 @@ public class QuickGesturePopupActivity extends BaseActivity {
     @Override
     protected void onResume() {
         Log.i("null", "QuickGesturePopupActivity onResume hideWhiteFloatView");
-        
-//        AppMasterPreference.getInstance(this).setIsWhiteDotResponsing(false);
-        
+
+        // AppMasterPreference.getInstance(this).setIsWhiteDotResponsing(false);
+
         // LeoLog.d("testActivity", "onResume");
         FloatWindowHelper.mGestureShowing = true;
         isCloseWindow = false; // 动画结束是否执行去除红点标识
@@ -249,7 +250,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
 
     private void fillSwitcherLayout(boolean loadExtra) {
         List<BaseInfo> items = QuickGestureManager.getInstance(this).getSwitcherList();
-        String testString  = QuickSwitchManager.getInstance(this).listToString(items, items.size(), false);
+        String testString = QuickSwitchManager.getInstance(this).listToString(items, items.size(),
+                false);
         LeoLog.d("testSwitchList", "fillSwitcherLayout and the String is : " + testString);
         mContainer.fillGestureItem(GType.SwitcherLayout, items, loadExtra);
     }
@@ -262,8 +264,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
             FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
             createFloatView();
         }
-        
-        if(!mFromSelfApp) {
+
+        if (!mFromSelfApp) {
             TaskDetectService.getService().callPretendAppLaunch();
         }
         super.onDestroy();

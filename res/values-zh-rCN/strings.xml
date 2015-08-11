@@ -791,7 +791,7 @@
     <string name="clean_mem_notify_boost">立即加速</string>
 	
 	<string name="pg_appmanager_quick_gesture_option_trigger_type">触发方式</string>
-	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底脚划出</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底角划出</string>
 	<string name="pg_appmanager_quick_gesture_trigger_alide">从侧边/底角划出</string>
 	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
 	<string name="pg_appmanager_quick_gesture_trigger_tips">请至少选择一项</string>
@@ -799,9 +799,6 @@
 	<string name="pg_appmanager_quick_gesture_conflict_content">快捷手势是否影响您的常规操作？您可以选择只开启小白点模式，点击设置</string>
 	<string name="pg_appmanager_quick_gesture_conflict_later">稍后再说</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">立刻开启</string>
-	
-	
-	
 	
 	
 	<!-- 2.7 end -->
