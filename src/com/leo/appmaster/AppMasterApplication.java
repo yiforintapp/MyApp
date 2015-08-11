@@ -187,7 +187,8 @@ public class AppMasterApplication extends Application {
                 .getInstance(getApplicationContext()).getRootViewAndWindowHeighSpace();
         registerLanguageChangeReceiver();
         // Log.e(Constants.RUN_TAG,
-        // "悬浮窗权限："+BuildProperties.isFloatWindowOpAllowed(getApplicationContext()));
+        // "设备信息：" + SDKWrapper.getEncodedDeviceInfo());
+
     }
 
     private String getUserSerial() {
@@ -321,19 +322,19 @@ public class AppMasterApplication extends Application {
 
         });
         initSplashData();
-        // TEST
-//         setSplashData();
+        // setSplashData();
     }
 
     private void setSplashData() {
         mSplashFlag = true;
         mIsEmptyForSplashUrl = false;
         mSplashDelayTime = 10000;
-         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
-         Constants.SPLASH_SKIP_PG_CLIENT);
-         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient("fb://page/1709302419294051");
-//        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
-//                "fb://page/1709302419294051");
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
+                Constants.SPLASH_SKIP_PG_CLIENT);
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient(
+                "fb://page/1709302419294051");
+        // AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
+        // "fb://page/1709302419294051");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         try {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashStartShowTime(
