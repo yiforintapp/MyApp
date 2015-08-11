@@ -23,5 +23,42 @@
         android:drawable="@drawable/gift_4"
         android:duration="150">
     </item>
+        <item
+        android:drawable="@drawable/gift_1"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/gift_2"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/gift_3"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/gift_4"
+        android:duration="150">
+    </item>
+        <item
+        android:drawable="@drawable/gift_1"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/gift_2"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/gift_3"
+        android:duration="150">
+    </item>
+    <item
+        android:drawable="@drawable/gift_4"
+        android:duration="150">
+    </item>
+        <item
+        android:drawable="@drawable/gift_4"
+        android:duration="3000">
+    </item>
+    
 
 </animation-list>
