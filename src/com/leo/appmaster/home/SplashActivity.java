@@ -38,6 +38,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
@@ -186,13 +187,13 @@ public class SplashActivity extends BaseActivity {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.splashRL:
-                    // Log.e(Constants.RUN_TAG, "立即体验");
+//                     Log.e(Constants.RUN_TAG, "立即体验");
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
                             "screen_cli", "go");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
-                    // Log.e(Constants.RUN_TAG, "跳过");
+//                     Log.e(Constants.RUN_TAG, "跳过");
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1, 
                             "screen_cli", "skip");
                     startHome();
@@ -225,6 +226,7 @@ public class SplashActivity extends BaseActivity {
         }
 //        mShowSplashFlag = true;
 //        mSkipToPgButton.setVisibility(View.VISIBLE);
+//        mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
 //        showSkipUrlButton();
         if (splash != null) {
             byte[] chunk = splash.getNinePatchChunk();
@@ -783,9 +785,8 @@ public class SplashActivity extends BaseActivity {
                     String clientUrl = AppMasterPreference.getInstance(this)
                             .getSplashSkipToClient();
                     if (clientUrl != null) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri.parse(clientUrl);
-                        intent.setData(uri);
+                        Intent intent = new Intent(Intent.ACTION_VIEW,uri);
                         try {
                             /* 存在客户端 */
                             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

@@ -787,5 +787,23 @@
     <string name="zipper_too_slow">哎喲，拉快一點嘛</string>
     <string name="theme_apply_title">是否應用解鎖主題：%1$s？</string>
     <!-- 2.6 end -->
+    
+    	<!-- 2.7 start -->
+	  <string name="clean_mem_notify_big">記憶體使用超過</string>
+    <string name="clean_mem_notify_big_right">65%</string>
+    <string name="clean_mem_notify_small">點擊壹鍵加速</string>
+    <string name="clean_mem_notify_boost">立即加速</string>
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">觸發管道</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白點側邊/底脚劃出</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">從側邊/底角劃出</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白點</string>
+	<string name="pg_appmanager_quick_gesture_trigger_tips">請至少選擇壹項</string>
+	
+	<string name="pg_appmanager_quick_gesture_conflict_content">快捷手勢是否影響您的常規操作？您可以選擇只開啟小白點模式，點擊設定</string>
+	<string name="pg_appmanager_quick_gesture_conflict_later">稍後再說</string>
+	<string name="pg_appmanager_quick_gesture_conflict_open">立刻開啟</string>
+	
+	<!-- 2.7 end -->
 
 </resources>

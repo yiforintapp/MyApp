@@ -62,9 +62,9 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-     public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-//    public static final int SHOW_NOTI_PRE_DAY = 20000;
-    public static final int MAX_MEMORY = 65;
+//     public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+    public static final int SHOW_NOTI_PRE_DAY = 20000;
+    public static final int MAX_MEMORY = 20;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -387,7 +387,7 @@ public class TaskDetectService extends Service {
 
         Intent intent = new Intent(this,
                 HomeBoostActivity.class);
-        intent.putExtra("for_sdk", "for_sdkfor_sdkfor_sdkfor_sdk");
+        intent.putExtra("for_sdk", "for_sdk");
         PendingIntent pendingIntent =
                 PendingIntent.getActivity(this, 0, intent,
                         PendingIntent.FLAG_UPDATE_CURRENT);

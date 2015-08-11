@@ -41,6 +41,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -1292,5 +1293,4 @@ public class QuickGestureManager {
             mCallLogs.clear();
         }
     }
-
 }

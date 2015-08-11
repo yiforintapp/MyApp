@@ -11,8 +11,8 @@
 
         <ImageView
             android:id="@+id/appwallIV"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
             android:layout_centerVertical="true"
             android:layout_marginLeft="8dp"
             android:src="@drawable/boosticon" />
