@@ -4,6 +4,7 @@ package com.leo.appmaster.ui;
 import java.util.List;
 import java.util.Locale;
 
+import android.R.bool;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -42,8 +43,9 @@ public class LeoPopMenu {
 
     public final static float OVERPX = 220.0f;
     public static boolean isOverWidth = false;
-
+    
     protected static float finalWidth;
+    protected static boolean mIsNewLine=true;
     
     protected static float newSmallWidth;
     protected static float newLongWidth;
@@ -92,8 +94,8 @@ public class LeoPopMenu {
         mLeoPopMenu = new PopupWindow(mContext);
         mLeoPopMenu.setContentView(convertView);
         mLeoPopMenu.setHeight(mStyles.height);
-        mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext, 70)));
-        
+        mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext, 68)));
+//        mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         Log.e("hehe", finalWidth+"final///"+mLeoPopMenu.getWidth()+" true w");
         
 //      mLeoPopMenu.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -292,23 +294,28 @@ public class LeoPopMenu {
 //                newSmallWidth = mMaxLength + 60;
 //            }
 //        }
-        newSmallWidth=W/3;
+        newSmallWidth=W/4;
         newLongWidth=W/2;
-        finalWidth=mMaxLength;
+        finalWidth=mMaxLength+DipPixelUtil.dip2px(mContext, 7);
+        
+        Log.e("cnm", "刚开始，finalWidth是最长文案的textview的长度，它有辣么长:"+finalWidth);
         if(mMaxLength>newLongWidth)
-        {
-           finalWidth=newSmallWidth;
+        {          
+            mIsNewLine=true;
+           finalWidth=newLongWidth;
+           Log.e("cnm", "开始判断了，发现finalWidth比最大限度还要长，所以让它等于最大限度，而且让mIsNewLine为真，此时它的长度为"+finalWidth);
         }
         if(mMaxLength<newSmallWidth)
         {
             finalWidth=newSmallWidth;
+            Log.e("cnm", "开始判断了，发现finalWidth比最小限度还要短，所以让它等于最小限度，而且让mIsNewLine为假，此时它的长度为"+finalWidth);
         }
 
         
-        Log.e("hehe", "finalW="+finalWidth);
-        Log.e("hehe", "是否超maxW="+isOverWidth);
-        Log.e("hehe", "最终的minW="+newSmallWidth);
-        Log.e("hehe", "最终的maxW="+newLongWidth);
+//        Log.e("hehe", "finalW="+finalWidth);
+//        Log.e("hehe", "是否超maxW="+isOverWidth);
+//        Log.e("hehe", "最终的minW="+newSmallWidth);
+//        Log.e("hehe", "最终的maxW="+newLongWidth);
         
         
         
@@ -376,6 +383,11 @@ public class LeoPopMenu {
                 mHolder = new Holder();
                 convertView = inflater.inflate(R.layout.popmenu_window_home_list_item, null);
                 mHolder.mItemName = (TextView) convertView.findViewById(R.id.menu_text);
+                mHolder.mItemName.setWidth((int) finalWidth+1);
+                if(!mIsNewLine)
+                {
+                    mHolder.mItemName.setMaxLines(1);
+                }    
                 convertView.setTag(mHolder);
             }
 
@@ -407,6 +419,13 @@ public class LeoPopMenu {
     public class MyListView extends ListView
     {
 
+    
+
+        public MyListView(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+            // TODO Auto-generated constructor stub
+        }
+
         public MyListView(Context context, AttributeSet attrs) {
             super(context, attrs);
             // TODO Auto-generated constructor stub
@@ -417,24 +436,26 @@ public class LeoPopMenu {
             // TODO Auto-generated constructor stub
         }
         
-        @Override
-        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            int maxWidth = meathureWidthByChilds() + getPaddingLeft() + getPaddingRight();
-            super.onMeasure(MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY), heightMeasureSpec);    
-        }
-     
-        public int meathureWidthByChilds() {
-            int maxWidth = 0;
-            View view = null;
-            for (int i = 0; i < getAdapter().getCount(); i++) {
-                view = getAdapter().getView(i, view, this);
-                view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-                if (view.getMeasuredWidth() > maxWidth){
-                    maxWidth = view.getMeasuredWidth();
-                }
-            }
-            return maxWidth;
-        }
+        
+        
+//        @Override
+//        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+//            int maxWidth = meathureWidthByChilds() + getPaddingLeft() + getPaddingRight();
+//            super.onMeasure(MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY), heightMeasureSpec);    
+//        }
+//     
+//        public int meathureWidthByChilds() {
+//            int maxWidth = 0;
+//            View view = null;
+//            for (int i = 0; i < getAdapter().getCount(); i++) {
+//                view = getAdapter().getView(i, view, this);
+//                view.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+//                if (view.getMeasuredWidth() > maxWidth){
+//                    maxWidth = view.getMeasuredWidth();
+//                }
+//            }
+//            return maxWidth;
+//        }
         
         
     }
