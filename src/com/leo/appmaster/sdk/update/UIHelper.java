@@ -179,14 +179,17 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 .getDefaultSharedPreferences(mContext);
         sp.edit()
                 .putLong(KEY_LAST_SHOW_REMIND_TIME, System.currentTimeMillis())
-                .apply();
+                .commit();
         int remindCount = sp.getInt(KEY_CURRENT_REMIND_TIMES, 0);
-        sp.edit().putInt(KEY_CURRENT_REMIND_TIMES, remindCount + 1).apply();
+
+        LeoLog.d(TAG, "recordRemind: remindCount = " + remindCount);
+        sp.edit().putInt(KEY_CURRENT_REMIND_TIMES, remindCount + 1).commit();
     }
 
     @SuppressWarnings("deprecation")
     private void sendUpdateNotification() {
         if (!mManager.isFromUser()) {
+            LeoLog.d(TAG, "sendUpdateNotification");
             recordRemind();
         }
         String appName = mContext.getString(R.string.app_name);
@@ -301,7 +304,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             } else {
                 if (frequencyConfig > 0 && remindTimesConfig > 0) {
                     LeoLog.d(TAG, "consider frequency and remind times");
-                    if (curRemindTimes >= remindTimesConfig) {
+                    if (curRemindTimes > remindTimesConfig) {
                         LeoLog.d(TAG, "curRemindCount = " + curRemindTimes
                                 + "      remindTimesConfig =  "
                                 + remindTimesConfig + "  so dont show remind");
@@ -332,14 +335,14 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     }
                 } else {// only consider remind times
                     LeoLog.d(TAG, "only consider frequency");
-                    if (curRemindTimes >= remindTimesConfig) {
+                    if (curRemindTimes > remindTimesConfig) {
                         Log.d(TAG, "curRemindCount = " + curRemindTimes
                                 + "      remindTimesConfig =  "
                                 + remindTimesConfig + "  so dont show remind");
                         return;
                     } else {
                         LeoLog.d(TAG,
-                                "curRemindTimes >= remindTimesConfig, send right now");
+                                "curRemindTimes < remindTimesConfig, send right now");
                         sendUpdateNotification();
                     }
                 }
@@ -351,7 +354,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         LeoLog.d(TAG, "checkShowRemindNotification");
         if (mManager.isFromUser()) {
             LeoLog.d(TAG, "isFromUser, send right nows");
-            relaunchActivity(mUIType, mUIParam);
+            relaunchActivity(mUIType, mUIParam, false);
         } else {
             SharedPreferences sp = PreferenceManager
                     .getDefaultSharedPreferences(mContext);
@@ -370,11 +373,11 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     + "    remindTimesConfig = " + remindTimesConfig);
 
             if (frequencyConfig <= 0 && remindTimesConfig <= 0) {
-                relaunchActivity(mUIType, mUIParam);
+                relaunchActivity(mUIType, mUIParam, true);
             } else {
                 if (frequencyConfig > 0 && remindTimesConfig > 0) {
                     LeoLog.d(TAG, "consider frequency and remind times");
-                    if (curRemindTimes >= remindTimesConfig) {
+                    if (curRemindTimes > remindTimesConfig) {
                         LeoLog.d(TAG, "curRemindCount = " + curRemindTimes
                                 + "      remindTimesConfig =  "
                                 + remindTimesConfig + "  so dont show remind");
@@ -389,7 +392,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     } else {
                         LeoLog.d(TAG,
                                 "(currentTime - lastRemindTime) > remindInterval, send right now");
-                        relaunchActivity(mUIType, mUIParam);
+                        relaunchActivity(mUIType, mUIParam, true);
                     }
                 } else if (frequencyConfig > 0) { // only consider frequency
                     LeoLog.d(TAG, "only consider frequency");
@@ -401,19 +404,19 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     } else {
                         LeoLog.d(TAG,
                                 "(currentTime - lastRemindTime) > remindInterval, send right now");
-                        relaunchActivity(mUIType, mUIParam);
+                        relaunchActivity(mUIType, mUIParam, true);
                     }
                 } else {// only consider remind times
                     LeoLog.d(TAG, "only consider frequency");
-                    if (curRemindTimes >= remindTimesConfig) {
+                    if (curRemindTimes > remindTimesConfig) {
                         Log.d(TAG, "curRemindCount = " + curRemindTimes
                                 + "      remindTimesConfig =  "
                                 + remindTimesConfig + "  so dont show remind");
                         return;
                     } else {
                         LeoLog.d(TAG,
-                                "curRemindTimes >= remindTimesConfig, send right now");
-                        relaunchActivity(mUIType, mUIParam);
+                                "curRemindTimes < remindTimesConfig, send right now");
+                        relaunchActivity(mUIType, mUIParam, true);
                     }
                 }
             }
@@ -579,8 +582,9 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         mContext.startActivity(i);
     }
 
-    private void relaunchActivity(int type, int param) {
-        if (!mManager.isFromUser()) {
+    private void relaunchActivity(int type, int param, boolean needRecord) {
+        if (!mManager.isFromUser() && needRecord) {
+            LeoLog.d(TAG, "relaunchActivity");
             recordRemind();
         }
         Intent i = new Intent();
@@ -603,7 +607,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     nm.cancel(UPDATE_NOTIFICATION_ID);
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
                     relaunchActivity(IUIHelper.TYPE_UPDATE,
-                            mManager.getReleaseType());
+                            mManager.getReleaseType(), false);
                 } else if (action.equals(ACTION_CANCEL_UPDATE)) {
                     mManager.onCancelUpdate();
                     if (listener != null) {
@@ -612,14 +616,14 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 } else if (action.equals(ACTION_DOWNLOADING)) {
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
                     relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
-                            mManager.getReleaseType());
+                            mManager.getReleaseType(), false);
                 } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {
                     mManager.onCancelDownload();
                     if (listener != null) {
                         listener.onChangeState(TYPE_DISMISS, 0);
                     }
                 } else if (action.equals(ACTION_DOWNLOAD_FAILED)) {
-                    relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0);
+                    relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0, false);
                 } else if (action.equals(ACTION_DOWNLOAD_FAILED_CANCEL)) {
                     mManager.onCancelDownload();
                     if (listener != null) {
@@ -665,15 +669,16 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     private void setRemidAlarm(int type, long trigger) {
         LeoLog.d(TAG, "setRemidAlarm type = " + type + "    trigger = " + trigger);
-        //dont need this alarm
-//        AlarmManager am = (AlarmManager) mContext
-//                .getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(mContext, UIHelper.class);
-//        intent.setAction(ACTION_SHOW_REMIND_TIP);
-//        intent.putExtra("remind_type", type);
-//        PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent, 0);
-//        am.cancel(pi);
-//        am.set(AlarmManager.RTC_WAKEUP, trigger, pi);
+        // dont need this alarm
+        // AlarmManager am = (AlarmManager) mContext
+        // .getSystemService(Context.ALARM_SERVICE);
+        // Intent intent = new Intent(mContext, UIHelper.class);
+        // intent.setAction(ACTION_SHOW_REMIND_TIP);
+        // intent.putExtra("remind_type", type);
+        // PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent,
+        // 0);
+        // am.cancel(pi);
+        // am.set(AlarmManager.RTC_WAKEUP, trigger, pi);
     }
 
     @Override
@@ -685,7 +690,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             if (type == 0) {
                 sendUpdateNotification();
             } else if (type == 1) {
-                relaunchActivity(mUIType, mUIParam);
+                boolean needRecord = intent.getBooleanExtra("need_record", true);
+                relaunchActivity(mUIType, mUIParam, needRecord);
             }
         }
     }
