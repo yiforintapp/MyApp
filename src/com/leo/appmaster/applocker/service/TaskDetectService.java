@@ -62,9 +62,10 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-//     public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-    public static final int SHOW_NOTI_PRE_DAY = 20000;
-    public static final int MAX_MEMORY = 20;
+    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+    // public static final int SHOW_NOTI_PRE_DAY = 20000;
+    public static final int MAX_MEMORY = 65;
+    // public static final int MAX_MEMORY = 20;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -363,8 +364,8 @@ public class TaskDetectService extends Service {
         view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
         view_custom.setTextViewText(R.id.appwallNameTV,
                 getApplicationContext().getString(R.string.clean_mem_notify_big));
-        view_custom.setTextViewText(R.id.app_precent,
-                getApplicationContext().getString(R.string.clean_mem_notify_big_right));
+        // view_custom.setTextViewText(R.id.app_precent,
+        // getApplicationContext().getString(R.string.clean_mem_notify_big_right));
         view_custom.setTextViewText(R.id.appwallDescTV,
                 getApplicationContext().getString(R.string.clean_mem_notify_small));
         NotificationCompat.Builder mBuilder = new Builder(this);
