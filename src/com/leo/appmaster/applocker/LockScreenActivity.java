@@ -104,6 +104,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
     public static final String SHOW_NOW = "mode changed_show_now";
     public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
+    public static long mClickTime = 0;
 
     private int mLockMode;
     private String mLockedPackage;
@@ -232,13 +233,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         });
 
-        long mClickTime = AppMasterPreference.getInstance(LockScreenActivity.this).getAdClickTime();
+        long mLastTime;
+        if (mClickTime == 0) {
+            mLastTime = AppMasterPreference.getInstance(LockScreenActivity.this).getAdClickTime();
+        } else {
+            mLastTime = mClickTime;
+        }
         long mNowTime = System.currentTimeMillis();
-        if (mNowTime - mClickTime > CLICK_OVER_DAY
-                || !AppMasterPreference.getInstance(LockScreenActivity.this).getAdClicked()) {
-            if (AppMasterPreference.getInstance(LockScreenActivity.this).getAdClicked()) {
-                AppMasterPreference.getInstance(LockScreenActivity.this).setAdClicked(false);
-            }
+        if (mNowTime - mLastTime > CLICK_OVER_DAY) {
             mAdIcon.setBackgroundResource(R.drawable.adanimation);
             adAnimation = (AnimationDrawable)
                     mAdIcon.getBackground();
@@ -246,9 +248,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } else {
             mAdIcon.setBackground(this.getResources().getDrawable(R.drawable.gift_1));
         }
-
         // mAdIcon.setImageDrawable(drawable);
-
     }
 
     private void showModeMissedTip() {
@@ -991,7 +991,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 startActivity(mWallIntent);
                 AppMasterPreference.getInstance(LockScreenActivity.this).setAdClickTime(
                         System.currentTimeMillis());
-                AppMasterPreference.getInstance(LockScreenActivity.this).setAdClicked(true);
+                mClickTime = System.currentTimeMillis();
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                         "ad_cli", "unlocktop");
                 break;
