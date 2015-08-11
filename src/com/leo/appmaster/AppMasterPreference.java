@@ -151,9 +151,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_HIDE_VIDEO_LAST_DIR = "hide_video_last_dir";
     public static final String PREF_HIDE_VIDEO_SECOND_DIR = "hide_video_second_dir";
 
-    //ad icon -- set click time
+    // ad icon -- set click time
     public static final String PREF_AD_ICON_CLICK_TIME = "ad_icon_click_time";
-    
+    public static final String PREF_AD_ICON_CLICKED_TOTAY = "ad_icon_clicked";
+
     // time to show notify that clean memory
     public static final String PREF_SHOW_NOTIFY_CLEAN_MEMORY = "show_notify_clean_memory";
     // lock mode
@@ -1331,13 +1332,21 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putString(PREF_HIDE_VIDEO_SECOND_DIR, path)
                 .commit();
     }
-    
+
     public void setAdClickTime(long time) {
         mPref.edit().putLong(PREF_AD_ICON_CLICK_TIME, time).commit();
     }
 
     public long getAdClickTime() {
         return mPref.getLong(PREF_AD_ICON_CLICK_TIME, 0);
+    }
+
+    public void setAdClicked(boolean value) {
+        mPref.edit().putBoolean(PREF_AD_ICON_CLICKED_TOTAY, value).commit();
+    }
+
+    public boolean getAdClicked() {
+        return mPref.getBoolean(PREF_AD_ICON_CLICKED_TOTAY, false);
     }
 
     public void setMessageItemRuning(boolean flag) {
