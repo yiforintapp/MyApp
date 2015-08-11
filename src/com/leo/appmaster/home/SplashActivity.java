@@ -222,10 +222,10 @@ public class SplashActivity extends BaseActivity {
             option.inScaled = true;
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
-        mShowSplashFlag = true;
-        mSkipToPgButton.setVisibility(View.VISIBLE);
-        mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
-        showSkipUrlButton();
+//        mShowSplashFlag = true;
+//        mSkipToPgButton.setVisibility(View.VISIBLE);
+//        mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
+//        showSkipUrlButton();
         if (splash != null) {
             byte[] chunk = splash.getNinePatchChunk();
             if (chunk != null && NinePatch.isNinePatchChunk(chunk)) {
