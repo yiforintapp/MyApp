@@ -324,4 +324,6 @@ public class Constants {
             "com.facebook.katana",
             "com.tencent.mm"
     };
+    
+    public static final String CP_PACKAGE="com.leomaster.launcher3";
 }

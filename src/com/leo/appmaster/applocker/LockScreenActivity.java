@@ -24,6 +24,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -102,6 +103,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
     public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
     public static final String SHOW_NOW = "mode changed_show_now";
+    public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
 
     private int mLockMode;
     private String mLockedPackage;
@@ -134,10 +136,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public int mQuiclModeId;
     private RelativeLayout mLockLayout;
     private boolean mMissingDialogShowing;
-
     private MobvistaAdWall wallAd;
-
     public static boolean sLockFilterFlag = false;
+    private static AnimationDrawable adAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,7 +196,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // preload the wall data
         wallAd.preloadWall();
 
-        setMobvistaIcon();
         // AppMasterApplication.getInstance().postInAppThreadPool(new Runnable()
         // {
         // @Override
@@ -231,7 +231,24 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             }
         });
-        mAdIcon.setImageDrawable(drawable);
+
+        long mClickTime = AppMasterPreference.getInstance(LockScreenActivity.this).getAdClickTime();
+        long mNowTime = System.currentTimeMillis();
+        if (mNowTime - mClickTime > CLICK_OVER_DAY
+                || !AppMasterPreference.getInstance(LockScreenActivity.this).getAdClicked()) {
+            if (AppMasterPreference.getInstance(LockScreenActivity.this).getAdClicked()) {
+                AppMasterPreference.getInstance(LockScreenActivity.this).setAdClicked(false);
+            }
+            mAdIcon.setBackgroundResource(R.drawable.adanimation);
+            adAnimation = (AnimationDrawable)
+                    mAdIcon.getBackground();
+            adAnimation.start();
+        } else {
+            mAdIcon.setBackground(this.getResources().getDrawable(R.drawable.gift_1));
+        }
+
+        // mAdIcon.setImageDrawable(drawable);
+
     }
 
     private void showModeMissedTip() {
@@ -253,6 +270,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onResume() {
+        setMobvistaIcon();
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         // handlePretendLock(); 貌似oncreate里的init方法已经执行了，容易曹成内存泄露
@@ -973,6 +991,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 startActivity(mWallIntent);
                 AppMasterPreference.getInstance(LockScreenActivity.this).setAdClickTime(
                         System.currentTimeMillis());
+                AppMasterPreference.getInstance(LockScreenActivity.this).setAdClicked(true);
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                         "ad_cli", "unlocktop");
                 break;

@@ -699,7 +699,7 @@ public class AppLoadEngine extends BroadcastReceiver {
 
     private void showLockTip(final String packageName) {
 
-        if (packageName.startsWith("com.leo.theme")) {
+        if (packageName.startsWith("com.leo.theme") || packageName.equals(Constants.CP_PACKAGE)) {
             return;
         }
 

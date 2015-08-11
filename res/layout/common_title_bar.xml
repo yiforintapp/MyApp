@@ -126,11 +126,10 @@
 
         <ImageView
             android:id="@+id/icon_ad_layout"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
             android:background="@drawable/title_bar_option_selector"
-            android:padding="5dp"
-            android:src="@drawable/what_hot_icon" />
+            android:padding="5dp" />
     </LinearLayout>
     <!-- ad icon -->
 
