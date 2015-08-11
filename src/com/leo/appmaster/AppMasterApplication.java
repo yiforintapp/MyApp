@@ -163,16 +163,10 @@ public class AppMasterApplication extends Application {
             @Override
             public void run() {
                 checkNew();
-            }
-        }, 10, TimeUnit.SECONDS);
-        postInAppThreadPool(new Runnable() {
-
-            @Override
-            public void run() {
                 // 获取闪屏数据
                 loadSplashDate();
             }
-        });
+        }, 10, TimeUnit.SECONDS);
         if (AppMasterPreference.getInstance(getApplicationContext()).getIsFirstInstallApp()) {
             SplashActivity.deleteImage();
             AppMasterPreference.getInstance(getApplicationContext()).setIsFirstInstallApp(false);
@@ -333,8 +327,8 @@ public class AppMasterApplication extends Application {
                 Constants.SPLASH_SKIP_PG_CLIENT);
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient(
                 "fb://page/1709302419294051");
-        // AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
-        // "fb://page/1709302419294051");
+         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
+         "www.baidu.com");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         try {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashStartShowTime(

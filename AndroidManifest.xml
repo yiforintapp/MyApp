@@ -539,7 +539,7 @@
             android:exported="true"
             android:hardwareAccelerated="true"
             android:launchMode="singleInstance"
-            android:noHistory="true"
+            android:noHistory="false"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
