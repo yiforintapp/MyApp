@@ -790,14 +790,14 @@ public class SplashActivity extends BaseActivity {
                     startIntentForWebViewActivity(url);
                 } else if (Constants.SPLASH_SKIP_PG_CLIENT.equals(skipMode)) {
                     /* 跳转到指定客户端 */
-                    String clientUrl = AppMasterPreference.getInstance(this)
+                    String clientIntent = AppMasterPreference.getInstance(this)
                             .getSplashSkipToClient();
-                    if (clientUrl != null) {
-                        Uri uri = Uri.parse(clientUrl);
-                        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    if (clientIntent != null) {
                         try {
                             /* 存在客户端 */
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            Intent intent = Intent.parseUri(clientIntent, 0);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                            Log.e(Constants.RUN_TAG, "客户端："+intent.toUri(0));
                             startActivity(intent);
                             finishForSkip();
                             Log.e(Constants.RUN_TAG, "存在客户端并进入");
@@ -838,7 +838,7 @@ public class SplashActivity extends BaseActivity {
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, url);
         intent.putExtra(SPLASH_TO_WEBVIEW, SPLASH_TO_WEBVIEW);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 }

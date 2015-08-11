@@ -316,19 +316,20 @@ public class AppMasterApplication extends Application {
 
         });
         initSplashData();
-//         setSplashData();
+//        setSplashData();
     }
 
+    /* 闪屏模拟数据测试 */
     private void setSplashData() {
         mSplashFlag = true;
         mIsEmptyForSplashUrl = false;
-        mSplashDelayTime = 1000;
+        mSplashDelayTime = 5000;
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
-                Constants.SPLASH_SKIP_PG_WEBVIEW);
+                Constants.SPLASH_SKIP_PG_CLIENT);
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient(
-                "fb://page/1709302419294051");
-         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
-         "www.baidu.com");
+                "fb://page/1709302419294051#Intent;action=android.intent.action.VIEW;launchFlags=0x10000000;end");
+        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
+                "www.baidu.com");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
         try {
             AppMasterPreference.getInstance(getApplicationContext()).setSplashStartShowTime(
