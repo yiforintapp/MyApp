@@ -5,8 +5,10 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -378,9 +380,9 @@ public class AppLockListActivity extends BaseActivity implements
                     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
 
-                        List<String> list = mLeoPopMenu.getPopMenuItems();
-                        String selectMode = list.get(position);
-                        if (TextUtils.equals(selectMode, getString(R.string.add_new_mode))) {
+                        List<Integer> list = mLeoPopMenu.getPopMenuItemIds();
+                        int selectModeID = list.get(position);
+                        if (selectModeID == LockMode.MODE_OTHER) { //add new mode item
                             addLockMode();
                             SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modesadd",
                                     "applock");
@@ -389,7 +391,7 @@ public class AppLockListActivity extends BaseActivity implements
                             LockManager lm = LockManager.getInstatnce();
                             List<LockMode> lockModes = lm.getLockMode();
                             for (LockMode lockMode : lockModes) {
-                                if (TextUtils.equals(selectMode, lockMode.modeName)) {
+                                if (selectModeID == lockMode.modeId) {// the first time show lock app list
                                     if (lockMode.defaultFlag == 1
                                             && !lockMode.haveEverOpened) {
                                         lm.setCurrentLockMode(lockMode, true);
@@ -424,7 +426,7 @@ public class AppLockListActivity extends BaseActivity implements
                         }
                     }
                 });
-                mLeoPopMenu.setPopMenuItems(this, getLockModeMenuItems());
+                mLeoPopMenu.setPopMenuItems(this, getLockModeMenuMapItems());
                 mLeoPopMenu.showPopMenu(this, mIvBack, null, null);
                 break;
             case R.id.mask_layer:
@@ -570,23 +572,26 @@ public class AppLockListActivity extends BaseActivity implements
         return listItems;
     }
 
-    private List<String> getLockModeMenuItems() {
-        List<String> listItems = new ArrayList<String>();
+    /**
+     * return a map,the key is modeId,and value is modeName
+     * @return
+     */
+    private Map<Integer, String> getLockModeMenuMapItems(){
+        Map<Integer,String> lockMap = new LinkedHashMap<Integer, String>();
         List<LockMode> lockModes = LockManager.getInstatnce().getLockMode();
         LockMode curMode = LockManager.getInstatnce().getCurLockMode();
         if (curMode != null) {
             for (LockMode lockMode : lockModes) {
-                if (!TextUtils.equals(lockMode.modeName, curMode.modeName)) {
-                    listItems.add(lockMode.modeName);
-                    Log.i("null", lockMode.modeName);
+                if(lockMode.modeId != curMode.modeId){
+                    lockMap.put(lockMode.modeId, lockMode.modeName);
+                    //Log.i("mode", lockMode.modeName + "  --> "+lockMode.modeId);
                 }
             }
         }
-
-        listItems.add(getString(R.string.add_new_mode));
-        return listItems;
+        lockMap.put(LockMode.MODE_OTHER, getString(R.string.add_new_mode));
+        return lockMap;
     }
-
+    
     private class LockedAppComparator implements Comparator<AppInfo> {
         List<String> sortBase;
 

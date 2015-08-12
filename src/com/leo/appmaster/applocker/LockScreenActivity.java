@@ -275,7 +275,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         // handlePretendLock(); 貌似oncreate里的init方法已经执行了，容易曹成内存泄露
-        LeoLog.e("LockScreenActivity", "onResume");
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -334,8 +333,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      */
     @Override
     protected void onNewIntent(Intent intent) {
-        LeoLog.e("LockScreenActivity", "onNewIntent");
-        Log.e("a729", "onNewIntent");
 
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
@@ -371,7 +368,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockedPackage = newLockedPkg;
 
             if (mPretendFragment != null) {
-                Log.e("a729", "!=null");
                 mPretendLayout.setVisibility(View.GONE);
                 mLockLayout.setVisibility(View.VISIBLE);
             }
@@ -392,12 +388,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             mLockFragment.onLockPackageChanged(mLockedPackage);
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
-            Log.e("a729", "onNewIntent===========getpre frag");
             if (mPretendFragment == null) {
                 // 解决Fragment内存泄露
                 mPretendFragment = getPretendFragment();
             }
-            if (mPretendFragment != null) { // ph
+            boolean showPretend = !mPrivateLockPck.equals(mLockedPackage);
+            if (mPretendFragment != null && showPretend) { // ph
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction tans;
                 mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
@@ -407,7 +403,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 tans.replace(R.id.pretend_layout, mPretendFragment);
                 tans.commitAllowingStateLoss();
             }
-            if (mPretendFragment != null) {
+            if (mPretendFragment != null && showPretend) {
                 mLockLayout.setVisibility(View.GONE);
                 mPretendLayout.setVisibility(View.VISIBLE);
                 if (mPretendFragment instanceof PretendAppErrorFragment) {
@@ -428,7 +424,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
         }
-        LeoLog.e("LockScreenActivity", "onNewIntent: mLockedPackage = " + mLockedPackage);
         mLockFragment.setPackage(mLockedPackage);
         mLockFragment.onNewIntent();
         checkOutcount();
@@ -544,7 +539,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onRestart() {
         super.onRestart();
-        LeoLog.e("LockScreenActivity", "onNewIntent");
         /**
          * dont change it, for lock theme
          */

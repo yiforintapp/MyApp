@@ -5,14 +5,12 @@ import java.io.File;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -20,7 +18,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.NinePatch;
 import android.graphics.drawable.NinePatchDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -38,7 +35,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
@@ -47,7 +43,6 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -194,6 +189,9 @@ public class SplashActivity extends BaseActivity {
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "skip");
                      startHome();
+                     if (mEventHandler != null) {
+                         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
+                     }
                     break;
                 default:
                     break;

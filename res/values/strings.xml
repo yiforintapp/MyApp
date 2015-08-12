@@ -797,6 +797,7 @@
 	<string name="pg_appmanager_quick_gesture_conflict_later">Later</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">Enable now</string>
 	
+	 <string name="anti_conflict_mode_open">Enable</string>
 	<!-- 2.7 end -->
 
 

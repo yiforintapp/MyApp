@@ -798,7 +798,7 @@
 	<string name="pg_appmanager_quick_gesture_conflict_content">Hızlı jest normal işlemlerinizi etkiler mi?Ayarları\'ı tıklayarak beyaz nokta modunu açmayı tercih edebilirsiniz</string>
 	<string name="pg_appmanager_quick_gesture_conflict_later">Daha sonra</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">Hemen açın</string>
-	
+	<string name="anti_conflict_mode_open">Etkinleştir</string>
 	
 	<!-- 2.7 end -->
 
