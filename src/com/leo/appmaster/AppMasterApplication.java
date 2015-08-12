@@ -327,7 +327,7 @@ public class AppMasterApplication extends Application {
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
                 Constants.SPLASH_SKIP_PG_CLIENT);
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient(
-                "fb://page/1709302419294051#Intent;action=android.intent.action.VIEW;launchFlags=0x10000000;end");
+                "market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster#Intent;action=android.intent.action.VIEW;launchFlags=0x10000000;end");
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
                 "www.baidu.com");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
