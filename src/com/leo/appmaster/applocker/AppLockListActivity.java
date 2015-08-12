@@ -382,7 +382,7 @@ public class AppLockListActivity extends BaseActivity implements
 
                         List<Integer> list = mLeoPopMenu.getPopMenuItemIds();
                         int selectModeID = list.get(position);
-                        if (selectModeID == LockMode.MODE_OTHER) {
+                        if (selectModeID == LockMode.MODE_OTHER) { //add new mode item
                             addLockMode();
                             SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modesadd",
                                     "applock");
@@ -391,7 +391,7 @@ public class AppLockListActivity extends BaseActivity implements
                             LockManager lm = LockManager.getInstatnce();
                             List<LockMode> lockModes = lm.getLockMode();
                             for (LockMode lockMode : lockModes) {
-                                if (selectModeID == lockMode.modeId) {
+                                if (selectModeID == lockMode.modeId) {// the first time show lock app list
                                     if (lockMode.defaultFlag == 1
                                             && !lockMode.haveEverOpened) {
                                         lm.setCurrentLockMode(lockMode, true);
@@ -572,6 +572,10 @@ public class AppLockListActivity extends BaseActivity implements
         return listItems;
     }
 
+    /**
+     * return a map,the key is modeId,and value is modeName
+     * @return
+     */
     private Map<Integer, String> getLockModeMenuMapItems(){
         Map<Integer,String> lockMap = new LinkedHashMap<Integer, String>();
         List<LockMode> lockModes = LockManager.getInstatnce().getLockMode();

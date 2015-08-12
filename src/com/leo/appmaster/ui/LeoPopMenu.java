@@ -445,7 +445,7 @@ public class LeoPopMenu {
                 mHolder.mItemName.setText(itemText);
             } else {
                 mHolder.mItemName.setText(mItems.get(position));
-                if(mIcons==null)
+                if(mIcons==null || mIcons.size() <=0)
                 {
                     mHolder.mItemIcon.setVisibility(View.GONE);
                 }
