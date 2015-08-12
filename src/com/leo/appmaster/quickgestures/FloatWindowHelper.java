@@ -1844,7 +1844,7 @@ public class FloatWindowHelper {
                 if (mConflictTipsDialog != null)
                 {
                     mConflictTipsDialog.dismiss();
-                    Toast.makeText(AppMasterApplication.getInstance(),R.string.quick_gesture_open_text, 0).show();
+                    Toast.makeText(AppMasterApplication.getInstance(),R.string.anti_conflict_mode_open, 0).show();
                 }
             }
         });

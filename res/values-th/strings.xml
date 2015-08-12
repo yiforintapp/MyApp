@@ -783,7 +783,7 @@
 	<string name="pg_appmanager_quick_gesture_conflict_later">รอเดี๋ยว</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">เปิด ทท.</string>
 	
-	
+	<string name="anti_conflict_mode_open">เปิดแล้ว</string>
 	<!-- 2.7 end -->
 	
 	

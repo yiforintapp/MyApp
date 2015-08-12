@@ -764,7 +764,7 @@
 	<string name="pg_appmanager_quick_gesture_conflict_later">потом</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">включить</string>
 	
-	
+	<string name="anti_conflict_mode_open">открыто</string>
 	<!-- 2.7 end -->
 
 </resources>

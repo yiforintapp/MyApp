@@ -804,6 +804,7 @@
 	<string name="pg_appmanager_quick_gesture_conflict_later">稍後再說</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">立刻開啟</string>
 	
+	 <string name="anti_conflict_mode_open">已開啟</string>
 	<!-- 2.7 end -->
 
 </resources>

@@ -796,11 +796,11 @@
 	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
 	<string name="pg_appmanager_quick_gesture_trigger_tips">请至少选择一项</string>
 	
-	<string name="pg_appmanager_quick_gesture_conflict_content">快捷手势是否影响您的常规操作？您可以选择只开启小白点模式，点击设置</string>
+	<string name="pg_appmanager_quick_gesture_conflict_content">快捷手势影响到您的常规操作？开启抗干扰模式，只用小白点打开快捷手势，轻松避免干扰问题</string>
 	<string name="pg_appmanager_quick_gesture_conflict_later">稍后再说</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">立刻开启</string>
 	
-	
+	<string name="anti_conflict_mode_open">抗干扰模式成功开启！</string>
 	<!-- 2.7 end -->
 
 
