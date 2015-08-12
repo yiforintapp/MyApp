@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.applocker.manager;
 
+import java.util.Currency;
 import java.util.List;
 
 import android.app.ActivityManager;
@@ -68,7 +69,7 @@ public class TaskChangeHandler {
         return mLastRuningActivity;
     }
 
-    public void handleAppLaunch(String pkg, String activity) {
+    public void handleAppLaunch(String pkg, String activity, String baseActivity) {
         if (pkg == null || activity == null)
             return;
         // For android 5.0, download package changed
@@ -108,6 +109,7 @@ public class TaskChangeHandler {
             if (isCurrentSelf && !isLastSelf) {
                 amp.setFromOther(true);
             }
+            boolean currentLockScreen = activity.contains(LOCKSCREENNAME);
             if (doubleCheck) {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
@@ -118,7 +120,7 @@ public class TaskChangeHandler {
                                         || activity
                                                 .contains(WAITNAME)
                                         || activity.contains(WEBVIEW) || activity.contains(AD))
-                                || (!unlocked && activity.contains(LOCKSCREENNAME)))
+                                || (!unlocked && currentLockScreen))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
@@ -134,8 +136,7 @@ public class TaskChangeHandler {
                                         .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
                                                 .contains(WAITNAME) || activity.contains(WEBVIEW) || activity
-                                            .contains(AD)) || activity
-                                    .contains(LOCKSCREENNAME))
+                                            .contains(AD)) || currentLockScreen)
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
@@ -143,13 +144,21 @@ public class TaskChangeHandler {
                     return;
                 }
             }
-            mLastRunningPkg = pkg;
-            mLastRuningActivity = activity;
-
+            
             // reset this filter flag
             if (LockScreenActivity.sLockFilterFlag) {
                 LockScreenActivity.sLockFilterFlag = false;
             }
+          
+            // No need to lock activities in lock screen's task
+            if(!currentLockScreen && (baseActivity != null && baseActivity.contains(LOCKSCREENNAME))) {
+                mLastRunningPkg = pkg;
+                mLastRuningActivity = activity;
+                return;
+            }
+            
+            mLastRunningPkg = pkg;
+            mLastRuningActivity = activity;
 
             // remocde app launch recoder
             LockManager.getInstatnce().recordAppLaunch(mLastRunningPkg);

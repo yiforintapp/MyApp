@@ -131,7 +131,7 @@ public class TaskDetectService extends Service {
     }
 
     public void callPretendAppLaunch() {
-        mLockHandler.handleAppLaunch(PRETEND_PACKAGE, PRETEND_PACKAGE);
+        mLockHandler.handleAppLaunch(PRETEND_PACKAGE, PRETEND_PACKAGE, PRETEND_PACKAGE);
     }
 
     @Override
@@ -436,6 +436,7 @@ public class TaskDetectService extends Service {
         public void run() {
             String pkgName = null;
             String activityName = null;
+            String baseActivity = null;
             if (Build.VERSION.SDK_INT > 19) { // Android L and above
                 List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
                 for (RunningAppProcessInfo pi : list) {
@@ -466,7 +467,11 @@ public class TaskDetectService extends Service {
                                             .getRunningTasks(1);
                                     if (tasks != null && tasks.size() > 0) {
                                         RunningTaskInfo topTaskInfo = tasks.get(0);
-                                        if (topTaskInfo.topActivity != null) {
+                                        if(topTaskInfo.baseActivity != null) {
+                                            baseActivity = topTaskInfo.baseActivity
+                                                    .getShortClassName();
+                                        } 
+                                       if (topTaskInfo.topActivity != null) {
                                             activityName = topTaskInfo.topActivity
                                                     .getShortClassName();
                                         }
@@ -490,6 +495,9 @@ public class TaskDetectService extends Service {
                     }
                     pkgName = topTaskInfo.topActivity.getPackageName();
                     activityName = topTaskInfo.topActivity.getShortClassName();
+                    if(topTaskInfo.baseActivity != null) {
+                        baseActivity = topTaskInfo.baseActivity.getShortClassName();
+                    }
                     // For aliyun os (may be others), the component of
                     // topActivity is hidden, make a backup here.
                     if (Utilities.isEmpty(pkgName)) {
@@ -533,7 +541,7 @@ public class TaskDetectService extends Service {
             }
 
             if (mLockHandler != null && pkgName != null && activityName != null) {
-                mLockHandler.handleAppLaunch(pkgName, activityName);
+                mLockHandler.handleAppLaunch(pkgName, activityName, baseActivity);
             }
 
         }
