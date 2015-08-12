@@ -2125,9 +2125,7 @@ public class FloatWindowHelper {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("show_orientation", orientation);
         intent.putExtra("from_white_dot", true);
-        if (TextUtils
-                .equals(mContext.getPackageName(), LockManager.getInstatnce().getLastPackage())) {
-
+        if (TextUtils.equals(mContext.getPackageName(), LockManager.getInstatnce().getLastPackage())) {
             intent.putExtra("from_self_app", true);
         }
 
