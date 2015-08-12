@@ -684,6 +684,13 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                         } else {
                             newFileName =
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
+                            try {
+                                if (VideoHideMainActivity.isLetPgFail) {
+                                    int i = 10 / 0;
+                                }
+                            } catch (Exception e) {
+                                return isSuccess = false;
+                            }
                             newFileName = newFileName + ".leotmv";
                             if (FileOperationUtil.renameFile(item.getPath(),
                                     newFileName)) {
@@ -750,9 +757,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             newFileName =
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
                             try {
-//                                if (VideoHideMainActivity.isLetPgFail) {
-//                                    int i = 10 / 0;
-//                                }
+                                if (VideoHideMainActivity.isLetPgFail) {
+                                    int i = 10 / 0;
+                                }
                                 newFileName = newFileName.substring(1,
                                         newFileName.indexOf(".leotmv"));
                                 if (FileOperationUtil.renameFile(item.getPath(),

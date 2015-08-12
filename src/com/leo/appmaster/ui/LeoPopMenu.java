@@ -90,11 +90,12 @@ public class LeoPopMenu {
         
         View convertView = buildTabListLayout();
               
-//        mLeoPopMenu=new PopupWindow(convertView, (int) finalWidth, styles.height,true);
-        mLeoPopMenu = new PopupWindow(mContext);
-        mLeoPopMenu.setContentView(convertView);
-        mLeoPopMenu.setHeight(mStyles.height);
-        mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext, 68)));
+       mLeoPopMenu=new PopupWindow(convertView,mStyles.width,mStyles.height,true);
+//        mLeoPopMenu = new PopupWindow(mContext);
+//        mLeoPopMenu.setContentView(convertView);
+//        mLeoPopMenu.setHeight(mStyles.height);
+    
+//        mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext, 68)));
 //        mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
         Log.e("hehe", finalWidth+"final///"+mLeoPopMenu.getWidth()+" true w");
         
@@ -138,7 +139,11 @@ public class LeoPopMenu {
             }
             LeoLog.d("LeoPopMenu", "popWidth is : " + popWidth+" mIconOffest = "+mIconOffest);
             
-            mStyles.width = DipPixelUtil.dip2px((Context) mContext, popWidth);
+//            mStyles.width = DipPixelUtil.dip2px((Context) mContext, popWidth);
+            
+            mStyles.width= (int) (finalWidth+DipPixelUtil.dip2px(mContext, 68));
+            
+            
             // LeoLog.d("LeoPopMenu", "dip2px popWidth is : " + mStyles.width);
             mStyles.height = LayoutParams.WRAP_CONTENT;
             if (mAnimaStyle != -1) {
@@ -209,7 +214,7 @@ public class LeoPopMenu {
         LeoLog.d("LeoPopMenu", "Height = " + H);
 
         float mMaxLength = 0;
-        
+        int MaxIndex = 0;
         TextView testTextView = (TextView) View.inflate(mContext, R.layout.popmenu_window_home_list_item, null).findViewById(R.id.menu_text);
 //        TextView testTextView = new TextView(mContext);
         for (int i = 0; i < mItems.size(); i++) {
@@ -218,6 +223,7 @@ public class LeoPopMenu {
             LeoLog.d("LeoPopMenu", "字符：" + mItems.get(i) + "...长度：" + mOne);
             if (mOne > mMaxLength) {
                 mMaxLength = mOne;
+                MaxIndex=i;
             }
         }
         
@@ -302,8 +308,31 @@ public class LeoPopMenu {
         if(mMaxLength>newLongWidth)
         {          
             mIsNewLine=true;
+            
            finalWidth=newLongWidth;
            Log.e("cnm", "开始判断了，发现finalWidth比最大限度还要长，所以让它等于最大限度，而且让mIsNewLine为真，此时它的长度为"+finalWidth);
+           
+           //判断第二长的item，然后再取出最长的单词长度，取两者的更大的那个值，最后还是加上7dp
+           
+       
+           mMaxLength=0;         
+           //取出第二长
+           for (int i = 0; i < mItems.size(); i++) {       
+               if(i==MaxIndex)
+               {
+                   continue;
+               }
+               testTextView.setText(mItems.get(i));       
+               float mOne = getTextViewLength(testTextView, mItems.get(i));
+               if (mOne > mMaxLength) {
+                   mMaxLength = mOne;
+               }
+           }
+           finalWidth=mMaxLength+DipPixelUtil.dip2px(mContext, 7);
+           
+           
+           
+           
         }
         if(mMaxLength<newSmallWidth)
         {
@@ -416,28 +445,26 @@ public class LeoPopMenu {
     
     
     
-    public class MyListView extends ListView
-    {
-
-    
-
-        public MyListView(Context context, AttributeSet attrs, int defStyleAttr) {
-            super(context, attrs, defStyleAttr);
-            // TODO Auto-generated constructor stub
-        }
-
-        public MyListView(Context context, AttributeSet attrs) {
-            super(context, attrs);
-            // TODO Auto-generated constructor stub
-        }
-
-        public MyListView(Context context) {
-            super(context);
-            // TODO Auto-generated constructor stub
-        }
-        
-        
-        
+//    public class MyListView extends ListView
+//    {
+//
+//        public MyListView(Context context, AttributeSet attrs, int defStyleAttr) {
+//            super(context, attrs, defStyleAttr);
+//            // TODO Auto-generated constructor stub
+//        }
+//
+//        public MyListView(Context context, AttributeSet attrs) {
+//            super(context, attrs);
+//            // TODO Auto-generated constructor stub
+//        }
+//
+//        public MyListView(Context context) {
+//            super(context);
+//            // TODO Auto-generated constructor stub
+//        }
+//        
+//        
+//        
 //        @Override
 //        protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //            int maxWidth = meathureWidthByChilds() + getPaddingLeft() + getPaddingRight();
@@ -458,7 +485,7 @@ public class LeoPopMenu {
 //        }
         
         
-    }
+//    }
     
     
     

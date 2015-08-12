@@ -166,7 +166,8 @@ public class TaskChangeHandler {
                 }
             }
             if (lock) {
-                LeoLog.d("Track Lock Screen", "apply lockscreen form TaskChangeHandler");
+                // LeoLog.d("Track Lock Screen",
+                // "apply lockscreen form TaskChangeHandler");
                 if (LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL, pkg, false,
                         null)) {
                     amp.setUnlocked(false);

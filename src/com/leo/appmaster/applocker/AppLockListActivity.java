@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
@@ -214,7 +215,7 @@ public class AppLockListActivity extends BaseActivity implements
                 .getAllPkgInfo();
         List<String> lockList = LockManager.getInstatnce().getCurLockList();
         for (AppItemInfo appDetailInfo : list) {
-            if (appDetailInfo.packageName.equals(this.getPackageName()))
+            if (appDetailInfo.packageName.equals(this.getPackageName()) || appDetailInfo.packageName.equals(Constants.CP_PACKAGE))
                 continue;
             if (lockList.contains(appDetailInfo.packageName)) {
                 appDetailInfo.isLocked = true;

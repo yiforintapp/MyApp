@@ -373,16 +373,33 @@
     <dimen name="webview_icon_margin">60dp</dimen>
     <dimen name="webview_title_width">232dp</dimen>
     <dimen name="guide_skip_margin">10dp</dimen>
-        <dimen name="privacy_default_title_margin_top">30dp</dimen>
+    <dimen name="privacy_default_title_margin_top">30dp</dimen>
     <dimen name="privacy_default_image_width">100dp</dimen>
     <dimen name="privacy_default_image_height">100dp</dimen>
     <dimen name="privacy_default_text_margin_top">8dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">42dp</dimen>
     <dimen name="app_manager_flow_chart_margin_top">4dp</dimen>
-     <dimen name="app_manager_lineview_margin_top">2dp</dimen> 
+    <dimen name="app_manager_lineview_margin_top">2dp</dimen>
     <!-- 2.6 end -->
-     <!-- 2.7 start -->
+
+
+    <!-- 2.7 start -->
     <integer name="home_page_tab_text_size">13</integer>
+
+    <dimen name="noti_spe_icon_height">50dp</dimen>
+    <dimen name="noti_spe_icon_m_left">10dp</dimen>
+    <dimen name="noti_spe_content_m_left">13dp</dimen>
+    <dimen name="noti_spe_content_big_text_size">14sp</dimen>
+    <dimen name="noti_spe_content_des_m_top">3dp</dimen>
+    <dimen name="noti_spe_content_small_text_size">12sp</dimen>
+    <dimen name="noti_spe_butt_width">70dp</dimen>
+    <dimen name="noti_spe_butt_height">30dp</dimen>
+    <dimen name="noti_spe_ar_butt_width">95dp</dimen>
+    <dimen name="noti_spe_ar_butt_height">23dp</dimen>
+    <dimen name="noti_spe_ar_content_m_left">9dp</dimen>
+    <dimen name="noti_spe_fr_butt_width">65dp</dimen>
+    <dimen name="noti_spe_fr_content_m_left">11dp</dimen>
+    <dimen name="noti_spe_tr_butt_width">105dp</dimen>
     <!-- 2.7 end -->
 
 </resources>
