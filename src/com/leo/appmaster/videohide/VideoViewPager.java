@@ -4,6 +4,7 @@ package com.leo.appmaster.videohide;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.R.integer;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -91,6 +92,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             "fail_toast");
                     break;
                 case SHOW_DIALOG:
+                    LeoLog.d("testBindService", "SHOW_DIALOG");
                     String mContentString = (String) msg.obj;
                     showDownLoadNewCbDialog(mContentString);
                     break;
@@ -260,7 +262,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     public void onClick(View arg0) {
         switch (arg0.getId()) {
             case R.id.unhide_video:
-
                 if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
                         && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG) && isCbHere
                         && isHaveServiceToBind && isBindServiceOK) {
@@ -273,39 +274,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 String cancleHideVideoText = getString(R.string.app_unhide_dialog_content_video);
                 showAlarmDialog(cancleHideVideoText, DIALOG_CANCLE_VIDEO);
 
-                // new
-                // if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                // && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG))
-                // {
-                // if (isCbHere) {
-                // if (isHaveServiceToBind) {
-                // if (isBindServiceOK) {
-                // isServiceDo = true;
-                // }
-                // String cancleHideVideoText =
-                // getString(R.string.app_unhide_dialog_content_video);
-                // showAlarmDialog(cancleHideVideoText, DIALOG_CANCLE_VIDEO);
-                // } else {
-                // // need new cb
-                // String mContentString =
-                // getString(R.string.video_hide_need_new_cb);
-                // showDownLoadNewCbDialog(mContentString);
-                // }
-                // } else {
-                // // no cb , goto download
-                // String mContentString =
-                // getString(R.string.video_hide_need_cb);
-                // showDownLoadNewCbDialog(mContentString);
-                // }
-                // } else {
-                // String cancleHideVideoText =
-                // getString(R.string.app_unhide_dialog_content_video);
-                // showAlarmDialog(cancleHideVideoText, DIALOG_CANCLE_VIDEO);
-                // }
-
                 break;
             case R.id.delete_video:
-
                 if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
                         && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG) && isCbHere
                         && isHaveServiceToBind && isBindServiceOK) {
@@ -314,35 +284,6 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
                 String deleteHideVideoText = getString(R.string.app_delete_dialog_content_video);
                 showAlarmDialog(deleteHideVideoText, DIALOG_DELECTE_VIDEO);
-
-                // if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
-                // && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG))
-                // {
-                // if (isCbHere) {
-                // if (isHaveServiceToBind) {
-                // if (isBindServiceOK) {
-                // isServiceDo = true;
-                // }
-                // String deleteHideVideoText =
-                // getString(R.string.app_delete_dialog_content_video);
-                // showAlarmDialog(deleteHideVideoText, DIALOG_DELECTE_VIDEO);
-                // } else {
-                // // need new cb
-                // String mContentString =
-                // getString(R.string.video_delete_need_new_cb);
-                // showDownLoadNewCbDialog(mContentString);
-                // }
-                // } else {
-                // // no cb , goto download
-                // String mContentString =
-                // getString(R.string.video_hide_need_cb);
-                // showDownLoadNewCbDialog(mContentString);
-                // }
-                // } else {
-                // String deleteHideVideoText =
-                // getString(R.string.app_delete_dialog_content_video);
-                // showAlarmDialog(deleteHideVideoText, DIALOG_DELECTE_VIDEO);
-                // }
 
                 break;
             default:
@@ -471,12 +412,15 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
                         backgoundTask.execute(true);
                     } else if (flag == DIALOG_DELECTE_VIDEO) {
-                        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-                            @Override
-                            public void run() {
-                                deleteVideo();
-                            }
-                        });
+                        DeleteTask task = new DeleteTask(VideoViewPager.this);
+                        task.execute(true);
+                        // AppMasterApplication.getInstance().postInAppThreadPool(new
+                        // Runnable() {
+                        // @Override
+                        // public void run() {
+                        // deleteVideo();
+                        // }
+                        // });
                     }
                 }
             }
@@ -489,11 +433,13 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
     }
 
     public void showDownLoadNewCbDialog(String mContentString) {
+        LeoLog.d("testBindService", "showDownLoadNewCbDialog");
         SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1, "hidevd_cb",
                 "cbdialogue");
         if (mDialog == null) {
             mDialog = new LEOAlarmDialog(this);
         }
+        LeoLog.d("testBindService", "finish Dialog");
         mDialog.setOnClickListener(new OnDiaogClickListener() {
             @Override
             public void onClick(int which) {
@@ -512,6 +458,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         mDialog.setContent(mContentString);
         mDialog.setSureButtonText(getString(R.string.button_install));
         mDialog.show();
+        LeoLog.d("testBindService", "Dialog show");
     }
 
     private void requestUrl() {
@@ -569,13 +516,12 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
      * delete Video
      */
     private void deleteVideo() {
+        LeoLog.d("testBindService", "come to deleteVideo()");
         boolean flag = false;
         String filePath = mAllPath.get(mPosition);
-        // if (!FileOperationUtil.deleteFile(filePath)) {
-        // return;
-        // }
 
         if (isServiceDo) {
+            LeoLog.d("testBindService", "is ServiceDo");
             int mProcessType = -1;
             try {
                 mProcessType =
@@ -600,9 +546,11 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             }
 
         } else {
+            LeoLog.d("testBindService", "is Not ServiceDo");
             try {
                 if (VideoHideMainActivity.isLetPgFail) {
                     flag = false;
+                    LeoLog.d("testBindService", "isLetPgFail , return false");
                 } else {
                     flag = FileOperationUtil.deleteFile(filePath);
                     FileOperationUtil.deleteFileMediaEntry(filePath, this);
@@ -634,6 +582,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
             viewPager.setAdapter(mPagerAdapter);
         } else {
+            LeoLog.d("testBindService", "to do something");
             String mContentString;
             if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
                     && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
@@ -649,6 +598,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         msg.obj = mContentString;
                         mHandler.sendMessage(msg);
                     } else if (!isHaveServiceToBind) {
+                        LeoLog.d("testBindService", "!isHaveServiceToBind");
                         mContentString = getString(R.string.video_hide_need_new_cb);
                         Message msg = Message.obtain();
                         msg.what = SHOW_DIALOG;
@@ -669,6 +619,136 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         }
         isServiceDo = false;
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
+    }
+
+    private class DeleteTask extends AsyncTask<Boolean, Integer, Boolean> {
+        private Context context;
+        private String mDeletePath;
+
+        DeleteTask(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        protected void onPreExecute() {
+
+        }
+
+        @Override
+        protected Boolean doInBackground(Boolean... params) {
+            boolean isSuccess = true;
+            boolean flag = params[0];
+            mDeletePath = mAllPath.get(mPosition);
+
+            if (flag && mPosition < mAllPath.size()) {
+                if (isServiceDo) {
+                    LeoLog.d("testBindService", "is ServiceDo");
+                    int mProcessType = -1;
+                    try {
+                        mProcessType =
+                                mService.deleteVideo(mDeletePath);
+                        if (mProcessType == 0) {
+                            mAllPath.remove(mPosition);
+                            isSuccess = true;
+                        }
+                    } catch (RemoteException e) {
+                        isSuccess = false;
+                    }
+
+                    // if cb can not do this , pg do this
+                    if (!isSuccess) {
+                        try {
+                            isSuccess = FileOperationUtil.deleteFile(mDeletePath);
+                            FileOperationUtil.deleteFileMediaEntry(mDeletePath, context);
+                            mAllPath.remove(mPosition);
+                            // flag = true;
+                        } catch (Exception e) {
+                            isSuccess = false;
+                        }
+                    }
+
+                } else {
+                    LeoLog.d("testBindService", "is Not ServiceDo");
+                    try {
+                        if (VideoHideMainActivity.isLetPgFail) {
+                            isSuccess = false;
+                            LeoLog.d("testBindService", "isLetPgFail , return false");
+                        } else {
+                            isSuccess = FileOperationUtil.deleteFile(mDeletePath);
+                            FileOperationUtil.deleteFileMediaEntry(mDeletePath, context);
+                            mAllPath.remove(mPosition);
+                        }
+                    } catch (Exception e) {
+                        isSuccess = false;
+                    }
+                }
+            }
+
+            return isSuccess;
+        }
+
+        @Override
+        protected void onPostExecute(final Boolean isSuccess) {
+
+            if (isSuccess) {
+                int number = mAllPath.size();
+                if (number == 0) {
+                    Intent intent = new Intent();
+                    intent.setClass(VideoViewPager.this, VideoHideMainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                } else if (mPosition == 0) {
+                    mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
+                            .get(mPosition)));
+                } else {
+                    if (mPosition == number) {
+                        mPosition = 0;
+                        mTtileBar.setTitle(FileOperationUtil.getNoExtNameFromHideFilepath(mAllPath
+                                .get(mPosition)));
+                    }
+                }
+                mResultPath.add(mDeletePath);
+                mPagerAdapter = new VideoPagerAdapter(VideoViewPager.this);
+                viewPager.setAdapter(mPagerAdapter);
+            } else {
+                LeoLog.d("testBindService", "to do something");
+                String mContentString;
+                if (mLastName.equals(VideoHideMainActivity.LAST_CATALOG)
+                        && mSecondName.equals(VideoHideMainActivity.SECOND_CATALOG)) {
+                    if (isServiceDo) {
+                        Message msg = Message.obtain();
+                        msg.what = SHOW_TOAST;
+                        mHandler.sendMessage(msg);
+                    } else {
+                        if (!isCbHere) {// no cb
+                            mContentString = getString(R.string.video_hide_need_cb);
+                            Message msg = Message.obtain();
+                            msg.what = SHOW_DIALOG;
+                            msg.obj = mContentString;
+                            mHandler.sendMessage(msg);
+                        } else if (!isHaveServiceToBind) {
+                            LeoLog.d("testBindService", "!isHaveServiceToBind");
+                            mContentString = getString(R.string.video_hide_need_new_cb);
+                            Message msg = Message.obtain();
+                            msg.what = SHOW_DIALOG;
+                            msg.obj = mContentString;
+                            mHandler.sendMessage(msg);
+                        } else {
+                            Message msg = Message.obtain();
+                            msg.what = SHOW_TOAST;
+                            mHandler.sendMessage(msg);
+                        }
+                    }
+                } else {
+                    Message msg = Message.obtain();
+                    msg.what = SHOW_TOAST;
+                    mHandler.sendMessage(msg);
+                }
+            }
+            isServiceDo = false;
+            PrivacyHelper.getInstance(context)
+                    .computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_VIDEO);
+        }
     }
 
     /**
