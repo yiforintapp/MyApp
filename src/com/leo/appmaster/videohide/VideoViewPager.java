@@ -602,12 +602,12 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         } else {
             try {
                 if (VideoHideMainActivity.isLetPgFail) {
-                    int i = 10 / 0;
+                    flag = false;
+                } else {
+                    flag = FileOperationUtil.deleteFile(filePath);
+                    FileOperationUtil.deleteFileMediaEntry(filePath, this);
+                    mAllPath.remove(mPosition);
                 }
-                flag = FileOperationUtil.deleteFile(filePath);
-                FileOperationUtil.deleteFileMediaEntry(filePath, this);
-                mAllPath.remove(mPosition);
-                // flag = true;
             } catch (Exception e) {
                 flag = false;
             }
@@ -740,26 +740,28 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                             Message msg = Message.obtain();
                             msg.what = 3;
                             mHandler.sendMessage(msg);
-                            int i = 10 / 0;
+
+                            isSuccess = false;
                         } else {
                             LeoLog.d("testBindService", "isLetPgFail = false");
                             Message msg = Message.obtain();
                             msg.what = 4;
                             mHandler.sendMessage(msg);
-                        }
-                        newFileName = newFileName.substring(1,
-                                newFileName.indexOf(".leotmv"));
-                        if (!FileOperationUtil.renameFile(path, newFileName)) {
-                            return isSuccess = false;
-                        } else {
-                            mResultPath.add(path);
-                            FileOperationUtil.saveFileMediaEntry(
-                                    FileOperationUtil.makePath(
-                                            FileOperationUtil.getDirPathFromFilepath(path),
-                                            newFileName),
-                                    context);
-                            FileOperationUtil.deleteFileMediaEntry(path, context);
-                            mAllPath.remove(mPosition);
+
+                            newFileName = newFileName.substring(1,
+                                    newFileName.indexOf(".leotmv"));
+                            if (!FileOperationUtil.renameFile(path, newFileName)) {
+                                return isSuccess = false;
+                            } else {
+                                mResultPath.add(path);
+                                FileOperationUtil.saveFileMediaEntry(
+                                        FileOperationUtil.makePath(
+                                                FileOperationUtil.getDirPathFromFilepath(path),
+                                                newFileName),
+                                        context);
+                                FileOperationUtil.deleteFileMediaEntry(path, context);
+                                mAllPath.remove(mPosition);
+                            }
                         }
                     } catch (Exception e) {
                         isSuccess = false;
