@@ -686,30 +686,30 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
                             try {
 
-                                if (VideoHideMainActivity.isLetPgFail) {
-                                    isSuccess = false;
-                                } else {
-                                    newFileName = newFileName + ".leotmv";
-                                    if (FileOperationUtil.renameFile(item.getPath(),
-                                            newFileName)) {
-                                        FileOperationUtil.saveFileMediaEntry(FileOperationUtil
-                                                .makePath(
-                                                        FileOperationUtil
-                                                                .getDirPathFromFilepath(item
-                                                                        .getPath()),
-                                                        newFileName), context);
-                                        FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
-                                                context);
+                                // if (VideoHideMainActivity.isLetPgFail) {
+                                // isSuccess = false;
+                                // } else {
+                                newFileName = newFileName + ".leotmv";
+                                if (FileOperationUtil.renameFile(item.getPath(),
+                                        newFileName)) {
+                                    FileOperationUtil.saveFileMediaEntry(FileOperationUtil
+                                            .makePath(
+                                                    FileOperationUtil
+                                                            .getDirPathFromFilepath(item
+                                                                    .getPath()),
+                                                    newFileName), context);
+                                    FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
+                                            context);
 
-                                        mVideoItems.remove(item);
-                                        SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                                "hidevd_cb",
-                                                "hide_done");
-                                    } else {
-                                        mUnhidePath.remove(item.getPath());
-                                        isSuccess = false;
-                                    }
+                                    mVideoItems.remove(item);
+                                    SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                            "hidevd_cb",
+                                            "hide_done");
+                                } else {
+                                    mUnhidePath.remove(item.getPath());
+                                    isSuccess = false;
                                 }
+                                // }
 
                             } catch (Exception e) {
                                 return isSuccess = false;
@@ -764,25 +764,25 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             newFileName =
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
                             try {
-                                if (VideoHideMainActivity.isLetPgFail) {
-                                    isSuccess = false;
+                                // if (VideoHideMainActivity.isLetPgFail) {
+                                // isSuccess = false;
+                                // } else {
+                                newFileName = newFileName.substring(1,
+                                        newFileName.indexOf(".leotmv"));
+                                if (FileOperationUtil.renameFile(item.getPath(),
+                                        newFileName)) {
+                                    FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+                                            .makePath(
+                                                    FileOperationUtil
+                                                            .getDirPathFromFilepath(item
+                                                                    .getPath()),
+                                                    newFileName), context);
+                                    FileOperationUtil.deleteFileMediaEntry(item.getPath(),
+                                            context);
+                                    mVideoItems.remove(item);
                                 } else {
-                                    newFileName = newFileName.substring(1,
-                                            newFileName.indexOf(".leotmv"));
-                                    if (FileOperationUtil.renameFile(item.getPath(),
-                                            newFileName)) {
-                                        FileOperationUtil.saveImageMediaEntry(FileOperationUtil
-                                                .makePath(
-                                                        FileOperationUtil
-                                                                .getDirPathFromFilepath(item
-                                                                        .getPath()),
-                                                        newFileName), context);
-                                        FileOperationUtil.deleteFileMediaEntry(item.getPath(),
-                                                context);
-                                        mVideoItems.remove(item);
-                                    } else {
-                                        return isSuccess = false;
-                                    }
+                                    return isSuccess = false;
+                                    // }
                                 }
                             } catch (Exception e) {
                                 return isSuccess = false;

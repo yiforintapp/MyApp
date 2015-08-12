@@ -72,6 +72,7 @@
             android:text="@string/app_add_hide_image"
             android:textColor="@drawable/manager_backup_text_selecter" />
 
+        <!--
         <Button
             android:id="@+id/switch_no_cb"
             android:layout_width="60dp"
@@ -93,6 +94,8 @@
             android:background="@drawable/check_update_button"
             android:text="PG正常状态"
             android:textColor="@drawable/manager_backup_text_selecter" />
+
+        -->
     </RelativeLayout>
 
 </LinearLayout>

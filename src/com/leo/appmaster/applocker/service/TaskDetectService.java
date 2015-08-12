@@ -44,6 +44,7 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
+import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -62,10 +63,10 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-     public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-//    public static final int SHOW_NOTI_PRE_DAY = 20000;
-     public static final int MAX_MEMORY = 65;
-//    public static final int MAX_MEMORY = 20;
+    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+    // public static final int SHOW_NOTI_PRE_DAY = 20000;
+    public static final int MAX_MEMORY = 65;
+    // public static final int MAX_MEMORY = 20;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -88,6 +89,7 @@ public class TaskDetectService extends Service {
 
     private static TaskDetectService sService;
     private static Notification sNotification;
+    private String language = "zh";
 
     public class TaskDetectBinder extends Binder {
         public TaskDetectService getService() {
@@ -122,6 +124,8 @@ public class TaskDetectService extends Service {
         mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
         // sendQuickPermissionOpenNotification(getApplicationContext());
+
+        language = AppwallHttpUtil.getLanguage();
 
         super.onCreate();
     }
@@ -368,7 +372,11 @@ public class TaskDetectService extends Service {
         // getApplicationContext().getString(R.string.clean_mem_notify_big_right));
         view_custom.setTextViewText(R.id.appwallDescTV,
                 getApplicationContext().getString(R.string.clean_mem_notify_small));
-        view_custom.setTextViewText(R.id.app_precent, " " + mProgress + "%");
+        if ("zh".equalsIgnoreCase(language)) {
+            view_custom.setTextViewText(R.id.app_precent, mProgress + "%");
+        } else {
+            view_custom.setTextViewText(R.id.app_precent, " " + mProgress + "%");
+        }
         NotificationCompat.Builder mBuilder = new Builder(this);
         mBuilder.setContent(view_custom)
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
@@ -468,11 +476,11 @@ public class TaskDetectService extends Service {
                                             .getRunningTasks(1);
                                     if (tasks != null && tasks.size() > 0) {
                                         RunningTaskInfo topTaskInfo = tasks.get(0);
-                                        if(topTaskInfo.baseActivity != null) {
+                                        if (topTaskInfo.baseActivity != null) {
                                             baseActivity = topTaskInfo.baseActivity
                                                     .getShortClassName();
-                                        } 
-                                       if (topTaskInfo.topActivity != null) {
+                                        }
+                                        if (topTaskInfo.topActivity != null) {
                                             activityName = topTaskInfo.topActivity
                                                     .getShortClassName();
                                         }
@@ -496,7 +504,7 @@ public class TaskDetectService extends Service {
                     }
                     pkgName = topTaskInfo.topActivity.getPackageName();
                     activityName = topTaskInfo.topActivity.getShortClassName();
-                    if(topTaskInfo.baseActivity != null) {
+                    if (topTaskInfo.baseActivity != null) {
                         baseActivity = topTaskInfo.baseActivity.getShortClassName();
                     }
                     // For aliyun os (may be others), the component of

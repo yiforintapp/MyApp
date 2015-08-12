@@ -521,7 +521,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
         String filePath = mAllPath.get(mPosition);
 
         if (isServiceDo) {
-            LeoLog.d("testBindService", "is ServiceDo");
+            // LeoLog.d("testBindService", "is ServiceDo");
             int mProcessType = -1;
             try {
                 mProcessType =
@@ -546,16 +546,16 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
             }
 
         } else {
-            LeoLog.d("testBindService", "is Not ServiceDo");
+            // LeoLog.d("testBindService", "is Not ServiceDo");
             try {
-                if (VideoHideMainActivity.isLetPgFail) {
-                    flag = false;
-                    LeoLog.d("testBindService", "isLetPgFail , return false");
-                } else {
-                    flag = FileOperationUtil.deleteFile(filePath);
-                    FileOperationUtil.deleteFileMediaEntry(filePath, this);
-                    mAllPath.remove(mPosition);
-                }
+                // if (VideoHideMainActivity.isLetPgFail) {
+                // flag = false;
+                // LeoLog.d("testBindService", "isLetPgFail , return false");
+                // } else {
+                flag = FileOperationUtil.deleteFile(filePath);
+                FileOperationUtil.deleteFileMediaEntry(filePath, this);
+                mAllPath.remove(mPosition);
+                // }
             } catch (Exception e) {
                 flag = false;
             }
@@ -670,14 +670,15 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 } else {
                     LeoLog.d("testBindService", "is Not ServiceDo");
                     try {
-                        if (VideoHideMainActivity.isLetPgFail) {
-                            isSuccess = false;
-                            LeoLog.d("testBindService", "isLetPgFail , return false");
-                        } else {
-                            isSuccess = FileOperationUtil.deleteFile(mDeletePath);
-                            FileOperationUtil.deleteFileMediaEntry(mDeletePath, context);
-                            mAllPath.remove(mPosition);
-                        }
+                        // if (VideoHideMainActivity.isLetPgFail) {
+                        // isSuccess = false;
+                        // LeoLog.d("testBindService",
+                        // "isLetPgFail , return false");
+                        // } else {
+                        isSuccess = FileOperationUtil.deleteFile(mDeletePath);
+                        FileOperationUtil.deleteFileMediaEntry(mDeletePath, context);
+                        mAllPath.remove(mPosition);
+                        // }
                     } catch (Exception e) {
                         isSuccess = false;
                     }
@@ -815,34 +816,34 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 } else {
                     newFileName = FileOperationUtil.getNameFromFilepath(path);
                     try {
-                        if (VideoHideMainActivity.isLetPgFail) {
-                            LeoLog.d("testBindService", "isLetPgFail = false");
-                            Message msg = Message.obtain();
-                            msg.what = 3;
-                            mHandler.sendMessage(msg);
+                        // if (VideoHideMainActivity.isLetPgFail) {
+                        // LeoLog.d("testBindService", "isLetPgFail = false");
+                        // Message msg = Message.obtain();
+                        // msg.what = 3;
+                        // mHandler.sendMessage(msg);
+                        //
+                        // isSuccess = false;
+                        // } else {
+                        // LeoLog.d("testBindService", "isLetPgFail = false");
+                        // Message msg = Message.obtain();
+                        // msg.what = 4;
+                        // mHandler.sendMessage(msg);
 
-                            isSuccess = false;
+                        newFileName = newFileName.substring(1,
+                                newFileName.indexOf(".leotmv"));
+                        if (!FileOperationUtil.renameFile(path, newFileName)) {
+                            return isSuccess = false;
                         } else {
-                            LeoLog.d("testBindService", "isLetPgFail = false");
-                            Message msg = Message.obtain();
-                            msg.what = 4;
-                            mHandler.sendMessage(msg);
-
-                            newFileName = newFileName.substring(1,
-                                    newFileName.indexOf(".leotmv"));
-                            if (!FileOperationUtil.renameFile(path, newFileName)) {
-                                return isSuccess = false;
-                            } else {
-                                mResultPath.add(path);
-                                FileOperationUtil.saveFileMediaEntry(
-                                        FileOperationUtil.makePath(
-                                                FileOperationUtil.getDirPathFromFilepath(path),
-                                                newFileName),
-                                        context);
-                                FileOperationUtil.deleteFileMediaEntry(path, context);
-                                mAllPath.remove(mPosition);
-                            }
+                            mResultPath.add(path);
+                            FileOperationUtil.saveFileMediaEntry(
+                                    FileOperationUtil.makePath(
+                                            FileOperationUtil.getDirPathFromFilepath(path),
+                                            newFileName),
+                                    context);
+                            FileOperationUtil.deleteFileMediaEntry(path, context);
+                            mAllPath.remove(mPosition);
                         }
+                        // }
                     } catch (Exception e) {
                         isSuccess = false;
                     }
