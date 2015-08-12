@@ -21,6 +21,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -219,7 +220,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         }
         AppInfo installPackage = null;
         for (AppItemInfo localApp : localAppList) {
-            if (localApp.packageName.equals(this.getPackageName()))
+            if (localApp.packageName.equals(this.getPackageName()) ||  localApp.packageName.equals(Constants.CP_PACKAGE))
                 continue;
             if (defaultLockList.contains(localApp.packageName)) {
                 localApp.isLocked = true;
