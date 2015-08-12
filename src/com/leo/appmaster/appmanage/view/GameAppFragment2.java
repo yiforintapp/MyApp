@@ -28,6 +28,9 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
@@ -37,6 +40,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.extra.AppWallBean;
 import com.leo.appmaster.model.extra.AppWallUrlBean;
@@ -54,11 +59,11 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     private static final int MSG_LOAD_INIT_FAILED = 0;
     private static final int MSG_LOAD_INIT_SUCCESSED = 1;
     private static final int MSG_LOAD_MORE_SUCCESSED = 2;
-    private static final String DATAPATH = "/appmaster/appwall";
+//    private static final String DATAPATH = "/appmaster/appwall";
     public static final String GPPACKAGE = "com.android.vending";
     private static final String CHARSETLOCAL = "utf-8";
     private static final String CHARSETSERVICE = "utf-8";
-    private static final String tag = "GameAppFragment";
+    private static final String TAG = "GameAppFragment";
     private GameHandler mHandler;
     private ListView lv_game_app;
     private GameAppAdapter2 mGameAdapter;
@@ -148,7 +153,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                     all.add(list.get(i));
                 }
             }
-            LeoLog.d(tag, "loadDataFinish! the ListSize is :" + all.size());
+            LeoLog.d(TAG, "loadDataFinish! the ListSize is :" + all.size());
             for (int i = 0; i < all.size(); i++) {
                 if (i < 20) {
                     temp.add(all.get(i));
@@ -168,12 +173,8 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                 public void onClick(View arg0) {
                     mProgressBar.setVisibility(View.VISIBLE);
                     game_layout_load_error.setVisibility(View.GONE);
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-                        @Override
-                        public void run() {
-                            loadGameData();
-                        }
-                    });
+                    
+                    loadGameData();
                 }
             });
 
@@ -184,46 +185,12 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     protected void onInitUI() {
         initUI();
 
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-            @Override
-            public void run() {
-                loadGameData();
-            }
-        });
+        loadGameData();
     }
 
     private void loadGameData() {
-        InputStream is = null;
-        String data = null;
-        String path = Utilities.getURL(DATAPATH);
-        // String path = "http://api1.leomaster.com/appmaster/appwall";
-        // String path = "http://192.168.1.201:8080/leo/appmaster/appwall";
-
-//        String language = AppwallHttpUtil.getLanguage();
-        String language = getPostLanguage();
-        String code = getString(R.string.channel_code);
-        LeoLog.d("httpurl", "language_type IS : " + language + "code" +
-                code);
-        Map<String, String> map = new HashMap<String, String>();
-        map.put("language_type", language);
-        map.put("market_id", code);
-        is = AppwallHttpUtil.requestByPost(path, map, CHARSETLOCAL);
-        if (is != null) {
-            data = AppwallHttpUtil.getJsonByInputStream(is, CHARSETSERVICE);
-        }
-        // LeoLog.d("httpurl", "DATA IS : " + data + "--is IS : " + is);
-        if (data != null && !data.equals("")) {
-            List<AppWallBean> apps = getJson(data);
-            // LeoLog.d("httpurl", "GetJson List size is :" + apps.size());
-            Message msg = mHandler.obtainMessage(
-                    MSG_LOAD_INIT_SUCCESSED, apps);
-            mHandler.sendMessage(msg);
-        } else {
-            mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
-            LoadFailUtils.sendLoadFail(
-                    GameAppFragment2.this.mActivity, "games");
-        }
-
+        LoadGameLisener listener = new LoadGameLisener(this);
+        HttpRequestAgent.getInstance(mActivity).loadGameData(listener, listener);
     }
     /*
      * 对系统语言上传到服务器作出理（主要对中文简体和繁体中文）
@@ -429,8 +396,8 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     public String toUrlgetPackageName(String url) {
         return url.substring(url.lastIndexOf("?id=") + 4);
     }
-
     private List<AppWallBean> getJson(String data) {
+
         List<AppWallBean> all = new ArrayList<AppWallBean>();
 
         String appIcon = null;
@@ -509,6 +476,49 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
 
             };
         }.start();
+    }
+    
+    private static class LoadGameLisener extends RequestListener<GameAppFragment2> {
+        
+        public LoadGameLisener(GameAppFragment2 outerContext) {
+            super(outerContext);
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            LeoLog.d(TAG, "load game error." + error == null ? "" : error.getMessage());
+            GameAppFragment2 outerContext = getOuterContext();
+            
+            Context context = AppMasterApplication.getInstance();
+            LoadFailUtils.sendLoadFail(context, "games");
+
+            if (outerContext == null) return;
+            
+            outerContext.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            LeoLog.d(TAG, "load game success. response: " + (response == null ? "" : response.toString()) +
+                    " | noMidify: " + noMidify);
+
+            GameAppFragment2 outerContext = getOuterContext();
+            if (response == null) {
+                Context context = AppMasterApplication.getInstance();
+                LoadFailUtils.sendLoadFail(context, "games");
+                if (outerContext != null) {
+                    outerContext.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+                }
+                return;
+            } else {
+                if (outerContext == null) return;
+
+                List<AppWallBean> apps = outerContext.getJson(response.toString());
+                Message msg = outerContext.mHandler.obtainMessage( MSG_LOAD_INIT_SUCCESSED, apps);
+                outerContext.mHandler.sendMessage(msg);
+            }
+        }
+        
     }
 
 }

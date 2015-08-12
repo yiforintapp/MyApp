@@ -8,6 +8,7 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.AppTask;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -16,9 +17,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.Build;
-import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.leo.analytics.update.IUIHelper;
 import com.leo.analytics.update.UpdateManager;
@@ -28,9 +31,14 @@ import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
-public class UIHelper implements com.leo.analytics.update.IUIHelper {
+public class UIHelper extends BroadcastReceiver implements com.leo.analytics.update.IUIHelper {
 
-    private final static String TAG = UIHelper.class.getSimpleName();
+    private final static String TAG = "UIHelper";
+
+    private final static String ACTION_SHOW_REMIND_TIP = "com.leo.appmaster.update.remind";
+
+    public static final String KEY_LAST_SHOW_REMIND_TIME = "last_show_remind_time";
+    public static final String KEY_CURRENT_REMIND_TIMES = "remind_count";
 
     private static UIHelper sUIHelper = null;
     private Context mContext = null;
@@ -39,7 +47,7 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
 
     private NotificationManager nm = null;
     // private RemoteViews updateRv = null;
-//    private RemoteViews downloadRv = null;
+    // private RemoteViews downloadRv = null;
     private Notification updateNotification = null;
     private Notification downloadNotification = null;
 
@@ -50,7 +58,7 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
     public final static String ACTION_CANCEL_DOWNLOAD = "com.leo.appmaster.download.cancel";
     public final static String ACTION_DOWNLOAD_FAILED = "com.leo.appmaster.download.failed";
     public final static String ACTION_DOWNLOAD_FAILED_CANCEL = "com.leo.appmaster.download.failed.dismiss";
-    
+
     private final static String PKG_SYSTEM_UI = "com.android.systemui";
 
     private final static int DOWNLOAD_NOTIFICATION_ID = 1001;
@@ -61,7 +69,7 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
     private int mUIParam = 0;
     private int mProgress = 0;
 
-    private UIHelper(Context ctx) {
+    public UIHelper(Context ctx) {
         mContext = ctx.getApplicationContext();
         /* new version found */
         IntentFilter filter = new IntentFilter();
@@ -89,7 +97,7 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
         mContext.registerReceiver(receive, filter);
     }
 
-    public static UIHelper getInstance(Context ctx) {
+    public static synchronized UIHelper getInstance(Context ctx) {
         if (sUIHelper == null) {
             sUIHelper = new UIHelper(ctx);
         }
@@ -115,9 +123,9 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
         String downloadTip = mContext.getString(R.string.downloading, appName);
         CharSequence from = appName;
         CharSequence message = downloadTip;
-//        downloadRv = new RemoteViews(mContext.getPackageName(),
-//                R.layout.sdk_notification_download);
-//        downloadRv.setTextViewText(R.id.tv_content, downloadTip);
+        // downloadRv = new RemoteViews(mContext.getPackageName(),
+        // R.layout.sdk_notification_download);
+        // downloadRv.setTextViewText(R.id.tv_content, downloadTip);
         Intent intent = new Intent(ACTION_DOWNLOADING);
         PendingIntent contentIntent = PendingIntent.getBroadcast(mContext, 0,
                 intent, 0);
@@ -146,16 +154,17 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
     public void sendDownloadNotification(int progress) {
         LeoLog.d(TAG, "sendDownloadNotification called ");
         String appName = mContext.getString(R.string.app_name);
-//        downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
-//        downloadRv.setTextViewText(
-//                R.id.tv_content,
-//                mContext.getString(R.string.downloading_notification, appName,
-//                        progress) + "%");
+        // downloadRv.setProgressBar(R.id.pb_download, 100, progress, false);
+        // downloadRv.setTextViewText(
+        // R.id.tv_content,
+        // mContext.getString(R.string.downloading_notification, appName,
+        // progress) + "%");
         // downloadRv.setTextViewText(R.id.tv_progress, progress + "%");
-//        downloadNotification.contentView = downloadRv;
+        // downloadNotification.contentView = downloadRv;
         String title = mContext.getString(R.string.downloading, appName);
-        String content = progress +  "%";
-        downloadNotification.setLatestEventInfo(mContext, title, content,  downloadNotification.contentIntent);
+        String content = progress + "%";
+        downloadNotification.setLatestEventInfo(mContext, title, content,
+                downloadNotification.contentIntent);
         NotificationUtil.setBigIcon(downloadNotification, R.drawable.ic_launcher_notification_big);
 
         nm.notify(DOWNLOAD_NOTIFICATION_ID, downloadNotification);
@@ -165,8 +174,24 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
         nm.cancel(DOWNLOAD_NOTIFICATION_ID);
     }
 
+    private void recordRemind() {
+        SharedPreferences sp = PreferenceManager
+                .getDefaultSharedPreferences(mContext);
+        sp.edit()
+                .putLong(KEY_LAST_SHOW_REMIND_TIME, System.currentTimeMillis())
+                .commit();
+        int remindCount = sp.getInt(KEY_CURRENT_REMIND_TIMES, 0);
+
+        LeoLog.d(TAG, "recordRemind: remindCount = " + remindCount);
+        sp.edit().putInt(KEY_CURRENT_REMIND_TIMES, remindCount + 1).commit();
+    }
+
     @SuppressWarnings("deprecation")
     private void sendUpdateNotification() {
+        if (!mManager.isFromUser()) {
+            LeoLog.d(TAG, "sendUpdateNotification");
+            recordRemind();
+        }
         String appName = mContext.getString(R.string.app_name);
         String updateTip = mContext.getString(R.string.update_available,
                 appName);
@@ -244,21 +269,167 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
             AppMasterApplication.getInstance().exitApplication();
         }
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
-                && !isAppOnTop(mContext) ) {
-            //|| ui_type == IUIHelper.BACK_DOWNLOAD_DONE
-            sendUpdateNotification();
+                && !isAppOnTop(mContext)) {
+            // || ui_type == IUIHelper.BACK_DOWNLOAD_DONE
+            checkShowRemindNotification();
         } else {
             showUI(ui_type, param);
         }
     }
 
+    private void checkShowRemindNotification() {
+        LeoLog.d(TAG, "checkShowRemindNotification");
+        if (mManager.isFromUser()) {
+            LeoLog.d(TAG, "isFromUser, send right nows");
+            sendUpdateNotification();
+        } else {
+            SharedPreferences sp = PreferenceManager
+                    .getDefaultSharedPreferences(mContext);
+            int frequencyConfig = sp.getInt(UpdateManager.KEY_FREQUENCY_CONFIG,
+                    0);
+            int remindTimesConfig = sp.getInt(
+                    UpdateManager.KEY_REMIND_TIMES_CONFIG, 0);
+
+            int curRemindTimes = sp.getInt(KEY_CURRENT_REMIND_TIMES, 0);
+            long lastRemindTime = sp.getLong(KEY_LAST_SHOW_REMIND_TIME, 0);
+
+            long currentTime = System.currentTimeMillis();
+            long remindInterval = frequencyConfig * 24 * 60 * 60 * 1000;
+
+            LeoLog.d(TAG, "not FromUser, frequencyConfig = " + frequencyConfig
+                    + "    remindTimesConfig = " + remindTimesConfig);
+
+            if (frequencyConfig <= 0 && remindTimesConfig <= 0) {
+                sendUpdateNotification();
+            } else {
+                if (frequencyConfig > 0 && remindTimesConfig > 0) {
+                    LeoLog.d(TAG, "consider frequency and remind times");
+                    if (curRemindTimes > remindTimesConfig) {
+                        LeoLog.d(TAG, "curRemindCount = " + curRemindTimes
+                                + "      remindTimesConfig =  "
+                                + remindTimesConfig + "  so dont show remind");
+                        return;
+                    }
+                    // consider remind times and frequency
+                    if ((currentTime - lastRemindTime) < remindInterval) {
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) < remindInterval, so dont show remind");
+                        setRemidAlarm(0, currentTime + remindInterval
+                                - (currentTime - lastRemindTime));
+                    } else {
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) > remindInterval, send right now");
+                        sendUpdateNotification();
+                    }
+                } else if (frequencyConfig > 0) { // only consider frequency
+                    LeoLog.d(TAG, "only consider frequency");
+                    if ((currentTime - lastRemindTime) < remindInterval) {
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) < remindInterval, so dont show remind");
+                        setRemidAlarm(0, currentTime + remindInterval
+                                - (currentTime - lastRemindTime));
+                    } else {
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) > remindInterval, send right now");
+                        sendUpdateNotification();
+                    }
+                } else {// only consider remind times
+                    LeoLog.d(TAG, "only consider frequency");
+                    if (curRemindTimes > remindTimesConfig) {
+                        Log.d(TAG, "curRemindCount = " + curRemindTimes
+                                + "      remindTimesConfig =  "
+                                + remindTimesConfig + "  so dont show remind");
+                        return;
+                    } else {
+                        LeoLog.d(TAG,
+                                "curRemindTimes < remindTimesConfig, send right now");
+                        sendUpdateNotification();
+                    }
+                }
+            }
+        }
+    }
+
+    private void checkShowRemindActivity() {
+        LeoLog.d(TAG, "checkShowRemindNotification");
+        if (mManager.isFromUser()) {
+            LeoLog.d(TAG, "isFromUser, send right nows");
+            relaunchActivity(mUIType, mUIParam, false);
+        } else {
+            SharedPreferences sp = PreferenceManager
+                    .getDefaultSharedPreferences(mContext);
+            int frequencyConfig = sp.getInt(UpdateManager.KEY_FREQUENCY_CONFIG,
+                    0);
+            int remindTimesConfig = sp.getInt(
+                    UpdateManager.KEY_REMIND_TIMES_CONFIG, 0);
+
+            int curRemindTimes = sp.getInt(KEY_CURRENT_REMIND_TIMES, 0);
+            long lastRemindTime = sp.getLong(KEY_LAST_SHOW_REMIND_TIME, 0);
+
+            long currentTime = System.currentTimeMillis();
+            long remindInterval = frequencyConfig * 24 * 60 * 60 * 1000;
+
+            LeoLog.d(TAG, "not FromUser, frequencyConfig = " + frequencyConfig
+                    + "    remindTimesConfig = " + remindTimesConfig);
+
+            if (frequencyConfig <= 0 && remindTimesConfig <= 0) {
+                relaunchActivity(mUIType, mUIParam, true);
+            } else {
+                if (frequencyConfig > 0 && remindTimesConfig > 0) {
+                    LeoLog.d(TAG, "consider frequency and remind times");
+                    if (curRemindTimes > remindTimesConfig) {
+                        LeoLog.d(TAG, "curRemindCount = " + curRemindTimes
+                                + "      remindTimesConfig =  "
+                                + remindTimesConfig + "  so dont show remind");
+                        return;
+                    }
+                    // consider remind times and frequency
+                    if ((currentTime - lastRemindTime) < remindInterval) {
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) < remindInterval, so dont show remind");
+                        setRemidAlarm(1, currentTime + remindInterval
+                                - (currentTime - lastRemindTime));
+                    } else {
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) > remindInterval, send right now");
+                        relaunchActivity(mUIType, mUIParam, true);
+                    }
+                } else if (frequencyConfig > 0) { // only consider frequency
+                    LeoLog.d(TAG, "only consider frequency");
+                    if ((currentTime - lastRemindTime) < remindInterval) {
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) < remindInterval, so dont show remind");
+                        setRemidAlarm(1, currentTime + remindInterval
+                                - (currentTime - lastRemindTime));
+                    } else {
+                        LeoLog.d(TAG,
+                                "(currentTime - lastRemindTime) > remindInterval, send right now");
+                        relaunchActivity(mUIType, mUIParam, true);
+                    }
+                } else {// only consider remind times
+                    LeoLog.d(TAG, "only consider frequency");
+                    if (curRemindTimes > remindTimesConfig) {
+                        Log.d(TAG, "curRemindCount = " + curRemindTimes
+                                + "      remindTimesConfig =  "
+                                + remindTimesConfig + "  so dont show remind");
+                        return;
+                    } else {
+                        LeoLog.d(TAG,
+                                "curRemindTimes < remindTimesConfig, send right now");
+                        relaunchActivity(mUIType, mUIParam, true);
+                    }
+                }
+            }
+        }
+    }
+
     @SuppressLint("NewApi")
     private boolean isActivityOnTop(Context context) {
-        if(!isAppOnTop(context)){
+        if (!isAppOnTop(context)) {
             return false;
         }
         /* now our Application on top, check activity */
-        if(Build.VERSION.SDK_INT > 19 ){
+        if (Build.VERSION.SDK_INT > 19) {
             ActivityManager am = (ActivityManager) context
                     .getSystemService(Context.ACTIVITY_SERVICE);
             try {
@@ -277,7 +448,7 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
                 e.printStackTrace();
             }
             return false;
-        }else{
+        } else {
             ActivityManager am = (ActivityManager) context
                     .getSystemService(Context.ACTIVITY_SERVICE);
             ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
@@ -289,14 +460,14 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
     }
 
     private boolean isAppOnTop(Context context) {
-        if(Build.VERSION.SDK_INT > 19 ){
+        if (Build.VERSION.SDK_INT > 19) {
             return isAppOnTopAfterLolipop(context);
-        }else{
+        } else {
             return isAppOnTopBeforeLolipop(context);
         }
     }
-    
-    private boolean isAppOnTopBeforeLolipop(Context context){
+
+    private boolean isAppOnTopBeforeLolipop(Context context) {
         ActivityManager am = (ActivityManager) context
                 .getSystemService(Context.ACTIVITY_SERVICE);
         ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
@@ -306,32 +477,37 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
             return true;
         }
         return false;
-    
+
     }
-    
-    private boolean isAppOnTopAfterLolipop(Context context){
+
+    private boolean isAppOnTopAfterLolipop(Context context) {
         // Android L and above
         String pkgName = null;
         ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> list = am.getRunningAppProcesses();
         for (RunningAppProcessInfo pi : list) {
-            if (pi.importance <= RunningAppProcessInfo.IMPORTANCE_VISIBLE  // Foreground or Visible
-                    && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter provider and service
+            if (pi.importance <= RunningAppProcessInfo.IMPORTANCE_VISIBLE // Foreground
+                                                                          // or
+                                                                          // Visible
+                    && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN // Filter
+                                                                                       // provider
+                                                                                       // and
+                                                                                       // service
                     && (0x4 & pi.flags) > 0) { // Must have activities
                 String pkgList[] = pi.pkgList;
-                if(pkgList != null && pkgList.length > 0) {
-                    if(pkgList[0].equals(PKG_SYSTEM_UI)){
+                if (pkgList != null && pkgList.length > 0) {
+                    if (pkgList[0].equals(PKG_SYSTEM_UI)) {
                         continue;
                     }
                     pkgName = pkgList[0];
                 }
             }
         }
-    
-        if(pkgName == null || !pkgName.equals(mContext.getPackageName())){
+
+        if (pkgName == null || !pkgName.equals(mContext.getPackageName())) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -376,7 +552,9 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
             LeoLog.d(TAG, "activity on top");
             listener.onChangeState(type, param);
         } else if (isAppOnTop(mContext)) {
-            relaunchActivity(type, param);
+            // TODO check auto check update
+            // relaunchActivity(type, param);
+            checkShowRemindActivity();
         } else {
             showNotification(type);
         }
@@ -385,25 +563,30 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
     private void showNotification(int type) {
         switch (type) {
             case IUIHelper.TYPE_CHECK_NEED_UPDATE:
-                sendUpdateNotification();
+                // TODO check auto check update
+                checkShowRemindNotification();
                 break;
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 sendDownloadFailedNotification();
                 break;
         }
     }
-    
+
     private void relaunchHome() {
-            LeoLog.d(TAG, "relaunchHome called");
-            Intent i = new Intent();
-            i.setClass(mContext, HomeActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            mContext.startActivity(i);
+        LeoLog.d(TAG, "relaunchHome called");
+        Intent i = new Intent();
+        i.setClass(mContext, HomeActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        mContext.startActivity(i);
     }
 
-    private void relaunchActivity(int type, int param) {
+    private void relaunchActivity(int type, int param, boolean needRecord) {
+        if (!mManager.isFromUser() && needRecord) {
+            LeoLog.d(TAG, "relaunchActivity");
+            recordRemind();
+        }
         Intent i = new Intent();
         i.setClass(mContext, UpdateActivity.class);
         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
@@ -424,7 +607,7 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
                     nm.cancel(UPDATE_NOTIFICATION_ID);
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
                     relaunchActivity(IUIHelper.TYPE_UPDATE,
-                            mManager.getReleaseType());
+                            mManager.getReleaseType(), false);
                 } else if (action.equals(ACTION_CANCEL_UPDATE)) {
                     mManager.onCancelUpdate();
                     if (listener != null) {
@@ -433,14 +616,14 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
                 } else if (action.equals(ACTION_DOWNLOADING)) {
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
                     relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
-                            mManager.getReleaseType());
+                            mManager.getReleaseType(), false);
                 } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {
                     mManager.onCancelDownload();
                     if (listener != null) {
                         listener.onChangeState(TYPE_DISMISS, 0);
                     }
                 } else if (action.equals(ACTION_DOWNLOAD_FAILED)) {
-                    relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0);
+                    relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0, false);
                 } else if (action.equals(ACTION_DOWNLOAD_FAILED_CANCEL)) {
                     mManager.onCancelDownload();
                     if (listener != null) {
@@ -481,6 +664,35 @@ public class UIHelper implements com.leo.analytics.update.IUIHelper {
     public void onUpdateChannel(int channel) {
         if (listener != null) {
             listener.onNotifyUpdateChannel(channel);
+        }
+    }
+
+    private void setRemidAlarm(int type, long trigger) {
+        LeoLog.d(TAG, "setRemidAlarm type = " + type + "    trigger = " + trigger);
+        // dont need this alarm
+        // AlarmManager am = (AlarmManager) mContext
+        // .getSystemService(Context.ALARM_SERVICE);
+        // Intent intent = new Intent(mContext, UIHelper.class);
+        // intent.setAction(ACTION_SHOW_REMIND_TIP);
+        // intent.putExtra("remind_type", type);
+        // PendingIntent pi = PendingIntent.getBroadcast(mContext, 0, intent,
+        // 0);
+        // am.cancel(pi);
+        // am.set(AlarmManager.RTC_WAKEUP, trigger, pi);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        String action = intent.getAction();
+        if (ACTION_SHOW_REMIND_TIP.equals(action)) {
+            int type = intent.getIntExtra("remind_type", -1);
+            Log.d(TAG, "onReceive: type = " + type);
+            if (type == 0) {
+                sendUpdateNotification();
+            } else if (type == 1) {
+                boolean needRecord = intent.getBooleanExtra("need_record", true);
+                relaunchActivity(mUIType, mUIParam, needRecord);
+            }
         }
     }
 

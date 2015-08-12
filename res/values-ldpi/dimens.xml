@@ -229,31 +229,39 @@
     <dimen name="quick_white_float_width">36dp</dimen>
     <!-- quick gesutre end -->
 
-    <integer name="privacy_contact_red_tip_tabTextwdth">10</integer>
-    <integer name="privacy_contact_red_tip_tabTexteight">10</integer>
+    <integer name="privacy_contact_red_tip_tabTextwdth">6</integer>
+    <integer name="privacy_contact_red_tip_tabTexteight">6</integer>
 
     <dimen name="privacy_contact_red_tip_x">94dp</dimen>
     <dimen name="privacy_contact_red_tip_y">12dp</dimen>
     <dimen name="text_icon_margin">3dp</dimen>
     <dimen name="dialog_btn_height">40dp</dimen>
     <dimen name="gesture_item_readtips_offsetx">15dp</dimen>
-    
+
     <!-- 2.5 start -->
     <dimen name="gesture_app_manager_bg_width">52dp</dimen>
     <dimen name="lock_setting_title_margintop">22dp</dimen>
     <!-- 2.5 end -->
 
-<!-- 2.6 start -->
+
+    <!-- 2.6 start -->
     <dimen name="webview_icon_margin">50dp</dimen>
-     <dimen name="webview_title_width">222dp</dimen>
-     <dimen name="guide_skip_margin">6dp</dimen>
-     <dimen name="privacy_default_title_margin_top">28dp</dimen>
-     <dimen name="privacy_default_image_width">80dp</dimen>
+    <dimen name="webview_title_width">222dp</dimen>
+    <dimen name="guide_skip_margin">6dp</dimen>
+    <dimen name="privacy_default_title_margin_top">28dp</dimen>
+    <dimen name="privacy_default_image_width">80dp</dimen>
     <dimen name="privacy_default_image_height">80dp</dimen>
     <dimen name="privacy_default_text_margin_top">6dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">38dp</dimen>
     <dimen name="apple_watch_top_btn_margin_top">12dp</dimen>
     <dimen name="app_manager_flow_chart_margin_top">8dp</dimen>
-     <dimen name="app_manager_lineview_margin_top">8dp</dimen> 
+    <dimen name="app_manager_lineview_margin_top">8dp</dimen>
     <!-- 2.6 end -->
+    <!-- 2.7start -->
+    <dimen name="splash_skip_button_padding">20dp</dimen>
+    <integer name="home_page_tab_text_size">16</integer>
+    <!-- 2.7end -->
+	
+	
+
 </resources>

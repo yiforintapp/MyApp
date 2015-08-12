@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.fragment;
 
 import android.app.Activity;

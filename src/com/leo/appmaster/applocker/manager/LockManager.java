@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
@@ -20,6 +19,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import android.R.integer;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +29,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
@@ -161,13 +162,13 @@ public class LockManager {
     private ExecutorService mTaskExecutor = Executors.newSingleThreadExecutor();
     private Future<Boolean> mLoadDefaultDataFuture;
     public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
-    public HashMap<Drawable, Bitmap> mDrawableColors;
+    private HashMap<Drawable, Integer> mDrawableColors;
     public ColorMatcher mMatcher;
     private TimerTask mFillterAllTask;
 
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
-        mDrawableColors = new HashMap<Drawable, Bitmap>();
+        mDrawableColors = new HashMap<Drawable, Integer>();
         loadAppLaunchReorder();
         mMatcher = new ColorMatcher();
         mLockPolicy = new TimeoutRelockPolicy(mContext);
@@ -179,7 +180,7 @@ public class LockManager {
         mTimeLockList = new ArrayList<TimeLock>();
         mLocationLockList = new ArrayList<LocationLock>();
         mTLMap = new HashMap<TimeLock, List<ScheduledFuture<?>>>();
-        mHandler = new Handler();
+        mHandler = new Handler(Looper.getMainLooper());
         mTimeChangeReceiver = new TimeChangeReceive();
         initFilterList();
     }
@@ -1039,9 +1040,10 @@ public class LockManager {
             homeMode.modeName = mContext.getString(R.string.family_mode);
             homeMode.isCurrentUsed = false;
             homeMode.defaultFlag = 3;
-            homeMode.modeIcon =
-                    BitmapFactory.decodeResource(mContext.getResources(),
-                            R.drawable.lock_mode_family);
+//            homeMode.modeIcon =
+//                    BitmapFactory.decodeResource(mContext.getResources(),
+//                            R.drawable.lock_mode_family);
+//            homeMode.modeIconId = R.drawable.lock_mode_family;
             List<String> list = Collections.synchronizedList(new LinkedList<String>());
             list.add(mContext.getPackageName());
             for (String pkg : Constants.sDefaultHomeModeList) {
@@ -1148,8 +1150,9 @@ public class LockManager {
                     lockMode.modeName = mContext.getString(R.string.vistor_mode);
                     lockMode.isCurrentUsed = true;
                     lockMode.defaultFlag = 1;
-                    lockMode.modeIcon = BitmapFactory.decodeResource(mContext.getResources(),
-                            R.drawable.lock_mode_visitor);
+                    // lockMode.modeIcon = BitmapFactory.decodeResource(mContext.getResources(),
+                    //        R.drawable.lock_mode_visitor);
+                    // lockMode.modeIconId = R.drawable.lock_mode_visitor;
                     List<String> list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     lockMode.lockList = list;
@@ -1190,9 +1193,10 @@ public class LockManager {
                     lockMode.modeName = mContext.getString(R.string.family_mode);
                     lockMode.isCurrentUsed = false;
                     lockMode.defaultFlag = 3;
-                    lockMode.modeIcon =
-                            BitmapFactory.decodeResource(mContext.getResources(),
-                                    R.drawable.lock_mode_family);
+//                    lockMode.modeIcon =
+//                            BitmapFactory.decodeResource(mContext.getResources(),
+//                                    R.drawable.lock_mode_family);
+//                    lockMode.modeIconId = R.drawable.lock_mode_family;
                     list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {
@@ -1941,6 +1945,22 @@ public class LockManager {
             }
             AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
         }
+    }
+    
+    public void clearDrawableColor() {
+        mDrawableColors.clear();
+    }
+    
+    public int getDrawableColorId(Drawable drawable) {
+        Integer value = mDrawableColors.get(drawable);
+        if (value == null) {
+            return 0;
+        }
+        return value.intValue();
+    }
+    
+    public void putDrawableColorId(Drawable drawable, int id) {
+        mDrawableColors.put(drawable, id);
     }
 
 }

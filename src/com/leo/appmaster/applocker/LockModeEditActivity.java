@@ -23,6 +23,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -346,8 +347,11 @@ public class LockModeEditActivity extends BaseActivity implements
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 1) {
-                            String modeName = mModeNameDiglog.getEditText().getText()
-                                    .toString();
+                            String modeName = "";
+                            EditText text = mModeNameDiglog.getEditText();
+                            if(text != null) {
+                                modeName = text.getText().toString();
+                            }
                             mEdited = true;
                             if (TextUtils.isEmpty(modeName)) {
                                 shakeView(mModeNameDiglog.getEditText());
@@ -417,8 +421,9 @@ public class LockModeEditActivity extends BaseActivity implements
                             }
                             mEditMode.lockList = changedList;
                             if (mNewMode) {
-                                mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
-                                        R.drawable.lock_mode_default);
+                                // mEditMode.modeIconId = R.drawable.lock_mode_default;
+                                // mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
+                                //        R.drawable.lock_mode_default);
                                 lm.addLockMode(mEditMode);
                             } else {
                                 lm.updateMode(mEditMode);
@@ -459,8 +464,9 @@ public class LockModeEditActivity extends BaseActivity implements
             }
             mEditMode.lockList = changedList;
             if (mNewMode) {
-                mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
-                        R.drawable.lock_mode_default);
+//                mEditMode.modeIconId = R.drawable.lock_mode_default;
+                // mEditMode.modeIcon = BitmapFactory.decodeResource(getResources(),
+                //        R.drawable.lock_mode_default);
                 lm.addLockMode(mEditMode);
             } else {
                 lm.updateMode(mEditMode);

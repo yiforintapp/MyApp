@@ -57,6 +57,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -105,6 +106,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     private static final int MSG_LOAD_INIT_SUCCESSED = 1;
     private static final int MSG_LOAD_PAGE_DATA_FAILED = 3;
     private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
+
+    private static final int LOAD_INIT = 100;
+    private static final int LOAD_MORE = 101;
 
     private EventHandler mHandler;
     private String mFromTheme;
@@ -463,24 +467,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     }
 
     private void loadInitOnlineTheme() {
-        HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemes,
-                new Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response, boolean noModify) {
-                        LeoLog.d("response", response.toString());
-                        List<ThemeItemInfo> list = ThemeJsonObjectParser
-                                .parserJsonObject(LockerTheme.this, response);
-                        Message msg = mHandler.obtainMessage(
-                                MSG_LOAD_INIT_SUCCESSED, list);
-                        mHandler.sendMessage(msg);
-                    }
-                }, new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
-                        LoadFailUtils.sendLoadFail(LockerTheme.this, "theme");
-                    }
-                });
+        ThemeListener listener = new ThemeListener(this, LOAD_INIT);
+        HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemes, listener);
     }
 
     private void initUI() {
@@ -617,24 +605,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         for (ThemeItemInfo info : mOnlineThemes) {
             loadedTheme.add(info.packageName);
         }
-
-        HttpRequestAgent.getInstance(this).loadOnlineTheme(loadedTheme,
-                new Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response, boolean noModify) {
-                        List<ThemeItemInfo> list = ThemeJsonObjectParser
-                                .parserJsonObject(LockerTheme.this, response);
-                        Message msg = mHandler.obtainMessage(
-                                MSG_LOAD_PAGE_DATA_SUCCESS, list);
-                        mHandler.sendMessage(msg);
-                    }
-                }, new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
-                        LoadFailUtils.sendLoadFail(LockerTheme.this, "theme");
-                    }
-                });
+        
+        ThemeListener listener = new ThemeListener(this, LOAD_MORE);
+        HttpRequestAgent.getInstance(this).loadOnlineTheme(loadedTheme, listener);
     }
 
     public void addMoreOnlineTheme(List<ThemeItemInfo> loadList) {
@@ -1004,6 +977,49 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 }
             });
         }
+    }
+    
+    private static class ThemeListener extends RequestListener<LockerTheme> {
+
+        private int loadType;
+
+        public ThemeListener(LockerTheme outerContext, int loadType) {
+            super(outerContext);
+            this.loadType = loadType;
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            Context context = AppMasterApplication.getInstance();
+            LoadFailUtils.sendLoadFail(context, "theme");
+            
+            LockerTheme lockerTheme = getOuterContext();
+            if (lockerTheme == null) return;
+            
+            if (loadType == LOAD_INIT) {
+                lockerTheme.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
+            } else {
+                lockerTheme.mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
+            }
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            LockerTheme lockerTheme = getOuterContext();
+            if (lockerTheme == null) return;
+            
+            LeoLog.d("response", response.toString());
+            int msgId = 0;
+            if (loadType == LOAD_INIT) {
+                msgId = MSG_LOAD_INIT_SUCCESSED;
+            } else {
+                msgId = MSG_LOAD_PAGE_DATA_SUCCESS;
+            }
+            List<ThemeItemInfo> list = ThemeJsonObjectParser.parserJsonObject(lockerTheme, response);
+            Message msg = lockerTheme.mHandler.obtainMessage(msgId, list);
+            lockerTheme.mHandler.sendMessage(msg);
+        }
+        
     }
 
 }

@@ -904,14 +904,36 @@
     <string name="lock_line_visiable">تم اخفاء مسار الفتح</string>
     <string name="guide_more_text"> المزيد من الوظائف ></string>
     <string name="guide_skip_text">القفز فوق ></string>
-    <string name="video_hide_need_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب COOLBrowser. و يرجي الاستخدام بعد التركيب.</string>
-    <string name="video_hide_need_new_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب أحدث COOLBrowser. و يرجي الغاء الاخفاء بعد التركيب.</string>
-    <string name="video_delete_need_new_cb">بسبب أسباب النظام، حذف هذا الفيديو يتطلب أحدث COOLBrowser. و يرجي الحذف بعد التركيب.</string>
+    <string name="video_hide_need_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب Cool Browser. و يرجي الاستخدام بعد التركيب.</string>
+    <string name="video_hide_need_new_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب أحدث Cool Browser. و يرجي الغاء الاخفاء بعد التركيب.</string>
+    <string name="video_delete_need_new_cb">بسبب أسباب النظام، حذف هذا الفيديو يتطلب أحدث Cool Browser. و يرجي الحذف بعد التركيب.</string>
     <string name="video_cencel_hide_fail">فشل في الغاء الاخفاء</string>
     <string name="video_delete_fail">فشل في حذف الملف</string>
     <string name="zipper_too_fast">اسحب ببطء </string>
     <string name="zipper_too_slow">اسحب بسرعة </string>
     <string name="theme_apply_title">هل تريد في تطبيق موضوع الغاء القفل: <xliff:g>%1$s</xliff:g> ؟ </string>
     <!-- 2.6 end -->
+    
+        <!-- 2.7 start -->
+    <string name="clean_mem_notify_big">تتجاوز نسبة استخدام الذاكرة</string>
+    <string name="clean_mem_notify_big_right">65%</string>
+    <string name="clean_mem_notify_small">انقر على الزر للتسريع</string>
+    <string name="clean_mem_notify_boost">قم بالتسريع الآن</string>
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">وضع الزناد</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">النقطة البيضاء الصغيرة تنزلق من الجانب / الزاوية السفلي</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">تنزلق من الجانب / الزاوية السفلي</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">النقطة البيضاء الصغيرة</string>
+	<string name="pg_appmanager_quick_gesture_trigger_tips">يرجي اختيار واحد على الأقل</string>
+	
+	<string name="pg_appmanager_quick_gesture_conflict_content">هل اللفتات السريعة تؤثر على العمليات العادية الخاصة بكم؟ يمكنك اختيار تشغيل وضع النقطة البيضاء الصغيرة، و انقر على الإعدادات</string>
+	<string name="pg_appmanager_quick_gesture_conflict_later">يقوم بالاجراء في وقت لاحق</string>
+	<string name="pg_appmanager_quick_gesture_conflict_open">قم بالتشغيل الان</string>
+	
+	
+	 <string name="anti_conflict_mode_open">تم تشغيل</string>
+	
+	
+	<!-- 2.7 end -->
 
 </resources>

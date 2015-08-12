@@ -11,6 +11,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,10 +27,8 @@ import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -37,8 +36,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -50,17 +47,23 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.NinePatchChunk;
+import com.leo.appmaster.utils.Utilities;
 
 public class SplashActivity extends BaseActivity {
 
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
+    public static final String SPLASH_TO_WEBVIEW = "splash_to_webview";
     private Handler mEventHandler;
 
     /* Guide page stuff begin */
@@ -78,6 +81,9 @@ public class SplashActivity extends BaseActivity {
     private RelativeLayout mSplashRL;
     private ImageView mSplashIcon;
     private ImageView mSplashName;
+    private boolean mIsEmptyForSplashUrl;
+    private ImageView mSkipToPgButton;
+    private boolean mShowSplashFlag;
 
     /* Guide page stuff end */
     @Override
@@ -98,53 +104,100 @@ public class SplashActivity extends BaseActivity {
 
     @SuppressLint("NewApi")
     private void initSplash() {
+        AppMasterPreference pre = AppMasterPreference.getInstance(this);
         mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
         mSplashIcon = (ImageView) findViewById(R.id.image_view_splash_center);
         mSplashName = (ImageView) findViewById(R.id.iv_back);
-        AppMasterPreference pre = AppMasterPreference.getInstance(this);
+        // mSkipUrlButton = (ImageView) findViewById(R.id.url_skip_bt);
+        mSkipToPgButton = (ImageView) findViewById(R.id.skip_to_pg_bt);
+        mIsEmptyForSplashUrl = checkSplashUrlIsEmpty();
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
+        // Log.d(Constants.RUN_TAG,
+        // "数据："+startShowSplashTime+", "+endShowSplashTime+",  跳转模式："+AppMasterPreference.getInstance(getApplicationContext()).getSplashSkipMode());
         /**
-         * 1.只有开始时间 2.只有结束时间 3.没有配置时间 4.开始，结束时间都有
+         * 可能存在的几种情况： @ 1.只有开始时间 @ 2.只有结束时间 @ 3.没有配置时间
+         * 
+         * @4.开始.结束时间都有
          */
         if (startShowSplashTime > 0 || endShowSplashTime > 0) {
-            // 只有开始时间
+            /* 只有开始时间 */
             if (endShowSplashTime <= 0 && startShowSplashTime > 0) {
                 if (currentTime >= startShowSplashTime) {
                     showSplash();
-                } else {
-                    // deleteImage();
                 }
             }
-            // 只有结束时间
+            /* 只有结束时间 */
             if (startShowSplashTime <= 0 && endShowSplashTime > 0) {
                 if (currentTime < endShowSplashTime) {
                     showSplash();
-                } else {
-                    // deleteImage();
                 }
             }
-            // 开始，结束时间都存在
+            /* 开始，结束时间都存在 */
             if (startShowSplashTime > 0 && endShowSplashTime > 0) {
                 if (currentTime >= startShowSplashTime && currentTime < endShowSplashTime) {
                     showSplash();
-                } else {
-                    // deleteImage();
                 }
             }
+            if (!mShowSplashFlag) {
+                showDefaultSplash();
+            }
         } else {
-            // 没有开始，没有结束时间,默认
-            Log.d("splash_end&start_time", "No time!");
-            // deleteImage();
-            if (mSplashIcon.getVisibility() == View.INVISIBLE) {
-                mSplashIcon.setVisibility(View.VISIBLE);
-            }
-            if (mSplashName.getVisibility() == View.INVISIBLE) {
-                mSplashName.setVisibility(View.VISIBLE);
-            }
+            showDefaultSplash();
         }
         PrivacyHelper.getInstance(this).setDirty(true);
+    }
+
+    private void showDefaultSplash() {
+        /* 没有开始，没有结束时间，默认 */
+        Log.d(Constants.RUN_TAG, "splash_end&start_time：No time!");
+        // clearSpSplashFlagDate();
+        if (mSplashIcon.getVisibility() == View.INVISIBLE) {
+            mSplashIcon.setVisibility(View.VISIBLE);
+        }
+        if (mSplashName.getVisibility() == View.INVISIBLE) {
+            mSplashName.setVisibility(View.VISIBLE);
+        }
+        if (mSkipToPgButton.getVisibility() == View.VISIBLE) {
+            mSkipToPgButton.setVisibility(View.GONE);
+        }
+    }
+
+    /* 如果url存在则设置点击跳转 */
+    private void showSkipUrlButton() {
+        // Log.e(Constants.RUN_TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
+        if (!mIsEmptyForSplashUrl) {
+            mSplashRL.setOnClickListener(new SkipUrlOnClickListener());
+        }
+    }
+
+    /* 闪屏链接跳转按钮单击监听 */
+    private class SkipUrlOnClickListener implements OnClickListener {
+        @Override
+        public void onClick(View v) {
+            int viewId = v.getId();
+            switch (viewId) {
+                case R.id.splashRL:
+                    // Log.e(Constants.RUN_TAG, "立即体验");
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
+                            "screen_cli", "go");
+                    skipModeHandle();
+                    break;
+                case R.id.skip_to_pg_bt:
+                    // Log.e(Constants.RUN_TAG, "跳过");
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
+                            "screen_cli", "skip");
+                     startHome();
+                     if (mEventHandler != null) {
+                         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
+                     }
+                    break;
+                default:
+                    break;
+            }
+        }
+
     }
 
     private void showSplash() {
@@ -166,6 +219,10 @@ public class SplashActivity extends BaseActivity {
             option.inScaled = true;
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
+//         mShowSplashFlag = true;
+//         mSkipToPgButton.setVisibility(View.VISIBLE);
+//         mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
+//         showSkipUrlButton();
         if (splash != null) {
             byte[] chunk = splash.getNinePatchChunk();
             if (chunk != null && NinePatch.isNinePatchChunk(chunk)) {
@@ -173,7 +230,26 @@ public class SplashActivity extends BaseActivity {
                 mSplashName.setVisibility(View.INVISIBLE);
                 mSplashRL.setBackgroundDrawable(new NinePatchDrawable(getResources(),
                         splash, chunk, NinePatchChunk.deserialize(chunk).mPaddings, null));
+                mShowSplashFlag = true;
+                mSkipToPgButton.setVisibility(View.VISIBLE);
+                mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
+                showSkipUrlButton();
             }
+        }
+    }
+
+    /* 反初始化闪屏跳过按钮和Url跳转 */
+    private void cancelSplashSkipbtAndUrlbt() {
+        mSkipToPgButton.setVisibility(View.INVISIBLE);
+        mSkipToPgButton.setOnClickListener(null);
+        mSplashRL.setOnClickListener(null);
+    }
+
+    public void finishForSkip() {
+        finish();
+        LeoEventBus.getDefaultBus().unregister(this);
+        if (mEventHandler != null) {
+            mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         }
     }
 
@@ -189,10 +265,20 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onResume() {
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
-        mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY, 2000);
+        splashDelayShow();
         LockManager lm = LockManager.getInstatnce();
         lm.clearFilterList();
         super.onResume();
+    }
+
+    private void splashDelayShow() {
+        if (mShowSplashFlag) {
+            mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
+                    AppMasterApplication.mSplashDelayTime);
+        } else {
+            mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
+                    Constants.SPLASH_DELAY_TIME);
+        }
     }
 
     @Override
@@ -226,6 +312,7 @@ public class SplashActivity extends BaseActivity {
                         boolean guidNotShown = mNewGuideMain == null
                                 || mNewGuideMain.getVisibility() != View.VISIBLE;
                         if (guidNotShown) {
+                            cancelSplashSkipbtAndUrlbt();
                             showNewFuncGuide();
                         }
                     } else {
@@ -247,6 +334,8 @@ public class SplashActivity extends BaseActivity {
                         // }
                         startHome();
                     }
+                    SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
+                            "screen_cli", "none");
                     break;
 
                 default:
@@ -288,47 +377,9 @@ public class SplashActivity extends BaseActivity {
                 long interval = pref.getPullInterval();
                 if (interval < (System.currentTimeMillis() - lastPull)
                         && NetWorkUtil.isNetworkAvailable(SplashActivity.this)) {
-                    HttpRequestAgent.getInstance(getApplicationContext())
-                            .getAppLockList(new Listener<JSONObject>() {
-                                @Override
-                                public void onResponse(JSONObject response, boolean noModify) {
-                                    JSONArray list;
-                                    ArrayList<String> lockList = new ArrayList<String>();
-                                    long next_pull;
-                                    JSONObject data;
-                                    try {
-                                        data = response.getJSONObject("data");
-                                        list = data.getJSONArray("list");
-                                        for (int i = 0; i < list.length(); i++) {
-                                            lockList.add(list.getString(i));
-                                        }
-                                        next_pull = data.getLong("next_pull");
-                                        LeoLog.d("next_pull = " + next_pull
-                                                + " lockList = ",
-                                                lockList.toString());
-
-                                        pref.setPullInterval(next_pull * 24
-                                                * 60 * 60 * 1000);
-                                        pref.setLastLocklistPullTime(System
-                                                .currentTimeMillis());
-                                        Intent intent = new Intent(
-                                                AppLoadEngine.ACTION_RECOMMEND_LIST_CHANGE);
-                                        intent.putStringArrayListExtra(
-                                                Intent.EXTRA_PACKAGES, lockList);
-                                        SplashActivity.this
-                                                .sendBroadcast(intent);
-                                    } catch (JSONException e) {
-                                        e.printStackTrace();
-                                        return;
-                                    }
-                                }
-                            }, new ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    LeoLog.d("Pull Lock list",
-                                            error.getMessage());
-                                }
-                            });
+                    AppLockListener listener = new AppLockListener(SplashActivity.this);
+                    HttpRequestAgent.getInstance(getApplicationContext()).getAppLockList(listener,
+                            listener);
                 }
             }
         }).start();
@@ -481,7 +532,8 @@ public class SplashActivity extends BaseActivity {
     }
 
     /* add for Guide Screen end */
-    // 删除目录下的图片
+
+    /* 删除目录下的图片 */
     public static boolean deleteImage() {
         boolean flag = false;
         File file = new File(FileOperationUtil.getSplashPath()
@@ -675,5 +727,115 @@ public class SplashActivity extends BaseActivity {
                 backGroundView = mNewPageBackgroundView;
             }
         }
+    }
+
+    private static class AppLockListener extends RequestListener<SplashActivity> {
+
+        public AppLockListener(SplashActivity outerContext) {
+            super(outerContext);
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            Context ctx = AppMasterApplication.getInstance();
+            AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
+
+            JSONArray list;
+            ArrayList<String> lockList = new ArrayList<String>();
+            long next_pull;
+            JSONObject data;
+            try {
+                data = response.getJSONObject("data");
+                list = data.getJSONArray("list");
+                for (int i = 0; i < list.length(); i++) {
+                    lockList.add(list.getString(i));
+                }
+                next_pull = data.getLong("next_pull");
+                LeoLog.d("next_pull = " + next_pull + " lockList = ", lockList.toString());
+
+                pref.setPullInterval(next_pull * 24 * 60 * 60 * 1000);
+                pref.setLastLocklistPullTime(System.currentTimeMillis());
+                Intent intent = new Intent(AppLoadEngine.ACTION_RECOMMEND_LIST_CHANGE);
+                intent.putStringArrayListExtra(Intent.EXTRA_PACKAGES, lockList);
+                ctx.sendBroadcast(intent);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            LeoLog.d("Pull Lock list", error.getMessage());
+        }
+    }
+
+    /* 闪屏链接是否存在 */
+    private boolean checkSplashUrlIsEmpty() {
+        return AppMasterApplication.getInstance().mIsEmptyForSplashUrl;
+    }
+
+    /* 闪屏链接跳转按钮,点击跳转处理 */
+    private void skipModeHandle() {
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        String skipMode = pref.getSplashSkipMode();
+        if (!mIsEmptyForSplashUrl) {
+            String url = AppMasterPreference.getInstance(this).getSplashSkipUrl();
+            if (!Utilities.isEmpty(skipMode)) {
+                if (Constants.SPLASH_SKIP_PG_WEBVIEW.equals(skipMode)) {
+                    /* 跳转到pg内webview */
+                    Log.e(Constants.RUN_TAG, "进入WebView");
+                    startIntentForWebViewActivity(url);
+                } else if (Constants.SPLASH_SKIP_PG_CLIENT.equals(skipMode)) {
+                    /* 跳转到指定客户端 */
+                    String clientIntent = AppMasterPreference.getInstance(this)
+                            .getSplashSkipToClient();
+                    if (clientIntent != null) {
+                        try {
+                            /* 存在客户端 */
+                            Intent intent = Intent.parseUri(clientIntent, 0);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            // Log.e(Constants.RUN_TAG, "客户端："+intent.toUri(0));
+                            startActivity(intent);
+                            finishForSkip();
+                            Log.e(Constants.RUN_TAG, "存在客户端并进入");
+                        } catch (Exception e) {
+                            /* 不存在指定客户端 */
+                            Log.e(Constants.RUN_TAG, "不存在客户端进入进入到WebView");
+                            startIntentForWebViewActivity(url);
+                        }
+                    } else {
+                        /* 不存在指定客户端 */
+                        Log.e(Constants.RUN_TAG, "去客户端但是链接为空进入到WebView");
+                        startIntentForWebViewActivity(url);
+                    }
+                }
+            }
+        }
+    }
+
+    /* 检查要跳转的客户端是否存在 */
+    private boolean checkExistClient(String packageName) {
+        if (!Utilities.isEmpty(packageName)) {
+            List<AppItemInfo> pkgInfos = AppLoadEngine.getInstance(this).getAllPkgInfo();
+            List<String> packageNames = new ArrayList<String>();
+            for (AppItemInfo info : pkgInfos) {
+                packageNames.add(info.packageName);
+            }
+            for (String string : packageNames) {
+                if (packageName.equals(string)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private void startIntentForWebViewActivity(String url) {
+        finishForSkip();
+        Intent intent = new Intent(this, WebViewActivity.class);
+        intent.putExtra(WebViewActivity.WEB_URL, url);
+        intent.putExtra(SPLASH_TO_WEBVIEW, SPLASH_TO_WEBVIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 }

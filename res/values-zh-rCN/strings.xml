@@ -773,14 +773,38 @@
     <string name="lock_line_visiable">解锁轨迹已显示</string>
     <string name="guide_more_text">更多 ></string>
     <string name="guide_skip_text">跳过 ></string>
-    <string name="video_hide_need_cb"> 由于系统原因，取消隐藏这些视频需要COOL Browser。请安装后才可使用</string>
-    <string name="video_hide_need_new_cb"> 由于系统原因，取消隐藏这些视频需要最新版的COOL Browser。请安装后才可取消隐藏</string>
-    <string name="video_delete_need_new_cb"> 由于系统原因，删除这些视频需要最新版的COOL Browser。请安装后才可删除</string>
+    <string name="video_hide_need_cb"> 由于系统原因，取消隐藏这些视频需要Cool Browser。请安装后才可使用</string>
+    <string name="video_hide_need_new_cb"> 由于系统原因，取消隐藏这些视频需要最新版的Cool Browser。请安装后才可取消隐藏</string>
+    <string name="video_delete_need_new_cb"> 由于系统原因，删除这些视频需要最新版的Cool Browser。请安装后才可删除</string>
     <string name="video_cencel_hide_fail">取消隐藏失败</string>
     <string name="video_delete_fail">删除文件失败</string>
     <string name="zipper_too_fast">哎呀，拉慢一点 </string>
     <string name="zipper_too_slow">哎哟，拉快一点嘛</string>
     <string name="theme_apply_title">是否应用解锁主题:%1$s ?</string>
     <!-- 2.6 end -->
+
+
+    <!-- 2.7 start -->
+    <string name="clean_mem_notify_big">内存使用超过</string>
+    <string name="clean_mem_notify_big_right">65%</string>
+    <string name="clean_mem_notify_small">点击一键加速</string>
+    <string name="clean_mem_notify_boost">立即加速</string>
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">触发方式</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底角划出</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">从侧边/底角划出</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
+	<string name="pg_appmanager_quick_gesture_trigger_tips">请至少选择一项</string>
+	
+	<string name="pg_appmanager_quick_gesture_conflict_content">快捷手势影响到您的常规操作？开启抗干扰模式，只用小白点打开快捷手势，轻松避免干扰问题</string>
+	<string name="pg_appmanager_quick_gesture_conflict_later">稍后再说</string>
+	<string name="pg_appmanager_quick_gesture_conflict_open">立刻开启</string>
+	
+	<string name="anti_conflict_mode_open">抗干扰模式成功开启！</string>
+	<!-- 2.7 end -->
+
+
+
+
 
 </resources>

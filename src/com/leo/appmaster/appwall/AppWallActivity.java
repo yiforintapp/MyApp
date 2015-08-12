@@ -54,6 +54,12 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.RoundedBitmapDisplayer;
 
+/**
+ * 已经废弃掉
+ * @author Jasper
+ *
+ */
+@Deprecated
 public class AppWallActivity extends BaseActivity implements
         OnItemClickListener {
     private boolean flagGp = false;

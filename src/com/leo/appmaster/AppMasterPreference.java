@@ -70,7 +70,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_LOCAL_BUSINESS_SERIAL = "local_business_serialnumber";
 
     // other
-    public static final String PREF_WHITE_DOT_RESPONSING="white_dot_responsing";
+    public static final String PREF_WHITE_DOT_RESPONSING = "white_dot_responsing";
     public static final String PREF_LAST_VERSION = "last_version";
     public static final String PREF_LAST_VERSION_INSTALL_TIME = "last_version_install_tiem";
     public static final String PREF_LOCK_REMIND = "lock_remind";
@@ -138,14 +138,24 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_SPLASH_LOAD_FAIL_DATE = "splash_load_fail_date";
     public static final String PREF_SPLASH_LOAD_FAIL_NUMBER = "splash_load_fail_number";
     // weizhuang
-    public static final String PREF_DETERMIN_CLOSE_BEAUTY="determin_close_beauty";
-    public static final String PREF_CLOCK_TO_LOCKLIST="clock_to_lock_list";
+    public static final String PREF_DETERMIN_CLOSE_BEAUTY = "determin_close_beauty";
+    public static final String PREF_CLOCK_TO_LOCKLIST = "clock_to_lock_list";
     public static final String PREF_HOME_TO_LOCKLIST = "home_to_lock_list";
     public static final String PREF_FROM_LOCKLIST = "from_lock_list";
     public static final String PREF_WEIZHUANG_FIRST_IN = "weizhuang_first_in";
     public static final String PREF_CUR_PRETNED_LOCK = "cur_pretend_lock";
-    public static final String PREF_NEED_CLOSE_BEAUTY="need_close_beauty";
-    public static final String PREF_NEED_DISGUISE_TIP="need_disguise_tip";
+    public static final String PREF_NEED_CLOSE_BEAUTY = "need_close_beauty";
+    public static final String PREF_NEED_DISGUISE_TIP = "need_disguise_tip";
+
+    // hideVideo
+    public static final String PREF_HIDE_VIDEO_LAST_DIR = "hide_video_last_dir";
+    public static final String PREF_HIDE_VIDEO_SECOND_DIR = "hide_video_second_dir";
+
+    // ad icon -- set click time
+    public static final String PREF_AD_ICON_CLICK_TIME = "ad_icon_click_time";
+
+    // time to show notify that clean memory
+    public static final String PREF_SHOW_NOTIFY_CLEAN_MEMORY = "show_notify_clean_memory";
     // lock mode
     public static final String PREF_FIRST_USE_LOCK_MODE = "first_use_lock_mode";
     private static final String PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED = "time_lock_mode_guide_user_clicked";
@@ -208,6 +218,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_SLIDE_ANIM_SHOW_TIMES = "quick_slide_anim_show_times";
     public static final String PREF_IF_LOCK_SCREEN_MENU_CLICKED = "if_menu_clicked";
     public static final String PREF_LAST_BOOST_TIMES = "last_boost_times";
+    public static final String PREF_SPLASH_SKIP_URL = "splash_skip_url";
+    public static final String PREF_SPLASH_SKIP_MODE = "splash_skip_mode";
+    public static final String PREF_SPLASH_DElAY_TIME = "splash_delay_time";
+    public static final String PREF_SPLASH_SKIP_TO_CLIENT = "splash_skip_to_client";
+    public static final String PREF_QUICK_SWITCH_FLOAT_WINDOWS = "switch_float_windows";
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -272,7 +287,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private boolean mShowWhiteDot;
 
     private AppMasterPreference(Context context) {
-        mPref = PreferenceManager.getDefaultSharedPreferences(context);
+        Context ctx = context.getApplicationContext();
+        mPref = PreferenceManager.getDefaultSharedPreferences(ctx);
         mPref.registerOnSharedPreferenceChangeListener(this);
         loadPreferences();
     }
@@ -455,8 +471,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setIsHomeToLockList(boolean flag)
     {
         mPref.edit().putBoolean(PREF_HOME_TO_LOCKLIST, flag).commit();
-    }   
-    
+    }
+
     public boolean getIsNeedDisguiseTip()
     {
         return mPref.getBoolean(PREF_NEED_DISGUISE_TIP, false);
@@ -466,7 +482,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     {
         mPref.edit().putBoolean(PREF_NEED_DISGUISE_TIP, flag).commit();
     }
-    //phtd
+
+    // phtd
     public boolean getIsWhiteDotResponsing()
     {
         return mPref.getBoolean(PREF_WHITE_DOT_RESPONSING, false);
@@ -476,9 +493,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     {
         mPref.edit().putBoolean(PREF_WHITE_DOT_RESPONSING, flag).commit();
     }
-    
-    
-    
 
     public boolean getIsClockToLockList()
     {
@@ -489,10 +503,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     {
         mPref.edit().putBoolean(PREF_CLOCK_TO_LOCKLIST, flag).commit();
     }
-    
-    
-    
-    
+
     public boolean getCallLogRedTip() {
         return mPref.getBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, false);
     }
@@ -500,10 +511,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setCallLogRedTip(boolean flag) {
         mPref.edit().putBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, flag).commit();
     }
-    
-    
-    
-    
+
     public boolean getIsNeedCloseBeauty() {
         return mPref.getBoolean(PREF_NEED_CLOSE_BEAUTY, false);
     }
@@ -511,7 +519,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setIsNeedCloseBeauty(boolean flag) {
         mPref.edit().putBoolean(PREF_NEED_CLOSE_BEAUTY, flag).commit();
     }
-    
+
     public boolean getIsDeterminCloseBeautyFirstly() {
         return mPref.getBoolean(PREF_DETERMIN_CLOSE_BEAUTY, false);
     }
@@ -519,11 +527,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setIsDeterminCloseBeautyFirstly(boolean flag) {
         mPref.edit().putBoolean(PREF_DETERMIN_CLOSE_BEAUTY, flag).commit();
     }
-    
-    
-    
-    
-    
 
     public boolean getHomeFragmentRedTip() {
         return mPref.getBoolean(PREF_APP_HOME_APP_FRAGMENT_RED_TIP, false);
@@ -1309,6 +1312,42 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_MESSAGE_ITEM_RUNING, true);
     }
 
+    public String getLastDir() {
+        return mPref.getString(PREF_HIDE_VIDEO_LAST_DIR,
+                "");
+    }
+
+    public void setLastDir(String path) {
+        mPref.edit().putString(PREF_HIDE_VIDEO_LAST_DIR, path)
+                .commit();
+    }
+
+    public String getSecondDir() {
+        return mPref.getString(PREF_HIDE_VIDEO_SECOND_DIR,
+                "");
+    }
+
+    public void setSecondDi(String path) {
+        mPref.edit().putString(PREF_HIDE_VIDEO_SECOND_DIR, path)
+                .commit();
+    }
+
+    public void setAdClickTime(long time) {
+        mPref.edit().putLong(PREF_AD_ICON_CLICK_TIME, time).commit();
+    }
+
+    public long getAdClickTime() {
+        return mPref.getLong(PREF_AD_ICON_CLICK_TIME, 0);
+    }
+
+//    public void setAdClicked(boolean value) {
+//        mPref.edit().putBoolean(PREF_AD_ICON_CLICKED_TOTAY, value).commit();
+//    }
+//
+//    public boolean getAdClicked() {
+//        return mPref.getBoolean(PREF_AD_ICON_CLICKED_TOTAY, false);
+//    }
+
     public void setMessageItemRuning(boolean flag) {
         mPref.edit().putBoolean(PREF_MESSAGE_ITEM_RUNING, flag).commit();
     }
@@ -1444,6 +1483,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mCurrentSplashStrategy;
     }
 
+    /* 加载闪屏失败的时间 */
     public void setLastLoadSplashTime(long lashTime) {
         mPref.edit().putLong(PREF_LAST_LOAD_SPLASH_TIME, lashTime).commit();
     }
@@ -1468,14 +1508,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);
     }
 
+    /* 加载闪屏首次失败的当天日期 */
     public void setSplashLoadFailDate(String date) {
         mPref.edit().putString(PREF_SPLASH_LOAD_FAIL_DATE, date).commit();
     }
 
     public String getSplashLoadFailDate() {
-        return mPref.getString(PREF_SPLASH_LOAD_FAIL_DATE, "splash_fail_default_date");
+        return mPref.getString(PREF_SPLASH_LOAD_FAIL_DATE, Constants.SPLASH_REQUEST_FAIL_DATE);
     }
 
+    /* 加载闪屏当天失败的次数 */
     public void setSplashLoadFailNumber(int number) {
         mPref.edit().putInt(PREF_SPLASH_LOAD_FAIL_NUMBER, number).commit();
     }
@@ -1489,7 +1531,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public String getSplashUriFlag() {
-        return mPref.getString(PREF_SPLASH_URL_FLAG, "splash_flag");
+        return mPref.getString(PREF_SPLASH_URL_FLAG, Constants.SPLASH_FLAG);
     }
 
     public void setRemoveUnlockAllShortcutFlag(boolean removed) {
@@ -1980,6 +2022,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, false);
     }
 
+    public void setIsOpenFloatWindows(boolean flag) {
+
+        mPref.edit().putBoolean(PREF_QUICK_SWITCH_FLOAT_WINDOWS, flag).commit();
+    }
+
+    public boolean getIsOpenFloatWindows() {
+        return mPref.getBoolean(PREF_QUICK_SWITCH_FLOAT_WINDOWS, true);
+    }
+
     public void setWhiteFloatViewCoordinate(int x, int y) {
         mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x + ":" + y).commit();
     }
@@ -2091,5 +2142,51 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLastBoostTime(long lastBoostTime) {
         mPref.edit().putLong(PREF_LAST_BOOST_TIMES, lastBoostTime).commit();
+    }
+
+    /* 保存闪屏跳转链接 */
+    public void setSplashSkipUrl(String url) {
+        mPref.edit().putString(PREF_SPLASH_SKIP_URL, url).commit();
+    }
+
+    public String getSplashSkipUrl() {
+        return mPref.getString(PREF_SPLASH_SKIP_URL, null);
+        // return mPref.getString(PREF_SPLASH_SKIP_URL,
+        // "market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+    }
+
+    /* 保存闪屏跳转方式 */
+    public void setSplashSkipMode(String flag) {
+        mPref.edit().putString(PREF_SPLASH_SKIP_MODE, flag).commit();
+    }
+
+    public String getSplashSkipMode() {
+        return mPref.getString(PREF_SPLASH_SKIP_MODE, Constants.SPLASH_SKIP_PG_WEBVIEW);
+    }
+
+    /* 保存闪屏延迟时间 */
+    public void setSplashDelayTime(int delayTime) {
+        mPref.edit().putInt(PREF_SPLASH_DElAY_TIME, delayTime).commit();
+    }
+
+    public int getSplashDelayTime() {
+        return mPref.getInt(PREF_SPLASH_DElAY_TIME, Constants.SPLASH_DELAY_TIME);
+    }
+
+    /* 保存闪屏跳转的客户端的链接 */
+    public void setSplashSkipToClient(String clientUrl) {
+        mPref.edit().putString(PREF_SPLASH_SKIP_TO_CLIENT, clientUrl).commit();
+    }
+
+    public String getSplashSkipToClient() {
+        return mPref.getString(PREF_SPLASH_SKIP_TO_CLIENT, null);
+    }
+
+    public void setLastShowNotifyTime(long savetime) {
+        mPref.edit().putLong(PREF_SHOW_NOTIFY_CLEAN_MEMORY, savetime).commit();
+    }
+
+    public long getLastShowNotifyTime() {
+        return mPref.getLong(PREF_SHOW_NOTIFY_CLEAN_MEMORY, 0);
     }
 }

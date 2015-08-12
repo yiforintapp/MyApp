@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
@@ -53,8 +52,8 @@ public class LockModeDao {
                         lockList = Collections.synchronizedList(new ArrayList<String>(Arrays.asList(lockPacks.split(";"))));
                     }
 
-                    byte[] bytes = cursor.getBlob(cursor
-                            .getColumnIndex(Constants.COLUMN_MODE_ICON));
+//                    byte[] bytes = cursor.getBlob(cursor
+//                            .getColumnIndex(Constants.COLUMN_MODE_ICON));
                     int defaultFlag = cursor.getInt(cursor
                             .getColumnIndex(Constants.COLUMN_DEFAULT_MODE_FLAG));
                     int curUsed = cursor.getInt(cursor
@@ -68,9 +67,9 @@ public class LockModeDao {
                     mode.defaultFlag = defaultFlag;
                     mode.isCurrentUsed = curUsed == 0 ? true : false;
                     mode.haveEverOpened = opened == 0 ? true : false;
-                    if (bytes != null) {
-                        mode.modeIcon = BitmapUtils.bytes2Bimap(bytes);
-                    }
+//                    if (bytes != null) {
+//                        mode.modeIcon = BitmapUtils.bytes2Bimap(bytes);
+//                    }
                     modeList.add(mode);
                 } while (cursor.moveToNext());
                 cursor.close();
@@ -90,11 +89,11 @@ public class LockModeDao {
                 lockList += pkg + ";";
             }
         }
-        byte[] bitmap = null;
-        if (lockMode.modeIcon != null) {
-            bitmap = BitmapUtils.Bitmap2Bytes(lockMode.modeIcon);
-        }
-        values.put(Constants.COLUMN_MODE_ICON, bitmap);
+//        byte[] bitmap = null;
+//        if (lockMode.modeIcon != null) {
+//            bitmap = BitmapUtils.Bitmap2Bytes(lockMode.modeIcon);
+//        }
+//        values.put(Constants.COLUMN_MODE_ICON, bitmap);
         values.put(Constants.COLUMN_LOCKED_LIST, lockList);
         values.put(Constants.COLUMN_DEFAULT_MODE_FLAG, lockMode.defaultFlag);
         values.put(Constants.COLUMN_CURRENT_USED, lockMode.isCurrentUsed ? 0 : 1);

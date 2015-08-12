@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 import android.provider.MediaStore.MediaColumns;
+import android.R.string;
 import android.net.Uri;
 
 public class Constants {
@@ -147,6 +148,11 @@ public class Constants {
      */
     public static final String ONLINE_THEME_URL = "/appmaster/themes";
     public static final String CHECK_NEW_THEME = "/appmaster/themesupdatecheck";
+
+    /**
+     * 应用推荐游戏
+     */
+    public static final String PATH_GAME_DATA = "/appmaster/appwall";
 
     /**
      * for compat first version theme preview url
@@ -297,7 +303,19 @@ public class Constants {
     public static final String SPLASH_URL = "/appmaster/flushscreen/";
     public static final String SPLASH_PATH = "appmaster/backup/";
     public static final String SPLASH_NAME = "splash_image.9.png";
-
+    public static final String REQUEST_SPLASH_SHOW_ENDDATE = "c";
+    public static final String REQUEST_SPLASH_IMAGEURL = "a";
+    public static final String REQUEST_SPLASH_SHOW_STARTDATE = "b";
+    public static final String SPLASH_FLAG = "splash_flag";
+    public static final String SPLASH_REQUEST_FAIL_DATE = "splash_fail_default_date";
+    public static final int SPLASH_DELAY_TIME = 2000;
+    public static final String REQUEST_SPLASH_DELAY_TIME = "d";
+    public static final String REQUEST_SPLASH_SKIP_URL = "e";
+    public static final String REQUEST_SPLASH_SKIP_FLAG = "f";
+    public static final String SPLASH_SKIP_TO_CLIENT_URL = "g";
+    public static final String SPLASH_SKIP_PG_WEBVIEW = "0";
+    public static final String SPLASH_SKIP_PG_CLIENT = "1";
+    public static final String SPLASH_BUTTON_TEXT="h";
     // ============== default home mode list =================
     public static String[] sDefaultHomeModeList = new String[] {
             "com.whatsapp",
@@ -306,4 +324,6 @@ public class Constants {
             "com.facebook.katana",
             "com.tencent.mm"
     };
+    
+    public static final String CP_PACKAGE="com.leomaster.launcher3";
 }

@@ -20,6 +20,7 @@
 
         <com.leo.appmaster.ui.LeoPagerTab
             android:id="@+id/tab_indicator"
+            android:overScrollMode="never"
             android:layout_width="match_parent"
             android:layout_height="42dp" />
 
@@ -27,6 +28,7 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+	        android:overScrollMode="never"
             android:background="@color/white" />
     </LinearLayout>
 

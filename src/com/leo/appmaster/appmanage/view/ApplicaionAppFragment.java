@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.view.LayoutInflater;
@@ -38,6 +39,8 @@ import com.leo.appmaster.appmanage.business.BusinessJsonParser;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -57,6 +60,10 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
     private static final int MSG_LOAD_INIT_SUCCESSED = 1;
     private static final int MSG_LOAD_PAGE_DATA_FAILED = 3;
     private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
+    
+    private static final int LOAD_INIT = 100;
+    private static final int LOAD_MORE = 101;
+    
     private static List<BusinessItemInfo> mRecommendDatas;
 
     private PullToRefreshListView mPullRefreshListView;
@@ -388,36 +395,9 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
             return;
         mRecommendDatas.clear();
         mInitLoading = true;
-        HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 8,
-                new Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response, boolean noModify) {
-                        LeoLog.d("loadBusinessRecomApp", "response = "
-                                + response);
-                        List<BusinessItemInfo> list = BusinessJsonParser
-                                .parserJsonObject(
-                                        mActivity,
-                                        response,
-                                        BusinessItemInfo.CONTAIN_BUSINESS_FOLDER);
-                        Message msg = mHandler.obtainMessage(
-                                MSG_LOAD_INIT_SUCCESSED, list);
-                        AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
-                        amp.setLocalBusinessSerialNumber(amp.getOnlineBusinessSerialNumber());
-                        mHandler.sendMessage(msg);
-                        mInitDataLoadFinish = true;
-                        mInitLoading = false;
-                    }
-                }, new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        LeoLog.e("loadBusinessRecomApp", "onErrorResponse = "
-                                + error.getMessage());
-                        mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
-                        mInitLoading = false;
-                        LoadFailUtils.sendLoadFail(
-                                ApplicaionAppFragment.this.mActivity, "hot");
-                    }
-                });
+        
+        BusinessListener listener = new BusinessListener(this, LOAD_INIT);
+        HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(1, 8, listener, listener);
     }
 
     @Override
@@ -469,28 +449,9 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
             return;
         }
 
+        BusinessListener listener = new BusinessListener(this, LOAD_MORE);
         HttpRequestAgent.getInstance(mActivity).loadBusinessRecomApp(
-                mCurrentPage + 1, 8, new Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response, boolean noModify) {
-                        mCurrentPage++;
-                        List<BusinessItemInfo> list = BusinessJsonParser
-                                .parserJsonObject(
-                                        mActivity,
-                                        response,
-                                        BusinessItemInfo.CONTAIN_BUSINESS_FOLDER);
-                        Message msg = mHandler.obtainMessage(
-                                MSG_LOAD_PAGE_DATA_SUCCESS, list);
-                        mHandler.sendMessage(msg);
-                    }
-                }, new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        mHandler.sendEmptyMessage(MSG_LOAD_PAGE_DATA_FAILED);
-                        LoadFailUtils.sendLoadFail(
-                                ApplicaionAppFragment.this.mActivity, "hot");
-                    }
-                });
+                mCurrentPage + 1, 8, listener, listener);
     }
 
     public void onLoadMoreBusinessDataFinish(boolean succeed, Object object) {
@@ -534,5 +495,60 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
             mRecommendAdapter.notifyDataSetChanged();
             Toast.makeText(mActivity, R.string.no_more_theme, 0).show();
         }
+    }
+    
+    private static class BusinessListener extends RequestListener<ApplicaionAppFragment> {
+        int loadType;
+
+        public BusinessListener(ApplicaionAppFragment outerContext, int loadType) {
+            super(outerContext);
+            this.loadType = loadType;
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            ApplicaionAppFragment outer = getOuterContext();
+            if (outer == null) return;
+            
+            int msgWhat = 0;
+            if (loadType == LOAD_INIT) {
+                LeoLog.d("loadBusinessRecomApp", "response = " + response);
+                AppMasterPreference amp = AppMasterPreference.getInstance(outer.mActivity);
+                amp.setLocalBusinessSerialNumber(amp.getOnlineBusinessSerialNumber());
+                outer.mInitDataLoadFinish = true;
+                outer.mInitLoading = false;
+
+                msgWhat = MSG_LOAD_INIT_SUCCESSED;
+            } else if (loadType == LOAD_MORE) {
+                outer.mCurrentPage++;
+
+                msgWhat = MSG_LOAD_PAGE_DATA_SUCCESS;
+            }
+            List<BusinessItemInfo> list = BusinessJsonParser
+                    .parserJsonObject(outer.mActivity, response,
+                            BusinessItemInfo.CONTAIN_BUSINESS_FOLDER);
+            Message msg = outer.mHandler.obtainMessage(msgWhat, list);
+            outer.mHandler.sendMessage(msg);
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            ApplicaionAppFragment outer = getOuterContext();
+            Context context = AppMasterApplication.getInstance();
+            LoadFailUtils.sendLoadFail(context, "hot");
+            if (outer == null) return;
+            
+            int msgWhat = 0;
+            if (loadType == LOAD_INIT) {
+                LeoLog.e("loadBusinessRecomApp", "onErrorResponse = " + error.getMessage());
+                outer.mInitLoading = false;
+                
+                msgWhat = MSG_LOAD_INIT_FAILED;
+            } else if (loadType == LOAD_MORE) {
+                msgWhat = MSG_LOAD_PAGE_DATA_FAILED;
+            }
+            outer.mHandler.sendEmptyMessage(msgWhat);
+        }
+        
     }
 }

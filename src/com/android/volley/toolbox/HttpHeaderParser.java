@@ -45,6 +45,7 @@ public class HttpHeaderParser {
         long serverExpires = 0;
         long softExpire = 0;
         long maxAge = 0;
+        long lastModify = 0;
         boolean hasCacheControl = false;
 
         String serverEtag = null;
@@ -89,6 +90,11 @@ public class HttpHeaderParser {
             // Default semantic for Expire header in HTTP specification is softExpire.
             softExpire = now + (serverExpires - serverDate);
         }
+        
+        headerValue = headers.get("Last-Modified");
+        if (headerValue != null) {
+            lastModify = parseDateAsEpoch(headerValue);
+        }
 
         Cache.Entry entry = new Cache.Entry();
         entry.data = response.data;
@@ -96,6 +102,7 @@ public class HttpHeaderParser {
         entry.softTtl = softExpire;
         entry.ttl = entry.softTtl;
         entry.serverDate = serverDate;
+        entry.lastModify = lastModify;
         entry.responseHeaders = headers;
 
         return entry;

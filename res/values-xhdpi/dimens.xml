@@ -126,8 +126,8 @@
     <!-- privacyContact -->
     <integer name="privacy_contact_red_tip_lockWidth">25</integer>
     <integer name="privacy_contact_red_tip_lockHeight">25</integer>
-    <integer name="privacy_contact_red_tip_tabTextwdth">25</integer>
-    <integer name="privacy_contact_red_tip_tabTexteight">25</integer>
+    <integer name="privacy_contact_red_tip_tabTextwdth">16</integer>
+    <integer name="privacy_contact_red_tip_tabTexteight">16</integer>
     <!-- privateContact end -->
 
 
@@ -220,7 +220,8 @@
     <dimen name="gesture_app_manager_bg_width">54dp</dimen>
     <dimen name="lock_setting_title_margintop">22dp</dimen>
     <!-- 2.5 ql part -->
-    
+
+
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">70dp</dimen>
     <dimen name="webview_title_width">262dp</dimen>
@@ -232,7 +233,28 @@
     <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
     <dimen name="app_manager_headview_three_text_margin_top">12dp</dimen>
     <dimen name="app_manager_flow_chart_margin_top">16dp</dimen>
-        <dimen name="app_manager_lineview_margin_top">12dp</dimen> 
+    <dimen name="app_manager_lineview_margin_top">12dp</dimen>
     <!-- 2.6 end -->
+
+
+    <!-- 2.7 start -->
+    <dimen name="app_manager_hotapp_rep_tip_width_height">9dp</dimen> <!-- 11 -->
+    <integer name="home_page_tab_text_size">15</integer>
+
+    <dimen name="noti_spe_icon_height">54dp</dimen>
+    <dimen name="noti_spe_icon_m_left">11dp</dimen>
+    <dimen name="noti_spe_content_m_left">15dp</dimen>
+    <dimen name="noti_spe_content_big_text_size">16sp</dimen>
+    <dimen name="noti_spe_content_des_m_top">4dp</dimen>
+    <dimen name="noti_spe_content_small_text_size">13sp</dimen>
+    <dimen name="noti_spe_butt_width">80dp</dimen>
+    <dimen name="noti_spe_butt_height">35dp</dimen>
+    <dimen name="noti_spe_ar_butt_width">100dp</dimen>
+    <dimen name="noti_spe_ar_butt_height">25dp</dimen>
+    <dimen name="noti_spe_ar_content_m_left">10dp</dimen>
+    <dimen name="noti_spe_fr_butt_width">70dp</dimen>
+    <dimen name="noti_spe_fr_content_m_left">12dp</dimen>
+    <dimen name="noti_spe_tr_butt_width">124dp</dimen>
+    <!-- 2.7 end -->
 
 </resources>

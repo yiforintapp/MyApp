@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.quickgestures;
 
 import java.lang.reflect.Method;

@@ -161,7 +161,7 @@ public class LockPatternView extends ViewGroup {
 
     private int mLockMode = LockManager.LOCK_MODE_PURE;
     private Context mContext;
-    
+
     /**
      * Represents a cell in the 3 X 3 matrix of the unlock pattern view.
      */
@@ -971,7 +971,6 @@ public class LockPatternView extends ViewGroup {
 
     }
 
-
     private void handleActionUp(MotionEvent event) {
         // report pattern detected
         if (!mPattern.isEmpty()) {
@@ -1102,7 +1101,7 @@ public class LockPatternView extends ViewGroup {
         mPaint.setFilterBitmap(true); // draw with higher quality since we
                                       // render with transforms
 
-        // draw the lines && hideline 
+        // draw the lines && hideline
         if (isFromLockScreenActivity) {
             if (!isHideLine) {
                 drawPath(canvas, pattern, count, drawLookup, currentPath, drawPath);
@@ -1195,96 +1194,102 @@ public class LockPatternView extends ViewGroup {
     }
 
     private void setCirclesResource(boolean[][] partOfPattern) {
-        int length = mButtonViews.length;
+        try {
+            int length = mButtonViews.length;
 
-        for (int i = 0; i < length; i++) {
+            for (int i = 0; i < length; i++) {
 
-            // if (!partOfPattern[i / 3][ i % 3] || (mInStealthMode &&
-            // mPatternDisplayMode != DisplayMode.Wrong)) {
-            // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
-            // } else if (mPatternInProgress) {
-            // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
-            // } else if (mPatternDisplayMode == DisplayMode.Wrong) {
-            // mButtonViews[i].setBackgroundResource(R.drawable.gesture_pattern_selected_wrong);
-            // } else if (mPatternDisplayMode == DisplayMode.Correct ||
-            // mPatternDisplayMode == DisplayMode.Animate) {
-            // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
-            // } else {
-            // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
-            // }
-
-            if (!partOfPattern[i / 3][i % 3]) {
+                // if (!partOfPattern[i / 3][ i % 3] || (mInStealthMode &&
+                // mPatternDisplayMode != DisplayMode.Wrong)) {
                 // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
-            } else if (mGestureState == BUTTON_STATE_DOWN || mPatternInProgress) {
+                // } else if (mPatternInProgress) {
                 // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
-                if (mLastParten != null && mCurrParten != null) {
-                    if (mLastParten == mCurrParten && mCurrParten.getRow() == i / 3
-                            && mCurrParten.getColumn() == i % 3) {
+                // } else if (mPatternDisplayMode == DisplayMode.Wrong) {
+                // mButtonViews[i].setBackgroundResource(R.drawable.gesture_pattern_selected_wrong);
+                // } else if (mPatternDisplayMode == DisplayMode.Correct ||
+                // mPatternDisplayMode == DisplayMode.Animate) {
+                // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                // } else {
+                // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                // }
 
-                        if (!mPressAnimDrawable[i].isRunning()) {
-                            mButtonViews[i].setBackgroundDrawable(mPressAnimDrawable[i]);
-                            mPressAnimDrawable[i].start();
-                        }
-                    } else {
-                        if (mLastParten.getRow() == i / 3 && mLastParten.getColumn() == i % 3) {
+                if (!partOfPattern[i / 3][i % 3]) {
+                    // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                } else if (mGestureState == BUTTON_STATE_DOWN || mPatternInProgress) {
+                    // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point);
+                    if (mLastParten != null && mCurrParten != null) {
+                        if (mLastParten == mCurrParten && mCurrParten.getRow() == i / 3
+                                && mCurrParten.getColumn() == i % 3) {
 
-                            if (mLastParten.getColumn() == mCurrParten.getColumn()) {
-                                mPressAnimDrawable[i].stop();
-                                if (mGestureVerticalAnimRes > 0) {
-                                    AnimationDrawable anim = (AnimationDrawable) mThemeRes
-                                            .getDrawable(mGestureVerticalAnimRes);
-                                    mButtonViews[i].setBackgroundDrawable(anim);
-                                    anim.start();
-                                } else if (mGestureVerticalDrawable != null) {
-                                    mButtonViews[i].setBackgroundDrawable(mGestureVerticalDrawable);
-                                } else {
-
-                                }
-                            } else if (mLastParten.getColumn() < mCurrParten.getColumn()) {
-                                mPressAnimDrawable[i].stop();
-                                if (mGestureRightAnimRes > 0) {
-                                    AnimationDrawable anim = (AnimationDrawable) mThemeRes
-                                            .getDrawable(mGestureRightAnimRes);
-                                    mButtonViews[i].setBackgroundDrawable(anim);
-                                    anim.start();
-                                } else if (mGestureRightDrawable != null) {
-                                    mButtonViews[i].setBackgroundDrawable(mGestureRightDrawable);
-                                } else {
-
-                                }
-                            } else if (mLastParten.getColumn() > mCurrParten.getColumn()) {
-                                mPressAnimDrawable[i].stop();
-                                if (mGestureLeftAnimRes > 0) {
-                                    AnimationDrawable anim = (AnimationDrawable) mThemeRes
-                                            .getDrawable(mGestureLeftAnimRes);
-                                    mButtonViews[i].setBackgroundDrawable(anim);
-                                    anim.start();
-                                } else if (mGestureLeftDrawable != null) {
-                                    mButtonViews[i].setBackgroundDrawable(mGestureLeftDrawable);
-                                } else {
-
-                                }
-                            }
-                            mLastParten = mCurrParten;
-                        }
-                        if (mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
                             if (!mPressAnimDrawable[i].isRunning()) {
                                 mButtonViews[i].setBackgroundDrawable(mPressAnimDrawable[i]);
                                 mPressAnimDrawable[i].start();
                             }
+                        } else {
+                            if (mLastParten.getRow() == i / 3 && mLastParten.getColumn() == i % 3) {
+
+                                if (mLastParten.getColumn() == mCurrParten.getColumn()) {
+                                    mPressAnimDrawable[i].stop();
+                                    if (mGestureVerticalAnimRes > 0) {
+                                        AnimationDrawable anim = (AnimationDrawable) mThemeRes
+                                                .getDrawable(mGestureVerticalAnimRes);
+                                        mButtonViews[i].setBackgroundDrawable(anim);
+                                        anim.start();
+                                    } else if (mGestureVerticalDrawable != null) {
+                                        mButtonViews[i]
+                                                .setBackgroundDrawable(mGestureVerticalDrawable);
+                                    } else {
+
+                                    }
+                                } else if (mLastParten.getColumn() < mCurrParten.getColumn()) {
+                                    mPressAnimDrawable[i].stop();
+                                    if (mGestureRightAnimRes > 0) {
+                                        AnimationDrawable anim = (AnimationDrawable) mThemeRes
+                                                .getDrawable(mGestureRightAnimRes);
+                                        mButtonViews[i].setBackgroundDrawable(anim);
+                                        anim.start();
+                                    } else if (mGestureRightDrawable != null) {
+                                        mButtonViews[i]
+                                                .setBackgroundDrawable(mGestureRightDrawable);
+                                    } else {
+
+                                    }
+                                } else if (mLastParten.getColumn() > mCurrParten.getColumn()) {
+                                    mPressAnimDrawable[i].stop();
+                                    if (mGestureLeftAnimRes > 0) {
+                                        AnimationDrawable anim = (AnimationDrawable) mThemeRes
+                                                .getDrawable(mGestureLeftAnimRes);
+                                        mButtonViews[i].setBackgroundDrawable(anim);
+                                        anim.start();
+                                    } else if (mGestureLeftDrawable != null) {
+                                        mButtonViews[i].setBackgroundDrawable(mGestureLeftDrawable);
+                                    } else {
+
+                                    }
+                                }
+                                mLastParten = mCurrParten;
+                            }
+                            if (mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
+                                if (!mPressAnimDrawable[i].isRunning()) {
+                                    mButtonViews[i].setBackgroundDrawable(mPressAnimDrawable[i]);
+                                    mPressAnimDrawable[i].start();
+                                }
+                            }
+                        }
+                    }
+
+                } else if (mGestureState == BUTTON_STATE_UP) {
+                    // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
+                    if (mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
+                        if (mUpAnimDrawable != null) {
+                            mButtonViews[i].setImageDrawable(mUpAnimDrawable);
+                            mUpAnimDrawable.start();
                         }
                     }
                 }
 
-            } else if (mGestureState == BUTTON_STATE_UP) {
-                // mButtonViews[i].setBackgroundResource(R.drawable.gesture_point_bg);
-                if (mCurrParten.getRow() == i / 3 && mCurrParten.getColumn() == i % 3) {
-                    if (mUpAnimDrawable != null) {
-                        mButtonViews[i].setImageDrawable(mUpAnimDrawable);
-                        mUpAnimDrawable.start();
-                    }
-                }
             }
+        } catch (Exception e) {
 
         }
     }
@@ -1502,8 +1507,8 @@ public class LockPatternView extends ViewGroup {
     public void setIsFromLockScreenActivity(boolean isture) {
         this.isFromLockScreenActivity = isture;
     }
-    
-    public void resetIfHideLine(){
+
+    public void resetIfHideLine() {
         isHideLine = AppMasterPreference.getInstance(mContext).getIsHideLine();
     }
 

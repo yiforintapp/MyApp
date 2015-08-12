@@ -13,6 +13,8 @@ import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 import android.content.Context;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory.Options;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,16 +27,25 @@ public class LockerThemeAdapter extends BaseAdapter {
     private LayoutInflater layoutInflater;
     private DisplayImageOptions commonOption;
     private DisplayImageOptions compatibleOption;
+    
+    private Options options;
 
     public LockerThemeAdapter(Context context, List<ThemeItemInfo> themes) {
         this.themes = themes;
         this.layoutInflater = LayoutInflater.from(context);
+        
+        options = new Options();
+        // 主题使用565配置
+        options.inPreferredConfig = Config.RGB_565;
         commonOption = new DisplayImageOptions.Builder()
                 .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
                 .showImageOnLoading(R.drawable.online_theme_loading)
                 .showImageOnFail(R.drawable.online_theme_loading_failed)
                 .displayer(new FadeInBitmapDisplayer(500))
-                .cacheInMemory(true).cacheOnDisk(true).considerExifParams(true)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .decodingOptions(options)
                 .build();
     }
 
@@ -109,6 +120,7 @@ public class LockerThemeAdapter extends BaseAdapter {
                     .showImageOnLoading(theme.themeImage)
                     .showImageOnFail(theme.themeImage).cacheInMemory(true)
                     .displayer(new FadeInBitmapDisplayer(500))
+                    .decodingOptions(options)
                     .cacheOnDisk(true).considerExifParams(true).build();
             if (Constants.THEME_PACKAGE_NIGHT.equals(theme.packageName)) {
                 ImageLoader.getInstance().displayImage(

@@ -7,6 +7,7 @@
 
     <com.leo.appmaster.ui.LeoAppViewPager
         android:id="@+id/pager_dialog"
+        android:overScrollMode="never"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dialog_free_disturb_app_free_disturb_paged_gridview_pager_dialog_layout_height" />
 

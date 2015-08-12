@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker;
 
 import android.app.Activity;

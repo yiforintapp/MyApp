@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.privacycontact;
 
 import java.io.ByteArrayOutputStream;

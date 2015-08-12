@@ -2,21 +2,22 @@
 package com.leo.appmaster.sdk.update;
 
 import java.lang.ref.WeakReference;
+import java.text.AttributedCharacterIterator.Attribute;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Html;
 import android.text.Spanned;
 import android.text.method.ScrollingMovementMethod;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 
 import com.leo.analytics.LeoAgent;
@@ -123,9 +124,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
-//            case IUIHelper.BACK_DOWNLOAD_DONE:
-//                showNeedUpdate();
-//                break;
+        // case IUIHelper.BACK_DOWNLOAD_DONE:
+        // showNeedUpdate();
+        // break;
         }
     }
 
@@ -166,15 +167,16 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "update", "pop_up");
         String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
-        Spanned feature = mManager.getFeature();
+        String feature = mManager.getFeatureString();
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
-        setContentView(R.layout.dialog_message_single_done);
-        TextView tvId = (TextView) findViewById(R.id.dlg_title);
-        tvId.setText(getString(R.string.update_title));
+        setContentView(R.layout.dialog_force_update_alarm);
+       /* TextView tvId = (TextView) findViewById(R.id.dlg_title);
+        tvId.setText(getString(R.string.update_title));*/
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
-        tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
+        Spanned msgText = Html.fromHtml(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
+        tvMsg.setText(msgText);
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
         TextView tvYes = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvYes.setText(getString(R.string.do_update));
@@ -349,18 +351,17 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         mUIHelper.cancelUpdateNotification();
         String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
-        Spanned feature = mManager.getFeature();
+        String feature = mManager.getFeatureString();
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
-        setContentView(R.layout.dialog_alarm);
-        TextView tvId = (TextView) findViewById(R.id.dlg_title);
-        tvId.setText(getString(R.string.update_title));
+        setContentView(R.layout.dialog_update_alarm);
+
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
-        tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
+        Spanned msgText = Html.fromHtml(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
+        tvMsg.setText(msgText);
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
-        tvMsg.setLayoutParams(new LinearLayout.LayoutParams(
-                LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
         tvYes.setOnClickListener(new View.OnClickListener() {
@@ -368,7 +369,6 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             public void onClick(View v) {
                 /* sdk mark */
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "sure");
-
                 if (AppUtil.appInstalled(UpdateActivity.this,
                         Constants.GP_PACKAGE)) {
                     LockManager.getInstatnce().timeFilterSelf();
@@ -387,7 +387,6 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 mManager.onCancelUpdate();
                 finish();
             }
-
         });
     }
 

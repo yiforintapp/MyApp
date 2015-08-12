@@ -156,7 +156,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_below="@id/four_teb"
-                android:src="@color/flow_charts_gry" />
+                android:src="@color/all_backgroud" />
         </RelativeLayout>
 
         <FrameLayout
@@ -175,11 +175,12 @@
                 android:id="@+id/list_backup_home_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@color/flow_charts_gry"
-                android:dividerHeight="1dp"
+               android:divider="@null"
                 android:overScrollMode="never"
                 android:visibility="gone" />
         </FrameLayout>
     </LinearLayout>
+<!--                  android:divider="@drawable/ins"
+                android:dividerHeight="1dp" -->
 
 </LinearLayout>

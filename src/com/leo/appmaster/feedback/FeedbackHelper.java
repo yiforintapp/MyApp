@@ -1,7 +1,9 @@
 package com.leo.appmaster.feedback;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -11,27 +13,37 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.R.string;
+import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.android.volley.Response.ErrorListener;
+import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 /**
  * Feedback helper to save and commit feedbacks
  */
 public class FeedbackHelper {
+    private static final String TAG = "FeedbackHelper";
 
-	private final static String FEEDBACK_URL = "/appmaster/feedback";
+	public final static String FEEDBACK_URL = "/appmaster/feedback";
 	// private final static String FEEDBACK_URL =
 	// "http://test.leostat.com/appmaster/feedback";
-	public final static String TABLE_NAME = "feedback";
+	protected final static String TABLE_NAME = "feedback";
 	protected final static String KEY_EMAIL = "email";
 	protected final static String KEY_CONTENT = "content";
 	protected final static String KEY_CATEGORY = "category";
@@ -47,82 +59,41 @@ public class FeedbackHelper {
 		@Override
 		public void run() {
 			mCommitIndex++;
-			boolean success = true;
 			Cursor c = AppMasterApplication.getInstance().getContentResolver()
 					.query(Constants.FEEDBACK_URI, null, null, null, null);
 
 			if (c != null && c.moveToFirst()) {
 				try {
 					final int idIndex = c.getColumnIndexOrThrow(Constants.ID);
-					final int contentIndex = c
-							.getColumnIndexOrThrow(KEY_CONTENT);
+					final int contentIndex = c .getColumnIndexOrThrow(KEY_CONTENT);
 					final int emailIndex = c.getColumnIndexOrThrow(KEY_EMAIL);
-					final int categoryIndex = c
-							.getColumnIndexOrThrow(KEY_CATEGORY);
+					final int categoryIndex = c .getColumnIndexOrThrow(KEY_CATEGORY);
 					final int timeIndex = c.getColumnIndexOrThrow(KEY_TIME);
-					HttpPost httpRequest = new HttpPost(Utilities.getURL(FEEDBACK_URL));
+					
+					// 最多只能报三个，防止数据库数据太多，导致流量崩溃
+					// TODO 后台支持批量接口，一次上报多条数据
+					int count = 0;
 					do {
 						long id = c.getLong(idIndex);
-						List<NameValuePair> params = new ArrayList<NameValuePair>();
-						params.add(new BasicNameValuePair(KEY_CONTENT, c
-								.getString(contentIndex)));
-						params.add(new BasicNameValuePair(KEY_EMAIL, c
-								.getString(emailIndex)));
-						params.add(new BasicNameValuePair(KEY_CATEGORY, c
-								.getString(categoryIndex)));
-						params.add(new BasicNameValuePair(KEY_TIME, c
-								.getString(timeIndex)));
-						httpRequest.setEntity(new UrlEncodedFormEntity(params,
-								HTTP.UTF_8));
-
 						String deviceInfo = SDKWrapper.getEncodedDeviceInfo();
-						httpRequest.addHeader("device", deviceInfo); // add
-																		// device
-																		// info
 
-						HttpResponse httpResponse = new DefaultHttpClient()
-								.execute(httpRequest);
-
-						if (httpResponse.getStatusLine().getStatusCode() == 200) { // connection
-																					// success
-							String strResult = EntityUtils
-									.toString(httpResponse.getEntity());
-							JSONObject object = new JSONObject(strResult);
-							int code = object.getInt("code");
-							if (code == 0) { // commit success
-
-								AppMasterApplication
-										.getInstance()
-										.getContentResolver()
-										.delete(Constants.FEEDBACK_URI,
-												Constants.ID + "=" + id, null); // delete
-																				// from
-																				// db
-								success = true;
-							} else { // commit fail
-								success = false;
-								break;
-							}
-						} else { // connection fail
-							success = false;
-							break;
-						}
-					} while (c.moveToNext());
+						Map<String, String> params = new HashMap<String, String>();
+						params.put(KEY_CONTENT, c.getString(contentIndex));
+						params.put(KEY_EMAIL, c.getString(emailIndex));
+						params.put(KEY_CATEGORY, c.getString(categoryIndex));
+						params.put(KEY_TIME, c.getString(timeIndex));
+						
+						Context ctx = AppMasterApplication.getInstance();
+						FeedbackListener listener = new FeedbackListener(id);
+						// 失败重试逻辑移动到commitFeedback里实现
+						HttpRequestAgent.getInstance(ctx).commitFeedback(listener, listener, params, deviceInfo);
+					} while (c.moveToNext() && count < 3);
 				} catch (Exception e) {
-					success = false;
 				} finally {
+				    if (c != null) {
+				        c.close();
+				    }
 				}
-			}
-			if (c != null) {
-				c.close();
-			}
-			if (success) { // success, exit thread
-				mCommitIndex = -1;
-//				dbHelper.close();
-			} else if (mCommitIndex < MAX_COMMIT_COUNT) { // fail, retry
-			    AppMasterApplication.getInstance().postInAppThreadPool(mCommitTask);
-			} else {
-//				dbHelper.close();
 			}
 		}
 	};
@@ -185,6 +156,36 @@ public class FeedbackHelper {
 				}
 			}
 		});
+	}
+	
+	private static class FeedbackListener implements Listener<JSONObject>, ErrorListener {
+	    private long id;
+	    public FeedbackListener(long id) {
+	        this.id = id;
+	    }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            LeoLog.d(TAG, "Feedback error, e" + error.getMessage());
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            LeoLog.d(TAG, "Feedback response: " + response == null ? null : response.toString());
+            if (response == null) return;
+            
+            try {
+                int code = response.getInt("code");
+                if (code == 0) {
+                    // succ, delete from db
+                    ContentResolver resolver = AppMasterApplication.getInstance().getContentResolver();
+                    resolver.delete(Constants.FEEDBACK_URI, Constants.ID + "=" + id, null); 
+                }
+            } catch (JSONException e) {
+                LeoLog.e(TAG, "parse feedback ex.", e);
+            } 
+        }
+	    
 	}
 
 }

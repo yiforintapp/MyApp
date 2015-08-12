@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.applocker.manager;
 
+import java.util.Currency;
 import java.util.List;
 
 import android.app.ActivityManager;
@@ -26,6 +27,7 @@ public class TaskChangeHandler {
     public static final String WAITNAME = "WaitActivity";
     public static final String GESTURE = "QuickGesturePopupActivity";
     public static final String WEBVIEW = "WebViewActivity";
+    public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
     public static final String LAUNCHERBOOST = "HomeBoostActivity";
 
@@ -67,7 +69,7 @@ public class TaskChangeHandler {
         return mLastRuningActivity;
     }
 
-    public void handleAppLaunch(String pkg, String activity) {
+    public void handleAppLaunch(String pkg, String activity, String baseActivity) {
         if (pkg == null || activity == null)
             return;
         // For android 5.0, download package changed
@@ -82,8 +84,15 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
-        // LeoLog.i("handleAppLaunch", pkg + "/" + activity);
-
+        String myPackage = mContext.getPackageName();
+        
+        LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+        
+        //fix bug AM-2134
+        if(TextUtils.equals(myPackage, pkg) && activity != null && activity.contains("Launcher")) {
+            return;
+        }
+        
         // for gesture check
         if (activity.contains(GESTURE)) {
             /* 去除下面代码为了解决：关闭GESTURE这个Acitivty后启动创建热区任务时闪动创建问题 */
@@ -92,7 +101,7 @@ public class TaskChangeHandler {
             FloatWindowHelper.mGestureShowing = false;
         }
 
-        String myPackage = mContext.getPackageName();
+        
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
         String checkPkg = amp.getDoubleCheck();
@@ -107,6 +116,7 @@ public class TaskChangeHandler {
             if (isCurrentSelf && !isLastSelf) {
                 amp.setFromOther(true);
             }
+            boolean currentLockScreen = activity.contains(LOCKSCREENNAME);
             if (doubleCheck) {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
@@ -116,8 +126,8 @@ public class TaskChangeHandler {
                                         .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
                                                 .contains(WAITNAME)
-                                        || activity.contains(WEBVIEW))
-                                || (!unlocked && activity.contains(LOCKSCREENNAME)))
+                                        || activity.contains(WEBVIEW) || activity.contains(AD))
+                                || (!unlocked && currentLockScreen))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
@@ -132,8 +142,8 @@ public class TaskChangeHandler {
                                         .contains(SPLASHNAME) || activity
                                         .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
-                                                .contains(WAITNAME) || activity.contains(WEBVIEW)) || activity
-                                    .contains(LOCKSCREENNAME))
+                                                .contains(WAITNAME) || activity.contains(WEBVIEW) || activity
+                                            .contains(AD)) || currentLockScreen)
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
@@ -141,13 +151,21 @@ public class TaskChangeHandler {
                     return;
                 }
             }
-            mLastRunningPkg = pkg;
-            mLastRuningActivity = activity;
-
+            
             // reset this filter flag
             if (LockScreenActivity.sLockFilterFlag) {
                 LockScreenActivity.sLockFilterFlag = false;
             }
+          
+            // No need to lock activities in lock screen's task
+            if(!currentLockScreen && (baseActivity != null && baseActivity.contains(LOCKSCREENNAME))) {
+                mLastRunningPkg = pkg;
+                mLastRuningActivity = activity;
+                return;
+            }
+            
+            mLastRunningPkg = pkg;
+            mLastRuningActivity = activity;
 
             // remocde app launch recoder
             LockManager.getInstatnce().recordAppLaunch(mLastRunningPkg);
@@ -164,7 +182,8 @@ public class TaskChangeHandler {
                 }
             }
             if (lock) {
-                LeoLog.d("Track Lock Screen", "apply lockscreen form TaskChangeHandler");
+                LeoLog.d("Track Lock Screen",
+                        "apply lockscreen form TaskChangeHandler");
                 if (LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL, pkg, false,
                         null)) {
                     amp.setUnlocked(false);

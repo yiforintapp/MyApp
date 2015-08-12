@@ -154,6 +154,11 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         setCanceledOnTouchOutside(true);
     }
 
+    public void setDialogIcon(int id)
+    {
+        mDialogIcon.setImageResource(id);
+    }
+    
     public void setContentGravity(int gravity) {
         mContent.setGravity(gravity);
     }

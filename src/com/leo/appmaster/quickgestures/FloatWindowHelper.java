@@ -5,6 +5,8 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.graphics.drawable.AnimationDrawable;
@@ -14,6 +16,8 @@ import android.os.Handler;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Display;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -21,14 +25,22 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
+import android.widget.PopupWindow;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.BeautyWeiZhuang;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
+
 import com.leo.appmaster.quickgestures.view.QuickGesturesAreaView;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
@@ -63,6 +75,7 @@ public class FloatWindowHelper {
             mRightCenterCenterParams;
     private static WindowManager mWindowManager;
     private static ImageView mWhiteFloatView;
+    private static LEOAlarmDialog mConflictTipsDialog;
     private static ScreenOnOffListener mScreenListener;
 
     public static volatile boolean mGestureShowing = false;
@@ -104,6 +117,8 @@ public class FloatWindowHelper {
     private static int mWhiteFLoatWidth, mWhiteFloatHeight;
     private static long mLastClickTime;
 
+    private static int areaClickAccount = 0;
+
     private static final int LEFT_BOTTOM_FLAG = 1;
     private static final int LEFT_CENTER_FLAG = 2;
     private static final int LEFT_TOP_FLAG = 3;
@@ -117,18 +132,20 @@ public class FloatWindowHelper {
     private static boolean isControling = false;
     private static CountDownTimer nowCount;
     private static Handler handler;
-//    public static boolean mIsWhiteFloatViewResponsing=false;
+
+    // public static boolean mIsWhiteFloatViewResponsing=false;
     /**
      * left bottom must call in UI thread
      * 
      * @param context
      */
-    public static void createFloatLeftBottomWindow(final Context mContext, int value) {
+    private static void createFloatLeftBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftBottomView == null) {
             mLeftBottomView = new QuickGesturesAreaView(mContext);
             // // no read contact /message/privacycontact red tip
+
             mLeftBottomView.setOnTouchListener(new OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -141,6 +158,7 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             startX = event.getRawX();
                             startY = event.getRawY();
+
                             break;
                         case MotionEvent.ACTION_MOVE:
                             moveX = startX - event.getRawX();
@@ -180,6 +198,15 @@ public class FloatWindowHelper {
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop() * 1.5)) {
                                 // cancel system no read message tip
+
+                                areaClickAccount += 1;
+                                Log.e("cou", "touched,count=" + areaClickAccount);
+                                if (areaClickAccount >= 3)
+                                {
+                                    areaClickAccount = 0;
+                                    showConflictTips();
+                                }
+
                                 removeSwipWindow(mContext, 1);
                             }
                             break;
@@ -226,7 +253,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatLeftCenterWindow(final Context mContext, int value) {
+    private static void createFloatLeftCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
@@ -314,6 +341,13 @@ public class FloatWindowHelper {
                                         e.printStackTrace();
                                     }
                                 }
+                                areaClickAccount += 1;
+                                Log.e("cou", "touched,count=" + areaClickAccount);
+                                if (areaClickAccount >= 3)
+                                {
+                                    areaClickAccount = 0;
+                                    showConflictTips();
+                                }
                                 removeSwipWindow(mContext, 2);
                             }
                             break;
@@ -355,7 +389,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
+    private static void createFloatLeftCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
@@ -442,6 +476,13 @@ public class FloatWindowHelper {
                                     } catch (Exception e) {
                                         e.printStackTrace();
                                     }
+                                    areaClickAccount += 1;
+                                    Log.e("cou", "touched,count=" + areaClickAccount);
+                                    if (areaClickAccount >= 3)
+                                    {
+                                        areaClickAccount = 0;
+                                        showConflictTips();
+                                    }
                                 }
                                 removeSwipWindow(mContext, 4);
                             }
@@ -504,7 +545,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatLeftTopWindow(final Context mContext, int value) {
+    private static void createFloatLeftTopWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mLeftTopView == null) {
@@ -560,7 +601,15 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop() * 1.5)) {
+                                areaClickAccount += 1;
+                                Log.e("cou", "touched,count=" + areaClickAccount);
+                                if (areaClickAccount >= 3)
+                                {
+                                    areaClickAccount = 0;
+                                    showConflictTips();
+                                }
                                 removeSwipWindow(mContext, 3);
+
                             }
                             break;
                     }
@@ -606,7 +655,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatRightBottomWindow(final Context mContext, int value) {
+    private static void createFloatRightBottomWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightBottomView == null) {
@@ -680,6 +729,13 @@ public class FloatWindowHelper {
                                 // e.printStackTrace();
                                 // }
                                 // }
+                                areaClickAccount += 1;
+                                Log.e("cou", "touched,count=" + areaClickAccount);
+                                if (areaClickAccount >= 3)
+                                {
+                                    areaClickAccount = 0;
+                                    showConflictTips();
+                                }
                                 removeSwipWindow(mContext, -1);
                             }
                             break;
@@ -726,7 +782,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatRightCenterWindow(final Context mContext, int value) {
+    private static void createFloatRightCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
@@ -812,6 +868,13 @@ public class FloatWindowHelper {
                                         e.printStackTrace();
                                     }
                                 }
+                                areaClickAccount += 1;
+                                Log.e("cou", "touched,count=" + areaClickAccount);
+                                if (areaClickAccount >= 3)
+                                {
+                                    areaClickAccount = 0;
+                                    showConflictTips();
+                                }
                                 removeSwipWindow(mContext, -2);
                             }
                             break;
@@ -854,7 +917,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatRightCenterCenterWindow(final Context mContext, int value) {
+    private static void createFloatRightCenterCenterWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         final boolean isShowBusinessRedTip = QuickGestureManager.getInstance(mContext)
@@ -943,6 +1006,13 @@ public class FloatWindowHelper {
                                         e.printStackTrace();
                                     }
                                 }
+                                areaClickAccount += 1;
+                                Log.e("cou", "touched,count=" + areaClickAccount);
+                                if (areaClickAccount >= 3)
+                                {
+                                    areaClickAccount = 0;
+                                    showConflictTips();
+                                }
                                 removeSwipWindow(mContext, -4);
                             }
                             break;
@@ -1008,7 +1078,7 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatRightTopWindow(final Context mContext, int value) {
+    private static void createFloatRightTopWindow(final Context mContext, int value) {
         final WindowManager windowManager = getWindowManager(mContext);
         final boolean isShowTip = QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage;
         if (mRightTopView == null) {
@@ -1062,6 +1132,13 @@ public class FloatWindowHelper {
                             isMoveIng = false;
                             if ((moveX < ViewConfiguration.get(mContext).getScaledTouchSlop() * 1.5 && moveY < ViewConfiguration
                                     .get(mContext).getScaledTouchSlop() * 1.5)) {
+                                areaClickAccount += 1;
+                                Log.e("cou", "touched,count=" + areaClickAccount);
+                                if (areaClickAccount >= 3)
+                                {
+                                    areaClickAccount = 0;
+                                    showConflictTips();
+                                }
                                 removeSwipWindow(mContext, -3);
                             }
                             break;
@@ -1184,7 +1261,8 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void updateView(Context context, int value) {
+    public static void updateView(Context ctx, int value) {
+        Context context = ctx.getApplicationContext();
         WindowManager windowManager = getWindowManager(context);
         WindowManager manager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
@@ -1397,7 +1475,8 @@ public class FloatWindowHelper {
      * 
      * @param context
      */
-    public static void createFloatWindow(Context context, int value) {
+    public static void createFloatWindow(Context ctx, int value) {
+        Context context = ctx.getApplicationContext();
         boolean leftBottom = QuickGestureManager
                 .getInstance(AppMasterApplication.getInstance()).isLeftBottom;
         boolean rightBottom = QuickGestureManager.getInstance(AppMasterApplication
@@ -1446,7 +1525,8 @@ public class FloatWindowHelper {
      * 
      * @param flag
      */
-    public static void updateFloatWindowBackgroudColor(Context context, boolean flag) {
+    public static void updateFloatWindowBackgroudColor(Context ctx, boolean flag) {
+        Context context = ctx.getApplicationContext();
         if (flag) {
             if (mLeftBottomView != null) {
                 mLeftBottomView
@@ -1559,7 +1639,8 @@ public class FloatWindowHelper {
         }
     }
 
-    public static void setShowSlideArea(Context context, String flag) {
+    public static void setShowSlideArea(Context ctx, String flag) {
+        Context context = ctx.getApplicationContext();
         int value = QuickGestureManager.getInstance(context).mSlidAreaSize;
         boolean leftBottom = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isLeftBottom;
         boolean rightBottom = QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isRightBottom;
@@ -1668,6 +1749,11 @@ public class FloatWindowHelper {
             }
             Intent intent;
             intent = new Intent(AppMasterApplication.getInstance(), QuickGesturePopupActivity.class);
+            if (TextUtils
+                    .equals(AppMasterApplication.getInstance().getPackageName(), LockManager
+                            .getInstatnce().getLastPackage())) {
+                intent.putExtra("from_self_app", true);
+            }
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.putExtra("show_orientation", 2);
             if (TextUtils
@@ -1684,19 +1770,106 @@ public class FloatWindowHelper {
         }
     }
 
-    public static void createWhiteFloatView(Context mContext) {
-        if (null == mWhiteFloatView) {
-            WindowManager windowManager = getWindowManager(mContext);
-            AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
-            int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
-            int halfH = windowManager.getDefaultDisplay().getHeight() / 2;
+    public static void showConflictTips()
+    {
+        if (mConflictTipsDialog != null)
+        {
+            if (mConflictTipsDialog.isShowing())
+            {
+                return;
+            }
+        }
 
-            createWhiteFloatParams(mContext);
-            // get the last coordinate,if 0 then appear in default swipe orientation
-            int[] coordinate = AppMasterPreference.getInstance(mContext)
+        mConflictTipsDialog = new LEOAlarmDialog(AppMasterApplication
+                .getInstance());
+       
+        mConflictTipsDialog.findViewById(R.id.dlg_title).setVisibility(View.GONE);
+        TextView tv = (TextView) mConflictTipsDialog
+                .findViewById(R.id.dlg_content);
+        tv.setPadding(0, DipPixelUtil.dip2px(
+                AppMasterApplication.getInstance(), 22), 0, 0);
+        tv.setGravity((Gravity.LEFT) & (Gravity.CENTER_VERTICAL));
+        tv.setText(R.string.pg_appmanager_quick_gesture_conflict_content);
+        mConflictTipsDialog.setDialogIcon(R.drawable.remind_conflict_dialog);
+        mConflictTipsDialog.setCanceledOnTouchOutside(false);
+        mConflictTipsDialog.setLeftBtnStr(AppMasterApplication.getInstance().getString(R.string.pg_appmanager_quick_gesture_conflict_later));
+        mConflictTipsDialog.setRightBtnStr(AppMasterApplication.getInstance().getString(R.string.pg_appmanager_quick_gesture_conflict_open));
+        mConflictTipsDialog.setLeftBtnListener(new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_conflict", "dialog_n");
+                if (mConflictTipsDialog != null)
+                {
+                    mConflictTipsDialog.dismiss();
+                }
+            }
+        });
+        mConflictTipsDialog.setRightBtnListener(new OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // TODO Auto-generated method stub
+                SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_conflict", "dialog_y");
+                FloatWindowHelper.removeAllFloatWindow(AppMasterApplication
+                                .getInstance());
+                AppMasterPreference.getInstance(
+                        AppMasterApplication.getInstance())
+                        .setIsOpenFloatWindows(false);
+                if (!AppMasterPreference.getInstance(
+                        AppMasterApplication.getInstance())
+                        .getSwitchOpenStrengthenMode())
+                {
+                    FloatWindowHelper.createWhiteFloatView(AppMasterApplication
+                                    .getInstance());
+//                    if (AppMasterPreference.getInstance(AppMasterApplication.getInstance()) .getSlideTimeJustHome()) 
+                        // FloatWindowHelper.hideWhiteFloatView(this);
+                        // }
+                        AppMasterPreference .getInstance(AppMasterApplication.getInstance()).setSwitchOpenStrengthenMode(true, true);
+                    
+                    // if (mStrengthenModeFlag) {
+                    // FloatWindowHelper.createWhiteFloatView(this);
+                    // if
+                    // (AppMasterPreference.getInstance(this).getSlideTimeJustHome())
+                    // {
+                    // FloatWindowHelper.hideWhiteFloatView(this);
+                    // }
+                    // } else {
+                    // FloatWindowHelper.removeWhiteFloatView(this);
+                    // mPre.setWhiteFloatViewCoordinate(0,
+                    // 0);
+                    // }
+                }
+                if (mConflictTipsDialog != null)
+                {
+                    mConflictTipsDialog.dismiss();
+                    Toast.makeText(AppMasterApplication.getInstance(),R.string.anti_conflict_mode_open, 0).show();
+                }
+            }
+        });
+//        mConflictTipsDialog.setCanceledOnTouchOutside(false);
+        mConflictTipsDialog.getWindow().setType(
+                WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+        mConflictTipsDialog.show();
+        SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_conflict", "dialog");
+        
+    }
+
+    public static void createWhiteFloatView(Context ctx) {
+        Context context = ctx.getApplicationContext();
+        if (null == mWhiteFloatView) {
+            WindowManager windowManager = getWindowManager(context);
+            AppMasterPreference pref = AppMasterPreference.getInstance(context);
+            int halfW = windowManager.getDefaultDisplay().getWidth() / 2;
+
+            createWhiteFloatParams(context);
+            // get the last coordinate,if 0 then appear in default swipe
+            // orientation
+            int[] coordinate = AppMasterPreference.getInstance(context)
                     .getWhiteFloatViewCoordinate();
             if (coordinate[0] == 0) {
-                //first open default appear in left center
+                // first open default appear in left center
                 mWhiteFloatParams.x = -halfW;
                 mWhiteFloatParams.y = mWhiteFloatParams.height;
                 pref.setWhiteFloatViewCoordinate(mWhiteFloatParams.x, mWhiteFloatParams.y);
@@ -1705,10 +1878,10 @@ public class FloatWindowHelper {
                 mWhiteFloatParams.y = coordinate[1];
             }
 
-            mWhiteFloatView = new ImageView(mContext);
+            mWhiteFloatView = new ImageView(context);
             goToChangeLight();
-            setWhiteFloatOnTouchEvent(mContext);
-            registerWhiteFloatOnScreenListener(mContext);
+            setWhiteFloatOnTouchEvent(context);
+            registerWhiteFloatOnScreenListener(context);
             try {
                 windowManager.addView(mWhiteFloatView, mWhiteFloatParams);
             } catch (Exception e) {
@@ -1744,10 +1917,10 @@ public class FloatWindowHelper {
             for (int i = 0; i < animationLightDrawable.getNumberOfFrames(); i++) {
                 duration += animationLightDrawable.getDuration(i);
             }
-            if(handler == null){
+            if (handler == null) {
                 handler = new Handler();
             }
-            
+
             handler.postDelayed(new Runnable() {
 
                 @Override
@@ -1756,6 +1929,7 @@ public class FloatWindowHelper {
                         @Override
                         public void onTick(long millisUntilFinished) {
                         }
+
                         @Override
                         public void onFinish() {
                             goToChangeDark();
@@ -1788,9 +1962,10 @@ public class FloatWindowHelper {
         }
     }
 
-    public static void removeWhiteFloatView(Context mContext) {
+    public static void removeWhiteFloatView(Context ctx) {
+        Context context = ctx.getApplicationContext();
         if (null != mWhiteFloatView) {
-            WindowManager windowManager = getWindowManager(mContext);
+            WindowManager windowManager = getWindowManager(context);
             try {
                 windowManager.removeView(mWhiteFloatView);
             } catch (Exception e) {
@@ -1802,10 +1977,11 @@ public class FloatWindowHelper {
         }
     }
 
-    public static void hideWhiteFloatView(Context mContext) {
+    public static void hideWhiteFloatView(Context ctx) {
+        Context context = ctx.getApplicationContext();
         if (null != mWhiteFloatView && null != mWhiteFloatParams) {
             if (mWhiteFloatView.getVisibility() == View.VISIBLE) {
-                WindowManager windowManager = getWindowManager(mContext);
+                WindowManager windowManager = getWindowManager(context);
                 mWhiteFloatView.setVisibility(View.GONE);
                 try {
                     windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
@@ -1815,10 +1991,11 @@ public class FloatWindowHelper {
         }
     }
 
-    public static void showWhiteFloatView(Context mContext) {
+    public static void showWhiteFloatView(Context ctx) {
+        Context context = ctx.getApplicationContext();
         if (null != mWhiteFloatView && null != mWhiteFloatParams) {
-            WindowManager windowManager = getWindowManager(mContext);
-            if (hasMessageTip(mContext)) {
+            WindowManager windowManager = getWindowManager(context);
+            if (hasMessageTip(context)) {
                 mWhiteFloatView.setVisibility(View.VISIBLE);
                 mWhiteFloatView.setImageResource(R.drawable.gesture_red_point);
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
@@ -1828,14 +2005,15 @@ public class FloatWindowHelper {
                 windowManager.updateViewLayout(mWhiteFloatView, mWhiteFloatParams);
             }
         } else {
-            createWhiteFloatView(mContext);
+            createWhiteFloatView(context);
         }
     }
 
     private static void onWhiteFloatClick(Context mContext) {
         if (null == mWhiteFloatView)
             return;
-        if (System.currentTimeMillis() - mLastClickTime < 1000) {
+        long nowTime = System.currentTimeMillis();
+        if (Math.abs(nowTime - mLastClickTime) < 1500) {
             return;
         }
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
@@ -1853,7 +2031,8 @@ public class FloatWindowHelper {
         pref.setNeedShowWhiteDotSlideTip(false);
         checkDismissWhiteDotLuminescence(mContext);
         int oreatation = mWhiteFloatParams.x < 0 ? 0 : 2;
-            showQuickGuestureView(mContext, oreatation);
+        mLastClickTime = nowTime;
+        showQuickGuestureView(mContext, oreatation);
 
     }
 
@@ -1878,17 +2057,13 @@ public class FloatWindowHelper {
                     case MotionEvent.ACTION_OUTSIDE:
                         break;
                     case MotionEvent.ACTION_DOWN:
-                        
-                      
-                        
-                        
                         isControling = true;
                         // 取消上一次的持续效果
                         if (nowCount != null) {
                             nowCount.cancel();
                             nowCount = null;
                         }
-                        if(mWhiteFloatView != null) {
+                        if (mWhiteFloatView != null) {
                             mWhiteFloatView.setBackgroundResource(R.drawable.gesture_white_point);
                         } else {
                             return false;
@@ -1913,9 +2088,9 @@ public class FloatWindowHelper {
                     case MotionEvent.ACTION_UP:
                         isControling = false;
                         goToChangeLight();
-                        
-                     // the x must  be both sides
-                        upX = event.getRawX() < halfW ? -halfW : halfW; 
+
+                        // the x must be both sides
+                        upX = event.getRawX() < halfW ? -halfW : halfW;
                         upY = (int) (event.getRawY() - halfH);
                         if (System.currentTimeMillis() - downTime < 150) {
                             onWhiteFloatClick(mContext);
@@ -1942,29 +2117,26 @@ public class FloatWindowHelper {
     }
 
     private static void showQuickGuestureView(Context mContext, int orientation) {
-        
+
         Log.e("temp728", "to show");
-        
-        
+
         Intent intent = new Intent(mContext,
                 QuickGesturePopupActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.putExtra("show_orientation", orientation);
         intent.putExtra("from_white_dot", true);
-        if (TextUtils
-                .equals(mContext.getPackageName(), LockManager.getInstatnce().getLastPackage())) {
-            
+        if (TextUtils.equals(mContext.getPackageName(), LockManager.getInstatnce().getLastPackage())) {
             intent.putExtra("from_self_app", true);
         }
-        
-//        
-//        if(!AppMasterPreference.getInstance(mContext).getIsWhiteDotResponsing())//phtd
-//        {
-           mContext.startActivity(intent);        
-//            AppMasterPreference.getInstance(mContext).setIsWhiteDotResponsing(true);           
-//        }
-//        
-        
+
+        //
+        // if(!AppMasterPreference.getInstance(mContext).getIsWhiteDotResponsing())//phtd
+        // {
+        mContext.startActivity(intent);
+        // AppMasterPreference.getInstance(mContext).setIsWhiteDotResponsing(true);
+        // }
+        //
+
     }
 
     private static boolean hasMessageTip(Context mContext) {
@@ -1988,18 +2160,20 @@ public class FloatWindowHelper {
                 @Override
                 public void onScreenChanged(Intent intent) {
                     if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-                        Log.i("null","锁屏啦");
+                        Log.i("null", "锁屏啦");
                         hideWhiteFloatView(mContext);
                         AppMasterPreference.getInstance(mContext)
                                 .setSwitchOpenStrengthenMode(false, false);
                     } else if (!AppUtil.isScreenLocked(mContext)
                             && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-                        Log.i("null","开屏啦");
-                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true, false);
+                        Log.i("null", "开屏啦");
+                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true,
+                                false);
                         showWhiteFloatView(mContext);
                     } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-                        Log.i("null","解锁啦");
-                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true, false);
+                        Log.i("null", "解锁啦");
+                        AppMasterPreference.getInstance(mContext).setSwitchOpenStrengthenMode(true,
+                                false);
                         showWhiteFloatView(mContext);
                     }
                     super.onScreenChanged(intent);
@@ -2034,7 +2208,8 @@ public class FloatWindowHelper {
     }
 
     // 去除热区红点，未读，运营icon和红点
-    public static void cancelAllRedTip(Context context) {
+    public static void cancelAllRedTip(Context ctx) {
+        Context context = ctx.getApplicationContext();
         // Log.e(FloatWindowHelper.RUN_TAG, "是否显示红点："
         // + QuickGestureManager.getInstance(context).isShowSysNoReadMessage);
         // 隐私通话
@@ -2052,7 +2227,8 @@ public class FloatWindowHelper {
         }
         // 短信，通话记录
         if (QuickGestureManager.getInstance(context).getQuickNoReadCall() != null) {
-            QuickGestureManager.getInstance(context).clearQuickNoReadCall();;
+            QuickGestureManager.getInstance(context).clearQuickNoReadCall();
+            ;
             if (QuickGestureManager.getInstance(context).isShowSysNoReadMessage) {
                 QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
             }

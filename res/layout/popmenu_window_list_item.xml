@@ -1,17 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
+    android:gravity="center_vertical"
     android:padding="10dp" >
+    
 
     
     <TextView
         android:id="@+id/menu_text"
-        android:layout_width="wrap_content"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="2"
+       
         android:textColor="#969696"
         android:textSize="14sp"  />
     
@@ -19,8 +22,7 @@
         android:id="@+id/menu_icon"
         android:layout_width="12dp"
         android:layout_height="12dp"
-        android:layout_marginLeft="14dp"
-        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="0dp"     
         android:src="@drawable/sort_select"
         android:visibility="gone"
        />

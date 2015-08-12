@@ -174,8 +174,9 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     }
                 }
                 if (targetMode != null) {
-                    mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
-                            targetMode.modeIcon));
+//                    mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
+//                            targetMode.modeIcon));
+                    mAppIcon.setImageDrawable(targetMode.getModeDrawable());
                 } else {
                     mAppIcon.setImageDrawable(AppUtil.getDrawable(
                             mActivity.getPackageManager(), mActivity.getPackageName()));
@@ -218,8 +219,9 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                 }
             }
             if (targetMode != null) {
-                mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
-                        targetMode.modeIcon));
+//                mAppIcon.setImageDrawable(new BitmapDrawable(getResources(),
+//                        targetMode.modeIcon));
+                mAppIcon.setImageDrawable(targetMode.getModeDrawable());
             } else {
                 mAppIcon.setImageDrawable(AppUtil.getDrawable(
                         mActivity.getPackageManager(), mActivity.getPackageName()));

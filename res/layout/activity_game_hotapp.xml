@@ -54,11 +54,13 @@
 
             <com.leo.appmaster.ui.LeoPagerTab
                 android:id="@+id/hotapp_app_tab_indicator"
+	            android:overScrollMode="never"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/app_manager_backup_head_back" />
         </RelativeLayout>
 
         <android.support.v4.view.ViewPager
+	        android:overScrollMode="never"
             android:id="@+id/hotapp_app_viewpager"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

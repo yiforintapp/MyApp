@@ -8,6 +8,7 @@
 
     <com.leo.appmaster.ui.LeoPictureViewPager
         android:id="@+id/picture_view_pager"
+        android:overScrollMode="never"
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
     </com.leo.appmaster.ui.LeoPictureViewPager>

@@ -28,6 +28,7 @@ import com.android.volley.VolleyLog.MarkerLog;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -352,7 +353,10 @@ public abstract class Request<T> implements Comparable<Request<T>> {
 	 *             In the event of auth failure
 	 */
 	public Map<String, String> getHeaders() throws AuthFailureError {
-		return Collections.emptyMap();
+	    HashMap<String, String> headers = new HashMap<String, String>();
+	    headers.put("Accept-Encoding", "gzip");
+	    return headers;
+//		return Collections.emptyMap();
 	}
 
 	/**

@@ -738,14 +738,33 @@
     <string name="lock_line_visiable">орбита деблокирови показана</string>
     <string name="guide_more_text">больше функции ></string>
     <string name="guide_skip_text">перепрыгнуть ></string>
-    <string name="video_hide_need_cb">из-за системы,для отмены сокрытия этих видео нужно COOL Browser.использовать после  установки</string>
-    <string name="video_hide_need_new_cb">из-за системы,для отмены сокрытия этих видео нужно COOL Browser.отменить сокрытие после  установки</string>
-    <string name="video_delete_need_new_cb">из-за системы,для исключения этих видео нужно COOLBrowser.использовать после  установки</string>
+    <string name="video_hide_need_cb">из-за системы,для отмены сокрытия этих видео нужно Cool Browser.использовать после  установки</string>
+    <string name="video_hide_need_new_cb">из-за системы,для отмены сокрытия этих видео нужно Cool Browser.отменить сокрытие после  установки</string>
+    <string name="video_delete_need_new_cb">из-за системы,для исключения этих видео нужно Cool Browser.использовать после  установки</string>
     <string name="video_cencel_hide_fail">отменить скрытие неудолось</string>
     <string name="video_delete_fail">исключать документы неудолось</string>
     <string name="zipper_too_fast">давайте помедленнее</string>
     <string name="zipper_too_slow">давайте побыстрее</string>
     <string name="theme_apply_title">использовать тон деблокирови%1$s?</string>
     <!-- 2.6 end -->
+    
+        <!-- 2.7 start -->
+    <string name="clean_mem_notify_big">памяти нет</string>
+    <string name="clean_mem_notify_big_right">65%</string>
+    <string name="clean_mem_notify_small">пуск</string>
+    <string name="clean_mem_notify_boost">ускорить</string>
+	
+	<string name="pg_appmanager_quick_gesture_option_trigger_type">метод запуска</string>
+	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">белая точка боку / снизу</string>
+	<string name="pg_appmanager_quick_gesture_trigger_alide">боку/ снизу</string>
+	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">белая точка</string>
+	<string name="pg_appmanager_quick_gesture_trigger_tips">выбирай один,по минимуму</string>
+	
+	<string name="pg_appmanager_quick_gesture_conflict_content">жест вам мешает? Вы сможете открыть только бклую точкую для настройки</string>
+	<string name="pg_appmanager_quick_gesture_conflict_later">потом</string>
+	<string name="pg_appmanager_quick_gesture_conflict_open">включить</string>
+	
+	<string name="anti_conflict_mode_open">открыто</string>
+	<!-- 2.7 end -->
 
 </resources>

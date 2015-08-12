@@ -210,7 +210,8 @@
     <dimen name="gesture_app_manager_bg_width">52dp</dimen>
     <dimen name="lock_setting_title_margintop">0dp</dimen>
     <!-- 2.5 ql part -->
-    
+
+
     <!-- 2.6 start -->
     <dimen name="webview_icon_margin">50dp</dimen>
     <dimen name="webview_title_width">222dp</dimen>
@@ -221,7 +222,25 @@
     <dimen name="privacy_default_text_margin_top">6dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">38dp</dimen>
     <dimen name="app_manager_flow_chart_margin_top">8dp</dimen>
-     <dimen name="app_manager_lineview_margin_top">8dp</dimen> 
+    <dimen name="app_manager_lineview_margin_top">8dp</dimen>
     <!-- 2.6 end -->
+
+
+    <!-- 2.7 start -->
+    <dimen name="noti_spe_icon_height">46dp</dimen>
+    <dimen name="noti_spe_icon_m_left">8dp</dimen>
+    <dimen name="noti_spe_content_m_left">11dp</dimen>
+    <dimen name="noti_spe_content_big_text_size">12sp</dimen>
+    <dimen name="noti_spe_content_des_m_top">3dp</dimen>
+    <dimen name="noti_spe_content_small_text_size">10sp</dimen>
+    <dimen name="noti_spe_butt_width">60dp</dimen>
+    <dimen name="noti_spe_butt_height">25dp</dimen>
+    <dimen name="noti_spe_ar_butt_width">90dp</dimen>
+    <dimen name="noti_spe_ar_butt_height">21dp</dimen>
+    <dimen name="noti_spe_ar_content_m_left">8dp</dimen>
+    <dimen name="noti_spe_fr_butt_width">60dp</dimen>
+    <dimen name="noti_spe_fr_content_m_left">10dp</dimen>
+    <dimen name="noti_spe_tr_butt_width">104dp</dimen>
+    <!-- 2.7 end -->
 
 </resources>

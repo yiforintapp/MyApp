@@ -28,6 +28,7 @@
                 android:fadingEdge="horizontal"
                 android:fastScrollEnabled="false"
                 android:footerDividersEnabled="false"
+		        android:overScrollMode="never"
                 android:headerDividersEnabled="false"
                 android:listSelector="@null"
                 android:scrollbarStyle="outsideOverlay"

@@ -77,6 +77,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:dividerHeight="34dp"
+		        android:overScrollMode="never"
                 android:listSelector="@drawable/manager_backup_list_selecter"
                 android:visibility="gone" >
             </ListView>

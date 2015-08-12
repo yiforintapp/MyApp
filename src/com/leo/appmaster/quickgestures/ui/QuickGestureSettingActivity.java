@@ -20,6 +20,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -43,6 +44,8 @@ import com.leo.appmaster.quickgestures.ui.QuickGestureSlideTimeDialog.UpdateFilt
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.ui.dialog.LEODoubleChoicesDialog;
 
 /**
  * QuickGestureActivity
@@ -53,20 +56,23 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         UpdateFilterAppClickListener {
     private CommonTitleBar mTitleBar;
     private AppMasterPreference mPre;
+    private TextView mSlidingAreaName;
     private QuickGestureRadioSeekBarDialog mAlarmDialog;
     private QuickGestureSlideTimeDialog mSlideTimeDialog;
+    private LEODoubleChoicesDialog mTriggerTypeDialog;
     public static boolean mAlarmDialogFlag = false;
     private List<QuickGsturebAppInfo> mFreeApps;
     private FreeDisturbSlideTimeAdapter mSlideTimeAdapter;
-    private TextView mSlidingTimeTv, mSlidAreaTv;
+    private TextView mSlidingTimeTv, mSlidAreaTv,mTvTriggerTYpeSummary;
     private RelativeLayout mSlidingArea, mSlidingTime, mNoReadMessageOpen,
             mRecentlyContactOPen, mPrivacyContactOpen, mActivityRootView, mStrengthenModeView;
     private ImageView mNoReadMessageOpenCK,
-            mRecentlyContactOpenCK, mPrivacyContactOpenCK, mStrengthModeOpenCk;
+            mRecentlyContactOpenCK, mPrivacyContactOpenCK;//mStrengthModeOpenCk
     private boolean mNoReadMessageFlag, mRecentlyContactFlag,
             mPrivacyContactFlag, mStrengthenModeFlag;
     private String slidingArea = "";
     public static final String FROME_STATUSBAR = "from_statusbar";
+    
     private boolean leftBottomTemp, leftCenterTemp, rightBottomTemp, RightCenterTemp;
 
     @Override
@@ -82,6 +88,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("null", "actiity onRes");
         if (mPre.getSwitchOpenQuickGesture()) {
             initChexkBox();
             setOnClickListener();
@@ -89,9 +96,44 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             unSetOnClickListener();
             closeQuickSetting();
         }
+        updateSlideAreaItem();
         initSlidingAreaText();
+        updateTriggerTypeItem();
+        
     }
 
+    private void updateTriggerTypeItem() {
+               
+        if(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()&&AppMasterPreference.getInstance(this).getIsOpenFloatWindows())
+        {
+            mTvTriggerTYpeSummary.setText(R.string.pg_appmanager_quick_gesture_option_trigger_type_summary);
+        }
+        else if(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode())
+        {
+            mTvTriggerTYpeSummary.setText(R.string.pg_appmanager_quick_gesture_trigger_wihtedot);
+        }
+        else
+        {
+            mTvTriggerTYpeSummary.setText(R.string.pg_appmanager_quick_gesture_trigger_alide);
+        }
+
+    }
+
+    public void updateSlideAreaItem()
+    {
+        if(AppMasterPreference.getInstance(this).getIsOpenFloatWindows())
+        {         
+            mSlidingAreaName.setTextColor(0xff414141);
+            mSlidingArea.setEnabled(true);             
+        }
+        else
+        {
+            mSlidingAreaName.setTextColor(0xff9b9b9b);
+            mSlidingArea.setEnabled(false);   
+        }
+    }
+    
+    
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -124,18 +166,20 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         mTitleBar.openBackView();
         mTitleBar.setTitle(R.string.quick_setting_title);
         mSlidingArea = (RelativeLayout) findViewById(R.id.slid_area);
+        mTvTriggerTYpeSummary=(TextView) findViewById(R.id.trigger_type_item_cotentTV);
+        mSlidingAreaName = (TextView) mSlidingArea.findViewById(R.id.slid_area_item_nameTV);
         mSlidingTime = (RelativeLayout) findViewById(R.id.allow_slid_time);
         mNoReadMessageOpen = (RelativeLayout) findViewById(R.id.no_read_message_content);
         mRecentlyContactOPen = (RelativeLayout) findViewById(R.id.recently_contact_content);
         mPrivacyContactOpen = (RelativeLayout) findViewById(R.id.privacy_contact_content);
-        mStrengthenModeView = (RelativeLayout) findViewById(R.id.strengthen_slid_mode);
+        mStrengthenModeView = (RelativeLayout) findViewById(R.id.trigger_type);
         mSlidingTimeTv = (TextView) findViewById(R.id.allow_slid_time_item_cotentTV);
         mSlidAreaTv = (TextView) findViewById(R.id.slid_area_item_cotentTV);
         mActivityRootView = (RelativeLayout) findViewById(R.id.quick_gesture_seting);
         mNoReadMessageOpenCK = (ImageView) findViewById(R.id.no_read_message_check);
         mRecentlyContactOpenCK = (ImageView) findViewById(R.id.recently_contact_check);
         mPrivacyContactOpenCK = (ImageView) findViewById(R.id.privacy_contact_check);
-        mStrengthModeOpenCk = (ImageView) findViewById(R.id.strengthen_mode_switch_check);
+//        mStrengthModeOpenCk = (ImageView) findViewById(R.id.strengthen_mode_switch_check);
     }
 
     private void initSlidingAreaText() {
@@ -222,11 +266,11 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
         // strengthen mode
-        if (mStrengthenModeFlag) {
-            mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
-        } else {
-            mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
-        }
+//        if (mStrengthenModeFlag) {
+//            mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
+//        } else {
+//            mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
+//        }
     }
 
     private void closeQuickSetting() {
@@ -239,9 +283,9 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         if (mPrivacyContactOpenCK != null) {
             mPrivacyContactOpenCK.setImageResource(R.drawable.switch_off);
         }
-        if (mStrengthModeOpenCk != null) {
-            mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
-        }
+//        if (mStrengthModeOpenCk != null) {
+//            mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
+//        }
     }
 
     private void setOnClickListener() {
@@ -266,6 +310,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.i("null", "actiity onRes");
         // if (mAlarmDialogFlag) {
         // FloatWindowHelper.mEditQuickAreaFlag = true;
         // updateFloatWindowBackGroudColor();
@@ -274,6 +319,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
 
     @Override
     protected void onPause() {
+        Log.i("null", "actiity onPau");
         super.onPause();
         if (FloatWindowHelper.mEditQuickAreaFlag == true) {
             FloatWindowHelper.mEditQuickAreaFlag = false;
@@ -714,6 +760,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
         int flag = arg0.getId();
         switch (flag) {
             case R.id.slid_area:
+                
                 SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1, "qssetting",
                         "area_cli");
                 FloatWindowHelper.mEditQuickAreaFlag = true;
@@ -799,29 +846,105 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                     mPrivacyContactFlag = false;
                 }
                 break;
-            case R.id.strengthen_slid_mode:
-                if (mStrengthenModeFlag) {
-                    mPre.setEverCloseWhiteDot(true);
-                    mPre.setSwitchOpenStrengthenMode(false, true);
-                    mStrengthenModeFlag = false;
-                    mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
-                            "qssetting",
-                            "point_close");
-                } else {
-                    mPre.setSwitchOpenStrengthenMode(true, true);
-                    mStrengthenModeFlag = true;
-                    mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
-                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
-                            "qssetting",
-                            "point_open");
-                }
-                switchStrengthMode();
-                //通知更新滑动区域红点显示状况
-                FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
-                break;
+//            case R.id.strengthen_slid_mode:
+//                if (mStrengthenModeFlag) {
+//                    mPre.setEverCloseWhiteDot(true);
+//                    mPre.setSwitchOpenStrengthenMode(false, true);
+//                    mStrengthenModeFlag = false;
+//                    mStrengthModeOpenCk.setImageResource(R.drawable.switch_off);
+//                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+//                            "qssetting",
+//                            "point_close");
+//                } else {
+//                    mPre.setSwitchOpenStrengthenMode(true, true);
+//                    mStrengthenModeFlag = true;
+//                    mStrengthModeOpenCk.setImageResource(R.drawable.switch_on);
+//                    SDKWrapper.addEvent(QuickGestureSettingActivity.this, SDKWrapper.P1,
+//                            "qssetting",
+//                            "point_open");
+//                }
+//                   switchStrengthMode();
+//                //通知更新滑动区域红点显示状况
+//                FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
+//                break;
+            case R.id.trigger_type:
+                
+                showTriggerTypeDialog();
+                //todo
+               
+//              //通知更新滑动区域红点显示状况
+              FloatWindowHelper.removeShowReadTipWindow(getApplicationContext());
+              
         }
 
+    }
+
+    private void showTriggerTypeDialog() {
+            
+        if (mTriggerTypeDialog == null) {
+            mTriggerTypeDialog = new LEODoubleChoicesDialog(this);
+        }
+        
+        final CheckBox fromCorner = (CheckBox) mTriggerTypeDialog.findViewById(R.id.cb_dialog_area);
+        final CheckBox whitedot = (CheckBox) mTriggerTypeDialog.findViewById(R.id.cb_dialog_whitedot);
+        whitedot.setChecked(AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode());
+        TextView TVSure = (TextView) mTriggerTypeDialog.findViewById(R.id.dlg_right_btn);
+        fromCorner.setChecked(mPre.getIsOpenFloatWindows());
+        TVSure.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                if(!whitedot.isChecked()&&!fromCorner.isChecked())
+                {
+                    Toast.makeText(QuickGestureSettingActivity.this, getResources().getString(R.string.pg_appmanager_quick_gesture_trigger_tips), 0).show();
+                    return;
+                }            
+                mPre.setSwitchOpenStrengthenMode(whitedot.isChecked(), true);
+                mPre.setIsOpenFloatWindows(fromCorner.isChecked());
+                mStrengthenModeFlag=whitedot.isChecked();
+            
+                if(mTriggerTypeDialog!=null)
+                {
+                    mTriggerTypeDialog.dismiss();                    
+                }
+                updateTriggerTypeItem();
+                updateSlideAreaItem();
+                switchStrengthMode();
+                switchSlideWindow();
+                
+                if(whitedot.isChecked()&&fromCorner.isChecked())
+                {
+                    SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_mode", "point+qs");
+                }
+                else if(fromCorner.isChecked())
+                {
+                    SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_mode", "qs_only");
+                }
+                else
+                {
+                    SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,"qs_mode", "point_only");
+                }
+               
+            }
+        });
+        TextView TVCancel = (TextView) mTriggerTypeDialog.findViewById(R.id.dlg_left_btn);
+        TVCancel.setOnClickListener(new OnClickListener() {
+            
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+            
+                if(mTriggerTypeDialog!=null)
+                {
+                    mTriggerTypeDialog.dismiss();                    
+                }
+            }
+        });
+        
+        
+        
+        mTriggerTypeDialog.show();
     }
 
     @Override
@@ -878,7 +1001,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
      * switch strength mode open
      */
     private void switchStrengthMode() {
-        if (mStrengthenModeFlag) {
+        if (AppMasterPreference.getInstance(this).getSwitchOpenStrengthenMode()) {
             FloatWindowHelper.createWhiteFloatView(this);
             if (AppMasterPreference.getInstance(this).getSlideTimeJustHome()) {
                 FloatWindowHelper.hideWhiteFloatView(this);
@@ -888,6 +1011,26 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
             mPre.setWhiteFloatViewCoordinate(0, 0);
         }
     }
+    
+    private void switchSlideWindow() {
+        if (mPre.getIsOpenFloatWindows()) {
+            int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
+            FloatWindowHelper.createFloatWindow(this,value);
+        } else {
+            FloatWindowHelper.removeAllFloatWindow(this);
+        }
+    }
+   
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        // TODO Auto-generated method stub
+        if(hasFocus)
+        {
+            updateTriggerTypeItem();
+            updateSlideAreaItem();
+        }
+    }
+    
     
     class DisableClickListener implements OnClickListener {
         @Override

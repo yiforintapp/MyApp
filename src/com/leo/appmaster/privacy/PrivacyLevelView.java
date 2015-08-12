@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.privacy;
 
 import android.animation.Animator;

@@ -24,6 +24,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -34,10 +35,10 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
@@ -83,11 +84,13 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ProcessUtils;
+import com.mobvista.sdk.m.core.MobvistaAd;
+import com.mobvista.sdk.m.core.MobvistaAdWall;
+import com.mobvista.sdk.m.core.WallIconCallback;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener {
@@ -100,6 +103,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final String EXTRA_UKLOCK_TYPE = "extra_unlock_type";
     public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
     public static final String SHOW_NOW = "mode changed_show_now";
+    public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
+    public static long mClickTime = 0;
 
     private int mLockMode;
     private String mLockedPackage;
@@ -111,7 +116,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LEOAlarmDialog mTipDialog;
     private EditText mEtQuestion, mEtAnwser;
     private String mLockTitle;
-    private ImageView mThemeView;
+    private ImageView mThemeView, mAdIcon;
     private View switch_bottom_content;
 
     private boolean mNewTheme;
@@ -132,14 +137,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public int mQuiclModeId;
     private RelativeLayout mLockLayout;
     private boolean mMissingDialogShowing;
-    
+    private MobvistaAdWall wallAd;
     public static boolean sLockFilterFlag = false;
+    private static AnimationDrawable adAnimation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
-        LeoLog.e("xxxx", "onCreate");
+        LeoLog.e("LockScreenActivity", "onCreate");
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
         LockManager lm = LockManager.getInstatnce();
@@ -173,9 +179,77 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         initUI();
+        mobvistaCheck();
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
+    }
+
+    private void mobvistaCheck() {
+        // mobvista ad
+        MobvistaAd.init(this, "19242", "8c8f18965dfd4377892a458f3b854401");
+        // -----------------Mobvista Sdk--------------------
+
+        // init wall controller
+        // newAdWallController(Context context,String unitid, String fbid)
+        wallAd = MobvistaAd.newAdWallController(this, "25",
+                "1060111710674878_1060603623959020");
+        // preload the wall data
+        wallAd.preloadWall();
+
+        // AppMasterApplication.getInstance().postInAppThreadPool(new Runnable()
+        // {
+        // @Override
+        // public void run() {
+        // nativeAd.loadAd(new AdListener() {
+        // @Override
+        // public void onAdLoaded(Campaign campaign) {
+        // //加载图片显示等动作
+        // }
+        //
+        // @Override
+        // public void onAdLoadError(String msg) {
+        // }
+        //
+        // @Override
+        // public void onAdClick(Campaign campaign) {
+        // }
+        // });
+        // }
+        // });
+    }
+
+    @SuppressWarnings("deprecation")
+    private void setMobvistaIcon() {
+        Drawable drawable = wallAd.loadWallIcon(new WallIconCallback() {
+
+            @Override
+            public void loaded(Drawable drawable) {
+                mAdIcon.setImageDrawable(drawable);
+            }
+
+            @Override
+            public void failed() {
+
+            }
+        });
+
+        long mLastTime;
+        if (mClickTime == 0) {
+            mLastTime = AppMasterPreference.getInstance(LockScreenActivity.this).getAdClickTime();
+        } else {
+            mLastTime = mClickTime;
+        }
+        long mNowTime = System.currentTimeMillis();
+        if (mNowTime - mLastTime > CLICK_OVER_DAY) {
+            mAdIcon.setBackgroundResource(R.drawable.adanimation);
+            adAnimation = (AnimationDrawable)
+                    mAdIcon.getBackground();
+            adAnimation.start();
+        } else {
+            mAdIcon.setBackgroundDrawable((this.getResources().getDrawable(R.drawable.gift_1)));
+        }
+        // mAdIcon.setImageDrawable(drawable);
     }
 
     private void showModeMissedTip() {
@@ -197,10 +271,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onResume() {
+        setMobvistaIcon();
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-        handlePretendLock();
-        LeoLog.e("xxxx", "onResume");
+        // handlePretendLock(); 貌似oncreate里的init方法已经执行了，容易曹成内存泄露
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -259,8 +333,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      */
     @Override
     protected void onNewIntent(Intent intent) {
-        LeoLog.e("xxxx", "onNewIntent");
-        Log.e("a729", "onNewIntent");
 
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
                 LockManager.LOCK_MODE_FULL) == LockManager.LOCK_MODE_FULL) {
@@ -296,7 +368,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mLockedPackage = newLockedPkg;
 
             if (mPretendFragment != null) {
-                Log.e("a729", "!=null");
                 mPretendLayout.setVisibility(View.GONE);
                 mLockLayout.setVisibility(View.VISIBLE);
             }
@@ -317,9 +388,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             mLockFragment.onLockPackageChanged(mLockedPackage);
             LeoLog.d(TAG, "onNewIntent" + "     mToPackage = " + mLockedPackage);
-            Log.e("a729", "onNewIntent===========getpre frag");
-            mPretendFragment = getPretendFragment();
-            if (mPretendFragment != null) { // ph
+            if (mPretendFragment == null) {
+                // 解决Fragment内存泄露
+                mPretendFragment = getPretendFragment();
+            }
+            boolean showPretend = !mPrivateLockPck.equals(mLockedPackage);
+            if (mPretendFragment != null && showPretend) { // ph
                 FragmentManager fm = getSupportFragmentManager();
                 FragmentTransaction tans;
                 mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
@@ -329,7 +403,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 tans.replace(R.id.pretend_layout, mPretendFragment);
                 tans.commitAllowingStateLoss();
             }
-            if (mPretendFragment != null) {
+            if (mPretendFragment != null && showPretend) {
                 mLockLayout.setVisibility(View.GONE);
                 mPretendLayout.setVisibility(View.VISIBLE);
                 if (mPretendFragment instanceof PretendAppErrorFragment) {
@@ -413,7 +487,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     mLockedPackage);
         }
 
-        LeoLog.d(TAG, "mToPackage = " + mLockedPackage);
+        LeoLog.d("LockScreenActivity", "mToPackage = " + mLockedPackage);
     }
 
     private void setAppInfoBackground(Drawable drawable) {
@@ -445,7 +519,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
-        LeoLog.d(TAG, "onDestroy");
+        MobvistaAd.release();
+        LeoLog.d("LockScreenActivity", "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
     }
 
@@ -464,7 +539,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onRestart() {
         super.onRestart();
-        LeoLog.e("xxxx", "onNewIntent");
         /**
          * dont change it, for lock theme
          */
@@ -523,6 +597,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
         mTtileBar.setOptionListener(this);
 
+        mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
+        ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
+        mAdIcon.setVisibility(View.VISIBLE);
+        mAdIcon.setOnClickListener(this);
+
         mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         ((View) mThemeView.getParent()).setVisibility(View.VISIBLE);
         mThemeView.setVisibility(View.VISIBLE);
@@ -542,7 +621,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tans;
         mPretendLayout = (RelativeLayout) findViewById(R.id.pretend_layout);
-        mPretendFragment = getPretendFragment();
+        if (mPretendFragment == null) {
+            // 解决Fragment内存泄露
+            mPretendFragment = getPretendFragment();
+        }
 
         if (mPretendFragment != null && !mRestartForThemeChanged) {
             mLockLayout.setVisibility(View.GONE);
@@ -894,6 +976,20 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 amp.setDoubleCheck(null);
                 startActivityForResult(intent, 0);
                 amp.setLockerScreenThemeGuide(true);
+                break;
+            case R.id.icon_ad_layout:
+                sLockFilterFlag = true;
+                AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
+                mAmp.setUnlocked(true);
+                mAmp.setDoubleCheck(null);
+                // wallAd.clickWall();
+                Intent mWallIntent = wallAd.getWallIntent();
+                startActivity(mWallIntent);
+                AppMasterPreference.getInstance(LockScreenActivity.this).setAdClickTime(
+                        System.currentTimeMillis());
+                mClickTime = System.currentTimeMillis();
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                        "ad_cli", "unlocktop");
                 break;
             default:
                 break;

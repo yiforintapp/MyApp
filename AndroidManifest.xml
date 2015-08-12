@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="41"
+    android:versionCode="43"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.BATTERY_STATS" />
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.RESTART_PACKAGES" />
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
@@ -89,6 +90,7 @@
         android:theme="@style/activity_theme" >
         <activity
             android:name="com.leo.appmaster.home.SplashActivity"
+            android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home" >
             <intent-filter>
@@ -155,7 +157,7 @@
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme"
-            android:windowSoftInputMode="stateHidden|adjustResize">
+            android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
             android:name="com.leo.appmaster.applocker.AppLockListActivity"
@@ -306,7 +308,9 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
-            <category android:name="android.intent.category.DEFAULT" />
+            <intent-filter>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
         </activity>
         <!-- lockerThemeGuide -->
         <activity
@@ -495,6 +499,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureActivity"
+            android:excludeFromRecents="true"
             android:exported="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
@@ -507,6 +512,7 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.quickgestures.ui.QuickGestureSettingActivity"
+            android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
@@ -528,11 +534,12 @@
         </activity>
         <activity
             android:name="com.leo.appmaster.sdk.push.ui.WebViewActivity"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:hardwareAccelerated="true"
             android:configChanges="orientation|screenSize"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:noHistory="false"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
@@ -633,6 +640,22 @@
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+        <receiver
+            android:name="com.leo.appmaster.applocker.receiver.NewAppInstalled"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+                <!-- 注意！！ 这句必须要加，否则接收不到BroadCast -->
+            </intent-filter>
+        </receiver>
         <receiver android:name="com.leo.appmaster.applocker.receiver.DeviceReceiver" >
             <meta-data
                 android:name="android.app.device_admin"
@@ -704,7 +727,25 @@
 
 
         <!-- for LEO push sdk -->
-        <service android:name="com.leo.push.PushService"  android:exported="true"/>
+        <service
+            android:name="com.leo.push.PushService"
+            android:exported="true" />
+
+        <!-- for LEO update sdk -->
+        <receiver
+            android:name="com.leo.appmaster.sdk.update.UIHelper"
+            android:exported="true" >
+            <intent-filter android:priority="10000" >
+                <action android:name="com.leo.appmaster.update.remind" />
+            </intent-filter>
+        </receiver>
+
+        <!-- mobvista ad activity -->
+        <activity
+            android:name="com.mobvista.sdk.m.core.AdMobvistaAct"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait" >
+        </activity>
     </application>
 
 </manifest>

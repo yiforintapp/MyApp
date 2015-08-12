@@ -13,27 +13,39 @@ import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
+import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationCompat.Builder;
+import android.util.Log;
+import android.view.View;
+import android.widget.RemoteViews;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
+import com.leo.appmaster.applocker.receiver.showTrafficAlof;
+import com.leo.appmaster.cleanmemory.HomeBoostActivity;
+import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
+import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 //import android.app.ActivityManager.AppTask;
@@ -44,13 +56,16 @@ public class TaskDetectService extends Service {
     public static final String EXTRA_STARTUP_FROM = "start_from";
 
     public static final String PRETEND_PACKAGE = "pretent_pkg";
-    
+
     public static final String SYSTEMUI_PKG = "com.android.systemui";
     private static final String ES_UNINSTALL_ACTIVITY = ".app.UninstallMonitorActivity";
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-
+     public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+//    public static final int SHOW_NOTI_PRE_DAY = 20000;
+     public static final int MAX_MEMORY = 65;
+//    public static final int MAX_MEMORY = 20;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -69,6 +84,7 @@ public class TaskDetectService extends Service {
     private AppMasterPreference sp_traffic;
     private FloatWindowTask mFloatWindowTask;
     private Handler mHandler;
+    private ProcessCleaner mCleaner;
 
     private static TaskDetectService sService;
     private static Notification sNotification;
@@ -88,10 +104,15 @@ public class TaskDetectService extends Service {
     public void onCreate() {
         mLockHandler = new TaskChangeHandler(getApplicationContext());
 
+        mCleaner = ProcessCleaner.getInstance(getApplicationContext());
+
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
         mScheduledExecutor = Executors.newScheduledThreadPool(2);
         flowDetecTask = new FlowTask();
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
+        // mflowDatectFuture =
+        // mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
+        // TimeUnit.MILLISECONDS);
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 60000,
                 TimeUnit.MILLISECONDS);
         mHandler = new Handler();
         sService = this;
@@ -101,16 +122,16 @@ public class TaskDetectService extends Service {
         mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
         // sendQuickPermissionOpenNotification(getApplicationContext());
-        
+
         super.onCreate();
     }
 
     private void startPhantomService() {
         startService(new Intent(this, PhantomService.class));
     }
-    
+
     public void callPretendAppLaunch() {
-        mLockHandler.handleAppLaunch(PRETEND_PACKAGE, PRETEND_PACKAGE);
+        mLockHandler.handleAppLaunch(PRETEND_PACKAGE, PRETEND_PACKAGE, PRETEND_PACKAGE);
     }
 
     @Override
@@ -118,20 +139,23 @@ public class TaskDetectService extends Service {
         if (!mServiceStarted) {
             startDetect();
         }
-//        // As native process is not work for android 5.0 and above, use AlarmManager instead.
-//        triggerForLollipop();
+        // // As native process is not work for android 5.0 and above, use
+        // AlarmManager instead.
+        // triggerForLollipop();
         return START_STICKY;
     }
-    
-//    private void triggerForLollipop() {
-//        if(PhoneInfo.getAndroidVersion() > 19) {
-//            Context context = getApplicationContext();
-//            Intent localIntent = new Intent(context, getClass());
-//            localIntent.setPackage(getPackageName());
-//            PendingIntent pi = PendingIntent.getService(context, 1, localIntent, PendingIntent.FLAG_ONE_SHOT);
-//            ((AlarmManager)context.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME, 5000 + SystemClock.elapsedRealtime(), pi);
-//        }
-//    }
+
+    // private void triggerForLollipop() {
+    // if(PhoneInfo.getAndroidVersion() > 19) {
+    // Context context = getApplicationContext();
+    // Intent localIntent = new Intent(context, getClass());
+    // localIntent.setPackage(getPackageName());
+    // PendingIntent pi = PendingIntent.getService(context, 1, localIntent,
+    // PendingIntent.FLAG_ONE_SHOT);
+    // ((AlarmManager)context.getSystemService(Context.ALARM_SERVICE)).set(AlarmManager.ELAPSED_REALTIME,
+    // 5000 + SystemClock.elapsedRealtime(), pi);
+    // }
+    // }
 
     public String getLastRunningPackage() {
         return mLockHandler.getLastRunningPackage();
@@ -243,6 +267,9 @@ public class TaskDetectService extends Service {
             int mVersion = PhoneInfo.getAndroidVersion();
             String network_state = whatState();
 
+            // 2min check memory is over 80%
+            checkMemory();
+
             if (!network_state.equals(STATE_NO_NETWORK)) {
                 Traffic traffic = Traffic.getInstance(getApplicationContext());
                 tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
@@ -306,6 +333,74 @@ public class TaskDetectService extends Service {
         }
     }
 
+    public void checkMemory() {
+        if (mCleaner != null) {
+            long mLastUsedMem = mCleaner.getUsedMem();
+            long mTotalMem = mCleaner.getTotalMem();
+            int mProgress = (int) (mLastUsedMem * 100 / mTotalMem);
+            LeoLog.d("testServiceData", mLastUsedMem + "/" + mTotalMem + "--" + mProgress);
+
+            long lastTime = sp_traffic.getLastShowNotifyTime();
+            long nowTime = System.currentTimeMillis();
+            if (mProgress > MAX_MEMORY && (nowTime - lastTime > SHOW_NOTI_PRE_DAY)) {// 24hours
+                shwoNotify(mProgress);
+                sp_traffic.setLastShowNotifyTime(nowTime);
+            }
+        }
+    }
+
+    private void shwoNotify(int mProgress) {
+        NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        int notifyId = 101;
+        RemoteViews view_custom;
+        if (!BuildProperties.checkIsHuaWeiEmotion31()) {
+            // 先设定RemoteViews
+            view_custom = new RemoteViews(getPackageName(), R.layout.clean_mem_notify);
+        } else {
+            // 先设定RemoteViews
+            view_custom = new RemoteViews(getPackageName(), R.layout.clean_mem_notify_huawei);
+        }
+        // 设置对应IMAGEVIEW的ID的资源图片
+        view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
+        view_custom.setTextViewText(R.id.appwallNameTV,
+                getApplicationContext().getString(R.string.clean_mem_notify_big));
+        // view_custom.setTextViewText(R.id.app_precent,
+        // getApplicationContext().getString(R.string.clean_mem_notify_big_right));
+        view_custom.setTextViewText(R.id.appwallDescTV,
+                getApplicationContext().getString(R.string.clean_mem_notify_small));
+        view_custom.setTextViewText(R.id.app_precent, " " + mProgress + "%");
+        NotificationCompat.Builder mBuilder = new Builder(this);
+        mBuilder.setContent(view_custom)
+                .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
+                .setTicker(getApplicationContext().getString(R.string.clean_mem_notify_big))
+                .setPriority(Notification.PRIORITY_DEFAULT)// 设置该通知优先级
+                .setOngoing(false)// 不是正在进行的 true为正在进行 效果和.flag一样
+                .setSmallIcon(R.drawable.statusbaricon)
+                .setAutoCancel(true);
+
+        // Intent realIntent = new Intent(this, HomeBoostActivity.class);
+        // realIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        // Intent clickIntent = new Intent(this, showTrafficAlof.class);
+        // clickIntent.putExtra("realIntent", realIntent);
+        // clickIntent.setAction("com.leo.appmaster.boost.notification");
+        // PendingIntent pi = PendingIntent.getBroadcast(this, 0, clickIntent,
+        // PendingIntent.FLAG_UPDATE_CURRENT);
+        // mBuilder.setContentIntent(pi);
+
+        Intent intent = new Intent(this,
+                HomeBoostActivity.class);
+        intent.putExtra("for_sdk", "for_sdk");
+        PendingIntent pendingIntent =
+                PendingIntent.getActivity(this, 0, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(pendingIntent);
+
+        // mNotificationManager.notify(notifyId, mBuilder.build());
+        Notification notify = mBuilder.build();
+        notify.contentView = view_custom;
+        mNotificationManager.notify(notifyId, notify);
+    }
+
     public String whatState() {
         State wifiState = null;
         State mobileState = null;
@@ -342,6 +437,7 @@ public class TaskDetectService extends Service {
         public void run() {
             String pkgName = null;
             String activityName = null;
+            String baseActivity = null;
             if (Build.VERSION.SDK_INT > 19) { // Android L and above
                 List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
                 for (RunningAppProcessInfo pi : list) {
@@ -372,7 +468,11 @@ public class TaskDetectService extends Service {
                                             .getRunningTasks(1);
                                     if (tasks != null && tasks.size() > 0) {
                                         RunningTaskInfo topTaskInfo = tasks.get(0);
-                                        if (topTaskInfo.topActivity != null) {
+                                        if(topTaskInfo.baseActivity != null) {
+                                            baseActivity = topTaskInfo.baseActivity
+                                                    .getShortClassName();
+                                        } 
+                                       if (topTaskInfo.topActivity != null) {
                                             activityName = topTaskInfo.topActivity
                                                     .getShortClassName();
                                         }
@@ -396,6 +496,9 @@ public class TaskDetectService extends Service {
                     }
                     pkgName = topTaskInfo.topActivity.getPackageName();
                     activityName = topTaskInfo.topActivity.getShortClassName();
+                    if(topTaskInfo.baseActivity != null) {
+                        baseActivity = topTaskInfo.baseActivity.getShortClassName();
+                    }
                     // For aliyun os (may be others), the component of
                     // topActivity is hidden, make a backup here.
                     if (Utilities.isEmpty(pkgName)) {
@@ -439,7 +542,7 @@ public class TaskDetectService extends Service {
             }
 
             if (mLockHandler != null && pkgName != null && activityName != null) {
-                mLockHandler.handleAppLaunch(pkgName, activityName);
+                mLockHandler.handleAppLaunch(pkgName, activityName, baseActivity);
             }
 
         }
@@ -492,16 +595,26 @@ public class TaskDetectService extends Service {
                             // create
                             boolean isDialogingShowing = QuickGestureManager
                                     .getInstance(AppMasterApplication.getInstance()).isDialogShowing;
+
+                            // phtc
+
                             if (isAppsAndHome) {
                                 boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
+
                                 if ((!isFilterApp
                                         || FloatWindowHelper.mEditQuickAreaFlag)
-                                        && !isDialogingShowing) {
+                                        && !isDialogingShowing
+                                        && sp_traffic.getIsOpenFloatWindows()) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
+
+                                    // TODO
+                                    Log.e("iscreated", "appsandhome");
+
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
+
                                 /** about white float view **/
                                 if (sp_traffic.getSwitchOpenStrengthenMode()) {
                                     if (!isFilterApp && !FloatWindowHelper.mEditQuickAreaFlag
@@ -517,9 +630,11 @@ public class TaskDetectService extends Service {
                                 if (!isHomeFlag)
                                     isHomeFlag = Utilities.isHome(getApplicationContext());
                                 if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag)
-                                        && !isDialogingShowing) {
+                                        && !isDialogingShowing
+                                        && sp_traffic.getIsOpenFloatWindows()) {
                                     FloatWindowHelper.createFloatWindow(getApplicationContext(),
                                             value);
+                                    Log.e("iscreated", "appsandhome");
                                 } else {
                                     FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
                                 }
