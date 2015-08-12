@@ -119,7 +119,6 @@ public class SplashActivity extends BaseActivity {
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
-
         // Log.d(Constants.RUN_TAG,
         // "数据："+startShowSplashTime+", "+endShowSplashTime+",  跳转模式："+AppMasterPreference.getInstance(getApplicationContext()).getSplashSkipMode());
         /**

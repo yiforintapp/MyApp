@@ -174,7 +174,7 @@
     <string name="app_select_all">Tümünü Seç</string>
     <string name="app_select_none">Tüm seçimi kaldır</string>
     <string name="app_hide_image">Gizle</string>
-    <string name="app_cancel_hide_image">tümünü seçmeyiniz</string>
+    <string name="app_cancel_hide_image">gösterme</string>
     <string name="app_hide_image_edit">Düzenle</string>
     <string name="app_add_hide_image">Ekle</string>
     <string name="app_share_hide_image">Paylaş</string>
@@ -280,7 +280,7 @@
     <string name="downloaded_failure">Yükleme başarısız!</string>
     -->
     <string name="backup">Yedekle</string>
-    <string name="restore">Geri yükle</string>
+    <string name="restore">Geri</string>
     <string name="backuped">Yedeklendi</string>
     <string name="delete_successfully">Başarıyla silindi!</string>
     <string name="no_more_business_app">yeni uygulama kalmadı</string>
@@ -479,7 +479,7 @@
     <!-- Backup and Restore -->
     <string name="app_backup_back">Yedekle&#038;Geri Yükle</string>
     <string name="app_backup_v2">Yedekle</string>
-    <string name="app_restore_v2">Geri yükle</string>
+    <string name="app_restore_v2">Geri</string>
     <string name="app_delete_v2">Sil</string>
     <string name="app_game">Oyunlar</string>
     <string name="app_application">Uygulamalar</string>
@@ -770,8 +770,8 @@
     <string name="traffic_over_text">Aşırı Uyarısı</string>
     <string name="lock_line_hide">izler gizlendi</string>
     <string name="lock_line_visiable">izler gösterildi</string>
-    <string name="guide_more_text">klavuz_daha fazla_metin</string>
-    <string name="guide_skip_text">klavuz_atla_metin</string>
+    <string name="guide_more_text">Daha</string>
+    <string name="guide_skip_text">atlamak</string>
     <string name="video_hide_need_cb">Cool Browser yüklenince gizlenme kaldırılabilir</string>
     <string name="video_hide_need_new_cb">Cool Browser yüklenince gizlenme kaldırılabilir</string>
     <string name="video_delete_need_new_cb">Cool Browser yüklenince ancak silinebilir</string>
