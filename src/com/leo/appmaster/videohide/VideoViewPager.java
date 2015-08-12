@@ -94,6 +94,16 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     String mContentString = (String) msg.obj;
                     showDownLoadNewCbDialog(mContentString);
                     break;
+                case 3:
+                    Toast.makeText(VideoViewPager.this,
+                            "PG失常逻辑", 0)
+                            .show();
+                    break;
+                case 4:
+                    Toast.makeText(VideoViewPager.this,
+                            "PG正常逻辑", 0)
+                            .show();
+                    break;
             }
         };
     };
@@ -727,9 +737,15 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     try {
                         if (VideoHideMainActivity.isLetPgFail) {
                             LeoLog.d("testBindService", "isLetPgFail = false");
+                            Message msg = Message.obtain();
+                            msg.what = 3;
+                            mHandler.sendMessage(msg);
                             int i = 10 / 0;
                         } else {
                             LeoLog.d("testBindService", "isLetPgFail = false");
+                            Message msg = Message.obtain();
+                            msg.what = 4;
+                            mHandler.sendMessage(msg);
                         }
                         newFileName = newFileName.substring(1,
                                 newFileName.indexOf(".leotmv"));
