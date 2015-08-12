@@ -134,6 +134,8 @@ public class AppUtil {
             appicon = pm.getApplicationIcon(pkg);
         } catch (NameNotFoundException e) {
             e.printStackTrace();
+        } catch (Error error) {
+            
         }
         
         if (appicon == null || !BitmapDrawable.class.isInstance(appicon)) {
