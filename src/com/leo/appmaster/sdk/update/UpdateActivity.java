@@ -171,8 +171,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
         setContentView(R.layout.dialog_force_update_alarm);
-        TextView tvId = (TextView) findViewById(R.id.dlg_title);
-        tvId.setText(getString(R.string.update_title));
+       /* TextView tvId = (TextView) findViewById(R.id.dlg_title);
+        tvId.setText(getString(R.string.update_title));*/
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         Spanned msgText = Html.fromHtml(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
