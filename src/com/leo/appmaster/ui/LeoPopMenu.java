@@ -1,8 +1,11 @@
 
 package com.leo.appmaster.ui;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import android.R.bool;
 import android.app.Activity;
@@ -28,6 +31,7 @@ import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 import android.widget.TextView;
 
+import com.leo.appmaster.R.integer;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -63,6 +67,7 @@ public class LeoPopMenu {
 
     protected List<String> mItems;
     protected List<Integer> mIcons;
+    protected List<Integer> mItemIds;
 
     protected OnItemClickListener mPopItemClickListener;
 
@@ -197,12 +202,26 @@ public class LeoPopMenu {
         }
         mListView.setAdapter(mAdapter);
         
-        
-   
-        
         return convertView;
     }
 
+    public void setPopMenuItems(Context context,Map<Integer, String> map){
+        if(null == map)
+            return;
+        List<Integer> itemIdList = new ArrayList<Integer>();
+        List<String> itemList = new ArrayList<String>();
+        for (Entry<Integer, String> entry: map.entrySet()) {
+            itemIdList.add(entry.getKey());
+            itemList.add(entry.getValue());
+          }
+        this.mItemIds = itemIdList;
+        setPopMenuItems(context, itemList);
+    }
+    
+    public List<Integer> getPopMenuItemIds(){
+        return mItemIds;
+    }
+    
     public void setPopMenuItems(Context context, List<String> items) {
         mItems = items;
         mContext = context;
@@ -412,6 +431,7 @@ public class LeoPopMenu {
                 mHolder = new Holder();
                 convertView = inflater.inflate(R.layout.popmenu_window_home_list_item, null);
                 mHolder.mItemName = (TextView) convertView.findViewById(R.id.menu_text);
+                mHolder.mItemIcon=(ImageView) convertView.findViewById(R.id.menu_icon);
                 mHolder.mItemName.setWidth((int) finalWidth+1);
                 if(!mIsNewLine)
                 {
@@ -425,6 +445,12 @@ public class LeoPopMenu {
                 mHolder.mItemName.setText(itemText);
             } else {
                 mHolder.mItemName.setText(mItems.get(position));
+                if(mIcons==null || mIcons.size() <=0)
+                {
+                    mHolder.mItemIcon.setVisibility(View.GONE);
+                }
+                
+                
             }
             return convertView;
         }

@@ -62,10 +62,10 @@ public class TaskDetectService extends Service {
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
-    public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-//     public static final int SHOW_NOTI_PRE_DAY = 20000;
-    public static final int MAX_MEMORY = 65;
-//     public static final int MAX_MEMORY = 20;
+     public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
+//    public static final int SHOW_NOTI_PRE_DAY = 20000;
+     public static final int MAX_MEMORY = 65;
+//    public static final int MAX_MEMORY = 20;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -131,7 +131,7 @@ public class TaskDetectService extends Service {
     }
 
     public void callPretendAppLaunch() {
-        mLockHandler.handleAppLaunch(PRETEND_PACKAGE, PRETEND_PACKAGE);
+        mLockHandler.handleAppLaunch(PRETEND_PACKAGE, PRETEND_PACKAGE, PRETEND_PACKAGE);
     }
 
     @Override
@@ -343,13 +343,13 @@ public class TaskDetectService extends Service {
             long lastTime = sp_traffic.getLastShowNotifyTime();
             long nowTime = System.currentTimeMillis();
             if (mProgress > MAX_MEMORY && (nowTime - lastTime > SHOW_NOTI_PRE_DAY)) {// 24hours
-                shwoNotify();
+                shwoNotify(mProgress);
                 sp_traffic.setLastShowNotifyTime(nowTime);
             }
         }
     }
 
-    private void shwoNotify() {
+    private void shwoNotify(int mProgress) {
         NotificationManager mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         int notifyId = 101;
         RemoteViews view_custom;
@@ -368,6 +368,7 @@ public class TaskDetectService extends Service {
         // getApplicationContext().getString(R.string.clean_mem_notify_big_right));
         view_custom.setTextViewText(R.id.appwallDescTV,
                 getApplicationContext().getString(R.string.clean_mem_notify_small));
+        view_custom.setTextViewText(R.id.app_precent, " " + mProgress + "%");
         NotificationCompat.Builder mBuilder = new Builder(this);
         mBuilder.setContent(view_custom)
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
@@ -436,6 +437,7 @@ public class TaskDetectService extends Service {
         public void run() {
             String pkgName = null;
             String activityName = null;
+            String baseActivity = null;
             if (Build.VERSION.SDK_INT > 19) { // Android L and above
                 List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
                 for (RunningAppProcessInfo pi : list) {
@@ -466,7 +468,11 @@ public class TaskDetectService extends Service {
                                             .getRunningTasks(1);
                                     if (tasks != null && tasks.size() > 0) {
                                         RunningTaskInfo topTaskInfo = tasks.get(0);
-                                        if (topTaskInfo.topActivity != null) {
+                                        if(topTaskInfo.baseActivity != null) {
+                                            baseActivity = topTaskInfo.baseActivity
+                                                    .getShortClassName();
+                                        } 
+                                       if (topTaskInfo.topActivity != null) {
                                             activityName = topTaskInfo.topActivity
                                                     .getShortClassName();
                                         }
@@ -490,6 +496,9 @@ public class TaskDetectService extends Service {
                     }
                     pkgName = topTaskInfo.topActivity.getPackageName();
                     activityName = topTaskInfo.topActivity.getShortClassName();
+                    if(topTaskInfo.baseActivity != null) {
+                        baseActivity = topTaskInfo.baseActivity.getShortClassName();
+                    }
                     // For aliyun os (may be others), the component of
                     // topActivity is hidden, make a backup here.
                     if (Utilities.isEmpty(pkgName)) {
@@ -533,7 +542,7 @@ public class TaskDetectService extends Service {
             }
 
             if (mLockHandler != null && pkgName != null && activityName != null) {
-                mLockHandler.handleAppLaunch(pkgName, activityName);
+                mLockHandler.handleAppLaunch(pkgName, activityName, baseActivity);
             }
 
         }
