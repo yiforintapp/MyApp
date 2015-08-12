@@ -194,6 +194,7 @@ public class SplashActivity extends BaseActivity {
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "skip");
                      startHome();
+                     finishForSkip();
                     break;
                 default:
                     break;
