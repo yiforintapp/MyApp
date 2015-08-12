@@ -193,7 +193,7 @@ public class SplashActivity extends BaseActivity {
                     // Log.e(Constants.RUN_TAG, "跳过");
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "skip");
-                    startHome();
+                     startHome();
                     break;
                 default:
                     break;
@@ -221,10 +221,10 @@ public class SplashActivity extends BaseActivity {
             option.inScaled = true;
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
-//        mShowSplashFlag = true;
-//        mSkipToPgButton.setVisibility(View.VISIBLE);
-//        mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
-//        showSkipUrlButton();
+//         mShowSplashFlag = true;
+//         mSkipToPgButton.setVisibility(View.VISIBLE);
+//         mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
+//         showSkipUrlButton();
         if (splash != null) {
             byte[] chunk = splash.getNinePatchChunk();
             if (chunk != null && NinePatch.isNinePatchChunk(chunk)) {
@@ -250,7 +250,7 @@ public class SplashActivity extends BaseActivity {
     public void finishForSkip() {
         finish();
         LeoEventBus.getDefaultBus().unregister(this);
-        if(mEventHandler != null) {
+        if (mEventHandler != null) {
             mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         }
     }
@@ -796,7 +796,7 @@ public class SplashActivity extends BaseActivity {
                             /* 存在客户端 */
                             Intent intent = Intent.parseUri(clientIntent, 0);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                            Log.e(Constants.RUN_TAG, "客户端："+intent.toUri(0));
+                            // Log.e(Constants.RUN_TAG, "客户端："+intent.toUri(0));
                             startActivity(intent);
                             finishForSkip();
                             Log.e(Constants.RUN_TAG, "存在客户端并进入");
