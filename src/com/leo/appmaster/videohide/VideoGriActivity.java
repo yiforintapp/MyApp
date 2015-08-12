@@ -685,29 +685,36 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             newFileName =
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
                             try {
+
                                 if (VideoHideMainActivity.isLetPgFail) {
-                                    int i = 10 / 0;
+                                    isSuccess = false;
+                                } else {
+                                    newFileName = newFileName + ".leotmv";
+                                    if (FileOperationUtil.renameFile(item.getPath(),
+                                            newFileName)) {
+                                        FileOperationUtil.saveFileMediaEntry(FileOperationUtil
+                                                .makePath(
+                                                        FileOperationUtil
+                                                                .getDirPathFromFilepath(item
+                                                                        .getPath()),
+                                                        newFileName), context);
+                                        FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
+                                                context);
+
+                                        mVideoItems.remove(item);
+                                        SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                                "hidevd_cb",
+                                                "hide_done");
+                                    } else {
+                                        mUnhidePath.remove(item.getPath());
+                                        isSuccess = false;
+                                    }
                                 }
+
                             } catch (Exception e) {
                                 return isSuccess = false;
                             }
-                            newFileName = newFileName + ".leotmv";
-                            if (FileOperationUtil.renameFile(item.getPath(),
-                                    newFileName)) {
-                                FileOperationUtil.saveFileMediaEntry(FileOperationUtil.makePath(
-                                        FileOperationUtil.getDirPathFromFilepath(item.getPath()),
-                                        newFileName), context);
-                                FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
-                                        context);
 
-                                mVideoItems.remove(item);
-                                SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
-                                        "hidevd_cb",
-                                        "hide_done");
-                            } else {
-                                mUnhidePath.remove(item.getPath());
-                                isSuccess = false;
-                            }
                         }
                     }
                 } else {
@@ -758,26 +765,27 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
                             try {
                                 if (VideoHideMainActivity.isLetPgFail) {
-                                    int i = 10 / 0;
-                                }
-                                newFileName = newFileName.substring(1,
-                                        newFileName.indexOf(".leotmv"));
-                                if (FileOperationUtil.renameFile(item.getPath(),
-                                        newFileName)) {
-                                    FileOperationUtil.saveImageMediaEntry(FileOperationUtil
-                                            .makePath(
-                                                    FileOperationUtil
-                                                            .getDirPathFromFilepath(item
-                                                                    .getPath()),
-                                                    newFileName), context);
-                                    FileOperationUtil.deleteFileMediaEntry(item.getPath(),
-                                            context);
-                                    mVideoItems.remove(item);
+                                    isSuccess = false;
                                 } else {
-                                    return isSuccess = false;
+                                    newFileName = newFileName.substring(1,
+                                            newFileName.indexOf(".leotmv"));
+                                    if (FileOperationUtil.renameFile(item.getPath(),
+                                            newFileName)) {
+                                        FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+                                                .makePath(
+                                                        FileOperationUtil
+                                                                .getDirPathFromFilepath(item
+                                                                        .getPath()),
+                                                        newFileName), context);
+                                        FileOperationUtil.deleteFileMediaEntry(item.getPath(),
+                                                context);
+                                        mVideoItems.remove(item);
+                                    } else {
+                                        return isSuccess = false;
+                                    }
                                 }
                             } catch (Exception e) {
-                                isSuccess = false;
+                                return isSuccess = false;
                             }
                         }
                     }

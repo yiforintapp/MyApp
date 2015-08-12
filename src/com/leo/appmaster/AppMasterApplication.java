@@ -52,6 +52,7 @@ import android.text.TextUtils;
 import android.text.format.Time;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.android.internal.telephony.ITelephony;
 import com.android.volley.Response.ErrorListener;
@@ -182,7 +183,6 @@ public class AppMasterApplication extends Application {
         registerLanguageChangeReceiver();
         // Log.e(Constants.RUN_TAG,
         // "设备信息：" + SDKWrapper.getEncodedDeviceInfo());
-
     }
 
     private String getUserSerial() {
@@ -316,7 +316,7 @@ public class AppMasterApplication extends Application {
 
         });
         initSplashData();
-//        setSplashData();
+        // setSplashData();
     }
 
     /* 闪屏模拟数据测试 */
@@ -326,8 +326,10 @@ public class AppMasterApplication extends Application {
         mSplashDelayTime = 5000;
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipMode(
                 Constants.SPLASH_SKIP_PG_CLIENT);
-        AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipToClient(
-                "market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster#Intent;action=android.intent.action.VIEW;launchFlags=0x10000000;end");
+        AppMasterPreference
+                .getInstance(getApplicationContext())
+                .setSplashSkipToClient(
+                        "#Intent;action=android.intent.action.VIEW;component=com.android.vending/com.google.android.finsky.activities.MainActivity;end");
         AppMasterPreference.getInstance(getApplicationContext()).setSplashSkipUrl(
                 "www.baidu.com");
         SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd");
@@ -900,7 +902,7 @@ public class AppMasterApplication extends Application {
         Date currentDate = new Date(curTime);
         final String failDate = dateFormate.format(currentDate);
         long lastLoadTime = pref.getLastLoadSplashTime();
-        // Log.e(Constants.RUN_TAG, "开始拉取");
+        Log.e(Constants.RUN_TAG, "开始拉取");
         if (lastLoadTime == 0
                 || (curTime - pref.getLastLoadSplashTime()) >
                 pref.getSplashCurrentStrategy()) {
@@ -962,7 +964,7 @@ public class AppMasterApplication extends Application {
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
             if (response != null) {
-                // Log.e(Constants.RUN_TAG, "拉取成功:");
+                Log.e(Constants.RUN_TAG, "拉取成功:");
                 try {
                     /* 起始时间 */
                     String startDate = response.getString(Constants.REQUEST_SPLASH_SHOW_STARTDATE);
@@ -1106,7 +1108,7 @@ public class AppMasterApplication extends Application {
             };
             Timer timer = new Timer();
             long delay = pref.getSplashCurrentStrategy();
-
+            Log.e(Constants.RUN_TAG, "成功后间隔时间："+delay);
             if (delay < 0) {
                 delay = AppMasterConfig.TIME_12_HOUR;
             }
@@ -1145,16 +1147,16 @@ public class AppMasterApplication extends Application {
                     pref.getSplashFailStrategy());
             pref.setLastLoadSplashTime(System
                     .currentTimeMillis());
+            Log.e(Constants.RUN_TAG, "拉取失败");
             TimerTask recheckTask = new TimerTask() {
                 @Override
                 public void run() {
-                    Log.e(Constants.RUN_TAG, "失败再次拉取");
                     loadSplashDate();
                 }
             };
             Timer timer = new Timer();
             long delay = pref.getSplashCurrentStrategy();
-
+            Log.e(Constants.RUN_TAG, "失败后间隔时间："+delay);
             if (delay < 0) {
                 delay = AppMasterConfig.TIME_12_HOUR;
             }
@@ -1231,6 +1233,7 @@ public class AppMasterApplication extends Application {
                         pref.getSplashFailStrategy());
                 pref.setLastLoadSplashTime(System
                         .currentTimeMillis());
+                Log.e(Constants.RUN_TAG, "拉取闪屏图失败");
                 TimerTask recheckTask = new TimerTask() {
                     @Override
                     public void run() {
@@ -1238,6 +1241,7 @@ public class AppMasterApplication extends Application {
                     }
                 };
                 Timer timer = new Timer();
+                Log.e(Constants.RUN_TAG, "失败后间隔时间："+pref.getSplashCurrentStrategy());
                 timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
             }
         });

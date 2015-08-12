@@ -84,8 +84,15 @@ public class TaskChangeHandler {
             mIsFirstDetect = false;
             return;
         }
+        String myPackage = mContext.getPackageName();
+        
         LeoLog.i("handleAppLaunch", pkg + "/" + activity);
-
+        
+        //fix bug AM-2134
+        if(TextUtils.equals(myPackage, pkg) && activity != null && activity.contains("Launcher")) {
+            return;
+        }
+        
         // for gesture check
         if (activity.contains(GESTURE)) {
             /* 去除下面代码为了解决：关闭GESTURE这个Acitivty后启动创建热区任务时闪动创建问题 */
@@ -94,7 +101,7 @@ public class TaskChangeHandler {
             FloatWindowHelper.mGestureShowing = false;
         }
 
-        String myPackage = mContext.getPackageName();
+        
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
         String checkPkg = amp.getDoubleCheck();
@@ -175,8 +182,8 @@ public class TaskChangeHandler {
                 }
             }
             if (lock) {
-                // LeoLog.d("Track Lock Screen",
-                // "apply lockscreen form TaskChangeHandler");
+                LeoLog.d("Track Lock Screen",
+                        "apply lockscreen form TaskChangeHandler");
                 if (LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL, pkg, false,
                         null)) {
                     amp.setUnlocked(false);
