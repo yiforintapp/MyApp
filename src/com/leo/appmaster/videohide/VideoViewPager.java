@@ -726,7 +726,10 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     newFileName = FileOperationUtil.getNameFromFilepath(path);
                     try {
                         if (VideoHideMainActivity.isLetPgFail) {
+                            LeoLog.d("testBindService", "isLetPgFail = false");
                             int i = 10 / 0;
+                        } else {
+                            LeoLog.d("testBindService", "isLetPgFail = false");
                         }
                         newFileName = newFileName.substring(1,
                                 newFileName.indexOf(".leotmv"));
