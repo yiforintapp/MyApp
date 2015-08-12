@@ -462,7 +462,7 @@ public class TimeLockEditActivity extends BaseActivity implements
 
             holder.name.setText(lm.getLockMode().get(position).modeName);
 
-            if (lm.getLockMode().get(position).modeName.equals(mEditTimeLock.lockModeName)) {
+            if (lm.getLockMode().get(position).modeId == mEditTimeLock.lockModeId) {
                 holder.selecte.setVisibility(View.VISIBLE);
             } else {
                 holder.selecte.setVisibility(View.GONE);
