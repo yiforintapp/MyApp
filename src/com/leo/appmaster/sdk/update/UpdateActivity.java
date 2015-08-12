@@ -124,9 +124,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
-//            case IUIHelper.BACK_DOWNLOAD_DONE:
-//                showNeedUpdate();
-//                break;
+        // case IUIHelper.BACK_DOWNLOAD_DONE:
+        // showNeedUpdate();
+        // break;
         }
     }
 
@@ -167,15 +167,16 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "update", "pop_up");
         String appName = getString(R.string.app_name);
         String version = mManager.getVersion();
-        Spanned feature = mManager.getFeature();
+        String feature = mManager.getFeatureString();
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
         setContentView(R.layout.dialog_message_single_done);
         TextView tvId = (TextView) findViewById(R.id.dlg_title);
         tvId.setText(getString(R.string.update_title));
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
-        tvMsg.setText(getString(R.string.update_datail_msg, appName, version,
+        Spanned msgText = Html.fromHtml(getString(R.string.update_datail_msg, appName, version,
                 fsize, feature));
+        tvMsg.setText(msgText);
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
         TextView tvYes = (TextView) findViewById(R.id.dlg_bottom_btn);
         tvYes.setText(getString(R.string.do_update));
@@ -354,13 +355,13 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
         setContentView(R.layout.dialog_update_alarm);
-        
+
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         Spanned msgText = Html.fromHtml(getString(R.string.update_datail_msg, appName, version,
-                        fsize, feature));
+                fsize, feature));
         tvMsg.setText(msgText);
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
-        
+
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
         tvYes.setOnClickListener(new View.OnClickListener() {
