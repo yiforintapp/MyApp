@@ -48,6 +48,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
      * 弹窗点击确定后刷新界面，但不走动画，在onResume内不走
      */
     private boolean isCanNotDoAnimation = false;
+    protected boolean mGoToSetting;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,8 @@ public class QuickGesturePopupActivity extends BaseActivity {
                 setButton.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mGoToSetting = true;
+                        LockManager.getInstatnce().filterAllOneTime(600);
                         Intent intent = new Intent(QuickGesturePopupActivity.this,
                                 QuickGestureSettingActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -254,7 +257,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             createFloatView();
         }
 
-        if (!mFromSelfApp) {
+        if (!mFromSelfApp && !mGoToSetting) {
             TaskDetectService.getService().callPretendAppLaunch();
         }
         super.onDestroy();
