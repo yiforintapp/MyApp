@@ -145,7 +145,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
-        LeoLog.e("xxxx", "onCreate");
+        LeoLog.e("LockScreenActivity", "onCreate");
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
         LockManager lm = LockManager.getInstatnce();
@@ -219,6 +219,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // });
     }
 
+    @SuppressWarnings("deprecation")
     private void setMobvistaIcon() {
         Drawable drawable = wallAd.loadWallIcon(new WallIconCallback() {
 
@@ -246,7 +247,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     mAdIcon.getBackground();
             adAnimation.start();
         } else {
-            mAdIcon.setBackground(this.getResources().getDrawable(R.drawable.gift_1));
+            mAdIcon.setBackgroundDrawable((this.getResources().getDrawable(R.drawable.gift_1)));
         }
         // mAdIcon.setImageDrawable(drawable);
     }
@@ -274,7 +275,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         // handlePretendLock(); 貌似oncreate里的init方法已经执行了，容易曹成内存泄露
-        LeoLog.e("xxxx", "onResume");
+        LeoLog.e("LockScreenActivity", "onResume");
         if (!mMissingDialogShowing) {
             boolean lockThemeGuid = checkNewTheme();
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
@@ -333,7 +334,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      */
     @Override
     protected void onNewIntent(Intent intent) {
-        LeoLog.e("xxxx", "onNewIntent");
+        LeoLog.e("LockScreenActivity", "onNewIntent");
         Log.e("a729", "onNewIntent");
 
         if (mLockMode == LockManager.LOCK_MODE_PURE && intent.getIntExtra(EXTRA_LOCK_MODE,
@@ -427,6 +428,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
         }
+        LeoLog.e("LockScreenActivity", "onNewIntent: mLockedPackage = " + mLockedPackage);
         mLockFragment.setPackage(mLockedPackage);
         mLockFragment.onNewIntent();
         checkOutcount();
@@ -490,7 +492,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     mLockedPackage);
         }
 
-        LeoLog.d(TAG, "mToPackage = " + mLockedPackage);
+        LeoLog.d("LockScreenActivity", "mToPackage = " + mLockedPackage);
     }
 
     private void setAppInfoBackground(Drawable drawable) {
@@ -523,7 +525,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg = null;
         }
         MobvistaAd.release();
-        LeoLog.d(TAG, "onDestroy");
+        LeoLog.d("LockScreenActivity", "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
     }
 
@@ -542,7 +544,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onRestart() {
         super.onRestart();
-        LeoLog.e("xxxx", "onNewIntent");
+        LeoLog.e("LockScreenActivity", "onNewIntent");
         /**
          * dont change it, for lock theme
          */
