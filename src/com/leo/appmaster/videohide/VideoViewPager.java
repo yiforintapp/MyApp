@@ -650,6 +650,8 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                         if (mProcessType == 0) {
                             mAllPath.remove(mPosition);
                             isSuccess = true;
+                        }else {
+                            isSuccess = false;
                         }
                     } catch (RemoteException e) {
                         isSuccess = false;
