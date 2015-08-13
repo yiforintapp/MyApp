@@ -659,8 +659,10 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     if (!isSuccess) {
                         try {
                             isSuccess = FileOperationUtil.deleteFile(mDeletePath);
-                            FileOperationUtil.deleteFileMediaEntry(mDeletePath, context);
-                            mAllPath.remove(mPosition);
+                            if(isSuccess){
+                                FileOperationUtil.deleteFileMediaEntry(mDeletePath, context);
+                                mAllPath.remove(mPosition);
+                            }
                             // flag = true;
                         } catch (Exception e) {
                             isSuccess = false;
