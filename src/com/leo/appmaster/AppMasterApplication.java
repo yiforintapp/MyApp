@@ -450,8 +450,10 @@ public class AppMasterApplication extends Application {
                 } else if (Integer.parseInt(versionCode) == 41) {
                     installBoostShortcut();
                 }
-
-                pref.setGuidePageFirstUse(true);
+                //filter 2.6 version don't show guide page
+                if(!lastVercode.equals("41")){
+                    pref.setGuidePageFirstUse(true);
+                }
                 pref.setIsUpdateQuickGestureUser(true);
             }
         }
