@@ -210,6 +210,8 @@
     <dimen name="app_manager_headview_three_text_margin_top">6dp</dimen>
     <dimen name="app_manager_flowactivity_usage_logo_width_height">110dp</dimen> <!-- 100 -->
     <dimen name="app_manager_headview_fourtext_margin_top">6dp</dimen> <!-- 6 -->
+    <dimen name="digital_item_width">55dp</dimen>
+    <dimen name="digital_item_height">55dp</dimen>
     <!-- 2.7 end -->
 
 </resources>
