@@ -17,6 +17,7 @@ public class AppMasterConfig {
 	 public static final String GESTURE_RECOMMEND_URL = "/appmaster/quickgesture";
 	 public static final String CHECK_NEW_BUSINESS_APP = "/appmaster/apprecommend/checkappupdate";
 	 public static final int TIME_2_HOUR = 2 * 60 * 60 * 1000;
+	 public static final int TIME_6_HOUR = 6 * 60 * 60 * 1000;
 	 public static final int TIME_12_HOUR = 12 * 60 * 60 * 1000;
 	 public static final int TIME_24_HOUR = 24 * 60 * 60 * 1000;
 	 public static final long MIN_PULL_TIME = 60 * 1000;
@@ -31,11 +32,13 @@ public class AppMasterConfig {
 //	 * RECOMMEND URL
 //	 */
 //	public static final String APP_RECOMMEND_URL = "/appmaster/apprecommend/list";
+//	 public static final String GESTURE_RECOMMEND_URL = "/appmaster/quickgesture";
 //	public static final String CHECK_NEW_BUSINESS_APP = "/appmaster/apprecommend/checkappupdate";
 //	public static final int TIME_2_HOUR = 2 * 60 * 60 * 1000;
+//	 public static final int TIME_6_HOUR = 6 * 60 * 60 * 1000;
 //	public static final int TIME_12_HOUR = 12 * 60 * 60 * 1000;
 // public static final int TIME_24_HOUR = 24 * 60 * 60 * 1000;
-
+//
 // public static final long MIN_PULL_TIME = 30 * 60 * 1000;
 //	/*-----     Release configurations end   ------*/
 

@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -117,12 +116,11 @@ public class QuickGesturePopupActivity extends BaseActivity {
                     @Override
                     public void onClick(View v) {
                         mGoToSetting = true;
-                        LockManager.getInstatnce().filterAllOneTime(600);
+                         LockManager.getInstatnce().filterAllOneTime(600);
                         Intent intent = new Intent(QuickGesturePopupActivity.this,
                                 QuickGestureSettingActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                                 Intent.FLAG_ACTIVITY_NEW_TASK);
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                         startActivity(intent);
                         finish();
                     }
@@ -258,7 +256,7 @@ public class QuickGesturePopupActivity extends BaseActivity {
             createFloatView();
         }
 
-        if (!mFromSelfApp && !mGoToSetting) {
+        if (!mFromSelfApp && !mGoToSetting &&  TaskDetectService.getService() != null) {
             TaskDetectService.getService().callPretendAppLaunch();
         }
         super.onDestroy();

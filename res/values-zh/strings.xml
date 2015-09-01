@@ -708,10 +708,10 @@
     <string name="pass_gesture_change">切換密碼管道</string>
     <string name="permission_open_tip_notification_title">設定快捷手勢</string>
     <string name="permission_open_tip_notification_content">點擊立刻開啟快捷手勢！</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">還在用老辦法管理應用和快捷開關嗎？趕快試試和apple watch一樣的快捷開關管理吧，讓你成為朋友中最cool的人！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">安裝iSwipe，體驗和apple watch一樣的快捷開關管理吧，讓你成為朋友中最cool的人！</string>
     <string name="grade_tip_feedback">我要吐槽</string>
-    <string name="quick_first_tip_dialog_right_bt">立即體驗</string>
-    <string name="quick_first_tip_dialog_left_bt">稍後再試</string>
+    <string name="quick_first_tip_dialog_right_bt">安裝</string>
+    <string name="quick_first_tip_dialog_left_bt">稍後</string>
 
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -803,8 +803,19 @@
 	<string name="pg_appmanager_quick_gesture_conflict_content">快捷手勢是否影響您的常規操作？您可以選擇只開啟小白點模式，點擊設定</string>
 	<string name="pg_appmanager_quick_gesture_conflict_later">稍後再說</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">立刻開啟</string>
-	
-	 <string name="anti_conflict_mode_open">已開啟</string>
+	<string name="anti_conflict_mode_open">已開啟</string>
 	<!-- 2.7 end -->
+	
+		    <!-- 2.8 start -->
+    <string name="device_admin_extra">防止被協力廠商軟件或他人卸載</string>
+    <string name="iswip_update_tip_title_text">快捷手勢更新了</string>
+    <string name="iswip_update_tip_context_text">快捷手勢正式更名為ISwipe，更多功能等著你，馬上下載體驗吧！</string>
+    <string name="iswip_update_tip_left_button_text">稍後再說</string>
+    <string name="iswip_update_tip_right_button_text">立即下載</string>
+    <string name="iswip_update_notifi_title">快捷手勢更新啦！！！</string>
+    <string name="iswip_update_notifi_content">正式更新為Iswipe</string>
+    <string name="iswip_update_notifi_button">立即更新</string>
+    <string name="ad_timeout">Wow！我猜下次你會收到一些更精彩的東西！</string>
+    <!-- 2.8 end -->
 
 </resources>

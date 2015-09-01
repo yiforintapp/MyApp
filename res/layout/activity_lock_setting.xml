@@ -15,6 +15,17 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
+        <ImageView
+            android:id="@+id/iv_AD_entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_title_bar"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/alien_bg1"
+            android:focusable="true"
+            android:onClick="true"
+            android:visibility="invisible" />
+
         <FrameLayout
             android:id="@+id/fragment_contain"
             android:layout_width="match_parent"
@@ -31,8 +42,7 @@
             android:layout_marginRight="62dp"
             android:background="@drawable/lock_tutorails_button"
             android:gravity="center"
-            android:visibility="gone"
-             >
+            android:visibility="gone" >
 
             <TextView
                 android:id="@+id/lock_guide_tv"

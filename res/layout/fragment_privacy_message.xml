@@ -40,6 +40,7 @@
             android:layout_marginTop="@dimen/privacy_default_title_margin_top"
             android:text="@string/privacy_contact_default_text"
             android:textColor="#d3d3d4"
+            android:gravity="center_horizontal"
             android:textSize="17dp" />
 
         <TextView
@@ -47,6 +48,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/privacy_default_text_margin_top"
             android:text="@string/privacy_message_default_text"
+            android:gravity="center_horizontal"
             android:textColor="#d3d3d4"
             android:textSize="15dp" />
     </LinearLayout>

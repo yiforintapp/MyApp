@@ -62,6 +62,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             }
         }
         if (TextUtils.isEmpty(mURL)) {
+            Log.i(TAG, "URL为空");
             finish();
         }
         Log.i(TAG, "URL = " + mURL);
@@ -342,7 +343,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     /* 进入主页 */
     private void startHome() {
-        Log.e(Constants.RUN_TAG, "是否来自闪屏：" + mIsFromSplash);
+        Log.i(TAG, "是否来自闪屏：" + mIsFromSplash);
         if (mIsFromSplash) {
             AppMasterPreference amp = AppMasterPreference.getInstance(this);
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {

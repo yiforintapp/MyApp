@@ -184,10 +184,10 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener, O
         if(email.matches(EMAIL_EXPRESSION)) {
             perference.edit().putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
             .putString(FeedbackHelper.KEY_EMAIL, email)
-            .putInt(FeedbackHelper.KEY_CATEGORY, mCategoryPos).commit();
+            .putInt(FeedbackHelper.KEY_CATEGORY, mCategoryPos).apply();
         } else {
             perference.edit().putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
-            .putInt(FeedbackHelper.KEY_CATEGORY, mCategoryPos).commit();
+            .putInt(FeedbackHelper.KEY_CATEGORY, mCategoryPos).apply();
         }
     };
 

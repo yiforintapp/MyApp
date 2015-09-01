@@ -21,6 +21,8 @@ import android.util.Log;
 
 import java.util.concurrent.BlockingQueue;
 
+import org.apache.http.HttpStatus;
+
 /**
  * Provides a thread for performing cache triage on a queue of requests.
  * Requests added to the specified cache queue are resolved from cache. Any
@@ -118,8 +120,10 @@ public class CacheDispatcher extends Thread {
                 // We have a cache hit; parse its data for delivery back to the
                 // request.
                 request.addMarker("cache-hit");
+//                Response<?> response = request.parseNetworkResponse(
+//                        new NetworkResponse(entry.data, entry.responseHeaders));
                 Response<?> response = request.parseNetworkResponse(
-                        new NetworkResponse(entry.data, entry.responseHeaders));
+                        new NetworkResponse(HttpStatus.SC_OK, entry.data, entry.responseHeaders, true));
                 request.addMarker("cache-hit-parsed");
                 if (!entry.refreshNeeded()) {
                     // Completely unexpired cache hit. Just deliver the

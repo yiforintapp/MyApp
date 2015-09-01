@@ -1,37 +1,44 @@
 package com.leo.appmaster.ui;
 
-import com.leo.appmaster.R;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.content.Context;
+import android.filterfw.core.FinalPort;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PaintFlagsDrawFilter;
-import android.graphics.RectF;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
+import android.graphics.Xfermode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
 import android.widget.ImageView;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.R;
 
 public class LockImageView extends ImageView {
 
-	private RectF mRect;
+//	private RectF mRect;
 	private boolean mLocked;
 	private boolean mRecommend;
 	private boolean mDefaultRecommend;
 	private Paint mPaint;
 	private Matrix mMatrix;
 	private float mLockX, mLockY;
-	private Bitmap mSourceBitmap, mGaryBitmap;
+//	private Drawable mGrayDrawable;
 	private PaintFlagsDrawFilter mDrawFilter;
+	
+	private int mLockIconWidth;
+	private int mLockIconHeight;
+	
+	private int mDefLockIconWidth;
+    private int mDefLockIconHeight;
 
 	public LockImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -45,183 +52,86 @@ public class LockImageView extends ImageView {
 
 		mLockX = getResources().getDimensionPixelSize(R.dimen.lock_icon_X);
 		mLockY = getResources().getDimensionPixelSize(R.dimen.lock_icon_Y);
+		
+		mLockIconWidth = getResources().getDimensionPixelSize(R.dimen.lock_icon_width);
+		mLockIconHeight = getResources().getDimensionPixelSize(R.dimen.lock_icon_height);
+		
+		mDefLockIconWidth = getResources().getDimensionPixelSize(R.dimen.default_lock_icon_width);
+		mDefLockIconHeight = getResources().getDimensionPixelSize(R.dimen.default_lock_icon_width);
+		
 	}
 
 	@Override
 	protected void onDraw(Canvas canvas) {
-	    // Add protect to avoid OutOfMemory error temply
-	    try {
-	        if (mSourceBitmap == null) {
-	            Drawable d = this.getDrawable();
-	            mSourceBitmap = Bitmap.createBitmap(d.getIntrinsicWidth(),
-	                    d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-	            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
-	            Canvas c = new Canvas(mSourceBitmap);
-	            d.draw(c);
+	    super.onDraw(canvas);
+	    if (mLocked || mRecommend || mDefaultRecommend) {
+	        if (mDrawFilter == null) {
+	            mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
+	                    | Paint.FILTER_BITMAP_FLAG);
 	        }
-	        if (mLocked) {
-	            if (mRect == null) {
-	                mRect = new RectF();
-	                int width = this.getMeasuredWidth();
-	                int height = this.getMeasuredHeight();
-	                mRect.left = 0;
-	                mRect.top = 0;
-	                mRect.right = width;
-	                mRect.bottom = height;
-	            }
-	            if (mDrawFilter == null) {
-	                mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
-	                        | Paint.FILTER_BITMAP_FLAG);
-	                canvas.setDrawFilter(mDrawFilter);
-	            }
-
-	            if (mGaryBitmap == null) {
-	                mGaryBitmap = mSourceBitmap.copy(mSourceBitmap.getConfig(),
-	                        true);
-	                int red, green, blue, alpha, agr;
-	                int pixel;
-	                for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
-	                    for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
-	                        pixel = mGaryBitmap.getPixel(i, j);
-	                        agr = (Color.red(pixel) + Color.green(pixel) + Color
-	                                .blue(pixel)) / 3;
-
-	                        alpha = (int) (Color.alpha(pixel));
-	                        red = (int) (Color.red(pixel) * 0.5);
-	                        green = (int) (Color.green(pixel) * 0.5);
-	                        blue = (int) (Color.blue(pixel) * 0.5);
-
-	                        pixel = Color.argb(alpha, red, green, blue);
-	                        mGaryBitmap.setPixel(i, j, pixel);
-	                    }
-	                }
-	            }
-	            this.setImageBitmap(mGaryBitmap);
-	            super.onDraw(canvas);
-	            canvas.save();
-	            canvas.translate(mLockX, mLockY);
-	            Bitmap lockBitmap = BitmapHolder.getLockBitmap(getContext());
-	            if (mMatrix == null) {
-	                int lockWidth = getResources().getDimensionPixelSize(
-	                        R.dimen.lock_icon_width);
-	                int lockHeight = getResources().getDimensionPixelSize(
-	                        R.dimen.lock_icon_height);
-
-	                float scaleX = (float) lockWidth / lockBitmap.getWidth();
-	                float scaleY = (float) lockHeight / lockBitmap.getHeight();
-
-	                mMatrix = new Matrix();
-	                mMatrix.setScale(scaleX, scaleY, lockBitmap.getWidth() / 2,
-	                        lockBitmap.getHeight() / 2);
-	            }
-	            canvas.drawBitmap(lockBitmap, mMatrix, mPaint);
-	            canvas.restore();
-	        } else if (mRecommend) {
-	            if (mRect == null) {
-	                mRect = new RectF();
-	                int width = this.getMeasuredWidth();
-	                int height = this.getMeasuredHeight();
-	                mRect.left = 0;
-	                mRect.top = 0;
-	                mRect.right = width;
-	                mRect.bottom = height;
-	            }
-	            if (mDrawFilter == null) {
-	                mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
-	                        | Paint.FILTER_BITMAP_FLAG);
-	                canvas.setDrawFilter(mDrawFilter);
-	            }
-
-	            this.setImageBitmap(mSourceBitmap);
-	            super.onDraw(canvas);
-	            canvas.save();
-	            canvas.translate(mLockX, mLockY);  
-	            Bitmap recommendBitmap = BitmapHolder
-	                    .getRecommendBitmap(getContext());
-	            if (mMatrix == null) {
-	                int lockWidth = getResources().getDimensionPixelSize(
-	                        R.dimen.lock_icon_width);
-	                int lockHeight = getResources().getDimensionPixelSize(
-	                        R.dimen.lock_icon_height);
-
-	                float scaleX = (float) lockWidth / recommendBitmap.getWidth();
-	                float scaleY = (float) lockHeight / recommendBitmap.getHeight();
-
-	                mMatrix = new Matrix();
-	                mMatrix.setScale(scaleX, scaleY,
-	                        recommendBitmap.getWidth() / 2,
-	                        recommendBitmap.getHeight() / 2);
-	            }
-	            canvas.drawBitmap(recommendBitmap, mMatrix, mPaint);
-	            canvas.restore();
-	        }else if(mDefaultRecommend){       
-	               if (mRect == null) {
-	                    mRect = new RectF();
-	                    int width = this.getMeasuredWidth();
-	                    int height = this.getMeasuredHeight();
-	                    mRect.left = 0;
-	                    mRect.top = 0;
-	                    mRect.right = width;
-	                    mRect.bottom = height;
-	                }
-	                if (mDrawFilter == null) {
-	                    mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG
-	                            | Paint.FILTER_BITMAP_FLAG);
-	                    canvas.setDrawFilter(mDrawFilter);
-	                }
-
-	                if (mGaryBitmap == null) {
-	                    mGaryBitmap = mSourceBitmap.copy(mSourceBitmap.getConfig(),
-	                            true);
-	                    int red, green, blue, alpha, agr;
-	                    int pixel;
-	                    for (int i = 0; i < mGaryBitmap.getWidth(); i++) {
-	                        for (int j = 0; j < mGaryBitmap.getHeight(); j++) {
-	                            pixel = mGaryBitmap.getPixel(i, j);
-	                            agr = (Color.red(pixel) + Color.green(pixel) + Color
-	                                    .blue(pixel)) / 3;
-
-	                            alpha = (int) (Color.alpha(pixel));
-	                            red = (int) (Color.red(pixel) * 0.5);
-	                            green = (int) (Color.green(pixel) * 0.5);
-	                            blue = (int) (Color.blue(pixel) * 0.5);
-
-	                            pixel = Color.argb(alpha, red, green, blue);
-	                            mGaryBitmap.setPixel(i, j, pixel);
-	                        }
-	                    }
-	                }
-	                this.setImageBitmap(mGaryBitmap);
-	                super.onDraw(canvas);
-	                canvas.save();
-	                canvas.translate(mLockX, mLockY);
-	                Bitmap lockBitmap = BitmapHolder.getDefaultBitmap(getContext());
-	                if (mMatrix == null) {
-	                    int lockWidth = getResources().getDimensionPixelSize(
-	                            R.dimen.default_lock_icon_width);
-	                    int lockHeight = getResources().getDimensionPixelSize(
-	                            R.dimen.default_lock_icon_width);
-
-	                    float scaleX = (float) lockWidth / lockBitmap.getWidth();
-	                    float scaleY = (float) lockHeight / lockBitmap.getHeight();
-
-	                    mMatrix = new Matrix();
-	                    mMatrix.setScale(scaleX, scaleY, lockBitmap.getWidth() / 2,
-	                            lockBitmap.getHeight() / 2);
-	                }
-	                canvas.drawBitmap(lockBitmap, mMatrix, mPaint);
-	                canvas.restore();
-	            
-	        }else {
-	            this.setImageBitmap(mSourceBitmap);
-	            super.onDraw(canvas);
-	        }
-	    } catch(Exception e) {
-	        
+	        canvas.setDrawFilter(mDrawFilter);
+	        canvas.save();
+            canvas.translate(mLockX, mLockY);
+            
+            Bitmap lockFlag = null;
+            if (mLocked) {
+                lockFlag = BitmapHolder.getLockBitmap(getContext());
+                initMatrix(lockFlag, mLockIconWidth, mLockIconHeight);
+            } else if (mRecommend) {
+                lockFlag = BitmapHolder.getRecommendBitmap(getContext());
+                initMatrix(lockFlag, mLockIconWidth, mLockIconHeight); 
+            } else {
+                lockFlag = BitmapHolder.getDefaultBitmap(getContext());
+                initMatrix(lockFlag, mDefLockIconWidth, mDefLockIconHeight); 
+            }
+            canvas.drawBitmap(lockFlag, mMatrix, mPaint);
+            canvas.restore();
 	    }
 	}
+	
+	private void initMatrix(Bitmap bitmap, int width, int height) {
+	    if (mMatrix != null) return;
+	    
+        float scaleX = (float) width / bitmap.getWidth();
+        float scaleY = (float) width / bitmap.getHeight();
 
-	public void setLocked(boolean locked) {
+        mMatrix = new Matrix();
+        mMatrix.setScale(scaleX, scaleY, bitmap.getWidth() / 2, bitmap.getHeight() / 2); 
+	}
+    
+//    private void setGrayBitmap() {
+//        Drawable d = getDrawable();
+//        Bitmap bitmap = null;
+//        if (!(d instanceof BitmapDrawable)) {
+//            bitmap = Bitmap.createBitmap(d.getIntrinsicWidth(),
+//                    d.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+//            d.setBounds(0, 0, d.getIntrinsicWidth(), d.getIntrinsicHeight());
+//            Canvas c = new Canvas(bitmap);
+//            d.draw(c);
+//        } else {
+//            bitmap = ((BitmapDrawable) d).getBitmap();
+//        }
+//        
+//        Bitmap graBitmap = bitmap.copy(bitmap.getConfig(), true);
+//        int red, green, blue, alpha;
+//        int pixel;
+//        for (int i = 0; i < graBitmap.getWidth(); i++) {
+//            for (int j = 0; j < graBitmap.getHeight(); j++) {
+//                pixel = graBitmap.getPixel(i, j);
+//
+//                alpha = (int) (Color.alpha(pixel));
+//                red = (int) (Color.red(pixel) * 0.5);
+//                green = (int) (Color.green(pixel) * 0.5);
+//                blue = (int) (Color.blue(pixel) * 0.5);
+//
+//                pixel = Color.argb(alpha, red, green, blue);
+//                graBitmap.setPixel(i, j, pixel);
+//            }
+//        }
+//        
+//    }
+
+    public void setLocked(final boolean locked) {
 		mLocked = locked;
 		invalidate();
 	}
@@ -234,6 +144,7 @@ public class LockImageView extends ImageView {
         mDefaultRecommend = defaultApp;
         invalidate();
     }
+    
 	private static class BitmapHolder {
 		private static Bitmap mLockBitmap, mRecommendBitmap,mDefaultRecommend;
 

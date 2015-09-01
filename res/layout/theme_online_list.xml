@@ -68,8 +68,9 @@
 
             <TextView
                 android:id="@+id/tv_reload"
-                android:layout_width="129dp"
+                android:layout_width="wrap_content"
                 android:layout_height="33dp"
+                android:minWidth="129dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="20dp"
                 android:background="@drawable/dlg_right_button_selector"

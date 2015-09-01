@@ -30,12 +30,14 @@
 
                 <TextView
                     android:id="@+id/first_tv"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="16dp"
+                    android:layout_marginRight="60dp"
                     android:text="@string/flow_settting_fist"
                     android:textColor="@color/flow_setting_tv"
+                    android:maxLines="2"
                     android:textSize="18dp" />
 
                 <ImageView
@@ -69,26 +71,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:background="@drawable/manager_backup_list_selecter" >
-
-                <TextView
-                    android:id="@+id/second_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="@string/flow_settting_dialog"
-                    android:textColor="@color/flow_setting_tv"
-                    android:textSize="18dp" />
-
-                <TextView
+                
+                                <TextView
                     android:id="@+id/second_tv_setting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:textColor="@color/commonbar_background"
                     android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/second_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/flow_settting_dialog"
+                    android:textColor="@color/flow_setting_tv"
+                    android:layout_toLeftOf="@id/second_tv_setting"
+                    android:textSize="18dp" />
+
+
 
                 <ImageView
                     android:layout_width="match_parent"
@@ -102,26 +109,31 @@
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:background="@drawable/manager_backup_list_selecter" >
-
-                <TextView
-                    android:id="@+id/thrid_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="16dp"
-                    android:text="@string/flow_settting_thrid"
-                    android:textColor="@color/flow_setting_tv"
-                    android:textSize="18dp" />
-
-                <TextView
+                
+                                <TextView
                     android:id="@+id/thrid_tv_setting"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
+                    android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:textColor="@color/commonbar_background"
                     android:textSize="18dp" />
+
+                <TextView
+                    android:id="@+id/thrid_tv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="16dp"
+                    android:layout_toLeftOf="@id/thrid_tv_setting"
+                    android:text="@string/flow_settting_thrid"
+                    android:textColor="@color/flow_setting_tv"
+                    android:textSize="18dp" />
+
+
 
                 <ImageView
                     android:layout_width="match_parent"

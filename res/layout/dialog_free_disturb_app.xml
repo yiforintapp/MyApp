@@ -18,24 +18,15 @@
 
             <TextView
                 android:id="@+id/free_disturb_dialog_title"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:maxLines="2"
                 android:text="@string/pg_appmanager_quick_gesture_select_free_disturb_app_text"
                 android:textColor="#676767"
+                android:gravity="center_horizontal"
                 android:textSize="18sp" >
             </TextView>
-
-            <TextView
-                android:id="@+id/selected_app_count"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toRightOf="@+id/free_disturb_dialog_title"
-                android:text="(0/0)"
-                android:textColor="#676767"
-                android:textSize="18sp" 
-                android:visibility="gone"/>
         </RelativeLayout>
 
         <TextView
@@ -62,6 +53,7 @@
                 android:id="@+id/dialog_all_app_itme_normalRB"
                 android:layout_width="18dp"
                 android:layout_height="18dp"
+                android:layout_marginLeft="10dp"
                 android:button="@drawable/quick_gesture_dialog_radio_selector" />
 
             <TextView

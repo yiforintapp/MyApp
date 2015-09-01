@@ -1,0 +1,343 @@
+
+package com.leo.appmaster.bootstrap;
+
+import java.lang.reflect.Method;
+import java.util.Calendar;
+import java.util.Date;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.ContentResolver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.Intent.ShortcutIconResource;
+import android.media.AudioManager;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.ContactsContract;
+import android.telephony.TelephonyManager;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.android.internal.telephony.ITelephony;
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.PhoneInfo;
+import com.leo.appmaster.R;
+import com.leo.appmaster.R.drawable;
+import com.leo.appmaster.R.string;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.receiver.LockReceiver;
+import com.leo.appmaster.appmanage.business.AppBusinessManager;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.cleanmemory.HomeBoostActivity;
+import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.home.SplashActivity;
+import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.DisplayImageOptions;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.ImageLoaderConfiguration;
+
+/**
+ * 主线程核心业务初始化
+ * 
+ * @author Jasper
+ */
+public class InitCoreBootstrap extends Bootstrap {
+    private static final String TAG = "InitCoreBootstrap";
+
+    private PrivacyMessageContentObserver mMessageObserver;
+    private PrivacyMessageContentObserver mCallLogObserver;
+    private PrivacyMessageContentObserver mContactObserver;
+    private MessagePrivacyReceiver mPrivacyReceiver;
+
+    private ITelephony mITelephony;
+    private AudioManager mAudioManager;
+    public Handler mHandler = new Handler(Looper.getMainLooper());
+
+    @Override
+    protected boolean doStrap() {
+        AppLoadEngine.getInstance(mApp);
+        AppBackupRestoreManager.getInstance(mApp);
+        initImageLoader();
+        registerPackageChangedBroadcast();
+        SDKWrapper.iniSDK(mApp);
+        AppBusinessManager.getInstance(mApp).init();
+        // init lock manager
+        LockManager.getInstatnce().init();
+        registerReceiveMessageCallIntercept();
+        AppMasterPreference preference = AppMasterPreference.getInstance(mApp);
+        if (preference.getIsFirstInstallApp()) {
+            SplashActivity.deleteImage();
+            preference.setIsFirstInstallApp(false);
+        }
+        PrivacyHelper.getInstance(mApp).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
+        QuickGestureManager.getInstance(mApp);
+        registerLanguageChangeReceiver();
+        checkUpdateFinish();
+        initIswipeUpdateTip();
+        initSplashDelayTime();
+        return true;
+    }
+
+    /* 初始化ISwipe升级提示标志 */
+    private void initIswipeUpdateTip() {
+        boolean flag = AppMasterPreference.getInstance(mApp).getIswipeDialogTip();
+        ISwipUpdateRequestManager.getInstance(mApp).setIswipeUpdateTip(flag);
+    }
+
+    @Override
+    public String getClassTag() {
+        return TAG;
+    }
+
+    private void initImageLoader() {
+        DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mApp)
+                .threadPoolSize(Constants.MAX_THREAD_POOL_SIZE)
+                .threadPriority(Thread.NORM_PRIORITY)
+                .memoryCacheSizePercentage(8)
+                .defaultDisplayImageOptions(options)
+                .diskCacheSize(Constants.MAX_DISK_CACHE_SIZE) // 100 Mb
+                .denyCacheImageMultipleSizesInMemory().build();
+        ImageLoader.getInstance().init(config);
+    }
+
+    private void registerPackageChangedBroadcast() {
+        // Register intent receivers
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_AVAILABLE);
+        // 正在移动App是发出的广播
+        filter.addAction(Intent.ACTION_EXTERNAL_APPLICATIONS_UNAVAILABLE);
+        // 设备当前区域设置已更改是发出的广播
+        filter.addAction(Intent.ACTION_LOCALE_CHANGED);
+        // recommend list change
+        filter.addAction(AppLoadEngine.ACTION_RECOMMEND_LIST_CHANGE);
+        mApp.registerReceiver(AppLoadEngine.getInstance(mApp), filter);
+    }
+
+    /**
+     * 短信拦截, 电话拦截
+     */
+    private void registerReceiveMessageCallIntercept() {
+        ContentResolver cr = mApp.getContentResolver();
+        if (cr != null) {
+            mMessageObserver = new PrivacyMessageContentObserver(mApp, mHandler,
+                    PrivacyMessageContentObserver.MESSAGE_MODEL);
+            cr.registerContentObserver(PrivacyContactUtils.SMS_INBOXS, true,
+                    mMessageObserver);
+            mCallLogObserver = new PrivacyMessageContentObserver(mApp, mHandler,
+                    PrivacyMessageContentObserver.CALL_LOG_MODEL);
+            cr.registerContentObserver(PrivacyContactUtils.CALL_LOG_URI, true, mCallLogObserver);
+            mContactObserver = new PrivacyMessageContentObserver(mApp, mHandler,
+                    PrivacyMessageContentObserver.CONTACT_MODEL);
+            cr.registerContentObserver(
+                    ContactsContract.CommonDataKinds.Phone.CONTENT_URI, true,
+                    mContactObserver);
+        }
+        openEndCall();
+        mPrivacyReceiver = new MessagePrivacyReceiver(mITelephony, mAudioManager);
+        IntentFilter filter = new IntentFilter();
+        filter.setPriority(Integer.MAX_VALUE);
+        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION);
+        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2);
+        filter.addAction(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3);
+        filter.addAction(PrivacyContactUtils.CALL_RECEIVER_ACTION);
+        filter.addAction(PrivacyContactUtils.SENT_SMS_ACTION);
+        mApp.registerReceiver(mPrivacyReceiver, filter);
+    }
+
+    // 打开endCall
+    private void openEndCall() {
+        mAudioManager = (AudioManager) mApp.getSystemService(Context.AUDIO_SERVICE);
+        TelephonyManager mTelephonyManager = (TelephonyManager) mApp
+                .getSystemService(Context.TELEPHONY_SERVICE);
+        try {
+            Method getITelephonyMethod = TelephonyManager.class.getDeclaredMethod("getITelephony",
+                    (Class[]) null);
+            getITelephonyMethod.setAccessible(true);
+            mITelephony = (ITelephony) getITelephonyMethod.invoke(mTelephonyManager,
+                    (Object[]) null);
+        } catch (Exception e) {
+        }
+    }
+
+    /* 本地语言改变监听 */
+    private void registerLanguageChangeReceiver() {
+        BroadcastReceiver receiv = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)) {
+                    // 初始化快捷手势数据
+                    if (AppMasterPreference.getInstance(mApp).getSwitchOpenQuickGesture()) {
+                        QuickGestureManager.getInstance(mApp).unInit();
+                        QuickGestureManager.getInstance(mApp).init();
+                    }
+                }
+            }
+        };
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_LOCALE_CHANGED);
+        mApp.registerReceiver(receiv, filter);
+    }
+
+    private void checkUpdateFinish() {
+        judgeLockAlert();
+        AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
+        String lastVercode = pref.getLastVersion();
+        int versionCode = PhoneInfo.getVersionCode(mApp);
+        LeoLog.i("value", "lastVercode=" + lastVercode);
+        LeoLog.i("value", "versionCode=" + versionCode);
+        if (TextUtils.isEmpty(lastVercode)) {
+            // first install
+            if (versionCode == 34) {
+                // remove unlock-all shortcut v2.1
+                tryRemoveUnlockAllShortcut(mApp);
+            } else if (versionCode >= 41) {
+                installBoostShortcut();
+            }
+            pref.setIsUpdateQuickGestureUser(false);
+        } else {
+            int lastCode = Integer.parseInt(lastVercode);
+            if (lastCode < versionCode) {
+                // hit update
+                if (versionCode == 34) {
+                    // remove unlock-all shortcut v2.1
+                    tryRemoveUnlockAllShortcut(mApp);
+                } else if (versionCode == 41) {
+                    installBoostShortcut();
+                }
+                int currentGuideVersion = mApp.getResources().getInteger(
+                        R.integer.guide_page_version);
+                int lastGuideVersion = pref.getLastGuideVersion();
+                /* 升级是否需要显示引导页，需要手动配置：true-显示，false-不显示 */
+                updateShowGuidePage(lastCode < 41 || currentGuideVersion > lastGuideVersion);
+                pref.setLastGuideVersion(currentGuideVersion);
+                pref.setIsUpdateQuickGestureUser(true);
+                /* 每次升级都重新刷新googleplay提示规则 */
+                uninitGooglePlayScorTip();
+            }
+        }
+        pref.setLastVersion(String.valueOf(versionCode));
+        tryRemoveUnlockAllShortcut(mApp);
+    }
+
+    private void updateShowGuidePage(boolean flag) {
+        AppMasterPreference.getInstance(mApp).setGuidePageFirstUse(flag);
+    }
+
+    private void uninitGooglePlayScorTip() {
+        /* 解锁次数设置为初始状态 */
+        AppMasterPreference.getInstance(mApp).setUnlockCount(0);
+        /* googlepaly评分提示设置为初始状态 */
+        AppMasterPreference.getInstance(mApp).setGoogleTipShowed(false);
+    }
+
+    private void tryRemoveUnlockAllShortcut(Context ctx) {
+        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag())
+        {
+            // remove unlock all shortcut
+            Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
+            shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            // 之前在创建快捷方式的时候，未加任何的action, 移除快捷方式时必须加Intent.ACTION_VIEW
+            shortcutIntent.setAction(Intent.ACTION_VIEW);
+            shortcutIntent.putExtra("quick_lock_mode", true);
+            shortcutIntent.putExtra("lock_mode_id", 0);
+            shortcutIntent.putExtra("lock_mode_name", ctx.getString(R.string.unlock_all_mode));
+            Intent shortcut = new Intent(
+                    "com.android.launcher.action.UNINSTALL_SHORTCUT");
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, ctx.getString(R.string.unlock_all_mode));
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            shortcut.putExtra("duplicate", false);
+            shortcut.putExtra("from_shortcut", true);
+            ctx.sendBroadcast(shortcut);
+
+            AppMasterPreference.getInstance(ctx).setRemoveUnlockAllShortcutFlag(true);
+        }
+
+    }
+
+    private void installBoostShortcut() {
+        Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
+        ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
+                R.drawable.booster_icon);
+        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+        shortcut.putExtra("duplicate", false);
+        shortcut.putExtra("from_shortcut", true);
+        mApp.sendBroadcast(shortcut);
+    }
+
+    private void judgeLockAlert() {
+        AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
+        if (pref.isReminded()) {
+            return;
+        }
+        Calendar calendar;
+        Intent intent;
+        AlarmManager am = (AlarmManager) mApp.getSystemService(Context.ALARM_SERVICE);
+        if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(mApp))) { // is
+                                                                             // new
+                                                                             // version
+            pref.setHaveEverAppLoaded(false);
+            intent = new Intent(mApp, LockReceiver.class);
+            intent.setAction(LockReceiver.ALARM_LOCK_ACTION);
+
+            calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            pref.setLastAlarmSetTime(calendar.getTimeInMillis());
+            calendar.add(Calendar.DATE, Constants.LOCK_TIP_INTERVAL_OF_DATE);
+            PendingIntent pi = PendingIntent.getBroadcast(mApp, 0, intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
+            am.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pi);
+        } else { // not new install
+            calendar = Calendar.getInstance();
+            calendar.setTime(new Date());
+            long detal = calendar.getTimeInMillis() - pref.getInstallTime();
+            intent = new Intent(mApp, LockReceiver.class);
+            intent.setAction(LockReceiver.ALARM_LOCK_ACTION);
+            if (detal < Constants.LOCK_TIP_INTERVAL_OF_MS) {
+                PendingIntent pi = PendingIntent.getBroadcast(mApp, 0, intent,
+                        PendingIntent.FLAG_UPDATE_CURRENT);
+                am.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
+                        + Constants.LOCK_TIP_INTERVAL_OF_MS - detal, pi);
+                pref.setLastAlarmSetTime(calendar.getTimeInMillis());
+            } else {
+                mApp.sendBroadcast(intent);
+            }
+        }
+    }
+
+    /* 初始化闪屏时间,需要在app启动时初始化 */
+    private void initSplashDelayTime() {
+        AppMasterApplication mApp = AppMasterApplication.getInstance();
+        SplashBootstrap.mIsEmptyForSplashUrl = isEmptySplashUrl();
+        /* 闪屏延时时间 */
+        SplashBootstrap.mSplashDelayTime = AppMasterPreference.getInstance(mApp)
+                .getSplashDelayTime();
+    }
+
+    /* 闪屏跳转连接是否为空：true-链接为空，false-链接不为空 */
+    private boolean isEmptySplashUrl() {
+        AppMasterApplication mApp = AppMasterApplication.getInstance();
+        String splashSkipUrl = AppMasterPreference.getInstance(mApp).getSplashSkipUrl();
+        String splashSkipToClient = AppMasterPreference.getInstance(mApp).getSplashSkipToClient();
+
+        return TextUtils.isEmpty(splashSkipUrl) && TextUtils.isEmpty(splashSkipToClient);
+    }
+
+}

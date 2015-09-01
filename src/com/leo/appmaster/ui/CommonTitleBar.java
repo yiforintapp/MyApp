@@ -1,12 +1,10 @@
 
 package com.leo.appmaster.ui;
 
-import android.R.integer;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -23,8 +21,8 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
     private ImageView mIvBackArrow;
     private TextView mTvTitle;
-    private TextView mTvSpinner;
-    private ImageView mImgSpinner;
+//    private TextView mTvSpinner;
+//    private ImageView mImgSpinner;
     private TextView mTvOptionText;
     private ImageView mTvOptionImage;
     private ImageView mTvLogo;
@@ -51,8 +49,8 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mLayoutBackView = findViewById(R.id.layout_title_back);
         mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
         mTvTitle = (TextView) findViewById(R.id.tv_title);
-        mTvSpinner = (TextView) findViewById(R.id.tv_layout_right);
-        mImgSpinner = (ImageView) findViewById(R.id.img_layout_right);
+//        mTvSpinner = (TextView) findViewById(R.id.tv_layout_right);
+//        mImgSpinner = (ImageView) findViewById(R.id.img_layout_right);
         mTvOptionText = (TextView) findViewById(R.id.tv_option_text);
         mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
         mLayoutSpiner = findViewById(R.id.layout_right);
@@ -85,17 +83,17 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         mTvOptionImage.setPadding(left, top, right, bottom);
     }
 
-    public void setSpinerText(String text) {
-        mTvSpinner.setText(text);
-    }
-
-    public void setSpinerText(int resid) {
-        mTvSpinner.setText(resid);
-    }
-
-    public void setSpinerImage(int resid) {
-        mImgSpinner.setImageResource(resid);
-    }
+//    public void setSpinerText(String text) {
+//        mTvSpinner.setText(text);
+//    }
+//
+//    public void setSpinerText(int resid) {
+//        mTvSpinner.setText(resid);
+//    }
+//
+//    public void setSpinerImage(int resid) {
+//        mImgSpinner.setImageResource(resid);
+//    }
 
     public void setSpinerListener(OnClickListener listener) {
         mLayoutSpiner.setOnClickListener(listener);
@@ -170,7 +168,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     }
 
     public void setHelpSettingVisiblity(int visibility) {
-        mHelpSetting.setVisibility(visibility);
+        mHelpSettingParent.setVisibility(visibility);
     }
 
     public void setHelpSettingListener(OnClickListener listener) {

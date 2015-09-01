@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
@@ -19,14 +20,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-import android.R.integer;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -48,6 +46,7 @@ import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.model.TimeLock.RepeatTime;
 import com.leo.appmaster.applocker.model.TimeLock.TimePoint;
 import com.leo.appmaster.applocker.service.TaskDetectService;
+import com.leo.appmaster.bootstrap.CheckNewBootstrap;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -1040,10 +1039,10 @@ public class LockManager {
             homeMode.modeName = mContext.getString(R.string.family_mode);
             homeMode.isCurrentUsed = false;
             homeMode.defaultFlag = 3;
-//            homeMode.modeIcon =
-//                    BitmapFactory.decodeResource(mContext.getResources(),
-//                            R.drawable.lock_mode_family);
-//            homeMode.modeIconId = R.drawable.lock_mode_family;
+            // homeMode.modeIcon =
+            // BitmapFactory.decodeResource(mContext.getResources(),
+            // R.drawable.lock_mode_family);
+            // homeMode.modeIconId = R.drawable.lock_mode_family;
             List<String> list = Collections.synchronizedList(new LinkedList<String>());
             list.add(mContext.getPackageName());
             for (String pkg : Constants.sDefaultHomeModeList) {
@@ -1150,8 +1149,9 @@ public class LockManager {
                     lockMode.modeName = mContext.getString(R.string.vistor_mode);
                     lockMode.isCurrentUsed = true;
                     lockMode.defaultFlag = 1;
-                    // lockMode.modeIcon = BitmapFactory.decodeResource(mContext.getResources(),
-                    //        R.drawable.lock_mode_visitor);
+                    // lockMode.modeIcon =
+                    // BitmapFactory.decodeResource(mContext.getResources(),
+                    // R.drawable.lock_mode_visitor);
                     // lockMode.modeIconId = R.drawable.lock_mode_visitor;
                     List<String> list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
@@ -1193,10 +1193,10 @@ public class LockManager {
                     lockMode.modeName = mContext.getString(R.string.family_mode);
                     lockMode.isCurrentUsed = false;
                     lockMode.defaultFlag = 3;
-//                    lockMode.modeIcon =
-//                            BitmapFactory.decodeResource(mContext.getResources(),
-//                                    R.drawable.lock_mode_family);
-//                    lockMode.modeIconId = R.drawable.lock_mode_family;
+                    // lockMode.modeIcon =
+                    // BitmapFactory.decodeResource(mContext.getResources(),
+                    // R.drawable.lock_mode_family);
+                    // lockMode.modeIconId = R.drawable.lock_mode_family;
                     list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {
@@ -1529,7 +1529,7 @@ public class LockManager {
         if (service != null) {
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 service.startDetect();
-                amp.setDoubleCheck(null);
+                amp.setDoubleCheck(null); 
             }
         } else {
             mContext.startService(new Intent(mContext, TaskDetectService.class));
@@ -1558,7 +1558,7 @@ public class LockManager {
 
         } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
             LockManager.getInstatnce().startLockService();
-            AppMasterApplication.getInstance().checkUBC();
+            CheckNewBootstrap.checkUBC();
             mHandler.postDelayed(new Runnable() {
 
                 @Override
@@ -1566,17 +1566,18 @@ public class LockManager {
                     checkScreenOn();
                 }
             }, 500);
-        } else if (PhoneInfo.getPhoneDeviceModel().contains("Nokia") && Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-                final String lastRunningPkg = getLastPackage();
-                final String lastRunningActivity = getLastActivity();
+        } else if (PhoneInfo.getPhoneDeviceModel().contains("Nokia")
+                && Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+            final String lastRunningPkg = getLastPackage();
+            final String lastRunningActivity = getLastActivity();
 
-                if (isPackageLocked(lastRunningPkg)
-                        && !QuickGesturePopupActivity.class.getName().contains(lastRunningActivity)
-                        && !LockScreenActivity.class.getName().contains(lastRunningActivity)
-                        && !WaitActivity.class.getName().contains(lastRunningActivity)
-                        && !ProxyActivity.class.getName().contains(lastRunningActivity)) {
-                    applyLock(LOCK_MODE_FULL, lastRunningPkg, false, null);
-                }
+            if (isPackageLocked(lastRunningPkg)
+                    && !QuickGesturePopupActivity.class.getName().contains(lastRunningActivity)
+                    && !LockScreenActivity.class.getName().contains(lastRunningActivity)
+                    && !WaitActivity.class.getName().contains(lastRunningActivity)
+                    && !ProxyActivity.class.getName().contains(lastRunningActivity)) {
+                applyLock(LOCK_MODE_FULL, lastRunningPkg, false, null);
+            }
         }
     }
 
@@ -1886,11 +1887,17 @@ public class LockManager {
             recoders = recoders.substring(0, recoders.length() - 1);
             String[] recoderList = recoders.split(";");
             for (String recoder : recoderList) {
+                // com.mobisystems.office:browser:3;这种情况貌似会crash
                 sIndex = recoder.indexOf(':');
                 if (sIndex != -1) {
                     temp = QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
                     temp.pkg = recoder.substring(0, sIndex);
-                    temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
+                    try {
+                        temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
+                    } catch (Exception e) {
+                        LeoLog.e(TAG, "parse recoder ex, recoder: " + recoder, e);
+                        continue;
+                    }
                     mAppLaunchRecorders.add(temp);
                 }
             }
@@ -1946,11 +1953,11 @@ public class LockManager {
             AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
         }
     }
-    
+
     public void clearDrawableColor() {
         mDrawableColors.clear();
     }
-    
+
     public int getDrawableColorId(Drawable drawable) {
         Integer value = mDrawableColors.get(drawable);
         if (value == null) {
@@ -1958,7 +1965,7 @@ public class LockManager {
         }
         return value.intValue();
     }
-    
+
     public void putDrawableColorId(Drawable drawable, int id) {
         mDrawableColors.put(drawable, id);
     }

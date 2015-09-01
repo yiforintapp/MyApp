@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
-import android.net.Uri;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Handler;
@@ -28,7 +27,6 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
-import android.view.View;
 import android.widget.RemoteViews;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -36,7 +34,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
-import com.leo.appmaster.applocker.receiver.showTrafficAlof;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.home.HomeActivity;
@@ -53,7 +50,8 @@ import com.leo.appmaster.utils.Utilities;
 
 @SuppressLint("NewApi")
 public class TaskDetectService extends Service {
-
+    private static final String TAG = "TaskDetectService";
+    protected static final boolean DBG = false;
     public static final String EXTRA_STARTUP_FROM = "start_from";
 
     public static final String PRETEND_PACKAGE = "pretent_pkg";
@@ -79,6 +77,8 @@ public class TaskDetectService extends Service {
     private ScheduledExecutorService mScheduledExecutor;
     private ScheduledFuture<?> mDetectFuture;
     private TimerTask mDetectTask;
+    // sony 5.1.1及Android M以上系统使用
+    private DetectThreadCompat mDetectThreadCompat;
 
     private TaskChangeHandler mLockHandler;
     // private TaskDetectBinder mBinder = new TaskDetectBinder();
@@ -124,9 +124,7 @@ public class TaskDetectService extends Service {
         mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
         // sendQuickPermissionOpenNotification(getApplicationContext());
-
         language = AppwallHttpUtil.getLanguage();
-
         super.onCreate();
     }
 
@@ -187,6 +185,10 @@ public class TaskDetectService extends Service {
             mDetectFuture = null;
             mDetectTask = null;
         }
+        if (mDetectThreadCompat != null) {
+            mDetectThreadCompat.interrupt();
+            mDetectThreadCompat = null;
+        }
     }
 
     private void stopFlowTask() {
@@ -199,11 +201,32 @@ public class TaskDetectService extends Service {
 
     private void startDetectTask() {
         stopDetectTask();
-        // for android 5.0, set period to 200, AM-1255
-        int period = Build.VERSION.SDK_INT > 19 ? 200 : 100;
-        mDetectTask = new DetectTask();
-        mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period,
-                TimeUnit.MILLISECONDS);
+        if (Build.VERSION.SDK_INT <= 21 || isGetRunningProcessAvailable()) {// Android
+                                                                            // 5.1.1及以下
+            // for android 5.0, set period to 200, AM-1255
+            int period = Build.VERSION.SDK_INT > 19 ? 200 : 100;
+            mDetectTask = new DetectTask();
+            mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period,
+                    TimeUnit.MILLISECONDS);
+        } else {
+            mDetectThreadCompat = new DetectThreadCompat(mLockHandler);
+            mDetectThreadCompat.start();
+        }
+    }
+
+    /**
+     * getRunningAppProcesses是否可用
+     * 
+     * @return
+     */
+    private boolean isGetRunningProcessAvailable() {
+        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
+        List<RunningAppProcessInfo> infos = am.getRunningAppProcesses();
+
+        if (infos.size() > 5)
+            return true;
+
+        return false;
     }
 
     public void checkFloatWindow() {
@@ -212,6 +235,7 @@ public class TaskDetectService extends Service {
             startFloatWindowTask();
             initFloatWindowData();
         } else {
+            LeoLog.d("FloatWindowTask", "没有启动PG内快捷手势停止使用");
             stopFloatWindowTask();
         }
     }
@@ -366,17 +390,16 @@ public class TaskDetectService extends Service {
         }
         // 设置对应IMAGEVIEW的ID的资源图片
         view_custom.setImageViewResource(R.id.appwallIV, R.drawable.boosticon);
-        view_custom.setTextViewText(R.id.appwallNameTV,
-                getApplicationContext().getString(R.string.clean_mem_notify_big));
-        // view_custom.setTextViewText(R.id.app_precent,
-        // getApplicationContext().getString(R.string.clean_mem_notify_big_right));
-        view_custom.setTextViewText(R.id.appwallDescTV,
-                getApplicationContext().getString(R.string.clean_mem_notify_small));
         if ("zh".equalsIgnoreCase(language)) {
             view_custom.setTextViewText(R.id.app_precent, mProgress + "%");
         } else {
             view_custom.setTextViewText(R.id.app_precent, " " + mProgress + "%");
         }
+        // view_custom.setTextViewText(R.id.app_precent,
+        // getApplicationContext().getString(R.string.clean_mem_notify_big_right));
+        view_custom.setTextViewText(R.id.appwallDescTV,
+                getApplicationContext().getString(R.string.clean_mem_notify_small));
+        view_custom.setTextViewText(R.id.app_precent, " " + mProgress + "%");
         NotificationCompat.Builder mBuilder = new Builder(this);
         mBuilder.setContent(view_custom)
                 .setWhen(System.currentTimeMillis())// 通知产生的时间，会在通知信息里显示
@@ -449,19 +472,15 @@ public class TaskDetectService extends Service {
             if (Build.VERSION.SDK_INT > 19) { // Android L and above
                 List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
                 for (RunningAppProcessInfo pi : list) {
+                    // Foreground or Visible
                     if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
-                            /*
-                             * Foreground or Visible
-                             */
+                            // Filter provider and service
                             && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
-                            /*
-                             * Filter provider and service
-                             */
+                            // RunningAppProcessInfo.FLAG_HAS_ACTIVITIES --> 0x4
+                            // Must have activities
                             && (0x4 & pi.flags) > 0
+                            // one activity is on the top
                             && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
-                        /*
-                         * Must have activities and one activity is on the top
-                         */
                         String pkgList[] = pi.pkgList;
                         if (pkgList != null && pkgList.length > 0) {
                             pkgName = pkgList[0];
@@ -472,21 +491,22 @@ public class TaskDetectService extends Service {
                             if (pkgName.equals(getPackageName())) {
                                 activityName = TaskChangeHandler.LOCKSCREENNAME;
                                 try {
-                                    List<RunningTaskInfo> tasks = mActivityManager
-                                            .getRunningTasks(1);
+                                    List<RunningTaskInfo> tasks = mActivityManager.getRunningTasks(1);
                                     if (tasks != null && tasks.size() > 0) {
                                         RunningTaskInfo topTaskInfo = tasks.get(0);
+                                        String topPkg = topTaskInfo.topActivity.getPackageName();
+                                        // 上面获取前台进程有误，获取到非前台App，但获取到的栈是正常的，就会出现，包名和activity名字不属于同一个包得尴尬情况 
+                                        if (topPkg != null && !topPkg.equals(pkgName)) return;
+                                        
                                         if (topTaskInfo.baseActivity != null) {
-                                            baseActivity = topTaskInfo.baseActivity
-                                                    .getShortClassName();
+                                            baseActivity = topTaskInfo.baseActivity.getShortClassName();
                                         }
                                         if (topTaskInfo.topActivity != null) {
-                                            activityName = topTaskInfo.topActivity
-                                                    .getShortClassName();
+                                            activityName = topTaskInfo.topActivity.getShortClassName();
                                         }
                                     }
                                 } catch (Exception e) {
-
+                                    LeoLog.e(TAG, "get top activity and base activity ex.");
                                 }
                             } else {
                                 activityName = pi.processName;
@@ -569,6 +589,9 @@ public class TaskDetectService extends Service {
             mRunnable = new Runnable() {
                 @Override
                 public void run() {
+                    if (DBG) {
+                        LeoLog.i(TAG, "快捷手势在运行");
+                    }
                     int screenStatus = Utilities.isScreenType(getApplicationContext());
                     if (screenStatus != -1) {
                         // int value =

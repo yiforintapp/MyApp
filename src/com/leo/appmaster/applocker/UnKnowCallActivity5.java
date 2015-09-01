@@ -58,7 +58,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     private AppMasterPreference sp_unknowcall;
     private Vibrator vib;
     private Timer mTimer;
-    
+
     private ObjectAnimator mMoveX;
     private ObjectAnimator mMoveY;
 
@@ -150,12 +150,13 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
 
     protected void showTransDonghua() {
         isShowing = true;
-
+        LeoLog.d("testshowwick", "showTransDonghua");
         if (!isLunXun) {
             setTimerTask();
         }
         if (mMoveX == null) {
-            mMoveX = ObjectAnimator.ofFloat(iv_hands, "translationX", 0, mBanJing, mBanJing, mZhiJing);
+            mMoveX = ObjectAnimator.ofFloat(iv_hands, "translationX", 0, mBanJing, mBanJing,
+                    mZhiJing);
             mMoveX.setDuration(2500);
         }
 
@@ -164,13 +165,15 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
             mMoveY.setDuration(2500);
         }
 
+        mMoveX.setRepeatCount(ObjectAnimator.INFINITE);
+        mMoveY.setRepeatCount(ObjectAnimator.INFINITE);
         mMoveX.start();
-        mMoveY.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                showTransDonghua();
-            }
-        });
+        // mMoveY.addListener(new AnimatorListenerAdapter() {
+        // @Override
+        // public void onAnimationEnd(Animator animation) {
+        // showTransDonghua();
+        // }
+        // });
         mMoveY.start();
     }
 
@@ -439,7 +442,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
             mTimer.purge();
             mTimer = null;
         }
-        
+
         // 解决内存泄露
         if (mMoveX != null) {
             mMoveX.end();

@@ -363,5 +363,14 @@
         <item name="@android:windowEnterAnimation">@anim/right_gesture_popup_show</item>
         <item name="@android:windowExitAnimation">@anim/right_gesture_popup_hide</item>
     </style>
+    
+    
+    <style name="translucent">
+    <item name="android:windowNoTitle">true</item>
+    <item name="android:windowBackground">@color/translucent_background</item>
+    <item name="android:windowIsTranslucent">true</item>
+    
+
+    </style>
 
 </resources>

@@ -98,9 +98,7 @@ public class QuickGestureManager {
     public int screenSpace;// 根布局与屏幕高的差值
     public boolean isMessageReadRedTip;
     public String privacyLastRecord;// RECORD_CALL:最后记录为通话记录，RECORD_MSM：最后记录为短信
-
     public boolean isCallLogRead;
-
     private QuickGestureFilterAppDialog quickSwitch;
 
     private QuickGestureFilterAppDialog commonApp;
@@ -109,6 +107,7 @@ public class QuickGestureManager {
         mContext = ctx.getApplicationContext();
         mSpSwitch = AppMasterPreference.getInstance(mContext);
         mDeletedBusinessItems = new ArrayList<String>();
+        screenSpace = AppMasterPreference.getInstance(ctx).getRootViewAndWindowHeighSpace();
         loadDeletedBusinessItems();
     }
 
@@ -118,7 +117,7 @@ public class QuickGestureManager {
         }
         return mInstance;
     }
-
+    
     public void init() {
         if (!mInited) {
             mInited = true;
@@ -1244,7 +1243,7 @@ public class QuickGestureManager {
             quickGestureShortcut.putExtra("duplicate", false);
             quickGestureShortcut.putExtra("from_shortcut", true);
             mContext.sendBroadcast(quickGestureShortcut);
-            prefernece.edit().putBoolean("shortcut_quickGesture", true).commit();
+            prefernece.edit().putBoolean("shortcut_quickGesture", true).apply();
         }
     }
 

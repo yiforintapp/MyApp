@@ -13,7 +13,6 @@ import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -23,11 +22,11 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -37,11 +36,10 @@ import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.AppInfo;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -250,8 +248,7 @@ public class LockModeEditActivity extends BaseActivity implements
 
         mLastSelectApp = (AppInfo) view.getTag();
         AppInfo info = null;
-        LockManager lm = LockManager.getInstatnce();
-        if (mLastSelectApp.isLocked) {
+        if (mLastSelectApp != null && mLastSelectApp.isLocked) {
             mLastSelectApp.isLocked = false;
             for (AppInfo baseInfo : mLockedList) {
                 if (baseInfo.packageName.equals(mLastSelectApp.packageName)) {

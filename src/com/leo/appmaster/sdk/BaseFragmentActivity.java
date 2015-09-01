@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.sdk;
 
 /**
@@ -12,28 +13,30 @@ import com.leo.appmaster.AppMasterApplication;
 
 public class BaseFragmentActivity extends FragmentActivity {
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		AppMasterApplication.getInstance().addActivity(this);
-		super.onCreate(savedInstanceState);
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        AppMasterApplication.getInstance().addActivity(this);
+        super.onCreate(savedInstanceState);
+    }
 
-	@Override
-	protected void onDestroy() {
-		AppMasterApplication.getInstance().removeActivity(this);
-		super.onDestroy();
-	}
+    @Override
+    protected void onDestroy() {
+        AppMasterApplication.getInstance().removeActivity(this);
+        super.onDestroy();
+    }
 
-	@Override
+    @Override
 	protected void onResume() {
 		super.onResume();
 		SDKWrapper.onResume(this);
+		AppMasterApplication.getInstance().resumeActivity(this);
 	}
 
-	@Override
-	protected void onPause() {
-	    SDKWrapper.onPause(this);
-		super.onPause();
-	}
+    @Override
+    protected void onPause() {
+        SDKWrapper.onPause(this);
+        super.onPause();
+        AppMasterApplication.getInstance().pauseActivity(this);
+    }
 
 }

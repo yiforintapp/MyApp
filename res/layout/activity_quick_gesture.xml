@@ -175,28 +175,29 @@
                         android:layout_height="match_parent"
                         android:src="@drawable/play" />
                 </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/slide_guide_setting"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/slide_guide_show"
-                    android:layout_marginRight="68dp"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/quick_gesture_slide_setting_content"
-                    android:textColor="@color/quick_intro_color"
-                    android:textSize="12dp" />
-
-                <Button
+                
+                                <Button
                     android:id="@+id/slide_setting_button"
-                    android:layout_width="60dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="28dp"
+                    android:minWidth="60dp"
                     android:layout_alignParentRight="true"
                     android:layout_alignTop="@+id/slide_guide_setting"
                     android:background="@drawable/manager_done_button_selecter"
                     android:text="@string/setting"
                     android:textColor="@color/white"
                     android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/slide_guide_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/slide_guide_show"
+                    android:layout_toLeftOf="@id/slide_setting_button"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/quick_gesture_slide_setting_content"
+                    android:textColor="@color/quick_intro_color"
+                    android:textSize="12dp" />
             </RelativeLayout>
 
             <!-- gesture edit guide -->

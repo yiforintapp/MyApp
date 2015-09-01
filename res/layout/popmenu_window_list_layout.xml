@@ -2,16 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="0dp"
-    android:paddingRight="0dp"
-	android:background="@drawable/bg" 
+    android:paddingLeft="6dp"
+    android:paddingRight="6dp"
+	android:background="@drawable/popup_menu_bg" 
     android:orientation="vertical" >
 <!-- 	android:background="@color/app_hot_text" -->
 
 <!--         android:background="@color/app_usage_text" -->
     <ListView
                 android:id="@+id/menu_list"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
     	android:overScrollMode="never"
         android:divider="@drawable/list_divider"

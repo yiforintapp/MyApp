@@ -3,15 +3,18 @@ package com.leo.appmaster.appmanage.view;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -38,6 +41,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
@@ -47,12 +51,16 @@ import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager.AppBackupDataListener;
 import com.leo.appmaster.backup.AppDeleteAdapter;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
+import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.quickgestures.ui.IswipUpdateTipDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -69,6 +77,10 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public static final String MESSAGE_ADD_APP = "message_add_app";
     public static final String DAY_TRAFFIC_SETTING = "day_traffic_setting";
     public static final String FINISH_HOME_ACTIVITY_FALG = "finish_home_activity";
+    public static final String ISWIPE_CANCEL_RED_TIP = "iswipe_cancel_red_tip";
+    public static final String PG_TO_ISWIPE = "pg_to_iswipe";
+    public static final String ISWIPE_FIRST_TIP = "iswipe_first_tip";
+    public static final String ISWIPE_NO_FIRST_TIP = "iswipe_no_firt_tip";
     public static final int DONGHUA_CHANGE_TEXT = 0;
     public static final int DONGHUA_SHOW_BEGIN = 1;
     public static boolean isClean = false;
@@ -78,7 +90,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     public boolean isGestureAnimating = false;
     private int mNowDongHuaWhere = 0;
     private int lastPosition = -1;
-    private boolean mIsGestureIconWithShadowTip=false;
+    private boolean mIsGestureIconWithShadowTip = false;
 
     // private boolean isReNewFragment = false;
 
@@ -112,6 +124,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     private ArrayList<AppItemInfo> DeleteDataList;
     private String deleteDataAllSize;
     private int mProgress = 0;
+    private IswipUpdateTipDialog mAppManagerIswipDialog;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -136,15 +149,14 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onResume() {
         super.onResume();
-//        if(mIsGestureIconWithShadowTip)
-//        {
-//            mGestureIcon.setImageResource(R.drawable.gesture_tab_icon);
-//            mIsGestureIconWithShadowTip=false;
-//        }
-        
+        // if(mIsGestureIconWithShadowTip)
+        // {
+        // mGestureIcon.setImageResource(R.drawable.gesture_tab_icon);
+        // mIsGestureIconWithShadowTip=false;
+        // }
+
         if (sp_homeAppManager.getQuickGestureRedTip()) {
-            
-          
+
             mQuickGestureRedTip.setVisibility(View.VISIBLE);
         } else {
 
@@ -291,7 +303,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         tv_backup_num = (TextView) mHeadView.findViewById(R.id.tv_backup_num);
 
         mCleaner = ProcessCleaner.getInstance(mActivity);
-        mDeleteManager = AppMasterApplication.getInstance().getBuckupManager();
+        mDeleteManager = AppBackupRestoreManager.getInstance(mActivity);
         mDeleteManager.registerBackupListener(this);
         mDeleteAdapter = new AppDeleteAdapter(mDeleteManager, HomeAppManagerFragment.this.mActivity);
         resources = AppMasterApplication.getInstance().getResources();
@@ -335,8 +347,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     deleteDataAllSize + resources.getString(R.string.first_used_space)
                     );
         }
-        AppBackupRestoreManager appBackupRestoreManager = new AppBackupRestoreManager(
-                mActivity.getApplicationContext());
+        AppBackupRestoreManager appBackupRestoreManager = AppBackupRestoreManager
+                .getInstance(mActivity);
         int RestoreListSize = appBackupRestoreManager.getRestoreList().size();
 
         backUpSpan = setTextColor(
@@ -356,7 +368,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         int start = startWord.length();
         int end = endWord.length();
         int total = totalWord.length();
-        if(end > total) {
+        if (end > total) {
             end = total;
         }
         String str = totalWord;
@@ -374,7 +386,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         int start = startWord.length();
         int end = endWord.length();
         int total = totalWord.length();
-        if(end > total) {
+        if (end > total) {
             end = total;
         }
         String str = totalWord;
@@ -418,9 +430,15 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 startActivity(mIntent);
                 break;
             case R.id.bg_show_dl:
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "boost", "home");
+                // real code
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "boost",
+                        "home");
                 Intent dlIntent = new Intent(mActivity, EleActivity.class);
                 startActivity(dlIntent);
+                // test code
+                // Intent dlIntent = new Intent(mActivity,
+                // TestPushActivity.class);
+                // startActivity(dlIntent);
                 break;
             case R.id.iv_donghua:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "newboost");
@@ -436,17 +454,88 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_guide", "pop_y");
                     mGestureIconBg.setVisibility(View.GONE);
                 }
-                startQuickGestureActivity();
-                // Intent intent1 = new Intent(Intent.ACTION_VIEW);
-                // intent1.setType("vnd.android.cursor.dir/calls");
-                // intent1.setAction(Intent.ACTION_CALL_BUTTON);
-                // try {
-                // startActivity(intent1);
-                // } catch (Exception e) {
-                // e.printStackTrace();
-                // }
+                /* ISwip启动处理 */
+                if (sp_homeAppManager.getQuickGestureRedTip() == true) {
+                    sp_homeAppManager.setQuickGestureRedTip(false);
+                    mQuickGestureRedTip.setVisibility(View.GONE);
+                    LeoEventBus.getDefaultBus().post(new BackupEvent(ISWIPE_CANCEL_RED_TIP));
+                }
+                startQuickGestureHandler();
                 break;
         }
+    }
+
+    private void startQuickGestureHandler() {
+        boolean installISwipe = ISwipUpdateRequestManager.getInstance(getActivity())
+                .isInstallIsiwpe();
+        // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
+        if (!ISwipUpdateRequestManager.getInstance(getActivity()).isUseIswipUser()) {
+            /* 新用户 */
+            startISwipHandlerForInstallIS(installISwipe);
+        } else {
+            /* 老用户 */
+            startISwipHandlerForUninstallIS(installISwipe);
+        }
+    }
+
+    private void startISwipHandlerForInstallIS(boolean flag) {
+        if (!flag) {
+            /* 下载ISwip对话框 */
+            showDownLoadISwipDialog(getActivity());
+            // ISwipUpdateRequestManager.getInstance(getActivity()).iSwipDownLoadHandler();
+            
+        } else {
+            /* 启动ISwipe主页 */
+            startISwipIntent();
+        }
+    }
+
+    private void startISwipHandlerForUninstallIS(boolean flag) {
+        if (flag) {
+            /* 关闭pg内快捷手势插件 */
+            closePgForIswipe();
+            /* 启动ISwipe主页 */
+            startISwipIntent();
+        } else {
+            /* 启动pg内快捷手势 */
+            startQuickGestureActivity();
+        }
+    }
+
+    private void closePgForIswipe() {
+        boolean useUserFlag = ISwipUpdateRequestManager.getInstance(getActivity())
+                .isUseIswipUser();
+        AppMasterPreference sp = AppMasterPreference.getInstance(getActivity());
+        if (useUserFlag && sp.getSwitchOpenQuickGesture()) {
+            sp.setSwitchOpenQuickGesture(false);
+        }
+    }
+
+    private void startISwipIntent() {
+        if (sp_homeAppManager.getQuickGestureRedTip()) {
+            sp_homeAppManager.setQuickGestureRedTip(false);
+            mQuickGestureRedTip.setVisibility(View.GONE);
+        }
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        ComponentName cn = new ComponentName(AppLoadEngine.ISWIPE_PACKAGENAME,
+                "com.leo.iswipe.activity.QuickGestureActivity");
+        intent.setComponent(cn);
+        boolean iswipeFirstTip = AppMasterPreference.getInstance(getActivity())
+                .getFristSlidingTip();
+        if (iswipeFirstTip) {
+            intent.putExtra(PG_TO_ISWIPE, ISWIPE_FIRST_TIP);
+        } else {
+            intent.putExtra(PG_TO_ISWIPE, ISWIPE_NO_FIRST_TIP);
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            LockManager.getInstatnce().timeFilterSelf();
+            LockManager.getInstatnce()
+                    .addFilterLockPackage(AppLoadEngine.ISWIPE_PACKAGENAME, false);
+            startActivity(intent);
+        } catch (Exception e) {
+        }
+
     }
 
     private void cleanMem() {
@@ -793,8 +882,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             public void onAnimationEnd(Animator animation) {
                 lastAlphaAnimator.start();
                 isGestureAnimating = false;
-//                mGestureIcon.setImageResource(R.drawable.quick_gesture_icon_withtip);
-//                mIsGestureIconWithShadowTip=true;
+                // mGestureIcon.setImageResource(R.drawable.quick_gesture_icon_withtip);
+                // mIsGestureIconWithShadowTip=true;
             }
         });
 
@@ -810,7 +899,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         AnimatorSet set = new AnimatorSet();
         set.playTogether(alphaAnimator, gestureSmall);
         set.start();
-        
+
     }
 
     public void setGestureTabBgVisibility(int visiable) {
@@ -819,5 +908,46 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                 mGestureIconBg.setVisibility(visiable);
             }
         }
+    }
+
+    private void showDownLoadISwipDialog(Context context) {
+        LeoLog.i("HomeAppManagerFragment", "HomeAppManagerFragment中的Dialog");
+        if (mAppManagerIswipDialog == null) {
+            mAppManagerIswipDialog = new IswipUpdateTipDialog(context);
+        }
+        mAppManagerIswipDialog.setVisiblilyTitle(false);
+        String contentButtonText = context.getResources().getString(
+                R.string.first_open_quick_gesture_dialog_tip_cotent);
+        mAppManagerIswipDialog.setContextText(contentButtonText);
+        String leftButtonText = context.getResources().getString(
+                R.string.quick_first_tip_dialog_left_bt);
+        mAppManagerIswipDialog.setLeftButtonText(leftButtonText);
+        String rightButtonText = context.getResources().getString(
+                R.string.quick_first_tip_dialog_right_bt);
+        mAppManagerIswipDialog.setRightButtonText(rightButtonText);
+        mAppManagerIswipDialog.setLeftListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                /* 稍后再说 */
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_iSwipe", "new_dia_n");
+                if (mAppManagerIswipDialog != null) {
+                    mAppManagerIswipDialog.dismiss();
+                }
+            }
+        });
+        mAppManagerIswipDialog.setRightListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                /* 立即下载 */
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_iSwipe", "new_dia_y");
+                ISwipUpdateRequestManager.getInstance(getActivity()).iSwipDownLoadHandler();
+                if (mAppManagerIswipDialog != null) {
+                    mAppManagerIswipDialog.dismiss();
+                }
+            }
+        });
+        mAppManagerIswipDialog.show();
     }
 }

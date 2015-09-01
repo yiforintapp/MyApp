@@ -1558,14 +1558,8 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
-
-        cachedThreadPool = AppMasterApplication.getInstance().getExecutorService();
-
-        // if (cachedThreadPool == null) {
-        // cachedThreadPool = Executors.newCachedThreadPool();
-        // }
-
-        cachedThreadPool.execute(new Runnable() {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            
             @Override
             public void run() {
                 cleanMem();

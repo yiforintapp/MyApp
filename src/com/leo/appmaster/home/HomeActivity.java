@@ -57,7 +57,8 @@ import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.appmanage.HotAppActivity;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
@@ -71,11 +72,12 @@ import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.quickgestures.ui.IswipUpdateTipDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureTipDialog;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoHomePopMenu;
@@ -87,6 +89,9 @@ import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.RootChecker;
+import com.leo.appmaster.utils.Utilities;
+import com.mobvista.sdk.m.core.MobvistaAd;
+import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class HomeActivity extends BaseFragmentActivity implements OnClickListener,
         OnItemClickListener,
@@ -94,11 +99,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     private final static String KEY_ROOT_CHECK = "root_check";
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
-    
+
     // 释放系统预加载资源使用
-    private static LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawables = 
+    private static LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawables =
             new LongSparseArray[2];
-    
+
     private ViewStub mViewStub;
     private MultiModeView mMultiModeView;
     private DrawerLayout mDrawerLayout;
@@ -120,8 +125,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
     private ImageView app_hot_tip_icon;
     private int type;
-    private int REQUEST_IS_FROM_APP_LOCK_LIST=1;
-    private boolean mIsFromAppLockList=false;
+    private int REQUEST_IS_FROM_APP_LOCK_LIST = 1;
+    private boolean mIsFromAppLockList = false;
+    private MobvistaAdWall mWallAd;
+    private IswipUpdateTipDialog mIswipDialog;
+    private boolean mShowIswipeFromNotfi;
+    private static final String TAG = "HomeActivity";
+    private static final boolean DBG = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,7 +141,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         initUI();
         tryTransStatusbar();
         // installShortcut();
-        
+
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
@@ -139,22 +149,35 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
         // TODO
-        
+        mobvistaCheck();
         // AM-2128 偶现图片显示异常，先暂时注释掉
         // releaseSysResources();
+        /* 获取是否从iswipe通知进入 */
+        checkIswipeNotificationTo();
     }
-    
+
+    private void checkIswipeNotificationTo() {
+        String fromPrivacyFlag = getIntent()
+                .getStringExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+        if (fromPrivacyFlag != null && ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME
+                .equals(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME)) {
+            ISwipUpdateRequestManager.getInstance(getApplicationContext());
+            mShowIswipeFromNotfi = true;
+            mPagerTab.setCurrentItem(2);
+        }
+    }
+
     /**
      * 释放系统预加载资源，完全无用，占用内存约10M
      */
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-	private void releaseSysResources() {
+    private void releaseSysResources() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             sPreloadedDrawables[0] = new LongSparseArray<Drawable.ConstantState>();
             sPreloadedDrawables[1] = new LongSparseArray<Drawable.ConstantState>();
-            
+
             Resources res = getResources();
-            
+
             try {
                 Field field = res.getClass().getDeclaredField("sPreloadedDrawables");
                 field.setAccessible(true);
@@ -165,30 +188,35 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
-            } 
+            }
         }
     }
 
-//    private void tryIsFromLockMore() {
-//        // TODO Auto-generated method stub
-//        Intent intent = getIntent();
-//        
-//        mIsFromAppLockList= intent.getBooleanExtra("isFromAppLockList", false);            
-//        Log.e("lockmore", "isfromlist"+intent.getBooleanExtra("isFromAppLockList", false));
-//    }
+    // private void tryIsFromLockMore() {
+    // // TODO Auto-generated method stub
+    // Intent intent = getIntent();
+    //
+    // mIsFromAppLockList= intent.getBooleanExtra("isFromAppLockList", false);
+    // Log.e("lockmore",
+    // "isfromlist"+intent.getBooleanExtra("isFromAppLockList", false));
+    // }
 
     // 伪装的引导，当第一次将应用加了所后返回home，弹出提示。
     private void showWeiZhuangTip() {
-        
-//     Log.e("isshow", "isfromlist"+mIsFromAppLockList);
-     Log.e("isshow", "isneed"+AppMasterPreference.getInstance(this).getIsNeedPretendTips()+"");
-     Log.e("isshow", "lockedcount"+ LockManager.getInstatnce().getLockedAppCount()+"");   
-     Log.e("isshow", "getpretendtype"+AppMasterPreference.getInstance(this).getPretendLock()+"");
-     Log.e("isshow", "getisfromAppList"+AppMasterPreference.getInstance(this).getIsFromLockList()+"");
+
+        // Log.e("isshow", "isfromlist"+mIsFromAppLockList);
+        Log.e("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
+                + "");
+        Log.e("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
+        Log.e("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
+                + "");
+        Log.e("isshow", "getisfromAppList"
+                + AppMasterPreference.getInstance(this).getIsFromLockList() + "");
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
-                && LockManager.getInstatnce().getLockedAppCount() > 0&&AppMasterPreference.getInstance(this).getPretendLock()==0&&
-                AppMasterPreference.getInstance(this).getIsFromLockList()==true)
-            {
+                && LockManager.getInstatnce().getLockedAppCount() > 0
+                && AppMasterPreference.getInstance(this).getPretendLock() == 0 &&
+                AppMasterPreference.getInstance(this).getIsFromLockList() == true)
+        {
             if (mSelfIconDialog == null)
             {
                 mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
@@ -200,9 +228,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             public void onClick(int which) {
                                 if (which == 1)
                                 {
-                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, 
+                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
                                             "coverguide", "cli_y");
-                                    
+
                                     mSelfIconDialog.dismiss();
                                     if (mFragmentHolders[0].fragment != null)
                                     {
@@ -213,9 +241,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                         fragment.playPretendEnterAnim();
                                     }
                                 }
-                                else if(which==0)
+                                else if (which == 0)
                                 {
-                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, 
+                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
                                             "coverguide", "cli_n");
                                 }
                                 dismissDialog(mSelfIconDialog);
@@ -225,51 +253,59 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             }
             mSelfIconDialog.setSureButtonText(getString(R.string.button_disguise_guide_select));
             mSelfIconDialog.setLeftBtnStr(getString(R.string.button_disguise_guide_cancel));
-            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha to  du
+            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha
+                                                                                          // to
+                                                                                          // du
             mSelfIconDialog.setCanceledOnTouchOutside(false);
             mSelfIconDialog.show();
             AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
         }
         else
-        {          
+        {
             AppMasterPreference.getInstance(this).setIsHomeToLockList(false);
             AppMasterPreference.getInstance(this).setIsFromLockList(false);
             AppMasterPreference.getInstance(this).setIsClockToLockList(false);
         }
     }
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        // TODO Auto-generated method stub
-//        Log.e("poha","resultCode"+resultCode);
-//        Log.e("poha","reqCode"+requestCode);
-//        if(resultCode==RESULT_OK)
-//        {
-//            Log.e("poha","in if");
-////            switch (requestCode) {
-////                           
-////                   case 0:
-//            mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
-//                    
-//                    
-//                    
-//                    
-//                    
-//                    
-//                    Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======" +data.getBooleanExtra("isFromAppLockList", false));
-////                    break;
-////              
-////                default:
-////                    break;
-////            }
-//        }
-        
-//    }
-    
-    
+
+    // @Override
+    // protected void onActivityResult(int requestCode, int resultCode, Intent
+    // data) {
+    // // TODO Auto-generated method stub
+    // Log.e("poha","resultCode"+resultCode);
+    // Log.e("poha","reqCode"+requestCode);
+    // if(resultCode==RESULT_OK)
+    // {
+    // Log.e("poha","in if");
+    // // switch (requestCode) {
+    // //
+    // // case 0:
+    // mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
+    //
+    //
+    //
+    //
+    //
+    //
+    // Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======"
+    // +data.getBooleanExtra("isFromAppLockList", false));
+    // // break;
+    // //
+    // // default:
+    // // break;
+    // // }
+    // }
+
+    // }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
+        if (mWallAd != null) {
+            mWallAd.release();
+            mWallAd = null;
+        }
     }
 
     @Override
@@ -279,8 +315,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     public void onEventMainThread(BackupEvent event) {
-        if (HomeAppManagerFragment.FINISH_HOME_ACTIVITY_FALG.equals(event.eventMsg)) {
+        String msg = event.eventMsg;
+        if (HomeAppManagerFragment.FINISH_HOME_ACTIVITY_FALG.equals(msg)) {
             this.finish();
+        } else if (HomeAppManagerFragment.ISWIPE_CANCEL_RED_TIP.equals(msg)) {
+            if (mPagerTab != null) {
+                mFragmentHolders[2].isRedTip = false;
+                mPagerTab.notifyDataSetChanged();
+            }
         }
     }
 
@@ -323,7 +365,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mShadeView.setPosition(0);
         mShadeView.setColorChangedListener(this);
         app_hot_tip_icon = (ImageView) mTtileBar.findViewById(R.id.app_hot_tip_icon_);
-
         if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
             app_hot_tip_icon.setVisibility(View.VISIBLE);
         } else {
@@ -415,8 +456,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         type = AppMasterPreference.getInstance(this).getLockType();
 
         judgeShowGradeTip();
-        
-//        tryIsFromLockMore();
+
+        // tryIsFromLockMore();
         showWeiZhuangTip();
         // compute privacy level here to avoid unknown change, such as file
         // deleted outside of your phone.
@@ -448,9 +489,45 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         } else {
             app_hot_tip_icon.setVisibility(View.GONE);
         }
-
+        /* ISwipe升级对话框提示 */
+        showIswipDialog();
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
+
+        ProcessDetectorCompat22.setForegroundScore();
+    }
+
+    private void showIswipDialog() {
+        /* ISwipe升级对话框提示 */
+        if (mShowIswipeFromNotfi) {
+            mShowIswipeFromNotfi = false;
+            boolean installIswipe = ISwipUpdateRequestManager.getInstance(this).isInstallIsiwpe();
+            if (!installIswipe) {
+                LeoLog.e(TAG, "直接显示的iswipe对话框,不用赋值");
+                showDownLoadISwipDialog(this, null);
+            }
+        } else {
+            showIswipeUpdateTip(this, "homeactivity");
+            LeoLog.e(TAG, "需要值显示的iswipe对话框");
+        }
+    }
+
+    private void saveIswipUpdateDate(int checkUpdate, int frequency, int number, String gpUrl,
+            String browserUrl, int downType) {
+        LeoLog.e(Constants.RUN_TAG, "初始化测试数据");
+        AppMasterPreference preference = AppMasterPreference.getInstance(AppMasterApplication
+                .getInstance());
+        preference.setIswipUpdateFlag(checkUpdate);
+        preference.setIswipUpdateFre(frequency);
+        preference.setIswipUpdateNumber(number);
+        if (!Utilities.isEmpty(gpUrl)) {
+            preference.setIswipUpdateGpUrl(gpUrl);
+        }
+        if (!Utilities.isEmpty(browserUrl)) {
+            preference.setIswipUpdateBrowserUrl(browserUrl);
+        }
+        preference.setIswipUpdateDownType(downType);
+
     }
 
     @Override
@@ -560,14 +637,21 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 mLeoPopMenu.setListViewDivider(null);
                 break;
             case R.id.bg_show_hotapp:
-                app_hot_tip_icon.setVisibility(View.GONE);
-                AppMasterPreference.getInstance(this).setHomeFragmentRedTip(false);
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "hot");
-                Intent nIntent = new Intent(HomeActivity.this, HotAppActivity.class);
-                try {
-                    startActivity(nIntent);
-                } catch (Exception e) {
-                }
+                // app_hot_tip_icon.setVisibility(View.GONE);
+                // AppMasterPreference.getInstance(this).setHomeFragmentRedTip(false);
+                // SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
+                // "hot");
+                // Intent nIntent = new Intent(HomeActivity.this,
+                // HotAppActivity.class);
+                // try {
+                // startActivity(nIntent);
+                // } catch (Exception e) {
+                // }
+                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
+                        System.currentTimeMillis());
+                Intent mWallIntent = mWallAd.getWallIntent();
+                startActivity(mWallIntent);
+
                 break;
             default:
                 break;
@@ -579,6 +663,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 ((Selectable) fragment).onScrolling();
             }
         }
+
     }
 
     private List<String> getRightMenuItems() {
@@ -660,7 +745,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     shortcut.putExtra("duplicate", false);
                     shortcut.putExtra("from_shortcut", true);
                     sendBroadcast(shortcut);
-                    prefernece.edit().putBoolean("shortcut", true).commit();
+                    prefernece.edit().putBoolean("shortcut", true).apply();
                 }
                 // boolean appwallFlag =
                 // prefernece.getBoolean("shortcut_appwall", false);
@@ -710,7 +795,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
                                 KEY_ROOT_CHECK, "root");
                     }
-                    prefernece.edit().putBoolean(KEY_ROOT_CHECK, false).commit();
+                    prefernece.edit().putBoolean(KEY_ROOT_CHECK, false).apply();
                 }
             }
 
@@ -734,10 +819,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     boolean haveTip = AppMasterPreference.getInstance(
                             HomeActivity.this).getGoogleTipShowed();
                     if (count >= 25 && !haveTip) {
-                        // LockManager.getInstatnce().timeFilterSelf();
-                        Intent intent = new Intent(HomeActivity.this,
-                                GradeTipActivity.class);
-                        HomeActivity.this.startActivity(intent);
+                        /* google play 评分提示 */
+                        googlePlayScoreTip();
                     }
                     /**
                      * show quick guesture dialog tip
@@ -749,8 +832,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 .getFristDialogTip();
                         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getIsUpdateQuickGestureUser();
-                        Log.i("######", "firstDilaogTip:" + firstDilaogTip);
-                        Log.i("######", "是否为升级用户：" + updateUser);
+                        Log.i("showFirstOpenQuickGestureTip", "是否为升级用户：" + updateUser);
                         if (!updateUser) {
                             boolean isMiui = BuildProperties.isMIUI();
                             boolean isOpenWindow = BuildProperties
@@ -763,21 +845,42 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                     AppMasterPreference.getInstance(HomeActivity.this)
                                             .setFristDialogTip(true);
                                 } else {
-                                    showFirstOpenQuickGestureTipDialog();
-                                    Log.i("######", "新用户提示！");
+                                    /* 系统是否安装iswipe */
+                                    boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
+                                            getApplicationContext()).isInstallIsiwpe();
+                                    if (!isIswipInstall) {
+                                        showFirstOpenQuickGestureTipDialog();
+                                    } else {
+                                        AppMasterPreference.getInstance(HomeActivity.this)
+                                                .setFristDialogTip(true);
+                                    }
+                                    Log.i("showFirstOpenQuickGestureTip", "新用户提示！");
                                 }
                             }
                         } else {
                             // update user
                             if (!firstDilaogTip) {
-                                Log.i("######", "升级用户提示！");
-                                showFirstOpenQuickGestureTipDialog();
+                                Log.i("showFirstOpenQuickGestureTip", "升级用户提示！");
+                                boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
+                                        getApplicationContext()).isInstallIsiwpe();
+                                if (!isIswipInstall) {
+                                    showFirstOpenQuickGestureTipDialog();
+                                } else {
+                                    AppMasterPreference.getInstance(HomeActivity.this)
+                                            .setFristDialogTip(true);
+                                }
                             }
                         }
                     }
                 }
             }
         });
+    }
+
+    private void googlePlayScoreTip() {
+        Intent intent = new Intent(HomeActivity.this,
+                GradeTipActivity.class);
+        HomeActivity.this.startActivity(intent);
     }
 
     @Override
@@ -1139,6 +1242,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             public void onClick(View arg0) {
                 SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
                         "firsd_n");
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "new_guide_n");
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
                 dismissDialog(mQuickGestureTip);
             }
@@ -1148,9 +1252,17 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             public void onClick(View arg0) {
                 SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
                         "firstd_y");
+                /* 系统是否安装iswipe */
+                boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
+                        getApplicationContext()).isInstallIsiwpe();
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
-                startQuickGestureEnterTip();
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
+                if (isIswipInstall) {
+                    startQuickGestureEnterTip();
+                } else {
+                    ISwipUpdateRequestManager.getInstance(HomeActivity.this).iSwipDownLoadHandler();
+                }
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "new_guide_y");
                 dismissDialog(mQuickGestureTip);
             }
         });
@@ -1203,12 +1315,81 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
         fragment.setGestureTabBgVisibility(View.GONE);
     }
-    
+
     private void dismissDialog(Dialog dlg) {
         if (dlg != null) {
             // 消失后释放相关图片资源
             dlg.dismiss();
             dlg = null;
+        }
+    }
+
+    private void mobvistaCheck() {
+        // -----------------Mobvista Sdk--------------------
+
+        // init wall controller
+        // newAdWallController(Context context,String unitid, String fbid)
+        mWallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        if (mWallAd != null) {
+            // preload the wall data
+            mWallAd.preloadWall();
+        }
+
+    }
+
+    private void showDownLoadISwipDialog(Context context, String flag) {
+        if (mIswipDialog == null) {
+            mIswipDialog = new IswipUpdateTipDialog(context);
+        }
+        mIswipDialog.setLeftListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mShowIswipeFromNotfi) {
+                    mShowIswipeFromNotfi = false;
+                    /* 对来自通知栏的统计 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe",
+                            "old_statusbar_n");
+                } else {
+                    /* 非通知栏 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_n");
+                }
+                /* 稍后再说 */
+                if (mIswipDialog != null) {
+                    mIswipDialog.dismiss();
+                }
+            }
+        });
+        mIswipDialog.setRightListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (mShowIswipeFromNotfi) {
+                    mShowIswipeFromNotfi = false;
+                    /* 对来自通知栏的统计 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe",
+                            "old_statusbar_y");
+                } else {
+                    /* 非通知栏 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_y");
+                }
+                /* 立即下载 */
+
+                if (mIswipDialog != null) {
+                    mIswipDialog.dismiss();
+                }
+                ISwipUpdateRequestManager.getInstance(HomeActivity.this).iSwipDownLoadHandler();
+            }
+        });
+        mIswipDialog.setFlag(flag);
+        mIswipDialog.show();
+    }
+
+    /* 不是通知进入主页，显示iswipe更新对话框 */
+    private void showIswipeUpdateTip(Context context, String flag) {
+        boolean tipFlag = ISwipUpdateRequestManager.getInstance(this).getIswipeUpdateTip();
+        if (tipFlag) {
+            showDownLoadISwipDialog(this, flag);
         }
     }
 }

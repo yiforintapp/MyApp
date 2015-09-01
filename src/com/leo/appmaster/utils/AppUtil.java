@@ -19,6 +19,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
@@ -119,15 +120,16 @@ public class AppUtil {
         }
         return d;
     }
-    
+
     /**
      * 获取app图标并缩放至app指定大小
+     * 
      * @param pkg
      * @return
      */
     public static Drawable loadAppIconDensity(String pkg) {
         Context ctx = AppMasterApplication.getInstance();
-        
+
         PackageManager pm = ctx.getPackageManager();
         Drawable appicon = null;
         try {
@@ -138,31 +140,42 @@ public class AppUtil {
             
         }
         
-        if (appicon == null || !BitmapDrawable.class.isInstance(appicon)) {
-            return null;
+        if (appicon == null) {
+            return appicon;
         }
-        
-        BitmapDrawable drawable = (BitmapDrawable) appicon;
-        return getScaledAppIcon(drawable);
+
+        return getScaledAppIcon(appicon);
     }
-    
+
     /**
      * 缩放appicon到指定大小
+     * 
      * @param src
      * @return
      */
-    public static Drawable getScaledAppIcon(BitmapDrawable src) {
+    public static Drawable getScaledAppIcon(Drawable src) {
+        if (src == null) return null;
+        
         Context ctx = AppMasterApplication.getInstance();
-        
-        Bitmap bitmap = src.getBitmap();
-        
+
+        Bitmap bitmap = null;
+        if (src instanceof BitmapDrawable) {
+            bitmap = ((BitmapDrawable) src).getBitmap();
+        } else {
+            bitmap = Bitmap.createBitmap(src.getIntrinsicWidth(),
+                    src.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
+            src.setBounds(0, 0, src.getIntrinsicWidth(), src.getIntrinsicHeight());
+            Canvas c = new Canvas(bitmap);
+            src.draw(c); 
+        }
+
         int size = ctx.getResources().getDimensionPixelSize(R.dimen.app_size);
         if (bitmap.getWidth() > size || bitmap.getHeight() > size) {
             bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
         } else {
             return src;
         }
-        
+
         return new BitmapDrawable(ctx.getResources(), bitmap);
     }
 
@@ -170,6 +183,7 @@ public class AppUtil {
         return TrafficStats.getTotalRxBytes() + TrafficStats.getTotalTxBytes();
     }
 
+    /* 判断打开屏幕是否存在解锁界面 */
     public static boolean isScreenLocked(Context mContext) {
         KeyguardManager mKeyguardManager = (KeyguardManager) mContext
                 .getSystemService(mContext.KEYGUARD_SERVICE);

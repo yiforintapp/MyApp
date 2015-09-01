@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.applocker.manager;
 
-import java.util.Currency;
 import java.util.List;
 
 import android.app.ActivityManager;
@@ -10,6 +9,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -27,7 +27,7 @@ public class TaskChangeHandler {
     public static final String WAITNAME = "WaitActivity";
     public static final String GESTURE = "QuickGesturePopupActivity";
     public static final String WEBVIEW = "WebViewActivity";
-    public static final String AD = "AdMobvistaAct";
+//    public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
     public static final String LAUNCHERBOOST = "HomeBoostActivity";
 
@@ -36,6 +36,8 @@ public class TaskChangeHandler {
 
     private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
     private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
+    
+    private static final boolean DBG = false;
 
     private Context mContext;
     private ActivityManager mAm;
@@ -86,7 +88,9 @@ public class TaskChangeHandler {
         }
         String myPackage = mContext.getPackageName();
         
-        LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+        if (DBG) {
+            LeoLog.i("handleAppLaunch", pkg + "/" + activity);
+        }
         
         //fix bug AM-2134
         if(TextUtils.equals(myPackage, pkg) && activity != null && activity.contains("Launcher")) {
@@ -126,7 +130,7 @@ public class TaskChangeHandler {
                                         .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
                                                 .contains(WAITNAME)
-                                        || activity.contains(WEBVIEW) || activity.contains(AD))
+                                        || activity.contains(WEBVIEW))
                                 || (!unlocked && currentLockScreen))
                         || (unlocked && isLastSelf && mLastRuningActivity
                                 .contains(LOCKSCREENNAME))) {
@@ -142,10 +146,10 @@ public class TaskChangeHandler {
                                         .contains(SPLASHNAME) || activity
                                         .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
-                                                .contains(WAITNAME) || activity.contains(WEBVIEW) || activity
-                                            .contains(AD)) || currentLockScreen)
-                        || (unlocked && isLastSelf && mLastRuningActivity
-                                .contains(LOCKSCREENNAME))) {
+                                                .contains(WAITNAME) || activity.contains(WEBVIEW)) || currentLockScreen)
+                        || (unlocked && isLastSelf && mLastRuningActivity.contains(LOCKSCREENNAME))
+                        // 排出iswipe
+                        || pkg.equals(Constants.ISWIPE_PACKAGE)) {
                     mLastRunningPkg = pkg;
                     mLastRuningActivity = activity;
                     return;

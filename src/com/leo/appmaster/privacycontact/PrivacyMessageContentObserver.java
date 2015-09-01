@@ -31,6 +31,8 @@ import com.leo.appmaster.utils.Utilities;
 
 @SuppressLint("NewApi")
 public class PrivacyMessageContentObserver extends ContentObserver {
+    private static final String TAG = "PrivacyMessageContentObserver";
+    private static final boolean DBG = false;
     private Context mContext;
     public static String CALL_LOG_MODEL = "call_log_model";
     public static String MESSAGE_MODEL = "message_model";
@@ -48,7 +50,10 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     @Override
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
-//        printTestObserverLog(); // 测试打印系统据库变化情况
+        if (DBG) {
+            /* 测试打印系统据库变化情况*/
+            printTestObserverLog();
+        }
         int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
         AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
         boolean isOpenNoReadMessageTip = pref.getSwitchOpenNoReadMessageTip();
@@ -81,14 +86,18 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
             boolean flag = PrivacyContactManager.getInstance(mContext).testValue;
             if (!flag) {
-                Log.d(Constants.RUN_TAG, "onReceive没有执行");
+                if (DBG) {
+                    Log.i(TAG, "onReceive没有执行");
+                }
                 /**
                  * 因为联系人没有执行onReceive取拦截短信，通过onChanage查找拦截，并删除记录，（支持5.0以下系统，5.0
                  * 以上不能对短信操作）
                  */
                 // filterPrivacyContactMsm(cr);
             } else {
-                Log.d(Constants.RUN_TAG, "onReceive执行");
+                if (DBG) {
+                    Log.i(TAG, "onReceive没有执行");
+                }
                 PrivacyContactManager.getInstance(mContext).testValue = false;
             }
             /* 快捷手势未读短信提醒 */
@@ -132,7 +141,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if (contact != null
                                 && !Utilities.isEmpty(contact.getContactNumber())) {
                             String number = contact.getContactNumber();
-                            /* 查询短信中未读的号码是否为隐私联系人*/
+                            /* 查询短信中未读的号码是否为隐私联系人 */
                             ContactBean privacyContact = MessagePrivacyReceiver.getPrivateMessage(
                                     number,
                                     mContext);
@@ -282,11 +291,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                          */
                         restoreRedTipValueForMsm();
                     }
-                    /*查看未读短信时，清除未读操作（包括第三方，或者系统自带短信列表查看）*/
+                    /* 查看未读短信时，清除未读操作（包括第三方，或者系统自带短信列表查看） */
                     if (messages == null
                             || messages.size() <= 0
                             && !PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag) {
-                        /*判断隐私联系人，短信，运营是否还有显示红点的需求，没有了将红点标志设为false*/
+                        /* 判断隐私联系人，短信，运营是否还有显示红点的需求，没有了将红点标志设为false */
                         if ((QuickGestureManager.getInstance(mContext).getQuickNoReadCall() == null || QuickGestureManager
                                 .getInstance(mContext).getQuickNoReadCall().size() <= 0)/* 未读通话 */
                                 && AppMasterPreference.getInstance(mContext)
@@ -301,12 +310,12 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             QuickGestureManager.getInstance(mContext).clearQuickNoReadMessage();
                         }
                         FloatWindowHelper.removeShowReadTipWindow(mContext);
-                        /* 对于不能接受短信广播的机型在这里取清空记录的未读短信数量*/
+                        /* 对于不能接受短信广播的机型在这里取清空记录的未读短信数量 */
                         if (PrivacyContactManager.getInstance(mContext).clearMsmForNoReceiver()) {
                             PrivacyContactManager.getInstance(mContext).messageSize = 0;
                         }
                     }
-                    /*有未读短信时操作*/
+                    /* 有未读短信时操作 */
                     if (messages != null && messages.size() > 0) {
                         if (AppMasterPreference.getInstance(mContext)
                                 .getSwitchOpenNoReadMessageTip()) {
@@ -383,7 +392,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         }
     }
 
-    /*通话记录异步处理*/
+    /* 通话记录异步处理 */
     class CallLogTask extends AsyncTask<ContactBean, ContactBean, Cursor> {
         private ContactBean call;
         private Cursor cursor = null;
