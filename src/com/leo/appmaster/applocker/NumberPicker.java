@@ -16,6 +16,9 @@
 
 package com.leo.appmaster.applocker;
 
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -23,10 +26,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Paint.Align;
-import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.text.InputFilter;
 import android.text.InputType;
@@ -43,25 +43,14 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
-import android.view.accessibility.AccessibilityNodeInfo;
-import android.view.accessibility.AccessibilityNodeProvider;
 import android.view.animation.DecelerateInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 import android.widget.TextView;
-
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Locale;
 
 import com.leo.appmaster.R;
 
@@ -468,11 +457,6 @@ public class NumberPicker extends LinearLayout {
     private boolean mDecrementVirtualButtonPressed;
 
     /**
-     * Provider to report to clients the semantic structure of this widget.
-     */
-    private SupportAccessibilityNodeProvider mAccessibilityNodeProvider;
-
-    /**
      * Helper class for managing pressed state of the virtual buttons.
      */
     private final PressedStateHelper mPressedStateHelper;
@@ -745,13 +729,6 @@ public class NumberPicker extends LinearLayout {
 
         updateInputTextView();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            // If not explicitly specified this view is important for
-            // accessibility.
-            if (getImportantForAccessibility() == IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
-                setImportantForAccessibility(IMPORTANT_FOR_ACCESSIBILITY_YES);
-            }
-        }
     }
 
     @Override
@@ -1033,55 +1010,6 @@ public class NumberPicker extends LinearLayout {
             return super.dispatchHoverEvent(event);
         }
 
-        if (((AccessibilityManager) getContext().getSystemService(
-                Context.ACCESSIBILITY_SERVICE)).isEnabled()) {
-            final int eventY = (int) event.getY();
-            final int hoveredVirtualViewId;
-            if (eventY < mTopSelectionDividerTop) {
-                hoveredVirtualViewId = AccessibilityNodeProviderImpl.VIRTUAL_VIEW_ID_DECREMENT;
-            } else if (eventY > mBottomSelectionDividerBottom) {
-                hoveredVirtualViewId = AccessibilityNodeProviderImpl.VIRTUAL_VIEW_ID_INCREMENT;
-            } else {
-                hoveredVirtualViewId = AccessibilityNodeProviderImpl.VIRTUAL_VIEW_ID_INPUT;
-            }
-            final int action = event.getAction() & MotionEvent.ACTION_MASK;
-            SupportAccessibilityNodeProvider provider = getSupportAccessibilityNodeProvider();
-
-            switch (action) {
-                case MotionEvent.ACTION_HOVER_ENTER: {
-                    provider.sendAccessibilityEventForVirtualView(
-                            hoveredVirtualViewId,
-                            AccessibilityEvent.TYPE_VIEW_HOVER_ENTER);
-                    mLastHoveredChildVirtualViewId = hoveredVirtualViewId;
-                    provider.performAction(hoveredVirtualViewId,
-                            AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS, null);
-                }
-                    break;
-                case MotionEvent.ACTION_HOVER_MOVE: {
-                    if (mLastHoveredChildVirtualViewId != hoveredVirtualViewId
-                            && mLastHoveredChildVirtualViewId != View.NO_ID) {
-                        provider.sendAccessibilityEventForVirtualView(
-                                mLastHoveredChildVirtualViewId,
-                                AccessibilityEvent.TYPE_VIEW_HOVER_EXIT);
-                        provider.sendAccessibilityEventForVirtualView(
-                                hoveredVirtualViewId,
-                                AccessibilityEvent.TYPE_VIEW_HOVER_ENTER);
-                        mLastHoveredChildVirtualViewId = hoveredVirtualViewId;
-                        provider.performAction(hoveredVirtualViewId,
-                                AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                                null);
-                    }
-                }
-                    break;
-                case MotionEvent.ACTION_HOVER_EXIT: {
-                    provider.sendAccessibilityEventForVirtualView(
-                            hoveredVirtualViewId,
-                            AccessibilityEvent.TYPE_VIEW_HOVER_EXIT);
-                    mLastHoveredChildVirtualViewId = View.NO_ID;
-                }
-                    break;
-            }
-        }
         return false;
     }
 
@@ -1570,25 +1498,7 @@ public class NumberPicker extends LinearLayout {
         }
     }
 
-    @Override
-    public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
-        super.onInitializeAccessibilityEvent(event);
-        event.setClassName(NumberPicker.class.getName());
-        event.setScrollable(true);
-        event.setScrollY((mMinValue + mValue) * mSelectorElementHeight);
-        event.setMaxScrollY((mMaxValue - mMinValue) * mSelectorElementHeight);
-    }
 
-    @Override
-    public AccessibilityNodeProvider getAccessibilityNodeProvider() {
-        if (!mHasSelectorWheel) {
-            return super.getAccessibilityNodeProvider();
-        }
-        if (mAccessibilityNodeProvider == null) {
-            mAccessibilityNodeProvider = new SupportAccessibilityNodeProvider();
-        }
-        return mAccessibilityNodeProvider.mProvider;
-    }
 
     /**
      * Makes a measure spec that tries greedily to use the max value.
@@ -2299,520 +2209,7 @@ public class NumberPicker extends LinearLayout {
         }
     }
 
-    private SupportAccessibilityNodeProvider getSupportAccessibilityNodeProvider() {
-        return new SupportAccessibilityNodeProvider();
-    }
 
-    class SupportAccessibilityNodeProvider {
-
-        AccessibilityNodeProviderImpl mProvider;
-
-        private SupportAccessibilityNodeProvider() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                mProvider = new AccessibilityNodeProviderImpl();
-            }
-        }
-
-        public boolean performAction(int virtualViewId, int action,
-                Bundle arguments) {
-            if (mProvider != null) {
-                return mProvider
-                        .performAction(virtualViewId, action, arguments);
-            }
-
-            return false;
-        }
-
-        public void sendAccessibilityEventForVirtualView(int virtualViewId,
-                int eventType) {
-            if (mProvider != null)
-                mProvider.sendAccessibilityEventForVirtualView(virtualViewId,
-                        eventType);
-        }
-    }
-
-    /**
-     * Class for managing virtual view tree rooted at this picker.
-     */
-    class AccessibilityNodeProviderImpl extends AccessibilityNodeProvider {
-        private static final int UNDEFINED = Integer.MIN_VALUE;
-
-        private static final int VIRTUAL_VIEW_ID_INCREMENT = 1;
-
-        private static final int VIRTUAL_VIEW_ID_INPUT = 2;
-
-        private static final int VIRTUAL_VIEW_ID_DECREMENT = 3;
-
-        private final Rect mTempRect = new Rect();
-
-        private final int[] mTempArray = new int[2];
-
-        private int mAccessibilityFocusedView = UNDEFINED;
-
-        @Override
-        public AccessibilityNodeInfo createAccessibilityNodeInfo(
-                int virtualViewId) {
-            switch (virtualViewId) {
-                case View.NO_ID:
-                    return createAccessibilityNodeInfoForNumberPicker(getScrollX(),
-                            getScrollY(), getScrollX() + (getRight() - getLeft()),
-                            getScrollY() + (getBottom() - getTop()));
-                case VIRTUAL_VIEW_ID_DECREMENT:
-                    return createAccessibilityNodeInfoForVirtualButton(
-                            VIRTUAL_VIEW_ID_DECREMENT,
-                            getVirtualDecrementButtonText(), getScrollX(),
-                            getScrollY(), getScrollX() + (getRight() - getLeft()),
-                            mTopSelectionDividerTop + mSelectionDividerHeight);
-                case VIRTUAL_VIEW_ID_INPUT:
-                    return createAccessibiltyNodeInfoForInputText();
-                case VIRTUAL_VIEW_ID_INCREMENT:
-                    return createAccessibilityNodeInfoForVirtualButton(
-                            VIRTUAL_VIEW_ID_INCREMENT,
-                            getVirtualIncrementButtonText(),
-                            getScrollX(),
-                            mBottomSelectionDividerBottom - mSelectionDividerHeight,
-                            getScrollX() + (getRight() - getLeft()), getScrollY()
-                                    + (getBottom() - getTop()));
-            }
-            return super.createAccessibilityNodeInfo(virtualViewId);
-        }
-
-        @Override
-        public List<AccessibilityNodeInfo> findAccessibilityNodeInfosByText(
-                String searched, int virtualViewId) {
-            if (TextUtils.isEmpty(searched)) {
-                return Collections.emptyList();
-            }
-            String searchedLowerCase = searched.toLowerCase();
-            List<AccessibilityNodeInfo> result = new ArrayList<AccessibilityNodeInfo>();
-            switch (virtualViewId) {
-                case View.NO_ID: {
-                    findAccessibilityNodeInfosByTextInChild(searchedLowerCase,
-                            VIRTUAL_VIEW_ID_DECREMENT, result);
-                    findAccessibilityNodeInfosByTextInChild(searchedLowerCase,
-                            VIRTUAL_VIEW_ID_INPUT, result);
-                    findAccessibilityNodeInfosByTextInChild(searchedLowerCase,
-                            VIRTUAL_VIEW_ID_INCREMENT, result);
-                    return result;
-                }
-                case VIRTUAL_VIEW_ID_DECREMENT:
-                case VIRTUAL_VIEW_ID_INCREMENT:
-                case VIRTUAL_VIEW_ID_INPUT: {
-                    findAccessibilityNodeInfosByTextInChild(searchedLowerCase,
-                            virtualViewId, result);
-                    return result;
-                }
-            }
-            return super.findAccessibilityNodeInfosByText(searched,
-                    virtualViewId);
-        }
-
-        @Override
-        public boolean performAction(int virtualViewId, int action,
-                Bundle arguments) {
-            switch (virtualViewId) {
-                case View.NO_ID: {
-                    switch (action) {
-                        case AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS: {
-                            if (mAccessibilityFocusedView != virtualViewId) {
-                                mAccessibilityFocusedView = virtualViewId;
-                                // requestAccessibilityFocus();
-                                performAccessibilityAction(
-                                        AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS,
-                                        null);
-                                return true;
-                            }
-                        }
-                            return false;
-                        case AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS: {
-                            if (mAccessibilityFocusedView == virtualViewId) {
-                                mAccessibilityFocusedView = UNDEFINED;
-                                // clearAccessibilityFocus();
-                                performAccessibilityAction(
-                                        AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS,
-                                        null);
-                                return true;
-                            }
-                            return false;
-                        }
-                        case AccessibilityNodeInfo.ACTION_SCROLL_FORWARD: {
-                            if (NumberPicker.this.isEnabled()
-                                    && (getWrapSelectorWheel() || getValue() < getMaxValue())) {
-                                changeValueByOne(true);
-                                return true;
-                            }
-                        }
-                            return false;
-                        case AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD: {
-                            if (NumberPicker.this.isEnabled()
-                                    && (getWrapSelectorWheel() || getValue() > getMinValue())) {
-                                changeValueByOne(false);
-                                return true;
-                            }
-                        }
-                            return false;
-                    }
-                }
-                    break;
-                case VIRTUAL_VIEW_ID_INPUT: {
-                    switch (action) {
-                        case AccessibilityNodeInfo.ACTION_FOCUS: {
-                            if (NumberPicker.this.isEnabled()
-                                    && !mInputText.isFocused()) {
-                                return mInputText.requestFocus();
-                            }
-                        }
-                            break;
-                        case AccessibilityNodeInfo.ACTION_CLEAR_FOCUS: {
-                            if (NumberPicker.this.isEnabled() && mInputText.isFocused()) {
-                                mInputText.clearFocus();
-                                return true;
-                            }
-                            return false;
-                        }
-                        case AccessibilityNodeInfo.ACTION_CLICK: {
-                            if (NumberPicker.this.isEnabled()) {
-                                showSoftInput();
-                                return true;
-                            }
-                            return false;
-                        }
-                        case AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS: {
-                            if (mAccessibilityFocusedView != virtualViewId) {
-                                mAccessibilityFocusedView = virtualViewId;
-                                sendAccessibilityEventForVirtualView(
-                                        virtualViewId,
-                                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
-                                mInputText.invalidate();
-                                return true;
-                            }
-                        }
-                            return false;
-                        case AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS: {
-                            if (mAccessibilityFocusedView == virtualViewId) {
-                                mAccessibilityFocusedView = UNDEFINED;
-                                sendAccessibilityEventForVirtualView(
-                                        virtualViewId,
-                                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED);
-                                mInputText.invalidate();
-                                return true;
-                            }
-                        }
-                            return false;
-                        default: {
-                            return mInputText.performAccessibilityAction(action,
-                                    arguments);
-                        }
-                    }
-                }
-                    return false;
-                case VIRTUAL_VIEW_ID_INCREMENT: {
-                    switch (action) {
-                        case AccessibilityNodeInfo.ACTION_CLICK: {
-                            if (NumberPicker.this.isEnabled()) {
-                                NumberPicker.this.changeValueByOne(true);
-                                sendAccessibilityEventForVirtualView(virtualViewId,
-                                        AccessibilityEvent.TYPE_VIEW_CLICKED);
-                                return true;
-                            }
-                        }
-                            return false;
-                        case AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS: {
-                            if (mAccessibilityFocusedView != virtualViewId) {
-                                mAccessibilityFocusedView = virtualViewId;
-                                sendAccessibilityEventForVirtualView(
-                                        virtualViewId,
-                                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
-                                invalidate(0, mBottomSelectionDividerBottom,
-                                        getRight(), getBottom());
-                                return true;
-                            }
-                        }
-                            return false;
-                        case AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS: {
-                            if (mAccessibilityFocusedView == virtualViewId) {
-                                mAccessibilityFocusedView = UNDEFINED;
-                                sendAccessibilityEventForVirtualView(
-                                        virtualViewId,
-                                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED);
-                                invalidate(0, mBottomSelectionDividerBottom,
-                                        getRight(), getBottom());
-                                return true;
-                            }
-                        }
-                            return false;
-                    }
-                }
-                    return false;
-                case VIRTUAL_VIEW_ID_DECREMENT: {
-                    switch (action) {
-                        case AccessibilityNodeInfo.ACTION_CLICK: {
-                            if (NumberPicker.this.isEnabled()) {
-                                final boolean increment = (virtualViewId == VIRTUAL_VIEW_ID_INCREMENT);
-                                NumberPicker.this.changeValueByOne(increment);
-                                sendAccessibilityEventForVirtualView(virtualViewId,
-                                        AccessibilityEvent.TYPE_VIEW_CLICKED);
-                                return true;
-                            }
-                        }
-                            return false;
-                        case AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS: {
-                            if (mAccessibilityFocusedView != virtualViewId) {
-                                mAccessibilityFocusedView = virtualViewId;
-                                sendAccessibilityEventForVirtualView(
-                                        virtualViewId,
-                                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUSED);
-                                invalidate(0, 0, getRight(), mTopSelectionDividerTop);
-                                return true;
-                            }
-                        }
-                            return false;
-                        case AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS: {
-                            if (mAccessibilityFocusedView == virtualViewId) {
-                                mAccessibilityFocusedView = UNDEFINED;
-                                sendAccessibilityEventForVirtualView(
-                                        virtualViewId,
-                                        AccessibilityEvent.TYPE_VIEW_ACCESSIBILITY_FOCUS_CLEARED);
-                                invalidate(0, 0, getRight(), mTopSelectionDividerTop);
-                                return true;
-                            }
-                        }
-                            return false;
-                    }
-                }
-                    return false;
-            }
-            return super.performAction(virtualViewId, action, arguments);
-        }
-
-        public void sendAccessibilityEventForVirtualView(int virtualViewId,
-                int eventType) {
-            switch (virtualViewId) {
-                case VIRTUAL_VIEW_ID_DECREMENT: {
-                    if (hasVirtualDecrementButton()) {
-                        sendAccessibilityEventForVirtualButton(virtualViewId,
-                                eventType, getVirtualDecrementButtonText());
-                    }
-                }
-                    break;
-                case VIRTUAL_VIEW_ID_INPUT: {
-                    sendAccessibilityEventForVirtualText(eventType);
-                }
-                    break;
-                case VIRTUAL_VIEW_ID_INCREMENT: {
-                    if (hasVirtualIncrementButton()) {
-                        sendAccessibilityEventForVirtualButton(virtualViewId,
-                                eventType, getVirtualIncrementButtonText());
-                    }
-                }
-                    break;
-            }
-        }
-
-        private void sendAccessibilityEventForVirtualText(int eventType) {
-            if (((AccessibilityManager) getContext().getSystemService(
-                    Context.ACCESSIBILITY_SERVICE)).isEnabled()) {
-                AccessibilityEvent event = AccessibilityEvent.obtain(eventType);
-                mInputText.onInitializeAccessibilityEvent(event);
-                mInputText.onPopulateAccessibilityEvent(event);
-                event.setSource(NumberPicker.this, VIRTUAL_VIEW_ID_INPUT);
-                requestSendAccessibilityEvent(NumberPicker.this, event);
-            }
-        }
-
-        private void sendAccessibilityEventForVirtualButton(int virtualViewId,
-                int eventType, String text) {
-            if (((AccessibilityManager) getContext().getSystemService(
-                    Context.ACCESSIBILITY_SERVICE)).isEnabled()) {
-                AccessibilityEvent event = AccessibilityEvent.obtain(eventType);
-                event.setClassName(Button.class.getName());
-                event.setPackageName(getContext().getPackageName());
-                event.getText().add(text);
-                event.setEnabled(NumberPicker.this.isEnabled());
-                event.setSource(NumberPicker.this, virtualViewId);
-                requestSendAccessibilityEvent(NumberPicker.this, event);
-            }
-        }
-
-        private void findAccessibilityNodeInfosByTextInChild(
-                String searchedLowerCase, int virtualViewId,
-                List<AccessibilityNodeInfo> outResult) {
-            switch (virtualViewId) {
-                case VIRTUAL_VIEW_ID_DECREMENT: {
-                    String text = getVirtualDecrementButtonText();
-                    if (!TextUtils.isEmpty(text)
-                            && text.toString().toLowerCase()
-                                    .contains(searchedLowerCase)) {
-                        outResult
-                                .add(createAccessibilityNodeInfo(VIRTUAL_VIEW_ID_DECREMENT));
-                    }
-                }
-                    return;
-                case VIRTUAL_VIEW_ID_INPUT: {
-                    CharSequence text = mInputText.getText();
-                    if (!TextUtils.isEmpty(text)
-                            && text.toString().toLowerCase()
-                                    .contains(searchedLowerCase)) {
-                        outResult
-                                .add(createAccessibilityNodeInfo(VIRTUAL_VIEW_ID_INPUT));
-                        return;
-                    }
-                    CharSequence contentDesc = mInputText.getText();
-                    if (!TextUtils.isEmpty(contentDesc)
-                            && contentDesc.toString().toLowerCase()
-                                    .contains(searchedLowerCase)) {
-                        outResult
-                                .add(createAccessibilityNodeInfo(VIRTUAL_VIEW_ID_INPUT));
-                        return;
-                    }
-                }
-                    break;
-                case VIRTUAL_VIEW_ID_INCREMENT: {
-                    String text = getVirtualIncrementButtonText();
-                    if (!TextUtils.isEmpty(text)
-                            && text.toString().toLowerCase()
-                                    .contains(searchedLowerCase)) {
-                        outResult
-                                .add(createAccessibilityNodeInfo(VIRTUAL_VIEW_ID_INCREMENT));
-                    }
-                }
-                    return;
-            }
-        }
-
-        private AccessibilityNodeInfo createAccessibiltyNodeInfoForInputText() {
-            AccessibilityNodeInfo info = mInputText
-                    .createAccessibilityNodeInfo();
-            info.setSource(NumberPicker.this, VIRTUAL_VIEW_ID_INPUT);
-            if (mAccessibilityFocusedView != VIRTUAL_VIEW_ID_INPUT) {
-                info.addAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS);
-            }
-            if (mAccessibilityFocusedView == VIRTUAL_VIEW_ID_INPUT) {
-                info.addAction(AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS);
-            }
-            return info;
-        }
-
-        private AccessibilityNodeInfo createAccessibilityNodeInfoForVirtualButton(
-                int virtualViewId, String text, int left, int top, int right,
-                int bottom) {
-            AccessibilityNodeInfo info = AccessibilityNodeInfo.obtain();
-            info.setClassName(Button.class.getName());
-            info.setPackageName(getContext().getPackageName());
-            info.setSource(NumberPicker.this, virtualViewId);
-            info.setParent(NumberPicker.this);
-            info.setText(text);
-            info.setClickable(true);
-            info.setLongClickable(true);
-            info.setEnabled(NumberPicker.this.isEnabled());
-            Rect boundsInParent = mTempRect;
-            boundsInParent.set(left, top, right, bottom);
-            // TODO info.setVisibleToUser(isVisibleToUser(boundsInParent));
-            info.setBoundsInParent(boundsInParent);
-            Rect boundsInScreen = boundsInParent;
-            int[] locationOnScreen = mTempArray;
-            getLocationOnScreen(locationOnScreen);
-            boundsInScreen.offset(locationOnScreen[0], locationOnScreen[1]);
-            info.setBoundsInScreen(boundsInScreen);
-
-            if (mAccessibilityFocusedView != virtualViewId) {
-                info.addAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS);
-            }
-            if (mAccessibilityFocusedView == virtualViewId) {
-                info.addAction(AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS);
-            }
-            if (NumberPicker.this.isEnabled()) {
-                info.addAction(AccessibilityNodeInfo.ACTION_CLICK);
-            }
-
-            return info;
-        }
-
-        private AccessibilityNodeInfo createAccessibilityNodeInfoForNumberPicker(
-                int left, int top, int right, int bottom) {
-            AccessibilityNodeInfo info = AccessibilityNodeInfo.obtain();
-            info.setClassName(NumberPicker.class.getName());
-            info.setPackageName(getContext().getPackageName());
-            info.setSource(NumberPicker.this);
-
-            if (hasVirtualDecrementButton()) {
-                info.addChild(NumberPicker.this, VIRTUAL_VIEW_ID_DECREMENT);
-            }
-            info.addChild(NumberPicker.this, VIRTUAL_VIEW_ID_INPUT);
-            if (hasVirtualIncrementButton()) {
-                info.addChild(NumberPicker.this, VIRTUAL_VIEW_ID_INCREMENT);
-            }
-
-            info.setParent((View) getParentForAccessibility());
-            info.setEnabled(NumberPicker.this.isEnabled());
-            info.setScrollable(true);
-
-            /**
-             * TODO: Figure out compat implementation for this final float
-             * applicationScale =
-             * getContext().getResources().getCompatibilityInfo
-             * ().applicationScale; Rect boundsInParent = mTempRect;
-             * boundsInParent.set(left, top, right, bottom);
-             * boundsInParent.scale(applicationScale);
-             * info.setBoundsInParent(boundsInParent);
-             * info.setVisibleToUser(isVisibleToUser()); Rect boundsInScreen =
-             * boundsInParent; int[] locationOnScreen = mTempArray;
-             * getLocationOnScreen(locationOnScreen);
-             * boundsInScreen.offset(locationOnScreen[0], locationOnScreen[1]);
-             * boundsInScreen.scale(applicationScale);
-             * info.setBoundsInScreen(boundsInScreen);
-             */
-
-            if (mAccessibilityFocusedView != View.NO_ID) {
-                info.addAction(AccessibilityNodeInfo.ACTION_ACCESSIBILITY_FOCUS);
-            }
-            if (mAccessibilityFocusedView == View.NO_ID) {
-                info.addAction(AccessibilityNodeInfo.ACTION_CLEAR_ACCESSIBILITY_FOCUS);
-            }
-            if (NumberPicker.this.isEnabled()) {
-                if (getWrapSelectorWheel() || getValue() < getMaxValue()) {
-                    info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_FORWARD);
-                }
-                if (getWrapSelectorWheel() || getValue() > getMinValue()) {
-                    info.addAction(AccessibilityNodeInfo.ACTION_SCROLL_BACKWARD);
-                }
-            }
-
-            return info;
-        }
-
-        private boolean hasVirtualDecrementButton() {
-            return getWrapSelectorWheel() || getValue() > getMinValue();
-        }
-
-        private boolean hasVirtualIncrementButton() {
-            return getWrapSelectorWheel() || getValue() < getMaxValue();
-        }
-
-        private String getVirtualDecrementButtonText() {
-            int value = mValue - 1;
-            if (mWrapSelectorWheel) {
-                value = getWrappedSelectorIndex(value);
-            }
-            if (value >= mMinValue) {
-                return (mDisplayedValues == null) ? formatNumber(value)
-                        : mDisplayedValues[value - mMinValue];
-            }
-            return null;
-        }
-
-        private String getVirtualIncrementButtonText() {
-            int value = mValue + 1;
-            if (mWrapSelectorWheel) {
-                value = getWrappedSelectorIndex(value);
-            }
-            if (value <= mMaxValue) {
-                return (mDisplayedValues == null) ? formatNumber(value)
-                        : mDisplayedValues[value - mMinValue];
-            }
-            return null;
-        }
-    }
 
     static private String formatNumberWithLocale(int value) {
         return String.format(Locale.getDefault(), "%d", value);

@@ -55,7 +55,7 @@ public class VideoHideMainActivity extends BaseActivity implements
     private GridView mGridView;
     private CommonTitleBar mTtileBar;
     private Button mAddButton;
-//    private Button mSwitchButton, let_pg_fail;
+    // private Button mSwitchButton, let_pg_fail;
     private RelativeLayout mNoHidePictureHint;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
@@ -75,8 +75,8 @@ public class VideoHideMainActivity extends BaseActivity implements
     private AppMasterPreference mSpSaveDir;
 
     // private boolean isHaveCbFloder = false;
-//    public static boolean isLetPgFail = false;
-//    private int i = 0;
+    // public static boolean isLetPgFail = false;
+    private int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -123,10 +123,13 @@ public class VideoHideMainActivity extends BaseActivity implements
             SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1, "hidevd_cb",
                     "hide");
         }
-        // LeoLog.d("testIntent", "mPath : " + mPath);
+        LeoLog.d("testIntent", "mPath : " + mPath);
         if (LAST_CATALOG.isEmpty() || SECOND_CATALOG.isEmpty()) {
             if (mPath == null) {
                 mPath = DEFAULT_PATH;
+                // LAST_CATALOG = FileOperationUtil.getLastDirNameFromCb(mPath);
+                // SECOND_CATALOG =
+                // FileOperationUtil.getDirNameFromFilepath(mPath);
                 LAST_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
                 SECOND_CATALOG = FileOperationUtil.getSecondDirNameFromFilepath(mPath);
             } else {
@@ -146,8 +149,8 @@ public class VideoHideMainActivity extends BaseActivity implements
             }
         }
 
-        // LeoLog.d("testIntent", "mLastName is : " + LAST_CATALOG);
-        // LeoLog.d("testIntent", "mSecondName is : " + SECOND_CATALOG);
+        LeoLog.d("testIntent", "mLastName is : " + LAST_CATALOG);
+        LeoLog.d("testIntent", "mSecondName is : " + SECOND_CATALOG);
     }
 
     /**
@@ -195,10 +198,10 @@ public class VideoHideMainActivity extends BaseActivity implements
         // mTtileBar.setOptionListener(this);
         mAddButton = (Button) findViewById(R.id.add_hide_image);
         mAddButton.setOnClickListener(this);
-//        let_pg_fail = (Button) findViewById(R.id.let_pg_fail);
-//        let_pg_fail.setOnClickListener(this);
-//        mSwitchButton = (Button) findViewById(R.id.switch_no_cb);
-//        mSwitchButton.setOnClickListener(this);
+        // let_pg_fail = (Button) findViewById(R.id.let_pg_fail);
+        // let_pg_fail.setOnClickListener(this);
+        // mSwitchButton = (Button) findViewById(R.id.switch_no_cb);
+        // mSwitchButton.setOnClickListener(this);
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
         mNohideVideo = (TextView) findViewById(R.id.nohideTV);
         mGridView = (GridView) findViewById(R.id.Video_hide_folder);
@@ -222,26 +225,32 @@ public class VideoHideMainActivity extends BaseActivity implements
                         VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
-//            case R.id.switch_no_cb:
-//                if (CB_PACKAGENAME.equals("com.example.appmaster_service")) {
-//                    CB_PACKAGENAME = "com.cool.coolbrowser";
-//                    mSwitchButton.setText("目标包为CB");
-//                } else {
-//                    CB_PACKAGENAME = "com.example.appmaster_service";
-//                    mSwitchButton.setText("目标包为非CB");
-//                }
-//                break;
-//            case R.id.let_pg_fail:
-//                if (i == 0) {
-//                    let_pg_fail.setText("PG正常状态");
-//                    isLetPgFail = false;
-//                    i = 1;
-//                } else {
-//                    let_pg_fail.setText("让PG失常");
-//                    isLetPgFail = true;
-//                    i = 0;
-//                }
-//                break;
+            // case R.id.switch_no_cb:
+            // if (CB_PACKAGENAME.equals("com.example.appmaster_service")) {
+            // CB_PACKAGENAME = "com.cool.coolbrowser";
+            // mSwitchButton.setText("目标包为CB");
+            // } else {
+            // CB_PACKAGENAME = "com.example.appmaster_service";
+            // mSwitchButton.setText("目标包为非CB");
+            // }
+            // break;
+            // case R.id.let_pg_fail:
+            // if (i == 0) {
+            // let_pg_fail.setText("PG正常状态");
+            // isLetPgFail = false;
+            // i = 1;
+            // } else {
+            // let_pg_fail.setText("让PG失常");
+            // isLetPgFail = true;
+            // i = 0;
+            // }
+            // break;
+            // case R.id.tv_option_image:
+            // intent = new Intent(this, LockOptionActivity.class);
+            // intent.putExtra(LockOptionActivity.TAG_COME_FROM,
+            // LockOptionActivity.FROM_IMAGEHIDE);
+            // startActivityForResult(intent, REQUEST_CODE_OPTION);
+            // break;
             default:
                 break;
         }

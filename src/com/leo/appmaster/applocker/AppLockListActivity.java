@@ -14,12 +14,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
@@ -32,6 +31,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -41,7 +41,6 @@ import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoLockSortPopMenu;
@@ -49,9 +48,8 @@ import com.leo.appmaster.ui.LeoPopMenu;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 
 public class AppLockListActivity extends BaseActivity implements
         AppChangeListener, OnItemClickListener, OnClickListener {
@@ -216,8 +214,14 @@ public class AppLockListActivity extends BaseActivity implements
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(this)
                 .getAllPkgInfo();
         List<String> lockList = LockManager.getInstatnce().getCurLockList();
+        
+        ProcessDetector detector = new ProcessDetector();
         for (AppItemInfo appDetailInfo : list) {
-            if (appDetailInfo.packageName.equals(this.getPackageName()) || appDetailInfo.packageName.equals(Constants.CP_PACKAGE))
+            if (appDetailInfo.packageName.equals(this.getPackageName())
+                    || appDetailInfo.packageName.equals(Constants.CP_PACKAGE)
+                    || appDetailInfo.packageName.equals(Constants.ISWIPE_PACKAGE)
+                    || appDetailInfo.packageName.equals(Constants.SEARCH_BOX_PACKAGE)
+                    || detector.isHomePackage(appDetailInfo.packageName))
                 continue;
             if (lockList.contains(appDetailInfo.packageName)) {
                 appDetailInfo.isLocked = true;
@@ -380,9 +384,9 @@ public class AppLockListActivity extends BaseActivity implements
                     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
 
-                        List<Integer> list = mLeoPopMenu.getPopMenuItemIds();
-                        int selectModeID = list.get(position);
-                        if (selectModeID == LockMode.MODE_OTHER) { //add new mode item
+                    	  List<Integer> list = mLeoPopMenu.getPopMenuItemIds();
+                          int selectModeID = list.get(position);
+                          if (selectModeID == LockMode.MODE_OTHER) { //add new mode item
                             addLockMode();
                             SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modesadd",
                                     "applock");
@@ -391,7 +395,7 @@ public class AppLockListActivity extends BaseActivity implements
                             LockManager lm = LockManager.getInstatnce();
                             List<LockMode> lockModes = lm.getLockMode();
                             for (LockMode lockMode : lockModes) {
-                                if (selectModeID == lockMode.modeId) {// the first time show lock app list
+                            	if (selectModeID == lockMode.modeId) {// the first time show lock app list
                                     if (lockMode.defaultFlag == 1
                                             && !lockMode.haveEverOpened) {
                                         lm.setCurrentLockMode(lockMode, true);
@@ -591,7 +595,7 @@ public class AppLockListActivity extends BaseActivity implements
         lockMap.put(LockMode.MODE_OTHER, getString(R.string.add_new_mode));
         return lockMap;
     }
-    
+
     private class LockedAppComparator implements Comparator<AppInfo> {
         List<String> sortBase;
 

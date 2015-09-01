@@ -54,8 +54,9 @@
 
                     <CheckBox
                         android:id="@+id/dialog_radio_slide_time_just_home_cb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="24dp"
                         android:button="@drawable/privacy_contact_input_radio_selecter"
                         android:paddingLeft="24dp"
                         android:text="@string/pg_appmanager_quick_gesture_slide_time_just_home_text"
@@ -77,8 +78,9 @@
 
                     <CheckBox
                         android:id="@+id/dialog_radio_slide_time_all_app_and_home_cb"
-                        android:layout_width="wrap_content"
-                        android:layout_height="24dp"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                         android:minHeight="24dp"
                         android:button="@drawable/privacy_contact_input_radio_selecter"
                         android:paddingLeft="24dp"
                         android:text="@string/pg_appmanager_quick_gesture_slide_time_home_and_all_app_text"

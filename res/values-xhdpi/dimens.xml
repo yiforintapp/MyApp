@@ -2,7 +2,8 @@
 <resources>
 
     <dimen name="gridview_vertical_spacing">12dip</dimen>
-
+	<dimen name="fragment_password_vertical_space_big">20dp</dimen>
+    <dimen name="fragment_password_vertical_space_small">9dp</dimen>
     <integer name="gridview_row_count">5</integer>
 
     <dimen name="splash_width">206dp</dimen>
@@ -74,7 +75,7 @@
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">18dp</dimen>
-    <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">40dp</dimen>
+    <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">50dp</dimen>
     <dimen name="activity_wait_textView1_marginbottom">165dp</dimen>
     <dimen name="list_item_locktheme_tick_sel_width">64px</dimen>
     <dimen name="list_item_locktheme_tick_sel_height">64px</dimen>
@@ -182,6 +183,7 @@
     <dimen name="dialog_list_btn_height">48dp</dimen>
     <dimen name="dialog_list_item_height">55dp</dimen>
     <dimen name="dialog_contact_item_height">64dp</dimen>
+    <dimen name="weizhuang_zhiwen_text_m_top">50dp</dimen>
     <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
@@ -256,5 +258,15 @@
     <dimen name="noti_spe_fr_content_m_left">12dp</dimen>
     <dimen name="noti_spe_tr_butt_width">124dp</dimen>
     <!-- 2.7 end -->
+
+
+    <!-- 2.8 start -->
+    <dimen name="ges_icon_m_top">50dp</dimen>
+    <dimen name="ges_icon_m_bottom">6dp</dimen>
+    <dimen name="testview_below_icon">20dp</dimen>
+    <dimen name="ges_Pattern_m_top">30dp</dimen>
+    <dimen name="ges_icon_padding">10dp</dimen>
+
+    <!-- 2.8 end -->
 
 </resources>

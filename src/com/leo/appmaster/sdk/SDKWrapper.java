@@ -9,6 +9,7 @@ import com.baidu.mobstat.StatService;
 import com.leo.analytics.LeoAgent;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.R;
+import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.push.PushManager;
@@ -61,6 +62,7 @@ public class SDKWrapper {
 
     private static void iniPushSDK(Context ctx) {
         /* TODO: change this from Log.DEBUG to Log.ERROR when release */
+        PushManager.getInstance(ctx).setUiHelper(PushInvoke.getInstance(ctx));
         PushManager.getInstance(ctx).setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
         try {
             int resId = ctx.getResources().getIdentifier("ic_launcher_notification_big", "drawable", ctx.getPackageName());
@@ -111,10 +113,11 @@ public class SDKWrapper {
         // TODO: change log level to ERROR when release
         LeoAgent.setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
         LeoAgent.initUpdateEngine(UIHelper.getInstance(ctx),
-                true);
+                true,false);
     }
     
     public static void onResume(Activity ctx){
+        // 百度的SDK会引起内存泄露，但又不能使用context作为参数传进去。。。蛋疼~
         StatService.onResume(ctx);
         LeoAgent.onResume();
         TCAgent.onResume(ctx);

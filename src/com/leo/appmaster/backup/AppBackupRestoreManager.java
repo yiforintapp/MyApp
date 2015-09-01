@@ -30,6 +30,7 @@ import android.os.StatFs;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -109,8 +110,18 @@ public class AppBackupRestoreManager implements AppChangeListener {
     private boolean mBackupCanceled = false;
 
     private PackageManager mPackageManager;
+    
+    private static AppBackupRestoreManager mInstance;
+    
+    public static synchronized AppBackupRestoreManager getInstance(Context context) {
+        if (mInstance == null) {
+            mInstance = new AppBackupRestoreManager(context.getApplicationContext());
+        }
+        
+        return mInstance;
+    }
 
-    public AppBackupRestoreManager(Context context) {
+    private AppBackupRestoreManager(Context context) {
         mContext = context.getApplicationContext();
         mPackageManager = mContext.getPackageManager();
         mBackupListeners = new ArrayList<AppBackupRestoreManager.AppBackupDataListener>();

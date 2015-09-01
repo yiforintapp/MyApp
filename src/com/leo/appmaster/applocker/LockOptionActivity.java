@@ -230,6 +230,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);
+                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getString(R.string.device_admin_extra));
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
@@ -238,6 +239,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);
+                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getString(R.string.device_admin_extra));
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
@@ -306,7 +308,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         } else if ("set_locker_theme".equals(key)) {
             Editor editor = mySharedPreferences.edit();
             editor.putBoolean("themeOption", true);
-            editor.commit();
+            editor.apply();
             Intent intent = new Intent(LockOptionActivity.this,
                     LockerTheme.class);
             startActivityForResult(intent, 0);

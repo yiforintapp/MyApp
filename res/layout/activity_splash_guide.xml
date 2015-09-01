@@ -103,4 +103,17 @@
         android:src="@drawable/splash_skip_button_select"
         android:visibility="gone" />
 
+    <TextView
+        android:id="@+id/skip_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="right"
+        android:layout_marginRight="@dimen/guide_skip_margin"
+        android:layout_marginTop="@dimen/guide_skip_margin"
+        android:text="@string/guide_skip_text"
+        android:textColor="@color/guide_skip_text_color"
+        android:textSize="14dp"
+        android:visibility="gone" />
+
 </FrameLayout>

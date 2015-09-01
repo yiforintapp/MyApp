@@ -1,12 +1,8 @@
 
 package com.leo.appmaster;
 
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
-
-import android.provider.MediaStore.MediaColumns;
-import android.R.string;
 import android.net.Uri;
+import android.provider.MediaStore.MediaColumns;
 
 public class Constants {
 
@@ -16,6 +12,12 @@ public class Constants {
     public static final String AUTHORITY = "com.leo.appmaster.provider";
     public static final String ID = "_id";
 
+    public static final String MOBVISTA_APPID="19242";
+    public static final String MOBVISTA_APPKEY="8c8f18965dfd4377892a458f3b854401";        
+    public static final String MOBVISTA_UNITID="25";
+    public static final String MOBVISTA_FACEBOOK_ID="1060111710674878_1060603623959020";        
+    
+    
     public static final String TABLE_DOWNLOAD = "download";
     public static final String TABLE_FEEDBACK = "feedback";
     public static final String TABLE_APPLIST_BUSINESS = "applist_business";
@@ -315,7 +317,7 @@ public class Constants {
     public static final String SPLASH_SKIP_TO_CLIENT_URL = "g";
     public static final String SPLASH_SKIP_PG_WEBVIEW = "0";
     public static final String SPLASH_SKIP_PG_CLIENT = "1";
-    public static final String SPLASH_BUTTON_TEXT="h";
+    public static final String SPLASH_BUTTON_TEXT = "h";
     // ============== default home mode list =================
     public static String[] sDefaultHomeModeList = new String[] {
             "com.whatsapp",
@@ -324,6 +326,14 @@ public class Constants {
             "com.facebook.katana",
             "com.tencent.mm"
     };
-    
-    public static final String CP_PACKAGE="com.leomaster.launcher3";
+
+    public static final String CP_PACKAGE = "com.leomaster.launcher3";
+    public static final String ISWIPE_PACKAGE = "com.leo.iswipe";
+    public static final String SEARCH_BOX_PACKAGE = "com.google.android.googlequicksearchbox";
+    public static final String GOOGLE_HOME_PACKAGE = "com.google.android.launcher";
+    /* Iswipe到GP客户端的链接 */
+    public static final String ISWIPE_TO_GP_CLIENT_RUL = "market://details?id=com.leo.iswipe&referrer=utm_source%3Dam_shengji_01;;com.android.vending";
+    /* Iswipe到浏览器的链接 */
+    public static final String ISWIPE_TO_GP_BROWSER_RUL = "https://play.google.com/store/apps/details?id=com.leo.iswipe";
+
 }

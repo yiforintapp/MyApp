@@ -38,6 +38,8 @@ import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
 public class MessagePrivacyReceiver extends BroadcastReceiver {
+    private static final String TAG = "MessagePrivacyReceiver";
+    private static final boolean DBG = false;
     private ITelephony mITelephony;
     private AudioManager mAudioManager;
     private int mAnswer = 1;
@@ -56,8 +58,10 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, final Intent intent) {
-        // 测试
-//        printTestReceiverLog(intent);
+        /* 测试 */
+        if (DBG) {
+            printTestReceiverLog(intent);
+        }
         String action = intent.getAction();
         mContext = context;
         if (mSimpleDateFormate == null) {

@@ -12,8 +12,7 @@
         android:layout_centerVertical="true"
         android:src="@drawable/reset_pasword_icon" />
 
-        <!-- android:layout_marginLeft="16dp" -->
-        android:background="@color/cool_green"
+
     <TextView
         android:id="@+id/menu_text"
         android:layout_width="match_parent"

@@ -838,10 +838,10 @@
     <string name="pass_gesture_change">إلى كلمة مرور</string>
     <string name="permission_open_tip_notification_title">إعداد</string>
     <string name="permission_open_tip_notification_content">شغل إشارة بنقرة!</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">هل تشغل تطبيق ومفتاح عن طريق قديم؟ حاول إدارة مفتاح سريع مثل آبل واتش!</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">تنزيل iSwipe لجعل هاتفك أكثر روعة مصل ساعة آبل</string>
     <string name="grade_tip_feedback">كلامي</string>
-    <string name="quick_first_tip_dialog_right_bt">تجربة</string>
-    <string name="quick_first_tip_dialog_left_bt">أعد حاول</string>
+    <string name="quick_first_tip_dialog_right_bt">تثبيت</string>
+    <string name="quick_first_tip_dialog_left_bt">لاحقا</string>
 
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -928,12 +928,20 @@
 	
 	<string name="pg_appmanager_quick_gesture_conflict_content">هل اللفتات السريعة تؤثر على العمليات العادية الخاصة بكم؟ يمكنك اختيار تشغيل وضع النقطة البيضاء الصغيرة، و انقر على الإعدادات</string>
 	<string name="pg_appmanager_quick_gesture_conflict_later">يقوم بالاجراء في وقت لاحق</string>
-	<string name="pg_appmanager_quick_gesture_conflict_open">قم بالتشغيل الان</string>
-	
-	
-	 <string name="anti_conflict_mode_open">تم تشغيل</string>
-	
-	
+	<string name="pg_appmanager_quick_gesture_conflict_open">قم بالتشغيل الان</string>	
+	<string name="anti_conflict_mode_open">تم تشغيل</string>
 	<!-- 2.7 end -->
+	
+	    <!-- 2.8 start -->
+    <string name="device_admin_extra">منع إلغاء التثبيت بواسطة الآخرين</string>
+    <string name="iswip_update_tip_title_text">تحديث الاختصارات السهلة!</string>
+    <string name="iswip_update_tip_context_text">تم إعادة تسمية الاختصار السهل إلى iSwipe. قم بتنزيله وتجربته!</string>
+    <string name="iswip_update_tip_left_button_text">لاحقا</string>
+    <string name="iswip_update_tip_right_button_text">التنزيل</string>
+    <string name="iswip_update_notifi_title">تم تحديث الاختصار السهل!</string>
+    <string name="iswip_update_notifi_content">تم إعادة تسمية الاختصار السهل إلى iSwipe</string>
+    <string name="iswip_update_notifi_button">التحديث الآن</string>
+    <string name="ad_timeout">رائع! المزيد من المفاجآت بانتظارك!</string>
+    <!-- 2.8 end -->
 
 </resources>

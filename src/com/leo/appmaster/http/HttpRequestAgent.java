@@ -265,11 +265,9 @@ public class HttpRequestAgent {
                 + requestLanguage + "/" +
                 mContext.getString(R.string.version_name) + "/"
                 + mContext.getString(R.string.channel_code) + ".html");
-//        url=Utilities.getURL("/appmaster/flushscreen/cn/zh/2.4/0085a.html");
-        Log.e(Constants.RUN_TAG,"闪屏请求访问url："+url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 object, listener, errorListener);
-        request.setShouldCache(true);
+        request.setShouldCache(false);
         mRequestQueue.add(request);
     }
 
@@ -282,7 +280,6 @@ public class HttpRequestAgent {
      */
     public void loadSplashImage(final String url, String dir,
             Listener<File> listener, ErrorListener eListener) {
-        Log.e(Constants.RUN_TAG, "闪屏图片的Url："+url);
         FileRequest request = new FileRequest(url, dir, listener, eListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
@@ -350,6 +347,36 @@ public class HttpRequestAgent {
         };
         mRequestQueue.add(request);
     }
+
+    
+    /* 加载ISwip更新提示 */
+    public void loadISwipCheckNew(Listener<JSONObject> listener, ErrorListener errorListener) {
+        String object = "";
+        String iswipeUrl = "/appmaster/iswipeswitch.html";
+        String url = Utilities.getURL(iswipeUrl);
+        Log.d(Constants.RUN_TAG, "iSwipe访问连接：" + url);
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
+                errorListener);
+        request.setShouldCache(true);
+        mRequestQueue.add(request);
+    }
+    
+    
+    
+    /* 加载广告展示方式 */
+    public void loadADShowType(Listener<JSONObject> listener, ErrorListener errorListener) {
+        String object = "";
+//        String iswipeUrl = "/appmaster/config?ai=0000a.html";
+        String adtypeurl = "/appmaster/adconfig.html";
+        String url = Utilities.getURL(adtypeurl);
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
+                errorListener);
+        Log.e("poha", "adtype，访问连接：" + url);
+        request.setShouldCache(false);
+        mRequestQueue.add(request);
+    }
+    
+
 
     public abstract static class RequestListener<T> implements Listener<JSONObject>, ErrorListener {
         private WeakReference<T> outerContextRef;

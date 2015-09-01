@@ -6,9 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.locks.Lock;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -28,19 +26,14 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
 import com.leo.appmaster.quickgestures.QuickSwitchManager;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
 import com.leo.appmaster.quickgestures.view.FilterAppImageView;
 import com.leo.appmaster.quickgestures.view.FilterAppPagedGridView;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
-import com.leo.appmaster.utils.LeoLog;
 
 /**
  * QuickGestureSlideTimeDialog
@@ -50,7 +43,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class QuickGestureFilterAppDialog extends LEOBaseDialog {
     private Context mContext;
     private FilterAppPagedGridView mGridView;
-    private TextView mTitle, mSureBt, mLeftBt, mSelectedCount;
+    private TextView mTitle, mSureBt, mLeftBt;
     private List<QuickGsturebAppInfo> mDisturbList = null;
     private List<QuickGsturebAppInfo> mFreeDisturbApp = null;
     private List<BaseInfo> mAddFreePackageName = null;
@@ -66,6 +59,8 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
     private List<QuickGsturebAppInfo> mostUseList;
     private boolean isAutoFillIcon;
     private static int mMostAppConunt = 0;
+    
+    private String  mTitleText;
 
     public QuickGestureFilterAppDialog(Context context, int flag) {
         super(context, R.style.bt_dialog);
@@ -82,7 +77,6 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                 R.layout.dialog_free_disturb_app, null);
         Resources resources = AppMasterApplication.getInstance().getResources();
         mTitle = (TextView) dlgView.findViewById(R.id.free_disturb_dialog_title);
-        mSelectedCount = (TextView) dlgView.findViewById(R.id.selected_app_count);
         mGridView = (FilterAppPagedGridView) dlgView.findViewById(R.id.free_disturb_gridview);
         mGridView.setFlag(mFlag);
         mSureBt = (TextView) dlgView.findViewById(R.id.quick_freed_disturb_dlg_right_btn);
@@ -197,10 +191,10 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
                     }
                 }
                 if (mFlag == 2) {
-                    mSelectedCount.setText(mContext.getResources().getString(
+                    mTitle.setText(mTitleText + mContext.getResources().getString(
                             R.string.quick_guesture_app_select_count, mSwitchListSize, 11));
                 } else if (mFlag == 3) {
-                    mSelectedCount.setText(mContext.getResources().getString(
+                    mTitle.setText(mTitleText + mContext.getResources().getString(
                             R.string.quick_guesture_app_select_count, mMostAppConunt, 11));
                 }
             }
@@ -208,12 +202,10 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
 
         loadData();
         if (mFlag == 2) {
-            mSelectedCount.setVisibility(View.VISIBLE);
-            mSelectedCount.setText(mContext.getResources().getString(
+            mTitle.setText(mTitleText + mContext.getResources().getString(
                     R.string.quick_guesture_app_select_count, mSwitchListSize, 11));
         } else if (mFlag == 3) {
-            mSelectedCount.setVisibility(View.VISIBLE);
-            mSelectedCount.setText(mContext.getResources().getString(
+            mTitle.setText(mTitleText + mContext.getResources().getString(
                     R.string.quick_guesture_app_select_count, mMostAppConunt, 11));
         }
 
@@ -302,6 +294,7 @@ public class QuickGestureFilterAppDialog extends LEOBaseDialog {
     }
 
     public void setTitle(int id) {
+        mTitleText = getContext().getString(id);
         mTitle.setText(id);
     }
 

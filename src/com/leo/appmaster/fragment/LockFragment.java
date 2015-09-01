@@ -2,10 +2,6 @@
 package com.leo.appmaster.fragment;
 
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.AppUnlockEvent;
-
-import android.content.Intent;
 
 public abstract class LockFragment extends BaseFragment {
 

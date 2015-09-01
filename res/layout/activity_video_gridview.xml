@@ -31,8 +31,8 @@
         android:orientation="horizontal" 
         android:paddingTop="10dp"
         android:paddingBottom="12dp"
-        android:paddingLeft="40dp"
-        android:paddingRight="40dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:background="@drawable/bottom_button">
         <Button 
             android:id="@+id/select_all"
@@ -42,6 +42,7 @@
             android:drawableTop="@drawable/select_all_selector"
             android:textColor="@drawable/selector_button_text"
             android:text="@string/app_select_all"
+            android:gravity="center_horizontal"
             android:background="@android:color/transparent"/>
 
        <Button 
@@ -52,6 +53,7 @@
             android:drawableTop="@drawable/hide_picture_selector"
             android:textColor="@drawable/selector_button_text"
             android:enabled="false"
+            android:gravity="center_horizontal"
             android:text="@string/app_hide_image"
             android:background="@android:color/transparent"/>
     </LinearLayout>

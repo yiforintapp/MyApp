@@ -5,7 +5,6 @@ import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.LinkedList;
 import java.util.List;
 
 import android.animation.AnimatorSet;
@@ -25,6 +24,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.model.AppInfo;
@@ -34,7 +34,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LockImageView;
 import com.leo.appmaster.ui.PagedGridView;
-import com.leo.appmaster.utils.LeoLog;
 
 public class RecommentAppLockListActivity extends BaseActivity implements OnClickListener,
         OnItemClickListener, AppChangeListener {
@@ -219,8 +218,13 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             defaultLockList.add(0, mInstallPackageName);
         }
         AppInfo installPackage = null;
+        ProcessDetector detector = new ProcessDetector();
         for (AppItemInfo localApp : localAppList) {
-            if (localApp.packageName.equals(this.getPackageName()) ||  localApp.packageName.equals(Constants.CP_PACKAGE))
+            if (localApp.packageName.equals(this.getPackageName())
+                    || localApp.packageName.equals(Constants.CP_PACKAGE)
+                    || localApp.packageName.equals(Constants.ISWIPE_PACKAGE)
+                    || localApp.packageName.equals(Constants.SEARCH_BOX_PACKAGE)
+                    || detector.isHomePackage(localApp.packageName))
                 continue;
             if (defaultLockList.contains(localApp.packageName)) {
                 localApp.isLocked = true;

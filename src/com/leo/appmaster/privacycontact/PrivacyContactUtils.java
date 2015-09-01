@@ -488,7 +488,7 @@ public class PrivacyContactUtils {
         Editor editor = preferences.edit();
         try {
             editor.putString(PRIVACY_MESSAGE_CONTACT_NUMBER, number);
-            editor.commit();
+            editor.apply();
             flag = true;
         } catch (Exception e) {
 
@@ -503,7 +503,7 @@ public class PrivacyContactUtils {
         Editor editor = preferences.edit();
         try {
             editor.putString(PRIVACY_MESSAGE_CONTACT_NUMBER, number);
-            editor.commit();
+            editor.apply();
             flag = true;
         } catch (Exception e) {
 

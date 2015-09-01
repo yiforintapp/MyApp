@@ -85,7 +85,7 @@ public class ThemeUtils {
 				Editor editor = preferences.edit();
 				editor.putString(THEME_PREFERENCE, pkgName);
 				
-				editor.commit();
+				editor.apply();
 			}
 		}
 	}

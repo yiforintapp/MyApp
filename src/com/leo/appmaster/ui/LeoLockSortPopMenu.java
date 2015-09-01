@@ -1,9 +1,11 @@
+
 package com.leo.appmaster.ui;
 
 import java.util.List;
 
 import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;

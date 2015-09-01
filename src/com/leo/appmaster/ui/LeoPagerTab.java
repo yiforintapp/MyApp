@@ -17,6 +17,7 @@ import android.os.Parcelable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
@@ -174,6 +175,8 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
         tabView.setFocusable(true);
         tabView.setOnClickListener(mTabClickListener);
         tabView.setText(text);
+//        tabView.setSingleLine();
+        tabView.setEllipsize(TruncateAt.END);
         tabView.setTextSize(getResources().getInteger(R.integer.home_page_tab_text_size));
         tabView.setGravity(Gravity.CENTER);
         tabView.setPadding(10, 0, 10, 0);

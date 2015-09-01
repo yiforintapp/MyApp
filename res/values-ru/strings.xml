@@ -670,9 +670,9 @@
     <string name="pass_gesture_change">способ переключения кода</string>
     <string name="permission_open_tip_notification_title">быстрый жест</string>
     <string name="permission_open_tip_notification_content">установить быстрый жест</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">Вы еще банальным образом управляете применением и быстрым выключателем? Попробуйте управление быстрым выключателем, одинаковым с apple watch. Вы будете самым cool человеком среди друзей.</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Установите iSwipe и сделайте ваш телефон таким, как Apple Watch</string>
     <string name="grade_tip_feedback">Проблемы</string>
-    <string name="quick_first_tip_dialog_right_bt">Пользование</string>
+    <string name="quick_first_tip_dialog_right_bt">установ.</string>
     <string name="quick_first_tip_dialog_left_bt">позже</string>
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -762,9 +762,20 @@
 	
 	<string name="pg_appmanager_quick_gesture_conflict_content">жест вам мешает? Вы сможете открыть только бклую точкую для настройки</string>
 	<string name="pg_appmanager_quick_gesture_conflict_later">потом</string>
-	<string name="pg_appmanager_quick_gesture_conflict_open">включить</string>
-	
-	<string name="anti_conflict_mode_open">открыто</string>
+	<string name="pg_appmanager_quick_gesture_conflict_open">включить</string>		
+	<string name="anti_conflict_mode_open">Оказалось</string>
 	<!-- 2.7 end -->
+	
+		    <!-- 2.8 start -->
+    <string name="device_admin_extra">Против удал. чужими</string>
+    <string name="iswip_update_tip_title_text">Обновл. E. Shortcuts</string>
+    <string name="iswip_update_tip_context_text">Easy Shortcuts поменялись на iSwipe. Попробуй скачать их!</string>
+    <string name="iswip_update_tip_left_button_text">позже</string>
+    <string name="iswip_update_tip_right_button_text">скачать</string>
+    <string name="iswip_update_notifi_title">Easy Shortcuts обновлен!</string>
+    <string name="iswip_update_notifi_content">Easy Shortcuts поменялись на iSwipe</string>
+    <string name="iswip_update_notifi_button">Обновить сейчас</string>
+    <string name="ad_timeout">Вас ждут сюрпризы!</string>
+    <!-- 2.8 end -->
 
 </resources>

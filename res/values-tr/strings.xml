@@ -705,9 +705,9 @@
     <string name="pass_gesture_change">Parola modeli aç</string>
     <string name="permission_open_tip_notification_title">el hareketini ayarlayın</string>
     <string name="permission_open_tip_notification_content">el hareketini açın</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">yeni versiyonlu hoş kısayollu el hareketini açın</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">iSwipe yükleyerek telefonunu Apple Watch gibi havalı yap</string>
     <string name="grade_tip_feedback">Geri bildirim</string>
-    <string name="quick_first_tip_dialog_right_bt">Şimdi dene</string>
+    <string name="quick_first_tip_dialog_right_bt">Yükle</string>
     <string name="quick_first_tip_dialog_left_bt">Daha sonra</string>
 
     <!-- quick gesture -->
@@ -798,8 +798,19 @@
 	<string name="pg_appmanager_quick_gesture_conflict_content">Hızlı jest normal işlemlerinizi etkiler mi?Ayarları\'ı tıklayarak beyaz nokta modunu açmayı tercih edebilirsiniz</string>
 	<string name="pg_appmanager_quick_gesture_conflict_later">Daha sonra</string>
 	<string name="pg_appmanager_quick_gesture_conflict_open">Hemen açın</string>
-	<string name="anti_conflict_mode_open">Etkinleştir</string>
-	
+	<string name="anti_conflict_mode_open">Dönük</string>
 	<!-- 2.7 end -->
+	
+		    <!-- 2.8 start -->
+    <string name="device_admin_extra">Başkaları tarafından kaldırılmayı önle</string>
+    <string name="iswip_update_tip_title_text">Easy Shortcuts\'ı Güncelle!</string>
+    <string name="iswip_update_tip_context_text">Easy Shortcuts\'ın adı iSwipe olarak değiştirildi. Yükleyip deneyin!</string>
+    <string name="iswip_update_tip_left_button_text">Daha Sonra</string>
+    <string name="iswip_update_tip_right_button_text">İndir</string>
+    <string name="iswip_update_notifi_title">Kısayollar güncellendi!</string>
+    <string name="iswip_update_notifi_content">Easy Shortcuts\'ın adı iSwipe olarak değiştirildi</string>
+    <string name="iswip_update_notifi_button">Şimdi Güncelle</string>
+    <string name="ad_timeout">Harika! Daha fazla sürpriz seni bekliyor!</string>
+    <!-- 2.8 end -->
 
 </resources>

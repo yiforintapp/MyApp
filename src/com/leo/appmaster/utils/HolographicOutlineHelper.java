@@ -18,6 +18,7 @@ package com.leo.appmaster.utils;
 
 import com.leo.appmaster.AppMasterApplication;
 
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
@@ -26,6 +27,8 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.TableMaskFilter;
+import android.os.Build;
+import android.util.DisplayMetrics;
 
 public class HolographicOutlineHelper {
 	private final Paint mHolographicPaint = new Paint();
@@ -49,7 +52,9 @@ public class HolographicOutlineHelper {
 	private static final int EXTRA_THICK = 2;
 
 	static {
-		final float scale = AppMasterApplication.density;
+	    Resources res = AppMasterApplication.getInstance().getResources();
+        DisplayMetrics dm = res.getDisplayMetrics();
+		final float scale = dm.density;
 
 		MIN_OUTER_BLUR_RADIUS = (int) (scale * 1.0f);
 		MAX_OUTER_BLUR_RADIUS = (int) (scale * 12.0f);
@@ -235,7 +240,7 @@ public class HolographicOutlineHelper {
 				brightOutlineOffset[1], mHolographicPaint);
 
 		// cleanup
-		if (AppMasterApplication.isAboveICS()) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
 			srcDstCanvas.setBitmap(null);
 		}
 		brightOutline.recycle();

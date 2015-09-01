@@ -29,6 +29,7 @@ import android.net.TrafficStats;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
+import android.util.Log;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -40,10 +41,13 @@ import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.appmanage.BusinessAppInstallTracker;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.extra.CacheInfo;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
@@ -146,9 +150,11 @@ public class AppLoadEngine extends BroadcastReceiver {
             "com.appstar.callrecorder", "com.sec.android.app.voicerecorder",
             "com.htc.soundrecorder", "com.twitter.android"
     };
-
+    public static final String PG_PACKAGENAME = "com.android.vending";
+    public static final String ISWIPE_PACKAGENAME = "com.leo.iswipe";
+    public static final long CLICKINTERVAl = 1000 * 60 * 60 * 2;
     private List<String> mRecommendLocklist;
-    
+
     private AppLoadEngine(Context context) {
         mContext = context.getApplicationContext();
         mPm = mContext.getPackageManager();
@@ -250,7 +256,8 @@ public class AppLoadEngine extends BroadcastReceiver {
     }
 
     public Drawable getAppIcon(String pkg) {
-        if(pkg == null) return null;
+        if (pkg == null)
+            return null;
         if (mAppDetails != null) {
             AppItemInfo info = mAppDetails.get(pkg);
             if (info != null) {
@@ -301,8 +308,7 @@ public class AppLoadEngine extends BroadcastReceiver {
         Collections.sort(dataList, new ApkSizeComparator());
         return dataList;
     }
-    
-    
+
     public ArrayList<AppItemInfo> getLaunchTimeSortedApps() {
         loadAllPkgInfo();
         ArrayList<AppItemInfo> dataList = new ArrayList<AppItemInfo>();
@@ -314,7 +320,6 @@ public class AppLoadEngine extends BroadcastReceiver {
         Collections.sort(dataList, new LaunchTimeComparator());
         return dataList;
     }
-    
 
     public AppItemInfo loadAppDetailInfo(String pkgName) {
         AppItemInfo info = mAppDetails.get(pkgName);
@@ -342,8 +347,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                         .getInstance(mContext);
                 Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
                 mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-                List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent,
-                        0);
+                List<ResolveInfo> apps = mPm.queryIntentActivities(mainIntent, 0);
 
                 // check first load, and save hide theme
                 checkFirstLoad();
@@ -394,22 +398,22 @@ public class AppLoadEngine extends BroadcastReceiver {
                     .getInstalledApplications(PackageManager.GET_UNINSTALLED_PACKAGES);
             for (ApplicationInfo applicationInfo : all) {
                 String packageName = applicationInfo.packageName;
-                if(packageName.isEmpty())
+                if (packageName.isEmpty())
                     continue;
-//                AppItemInfo appInfo = new AppItemInfo();
+                // AppItemInfo appInfo = new AppItemInfo();
                 Intent intent = new Intent(Intent.ACTION_MAIN, null);
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
                 intent.setPackage(packageName);
                 List<ResolveInfo> apps = mPm.queryIntentActivities(intent, 0);
                 ResolveInfo info = apps.size() > 0 ? apps.get(0) : null;
-                /*loadAppInfoOfPackage(packageName, info != null ? info.activityInfo.name : "",
-                        applicationInfo, appInfo);
-                try {
-                    appInfo.installTime = mPm.getPackageInfo(packageName, 0).firstInstallTime;
-                } catch (NameNotFoundException e) {
-                    e.printStackTrace();
-                }*/
-                if(null != info){
+                /*
+                 * loadAppInfoOfPackage(packageName, info != null ?
+                 * info.activityInfo.name : "", applicationInfo, appInfo); try {
+                 * appInfo.installTime = mPm.getPackageInfo(packageName,
+                 * 0).firstInstallTime; } catch (NameNotFoundException e) {
+                 * e.printStackTrace(); }
+                 */
+                if (null != info) {
                     if (isThemeApk(packageName)) {
                         if (!themeList.contains(packageName)) {
                             themeList.add(packageName);
@@ -436,11 +440,11 @@ public class AppLoadEngine extends BroadcastReceiver {
         appInfo.activityName = activityName;
         appInfo.label = applicationInfo.loadLabel(mPm).toString().trim();
         appInfo.icon = AppUtil.loadAppIconDensity(packageName);
-//        try {
-//            appInfo.icon = applicationInfo.loadIcon(mPm);
-//        } catch (Exception e) {
-//            appInfo.icon = mPm.getDefaultActivityIcon();
-//        }
+        // try {
+        // appInfo.icon = applicationInfo.loadIcon(mPm);
+        // } catch (Exception e) {
+        // appInfo.icon = mPm.getDefaultActivityIcon();
+        // }
         appInfo.systemApp = AppUtil.isSystemApp(applicationInfo);
         appInfo.inSdcard = AppUtil.isInstalledInSDcard(applicationInfo);
         try {
@@ -560,11 +564,18 @@ public class AppLoadEngine extends BroadcastReceiver {
                     op = AppChangeListener.TYPE_REMOVE;
                     checkUnlockWhenRemove(packageName);
                     checkThemeWhenRemove(packageName);
+                    // Toast.makeText(mContext, "监控卸载了应用:"+packageName,
+                    // Toast.LENGTH_SHORT).show();
                 }
                 // else, we are replacing the package, so a PACKAGE_ADDED will
                 // be sent
                 // later, we will update the package at this time
             } else if (Intent.ACTION_PACKAGE_ADDED.equals(action)) {
+                LeoLog.d("AppLoadEngineAdd", "ACTION_PACKAGE_ADDED");
+                LeoLog.d("AppLoadEngineAdd", "packName is : " + packageName);
+                // ad wall 打点
+                doStatistics(packageName);
+
                 if (!replacing) {
                     op = AppChangeListener.TYPE_ADD;
                     LockMode lm = LockManager.getInstatnce().getCurLockMode();
@@ -602,6 +613,46 @@ public class AppLoadEngine extends BroadcastReceiver {
                                 packageName
                         }));
             }
+        }
+    }
+
+    /**
+     * adwall 广告安装打点
+     * 
+     * @param packageName
+     */
+    private void doStatistics(String packageName) {
+        long mNowTime = System.currentTimeMillis();
+        // 小礼品盒
+        long mGiftBoxClickTime = AppMasterPreference.getInstance(mContext).getAdClickTime();
+        if (mNowTime - mGiftBoxClickTime < CLICKINTERVAl) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "app_act", "adunlocktop_" + packageName);
+        }
+        // 外星人
+        long mEtClickTime = AppMasterPreference.getInstance(mContext).getAdEtClickTime();
+        if (mNowTime - mEtClickTime < CLICKINTERVAl) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "app_act", "adunlockdraw_" + packageName);
+        }
+        // 底部banner
+        long mBannerClickTime = AppMasterPreference.getInstance(mContext).getAdBannerClickTime();
+        if (mNowTime - mBannerClickTime < CLICKINTERVAl) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "app_act", "adunlockbanner" + packageName);
+        }
+        // 半屏banner
+        long mHalfScreenBanner = AppMasterPreference.getInstance(mContext)
+                .getHalfScreenBannerClickTime();
+        if (mNowTime - mHalfScreenBanner < CLICKINTERVAl) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "app_act", "adunlockbannerpop" + packageName);
+        }
+        // PG首页右上角礼品盒
+        long mGiftBoxFromHome = AppMasterPreference.getInstance(mContext).getAdClickTimeFromHome();
+        if (mNowTime - mGiftBoxFromHome < CLICKINTERVAl) {
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "app_act", "home" + packageName);
         }
     }
 
@@ -698,8 +749,11 @@ public class AppLoadEngine extends BroadcastReceiver {
     }
 
     private void showLockTip(final String packageName) {
-
-        if (packageName.startsWith("com.leo.theme") || packageName.equals(Constants.CP_PACKAGE)) {
+        ProcessDetector detector = new ProcessDetector();
+        if (packageName.startsWith("com.leo.theme") || packageName.equals(Constants.CP_PACKAGE)
+                || packageName.equals(Constants.ISWIPE_PACKAGE)
+                || packageName.equals(Constants.SEARCH_BOX_PACKAGE)
+                || detector.isHomePackage(packageName)) {
             return;
         }
 
@@ -899,8 +953,7 @@ public class AppLoadEngine extends BroadcastReceiver {
                     mAppDetails.clear();
                     mAppsLoaded = false;
                     loadAllPkgInfo();
-                    AppMasterApplication.getInstance().getBuckupManager()
-                            .resetList();
+                    AppBackupRestoreManager.getInstance(mContext).resetList();
                     break;
 
             }
@@ -986,4 +1039,14 @@ public class AppLoadEngine extends BroadcastReceiver {
         }
     }
 
+    /* 查询客户端是否安装指定App */
+    public boolean isInstallApp(String packageName) {
+        ArrayList<AppItemInfo> appInfos = AppLoadEngine.getInstance(mContext).getAllPkgInfo();
+        for (AppItemInfo appItemInfo : appInfos) {
+            if (packageName.equals(appItemInfo.packageName)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

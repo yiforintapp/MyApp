@@ -9,16 +9,19 @@ import android.os.Handler;
 import android.provider.Settings;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.WeiZhuangActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
+import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
@@ -29,6 +32,8 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
+import com.mobvista.sdk.m.core.MobvistaAd;
+import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class DeskProxyActivity extends Activity {
     public static final int mAppLockType = 1;
@@ -36,11 +41,17 @@ public class DeskProxyActivity extends Activity {
     public static final int mPicHide = 3;
     public static final int mVioHide = 4;
     public static final int mPrivateSms = 5;
+
     public static final int mFlow = 6;
     public static final int mElec = 7;
     public static final int mBackup = 8;
     public static final int mQuickGues = 9;
     public static final int mLockThem = 10;
+    public static final int mHotApp = 11;
+    public static final int mAd = 12;
+
+    private MobvistaAdWall wallAd;
+
     private boolean mDelayFinish = false;
     private Handler mHandler;
     private String mCbPath;
@@ -73,6 +84,10 @@ public class DeskProxyActivity extends Activity {
                 } else if (type == mLockThem) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
                     gotoLockThem(type);
+                } else if (type == mHotApp) {
+                    gotoHotApp(type);
+                } else if (type == mAd) {
+                    gotoAd(type);
                 } else {
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -131,19 +146,47 @@ public class DeskProxyActivity extends Activity {
                                 "lockThem");
                         gotoLockThem(type);
                         break;
+                    case mHotApp:
+                        gotoHotApp(type);
+                        break;
+                    case mAd:
+                        gotoAd(type);
+                        break;
                 }
             }
             finish();
         }
     }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (wallAd != null) {
+            wallAd.release();
+            wallAd = null;
+        }
+    }
+
+    private void gotoAd(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        if (wallAd != null) {
+            wallAd.preloadWall();
+            wallAd.clickWall();
+        }
+    }
+
+    private void gotoHotApp(int type) {
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        Intent intent = new Intent(this, HotAppActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(intent);
+    }
 
     private void gotoLockThem(int type) {
         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent intent = new Intent(this, LockerTheme.class);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-        // Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
 
@@ -258,7 +301,7 @@ public class DeskProxyActivity extends Activity {
 
     private void goToHideVio(int type) {
         Intent intent = new Intent(this, VideoHideMainActivity.class);
-        if(mCbPath != null){
+        if (mCbPath != null) {
             intent.putExtra("cb_download_path", mCbPath);
         }
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);

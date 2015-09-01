@@ -11,6 +11,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Context;
@@ -28,6 +29,8 @@ import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
@@ -40,7 +43,9 @@ import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.AnimationUtils;
+import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
@@ -54,6 +59,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -87,8 +93,8 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.ProcessUtils;
-import com.mobvista.sdk.m.core.MobvistaAd;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 import com.mobvista.sdk.m.core.WallIconCallback;
 
@@ -104,8 +110,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final String EXTRA_LOCK_TITLE = "extra_lock_title";
     public static final String SHOW_NOW = "mode changed_show_now";
     public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
-    public static long mClickTime = 0;
+    public static final int SHOW_RED_MAN = 1;
 
+    public static final int AD_TYPE_SHAKE = 1;
+    public static final int AD_TYPE_JUMP = 2;
+    public static final int AD_TYPE_STAY = 3;
+    public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
     private CommonTitleBar mTtileBar;
@@ -116,8 +126,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private LEOAlarmDialog mTipDialog;
     private EditText mEtQuestion, mEtAnwser;
     private String mLockTitle;
-    private ImageView mThemeView, mAdIcon;
+    // private ImageView mThemeView;
+    private ImageView mAdIcon, mAdIconRedTip;
     private View switch_bottom_content;
+    private ImageView mADAnimalEntry;
 
     private boolean mNewTheme;
     private RelativeLayout mPretendLayout;
@@ -140,12 +152,32 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private MobvistaAdWall wallAd;
     public static boolean sLockFilterFlag = false;
     private static AnimationDrawable adAnimation;
+    private Handler handler;
+    public static boolean interupAinimation = false;
+    private boolean clickShakeIcon = false;
+    private boolean isClickAny = false;
+
+    private MobvistaEngine mAdEngine;
+
+    private Handler mHandler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case SHOW_RED_MAN:
+                    mADAnimalEntry.setBackgroundResource(R.drawable.adanimation3);
+                    AnimationDrawable redmanAnimation = (AnimationDrawable)
+                            mADAnimalEntry.getBackground();
+                    redmanAnimation.start();
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
         LeoLog.e("LockScreenActivity", "onCreate");
+
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
         LockManager lm = LockManager.getInstatnce();
@@ -183,73 +215,63 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
+        handler = new Handler();
     }
 
     private void mobvistaCheck() {
+        // init方法统一放到MobvistaEngine里，by lishuai
         // mobvista ad
-        MobvistaAd.init(this, "19242", "8c8f18965dfd4377892a458f3b854401");
+        // MobvistaAd.init(this, Constants.MOBVISTA_APPID,
+        // Constants.MOBVISTA_APPKEY);
         // -----------------Mobvista Sdk--------------------
 
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
-        wallAd = MobvistaAd.newAdWallController(this, "25",
-                "1060111710674878_1060603623959020");
-        // preload the wall data
-        wallAd.preloadWall();
+        wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        if (wallAd != null) {
+            // preload the wall data
+            wallAd.preloadWall();
+        }
 
-        // AppMasterApplication.getInstance().postInAppThreadPool(new Runnable()
-        // {
-        // @Override
-        // public void run() {
-        // nativeAd.loadAd(new AdListener() {
-        // @Override
-        // public void onAdLoaded(Campaign campaign) {
-        // //加载图片显示等动作
-        // }
-        //
-        // @Override
-        // public void onAdLoadError(String msg) {
-        // }
-        //
-        // @Override
-        // public void onAdClick(Campaign campaign) {
-        // }
-        // });
-        // }
-        // });
     }
 
     @SuppressWarnings("deprecation")
     private void setMobvistaIcon() {
-        Drawable drawable = wallAd.loadWallIcon(new WallIconCallback() {
+        // In some case, we have no AD
+        if (wallAd != null) {
+            wallAd.loadWallIcon(new WallIconCallback() {
 
-            @Override
-            public void loaded(Drawable drawable) {
-                mAdIcon.setImageDrawable(drawable);
+                @Override
+                public void loaded(Drawable drawable) {
+                    mAdIcon.setImageDrawable(drawable);
+                }
+
+                @Override
+                public void failed() {
+
+                }
+            });
+
+            if (SHOW_AD_TYPE == AD_TYPE_SHAKE && !isClickAny) {
+                mAdIconRedTip.setVisibility(View.VISIBLE);
+                mAdIcon.setBackgroundResource(R.drawable.adanimation2);
+                adAnimation = (AnimationDrawable)
+                        mAdIcon.getBackground();
+                adAnimation.start();
+
+            } else { // jump
+                mAdIconRedTip.setVisibility(View.GONE);
+                if (SHOW_AD_TYPE == AD_TYPE_JUMP && !isClickAny) {
+                    mAdIcon.setBackgroundResource(R.drawable.adanimation);
+                    adAnimation = (AnimationDrawable)
+                            mAdIcon.getBackground();
+                    adAnimation.start();
+                } else {
+                    mAdIcon.setBackgroundDrawable((this.getResources()
+                            .getDrawable(R.drawable.jump_1)));
+                }
             }
-
-            @Override
-            public void failed() {
-
-            }
-        });
-
-        long mLastTime;
-        if (mClickTime == 0) {
-            mLastTime = AppMasterPreference.getInstance(LockScreenActivity.this).getAdClickTime();
-        } else {
-            mLastTime = mClickTime;
         }
-        long mNowTime = System.currentTimeMillis();
-        if (mNowTime - mLastTime > CLICK_OVER_DAY) {
-            mAdIcon.setBackgroundResource(R.drawable.adanimation);
-            adAnimation = (AnimationDrawable)
-                    mAdIcon.getBackground();
-            adAnimation.start();
-        } else {
-            mAdIcon.setBackgroundDrawable((this.getResources().getDrawable(R.drawable.gift_1)));
-        }
-        // mAdIcon.setImageDrawable(drawable);
     }
 
     private void showModeMissedTip() {
@@ -271,12 +293,26 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onResume() {
+        whichTypeShow();
+
+        Log.e("poha", AppMasterPreference.getInstance(this).getADShowType()
+                + ":current ad show type");
+        
+        if (AppMasterPreference.getInstance(this).getADShowType() == 3
+                && NetWorkUtil.isNetworkAvailable(getApplicationContext())){
+            mADAnimalEntry.setVisibility(View.VISIBLE);
+            if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE && !isClickAny) {
+                startShakeRotateAnimation(true);
+            }
+        }
         setMobvistaIcon();
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
         // handlePretendLock(); 貌似oncreate里的init方法已经执行了，容易曹成内存泄露
         if (!mMissingDialogShowing) {
-            boolean lockThemeGuid = checkNewTheme();
+
+            // boolean lockThemeGuid = checkNewTheme();
+
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
                 /*
                  * tell PushUIHelper than do not show dialog when lockscreen is
@@ -287,7 +323,143 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             AppMasterPreference.getInstance(this).setUnlocked(false);
         }
         super.onResume();
+
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
+    }
+
+    private void whichTypeShow() {
+        mHaveNewThings = AppMasterPreference.getInstance(this)
+                .getIsADAppwallNeedUpdate();
+        mLastTime = AppMasterPreference.getInstance(LockScreenActivity.this)
+                .getAdClickTime();
+        isClickJump = AppMasterPreference.getInstance(LockScreenActivity.this)
+                .getJumpIcon();
+        long mNowTime = System.currentTimeMillis();
+        if ((mLastTime != 0 && mNowTime - mLastTime > CLICK_OVER_DAY) || mHaveNewThings) {// shake
+            SHOW_AD_TYPE = AD_TYPE_SHAKE;
+        } else { // jump
+            if (!isClickJump && !clickShakeIcon) {
+                SHOW_AD_TYPE = AD_TYPE_JUMP;
+            } else {
+                SHOW_AD_TYPE = AD_TYPE_STAY;
+            }
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private void startShakeRotateAnimation(boolean isFirstIn) {
+        mADAnimalEntry.setBackgroundResource(R.drawable.alien_bg1);
+
+        RotateAnimation reverse = new RotateAnimation(0f, 16f, Animation.RELATIVE_TO_SELF,
+                0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+        reverse.setDuration(500);
+        reverse.setFillAfter(true);
+        if (isFirstIn) {
+            reverse.setStartOffset(500);
+        }
+        mADAnimalEntry.setAnimation(reverse);
+        reverse.setAnimationListener(new AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                RotateAnimation reverse1 = new RotateAnimation(16f, -14f,
+                        Animation.RELATIVE_TO_SELF,
+                        0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+                reverse1.setFillAfter(true);
+                reverse1.setDuration(600);
+                mADAnimalEntry.setAnimation(reverse1);
+                reverse1.setAnimationListener(new AnimationListener() {
+
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+
+                    }
+
+                    @Override
+                    public void onAnimationRepeat(Animation animation) {
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        RotateAnimation reverse2 = new RotateAnimation(-14f, 12f,
+                                Animation.RELATIVE_TO_SELF,
+                                0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+                        reverse2.setFillAfter(true);
+                        reverse2.setDuration(700);
+                        mADAnimalEntry.setAnimation(reverse2);
+                        reverse2.setAnimationListener(new AnimationListener() {
+
+                            @Override
+                            public void onAnimationStart(Animation animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                RotateAnimation tozero = new RotateAnimation(12f, 0f,
+                                        Animation.RELATIVE_TO_SELF,
+                                        0.5f, Animation.RELATIVE_TO_SELF, 0.0f);
+                                tozero.setFillAfter(true);
+                                tozero.setDuration(750);
+                                mADAnimalEntry.setAnimation(tozero);
+                                tozero.setAnimationListener(new AnimationListener() {
+
+                                    @Override
+                                    public void onAnimationStart(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationRepeat(Animation animation) {
+
+                                    }
+
+                                    @Override
+                                    public void onAnimationEnd(Animation animation) {
+                                        interupAinimation = false;
+                                        mADAnimalEntry.clearAnimation();
+                                        Message msg = new Message();
+                                        msg.what = SHOW_RED_MAN;
+                                        mHandler.sendEmptyMessageAtTime(msg.what,
+                                                500);
+                                    }
+                                });
+                                if (interupAinimation) {
+                                    mADAnimalEntry.clearAnimation();
+                                    interupAinimation = false;
+                                } else {
+                                    tozero.start();
+                                }
+                            }
+                        });
+                        if (interupAinimation) {
+                            mADAnimalEntry.clearAnimation();
+                            interupAinimation = false;
+                        } else {
+                            reverse2.start();
+                        }
+                    }
+                });
+                if (interupAinimation) {
+                    mADAnimalEntry.clearAnimation();
+                    interupAinimation = false;
+                } else {
+                    reverse1.start();
+                }
+            }
+        });
+        reverse.start();
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
@@ -310,13 +482,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mNewTheme = false;
         }
 
-        if (mNewTheme) {
-            mThemeView.setImageDrawable(this.getResources().getDrawable(
-                    R.drawable.theme_active_icon));
-        } else {
-            mThemeView.setImageDrawable(this.getResources().getDrawable(
-                    R.drawable.theme_icon));
-        }
+        // if (mNewTheme) {
+        // mThemeView.setImageDrawable(this.getResources().getDrawable(
+        // R.drawable.theme_active_icon));
+        // } else {
+        // mThemeView.setImageDrawable(this.getResources().getDrawable(
+        // R.drawable.theme_icon));
+        // }
+
         return lockThemeGuid;
     }
 
@@ -519,7 +692,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
-        MobvistaAd.release();
+        // 这部分注释掉，担心影响到MobvistaEngine里的逻辑，因为init调用只有一次, by lishuai
+        // try {
+        // MobvistaAd.release();
+        // } catch (Exception e) {
+        // }
+        if (wallAd != null) {
+            wallAd.release();
+            wallAd = null;
+        }
         LeoLog.d("LockScreenActivity", "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
     }
@@ -552,8 +733,31 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void initUI() {
+
+        mADAnimalEntry = (ImageView) findViewById(R.id.iv_AD_entry);
+        if (!NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
+            mADAnimalEntry.setVisibility(View.GONE);
+        }
+
+        mADAnimalEntry.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isClickAny = true;
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "draw");
+                interupAinimation = true;
+                // Toast.makeText(LockScreenActivity.this, showType + "",
+                // 0).show();
+                mADAnimalEntry.setVisibility(View.GONE);
+                Intent intent = new Intent(LockScreenActivity.this,
+                        UFOActivity.class);
+                startActivity(intent);
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "ad_draw");
+                overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
+            }
+        });
+
         mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
-        mThemeView = (ImageView) findViewById(R.id.img_layout_right);
+        // mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         switch_bottom_content = findViewById(R.id.switch_bottom_content);
         switch_bottom_content.setVisibility(View.INVISIBLE);
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
@@ -588,24 +792,27 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mTtileBar.setHelpSettingVisiblity(View.INVISIBLE);
         }
 
-        if (AppMasterPreference.getInstance(this).getLockScreenMenuClicked()) {
-            mTtileBar.setOptionImage(R.drawable.menu_item_btn);
-        } else {
-            mTtileBar.setOptionImage(R.drawable.menu_item_red_tip_btn);
-        }
+        // if (AppMasterPreference.getInstance(this).getLockScreenMenuClicked())
+        // {
+        mTtileBar.setOptionImage(R.drawable.menu_item_btn);
+        // } else {
+        // mTtileBar.setOptionImage(R.drawable.menu_item_red_tip_btn);
+        // }
+
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
         mTtileBar.setOptionImagePadding(DipPixelUtil.dip2px(this, 5));
         mTtileBar.setOptionListener(this);
 
+        mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
         mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
         ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
         mAdIcon.setVisibility(View.VISIBLE);
         mAdIcon.setOnClickListener(this);
 
-        mThemeView = (ImageView) findViewById(R.id.img_layout_right);
-        ((View) mThemeView.getParent()).setVisibility(View.VISIBLE);
-        mThemeView.setVisibility(View.VISIBLE);
-        mThemeView.setOnClickListener(this);
+        // mThemeView = (ImageView) findViewById(R.id.img_layout_right);
+        // ((View) mThemeView.getParent()).setVisibility(View.VISIBLE);
+        // mThemeView.setVisibility(View.VISIBLE);
+        // mThemeView.setOnClickListener(this);
 
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction tans = fm.beginTransaction();
@@ -633,14 +840,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             tans.add(R.id.pretend_layout, mPretendFragment);
             tans.commit();
         } else {
-            LeoLog.d("whatisthis", "mPretendFragment == null ");
             mLockLayout.setVisibility(View.VISIBLE);
             mPretendLayout.setVisibility(View.GONE);
         }
     }
 
     private PretendFragment getPretendFragment() {
-        LeoLog.d("whatisthis", "mLockedPackage : " + mLockedPackage);
         if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
@@ -785,7 +990,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         List<TimeLock> timeLockList = lm.getTimeLock();
         List<LocationLock> locationLockList = lm.getLocationLock();
         if (switchCount == 6) {
-            // TODO show tip
+
             int timeLockCount = timeLockList.size();
             int locationLockCount = locationLockList.size();
 
@@ -965,31 +1170,41 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 onBackPressed();
                 finish();
                 break;
-            case R.id.img_layout_right:
-                sLockFilterFlag = true;
-                Intent intent = new Intent(LockScreenActivity.this,
-                        LockerTheme.class);
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-                        "theme_enter", "unlock");
-                AppMasterPreference amp = AppMasterPreference.getInstance(this);
-                amp.setUnlocked(true);
-                amp.setDoubleCheck(null);
-                startActivityForResult(intent, 0);
-                amp.setLockerScreenThemeGuide(true);
-                break;
+            // case R.id.img_layout_right:
+            // sLockFilterFlag = true;
+            // Intent intent = new Intent(LockScreenActivity.this,
+            // LockerTheme.class);
+            // SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+            // "theme_enter", "unlock");
+            // AppMasterPreference amp =
+            // AppMasterPreference.getInstance(this);
+            // amp.setUnlocked(true);
+            // amp.setDoubleCheck(null);
+            // startActivityForResult(intent, 0);
+            // amp.setLockerScreenThemeGuide(true);
+            // break;
             case R.id.icon_ad_layout:
+                isClickAny = true;
                 sLockFilterFlag = true;
                 AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
                 mAmp.setUnlocked(true);
                 mAmp.setDoubleCheck(null);
                 // wallAd.clickWall();
+                mAmp.setIsADAppwallNeedUpdate(false);
                 Intent mWallIntent = wallAd.getWallIntent();
                 startActivity(mWallIntent);
+                if (!mHaveNewThings && !clickShakeIcon) {
+                    AppMasterPreference.getInstance(LockScreenActivity.this).setJumpIcon(true);
+                } else {
+                    clickShakeIcon = true;
+                }
                 AppMasterPreference.getInstance(LockScreenActivity.this).setAdClickTime(
                         System.currentTimeMillis());
-                mClickTime = System.currentTimeMillis();
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-                        "ad_cli", "unlocktop");
+                // Send ad event for network available only
+                if (NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
+                    SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                            "ad_cli", "unlocktop");
+                }
                 break;
             default:
                 break;
@@ -1011,6 +1226,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 listItems.add(resources.getString(R.string.find_passwd));
             }
         }
+        listItems.add(resources.getString(R.string.unlock_theme));
         listItems.add(resources.getString(R.string.setting_hide_lockline));
         listItems.add(resources.getString(R.string.help_setting_tip_title));
 
@@ -1022,6 +1238,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
             icons.add(R.drawable.forget_password_icon);
         }
+        icons.add(R.drawable.theme_icon_black);
         if (AppMasterPreference.getInstance(this).getIsHideLine()) {
             icons.add(R.drawable.show_locus_icon);
         } else {
@@ -1036,17 +1253,35 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (position == 0) {
                 findPasswd();
             } else if (position == 1) {
+                onMoveToTheme();
+            } else if (position == 2) {
                 onHideLockLineClicked(position);
             } else {
                 onHelpItemClicked();
             }
         } else {
             if (position == 0) {
-                onHideLockLineClicked(position);
+                onMoveToTheme();
             } else if (position == 1) {
+                onHideLockLineClicked(position);
+            } else if (position == 2) {
                 onHelpItemClicked();
             }
         }
+    }
+
+    private void onMoveToTheme() {
+        sLockFilterFlag = true;
+        Intent intent = new Intent(LockScreenActivity.this,
+                LockerTheme.class);
+        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                "theme_enter", "unlock");
+        AppMasterPreference amp =
+                AppMasterPreference.getInstance(this);
+        amp.setUnlocked(true);
+        amp.setDoubleCheck(null);
+        startActivityForResult(intent, 0);
+        amp.setLockerScreenThemeGuide(true);
     }
 
     private void onHideLockLineClicked(int position) {
@@ -1196,6 +1431,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private TextView mActiveText;
     private Map<String, Object> currModeIconMap;
     private Map<String, Object> willModeIconMap;
+
+    private boolean mHaveNewThings = false;
+
+    private long mLastTime;
+    private boolean isClickJump;
 
     /**
      * show the tip when mode success activating

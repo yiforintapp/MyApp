@@ -150,16 +150,14 @@ public class PhoneInfo {
 		}
 	}
 
-	public static String getVersionCode(Context aContext) {
+	public static int getVersionCode(Context aContext) {
 		try {
 			PackageManager packageManager = aContext.getPackageManager();
 			PackageInfo packInfo = packageManager.getPackageInfo(
 					aContext.getPackageName(), 0);
-			int versioncode = packInfo.versionCode;
-			return String.valueOf(versioncode);
+			return packInfo.versionCode;
 		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			return null;
+			return -1;
 		}
 	}
 

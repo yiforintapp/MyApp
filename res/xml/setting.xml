@@ -84,7 +84,7 @@
         android:layout="@layout/pref_list_item_bot"
         android:title="@string/lock_setting_unlock_all"
       android:widgetLayout="@layout/pref_widget_checkbox" 
-        />
+        />
     -->
 
 </PreferenceScreen>

@@ -2,7 +2,8 @@
 <resources>
 
     <dimen name="gridview_vertical_spacing">21dip</dimen>
-
+	<dimen name="fragment_password_vertical_space_big">50dp</dimen>
+    <dimen name="fragment_password_vertical_space_small">9dp</dimen>
     <integer name="gridview_row_count">5</integer>
 
     <dimen name="about_logo_width">124dp</dimen>
@@ -20,6 +21,9 @@
     <dimen name="lock_icon_height">24dp</dimen>
     <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
     <dimen name="app_item_linearlayout_padding">5dp</dimen>
+    
+      <dimen name="digital_item_width">60dp</dimen>
+    <dimen name="digital_item_height">60dp</dimen>
 
     <integer name="recomment_gridview_row_count">4</integer>
     <integer name="recomment_gridview_col_count">4</integer>
@@ -33,8 +37,8 @@
     <dimen name="help_setting_margintop">18dp</dimen>
     <dimen name="help_setting_page_margin">8dp</dimen>
     <dimen name="fragment_lock_password_passwd_input_tip_margintop">10dp</dimen>
-    <dimen name="fragment_lock_password_appicon_width">48dp</dimen>
-    <dimen name="fragment_lock_password_appicon_height">48dp</dimen>
+    <dimen name="fragment_lock_password_appicon_width">72dp</dimen>
+    <dimen name="fragment_lock_password_appicon_height">72dp</dimen>
     <dimen name="fragment_lock_password_passwd_input_tip_textsize">16sp</dimen>
     <dimen name="fragment_lock_password_layout_passwd_height">20dp</dimen>
     <dimen name="fragment_lock_password_tv_passwd_width">20dp</dimen>
@@ -153,6 +157,7 @@
     <dimen name="dialog_list_btn_height">48dp</dimen>
     <dimen name="dialog_list_item_height">55dp</dimen>
     <dimen name="dialog_contact_item_height">64dp</dimen>
+     <dimen name="weizhuang_zhiwen_text_m_top">64dp</dimen>
     <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">55dp</dimen>
     <dimen name="dialog_free_disturb_app_free_disturb_gridview_padding_top">16dp</dimen>
@@ -198,12 +203,12 @@
     <dimen name="privacy_default_text_margin_top">10dp</dimen>
     <dimen name="privacy_auto_add_btn_margin_top">52dp</dimen>
     <dimen name="apple_watch_top_btn_margin_top">20dp</dimen>
+    <dimen name="app_manager_flow_chart_margin_top">20dp</dimen>
+     <dimen name="app_manager_lineview_margin_top">12dp</dimen> 
     <!-- 2.6 end -->
-    <!-- 2.7 start -->
+        <!-- 2.7 start -->
      <dimen name="app_manager_headview_three_text_margin_top">16dp</dimen> <!-- 8dp -->
       <dimen name="app_manager_headview_two_text_margin_top">5dp</dimen> <!-- 3 -->
-      <dimen name="app_manager_flow_chart_margin_top">20dp</dimen>
-      <dimen name="app_manager_lineview_margin_top">12dp</dimen>
      <!-- 2.7 end -->
 		 
 </resources>

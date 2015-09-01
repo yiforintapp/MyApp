@@ -49,7 +49,7 @@ public class RestoreFragment extends BaseFragment implements AppBackupDataListen
         list_empty =  findViewById(R.id.list_empty);
         list_restore = (ListView) findViewById(R.id.list_restore);
 
-        mBackupManager_restore = AppMasterApplication.getInstance().getBuckupManager();
+        mBackupManager_restore = AppBackupRestoreManager.getInstance(mActivity);
         mBackupManager_restore.registerBackupListener(this);
 
         mRestoreAdapter = new AppRestoreAdapter(mBackupManager_restore);

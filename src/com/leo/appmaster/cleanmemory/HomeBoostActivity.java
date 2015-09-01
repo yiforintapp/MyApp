@@ -89,7 +89,8 @@ public class HomeBoostActivity extends Activity {
     }
 
     private void startClean() {
-        AppMasterApplication.getInstance().getExecutorService().execute(new Runnable() {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            
             @Override
             public void run() {
                 cleanMemory();

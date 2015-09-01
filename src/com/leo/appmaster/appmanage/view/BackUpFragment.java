@@ -67,7 +67,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
         iv_check_backup.setOnClickListener(this);
         pb_loading = (ProgressBar) findViewById(R.id.pb_loading);
 
-        mBackupManager = AppMasterApplication.getInstance().getBuckupManager();
+        mBackupManager = AppBackupRestoreManager.getInstance(mActivity);
         mBackupManager.registerBackupListener(this);
 
         mBackupAdapter = new AppBackupAdapter(mBackupManager);

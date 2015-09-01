@@ -3,7 +3,9 @@ package com.leo.appmaster.home;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.json.JSONArray;
@@ -43,6 +45,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
@@ -65,7 +68,6 @@ public class SplashActivity extends BaseActivity {
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
     public static final String SPLASH_TO_WEBVIEW = "splash_to_webview";
     private Handler mEventHandler;
-
     /* Guide page stuff begin */
     private ViewPager mViewPager, mNewFuncViewPager;
     /* pages */
@@ -84,6 +86,9 @@ public class SplashActivity extends BaseActivity {
     private boolean mIsEmptyForSplashUrl;
     private ImageView mSkipToPgButton;
     private boolean mShowSplashFlag;
+    private TextView mSkipText;
+    private static final String TAG = "SplashActivity";
+    private static final boolean DBG = true;
 
     /* Guide page stuff end */
     @Override
@@ -91,11 +96,6 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         LeoLog.d("SplashActivity", "onCreate");
         setContentView(R.layout.activity_splash_guide);
-        // mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
-        // mSplashIcon = (ImageView)
-        // findViewById(R.id.image_view_splash_center);
-        // mSplashName = (ImageView) findViewById(R.id.iv_back);
-        // showSplash();
         initSplash();
         mEventHandler = new EventHandler();
         startInitTask();
@@ -108,14 +108,19 @@ public class SplashActivity extends BaseActivity {
         mSplashRL = (RelativeLayout) findViewById(R.id.splashRL);
         mSplashIcon = (ImageView) findViewById(R.id.image_view_splash_center);
         mSplashName = (ImageView) findViewById(R.id.iv_back);
-        // mSkipUrlButton = (ImageView) findViewById(R.id.url_skip_bt);
         mSkipToPgButton = (ImageView) findViewById(R.id.skip_to_pg_bt);
         mIsEmptyForSplashUrl = checkSplashUrlIsEmpty();
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
-        // Log.d(Constants.RUN_TAG,
-        // "数据："+startShowSplashTime+", "+endShowSplashTime+",  跳转模式："+AppMasterPreference.getInstance(getApplicationContext()).getSplashSkipMode());
+        if (DBG) {
+            SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Log.d(TAG, "当前系统时间：" + dateFormate.format(new Date(currentTime)));
+            Log.d(TAG, "闪屏开始时间：" + dateFormate.format(new Date(startShowSplashTime)));
+            Log.d(TAG, "闪屏结束时间：" + dateFormate.format(new Date(endShowSplashTime)));
+            Log.d(TAG, " 闪屏跳转模式：" + AppMasterPreference.getInstance(getApplicationContext())
+                    .getSplashSkipMode());
+        }
         /**
          * 可能存在的几种情况： @ 1.只有开始时间 @ 2.只有结束时间 @ 3.没有配置时间
          * 
@@ -151,7 +156,10 @@ public class SplashActivity extends BaseActivity {
 
     private void showDefaultSplash() {
         /* 没有开始，没有结束时间，默认 */
-        Log.d(Constants.RUN_TAG, "splash_end&start_time：No time!");
+        if (DBG) {
+            Log.i(TAG, "splash_end&start_time：No time!");
+            Log.i(TAG, "使用默认闪屏!");
+        }
         // clearSpSplashFlagDate();
         if (mSplashIcon.getVisibility() == View.INVISIBLE) {
             mSplashIcon.setVisibility(View.VISIBLE);
@@ -166,7 +174,9 @@ public class SplashActivity extends BaseActivity {
 
     /* 如果url存在则设置点击跳转 */
     private void showSkipUrlButton() {
-        // Log.e(Constants.RUN_TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
+        if (DBG) {
+            LeoLog.e(TAG, "链接是否为空：" + mIsEmptyForSplashUrl);
+        }
         if (!mIsEmptyForSplashUrl) {
             mSplashRL.setOnClickListener(new SkipUrlOnClickListener());
         }
@@ -179,19 +189,17 @@ public class SplashActivity extends BaseActivity {
             int viewId = v.getId();
             switch (viewId) {
                 case R.id.splashRL:
-                    // Log.e(Constants.RUN_TAG, "立即体验");
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "go");
                     skipModeHandle();
                     break;
                 case R.id.skip_to_pg_bt:
-                    // Log.e(Constants.RUN_TAG, "跳过");
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "skip");
-                     startHome();
-                     if (mEventHandler != null) {
-                         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
-                     }
+                    startHome();
+                    if (mEventHandler != null) {
+                        mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
+                    }
                     break;
                 default:
                     break;
@@ -203,7 +211,7 @@ public class SplashActivity extends BaseActivity {
     private void showSplash() {
         String path = FileOperationUtil.getSplashPath();
         Bitmap splash = null;
-
+        LeoLog.i(TAG, "使用后台配置闪屏!");
         if (path != null && !"".equals(path)) {
             BitmapFactory.Options option = new BitmapFactory.Options();
             option.inDensity = 480;
@@ -219,13 +227,16 @@ public class SplashActivity extends BaseActivity {
             option.inScaled = true;
             splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
         }
-//         mShowSplashFlag = true;
-//         mSkipToPgButton.setVisibility(View.VISIBLE);
-//         mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
-//         showSkipUrlButton();
+        // mShowSplashFlag = true;
+        // mSkipToPgButton.setVisibility(View.VISIBLE);
+        // mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
+        // showSkipUrlButton();
         if (splash != null) {
             byte[] chunk = splash.getNinePatchChunk();
             if (chunk != null && NinePatch.isNinePatchChunk(chunk)) {
+                if (DBG) {
+                    Log.i(TAG, "使用后台配置闪屏");
+                }
                 mSplashIcon.setVisibility(View.INVISIBLE);
                 mSplashName.setVisibility(View.INVISIBLE);
                 mSplashRL.setBackgroundDrawable(new NinePatchDrawable(getResources(),
@@ -245,9 +256,11 @@ public class SplashActivity extends BaseActivity {
         mSplashRL.setOnClickListener(null);
     }
 
-    public void finishForSkip() {
-        finish();
-        LeoEventBus.getDefaultBus().unregister(this);
+    public void finishForSkip(boolean finish) {
+        if (finish) {
+            finish();
+        }
+
         if (mEventHandler != null) {
             mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         }
@@ -274,11 +287,18 @@ public class SplashActivity extends BaseActivity {
     private void splashDelayShow() {
         if (mShowSplashFlag) {
             mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
-                    AppMasterApplication.mSplashDelayTime);
+                    SplashBootstrap.mSplashDelayTime);
+            if (DBG) {
+                LeoLog.i(TAG, "配置闪屏时间:" + SplashBootstrap.mSplashDelayTime);
+            }
         } else {
             mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
                     Constants.SPLASH_DELAY_TIME);
+            if (DBG) {
+                LeoLog.i(TAG, "闪屏默认时间:" + Constants.SPLASH_DELAY_TIME);
+            }
         }
+
     }
 
     @Override
@@ -363,6 +383,9 @@ public class SplashActivity extends BaseActivity {
             startActivity(intent);
             finish();
         }
+        if (mShowSplashFlag) {
+            mShowSplashFlag = false;
+        }
     }
 
     private void startInitTask() {
@@ -388,12 +411,13 @@ public class SplashActivity extends BaseActivity {
     /* add for Guide Screen begin */
     private void showGuide() {
         mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
-        mPageColors[1] = getResources().getColor(R.color.guide_page2_background_color);
-        mPageColors[2] = getResources().getColor(R.color.guide_page3_background_color);
-        mPageColors[3] = getResources().getColor(R.color.guide_page4_background_color);
-
+        // mPageColors[1] =
+        // getResources().getColor(R.color.guide_page2_background_color);
+        mPageColors[1] = getResources().getColor(R.color.guide_page3_background_color);
+        mPageColors[2] = getResources().getColor(R.color.guide_page4_background_color);
         Log.i("tag", mPageColors[0] + "  " + mPageColors[3]);
-
+        /* 显示跳过按钮 */
+        setSkipClickListener();
         LayoutInflater inflater = getLayoutInflater();
         mPageViews = new ArrayList<View>();
         mPageBackgroundView = (GuideItemView) findViewById(R.id.guide_bg_view);
@@ -409,38 +433,29 @@ public class SplashActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.guide_page1_title));
         tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.guide_page1_content));
-        setSkipClickListener(page1);
+        // setSkipClickListener(page1);
         mPageViews.add(page1);
+
         /* page2 */
         ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page2.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_2));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_3));
         tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page2_title));
+        tvTitle.setText(getResources().getString(R.string.guide_page3_title));
         tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page2_content));
-        setSkipClickListener(page2);
+        tvContent.setText(getResources().getString(R.string.guide_page3_content));
         mPageViews.add(page2);
+        // setSkipClickListener(page3);
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_3));
-        tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page3_title));
-        tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page3_content));
-        setSkipClickListener(page3);
-        mPageViews.add(page3);
-        /* page4 */
-        ViewGroup page4 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page4.findViewById(R.id.guide_image);
         bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_4));
-        tvTitle = (TextView) page4.findViewById(R.id.guide_tv_title);
+        tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
         tvTitle.setText(getResources().getString(R.string.guide_page4_title));
-        tvContent = (TextView) page4.findViewById(R.id.guide_tv_content);
+        tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.guide_page4_content));
-        mPageViews.add(page4);
-
+        mPageViews.add(page3);
+        // mPageViews.add(page3);
         mMain = (ViewGroup) findViewById(R.id.layout_guide);
         mViewPager = (ViewPager) mMain.findViewById(R.id.guide_viewpager);
         initViewPagerEdges(mViewPager);
@@ -547,24 +562,24 @@ public class SplashActivity extends BaseActivity {
     /*
      * set click listener of skip btn in guide page
      */
-    private void setSkipClickListener(ViewGroup page) {
-        final TextView skipText;
-        skipText = (TextView) page.findViewById(R.id.skip_tv);
-        skipText.setVisibility(View.VISIBLE);
-        /*
-         * skipText.setOnTouchListener(new OnTouchListener() {
-         * @Override public boolean onTouch(View v, MotionEvent event) { int
-         * action = event.getAction(); switch (action) { case
-         * MotionEvent.ACTION_DOWN: skipText.setAlpha(0.6f); break; default:
-         * break; } return false; } });
-         */
-
-        skipText.setOnClickListener(new OnClickListener() {
+    private void setSkipClickListener() {
+        if (mSkipText == null) {
+            mSkipText = (TextView) findViewById(R.id.skip_tv);
+        }
+        mSkipText.setVisibility(View.VISIBLE);
+        mSkipText.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 enterHome();
             }
         });
+    }
+
+    private void unsetSkipClickListener() {
+        if (mSkipText != null) {
+            mSkipText.setVisibility(View.GONE);
+            mSkipText.setOnClickListener(null);
+        }
     }
 
     private void enterHome() {
@@ -584,10 +599,13 @@ public class SplashActivity extends BaseActivity {
         ImageView bigImage = null;
         mPageColors[4] = getResources().getColor(R.color.new_guide_page1_background_color);
         mPageColors[5] = getResources().getColor(R.color.new_guide_page2_background_color);
-        mPageColors[6] = getResources().getColor(R.color.new_guide_page3_background_color);
-
+        // mPageColors[6] =
+        // getResources().getColor(R.color.new_guide_page3_background_color);
+        mPageColors[6] = getResources().getColor(R.color.guide_page2_background_color);
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
         mNewPageBackgroundView.initBackgroundColor(mPageColors[4]);
+        /* 显示跳过按钮 */
+        setSkipClickListener();
         /* page1 */
         ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page1.findViewById(R.id.guide_image);
@@ -596,7 +614,6 @@ public class SplashActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.new_guide_page1_title));
         tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.new_guide_page1_content));
-        setSkipClickListener(page1);
         mNewFuncPageViews.add(page1);
 
         /* page2 */
@@ -607,19 +624,16 @@ public class SplashActivity extends BaseActivity {
         tvTitle.setText(getResources().getString(R.string.new_guide_page2_title));
         tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
         tvContent.setText(getResources().getString(R.string.new_guide_page2_content));
-        setSkipClickListener(page2);
         mNewFuncPageViews.add(page2);
-
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_3));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_2));
         tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.new_guide_page3_title));
+        tvTitle.setText(getResources().getString(R.string.guide_page2_title));
         tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.new_guide_page3_content));
+        tvContent.setText(getResources().getString(R.string.guide_page2_content));
         mNewFuncPageViews.add(page3);
-
         mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
         mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
         initViewPagerEdges(mNewFuncViewPager);
@@ -647,7 +661,7 @@ public class SplashActivity extends BaseActivity {
         enterAppButton = (Button) page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
         enterAppButton.setTextColor(getResources().getColor(
-                R.color.new_guide_page3_background_color));
+                R.color.guide_page2_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             @Override
@@ -664,6 +678,7 @@ public class SplashActivity extends BaseActivity {
             mNewGuideMain.setVisibility(View.VISIBLE);
             mNewFuncViewPager.setCurrentItem(mNewFuncPageViews.size() - 1);
             initViewPagerEdges(mNewFuncViewPager);
+            mSkipText.setVisibility(View.INVISIBLE);
         } else {
             super.onBackPressed();
         }
@@ -718,6 +733,11 @@ public class SplashActivity extends BaseActivity {
 
         @Override
         public void onPageSelected(int arg0) {
+            if (pageViews.size() == (arg0 + 1)) {
+                unsetSkipClickListener();
+            } else {
+                setSkipClickListener();
+            }
         }
 
         private void initBackGroundView() {
@@ -771,7 +791,7 @@ public class SplashActivity extends BaseActivity {
 
     /* 闪屏链接是否存在 */
     private boolean checkSplashUrlIsEmpty() {
-        return AppMasterApplication.getInstance().mIsEmptyForSplashUrl;
+        return SplashBootstrap.mIsEmptyForSplashUrl;
     }
 
     /* 闪屏链接跳转按钮,点击跳转处理 */
@@ -783,8 +803,9 @@ public class SplashActivity extends BaseActivity {
             if (!Utilities.isEmpty(skipMode)) {
                 if (Constants.SPLASH_SKIP_PG_WEBVIEW.equals(skipMode)) {
                     /* 跳转到pg内webview */
-                    Log.e(Constants.RUN_TAG, "进入WebView");
+                    Log.i(TAG, "进入WebView");
                     startIntentForWebViewActivity(url);
+                    finishForSkip(true);
                 } else if (Constants.SPLASH_SKIP_PG_CLIENT.equals(skipMode)) {
                     /* 跳转到指定客户端 */
                     String clientIntent = AppMasterPreference.getInstance(this)
@@ -794,19 +815,20 @@ public class SplashActivity extends BaseActivity {
                             /* 存在客户端 */
                             Intent intent = Intent.parseUri(clientIntent, 0);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            // Log.e(Constants.RUN_TAG, "客户端："+intent.toUri(0));
                             startActivity(intent);
-                            finishForSkip();
-                            Log.e(Constants.RUN_TAG, "存在客户端并进入");
+                            Log.i(TAG, "存在客户端并进入");
                         } catch (Exception e) {
                             /* 不存在指定客户端 */
-                            Log.e(Constants.RUN_TAG, "不存在客户端进入进入到WebView");
+                            Log.i(TAG, "不存在客户端进入进入到WebView");
                             startIntentForWebViewActivity(url);
+                        } finally {
+                            finishForSkip(true);
                         }
                     } else {
                         /* 不存在指定客户端 */
-                        Log.e(Constants.RUN_TAG, "去客户端但是链接为空进入到WebView");
+                        Log.i(TAG, "去客户端但是链接为空进入到WebView");
                         startIntentForWebViewActivity(url);
+                        finishForSkip(true);
                     }
                 }
             }
@@ -831,11 +853,11 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startIntentForWebViewActivity(String url) {
-        finishForSkip();
         Intent intent = new Intent(this, WebViewActivity.class);
         intent.putExtra(WebViewActivity.WEB_URL, url);
         intent.putExtra(SPLASH_TO_WEBVIEW, SPLASH_TO_WEBVIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
+        Log.i(TAG, "跳转到PG的WebView中，URL=" + url);
     }
 }

@@ -117,13 +117,13 @@ public class LockSettingActivity extends BaseFragmentActivity implements
                 tans.replace(R.id.fragment_contain, mPasswd);
                 mSwitchBottom.setText(getString(R.string.switch_gesture));
                 iv_reset_icon.setBackgroundResource(
-                        R.drawable.reset_pass_gesture_icon);
+                        R.drawable.reset_pass_gesture);
             } else {
                 mLockType = LOCK_TYPE_GESTURE;
                 tans.replace(R.id.fragment_contain, mGesture);
                 mSwitchBottom.setText(getString(R.string.switch_passwd));
                 iv_reset_icon.setBackgroundResource(
-                        R.drawable.reset_pass_number_icon);
+                        R.drawable.reset_pass_number);
             }
         } else {
             if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
@@ -131,13 +131,13 @@ public class LockSettingActivity extends BaseFragmentActivity implements
                 tans.replace(R.id.fragment_contain, mGesture);
                 mSwitchBottom.setText(getString(R.string.switch_passwd));
                 iv_reset_icon.setBackgroundResource(
-                        R.drawable.reset_pass_number_icon);
+                        R.drawable.reset_pass_number);
             } else {
                 mLockType = LOCK_TYPE_PASSWD;
                 tans.replace(R.id.fragment_contain, mPasswd);
                 mSwitchBottom.setText(getString(R.string.switch_gesture));
                 iv_reset_icon.setBackgroundResource(
-                        R.drawable.reset_pass_gesture_icon);
+                        R.drawable.reset_pass_gesture);
             }
         }
 
@@ -213,13 +213,13 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             mLockType = LOCK_TYPE_GESTURE;
             mSwitchBottom.setText(getString(R.string.switch_passwd));
             iv_reset_icon.setBackgroundResource(
-                    R.drawable.reset_pass_number_icon);
+                    R.drawable.reset_pass_number);
         } else {
             tans.replace(R.id.fragment_contain, mPasswd);
             mLockType = LOCK_TYPE_PASSWD;
             mSwitchBottom.setText(getString(R.string.switch_gesture));
             iv_reset_icon.setBackgroundResource(
-                    R.drawable.reset_pass_gesture_icon);
+                    R.drawable.reset_pass_gesture);
         }
         tans.commit();
     }

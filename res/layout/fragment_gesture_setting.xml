@@ -12,6 +12,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/lock_setting_title_margintop"
         android:enabled="false"
+        android:singleLine="true"
+        android:ellipsize="marquee"
         android:gravity="center"
         android:text="@string/first_set_passwd_hint"
         android:textColor="#ffffff"

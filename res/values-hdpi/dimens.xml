@@ -6,6 +6,9 @@
     <integer name="gridview_row_count">4</integer>
     <integer name="applist_cell_count">16</integer>
 
+    	<dimen name="fragment_password_vertical_space_big">20dp</dimen>
+    <dimen name="fragment_password_vertical_space_small">9dp</dimen>
+    
     <dimen name="splash_width">176dp</dimen>
     <dimen name="lock_pattern_button_width">60dp</dimen>
     <dimen name="gesture_setting_margintop">10dp</dimen>
@@ -78,7 +81,7 @@
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">18dp</dimen>
-    <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">40dp</dimen>
+    <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">50dp</dimen>
     <dimen name="activity_wait_textView1_marginbottom">165dp</dimen>
     <dimen name="list_item_locktheme_tick_sel_width">64px</dimen>
     <dimen name="list_item_locktheme_tick_sel_height">64px</dimen>
@@ -401,5 +404,12 @@
     <dimen name="noti_spe_fr_content_m_left">11dp</dimen>
     <dimen name="noti_spe_tr_butt_width">114dp</dimen>
     <!-- 2.7 end -->
+    <!-- 2.8 start -->
+    <dimen name="ges_icon_m_top">43dp</dimen>
+    <dimen name="ges_icon_m_bottom">2dp</dimen>
+    <dimen name="testview_below_icon">16dp</dimen>
+    <dimen name="ges_Pattern_m_top">23dp</dimen>
+    <dimen name="ges_icon_padding">8dp</dimen>
+    <!-- 2.8 end -->
 
 </resources>

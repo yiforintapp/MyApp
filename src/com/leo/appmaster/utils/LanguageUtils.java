@@ -7,7 +7,6 @@ import java.util.Locale;
 
 /**
  * 语言工具类
- * 
  */
 /*
  * 从右到左显示的语言
@@ -17,7 +16,7 @@ public class LanguageUtils {
             "ar"
     };
 
-    // 获取从右到左显示的语言集合
+    /* 获取从右到左显示的语言集合 */
     public static final List<String> getRightToLeftLanguage() {
         if (mLanguageFliter.length > 0) {
             return Arrays.asList(mLanguageFliter);
@@ -25,11 +24,8 @@ public class LanguageUtils {
         return null;
     }
 
-    // 判断当前系统语言或传入语言是否为从右到左显示的语言
+    /* 判断当前系统语言或传入语言是否为从右到左显示的语言 */
     public static final boolean isRightToLeftLanguage(String language) {
-/*        if(true){
-        return true;
-        }*/
         if (!Utilities.isEmpty(language)) {
             if (getRightToLeftLanguage() != null) {
                 if (getRightToLeftLanguage().contains(language)) {

@@ -705,10 +705,10 @@
     <string name="pass_gesture_change">切换密码方式</string>
     <string name="permission_open_tip_notification_title">设置快捷手势</string>
     <string name="permission_open_tip_notification_content">点击立刻开启快捷手势！</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">还在用老办法管理应用和快捷开关吗？赶快试试和apple watch一样的快捷开关管理吧，让你成为朋友中最cool的人！\n新版快捷手势，更流畅，更好用！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">安装iSwipe，体验和apple watch一样的快捷开关管理吧，让你成为朋友中最cool的人！</string>
     <string name="grade_tip_feedback">我要吐槽</string>
-    <string name="quick_first_tip_dialog_right_bt">立即体验</string>
-    <string name="quick_first_tip_dialog_left_bt">稍后再试</string>
+    <string name="quick_first_tip_dialog_right_bt">安装</string>
+    <string name="quick_first_tip_dialog_left_bt">稍后</string>
 
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -789,22 +789,26 @@
     <string name="clean_mem_notify_big_right">65%</string>
     <string name="clean_mem_notify_small">点击一键加速</string>
     <string name="clean_mem_notify_boost">立即加速</string>
-	
-	<string name="pg_appmanager_quick_gesture_option_trigger_type">触发方式</string>
-	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底角划出</string>
-	<string name="pg_appmanager_quick_gesture_trigger_alide">从侧边/底角划出</string>
-	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
-	<string name="pg_appmanager_quick_gesture_trigger_tips">请至少选择一项</string>
-	
-	<string name="pg_appmanager_quick_gesture_conflict_content">快捷手势影响到您的常规操作？开启抗干扰模式，只用小白点打开快捷手势，轻松避免干扰问题</string>
-	<string name="pg_appmanager_quick_gesture_conflict_later">稍后再说</string>
-	<string name="pg_appmanager_quick_gesture_conflict_open">立刻开启</string>
-	
-	<string name="anti_conflict_mode_open">抗干扰模式成功开启！</string>
-	<!-- 2.7 end -->
-
-
-
-
+    <string name="pg_appmanager_quick_gesture_option_trigger_type">触发方式</string>
+    <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白点 侧边/底角划出</string>
+    <string name="pg_appmanager_quick_gesture_trigger_alide">从侧边/底角划出</string>
+    <string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白点</string>
+    <string name="pg_appmanager_quick_gesture_trigger_tips">请至少选择一项</string>
+    <string name="pg_appmanager_quick_gesture_conflict_content">快捷手势影响到您的常规操作？开启抗干扰模式，只用小白点打开快捷手势，轻松避免干扰问题</string>
+    <string name="pg_appmanager_quick_gesture_conflict_later">稍后再说</string>
+    <string name="pg_appmanager_quick_gesture_conflict_open">立刻开启</string>
+    <string name="anti_conflict_mode_open">抗干扰模式成功开启！</string>
+    <!-- 2.7 end -->
+    <!-- 2.8 start -->
+    <string name="device_admin_extra">防止被第三方软件或他人卸载</string>
+    <string name="iswip_update_tip_title_text">快捷手势更新了</string>
+    <string name="iswip_update_tip_context_text">快捷手势正式更名为ISwipe，更多功能等着你，马上下载体验吧！</string>
+    <string name="iswip_update_tip_left_button_text">稍后再说</string>
+    <string name="iswip_update_tip_right_button_text">立即下载</string>
+    <string name="iswip_update_notifi_title">快捷手势更新啦!!!</string>
+    <string name="iswip_update_notifi_content">正式更新为ISwipe</string>
+    <string name="iswip_update_notifi_button">立即更新</string>
+    <string name="ad_timeout">Wow!我猜下次你会收到一些更精彩的东西！</string>
+    <!-- 2.8 end -->
 
 </resources>

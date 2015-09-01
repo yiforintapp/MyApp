@@ -6,18 +6,17 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.applocker.model.LocationLock;
-import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.applocker.model.TimeLock;
-import com.leo.appmaster.utils.BitmapUtils;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
+
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.applocker.model.LocationLock;
+import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.TimeLock;
 
 /**
  * DOA for Lock mode, Time lock and location lock
@@ -108,7 +107,8 @@ public class LockModeDao {
         ContentValues values = new ContentValues();
         values.put(Constants.COLUMN_LOCK_MODE_NAME, lockMode.modeName);
         String lockList = "";
-        for (String pkg : lockMode.lockList) {
+        String[] lockArray =  lockMode.lockList.toArray(new String[0]);
+        for (String pkg : lockArray) {
             lockList += pkg + ";";
         }
         values.put(Constants.COLUMN_LOCKED_LIST, lockList);

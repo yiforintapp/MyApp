@@ -56,8 +56,8 @@ import com.leo.imageloader.core.RoundedBitmapDisplayer;
 
 /**
  * 已经废弃掉
+ * 
  * @author Jasper
- *
  */
 @Deprecated
 public class AppWallActivity extends BaseActivity implements
@@ -82,26 +82,28 @@ public class AppWallActivity extends BaseActivity implements
     private void init() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.appwallTB);
         mTtileBar.setTitle(R.string.appwall_name);
-        if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
-            AppMasterPreference pre = AppMasterPreference.getInstance(AppWallActivity.this);
-            pre.setLaunchOtherApp(false);
-            mTtileBar.openBackView();
-        } else {
-            mTtileBar.setBackViewListener(new OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    Intent intent = new Intent(AppWallActivity.this, HomeActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    try {
-                        startActivity(intent);
-                        finish();
-                    } catch (Exception e) {
-                    }
-
-                }
-            });
-        }
+        mTtileBar.openBackView();
+//        if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
+//            AppMasterPreference pre = AppMasterPreference.getInstance(AppWallActivity.this);
+//            pre.setLaunchOtherApp(false);
+//            mTtileBar.openBackView();
+//        } else {
+//            mTtileBar.setBackViewListener(new OnClickListener() {
+//
+//                @Override
+//                public void onClick(View arg0) {
+//                    Intent intent = new Intent(AppWallActivity.this, HomeActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+//                    try {
+//                        startActivity(intent);
+//                        finish();
+//                    } catch (Exception e) {
+//                    }
+//
+//                }
+//            });
+//        }
+        
 
         mTtileBar.setOptionTextVisibility(View.INVISIBLE);
         appwallLV = (ListView) findViewById(R.id.appwallLV);
@@ -167,19 +169,21 @@ public class AppWallActivity extends BaseActivity implements
 
     @Override
     public void onBackPressed() {
-        if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
-            AppMasterPreference pre = AppMasterPreference.getInstance(AppWallActivity.this);
-            pre.setLaunchOtherApp(false);
-            finish();
-        } else {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-            try {
-                startActivity(intent);
-                finish();
-            } catch (Exception e) {
-            }
-        }
+        // if (Constants.HOME_TO_APP_WALL_FLAG_VALUE.equals(mAppwallFromHome)) {
+        // AppMasterPreference pre =
+        // AppMasterPreference.getInstance(AppWallActivity.this);
+        // pre.setLaunchOtherApp(false);
+        // finish();
+        // } else {
+        // Intent intent = new Intent(this, HomeActivity.class);
+        // intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        // try {
+        // startActivity(intent);
+        // finish();
+        // } catch (Exception e) {
+        // }
+        // }
+        finish();
     }
 
     @Override

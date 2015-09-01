@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+	<dimen name="ad_apace">20dp</dimen>
     <dimen name="splash_width">206dp</dimen>
     <dimen name="multi_mode_indicator_margin_top">15dp</dimen>
     <dimen name="multi_mode_title_margin_top">80dp</dimen>
@@ -186,7 +186,8 @@
     <dimen name="weizhuang_unknowcall_tips_text_content_m_top">2dp</dimen>
     <dimen name="weizhuang_instruction_margin_top">4dp</dimen>
     <dimen name="weizhuang_tip_content_padding">20dp</dimen>
-
+<dimen name="weizhuang_zhiwen_text_m_top">20dp</dimen>
+    
     <!-- quick gesture start -->
     <!-- quick gesture start -->
     <dimen name="qg_conner_tab_text_size">12dp</dimen>
