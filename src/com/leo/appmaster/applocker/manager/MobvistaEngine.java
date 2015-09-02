@@ -248,6 +248,7 @@ public class MobvistaEngine implements AdListener {
         sIsStarted = false;
         if (sReleasedByUser) {
             doReleaseInner();
+            return;
         }
 
         notifyFail(ERR_MOBVISTA_FAIL, arg0);
@@ -259,6 +260,7 @@ public class MobvistaEngine implements AdListener {
         sIsStarted = false;
         if (sReleasedByUser) {
             doReleaseInner();
+            return;
         }
         if (arg0 == null) {
             notifyFail(ERR_MOBVISTA_RESULT_NULL, null);
