@@ -777,7 +777,7 @@
 
 
     <!-- 2.7 start -->
-    <string name="clean_mem_notify_big">Exceeded storage</string>
+    <string name="clean_mem_notify_big">Exceed storage</string>
     <string name="clean_mem_notify_big_right">65%</string>
     <string name="clean_mem_notify_small">Boost</string>
     <string name="clean_mem_notify_boost">Boost</string>
