@@ -780,7 +780,7 @@
     <string name="clean_mem_notify_big">Exceeded storage</string>
     <string name="clean_mem_notify_big_right">65%</string>
     <string name="clean_mem_notify_small">Boost</string>
-    <string name="clean_mem_notify_boost">Go to boost</string>
+    <string name="clean_mem_notify_boost">Boost</string>
     <string name="pg_appmanager_quick_gesture_option_trigger_type">Trigger Method</string>
     <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">Little white dot/ Edge or corner</string>
     <string name="pg_appmanager_quick_gesture_trigger_alide">Swipe from edge or corner</string>
