@@ -158,10 +158,10 @@ public class QuickSwitchManager {
         if (BuildProperties.isLava504Q()) {
             return;
         }
-        Camera cam = null;
+        Camera camera = null;
         try {
-            cam = Camera.open();
-            Camera.Parameters p = cam.getParameters();
+            camera = Camera.open();
+            Camera.Parameters p = camera.getParameters();
             String position = p.getFlashMode();// 获取闪光灯的状态
             if (position.equals(OFFSTATUS)) {
                 isFlashLightOpen = false;
@@ -169,11 +169,9 @@ public class QuickSwitchManager {
                 isFlashLightOpen = true;
             }
         } catch (Exception e) {
-            if (cam != null) {
-                if (mCamera != null) {
-                    mCamera.release();
-                    mCamera = null;
-                }
+            if (camera != null) {
+                camera.release();
+                camera = null;
             }
             isFlashLightOpen = false;
         }
