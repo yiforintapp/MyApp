@@ -181,7 +181,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         homeAppManagerTask = new HomeAppAsyncTask();
         homeAppManagerTask.execute();
 
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 cleanView();

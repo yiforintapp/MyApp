@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity.NameComparator;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -954,7 +955,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     }
 
     private void checkNoReadMessage() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 QuickGestureManager.getInstance(QuickGestureSettingActivity.this).addQuickNoReadMessage(PrivacyContactUtils
@@ -973,12 +974,12 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
     }
 
     private void checkNoReadCallLog() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
 
             @Override
             public void run() {
                 String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-                String[] selectionArgs = new String[] {
+                String[] selectionArgs = new String[]{
                         String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
                 };
                 QuickGestureManager.getInstance(QuickGestureSettingActivity.this).addQuickNoReadCall(PrivacyContactUtils
@@ -988,7 +989,7 @@ public class QuickGestureSettingActivity extends BaseActivity implements OnClick
                                 selectionArgs));
                 if (QuickGestureManager.getInstance(QuickGestureSettingActivity.this).getQuickNoReadCall() != null
                         && QuickGestureManager.getInstance(QuickGestureSettingActivity.this).getQuickNoReadCall()
-                                .size() > 0) {
+                        .size() > 0) {
                     QuickGestureManager.getInstance(QuickGestureSettingActivity.this).isShowSysNoReadMessage = true;
                     FloatWindowHelper
                             .removeShowReadTipWindow(QuickGestureSettingActivity.this);

@@ -30,6 +30,7 @@ import android.os.StatFs;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
@@ -154,7 +155,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
     }
 
     public void prepareDate() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 getBackupList();
@@ -166,7 +167,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
     }
 
     public void prepareDate_restore() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 for (AppBackupDataListener listener : mBackupListeners) {
@@ -177,7 +178,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
     }
 
     public void prepareDate_delete() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 getDeleteList();
@@ -198,7 +199,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                         getFailMessage(FAIL_TYPE_SDCARD_UNAVAILABLE));
             }
         } else {
-            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     int failType = FAIL_TYPE_NONE;
@@ -226,7 +227,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                         getFailMessage(FAIL_TYPE_SDCARD_UNAVAILABLE));
             }
         } else {
-            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     int doneNum = 0;
@@ -248,7 +249,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                         if (failType == FAIL_TYPE_NONE) {
                             successNum++;
 //                            LeoLog.d("testfuckbackup", app.packageName);
-                            SDKWrapper.addEvent(mContext , SDKWrapper.P1, "backup", "backup_" + app.packageName);
+                            SDKWrapper.addEvent(mContext, SDKWrapper.P1, "backup", "backup_" + app.packageName);
                         } else if (failType == FAIL_TYPE_SDCARD_UNAVAILABLE
                                 || failType == FAIL_TYPE_FULL) {
                             success = false;
@@ -277,7 +278,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
     }
 
     public void deleteApp(final AppItemInfo app) {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 File apkFile = new File(app.sourceDir);
@@ -321,7 +322,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
     public void checkDataUpdate() {
         if (mDataReady) {
-            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     ArrayList<AppItemInfo> deleteSavedList = new ArrayList<AppItemInfo>();
@@ -343,7 +344,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                             listener.onDataUpdate();
                         }
                     }
-                    
+
                 }
             });
         }
@@ -761,7 +762,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                 listener.onDataUpdate();
             }
         } else {
-            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     mBackupList.clear();

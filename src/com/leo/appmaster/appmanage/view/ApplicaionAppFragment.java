@@ -33,6 +33,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.business.BusinessJsonParser;
@@ -138,7 +139,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
     @Override
     protected void onInitUI() {
         initUI();
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 loadInitBusinessData();
@@ -415,7 +416,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
     private void doReload() {
         mRecommendHolder.setVisibility(View.INVISIBLE);
         mProgressBar.setVisibility(View.VISIBLE);
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 loadInitBusinessData();
@@ -426,7 +427,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
     @Override
     public void onRefresh(PullToRefreshBase<ListView> refreshView) {
 
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 loadMoreBusiness();

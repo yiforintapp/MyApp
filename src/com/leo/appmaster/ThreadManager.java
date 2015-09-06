@@ -1,13 +1,17 @@
 package com.leo.appmaster;
 
+import java.lang.reflect.Field;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
@@ -15,6 +19,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.os.AsyncTask;
@@ -47,6 +52,8 @@ public class ThreadManager {
      * 异步线程池核心线程个数
      */
     private static final int ASYNCTASK_CORE_SIZE = 4;
+
+    private static final int MAX_POOL_SIZE = 64;
 
     /**
      * AsyncTask的默认Executor，负责长时间网络请求，2个线程
@@ -99,8 +106,25 @@ public class ThreadManager {
     
     private static ScheduledThreadPoolExecutor initThreadExecutor(int coreSize, ThreadFactory factory) {
         ScheduledThreadPoolExecutor result = new ScheduledThreadPoolExecutor(coreSize, factory);
-        result.setMaximumPoolSize(32);
+        result.setMaximumPoolSize(MAX_POOL_SIZE);
         result.setKeepAliveTime(1L, TimeUnit.SECONDS);
+        result.setRejectedExecutionHandler(new RejectedExecutionHandler() {
+            @Override
+            public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                String clazz = null;
+                try {
+                    Field field = r.getClass().getDeclaredField("this$0");
+                    field.setAccessible(true);
+                    clazz = field.getClass().getName();
+                } catch (NoSuchFieldException e) {
+                    clazz = r.getClass().getName();
+                }
+
+                throw new RejectedExecutionException("Task " + clazz +
+                        " rejected from " +
+                        executor.toString());
+            }
+        });
 
         return result;
     }
@@ -322,6 +346,16 @@ public class ThreadManager {
             }
         }
         
+    }
+
+    private static class QueueAbortPolicy extends ThreadPoolExecutor.AbortPolicy {
+        @Override
+        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
+            if (AppMasterConfig.LOGGABLE) {
+                super.rejectedExecution(r, e);
+            }
+            BlockingQueue<Runnable> queue = e.getQueue();
+        }
     }
 
 }

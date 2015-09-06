@@ -127,13 +127,13 @@ public class AppMasterApplication extends Application {
         return mInstance;
     }
 
-    public void postInAppThreadPool(Runnable runable) {
-        mExecutorService.execute(runable);
-    }
-
-    public void postInAppThreadPool(Runnable runable, long delay) {
-        mExecutorService.schedule(runable, delay, TimeUnit.MILLISECONDS);
-    }
+//    public void postInAppThreadPool(Runnable runable) {
+//        mExecutorService.execute(runable);
+//    }
+//
+//    public void postInAppThreadPool(Runnable runable, long delay) {
+//        mExecutorService.schedule(runable, delay, TimeUnit.MILLISECONDS);
+//    }
 
     public void postInMainThread(Runnable runnable) {
         mHandler.post(runnable);

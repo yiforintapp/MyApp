@@ -16,6 +16,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 
 
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -54,7 +55,7 @@ public class ADShowTypeRequestManager {
     }
 
     public void loadADCheckShowType() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 requestADShowType();

@@ -34,6 +34,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
@@ -141,7 +142,7 @@ public class ISwipUpdateRequestManager {
 
     /* 加载Iswipe更新数据 */
     public void loadIswipCheckNew() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 requestISwipeUpdateDate();
@@ -515,7 +516,7 @@ public class ISwipUpdateRequestManager {
 
     /* iswipe更新通知显示处理 */
     public void showIswipeUpdateNotificationTip() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 showISwipCheckNewNotification();

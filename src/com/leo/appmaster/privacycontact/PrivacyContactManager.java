@@ -24,6 +24,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -425,7 +426,7 @@ public class PrivacyContactManager {
     }
 
     public void initLoadData() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 PrivacyContactManager.getInstance(mContext).destroyCalls();
@@ -436,7 +437,7 @@ public class PrivacyContactManager {
 
     public void uninitLoadData() {
         mIsOpenPrivacyContact = false;
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
 
             @Override
             public void run() {

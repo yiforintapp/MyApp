@@ -32,6 +32,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
@@ -1558,8 +1559,8 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-            
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+
             @Override
             public void run() {
                 cleanMem();

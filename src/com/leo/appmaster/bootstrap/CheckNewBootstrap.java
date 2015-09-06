@@ -30,6 +30,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.R.drawable;
 import com.leo.appmaster.R.string;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -281,7 +282,7 @@ public class CheckNewBootstrap extends Bootstrap {
 
     public static void checkUBC() {
         final AppMasterApplication application = AppMasterApplication.getInstance();
-        application.postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 String pkgName = getTopPackage();

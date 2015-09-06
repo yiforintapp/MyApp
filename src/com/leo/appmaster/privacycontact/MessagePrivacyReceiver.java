@@ -28,6 +28,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -111,7 +112,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             messageBean.setMessageType(mAnswer);
                             // 过滤监控短信记录数据库，隐私联系人删除未读短信记录时引发数据库变化而做的操作（要在执行删除操作之前去赋值）
                             PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag = true;
-                            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                            ThreadManager.executeOnAsyncThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     PrivacyContactManager.getInstance(mContext).synMessage(

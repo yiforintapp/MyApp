@@ -22,6 +22,7 @@ import android.util.Log;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -68,7 +69,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             List<MessageBean> messages = null;
             if (mLastMessage != null) {
                 try {
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
 
                         @Override
                         public void run() {
@@ -127,7 +128,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     }
 
     private void filterPrivacyContactMsm(final ContentResolver cr) {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 List<MessageBean> messages = PrivacyContactUtils
@@ -149,8 +150,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 /* 该联系人的所有未读短信添加到到隐私列表 */
                                 /* 删除所有的短信 */
                                 PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
-                                        new String[] {
-                                            number
+                                        new String[]{
+                                                number
                                         }, mContext);
                                 // 过滤监控短信记录数据库，隐私联系人删除未读短信记录时引发数据库变化而做的操作（要在执行删除操作之前去赋值）
                                 // PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag
@@ -172,13 +173,13 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     }
 
     private void noReadCallForQuickGesture(final ContactBean call) {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
 
             @Override
             public void run() {
                 if (AppMasterPreference.getInstance(mContext).getSwitchOpenRecentlyContact()) {
                     String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-                    String[] selectionArgs = new String[] {
+                    String[] selectionArgs = new String[]{
                             String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
                     };
                     ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
@@ -219,11 +220,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if ((QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() == null || QuickGestureManager
                                 .getInstance(mContext).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
                                 && AppMasterPreference.getInstance(mContext)
-                                        .getCallLogNoReadCount() <= 0/* 隐私通话 */
+                                .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                 && AppMasterPreference.getInstance(mContext)
-                                        .getMessageNoReadCount() <= 0/* 隐私短信 */
+                                .getMessageNoReadCount() <= 0/* 隐私短信 */
                                 && AppMasterPreference.getInstance(mContext)
-                                        .getLastBusinessRedTipShow()/* 运营 */) {
+                                .getLastBusinessRedTipShow()/* 运营 */) {
                             QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                         }
                         if (QuickGestureManager.getInstance(mContext).getQuickNoReadCall() != null) {
@@ -259,7 +260,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     }
 
     private void noReadMsmTipForQuickGesture(final ContentResolver cr) {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 if (AppMasterPreference.getInstance(mContext).getSwitchOpenNoReadMessageTip()) {
@@ -299,11 +300,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if ((QuickGestureManager.getInstance(mContext).getQuickNoReadCall() == null || QuickGestureManager
                                 .getInstance(mContext).getQuickNoReadCall().size() <= 0)/* 未读通话 */
                                 && AppMasterPreference.getInstance(mContext)
-                                        .getCallLogNoReadCount() <= 0/* 隐私通话 */
+                                .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                 && AppMasterPreference.getInstance(mContext)
-                                        .getMessageNoReadCount() <= 0/* 隐私短信 */
+                                .getMessageNoReadCount() <= 0/* 隐私短信 */
                                 && AppMasterPreference.getInstance(mContext)
-                                        .getLastBusinessRedTipShow()/* 运营 */) {
+                                .getLastBusinessRedTipShow()/* 运营 */) {
                             QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                         }
                         if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null) {
@@ -502,7 +503,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         }
                     }
                     // 删除系统记录
-                    AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
                         public void run() {
                             int count = PrivacyContactUtils.deleteCallLogFromSystem(

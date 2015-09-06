@@ -1,5 +1,7 @@
 package com.leo.appmaster.bootstrap;
 
+import com.leo.appmaster.ThreadManager;
+
 /**
  * 后台延时初始化组
  * 1、检查更新
@@ -47,8 +49,8 @@ public class BackgroundDelayBootstrap extends BootstrapGroup {
 
     @Override
     public final void execute() {
-        mApp.postInAppThreadPool(new Runnable() {
-            
+        ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+
             @Override
             public void run() {
                 strap();

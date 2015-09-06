@@ -29,6 +29,7 @@ import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -115,7 +116,7 @@ public class FeedbackHelper {
 	public void tryCommit() {
 		if (mCommitIndex < 0) {
 			mCommitIndex = 0;
-			AppMasterApplication.getInstance().postInAppThreadPool(mCommitTask);
+			ThreadManager.executeOnAsyncThread(mCommitTask);
 		}
 	}
 
@@ -129,7 +130,7 @@ public class FeedbackHelper {
 	public void tryCommit(final String category, final String email,
 			final String content) {
 		mCommitIndex = MAX_COMMIT_COUNT;
-		AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+		ThreadManager.executeOnAsyncThread(new Runnable() {
 			@Override
 			public void run() {
 				boolean success = false;
