@@ -104,7 +104,8 @@ public class DetectThreadCompat extends Thread {
                 
                 AdjFileObserver observer = createAdjFileObserver(needToListenAdj);
                 if (observer == null) continue;
-                
+
+                mAdjObserver = observer;
                 if (!needToListenAdj.equals(lastProcessAdj)) {
                     if (DBG) {
                         LeoLog.i(TAG, "neet to stop and restart watching.");
@@ -115,7 +116,6 @@ public class DetectThreadCompat extends Thread {
                     if (mAdjObserver != null) {
                         mAdjObserver.stopWatching();
                     }
-                    mAdjObserver = observer;
                     mAdjObserver.startWatching();
                 } else {
                     if (DBG) {
