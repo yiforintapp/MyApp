@@ -17,6 +17,7 @@ package com.leo.imageloader;
 
 import android.view.View;
 
+import com.leo.appmaster.ThreadManager;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.FlushedInputStream;
 import com.leo.imageloader.core.ImageAware;
@@ -62,7 +63,8 @@ class ImageLoaderEngine {
 		taskExecutor = configuration.taskExecutor;
 		taskExecutorForCachedImages = configuration.taskExecutorForCachedImages;
 
-		taskDistributor = DefaultConfigurationFactory.createTaskDistributor();
+//		taskDistributor = DefaultConfigurationFactory.createTaskDistributor();
+		taskDistributor = ThreadManager.getAsyncExecutor();
 	}
 
 	/** Submits task to execution pool */

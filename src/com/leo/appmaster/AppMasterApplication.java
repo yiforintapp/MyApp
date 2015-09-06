@@ -135,13 +135,13 @@ public class AppMasterApplication extends Application {
 //        mExecutorService.schedule(runable, delay, TimeUnit.MILLISECONDS);
 //    }
 
-    public void postInMainThread(Runnable runnable) {
-        mHandler.post(runnable);
-    }
+//    public void postInMainThread(Runnable runnable) {
+//        mHandler.post(runnable);
+//    }
 
-    public boolean isUiThread() {
-        return Thread.currentThread() == mUiThread;
-    }
+//    public boolean isUiThread() {
+//        return Thread.currentThread() == mUiThread;
+//    }
 
     // for force update strategy to exit application completely
     public synchronized void addActivity(Activity activity) {

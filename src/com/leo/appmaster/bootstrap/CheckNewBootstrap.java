@@ -295,7 +295,7 @@ public class CheckNewBootstrap extends Bootstrap {
                 if (Math.abs(curTime - lastUBC) > AppMasterConfig.TIME_12_HOUR) {
                     pref.setLastUBCTime(curTime);
                     if (lastUBC > 0) {
-                        application.postInMainThread(new Runnable() {
+                        ThreadManager.executeOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Intent intent = new Intent();

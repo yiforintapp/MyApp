@@ -22,11 +22,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.utils.LeoLog;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.SystemClock;
+import android.widget.Toast;
 
 /**
  * 线程池统一管理类，包含如下
@@ -42,6 +44,9 @@ import android.os.SystemClock;
 public class ThreadManager {
     private static final boolean DEBUG = false;
     private static final String TAG = "ThreadManager";
+
+    private static final int TIME_UI_ALARM = 300;
+    private static final int TIME_ASYNC_ALARM = 5 * 1000;
     
     /**
      * 网络线程池个数
@@ -53,7 +58,8 @@ public class ThreadManager {
      */
     private static final int ASYNCTASK_CORE_SIZE = 4;
 
-    private static final int MAX_POOL_SIZE = 64;
+    private static final int MAX_ASYNC_SIZE = 128;
+    private static final int MAX_NETWORK_SIZE = 32;
 
     /**
      * AsyncTask的默认Executor，负责长时间网络请求，2个线程
@@ -98,15 +104,15 @@ public class ThreadManager {
     };
     
     static {
-        sNetworkExecutor = initThreadExecutor(NETWORK_CORE_SIZE, sNetworkFactory);
-        sAsyncExecutor = initThreadExecutor(ASYNCTASK_CORE_SIZE, sAsyncFactory);
+        sNetworkExecutor = initThreadExecutor(NETWORK_CORE_SIZE, MAX_NETWORK_SIZE, sNetworkFactory);
+        sAsyncExecutor = initThreadExecutor(ASYNCTASK_CORE_SIZE, MAX_ASYNC_SIZE, sAsyncFactory);
         
         sUiThread = Thread.currentThread();
     }
     
-    private static ScheduledThreadPoolExecutor initThreadExecutor(int coreSize, ThreadFactory factory) {
+    private static ScheduledThreadPoolExecutor initThreadExecutor(int coreSize, int maxSize, ThreadFactory factory) {
         ScheduledThreadPoolExecutor result = new ScheduledThreadPoolExecutor(coreSize, factory);
-        result.setMaximumPoolSize(MAX_POOL_SIZE);
+        result.setMaximumPoolSize(maxSize);
         result.setKeepAliveTime(1L, TimeUnit.SECONDS);
         result.setRejectedExecutionHandler(new RejectedExecutionHandler() {
             @Override
@@ -347,19 +353,44 @@ public class ThreadManager {
                 
                 long cost = SystemClock.elapsedRealtime() - start;
                 LeoLog.i(TAG, mTarget.getClass().getSimpleName() + " cost: " + cost);
+                if (isUiThread()) {
+                    if (cost > TIME_UI_ALARM) {
+                        String msg = getClassTag() + "耗时超过 " + TIME_UI_ALARM + " ms, 需要优化";
+                        toast(msg);
+                    }
+                } else {
+                    if (cost > TIME_ASYNC_ALARM) {
+                        String msg = getClassTag() + "耗时超过 " + TIME_ASYNC_ALARM + " ms, 请检查代码逻辑";
+                        toast(msg);
+                    }
+                }
             }
+        }
+
+        private String getClassTag() {
+            String clazz = null;
+            try {
+                Field field = mTarget.getClass().getDeclaredField("this$0");
+                field.setAccessible(true);
+                clazz = field.getClass().getName();
+            } catch (NoSuchFieldException e) {
+                clazz = mTarget.getClass().getName();
+            }
+
+            return clazz;
+        }
+
+        private void toast(final String msg) {
+            executeOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Context context = AppMasterApplication.getInstance();
+                    Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
+                }
+            });
         }
         
-    }
-
-    private static class QueueAbortPolicy extends ThreadPoolExecutor.AbortPolicy {
-        @Override
-        public void rejectedExecution(Runnable r, ThreadPoolExecutor e) {
-            if (AppMasterConfig.LOGGABLE) {
-                super.rejectedExecution(r, e);
-            }
-            BlockingQueue<Runnable> queue = e.getQueue();
-        }
     }
 
 }
