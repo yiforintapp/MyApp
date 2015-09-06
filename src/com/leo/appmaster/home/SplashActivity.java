@@ -43,6 +43,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
@@ -389,8 +390,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startInitTask() {
-        new Thread(new Runnable() {
-
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 // get recommend app lock list
@@ -405,7 +405,7 @@ public class SplashActivity extends BaseActivity {
                             listener);
                 }
             }
-        }).start();
+        });
     }
 
     /* add for Guide Screen begin */

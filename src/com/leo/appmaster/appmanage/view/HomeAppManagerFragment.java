@@ -244,7 +244,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     public void showdonghua() {
         LeoLog.d("shodonghua", "SHOW DONG HUA");
-        new Thread() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
             public void run() {
                 if (isGestureAnimating) {
                     if (roundProgressBar != null) {
@@ -282,8 +283,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     e.printStackTrace();
                 }
                 isShowIng = false;
-            };
-        }.start();
+            }
+        });
     }
 
     private void InitHeadView() {

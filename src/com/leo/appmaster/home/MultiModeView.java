@@ -428,15 +428,9 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                             mLockManager.setCurrentLockMode(mode, true);
                             checkLockTip();
                             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modeschage", "home");
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    LeoEventBus.getDefaultBus().post(
-                                            new LockModeEvent(EventId.EVENT_MODE_CHANGE,
-                                                    "multi mode page selectd"));
-                                }
-                            }).start();
-
+                            LeoEventBus.getDefaultBus().post(
+                                    new LockModeEvent(EventId.EVENT_MODE_CHANGE,
+                                            "multi mode page selectd"));
                             disappearAnim(curPosition, selectedImg);
                             break;
                         case MotionEvent.ACTION_CANCEL:

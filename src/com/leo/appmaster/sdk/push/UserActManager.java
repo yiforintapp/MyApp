@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import org.apache.http.message.BasicNameValuePair;
 
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -82,7 +83,7 @@ public class UserActManager {
         pairs.add(new BasicNameValuePair("is_rewarded", rewardedStr));
         pairs.add(new BasicNameValuePair("is_statusbar", statusbarStr));
         LeoPollAckReq ack = new LeoPollAckReq(pairs);
-        new Thread(ack).start();
+        ThreadManager.executeOnNetworkThread(ack);
     }
 
     private void doFetch() {
@@ -102,7 +103,7 @@ public class UserActManager {
                     }
                 }
             });
-            new Thread(pq).start();
+            ThreadManager.executeOnNetworkThread(pq);
         }
     }
 

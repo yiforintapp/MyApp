@@ -201,19 +201,9 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     }
 
     private void showFeedBack() {
-        new Thread() {
-            public void run() {
-                try {
-                    mHandler.sendEmptyMessage(SHOWLOCK);
-                    sleep(300);
-                    mHandler.sendEmptyMessage(SHOWUNLOCK);
-                    sleep(600);
-                    mHandler.sendEmptyMessage(FINISHFRAGMENT);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            };
-        }.start();
+        mHandler.sendEmptyMessage(SHOWLOCK);
+        mHandler.sendEmptyMessageDelayed(SHOWUNLOCK, 300);
+        mHandler.sendEmptyMessageDelayed(FINISHFRAGMENT, 600);
     }
 
 }
