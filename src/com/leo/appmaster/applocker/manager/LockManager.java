@@ -36,6 +36,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.TimeLockEditActivity;
@@ -1422,7 +1423,6 @@ public class LockManager {
 
     public void filterAllOneTime(long outtime) {
         mFilterAll = true;
-        Timer timer = new Timer();
 
         if (mFillterAllTask != null) {
             mFillterAllTask.cancel();
@@ -1436,13 +1436,12 @@ public class LockManager {
             }
         };
 
-        timer.schedule(mFillterAllTask, outtime);
+        ThreadManager.getTimer().schedule(mFillterAllTask, outtime);
     }
 
     public void timeFilter(final String packageName, long outtime) {
         addFilterLockPackage(packageName, true);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        ThreadManager.getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
                 mFilterPgks.remove(packageName);

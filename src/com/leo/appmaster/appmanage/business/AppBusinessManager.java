@@ -263,7 +263,7 @@ public class AppBusinessManager {
                                             syncServerGestureData(false);
                                         }
                                     };
-                                    Timer timer = new Timer();
+                                    Timer timer = ThreadManager.getTimer();
                                     timer.schedule(recheckTask, DELAY_12_HOUR);
                                 }
                             }
@@ -280,7 +280,7 @@ public class AppBusinessManager {
                                         syncServerGestureData(false);
                                     }
                                 };
-                                Timer timer = new Timer();
+                                Timer timer = ThreadManager.getTimer();
                                 timer.schedule(recheckTask, DELAY_2_HOUR);
                                 mErrorTryCount++;
                             } else {
@@ -290,7 +290,7 @@ public class AppBusinessManager {
                                         syncServerGestureData(false);
                                     }
                                 };
-                                Timer timer = new Timer();
+                                Timer timer = ThreadManager.getTimer();
                                 timer.schedule(recheckTask,
                                         DELAY_12_HOUR / 2);
                             }
@@ -304,7 +304,7 @@ public class AppBusinessManager {
                         syncServerGestureData(false);
                     }
                 };
-                Timer timer = new Timer();
+                Timer timer = ThreadManager.getTimer();
                 timer.schedule(recheckTask,
                         DELAY_12_HOUR - (curTime - pref.getLastSyncBusinessTime()));
             }
@@ -349,7 +349,7 @@ public class AppBusinessManager {
                                         syncOtherRecommend(type);
                                     }
                                 };
-                                Timer timer = new Timer();
+                                Timer timer = ThreadManager.getTimer();
                                 timer.schedule(recheckTask, DELAY_12_HOUR);
                             }
                         }
@@ -365,7 +365,7 @@ public class AppBusinessManager {
                                 syncOtherRecommend(type);
                             }
                         };
-                        Timer timer = new Timer();
+                        Timer timer = ThreadManager.getTimer();
                         timer.schedule(recheckTask, DELAY_2_HOUR);
 
                         // if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {

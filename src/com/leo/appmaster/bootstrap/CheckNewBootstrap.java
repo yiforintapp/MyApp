@@ -104,7 +104,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     checkNewTheme();
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             if (lastCheckTime == 0) { // First time, check theme after 24 hours
                 lastCheckTime = curTime;
                 pref.setLastCheckThemeTime(curTime);
@@ -142,7 +142,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     checkNewAppBusiness();
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             if (lastCheckTime == 0) { // First time, check business after 24
                                       // hours
                 lastCheckTime = curTime;
@@ -368,7 +368,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     checkNewTheme();
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             timer.schedule(recheckTask, pref.getThemeCurrentStrategy());
         }
 
@@ -430,7 +430,7 @@ public class CheckNewBootstrap extends Bootstrap {
                             checkNewTheme();
                         }
                     };
-                    Timer timer = new Timer();
+                    Timer timer = ThreadManager.getTimer();
                     timer.schedule(recheckTask, pref.getThemeCurrentStrategy());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -456,7 +456,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     checkNewAppBusiness();
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             timer.schedule(recheckTask, pref.getBusinessCurrentStrategy());
         }
 
@@ -514,7 +514,7 @@ public class CheckNewBootstrap extends Bootstrap {
                             checkNewAppBusiness();
                         }
                     };
-                    Timer timer = new Timer();
+                    Timer timer = ThreadManager.getTimer();
                     timer.schedule(recheckTask, pref.getBusinessCurrentStrategy());
 
                 } catch (JSONException e) {

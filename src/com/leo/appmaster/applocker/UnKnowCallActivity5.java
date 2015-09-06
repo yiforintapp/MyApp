@@ -8,6 +8,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Service;
+import android.media.MediaTimeProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CirCleDongHua;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -57,10 +59,11 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     private LEOAlarmDialog mAlarmDialog;
     private AppMasterPreference sp_unknowcall;
     private Vibrator vib;
-    private Timer mTimer;
 
     private ObjectAnimator mMoveX;
     private ObjectAnimator mMoveY;
+
+    private TimerTask mAnimTask;
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -178,43 +181,40 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     }
 
     private void setTimerTask() {
-        try {
-            if (mTimer != null) {
-                mTimer.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        isLunXun = true;
-                        LeoLog.d("testunknow",
-                                "hand_x : " + iv_hands.getX() + " ; hand_y : " + iv_hands.getY());
-                        int handX = (int) iv_hands.getX();
-                        int handY = (int) iv_hands.getY();
-                        int handWidth = iv_hands.getWidth();
-                        int handHeight = iv_hands.getHeight();
-                        int handLeft = handX - handWidth / 2;
-                        int handTop = handY - handHeight / 2;
-                        if (handLeft < gua_right + 10 && handTop < gua_top - 10) {
-                            Message message = new Message();
-                            message.what = SHOWGUABIG;
-                            handler.sendMessage(message);
-                        } else if (handTop < duan_bottom + 10 && handLeft > duan_left - 10) {
-                            Message message = new Message();
-                            message.what = SHOWDUANBIG;
-                            handler.sendMessage(message);
-                        } else if (handLeft > jie_left - 20) {
-                            Message message = new Message();
-                            message.what = SHOWJIEBIG;
-                            handler.sendMessage(message);
-                        } else {
-                            Message message = new Message();
-                            message.what = SHOWNORMAL;
-                            handler.sendMessage(message);
-                        }
+        if (mAnimTask == null) {
+            mAnimTask = new TimerTask() {
+                @Override
+                public void run() {
+                    isLunXun = true;
+                    LeoLog.d("testunknow",
+                            "hand_x : " + iv_hands.getX() + " ; hand_y : " + iv_hands.getY());
+                    int handX = (int) iv_hands.getX();
+                    int handY = (int) iv_hands.getY();
+                    int handWidth = iv_hands.getWidth();
+                    int handHeight = iv_hands.getHeight();
+                    int handLeft = handX - handWidth / 2;
+                    int handTop = handY - handHeight / 2;
+                    if (handLeft < gua_right + 10 && handTop < gua_top - 10) {
+                        Message message = new Message();
+                        message.what = SHOWGUABIG;
+                        handler.sendMessage(message);
+                    } else if (handTop < duan_bottom + 10 && handLeft > duan_left - 10) {
+                        Message message = new Message();
+                        message.what = SHOWDUANBIG;
+                        handler.sendMessage(message);
+                    } else if (handLeft > jie_left - 20) {
+                        Message message = new Message();
+                        message.what = SHOWJIEBIG;
+                        handler.sendMessage(message);
+                    } else {
+                        Message message = new Message();
+                        message.what = SHOWNORMAL;
+                        handler.sendMessage(message);
                     }
-                }, 100, 100);
-            }
-        } catch (Exception e) {
-
+                }
+            };
         }
+        ThreadManager.getTimer().schedule(mAnimTask, 100, 100);
     }
 
     private void init() {
@@ -242,7 +242,6 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
 
         iv_hands = (ImageView) findViewById(R.id.iv_hands);
         iv_topguide = (ImageView) findViewById(R.id.iv_topguide);
-        mTimer = new Timer();
 
         iv_hands.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -428,10 +427,14 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
             mAlarmDialog.dismiss();
             mAlarmDialog = null;
         }
-        if (mTimer != null) {
-            mTimer.cancel();
-            mTimer.purge();
-            mTimer = null;
+//        if (mTimer != null) {
+//            mTimer.cancel();
+//            mTimer.purge();
+//            mTimer = null;
+//        }
+        if (mAnimTask != null) {
+            mAnimTask.cancel();
+            ThreadManager.getTimer().purge();
         }
 
         // 解决内存泄露
@@ -508,7 +511,9 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
 
     public void hideHands() {
         iv_hands.setVisibility(View.INVISIBLE);
-        mTimer.cancel();
+        if (mAnimTask != null) {
+            mAnimTask.cancel();
+        }
     }
 
 }
