@@ -20,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
@@ -162,9 +163,23 @@ public class AppUtil {
         if (src instanceof BitmapDrawable) {
             bitmap = ((BitmapDrawable) src).getBitmap();
         } else {
-            bitmap = Bitmap.createBitmap(src.getIntrinsicWidth(),
-                    src.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-            src.setBounds(0, 0, src.getIntrinsicWidth(), src.getIntrinsicHeight());
+            int width = src.getIntrinsicWidth();
+            int height = src.getIntrinsicHeight();
+            if (width <= 0 || height <= 0) {
+                Rect bounds = src.getBounds();
+                if (bounds != null) {
+                    width = bounds.width();
+                    height = bounds.height();
+                }
+
+                if (width <= 0 || height <= 0) {
+                    // 如果通过bounds还是无法获取宽高信息，就直接返回
+                    return src;
+                }
+            }
+
+            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
+            src.setBounds(0, 0, width, height);
             Canvas c = new Canvas(bitmap);
             src.draw(c); 
         }
