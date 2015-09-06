@@ -9,6 +9,7 @@ import android.view.animation.LinearInterpolator;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.TimeView;
@@ -73,7 +74,7 @@ public class WaitActivity extends BaseActivity {
         va.setInterpolator(new LinearInterpolator());
         va.start();
 
-        new Thread(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 while (true) {
@@ -95,7 +96,7 @@ public class WaitActivity extends BaseActivity {
                 returned = true;
                 finish();
             }
-        }).start();
+        });
     }
     
     // private void returnBack() {

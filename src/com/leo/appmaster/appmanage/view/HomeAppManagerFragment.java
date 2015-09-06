@@ -43,6 +43,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
@@ -551,7 +552,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     private void donghua_show_clean() {
-        new Thread() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
             public void run() {
                 if (isStopDongHua) {
                     mProgress = mNowDongHuaWhere;
@@ -571,8 +573,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     msg.obj = mProgress;
                     handler.sendMessage(msg);
                 }
-            };
-        }.start();
+            }
+        });
 
         ScaleAnimation show = new ScaleAnimation(1.0f, 0.0f, 1.0f,
                 0.0f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,

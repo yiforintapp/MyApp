@@ -355,16 +355,7 @@ public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener
     }
 
     public void setHold() {
-        new Thread() {
-            public void run() {
-                try {
-                    sleep(150);
-                    handler.sendEmptyMessage(1);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            };
-        }.start();
+        handler.sendEmptyMessageDelayed(1, 150);
     }
 
     @Override
