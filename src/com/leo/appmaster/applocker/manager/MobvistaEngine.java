@@ -149,12 +149,17 @@ public class MobvistaEngine implements AdListener {
         }
         
         Activity requestActivity = mActivity == null ? activity : mActivity;
-        if (sNativeAd == null) {
-            sNativeAd = MobvistaAd.newNativeController(requestActivity,
-                    Constants.MOBVISTA_UNITID,
-                    Constants.MOBVISTA_FACEBOOK_ID);
+        sNativeAd = MobvistaAd.newNativeController(requestActivity,
+                Constants.MOBVISTA_UNITID,
+                Constants.MOBVISTA_FACEBOOK_ID);
+        try {
+            // 这个地方执行导致crash，直接catch住
+            sNativeAd.loadAd(this);
+        } catch (Throwable thr) {
+            listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, "Mobvista execute throwable.");
+            doReleaseInner();
+            return;
         }
-        sNativeAd.loadAd(this);
         sIsStarted = true;
         sReleasedByUser = false;
         LeoLog.i(TAG, "real to start load mobvista.");
