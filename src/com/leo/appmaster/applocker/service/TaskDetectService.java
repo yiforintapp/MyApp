@@ -33,6 +33,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
@@ -109,7 +110,7 @@ public class TaskDetectService extends Service {
         mCleaner = ProcessCleaner.getInstance(getApplicationContext());
 
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
-        mScheduledExecutor = Executors.newScheduledThreadPool(2);
+        mScheduledExecutor = ThreadManager.getAsyncExecutor();
         flowDetecTask = new FlowTask();
         // mflowDatectFuture =
         // mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,

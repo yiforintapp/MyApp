@@ -15,9 +15,11 @@ import android.os.Handler;
 import android.provider.MediaStore.Video;
 import android.view.View;
 
+import com.leo.appmaster.ThreadManager;
+
 public class AsyncLoadImage {
     private Map<String, SoftReference<Drawable>> cacheMap = new HashMap<String, SoftReference<Drawable>>();
-    private ExecutorService executorService = Executors.newFixedThreadPool(5);
+    private ExecutorService executorService = ThreadManager.getAsyncExecutor();
     private Handler handler = new Handler();
     
     public synchronized void cancel() {

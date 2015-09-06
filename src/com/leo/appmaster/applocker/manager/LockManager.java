@@ -13,6 +13,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -154,7 +155,7 @@ public class LockManager {
     /*
      * for time lock, and other time task
      */
-    private ScheduledExecutorService mScheduler = Executors.newScheduledThreadPool(2);
+    private ScheduledExecutorService mScheduler = ThreadManager.getAsyncExecutor();
 
     /*
      * for data operation
@@ -1150,10 +1151,6 @@ public class LockManager {
                     lockMode.modeName = mContext.getString(R.string.vistor_mode);
                     lockMode.isCurrentUsed = true;
                     lockMode.defaultFlag = 1;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.lock_mode_visitor);
-                    // lockMode.modeIconId = R.drawable.lock_mode_visitor;
                     List<String> list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     lockMode.lockList = list;
@@ -1161,43 +1158,11 @@ public class LockManager {
                     mCurrentMode = lockMode;
                     lmd.insertLockMode(lockMode);
 
-                    // add unlock all
-                    // lockMode = new LockMode();
-                    // lockMode.modeName =
-                    // mContext.getString(R.string.unlock_all_mode);
-                    // lockMode.isCurrentUsed = false;
-                    // lockMode.defaultFlag = 0;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.lock_mode_unlock);
-                    // list = new LinkedList<String>();
-                    // list.add(mContext.getPackageName());
-                    // lockMode.lockList = list;
-                    // mLockModeList.add(lockMode);
-                    // lmd.insertLockMode(lockMode);
-                    // add office
-                    // lockMode = new LockMode();
-                    // lockMode.modeName = getString(R.string.office_mode);
-                    // lockMode.isCurrentUsed = false;
-                    // lockMode.defaultFlag = 2;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(getResources(),
-                    // R.drawable.lock_mode_office);
-                    // list = new LinkedList<String>();
-                    // list.add(mActivity.getPackageName());
-                    // lockMode.lockList = list;
-                    // mLockModeList.add(lockMode);
-                    // lmd.insertLockMode(lockMode);
-
                     // add family mode
                     lockMode = new LockMode();
                     lockMode.modeName = mContext.getString(R.string.family_mode);
                     lockMode.isCurrentUsed = false;
                     lockMode.defaultFlag = 3;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.lock_mode_family);
-                    // lockMode.modeIconId = R.drawable.lock_mode_family;
                     list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {

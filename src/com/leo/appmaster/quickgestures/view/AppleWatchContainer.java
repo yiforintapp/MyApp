@@ -61,7 +61,6 @@ public class AppleWatchContainer extends FrameLayout {
     private AppMasterPreference mPref;
     private int mCurrentLayout = 3;
     private List<QuickSwitcherInfo> mSwitchList;
-    private ExecutorService cachedThreadPool;
     private boolean isCleanFinish = false;
 
     public static enum Orientation {

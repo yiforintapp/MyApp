@@ -149,6 +149,10 @@ public class ThreadManager {
     public static ScheduledExecutorService getAsyncExecutor() {
         return sAsyncExecutor;
     }
+
+    public static ScheduledExecutorService getNetworkExecutor() {
+        return sNetworkExecutor;
+    }
     
     /**
      * 执行文件相关操作<br>

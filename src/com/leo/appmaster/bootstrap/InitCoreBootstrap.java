@@ -29,6 +29,7 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.R.drawable;
 import com.leo.appmaster.R.string;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
@@ -106,6 +107,8 @@ public class InitCoreBootstrap extends Bootstrap {
     private void initImageLoader() {
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mApp)
+                .taskExecutor(ThreadManager.getNetworkExecutor())
+                .taskExecutorForCachedImages(ThreadManager.getAsyncExecutor())
                 .threadPoolSize(Constants.MAX_THREAD_POOL_SIZE)
                 .threadPriority(Thread.NORM_PRIORITY)
                 .memoryCacheSizePercentage(8)
