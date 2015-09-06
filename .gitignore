@@ -2,3 +2,13 @@
 /bin
 /project.properties
 /.classpath
+/.idea
+/.settings
+/gradle
+/.gradle
+/build.gradle
+/gradlew
+/gradlew.bat
+/appmaster.iml
+/local.properties
+
