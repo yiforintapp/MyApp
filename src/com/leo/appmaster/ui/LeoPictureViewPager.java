@@ -58,6 +58,8 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
+import com.leo.appmaster.utils.LeoLog;
+
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -418,7 +420,11 @@ public class LeoPictureViewPager extends ViewGroup {
      */
     public void setAdapter(PagerAdapter adapter) {
         if (mAdapter != null) {
-            mAdapter.unregisterDataSetObserver(mObserver);
+            try {
+                mAdapter.unregisterDataSetObserver(mObserver);
+            } catch (Exception e) {
+                LeoLog.e(TAG, "setAdapter unregisterDataSetObserver ex.", e);
+            }
             mAdapter.startUpdate(this);
             for (int i = 0; i < mItems.size(); i++) {
                 final ItemInfo ii = mItems.get(i);
