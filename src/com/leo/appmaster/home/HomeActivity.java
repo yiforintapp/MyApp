@@ -205,12 +205,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private void showWeiZhuangTip() {
 
         // Log.e("isshow", "isfromlist"+mIsFromAppLockList);
-        Log.e("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
+        LeoLog.e("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 + "");
-        Log.e("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
-        Log.e("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
+        LeoLog.e("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
+        LeoLog.e("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
                 + "");
-        Log.e("isshow", "getisfromAppList"
+        LeoLog.e("isshow", "getisfromAppList"
                 + AppMasterPreference.getInstance(this).getIsFromLockList() + "");
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 && LockManager.getInstatnce().getLockedAppCount() > 0
