@@ -206,12 +206,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private void showWeiZhuangTip() {
 
         // Log.e("isshow", "isfromlist"+mIsFromAppLockList);
-        LeoLog.e("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
+        Log.e("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 + "");
-        LeoLog.e("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
-        LeoLog.e("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
+        Log.e("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
+        Log.e("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
                 + "");
-        LeoLog.e("isshow", "getisfromAppList"
+        Log.e("isshow", "getisfromAppList"
                 + AppMasterPreference.getInstance(this).getIsFromLockList() + "");
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 && LockManager.getInstatnce().getLockedAppCount() > 0
@@ -269,6 +269,35 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
+    // @Override
+    // protected void onActivityResult(int requestCode, int resultCode, Intent
+    // data) {
+    // // TODO Auto-generated method stub
+    // Log.e("poha","resultCode"+resultCode);
+    // Log.e("poha","reqCode"+requestCode);
+    // if(resultCode==RESULT_OK)
+    // {
+    // Log.e("poha","in if");
+    // // switch (requestCode) {
+    // //
+    // // case 0:
+    // mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
+    //
+    //
+    //
+    //
+    //
+    //
+    // Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======"
+    // +data.getBooleanExtra("isFromAppLockList", false));
+    // // break;
+    // //
+    // // default:
+    // // break;
+    // // }
+    // }
+
+    // }
 
     @Override
     protected void onDestroy() {
@@ -804,7 +833,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 .getFristDialogTip();
                         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                                 .getIsUpdateQuickGestureUser();
-                        Log.i("showFirstOpenQuickGestureTip", "是否为升级用户：" + updateUser);
+                        LeoLog.i(TAG, "是否为升级用户：" + updateUser);
                         if (!updateUser) {
                             boolean isMiui = BuildProperties.isMIUI();
                             boolean isOpenWindow = BuildProperties
@@ -826,13 +855,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                         AppMasterPreference.getInstance(HomeActivity.this)
                                                 .setFristDialogTip(true);
                                     }
-                                    Log.i("showFirstOpenQuickGestureTip", "新用户提示！");
+                                    LeoLog.i(TAG, "新用户提示！");
                                 }
                             }
                         } else {
                             // update user
                             if (!firstDilaogTip) {
-                                Log.i("showFirstOpenQuickGestureTip", "升级用户提示！");
+                                LeoLog.i(TAG, "升级用户提示！");
                                 boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
                                         getApplicationContext()).isInstallIsiwpe();
                                 if (!isIswipInstall) {
