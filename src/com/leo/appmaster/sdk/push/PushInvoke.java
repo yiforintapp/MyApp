@@ -132,9 +132,20 @@ public class PushInvoke implements PushInvokeHelper {
     }
 
     private String getMidName(String actionContent) {
-        String[] mContent = actionContent.split(";");
-        String[] mMid = mContent[1].split("/");
-        return mMid[1];
+
+        String mType = "d";
+        try {
+            String[] mContent = actionContent.split(";");
+            String[] mMid = mContent[1].split("/");
+            mType = mMid[1];
+        } catch (Exception e) {
+            return mType;
+        }
+        return mType;
+
+        // String[] mContent = actionContent.split(";");
+        // String[] mMid = mContent[1].split("/");
+        // return mMid[1];
     }
 
     private void invokeISwipe() {
