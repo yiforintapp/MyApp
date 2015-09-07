@@ -27,6 +27,7 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -77,8 +78,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                if (code == MobvistaEngine.ERR_OK)
-                {
+                if (code == MobvistaEngine.ERR_OK){
                     mIsLoaded = true;
                     loadADPic(campaign.getIconUrl(),new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil.dip2px(UFOActivity.this, 48)),
                             (ImageView) mDialog.findViewById(R.id.iv_ufo_ad_icon));
@@ -115,9 +115,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
         });
     }
 
-    private void loadADPic(String url, ImageSize size, final ImageView v)
-    {
-
+    private void loadADPic(String url, ImageSize size, final ImageView v){
         ImageLoader.getInstance().loadImage(
                 url, size, new ImageLoadingListener() {
 
@@ -131,8 +129,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
 
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        if (loadedImage != null)
-                        {
+                        if (loadedImage != null) {
                             v.setImageBitmap(loadedImage);
                         }
                     }
@@ -170,8 +167,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
 
-        if (!mHasPlayed)
-        {
+        if (!mHasPlayed) {
             mHasPlayed = true;
             playUFOFly();
         }
@@ -228,7 +224,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
             @Override
             public void onAnimationEnd(Animator animation) {
                 ObjectAnimator.clearAllAnimations();
-                Log.e("poha", "飞碟最终的y" + mWholeUFO.getY() + "--------------------------------------"+windowW + " * " + windowH);
                 float y2 = mWholeUFO.getY();
                 int detay2 = DipPixelUtil.dip2px(UFOActivity.this, 10);
                 PropertyValuesHolder ufoY2 = PropertyValuesHolder.ofFloat("y", y2, y2 + detay2, y2,
@@ -267,25 +262,12 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
                                 // mAlien.setVisibility(View.INVISIBLE);
                                 Toast.makeText(UFOActivity.this, getString(R.string.ad_timeout), 1).show();
                                 UFOActivity.this.finish();
-//                                RelativeLayout Tips = (RelativeLayout) findViewById(R.id.rl_ADdialog_nodata);
-//                                Tips.setY(mWholeUFO.getY() + mWholeUFO.getHeight());
-//                                Tips.setVisibility(View.VISIBLE);
-//                                findViewById(R.id.rl_ufo_rootview).setOnClickListener(
-//                                        new OnClickListener() {
-//
-//                                            @Override
-//                                            public void onClick(View v) {
-//                                                UFOActivity.this.finish();
-//                                            }
-//                                        });
                             }
-                            else
-                            {
+                            else{
                                 mLongLight.setVisibility(View.VISIBLE);
                                 mCircleLight.setVisibility(View.VISIBLE);
                                 mLongLight.setY(mWholeUFO.getY() + mWholeUFO.getHeight()
                                         - (DipPixelUtil.dip2px(UFOActivity.this, 30)));
-                                Log.e("poha", mLongLight.getY() + "::dialog开始时，longlight的y");
                                 mCircleLight.setY(mLongLight.getY() + mLongLight.getHeight()
                                         - (float) (mCircleLight.getHeight() / 2));
 
@@ -293,16 +275,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
                                 mLongLight.setPivotY(0);
                                 
                                 mDialog.setVisibility(View.VISIBLE);
-//                                float dh = mDialog.getHeight();
-//                                mDialog.setY(mWholeUFO.getY() + mWholeUFO.getHeight()+DipPixelUtil.dip2px(UFOActivity.this, 10));
-//                                mDialog.setPivotX(windowW/2-mDialog.getWidth()/2);
-//                                mDialog.setPivotY(0);
-//                                mDialog.setX(windowW/2-mDialog.getWidth()/2);
                                 float xWhenMiddle=(windowW-mDialog.getWidth())/2;
-                                Log.e("poha", mWholeUFO.getY() + "::dialog开始时，ufo的y");
-                                Log.e("poha", mWholeUFO.getHeight() + "::dialog开始时，ufo的height");
-                                Log.e("poha", mDialog.getX() + "::dialog开始的X");
-//                                mDialog.setVisibility(View.VISIBLE);
                                 
                                 PropertyValuesHolder dialogy = PropertyValuesHolder.ofFloat(
                                         "y",
@@ -327,9 +300,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
                                 PropertyValuesHolder dialogscalex = PropertyValuesHolder.ofFloat(
                                         "scaleX", 0.1f,
                                         0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.6f, 0.8f, 0.9f, 1f);
-//                                PropertyValuesHolder dialogx = PropertyValuesHolder.ofFloat(
-//                                        "x", xWhenMiddle,
-//                                        xWhenMiddle, xWhenMiddle, xWhenMiddle, xWhenMiddle, xWhenMiddle, xWhenMiddle, xWhenMiddle, xWhenMiddle, xWhenMiddle);
                                 PropertyValuesHolder dialogscaley = PropertyValuesHolder.ofFloat(
                                         "scaleY", 0.1f,
                                         0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.6f, 0.8f, 0.9f, 1f);
@@ -346,8 +316,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
                                     @Override
                                     public void onAnimationEnd(Animator animation) {
                                         ufo.stop();                                        
-                                        Log.e("poha", mDialog.getX()+mDialog.getWidth()/2 + "DX");
-                                        Log.e("poha", mDialog.getY() + "DY");
+                                        LeoLog.e("poha", mDialog.getX()+mDialog.getWidth()/2 + "DX");
+                                        LeoLog.e("poha", mDialog.getY() + "DY");
                                         mWholeUFO.setVisibility(View.INVISIBLE);
                                         mLongLight.setVisibility(View.INVISIBLE);
                                         mCircleLight.setVisibility(View.INVISIBLE);

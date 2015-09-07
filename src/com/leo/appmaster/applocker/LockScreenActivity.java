@@ -295,7 +295,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         whichTypeShow();
 
-        Log.e("poha", AppMasterPreference.getInstance(this).getADShowType()
+        LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
         
         if (AppMasterPreference.getInstance(this).getADShowType() == 3
