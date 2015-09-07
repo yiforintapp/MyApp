@@ -110,7 +110,6 @@
         <activity
             android:name="com.leo.appmaster.home.HomeActivity"
             android:excludeFromRecents="true"
-            android:exported="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:taskAffinity="com.leo.appmaster.home"
@@ -594,6 +593,15 @@
             android:name="com.leo.appmaster.applocker.MobvistaProxyActivity"
             android:excludeFromRecents="true"
             android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.quickgestures.IswipeUpdateNotifiProxyActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:taskAffinity="com.leo.appmaster.proxy"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 
