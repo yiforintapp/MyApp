@@ -30,6 +30,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.feedback.FeedbackHelper;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -136,6 +137,7 @@ public class HttpRequestAgent {
             ErrorListener eListener) {
         String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
+        LeoLog.d("httpurl", "New Theme Http is :" + url);
         String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalThemeSerialNumber() + "&market_id="
@@ -154,6 +156,7 @@ public class HttpRequestAgent {
             ErrorListener eListener) {
         String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
+        LeoLog.d("httpurl", "New Business Http is :" + url);
         String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalBusinessSerialNumber() + "&market_id="
