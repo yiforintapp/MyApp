@@ -51,10 +51,8 @@ public class ScreenOnOffListener extends BroadcastListener {
 
         if (!AppUtil.isScreenLocked(mContext)
                 && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-            Log.e("poha", "screenchanged!,load finished!");
             ADShowTypeRequestManager.getInstance(mContext).loadADCheckShowType();
         } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-            Log.e("poha", "screenchanged!,load finished!");
             ADShowTypeRequestManager.getInstance(mContext).loadADCheckShowType();
         }
 

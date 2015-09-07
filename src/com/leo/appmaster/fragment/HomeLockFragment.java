@@ -32,6 +32,7 @@ import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 
 public class HomeLockFragment extends BaseFragment implements OnClickListener, Selectable {
 
@@ -147,13 +148,13 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
                     startRcommendLock(0);
                     AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
-                    Log.e("lockmore", "enter lock lis tand set home to list true");
+                    LeoLog.e("lockmore", "enter lock lis tand set home to list true");
                     curMode.haveEverOpened = true;
                     lm.updateMode(curMode);
                 } else {
                     enterLockList();
                     AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
-                    Log.e("lockmore", "enter lock lis tand set home to list true");
+                    LeoLog.e("lockmore", "enter lock lis tand set home to list true");
                 }
                 break;
             case R.id.lock_theme:

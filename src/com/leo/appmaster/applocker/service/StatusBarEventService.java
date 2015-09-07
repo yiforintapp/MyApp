@@ -8,6 +8,8 @@ import android.content.Intent;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
@@ -29,6 +31,8 @@ public class StatusBarEventService extends IntentService {
     public static final int EVENT_BUSINESS_GAME = 2;
     public static final int EVENT_BUSINESS_QUICK_GUESTURE = 3;
     public static final int EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION = 4;
+    /* iswipe更新通知事件标志 */
+    public static final int EVENT_ISWIPE_UPDATE_NOTIFICATION = 5;
 
     public StatusBarEventService() {
         super("");
@@ -95,13 +99,19 @@ public class StatusBarEventService extends IntentService {
             targetIntent.putExtra(QuickGestureActivity.FROME_STATUSBAR, true);
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        } else if (eventType == EVENT_ISWIPE_UPDATE_NOTIFICATION) {
+            LeoLog.i(TAG, "来自iswipe升级通知，启动主页！");
+            targetIntent = new Intent(this, HomeActivity.class);
+            targetIntent.putExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME,
+                    ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+            targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         } else {
             return;
         }
-
         try {
             startActivity(targetIntent);
         } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

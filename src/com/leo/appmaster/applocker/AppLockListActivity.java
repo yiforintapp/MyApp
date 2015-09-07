@@ -50,6 +50,7 @@ import com.leo.appmaster.ui.PagedGridView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AppLockListActivity extends BaseActivity implements
         AppChangeListener, OnItemClickListener, OnClickListener {
@@ -123,9 +124,9 @@ public class AppLockListActivity extends BaseActivity implements
             } else {
 
                 boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
-                Log.e("lockmore", "fromLockMore==" + fromLockMore);
+                LeoLog.e("lockmore", "fromLockMore==" + fromLockMore);
                 boolean isStartFromLockmode=getIntent().getBooleanExtra("enter_from_lockmode", false);
-                Log.e("lockmore", "isStartFromLockmode==" + isStartFromLockmode);
+                LeoLog.e("lockmore", "isStartFromLockmode==" + isStartFromLockmode);
 //                if(isStartFromLockmode)
 //                {
 //        
@@ -140,7 +141,7 @@ public class AppLockListActivity extends BaseActivity implements
                     Intent intent = new Intent(this, HomeActivity.class);
                     if (AppMasterPreference.getInstance(this).getIsHomeToLockList()||AppMasterPreference.getInstance(this).getIsClockToLockList())
                     {
-                        Log.e("lockmore", "inif is home");
+                        LeoLog.e("lockmore", "inif is home");
                         AppMasterPreference.getInstance(this).setIsFromLockList(true);
                     }
                     Log.e("lockmore", "settrue");
@@ -151,8 +152,8 @@ public class AppLockListActivity extends BaseActivity implements
                 {
                     if (AppMasterPreference.getInstance(this).getIsHomeToLockList()||AppMasterPreference.getInstance(this).getIsClockToLockList())
                     {
-                        Log.e("lockmore", "inif is home");
-                        Log.e("lockmore", "settrue");
+                        LeoLog.e("lockmore", "inif is home");
+                        LeoLog.e("lockmore", "settrue");
                         AppMasterPreference.getInstance(this).setIsFromLockList(true);
                     }
                 }

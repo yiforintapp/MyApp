@@ -10,9 +10,11 @@ import android.provider.MediaStore;
 import android.provider.MediaStore.Files;
 import android.provider.MediaStore.MediaColumns;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.utils.IoUtils;
 
 public class FileHideHelper {
 
@@ -21,7 +23,7 @@ public class FileHideHelper {
             MediaStore.Files.FileColumns.DATA,
             MediaStore.Files.FileColumns._ID, //
     };
-    
+
     public static int getAllPhotoCount(Context context) {
         Cursor cursor = null;
         try {
@@ -29,19 +31,19 @@ public class FileHideHelper {
                     context.getContentResolver(),
                     MediaStore.Images.Media.EXTERNAL_CONTENT_URI, FileOperationUtil.STORE_IMAGES,
                     null, MediaColumns.DATE_MODIFIED + " desc");
-            
+
             return cursor.getCount();
         } catch (Exception e) {
-            
+
         } finally {
-            if(cursor != null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
-        
+
         return 0;
     }
-    
+
     public static int getAllVideoCount(Context context) {
         Uri uri = Files.getContentUri("external");
         String selection = Constants.VIDEO_FORMAT;
@@ -50,13 +52,13 @@ public class FileHideHelper {
             cursor = context.getContentResolver().query(uri, null, selection, null, null);
             return cursor.getCount();
         } catch (Exception e) {
-            
+
         } finally {
-            if(cursor != null) {
+            if (cursor != null) {
                 cursor.close();
             }
         }
-        
+
         return 0;
     }
 
@@ -79,20 +81,22 @@ public class FileHideHelper {
             selection = MediaColumns.DATA + " LIKE '%.leotmp'";
             cursor = context.getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
                     MediaColumns.DATE_ADDED + " desc");
-            cur = context.getContentResolver().query(Constants.IMAGE_HIDE_URI, new String[]{"image_path"}, null, null, null);
-            int unhideDbCount=cur.getCount();
+            cur = context.getContentResolver().query(Constants.IMAGE_HIDE_URI, new String[] {
+                    "image_path"
+            }, null, null, null);
+            int unhideDbCount = cur.getCount();
             int oldHideCount = cursor.getCount();
             if (oldHideCount > 0) {
                 replaceOldHideImages(context);
             }
-            return newHideCount + oldHideCount-unhideDbCount;
+            return newHideCount + oldHideCount - unhideDbCount;
         } catch (Exception e) {
 
         } finally {
             if (cursor != null) {
                 cursor.close();
             }
-            if(cur != null) {
+            if (cur != null) {
                 cur.close();
             }
         }
@@ -109,13 +113,12 @@ public class FileHideHelper {
         if (cursor == null)
             return;
 
-        if(cursor.getCount() == 0) {
+        if (cursor.getCount() == 0) {
             cursor.close();
             return;
         }
         final String[] paths = FileOperationUtil.getSdCardPaths(context);
-
-        new Thread(new Runnable() {
+        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
             @Override
             public void run() {
                 while (cursor.moveToNext()) {
@@ -177,12 +180,13 @@ public class FileHideHelper {
                             }
                         } catch (Exception e) {
 
+                        } finally {
+                            IoUtils.closeSilently(cursor);
                         }
                     }
                 }
-                cursor.close();
             }
-        }).start();
+        });
 
     }
 

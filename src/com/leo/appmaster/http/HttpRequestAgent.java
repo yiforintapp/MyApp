@@ -371,7 +371,7 @@ public class HttpRequestAgent {
         String url = Utilities.getURL(adtypeurl);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
-        Log.e("poha", "adtype，访问连接：" + url);
+        LeoLog.e("poha", "adtype，访问连接：" + url);
         request.setShouldCache(false);
         mRequestQueue.add(request);
     }

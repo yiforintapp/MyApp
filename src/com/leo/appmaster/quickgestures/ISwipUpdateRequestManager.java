@@ -408,7 +408,7 @@ public class ISwipUpdateRequestManager {
     }
 
     /* ISwip更新通知 */
-    private void showISwipCheckNewNotification() {
+    public void showISwipCheckNewNotification() {
         RemoteViews custom = new RemoteViews(mContext.getPackageName(),
                 R.layout.iswipe_update_notify);
         custom.setImageViewResource(R.id.appwallIV, R.drawable.iswip_icon);
@@ -420,8 +420,11 @@ public class ISwipUpdateRequestManager {
                 .getSystemService(Context.NOTIFICATION_SERVICE);
         Notification notification = new Notification();
         notification.contentView = custom;
-        Intent intent = new Intent(mContext, HomeActivity.class);
-        intent.putExtra(ISWIP_NOTIFICATION_TO_PG_HOME, ISWIP_NOTIFICATION_TO_PG_HOME);
+        Intent intent = new Intent(mContext, IswipeUpdateNotifiProxyActivity.class);
+        // intent.putExtra(ISWIP_NOTIFICATION_TO_PG_HOME,
+        // ISWIP_NOTIFICATION_TO_PG_HOME);
+        intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                StatusBarEventService.EVENT_ISWIPE_UPDATE_NOTIFICATION);
         PendingIntent contentIntent = PendingIntent.getActivity(mContext, 0,
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
         notification.icon = R.drawable.ic_launcher_notification;

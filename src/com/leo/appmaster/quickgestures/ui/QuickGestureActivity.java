@@ -227,7 +227,6 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
 
         Locale locale = getResources().getConfiguration().locale;
         String language = locale.getLanguage();
-        // Log.e("poha", language);
 
         if (language.endsWith("ru"))
         {

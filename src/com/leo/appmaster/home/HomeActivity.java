@@ -206,12 +206,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private void showWeiZhuangTip() {
 
         // Log.e("isshow", "isfromlist"+mIsFromAppLockList);
-        Log.e("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
+        LeoLog.e("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 + "");
-        Log.e("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
-        Log.e("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
+        LeoLog.e("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
+        LeoLog.e("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
                 + "");
-        Log.e("isshow", "getisfromAppList"
+        LeoLog.e("isshow", "getisfromAppList"
                 + AppMasterPreference.getInstance(this).getIsFromLockList() + "");
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 && LockManager.getInstatnce().getLockedAppCount() > 0
@@ -269,35 +269,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    // @Override
-    // protected void onActivityResult(int requestCode, int resultCode, Intent
-    // data) {
-    // // TODO Auto-generated method stub
-    // Log.e("poha","resultCode"+resultCode);
-    // Log.e("poha","reqCode"+requestCode);
-    // if(resultCode==RESULT_OK)
-    // {
-    // Log.e("poha","in if");
-    // // switch (requestCode) {
-    // //
-    // // case 0:
-    // mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
-    //
-    //
-    //
-    //
-    //
-    //
-    // Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======"
-    // +data.getBooleanExtra("isFromAppLockList", false));
-    // // break;
-    // //
-    // // default:
-    // // break;
-    // // }
-    // }
-
-    // }
 
     @Override
     protected void onDestroy() {
