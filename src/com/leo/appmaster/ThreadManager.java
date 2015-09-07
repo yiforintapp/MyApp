@@ -37,7 +37,7 @@ import android.widget.Toast;
  *  网络线程2个
  *  公共Timer
  *  线性线程池
- * 
+ *
  * @author Jasper
  *
  */
@@ -47,7 +47,7 @@ public class ThreadManager {
 
     private static final int TIME_UI_ALARM = 300;
     private static final int TIME_ASYNC_ALARM = 5 * 1000;
-    
+
     /**
      * 网络线程池个数
      * 一些不适用于Volley类的接口请求
@@ -65,51 +65,51 @@ public class ThreadManager {
      * AsyncTask的默认Executor，负责长时间网络请求，2个线程
      */
     private static ScheduledThreadPoolExecutor sNetworkExecutor;
-    
+
     /**
      * 异步线程池，4个线程，执行一些耗时不能在UI线程执行的操作
      */
     private static ScheduledThreadPoolExecutor sAsyncExecutor;
-    
+
     /**
      * 文件相关操作线程
      * 如文件读写、图片解码等等
      */
     private static Handler sFileThreadHandler;
-    
+
     private static HandlerThread sFileThread;
-    
+
     private static Handler sUiHandler;
-    
+
     private static Timer sTimer;
-    
+
     private static Thread sUiThread;
-    
+
     private static final ThreadFactory sNetworkFactory = new ThreadFactory() {
         private final AtomicInteger mCount = new AtomicInteger(1);
 
         public Thread newThread(Runnable r) {
             return new Thread(r, "Network #" + mCount.getAndIncrement());
         }
-        
+
     };
-    
+
     private static final ThreadFactory sAsyncFactory = new ThreadFactory() {
         private final AtomicInteger mCount = new AtomicInteger(1);
 
         public Thread newThread(Runnable r) {
             return new Thread(r, "AsyncTask #" + mCount.getAndIncrement());
         }
-        
+
     };
-    
+
     static {
         sNetworkExecutor = initThreadExecutor(NETWORK_CORE_SIZE, MAX_NETWORK_SIZE, sNetworkFactory);
         sAsyncExecutor = initThreadExecutor(ASYNCTASK_CORE_SIZE, MAX_ASYNC_SIZE, sAsyncFactory);
-        
+
         sUiThread = Thread.currentThread();
     }
-    
+
     private static ScheduledThreadPoolExecutor initThreadExecutor(int coreSize, int maxSize, ThreadFactory factory) {
         ScheduledThreadPoolExecutor result = new ScheduledThreadPoolExecutor(coreSize, factory);
         result.setMaximumPoolSize(maxSize);
@@ -134,24 +134,24 @@ public class ThreadManager {
 
         return result;
     }
-    
+
     public static Handler getFileThreadHandler() {
         if (sFileThreadHandler == null) {
             sFileThread = new HandlerThread("file_io");
             sFileThread.start();
-            
+
             sFileThreadHandler = new Handler(sFileThread.getLooper());
         }
         return sFileThreadHandler;
     }
-    
+
     public static Handler getUiThreadHandler() {
         if (sUiHandler == null) {
             sUiHandler = new Handler(Looper.getMainLooper());
         }
         return sUiHandler;
     }
-    
+
     public static ScheduledExecutorService getAsyncExecutor() {
         return sAsyncExecutor;
     }
@@ -159,10 +159,10 @@ public class ThreadManager {
     public static ScheduledExecutorService getNetworkExecutor() {
         return sNetworkExecutor;
     }
-    
+
     /**
      * 执行文件相关操作<br>
-     * 
+     *
      * @param runnable
      */
     public static void executeOnFileThread(Runnable runnable) {
@@ -172,7 +172,7 @@ public class ThreadManager {
             getFileThreadHandler().post(runnable);
         }
     }
-    
+
     /**
      * 在异步线程中执行<br>
      * 一些比较耗时且不能在ui线程中执行的操作 <br>
@@ -186,7 +186,7 @@ public class ThreadManager {
             sAsyncExecutor.execute(runnable);
         }
     }
-    
+
     /**
      * 在异步线程中执行<br>
      * 一些比较耗时且不能在ui线程中执行的操作 <br>
@@ -195,9 +195,12 @@ public class ThreadManager {
      * @param delayMs
      */
     public static void executeOnAsyncThreadDelay(Runnable runnable, long delayMs) {
+        if (AppMasterConfig.LOGGABLE) {
+            runnable = new WrapRunnable(runnable);
+        }
         sAsyncExecutor.schedule(runnable, delayMs, TimeUnit.MILLISECONDS);
     }
-    
+
     /**
      * 执行网络相关
      * @param runnable
@@ -209,7 +212,7 @@ public class ThreadManager {
             sNetworkExecutor.execute(runnable);
         }
     }
-    
+
     /**
      * 在ui线程中执行
      * @param runnable
@@ -221,7 +224,7 @@ public class ThreadManager {
             getUiThreadHandler().post(runnable);
         }
     }
-    
+
     /**
      * 返回线性Executor，不会新建线程池，会受到现有线程池线程个数限制
      * @return
@@ -229,11 +232,11 @@ public class ThreadManager {
     public static Executor newSerialExecutor() {
         return new SerialExecutor();
     }
-    
+
     public static boolean isUiThread() {
         return Thread.currentThread() == sUiThread;
     }
-    
+
     /**
      * 获取全局公用timer
      * @return
@@ -303,13 +306,13 @@ public class ThreadManager {
                     }
                     // 全局timer不能cancel
                 }
-                
+
             };
         }
-        
+
         return sTimer;
     }
-    
+
     private static class SerialExecutor implements Executor {
         final Queue<Runnable> mTasks = new LinkedList<Runnable>();
         Runnable mActive;
@@ -335,9 +338,9 @@ public class ThreadManager {
                 sAsyncExecutor.execute(mActive);
             }
         }
-        
+
     }
-   
+
     private static class WrapRunnable implements Runnable {
         private Runnable mTarget;
 
@@ -350,9 +353,9 @@ public class ThreadManager {
             if (mTarget != null) {
                 long start = SystemClock.elapsedRealtime();
                 mTarget.run();
-                
+
                 long cost = SystemClock.elapsedRealtime() - start;
-                LeoLog.i(TAG, mTarget.getClass().getSimpleName() + " cost: " + cost);
+                LeoLog.i(TAG, getClassTag() + " cost: " + cost);
                 if (isUiThread()) {
                     if (cost > TIME_UI_ALARM) {
                         String msg = getClassTag() + "耗时超过 " + TIME_UI_ALARM + " ms, 需要优化";
@@ -390,7 +393,7 @@ public class ThreadManager {
                 }
             });
         }
-        
+
     }
 
 }
