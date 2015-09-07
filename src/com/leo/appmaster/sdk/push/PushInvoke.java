@@ -115,19 +115,26 @@ public class PushInvoke implements PushInvokeHelper {
     // }
 
     @Override
-    public void addTimeFilter() {
-        // LeoLog.d("testDEO", "addTimeFilter mType is : " + mType);
-        // if (mType.equals(PUSH_GOTO_PAGE_TRAFFIC)
-        // || mType.equals(PUSH_GOTO_PAGE_ELEC)
-        // || mType.equals(PUSH_GOTO_PAGE_BACKUP)
-        // || mType.equals(PUSH_GOTO_PAGE_ISWIPE)
-        // || mType.equals(PUSH_GOTO_PAGE_THEME)
-        // || mType.equals(PUSH_GOTO_PAGE_HotApp)
-        // || mType.equals(PUSH_GOTO_GAME))
-        // {
-        LockManager.getInstatnce().timeFilter(mContext.getPackageName(), 1000);
-        // }
+    public void addTimeFilter(String actionContent) {
+        String mType = getMidName(actionContent);
+        LeoLog.d("testDEO", "addTimeFilter mType is : " + mType);
+        if (mType.equals(PUSH_GOTO_PAGE_TRAFFIC)
+                || mType.equals(PUSH_GOTO_PAGE_ELEC)
+                || mType.equals(PUSH_GOTO_PAGE_BACKUP)
+                || mType.equals(PUSH_GOTO_PAGE_ISWIPE)
+                || mType.equals(PUSH_GOTO_PAGE_THEME)
+                || mType.equals(PUSH_GOTO_PAGE_HotApp)
+                || mType.equals(PUSH_GOTO_GAME))
+        {
+            LockManager.getInstatnce().timeFilter(mContext.getPackageName(), 1000);
+        }
 
+    }
+
+    private String getMidName(String actionContent) {
+        String[] mContent = actionContent.split(";");
+        String[] mMid = mContent[1].split("/");
+        return mMid[1];
     }
 
     private void invokeISwipe() {
