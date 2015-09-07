@@ -12,6 +12,7 @@ import android.provider.MediaStore.MediaColumns;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -118,7 +119,8 @@ public class FileHideHelper {
             return;
         }
         final String[] paths = FileOperationUtil.getSdCardPaths(context);
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        new ThreadManager();
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 while (cursor.moveToNext()) {
