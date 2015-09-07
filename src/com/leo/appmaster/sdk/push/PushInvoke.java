@@ -144,15 +144,13 @@ public class PushInvoke implements PushInvokeHelper {
     }
 
     private void invokeNewTheme() {
-        CheckNewBootstrap mCheckHotApp = new CheckNewBootstrap();
-        mCheckHotApp.setFromPush(true);
-        mCheckHotApp.checkNewTheme();
+        CheckNewBootstrap.setFromPush(true);
+        CheckNewBootstrap.checkNewTheme();
     }
 
     private void invokeHotApp() {
-        CheckNewBootstrap mCheckHotApp = new CheckNewBootstrap();
-        mCheckHotApp.setFromPush(true);
-        mCheckHotApp.checkNewAppBusiness();
+        CheckNewBootstrap.setFromPush(true);
+        CheckNewBootstrap.checkNewAppBusiness();
     }
 
     private void invokeSplash() {

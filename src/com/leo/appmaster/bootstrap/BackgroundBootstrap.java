@@ -28,7 +28,7 @@ public class BackgroundBootstrap extends BootstrapGroup {
      */
     private static final int[] STEPS = {STEP_INIT, STEP_SPLASH};
 
-    public BackgroundBootstrap() {
+    BackgroundBootstrap() {
         super();
         mStepIds = STEPS;
         

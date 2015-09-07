@@ -41,6 +41,10 @@ public class SplashBootstrap extends Bootstrap {
     public static volatile boolean mIsEmptyForSplashUrl;
     public static volatile int mSplashDelayTime;
 
+    SplashBootstrap() {
+        super();
+    }
+
     @Override
     protected boolean doStrap() {
         // initStrap();

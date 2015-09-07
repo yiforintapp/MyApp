@@ -24,7 +24,7 @@ public class BackgroundDelayBootstrap extends BootstrapGroup {
     
     private static final int[] STEPS = { STEP_CHECK_NEW };
 
-    public BackgroundDelayBootstrap() {
+    BackgroundDelayBootstrap() {
         super();
         mStepIds = STEPS;
     }

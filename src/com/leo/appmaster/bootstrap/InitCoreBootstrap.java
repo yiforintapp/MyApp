@@ -68,6 +68,10 @@ public class InitCoreBootstrap extends Bootstrap {
     private AudioManager mAudioManager;
     public Handler mHandler = new Handler(Looper.getMainLooper());
 
+    InitCoreBootstrap() {
+        super();
+    }
+
     @Override
     protected boolean doStrap() {
         AppLoadEngine.getInstance(mApp);

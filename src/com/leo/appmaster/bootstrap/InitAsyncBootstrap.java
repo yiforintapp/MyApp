@@ -23,6 +23,10 @@ import com.leo.appmaster.utils.LeoLog;
 public class InitAsyncBootstrap extends Bootstrap {
     private static final String TAG = "InitBootstrap";
 
+    InitAsyncBootstrap() {
+        super();
+    }
+
     @Override
     protected boolean doStrap() {
         checkClosePgQuickGesture();

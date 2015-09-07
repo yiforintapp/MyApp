@@ -58,7 +58,7 @@ public class CheckNewBootstrap extends Bootstrap {
     public static final int CHECKHOTAPP = 1;
     private static boolean isFromPush = false;
 
-    public CheckNewBootstrap() {
+    CheckNewBootstrap() {
         super();
 
         mAppRequestListener = new NewAppRequestListener();
@@ -524,7 +524,7 @@ public class CheckNewBootstrap extends Bootstrap {
         }
     }
 
-    public void setFromPush(boolean b) {
+    public static void setFromPush(boolean b) {
         isFromPush = b;
     }
 

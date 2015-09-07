@@ -44,7 +44,7 @@ public abstract class Bootstrap {
     
     protected LongSparseArray<Bootstrap> mStrapArray;
     
-    public Bootstrap() {
+    Bootstrap() {
         mApp = AppMasterApplication.getInstance();
         mStrapArray = new LongSparseArray<Bootstrap>();
     }
