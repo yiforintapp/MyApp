@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.LeoLog;
 
 public class ZipperView extends View {
     private static final String TAG = "LalianView";
@@ -256,7 +257,7 @@ public class ZipperView extends View {
                     if (mIsZipperTouched)
                     {
                         long durationTime = System.currentTimeMillis() - downtime;
-                        Log.e("poha", durationTime + "");
+                        LeoLog.e("poha", durationTime + "");
                         if (event.getY() >0)
                         {
                             if (event.getY()/durationTime*1000 < mHeight*1.5)
@@ -312,24 +313,24 @@ public class ZipperView extends View {
         }
         else if (pointerCount == 2)
         {
-            Log.e("poha", "两个触摸点");
+            LeoLog.e("poha", "两个触摸点");
 
             // int id1 = event.getPointerId(0);
             // int di2 = event.getPointerId(1);
             switch (event.getAction()) {
                 case MotionEvent.ACTION_POINTER_2_DOWN:
 
-                    Log.e("poha", "两个点的进入down");
+                    LeoLog.e("poha", "两个点的进入down");
 
                     px01 = event.getX(0);
                     py01 = event.getY(0);
                     px02 = event.getX(1);
                     py02 = event.getY(1);
 
-                    Log.e("poha", "px01:" + px01);
-                    Log.e("poha", "py01:" + py01);
-                    Log.e("poha", "px02:" + px02);
-                    Log.e("poha", "py02:" + py02);
+                    LeoLog.e("poha", "px01:" + px01);
+                    LeoLog.e("poha", "py01:" + py01);
+                    LeoLog.e("poha", "px02:" + px02);
+                    LeoLog.e("poha", "py02:" + py02);
                     break;
                 case MotionEvent.ACTION_POINTER_1_UP:
 
@@ -338,10 +339,10 @@ public class ZipperView extends View {
                     float ax02 = event.getX(1);
                     float ay02 = event.getY(1);
 
-                    Log.e("poha", "ax01:" + ax01);
-                    Log.e("poha", "ay01:" + ay01);
-                    Log.e("poha", "ax02:" + ax02);
-                    Log.e("poha", "ay02:" + ay02);
+                    LeoLog.e("poha", "ax01:" + ax01);
+                    LeoLog.e("poha", "ay01:" + ay01);
+                    LeoLog.e("poha", "ax02:" + ax02);
+                    LeoLog.e("poha", "ay02:" + ay02);
 
                     if ( (px01 <= px02 && ax01 > px01 + 50 && ax02 < px02 - 50)                   //01点在左，则需要抬起时01点往右移了30，02点往左移了30
                             || (px01 > px02&& ax01 < px01 - 50 && ax02 > px02 + 50)              //或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30
@@ -362,10 +363,10 @@ public class ZipperView extends View {
                     float aax02 = event.getX(1);
                     float aay02 = event.getY(1);
 
-                    Log.e("poha", "ax01:" + aax01);
-                    Log.e("poha", "ay01:" + aay01);
-                    Log.e("poha", "ax02:" + aax02);
-                    Log.e("poha", "ay02:" + aay02);
+                    LeoLog.e("poha", "ax01:" + aax01);
+                    LeoLog.e("poha", "ay01:" + aay01);
+                    LeoLog.e("poha", "ax02:" + aax02);
+                    LeoLog.e("poha", "ay02:" + aay02);
 
                     if ( (px01 <= px02 && aax01 > px01 + 50 && aax02 < px02 - 50)                   //01点在左，则需要抬起时01点往右移了30，02点往左移了30
                             || (px01 > px02&& aax01 < px01 - 50 && aax02 > px02 + 50)              //或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30

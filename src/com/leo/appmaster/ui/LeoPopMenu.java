@@ -119,9 +119,6 @@ public class LeoPopMenu {
         } else {
             mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
         }
-        // mLeoPopMenu.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
-        // mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        // temp
 
     }
 
@@ -246,82 +243,16 @@ public class LeoPopMenu {
 
         Log.e("hehe", "最长字符占的宽度px=" + mMaxLength);
 
-        //
-        // if (W >= 1080) {
-        // if (mMaxLength > OVERPX) {
-        // isOverWidth = true;
-        // if (mMaxLength > 260) {
-        // newLongWidth = mMaxLength - 130;
-        // } else {
-        // newLongWidth = mMaxLength - 110;
-        // }
-        // if (newLongWidth > 210) {
-        // newLongWidth = 210;
-        // }
-        // Log.i("tag","OVERPX mMaxLength = "+mMaxLength);
-        // Log.i("tag"," OVERPX newLongWidth = "+newLongWidth);
-        // } else {
-        // isOverWidth = false;
-        // if (mMaxLength < SMALLWidth) {
-        // newSmallWidth = mMaxLength - 20;
-        // } else if (mMaxLength < 180) {
-        // newSmallWidth = mMaxLength - 40;
-        // } else {
-        // newSmallWidth = mMaxLength - 60;
-        // }
-        // Log.i("tag","SMALLWidth mMaxLength = "+mMaxLength);
-        // Log.i("tag"," SMALLWidth newSmallWidth = "+newSmallWidth);
-        // }
-        // } else if (W >= 720) {
-        // if (mMaxLength > OVERPX) {
-        // isOverWidth = true;
-        // newLongWidth = LongWidth - 30;
-        // if (newLongWidth > 210) {
-        // newLongWidth = 210;
-        // }
-        // } else {
-        // isOverWidth = false;
-        // if (mMaxLength < SMALLWidth) {
-        // newSmallWidth = mMaxLength;
-        // } else {
-        // newSmallWidth = mMaxLength - 20;
-        // }
-        // }
-        // } else if (W >= 480) {
-        // if (mMaxLength > OVERPX) {
-        // isOverWidth = true;
-        // newLongWidth = LongWidth + 30;
-        // if (newLongWidth > 210) {
-        // newLongWidth = 210;
-        // }
-        // } else {
-        // isOverWidth = false;
-        // newSmallWidth = mMaxLength + 40;
-        // }
-        // } else {
-        // if (mMaxLength > OVERPX) {
-        // isOverWidth = true;
-        // newLongWidth = LongWidth + 50;
-        // if (newLongWidth > 210) {
-        // newLongWidth = 210;
-        // }
-        // } else {
-        // isOverWidth = false;
-        // newSmallWidth = mMaxLength + 60;
-        // }
-        // }
+        
         newSmallWidth = W / 4;
         newLongWidth = W / 2;
         finalWidth = mMaxLength + DipPixelUtil.dip2px(mContext, 7);
 
-        Log.e("cnm", "刚开始，finalWidth是最长文案的textview的长度，它有辣么长:" + finalWidth);
         if (mMaxLength > newLongWidth)
         {
             mIsNewLine = true;
 
             finalWidth = newLongWidth;
-            Log.e("cnm", "开始判断了，发现finalWidth比最大限度还要长，所以让它等于最大限度，而且让mIsNewLine为真，此时它的长度为"
-                    + finalWidth);
 
             // 判断第二长的item，然后再取出最长的单词长度，取两者的更大的那个值，最后还是加上7dp
 
@@ -344,19 +275,8 @@ public class LeoPopMenu {
         if (mMaxLength < newSmallWidth)
         {
             finalWidth = newSmallWidth;
-            Log.e("cnm", "开始判断了，发现finalWidth比最小限度还要短，所以让它等于最小限度，而且让mIsNewLine为假，此时它的长度为"
-                    + finalWidth);
         }
 
-        // Log.e("hehe", "finalW="+finalWidth);
-        // Log.e("hehe", "是否超maxW="+isOverWidth);
-        // Log.e("hehe", "最终的minW="+newSmallWidth);
-        // Log.e("hehe", "最终的maxW="+newLongWidth);
-
-        // // 不改动上面的代码，对最终结果再做适配
-        // Locale locale = mContext.getResources().getConfiguration().locale;
-        // String language = locale.getLanguage();
-        // // Log.e("poha", language);
 
     }
 

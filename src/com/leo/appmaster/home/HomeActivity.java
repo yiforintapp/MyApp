@@ -268,35 +268,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    // @Override
-    // protected void onActivityResult(int requestCode, int resultCode, Intent
-    // data) {
-    // // TODO Auto-generated method stub
-    // Log.e("poha","resultCode"+resultCode);
-    // Log.e("poha","reqCode"+requestCode);
-    // if(resultCode==RESULT_OK)
-    // {
-    // Log.e("poha","in if");
-    // // switch (requestCode) {
-    // //
-    // // case 0:
-    // mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
-    //
-    //
-    //
-    //
-    //
-    //
-    // Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======"
-    // +data.getBooleanExtra("isFromAppLockList", false));
-    // // break;
-    // //
-    // // default:
-    // // break;
-    // // }
-    // }
-
-    // }
 
     @Override
     protected void onDestroy() {
