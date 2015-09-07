@@ -115,8 +115,8 @@ public class PushInvoke implements PushInvokeHelper {
     // }
 
     @Override
-    public void addTimeFilter(String actionContent) {
-        String mType = getMidName(actionContent);
+    public void addTimeFilter(String mType) {
+        // String mType = getMidName(actionContent);
         LeoLog.d("testDEO", "addTimeFilter mType is : " + mType);
         if (mType.equals(PUSH_GOTO_PAGE_TRAFFIC)
                 || mType.equals(PUSH_GOTO_PAGE_ELEC)
@@ -131,22 +131,24 @@ public class PushInvoke implements PushInvokeHelper {
 
     }
 
-    private String getMidName(String actionContent) {
-
-        String mType = "d";
-        try {
-            String[] mContent = actionContent.split(";");
-            String[] mMid = mContent[1].split("/");
-            mType = mMid[1];
-        } catch (Exception e) {
-            return mType;
-        }
-        return mType;
-
-        // String[] mContent = actionContent.split(";");
-        // String[] mMid = mContent[1].split("/");
-        // return mMid[1];
-    }
+//    private String getMidName(String actionContent) {
+//        String mType = "d";
+//        try {
+//            String[] mContent = actionContent.split(";");
+//            for (String mString : mContent) {
+//                if (mString.startsWith("component=")) {
+//                    String[] mStrings = mString.split("/");
+//                    mType = mStrings[1];
+//                }
+//            }
+//            Debug.d("testGetName", "mType is : " + mType);
+//            // String[] mMid = mContent[1].split("/");
+//            // mType = mMid[1];
+//        } catch (Exception e) {
+//            return mType;
+//        }
+//        return mType;
+//    }
 
     private void invokeISwipe() {
         ISwipUpdateRequestManager.getInstance(mContext).setPushLoad(true);
