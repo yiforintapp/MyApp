@@ -21,7 +21,9 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
     // oom_score收不到文件监控消息，需要按频率扫描
     private static final int WAIT_HOME_TIMEOUT = 0;
     private static final int MAX_SCORE = 80;
-    private static final int MIN_SCORE = 30;
+    private static int MIN_SCORE = 30;
+    // min_score被减小的值
+    private static final int MIN_DIFF_DEC = 15;
     // 最小diff上限
     private static final int MIN_DIFF_UP_LIMIT = MAX_SCORE - MIN_SCORE;
     
@@ -35,12 +37,16 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
      */
     public static void setForegroundScore() {
         AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
-            
+
             @Override
             public void run() {
                 int score = getOomScore(Process.myPid());
                 score = score > MAX_SCORE ? MAX_SCORE : score;
-                
+
+                if (Math.abs(score - MIN_SCORE) < MIN_DIFF_DEC) {
+                    // leo处于前台时获取到的socre跟最小值差值小于MIN_DIFF_DEC，则把最小值减MIN_DIFF_DEC
+                    MIN_SCORE -= MIN_DIFF_DEC;
+                }
                 mForegroundScore = score;
                 Context context = AppMasterApplication.getInstance();
                 AppMasterPreference.getInstance(context).setForegroundScore(mForegroundScore);
