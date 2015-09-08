@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.os.RemoteException;
 
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.ISwipeInterface;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -45,6 +46,11 @@ public class ISwipeService extends Service {
         @Override
         public List<LockMode> getLockModeList() throws RemoteException {
             LeoLog.i(TAG, "getLockModeList");
+            AppMasterPreference amp = AppMasterPreference.getInstance(ISwipeService.this);
+            if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                LeoLog.i(TAG, "getLockModeList lock type is none.");
+                return null;
+            }
             return LockManager.getInstatnce().getLockMode();
         }
     };
