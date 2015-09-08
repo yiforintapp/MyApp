@@ -57,7 +57,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     private static final String QUERY_SQL_TABLE_MESSAGE_LIST_MODEL = "query_list_model";
     private static final String QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL = "query_item_model";
 
-    private TextView mTextView;
+//    private TextView mTextView;
     private LinearLayout mDefaultText;
     private ListView mListMessage;
     private MyMessageAdapter mAdapter;
@@ -86,7 +86,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     protected void onInitUI() {
         mContext = getActivity();
         mSimpleDateFormate = new SimpleDateFormat("yy/MM/dd");
-        mTextView = (TextView) findViewById(R.id.content);
+//        mTextView = (TextView) findViewById(R.id.content);
         mDefaultText = (LinearLayout) findViewById(R.id.message_default_tv);
         mButtomTip = (RelativeLayout) findViewById(R.id.buttom_tip);
         mMessageList = new ArrayList<MessageBean>();
@@ -164,11 +164,11 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         super.onDestroyView();
     }
 
-    public void setContent(String content) {
-        if (mTextView != null) {
-            mTextView.setText(content);
-        }
-    }
+//    public void setContent(String content) {
+//        if (mTextView != null) {
+//            mTextView.setText(content);
+//        }
+//    }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {

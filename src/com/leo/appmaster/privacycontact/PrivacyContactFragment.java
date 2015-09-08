@@ -69,7 +69,8 @@ public class PrivacyContactFragment extends BaseFragment {
         return R.layout.fragment_privacy_contact;
     }
 
-    @Override
+    @SuppressLint("WrongViewCast")
+	@Override
     protected void onInitUI() {
         mContext = getActivity();
         mTextView = (TextView) findViewById(R.id.content);

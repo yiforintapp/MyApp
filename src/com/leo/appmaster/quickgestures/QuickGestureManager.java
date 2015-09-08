@@ -28,6 +28,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
@@ -43,6 +44,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
@@ -53,6 +55,8 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
@@ -63,7 +67,13 @@ import com.leo.appmaster.utils.NotificationUtil;
 
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
-
+    public static final boolean DBG = true;
+    /* 接受隐私联系人存在未读广播的权限 */
+    private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
+    private static final String RECEIVER_TO_SWIPE_ACTION = "com.leo.appmaster.ACTION_PRIVACY_CONTACT";
+    public static final String PRIVACY_MSM = "privacy_msm";
+    public static final String PRIVACY_CALL = "privacy_call";
+    public static final String PRIVACYCONTACT_TO_IWIPE_KEY = "privacycontact_to_iswipe";
     protected static final String AppLauncherRecorder = null;
     public static boolean isFromDialog = false;
     public static boolean isClickSure = false;
@@ -117,7 +127,7 @@ public class QuickGestureManager {
         }
         return mInstance;
     }
-    
+
     public void init() {
         if (!mInited) {
             mInited = true;
@@ -1291,5 +1301,43 @@ public class QuickGestureManager {
         if (mCallLogs != null) {
             mCallLogs.clear();
         }
+    }
+
+    /* 隐私联系人有未读发送广播到iswipe */
+    public void privacyContactSendReceiverToSwipe(final String flag) {
+        Intent privacyIntent = null;
+        if (PRIVACY_MSM.equals(flag)) {
+            LeoLog.i(TAG, "隐私联系人有未读短信");
+            privacyIntent = getPrivacyMsmIntent();
+        } else if (PRIVACY_CALL.equals(flag)) {
+            LeoLog.i(TAG, "隐私联系人有未读通话");
+            privacyIntent = getPrivacyCallIntent();
+        }
+        Intent intent = new Intent(RECEIVER_TO_SWIPE_ACTION);
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(PRIVACYCONTACT_TO_IWIPE_KEY, privacyIntent);
+        intent.putExtras(bundle);
+        // intent.putExtra(PRIVACYCONTACT_TO_IWIPE_KEY, flag);
+        try {
+            mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
+            // mContext.sendBroadcast(intent);
+        } catch (Exception e) {
+            LeoLog.i(TAG, "隐私联系人广播发送失败！！");
+        }
+    }
+
+    private Intent getPrivacyMsmIntent() {
+        Intent privacyMsmIntent = new Intent(mContext, PrivacyContactActivity.class);
+        privacyMsmIntent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+        return privacyMsmIntent;
+    }
+
+    private Intent getPrivacyCallIntent() {
+        Intent privacyCallIntent = new Intent(mContext,
+                PrivacyContactActivity.class);
+        privacyCallIntent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+        return privacyCallIntent;
     }
 }

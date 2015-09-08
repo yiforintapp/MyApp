@@ -407,7 +407,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         HomeFragmentHoler holder = new HomeFragmentHoler();
         holder.title = this.getString(R.string.privacy_contact_message);
         PrivacyMessageFragment messageFragment = new PrivacyMessageFragment();
-        messageFragment.setContent(holder.title);
+//        messageFragment.setContent(holder.title);
         holder.fragment = messageFragment;
         mFragmentHolders[0] = holder;
         if (AppMasterPreference.getInstance(this).getMessageNoReadCount() > 0) {
@@ -419,7 +419,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         holder = new HomeFragmentHoler();
         holder.title = this.getString(R.string.privacy_contact_calllog);
         PrivacyCalllogFragment pravicyCalllogFragment = new PrivacyCalllogFragment();
-        pravicyCalllogFragment.setContent(holder.title);
+//        pravicyCalllogFragment.setContent(holder.title);
         holder.fragment = pravicyCalllogFragment;
         mFragmentHolders[1] = holder;
         if (AppMasterPreference.getInstance(this).getCallLogNoReadCount() > 0) {
@@ -432,7 +432,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         holder.title = this.getString(R.string.privacy_contact_contact);
         PrivacyContactFragment appManagerFragment = new
                 PrivacyContactFragment();
-        appManagerFragment.setContent(holder.title);
+//        appManagerFragment.setContent(holder.title);
         holder.fragment = appManagerFragment;
         mFragmentHolders[2] = holder;
 

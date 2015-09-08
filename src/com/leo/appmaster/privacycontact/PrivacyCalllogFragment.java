@@ -77,7 +77,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
         return R.layout.fragment_privacy_call_log;
     }
 
-    @Override
+    @SuppressLint("WrongViewCast")
+	@Override
     protected void onInitUI() {
         mContext = getActivity();
         mSimpleDateFormate = new SimpleDateFormat("yy/MM/dd");

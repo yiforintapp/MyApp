@@ -34,6 +34,7 @@ import com.leo.appmaster.utils.F;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 
+@SuppressLint("Instantiatable")
 public class UIHelper extends BroadcastReceiver implements com.leo.analytics.update.IUIHelper {
 
     private final static String TAG = "UIHelper";

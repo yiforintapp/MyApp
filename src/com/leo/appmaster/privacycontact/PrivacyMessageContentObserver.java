@@ -52,7 +52,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
     public void onChange(boolean selfChange) {
         super.onChange(selfChange);
         if (DBG) {
-            /* 测试打印系统据库变化情况*/
+            /* 测试打印系统据库变化情况 */
             printTestObserverLog();
         }
         int privateContacts = PrivacyContactManager.getInstance(mContext).getPrivacyContactsCount();
@@ -84,6 +84,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
                 /* 快捷手势隐私短信未读提醒 */
                 noReadPrivacyMsmTipForQuickGesture(pref);
+                /* 隐私联系人有未读短信时发送广播 */
+                QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
+                        QuickGestureManager.PRIVACY_MSM);
             }
             boolean flag = PrivacyContactManager.getInstance(mContext).testValue;
             if (!flag) {
@@ -150,8 +153,8 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                 /* 该联系人的所有未读短信添加到到隐私列表 */
                                 /* 删除所有的短信 */
                                 PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
-                                        new String[]{
-                                                number
+                                        new String[] {
+                                            number
                                         }, mContext);
                                 // 过滤监控短信记录数据库，隐私联系人删除未读短信记录时引发数据库变化而做的操作（要在执行删除操作之前去赋值）
                                 // PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag
@@ -179,7 +182,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             public void run() {
                 if (AppMasterPreference.getInstance(mContext).getSwitchOpenRecentlyContact()) {
                     String selection = Calls.TYPE + "=? and " + Calls.NEW + "=?";
-                    String[] selectionArgs = new String[]{
+                    String[] selectionArgs = new String[] {
                             String.valueOf(Calls.MISSED_TYPE), String.valueOf(1)
                     };
                     ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
@@ -220,11 +223,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if ((QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() == null || QuickGestureManager
                                 .getInstance(mContext).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
                                 && AppMasterPreference.getInstance(mContext)
-                                .getCallLogNoReadCount() <= 0/* 隐私通话 */
+                                        .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                 && AppMasterPreference.getInstance(mContext)
-                                .getMessageNoReadCount() <= 0/* 隐私短信 */
+                                        .getMessageNoReadCount() <= 0/* 隐私短信 */
                                 && AppMasterPreference.getInstance(mContext)
-                                .getLastBusinessRedTipShow()/* 运营 */) {
+                                        .getLastBusinessRedTipShow()/* 运营 */) {
                             QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                         }
                         if (QuickGestureManager.getInstance(mContext).getQuickNoReadCall() != null) {
@@ -300,11 +303,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         if ((QuickGestureManager.getInstance(mContext).getQuickNoReadCall() == null || QuickGestureManager
                                 .getInstance(mContext).getQuickNoReadCall().size() <= 0)/* 未读通话 */
                                 && AppMasterPreference.getInstance(mContext)
-                                .getCallLogNoReadCount() <= 0/* 隐私通话 */
+                                        .getCallLogNoReadCount() <= 0/* 隐私通话 */
                                 && AppMasterPreference.getInstance(mContext)
-                                .getMessageNoReadCount() <= 0/* 隐私短信 */
+                                        .getMessageNoReadCount() <= 0/* 隐私短信 */
                                 && AppMasterPreference.getInstance(mContext)
-                                .getLastBusinessRedTipShow()/* 运营 */) {
+                                        .getLastBusinessRedTipShow()/* 运营 */) {
                             QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
                         }
                         if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null) {
@@ -539,7 +542,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 cursor.close();
                 // 快捷手势隐私通话未读提示
                 noReadCallPrivacyCallTipForQuickGesture();
-
+                /* 隐私联系人有未读 通话时发送广播 */
+                QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
+                        QuickGestureManager.PRIVACY_CALL);
             }
         }
 

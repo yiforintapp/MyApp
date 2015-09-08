@@ -30,6 +30,7 @@ import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -43,7 +44,8 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private TextView mLockSettingBtn;
     private ImageView mIvDisguiseIconShadow;
     private boolean isFromAppLockList = false;
-    private boolean isDisguiseIconWithShadow=false;
+    private boolean isDisguiseIconWithShadow = false;
+
     @Override
     protected int layoutResourceId() {
         return R.layout.fragment_home_lock;
@@ -61,7 +63,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
         mLockModeBtn.setOnClickListener(this);
         mLockSettingBtn = (TextView) findViewById(R.id.lock_setting);
         mLockSettingBtn.setOnClickListener(this);
-        mIvDisguiseIconShadow=(ImageView) findViewById(R.id.iv_home_lock_disguise_shadow);
+        mIvDisguiseIconShadow = (ImageView) findViewById(R.id.iv_home_lock_disguise_shadow);
         mLockModeCircle.startAnimation();
     }
 
@@ -73,17 +75,18 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
 
     @Override
     public void onResume() {
-        if(isDisguiseIconWithShadow)
+        if (isDisguiseIconWithShadow)
         {
             mIvDisguiseIconShadow.setVisibility(View.GONE);
-//            Drawable drawable = getResources().getDrawable(
-//                    R.drawable.disguise_icon);            
-//            drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
-//            mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
-            
-            isDisguiseIconWithShadow=false;
+            // Drawable drawable = getResources().getDrawable(
+            // R.drawable.disguise_icon);
+            // drawable.setBounds(0, 0, drawable.getMinimumWidth(),
+            // drawable.getMinimumHeight());
+            // mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
+
+            isDisguiseIconWithShadow = false;
         }
-        
+
         updateModeUI();
         checkNewTheme();
         super.onResume();
@@ -142,20 +145,26 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.app_lock:
-                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "lock");
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home",
+                        "lock");
                 LockManager lm = LockManager.getInstatnce();
                 LockMode curMode = lm.getCurLockMode();
-                if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
+                if (curMode != null && curMode.defaultFlag == 1 &&
+                        !curMode.haveEverOpened) {
                     startRcommendLock(0);
                     AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
-                    LeoLog.e("lockmore", "enter lock lis tand set home to list true");
+                    LeoLog.e("lockmore",
+                            "enter lock lis tand set home to list true");
                     curMode.haveEverOpened = true;
                     lm.updateMode(curMode);
                 } else {
                     enterLockList();
                     AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
-                    LeoLog.e("lockmore", "enter lock lis tand set home to list true");
+                    LeoLog.e("lockmore",
+                            "enter lock lis tand set home to list true");
                 }
+//                QuickGestureManager.getInstance(getActivity()).privacyContactSendReceiverToSwipe(
+//                        QuickGestureManager.PRIVACY_CALL);
                 break;
             case R.id.lock_theme:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "theme");
@@ -194,16 +203,16 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     }
 
     private void enterAppWeiZhuang() {
-     
-        if(AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
+
+        if (AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
         {
             Drawable drawable = getResources().getDrawable(
                     R.drawable.disguise_icon);
-            
+
             drawable.setBounds(0, 0, drawable.getMinimumWidth(), drawable.getMinimumHeight());
             mLockSettingBtn.setCompoundDrawables(drawable, null, null, null);
             AppMasterPreference.getInstance(mActivity).setIsNeedDisguiseTip(false);
-        }       
+        }
         Intent intent;
         intent = new Intent(mActivity, WeiZhuangActivity.class);
         mActivity.startActivity(intent);
@@ -219,13 +228,13 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     private void enterLockMode() {
         Intent intent = new Intent(mActivity, LockModeActivity.class);
         intent.putExtra("isFromHomeToLockMode", true);
-        
+
         mActivity.startActivity(intent);
     }
 
     private void enterLockTheme() {
         Intent intent = new Intent(mActivity, LockerTheme.class);
-    
+
         mActivity.startActivity(intent);
     }
 
@@ -277,12 +286,12 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
             @Override
             public void onAnimationEnd(Animator animation) {
                 lastAlphaAnimator.start();
-//                AppMasterPreference.getInstance(mActivity).setIsNeedDisguiseTip(true);
-//                if(AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
-                {                 
+                // AppMasterPreference.getInstance(mActivity).setIsNeedDisguiseTip(true);
+                // if(AppMasterPreference.getInstance(mActivity).getIsNeedDisguiseTip())
+                {
                     mIvDisguiseIconShadow.setVisibility(View.VISIBLE);
-//                    mLockSettingBtn.setCompoundDrawablePadding(pad)
-                    isDisguiseIconWithShadow=true;
+                    // mLockSettingBtn.setCompoundDrawablePadding(pad)
+                    isDisguiseIconWithShadow = true;
                 }
             }
         });
