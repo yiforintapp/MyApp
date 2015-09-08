@@ -375,8 +375,8 @@ public class ThreadManager {
             try {
                 Field field = mTarget.getClass().getDeclaredField("this$0");
                 field.setAccessible(true);
-                clazz = field.getClass().getName();
-            } catch (NoSuchFieldException e) {
+                clazz = field.get(mTarget).getClass().getName();
+            } catch (Exception e) {
                 clazz = mTarget.getClass().getName();
             }
 
