@@ -42,11 +42,14 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
             public void run() {
                 int score = getOomScore(Process.myPid());
                 score = score > MAX_SCORE ? MAX_SCORE : score;
+                
+                score /= 2;
+                MIN_SCORE = score / 2;
 
-                if (Math.abs(score - MIN_SCORE) < MIN_DIFF_DEC) {
-                    // leo处于前台时获取到的socre跟最小值差值小于MIN_DIFF_DEC，则把最小值减MIN_DIFF_DEC
-                    MIN_SCORE -= MIN_DIFF_DEC;
-                }
+//                if (Math.abs(score - MIN_SCORE) < MIN_DIFF_DEC) {
+//                    // leo处于前台时获取到的socre跟最小值差值小于MIN_DIFF_DEC，则把最小值减MIN_DIFF_DEC
+//                    MIN_SCORE -= MIN_DIFF_DEC;
+//                }
                 mForegroundScore = score;
                 Context context = AppMasterApplication.getInstance();
                 AppMasterPreference.getInstance(context).setForegroundScore(mForegroundScore);
@@ -65,9 +68,9 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
         if (score < mForegroundScore) {
             Context context = AppMasterApplication.getInstance();
             AppMasterPreference.getInstance(context).setForegroundScore(score);
+            mForegroundScore = score;
         }
         
-        mForegroundScore = score;
         LeoLog.i(TAG, "setForegroundScore, score: " + mForegroundScore);
     }
 
@@ -122,7 +125,8 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
                 if (minAdj != null && processAdj.oomAdj > minAdj.oomAdj) continue;
                 
                 int diff = Math.abs(processAdj.oomAdj - mForegroundScore);
-                if (diff < minDiff) {
+                if (diff < minDiff ||
+                        (minAdj != null && processAdj.oomAdj < minAdj.oomAdj)) {
                     Intent intent = new Intent();
                     intent.setPackage(processAdj.pkg);
                     intent.setAction(Intent.ACTION_MAIN);
@@ -130,6 +134,8 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
                     List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent, 0);
                     if (list == null || list.isEmpty())
                         continue;
+//                    Intent intent = context.getPackageManager().getLaunchIntentForPackage(processAdj.pkg);
+//                    if (intent == null) continue;
 
                     minDiff = diff;
                     minAdj = processAdj;
