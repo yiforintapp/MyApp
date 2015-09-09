@@ -29,8 +29,8 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/transparent"
-        android:scrollbars="none"
-        android:fadeScrollbars="true" >
+        android:fadeScrollbars="true"
+        android:scrollbars="none" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -75,13 +75,76 @@
                     android:layout_centerHorizontal="true" />
             </RelativeLayout>
 
+            <!-- ad item -->
             <RelativeLayout
-                android:id="@+id/privacy_suggest_applock"
+                android:id="@+id/privacy_ad_item"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/privacy_suggest_height"
                 android:layout_below="@id/top_layout"
                 android:layout_marginBottom="@dimen/privacy_suggest_padding"
                 android:layout_marginTop="@dimen/privacy_suggest_padding"
+                android:background="@drawable/privacy_suggest_applock_selector"
+                android:paddingRight="@dimen/privacy_suggest_padding" >
+
+                <ImageView
+                    android:id="@+id/privacy_ad_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_padding"
+                    android:layout_marginTop="@dimen/privacy_suggest_padding"
+                    android:src="@drawable/ad_sign" />
+
+                <LinearLayout
+                    android:id="@+id/privacy_ad_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginLeft="@dimen/privacy_suggest_icon_text_margin"
+                    android:layout_toRightOf="@id/privacy_ad_icon"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical" >
+
+                    <TextView
+                        android:id="@+id/privacy_ad_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:singleLine="true"
+                        android:text="@string/privacy_title_applcok"
+                        android:textColor="#4285f4"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/privacy_ad_suggest"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:singleLine="true"
+                        android:text="@string/privacy_no_app_lock"
+                        android:textColor="#646464"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/privacy_ad_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_suggest_text_margin"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="@string/privacy_no_app_lock_des"
+                        android:textColor="#a7a7a7"
+                        android:textSize="12dp" />
+                </LinearLayout>
+            </RelativeLayout>
+            <!-- ad item -->
+
+            <RelativeLayout
+                android:id="@+id/privacy_suggest_applock"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/privacy_suggest_height"
+                android:layout_below="@id/privacy_ad_item"
+                android:layout_marginBottom="@dimen/privacy_suggest_padding"
                 android:background="@drawable/privacy_suggest_applock_selector"
                 android:paddingRight="@dimen/privacy_suggest_padding" >
 
