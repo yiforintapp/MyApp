@@ -137,7 +137,6 @@ public class HttpRequestAgent {
             ErrorListener eListener) {
         String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(Constants.CHECK_NEW_THEME);
-        LeoLog.d("httpurl", "New Theme Http is :" + url);
         String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalThemeSerialNumber() + "&market_id="
@@ -146,6 +145,7 @@ public class HttpRequestAgent {
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
         url += body;
+        LeoLog.d("httpurl", "New Theme Http is :" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 "", listener, eListener);
         request.setShouldCache(false);
@@ -156,7 +156,6 @@ public class HttpRequestAgent {
             ErrorListener eListener) {
         String requestLanguage = getPostLanguage();
         String url = Utilities.getURL(AppMasterConfig.CHECK_NEW_BUSINESS_APP);
-        LeoLog.d("httpurl", "New Business Http is :" + url);
         String body = "?update_flag="
                 + AppMasterPreference.getInstance(mContext)
                         .getLocalBusinessSerialNumber() + "&market_id="
@@ -165,6 +164,7 @@ public class HttpRequestAgent {
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
         url += body;
+        LeoLog.d("httpurl", "New Business Http is :" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 "", listener, eListener);
         request.setShouldCache(false);
@@ -351,7 +351,6 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
-    
     /* 加载ISwip更新提示 */
     public void loadISwipCheckNew(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
@@ -363,13 +362,11 @@ public class HttpRequestAgent {
         request.setShouldCache(true);
         mRequestQueue.add(request);
     }
-    
-    
-    
+
     /* 加载广告展示方式 */
     public void loadADShowType(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
-//        String iswipeUrl = "/appmaster/config?ai=0000a.html";
+        // String iswipeUrl = "/appmaster/config?ai=0000a.html";
         String adtypeurl = "/appmaster/adconfig.html";
         String url = Utilities.getURL(adtypeurl);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
@@ -378,8 +375,6 @@ public class HttpRequestAgent {
         request.setShouldCache(false);
         mRequestQueue.add(request);
     }
-    
-
 
     public abstract static class RequestListener<T> implements Listener<JSONObject>, ErrorListener {
         private WeakReference<T> outerContextRef;
