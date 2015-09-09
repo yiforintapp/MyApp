@@ -70,7 +70,7 @@ public class PrivacyContactFragment extends BaseFragment {
     }
 
     @SuppressLint("WrongViewCast")
-	@Override
+    @Override
     protected void onInitUI() {
         mContext = getActivity();
         mTextView = (TextView) findViewById(R.id.content);
@@ -474,6 +474,9 @@ public class PrivacyContactFragment extends BaseFragment {
                                                     pre.setMessageNoReadCount(temp);
                                                 }
                                                 if (temp <= 0) {
+                                                    /* ISwipe处理：通知没有未读 */
+                                                    QuickGestureManager.getInstance(mContext)
+                                                            .cancelPrivacyTipFromPrivacyMsm();
                                                     // 没有未读去除隐私通知
                                                     if (pre.getCallLogNoReadCount() <= 0) {
                                                         NotificationManager notificationManager = (NotificationManager) getActivity()
@@ -503,7 +506,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                         ContentValues values = new ContentValues();
                                         values.put("address", messageBean.getPhoneNumber());
                                         values.put("body", messageBean.getMessageBody());
-                                        Long date=null;
+                                        Long date = null;
                                         try {
                                             date = Date.parse(messageBean.getMessageTime());
                                         } catch (Exception e1) {
@@ -550,6 +553,9 @@ public class PrivacyContactFragment extends BaseFragment {
                                                     pre.setCallLogNoReadCount(callLogTemp);
                                                 }
                                                 if (callLogTemp <= 0) {
+                                                    /* ISwipe处理：通知没有未读 */
+                                                    QuickGestureManager.getInstance(mContext)
+                                                            .cancelPrivacyTipFromPrivacyCall();
                                                     // 没有未读去除隐私通知
                                                     if (pre.getMessageNoReadCount() <= 0) {
                                                         NotificationManager notificationManager = (NotificationManager) getActivity()

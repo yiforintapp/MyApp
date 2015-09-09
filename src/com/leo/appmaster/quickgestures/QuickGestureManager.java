@@ -64,6 +64,7 @@ import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
+import com.leo.appmaster.utils.Utilities;
 
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
@@ -71,6 +72,7 @@ public class QuickGestureManager {
     /* 接受隐私联系人存在未读广播的权限 */
     private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
     private static final String RECEIVER_TO_SWIPE_ACTION = "com.leo.appmaster.ACTION_PRIVACY_CONTACT";
+    private static final String RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP = "com.leo.appmaster.ACTION_CANCEL_PRIVACY_TIP";
     public static final String PRIVACY_MSM = "privacy_msm";
     public static final String PRIVACY_CALL = "privacy_call";
     public static final String PRIVACYCONTACT_TO_IWIPE_KEY = "privacycontact_to_iswipe";
@@ -1304,19 +1306,28 @@ public class QuickGestureManager {
     }
 
     /* 隐私联系人有未读发送广播到iswipe */
-    public void privacyContactSendReceiverToSwipe(final String flag) {
+    public void privacyContactSendReceiverToSwipe(final String flag, int actiontype) {
         Intent privacyIntent = null;
-        if (PRIVACY_MSM.equals(flag)) {
-            LeoLog.i(TAG, "隐私联系人有未读短信");
-            privacyIntent = getPrivacyMsmIntent();
-        } else if (PRIVACY_CALL.equals(flag)) {
-            LeoLog.i(TAG, "隐私联系人有未读通话");
-            privacyIntent = getPrivacyCallIntent();
+        if (!Utilities.isEmpty(flag)) {
+            if (PRIVACY_MSM.equals(flag)) {
+                LeoLog.i(TAG, "隐私联系人有未读短信");
+                privacyIntent = getPrivacyMsmIntent();
+            } else if (PRIVACY_CALL.equals(flag)) {
+                LeoLog.i(TAG, "隐私联系人有未读通话");
+                privacyIntent = getPrivacyCallIntent();
+            }
         }
         Intent intent = new Intent(RECEIVER_TO_SWIPE_ACTION);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(PRIVACYCONTACT_TO_IWIPE_KEY, privacyIntent);
-        intent.putExtras(bundle);
+        if (actiontype == 0) {
+            /* 通知有未读 */
+            intent.setAction(RECEIVER_TO_SWIPE_ACTION);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(PRIVACYCONTACT_TO_IWIPE_KEY, privacyIntent);
+            intent.putExtras(bundle);
+        } else if (actiontype == 1) {
+            /* 通知取消未读 */
+            intent.setAction(RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP);
+        }
         // intent.putExtra(PRIVACYCONTACT_TO_IWIPE_KEY, flag);
         try {
             mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
@@ -1340,4 +1351,20 @@ public class QuickGestureManager {
                 PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
         return privacyCallIntent;
     }
+
+    /* 对于iswipe没有隐私未读处理 */
+    public void cancelPrivacyTipFromPrivacyCall() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        if (amp.getMessageNoReadCount() <= 0) {
+            privacyContactSendReceiverToSwipe(null, 1);
+        }
+    }
+
+    public void cancelPrivacyTipFromPrivacyMsm() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        if (amp.getCallLogNoReadCount() <= 0) {
+            privacyContactSendReceiverToSwipe(null, 1);
+        }
+    }
+
 }

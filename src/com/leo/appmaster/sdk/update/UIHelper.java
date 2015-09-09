@@ -792,17 +792,27 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         /* 是否为首次生成随机次数 */
         boolean isFirstRandow = amp.getUnlockUpdateFirstRandom();
         if (isFirstRandow) {
+            LeoLog.i(TAG, "首次产生随机数");
             /* 首次生成随机次数 */
             UIHelper.getInstance(mContext).mRandomCount = updateRandomCount();
             amp.setUnlockSucessRandom(UIHelper.getInstance(mContext).mRandomCount);
             amp.setUnlockUpdateFirstRandom(false);
         }
+        String tipDate = amp.getUpdateTipDate();
+        if (Utilities.isEmpty(tipDate)) {
+            String date = getCurrentDate();
+            LeoLog.i(TAG, "目前时间：" + date);
+            /* 存储下当前日期 */
+            amp.setUpdateTipDate(date);
+        }
         boolean isCountEnough = isUnlockCountEnough();
         if (isCountEnough) {
+            LeoLog.i(TAG, "第" + (amp.getUnlockUpdateTipCount() + 1) + "次产生随机数！");
             Toast.makeText(mContext, "解锁次数够了弹升级对话框", Toast.LENGTH_SHORT).show();
             /* 除了首次其余的次数需要在升级提示后生成随机数 */
             UIHelper.getInstance(mContext).mRandomCount = updateRandomCount();
             amp.setUnlockSucessRandom(UIHelper.getInstance(mContext).mRandomCount);
+            LeoLog.i(TAG, "本次产生随机数为：" + UIHelper.getInstance(mContext).mRandomCount);
             /* 当天弹出次数累加 */
             amp.setUnlockUpdateTipCount(amp.getUnlockUpdateTipCount() + 1);
             /* 记录本次提示时解锁成功的次数 */
@@ -815,29 +825,33 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private boolean isUnlockCountEnough() {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         int lockCount = (int) amp.getUnlockCount();
-        LeoLog.i("unlockSuccessUpdateTip", "解锁成功次数：" + lockCount);
+        LeoLog.i(TAG, "解锁成功次数：" + lockCount);
         int updateUnclockCount = amp.getRecordUpdateTipUnlockCount();
         int count = lockCount - updateUnclockCount;
         /* 解锁成功后提示的次数 */
         int updateTipCount = amp.getUnlockUpdateTipCount();
         int random = UIHelper.getInstance(mContext).mRandomCount;
-        if (count == random && updateTipCount < 3) {
+        String tipDate = amp.getUpdateTipDate();
+        boolean dateChanage = false;
+        if (!Utilities.isEmpty(tipDate)) {
+            String date = getCurrentDate();
+            /* 对比日期是否改变 */
+            dateChanage = tipDate.equals(date);
+        } else {
+            String date = getCurrentDate();
+            /* 存储下当前日期 */
+            amp.setUpdateTipDate(date);
+        }
+        if (count == random && updateTipCount < 3 && dateChanage) {
             return true;
         } else {
-            if (updateTipCount >= 3) {
-                /* 记录弹出够3次后的当天日期 */
-                /* 为空时存下日期，不为空时不去存储，解决重复存储 */
-                String tipDate = amp.getUpdateTipDate();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-                String date = sdf.format(System.currentTimeMillis());
+            if (updateTipCount >= 3 || !dateChanage) {
+                String date = getCurrentDate();
                 if (!Utilities.isEmpty(tipDate)) {
-                    LeoLog.i(TAG, "升级3次提示达到，目前时间：" + date);
-                    /* 存储下当前日期 */
-                    amp.setUpdateTipDate(date);
-                } else {
                     /* 升级第二天是否提示过 */
                     boolean secondTip = amp.getSecondDayTip();
-                    if (!date.equals(tipDate) && !secondTip) {
+                    if (!dateChanage && !secondTip) {
+                        LeoLog.i(TAG, "第二天提示一次！");
                         amp.setSecondDayTip(true);
                         return true;
                     }
@@ -847,11 +861,18 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         return false;
     }
 
+    private String getCurrentDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String date = sdf.format(System.currentTimeMillis());
+        return date;
+    }
+
     /* 每次发现更新升级，恢复升级提示为默认值 */
     private void setUnlockUpdateTipDefaultValue() {
+        LeoLog.i(TAG, "初始化升级更新提示数据！");
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         /* 是否为首次生成随机次数 */
-        amp.setUnlockUpdateFirstRandom(false);
+        amp.setUnlockUpdateFirstRandom(true);
         amp.setUnlockSucessRandom(0);
         /* 当天弹出次数累加 */
         amp.setUnlockUpdateTipCount(0);

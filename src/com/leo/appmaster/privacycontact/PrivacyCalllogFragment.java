@@ -78,7 +78,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
     }
 
     @SuppressLint("WrongViewCast")
-	@Override
+    @Override
     protected void onInitUI() {
         mContext = getActivity();
         mSimpleDateFormate = new SimpleDateFormat("yy/MM/dd");
@@ -525,7 +525,9 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                 pre.setCallLogNoReadCount(temp);
                             }
                             if (temp <= 0) {
-
+                                /* ISwipe处理：通知没有未读 */
+                                QuickGestureManager.getInstance(mContext)
+                                        .cancelPrivacyTipFromPrivacyCall();
                                 // 没有未读去除隐私通知
                                 if (pre.getMessageNoReadCount() <= 0) {
                                     NotificationManager notificationManager = (NotificationManager) getActivity()
@@ -601,6 +603,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 if (temp > 0) {
                     pre.setCallLogNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
+                        /* ISwipe处理：通知没有未读 */
+                        QuickGestureManager.getInstance(context).cancelPrivacyTipFromPrivacyCall();
                         // 没有未读去除隐私通知
                         if (pre.getMessageNoReadCount() <= 0) {
                             NotificationManager notificationManager = (NotificationManager)
@@ -620,7 +624,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                     false);
                             if ((QuickGestureManager.getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
                                     .getInstance(context).getQuickNoReadCall().size() <= 0)/* 未读通话 */
-                                    && (QuickGestureManager.getInstance(context).getQuiQuickNoReadMessage() == null || QuickGestureManager
+                                    && (QuickGestureManager.getInstance(context)
+                                            .getQuiQuickNoReadMessage() == null || QuickGestureManager
                                             .getInstance(context).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
                                     && AppMasterPreference.getInstance(context)
                                             .getMessageNoReadCount() <= 0/* 隐私短信 */

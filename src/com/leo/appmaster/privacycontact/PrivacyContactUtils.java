@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.privacycontact;
 
 import java.io.ByteArrayOutputStream;
@@ -1065,6 +1066,8 @@ public class PrivacyContactUtils {
                 if (temp > 0) {
                     pre.setMessageNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
+                        /* ISwipe处理：通知没有未读 */
+                        QuickGestureManager.getInstance(context).cancelPrivacyTipFromPrivacyMsm();
                         // 没有未读去除隐私通知
                         if (pre.getCallLogNoReadCount() <= 0) {
                             NotificationManager notificationManager = (NotificationManager)
@@ -1080,9 +1083,11 @@ public class PrivacyContactUtils {
                             // = false;
                             QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
                             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
-                            if ((QuickGestureManager.getInstance(context).getQuiQuickNoReadMessage() == null || QuickGestureManager
+                            if ((QuickGestureManager.getInstance(context)
+                                    .getQuiQuickNoReadMessage() == null || QuickGestureManager
                                     .getInstance(context).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
-                                    && (QuickGestureManager.getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
+                                    && (QuickGestureManager.getInstance(context)
+                                            .getQuickNoReadCall() == null || QuickGestureManager
                                             .getInstance(context).getQuickNoReadCall().size() <= 0)/* 未读通话 */
                                     && AppMasterPreference.getInstance(context)
                                             .getCallLogNoReadCount() <= 0/* 隐私通话 */

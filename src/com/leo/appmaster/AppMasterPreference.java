@@ -2601,7 +2601,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getUnlockUpdateFirstRandom() {
-        return mPref.getBoolean(PREF_UNLOCK_UPDATE_FIRST_RANDOM, false);
+        return mPref.getBoolean(PREF_UNLOCK_UPDATE_FIRST_RANDOM, true);
     }
 
     /* 解锁成功升级提示的次数 */
