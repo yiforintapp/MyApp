@@ -97,7 +97,6 @@ public class InitCoreBootstrap extends Bootstrap {
         initIswipeUpdateTip();
         initSplashDelayTime();
         UIHelper.getInstance(mApp).mRandomCount=preference.getUnlockSucessRandom();
-        LeoLog.e("xxxxxxx", "是否为oppo系统："+BuildProperties.isHuaWeiTipPhone(mApp));
         return true;
     }
 
