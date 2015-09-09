@@ -374,7 +374,7 @@ public class CheckNewBootstrap extends Bootstrap {
 
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
-            LeoLog.d(TAG, "checkNewTheme  onResponse!");
+            LeoLog.d(TAG, "checkNewTheme  onResponse!" + response.toString());
             AppMasterApplication app = AppMasterApplication.getInstance();
             AppMasterPreference pref = AppMasterPreference.getInstance(app);
             if (response != null) {
@@ -462,7 +462,7 @@ public class CheckNewBootstrap extends Bootstrap {
 
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
-            LeoLog.d(TAG, "checkNewAppBusiness onResponse!");
+            LeoLog.d(TAG, "checkNewAppBusiness onResponse! " + response.toString());
             AppMasterApplication app = AppMasterApplication.getInstance();
             AppMasterPreference pref = AppMasterPreference.getInstance(app);
             if (response != null) {
