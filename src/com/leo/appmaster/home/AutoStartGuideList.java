@@ -115,6 +115,7 @@ public class AutoStartGuideList extends WhiteList {
                 LeoLog.i(TAG, "跳转红米成功！");
             } catch (Exception e) {
                 LeoLog.i(TAG, "跳转红米失败！");
+                e.printStackTrace();
             }
             return false;
         }

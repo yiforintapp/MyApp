@@ -79,6 +79,7 @@ import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
@@ -965,7 +966,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         /* 解锁成功弹出升级提示 */
         boolean isUnLockUpdateTip = pref.getUnlockUpdateTip();
-        if (isUnLockUpdateTip) {
+        isUnLockUpdateTip=true;
+        ISwipUpdateRequestManager im = ISwipUpdateRequestManager.getInstance(this);
+        /* 判断网络状态 */
+        boolean netWorkStatus = im.getNetworkStatus();
+        if (isUnLockUpdateTip && netWorkStatus) {
             UIHelper.getInstance(this).unlockSuccessUpdateTip();
         }
         LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
