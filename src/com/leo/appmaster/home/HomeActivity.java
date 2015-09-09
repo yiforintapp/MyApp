@@ -133,6 +133,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private boolean mShowIswipeFromNotfi;
     private static final String TAG = "HomeActivity";
     private static final boolean DBG = true;
+    private ImageView mLeftMenuRedTip;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,6 +357,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         mTtileBar = (HomeTitleBar) findViewById(R.id.layout_title_bar);
         mLeftMenu = (ImageView) findViewById(R.id.iv_menu);
+        mLeftMenuRedTip = (ImageView) findViewById(R.id.iv_menu_red_tip);
         mLeftMenu.setOnClickListener(this);
         mLeftMenu.setImageDrawable(mDrawerArrowDrawable);
         mTtileBar.setOptionClickListener(this);
@@ -452,6 +454,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void onResume() {
+        /* 分析是否需要升级红点显示 */
+        boolean menuRedTipVisibility = (mLeftMenuRedTip.getVisibility() == View.GONE);
+        if (mLeftMenuRedTip != null && menuRedTipVisibility) {
+            if (SDKWrapper.isUpdateAvailable()) {
+                mLeftMenuRedTip.setVisibility(View.VISIBLE);
+            }
+        }
         /* check if there is force update when showing HomeActivity */
         SDKWrapper.checkForceUpdate();
         type = AppMasterPreference.getInstance(this).getLockType();

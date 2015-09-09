@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<dimen name="ad_apace">62dp</dimen>
+
+    <dimen name="ad_apace">62dp</dimen>
     <dimen name="gridview_vertical_spacing">14dip</dimen>
 
     <integer name="gridview_row_count">4</integer>
     <integer name="applist_cell_count">20</integer>
 
-	<dimen name="fragment_password_vertical_space_big">20dp</dimen>
+    <dimen name="fragment_password_vertical_space_big">20dp</dimen>
     <dimen name="fragment_password_vertical_space_small">9dp</dimen>
- 
     <dimen name="setting_item_height">55dp</dimen>
     <dimen name="lock_icon_width">22dp</dimen>
     <dimen name="lock_icon_X">28dp</dimen>
@@ -286,9 +286,9 @@
     <dimen name="iswipe_update_tip_notifi_image_width">42dp</dimen>
     <dimen name="iswipe_update_tip_notifi_image_height">42dp</dimen>
     <dimen name="iswipe_update_tip_notifi_content_top">3dp</dimen>
-
     <dimen name="iswipe_update_tip_title_size">17sp</dimen>
     <dimen name="iswipe_update_tip_content_size">12sp</dimen>
     <!-- 2.8 end -->
+    <dimen name="home_left_iv_menu_margin_right_top">5dp</dimen>
 
 </resources>

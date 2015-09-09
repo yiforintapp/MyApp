@@ -46,6 +46,8 @@ import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.update.UIHelper;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -94,6 +96,8 @@ public class InitCoreBootstrap extends Bootstrap {
         checkUpdateFinish();
         initIswipeUpdateTip();
         initSplashDelayTime();
+        UIHelper.getInstance(mApp).mRandomCount=preference.getUnlockSucessRandom();
+        LeoLog.e("xxxxxxx", "是否为oppo系统："+BuildProperties.isHuaWeiTipPhone(mApp));
         return true;
     }
 

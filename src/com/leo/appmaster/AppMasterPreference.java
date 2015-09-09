@@ -254,9 +254,17 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_AD_APPWAL_UPDATE = "ad_appwall_update";
     public static final String PREF_AD_LAST_LOAD_TIME = "ad_last_load_time";
     public static final String PREF_ISWIPE_UPDATE_TIP = "pref_iswipe_update_tip";
-    
+
     public static final String PREF_MOBVISTA_LOADED = "mobvista_loaded";
-    
+    public static final String PREF_UNLOCK_UPDATE_TIP = "unlock_update_tip";
+    public static final String PREF_UNLOCK_UPDATE_FIRST_RANDOM = "unlock_update_first_random";
+    public static final String PREF_UNLOCK_UPDATE_TIP_COUNT = "unlock_update_tip_count";
+    public static final String PREF_UNLOCK_UPDATE_TIP_COUNT_RECORD = "unlock_update_count_record";
+    public static final String PREF_UNLOCK_SUCCESS_TIP_RANDOM = "unlock_success_tip_random";
+    public static final String PREF_UPDATE_TIP_DATE = "update_tip_date";
+    public static final String PREF_UPDATE_SECOND_TIP_FLAG = "update_second_tip";
+    public static final int OPEN_FLAG = 1;
+    public static final int CLOSE_FLAG = 0;
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mHideThemeList;
@@ -1415,7 +1423,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public long getAdClickTime() {
         return mPref.getLong(PREF_AD_ICON_CLICK_TIME, 0);
     }
-    
+
     public void setAdClickTimeFromHome(long time) {
         mPref.edit().putLong(PREF_AD_ICON_FROM_HOME, time).apply();
     }
@@ -1423,7 +1431,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public long getAdClickTimeFromHome() {
         return mPref.getLong(PREF_AD_ICON_FROM_HOME, 0);
     }
-    
+
     public void setAdEtClickTime(long time) {
         mPref.edit().putLong(PREF_AD_ICON_ET_CLICK_TIME, time).apply();
     }
@@ -2559,12 +2567,86 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public int getIswipeUpdateTip() {
         return mPref.getInt(PREF_ISWIPE_UPDATE_TIP, -1);
     }
-    
+
     public void setMobvistaClicked() {
         mPref.edit().putBoolean(PREF_MOBVISTA_LOADED, true).apply();
     }
-    
+
     public boolean isMobvistaClicked() {
         return mPref.getBoolean(PREF_MOBVISTA_LOADED, false);
     }
+
+    /* 解锁成功升级提示标志 */
+    public boolean getUnlockUpdateTip() {
+        return mPref.getBoolean(PREF_UNLOCK_UPDATE_TIP, false);
+    }
+
+    public void setUnlockUpdateTip(int flag) {
+        /* 解锁成功升级提示开关（1标示开，0标示关） */
+        switch (flag) {
+            case OPEN_FLAG:
+                mPref.edit().putBoolean(PREF_UNLOCK_UPDATE_TIP, true).apply();
+                break;
+            case CLOSE_FLAG:
+                mPref.edit().putBoolean(PREF_UNLOCK_UPDATE_TIP, false).apply();
+                break;
+            default:
+                break;
+        }
+    }
+
+    /* 是否为首次生成解锁随机次数 */
+    public void setUnlockUpdateFirstRandom(boolean flag) {
+        mPref.edit().putBoolean(PREF_UNLOCK_UPDATE_FIRST_RANDOM, flag).apply();
+    }
+
+    public boolean getUnlockUpdateFirstRandom() {
+        return mPref.getBoolean(PREF_UNLOCK_UPDATE_FIRST_RANDOM, false);
+    }
+
+    /* 解锁成功升级提示的次数 */
+    public void setUnlockUpdateTipCount(int flag) {
+        mPref.edit().putInt(PREF_UNLOCK_UPDATE_TIP_COUNT, flag).apply();
+    }
+
+    public int getUnlockUpdateTipCount() {
+        return mPref.getInt(PREF_UNLOCK_UPDATE_TIP_COUNT, 0);
+    }
+
+    /* 记录当前升级提示的解锁成功次数 */
+    public void setRecordUpdateTipUnlockCount(int flag) {
+        mPref.edit().putInt(PREF_UNLOCK_UPDATE_TIP_COUNT_RECORD, flag).apply();
+    }
+
+    public int getRecordUpdateTipUnlockCount() {
+        return mPref.getInt(PREF_UNLOCK_UPDATE_TIP_COUNT_RECORD, 0);
+    }
+
+    /* 保存本次产生的随机数 */
+    public void setUnlockSucessRandom(int flag) {
+        mPref.edit().putInt(PREF_UNLOCK_SUCCESS_TIP_RANDOM, flag).apply();
+    }
+
+    public int getUnlockSucessRandom() {
+        return mPref.getInt(PREF_UNLOCK_SUCCESS_TIP_RANDOM, 0);
+    }
+
+    /* 存储下升级的当前日期 */
+    public void setUpdateTipDate(String date) {
+        mPref.edit().putString(PREF_UPDATE_TIP_DATE, date).apply();
+    }
+
+    public String getUpdateTipDate() {
+        return mPref.getString(PREF_UPDATE_TIP_DATE, null);
+    }
+
+    /* 保存升级第二天提示一次标志 */
+    public void setSecondDayTip(boolean b) {
+        mPref.edit().putBoolean(PREF_UPDATE_SECOND_TIP_FLAG, b).apply();
+    }
+
+    public boolean getSecondDayTip() {
+        return mPref.getBoolean(PREF_UPDATE_SECOND_TIP_FLAG, false);
+    }
+
 }

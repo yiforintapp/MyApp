@@ -3,12 +3,15 @@ package com.leo.appmaster.home;
 
 import android.content.ComponentName;
 import android.content.Intent;
+import android.util.Log;
+
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
+
 /**
  * 自启动引导
+ * 
  * @author run
- *
  */
 public class AutoStartGuideList extends WhiteList {
     public static final String TAG = "AutoStartGuideList";
@@ -29,8 +32,8 @@ public class AutoStartGuideList extends WhiteList {
     protected boolean doHandler() {
         try {
             if (mLists != null) {
+                int flag = isAutoWhiteListModel();
                 for (int i : mLists) {
-                    int flag = isAutoWhiteListModel();
                     if (flag != -1) {
                         if (flag == i) {
                             WhiteList wl = getWhiteList(i);
@@ -124,6 +127,18 @@ public class AutoStartGuideList extends WhiteList {
         @Override
         protected boolean doHandler() {
             LeoLog.i(TAG, "加载 华为的处理方法");
+
+            Intent intent = new Intent();
+            ComponentName cn = new ComponentName("com.huawei.systemmanager",
+                    "com.huawei.systemmanager.optimize.process.ProtectActivity");
+            intent.setComponent(cn);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                mContext.startActivity(intent);
+                Log.e("start_xiaomi_4", "跳转huawei成功！");
+            } catch (Exception e) {
+                Log.e("start_xiaomi_4", "跳转huawei失败！");
+            }
             return false;
         }
 
@@ -135,6 +150,23 @@ public class AutoStartGuideList extends WhiteList {
         @Override
         protected boolean doHandler() {
             LeoLog.i(TAG, "加载Oppo的处理方法");
+
+            Intent intent = new Intent();
+            /* 进入纯净后台 */
+            ComponentName cn = new
+                    ComponentName("com.oppo.purebackground",
+                            "com.oppo.purebackground.Purebackground_AddTrust_Activity");
+            /* 进入自启动管理 */
+            // ComponentName cn = new ComponentName("com.oppo.safe",
+            // "com.oppo.safe.permission.startup.StartupAppListActivity");
+            // intent.setComponent(cn);
+            // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                mContext.startActivity(intent);
+                Log.e("start_xiaomi_4", "跳转oppo成功！");
+            } catch (Exception e) {
+                Log.e("start_xiaomi_4", "跳转oppo失败！");
+            }
             return false;
         }
     }
