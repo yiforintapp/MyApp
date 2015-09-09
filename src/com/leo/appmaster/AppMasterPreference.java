@@ -2649,4 +2649,25 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_UPDATE_SECOND_TIP_FLAG, false);
     }
 
+
+    /**
+     * 设置定时任务执行的时间
+     * @param jobKey
+     * @param time
+     */
+    public void setScheduleTime(String jobKey, long time) {
+        mPref.edit().putLong(jobKey, time).apply();
+    }
+
+    public long getScheduleTime(String jobKey) {
+        return mPref.getLong(jobKey, 0);
+    }
+
+    public void setScheduleValue(String key, int state) {
+        mPref.edit().putInt(key, state).apply();
+    }
+
+    public int getScheduleValue(String key, int def) {
+        return mPref.getInt(key, def);
+    }
 }

@@ -1,11 +1,32 @@
 package com.leo.appmaster.schedule;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.utils.LeoLog;
+
+import org.json.JSONObject;
+
 /**
  * 拉取业务基类
  *  每12小时拉取一次，失败每3小时拉取一次，持续3次
+ *  维护下面三个变量到pref
+ *      1、状态 —— 成功、失败
+ *      2、失败次数
+ *      3、请求时间 —— 不区分成功和失败，使用变量1区分
  * Created by Jasper on 2015/9/8.
  */
 public abstract class FetchScheduleJob extends ScheduleJob {
+    public static final String KEY_JOB = "key_job";
+
+    private static final String KEY_RETRY_COUNT = "key_retry_count";
 
     /**
      * 默认拉取间隔，12小时
@@ -20,9 +41,101 @@ public abstract class FetchScheduleJob extends ScheduleJob {
      */
     private static final int FETCH_FAIL_COUNT = 3;
 
+    private static final int STATE_SUCC = 1;
+    private static final int STATE_FAIL = 0;
+
+    private Intent mIntent;
+
     @Override
     public int getId() {
         return getClass().getSimpleName().hashCode();
+    }
+
+    protected String getJobKey() {
+        return getClass().getSimpleName();
+    }
+
+    private String getJobTimeKey() {
+        return getClass().getSimpleName() + "_time";
+    }
+
+    private String getJobFailCountKey() {
+        return getClass().getSimpleName() + "_fail";
+    }
+
+    private String getJobStateKey() {
+        return getClass().getSimpleName() + "_state";
+    }
+
+    @Override
+    public void start() {
+        LeoLog.i(getJobKey(), "start job.");
+        AppMasterApplication ctx = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
+        long lastTime = pref.getScheduleTime(getJobTimeKey());
+        if (lastTime <= 0) {
+            LeoLog.i(getJobKey(), "Haven't worked before, start work.");
+            // 还没有执行过直接开始执行
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    work();
+                }
+            });
+        } else {
+            int state = pref.getScheduleValue(getJobStateKey(), STATE_SUCC);
+            switch (state) {
+                case STATE_SUCC:
+                    startInner(true);
+                    break;
+                case STATE_FAIL:
+                    startInner(false);
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+    private void startInner(boolean success) {
+        LeoLog.i(getJobKey(), "startInner, success: " + success);
+        AppMasterApplication ctx = AppMasterApplication.getInstance();
+        AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(ScheduleReceiver.ACTION);
+        int period = getPeriod();
+        if (!success) {
+            AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
+            int currentRetryCount = pref.getScheduleValue(getJobFailCountKey(), 0);
+
+            if (currentRetryCount <= getRetryCount()) {
+                LeoLog.i(getJobKey(), "haven't overlimit max retry count.");
+                period = getFailPeriod();
+            } else {
+                LeoLog.i(getJobKey(), "have overlimit max retry count.");
+                // 重试次数已经大于了设定的次数，则把状态及次数设置为true
+                // 保存重试次数
+                pref.setScheduleValue(getJobFailCountKey(), 0);
+                // 保存重试状态
+                pref.setScheduleValue(getJobStateKey(), STATE_SUCC);
+            }
+        }
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, getId(),
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.set(AlarmManager.ELAPSED_REALTIME, period, pendingIntent);
+    }
+
+    @Override
+    public void stop() {
+        LeoLog.i(getJobKey(), "stop job.");
+        AppMasterApplication ctx = AppMasterApplication.getInstance();
+        AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(ScheduleReceiver.ACTION);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, getId(),
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        am.cancel(pendingIntent);
     }
 
     /**
@@ -48,4 +161,54 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     protected int getRetryCount() {
         return FETCH_FAIL_COUNT;
     }
+
+    /**
+     * 拉取数据成功
+     */
+    protected void onFetchSuccess(JSONObject response, boolean noMidify) {
+        LeoLog.i(getJobKey(), "onFetchSuccess, response: " + response + " | noModify: " + noMidify);
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        // 保存时间
+        pref.setScheduleTime(getJobTimeKey(), System.currentTimeMillis());
+        // 保存状态
+        pref.setScheduleValue(getJobStateKey(), STATE_SUCC);
+        // 保存重试次数
+        pref.setScheduleValue(getJobFailCountKey(), 0);
+        startInner(true);
+    }
+
+    /**
+     * 拉取时间失败
+     */
+    protected void onFetchFail(VolleyError error) {
+        LeoLog.i(getJobKey(), "onFetchFail, error: " + error == null ? null : error.toString());
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(context);
+        // 保存时间
+        pref.setScheduleTime(getJobTimeKey(), System.currentTimeMillis());
+        // 保存状态
+        pref.setScheduleValue(getJobStateKey(), STATE_FAIL);
+        // 保存重试次数
+        int count = pref.getScheduleValue(getJobFailCountKey(), 0);
+        pref.setScheduleValue(getJobFailCountKey(), ++count);
+        startInner(false);
+    }
+
+    protected FetchScheduleListener newFetchListener() {
+        return new FetchScheduleListener();
+    }
+
+    private class FetchScheduleListener implements Response.Listener<JSONObject>, Response.ErrorListener {
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            onFetchFail(error);
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            onFetchSuccess(response, noMidify);
+        }
+    }
+
 }
