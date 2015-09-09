@@ -109,16 +109,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             });
         } else {
             int state = pref.getScheduleValue(getJobStateKey(), STATE_SUCC);
-            switch (state) {
-                case STATE_SUCC:
-                    startInner(true);
-                    break;
-                case STATE_FAIL:
-                    startInner(false);
-                    break;
-                default:
-                    break;
-            }
+            startInner(state == STATE_SUCC);
         }
 
     }
