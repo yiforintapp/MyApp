@@ -28,6 +28,7 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
+import com.leo.appmaster.home.AutoStartGuideList;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
@@ -176,6 +177,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
             case R.id.lock_mode:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "modes");
                 enterLockMode();
+//                new AutoStartGuideList().executeGuide();
                 break;
             case R.id.lock_setting:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "appcover");

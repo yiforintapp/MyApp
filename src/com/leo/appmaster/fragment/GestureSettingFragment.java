@@ -365,7 +365,7 @@ public class GestureSettingFragment extends BaseFragment implements
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(mActivity);
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(mActivity);
         boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isOppoOs();
+        boolean isOppoOs = BuildProperties.isYiJia();
         boolean isOpenWindow =
                 BuildProperties.isFloatWindowOpAllowed(mActivity);
 

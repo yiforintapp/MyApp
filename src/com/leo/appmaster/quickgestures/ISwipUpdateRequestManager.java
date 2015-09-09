@@ -724,7 +724,7 @@ public class ISwipUpdateRequestManager {
     private boolean checkIsISwipeFilterPhoneModel() {
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(mContext);
         boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isOppoOs();
+        boolean isOppoOs = BuildProperties.isYiJia();
         return checkHuaWei || checkMiui || isOppoOs;
     }
 }

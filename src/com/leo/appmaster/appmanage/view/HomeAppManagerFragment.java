@@ -791,7 +791,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(getActivity());
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(getActivity());
         boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isOppoOs();
+        boolean isOppoOs = BuildProperties.isYiJia();
         boolean isOpenWindow =
                 BuildProperties.isFloatWindowOpAllowed(getActivity());
         if (!checkFloatWindow) {

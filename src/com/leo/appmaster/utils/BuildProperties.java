@@ -333,10 +333,16 @@ public class BuildProperties {
         return TextUtils.equals("GT-S5282", android.os.Build.MODEL);
     }
 
-    public static boolean isOppoOs() {
+    public static boolean isYiJia() {
         // 说明：一加手机在4.4系统以下，无需手动开启悬浮窗
         if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom")))
                 || Build.VERSION.SDK_INT < 19)
+            return false;
+        return true;
+    }
+
+    public static boolean isOppoOs() {
+        if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom"))))
             return false;
         return true;
     }

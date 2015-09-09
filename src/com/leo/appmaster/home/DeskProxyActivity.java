@@ -195,7 +195,7 @@ public class DeskProxyActivity extends Activity {
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(this);
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(this);
         boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isOppoOs();
+        boolean isOppoOs = BuildProperties.isYiJia();
         boolean isOpenWindow =
                 BuildProperties.isFloatWindowOpAllowed(this);
 

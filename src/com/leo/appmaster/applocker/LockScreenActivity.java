@@ -116,6 +116,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
     public int SHOW_AD_TYPE = 0;
+    public static final int UPDATE_TIP_FRE = 10;
     private int mLockMode;
     private String mLockedPackage;
     private CommonTitleBar mTtileBar;
@@ -156,7 +157,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static boolean interupAinimation = false;
     private boolean clickShakeIcon = false;
     private boolean isClickAny = false;
-
+    private int mRandowCount;
     private MobvistaEngine mAdEngine;
 
     private Handler mHandler = new Handler() {
@@ -297,9 +298,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
-        
+
         if (AppMasterPreference.getInstance(this).getADShowType() == 3
-                && NetWorkUtil.isNetworkAvailable(getApplicationContext())){
+                && NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
             mADAnimalEntry.setVisibility(View.VISIBLE);
             if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE && !isClickAny) {
                 startShakeRotateAnimation(true);
@@ -960,6 +961,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "done");
 
         }
+        /* 解锁成功弹出升级提示 */
+        // TODO
+        boolean isUnLockUpdateTip = false;
+        if (isUnLockUpdateTip) {
+            unlockSuccessUpdateTip();
+        }
         LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
         mTtileBar.postDelayed(new Runnable() {
 
@@ -980,6 +987,36 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         amp.setLockerScreenThemeGuide(true);
         amp.setUnlocked(true);
         amp.setDoubleCheck(null);
+    }
+
+    private void unlockSuccessUpdateTip() {
+        long count = AppMasterPreference.getInstance(this).getUnlockCount();
+        LeoLog.i("unlockSuccessUpdateTip", "解锁成功次数：" + count);
+        /* 是否为首次生成随机次数 */
+        // TODO 需要记录到sp中
+        boolean isFirstRandow = true;
+        if (isFirstRandow) {
+            /* 首次生成随机次数 */
+            mRandowCount = updateRandomCount();
+        }
+        /* 是否满足升级提示次数 */
+        //TODO 需要记录到sp中
+        boolean isCountEnough = false;
+        if (count == UPDATE_TIP_FRE && isCountEnough) {
+            Toast.makeText(this, "解锁够" + UPDATE_TIP_FRE + "次了", Toast.LENGTH_SHORT).show();
+            /* 除了首次其余的次数需要在升级提示后生成随机数 */
+            mRandowCount = updateRandomCount();
+            /* 当天弹出次数累加 */
+            // TODO 需要记录到sp中
+            /* 记录弹出够3次后的当天日期 */
+            // TODO 
+            /* 当天的下一天再去弹出一次 */
+        }
+    }
+
+    private int updateRandomCount() {
+        /* 解锁30次，随机弹3次，即生成10以内的随机整数,生成3次 */
+        return 1 + (int) (Math.random() * UPDATE_TIP_FRE);
     }
 
     private void checkLockTip() {
