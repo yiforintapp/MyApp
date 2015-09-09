@@ -108,6 +108,6 @@
     <color name="cool_grey">#999999</color>
     <color name="cool_green">#00d592</color>
     <color name="cool_red">#ff2a00</color>
-    <color name="translucent_background">#6d000000</color>
+    <color name="translucent_background">#b2000000</color>
 
 </resources>
