@@ -11,6 +11,7 @@ import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.schedule.FetchScheduleJob;
 import com.leo.appmaster.schedule.MessageFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
@@ -54,7 +55,7 @@ public class InitAsyncBootstrap extends Bootstrap {
             SDKWrapper.addEvent(mApp, SDKWrapper.P1, "gp_check", "nogp");
         }
 
-        MessageFetchJob.startJob();
+        FetchScheduleJob.startFetchJobs();
         return true;
     }
 

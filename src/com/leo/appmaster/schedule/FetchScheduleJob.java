@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -46,7 +47,29 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     private static final int STATE_SUCC = 1;
     private static final int STATE_FAIL = 0;
 
-    private Intent mIntent;
+    private static final String[] FETCH_JOBS = {
+        "com.leo.appmaster.schedule.MessageFetchJob"
+    };
+
+    public static void startFetchJobs() {
+        for (String fetchJob : FETCH_JOBS) {
+            try {
+                Class<?> clazz = Class.forName(fetchJob);
+                Object object = clazz.newInstance();
+
+                if (object instanceof ScheduleJob) {
+                    final ScheduleJob job = (ScheduleJob) object;
+                    job.start();
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     public int getId() {
@@ -203,7 +226,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         return new FetchScheduleListener();
     }
 
-    private class FetchScheduleListener implements Response.Listener<JSONObject>, Response.ErrorListener {
+    public class FetchScheduleListener implements Response.Listener<JSONObject>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
             onFetchFail(error);
