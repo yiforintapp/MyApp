@@ -11,7 +11,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class ScheduleReceiver extends BroadcastReceiver {
     public static final String ACTION = "com.leo.appmaster.action.SCHEDULE";
 
-    private static final String TAG = "ScheduleReceiver";
+    private static final String TAG = "ScheduleReceiverJob";
 
     public ScheduleReceiver() {
     }

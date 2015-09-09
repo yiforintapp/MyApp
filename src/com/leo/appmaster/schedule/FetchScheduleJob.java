@@ -31,11 +31,13 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     /**
      * 默认拉取间隔，12小时
      */
-    private static final int FETCH_PERIOD = 12 * 60 * 60 * 1000;
+//    private static final int FETCH_PERIOD = 12 * 60 * 60 * 1000;
+    private static final int FETCH_PERIOD = 12 * 1000;
     /**
      * 失败拉取间隔，2小时
      */
-    private static final int FETCH_FAIL_ERIOD = 2 * 60 * 60 * 1000;
+//    private static final int FETCH_FAIL_ERIOD = 2 * 60 * 60 * 1000;
+    private static final int FETCH_FAIL_ERIOD = 10 * 1000;
     /**
      * 默认失败重试次数
      */
@@ -72,7 +74,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         LeoLog.i(getJobKey(), "start job.");
         AppMasterApplication ctx = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
-        long lastTime = pref.getScheduleTime(getJobTimeKey());
+        long lastTime = /*pref.getScheduleTime(getJobTimeKey())*/1;
         if (lastTime <= 0) {
             LeoLog.i(getJobKey(), "Haven't worked before, start work.");
             // 还没有执行过直接开始执行
@@ -104,6 +106,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(ScheduleReceiver.ACTION);
+        intent.putExtra(KEY_JOB, getClass().getName());
         int period = getPeriod();
         if (!success) {
             AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
@@ -121,9 +124,10 @@ public abstract class FetchScheduleJob extends ScheduleJob {
                 pref.setScheduleValue(getJobStateKey(), STATE_SUCC);
             }
         }
+        LeoLog.i(getJobKey(), "period is : " + period);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, getId(),
                 intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.set(AlarmManager.ELAPSED_REALTIME, period, pendingIntent);
+        am.set(AlarmManager.RTC, System.currentTimeMillis() + period, pendingIntent);
     }
 
     @Override
@@ -182,7 +186,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
      * 拉取时间失败
      */
     protected void onFetchFail(VolleyError error) {
-        LeoLog.i(getJobKey(), "onFetchFail, error: " + error == null ? null : error.toString());
+        LeoLog.i(getJobKey(), "onFetchFail, error: " + (error == null ? null : error.toString()));
         AppMasterApplication context = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(context);
         // 保存时间
