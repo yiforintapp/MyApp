@@ -3,9 +3,12 @@ package com.leo.appmaster.fragment;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +30,13 @@ import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageSize;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class HomePravicyFragment extends BaseFragment implements OnClickListener, Selectable,
@@ -47,7 +56,8 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     private AppMasterPreference mPreference;
     // 广告素材
     private MobvistaEngine mAdEngine;
-    private boolean mAdSwitchOpen = false;
+    private boolean isFirstOpen = false;
+    private static int mAdSwitchOpen = -1;
 
     @Override
     public void onAttach(Activity activity) {
@@ -152,8 +162,14 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         mCallLogTv = (TipTextView) mPrivacyCall.findViewById(R.id.privacy_call_text);
         isShowRedTip(mCallLogTv, 1);
         onLevelChange(PrivacyHelper.getInstance(mActivity).getCurLevelColor().toIntColor());
-        // mAdSwitchOpen =
-        // AppMasterPreference.getInstance(getActivity()).getisada
+
+        // 默认是开，记得改回默认是关
+        if (mAdSwitchOpen == -1) {
+            mAdSwitchOpen = AppMasterPreference.getInstance(getActivity())
+                    .getIsADAfterPrivacyProtectionOpen();
+        }
+
+        LeoLog.d("testAdBanner", "mAdSwitchOpen is : " + mAdSwitchOpen);
     }
 
     @Override
@@ -226,7 +242,10 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                 break;
             case R.id.privacy_level:
 
-                loadAD();
+                // 开启广告位
+                if (mAdSwitchOpen == 1) {
+                    loadAD();
+                }
 
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "privacylevel");
                 Level level = PrivacyHelper.getInstance(mActivity).getPrivacyLevel();
@@ -242,22 +261,42 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     }
 
     private void loadAD() {
-        TextView tv_clickTextView = (TextView) mProposalView.findViewById(R.id.ad_download);
-        tv_clickTextView.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-            }
-        });
-
         mAdEngine = MobvistaEngine.getInstance();
         mAdEngine.loadMobvista(getActivity(), new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
-                    // mProposalView
+                    LeoLog.d("testAdBanner", "load done . show it");
+                    ImageView adicon = (ImageView) mProposalView
+                            .findViewById(R.id.privacy_ad_icon);
+                    loadADPic(
+                            campaign.getIconUrl(),
+                            new ImageSize(DipPixelUtil.dip2px(mActivity, 48), DipPixelUtil
+                                    .dip2px(mActivity, 48)), adicon);
 
+                    // 名字
+                    TextView adname = (TextView) mProposalView
+                            .findViewById(R.id.privacy_ad_title);
+                    adname.setText(campaign.getAppName());
+                    // 描述
+                    TextView addesc = (TextView) mProposalView
+                            .findViewById(R.id.privacy_ad_description);
+                    addesc.setText(campaign.getAppDesc());
+                    // call
+                    TextView adcall = (TextView) mProposalView
+                            .findViewById(R.id.ad_download);
+                    adcall.setOnClickListener(new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    adcall.setText(campaign.getAdCall());
+                    mAdEngine.registerView(getActivity(), adcall);
+
+                    View adview = mProposalView.findViewById(R.id.privacy_ad_item);
+                    adview.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -266,6 +305,33 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
 
             }
         });
+    }
+
+    private void loadADPic(String url, ImageSize size, final ImageView v) {
+        ImageLoader.getInstance().loadImage(
+                url, size, new ImageLoadingListener() {
+
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        if (loadedImage != null)
+                        {
+                            v.setImageBitmap(loadedImage);
+                        }
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+
+                    }
+                });
     }
 
     @Override

@@ -50,7 +50,7 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
     private View mProposalPic;
     private View mProposalVideo;
     private View mProposalContact;
-    private View mProposalAd;
+    // private View mProposalAd;
 
     private TextView mAppLockSuggest;
     private TextView mAppLockDes;
@@ -148,8 +148,8 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
         mPrivacyContactDes = (TextView) mProposalContact
                 .findViewById(R.id.suggest_privacy_contact_description);
         mProposalContact.setOnClickListener(this);
-        
-        mProposalAd = findViewById(R.id.privacy_ad_item);
+
+//        mProposalAd = findViewById(R.id.privacy_ad_item);
     }
 
     @Override
@@ -259,9 +259,9 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
                 setBackgroundColor(mBgColor);
                 mTitleBar.setVisibility(View.VISIBLE);
                 mProposalList.setVisibility(View.VISIBLE);
-                
-                mProposalAd.setVisibility(View.VISIBLE);
-                
+
+//                mProposalAd.setVisibility(View.VISIBLE);
+
             }
 
             @Override
