@@ -2598,7 +2598,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAfterPrivacyProtectionOpen(){
-        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 1);
+        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 0);
     }
     public void setIsADAtAppLockFragmentOpen(int value){
         mPref.edit().putInt(PREF_AD_AT_APPLOCK_FRAGMENT, value).apply();

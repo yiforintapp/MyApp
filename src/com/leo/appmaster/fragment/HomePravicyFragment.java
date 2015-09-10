@@ -168,8 +168,6 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             mAdSwitchOpen = AppMasterPreference.getInstance(getActivity())
                     .getIsADAfterPrivacyProtectionOpen();
         }
-
-        LeoLog.d("testAdBanner", "mAdSwitchOpen is : " + mAdSwitchOpen);
     }
 
     @Override
@@ -267,7 +265,6 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
-                    LeoLog.d("testAdBanner", "load done . show it");
                     ImageView adicon = (ImageView) mProposalView
                             .findViewById(R.id.privacy_ad_icon);
                     loadADPic(

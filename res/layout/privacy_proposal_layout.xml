@@ -93,15 +93,14 @@
                     android:layout_height="48dp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="@dimen/privacy_ad_icon_m_left"
-                    android:layout_marginTop="@dimen/privacy_suggest_icon_text_margin"
-                    android:src="@drawable/disguise_icon_no" />
+                    android:layout_marginTop="@dimen/privacy_suggest_padding" />
 
                 <LinearLayout
                     android:id="@+id/privacy_ad_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/privacy_suggest_icon_text_margin"
-                    android:layout_marginTop="@dimen/privacy_suggest_padding"
+                    android:layout_marginTop="@dimen/privacy_suggest_icon_text_margin"
                     android:layout_toRightOf="@id/privacy_ad_icon"
                     android:orientation="vertical"
                     android:paddingRight="@dimen/privacy_ad_right_content_p_r" >
