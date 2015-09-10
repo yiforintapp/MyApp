@@ -5,11 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".applocker.UFOActivity" >
-    <ImageView 
-        android:id="@+id/iv_test"
-        android:layout_width="70dp"
-        android:layout_height="50dp"
-        />
+    
 	<ImageView
         android:id="@+id/iv_splashlight"
         android:layout_width="wrap_content"
@@ -75,6 +71,33 @@
             android:layout_height="wrap_content"
             android:text="@string/ad_timeout"
             />
+    </RelativeLayout>
+    
+    <RelativeLayout
+        android:id="@+id/rl_Themedialog"
+        android:layout_width="302dp"
+        android:layout_height="285dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white"
+        android:layout_centerVertical="true"
+        android:visibility="invisible" >
+    <ImageView
+        android:id="@+id/iv_ThemedialogBg"
+        android:layout_width="302dp"
+        android:layout_height="285dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:visibility="visible" >
+        </ImageView>
+        
+    	<Button 
+    	    android:id="@+id/btn_usetheme"
+    	     android:text="use/download"
+    	     android:textSize="12sp"
+    	    android:layout_width="70dp"
+        	android:layout_height="50dp"
+        	android:layout_centerHorizontal="true"
+    	    />
     </RelativeLayout>
     
     <RelativeLayout

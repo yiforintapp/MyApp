@@ -39,6 +39,8 @@ import com.leo.appmaster.lockertheme.ThemeJsonObjectParser;
 import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
@@ -57,10 +59,13 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private AnimationDrawable mUFODrawable;//
     // 广告素材
     private MobvistaEngine mAdEngine;
-    //主题
+    // 主题
     private List<String> mHideThemeList;
     private ThemeItemInfo mChosenTheme;
-    
+    private ImageView mThemDialogBg;
+    private String mThemeName;
+    private Button mBtnUseTheme;
+
     private ImageView mClose;
     private RelativeLayout mWholeUFO;
     private RelativeLayout mDialog;
@@ -71,7 +76,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private ImageView mSplashLight;
     private CountDownTimer mCdt;
     private Button mInstall;
-    private boolean mIsShowTheme=false;
+    private boolean mIsShowTheme = false;
     // 动画参数
     private float mUFOW;
     private float mUFOH;
@@ -82,60 +87,48 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_ufo);
         InitUI();
-        int ran =(int) (Math.random()*2d+1d);
-        Log.e("poha", ran+"");
-        if(ran==1){
-            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran="+ran, 1).show();
-            mIsShowTheme=true;
+
+        int ran = (int) (Math.random() * 1d + 1d);
+        if (ran == 111) {
+            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
+            mIsShowTheme = true;
             loadTheme();
-        }else{
-            loadAD();            
+        } else {
+            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
+            loadAD();
         }
     };
 
     private void loadTheme() {
         mHideThemeList = AppMasterPreference.getInstance(this).getHideThemeList();
-        HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemeList, new ThemeListener(this) );      
-//        ImageView v = (ImageView) findViewById(R.id.iv_test);
-        
+        HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemeList, new ThemeListener(this));
     }
-    
-    private static class ThemeListener extends RequestListener<UFOActivity>{
+
+    private static class ThemeListener extends RequestListener<UFOActivity> {
         public ThemeListener(UFOActivity outerContext) {
             super(outerContext);
         }
 
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
-            // TODO Auto-generated method stub
             UFOActivity ufoActivity = getOuterContext();
-            List<ThemeItemInfo> list = ThemeJsonObjectParser.parserJsonObject(ufoActivity, response);
-            Log.e("poha", "resp");
-            if(list!=null)
-            {
-                
-                Log.e("poha", "sieze="+list.size());
-                for(int i=0;i<list.size();i++)
-                {
-                    if(list.get(i).themeName!=null)
-                        Log.e("poha", list.get(i).themeName+"==");   
-                    if(list.get(i).previewUrl==null)
-                        Log.e("poha", "previewUrl="+list.get(i).previewUrl);   
-                }
-                
+            List<ThemeItemInfo> list = ThemeJsonObjectParser
+                    .parserJsonObject(ufoActivity, response);
+            if (list != null) {
+                double size = (double) list.size();
+                int ran = (int) (Math.random() * size);
+                ufoActivity.mThemeName = list.get(ran).themeName;
+                ufoActivity.mChosenTheme = list.get(ran);
+                ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(300, 200),
+                        ufoActivity.mThemDialogBg);
+                Toast.makeText(ufoActivity, "Load到啦，主题是" + list.get(ran).themeName, 0).show();
             }
-            
-            int ran =(int) (Math.random()*list.size());
-            ufoActivity.mChosenTheme = list.get(ran);          
-            ufoActivity.mWholeUFO.setBackgroundDrawable(ufoActivity.mChosenTheme.themeImage);
         }
 
         @Override
         public void onErrorResponse(VolleyError error) {
-            
-        }
 
-        
+        }
     }
 
     private void loadAD() {
@@ -145,15 +138,15 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                Log.e("poha", "code="+code);
                 if (code == MobvistaEngine.ERR_OK) {
+                    Log.e("poha", "OK");
                     mIsLoaded = true;
-                    loadADPic(
-                            campaign.getIconUrl(),
+                    loadADPic(campaign.getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
                                     .dip2px(UFOActivity.this, 48)),
                             (ImageView) mDialog.findViewById(R.id.iv_ufo_ad_icon));
-                    loadADPic(
-                            campaign.getImageUrl(),
+                    loadADPic(campaign.getImageUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 302), DipPixelUtil
                                     .dip2px(UFOActivity.this, 158)),
                             (ImageView) mDialog.findViewById(R.id.iv_appbg_ufo));
@@ -196,6 +189,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         if (loadedImage != null) {
                             v.setImageBitmap(loadedImage);
+                            if (mIsShowTheme) {
+                                mIsLoaded = true;
+                            }
                         }
                     }
 
@@ -220,13 +216,32 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mDialog = (RelativeLayout) findViewById(R.id.rl_ADdialog);
         mInstall = (Button) findViewById(R.id.btn_ufo_dialog_install);
         // mNativeAd.registerView(mInstall, null);
-
+        mThemDialogBg = (ImageView) findViewById(R.id.iv_ThemedialogBg);
         mLongLight = (ImageView) findViewById(R.id.iv_longlight);
         mCircleLight = (ImageView) findViewById(R.id.iv_circlelight);
-        mSplashLight=(ImageView) findViewById(R.id.iv_splashlight);
+        mSplashLight = (ImageView) findViewById(R.id.iv_splashlight);
         WindowManager wm = this.getWindowManager();
         mWindowW = wm.getDefaultDisplay().getWidth();
         mWindowH = wm.getDefaultDisplay().getHeight();
+        mBtnUseTheme = (Button) findViewById(R.id.btn_usetheme);
+        mBtnUseTheme.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                // TODO
+                if (AppUtil.appInstalled(UFOActivity.this, Constants.GP_PACKAGE)) {
+                    try {
+                        AppwallHttpUtil.requestGp(UFOActivity.this, mChosenTheme.packageName);
+                    } catch (Exception e) {
+                        AppwallHttpUtil.requestUrl(UFOActivity.this,
+                                mChosenTheme.downloadUrl);
+                    }
+                }else {
+                    AppwallHttpUtil.requestUrl(UFOActivity.this,
+                            mChosenTheme.downloadUrl);
+                }
+            }
+        });
     }
 
     @Override
@@ -252,7 +267,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         float yWhenFinal = mWindowH / 4 - mUFOH / 2;// UFO最终时刻的y，使得UFO在屏幕竖直方向1/4处
         float yWhenTop = 0f;// UFO在最顶上的y
 
-        PropertyValuesHolder ufoX = PropertyValuesHolder.ofFloat("x", 
+        PropertyValuesHolder ufoX = PropertyValuesHolder.ofFloat("x",
                 ufoStartX,
                 (xWhenBorder - ufoStartX) / 4,
                 2 * (xWhenBorder - ufoStartX) / 4,
@@ -263,15 +278,15 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 xWhenMiddle + 2 * (xWhenBorder - xWhenMiddle) / 5,
                 xWhenMiddle + 1 * (xWhenBorder - xWhenMiddle) / 5, xWhenMiddle
                 );
-        PropertyValuesHolder ufoY = PropertyValuesHolder.ofFloat("y", 
+        PropertyValuesHolder ufoY = PropertyValuesHolder.ofFloat("y",
                 ufoStartY,
                 4 * (yWhenTop + ufoStartY) / 7,
-                yWhenTop, 
-                4 * (yWhenTop + ufoStartY) / 7, 
-                ufoStartY, 
-                ufoStartY + 1 *(yWhenFinal - ufoStartY) / 4,
-                ufoStartY + 2 * (yWhenFinal - ufoStartY) / 4, 
-                ufoStartY + 3 * (yWhenFinal - ufoStartY) / 4, 
+                yWhenTop,
+                4 * (yWhenTop + ufoStartY) / 7,
+                ufoStartY,
+                ufoStartY + 1 * (yWhenFinal - ufoStartY) / 4,
+                ufoStartY + 2 * (yWhenFinal - ufoStartY) / 4,
+                ufoStartY + 3 * (yWhenFinal - ufoStartY) / 4,
                 yWhenFinal
                 );
         PropertyValuesHolder ufoSX = PropertyValuesHolder.ofFloat("scaleX", 0.1f, 0.2f, 0.3f, 0.4f,
@@ -322,12 +337,14 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
             public void onFinish() {
                 if (!mHasGetLoadResult) {
+                    LeoLog.e("poha", mIsLoaded+":isloaded");
                     if (!mIsLoaded) {
                         mUFODrawable.stop();
                         mWholeUFO.setVisibility(View.INVISIBLE);
                         mLongLight.setVisibility(View.INVISIBLE);
                         mCircleLight.setVisibility(View.INVISIBLE);
                         // mAlien.setVisibility(View.INVISIBLE);
+                        Log.e("poha", mIsLoaded+":isloaded");
                         Toast.makeText(UFOActivity.this, getString(R.string.ad_timeout), 1).show();
                         UFOActivity.this.finish();
                     }
@@ -341,28 +358,56 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     protected void showAD() {
+
+        if (mIsShowTheme) {
+            mDialog = (RelativeLayout) findViewById(R.id.rl_Themedialog);
+        }
         mDialog.setVisibility(View.VISIBLE);
-        mDialog.setPivotX(mDialog.getWidth()/2);
+        mDialog.setPivotX(mDialog.getWidth() / 2);
         mDialog.setPivotY(0);
-        mDialog.setY(mWholeUFO.getY()+mWholeUFO.getHeight()+DipPixelUtil.dip2px(UFOActivity.this, 5));
+        mDialog.setY(mWholeUFO.getY() + mWholeUFO.getHeight()
+                + DipPixelUtil.dip2px(UFOActivity.this, 5));
         float xWhenMiddle = (mWindowW - mDialog.getWidth()) / 2;
-        float yWhenMiddle =  (mWindowH - mDialog.getHeight()) / 2;
-        //广告对话框的出现动画
-        PropertyValuesHolder dialogy = PropertyValuesHolder.ofFloat("y",
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 5),mWindowH - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 15),mWindowH - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 25),mWindowH - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 55),mWindowH - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 75),mWindowH - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),mWindowH - mDialog.getHeight()),
-                yWhenMiddle - (3/(float)4)* (yWhenMiddle-Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),mWindowH - mDialog.getHeight())),   
-                yWhenMiddle - (2/(float)4)* (yWhenMiddle-Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),mWindowH - mDialog.getHeight())),                  
-                yWhenMiddle - (1/ (float)4)*(yWhenMiddle-Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),mWindowH - mDialog.getHeight())),
+        float yWhenMiddle = (mWindowH - mDialog.getHeight()) / 2;
+        // 广告对话框的出现动画
+        PropertyValuesHolder dialogy = PropertyValuesHolder.ofFloat(
+                "y",
+                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 5), mWindowH
+                        - mDialog.getHeight()),
+                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 15), mWindowH
+                        - mDialog.getHeight()),
+                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 25), mWindowH
+                        - mDialog.getHeight()),
+                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 55), mWindowH
+                        - mDialog.getHeight()),
+                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 75), mWindowH
+                        - mDialog.getHeight()),
+                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95), mWindowH
+                        - mDialog.getHeight()),
+                yWhenMiddle
+                        - (3 / (float) 4)
+                        * (yWhenMiddle - Math.min(
+                                mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
+                                mWindowH - mDialog.getHeight())),
+                yWhenMiddle
+                        - (2 / (float) 4)
+                        * (yWhenMiddle - Math.min(
+                                mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
+                                mWindowH - mDialog.getHeight())),
+                yWhenMiddle
+                        - (1 / (float) 4)
+                        * (yWhenMiddle - Math.min(
+                                mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
+                                mWindowH - mDialog.getHeight())),
                 yWhenMiddle);
-        PropertyValuesHolder dialogscalex = PropertyValuesHolder.ofFloat("scaleX",0.1f,0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.6f, 0.8f, 0.9f, 1f);
-        PropertyValuesHolder dialogscaley = PropertyValuesHolder.ofFloat("scaleY", 0.1f, 0.1f, 0.1f, 0.1f, 0.1f, 0.4f, 0.6f, 0.8f, 0.9f, 1f);
-        PropertyValuesHolder dialogalpha = PropertyValuesHolder.ofFloat("Alpha", 0.3f,0.3f, 0.5f, 0.7f, 1f, 1f, 1, 1f, 1f, 1f);
-        ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(mDialog,dialogscalex, dialogscaley, dialogy, dialogalpha);
+        PropertyValuesHolder dialogscalex = PropertyValuesHolder.ofFloat("scaleX", 0.1f, 0.1f,
+                0.1f, 0.1f, 0.1f, 0.4f, 0.6f, 0.8f, 0.9f, 1f);
+        PropertyValuesHolder dialogscaley = PropertyValuesHolder.ofFloat("scaleY", 0.1f, 0.1f,
+                0.1f, 0.1f, 0.1f, 0.4f, 0.6f, 0.8f, 0.9f, 1f);
+        PropertyValuesHolder dialogalpha = PropertyValuesHolder.ofFloat("Alpha", 0.3f, 0.3f, 0.5f,
+                0.7f, 1f, 1f, 1, 1f, 1f, 1f);
+        ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(mDialog, dialogscalex,
+                dialogscaley, dialogy, dialogalpha);
         animator2.setDuration(2000);
         animator2.start();
         animator2.addListener(new MyEndAnimatorListener() {
@@ -381,27 +426,34 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                                 UFOActivity.this.finish();
                             }
                         });
-                }
+            }
         });
-        //同时出现的UFO灯光动画
+        // 同时出现的UFO灯光动画
         mLongLight.setVisibility(View.VISIBLE);
         mCircleLight.setVisibility(View.VISIBLE);
         mSplashLight.setVisibility(View.VISIBLE);
-        mSplashLight.setY(mWholeUFO.getY() + mWholeUFO.getHeight() - (DipPixelUtil.dip2px(UFOActivity.this, 30)));
-        mLongLight.setY(mWholeUFO.getY() + mWholeUFO.getHeight() - (DipPixelUtil.dip2px(UFOActivity.this, 30)));
-        mCircleLight.setY(mSplashLight.getY() + mSplashLight.getHeight() - (float) (mCircleLight.getHeight() / 2));
+        mSplashLight.setY(mWholeUFO.getY() + mWholeUFO.getHeight()
+                - (DipPixelUtil.dip2px(UFOActivity.this, 30)));
+        mLongLight.setY(mWholeUFO.getY() + mWholeUFO.getHeight()
+                - (DipPixelUtil.dip2px(UFOActivity.this, 30)));
+        mCircleLight.setY(mSplashLight.getY() + mSplashLight.getHeight()
+                - (float) (mCircleLight.getHeight() / 2));
         mLongLight.setPivotX(0.5f);
         mLongLight.setPivotY(0);
-        mSplashLight.setPivotX(mSplashLight.getWidth()/2);
-        
-        PropertyValuesHolder splashLightScaleXAnim = PropertyValuesHolder.ofFloat("scaleX",0.2f,0.4f,0.6f,0.8f,1.0f);
-        ObjectAnimator animator3 = ObjectAnimator.ofPropertyValuesHolder(mSplashLight,splashLightScaleXAnim); 
+        mSplashLight.setPivotX(mSplashLight.getWidth() / 2);
+
+        PropertyValuesHolder splashLightScaleXAnim = PropertyValuesHolder.ofFloat("scaleX", 0.2f,
+                0.4f, 0.6f, 0.8f, 1.0f);
+        ObjectAnimator animator3 = ObjectAnimator.ofPropertyValuesHolder(mSplashLight,
+                splashLightScaleXAnim);
         animator3.setDuration(700);
         animator3.start();
-//        mCircleLight.setPivotX(mCircleLight.getWidth()/2);
-//        mCircleLight.setPivotY(mCircleLight.getHeight()/2);
-        PropertyValuesHolder circleLightScaleXAnim = PropertyValuesHolder.ofFloat("scaleX",0.2f,0.4f,0.6f,0.8f,1.0f);
-        ObjectAnimator animator4 = ObjectAnimator.ofPropertyValuesHolder(mCircleLight,circleLightScaleXAnim); 
+        // mCircleLight.setPivotX(mCircleLight.getWidth()/2);
+        // mCircleLight.setPivotY(mCircleLight.getHeight()/2);
+        PropertyValuesHolder circleLightScaleXAnim = PropertyValuesHolder.ofFloat("scaleX", 0.2f,
+                0.4f, 0.6f, 0.8f, 1.0f);
+        ObjectAnimator animator4 = ObjectAnimator.ofPropertyValuesHolder(mCircleLight,
+                circleLightScaleXAnim);
         animator4.setDuration(700);
         animator4.start();
     }
@@ -434,6 +486,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mAdEngine.release(this);
         LockScreenActivity.interupAinimation = false;
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
     }

@@ -19,6 +19,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
+import com.leo.appmaster.schedule.FetchScheduleJob.FetchScheduleListener;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.mobvista.sdk.m.core.entity.Campaign;
@@ -44,6 +45,7 @@ public class ADShowTypeRequestManager {
     public boolean mIsPushRequestADShowType = false;
     
     public static Campaign mCampaign; 
+    private FetchScheduleListener mListener;
 
     private ADShowTypeRequestManager(Context context) {
         mContext = context;
@@ -57,7 +59,8 @@ public class ADShowTypeRequestManager {
         return mInstance;
     }
 
-    public void loadADCheckShowType() {
+    public void loadADCheckShowType(FetchScheduleListener listener) {
+        mListener = listener;
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
@@ -103,6 +106,9 @@ public class ADShowTypeRequestManager {
 
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
+            if(mListener!=null){
+                mListener.onResponse(response, noMidify);
+            }
             if (response != null)
             {
                 AppMasterPreference sp = AppMasterPreference.getInstance(mContext);
@@ -158,7 +164,9 @@ public class ADShowTypeRequestManager {
 
         @Override
         public void onErrorResponse(VolleyError error) {
-            // TODO Auto-generated method stub
+            if(mListener!=null){
+                mListener.onErrorResponse(error);
+            }
             LeoLog.e("poha", "请求失败。。。");
 
             AppMasterPreference sp = AppMasterPreference.getInstance(mContext);

@@ -41,22 +41,22 @@ public class ScreenOnOffListener extends BroadcastListener {
     public void onScreenChanged(Intent intent) {
         /* 解锁手机加载iSwipe更新数据 */
         loadISwipeUpdateForOnScreen(intent);
-        loadADShowTypeUpdateOnScreen(intent);
+//        loadADShowTypeUpdateOnScreen(intent);
 
     }
 
-    private void loadADShowTypeUpdateOnScreen(Intent intent)
-    {
-        Context mContext = AppMasterApplication.getInstance();
-
-        if (!AppUtil.isScreenLocked(mContext)
-                && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-            ADShowTypeRequestManager.getInstance(mContext).loadADCheckShowType();
-        } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-            ADShowTypeRequestManager.getInstance(mContext).loadADCheckShowType();
-        }
-
-    }
+//    private void loadADShowTypeUpdateOnScreen(Intent intent)
+//    {
+//        Context mContext = AppMasterApplication.getInstance();
+//
+//        if (!AppUtil.isScreenLocked(mContext)
+//                && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+//            ADShowTypeRequestManager.getInstance(mContext).loadADCheckShowType();
+//        } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+//            ADShowTypeRequestManager.getInstance(mContext).loadADCheckShowType();
+//        }
+//
+//    }
 
     private void loadISwipeUpdateForOnScreen(Intent intent) {
         Context mContext = AppMasterApplication.getInstance();

@@ -7,6 +7,6 @@ public class ADFetchJob extends FetchScheduleJob {
 
     @Override
     protected void work() {
-        ADShowTypeRequestManager.getInstance(AppMasterApplication.getInstance()).loadADCheckShowType();
+        ADShowTypeRequestManager.getInstance(AppMasterApplication.getInstance()).loadADCheckShowType(new FetchScheduleListener());
     }
 }
