@@ -166,7 +166,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
                     Button call = (Button) mDialog.findViewById(R.id.btn_ufo_dialog_install);
                     call.setText(campaign.getAdCall());
-                    mAdEngine.registerView(call);
+                    mAdEngine.registerView(UFOActivity.this, call);
                 }
 
             }
