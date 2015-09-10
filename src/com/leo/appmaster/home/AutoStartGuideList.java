@@ -2,6 +2,7 @@
 package com.leo.appmaster.home;
 
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -32,7 +33,7 @@ public class AutoStartGuideList extends WhiteList {
     protected boolean doHandler() {
         try {
             if (mLists != null) {
-                int flag = isAutoWhiteListModel();
+                int flag = isAutoWhiteListModel(mContext);
                 for (int i : mLists) {
                     if (flag != -1) {
                         if (flag == i) {
@@ -175,7 +176,7 @@ public class AutoStartGuideList extends WhiteList {
     }
 
     /* 判断是否为添加自启动的白名单机型 */
-    private int isAutoWhiteListModel() {
+    public static int isAutoWhiteListModel(Context context) {
         boolean miuiV5 = BuildProperties.isMiuiV5();
         // if (miuiV5) {
         // return XIAOMIREAD;
@@ -184,7 +185,7 @@ public class AutoStartGuideList extends WhiteList {
         if (miuiv6Plus && !miuiV5) {
             return XIAOMI4;
         }
-        boolean huawei = BuildProperties.isHuaWeiTipPhone(mContext);
+        boolean huawei = BuildProperties.isHuaWeiTipPhone(context);
         if (huawei) {
             return HUAWEI;
         }

@@ -9,7 +9,7 @@
         android:layout_width="@dimen/iswipe_update_tip_dialog_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/iswipe_dialog_tip_bg"
+        android:background="@drawable/auto_start_dialog_tip_bg"
         android:orientation="vertical"
         android:paddingBottom="20dp" >
 
@@ -20,7 +20,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="25dp"
-            android:src="@drawable/iswip_pic" />
+            android:src="@drawable/shouquan" />
 
         <TextView
             android:id="@+id/iswip_tip_title_text"
@@ -41,7 +41,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginTop="14dp"
             android:text="@string/iswip_update_tip_context_text"
-            android:textColor="#e9e5ff"
+            android:textColor="@color/auto_start_dialog_content_color"
             android:textSize="13dp" />
 
         <RelativeLayout
@@ -58,7 +58,7 @@
                 android:background="@drawable/iswip_update_left_button_selector"
                 android:gravity="center"
                 android:text="@string/iswip_update_tip_left_button_text"
-                android:textColor="@drawable/siwipe_dialog_tip_left_text_color"
+                android:textColor="@drawable/autostart_dialog_tip_left_text_color"
                 android:textSize="14dp" />
 
             <TextView
@@ -70,7 +70,7 @@
                 android:background="@drawable/iswip_update_right_button_selector"
                 android:gravity="center"
                 android:text="@string/iswip_update_tip_right_button_text"
-                android:textColor="#6d50ff"
+                android:textColor="@color/auto_start_dialog_right_button_text_color"
                 android:textSize="14dp" />
         </RelativeLayout>
     </LinearLayout>

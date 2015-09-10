@@ -810,5 +810,11 @@
     <string name="iswip_update_notifi_button">立即更新</string>
     <string name="ad_timeout">Wow!我猜下次你会收到一些更精彩的东西！</string>
     <!-- 2.8 end -->
+    <!-- 2.9 start -->
+    <string name="auto_start_guide_tip_title">开机启动授权</string>
+    <string name="auto_start_guide_tip_content">让隐私卫士可以开机启动，更好的保护你的隐私。</string>
+    <string name="auto_start_guide_tip_left_button">稍后再说</string>
+    <string name="auto_start_guide_tip_right_button">点击设置</string>
+    <!-- 2.9 end -->
 
 </resources>

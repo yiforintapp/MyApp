@@ -109,5 +109,9 @@
     <color name="cool_green">#00d592</color>
     <color name="cool_red">#ff2a00</color>
     <color name="translucent_background">#b2000000</color>
+    <color name="auto_start_dialog_content_color">#ddfffa</color>
+    <color name="auto_start_dialog_right_button_text_color">#01c7a9</color>
+    <color name="auto_start_dialog_left_button_text_color">#cdf0e9</color>
+    
 
 </resources>

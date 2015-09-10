@@ -965,10 +965,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         }
         /* 解锁成功弹出升级提示 */
-        boolean isUnLockUpdateTip = pref.getUnlockUpdateTip();
-        isUnLockUpdateTip=true;
+        boolean isUnLockUpdateTip = pref.getVersionUpdateTipsAfterUnlockOpen();
+        // isUnLockUpdateTip=true;
         ISwipUpdateRequestManager im = ISwipUpdateRequestManager.getInstance(this);
-        /* 判断网络状态 */
+        /* 判断网络状态 */     
         boolean netWorkStatus = im.getNetworkStatus();
         if (isUnLockUpdateTip && netWorkStatus) {
             UIHelper.getInstance(this).unlockSuccessUpdateTip();

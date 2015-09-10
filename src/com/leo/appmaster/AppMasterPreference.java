@@ -248,7 +248,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_ISWIPE_LAST_LOAD_VERSION = "iswipe_last_load_version";
     // About AD
     public static final String PREF_AD_AT_APPLOCK_FRAGMENT = "ad_at_applock_fragment";
-    public static final String PREF_AD_AT_THEME= "ad_at_theme";
+    public static final String PREF_AD_AT_THEME = "ad_at_theme";
     public static final String PREF_GIFTBOX_UPDATE = "giftbox_update";
     public static final String PREF_VERSION_UPDATE_AFTER_UNLOCK = "version_update_after_unlock";
     public static final String PREF_APP_STATISTICS = "app_statistic";
@@ -274,7 +274,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_UPDATE_SECOND_TIP_FLAG = "update_second_tip";
     public static final String PREF_RECORD_FIRST_UNLOCK_COUNT = "record_first_unlock_count";
     public static final String PREF_RECORD_CHANGE_DATE_UNLOCK_COUNT = "record_change_date_unlock_count";
-    public static final String PREF_UPDATE_RECOVERY_DEFAULT_DATA="update_recovery_defatult_data";
+    public static final String PREF_UPDATE_RECOVERY_DEFAULT_DATA = "update_recovery_defatult_data";
+    public static final String PREF_PG_UNLOCK_UPDATE_TIP_FLAG = "pg_unlock_update_flag";
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
     private List<String> mLockedAppList;
@@ -2497,7 +2498,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mADLastLoadTime;
     }
 
-
     // 是否需要更新广告的appwall图标
     public void setIsADAppwallNeedUpdate(boolean flag) {
         mPref.edit().putBoolean(PREF_AD_APPWAL_UPDATE, flag).apply();
@@ -2567,79 +2567,86 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mADShowType;
     }
 
- // UFO动画的展示形式
-    public void setUFOAnimType(int type){
+    // UFO动画的展示形式
+    public void setUFOAnimType(int type) {
         mPref.edit().putInt(PREF_UFO_ANIM_TYPE, type).apply();
     }
 
-    public int getUFOAnimType(){
+    public int getUFOAnimType() {
         return mPref.getInt(PREF_UFO_ANIM_TYPE, 1);
     }
-    
+
     // THEME_CHANCE_AFTER_UFO
-    public void setThemeChanceAfterUFO(int chance){
+    public void setThemeChanceAfterUFO(int chance) {
         mPref.edit().putInt(PREF_THEME_CHANCE_AFTER_UFO, chance).apply();
     }
 
-    public int getThemeChanceAfterUFO(){
+    public int getThemeChanceAfterUFO() {
         return mPref.getInt(PREF_THEME_CHANCE_AFTER_UFO, 0);
     }
-    
-    public void setADChanceAfterAccelerating(int flag){
+
+    public void setADChanceAfterAccelerating(int flag) {
         mPref.edit().putInt(PREF_AD_AFTER_ACCELERATING, flag).apply();
     }
 
-    public int getADChanceAfterAccelerating(){
+    public int getADChanceAfterAccelerating() {
         return mPref.getInt(PREF_AD_AFTER_ACCELERATING, 0);
     }
-    
-    public void setIsADAfterPrivacyProtectionOpen(int value){
+
+    public void setIsADAfterPrivacyProtectionOpen(int value) {
         mPref.edit().putInt(PREF_AD_AFTER_PRIVACY_PROTECTION, value).apply();
     }
 
-    public int getIsADAfterPrivacyProtectionOpen(){
+    public int getIsADAfterPrivacyProtectionOpen() {
         return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 0);
     }
-    public void setIsADAtAppLockFragmentOpen(int value){
+
+    public void setIsADAtAppLockFragmentOpen(int value) {
         mPref.edit().putInt(PREF_AD_AT_APPLOCK_FRAGMENT, value).apply();
     }
 
-    public int getIsADAtAppLockFragmentOpen(){
+    public int getIsADAtAppLockFragmentOpen() {
         return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 0);
     }
-    
-    public void setIsADAtLockThemeOpen(int value){
+
+    public void setIsADAtLockThemeOpen(int value) {
         mPref.edit().putInt(PREF_AD_AT_THEME, value).apply();
     }
 
-    public int getIsADAtLockThemeOpen(){
+    public int getIsADAtLockThemeOpen() {
         return mPref.getInt(PREF_AD_AT_THEME, 0);
     }
-    
-    public void setIsGiftBoxNeedUpdate(int value){
+
+    public void setIsGiftBoxNeedUpdate(int value) {
         mPref.edit().putInt(PREF_GIFTBOX_UPDATE, value).apply();
     }
 
-    public int getIsGiftBoxNeedUpdate(){
+    public int getIsGiftBoxNeedUpdate() {
         return mPref.getInt(PREF_GIFTBOX_UPDATE, 0);
     }
-    
-    public void setVersionUpdateTipsAfterUnlockOpen(int value){
+
+    /* 解锁成功升级提示标志 */
+    /* 解锁成功升级提示开关（1标示开，0标示关） */
+    public void setVersionUpdateTipsAfterUnlockOpen(int value) {
         mPref.edit().putInt(PREF_VERSION_UPDATE_AFTER_UNLOCK, value).apply();
     }
 
-    public int getVersionUpdateTipsAfterUnlockOpen(){
-        return mPref.getInt(PREF_VERSION_UPDATE_AFTER_UNLOCK, 0);
+    public boolean getVersionUpdateTipsAfterUnlockOpen() {
+        int flag = mPref.getInt(PREF_VERSION_UPDATE_AFTER_UNLOCK, 0);
+        if (flag == OPEN_FLAG) {
+            return true;
+        }
+        return false;
     }
-    
-    public void setIsAppStatisticsOpen(int value){
+
+    public void setIsAppStatisticsOpen(int value) {
         mPref.edit().putInt(PREF_APP_STATISTICS, value).apply();
     }
 
-    public int getIsAppStatisticsOpen(){
+    public int getIsAppStatisticsOpen() {
         return mPref.getInt(PREF_APP_STATISTICS, 0);
     }
-    
+
     public String getLoadIswipVerison() {
         return mPref.getString(PREF_ISWIPE_LAST_LOAD_VERSION, null);
     }
@@ -2658,25 +2665,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean isMobvistaClicked() {
         return mPref.getBoolean(PREF_MOBVISTA_LOADED, false);
-    }
-
-    /* 解锁成功升级提示标志 */
-    public boolean getUnlockUpdateTip() {
-        return mPref.getBoolean(PREF_UNLOCK_UPDATE_TIP, false);
-    }
-
-    public void setUnlockUpdateTip(int flag) {
-        /* 解锁成功升级提示开关（1标示开，0标示关） */
-        switch (flag) {
-            case OPEN_FLAG:
-                mPref.edit().putBoolean(PREF_UNLOCK_UPDATE_TIP, true).apply();
-                break;
-            case CLOSE_FLAG:
-                mPref.edit().putBoolean(PREF_UNLOCK_UPDATE_TIP, false).apply();
-                break;
-            default:
-                break;
-        }
     }
 
     /* 是否为首次生成解锁随机次数 */
@@ -2732,8 +2720,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getSecondDayTip() {
         return mPref.getBoolean(PREF_UPDATE_SECOND_TIP_FLAG, false);
     }
+
     /**
      * 设置定时任务执行的时间
+     * 
      * @param jobKey
      * @param time
      */
@@ -2752,6 +2742,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public int getScheduleValue(String key, int def) {
         return mPref.getInt(key, def);
     }
+
     /* 保存不同版本首次使用时的初始解锁次数 */
     public void setFirstUnlockCount(int count) {
         mPref.edit().putInt(PREF_RECORD_FIRST_UNLOCK_COUNT, count).apply();
@@ -2779,4 +2770,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_UPDATE_RECOVERY_DEFAULT_DATA, false);
     }
 
+    /* 首次进入PG自启动提示标志 */
+    public void setPGUnlockUpdateTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_PG_UNLOCK_UPDATE_TIP_FLAG, flag).apply();
+    }
+
+    public boolean getPGUnlockUpdateTip() {
+        return mPref.getBoolean(PREF_PG_UNLOCK_UPDATE_TIP_FLAG, true);
+    }
 }

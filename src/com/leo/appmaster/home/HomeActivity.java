@@ -34,9 +34,13 @@ import android.text.Html;
 import android.util.Log;
 import android.util.LongSparseArray;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnKeyListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewStub;
 import android.view.WindowManager;
@@ -93,6 +97,7 @@ import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 
+@SuppressLint("ResourceAsColor")
 public class HomeActivity extends BaseFragmentActivity implements OnClickListener,
         OnItemClickListener,
         OnPageChangeListener, OnShaderColorChangedLisetner {
@@ -133,7 +138,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private static final String TAG = "HomeActivity";
     private static final boolean DBG = true;
     private ImageView mLeftMenuRedTip;
-    private IswipUpdateTipDialog mAutoStartGuideDialog;
+    private AutoStartTipDialog mAutoStartGuideDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -156,6 +161,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // releaseSysResources();
         /* 获取是否从iswipe通知进入 */
         checkIswipeNotificationTo();
+        /* 白名单引导 */
+        autoStartDialogHandler();
     }
 
     private void checkIswipeNotificationTo() {
@@ -1403,30 +1410,51 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    /* 自启动引导对话框 */ 
+    /* 自启动引导对话框 */
     private void autoStartGuideDialog() {
         if (mAutoStartGuideDialog == null) {
-            mAutoStartGuideDialog = new IswipUpdateTipDialog(this);
+            mAutoStartGuideDialog = new AutoStartTipDialog(this);
         }
-//        mAutoStartGuideDialog.setTitleText();
-//        mAutoStartGuideDialog.setContextText();
-//        mAutoStartGuideDialog.setLeftButtonText();
-//        mAutoStartGuideDialog.setRightButtonText();
-//        mAutoStartGuideDialog.setIswipeUpdateDialogBackground();
-//        mAutoStartGuideDialog.setContentImage();
+        mAutoStartGuideDialog.setTitleText(getString(R.string.auto_start_guide_tip_title));
+        mAutoStartGuideDialog.setContentText(getString(R.string.auto_start_guide_tip_content));
+        mAutoStartGuideDialog
+                .setLeftButtonText(getString(R.string.auto_start_guide_tip_left_button));
+        mAutoStartGuideDialog
+                .setRightButtonText(getString(R.string.auto_start_guide_tip_right_button));
+        mAutoStartGuideDialog.setIswipeUpdateDialogBackground(R.drawable.auto_start_dialog_tip_bg);
+        mAutoStartGuideDialog.setContentImage(R.drawable.shouquan);
+        mAutoStartGuideDialog.setFlag(IswipUpdateTipDialog.AUTOSTART_TIP_DIALOG);
         mAutoStartGuideDialog.setLeftListener(new OnClickListener() {
-
             @Override
             public void onClick(View v) {
-
+                mAutoStartGuideDialog.dismiss();
             }
         });
         mAutoStartGuideDialog.setRightListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
+                mAutoStartGuideDialog.dismiss();
+                new AutoStartGuideList().executeGuide();
             }
         });
+        mAutoStartGuideDialog.setCanceledOnTouchOutside(false);
+        mAutoStartGuideDialog.show();
+    }
+
+    /* 首次进入PG自启动引导 */
+    private void autoStartDialogHandler() {
+        /* 是否需要提示 */
+        boolean flag = AppMasterPreference.getInstance(this).getPGUnlockUpdateTip();
+        /* 新用户用户，不为升级用户 */
+        boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
+                .getIsUpdateQuickGestureUser();
+        if (flag && !updateUser) {
+            /* 是否存在于白名单 */
+            int model = AutoStartGuideList.isAutoWhiteListModel(this);
+            if (model != -1) {
+                autoStartGuideDialog();
+            }
+        }
     }
 }

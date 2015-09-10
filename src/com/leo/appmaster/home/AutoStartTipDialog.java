@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures.ui;
+package com.leo.appmaster.home;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -20,7 +20,7 @@ import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
-public class IswipUpdateTipDialog extends LEOBaseDialog {
+public class AutoStartTipDialog extends LEOBaseDialog {
     private static final String HOMEACTIVITY = "homeactivity";
     public static final String AUTOSTART_TIP_DIALOG = "autostart_tip_dialog";
     private Context mContext;
@@ -36,7 +36,7 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
         public void onClick(int which);
     }
 
-    public IswipUpdateTipDialog(Context context) {
+    public AutoStartTipDialog(Context context) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
         initUI();
@@ -44,7 +44,7 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
 
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
-                R.layout.iswip_update_tip_dialog, null);
+                R.layout.auto_start_tip_dialog, null);
         mTitle = (TextView) dlgView.findViewById(R.id.iswip_tip_title_text);
         mContent = (TextView) dlgView.findViewById(R.id.iswip_tip_content_text);
         mLeftBt = (TextView) dlgView.findViewById(R.id.iswip_left_bt);

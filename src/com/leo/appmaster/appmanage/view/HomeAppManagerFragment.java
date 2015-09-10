@@ -921,7 +921,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         mAppManagerIswipDialog.setVisiblilyTitle(false);
         String contentButtonText = context.getResources().getString(
                 R.string.first_open_quick_gesture_dialog_tip_cotent);
-        mAppManagerIswipDialog.setContextText(contentButtonText);
+        mAppManagerIswipDialog.setContentText(contentButtonText);
         String leftButtonText = context.getResources().getString(
                 R.string.quick_first_tip_dialog_left_bt);
         mAppManagerIswipDialog.setLeftButtonText(leftButtonText);
