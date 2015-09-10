@@ -259,6 +259,7 @@ public class MobvistaEngine {
 
         @Override
         public void onAdLoaded(Campaign campaign) {
+            LeoLog.i(TAG, "onAdLoaded...");
             MobvistaListener listener = null;
             if (mMobvistaListeners.containsKey(activity)) {
                 listener = mMobvistaListeners.get(activity);
@@ -280,6 +281,7 @@ public class MobvistaEngine {
 
         @Override
         public void onAdLoadError(String s) {
+            LeoLog.i(TAG, "onAdLoadError...s: " + s);
             MobvistaListener listener = null;
             if (mMobvistaListeners.containsKey(activity)) {
                 listener = mMobvistaListeners.get(activity);
