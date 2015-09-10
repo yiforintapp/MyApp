@@ -2,17 +2,22 @@ package com.leo.appmaster.db;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.leo.appmaster.msgcenter.Message;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.utils.IoUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by Jasper on 2015/9/10.
  */
 public class MsgCenterTable extends SQLiteOpenHelper {
+    private static final String TAG = "MsgCenterTable";
 
     protected static final String DATABASE_NAME = AppMasterDBHelper.DB_NAME;
     protected static final String TABLE_NAME = "msg_center";
@@ -74,6 +79,8 @@ public class MsgCenterTable extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         if (db == null) return;
 
+        // 先清空数据
+        db.delete(TABLE_NAME, null, null);
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
@@ -95,5 +102,39 @@ public class MsgCenterTable extends SQLiteOpenHelper {
         } finally {
             db.endTransaction();
         }
+    }
+    
+    public List<Message> queryMsgList() {
+        ArrayList<Message> result = new ArrayList<Message>();
+        SQLiteDatabase db = getWritableDatabase();
+        if (db == null) return result;
+        
+        Cursor cursor = null;
+        try {
+            cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                do {
+                    Message message = new Message();
+                    message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
+                    message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
+                    message.jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
+                    message.id = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
+                    message.name = cursor.getString(cursor.getColumnIndex(COL_NAME));
+                    message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
+                    message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
+                    message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
+                    message.typeId = cursor.getString(cursor.getColumnIndex(COL_TYPE_ID));
+                    
+                    result.add(message);
+                } while (cursor.moveToNext());
+            }
+        } catch (Exception e) {
+            LeoLog.e(TAG, "queryMsgList ex.", e);
+        } finally {
+            IoUtils.closeSilently(cursor);
+        }
+        
+        return result;
     }
 }

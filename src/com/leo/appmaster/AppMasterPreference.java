@@ -12,6 +12,7 @@ import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.preference.PreferenceManager;
 
 import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
 
 public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
@@ -955,6 +956,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void savePassword(String password) {
+        if (mLockType == LOCK_TYPE_NONE) {
+            LockManager.getInstatnce().sendFirstUseLockModeToISwipe();
+        }
         mPassword = "";
         if (password != null) {
             mPassword = password.trim();
@@ -968,6 +972,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void saveGesture(String gesture) {
+        if (mLockType == LOCK_TYPE_NONE) {
+            LockManager.getInstatnce().sendFirstUseLockModeToISwipe();
+        }
         mGesture = gesture;
 
         Editor editor = mPref.edit();
