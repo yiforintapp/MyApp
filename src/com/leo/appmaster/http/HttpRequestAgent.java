@@ -375,6 +375,12 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
+    public void loadMessageCenterList(Listener<JSONObject> listener, ErrorListener errorListener) {
+        Context context = AppMasterApplication.getInstance();
+        String country = Utilities.getCountryID(context);
+
+    }
+
     public abstract static class RequestListener<T> implements Listener<JSONObject>, ErrorListener {
         private WeakReference<T> outerContextRef;
 

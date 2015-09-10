@@ -151,6 +151,8 @@ public class Constants {
     public static final String ONLINE_THEME_URL = "/appmaster/themes";
     public static final String CHECK_NEW_THEME = "/appmaster/themesupdatecheck";
 
+    public static final String MSG_CENTER_URL = "/appmaster/activity";
+
     /**
      * 应用推荐游戏
      */
