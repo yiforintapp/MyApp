@@ -467,6 +467,7 @@ public class ISwipUpdateRequestManager {
         if (gpDownLoadUrl != null) {
             Intent intent = startPG(gpDownLoadUrl);
             try {
+                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
             } catch (Exception e) {
                 /* 本地没有GP则跳浏览器 */
@@ -485,6 +486,7 @@ public class ISwipUpdateRequestManager {
         if (browserUrl != null) {
             Intent intent = startBrowser(browserUrl);
             try {
+                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();

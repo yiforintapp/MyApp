@@ -5,6 +5,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -88,10 +89,12 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
                 LeoLog.i(TAG, "跳转小米4成功！");
             } catch (Exception e) {
                 LeoLog.i(TAG, "跳转小米4失败！");
+                e.printStackTrace();
             }
             return false;
         }
@@ -113,6 +116,7 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
                 LeoLog.i(TAG, "跳转红米成功！");
             } catch (Exception e) {
@@ -137,10 +141,12 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
                 LeoLog.e(TAG, "跳转huawei成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转huawei失败！");
+                e.printStackTrace();
             }
             return false;
         }
@@ -165,10 +171,12 @@ public class AutoStartGuideList extends WhiteList {
              intent.setComponent(cn);
              intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
                 LeoLog.e(TAG, "跳转oppo成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转oppo失败！");
+                e.printStackTrace();
             }
             return false;
         }
