@@ -19,6 +19,7 @@ import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -403,6 +404,11 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         bg_show_xz_bf = findViewById(R.id.bg_show_xz_bf);
         bg_show_ll = findViewById(R.id.bg_show_ll);
         bg_show_dl = findViewById(R.id.bg_show_dl);
+        
+        if (Build.VERSION.SDK_INT > 21) {
+            // 版本号高于（含）5.1.1，不显示电量
+            bg_show_dl.setVisibility(View.GONE);
+        }
 
         bg_show_xz_bf.setOnClickListener(this);
         bg_show_ll.setOnClickListener(this);
