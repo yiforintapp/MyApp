@@ -58,6 +58,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -967,12 +968,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         /* 解锁成功弹出升级提示 */
         boolean isUnLockUpdateTip = pref.getVersionUpdateTipsAfterUnlockOpen();
-        // isUnLockUpdateTip=true;
+//        isUnLockUpdateTip = true;
         ISwipUpdateRequestManager im = ISwipUpdateRequestManager.getInstance(this);
-        /* 判断网络状态 */     
+        /* 判断网络状态 */
         boolean netWorkStatus = im.getNetworkStatus();
+        LeoLog.i(TAG, "是否开启解锁成功升级提示：" + isUnLockUpdateTip);
+        LeoLog.i(TAG, "当前是否有网络：" + netWorkStatus);
         if (isUnLockUpdateTip && netWorkStatus) {
-            UIHelper.getInstance(this).unlockSuccessUpdateTip();
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    UIHelper.getInstance(AppMasterApplication.getInstance()).unlockSuccessUpdateTip();
+                }
+            });
         }
         LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
         mTtileBar.postDelayed(new Runnable() {

@@ -423,7 +423,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         LeoLog.d(TAG, "checkShowRemindNotification");
         if (mManager.isFromUser() || UpdateManager.isOneDayGetTwoNew) {
             LeoLog.d(TAG, "isFromUser, send right nows");
-            relaunchActivity(mUIType, mUIParam, false);
+            relaunchActivity(mUIType, mUIParam, false, false);
             UpdateManager.isOneDayGetTwoNew = false;
         } else {
             SharedPreferences sp = PreferenceManager
@@ -443,7 +443,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     + "    remindTimesConfig = " + remindTimesConfig);
 
             if (frequencyConfig <= 0 && remindTimesConfig <= 0) {
-                relaunchActivity(mUIType, mUIParam, true);
+                relaunchActivity(mUIType, mUIParam, true, false);
             } else {
                 if (frequencyConfig > 0 && remindTimesConfig > 0) {
                     LeoLog.d(TAG, "consider frequency and remind times");
@@ -462,7 +462,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     } else if (shouldshow()) {
                         LeoLog.d(TAG,
                                 "(currentTime - lastRemindTime) > remindInterval, send right now");
-                        relaunchActivity(mUIType, mUIParam, true);
+                        relaunchActivity(mUIType, mUIParam, true, false);
                     }
                 } else if (frequencyConfig > 0) { // only consider frequency
                     LeoLog.d(TAG, "only consider frequency");
@@ -474,7 +474,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     } else if (shouldshow()) {
                         LeoLog.d(TAG,
                                 "(currentTime - lastRemindTime) > remindInterval, send right now");
-                        relaunchActivity(mUIType, mUIParam, true);
+                        relaunchActivity(mUIType, mUIParam, true, false);
                     }
                 } else {// only consider remind times
                     LeoLog.d(TAG, "only consider frequency");
@@ -486,7 +486,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     } else if (shouldshow()) {
                         LeoLog.d(TAG,
                                 "curRemindTimes < remindTimesConfig, send right now");
-                        relaunchActivity(mUIType, mUIParam, true);
+                        relaunchActivity(mUIType, mUIParam, true, false);
                     }
                 }
             }
@@ -653,7 +653,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         mContext.startActivity(i);
     }
 
-    private void relaunchActivity(int type, int param, boolean needRecord) {
+    private void relaunchActivity(int type, int param, boolean needRecord, boolean filterLockFlag/* 是否需要过滤锁 */) {
         if (!mManager.isFromUser() && needRecord) {
             LeoLog.d(TAG, "relaunchActivity");
             recordRemind();
@@ -665,6 +665,9 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         i.putExtra(LAYOUT_TYPE, type);
         i.putExtra(LAYOUT_PARAM, param);
+        if (filterLockFlag) {
+            LockManager.getInstatnce().timeFilterSelf();
+        }
         mContext.startActivity(i);
     }
 
@@ -678,7 +681,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     nm.cancel(UPDATE_NOTIFICATION_ID);
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
                     relaunchActivity(IUIHelper.TYPE_UPDATE,
-                            mManager.getReleaseType(), false);
+                            mManager.getReleaseType(), false, false);
                 } else if (action.equals(ACTION_CANCEL_UPDATE)) {
                     mManager.onCancelUpdate();
                     if (listener != null) {
@@ -687,14 +690,14 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 } else if (action.equals(ACTION_DOWNLOADING)) {
                     LeoLog.d(TAG, "recevie UPDATE_NOTIFICATION_ID");
                     relaunchActivity(IUIHelper.TYPE_DOWNLOADING,
-                            mManager.getReleaseType(), false);
+                            mManager.getReleaseType(), false, false);
                 } else if (action.equals(ACTION_CANCEL_DOWNLOAD)) {
                     mManager.onCancelDownload();
                     if (listener != null) {
                         listener.onChangeState(TYPE_DISMISS, 0);
                     }
                 } else if (action.equals(ACTION_DOWNLOAD_FAILED)) {
-                    relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0, false);
+                    relaunchActivity(IUIHelper.TYPE_DOWNLOAD_FAILED, 0, false, false);
                 } else if (action.equals(ACTION_DOWNLOAD_FAILED_CANCEL)) {
                     mManager.onCancelDownload();
                     if (listener != null) {
@@ -790,7 +793,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 sendUpdateNotification();
             } else if (type == 1) {
                 boolean needRecord = intent.getBooleanExtra("need_record", true);
-                relaunchActivity(mUIType, mUIParam, needRecord);
+                relaunchActivity(mUIType, mUIParam, needRecord, false);
             }
         }
     }
@@ -921,7 +924,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 if (!Utilities.isEmpty(version)
                         && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {
                     relaunchActivity(IUIHelper.TYPE_CHECK_NEED_UPDATE, UpdateManager.NORMAL_UPDATE,
-                            false);
+                            false, true);
                 } else {
                     LeoLog.i(TAG, "没有加载到更新日志，因此不去显示对话框！");
                 }
