@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -35,9 +36,10 @@ public class MsgCenterTable extends SQLiteOpenHelper {
 
     protected static MsgCenterTable sInstance;
 
-    public static synchronized MsgCenterTable getInstance(Context context) {
+    public static synchronized MsgCenterTable getInstance() {
         if (sInstance == null) {
-            sInstance = new MsgCenterTable(context.getApplicationContext());
+            AppMasterApplication ctx = AppMasterApplication.getInstance();
+            sInstance = new MsgCenterTable(ctx);
         }
 
         return sInstance;
@@ -103,7 +105,11 @@ public class MsgCenterTable extends SQLiteOpenHelper {
             db.endTransaction();
         }
     }
-    
+
+    /**
+     * 获取消息列表
+     * @return
+     */
     public List<Message> queryMsgList() {
         ArrayList<Message> result = new ArrayList<Message>();
         SQLiteDatabase db = getWritableDatabase();

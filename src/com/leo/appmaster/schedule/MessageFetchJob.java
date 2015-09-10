@@ -5,22 +5,23 @@ import android.content.Context;
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.utils.LeoLog;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 消息中心抓取任务
  * Created by Jasper on 2015/9/8.
  */
 public class MessageFetchJob extends FetchScheduleJob {
-
-    public static void startJob() {
-        new MessageFetchJob().start();
-    }
 
     @Override
     protected void work() {
@@ -31,13 +32,13 @@ public class MessageFetchJob extends FetchScheduleJob {
         FetchScheduleListener listener = newFetchListener();
         HttpRequestAgent.getInstance(ctx).loadMessageCenterList(listener, listener);
 
-        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                onFetchSuccess(null, false);
+//        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                onFetchSuccess(null, false);
 //                onFetchFail(null);
-            }
-        }, 5 * 1000);
+//            }
+//        }, 5 * 1000);
     }
 
     @Override
@@ -46,24 +47,33 @@ public class MessageFetchJob extends FetchScheduleJob {
     }
 
     @Override
-    protected void onFetchSuccess(JSONObject response, boolean noMidify) {
+    protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
+        if (response == null || !(response instanceof JSONArray)) return;
 
-        if (response == null) return;
-
-        Message message = new Message();
+        List<Message> list = new ArrayList<Message>();
         try {
-            message.time = response.getString("activity_time");
-            message.name = response.getString("category_name");
-            message.description = response.getString("description");
-            message.imageUrl = response.getString("image_url");
-            message.jumpUrl = response.getString("link");
-            message.offlineTime = response.getString("offline_time");
-            message.title = response.getString("title");
-            message.typeId = response.getString("type_id");
-            message.id = response.getInt("id");
+            JSONArray array = (JSONArray) response;
+            for (int i = 0; i < array.length(); i++) {
+                JSONObject obj = (JSONObject) array.get(i);
+
+                Message message = new Message();
+                message.time = obj.getString("activity_time");
+                message.name = obj.getString("category_name");
+                message.description = obj.getString("description");
+                message.imageUrl = obj.getString("image_url");
+                message.jumpUrl = obj.getString("link");
+                message.offlineTime = obj.getString("offline_time");
+                message.title = obj.getString("title");
+                message.typeId =obj.getString("type_id");
+                message.id = obj.getInt("id");
+
+                list.add(message);
+            }
         } catch (JSONException e) {
             e.printStackTrace();
         }
+
+        MsgCenterTable.getInstance().insertMsgList(list);
     }
 }

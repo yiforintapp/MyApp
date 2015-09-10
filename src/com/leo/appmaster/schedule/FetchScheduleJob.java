@@ -32,13 +32,13 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     /**
      * 默认拉取间隔，12小时
      */
-//    private static final int FETCH_PERIOD = 12 * 60 * 60 * 1000;
-    private static final int FETCH_PERIOD = 12 * 1000;
+    private static final int FETCH_PERIOD = 12 * 60 * 60 * 1000;
+//    private static final int FETCH_PERIOD = 12 * 1000;
     /**
      * 失败拉取间隔，2小时
      */
-//    private static final int FETCH_FAIL_ERIOD = 2 * 60 * 60 * 1000;
-    private static final int FETCH_FAIL_ERIOD = 10 * 1000;
+    private static final int FETCH_FAIL_ERIOD = 2 * 60 * 60 * 1000;
+//    private static final int FETCH_FAIL_ERIOD = 10 * 1000;
     /**
      * 默认失败重试次数
      */
@@ -184,7 +184,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     /**
      * 拉取数据成功
      */
-    protected void onFetchSuccess(JSONObject response, boolean noMidify) {
+    protected void onFetchSuccess(Object response, boolean noMidify) {
         LeoLog.i(getJobKey(), "onFetchSuccess, response: " + response + " | noModify: " + noMidify);
         AppMasterApplication context = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(context);
@@ -218,14 +218,14 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         return new FetchScheduleListener();
     }
 
-    public class FetchScheduleListener implements Response.Listener<JSONObject>, Response.ErrorListener {
+    public class FetchScheduleListener<T> implements Response.Listener<Object>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
             onFetchFail(error);
         }
 
         @Override
-        public void onResponse(JSONObject response, boolean noMidify) {
+        public void onResponse(Object response, boolean noMidify) {
             onFetchSuccess(response, noMidify);
         }
     }
