@@ -9,9 +9,14 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
+import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
@@ -26,12 +31,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.VolleyError;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.R.id;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.lockertheme.LockerTheme;
@@ -88,8 +97,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         setContentView(R.layout.activity_ad_ufo);
         InitUI();
 
-        int ran = (int) (Math.random() * 1d + 1d);
-        if (ran == 111) {
+        int ran = (int) (Math.random() * 2d + 1d);
+        if (ran == 1) {
             Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
             mIsShowTheme = true;
             loadTheme();
@@ -114,9 +123,17 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             UFOActivity ufoActivity = getOuterContext();
             List<ThemeItemInfo> list = ThemeJsonObjectParser
                     .parserJsonObject(ufoActivity, response);
+            
+            for(int i=0;i<list.size();i++)
+            {
+                LeoLog.e("poha", list.get(i).packageName+""+list.get(i).themeName);
+            }
+            
+            
             if (list != null) {
                 double size = (double) list.size();
-                int ran = (int) (Math.random() * size);
+//                int ran = (int) (Math.random() * size);
+                int ran = 9;
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(300, 200),
@@ -140,8 +157,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 Log.e("poha", "code="+code);
                 if (code == MobvistaEngine.ERR_OK) {
-                    Log.e("poha", "OK");
                     mIsLoaded = true;
+                    Log.e("poha", "OK mIsLoaded="+mIsLoaded);
                     loadADPic(campaign.getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
                                     .dip2px(UFOActivity.this, 48)),
@@ -194,7 +211,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                             }
                         }
                     }
-
                     @Override
                     public void onLoadingCancelled(String imageUri, View view) {
                     }
@@ -229,16 +245,27 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             @Override
             public void onClick(View v) {
                 // TODO
-                if (AppUtil.appInstalled(UFOActivity.this, Constants.GP_PACKAGE)) {
-                    try {
-                        AppwallHttpUtil.requestGp(UFOActivity.this, mChosenTheme.packageName);
-                    } catch (Exception e) {
+                List<String> mHideThemes;
+                mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
+                if(mHideThemes.contains(mChosenTheme.packageName))
+                {
+                    Toast.makeText(UFOActivity.this, "这个主题已经本地有了", 0).show();
+                    AppMasterApplication.setSharedPreferencesValue(mChosenTheme.packageName);
+                    LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
+                }
+                else{
+                    ThemeItemInfo bean = new ThemeItemInfo();
+                    if (AppUtil.appInstalled(UFOActivity.this, Constants.GP_PACKAGE)) {
+                        try {
+                            AppwallHttpUtil.requestGp(UFOActivity.this, mChosenTheme.packageName);
+                        } catch (Exception e) {
+                            AppwallHttpUtil.requestUrl(UFOActivity.this,
+                                    mChosenTheme.downloadUrl);
+                        }
+                    }else {
                         AppwallHttpUtil.requestUrl(UFOActivity.this,
                                 mChosenTheme.downloadUrl);
                     }
-                }else {
-                    AppwallHttpUtil.requestUrl(UFOActivity.this,
-                            mChosenTheme.downloadUrl);
                 }
             }
         });
@@ -324,7 +351,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mUFODrawable = (AnimationDrawable) mUFO.getDrawable();
         mUFODrawable.start();
         // boolean hasGetLoadResult = false;
-        mCdt = new CountDownTimer(6000, 1000) {
+        mCdt = new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
                 if (mIsLoaded && !mHasGetLoadResult) {
                     if (mCdt != null) {
