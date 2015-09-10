@@ -81,6 +81,10 @@ public class LockManager {
     public static final String TAG = "LockManager";
 
     public static final String ACTION_TIME_LOCK = "action_time_lock";
+    private static final String ACTION_FIRST_USE_LOCK_MODE = "com.leo.appmaster.ACTION_FIRST_USE_LOCK_MODE";
+    private static final String ACTION_LOCK_MODE_CHANGE = "com.leo.appmaster.ACTION_LOCK_MODE_CHANGE";
+    
+    private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
 
     public static final int LOCK_MODE_FULL = 1;
     public static final int LOCK_MODE_PURE = 2;
@@ -252,6 +256,20 @@ public class LockManager {
             @Override
             public void run() {
                 initTimeLock();
+            }
+        });
+        
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            sendFirstUseLockModeToISwipe();
+        }
+        
+        final Handler handler = new Handler(Looper.myLooper());
+        mContext.getContentResolver().registerContentObserver(Constants.LOCK_MODE_URI, true,
+                new ContentObserver(handler) {
+            @Override
+            public void onChange(boolean selfChange) {
+                sendLockModeChangeToISwipe();
             }
         });
     }
@@ -1933,6 +1951,42 @@ public class LockManager {
 
     public void putDrawableColorId(Drawable drawable, int id) {
         mDrawableColors.put(drawable, id);
+    }
+    
+    public void sendFirstUseLockModeToISwipe() {
+        Intent intent = new Intent(ACTION_FIRST_USE_LOCK_MODE);
+
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            List<LockMode> list = LockManager.getInstatnce().getLockMode();
+            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
+            arrayList.addAll(list);
+            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
+        }
+        try {
+            mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
+            LeoLog.e(TAG, "send first use lock mode .");
+        } catch (Exception e) {
+            LeoLog.e(TAG, "send first use lock mode failed.", e);
+        }
+    }
+
+    public void sendLockModeChangeToISwipe() {
+        Intent intent = new Intent(ACTION_LOCK_MODE_CHANGE);
+        
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            List<LockMode> list = LockManager.getInstatnce().getLockMode();
+            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
+            arrayList.addAll(list);
+            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
+        }
+        try {
+            mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
+            LeoLog.e(TAG, "send lock mode changed .");
+        } catch (Exception e) {
+            LeoLog.e(TAG, "send lock mode changed failed.", e);
+        }
     }
 
 }

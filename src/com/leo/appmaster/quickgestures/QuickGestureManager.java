@@ -78,9 +78,6 @@ public class QuickGestureManager {
     private static final String RECEIVER_TO_SWIPE_ACTION = "com.leo.appmaster.ACTION_PRIVACY_CONTACT";
     private static final String RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP = "com.leo.appmaster.ACTION_CANCEL_PRIVACY_TIP";
 
-    private static final String ACTION_FIRST_USE_LOCK_MODE = "com.leo.appmaster.ACTION_FIRST_USE_LOCK_MODE";
-    private static final String ACTION_LOCK_MODE_CHANGE = "com.leo.appmaster.ACTION_LOCK_MODE_CHANGE";
-
     public static final String PRIVACY_MSM = "privacy_msm";
     public static final String PRIVACY_CALL = "privacy_call";
     public static final String PRIVACYCONTACT_TO_IWIPE_KEY = "privacycontact_to_iswipe";
@@ -129,15 +126,6 @@ public class QuickGestureManager {
         mDeletedBusinessItems = new ArrayList<String>();
         screenSpace = AppMasterPreference.getInstance(ctx).getRootViewAndWindowHeighSpace();
         loadDeletedBusinessItems();
-
-        final Handler handler = new Handler(Looper.myLooper());
-        mContext.getContentResolver().registerContentObserver(Constants.LOCK_MODE_URI, true,
-                new ContentObserver(handler) {
-            @Override
-            public void onChange(boolean selfChange) {
-                sendLockModeChangeToISwipe();
-            }
-        });
     }
 
     public static synchronized QuickGestureManager getInstance(Context ctx) {
@@ -167,11 +155,6 @@ public class QuickGestureManager {
             preloadIconMatcherColor();
 
             QuickSwitchManager.getInstance(mContext).init();
-            
-            AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
-            if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                sendFirstUseLockModeToISwipe();
-            }
         }
     }
 
@@ -1386,40 +1369,6 @@ public class QuickGestureManager {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         if (amp.getCallLogNoReadCount() <= 0) {
             privacyContactSendReceiverToSwipe(null, 1);
-        }
-    }
-
-    public void sendFirstUseLockModeToISwipe() {
-        Intent intent = new Intent(ACTION_FIRST_USE_LOCK_MODE);
-
-        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
-        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            List<LockMode> list = LockManager.getInstatnce().getLockMode();
-            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
-            arrayList.addAll(list);
-            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
-        }
-        try {
-            mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
-        } catch (Exception e) {
-            LeoLog.e(TAG, "send first use lock mode failed.", e);
-        }
-    }
-
-    public void sendLockModeChangeToISwipe() {
-        Intent intent = new Intent(ACTION_LOCK_MODE_CHANGE);
-        
-        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
-        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            List<LockMode> list = LockManager.getInstatnce().getLockMode();
-            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
-            arrayList.addAll(list);
-            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
-        }
-        try {
-            mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
-        } catch (Exception e) {
-            LeoLog.e(TAG, "send lock mode changed failed.", e);
         }
     }
 
