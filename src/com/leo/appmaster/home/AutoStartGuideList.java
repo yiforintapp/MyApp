@@ -4,7 +4,6 @@ package com.leo.appmaster.home;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -17,11 +16,11 @@ import com.leo.appmaster.utils.LeoLog;
 public class AutoStartGuideList extends WhiteList {
     public static final String TAG = "AutoStartGuideList";
     private static final int XIAOMI4 = 0;
-    // private static final int XIAOMIREAD = 1;
-    private static final int HUAWEI = 1;
-    private static final int OPPO = 2;
+    private static final int XIAOMIREAD = 1;
+    private static final int HUAWEI = 2;
+    private static final int OPPO = 3;
     private static int[] LIST = {
-            XIAOMI4, HUAWEI, OPPO
+            XIAOMI4, XIAOMIREAD, HUAWEI, OPPO
     };
 
     public AutoStartGuideList() {
@@ -60,9 +59,9 @@ public class AutoStartGuideList extends WhiteList {
             case XIAOMI4:
                 list = new XiaoMi4();
                 break;
-            // case XIAOMIREAD:
-            // list = new ReadMi();
-            // break;
+            case XIAOMIREAD:
+                list = new ReadMi();
+                break;
             case HUAWEI:
                 list = new HuaWei();
                 break;
@@ -163,8 +162,8 @@ public class AutoStartGuideList extends WhiteList {
             /* 进入自启动管理 */
             // ComponentName cn = new ComponentName("com.oppo.safe",
             // "com.oppo.safe.permission.startup.StartupAppListActivity");
-            // intent.setComponent(cn);
-            // intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+             intent.setComponent(cn);
+             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 mContext.startActivity(intent);
                 LeoLog.e(TAG, "跳转oppo成功！");
@@ -178,9 +177,9 @@ public class AutoStartGuideList extends WhiteList {
     /* 判断是否为添加自启动的白名单机型 */
     public static int isAutoWhiteListModel(Context context) {
         boolean miuiV5 = BuildProperties.isMiuiV5();
-        // if (miuiV5) {
-        // return XIAOMIREAD;
-        // }
+        if (miuiV5) {
+            return XIAOMIREAD;
+        }
         boolean miuiv6Plus = BuildProperties.isMIUI();
         if (miuiv6Plus && !miuiV5) {
             return XIAOMI4;
