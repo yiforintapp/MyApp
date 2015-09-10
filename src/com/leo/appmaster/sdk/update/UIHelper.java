@@ -818,8 +818,6 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         boolean isCountEnough = isUnlockCountEnough();
         if (isCountEnough) {
             LeoLog.i(TAG, "第" + (amp.getUnlockUpdateTipCount() + 1) + "次产生随机数！");
-            // Toast.makeText(mContext, "解锁次数够了弹升级对话框",
-            // Toast.LENGTH_SHORT).show();
             /* 弹出升级对话框 */
             updateTipDialog();
             /* 除了首次其余的次数需要在升级提示后生成随机数 */
@@ -870,8 +868,6 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     if (difCount == 15) {
                         LeoLog.i(TAG, "第二天提示一次！");
                         amp.setSecondDayTip(true);
-                        // Toast.makeText(mContext, "解锁次数够了弹升级对话框",
-                        // Toast.LENGTH_SHORT).show();
                         /* 弹出升级对话框 */
                         updateTipDialog();
                     }
@@ -915,18 +911,23 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     }
 
     /* 弹出升级对话框 */
-    private void updateTipDialog() {
-//        UpdateManager manager = LeoAgent.getUpdateManager();
-//        if(manager!=null){
-//        String version = manager.getVersion();
-//        String feature = manager.getFeatureString();
-//        int size = mManager.getSize();
-//        if (!Utilities.isEmpty(version)
-//                && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {
-//            relaunchActivity(IUIHelper.TYPE_CHECK_NEED_UPDATE, UpdateManager.NORMAL_UPDATE, false);
-//        } else {
-//            LeoLog.i(TAG, "没有加载到更新日志，因此不去显示对话框！");
-//        }
-//        }
+    public void updateTipDialog() {
+        UpdateManager manager = mManager;
+        try {
+            if (manager != null) {
+                String version = manager.getVersion();
+                String feature = manager.getFeatureString();
+                int size = manager.getSize();
+                if (!Utilities.isEmpty(version)
+                        && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {
+                    relaunchActivity(IUIHelper.TYPE_CHECK_NEED_UPDATE, UpdateManager.NORMAL_UPDATE,
+                            false);
+                } else {
+                    LeoLog.i(TAG, "没有加载到更新日志，因此不去显示对话框！");
+                }
+            }
+        } catch (Exception e) {
+            LeoLog.i(TAG, "没有检查到更新内容，有异常，不显示对话框！");
+        }
     }
 }
