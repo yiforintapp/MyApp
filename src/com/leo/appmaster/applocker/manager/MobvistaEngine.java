@@ -71,7 +71,7 @@ public class MobvistaEngine implements AdListener {
         Context context = AppMasterApplication.getInstance();
         MobvistaAd.init(context, Constants.MOBVISTA_APPID,
                 Constants.MOBVISTA_APPKEY);
-        
+         
         sMobvistaListeners = new ArrayList<MobvistaEngine.MobvistaListener>();
     }
     

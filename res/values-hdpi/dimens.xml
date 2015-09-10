@@ -6,9 +6,8 @@
     <integer name="gridview_row_count">4</integer>
     <integer name="applist_cell_count">16</integer>
 
-    	<dimen name="fragment_password_vertical_space_big">20dp</dimen>
+    <dimen name="fragment_password_vertical_space_big">20dp</dimen>
     <dimen name="fragment_password_vertical_space_small">9dp</dimen>
-    
     <dimen name="splash_width">176dp</dimen>
     <dimen name="lock_pattern_button_width">60dp</dimen>
     <dimen name="gesture_setting_margintop">10dp</dimen>
@@ -411,5 +410,15 @@
     <dimen name="ges_Pattern_m_top">23dp</dimen>
     <dimen name="ges_icon_padding">8dp</dimen>
     <!-- 2.8 end -->
+
+
+    <!-- 2.9 start -->
+    <dimen name="privacy_ad_layout_height">105dp</dimen>
+    <dimen name="privacy_ad_icon_m_left">17dp</dimen>
+    <dimen name="privacy_ad_dec_m_top">4dp</dimen>
+    <dimen name="privacy_ad_download_width">282dp</dimen>
+    <dimen name="privacy_ad_download_height">31dp</dimen>
+            <dimen name="privacy_ad_right_content_p_r">22dp</dimen>
+    <!-- 2.9 end -->
 
 </resources>

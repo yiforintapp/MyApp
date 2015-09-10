@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.fragment;
 
 import android.app.Activity;
@@ -5,11 +6,14 @@ import android.content.Intent;
 import android.graphics.Rect;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyLevelChangeEvent;
@@ -24,6 +28,7 @@ import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class HomePravicyFragment extends BaseFragment implements OnClickListener, Selectable,
         PrivacyLevelView.ScanningListener {
@@ -40,6 +45,9 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     private TipTextView mCallLogTv, mMessageTv;
     private PrivacyProposalLayout mProposalView;
     private AppMasterPreference mPreference;
+    // 广告素材
+    private MobvistaEngine mAdEngine;
+    private boolean mAdSwitchOpen = false;
 
     @Override
     public void onAttach(Activity activity) {
@@ -144,6 +152,8 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         mCallLogTv = (TipTextView) mPrivacyCall.findViewById(R.id.privacy_call_text);
         isShowRedTip(mCallLogTv, 1);
         onLevelChange(PrivacyHelper.getInstance(mActivity).getCurLevelColor().toIntColor());
+        // mAdSwitchOpen =
+        // AppMasterPreference.getInstance(getActivity()).getisada
     }
 
     @Override
@@ -182,7 +192,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                     startActivity(intent);
                     /* sdk market */
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "privacyview", "mesg");
-//                    PrivacyContactManager.getInstance(getActivity()).initLoadData();
+                    // PrivacyContactManager.getInstance(getActivity()).initLoadData();
                 } catch (Exception e) {
                 } finally {
                     intent = null;
@@ -198,7 +208,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                     startActivity(intent);
                     /* sdk market */
                     SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "privacyview", "call");
-//                    PrivacyContactManager.getInstance(getActivity()).initLoadData();
+                    // PrivacyContactManager.getInstance(getActivity()).initLoadData();
                 } catch (Exception e) {
                 } finally {
                     intent = null;
@@ -215,6 +225,9 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                 startActivity(intent);
                 break;
             case R.id.privacy_level:
+
+                loadAD();
+
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "privacylevel");
                 Level level = PrivacyHelper.getInstance(mActivity).getPrivacyLevel();
                 if (level == Level.LEVEL_FIVE) {
@@ -227,7 +240,34 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                 break;
         }
     }
-   
+
+    private void loadAD() {
+        TextView tv_clickTextView = (TextView) mProposalView.findViewById(R.id.ad_download);
+        tv_clickTextView.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+        mAdEngine = MobvistaEngine.getInstance();
+        mAdEngine.loadMobvista(getActivity(), new MobvistaListener() {
+
+            @Override
+            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                if (code == MobvistaEngine.ERR_OK) {
+                    // mProposalView
+
+                }
+            }
+
+            @Override
+            public void onMobvistaClick(Campaign campaign) {
+
+            }
+        });
+    }
+
     @Override
     public void onBackgroundChanged(int color) {
         super.onBackgroundChanged(color);

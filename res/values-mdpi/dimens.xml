@@ -168,7 +168,7 @@
     <!-- weizhuang -->
     <dimen name="weizhaung_guide_image_margin_top">36dp</dimen>
     <dimen name="weizhuang_zhiwen_text_m_top">40dp</dimen>
-    
+
     <!-- quick gesture start -->
     <dimen name="dialog_free_disturb_app_dialog_title_height">40dp</dimen>
     <dimen name="dialog_list_width">260dp</dimen>
@@ -244,5 +244,15 @@
     <dimen name="noti_spe_fr_content_m_left">10dp</dimen>
     <dimen name="noti_spe_tr_butt_width">104dp</dimen>
     <!-- 2.7 end -->
+
+
+    <!-- 2.9 start -->
+    <dimen name="privacy_ad_layout_height">95dp</dimen>
+    <dimen name="privacy_ad_icon_m_left">15dp</dimen>
+    <dimen name="privacy_ad_dec_m_top">4dp</dimen>
+    <dimen name="privacy_ad_download_width">262dp</dimen>
+    <dimen name="privacy_ad_download_height">28dp</dimen>
+                <dimen name="privacy_ad_right_content_p_r">18dp</dimen>
+    <!-- 2.9 end -->
 
 </resources>

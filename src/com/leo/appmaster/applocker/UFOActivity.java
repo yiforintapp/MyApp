@@ -102,7 +102,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener
                     // });
                     mAdEngine.registerView(call);
                 }
-
             }
 
             @Override
