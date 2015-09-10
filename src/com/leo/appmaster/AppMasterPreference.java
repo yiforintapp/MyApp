@@ -263,6 +263,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_UNLOCK_SUCCESS_TIP_RANDOM = "unlock_success_tip_random";
     public static final String PREF_UPDATE_TIP_DATE = "update_tip_date";
     public static final String PREF_UPDATE_SECOND_TIP_FLAG = "update_second_tip";
+    public static final String PREF_RECORD_FIRST_UNLOCK_COUNT = "record_first_unlock_count";
+    public static final String PREF_RECORD_CHANGE_DATE_UNLOCK_COUNT = "record_change_date_unlock_count";
+    public static final String PREF_UPDATE_RECOVERY_DEFAULT_DATA="update_recovery_defatult_data";
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
     private List<String> mLockedAppList;
@@ -2613,7 +2616,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_UNLOCK_UPDATE_TIP_COUNT, 0);
     }
 
-    /* 记录当前升级提示的解锁成功次数 */
+    /* 记录升级提示后本次总共解锁成功次数 */
     public void setRecordUpdateTipUnlockCount(int flag) {
         mPref.edit().putInt(PREF_UNLOCK_UPDATE_TIP_COUNT_RECORD, flag).apply();
     }
@@ -2648,8 +2651,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public boolean getSecondDayTip() {
         return mPref.getBoolean(PREF_UPDATE_SECOND_TIP_FLAG, false);
     }
-
-
     /**
      * 设置定时任务执行的时间
      * @param jobKey
@@ -2670,4 +2671,31 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public int getScheduleValue(String key, int def) {
         return mPref.getInt(key, def);
     }
+    /* 保存不同版本首次使用时的初始解锁次数 */
+    public void setFirstUnlockCount(int count) {
+        mPref.edit().putInt(PREF_RECORD_FIRST_UNLOCK_COUNT, count).apply();
+    }
+
+    public int getFirstUnlockCount() {
+        return mPref.getInt(PREF_RECORD_FIRST_UNLOCK_COUNT, 0);
+    }
+
+    /* 保存第二天首次解锁的初始次数 */
+    public void setChanageDateUnlockCount(int count) {
+        mPref.edit().putInt(PREF_RECORD_CHANGE_DATE_UNLOCK_COUNT, count).apply();
+    }
+
+    public int getChanageDateUnlockCount() {
+        return mPref.getInt(PREF_RECORD_CHANGE_DATE_UNLOCK_COUNT, -1);
+    }
+
+    /* 保存有升级更新时是否已经对升级解锁提示数据初始化 */
+    public void setUpdateRecoveryDefaultData(boolean flag) {
+        mPref.edit().putBoolean(PREF_UPDATE_RECOVERY_DEFAULT_DATA, flag).apply();
+    }
+
+    public boolean getUpdateRecoveryDefaultData() {
+        return mPref.getBoolean(PREF_UPDATE_RECOVERY_DEFAULT_DATA, false);
+    }
+
 }
