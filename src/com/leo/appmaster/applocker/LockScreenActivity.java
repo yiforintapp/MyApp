@@ -303,8 +303,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
 
-//        if (AppMasterPreference.getInstance(this).getADShowType() == 3
-//                && NetWorkUtil.isNetworkAvailable(getApplicationContext()))
+        // if (AppMasterPreference.getInstance(this).getADShowType() == 3
+        // && NetWorkUtil.isNetworkAvailable(getApplicationContext()))
         {
             mADAnimalEntry.setVisibility(View.VISIBLE);
             if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE && !isClickAny) {
@@ -968,19 +968,24 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         /* 解锁成功弹出升级提示 */
         boolean isUnLockUpdateTip = pref.getVersionUpdateTipsAfterUnlockOpen();
-//        isUnLockUpdateTip = true;
+        // isUnLockUpdateTip = true;
         ISwipUpdateRequestManager im = ISwipUpdateRequestManager.getInstance(this);
         /* 判断网络状态 */
         boolean netWorkStatus = im.getNetworkStatus();
         LeoLog.i(TAG, "是否开启解锁成功升级提示：" + isUnLockUpdateTip);
         LeoLog.i(TAG, "当前是否有网络：" + netWorkStatus);
         if (isUnLockUpdateTip && netWorkStatus) {
-            ThreadManager.executeOnAsyncThread(new Runnable() {
-                @Override
-                public void run() {
-                    UIHelper.getInstance(AppMasterApplication.getInstance()).unlockSuccessUpdateTip();
-                }
-            });
+            /* 是否为强制升级 */
+            boolean isForceUpdate = AppMasterPreference.getInstance(this).getPGIsForceUpdate();
+            if (!isForceUpdate) {
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        UIHelper.getInstance(AppMasterApplication.getInstance())
+                                .unlockSuccessUpdateTip();
+                    }
+                });
+            }
         }
         LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
         mTtileBar.postDelayed(new Runnable() {

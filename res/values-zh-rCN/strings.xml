@@ -811,10 +811,10 @@
     <string name="ad_timeout">Wow!我猜下次你会收到一些更精彩的东西！</string>
     <!-- 2.8 end -->
     <!-- 2.9 start -->
-    <string name="auto_start_guide_tip_title">开机启动授权</string>
-    <string name="auto_start_guide_tip_content">让隐私卫士可以开机启动，更好的保护你的隐私。</string>
-    <string name="auto_start_guide_tip_left_button">稍后再说</string>
-    <string name="auto_start_guide_tip_right_button">点击设置</string>
+    <string name="auto_start_guide_tip_title">需要启动权限</string>
+    <string name="auto_start_guide_tip_content">开机启动隐私卫士，安全无忧。</string>
+    <string name="auto_start_guide_tip_left_button">稍后设置</string>
+    <string name="auto_start_guide_tip_right_button">立即设置</string>
     <!-- 2.9 end -->
 
 </resources>

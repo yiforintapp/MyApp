@@ -276,6 +276,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_RECORD_CHANGE_DATE_UNLOCK_COUNT = "record_change_date_unlock_count";
     public static final String PREF_UPDATE_RECOVERY_DEFAULT_DATA = "update_recovery_defatult_data";
     public static final String PREF_PG_UNLOCK_UPDATE_TIP_FLAG = "pg_unlock_update_flag";
+    public static final String PREF_PG_IS_FORCE_UPDATE = "pg_is_force_update";
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
     private List<String> mLockedAppList;
@@ -2777,5 +2778,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getPGUnlockUpdateTip() {
         return mPref.getBoolean(PREF_PG_UNLOCK_UPDATE_TIP_FLAG, true);
+    }
+
+    /* 保存是否为强制升级 */
+    public void setPGIsForceUpdate(boolean flag) {
+        mPref.edit().putBoolean(PREF_PG_IS_FORCE_UPDATE, flag).apply();
+    }
+
+    public boolean getPGIsForceUpdate() {
+        return mPref.getBoolean(PREF_PG_IS_FORCE_UPDATE, false);
     }
 }

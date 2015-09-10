@@ -294,8 +294,10 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     public void onNewState(int ui_type, int param) {
         mUIType = ui_type;
         mUIParam = param;
+        AppMasterPreference.getInstance(mContext).setPGIsForceUpdate(false);
         if (ui_type == IUIHelper.TYPE_DOWNLOAD_DONE && param == UpdateManager.FORCE_UPDATE) {
             AppMasterApplication.getInstance().exitApplication();
+            AppMasterPreference.getInstance(mContext).setPGIsForceUpdate(true);
         }
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
                 && !isAppOnTop(mContext)) {
