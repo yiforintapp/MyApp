@@ -375,10 +375,29 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
+    /**
+     * 加载消息中心列表
+     * @param listener
+     * @param errorListener
+     */
     public void loadMessageCenterList(Listener<JSONObject> listener, ErrorListener errorListener) {
         Context context = AppMasterApplication.getInstance();
+        String language = getPostLanguage();
         String country = Utilities.getCountryID(context);
+        String versionName = mContext.getString(R.string.version_name);
+        String channelCode = mContext.getString(R.string.channel_code);
 
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(Utilities.getURL(Constants.MSG_CENTER_URL))
+                .append(language)
+                .append(country)
+                .append(versionName)
+                .append(channelCode)
+                .append(".html");
+        JsonObjectRequest request = new JsonObjectRequest(
+                Method.GET, stringBuilder.toString(), "", listener, errorListener);
+        request.setShouldCache(true);
+        mRequestQueue.add(request);
     }
 
     public abstract static class RequestListener<T> implements Listener<JSONObject>, ErrorListener {
