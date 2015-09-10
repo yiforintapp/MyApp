@@ -48,7 +48,8 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     private static final int STATE_FAIL = 0;
 
     private static final String[] FETCH_JOBS = {
-        "com.leo.appmaster.schedule.MessageFetchJob"
+        "com.leo.appmaster.schedule.MessageFetchJob",
+        "com.leo.appmaster.schedule.ADFetchJob"
     };
 
     public static void startFetchJobs() {

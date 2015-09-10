@@ -1,14 +1,20 @@
 
 package com.leo.appmaster.applocker;
 
+import java.util.List;
+
+import org.json.JSONObject;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,12 +25,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.R.id;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
+import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
+import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.lockertheme.ThemeJsonObjectParser;
+import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -45,7 +57,10 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private AnimationDrawable mUFODrawable;//
     // 广告素材
     private MobvistaEngine mAdEngine;
-
+    //主题
+    private List<String> mHideThemeList;
+    private ThemeItemInfo mChosenTheme;
+    
     private ImageView mClose;
     private RelativeLayout mWholeUFO;
     private RelativeLayout mDialog;
@@ -56,6 +71,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private ImageView mSplashLight;
     private CountDownTimer mCdt;
     private Button mInstall;
+    private boolean mIsShowTheme=false;
     // 动画参数
     private float mUFOW;
     private float mUFOH;
@@ -66,8 +82,61 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ad_ufo);
         InitUI();
-        loadAD();
+        int ran =(int) (Math.random()*2d+1d);
+        Log.e("poha", ran+"");
+        if(ran==1){
+            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran="+ran, 1).show();
+            mIsShowTheme=true;
+            loadTheme();
+        }else{
+            loadAD();            
+        }
     };
+
+    private void loadTheme() {
+        mHideThemeList = AppMasterPreference.getInstance(this).getHideThemeList();
+        HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemeList, new ThemeListener(this) );      
+//        ImageView v = (ImageView) findViewById(R.id.iv_test);
+        
+    }
+    
+    private static class ThemeListener extends RequestListener<UFOActivity>{
+        public ThemeListener(UFOActivity outerContext) {
+            super(outerContext);
+        }
+
+        @Override
+        public void onResponse(JSONObject response, boolean noMidify) {
+            // TODO Auto-generated method stub
+            UFOActivity ufoActivity = getOuterContext();
+            List<ThemeItemInfo> list = ThemeJsonObjectParser.parserJsonObject(ufoActivity, response);
+            Log.e("poha", "resp");
+            if(list!=null)
+            {
+                
+                Log.e("poha", "sieze="+list.size());
+                for(int i=0;i<list.size();i++)
+                {
+                    if(list.get(i).themeName!=null)
+                        Log.e("poha", list.get(i).themeName+"==");   
+                    if(list.get(i).previewUrl==null)
+                        Log.e("poha", "previewUrl="+list.get(i).previewUrl);   
+                }
+                
+            }
+            
+            int ran =(int) (Math.random()*list.size());
+            ufoActivity.mChosenTheme = list.get(ran);          
+            ufoActivity.mWholeUFO.setBackgroundDrawable(ufoActivity.mChosenTheme.themeImage);
+        }
+
+        @Override
+        public void onErrorResponse(VolleyError error) {
+            
+        }
+
+        
+    }
 
     private void loadAD() {
 

@@ -27,8 +27,16 @@ public class ADShowTypeRequestManager {
     /* 是否升级 */
 
     private static final String AD_SHOW_TYPE = "a";// 广告的展示方式，如半屏广告，banner广告等等
-
-
+    private static final String UFO_ANIM_TYPE="b";
+    private static final String THEME_CHANCE_AFTER_UFO="c";
+    private static final String AD_AFTER_ACCELERATING="d";
+    private static final String AD_AFTER_PRIVACY_PROTECTION="e";
+    private static final String AD_AT_APPLOCK_FRAGMENT="f";
+    private static final String AD_AT_THEME="g";
+    private static final String GIFTBOX_UPDATE="h";
+    private static final String VERSION_UPDATE_AFTER_UNLOCK="i";
+    private static final String APP_STATISTICS="j";
+    
     private static ADShowTypeRequestManager mInstance;
     private Context mContext;
     private SimpleDateFormat mDateFormate;
@@ -62,23 +70,20 @@ public class ADShowTypeRequestManager {
 
         AppMasterPreference sp = AppMasterPreference.getInstance(mContext);
         // 当前时间（ms）
-        long currentTime = System.currentTimeMillis();
-        long lastRequestTime = sp.getADRequestShowTypeLastTime();
-        String currentDate = mDateFormate.format(new Date(currentTime));
-        String lastRequestDate = mDateFormate.format(new Date(lastRequestTime));
-
-        
-        LeoLog.e("poha", "当前时间：" + currentTime + "，上次请求时间：" + lastRequestTime + ",间隔是（s）："
-                + (currentTime - lastRequestTime) / 1000);
-        LeoLog.e("poha", "当前日期：" + currentDate + "，上次请求日期：" + lastRequestDate);
-        LeoLog.e("poha", "上次记录的到下次请求的间隔时间（12h/2h）：" + sp.getADRequestShowTypeNextTimeSpacing() / 1000
-                / 60 / 60 + "，当天的请求失败次数："
-                + sp.getADRequestShowtypeFailTimesCurrentDay());
-
-        if (((currentTime - lastRequestTime) > sp.getADRequestShowTypeNextTimeSpacing()
-                && sp.getADRequestShowtypeFailTimesCurrentDay() < 3) || mIsPushRequestADShowType)
-        {
-            mIsPushRequestADShowType = false;
+//        long currentTime = System.currentTimeMillis();
+//        long lastRequestTime = sp.getADRequestShowTypeLastTime();
+//        String currentDate = mDateFormate.format(new Date(currentTime));
+//        String lastRequestDate = mDateFormate.format(new Date(lastRequestTime));
+//        LeoLog.e("poha", "当前时间：" + currentTime + "，上次请求时间：" + lastRequestTime + ",间隔是（s）："
+//                + (currentTime - lastRequestTime) / 1000);
+//        LeoLog.e("poha", "当前日期：" + currentDate + "，上次请求日期：" + lastRequestDate);
+////        LeoLog.e("poha", "上次记录的到下次请求的间隔时间（12h/2h）：" + sp.getADRequestShowTypeNextTimeSpacing() / 1000
+//                / 60 / 60 + "，当天的请求失败次数："
+//                + sp.getADRequestShowtypeFailTimesCurrentDay());
+//        if (((currentTime - lastRequestTime) > sp.getADRequestShowTypeNextTimeSpacing()
+//                && sp.getADRequestShowtypeFailTimesCurrentDay() < 3) || mIsPushRequestADShowType)
+//        {
+//            mIsPushRequestADShowType = false;
                         
             LeoLog.e("poha", "满足发起请求的条件，正在发起请求");
             UpdateADShowTypeRequestListener listenerr = new UpdateADShowTypeRequestListener(
@@ -86,10 +91,7 @@ public class ADShowTypeRequestManager {
             HttpRequestAgent.getInstance(AppMasterApplication.getInstance()).loadADShowType(
                     listenerr,
                     listenerr);
-        }
-
-
-  
+//        }
 
     }
 
@@ -107,7 +109,6 @@ public class ADShowTypeRequestManager {
 
                 try {
                     int adtype = response.getInt(AD_SHOW_TYPE);               
-                    
                     LeoLog.e("poha", "请求成功，广告展示形式是：" + adtype);
                     if(adtype!=AppMasterPreference.getInstance(mContext).getADShowType())
                     {
@@ -127,24 +128,21 @@ public class ADShowTypeRequestManager {
                         {
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
                         }
-                        
                     }
                     AppMasterPreference.getInstance(mContext).setADShowType(adtype);
-
-                    long currentTime = System.currentTimeMillis();
-                    String currentDate = mDateFormate.format(new Date(System.currentTimeMillis()));
-                    String LastRequestDate = mDateFormate.format(new Date(sp
-                            .getADRequestShowTypeLastTime()));
-
-                    sp.setADRequestShowTypeLastTime(currentTime);
-                    if (!currentDate.equals(LastRequestDate))
-                    {
-                        sp.setADRequestShowtypeFailTimesCurrentDay(0);
-                    }
-                    sp.setADRequestShowTypeNextTimeSpacing(1000 * 60 * 60 * 12);
+                    AppMasterPreference.getInstance(mContext).setUFOAnimType((response.getInt(UFO_ANIM_TYPE)));
+                    AppMasterPreference.getInstance(mContext).setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));
+                    AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
+                    AppMasterPreference.getInstance(mContext).setIsADAfterPrivacyProtectionOpen((response.getInt(AD_AFTER_PRIVACY_PROTECTION)));
+                    AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen((response.getInt(AD_AT_APPLOCK_FRAGMENT)));
+                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen((response.getInt(AD_AT_THEME)));
+                    AppMasterPreference.getInstance(mContext).setIsGiftBoxNeedUpdate((response.getInt(GIFTBOX_UPDATE)));
+                    AppMasterPreference.getInstance(mContext).setVersionUpdateTipsAfterUnlockOpen((response.getInt(VERSION_UPDATE_AFTER_UNLOCK)));
+                    AppMasterPreference.getInstance(mContext).setIsAppStatisticsOpen((response.getInt(APP_STATISTICS)));
+//                    TYPE="b";
+//                    private static final String THEME_CHANCE_AFTER_UFO="
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
 
                     LeoLog.e("poha", "请求成功，JSON解析出错");
 

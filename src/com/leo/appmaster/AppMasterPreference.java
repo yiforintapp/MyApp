@@ -247,6 +247,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_ISWIPE_TIP_LAST_TIME = "iswipe_tip_last_time";
     public static final String PREF_ISWIPE_LAST_LOAD_VERSION = "iswipe_last_load_version";
     // About AD
+    public static final String PREF_AD_AT_APPLOCK_FRAGMENT = "ad_at_applock_fragment";
+    public static final String PREF_AD_AT_THEME= "ad_at_theme";
+    public static final String PREF_GIFTBOX_UPDATE = "giftbox_update";
+    public static final String PREF_VERSION_UPDATE_AFTER_UNLOCK = "version_update_after_unlock";
+    public static final String PREF_APP_STATISTICS = "app_statistic";
+    public static final String PREF_AD_AFTER_PRIVACY_PROTECTION = "ad_after_privacy_protection";
+    public static final String PREF_AD_AFTER_ACCELERATING = "ad_after_accelerating";
+    public static final String PREF_THEME_CHANCE_AFTER_UFO = "theme_chance_after_ufo";
+    public static final String PREF_UFO_ANIM_TYPE = "ufo_anim_type";
     public static final String PREF_AD_REQUEST_SHOWTYPE_LAST_TIME = "ad_request_showtype_last_time";
     public static final String PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY = "ad_request_showtype_fail_times_current_day";
     public static final String PREF_AD_REQUEST_SHOWTYPE_NEXT_TIME_SPACING = "ad_request_showtype_next_time_spacing";
@@ -2488,7 +2497,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mADLastLoadTime;
     }
 
-    // TODO //上次请求广告展示类型的时间
 
     // 是否需要更新广告的appwall图标
     public void setIsADAppwallNeedUpdate(boolean flag) {
@@ -2559,6 +2567,79 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mADShowType;
     }
 
+ // UFO动画的展示形式
+    public void setUFOAnimType(int type){
+        mPref.edit().putInt(PREF_UFO_ANIM_TYPE, type).apply();
+    }
+
+    public int getUFOAnimType(){
+        return mPref.getInt(PREF_UFO_ANIM_TYPE, 1);
+    }
+    
+    // THEME_CHANCE_AFTER_UFO
+    public void setThemeChanceAfterUFO(int chance){
+        mPref.edit().putInt(PREF_THEME_CHANCE_AFTER_UFO, chance).apply();
+    }
+
+    public int getThemeChanceAfterUFO(){
+        return mPref.getInt(PREF_THEME_CHANCE_AFTER_UFO, 0);
+    }
+    
+    public void setADChanceAfterAccelerating(int flag){
+        mPref.edit().putInt(PREF_AD_AFTER_ACCELERATING, flag).apply();
+    }
+
+    public int getADChanceAfterAccelerating(){
+        return mPref.getInt(PREF_AD_AFTER_ACCELERATING, 0);
+    }
+    
+    public void setIsADAfterPrivacyProtectionOpen(int value){
+        mPref.edit().putInt(PREF_AD_AFTER_PRIVACY_PROTECTION, value).apply();
+    }
+
+    public int getIsADAfterPrivacyProtectionOpen(){
+        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 0);
+    }
+    public void setIsADAtAppLockFragmentOpen(int value){
+        mPref.edit().putInt(PREF_AD_AT_APPLOCK_FRAGMENT, value).apply();
+    }
+
+    public int getIsADAtAppLockFragmentOpen(){
+        return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 0);
+    }
+    
+    public void setIsADAtLockThemeOpen(int value){
+        mPref.edit().putInt(PREF_AD_AT_THEME, value).apply();
+    }
+
+    public int getIsADAtLockThemeOpen(){
+        return mPref.getInt(PREF_AD_AT_THEME, 0);
+    }
+    
+    public void setIsGiftBoxNeedUpdate(int value){
+        mPref.edit().putInt(PREF_GIFTBOX_UPDATE, value).apply();
+    }
+
+    public int getIsGiftBoxNeedUpdate(){
+        return mPref.getInt(PREF_GIFTBOX_UPDATE, 0);
+    }
+    
+    public void setVersionUpdateTipsAfterUnlockOpen(int value){
+        mPref.edit().putInt(PREF_VERSION_UPDATE_AFTER_UNLOCK, value).apply();
+    }
+
+    public int getVersionUpdateTipsAfterUnlockOpen(){
+        return mPref.getInt(PREF_VERSION_UPDATE_AFTER_UNLOCK, 0);
+    }
+    
+    public void setIsAppStatisticsOpen(int value){
+        mPref.edit().putInt(PREF_APP_STATISTICS, value).apply();
+    }
+
+    public int getIsAppStatisticsOpen(){
+        return mPref.getInt(PREF_APP_STATISTICS, 0);
+    }
+    
     public String getLoadIswipVerison() {
         return mPref.getString(PREF_ISWIPE_LAST_LOAD_VERSION, null);
     }
