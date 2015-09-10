@@ -86,7 +86,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 noReadPrivacyMsmTipForQuickGesture(pref);
                 /* 隐私联系人有未读短信时发送广播 */
                 QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
-                        QuickGestureManager.PRIVACY_MSM);
+                        QuickGestureManager.PRIVACY_MSM,0);
             }
             boolean flag = PrivacyContactManager.getInstance(mContext).testValue;
             if (!flag) {
@@ -544,7 +544,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 noReadCallPrivacyCallTipForQuickGesture();
                 /* 隐私联系人有未读 通话时发送广播 */
                 QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
-                        QuickGestureManager.PRIVACY_CALL);
+                        QuickGestureManager.PRIVACY_CALL,0);
             }
         }
 

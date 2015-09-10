@@ -223,7 +223,7 @@ public class GestureLockFragment extends LockFragment implements
                             Button call1 = (Button) mNormalBannerAD
                                     .findViewById(R.id.iv_ad_app_download);
                             call1.setText(campaign.getAdCall());
-                            mAdEngine.registerView(mNormalBannerAD);
+                            mAdEngine.registerView(getActivity(), mNormalBannerAD);
                             mCurrentRegisterView = 1;
                             ImageView close1 = (ImageView) mNormalBannerAD
                                     .findViewById(R.id.iv_adclose);
@@ -308,7 +308,7 @@ public class GestureLockFragment extends LockFragment implements
                                     });
                                     Button install = (Button) view.findViewById(R.id.bt_installapp);
                                     install.setText(campaign.getAdCall());
-                                    mAdEngine.registerView(install);
+                                    mAdEngine.registerView(getActivity(), install);
                                     mCurrentRegisterView = 2;
                                     View close = view.findViewById(R.id.iv_adclose);
                                     close.setOnClickListener(new OnClickListener() {
@@ -364,7 +364,7 @@ public class GestureLockFragment extends LockFragment implements
     public void onDestroy() {
         super.onDestroy();
 
-        MobvistaEngine.getInstance().release();
+        MobvistaEngine.getInstance().release(getActivity());
     }
 
     @Override

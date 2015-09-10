@@ -46,6 +46,8 @@ import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.update.UIHelper;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -94,6 +96,7 @@ public class InitCoreBootstrap extends Bootstrap {
         checkUpdateFinish();
         initIswipeUpdateTip();
         initSplashDelayTime();
+        UIHelper.getInstance(mApp).mRandomCount = preference.getUnlockSucessRandom();
         return true;
     }
 
@@ -235,6 +238,9 @@ public class InitCoreBootstrap extends Bootstrap {
                 pref.setIsUpdateQuickGestureUser(true);
                 /* 每次升级都重新刷新googleplay提示规则 */
                 uninitGooglePlayScorTip();
+                /* 恢复“每次发现更新升级，恢复升级提示为默认值”的该方法是否执行的默认值 */
+                AppMasterPreference.getInstance(mApp)
+                        .setUpdateRecoveryDefaultData(false);
             }
         }
         pref.setLastVersion(String.valueOf(versionCode));

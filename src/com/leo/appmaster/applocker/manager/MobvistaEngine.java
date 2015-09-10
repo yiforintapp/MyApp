@@ -1,8 +1,10 @@
 package com.leo.appmaster.applocker.manager;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,7 +16,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.MobvistaProxyActivity;
+import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.mobvista.sdk.m.core.AdListener;
 import com.mobvista.sdk.m.core.AdTrackingListener;
 import com.mobvista.sdk.m.core.MobvistaAd;
@@ -30,7 +34,7 @@ import com.mobvista.sdk.m.core.entity.Campaign;
  * @author Jasper
  *
  */
-public class MobvistaEngine implements AdListener {
+public class MobvistaEngine {
     private static final String TAG = "MobvistaEngine";
     
     /**
@@ -54,25 +58,20 @@ public class MobvistaEngine implements AdListener {
      * 广告过期时间, 1小时
      */
     private static final int AD_TIMEOUT = 60 * 60 * 1000;
-    
-    private static Mobvista sMobvista;
-    private static MobvistaAdNative sNativeAd;
-    
-    private static List<MobvistaListener> sMobvistaListeners;
-    
-    private static boolean sIsStarted;
-    private static boolean sReleasedByUser;
-    
+
     private static MobvistaEngine sInstance;
     
-    private Activity mActivity;
+    private Map<Activity, Mobvista> mMobvistaMap;
+    private Map<Activity, MobvistaListener> mMobvistaListeners;
+    private Map<Activity, MobvistaAdNative> mMobvistaNative;
     
     static {
         Context context = AppMasterApplication.getInstance();
         MobvistaAd.init(context, Constants.MOBVISTA_APPID,
                 Constants.MOBVISTA_APPKEY);
          
-        sMobvistaListeners = new ArrayList<MobvistaEngine.MobvistaListener>();
+        
+//        sMobvistaListeners = new ArrayList<MobvistaEngine.MobvistaListener>();
     }
     
     public static interface MobvistaListener {
@@ -99,7 +98,9 @@ public class MobvistaEngine implements AdListener {
     }
     
     private MobvistaEngine() {
-        
+        mMobvistaMap = new HashMap<Activity, Mobvista>();
+        mMobvistaListeners = new HashMap<Activity, MobvistaListener>();
+        mMobvistaNative = new HashMap<Activity, MobvistaAdNative>();
     }
     
     /**
@@ -116,52 +117,38 @@ public class MobvistaEngine implements AdListener {
             LeoLog.i(TAG, "activity is null.");
             return;
         }
-        
-        if (!sMobvistaListeners.contains(listener) && !(activity instanceof MobvistaProxyActivity)) {
-            sMobvistaListeners.add(listener);
+
+        if (!(activity instanceof MobvistaProxyActivity)) {
+            mMobvistaListeners.put(activity, listener);
         }
-        
-//        AppMasterApplication context = AppMasterApplication.getInstance();
-//        AppMasterPreference preference = AppMasterPreference.getInstance(context);
-//        if (mActivity == null && preference.isMobvistaClicked()) {
-//            // 广告已经点击过，使用MobvistaProxyActivity被长期持有
-//            if (activity instanceof MobvistaProxyActivity) {
-//                mActivity = activity;
-//            }
-//            if (mActivity == null) {
-//                Intent intent = new Intent(context, MobvistaProxyActivity.class);
-//                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                context.startActivity(intent);
-//                LeoLog.i(TAG, "start mob proxy activity.");
-//                return;
-//            } 
-//        }
-//        
-        if (!isOutOfDate(sMobvista)) {
-            listener.onMobvistaFinished(ERR_OK, sMobvista.campaign, null);
+
+        Mobvista mobvista = mMobvistaMap.get(activity);
+        if (!isOutOfDate(mobvista)) {
+            listener.onMobvistaFinished(ERR_OK, mobvista.campaign, null);
             LeoLog.i(TAG, "data has not outofdate, return old data.");
             return;
         }
-        
-        if (sIsStarted){
+
+        boolean started = mMobvistaNative.get(activity) != null;
+        if (started){
             LeoLog.i(TAG, "engine has startd.");
             return;
         }
         
-        Activity requestActivity = mActivity == null ? activity : mActivity;
-        sNativeAd = MobvistaAd.newNativeController(requestActivity,
+//        Activity requestActivity = mActivity == null ? activity : mActivity;
+        MobvistaAdNative mobvistaAd = MobvistaAd.newNativeController(activity,
                 Constants.MOBVISTA_UNITID,
                 Constants.MOBVISTA_FACEBOOK_ID);
         try {
             // 这个地方执行导致crash，直接catch住
-            sNativeAd.loadAd(this);
+            mobvistaAd.loadAd(new AdListenerImpl(activity));
+            mMobvistaNative.put(activity, mobvistaAd);
         } catch (Throwable thr) {
             listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, "Mobvista execute throwable.");
-            doReleaseInner();
+            doReleaseInner(activity);
             return;
         }
-        sIsStarted = true;
-        sReleasedByUser = false;
+//        sReleasedByUser = false;
         LeoLog.i(TAG, "real to start load mobvista.");
     }
     
@@ -179,141 +166,149 @@ public class MobvistaEngine implements AdListener {
      * 注册广告点击事件
      * @param view
      */
-    public void registerView(View view) {
-        if (sNativeAd != null) {
-            LeoLog.i(TAG, "registerView");
-            sNativeAd.registerView(view, new AdTrackingListener() {
-                
-                @Override
-                public void onStartRedirection(Campaign arg0, String arg1) {
-                    LeoLog.i(TAG, "-->onStartRedirection arg0: " + arg0 + " | string: " + arg1);
-                }
-                
-                @Override
-                public void onRedirectionFailed(Campaign arg0, String arg1) {
-                    LeoLog.i(TAG, "-->onRedirectionFailed arg0: " + arg0 + " | string: " + arg1);
-                    
-                }
-                
-                @Override
-                public void onFinishRedirection(Campaign arg0, String arg1) {
-                    LeoLog.i(TAG, "-->onFinishRedirection arg0: " + arg0 + " | string: " + arg1);
-                    AppMasterApplication context = AppMasterApplication.getInstance();
-                    AppMasterPreference preference = AppMasterPreference.getInstance(context);
-                    
-                    // 记录广告已经被点击过
-                    preference.setMobvistaClicked();
-                }
-                
-                @Override
-                public void onDownloadStart(Campaign arg0) {
-                    LeoLog.i(TAG, "-->onDownloadStart arg0: " + arg0);
-                }
-                
-                @Override
-                public void onDownloadProgress(Campaign arg0, int arg1) {
-                    LeoLog.i(TAG, "-->onDownloadProgress arg0: " + arg0 + " | progress: " + arg1);
-                }
-                
-                @Override
-                public void onDownloadFinish(Campaign arg0) {
-                    LeoLog.i(TAG, "-->onDownloadFinish arg0: " + arg0);
-                }
-                
-                @Override
-                public void onDownloadError(String arg0) {
-                    LeoLog.i(TAG, "-->onDownloadError arg0: " + arg0);
-                }
-            });
+    public void registerView(Activity activity, View view) {
+        MobvistaAdNative adNative = mMobvistaNative.get(activity);
+        if (adNative == null) {
+            LeoLog.i(TAG, "havnt register activity before.");
+            return;
         }
+        LeoLog.i(TAG, "registerView");
+        adNative.registerView(view, new AdTrackingListener() {
+
+            @Override
+            public void onStartRedirection(Campaign arg0, String arg1) {
+                LeoLog.i(TAG, "-->onStartRedirection arg0: " + arg0 + " | string: " + arg1);
+            }
+
+            @Override
+            public void onRedirectionFailed(Campaign arg0, String arg1) {
+                LeoLog.i(TAG, "-->onRedirectionFailed arg0: " + arg0 + " | string: " + arg1);
+
+            }
+
+            @Override
+            public void onFinishRedirection(Campaign arg0, String arg1) {
+                LeoLog.i(TAG, "-->onFinishRedirection arg0: " + arg0 + " | string: " + arg1);
+                AppMasterApplication context = AppMasterApplication.getInstance();
+                AppMasterPreference preference = AppMasterPreference.getInstance(context);
+
+                // 记录广告已经被点击过
+                preference.setMobvistaClicked();
+            }
+
+            @Override
+            public void onDownloadStart(Campaign arg0) {
+                LeoLog.i(TAG, "-->onDownloadStart arg0: " + arg0);
+            }
+
+            @Override
+            public void onDownloadProgress(Campaign arg0, int arg1) {
+                LeoLog.i(TAG, "-->onDownloadProgress arg0: " + arg0 + " | progress: " + arg1);
+            }
+
+            @Override
+            public void onDownloadFinish(Campaign arg0) {
+                LeoLog.i(TAG, "-->onDownloadFinish arg0: " + arg0);
+            }
+
+            @Override
+            public void onDownloadError(String arg0) {
+                LeoLog.i(TAG, "-->onDownloadError arg0: " + arg0);
+            }
+        });
     }
     
     /**
      * 释放广告资源
      */
-    public void release() {
-        sReleasedByUser = true;
-        sIsStarted = false;
-        doReleaseInner();
-    }
-    
-    @Override
-    public void onAdClick(Campaign arg0) {
-        LeoLog.i(TAG, "onAdClick, arg0: " + arg0);
-        for (MobvistaListener mobvistaListener : sMobvistaListeners) {
-            Campaign data = sMobvista == null ? null : sMobvista.campaign;
-            mobvistaListener.onMobvistaClick(arg0 == null ? data : arg0);
-        }
-        sMobvista = null;
+    public void release(Activity activity) {
+        doReleaseInner(activity);
     }
 
-    @Override
-    public void onAdLoadError(String arg0) {
-        LeoLog.i(TAG, "onAdLoadError, string: " + arg0);
-        sIsStarted = false;
-        if (sReleasedByUser) {
-            doReleaseInner();
-            return;
+    private void doReleaseInner(Activity activity) {
+        MobvistaAdNative adNative = null;
+        if (mMobvistaNative.containsKey(activity)) {
+            adNative = mMobvistaNative.remove(activity);
         }
-
-        notifyFail(ERR_MOBVISTA_FAIL, arg0);
-    }
-    
-    @Override
-    public void onAdLoaded(Campaign arg0) {
-        LeoLog.i(TAG, "onAdLoaded, arg0: " + arg0);
-        sIsStarted = false;
-        if (sReleasedByUser) {
-            doReleaseInner();
-            return;
-        }
-        if (arg0 == null) {
-            notifyFail(ERR_MOBVISTA_RESULT_NULL, null);
-        } else {
-            sMobvista = new Mobvista();
-            sMobvista.campaign = arg0;
-            sMobvista.requestTimeMs = System.currentTimeMillis();
-
-            notifySuccess(arg0);
-        }
-    }
-    
-    private void notifySuccess(Campaign arg0) {
-        Iterator<MobvistaListener> iterator = sMobvistaListeners.iterator();
-        while (iterator.hasNext()) {
-            MobvistaListener listener = iterator.next();
-            listener.onMobvistaFinished(ERR_OK, arg0, null);
-        }
-    }
-    
-    private void notifyFail(int code, String msg) {
-        Iterator<MobvistaListener> iterator = sMobvistaListeners.iterator();
-        while (iterator.hasNext()) {
-            MobvistaListener listener = iterator.next();
-            listener.onMobvistaFinished(code, null, msg);
-        } 
-    }
-    
-    private void doReleaseInner() {
-        try {
-            if (mActivity == null && sNativeAd != null) {
-                // mActivity为空，说明使用的不是MobvistaProxyActivity，所以需要释放
-                sNativeAd.release();
-                sNativeAd = null;
-                
-                sMobvista = null;
+        if (adNative != null) {
+            try {
+                adNative.release();
+            } catch (Throwable e) {
             }
-            sMobvistaListeners.clear();
-            sIsStarted = false;
-        } catch (Exception e) {
+        }
+        if (mMobvistaListeners.containsKey(activity)) {
+            mMobvistaListeners.remove(activity);
+        }
+        if (mMobvistaMap.containsKey(activity)) {
+            mMobvistaMap.remove(activity);
         }
     }
-    
-    private static boolean isOutOfDate(Mobvista mobvista) { 
+
+    private static boolean isOutOfDate(Mobvista mobvista) {
         if (mobvista == null) return true;
         
         long current = System.currentTimeMillis();
         return current - mobvista.requestTimeMs > AD_TIMEOUT; 
+    }
+
+    private class AdListenerImpl implements AdListener {
+        private Activity activity;
+        public AdListenerImpl(Activity activity) {
+            this.activity = activity;
+        }
+
+        @Override
+        public void onAdLoaded(Campaign campaign) {
+            MobvistaListener listener = null;
+            if (mMobvistaListeners.containsKey(activity)) {
+                listener = mMobvistaListeners.get(activity);
+            }
+
+            if (listener != null) {
+                if (campaign == null) {
+                    listener.onMobvistaFinished(ERR_MOBVISTA_RESULT_NULL, campaign, null);
+
+                    Mobvista mobvista = new Mobvista();
+                    mobvista.campaign = campaign;
+                    mobvista.requestTimeMs = System.currentTimeMillis();
+                    mMobvistaMap.put(activity, mobvista);
+                } else {
+                    listener.onMobvistaFinished(ERR_OK, campaign, null);
+                }
+            }
+        }
+
+        @Override
+        public void onAdLoadError(String s) {
+            MobvistaListener listener = null;
+            if (mMobvistaListeners.containsKey(activity)) {
+                listener = mMobvistaListeners.get(activity);
+            }
+
+            if (listener != null) {
+                listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, s);
+            }
+        }
+
+        @Override
+        public void onAdClick(Campaign campaign) {
+            Campaign data = null;
+            if (mMobvistaMap.containsKey(activity)) {
+                Mobvista m = mMobvistaMap.get(activity);
+                if (m != null) {
+                    data = m.campaign;
+                }
+            }
+
+            MobvistaListener listener = null;
+            if (mMobvistaListeners.containsKey(activity)) {
+                listener = mMobvistaListeners.get(activity);
+            }
+
+            if (listener != null) {
+                listener.onMobvistaClick(campaign == null ? data : campaign);
+            }
+        }
     }
     
     private static class Mobvista {

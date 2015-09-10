@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="45"
+    android:versionCode="41"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -75,13 +75,14 @@
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <!-- baidu mtj permissions -->
 
-	<android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- wifi -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 有隐私联系人未读时给iswipe发送广播权限 -->
 
-	<permission android:name="com.leo.appmaster.permission.CONNECT_ISWIPE_SERVICE"
+    <permission
+        android:name="com.leo.appmaster.permission.CONNECT_ISWIPE_SERVICE"
         android:protectionLevel="signature" />
     <permission
         android:name="com.leo.appmaster.RECEIVER_TO_ISWIPE"
@@ -744,14 +745,22 @@
 
         <service
             android:name=".applocker.gesture.ISwipeService"
-            android:permission="com.leo.appmaster.permission.CONNECT_ISWIPE_SERVICE"
             android:enabled="true"
-            android:exported="true" >
+            android:exported="true"
+            android:permission="com.leo.appmaster.permission.CONNECT_ISWIPE_SERVICE" >
             <intent-filter>
                 <action android:name="com.leo.appmaster.ISWIPE_SERVICE" />
             </intent-filter>
         </service>
-        
+
+        <receiver
+            android:name=".schedule.ScheduleReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.leo.appmaster.action.SCHEDULE" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

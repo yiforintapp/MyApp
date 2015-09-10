@@ -46,6 +46,7 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
@@ -523,6 +524,9 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                     pre.setMessageNoReadCount(temp);
                                 }
                                 if (temp <= 0) {
+                                    /* ISwipe处理：通知没有未读 */
+                                    QuickGestureManager.getInstance(mContext)
+                                            .cancelPrivacyTipFromPrivacyMsm();
                                     // 没有未读去除隐私通知
                                     if (pre.getCallLogNoReadCount() <= 0) {
                                         NotificationManager notificationManager = (NotificationManager) getActivity()

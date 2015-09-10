@@ -91,7 +91,6 @@ import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
-import com.mobvista.sdk.m.core.MobvistaAd;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class HomeActivity extends BaseFragmentActivity implements OnClickListener,
@@ -133,6 +132,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private boolean mShowIswipeFromNotfi;
     private static final String TAG = "HomeActivity";
     private static final boolean DBG = true;
+    private ImageView mLeftMenuRedTip;
+    private IswipUpdateTipDialog mAutoStartGuideDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,6 +357,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         mTtileBar = (HomeTitleBar) findViewById(R.id.layout_title_bar);
         mLeftMenu = (ImageView) findViewById(R.id.iv_menu);
+        mLeftMenuRedTip = (ImageView) findViewById(R.id.iv_menu_red_tip);
         mLeftMenu.setOnClickListener(this);
         mLeftMenu.setImageDrawable(mDrawerArrowDrawable);
         mTtileBar.setOptionClickListener(this);
@@ -452,6 +454,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void onResume() {
+        /* 分析是否需要升级红点显示 */
+        boolean menuRedTipVisibility = (mLeftMenuRedTip.getVisibility() == View.GONE);
+        if (mLeftMenuRedTip != null && menuRedTipVisibility) {
+            if (SDKWrapper.isUpdateAvailable()) {
+                mLeftMenuRedTip.setVisibility(View.VISIBLE);
+            }
+        }
         /* check if there is force update when showing HomeActivity */
         SDKWrapper.checkForceUpdate();
         type = AppMasterPreference.getInstance(this).getLockType();
@@ -1392,5 +1401,32 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (tipFlag) {
             showDownLoadISwipDialog(this, flag);
         }
+    }
+
+    /* 自启动引导对话框 */ 
+    private void autoStartGuideDialog() {
+        if (mAutoStartGuideDialog == null) {
+            mAutoStartGuideDialog = new IswipUpdateTipDialog(this);
+        }
+//        mAutoStartGuideDialog.setTitleText();
+//        mAutoStartGuideDialog.setContextText();
+//        mAutoStartGuideDialog.setLeftButtonText();
+//        mAutoStartGuideDialog.setRightButtonText();
+//        mAutoStartGuideDialog.setIswipeUpdateDialogBackground();
+//        mAutoStartGuideDialog.setContentImage();
+        mAutoStartGuideDialog.setLeftListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        mAutoStartGuideDialog.setRightListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
     }
 }

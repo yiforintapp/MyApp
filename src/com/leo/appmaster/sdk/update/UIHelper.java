@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.sdk.update;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -23,16 +24,22 @@ import android.os.Build;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.leo.analytics.LeoAgent;
 import com.leo.analytics.update.IUIHelper;
 import com.leo.analytics.update.UpdateHelper;
 import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.F;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
+import com.leo.appmaster.utils.Utilities;
 
 @SuppressLint("Instantiatable")
 public class UIHelper extends BroadcastReceiver implements com.leo.analytics.update.IUIHelper {
@@ -46,7 +53,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     public static final String KEY_CURRENT_REMIND_TIMES = "remind_count";
     public static final int RECONNECTTIME = 12 * 1000 * 60 * 60;
     // public static final int RECONNECTTIME = 1000 * 60;
-
+    public static final int UPDATE_TIP_FRE = 10;
+    public static final int UPDATE_UNLOCK_COUNT = 30;
     private static UIHelper sUIHelper = null;
     private Context mContext = null;
     private UpdateManager mManager = null;
@@ -78,6 +86,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mUIParam = 0;
     private int mProgress = 0;
+    /* 解锁成功的随机数 */
+    public int mRandomCount;
 
     public UIHelper(Context ctx) {
 
@@ -293,6 +303,14 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             checkShowRemindNotification();
         } else {
             showUI(ui_type, param);
+        }
+        /* 每次发现更新升级，恢复升级提示为默认值 */
+        boolean updateDefault = AppMasterPreference.getInstance(mContext)
+                .getUpdateRecoveryDefaultData();
+        if (!updateDefault) {
+            setUnlockUpdateTipDefaultValue();
+            AppMasterPreference.getInstance(mContext)
+                    .setUpdateRecoveryDefaultData(true);
         }
     }
 
@@ -777,4 +795,139 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         }
     }
 
+    /* 解锁成功弹出升级提示 */
+    public void unlockSuccessUpdateTip() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        /* 是否为首次生成随机次数 */
+        boolean isFirstRandow = amp.getUnlockUpdateFirstRandom();
+        if (isFirstRandow) {
+            /* 首次生成随机次数 */
+            UIHelper.getInstance(mContext).mRandomCount = updateRandomCount();
+            amp.setUnlockSucessRandom(UIHelper.getInstance(mContext).mRandomCount);
+            amp.setUnlockUpdateFirstRandom(false);
+            LeoLog.i(TAG, "首次产生随机数：" + UIHelper.getInstance(mContext).mRandomCount);
+        }
+        String tipDate = amp.getUpdateTipDate();
+        if (Utilities.isEmpty(tipDate)) {
+            String date = getCurrentDate();
+            LeoLog.i(TAG, "目前时间：" + date);
+            /* 存储下当前日期 */
+            amp.setUpdateTipDate(date);
+            amp.setFirstUnlockCount((int) amp.getUnlockCount() - 1);
+        }
+        boolean isCountEnough = isUnlockCountEnough();
+        if (isCountEnough) {
+            LeoLog.i(TAG, "第" + (amp.getUnlockUpdateTipCount() + 1) + "次产生随机数！");
+            /* 弹出升级对话框 */
+            updateTipDialog();
+            /* 除了首次其余的次数需要在升级提示后生成随机数 */
+            UIHelper.getInstance(mContext).mRandomCount = updateRandomCount();
+            amp.setUnlockSucessRandom(UIHelper.getInstance(mContext).mRandomCount);
+            LeoLog.i(TAG, "本次产生随机数为：" + UIHelper.getInstance(mContext).mRandomCount);
+            /* 当天弹出次数累加 */
+            amp.setUnlockUpdateTipCount(amp.getUnlockUpdateTipCount() + 1);
+            /* 记录本次提示时解锁成功的次数 */
+            amp.setRecordUpdateTipUnlockCount((int) amp.getUnlockCount());
+        }
+    }
+
+    /* 是否满足升级提示条件 */
+    @SuppressLint("SimpleDateFormat")
+    private boolean isUnlockCountEnough() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        int lockCount = (int) amp.getUnlockCount();
+        LeoLog.i(TAG, "解锁成功次数：" + lockCount);
+        int updateUnclockCount = amp.getRecordUpdateTipUnlockCount();
+        int firstUnlockCount = amp.getFirstUnlockCount();
+        int count = lockCount - updateUnclockCount;
+        int differCount = lockCount - firstUnlockCount;
+        /* 解锁成功后提示的次数 */
+        int updateTipCount = amp.getUnlockUpdateTipCount();
+        int random = UIHelper.getInstance(mContext).mRandomCount;
+        String tipDate = amp.getUpdateTipDate();
+        boolean dateChanage = true;
+        if (!Utilities.isEmpty(tipDate)) {
+            String date = getCurrentDate();
+            /* 对比日期是否改变 */
+            dateChanage = tipDate.equals(date);
+        }
+        if (count == random /* 判断是否达到随机次数 */
+                && updateTipCount < 3 /* 是否提示小于3次 */
+                && dateChanage /* 日期是否没有改变 */
+                && differCount <= UPDATE_UNLOCK_COUNT/* 解锁成功是否小于30次 */) {
+            return true;
+        } else {
+            if (!dateChanage) {
+                /* 升级第二天是否提示过 */
+                boolean secondTip = amp.getSecondDayTip();
+                if (!secondTip) {
+                    if (amp.getChanageDateUnlockCount() < 0) {
+                        amp.setChanageDateUnlockCount(lockCount - 1);
+                    }
+                    int difCount = lockCount - amp.getChanageDateUnlockCount();
+                    if (difCount == 15) {
+                        LeoLog.i(TAG, "第二天提示一次！");
+                        amp.setSecondDayTip(true);
+                        /* 弹出升级对话框 */
+                        updateTipDialog();
+                    }
+                } else {
+                    LeoLog.i(TAG, "第二天提示的也已经提示过了，不再提示等下个版本吧！");
+                }
+            }
+        }
+        return false;
+    }
+
+    private String getCurrentDate() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+        String date = sdf.format(System.currentTimeMillis());
+        return date;
+    }
+
+    /* 每次发现更新升级，恢复升级提示为默认值 */
+    private void setUnlockUpdateTipDefaultValue() {
+        LeoLog.i(TAG, "初始化升级更新提示数据！");
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        /* 是否为首次生成随机次数 */
+        amp.setUnlockUpdateFirstRandom(true);
+        amp.setUnlockSucessRandom(0);
+        /* 当天弹出次数累加 */
+        amp.setUnlockUpdateTipCount(0);
+        /* 记录本次提示时解锁成功的次数 */
+        amp.setRecordUpdateTipUnlockCount(0);
+        /* 为空时存下日期，不为空时不去存储，解决重复存储 */
+        amp.setUpdateTipDate(null);
+        /* 升级第二天是否提示过 */
+        amp.setSecondDayTip(false);
+        amp.setFirstUnlockCount(0);
+        amp.setChanageDateUnlockCount(-1);
+
+    }
+
+    private int updateRandomCount() {
+        /* 解锁30次，随机弹3次，即生成10以内的随机整数,生成3次 */
+        return 1 + (int) (Math.random() * UPDATE_TIP_FRE);
+    }
+
+    /* 弹出升级对话框 */
+    public void updateTipDialog() {
+        UpdateManager manager = mManager;
+        try {
+            if (manager != null) {
+                String version = manager.getVersion();
+                String feature = manager.getFeatureString();
+                int size = manager.getSize();
+                if (!Utilities.isEmpty(version)
+                        && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {
+                    relaunchActivity(IUIHelper.TYPE_CHECK_NEED_UPDATE, UpdateManager.NORMAL_UPDATE,
+                            false);
+                } else {
+                    LeoLog.i(TAG, "没有加载到更新日志，因此不去显示对话框！");
+                }
+            }
+        } catch (Exception e) {
+            LeoLog.i(TAG, "没有检查到更新内容，有异常，不显示对话框！");
+        }
+    }
 }

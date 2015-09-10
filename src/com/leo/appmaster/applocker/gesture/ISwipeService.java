@@ -47,7 +47,7 @@ public class ISwipeService extends Service {
         public List<LockMode> getLockModeList() throws RemoteException {
             LeoLog.i(TAG, "getLockModeList");
             AppMasterPreference amp = AppMasterPreference.getInstance(ISwipeService.this);
-            if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            if (amp.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                 LeoLog.i(TAG, "getLockModeList lock type is none.");
                 return null;
             }

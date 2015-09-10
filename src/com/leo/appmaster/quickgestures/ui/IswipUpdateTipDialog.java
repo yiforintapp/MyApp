@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.internal.Utils;
@@ -23,6 +24,8 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
     private TextView mContent;
     private TextView mLeftBt;
     private TextView mRightBt;
+    private ImageView mContentImage;
+    private LinearLayout mLinearLayout;
     String mDialgFlag;
 
     public interface OnDiaogClickListener {
@@ -42,8 +45,18 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
         mContent = (TextView) dlgView.findViewById(R.id.iswip_tip_content_text);
         mLeftBt = (TextView) dlgView.findViewById(R.id.iswip_left_bt);
         mRightBt = (TextView) dlgView.findViewById(R.id.iswip_right_bt);
+        mContentImage = (ImageView) dlgView.findViewById(R.id.iswip_tip_title_pic);
+        mLinearLayout = (LinearLayout) dlgView.findViewById(R.id.iswipe_update_tip_dialog);
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    public void setContentImage(int image) {
+        mContentImage.setImageResource(image);
+    }
+
+    public void setIswipeUpdateDialogBackground(int background) {
+        mLinearLayout.setBackgroundResource(background);
     }
 
     public void setFlag(String flag) {
