@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -988,6 +989,7 @@ public class LockManager {
             boolean resault = addDefaultMode();
             mLockModeLoaded = resault;
             AppMasterPreference.getInstance(mContext).setFirstUseLockMode(!resault);
+            QuickGestureManager.getInstance(mContext).sendFirstUseLockModeToISwipe();
         } else {
             LeoLog.d("loadLockMode", "not first Load ");
             mTaskExecutor.execute(new Runnable() {
