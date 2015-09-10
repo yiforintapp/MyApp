@@ -4,7 +4,6 @@ package com.leo.appmaster.applocker;
 import java.util.List;
 
 import org.json.JSONObject;
-
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
@@ -94,19 +93,27 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    };
+    
+    @Override
+    protected void onStart() {
+        super.onStart();
         setContentView(R.layout.activity_ad_ufo);
         InitUI();
-
+        toLoad();
+    }
+    
+    private void toLoad() {
         int ran = (int) (Math.random() * 2d + 1d);
         if (ran == 1) {
-            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
+//            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
             mIsShowTheme = true;
             loadTheme();
         } else {
-            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
+//            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
             loadAD();
         }
-    };
+    }
 
     private void loadTheme() {
         mHideThemeList = AppMasterPreference.getInstance(this).getHideThemeList();
@@ -124,21 +131,18 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             List<ThemeItemInfo> list = ThemeJsonObjectParser
                     .parserJsonObject(ufoActivity, response);
             
-            for(int i=0;i<list.size();i++)
-            {
+            for(int i=0;i<list.size();i++){
                 LeoLog.e("poha", list.get(i).packageName+""+list.get(i).themeName);
             }
-            
-            
             if (list != null) {
                 double size = (double) list.size();
-//                int ran = (int) (Math.random() * size);
-                int ran = 9;
+                int ran = (int) (Math.random() * size);
+//                int ran = 9;
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(300, 200),
                         ufoActivity.mThemDialogBg);
-                Toast.makeText(ufoActivity, "Load到啦，主题是" + list.get(ran).themeName, 0).show();
+//                Toast.makeText(ufoActivity, "Load到啦，主题是" + list.get(ran).themeName, 0).show();
             }
         }
 
@@ -223,7 +227,19 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                
+//                UFOActivity.this.onRestart();
+//                Intent intent =new Intent(UFOActivity.this, UFOActivity.class);
+//                startActivity(intent);
                 UFOActivity.this.finish();
+////                mHasPlayed = false;
+////                mHasGetLoadResult = false;
+////                mIsLoaded = false;
+////                mWholeUFO.setX(0);
+////                mWholeUFO.setY(DipPixelUtil.dip2px(UFOActivity.this, 30));
+////                mDialog.setVisibility(View.INVISIBLE);
+////                UFOActivity.this.onWindowFocusChanged(true);
+////                toLoad();
             }
         });
         mWholeUFO = (RelativeLayout) findViewById(R.id.rl_ufo_withalien);
@@ -389,6 +405,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         if (mIsShowTheme) {
             mDialog = (RelativeLayout) findViewById(R.id.rl_Themedialog);
         }
+        else{
+            mDialog = (RelativeLayout) findViewById(R.id.rl_ADdialog);
+        }
         mDialog.setVisibility(View.VISIBLE);
         mDialog.setPivotX(mDialog.getWidth() / 2);
         mDialog.setPivotY(0);
@@ -513,7 +532,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if(mAdEngine!=null){
         mAdEngine.release(this);
+        }
         LockScreenActivity.interupAinimation = false;
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
     }

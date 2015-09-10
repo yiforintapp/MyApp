@@ -76,7 +76,7 @@
     <RelativeLayout
         android:id="@+id/rl_Themedialog"
         android:layout_width="302dp"
-        android:layout_height="285dp"
+        android:layout_height="255dp"
         android:layout_centerHorizontal="true"
         android:background="@color/white"
         android:layout_centerVertical="true"
@@ -84,20 +84,47 @@
     <ImageView
         android:id="@+id/iv_ThemedialogBg"
         android:layout_width="302dp"
-        android:layout_height="285dp"
+        android:layout_height="200dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
         android:visibility="visible" >
         </ImageView>
         
-    	<Button 
-    	    android:id="@+id/btn_usetheme"
-    	     android:text="use/download"
-    	     android:textSize="12sp"
-    	    android:layout_width="70dp"
-        	android:layout_height="50dp"
-        	android:layout_centerHorizontal="true"
+    	<TextView 
+    	    android:layout_height="50dp"
+    	     android:text="主题介绍（却文案）长长长长长长长长长长长长长长长长长长长长长长长长长长长"
+    	    android:textSize="14sp"
+    	    android:maxLines="2"
+    	   android:textColor="@color/black"
+    	    android:layout_width="220dp"
+    	    android:layout_alignParentBottom="true"
+    	    android:layout_alignParentLeft="true"
+    	    android:layout_marginLeft="5dp"
     	    />
+    
+    	<Button 
+    	    android:background="@drawable/select_bt_halfscreen_install"
+    	    android:id="@+id/btn_usetheme"
+    	    android:layout_alignParentBottom="true"
+    	    android:layout_alignParentRight="true"
+    	    android:text="Download"
+    	    android:textSize="14sp"
+    	    android:layout_width="70dp"
+    	    android:gravity="center"
+        	android:layout_height="40dp"
+        	
+        	android:layout_marginBottom="10dp"
+        	android:layout_marginRight="8dp"
+    	    />
+    
+    	<ImageView
+            android:id="@+id/iv_close_theme"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="3dp"
+            android:layout_marginTop="3dp"
+            android:src="@drawable/ad_banner_close" />
     </RelativeLayout>
     
     <RelativeLayout
