@@ -231,6 +231,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_SWITCH_FLOAT_WINDOWS = "switch_float_windows";
 
     public static final String PREF_FOREGROUND_SCORE = "foreground_score";
+    public static final String PREF_FOREGROUND_MIN_SCORE = "foreground_min_score";
 
     public static final String PREF_ISWIP_UPDATE_FALG = "iswip_update";
     public static final String PREF_ISWIP_UPDATE_TIP_FRE = "iswip_update_tip_fre";
@@ -2323,6 +2324,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setForegroundScore(int score) {
         mPref.edit().putInt(PREF_FOREGROUND_SCORE, score).apply();
+    }
+    
+    public int getForegroundMinScore() {
+        return mPref.getInt(PREF_FOREGROUND_MIN_SCORE, 0);
+    }
+    
+    public void setForegroundMinScore(int score) {
+        mPref.edit().putInt(PREF_FOREGROUND_MIN_SCORE, score).apply();
     }
 
     /* 保存iswip是否有更新 */

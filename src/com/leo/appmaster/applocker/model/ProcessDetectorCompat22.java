@@ -32,6 +32,11 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
     
     private static int mForegroundScore = 0;
     
+    static {
+        AppMasterApplication context = AppMasterApplication.getInstance();
+        MIN_SCORE = AppMasterPreference.getInstance(context).getForegroundMinScore();
+    }
+    
     /**
      * 设置oom_score值，后续作为参考值, leo到前台后会触发设置
      */
@@ -46,12 +51,10 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
                 score /= 2;
                 MIN_SCORE = score / 2;
 
-//                if (Math.abs(score - MIN_SCORE) < MIN_DIFF_DEC) {
-//                    // leo处于前台时获取到的socre跟最小值差值小于MIN_DIFF_DEC，则把最小值减MIN_DIFF_DEC
-//                    MIN_SCORE -= MIN_DIFF_DEC;
-//                }
+                AppMasterApplication context = AppMasterApplication.getInstance();
+                AppMasterPreference.getInstance(context).setForegroundMinScore(MIN_SCORE);
+
                 mForegroundScore = score;
-                Context context = AppMasterApplication.getInstance();
                 AppMasterPreference.getInstance(context).setForegroundScore(mForegroundScore);
                 LeoLog.i(TAG, "setForegroundScore async, score: " + mForegroundScore);
             }
