@@ -989,7 +989,6 @@ public class LockManager {
             boolean resault = addDefaultMode();
             mLockModeLoaded = resault;
             AppMasterPreference.getInstance(mContext).setFirstUseLockMode(!resault);
-            QuickGestureManager.getInstance(mContext).sendFirstUseLockModeToISwipe();
         } else {
             LeoLog.d("loadLockMode", "not first Load ");
             mTaskExecutor.execute(new Runnable() {

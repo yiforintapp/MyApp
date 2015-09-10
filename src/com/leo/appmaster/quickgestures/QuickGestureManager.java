@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.locks.Lock;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
@@ -48,6 +49,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -165,6 +167,11 @@ public class QuickGestureManager {
             preloadIconMatcherColor();
 
             QuickSwitchManager.getInstance(mContext).init();
+            
+            AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+            if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                sendFirstUseLockModeToISwipe();
+            }
         }
     }
 
@@ -1384,6 +1391,14 @@ public class QuickGestureManager {
 
     public void sendFirstUseLockModeToISwipe() {
         Intent intent = new Intent(ACTION_FIRST_USE_LOCK_MODE);
+
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            List<LockMode> list = LockManager.getInstatnce().getLockMode();
+            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
+            arrayList.addAll(list);
+            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
+        }
         try {
             mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
         } catch (Exception e) {
@@ -1393,10 +1408,18 @@ public class QuickGestureManager {
 
     public void sendLockModeChangeToISwipe() {
         Intent intent = new Intent(ACTION_LOCK_MODE_CHANGE);
+        
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            List<LockMode> list = LockManager.getInstatnce().getLockMode();
+            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
+            arrayList.addAll(list);
+            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
+        }
         try {
             mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
         } catch (Exception e) {
-            LeoLog.e(TAG, "send first use lock mode failed.", e);
+            LeoLog.e(TAG, "send lock mode changed failed.", e);
         }
     }
 
