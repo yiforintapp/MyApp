@@ -137,14 +137,23 @@ public class ADShowTypeRequestManager {
                     }
                     AppMasterPreference.getInstance(mContext).setADShowType(adtype);
                     AppMasterPreference.getInstance(mContext).setUFOAnimType((response.getInt(UFO_ANIM_TYPE)));
+                    LeoLog.e("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
                     AppMasterPreference.getInstance(mContext).setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));
+                    LeoLog.e("poha", "请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
                     AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
+                    LeoLog.e("poha", "请求成功，加速后出现广告概率：" + response.getInt(AD_AFTER_ACCELERATING));
                     AppMasterPreference.getInstance(mContext).setIsADAfterPrivacyProtectionOpen((response.getInt(AD_AFTER_PRIVACY_PROTECTION)));
+                    LeoLog.e("poha", "请求成功，隐私保护后出现广告的开关：" + response.getInt(AD_AFTER_PRIVACY_PROTECTION));
                     AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen((response.getInt(AD_AT_APPLOCK_FRAGMENT)));
-                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen((response.getInt(AD_AT_THEME)));
+                    LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen((response.getInt(AD_AFTER_PRIVACY_PROTECTION)));
+                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + response.getInt(AD_AFTER_PRIVACY_PROTECTION));
                     AppMasterPreference.getInstance(mContext).setIsGiftBoxNeedUpdate((response.getInt(GIFTBOX_UPDATE)));
+                    LeoLog.e("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
                     AppMasterPreference.getInstance(mContext).setVersionUpdateTipsAfterUnlockOpen((response.getInt(VERSION_UPDATE_AFTER_UNLOCK)));
+                    LeoLog.e("poha", "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));
                     AppMasterPreference.getInstance(mContext).setIsAppStatisticsOpen((response.getInt(APP_STATISTICS)));
+                    LeoLog.e("poha", "请求成功，应用统计的开关：" + response.getInt(APP_STATISTICS));
 //                    TYPE="b";
 //                    private static final String THEME_CHANCE_AFTER_UFO="
 
