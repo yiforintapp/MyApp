@@ -308,7 +308,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
 
             @Override
             public void onMobvistaClick(Campaign campaign) {
-
+                LockManager.getInstatnce().timeFilterSelf();
             }
         });
     }

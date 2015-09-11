@@ -270,7 +270,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
             @Override
             public void onMobvistaClick(Campaign campaign) {
-
+                 LockManager.getInstatnce().timeFilterSelf();
             }
         });
     }
