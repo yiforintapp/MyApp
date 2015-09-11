@@ -127,7 +127,7 @@
                             android:singleLine="true"
                             android:text="@string/privacy_title_applcok"
                             android:textColor="#646464"
-                            android:textSize="14dp" />
+                            android:textSize="14sp" />
                     </RelativeLayout>
 
                     <TextView
@@ -139,7 +139,7 @@
                         android:maxLines="3"
                         android:text="@string/privacy_no_app_lock_des"
                         android:textColor="#999999"
-                        android:textSize="12dp" />
+                        android:textSize="12sp" />
                 </LinearLayout>
 
                 <TextView
@@ -154,7 +154,7 @@
                     android:onClick="true"
                     android:text="@string/traff_first_page_small_set"
                     android:textColor="@drawable/manager_traffic_text_selecter"
-                    android:textSize="14dp" />
+                    android:textSize="14sp" />
             </RelativeLayout>
             <!-- ad item -->
 

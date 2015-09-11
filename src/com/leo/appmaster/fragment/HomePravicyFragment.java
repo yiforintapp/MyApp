@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -57,7 +58,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     // 广告素材
     private MobvistaEngine mAdEngine;
     private boolean isFirstOpen = false;
-    private static int mAdSwitchOpen = -1;
+    private static int mPrivicyAdSwitchOpen = -1;
 
     @Override
     public void onAttach(Activity activity) {
@@ -94,6 +95,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             mProposalView.close(true);
             return true;
         }
+
         return super.onBackPressed();
     }
 
@@ -164,14 +166,22 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         onLevelChange(PrivacyHelper.getInstance(mActivity).getCurLevelColor().toIntColor());
 
         // 默认是开，记得改回默认是关
-        if (mAdSwitchOpen == -1) {
-            mAdSwitchOpen = AppMasterPreference.getInstance(getActivity())
+        if (mPrivicyAdSwitchOpen == -1) {
+            mPrivicyAdSwitchOpen = AppMasterPreference.getInstance(getActivity())
                     .getIsADAfterPrivacyProtectionOpen();
+        }
+        
+        // 开启广告位
+        if (mPrivicyAdSwitchOpen == 1) {
+            loadAD();
         }
     }
 
     @Override
     public void onDestroyView() {
+        if (mAdEngine != null) {
+            mAdEngine.release(getActivity());
+        }
         super.onDestroyView();
     }
 
@@ -240,11 +250,6 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                 break;
             case R.id.privacy_level:
 
-                // 开启广告位
-                if (mAdSwitchOpen == 1) {
-                    loadAD();
-                }
-
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "privacylevel");
                 Level level = PrivacyHelper.getInstance(mActivity).getPrivacyLevel();
                 if (level == Level.LEVEL_FIVE) {
@@ -283,12 +288,16 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                     // call
                     TextView adcall = (TextView) mProposalView
                             .findViewById(R.id.ad_download);
+                    
                     adcall.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            // LeoLog.d("testclickview",
+                            // "点击广告，timeFilterSelf !!");
+                            // LockManager.getInstatnce().timeFilterSelf();
                         }
                     });
+                    
                     adcall.setText(campaign.getAdCall());
                     mAdEngine.registerView(getActivity(), adcall);
 

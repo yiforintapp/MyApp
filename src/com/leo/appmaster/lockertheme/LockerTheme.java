@@ -32,6 +32,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -50,7 +51,9 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
+import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.ThemeChanageListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -68,14 +71,17 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.PackageChangedListener;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.ImageSize;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class LockerTheme extends BaseActivity implements OnClickListener, ThemeChanageListener,
-         OnRefreshListener2<ListView> {
+        OnRefreshListener2<ListView> {
 
     private ViewPager mViewPager;
     private PullToRefreshListView localThemeList;
@@ -87,7 +93,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     private ProgressBar mProgressBar;
     private LEOThreeButtonDialog dialog;
     private LeoPagerTab mPagerTab;
-    
+
     private List<ThemeItemInfo> mLocalThemes;
     private List<ThemeItemInfo> mOnlineThemes;
     private LockerThemeAdapter mLocalThemeAdapter;
@@ -107,6 +113,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     private static final int MSG_LOAD_PAGE_DATA_FAILED = 3;
     private static final int MSG_LOAD_PAGE_DATA_SUCCESS = 4;
 
+    public static final String LOCAL_AD_NAME = "local";
+    public static final String ONLINE_AD_NAME = "online";
+    public static final int LOCAL_AD_LOCATION = 1;
+    public static final int ONLINE_AD_LOCATION = 2;
+
     private static final int LOAD_INIT = 100;
     private static final int LOAD_MORE = 101;
 
@@ -115,6 +126,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     private int mHelpSettingCurrent;
     private LEOCircleProgressDialog mProgressDialog;
     private boolean mNeedLoadTheme;
+
+    private MobvistaEngine mAdEngine;
+    private static int mThemeAdSwitchOpen = -1;
+    private boolean isGetAd = false;
 
     private static class EventHandler extends Handler {
         WeakReference<LockerTheme> lockerTheme;
@@ -169,6 +184,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         super.onCreate(arg0);
         setContentView(R.layout.activity_locker_theme);
 
+        if (mThemeAdSwitchOpen == -1) {
+            // 默认是开，记得改回默认是关
+            mThemeAdSwitchOpen = AppMasterPreference.getInstance(this)
+                    .getIsADAtLockThemeOpen();
+        }
+
         mHandler = new EventHandler(this);
         loadData();
         initUI();
@@ -190,6 +211,68 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
         createResultToHelpSetting();
         AppLoadEngine.getInstance(this).setThemeChanageListener(this);
+
+        if (mThemeAdSwitchOpen == 1) {
+            loadAd();
+        }
+    }
+
+    public void regisClickView(View view) {
+
+        if (mAdEngine != null) {
+            mAdEngine.registerView(this, view);
+        } 
+
+    }
+
+    private void loadAd() {
+        mAdEngine = MobvistaEngine.getInstance();
+        mAdEngine.loadMobvista(this, new MobvistaListener() {
+
+            @Override
+            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                if (code == MobvistaEngine.ERR_OK) {
+                    isGetAd = true;
+
+                    // 1是本地有广告
+                    if (mThemeAdSwitchOpen == 1) {
+                        mLocalThemeAdapter.setCampaign(campaign, isGetAd);
+                        // 插入假数据，腾出广告位
+                        ThemeItemInfo localInfo = new ThemeItemInfo();
+                        localInfo.themeName = LOCAL_AD_NAME;
+                        localInfo.packageName = LOCAL_AD_NAME;
+                        localInfo.themeType = Constants.THEME_TYPE_LOCAL;
+                        if (mLocalThemes.size() > 0) {
+                            mLocalThemes.add(LOCAL_AD_LOCATION, localInfo);
+                        }
+                        mLocalThemeAdapter.notifyDataSetChanged();
+                    }
+                    // 2是在线有广告
+                    else if (mThemeAdSwitchOpen == 2) {
+                        mOnlineThemeAdapter.setCampaign(campaign, isGetAd);
+                        // 插入假数据，腾出广告位
+                        ThemeItemInfo onlineInfo = new ThemeItemInfo();
+                        onlineInfo.themeName = ONLINE_AD_NAME;
+                        onlineInfo.packageName = ONLINE_AD_NAME;
+                        onlineInfo.themeType = Constants.THEME_TYPE_ONLINE;
+                        if (mOnlineThemes.size() > 1) {
+                            mOnlineThemes.add(ONLINE_AD_LOCATION, onlineInfo);
+                        } else if (mOnlineThemes.size() == 0) {
+                            mOnlineThemes.add(0, onlineInfo);
+                        } else if (mOnlineThemes.size() == 1) {
+                            mOnlineThemes.add(1, onlineInfo);
+                        }
+                        mOnlineThemeAdapter.notifyDataSetChanged();
+                    }
+
+                }
+            }
+
+            @Override
+            public void onMobvistaClick(Campaign campaign) {
+
+            }
+        });
     }
 
     private PackageChangedListener mPackageChangedListener = new PackageChangedListener() {
@@ -211,7 +294,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             for (int i = 0; i < mLocalThemes.size(); i++) {
                 if (mLocalThemes.get(i).packageName.equals(mFromTheme)) {
                     number = i;
-                    showAlarmDialog (mLocalThemes.get(i).themeName, mLocalThemes.get(i).themeLogo,View.VISIBLE);
+                    showAlarmDialog(mLocalThemes.get(i).themeName, mLocalThemes.get(i).themeLogo,
+                            View.VISIBLE);
                     lastSelectedItem = mLocalThemes.get(i);
                 }
             }
@@ -435,14 +519,15 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 }
                 bean.label = (String) this.getResources().getText(
                         R.string.localtheme);
-                int themeLogo = themeContext.getResources().getIdentifier("ic_launcher","drawable", themeContext.getPackageName());
-                Log.i("######","themeLogo = "+themeLogo);
-                if(themeLogo > 0){
+                int themeLogo = themeContext.getResources().getIdentifier("ic_launcher",
+                        "drawable", themeContext.getPackageName());
+                Log.i("######", "themeLogo = " + themeLogo);
+                if (themeLogo > 0) {
                     bean.themeLogo = themeContext.getResources().getDrawable(themeLogo);
-                }else{
+                } else {
                     bean.themeLogo = this.getResources().getDrawable(R.drawable.default_theme_logo);
                 }
-                
+
                 if (AppMasterApplication.usedThemePackage.equals(themePackage)) {
                     bean.curUsedTheme = true;
                 } else {
@@ -521,14 +606,14 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             @Override
             public CharSequence getPageTitle(int position) {
                 String title = "";
-                if(position ==0){
+                if (position == 0) {
                     title = getString(R.string.localtheme);
-                }else if(position == 1){
+                } else if (position == 1) {
                     title = getString(R.string.onlinetheme);
                 }
-                return  title;
+                return title;
             }
-            
+
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 View view = null;
@@ -605,7 +690,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         for (ThemeItemInfo info : mOnlineThemes) {
             loadedTheme.add(info.packageName);
         }
-        
+
         ThemeListener listener = new ThemeListener(this, LOAD_MORE);
         HttpRequestAgent.getInstance(this).loadOnlineTheme(loadedTheme, listener);
     }
@@ -663,6 +748,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mAdEngine.release(this);
+
+        mLocalThemeAdapter = null;
+        mOnlineThemeAdapter = null;
+
         // unregisterReceiver(mLockerThemeReceive);
         LeoGlobalBroadcast.unregisterBroadcastListener(mPackageChangedListener);
         AppLoadEngine.getInstance(this).setThemeChanageListener(null);
@@ -722,7 +812,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         }
     }
 
-    public void showAlarmDialog(String packageName,Drawable themeImage, int rightVisible) {
+    public void showAlarmDialog(String packageName, Drawable themeImage, int rightVisible) {
         dialog = new LEOThreeButtonDialog(this);
         dialog.setDialogIconDrawable(themeImage);
         dialog.setTitle(getResources().getString(R.string.theme_apply_title, packageName));
@@ -811,7 +901,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
         return defaultTheme;
     }
-
 
     /**
      * setLockerGuideShare
@@ -904,6 +993,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             /* SDK mark user click theme - end */
             if (lastSelectedItem.themeType == Constants.THEME_TYPE_ONLINE) {
                 LockManager.getInstatnce().timeFilterSelf();
+                if (lastSelectedItem.packageName.equals(ONLINE_AD_NAME)) {
+                    return;
+                }
                 if (AppUtil
                         .appInstalled(LockerTheme.this, Constants.GP_PACKAGE)) {
                     try {
@@ -919,11 +1011,16 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 }
             } else if (!lastSelectedItem.packageName
                     .equals(AppMasterApplication.usedThemePackage)) {
+                if (lastSelectedItem.packageName.equals(LOCAL_AD_NAME)) {
+                    return;
+                }
                 if (lastSelectedItem.packageName
                         .equals("com.leo.theme.default")) {
-                    showAlarmDialog(lastSelectedItem.themeName, lastSelectedItem.themeLogo,View.GONE);
+                    showAlarmDialog(lastSelectedItem.themeName, lastSelectedItem.themeLogo,
+                            View.GONE);
                 } else {
-                    showAlarmDialog(lastSelectedItem.themeName,lastSelectedItem.themeLogo, View.VISIBLE);
+                    showAlarmDialog(lastSelectedItem.themeName, lastSelectedItem.themeLogo,
+                            View.VISIBLE);
                 }
             }
         }
@@ -966,7 +1063,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         for (int i = 0; i < mLocalThemes.size(); i++) {
                             if (mLocalThemes.get(i).packageName.equals(mFromTheme)) {
                                 number = i;
-                                showAlarmDialog(mLocalThemes.get(i).themeName, mLocalThemes.get(i).themeLogo,View.VISIBLE);
+                                showAlarmDialog(mLocalThemes.get(i).themeName,
+                                        mLocalThemes.get(i).themeLogo, View.VISIBLE);
                                 lastSelectedItem = mLocalThemes.get(i);
                             }
                         }
@@ -978,7 +1076,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             });
         }
     }
-    
+
     private static class ThemeListener extends RequestListener<LockerTheme> {
 
         private int loadType;
@@ -992,10 +1090,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         public void onErrorResponse(VolleyError error) {
             Context context = AppMasterApplication.getInstance();
             LoadFailUtils.sendLoadFail(context, "theme");
-            
+
             LockerTheme lockerTheme = getOuterContext();
-            if (lockerTheme == null) return;
-            
+            if (lockerTheme == null)
+                return;
+
             if (loadType == LOAD_INIT) {
                 lockerTheme.mHandler.sendEmptyMessage(MSG_LOAD_INIT_FAILED);
             } else {
@@ -1006,8 +1105,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
             LockerTheme lockerTheme = getOuterContext();
-            if (lockerTheme == null) return;
-            
+            if (lockerTheme == null)
+                return;
+
             LeoLog.d("response", response.toString());
             int msgId = 0;
             if (loadType == LOAD_INIT) {
@@ -1015,11 +1115,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             } else {
                 msgId = MSG_LOAD_PAGE_DATA_SUCCESS;
             }
-            List<ThemeItemInfo> list = ThemeJsonObjectParser.parserJsonObject(lockerTheme, response);
+            List<ThemeItemInfo> list = ThemeJsonObjectParser
+                    .parserJsonObject(lockerTheme, response);
             Message msg = lockerTheme.mHandler.obtainMessage(msgId, list);
             lockerTheme.mHandler.sendMessage(msg);
         }
-        
+
     }
 
 }

@@ -2605,8 +2605,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putInt(PREF_AD_AFTER_PRIVACY_PROTECTION, value).apply();
     }
 
-    public int getIsADAfterPrivacyProtectionOpen() {
-        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 0);
+    public int getIsADAfterPrivacyProtectionOpen(){
+        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 1);
     }
 
     public void setIsADAtAppLockFragmentOpen(int value) {
@@ -2621,8 +2621,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mPref.edit().putInt(PREF_AD_AT_THEME, value).apply();
     }
 
-    public int getIsADAtLockThemeOpen() {
-        return mPref.getInt(PREF_AD_AT_THEME, 0);
+    public int getIsADAtLockThemeOpen(){
+        return mPref.getInt(PREF_AD_AT_THEME, 1);
     }
 
     public void setIsGiftBoxNeedUpdate(int value) {
