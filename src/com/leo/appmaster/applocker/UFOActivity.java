@@ -134,26 +134,90 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             UFOActivity ufoActivity = getOuterContext();
             List<ThemeItemInfo> list = ThemeJsonObjectParser
                     .parserJsonObject(ufoActivity, response);
+            List<ThemeItemInfo> listBackup = list;
             
             for(int i=0;i<list.size();i++){
                 LeoLog.e("poha", list.get(i).packageName+""+list.get(i).themeName);
             }
+            LeoLog.e("poha", list.size()+"起始list size");  
             if (list != null) {
+                List<String> mHideThemes;
+                mHideThemes = AppMasterPreference.getInstance(ufoActivity).getHideThemeList();
+                for(int i =0;i<mHideThemes.size();i++){
+                    for(int j=0;j<list.size();j++){
+                        if(list.get(j).packageName==mHideThemes.get(i)){
+                            list.remove(j);
+                        }
+                    }
+                }
+                LeoLog.e("poha", list.size()+"最终list size");  
+                if(list.size()==0){
+                    list=listBackup;
+                }
                 double size = (double) list.size();
                 int ran = (int) (Math.random() * size);
-//                int ran = 9;
+                
+//                if(mHideThemes.contains(mChosenTheme.packageName)){
+//                    Toast.makeText(UFOActivity.this, "这个主题已经本地有了", 0).show();
+//                    AppMasterApplication.setSharedPreferencesValue(mChosenTheme.packageName);
+//                    LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
+//                    UFOActivity.this.finish();
+//                }
+                
+//                ran = 6;
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 144),
                         ufoActivity.mThemDialogBg);
-//                Toast.makeText(ufoActivity, "Load到啦，主题是" + list.get(ran).themeName, 0).show();
+                
+                ufoActivity.initButton();
+                
             }
         }
 
+        
+        
         @Override
         public void onErrorResponse(VolleyError error) {
-
         }
+    }
+    
+    private void initButton(){
+        mBtnUseTheme = (Button) findViewById(R.id.btn_usetheme);
+        List<String> mHideThemes;
+        mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
+        if(mHideThemes.contains(mChosenTheme.packageName))
+        {
+            mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_use));
+        }
+        mBtnUseTheme.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<String> mHideThemes;
+                mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
+                if(mHideThemes.contains(mChosenTheme.packageName))
+                {
+                    mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_use));
+                    Toast.makeText(UFOActivity.this, "这个主题已经本地有了,更新按钮文字", 0).show();
+                    
+                }
+                else{
+                    ThemeItemInfo bean = new ThemeItemInfo();
+                    if (AppUtil.appInstalled(UFOActivity.this, Constants.GP_PACKAGE)) {
+                        try {
+                            AppwallHttpUtil.requestGp(UFOActivity.this, mChosenTheme.packageName);
+                        } catch (Exception e) {
+                            AppwallHttpUtil.requestUrl(UFOActivity.this,
+                                    mChosenTheme.downloadUrl);
+                        }
+                    }else {
+                        AppwallHttpUtil.requestUrl(UFOActivity.this,
+                                mChosenTheme.downloadUrl);
+                    }
+                }
+            }
+        });
+        
     }
 
     private void loadAD() {
@@ -252,35 +316,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mWindowW = wm.getDefaultDisplay().getWidth();
         mWindowH = wm.getDefaultDisplay().getHeight();
         mBtnUseTheme = (Button) findViewById(R.id.btn_usetheme);
-        mBtnUseTheme.setOnClickListener(new OnClickListener() {
-         
-            @Override
-            public void onClick(View v) {
-                List<String> mHideThemes;
-                mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
-                if(mHideThemes.contains(mChosenTheme.packageName))
-                {
-                    Toast.makeText(UFOActivity.this, "这个主题已经本地有了", 0).show();
-                    AppMasterApplication.setSharedPreferencesValue(mChosenTheme.packageName);
-                    LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
-                    UFOActivity.this.finish();
-                }
-                else{
-                    ThemeItemInfo bean = new ThemeItemInfo();
-                    if (AppUtil.appInstalled(UFOActivity.this, Constants.GP_PACKAGE)) {
-                        try {
-                            AppwallHttpUtil.requestGp(UFOActivity.this, mChosenTheme.packageName);
-                        } catch (Exception e) {
-                            AppwallHttpUtil.requestUrl(UFOActivity.this,
-                                    mChosenTheme.downloadUrl);
-                        }
-                    }else {
-                        AppwallHttpUtil.requestUrl(UFOActivity.this,
-                                mChosenTheme.downloadUrl);
-                    }
-                }
-            }
-        });
+        
     }
 
     @Override

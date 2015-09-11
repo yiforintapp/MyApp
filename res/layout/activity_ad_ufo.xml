@@ -159,8 +159,8 @@
             android:layout_weight="3"
             android:maxLines="2"
             android:textColor="#999999"
-            android:textSize="9sp" />
             android:text="@string/ufo_theme_content"
+            android:textSize="9sp" />
             </LinearLayout>
            
 
@@ -175,7 +175,7 @@
             android:layout_marginRight="10dp"
             android:background="@drawable/select_bt_halfscreen_install"
             android:gravity="center"
-            android:text="Download"
+            android:text="@string/ufo_theme_down"
             android:textSize="12sp" />
         
             <ImageView

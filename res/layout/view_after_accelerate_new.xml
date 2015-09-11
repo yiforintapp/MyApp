@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/iv_dial"
+        android:layout_marginLeft="80dp"
+        android:layout_width="111dp"      
+        android:layout_height="64dp" 
+        android:src="@drawable/acclerate_result_dial" />
+
+<!--         android:layout_below="@id/iv_dial" -->
+    <RelativeLayout
+        android:layout_marginTop="60dp"
+        android:layout_width="272dp"              	
+        android:layout_height="69dp"
+        android:background="@color/white" >
+		
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:textColor="#333333"
+            android:textSize="18dp" 
+            android:id="@+id/tv_accelerat_result"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent" />
+    </RelativeLayout>
+    
+    <ImageView
+        android:layout_marginLeft="123dp"
+        android:layout_marginTop="47dp"
+        android:layout_width="44dp"      
+        android:layout_height="27dp"
+        android:src="@drawable/acclerate_result_zhizhen" />
+    
+</RelativeLayout>
+
+
+

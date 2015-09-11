@@ -1,8 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:layout_height="match_parent" >
 
     <View
         android:id="@+id/bg_statusbar"
@@ -13,6 +12,107 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true" >
+
+            <ImageView
+                android:id="@+id/iv_dial"
+                android:layout_width="111dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="80dp"
+                android:src="@drawable/acclerate_result_dial" />
+
+            <!-- android:layout_below="@id/iv_dial" -->
+
+            <RelativeLayout
+                android:layout_width="272dp"
+                android:layout_height="200dp"
+                android:layout_marginTop="60dp"
+                android:background="@color/white" >
+
+                <TextView
+                    android:id="@+id/tv_accelerat_result"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginTop="20dp"
+                    android:textColor="#333333"
+                    android:textSize="16dp" />
+
+                <RelativeLayout
+                    android:id="@+id/rl_ad_bg"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
+                    android:layout_below="@id/tv_accelerat_result"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginTop="10dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ad_signal" />
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:background="@color/accent_dark" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="34dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="3dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginRight="82dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="14dp"
+                            android:textColor="#333"
+                            android:textSize="11dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="20dp"
+                            android:maxLines="2"
+                            android:textColor="#333"
+                            android:textSize="9dp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:layout_width="75dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginBottom="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="@drawable/select_bt_halfscreen_install"
+                        android:textColor="@color/white"
+                        android:textSize="10sp" />
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="44dp"
+                android:layout_height="27dp"
+                android:layout_marginLeft="123dp"
+                android:layout_marginTop="47dp"
+                android:src="@drawable/acclerate_result_zhizhen" />
+        </RelativeLayout>
 
         <ImageView
             android:id="@+id/iv_cloud"
@@ -32,4 +132,4 @@
             android:src="@drawable/gesture_rocket" />
     </RelativeLayout>
 
-</LinearLayout>
+</RelativeLayout>

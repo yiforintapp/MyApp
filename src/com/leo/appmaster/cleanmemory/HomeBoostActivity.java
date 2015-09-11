@@ -6,17 +6,28 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.UFOActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageSize;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Build.VERSION;
 import android.view.Display;
@@ -25,6 +36,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,14 +45,14 @@ public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
     private View mStatusBar;
     private int mRocketHeight;
-
+    private MobvistaEngine mAdEngine;
     private boolean isClean = false;
     private ProcessCleaner mCleaner;
     private long mLastUsedMem;
     private long mCleanMem;
     private boolean isCleanFinish = false;
     private int mScreenH;
-
+    private boolean mIsADLoaded = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,8 +61,72 @@ public class HomeBoostActivity extends Activity {
         handleIntent();
         overridePendingTransition(0, 0);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "boost", "launcher");
+//        loadAD();
     }
+    
+//    private void loadAD() {
+//
+//        mAdEngine = MobvistaEngine.getInstance();
+//        mAdEngine.loadMobvista(this, new MobvistaListener() {
+//
+//            @Override
+//            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+//                if (code == MobvistaEngine.ERR_OK) {
+//                    mIsADLoaded = true;
+//                    loadADPic(campaign.getIconUrl(),
+//                            new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
+//                                    .dip2px(UFOActivity.this, 48)),
+//                            (ImageView) mDialog.findViewById(R.id.iv_ufo_ad_icon));
+//                    loadADPic(campaign.getImageUrl(),
+//                            new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 302), DipPixelUtil
+//                                    .dip2px(UFOActivity.this, 158)),
+//                            (ImageView) mDialog.findViewById(R.id.iv_appbg_ufo));
+//
+//                    TextView appname = (TextView) mDialog.findViewById(R.id.tv_appname_ufo);
+//                    appname.setText(campaign.getAppName());
+//
+//                    TextView appdesc = (TextView) mDialog.findViewById(R.id.tv_appdesc_ufo);
+//                    appdesc.setText(campaign.getAppDesc());
+//
+//                    Button call = (Button) mDialog.findViewById(R.id.btn_ufo_dialog_install);
+//                    call.setText(campaign.getAdCall());
+//                    mAdEngine.registerView(UFOActivity.this, call);
+//                }
+//            }
+//
+//            @Override
+//            public void onMobvistaClick(Campaign campaign) {
+//                UFOActivity.this.finish();
+////                AppMasterPreference.getInstance(UFOActivity.this).setAdEtClickTime(
+////                        System.currentTimeMillis());
+//            }
+//        });
+//    }
+    
+    private void loadADPic(String url, ImageSize size, final ImageView v) {
+        ImageLoader.getInstance().loadImage(
+                url, size, new ImageLoadingListener() {
 
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        if (loadedImage != null) {
+                            v.setImageBitmap(loadedImage);
+                        }
+                    }
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+                    }
+                });
+    }
+    
     private void handleIntent() {
         Intent intent = getIntent();
         String abc = intent.getStringExtra("for_sdk");
@@ -168,8 +244,9 @@ public class HomeBoostActivity extends Activity {
 
     public void showCleanResault() {
         LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.toast_self_make, null);
-        TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
+//        View view = inflater.inflate(R.layout.toast_self_make, null);
+        View view = inflater.inflate(R.layout.view_after_accelerate_new, null);
+        TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_accelerat_result);
         String mToast;
 
         if (isClean) {
@@ -192,6 +269,11 @@ public class HomeBoostActivity extends Activity {
         }
 
         tv_clean_rocket.setText(mToast);
+        
+       //dfasdfads
+        Dialog mADDialog = new Dialog(this);
+
+        
         Toast toast = new Toast(this);
         toast.setView(view);
         toast.setDuration(0);
