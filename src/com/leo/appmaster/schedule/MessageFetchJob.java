@@ -24,6 +24,13 @@ import java.util.List;
 public class MessageFetchJob extends FetchScheduleJob {
     private static final boolean DBG = true;
 
+    public static void startByPush() {
+        MessageFetchJob job = new MessageFetchJob();
+        FetchScheduleListener listener = job.newJsonArrayListener();
+        Context ctx = AppMasterApplication.getInstance();
+        HttpRequestAgent.getInstance(ctx).loadMessageCenterList(listener, listener);
+    }
+
     @Override
     protected void work() {
         LeoLog.i(getJobKey(), "do work.....");
@@ -32,14 +39,6 @@ public class MessageFetchJob extends FetchScheduleJob {
 
         FetchScheduleListener listener = newJsonArrayListener();
         HttpRequestAgent.getInstance(ctx).loadMessageCenterList(listener, listener);
-
-//        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                onFetchSuccess(null, false);
-//                onFetchFail(null);
-//            }
-//        }, 5 * 1000);
     }
 
     @Override

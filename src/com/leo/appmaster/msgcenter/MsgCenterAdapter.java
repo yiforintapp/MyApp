@@ -78,7 +78,7 @@ public class MsgCenterAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return mMessageList.size();
+        return /*mMessageList.size()*/0;
     }
 
     @Override

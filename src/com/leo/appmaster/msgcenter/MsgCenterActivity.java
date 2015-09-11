@@ -1,11 +1,14 @@
 package com.leo.appmaster.msgcenter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -19,6 +22,8 @@ public class MsgCenterActivity extends BaseActivity implements
     private CommonTitleBar mTitleBar;
 
     private ListView mMessageLv;
+    private View mEmptyView;
+    private TextView mFeedbackTv;
     private MsgCenterAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,12 @@ public class MsgCenterActivity extends BaseActivity implements
 
         mMessageLv = (ListView) findViewById(R.id.msg_center_lv);
         mMessageLv.setOnItemClickListener(this);
+
+        mEmptyView = findViewById(R.id.msg_center_empty_ll);
+        mMessageLv.setEmptyView(mEmptyView);
+
+        mFeedbackTv = (TextView) findViewById(R.id.msg_center_feedback_tv);
+        mFeedbackTv.setOnClickListener(this);
 
         mAdapter = new MsgCenterAdapter();
         mMessageLv.setAdapter(mAdapter);
@@ -47,6 +58,10 @@ public class MsgCenterActivity extends BaseActivity implements
         switch (v.getId()) {
             case R.id.layout_title_back:
                 finish();
+                break;
+            case R.id.msg_center_feedback_tv:
+                Intent feedback = new Intent(this, FeedbackActivity.class);
+                startActivity(feedback);
                 break;
         }
     }

@@ -67,6 +67,7 @@ import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.appwall.AppWallActivity;
+import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
@@ -140,6 +141,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private static final boolean DBG = true;
     private ImageView mLeftMenuRedTip;
     private AutoStartTipDialog mAutoStartGuideDialog;
+
+    private TextView mUnreadCountTv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -381,6 +384,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 //        } else {
 //            app_hot_tip_icon.setVisibility(View.GONE);
 //        }
+
+        mUnreadCountTv = (TextView) findViewById(R.id.home_mc_unread_tv);
     }
 
     public void showModePages(boolean show/* , int[] center */) {
@@ -513,6 +518,35 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
 
         ProcessDetectorCompat22.setForegroundScore();
+        // 设置消息中心未读计数
+        setMsgCenterUnread();
+    }
+
+    private void setMsgCenterUnread() {
+        ThreadManager.executeOnFileThread(new Runnable() {
+            @Override
+            public void run() {
+                MsgCenterTable table = new MsgCenterTable();
+                final int unreadCount = table.getUnreadCount();
+                String unreadCountStr = unreadCount + "";
+                if (unreadCount > 99) {
+                    unreadCountStr = "99+";
+                }
+
+                final String finalUnreadCountStr = unreadCountStr;
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (unreadCount <= 0) {
+                            mUnreadCountTv.setVisibility(View.GONE);
+                        } else {
+                            mUnreadCountTv.setVisibility(View.VISIBLE);
+                            mUnreadCountTv.setText(finalUnreadCountStr);
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void showIswipDialog() {

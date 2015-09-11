@@ -1,23 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/white"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical">
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background"
-        android:layout_alignParentTop="true" />
+        android:layout_alignParentTop="true"
+        android:background="@color/app_background" />
 
     <ListView
         android:id="@+id/msg_center_lv"
-        android:overScrollMode="never"
-        android:scrollbars="none"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layout_title_bar"
         android:divider="@drawable/mc_list_divider"
         android:dividerHeight="1dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:overScrollMode="never"
+        android:scrollbars="none" />
 
-</LinearLayout>
+    <LinearLayout
+        android:id="@+id/msg_center_empty_ll"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/layout_title_bar"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="124dp"
+            android:src="@drawable/ic_mc_list_empty" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="13dp"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:text="@string/msg_center_empty"
+            android:textColor="@color/mc_empty_tips"
+            android:textSize="17sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:gravity="center_horizontal"
+            android:includeFontPadding="false"
+            android:text="@string/msg_center_empty_say"
+            android:textColor="@color/mc_empty_tips"
+            android:textSize="14sp" />
+
+        <TextView
+            android:id="@+id/msg_center_feedback_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="38dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="43dp"
+            android:background="@drawable/mycheck_button_selecter"
+            android:gravity="center"
+            android:minWidth="120dp"
+            android:text="@string/msg_center_feedback"
+            android:textColor="@drawable/manager_backup_text_selecter"
+            android:textSize="17sp" />
+    </LinearLayout>
+
+</RelativeLayout>
