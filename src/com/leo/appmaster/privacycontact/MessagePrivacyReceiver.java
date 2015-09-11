@@ -328,7 +328,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             AppMasterPreference pre = AppMasterPreference
                     .getInstance(mContext);
             int count = pre.getCallLogNoReadCount();
-            if (count > 0) {
+            if (count >0) {
                 pre.setCallLogNoReadCount(count + 1);
             } else {
                 pre.setCallLogNoReadCount(1);

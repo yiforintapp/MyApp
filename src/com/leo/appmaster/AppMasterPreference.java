@@ -13,6 +13,7 @@ import android.preference.PreferenceManager;
 
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.utils.LeoLog;
 
 public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
@@ -1699,6 +1700,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setCallLogNoReadCount(int count) {
+        LeoLog.i("QuickGestureManager", "保存未读数："+count);
         mPref.edit().putInt(PREF_CALL_LOG_NO_READ_COUNT, count).apply();
     }
 
