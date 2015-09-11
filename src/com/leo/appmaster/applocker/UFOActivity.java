@@ -137,15 +137,17 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             List<ThemeItemInfo> listBackup = list;
             
             for(int i=0;i<list.size();i++){
-                LeoLog.e("poha", list.get(i).packageName+""+list.get(i).themeName);
+                LeoLog.e("poha", list.get(i).packageName+"          "+list.get(i).themeName);
             }
             LeoLog.e("poha", list.size()+"起始list size");  
             if (list != null) {
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(ufoActivity).getHideThemeList();
                 for(int i =0;i<mHideThemes.size();i++){
+                    LeoLog.e("poha", mHideThemes.get(i)+"                   hide");  
                     for(int j=0;j<list.size();j++){
-                        if(list.get(j).packageName==mHideThemes.get(i)){
+                        if(list.get(j).packageName.equals(mHideThemes.get(i))){
+                            LeoLog.e("poha", "removed");  
                             list.remove(j);
                         }
                     }
