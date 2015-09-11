@@ -805,6 +805,4 @@
         <string name="ad_timeout">Wow! More surprises are waiting for you!</string>
     <!-- 2.8 end -->
 
-    <!-- 2.10 消息中心 -->
-    <string name="msg_center_title">消息中心</string>
 </resources>

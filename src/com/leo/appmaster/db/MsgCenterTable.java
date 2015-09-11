@@ -22,7 +22,7 @@ public class MsgCenterTable extends SQLiteOpenHelper {
 
     protected static final String DATABASE_NAME = AppMasterDBHelper.DB_NAME;
     protected static final String TABLE_NAME = "msg_center";
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = AppMasterDBHelper.DB_VERSION;
 
     protected static final String COL_MSG_ID = "msg_id";
     protected static final String COL_TIME = "activity_time";

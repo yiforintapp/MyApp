@@ -13,8 +13,6 @@
 
     <ListView
         android:id="@+id/msg_center_lv"
-        android:paddingLeft="@dimen/mc_list_hori_padding"
-        android:paddingRight="@dimen/mc_list_hori_padding"
         android:overScrollMode="never"
         android:scrollbars="none"
         android:listSelector="@null"

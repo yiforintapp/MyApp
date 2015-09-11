@@ -388,10 +388,10 @@ public class HttpRequestAgent {
         String channelCode = mContext.getString(R.string.channel_code);
 
         StringBuilder stringBuilder = new StringBuilder();
-        stringBuilder.append(Utilities.getURL(Constants.MSG_CENTER_URL))
-                .append(language)
-                .append(country)
-                .append(versionName)
+        stringBuilder.append(Utilities.getURL(Constants.MSG_CENTER_URL)).append("/")
+                .append(language).append("/")
+                .append(country).append("/")
+                .append(versionName).append("/")
                 .append(channelCode)
                 .append(".html");
         JsonObjectRequest request = new JsonObjectRequest(

@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
+    android:paddingLeft="@dimen/mc_list_hori_padding"
+    android:paddingRight="@dimen/mc_list_hori_padding"
     android:orientation="vertical"
     android:paddingTop="@dimen/mc_list_item_top_padding">
 

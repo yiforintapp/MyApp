@@ -59,8 +59,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
             throw new RuntimeException("webview is null.");
         }
 
-        String mark = Build.MANUFACTURER + "_"
-                + Build.MODEL;
+        String mark = Build.MANUFACTURER + "_" + Build.MODEL;
         try {
             if (Build.VERSION.SDK_INT >= 11 && !MX2.equals(mark)) {
                 //开启硬件加速

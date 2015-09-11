@@ -817,4 +817,6 @@
     <string name="auto_start_guide_tip_right_button">立即设置</string>
     <!-- 2.9 end -->
 
+    <!-- 2.10 消息中心 -->
+    <string name="msg_center_title">消息中心</string>
 </resources>

@@ -10,7 +10,7 @@ import com.leo.appmaster.Constants;
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "appmaster.db";
-    private static final int DB_VERSION = 6;
+    public static final int DB_VERSION = 6;
 
     private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
             + Constants.TABLE_DOWNLOAD
