@@ -254,9 +254,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_AD_AT_THEME = "ad_at_theme";
     public static final String PREF_GIFTBOX_UPDATE = "giftbox_update";
     public static final String PREF_VERSION_UPDATE_AFTER_UNLOCK = "version_update_after_unlock";
+    
     public static final String PREF_APP_STATISTICS = "app_statistic";
+    public static final String PREF_APP_STATISTICS_LASTTIME = "app_statistics_lasttime";
+    
     public static final String PREF_APP_WIFI_STATISTICS = "wifi_statistics";
-    public static final String PREF_APP_WIFI_STATISTICS_LASTTIME = "wifi_statistics_lasttime";
+    public static final String PREF_APP_WIFI_STATISTICS_IS_LOADED = "wifi_statistics_isloaded";
+    
     public static final String PREF_AD_AFTER_PRIVACY_PROTECTION = "ad_after_privacy_protection";
     public static final String PREF_AD_AFTER_ACCELERATING = "ad_after_accelerating";
     public static final String PREF_THEME_CHANCE_AFTER_UFO = "theme_chance_after_ufo";
@@ -282,6 +286,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_UPDATE_RECOVERY_DEFAULT_DATA = "update_recovery_defatult_data";
     public static final String PREF_PG_UNLOCK_UPDATE_TIP_FLAG = "pg_unlock_update_flag";
     public static final String PREF_PG_IS_FORCE_UPDATE = "pg_is_force_update";
+    
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
     private List<String> mLockedAppList;
@@ -2676,12 +2681,20 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_APP_WIFI_STATISTICS, 0);
     }
 
-    public void setIsWifiStatisticsLasttime(int value) {
-        mPref.edit().putInt(PREF_APP_WIFI_STATISTICS_LASTTIME, value).apply();
+    public void setIsWifiStatisticsIsLoad(int value) {
+        mPref.edit().putInt(PREF_APP_WIFI_STATISTICS_IS_LOADED, value).apply();
     }
 
-    public int getIsWifiStatisticsLasttime() {
-        return mPref.getInt(PREF_APP_WIFI_STATISTICS_LASTTIME, 0);
+    public int getIsWifiStatisticsIsLoad() {
+        return mPref.getInt(PREF_APP_WIFI_STATISTICS_IS_LOADED, 0);
+    }
+    
+    public void setIsStatisticsLasttime(int value) {
+        mPref.edit().putInt(PREF_APP_STATISTICS_LASTTIME, value).apply();
+    }
+
+    public int getIsStatisticsLasttime() {
+        return mPref.getInt(PREF_APP_STATISTICS_LASTTIME, 0);
     }
 
     public String getLoadIswipVerison() {

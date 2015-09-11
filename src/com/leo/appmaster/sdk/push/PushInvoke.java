@@ -31,7 +31,8 @@ public class PushInvoke implements PushInvokeHelper {
     public static final String GPGUIDE = "5";
     public static final String ADWALL = "6";
     public static final String ISWIPE = "7";
-
+    
+    
     public static final String ACTION_UPDATE_I = "com.leo.appmaster.invoke.update";
     public static final String ACTION_THEME_I = "com.leo.appmaster.invoke.theme";
     public static final String ACTION_SPLASH_I = "com.leo.appmaster.invoke.splash";

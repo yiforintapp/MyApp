@@ -240,9 +240,9 @@ public class ADShowTypeRequestManager {
     public void addAppInfoEvent() {
         LeoLog.d("testAppEvent", "addAppInfoEvent()");
         int lastTimeStatus = AppMasterPreference.getInstance(mContext)
-                .getIsWifiStatisticsLasttime();
+                .getIsStatisticsLasttime();
         LeoLog.d("testAppEvent", "lastTimeStatus is : " + lastTimeStatus);
-        int nowStatus = AppMasterPreference.getInstance(mContext).getIsWifiStatistics();
+        int nowStatus = AppMasterPreference.getInstance(mContext).getIsAppStatisticsOpen();
         LeoLog.d("testAppEvent", "nowStatus is : " + nowStatus);
         if (nowStatus == 1 && lastTimeStatus == 0) {
 
@@ -253,8 +253,8 @@ public class ADShowTypeRequestManager {
             for (PackageInfo packageInfo : list) {
                 String packNameString = packageInfo.packageName;
                 if (!isSystemApp(packageInfo)) {
-                    Log.d("testpckName", packNameString);
-                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "install_packagename",
+                    Log.d("testAppEvent", packNameString);
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "install_check",
                             packNameString);
                 }
             }
@@ -262,7 +262,7 @@ public class ADShowTypeRequestManager {
         } else {
             LeoLog.d("testAppEvent", "条件不符合，不addEvent");
         }
-        AppMasterPreference.getInstance(mContext).setIsWifiStatisticsLasttime(nowStatus);
+        AppMasterPreference.getInstance(mContext).setIsStatisticsLasttime(nowStatus);
     }
 
     public boolean isSystemApp(PackageInfo pInfo) {
