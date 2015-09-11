@@ -77,7 +77,7 @@ public class QuickGestureManager {
     private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
     private static final String RECEIVER_TO_SWIPE_ACTION = "com.leo.appmaster.ACTION_PRIVACY_CONTACT";
     private static final String RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP = "com.leo.appmaster.ACTION_CANCEL_PRIVACY_TIP";
-
+    private static final String PRIVACY_MSM_OR_CALL = "privacy_msm_or_call";
     public static final String PRIVACY_MSM = "privacy_msm";
     public static final String PRIVACY_CALL = "privacy_call";
     public static final String PRIVACYCONTACT_TO_IWIPE_KEY = "privacycontact_to_iswipe";
@@ -1314,13 +1314,16 @@ public class QuickGestureManager {
     /* 隐私联系人有未读发送广播到iswipe */
     public void privacyContactSendReceiverToSwipe(final String flag, int actiontype, String number) {
         Intent privacyIntent = null;
+        String msmOrCall = null;
         if (!Utilities.isEmpty(flag)) {
             if (PRIVACY_MSM.equals(flag)) {
                 LeoLog.i(TAG, "隐私联系人有未读短信");
                 privacyIntent = getPrivacyMsmIntent();
+                msmOrCall = PRIVACY_MSM;
             } else if (PRIVACY_CALL.equals(flag)) {
                 LeoLog.i(TAG, "隐私联系人有未读通话");
                 privacyIntent = getPrivacyCallIntent();
+                msmOrCall = PRIVACY_CALL;
             }
         }
         Intent intent = new Intent();
@@ -1334,6 +1337,7 @@ public class QuickGestureManager {
             if (!Utilities.isEmpty(number)) {
                 intent.putExtra(PRIVACY_CONTACT_NUMBER, number);
             }
+            intent.putExtra(PRIVACY_MSM_OR_CALL, msmOrCall);
         } else if (actiontype == 1) {
             /* 通知取消未读 */
             intent.setAction(RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP);
@@ -1367,14 +1371,14 @@ public class QuickGestureManager {
     public void cancelPrivacyTipFromPrivacyCall() {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         if (amp.getMessageNoReadCount() <= 0) {
-            privacyContactSendReceiverToSwipe(null, 1,null);
+            privacyContactSendReceiverToSwipe(null, 1, null);
         }
     }
 
     public void cancelPrivacyTipFromPrivacyMsm() {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         if (amp.getCallLogNoReadCount() <= 0) {
-            privacyContactSendReceiverToSwipe(null, 1,null);
+            privacyContactSendReceiverToSwipe(null, 1, null);
         }
     }
 
