@@ -23,6 +23,7 @@ import android.util.Log;
 public class ScreenOnOffListener extends BroadcastListener {
 
     public static final String TAG = "SCREEN ON OFF";
+    public static final long mTwoDay = 48 * 60 * 60 * 1000;
 
     public final void onEvent(String action) {
         if (Intent.ACTION_SCREEN_OFF.equals(action)
@@ -68,8 +69,12 @@ public class ScreenOnOffListener extends BroadcastListener {
                     // 开关
                     int isWifiSwitch = AppMasterPreference.getInstance(mContext)
                             .getIsWifiStatistics();
-                    int isUploadData = AppMasterPreference.getInstance(mContext)
+                    // 是否统计过
+                    long isUploadData = AppMasterPreference.getInstance(mContext)
                             .getIsWifiStatisticsIsLoad();
+                    LeoLog.d("testOpenScreen", "wifi统计开关 : " + isWifiSwitch);
+                    LeoLog.d("testOpenScreen", "wifi是否统计过全量 : " + isUploadData);
+
                     WifiInfoFetcher.WifiFetcherListener listener = new
                             WifiInfoFetcher.WifiFetcherListener() {
                                 @Override
@@ -86,18 +91,24 @@ public class ScreenOnOffListener extends BroadcastListener {
                     List<APInfo> results = mWifiFetcher.getApInfoList();
                     // 第一次统计
                     if (results.size() > 0 && isWifiSwitch == 1 && isUploadData == 0) {
+                        LeoLog.d("testOpenScreen", "第一次统计，全量上报");
                         addEvent(mContext, results);
                     }
 
+                    long nowTime = System.currentTimeMillis();
                     // 后续统计，增量上报
-                    if (results.size() > 0 && isWifiSwitch == 1 && isUploadData == 1) {
+                    if (results.size() > 0 && isWifiSwitch == 1 && isUploadData > 0
+                            && (nowTime - isUploadData > mTwoDay)) {
                         List<APInfo> newresults = mWifiFetcher.prepareUploadData();
+
                         if (newresults.size() > 0) {
+                            LeoLog.d("testOpenScreen", "后续统计，增量上报！");
                             addEvent(mContext, newresults);
                             mWifiFetcher.afterUpload();
+                        } else {
+                            LeoLog.d("testOpenScreen", "暂无新增！");
                         }
                     }
-
                 }
             });
         }
@@ -114,7 +125,8 @@ public class ScreenOnOffListener extends BroadcastListener {
             }
             LeoLog.d("testOpenScreen", abc);
             LeoAgent.addEvent("wifi_upload", abc);
-            AppMasterPreference.getInstance(mContext).setIsWifiStatisticsIsLoad(1);
+            AppMasterPreference.getInstance(mContext).setIsWifiStatisticsIsLoad(
+                    System.currentTimeMillis());
         } catch (Exception e) {
             e.printStackTrace();
         }
