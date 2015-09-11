@@ -30,6 +30,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.feedback.FeedbackHelper;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -145,7 +146,7 @@ public class HttpRequestAgent {
                 + mContext.getPackageName();
         url += body;
         LeoLog.d("httpurl", "New Theme Http is :" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
+        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 "", listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
@@ -164,7 +165,7 @@ public class HttpRequestAgent {
                 + mContext.getPackageName();
         url += body;
         LeoLog.d("httpurl", "New Business Http is :" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
+        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
                 "", listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
@@ -350,6 +351,7 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
+    
     /* 加载ISwip更新提示 */
     public void loadISwipCheckNew(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";

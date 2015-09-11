@@ -246,11 +246,13 @@ public final class Utilities {
     public static String getURL(String suffix) {
         // LeoLog.d("httpurl", "gameFragment Http is :::"+"http://" +
         // SDKWrapper.getBestServerDomain() + suffix);
+
+        // return "http://api.leomaster.com" + suffix;
         return "http://" + SDKWrapper.getBestServerDomain() + suffix;
     }
 
     public static String getCountryID(Context context) {
-        //AM-1764 android.os.TransactionTooLargeException
+        // AM-1764 android.os.TransactionTooLargeException
         TelephonyManager tm;
         try {
             tm = (TelephonyManager) context
