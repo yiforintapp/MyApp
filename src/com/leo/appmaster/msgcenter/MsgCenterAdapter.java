@@ -1,5 +1,6 @@
 package com.leo.appmaster.msgcenter;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
@@ -31,11 +32,15 @@ public class MsgCenterAdapter extends BaseAdapter {
     private BitmapFactory.Options options;
     private DisplayImageOptions commonOption;
 
+    private Context mContext;
+
+    private int mTitleLeftPadding;
+
     public MsgCenterAdapter() {
         mMessageList = new ArrayList<Message>();
 
-        AppMasterApplication ctx = AppMasterApplication.getInstance();
-        mInflater = LayoutInflater.from(ctx);
+        mContext = AppMasterApplication.getInstance();
+        mInflater = LayoutInflater.from(mContext);
 
         options = new BitmapFactory.Options();
         // 主题使用565配置
@@ -50,6 +55,8 @@ public class MsgCenterAdapter extends BaseAdapter {
                 .considerExifParams(true)
                 .decodingOptions(options)
                 .build();
+
+        mTitleLeftPadding = mContext.getResources().getDimensionPixelSize(R.dimen.mc_item_title_left_padding);
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
@@ -112,9 +119,11 @@ public class MsgCenterAdapter extends BaseAdapter {
         holder.time.setText(msg.time);
         holder.description.setText(msg.description);
         if (msg.unread) {
+            holder.title.setPadding(mTitleLeftPadding, 0, 0, 0);
             holder.unread.setVisibility(View.VISIBLE);
         } else {
             holder.unread.setVisibility(View.GONE);
+            holder.title.setPadding(0, 0, 0, 0);
         }
         ImageLoader.getInstance().displayImage(msg.imageUrl, holder.image, commonOption);
 

@@ -408,4 +408,5 @@
     <dimen name="mc_list_hori_padding">20dp</dimen>
     <dimen name="mc_list_item_top_padding">16dp</dimen>
     <dimen name="mc_list_item_height">163dp</dimen>
+    <dimen name="mc_item_title_left_padding">22dp</dimen>
 </resources>

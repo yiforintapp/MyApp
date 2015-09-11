@@ -20,23 +20,24 @@
             android:src="@drawable/ic_msg_center_unread"/>
 
         <TextView
-            android:id="@+id/mc_title_tv"
-            android:text="这个是标题"
-            android:textColor="@color/mc_title"
-            android:textSize="16sp"
-            android:includeFontPadding="false"
-            android:layout_toRightOf="@id/mc_unread_iv"
-            android:layout_marginLeft="9dp"
-            android:singleLine="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <TextView
             android:id="@+id/mc_time_tv"
             android:text="08-14"
             android:textSize="12sp"
             android:textColor="@color/mc_time"
             android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/mc_title_tv"
+            android:text="这个是标题这个是标题这个是标题这个是标题这个是标题这个是标题这个是标题"
+            android:textColor="@color/mc_title"
+            android:textSize="16sp"
+            android:layout_alignParentLeft="true"
+            android:includeFontPadding="false"
+            android:layout_toRightOf="@id/mc_unread_iv"
+            android:layout_toLeftOf="@id/mc_time_tv"
+            android:singleLine="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
