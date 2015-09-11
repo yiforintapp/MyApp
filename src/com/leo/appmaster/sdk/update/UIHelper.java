@@ -81,7 +81,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private final static int UPDATE_NOTIFICATION_ID = 1002;
     private final static int DOWNLOAD_FAILED_NOTIFICATION_ID = 1003;
 
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
 
     private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mUIParam = 0;
