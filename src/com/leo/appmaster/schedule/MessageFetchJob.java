@@ -51,9 +51,6 @@ public class MessageFetchJob extends FetchScheduleJob {
         super.onFetchSuccess(response, noMidify);
         if (response == null || !(response instanceof JSONArray)) return;
 
-        if (DBG) {
-            LeoLog.i(getJobKey(), "response: " + (response == null ? null : response.toString()));
-        }
         List<Message> list = new ArrayList<Message>();
         try {
             JSONArray array = (JSONArray) response;
@@ -69,6 +66,7 @@ public class MessageFetchJob extends FetchScheduleJob {
                 message.offlineTime = obj.getString("offline_time");
                 message.title = obj.getString("title");
                 message.typeId =obj.getString("type_id");
+                message.resUrl =obj.getString("resource");
                 message.id = obj.getInt("id");
 
                 list.add(message);
@@ -81,13 +79,14 @@ public class MessageFetchJob extends FetchScheduleJob {
         table.insertMsgList(list);
     }
 
-//    @Override
-//    protected int getPeriod() {
-//        return 10 * 1000;
-//    }
-//
-//    @Override
-//    protected int getFailPeriod() {
-//        return 10 * 1000;
-//    }
+    @Override
+    protected int getPeriod() {
+        return 10 * 1000;
+    }
+
+    @Override
+    protected int getFailPeriod() {
+        return 10 * 1000;
+    }
+
 }

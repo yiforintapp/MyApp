@@ -29,6 +29,8 @@ public class MsgCenterTable extends BaseTable {
     protected static final String COL_OFFLINE_TIME = "offline_time";
     protected static final String COL_TITLE = "title";
     protected static final String COL_TYPE_ID = "type_id";
+    // 资源包地址
+    protected static final String COL_RES = "res";
     // 1:未读  0:已读
     protected static final String COL_UNREAD = "unread";
 
@@ -50,6 +52,7 @@ public class MsgCenterTable extends BaseTable {
                 COL_LINK + " TEXT," +
                 COL_OFFLINE_TIME + " TEXT," +
                 COL_TITLE + " TEXT," +
+                COL_RES + " TEXT," +
                 COL_UNREAD + " INTEGER," +
                 COL_TYPE_ID + " TEXT);");
     }
@@ -98,6 +101,7 @@ public class MsgCenterTable extends BaseTable {
                 values.put(COL_OFFLINE_TIME, message.offlineTime);
                 values.put(COL_TIME, message.time);
                 values.put(COL_TYPE_ID, message.typeId);
+                values.put(COL_RES, message.resUrl);
                 values.put(COL_UNREAD, message.unread ? UNREADED : READED);
                 db.insert(TABLE_NAME, null, values);
             }
@@ -134,6 +138,7 @@ public class MsgCenterTable extends BaseTable {
                     message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
                     message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
                     message.typeId = cursor.getString(cursor.getColumnIndex(COL_TYPE_ID));
+                    message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
                     message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
                     result.add(message);
                 } while (cursor.moveToNext());

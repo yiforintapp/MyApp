@@ -150,9 +150,8 @@ public abstract class FetchScheduleJob extends ScheduleJob {
                 }
             });
         } else {
-            LeoLog.i(getJobKey(), "period is : " + period);
-
             period -= goesBy;
+            LeoLog.i(getJobKey(), "period is : " + period);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, getId(),
                     intent, PendingIntent.FLAG_UPDATE_CURRENT);
             am.set(AlarmManager.RTC, System.currentTimeMillis() + period, pendingIntent);

@@ -400,6 +400,11 @@ public class HttpRequestAgent {
                 .append(".html");
         JsonArrayRequest request = new JsonArrayRequest(stringBuilder.toString(), listener, errorListener);
         request.setShouldCache(true);
+        // 最多重试3次
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         mRequestQueue.add(request);
     }
 

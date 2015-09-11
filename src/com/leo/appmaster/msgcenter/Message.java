@@ -22,6 +22,8 @@ public class Message implements Serializable {
     public String offlineTime;
     // 活动标题
     public String title;
+    // 资源包地址
+    public String resUrl;
 
     // 活动类型
     public String typeId;
