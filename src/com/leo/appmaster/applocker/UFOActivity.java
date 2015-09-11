@@ -105,7 +105,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
     
     private void toLoad() {
-        int ran = (int) (Math.random() * 2d + 1d);
+        
+        double themeChanceAfterUFO = (double)AppMasterPreference.getInstance(this).getThemeChanceAfterUFO();
+        int ran = (int) (Math.random() * themeChanceAfterUFO + 1d);
         if (ran == 1) {
             Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
             mIsShowTheme = true;
@@ -142,7 +144,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                int ran = 9;
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
-                ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(300, 200),
+                ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 144),
                         ufoActivity.mThemDialogBg);
 //                Toast.makeText(ufoActivity, "Load到啦，主题是" + list.get(ran).themeName, 0).show();
             }
