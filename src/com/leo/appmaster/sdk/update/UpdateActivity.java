@@ -384,8 +384,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 mManager.onCancelUpdate();
                 LockManager lockManager = LockManager.getInstatnce();
                 LeoLog.i("UpdateActivity", "加锁应用："+lockManager.getLastPackage());
-                LockManager.getInstatnce().addFilterLockPackage(lockManager.getLastPackage(), false);
-//                updateTipFilterLock();
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 finish();
             }
         });
@@ -393,20 +392,8 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
 
     @Override
     public void onBackPressed() {
-        LockManager lockManager = LockManager.getInstatnce();
-        LockManager.getInstatnce().addFilterLockPackage(lockManager.getLastPackage(), false);
+        LockManager.getInstatnce().filterAllOneTime(1000);
         super.onBackPressed();
-//        updateTipFilterLock();
-    }
-
-    /* 升级弹框是否需要不加锁 */
-    private void updateTipFilterLock() {
-        if (UIHelper.mUpdateTipIsFilterLock) {
-            LeoLog.i(UIHelper.TAG, "不需要加锁！");
-            LockManager.getInstatnce().timeFilterSelf();
-            UIHelper.mUpdateTipIsFilterLock = false;
-        }
-        finish();
     }
 
     private boolean isOutOfBounds(Activity context, MotionEvent event) {
