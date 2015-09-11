@@ -663,15 +663,18 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         }
         Intent i = new Intent();
         i.setClass(mContext, UpdateActivity.class);
+        LeoLog.i(TAG, "当前所在应用："+lockPackage);
         if (lockPackage != null && !lockPackage.equals(mContext.getPackageName())) {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            mUpdateTipIsFilterLock = true;
             LeoLog.i(UIHelper.TAG, "需要过滤锁是启动的Activity方式！");
         } else {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
+        if(filterLockFlag){
+            mUpdateTipIsFilterLock = true;
         }
         i.putExtra(LAYOUT_TYPE, type);
         i.putExtra(LAYOUT_PARAM, param);
