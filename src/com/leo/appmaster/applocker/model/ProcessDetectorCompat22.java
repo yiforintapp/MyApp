@@ -12,6 +12,7 @@ import android.os.Process;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.LeoLog;
 
 public class ProcessDetectorCompat22 extends ProcessDetector {
@@ -47,7 +48,7 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
             public void run() {
                 int score = getOomScore(Process.myPid());
                 score = score > MAX_SCORE ? MAX_SCORE : score;
-                
+
                 score /= 2;
                 MIN_SCORE = score / 2;
 
@@ -55,7 +56,6 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
                 AppMasterPreference.getInstance(context).setForegroundMinScore(MIN_SCORE);
 
                 mForegroundScore = score;
-                Context context = AppMasterApplication.getInstance();
                 AppMasterPreference.getInstance(context).setForegroundScore(mForegroundScore);
                 LeoLog.i(TAG, "setForegroundScore async, score: " + mForegroundScore);
             }
