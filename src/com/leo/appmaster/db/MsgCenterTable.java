@@ -38,6 +38,28 @@ public class MsgCenterTable extends BaseTable {
     public MsgCenterTable() {
     }
 
+    @Override
+    public void createTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                "( _id INTEGER PRIMARY KEY," +
+                COL_MSG_ID + " INTEGER," +
+                COL_TIME + " TEXT," +
+                COL_NAME + " TEXT," +
+                COL_DESCRIPTION + " TEXT," +
+                COL_IMAGE_URL + " TEXT," +
+                COL_LINK + " TEXT," +
+                COL_OFFLINE_TIME + " TEXT," +
+                COL_TITLE + " TEXT," +
+                COL_UNREAD + " INTEGER," +
+                COL_TYPE_ID + " TEXT);");
+    }
+
+    @Override
+    public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        createTable(db);
+    }
+
     /**
      * 插入消息列表
      *
@@ -50,8 +72,6 @@ public class MsgCenterTable extends BaseTable {
         if (db == null) return;
 
         // 先清空数据
-//        db.execSQL("delete from " + TABLE_NAME);
-
         List<Message> oldList = queryMsgList();
         for (Message oldMsg : oldList) {
             for (Message message : msgList) {
@@ -82,6 +102,8 @@ public class MsgCenterTable extends BaseTable {
                 db.insert(TABLE_NAME, null, values);
             }
             db.setTransactionSuccessful();
+        } catch (Throwable e) {
+            e.printStackTrace();
         } finally {
             db.endTransaction();
         }
@@ -116,7 +138,7 @@ public class MsgCenterTable extends BaseTable {
                     result.add(message);
                 } while (cursor.moveToNext());
             }
-        } catch (Exception e) {
+        } catch (Throwable e) {
             LeoLog.e(TAG, "queryMsgList ex.", e);
         } finally {
             IoUtils.closeSilently(cursor);
@@ -125,15 +147,23 @@ public class MsgCenterTable extends BaseTable {
         return result;
     }
 
+    /**
+     * 标记消息为已读
+     * @param msg
+     */
     public void readMessage(Message msg) {
         if (msg == null) return;
 
         SQLiteDatabase db = getHelper().getWritableDatabase();
         if (db == null) return;
 
-        ContentValues values = new ContentValues();
-        values.put(COL_UNREAD, READED);
-        db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { msg.id + "" });
+        try {
+            ContentValues values = new ContentValues();
+            values.put(COL_UNREAD, READED);
+            db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { msg.id + "" });
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteMsgList(List<Message> list) {
@@ -148,30 +178,35 @@ public class MsgCenterTable extends BaseTable {
                 db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[] { message.id + "" });
             }
             db.setTransactionSuccessful();
+        } catch (Throwable e) {
+            e.printStackTrace();
         } finally {
             db.endTransaction();
         }
     }
 
-    @Override
-    public void createTable(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                "( _id INTEGER PRIMARY KEY," +
-                COL_MSG_ID + " INTEGER," +
-                COL_TIME + " TEXT," +
-                COL_NAME + " TEXT," +
-                COL_DESCRIPTION + " TEXT," +
-                COL_IMAGE_URL + " TEXT," +
-                COL_LINK + " TEXT," +
-                COL_OFFLINE_TIME + " TEXT," +
-                COL_TITLE + " TEXT," +
-                COL_UNREAD + " INTEGER," +
-                COL_TYPE_ID + " TEXT);");
+    /**
+     * 获取未读计数
+     * @return
+     */
+    public int getUnreadCount() {
+        SQLiteDatabase db = getHelper().getReadableDatabase();
+        if (db == null) return 0;
+
+        Cursor cursor = null;
+        try {
+            cursor = db.query(TABLE_NAME, new String[] { COL_TITLE },
+                    COL_UNREAD + " = ?", new String[] { UNREADED + "" }, null, null, null);
+            if (cursor != null) {
+                return cursor.getCount();
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.closeSilently(cursor);
+        }
+
+        return 0;
     }
 
-    @Override
-    public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        createTable(db);
-    }
 }

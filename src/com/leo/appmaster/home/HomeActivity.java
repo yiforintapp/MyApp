@@ -129,7 +129,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private Handler mHandler = new Handler();
     private DrawerArrowDrawable mDrawerArrowDrawable;
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
-    private ImageView app_hot_tip_icon;
+//    private ImageView app_hot_tip_icon;
     private int type;
     private int REQUEST_IS_FROM_APP_LOCK_LIST = 1;
     private boolean mIsFromAppLockList = false;
@@ -375,12 +375,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mShadeView = (HomeShadeView) findViewById(R.id.shadeview);
         mShadeView.setPosition(0);
         mShadeView.setColorChangedListener(this);
-        app_hot_tip_icon = (ImageView) mTtileBar.findViewById(R.id.app_hot_tip_icon_);
-        if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
-            app_hot_tip_icon.setVisibility(View.VISIBLE);
-        } else {
-            app_hot_tip_icon.setVisibility(View.GONE);
-        }
+//        app_hot_tip_icon = (ImageView) mTtileBar.findViewById(R.id.app_hot_tip_icon_);
+//        if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
+//            app_hot_tip_icon.setVisibility(View.VISIBLE);
+//        } else {
+//            app_hot_tip_icon.setVisibility(View.GONE);
+//        }
     }
 
     public void showModePages(boolean show/* , int[] center */) {
@@ -502,11 +502,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             }
         }
 
-        if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
-            app_hot_tip_icon.setVisibility(View.VISIBLE);
-        } else {
-            app_hot_tip_icon.setVisibility(View.GONE);
-        }
+//        if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
+//            app_hot_tip_icon.setVisibility(View.VISIBLE);
+//        } else {
+//            app_hot_tip_icon.setVisibility(View.GONE);
+//        }
         /* ISwipe升级对话框提示 */
         showIswipDialog();
         super.onResume();

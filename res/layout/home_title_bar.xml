@@ -64,14 +64,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_msg_center_tip" />
+        
 
-        <ImageView
-            android:id="@+id/app_hot_tip_icon_"
-            android:layout_width="@dimen/app_manager_hotapp_rep_tip_width_height"
-            android:layout_height="@dimen/app_manager_hotapp_rep_tip_width_height"
-            android:layout_toRightOf="@id/hot_app_iv"
-            android:src="@drawable/red_tip"
-            android:visibility="gone" />
+
+        <!--<ImageView-->
+            <!--android:id="@+id/app_hot_tip_icon_"-->
+            <!--android:layout_width="@dimen/app_manager_hotapp_rep_tip_width_height"-->
+            <!--android:layout_height="@dimen/app_manager_hotapp_rep_tip_width_height"-->
+            <!--android:layout_toRightOf="@id/hot_app_iv"-->
+            <!--android:src="@drawable/red_tip"-->
+            <!--android:visibility="gone" />-->
     </RelativeLayout>
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="13dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginTop="13dp"
+        android:layout_toLeftOf="@id/iv_option_image"
+        android:background="@drawable/ic_mc_unread_bg"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="99+"
+        android:textColor="@color/white"
+        android:textSize="11sp" />
 
 </RelativeLayout>
