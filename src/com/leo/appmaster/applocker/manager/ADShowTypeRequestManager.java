@@ -253,7 +253,7 @@ public class ADShowTypeRequestManager {
             for (PackageInfo packageInfo : list) {
                 String packNameString = packageInfo.packageName;
                 if (!isSystemApp(packageInfo)) {
-                    Log.d("testAppEvent", packNameString);
+                    LeoLog.d("testAppEvent", packNameString);
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "install_check",
                             packNameString);
                 }
