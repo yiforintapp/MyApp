@@ -81,6 +81,7 @@ public class QuickGestureManager {
     public static final String PRIVACY_MSM = "privacy_msm";
     public static final String PRIVACY_CALL = "privacy_call";
     public static final String PRIVACYCONTACT_TO_IWIPE_KEY = "privacycontact_to_iswipe";
+    public static final String PRIVACY_CONTACT_NUMBER = "private_number";
     protected static final String AppLauncherRecorder = null;
     public static boolean isFromDialog = false;
     public static boolean isClickSure = false;
@@ -1311,7 +1312,7 @@ public class QuickGestureManager {
     }
 
     /* 隐私联系人有未读发送广播到iswipe */
-    public void privacyContactSendReceiverToSwipe(final String flag, int actiontype) {
+    public void privacyContactSendReceiverToSwipe(final String flag, int actiontype, String number) {
         Intent privacyIntent = null;
         if (!Utilities.isEmpty(flag)) {
             if (PRIVACY_MSM.equals(flag)) {
@@ -1322,21 +1323,26 @@ public class QuickGestureManager {
                 privacyIntent = getPrivacyCallIntent();
             }
         }
-        Intent intent = new Intent(RECEIVER_TO_SWIPE_ACTION);
+        Intent intent = new Intent();
         if (actiontype == 0) {
+            LeoLog.i(TAG, "有未读隐私");
             /* 通知有未读 */
             intent.setAction(RECEIVER_TO_SWIPE_ACTION);
             Bundle bundle = new Bundle();
             bundle.putParcelable(PRIVACYCONTACT_TO_IWIPE_KEY, privacyIntent);
             intent.putExtras(bundle);
+            if (!Utilities.isEmpty(number)) {
+                intent.putExtra(PRIVACY_CONTACT_NUMBER, number);
+            }
         } else if (actiontype == 1) {
             /* 通知取消未读 */
             intent.setAction(RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP);
+            LeoLog.i(TAG, "通知取消隐私未读标志！！");
         }
         // intent.putExtra(PRIVACYCONTACT_TO_IWIPE_KEY, flag);
         try {
             mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
-            // mContext.sendBroadcast(intent);
+            LeoLog.i(TAG, "隐私联系人广播发送成功～～～");
         } catch (Exception e) {
             LeoLog.i(TAG, "隐私联系人广播发送失败！！");
         }
@@ -1361,14 +1367,14 @@ public class QuickGestureManager {
     public void cancelPrivacyTipFromPrivacyCall() {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         if (amp.getMessageNoReadCount() <= 0) {
-            privacyContactSendReceiverToSwipe(null, 1);
+            privacyContactSendReceiverToSwipe(null, 1,null);
         }
     }
 
     public void cancelPrivacyTipFromPrivacyMsm() {
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         if (amp.getCallLogNoReadCount() <= 0) {
-            privacyContactSendReceiverToSwipe(null, 1);
+            privacyContactSendReceiverToSwipe(null, 1,null);
         }
     }
 

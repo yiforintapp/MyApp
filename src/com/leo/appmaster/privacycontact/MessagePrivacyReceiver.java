@@ -35,6 +35,7 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -255,7 +256,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         return flagContact;
     }
 
-    public void callLogNotification(Context context) {
+    public void callLogNotification(Context context,String number) {
         boolean callLogRuningStatus = AppMasterPreference.getInstance(
                 context)
                 .getCallLogItemRuning();
@@ -296,6 +297,10 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
          * 记录最后隐私短信和隐私通话哪个最后记录(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)
          */
         QuickGestureManager.getInstance(mContext).privacyLastRecord = QuickGestureManager.RECORD_CALL;
+        /* 隐私联系人有未读 通话时发送广播 */
+        QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
+                QuickGestureManager.PRIVACY_CALL,0,number);
+        LeoLog.e(TAG, "本次联系人："+number);
     }
 
     private void saveCallLog(ContactBean contact) {
@@ -343,7 +348,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
             // 发送通知
-            callLogNotification(mContext);
+            callLogNotification(mContext,contact.getContactNumber());
         }
     }
 

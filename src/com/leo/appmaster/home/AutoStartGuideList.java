@@ -19,9 +19,9 @@ public class AutoStartGuideList extends WhiteList {
     private static final int XIAOMI4 = 0;
     private static final int XIAOMIREAD = 1;
     private static final int HUAWEI = 2;
-    private static final int OPPO = 3;
+//    private static final int OPPO = 3;
     private static int[] LIST = {
-            XIAOMI4, XIAOMIREAD, HUAWEI, OPPO
+            XIAOMI4, XIAOMIREAD, HUAWEI
     };
 
     public AutoStartGuideList() {
@@ -66,9 +66,9 @@ public class AutoStartGuideList extends WhiteList {
             case HUAWEI:
                 list = new HuaWei();
                 break;
-            case OPPO:
-                list = new Oppo();
-                break;
+//            case OPPO:
+//                list = new Oppo();
+//                break;
             default:
                 break;
         }
@@ -196,10 +196,10 @@ public class AutoStartGuideList extends WhiteList {
         if (huawei) {
             return HUAWEI;
         }
-        boolean oppo = BuildProperties.isOppoOs();
-        if (oppo) {
-            return OPPO;
-        }
+//        boolean oppo = BuildProperties.isOppoOs();
+//        if (oppo) {
+//            return OPPO;
+//        }
         return -1;
     }
 }

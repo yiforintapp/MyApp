@@ -28,6 +28,7 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 @SuppressLint("NewApi")
@@ -84,9 +85,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 }
                 /* 快捷手势隐私短信未读提醒 */
                 noReadPrivacyMsmTipForQuickGesture(pref);
-                /* 隐私联系人有未读短信时发送广播 */
-                QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
-                        QuickGestureManager.PRIVACY_MSM,0);
             }
             boolean flag = PrivacyContactManager.getInstance(mContext).testValue;
             if (!flag) {
@@ -428,9 +426,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         @Override
         protected void onPostExecute(Cursor cursor) {
             super.onPostExecute(cursor);
+               String numberToIswipe=null;
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     final String number = cursor.getString(cursor.getColumnIndex("number"));
+                    numberToIswipe=number;
                     String name = call.getContactName();
                     cursor.getString(cursor.getColumnIndex("duration"));
                     Date date = new Date(Long.parseLong(cursor.getString(cursor
@@ -530,21 +530,18 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     if (call.getAnswerType() == 1) {
                         if (CallLog.Calls.OUTGOING_TYPE != type) {
                             if (CallLog.Calls.MISSED_TYPE == type) {
-                                new MessagePrivacyReceiver().callLogNotification(mContext);
+                                new MessagePrivacyReceiver().callLogNotification(mContext,numberToIswipe);
                             }
                         }
                     } else if (call.getAnswerType() == 0) {
                         if (CallLog.Calls.OUTGOING_TYPE != type) {
-                            new MessagePrivacyReceiver().callLogNotification(mContext);
+                            new MessagePrivacyReceiver().callLogNotification(mContext,numberToIswipe);
                         }
                     }
                 }
                 cursor.close();
                 // 快捷手势隐私通话未读提示
                 noReadCallPrivacyCallTipForQuickGesture();
-                /* 隐私联系人有未读 通话时发送广播 */
-                QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
-                        QuickGestureManager.PRIVACY_CALL,0);
             }
         }
 

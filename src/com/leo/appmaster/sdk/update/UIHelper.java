@@ -86,6 +86,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private final static int UPDATE_NOTIFICATION_ID = 1002;
     private final static int DOWNLOAD_FAILED_NOTIFICATION_ID = 1003;
 
+    private static final boolean DBG = false;
+
     private int mUIType = IUIHelper.TYPE_CHECKING;
     private int mUIParam = 0;
     private int mProgress = 0;
@@ -666,18 +668,19 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         }
         Intent i = new Intent();
         i.setClass(mContext, UpdateActivity.class);
-        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                | Intent.FLAG_ACTIVITY_CLEAR_TOP
-                | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        if (filterLockFlag) {
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            mUpdateTipIsFilterLock = true;
+            LeoLog.i(UIHelper.TAG, "需要过滤锁是启动的Activity方式！");
+        } else {
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
         i.putExtra(LAYOUT_TYPE, type);
         i.putExtra(LAYOUT_PARAM, param);
-        if (filterLockFlag) {
-            LockManager.getInstatnce().timeFilterSelf();
-            mUpdateTipIsFilterLock=true;
-            AppMasterApplication.getInstance().startActivity(i);
-            LeoLog.i(UIHelper.TAG, "需要过滤锁是启动的Activity方式！");
-        }
-        mContext.startActivity(i);     
+        mContext.startActivity(i);
     }
 
     BroadcastReceiver receive = new BroadcastReceiver() {
@@ -920,8 +923,11 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private int updateRandomCount() {
         /* 解锁30次，随机弹3次，即生成10以内的随机整数,生成3次 */
         LeoLog.i(TAG, "(此处存在用于自己测试时设置的值，注意检查！)开始产生随机数啦----------------");
-         return 1 + (int) (Math.random() * UPDATE_TIP_FRE);
-//        return 2;
+        int random = 1 + (int) (Math.random() * UPDATE_TIP_FRE);
+        if (DBG) {
+            random = 2;
+        }
+        return random;
     }
 
     /* 弹出升级对话框 */
@@ -933,15 +939,16 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         /* 解锁成功弹出升级提示 */
         boolean isUnLockUpdateTip = AppMasterPreference.getInstance(mContext)
                 .getVersionUpdateTipsAfterUnlockOpen();
-        //TODO  测试
-//        isUnLockUpdateTip = true;
+        if (DBG) {
+            isUnLockUpdateTip = true;
+        }
         LeoLog.i(TAG, "(此处存在用于自己测试时设置的值，注意检查！)是否开启解锁成功升级提示：" + isUnLockUpdateTip);
         if (netWorkStatus && isUnLockUpdateTip) {
             UpdateManager manager = mManager;
             try {
                 if (manager != null) {
                     String version = manager.getVersion();
-//                    String feature = manager.getFeatureString();
+                    // String feature = manager.getFeatureString();
                     int size = manager.getSize();
                     if (!Utilities.isEmpty(version)
                             && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {

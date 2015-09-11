@@ -250,6 +250,9 @@ public class PrivacyContactManager {
                     notification.when = System.currentTimeMillis();
                     notificationManager.notify(20140901, notification);
                     AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
+                    /* 隐私联系人有未读短信时发送广播 */
+                    QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
+                            QuickGestureManager.PRIVACY_MSM,0,mLastMessage.getPhoneNumber());
 
                 }
                 String dateFrom = sdf.format(new Date(sendDate));
@@ -300,6 +303,7 @@ public class PrivacyContactManager {
                 notification.when = System.currentTimeMillis();
                 notificationManager.notify(20140901, notification);
                 AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
+                
             }
         }
         /* 通知更新短信记录 */

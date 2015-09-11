@@ -665,10 +665,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 // startActivity(nIntent);
                 // } catch (Exception e) {
                 // }
-//                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
-//                        System.currentTimeMillis());
-//                Intent mWallIntent = mWallAd.getWallIntent();
-//                startActivity(mWallIntent);
+                // AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
+                // System.currentTimeMillis());
+                // Intent mWallIntent = mWallAd.getWallIntent();
+                // startActivity(mWallIntent);
                 Intent msgCenter = new Intent();
                 msgCenter.setClass(this, MsgCenterActivity.class);
                 startActivity(msgCenter);
@@ -991,10 +991,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 Uri uri = Uri
                         .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
                 intent.setData(uri);
-//                ComponentName cn = new ComponentName(
-//                        "com.android.vending",
-//                        "com.google.android.finsky.activities.MainActivity");
-//                intent.setComponent(cn);
+                // ComponentName cn = new ComponentName(
+                // "com.android.vending",
+                // "com.google.android.finsky.activities.MainActivity");
+                // intent.setComponent(cn);
                 intent.setPackage("com.android.vending");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
@@ -1449,11 +1449,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     /* 首次进入PG自启动引导 */
     private void autoStartDialogHandler() {
         /* 是否需要提示 */
-        boolean flag = AppMasterPreference.getInstance(this).getPGUnlockUpdateTip();
-        /* 新用户用户，不为升级用户 */
-        boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
-                .getIsUpdateQuickGestureUser();
-        if (flag && !updateUser) {
+        boolean autoStartGuideFlag = AppMasterPreference.getInstance(this).getPGUnlockUpdateTip();
+        if (autoStartGuideFlag) {
             /* 是否存在于白名单 */
             int model = AutoStartGuideList.isAutoWhiteListModel(this);
             if (model != -1) {

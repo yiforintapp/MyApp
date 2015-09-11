@@ -371,7 +371,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 }
                 mManager.onConfirmDownload();
                 // finish(); do not finish, downloading UI need the activity
-                updateTipFilterLock();
+//                updateTipFilterLock();
             }
         });
         TextView tvNo = (TextView) findViewById(R.id.dlg_left_btn);
@@ -382,15 +382,21 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 /* sdk mark */
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "cancel");
                 mManager.onCancelUpdate();
-                updateTipFilterLock();
+                LockManager lockManager = LockManager.getInstatnce();
+                LeoLog.i("UpdateActivity", "加锁应用："+lockManager.getLastPackage());
+                LockManager.getInstatnce().addFilterLockPackage(lockManager.getLastPackage(), false);
+//                updateTipFilterLock();
+                finish();
             }
         });
     }
 
     @Override
     public void onBackPressed() {
+        LockManager lockManager = LockManager.getInstatnce();
+        LockManager.getInstatnce().addFilterLockPackage(lockManager.getLastPackage(), false);
         super.onBackPressed();
-        updateTipFilterLock();
+//        updateTipFilterLock();
     }
 
     /* 升级弹框是否需要不加锁 */

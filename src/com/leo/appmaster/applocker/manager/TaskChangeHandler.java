@@ -27,6 +27,7 @@ public class TaskChangeHandler {
     public static final String WAITNAME = "WaitActivity";
     public static final String GESTURE = "QuickGesturePopupActivity";
     public static final String WEBVIEW = "WebViewActivity";
+    public static final String UPDATE = "UpdateActivity";
 //    public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
     public static final String LAUNCHERBOOST = "HomeBoostActivity";
@@ -130,6 +131,7 @@ public class TaskChangeHandler {
                                         .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
                                                 .contains(WAITNAME)
+                                         || activity.contains(UPDATE)
                                         || activity.contains(WEBVIEW))
                                 || (!unlocked && currentLockScreen))
                         || (unlocked && isLastSelf && mLastRuningActivity
@@ -145,6 +147,7 @@ public class TaskChangeHandler {
                                         .contains(LAUNCHERBOOST) || activity
                                         .contains(SPLASHNAME) || activity
                                         .contains(GESTURE) || activity.contains(PROXYNAME)
+                                        || activity.contains(UPDATE)
                                         || activity
                                                 .contains(WAITNAME) || activity.contains(WEBVIEW)) || currentLockScreen)
                         || (unlocked && isLastSelf && mLastRuningActivity.contains(LOCKSCREENNAME))
