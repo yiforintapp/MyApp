@@ -819,4 +819,10 @@
 
     <!-- 2.10 消息中心 -->
     <string name="msg_center_title">消息中心</string>
+    <string name="ufo_roll_again">Roll Again</string>
+    <string name="ufo_theme_down">下载</string>
+    <string name="ufo_theme_use">应用</string>
+    <string name="ufo_theme_use_toast">主题已应用</string>
+    <string name="ufo_theme_content">拒绝枯燥无聊，应用新主题，美化你的界面</string>
+    <string name="ufo_theme_title">应用锁主题</string>
 </resources>

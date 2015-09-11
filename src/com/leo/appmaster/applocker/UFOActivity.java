@@ -63,7 +63,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
     private boolean mHasPlayed = false;// 是否播放过动画，开始播放后置为true，以后每次WindowFocusChanged后就不播放动画了，
     private boolean mHasGetLoadResult = false;// 是否已经得到拉取广告的结果，用于控制loading的实时结束
-    private boolean mIsLoaded = false;// 是否从MobvistaEngine的接口中得到结果
+    private boolean mIsADLoaded = false;// 是否从MobvistaEngine的接口中得到结果
+    private boolean mIsThemeLoaded =false;
     private AnimationDrawable mUFODrawable;//
     // 广告素材
     private MobvistaEngine mAdEngine;
@@ -106,11 +107,12 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private void toLoad() {
         int ran = (int) (Math.random() * 2d + 1d);
         if (ran == 1) {
-//            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
+            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
             mIsShowTheme = true;
             loadTheme();
+            loadAD();
         } else {
-//            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
+            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
             loadAD();
         }
     }
@@ -159,10 +161,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                Log.e("poha", "code="+code);
                 if (code == MobvistaEngine.ERR_OK) {
-                    mIsLoaded = true;
-                    Log.e("poha", "OK mIsLoaded="+mIsLoaded);
+                    mIsADLoaded = true;
                     loadADPic(campaign.getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
                                     .dip2px(UFOActivity.this, 48)),
@@ -210,8 +210,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                         if (loadedImage != null) {
                             v.setImageBitmap(loadedImage);
-                            if (mIsShowTheme) {
-                                mIsLoaded = true;
+                            if (mIsShowTheme&&mChosenTheme!=null) {
+                                mIsThemeLoaded = true;
                             }
                         }
                     }
@@ -227,19 +227,13 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mClose.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                
-//                UFOActivity.this.onRestart();
-//                Intent intent =new Intent(UFOActivity.this, UFOActivity.class);
-//                startActivity(intent);
                 UFOActivity.this.finish();
-////                mHasPlayed = false;
-////                mHasGetLoadResult = false;
-////                mIsLoaded = false;
-////                mWholeUFO.setX(0);
-////                mWholeUFO.setY(DipPixelUtil.dip2px(UFOActivity.this, 30));
-////                mDialog.setVisibility(View.INVISIBLE);
-////                UFOActivity.this.onWindowFocusChanged(true);
-////                toLoad();
+            }
+        });
+        findViewById(R.id.iv_ufo_theme_close).setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                UFOActivity.this.finish();
             }
         });
         mWholeUFO = (RelativeLayout) findViewById(R.id.rl_ufo_withalien);
@@ -257,10 +251,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mWindowH = wm.getDefaultDisplay().getHeight();
         mBtnUseTheme = (Button) findViewById(R.id.btn_usetheme);
         mBtnUseTheme.setOnClickListener(new OnClickListener() {
-
+         
             @Override
             public void onClick(View v) {
-                // TODO
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
                 if(mHideThemes.contains(mChosenTheme.packageName))
@@ -268,6 +261,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                     Toast.makeText(UFOActivity.this, "这个主题已经本地有了", 0).show();
                     AppMasterApplication.setSharedPreferencesValue(mChosenTheme.packageName);
                     LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
+                    UFOActivity.this.finish();
                 }
                 else{
                     ThemeItemInfo bean = new ThemeItemInfo();
@@ -369,7 +363,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         // boolean hasGetLoadResult = false;
         mCdt = new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
-                if (mIsLoaded && !mHasGetLoadResult) {
+                if ((mIsADLoaded||mIsThemeLoaded) && !mHasGetLoadResult) {
                     if (mCdt != null) {
                         mCdt.onFinish();
                         mCdt.cancel();
@@ -380,16 +374,14 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
             public void onFinish() {
                 if (!mHasGetLoadResult) {
-                    LeoLog.e("poha", mIsLoaded+":isloaded");
-                    if (!mIsLoaded) {
+                    //没有任何结果出来
+                    if (!mIsADLoaded&&!mIsThemeLoaded) {
                         mUFODrawable.stop();
-                        mWholeUFO.setVisibility(View.INVISIBLE);
+//                        mWholeUFO.setVisibility(View.INVISIBLE);
                         mLongLight.setVisibility(View.INVISIBLE);
                         mCircleLight.setVisibility(View.INVISIBLE);
-                        // mAlien.setVisibility(View.INVISIBLE);
-                        Log.e("poha", mIsLoaded+":isloaded");
-                        Toast.makeText(UFOActivity.this, getString(R.string.ad_timeout), 1).show();
-                        UFOActivity.this.finish();
+//                        mAlien.setVisibility(View.INVISIBLE);
+                        onNothingToShow();
                     }
                     else {
                         showAD();
@@ -400,10 +392,39 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         }.start();
     }
 
-    protected void showAD() {
+    protected void onNothingToShow() {
+        float sx = mWholeUFO.getX();
+        
+        PropertyValuesHolder ufodismiss = PropertyValuesHolder.ofFloat("x", sx + 50,sx + 100,sx + 150,sx + 200,mWindowW+100);
+        ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(mWholeUFO, ufodismiss);
+        animator2.setDuration(1000);
+        animator2.addListener(new MyEndAnimatorListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                findViewById(R.id.rl_ufo_rootview).setOnClickListener(
+                        new OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                UFOActivity.this.finish();
+                            }
+                        });
+                findViewById(R.id.rl_ADdialog_nodata).setVisibility(View.VISIBLE);
+                findViewById(R.id.btn_rollagain).setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(UFOActivity.this, UFOActivity.class);
+                        UFOActivity.this.finish();
+                        startActivity(intent);
+                    }
+                });
+            }
+        });
+        animator2.start();
+    }
 
-        if (mIsShowTheme) {
-            mDialog = (RelativeLayout) findViewById(R.id.rl_Themedialog);
+    protected void showAD() {
+        if (mIsShowTheme&&mIsThemeLoaded) {
+            mDialog = (RelativeLayout) findViewById(R.id.rl_Themedialog_root);
         }
         else{
             mDialog = (RelativeLayout) findViewById(R.id.rl_ADdialog);
@@ -463,6 +484,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 LeoLog.e("poha", mDialog.getX() + mDialog.getWidth() / 2 + "DX");
                 LeoLog.e("poha", mDialog.getY() + "DY");
                 mWholeUFO.setVisibility(View.INVISIBLE);
+                mSplashLight.setVisibility(View.INVISIBLE);
                 mLongLight.setVisibility(View.INVISIBLE);
                 mCircleLight.setVisibility(View.INVISIBLE);
                 findViewById(R.id.rl_ufo_rootview).setOnClickListener(
