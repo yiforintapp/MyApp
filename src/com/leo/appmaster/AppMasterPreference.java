@@ -1700,7 +1700,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setCallLogNoReadCount(int count) {
-        LeoLog.i("QuickGestureManager", "保存未读数："+count);
+        LeoLog.i("MessagePrivacyReceiver", "保存未读数："+count);
         mPref.edit().putInt(PREF_CALL_LOG_NO_READ_COUNT, count).apply();
     }
 

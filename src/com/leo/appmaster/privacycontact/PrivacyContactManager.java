@@ -250,10 +250,6 @@ public class PrivacyContactManager {
                     notification.when = System.currentTimeMillis();
                     notificationManager.notify(20140901, notification);
                     AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
-                    /* 隐私联系人有未读短信时发送广播 */
-                    QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
-                            QuickGestureManager.PRIVACY_MSM,0,mLastMessage.getPhoneNumber());
-
                 }
                 String dateFrom = sdf.format(new Date(sendDate));
                 message.setMessageTime(dateFrom);
@@ -303,7 +299,6 @@ public class PrivacyContactManager {
                 notification.when = System.currentTimeMillis();
                 notificationManager.notify(20140901, notification);
                 AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
-                
             }
         }
         /* 通知更新短信记录 */
@@ -317,6 +312,9 @@ public class PrivacyContactManager {
         message.setMessageTime(dateFrom);
         mMessage = message;
         mLastMessage = message;
+        /* 隐私联系人有未读短信时发送广播 */
+        QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
+                QuickGestureManager.PRIVACY_MSM,0,mLastMessage.getPhoneNumber());
     }
 
     /* 对快捷手势隐私联系人,消费(查看或者删除)隐私通话时，红点去除操作 */
