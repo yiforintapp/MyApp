@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
 import android.preference.PreferenceManager;
+import android.sax.StartElementListener;
 import android.text.TextUtils;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,8 +34,10 @@ import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.F;
 import com.leo.appmaster.utils.LeoLog;
@@ -44,7 +47,7 @@ import com.leo.appmaster.utils.Utilities;
 @SuppressLint("Instantiatable")
 public class UIHelper extends BroadcastReceiver implements com.leo.analytics.update.IUIHelper {
 
-    private final static String TAG = "UIHelper";
+    public final static String TAG = "UIHelper";
 
     private final static String ACTION_SHOW_REMIND_TIP = "com.leo.appmaster.update.remind";
 
@@ -88,6 +91,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     private int mProgress = 0;
     /* 解锁成功的随机数 */
     public int mRandomCount;
+    public static volatile boolean mUpdateTipIsFilterLock;
 
     public UIHelper(Context ctx) {
 
@@ -250,7 +254,6 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 contentIntent);
         NotificationUtil
                 .setBigIcon(updateNotification, R.drawable.ic_launcher_notification_big);
-
         updateNotification.flags = Notification.FLAG_AUTO_CANCEL
                 | Notification.FLAG_ONGOING_EVENT;
         nm.notify(UPDATE_NOTIFICATION_ID, updateNotification);
@@ -294,6 +297,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     public void onNewState(int ui_type, int param) {
         mUIType = ui_type;
         mUIParam = param;
+        /* 恢复记录强制升级标志的默认值 */
         AppMasterPreference.getInstance(mContext).setPGIsForceUpdate(false);
         if (ui_type == IUIHelper.TYPE_DOWNLOAD_DONE && param == UpdateManager.FORCE_UPDATE) {
             AppMasterApplication.getInstance().exitApplication();
@@ -669,8 +673,11 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         i.putExtra(LAYOUT_PARAM, param);
         if (filterLockFlag) {
             LockManager.getInstatnce().timeFilterSelf();
+            mUpdateTipIsFilterLock=true;
+            AppMasterApplication.getInstance().startActivity(i);
+            LeoLog.i(UIHelper.TAG, "需要过滤锁是启动的Activity方式！");
         }
-        mContext.startActivity(i);
+        mContext.startActivity(i);     
     }
 
     BroadcastReceiver receive = new BroadcastReceiver() {
@@ -912,27 +919,44 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     private int updateRandomCount() {
         /* 解锁30次，随机弹3次，即生成10以内的随机整数,生成3次 */
-        return 1 + (int) (Math.random() * UPDATE_TIP_FRE);
+        LeoLog.i(TAG, "(此处存在用于自己测试时设置的值，注意检查！)开始产生随机数啦----------------");
+         return 1 + (int) (Math.random() * UPDATE_TIP_FRE);
+//        return 2;
     }
 
     /* 弹出升级对话框 */
     public void updateTipDialog() {
-        UpdateManager manager = mManager;
-        try {
-            if (manager != null) {
-                String version = manager.getVersion();
-                String feature = manager.getFeatureString();
-                int size = manager.getSize();
-                if (!Utilities.isEmpty(version)
-                        && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {
-                    relaunchActivity(IUIHelper.TYPE_CHECK_NEED_UPDATE, UpdateManager.NORMAL_UPDATE,
-                            false, true);
-                } else {
-                    LeoLog.i(TAG, "没有加载到更新日志，因此不去显示对话框！");
+        ISwipUpdateRequestManager im = ISwipUpdateRequestManager.getInstance(mContext);
+        /* 判断网络状态 */
+        boolean netWorkStatus = im.getNetworkStatus();
+        LeoLog.i(TAG, "当前是否有网络：" + netWorkStatus);
+        /* 解锁成功弹出升级提示 */
+        boolean isUnLockUpdateTip = AppMasterPreference.getInstance(mContext)
+                .getVersionUpdateTipsAfterUnlockOpen();
+        //TODO  测试
+//        isUnLockUpdateTip = true;
+        LeoLog.i(TAG, "(此处存在用于自己测试时设置的值，注意检查！)是否开启解锁成功升级提示：" + isUnLockUpdateTip);
+        if (netWorkStatus && isUnLockUpdateTip) {
+            UpdateManager manager = mManager;
+            try {
+                if (manager != null) {
+                    String version = manager.getVersion();
+//                    String feature = manager.getFeatureString();
+                    int size = manager.getSize();
+                    if (!Utilities.isEmpty(version)
+                            && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {
+                        mUIType = IUIHelper.TYPE_CHECK_NEED_UPDATE;
+                        mUIParam = UpdateManager.NORMAL_UPDATE;
+                        relaunchActivity(IUIHelper.TYPE_CHECK_NEED_UPDATE,
+                                UpdateManager.NORMAL_UPDATE,
+                                false, true);
+                    } else {
+                        LeoLog.i(TAG, "没有加载到更新日志，因此不去显示对话框！");
+                    }
                 }
+            } catch (Exception e) {
+                LeoLog.i(TAG, "没有检查到更新内容，有异常，不显示对话框！");
             }
-        } catch (Exception e) {
-            LeoLog.i(TAG, "没有检查到更新内容，有异常，不显示对话框！");
         }
     }
 }

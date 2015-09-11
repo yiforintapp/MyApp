@@ -289,6 +289,7 @@
     <dimen name="iswipe_update_tip_title_size">17sp</dimen>
     <dimen name="iswipe_update_tip_content_size">12sp</dimen>
     <!-- 2.8 end -->
-    <dimen name="home_left_iv_menu_margin_right_top">5dp</dimen>
+    <dimen name="home_left_iv_menu_margin_right">3dp</dimen>
+     <dimen name="home_left_iv_menu_margin_top">10dp</dimen>
 
 </resources>

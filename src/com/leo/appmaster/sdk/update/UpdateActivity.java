@@ -122,9 +122,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
-//            case IUIHelper.BACK_DOWNLOAD_DONE:
-//                showNeedUpdate();
-//                break;
+        // case IUIHelper.BACK_DOWNLOAD_DONE:
+        // showNeedUpdate();
+        // break;
         }
     }
 
@@ -351,13 +351,13 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
         setContentView(R.layout.dialog_update_alarm);
-        
+
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         Spanned msgText = Html.fromHtml(getString(R.string.update_datail_msg, appName, version,
-                        fsize, feature));
+                fsize, feature));
         tvMsg.setText(msgText);
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
-        
+
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
         tvYes.setOnClickListener(new View.OnClickListener() {
@@ -371,6 +371,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 }
                 mManager.onConfirmDownload();
                 // finish(); do not finish, downloading UI need the activity
+                updateTipFilterLock();
             }
         });
         TextView tvNo = (TextView) findViewById(R.id.dlg_left_btn);
@@ -381,9 +382,25 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 /* sdk mark */
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "cancel");
                 mManager.onCancelUpdate();
-                finish();
+                updateTipFilterLock();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        updateTipFilterLock();
+    }
+
+    /* 升级弹框是否需要不加锁 */
+    private void updateTipFilterLock() {
+        if (UIHelper.mUpdateTipIsFilterLock) {
+            LeoLog.i(UIHelper.TAG, "不需要加锁！");
+            LockManager.getInstatnce().timeFilterSelf();
+            UIHelper.mUpdateTipIsFilterLock = false;
+        }
+        finish();
     }
 
     private boolean isOutOfBounds(Activity context, MotionEvent event) {

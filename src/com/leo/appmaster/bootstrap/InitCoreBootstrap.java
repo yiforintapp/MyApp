@@ -219,6 +219,7 @@ public class InitCoreBootstrap extends Bootstrap {
                 installBoostShortcut();
             }
             pref.setIsUpdateQuickGestureUser(false);
+            setUpdateTipData();
         } else {
             int lastCode = Integer.parseInt(lastVercode);
             if (lastCode < versionCode) {
@@ -238,13 +239,28 @@ public class InitCoreBootstrap extends Bootstrap {
                 pref.setIsUpdateQuickGestureUser(true);
                 /* 每次升级都重新刷新googleplay提示规则 */
                 uninitGooglePlayScorTip();
-                /* 恢复“每次发现更新升级，恢复升级提示为默认值”的该方法是否执行的默认值 */
-                AppMasterPreference.getInstance(mApp)
-                        .setUpdateRecoveryDefaultData(false);
+                recoveryUpdateTipDefaultData();
             }
         }
         pref.setLastVersion(String.valueOf(versionCode));
         tryRemoveUnlockAllShortcut(mApp);
+    }
+
+    /* case1对于老用户: 恢复“每次发现更新升级，恢复升级提示为默认值”的该方法是否执行的默认值 */
+    private void recoveryUpdateTipDefaultData() {
+        LeoLog.i(UIHelper.TAG, "重置‘是否恢复发现升级提示’标识的默认值");
+        AppMasterPreference.getInstance(mApp)
+                .setUpdateRecoveryDefaultData(false);
+    }
+
+    /**
+     * case2对于新用户: 设置“每次发现更新升级，恢复升级提示为默认值”的该方法为已经执行true，
+     * 这样不再去执行,因为新用户本来已经为默认值所以不用恢复数据
+     */
+    private void setUpdateTipData() {
+        LeoLog.i(UIHelper.TAG, "设置‘是否恢复发现升级提示’标识的值为true");
+        AppMasterPreference.getInstance(mApp)
+                .setUpdateRecoveryDefaultData(true);
     }
 
     private void updateShowGuidePage(boolean flag) {

@@ -966,27 +966,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "done");
 
         }
-        /* 解锁成功弹出升级提示 */
-        boolean isUnLockUpdateTip = pref.getVersionUpdateTipsAfterUnlockOpen();
-        // isUnLockUpdateTip = true;
-        ISwipUpdateRequestManager im = ISwipUpdateRequestManager.getInstance(this);
-        /* 判断网络状态 */
-        boolean netWorkStatus = im.getNetworkStatus();
-        LeoLog.i(TAG, "是否开启解锁成功升级提示：" + isUnLockUpdateTip);
-        LeoLog.i(TAG, "当前是否有网络：" + netWorkStatus);
-        if (isUnLockUpdateTip && netWorkStatus) {
-            /* 是否为强制升级 */
-            boolean isForceUpdate = AppMasterPreference.getInstance(this).getPGIsForceUpdate();
-            if (!isForceUpdate) {
-                ThreadManager.executeOnAsyncThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        UIHelper.getInstance(AppMasterApplication.getInstance())
-                                .unlockSuccessUpdateTip();
-                    }
-                });
-            }
-        }
         LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
         mTtileBar.postDelayed(new Runnable() {
 
@@ -1007,6 +986,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         amp.setLockerScreenThemeGuide(true);
         amp.setUnlocked(true);
         amp.setDoubleCheck(null);
+
+        /* 是否为强制升级 */
+        boolean isForceUpdate = AppMasterPreference.getInstance(this).getPGIsForceUpdate();
+        if (!isForceUpdate) {
+            ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                @Override
+                public void run() {
+                    UIHelper.getInstance(AppMasterApplication.getInstance())
+                            .unlockSuccessUpdateTip();
+                }
+            }, 200);
+        }
     }
 
     private void checkLockTip() {
