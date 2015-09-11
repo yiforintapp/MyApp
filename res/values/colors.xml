@@ -118,4 +118,5 @@
     <color name="mc_description">#999999</color>
     <color name="mc_time">#999999</color>
     <color name="mc_item_pressed">#f7f7f7</color>
+    <color name="mc_list_divider">#e9e9e9</color>
 </resources>

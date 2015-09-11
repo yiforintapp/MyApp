@@ -30,5 +30,11 @@ public class Message implements Serializable {
     public int id;
 
     // 未读标志
-    public boolean unread;
+    public boolean unread = true;
+
+    @Override
+    public String toString() {
+        return "id: " + id + " | typeId: " + typeId + " | title: " + title +
+                " | name: " + name;
+    }
 }

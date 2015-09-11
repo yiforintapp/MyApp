@@ -13,6 +13,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.LeoLog;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -227,18 +228,22 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         startInner(false);
     }
 
-    protected FetchScheduleListener newFetchListener() {
-        return new FetchScheduleListener();
+    protected FetchScheduleListener newJsonObjListener() {
+        return new FetchScheduleListener<JSONObject>();
     }
 
-    public class FetchScheduleListener<T> implements Response.Listener<Object>, Response.ErrorListener {
+    protected FetchScheduleListener newJsonArrayListener() {
+        return new FetchScheduleListener<JSONArray>();
+    }
+
+    public class FetchScheduleListener<T> implements Response.Listener<T>, Response.ErrorListener {
         @Override
         public void onErrorResponse(VolleyError error) {
             onFetchFail(error);
         }
 
         @Override
-        public void onResponse(Object response, boolean noMidify) {
+        public void onResponse(T response, boolean noMidify) {
             onFetchSuccess(response, noMidify);
         }
     }

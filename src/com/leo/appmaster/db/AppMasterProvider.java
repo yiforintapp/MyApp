@@ -24,7 +24,7 @@ public class AppMasterProvider extends ContentProvider {
 
 	@Override
 	public boolean onCreate() {
-		dbHelper = new AppMasterDBHelper(getContext());
+		dbHelper = AppMasterDBHelper.getInstance(getContext());
 		return true;
 	}
 

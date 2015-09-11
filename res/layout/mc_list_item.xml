@@ -2,14 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
+    android:clickable="true"
+    android:background="@drawable/mc_item_selector"
+    android:paddingLeft="@dimen/mc_list_hori_padding"
+    android:paddingRight="@dimen/mc_list_hori_padding"
     android:orientation="vertical"
     android:paddingTop="@dimen/mc_list_item_top_padding">
 
     <RelativeLayout
         android:id="@+id/mc_title_lyout"
         android:layout_width="match_parent"
-        android:layout_height="15dp">
+        android:layout_height="16dp">
 
         <ImageView
             android:id="@+id/mc_unread_iv"

@@ -1,12 +1,9 @@
 package com.leo.appmaster.db;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
@@ -15,14 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * 消息中心数据库表
  * Created by Jasper on 2015/9/10.
  */
-public class MsgCenterTable extends SQLiteOpenHelper {
+public class MsgCenterTable extends BaseTable {
     private static final String TAG = "MsgCenterTable";
 
-    protected static final String DATABASE_NAME = AppMasterDBHelper.DB_NAME;
     protected static final String TABLE_NAME = "msg_center";
-    private static final int DATABASE_VERSION = AppMasterDBHelper.DB_VERSION;
 
     protected static final String COL_MSG_ID = "msg_id";
     protected static final String COL_TIME = "activity_time";
@@ -33,41 +29,13 @@ public class MsgCenterTable extends SQLiteOpenHelper {
     protected static final String COL_OFFLINE_TIME = "offline_time";
     protected static final String COL_TITLE = "title";
     protected static final String COL_TYPE_ID = "type_id";
+    // 1:未读  0:已读
+    protected static final String COL_UNREAD = "unread";
 
-    protected static MsgCenterTable sInstance;
+    private static final int READED = 0;
+    private static final int UNREADED = 1;
 
-    public static synchronized MsgCenterTable getInstance() {
-        if (sInstance == null) {
-            AppMasterApplication ctx = AppMasterApplication.getInstance();
-            sInstance = new MsgCenterTable(ctx);
-        }
-
-        return sInstance;
-    }
-
-    public MsgCenterTable(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
-                "( _id INTEGER PRIMARY KEY," +
-                COL_MSG_ID + " INTEGER," +
-                COL_TIME + " TEXT," +
-                COL_NAME + " TEXT," +
-                COL_DESCRIPTION + " TEXT," +
-                COL_IMAGE_URL + " TEXT," +
-                COL_LINK + " TEXT," +
-                COL_OFFLINE_TIME + " TEXT," +
-                COL_TITLE + " TEXT," +
-                COL_TYPE_ID + " TEXT");
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
-        onCreate(db);
+    public MsgCenterTable() {
     }
 
     /**
@@ -78,11 +46,22 @@ public class MsgCenterTable extends SQLiteOpenHelper {
     public void insertMsgList(List<Message> msgList) {
         if (msgList == null || msgList.isEmpty()) return;
 
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getHelper().getWritableDatabase();
         if (db == null) return;
 
         // 先清空数据
-        db.delete(TABLE_NAME, null, null);
+//        db.execSQL("delete from " + TABLE_NAME);
+
+        List<Message> oldList = queryMsgList();
+        for (Message oldMsg : oldList) {
+            for (Message message : msgList) {
+                if (message.id == oldMsg.id) {
+                    message.unread = oldMsg.unread;
+                    break;
+                }
+            }
+        }
+        deleteMsgList(oldList);
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
@@ -95,9 +74,11 @@ public class MsgCenterTable extends SQLiteOpenHelper {
                 values.put(COL_LINK, message.jumpUrl);
                 values.put(COL_MSG_ID, message.id);
                 values.put(COL_NAME, message.name);
+                values.put(COL_TITLE, message.title);
                 values.put(COL_OFFLINE_TIME, message.offlineTime);
                 values.put(COL_TIME, message.time);
                 values.put(COL_TYPE_ID, message.typeId);
+                values.put(COL_UNREAD, message.unread ? UNREADED : READED);
                 db.insert(TABLE_NAME, null, values);
             }
             db.setTransactionSuccessful();
@@ -112,7 +93,7 @@ public class MsgCenterTable extends SQLiteOpenHelper {
      */
     public List<Message> queryMsgList() {
         ArrayList<Message> result = new ArrayList<Message>();
-        SQLiteDatabase db = getWritableDatabase();
+        SQLiteDatabase db = getHelper().getWritableDatabase();
         if (db == null) return result;
         
         Cursor cursor = null;
@@ -131,7 +112,7 @@ public class MsgCenterTable extends SQLiteOpenHelper {
                     message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
                     message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
                     message.typeId = cursor.getString(cursor.getColumnIndex(COL_TYPE_ID));
-                    
+                    message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
                     result.add(message);
                 } while (cursor.moveToNext());
             }
@@ -142,5 +123,55 @@ public class MsgCenterTable extends SQLiteOpenHelper {
         }
         
         return result;
+    }
+
+    public void readMessage(Message msg) {
+        if (msg == null) return;
+
+        SQLiteDatabase db = getHelper().getWritableDatabase();
+        if (db == null) return;
+
+        ContentValues values = new ContentValues();
+        values.put(COL_UNREAD, READED);
+        db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { msg.id + "" });
+    }
+
+    public void deleteMsgList(List<Message> list) {
+        if (list == null || list.isEmpty()) return;
+
+        SQLiteDatabase db = getHelper().getWritableDatabase();
+        if (db == null) return;
+
+        db.beginTransaction();
+        try {
+            for (Message message : list) {
+                db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[] { message.id + "" });
+            }
+            db.setTransactionSuccessful();
+        } finally {
+            db.endTransaction();
+        }
+    }
+
+    @Override
+    public void createTable(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
+                "( _id INTEGER PRIMARY KEY," +
+                COL_MSG_ID + " INTEGER," +
+                COL_TIME + " TEXT," +
+                COL_NAME + " TEXT," +
+                COL_DESCRIPTION + " TEXT," +
+                COL_IMAGE_URL + " TEXT," +
+                COL_LINK + " TEXT," +
+                COL_OFFLINE_TIME + " TEXT," +
+                COL_TITLE + " TEXT," +
+                COL_UNREAD + " INTEGER," +
+                COL_TYPE_ID + " TEXT);");
+    }
+
+    @Override
+    public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
+        createTable(db);
     }
 }

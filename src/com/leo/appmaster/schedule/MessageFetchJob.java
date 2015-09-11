@@ -22,6 +22,7 @@ import java.util.List;
  * Created by Jasper on 2015/9/8.
  */
 public class MessageFetchJob extends FetchScheduleJob {
+    private static final boolean DBG = true;
 
     @Override
     protected void work() {
@@ -29,7 +30,7 @@ public class MessageFetchJob extends FetchScheduleJob {
 
         Context ctx = AppMasterApplication.getInstance();
 
-        FetchScheduleListener listener = newFetchListener();
+        FetchScheduleListener listener = newJsonArrayListener();
         HttpRequestAgent.getInstance(ctx).loadMessageCenterList(listener, listener);
 
 //        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -51,6 +52,9 @@ public class MessageFetchJob extends FetchScheduleJob {
         super.onFetchSuccess(response, noMidify);
         if (response == null || !(response instanceof JSONArray)) return;
 
+        if (DBG) {
+            LeoLog.i(getJobKey(), "response: " + (response == null ? null : response.toString()));
+        }
         List<Message> list = new ArrayList<Message>();
         try {
             JSONArray array = (JSONArray) response;
@@ -74,7 +78,8 @@ public class MessageFetchJob extends FetchScheduleJob {
             e.printStackTrace();
         }
 
-        MsgCenterTable.getInstance().insertMsgList(list);
+        MsgCenterTable table = new MsgCenterTable();
+        table.insertMsgList(list);
     }
 
     @Override

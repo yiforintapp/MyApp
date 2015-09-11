@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.leo.appmaster.AppMasterApplication;
@@ -382,7 +384,7 @@ public class HttpRequestAgent {
      * @param listener
      * @param errorListener
      */
-    public void loadMessageCenterList(Listener<JSONObject> listener, ErrorListener errorListener) {
+    public void loadMessageCenterList(Listener<JSONArray> listener, ErrorListener errorListener) {
         Context context = AppMasterApplication.getInstance();
         String language = getPostLanguage();
         String country = Utilities.getCountryID(context);
@@ -396,8 +398,7 @@ public class HttpRequestAgent {
                 .append(versionName).append("/")
                 .append(channelCode)
                 .append(".html");
-        JsonObjectRequest request = new JsonObjectRequest(
-                Method.GET, stringBuilder.toString(), "", listener, errorListener);
+        JsonArrayRequest request = new JsonArrayRequest(stringBuilder.toString(), listener, errorListener);
         request.setShouldCache(true);
         mRequestQueue.add(request);
     }
