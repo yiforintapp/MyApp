@@ -752,7 +752,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mAdEngine.release(this);
+        if(mAdEngine != null){
+            mAdEngine.release(this);
+        }
 
         mLocalThemeAdapter = null;
         mOnlineThemeAdapter = null;
