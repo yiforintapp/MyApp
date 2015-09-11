@@ -167,10 +167,13 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
 
         // 默认是开，记得改回默认是关
         if (mPrivicyAdSwitchOpen == -1) {
+            LeoLog.d("testPrivicyAd", "获取隐私防护广告开关");
             mPrivicyAdSwitchOpen = AppMasterPreference.getInstance(getActivity())
                     .getIsADAfterPrivacyProtectionOpen();
         }
-        
+
+        LeoLog.d("testPrivicyAd", "开关值是：" + mPrivicyAdSwitchOpen);
+
         // 开启广告位
         if (mPrivicyAdSwitchOpen == 1) {
             loadAD();
@@ -264,12 +267,14 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     }
 
     private void loadAD() {
+        LeoLog.d("testPrivicyAd", "loadAd");
         mAdEngine = MobvistaEngine.getInstance();
         mAdEngine.loadMobvista(getActivity(), new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
+                    LeoLog.d("testPrivicyAd", "loadAd -- OK!");
                     ImageView adicon = (ImageView) mProposalView
                             .findViewById(R.id.privacy_ad_icon);
                     loadADPic(
@@ -288,16 +293,13 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                     // call
                     TextView adcall = (TextView) mProposalView
                             .findViewById(R.id.ad_download);
-                    
+
                     adcall.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            // LeoLog.d("testclickview",
-                            // "点击广告，timeFilterSelf !!");
-                            // LockManager.getInstatnce().timeFilterSelf();
                         }
                     });
-                    
+
                     adcall.setText(campaign.getAdCall());
                     mAdEngine.registerView(getActivity(), adcall);
 

@@ -186,6 +186,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
         if (mThemeAdSwitchOpen == -1) {
             // 默认是开，记得改回默认是关
+            LeoLog.d("testThemeAd", "获取主题广告开关");
             mThemeAdSwitchOpen = AppMasterPreference.getInstance(this)
                     .getIsADAtLockThemeOpen();
         }
@@ -212,7 +213,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         createResultToHelpSetting();
         AppLoadEngine.getInstance(this).setThemeChanageListener(this);
 
-        if (mThemeAdSwitchOpen == 1) {
+        LeoLog.d("testThemeAd", "开关值是：" + mThemeAdSwitchOpen);
+        if (mThemeAdSwitchOpen == 1 || mThemeAdSwitchOpen == 2) {
             loadAd();
         }
     }
@@ -221,17 +223,19 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
         if (mAdEngine != null) {
             mAdEngine.registerView(this, view);
-        } 
+        }
 
     }
 
     private void loadAd() {
+        LeoLog.d("testThemeAd", "loadAd");
         mAdEngine = MobvistaEngine.getInstance();
         mAdEngine.loadMobvista(this, new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
+                    LeoLog.d("testThemeAd", "loadAd -- OK!");
                     isGetAd = true;
 
                     // 1是本地有广告
@@ -270,7 +274,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
             @Override
             public void onMobvistaClick(Campaign campaign) {
-                 LockManager.getInstatnce().timeFilterSelf();
+                LockManager.getInstatnce().timeFilterSelf();
             }
         });
     }
