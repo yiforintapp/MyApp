@@ -33,6 +33,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
     protected WebView mWebView;
     protected ProgressBar mLoadingView;
+    protected View mErrorView;
 
     @Override
     protected void onDestroy() {
@@ -51,6 +52,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
         mWebView = getWebView();
         mLoadingView = getLoadingView();
+        mErrorView = getErrorView();
 
         if (mWebView == null) {
             throw new RuntimeException("webview is null.");
@@ -141,6 +143,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
     protected abstract WebView getWebView();
     protected abstract ProgressBar getLoadingView();
+    protected abstract View getErrorView();
 
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         return false;
@@ -154,6 +157,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
         LeoLog.d(TAG, "onPageFinished, url: " + url);
         mWebView.setVisibility(View.VISIBLE);
         mLoadingView.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.GONE);
     }
 
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
@@ -164,6 +168,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 //        }
         mWebView.setVisibility(View.GONE);
         mLoadingView.setVisibility(View.GONE);
+        mErrorView.setVisibility(View.VISIBLE);
     }
 
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {

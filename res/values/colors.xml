@@ -120,4 +120,5 @@
     <color name="mc_item_pressed">#f7f7f7</color>
     <color name="mc_list_divider">#e9e9e9</color>
     <color name="mc_empty_tips">#d3d3d4</color>
+    <color name="ms_error_bg">#f3f3f3</color>
 </resources>

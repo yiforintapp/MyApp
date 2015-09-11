@@ -822,6 +822,7 @@
     <string name="msg_center_empty">没有新消息哦</string>
     <string name="msg_center_empty_say">如果有什么想说的，就赶紧告诉我们吧~</string>
     <string name="msg_center_feedback">意见反馈</string>
+    <string name="msg_center_load_fail">服务器有点累哦，休息一下刷新试试吧~</string>
 
     <string name="ufo_roll_again">Roll Again</string>
     <string name="ufo_theme_down">下载</string>
