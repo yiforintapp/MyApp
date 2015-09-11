@@ -403,4 +403,9 @@
     <!-- 2.7 start -->
     <integer name="home_page_tab_text_size">16</integer>
     <!-- 2.7 end -->
+
+    <!-- 2.10 msg center-->
+    <dimen name="mc_list_hori_padding">20dp</dimen>
+    <dimen name="mc_list_item_top_padding">18dp</dimen>
+    <dimen name="mc_list_item_height">163dp</dimen>
 </resources>

@@ -76,6 +76,7 @@ import com.leo.appmaster.fragment.HomeLockFragment;
 import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
+import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.ui.IswipUpdateTipDialog;
@@ -664,11 +665,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 // startActivity(nIntent);
                 // } catch (Exception e) {
                 // }
-                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
-                        System.currentTimeMillis());
-                Intent mWallIntent = mWallAd.getWallIntent();
-                startActivity(mWallIntent);
-
+//                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
+//                        System.currentTimeMillis());
+//                Intent mWallIntent = mWallAd.getWallIntent();
+//                startActivity(mWallIntent);
+                Intent msgCenter = new Intent();
+                msgCenter.setClass(this, MsgCenterActivity.class);
+                startActivity(msgCenter);
                 break;
             default:
                 break;

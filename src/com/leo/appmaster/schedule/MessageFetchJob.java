@@ -76,4 +76,14 @@ public class MessageFetchJob extends FetchScheduleJob {
 
         MsgCenterTable.getInstance().insertMsgList(list);
     }
+
+    @Override
+    protected int getPeriod() {
+        return 10 * 1000;
+    }
+
+    @Override
+    protected int getFailPeriod() {
+        return 10 * 1000;
+    }
 }

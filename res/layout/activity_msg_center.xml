@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/white"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.leo.appmaster.ui.CommonTitleBar
+        android:id="@+id/layout_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/app_background"
+        android:layout_alignParentTop="true" />
+
+    <ListView
+        android:id="@+id/msg_center_lv"
+        android:paddingLeft="@dimen/mc_list_hori_padding"
+        android:paddingRight="@dimen/mc_list_hori_padding"
+        android:overScrollMode="never"
+        android:scrollbars="none"
+        android:listSelector="@null"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

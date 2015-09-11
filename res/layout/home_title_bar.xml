@@ -63,7 +63,7 @@
             android:id="@+id/hot_app_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/what_hot_icon" />
+            android:src="@drawable/ic_msg_center_tip" />
 
         <ImageView
             android:id="@+id/app_hot_tip_icon_"

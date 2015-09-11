@@ -28,4 +28,7 @@ public class Message implements Serializable {
 
     // 活动id
     public int id;
+
+    // 未读标志
+    public boolean unread;
 }

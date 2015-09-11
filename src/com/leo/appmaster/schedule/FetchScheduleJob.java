@@ -98,7 +98,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         LeoLog.i(getJobKey(), "start job.");
         AppMasterApplication ctx = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
-        long lastTime = /*pref.getScheduleTime(getJobTimeKey())*/1;
+        long lastTime = pref.getScheduleTime(getJobTimeKey());
         if (lastTime <= 0) {
             LeoLog.i(getJobKey(), "Haven't worked before, start work.");
             // 还没有执行过直接开始执行
@@ -118,13 +118,13 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     private void startInner(boolean success) {
         LeoLog.i(getJobKey(), "startInner, success: " + success);
         AppMasterApplication ctx = AppMasterApplication.getInstance();
+        AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
         AlarmManager am = (AlarmManager) ctx.getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(ScheduleReceiver.ACTION);
         intent.putExtra(KEY_JOB, getClass().getName());
         int period = getPeriod();
         if (!success) {
-            AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
             int currentRetryCount = pref.getScheduleValue(getJobFailCountKey(), 0);
 
             if (currentRetryCount <= getRetryCount()) {
@@ -139,10 +139,23 @@ public abstract class FetchScheduleJob extends ScheduleJob {
                 pref.setScheduleValue(getJobStateKey(), STATE_SUCC);
             }
         }
-        LeoLog.i(getJobKey(), "period is : " + period);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, getId(),
-                intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        am.set(AlarmManager.RTC, System.currentTimeMillis() + period, pendingIntent);
+        long lastTime = pref.getScheduleTime(getJobTimeKey());
+        long goesBy = System.currentTimeMillis() - lastTime;
+        if (goesBy >= period) {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    work();
+                }
+            });
+        } else {
+            LeoLog.i(getJobKey(), "period is : " + period);
+
+            period -= goesBy;
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(ctx, getId(),
+                    intent, PendingIntent.FLAG_UPDATE_CURRENT);
+            am.set(AlarmManager.RTC, System.currentTimeMillis() + period, pendingIntent);
+        }
     }
 
     @Override
