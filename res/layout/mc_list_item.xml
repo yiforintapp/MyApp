@@ -3,20 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:paddingLeft="@dimen/mc_list_hori_padding"
-    android:paddingRight="@dimen/mc_list_hori_padding"
     android:orientation="vertical"
     android:paddingTop="@dimen/mc_list_item_top_padding">
 
     <RelativeLayout
         android:id="@+id/mc_title_lyout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="15dp">
 
         <ImageView
             android:id="@+id/mc_unread_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
             android:src="@drawable/ic_msg_center_unread"/>
 
         <TextView
@@ -24,6 +23,7 @@
             android:text="这个是标题"
             android:textColor="@color/mc_title"
             android:textSize="16sp"
+            android:includeFontPadding="false"
             android:layout_toRightOf="@id/mc_unread_iv"
             android:layout_marginLeft="9dp"
             android:singleLine="true"

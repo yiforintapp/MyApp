@@ -406,6 +406,6 @@
 
     <!-- 2.10 msg center-->
     <dimen name="mc_list_hori_padding">20dp</dimen>
-    <dimen name="mc_list_item_top_padding">18dp</dimen>
+    <dimen name="mc_list_item_top_padding">16dp</dimen>
     <dimen name="mc_list_item_height">163dp</dimen>
 </resources>

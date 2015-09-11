@@ -15,7 +15,10 @@
         android:id="@+id/msg_center_lv"
         android:overScrollMode="never"
         android:scrollbars="none"
-        android:listSelector="@null"
+        android:listSelector="@drawable/mc_item_selector"
+        android:dividerHeight="1dp"
+        android:paddingLeft="@dimen/mc_list_hori_padding"
+        android:paddingRight="@dimen/mc_list_hori_padding"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
