@@ -803,6 +803,10 @@
     <string name="iswip_update_notifi_content">Easy Shortcuts is renamed as iSwipe</string>
     <string name="iswip_update_notifi_button">Update Now</string>
         <string name="ad_timeout">Wow! More surprises are waiting for you!</string>
+    <string name="title_activity_msg_center_browser">MsgCenterBrowserActivity</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
     <!-- 2.8 end -->
 
 </resources>

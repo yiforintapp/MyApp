@@ -161,6 +161,8 @@ public class MsgCenterTable extends BaseTable {
             ContentValues values = new ContentValues();
             values.put(COL_UNREAD, READED);
             db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { msg.id + "" });
+
+            msg.unread = false;
         } catch (Throwable e) {
             e.printStackTrace();
         }

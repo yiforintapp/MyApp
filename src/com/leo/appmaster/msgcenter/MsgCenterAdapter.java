@@ -30,8 +30,6 @@ public class MsgCenterAdapter extends BaseAdapter {
 
     private BitmapFactory.Options options;
     private DisplayImageOptions commonOption;
-    private DisplayImageOptions compatibleOption;
-
 
     public MsgCenterAdapter() {
         mMessageList = new ArrayList<Message>();

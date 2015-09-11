@@ -8,6 +8,8 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -51,6 +53,7 @@ public class MsgCenterActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        mAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -68,6 +71,16 @@ public class MsgCenterActivity extends BaseActivity implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        final Message msg = (Message) mAdapter.getItem(position);
+        if (msg == null) return;
 
+        MsgCenterBrowserActivity.startMsgCenterWeb(this, msg.title, msg.jumpUrl);
+        ThreadManager.executeOnFileThread(new Runnable() {
+            @Override
+            public void run() {
+                MsgCenterTable table = new MsgCenterTable();
+                table.readMessage(msg);
+            }
+        });
     }
 }

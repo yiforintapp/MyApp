@@ -14,6 +14,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.CheckNewBootstrap;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.schedule.MessageFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -31,7 +32,8 @@ public class PushInvoke implements PushInvokeHelper {
     public static final String GPGUIDE = "5";
     public static final String ADWALL = "6";
     public static final String ISWIPE = "7";
-    
+    public static final String MSG_CENTER = "8";
+
     
     public static final String ACTION_UPDATE_I = "com.leo.appmaster.invoke.update";
     public static final String ACTION_THEME_I = "com.leo.appmaster.invoke.theme";
@@ -84,6 +86,8 @@ public class PushInvoke implements PushInvokeHelper {
         } else if (type.equals(ISWIPE)) {
             invokeISwipe();
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "push_refresh", "iSwipe");
+        } else if (MSG_CENTER.equals(type)) {
+            MessageFetchJob.startByPush();
         }
         // String mAction = getAction(type);
         // Log.d("PushInvoke", "mAction is : " + mAction);

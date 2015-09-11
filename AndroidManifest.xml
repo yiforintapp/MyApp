@@ -183,6 +183,13 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
+            android:name=".msgcenter.MsgCenterBrowserActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
             android:name=".applocker.LockModeActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
@@ -768,6 +775,7 @@
                 <action android:name="com.leo.appmaster.action.SCHEDULE" />
             </intent-filter>
         </receiver>
+
     </application>
 
 </manifest>

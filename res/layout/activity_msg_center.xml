@@ -16,6 +16,7 @@
         android:id="@+id/msg_center_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:listSelector="@drawable/mc_item_selector"
         android:layout_below="@id/layout_title_bar"
         android:divider="@drawable/mc_list_divider"
         android:dividerHeight="1dp"

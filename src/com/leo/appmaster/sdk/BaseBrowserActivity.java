@@ -26,7 +26,6 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     private static final String TAG = "BaseBrowserActivity";
 
     public static final int FLAG_HARDWARE_ACCELERATED = 16777216;
-    private final static int FILECHOOSER_RESULTCODE = 1;
     protected static final String MX2 = "Meizu_M040";
 
     protected WebViewClientImpl mWebViewClient;
@@ -34,8 +33,6 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
     protected WebView mWebView;
     protected ProgressBar mLoadingView;
-
-    private boolean mReceivedError;
 
     @Override
     protected void onDestroy() {
@@ -109,8 +106,8 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
         settings.setUseWideViewPort(true);
         settings.setLoadWithOverviewMode(true);
-        settings.setBuiltInZoomControls(true);
-        settings.setSupportZoom(true);
+        settings.setBuiltInZoomControls(false);
+        settings.setSupportZoom(false);
 
         // 开启本地存储
         settings.setDatabaseEnabled(true);
@@ -155,8 +152,6 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
     public void onPageFinished(WebView view, String url) {
         LeoLog.d(TAG, "onPageFinished, url: " + url);
-        if (mReceivedError) return;
-
         mWebView.setVisibility(View.VISIBLE);
         mLoadingView.setVisibility(View.GONE);
     }
@@ -168,6 +163,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 //            mReceivedError = true;
 //        }
         mWebView.setVisibility(View.GONE);
+        mLoadingView.setVisibility(View.GONE);
     }
 
     public void onReceivedSslError(WebView view, SslErrorHandler handler, SslError error) {
@@ -187,7 +183,6 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     }
 
     public void onReceivedTitle(WebView view, String title) {
-        if (mReceivedError) return;
 
     }
 
@@ -209,12 +204,6 @@ public abstract class BaseBrowserActivity extends BaseActivity {
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
             BaseBrowserActivity.this.onProgressChanged(view, newProgress);
-//            if(blockLoadingNetworkImage)
-//            {
-//                mWebView.getSettings().setBlockNetworkImage(false);
-//                blockLoadingNetworkImage=false;
-//            }
-
         }
 
         @Override
