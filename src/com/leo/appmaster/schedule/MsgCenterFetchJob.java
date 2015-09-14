@@ -112,25 +112,30 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         return 10 * 1000;
     }
 
-    public static void checkCacheAndRequest(Message msg) {
-        if (msg == null) {
+    public static void checkCacheAndRequest(Message message) {
+        List<Message> list = new ArrayList<Message>();
+        if (message == null) {
             MsgCenterTable table = new MsgCenterTable();
-            msg = table.getUpdateMessage();
-            if (msg == null) return;
+            list.addAll(table.getUpdateMessage());
+            if (list.isEmpty()) return;
+        } else {
+            list.add(message);
         }
 
-        String fileNameNoSuffix = getFileName(msg.jumpUrl);
-        String htmlFileName = fileNameNoSuffix + ".html";
-        File htmlFile = new File(getFilePath(htmlFileName));
-        if (msg.jumpUrl != null && !htmlFile.exists()) {
-            requestHtml(htmlFile.getAbsolutePath(), msg.jumpUrl);
-        }
+        for (Message msg : list) {
+            String fileNameNoSuffix = getFileName(msg.jumpUrl);
+            String htmlFileName = fileNameNoSuffix + ".html";
+            File htmlFile = new File(getFilePath(htmlFileName));
+            if (msg.jumpUrl != null && !htmlFile.exists()) {
+                requestHtml(htmlFile.getAbsolutePath(), msg.jumpUrl);
+            }
 
-        String resFileName = fileNameNoSuffix + ".zip";
-        File resFile = new File(getFilePath(resFileName));
-        if (msg.resUrl != null && !resFile.exists()) {
-            // Volley不支持stream保存，蛋疼，自己写一套先
-            requestResFile(resFile.getAbsolutePath(), msg.resUrl);
+            String resFileName = fileNameNoSuffix + ".zip";
+            File resFile = new File(getFilePath(resFileName));
+            if (msg.resUrl != null && !resFile.exists()) {
+                // Volley不支持stream保存，蛋疼，自己写一套先
+                requestResFile(resFile.getAbsolutePath(), msg.resUrl);
+            }
         }
     }
 

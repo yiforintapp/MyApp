@@ -147,7 +147,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
 
         String fileName = null;
         int pIndex = url.lastIndexOf("/");
-        if (pIndex > 0 && pIndex < url.length()-1) {
+        if (pIndex > 0 && pIndex < url.length() - 1) {
             fileName = url.substring(pIndex + 1);
         }
         if (TextUtils.isEmpty(fileName)) {

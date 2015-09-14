@@ -1,5 +1,6 @@
 package com.leo.appmaster.db;
 
+import android.accounts.ChooseAccountTypeActivity;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -224,35 +225,42 @@ public class MsgCenterTable extends BaseTable {
      * 获取更新日志
      * @return
      */
-    public Message getUpdateMessage() {
-        Message message = null;
+    public List<Message> getUpdateMessage() {
+        List<Message> result = new ArrayList<Message>();
 
         SQLiteDatabase db = getHelper().getReadableDatabase();
-        if (db == null) return message;
+        if (db == null) return result;
 
         Cursor cursor = null;
         try {
             cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
-                message = new Message();
-                message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
-                message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
-                message.jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
-                message.msgId = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
-                message.categoryName = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_NAME));
-                message.categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
-                message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
-                message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
-                message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
-                message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
-                message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
+                do {
+                    String catrgoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
+                    if (!Message.CATEGORY_UPDATE.equals(catrgoryCode)) continue;
+
+                    Message message = new Message();
+                    message.categoryCode = catrgoryCode;
+                    message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
+                    message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
+                    message.jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
+                    message.msgId = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
+                    message.categoryName = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_NAME));
+                    message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
+                    message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
+                    message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
+                    message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
+                    message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
+
+                    result.add(message);
+                } while (cursor.moveToNext());
             }
         } finally {
             IoUtils.closeSilently(cursor);
         }
 
-        return message;
+        return result;
     }
 
     /**
@@ -265,10 +273,21 @@ public class MsgCenterTable extends BaseTable {
 
         Cursor cursor = null;
         try {
-            cursor = db.query(TABLE_NAME, new String[] { COL_TITLE },
+            cursor = db.query(TABLE_NAME, null,
                     COL_UNREAD + " = ?", new String[] { UNREADED + "" }, null, null, null);
             if (cursor != null) {
-                return cursor.getCount();
+                int result = cursor.getCount();
+                cursor.moveToFirst();
+                do {
+                    String categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
+                    String jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
+                    if (Message.CATEGORY_UPDATE.equals(categoryCode)) {
+                        if (!MsgCenterFetchJob.hasCacheFile(jumpUrl)) {
+                            result--;
+                        }
+                    }
+                } while (cursor.moveToNext());
+                return result;
             }
         } catch (Throwable e) {
             e.printStackTrace();

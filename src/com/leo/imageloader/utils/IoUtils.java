@@ -114,7 +114,7 @@ public final class IoUtils {
 		if (closeable != null) {
 			try {
 				closeable.close();
-			} catch (Exception ignored) {
+			} catch (Throwable ignored) {
 			}
 		}
 	}
