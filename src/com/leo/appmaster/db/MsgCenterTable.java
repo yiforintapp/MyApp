@@ -256,6 +256,8 @@ public class MsgCenterTable extends BaseTable {
                     result.add(message);
                 } while (cursor.moveToNext());
             }
+        } catch (Throwable e) {
+            e.printStackTrace();
         } finally {
             IoUtils.closeSilently(cursor);
         }
