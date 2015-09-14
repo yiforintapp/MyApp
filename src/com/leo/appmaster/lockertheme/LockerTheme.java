@@ -221,7 +221,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
     public void regisClickView(View view) {
 
-        if (mAdEngine != null) {
+        if (mAdEngine != null && view != null) {
             mAdEngine.registerView(this, view);
         }
 
@@ -237,6 +237,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 if (code == MobvistaEngine.ERR_OK) {
                     LeoLog.d("testThemeAd", "loadAd -- OK!");
                     isGetAd = true;
+
+                    // mThemeAdSwitchOpen = 2;
 
                     // 1是本地有广告
                     if (mThemeAdSwitchOpen == 1) {

@@ -188,7 +188,7 @@ public class LockerThemeAdapter extends BaseAdapter {
         // download
         adHolder.ad_download.setText(mCampaign.getAdCall());
 
-        adHolder.ad_download.setOnClickListener(new OnClickListener() {
+        adHolder.ad_background.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 // LeoLog.d("testclickview", "点击广告，timeFilterSelf !!");
@@ -197,7 +197,7 @@ public class LockerThemeAdapter extends BaseAdapter {
         });
 
         LockerTheme activity = (LockerTheme) mContext;
-        activity.regisClickView(adHolder.ad_download);
+        activity.regisClickView(adHolder.ad_background);
 
         return convertView;
     }
