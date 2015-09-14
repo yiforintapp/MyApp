@@ -13,6 +13,8 @@ import java.util.Set;
 
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -25,6 +27,7 @@ import android.view.WindowManager;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.sdk.SDKWrapper;
 
 /**
@@ -36,6 +39,7 @@ public class BuildProperties {
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+    private static final String KEY_LENOVO_VERSION_ROM_NAME = "ro.lenovo.lvp.version";
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";// 解锁等待界面动画执行过快机型
     private final Properties properties;
 
@@ -388,5 +392,12 @@ public class BuildProperties {
             }
         }
         return false;
+    }
+
+    /* 判断是否为联想的机型 */
+    public static boolean isLenoveModel() {
+        if (TextUtils.isEmpty((CharSequence) (getSystemProperty(KEY_LENOVO_VERSION_ROM_NAME))))
+            return false;
+        return true;
     }
 }

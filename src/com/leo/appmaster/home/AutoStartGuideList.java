@@ -19,9 +19,10 @@ public class AutoStartGuideList extends WhiteList {
     private static final int XIAOMI4 = 0;
     private static final int XIAOMIREAD = 1;
     private static final int HUAWEI = 2;
-//    private static final int OPPO = 3;
+    private static final int LENOVO = 3;
+    // private static final int OPPO = 3;
     private static int[] LIST = {
-            XIAOMI4, XIAOMIREAD, HUAWEI
+            XIAOMI4, XIAOMIREAD, HUAWEI, LENOVO
     };
 
     public AutoStartGuideList() {
@@ -66,9 +67,9 @@ public class AutoStartGuideList extends WhiteList {
             case HUAWEI:
                 list = new HuaWei();
                 break;
-//            case OPPO:
-//                list = new Oppo();
-//                break;
+             case LENOVO:
+             list = new Lenovo();
+             break;
             default:
                 break;
         }
@@ -154,28 +155,24 @@ public class AutoStartGuideList extends WhiteList {
     }
 
     /* oppo */
-    private static class Oppo extends AutoStartGuideList {
+    private static class Lenovo extends AutoStartGuideList {
 
         @Override
         protected boolean doHandler() {
-            LeoLog.i(TAG, "加载Oppo的处理方法");
+            LeoLog.i(TAG, "加载Lenovo的处理方法");
 
             Intent intent = new Intent();
-            /* 进入纯净后台 */
-            ComponentName cn = new
-                    ComponentName("com.oppo.purebackground",
-                            "com.oppo.purebackground.Purebackground_AddTrust_Activity");
-            /* 进入自启动管理 */
-            // ComponentName cn = new ComponentName("com.oppo.safe",
-            // "com.oppo.safe.permission.startup.StartupAppListActivity");
-             intent.setComponent(cn);
-             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            ComponentName cn = new ComponentName("com.lenovo.security",
+                    "com.lenovo.security.homepage.HomePageActivity");
+            intent.setComponent(cn);
+            intent.setComponent(cn);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
-                LeoLog.e(TAG, "跳转oppo成功！");
+                LeoLog.e(TAG, "跳转Lenovo成功！");
             } catch (Exception e) {
-                LeoLog.e(TAG, "跳转oppo失败！");
+                LeoLog.e(TAG, "跳转Lenovo失败！");
                 e.printStackTrace();
             }
             return false;
@@ -196,10 +193,10 @@ public class AutoStartGuideList extends WhiteList {
         if (huawei) {
             return HUAWEI;
         }
-//        boolean oppo = BuildProperties.isOppoOs();
-//        if (oppo) {
-//            return OPPO;
-//        }
+        boolean lenovo = BuildProperties.isLenoveModel();
+        if (lenovo) {
+            return LENOVO;
+        }
         return -1;
     }
 }

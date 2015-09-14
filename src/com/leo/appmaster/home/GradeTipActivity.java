@@ -55,9 +55,9 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 LockManager.getInstatnce().timeFilterSelf();
-                Intent intent2 = new Intent(this, GooglePlayGuideActivity.class);
-                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent2);
+//                Intent intent2 = new Intent(this, GooglePlayGuideActivity.class);
+//                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent2);
                 showGP = true;
             } catch (Exception e) {
 
