@@ -831,5 +831,9 @@
     <string name="ufo_theme_content">拒绝枯燥无聊，应用新主题，美化你的界面</string>
     <string name="ufo_theme_title">应用锁主题</string>
     <string name="menue_item_delete_pg">卸载</string>
+    <string name="advace_protect_dialog_left_text">稍后再说</string>
+    <string name="advace_protect_dialog_right_text">去设置</string>
+    <string name="advace_protect_dialog_title_text">建议打开高级保护</string>
+    <string name="advace_protect_dialog_content_text">恭喜您加锁成功，为了防止隐私卫士被他人无意卸载后无法继续加锁应用，建议您进行高级保护。随后您可以在侧边栏中卸载隐私卫士。</string>
 
 </resources>

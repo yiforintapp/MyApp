@@ -1,5 +1,5 @@
 
-package com.leo.appmaster.quickgestures.ui;
+package com.leo.appmaster.home;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -20,8 +20,8 @@ import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
-public class IswipUpdateTipDialog extends LEOBaseDialog {
-    private static final String HOMEACTIVITY = "homeactivity";
+public class AdvanceProtectTipDialog extends LEOBaseDialog {
+    public static final String ADVANCE_PROTECT_TIP_DIALOG = "advance_protect_tip_dialog";
     private Context mContext;
     private TextView mTitle;
     private TextView mContent;
@@ -35,7 +35,7 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
         public void onClick(int which);
     }
 
-    public IswipUpdateTipDialog(Context context) {
+    public AdvanceProtectTipDialog(Context context) {
         super(context, R.style.bt_dialog);
         mContext = context.getApplicationContext();
         initUI();
@@ -43,7 +43,7 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
 
     private void initUI() {
         View dlgView = LayoutInflater.from(mContext).inflate(
-                R.layout.iswip_update_tip_dialog, null);
+                R.layout.advance_protect_tip_dialog, null);
         mTitle = (TextView) dlgView.findViewById(R.id.iswip_tip_title_text);
         mContent = (TextView) dlgView.findViewById(R.id.iswip_tip_content_text);
         mLeftBt = (TextView) dlgView.findViewById(R.id.iswip_left_bt);
@@ -109,12 +109,13 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
             mLeftBt.setText(left);
         }
 
-    } 
+    }
 
     public void setLeftButtonTextColor(int id) {
         mLeftBt.setTextColor(id);
     }
-    public void setLeftOnKeyListener(android.view.View.OnKeyListener listener){
+
+    public void setLeftOnKeyListener(android.view.View.OnKeyListener listener) {
         mLeftBt.setOnKeyListener(listener);
     }
 
@@ -139,12 +140,9 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
     @Override
     public void dismiss() {
         boolean noEmpty = !Utilities.isEmpty(mDialgFlag);
-        boolean flagEquals = HOMEACTIVITY.equals(mDialgFlag);
-        if (noEmpty && flagEquals) {
-            /* 主页弹出的对话框初始化弹出标志值 */
-            ISwipUpdateRequestManager.getInstance(mContext).cancelShowIswipUpdate();
-            mDialgFlag = null;
-        } 
+        if (noEmpty && ADVANCE_PROTECT_TIP_DIALOG.equals(mDialgFlag)) {
+            AppMasterPreference.getInstance(mContext).setAdvanceProtectDialogTip(false);
+        }
         super.dismiss();
     }
 }

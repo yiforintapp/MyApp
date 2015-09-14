@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -111,6 +112,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private final static String KEY_ROOT_CHECK = "root_check";
     public final static long INTERVEL_CLICK_AD = 24 * 60 * 60 * 1000;
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
+    /* 数组中为不显示开启高级保护的渠道 */
+    public static final String[] FILTER_CHANNEL = {
+            "0002a"
+    };
 
     // 释放系统预加载资源使用
     private static LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawables =
@@ -152,6 +157,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private MenuAdapter mMenuAdapter;
     private TextView mUnreadCountTv;
     private List<MenuItem> mMenuItems;
+    private AdvanceProtectTipDialog mAdvanceProtectDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -239,51 +245,51 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 && AppMasterPreference.getInstance(this).getPretendLock() == 0 &&
                 AppMasterPreference.getInstance(this).getIsFromLockList() == true)
         {
-            if (mSelfIconDialog == null)
-            {
-                mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
-                mSelfIconDialog.setIcon(R.drawable.pretend_guide);
-                mSelfIconDialog
-                        .setOnClickListener(new LEOSelfIconAlarmDialog.OnDiaogClickListener() {
+            if (showAdvanceProtectDialog()) {
+                if (mSelfIconDialog == null)
+                {
+                    mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
+                    mSelfIconDialog.setIcon(R.drawable.pretend_guide);
+                    mSelfIconDialog
+                            .setOnClickListener(new LEOSelfIconAlarmDialog.OnDiaogClickListener() {
 
-                            @Override
-                            public void onClick(int which) {
-                                if (which == 1)
-                                {
-                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
-                                            "coverguide", "cli_y");
-
-                                    mSelfIconDialog.dismiss();
-                                    if (mFragmentHolders[0].fragment != null)
+                                @Override
+                                public void onClick(int which) {
+                                    if (which == 1)
                                     {
+                                        SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
+                                                "coverguide", "cli_y");
 
-                                        HomeLockFragment fragment = (HomeLockFragment) mFragmentHolders[0].fragment;
+                                        mSelfIconDialog.dismiss();
+                                        if (mFragmentHolders[0].fragment != null)
+                                        {
 
-                                        mPagerTab.setCurrentItem(0);
-                                        fragment.playPretendEnterAnim();
+                                            HomeLockFragment fragment = (HomeLockFragment) mFragmentHolders[0].fragment;
+
+                                            mPagerTab.setCurrentItem(0);
+                                            fragment.playPretendEnterAnim();
+                                        }
                                     }
+                                    else if (which == 0)
+                                    {
+                                        SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
+                                                "coverguide", "cli_n");
+                                    }
+                                    dismissDialog(mSelfIconDialog);
                                 }
-                                else if (which == 0)
-                                {
-                                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
-                                            "coverguide", "cli_n");
-                                }
-                                dismissDialog(mSelfIconDialog);
-                            }
-                        });
-                //
+                            });
+                    //
+                }
+                mSelfIconDialog.setSureButtonText(getString(R.string.button_disguise_guide_select));
+                mSelfIconDialog.setLeftBtnStr(getString(R.string.button_disguise_guide_cancel));
+                mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha
+                                                                                              // to
+                                                                                              // du
+                mSelfIconDialog.setCanceledOnTouchOutside(false);
+                mSelfIconDialog.show();
+                AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
             }
-            mSelfIconDialog.setSureButtonText(getString(R.string.button_disguise_guide_select));
-            mSelfIconDialog.setLeftBtnStr(getString(R.string.button_disguise_guide_cancel));
-            mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha
-                                                                                          // to
-                                                                                          // du
-            mSelfIconDialog.setCanceledOnTouchOutside(false);
-            mSelfIconDialog.show();
-            AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
-        }
-        else
-        {
+        } else {
             AppMasterPreference.getInstance(this).setIsHomeToLockList(false);
             AppMasterPreference.getInstance(this).setIsFromLockList(false);
             AppMasterPreference.getInstance(this).setIsClockToLockList(false);
@@ -846,7 +852,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (isAdmin) {
             // listItems.add(object)
             listItems.add(new MenuItem(resources.getString(R.string.menue_item_delete_pg),
-                    R.drawable.menu_feedbacks_icon));
+                    R.drawable.menu_delete));
             LeoLog.i("pg_delete_menue", "显示卸载按钮");
         } else {
             LeoLog.i("pg_delete_menue", "不显示卸载按钮");
@@ -1076,80 +1082,80 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         } else if (position == 1) {
             /* Facebook */
-                /* sdk mark */
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                        "Facebook");
-                Intent intentLikeUs = null;
-                LockManager.getInstatnce().timeFilterSelf();
-                if (AppUtil.appInstalled(getApplicationContext(),
-                        "com.facebook.katana")) {
-                    intentLikeUs = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri
-                            .parse("fb://page/1709302419294051");
-                    intentLikeUs.setData(uri);
-                    ComponentName cn = new ComponentName("com.facebook.katana",
-                            "com.facebook.katana.IntentUriHandler");
-                    intentLikeUs.setComponent(cn);
-                    intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(intentLikeUs);
-                    } catch (Exception e) {
-                    }
-                } else {
-                    intentLikeUs = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri
-                            .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
-                    intentLikeUs.setData(uri);
-                    intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    "Facebook");
+            Intent intentLikeUs = null;
+            LockManager.getInstatnce().timeFilterSelf();
+            if (AppUtil.appInstalled(getApplicationContext(),
+                    "com.facebook.katana")) {
+                intentLikeUs = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("fb://page/1709302419294051");
+                intentLikeUs.setData(uri);
+                ComponentName cn = new ComponentName("com.facebook.katana",
+                        "com.facebook.katana.IntentUriHandler");
+                intentLikeUs.setComponent(cn);
+                intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
                     startActivity(intentLikeUs);
+                } catch (Exception e) {
                 }
+            } else {
+                intentLikeUs = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
+                intentLikeUs.setData(uri);
+                intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intentLikeUs);
+            }
         } else if (position == 0) {
             /* google play */
-                /* sdk mark */
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                        "googleplay");
-                LockManager.getInstatnce().timeFilterSelf();
-                if (AppUtil.appInstalled(getApplicationContext(),
-                        "com.android.vending")) {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri
-                            .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                    intent.setData(uri);
-                    // ComponentName cn = new ComponentName(
-                    // "com.android.vending",
-                    // "com.google.android.finsky.activities.MainActivity");
-                    // intent.setComponent(cn);
-                    intent.setPackage("com.android.vending");
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(intent);
-                        // mHandler.postDelayed(new Runnable() {
-                        // @Override
-                        // public void run() {
-                        // String lastActivity =
-                        // LockManager.getInstatnce().getLastActivity();
-                        // if (lastActivity != null
-                        // && lastActivity
-                        // .equals("com.google.android.finsky.activities.MainActivity"))
-                        // {
-                        // // Intent intent2 = new Intent(
-                        // // HomeActivity.this,
-                        // // GooglePlayGuideActivity.class);
-                        // // startActivity(intent2);
-                        // }
-                        // }
-                        // }, 1000);
-                    } catch (Exception e) {
-
-                    }
-                } else {
-                    intent = new Intent(Intent.ACTION_VIEW);
-                    Uri uri = Uri
-                            .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                    intent.setData(uri);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            /* sdk mark */
+            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    "googleplay");
+            LockManager.getInstatnce().timeFilterSelf();
+            if (AppUtil.appInstalled(getApplicationContext(),
+                    "com.android.vending")) {
+                intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                intent.setData(uri);
+                // ComponentName cn = new ComponentName(
+                // "com.android.vending",
+                // "com.google.android.finsky.activities.MainActivity");
+                // intent.setComponent(cn);
+                intent.setPackage("com.android.vending");
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
                     startActivity(intent);
+                    // mHandler.postDelayed(new Runnable() {
+                    // @Override
+                    // public void run() {
+                    // String lastActivity =
+                    // LockManager.getInstatnce().getLastActivity();
+                    // if (lastActivity != null
+                    // && lastActivity
+                    // .equals("com.google.android.finsky.activities.MainActivity"))
+                    // {
+                    // // Intent intent2 = new Intent(
+                    // // HomeActivity.this,
+                    // // GooglePlayGuideActivity.class);
+                    // // startActivity(intent2);
+                    // }
+                    // }
+                    // }, 1000);
+                } catch (Exception e) {
+
                 }
+            } else {
+                intent = new Intent(Intent.ACTION_VIEW);
+                Uri uri = Uri
+                        .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                intent.setData(uri);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
         } else if (position == 3) {
             /* sdk mark */
             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
@@ -1161,13 +1167,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             /* 游戏中心 */
 
             /* sdk mark */
-//            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-//                    "gamecenter");
-//            intent = new Intent(HomeActivity.this,
-//                    AppWallActivity.class);
-//            intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG,
-//                    Constants.HOME_TO_APP_WALL_FLAG_VALUE);
-//            startActivity(intent);
+            // SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+            // "gamecenter");
+            // intent = new Intent(HomeActivity.this,
+            // AppWallActivity.class);
+            // intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG,
+            // Constants.HOME_TO_APP_WALL_FLAG_VALUE);
+            // startActivity(intent);
             unistallPG();
         } else if (position == 4) {
             /* 检查更新 */
@@ -1552,7 +1558,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 .setRightButtonText(getString(R.string.auto_start_guide_tip_right_button));
         mAutoStartGuideDialog.setIswipeUpdateDialogBackground(R.drawable.auto_start_dialog_tip_bg);
         mAutoStartGuideDialog.setContentImage(R.drawable.shouquan);
-        mAutoStartGuideDialog.setFlag(IswipUpdateTipDialog.AUTOSTART_TIP_DIALOG);
+        mAutoStartGuideDialog.setFlag(AutoStartTipDialog.AUTOSTART_TIP_DIALOG);
         mAutoStartGuideDialog.setLeftListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -1598,5 +1604,52 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             e.printStackTrace();
         }
         return false;
+    }
+
+    /* 开启高级保护引导对话框 */
+    private void advanceProtectDialogTip() {
+        if (mAdvanceProtectDialog == null) {
+            mAdvanceProtectDialog = new AdvanceProtectTipDialog(this);
+        }
+        mAdvanceProtectDialog.setLeftListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mAdvanceProtectDialog.dismiss();
+            }
+        });
+        mAdvanceProtectDialog.setRightListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mAdvanceProtectDialog.dismiss();
+                Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
+                startActivity(intent);
+            }
+        });
+        mAdvanceProtectDialog.setFlag(AdvanceProtectTipDialog.ADVANCE_PROTECT_TIP_DIALOG);
+        mAdvanceProtectDialog.setCanceledOnTouchOutside(false);
+        mAdvanceProtectDialog.show();
+    }
+
+    /* 是否显示高级保护对话框的处理 */
+    private boolean showAdvanceProtectDialog() {
+        String channel = getString(R.string.channel_code);
+        boolean isFilterChannel = false;
+        List<String> channels = Arrays.asList(FILTER_CHANNEL);
+        if (channels != null && channels.size() > 0) {
+            for (String string : channels) {
+                if (string.equals(channel)) {
+                    isFilterChannel = true;
+                    break;
+                }
+            }
+        }
+        boolean isAdvanceProtectTip = AppMasterPreference.getInstance(this)
+                .getAdvanceProtectDialogTip();
+        if (!isFilterChannel && isAdvanceProtectTip) {
+            advanceProtectDialogTip();
+        }
+        return isFilterChannel;
     }
 }

@@ -288,7 +288,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_PG_UNLOCK_UPDATE_TIP_FLAG = "pg_unlock_update_flag";
     public static final String PREF_PG_IS_FORCE_UPDATE = "pg_is_force_update";
     public static final String PREF_RANDOM_IN_30_WITHIN = "randoom_in_30_within";
-
+    public static final String PREF_ADVANCE_PROTECT_DIALOG_TIP = "advance_protect_dialog_tip";
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
     private List<String> mLockedAppList;
@@ -2302,7 +2302,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setLastBoostTime(long lastBoostTime) {
         mPref.edit().putLong(PREF_LAST_BOOST_TIMES, lastBoostTime).apply();
     }
-    
+
     public long getLastBoostWithADTime() {
         return mPref.getLong(PREF_LAST_BOOST_WITH_AD_TIMES, 0);
     }
@@ -2856,4 +2856,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public int getRandomIn30Within() {
         return mPref.getInt(PREF_RANDOM_IN_30_WITHIN, -1);
     }
+
+    /* 高级保护打开提示 */
+    public void setAdvanceProtectDialogTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_ADVANCE_PROTECT_DIALOG_TIP, flag).apply();
+    }
+
+    public boolean getAdvanceProtectDialogTip() {
+        return mPref.getBoolean(PREF_ADVANCE_PROTECT_DIALOG_TIP, true);
+    }
+
 }
