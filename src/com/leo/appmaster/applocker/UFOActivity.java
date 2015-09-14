@@ -36,7 +36,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.R.id;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -205,6 +204,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
                 if(mHideThemes.contains(mChosenTheme.packageName)){
                     mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_use));
+                    AppMasterApplication.setSharedPreferencesValue(mChosenTheme.packageName);
+                    LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
                     Toast.makeText(UFOActivity.this, UFOActivity.this.getResources().getString(R.string.ufo_theme_use_toast), 0).show();
                     UFOActivity.this.finish();
                 }
