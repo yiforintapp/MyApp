@@ -226,6 +226,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_QUICK_SLIDE_ANIM_SHOW_TIMES = "quick_slide_anim_show_times";
     public static final String PREF_IF_LOCK_SCREEN_MENU_CLICKED = "if_menu_clicked";
     public static final String PREF_LAST_BOOST_TIMES = "last_boost_times";
+    public static final String PREF_LAST_BOOST_WITH_AD_TIMES = "last_boost_with_ad_times";
     public static final String PREF_SPLASH_SKIP_URL = "splash_skip_url";
     public static final String PREF_SPLASH_SKIP_MODE = "splash_skip_mode";
     public static final String PREF_SPLASH_DElAY_TIME = "splash_delay_time";
@@ -2300,6 +2301,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLastBoostTime(long lastBoostTime) {
         mPref.edit().putLong(PREF_LAST_BOOST_TIMES, lastBoostTime).apply();
+    }
+    
+    public long getLastBoostWithADTime() {
+        return mPref.getLong(PREF_LAST_BOOST_WITH_AD_TIMES, 0);
+    }
+
+    public void setLastBoostWithADTime(long lastBoostTime) {
+        mPref.edit().putLong(PREF_LAST_BOOST_WITH_AD_TIMES, lastBoostTime).apply();
     }
 
     /* 保存闪屏跳转链接 */

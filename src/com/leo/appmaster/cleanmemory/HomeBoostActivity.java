@@ -16,6 +16,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageAware;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
 import com.mobvista.sdk.m.core.entity.Campaign;
@@ -29,6 +30,7 @@ import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.Build.VERSION;
 import android.view.Display;
 import android.view.Gravity;
@@ -55,6 +57,8 @@ public class HomeBoostActivity extends Activity {
     private int mScreenH;
     private boolean mIsADLoaded = false;
     private RelativeLayout mRlResultWithAD;
+    private CountDownTimer mCdt;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,48 +67,59 @@ public class HomeBoostActivity extends Activity {
         handleIntent();
         overridePendingTransition(0, 0);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "boost", "launcher");
-        loadAD();
+        
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        long currentTime = System.currentTimeMillis();
+        long lastBoostWithADTime = amp.getLastBoostWithADTime();
+//        if ((currentTime - lastBoostTime) < 10 * 1000) {
+//            isClean = false;
+        if((currentTime-lastBoostWithADTime)>1000*60*60*24){
+            loadAD();            
+        }
     }
-    
+
     private void loadAD() {
 
-//        mAdEngine = MobvistaEngine.getInstance();
-//        mAdEngine.loadMobvista(this, new MobvistaListener() {
-//
-//            @Override
-//            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-//                if (code == MobvistaEngine.ERR_OK) {
-//                    mIsADLoaded = true;
-//                    loadADPic(campaign.getIconUrl(),
-//                            new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48), DipPixelUtil
-//                                    .dip2px(HomeBoostActivity.this, 48)),
-//                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_ufo_ad_icon));
-//                    loadADPic(campaign.getImageUrl(),
-//                            new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 302), DipPixelUtil
-//                                    .dip2px(HomeBoostActivity.this, 158)),
-//                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_appbg_ufo));
-//
-//                    TextView appname = (TextView) mRlResultWithAD.findViewById(R.id.tv_appname_ufo);
-//                    appname.setText(campaign.getAppName());
-//
-//                    TextView appdesc = (TextView) mRlResultWithAD.findViewById(R.id.tv_appdesc_ufo);
-//                    appdesc.setText(campaign.getAppDesc());
-//
-//                    Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ufo_dialog_install);
-//                    call.setText(campaign.getAdCall());
-//                    mAdEngine.registerView(HomeBoostActivity.this, call);
-////                }
-//            }
-//
-//            @Override
-//            public void onMobvistaClick(Campaign campaign) {
-//                HomeBoostActivity.this.finish();
-////                AppMasterPreference.getInstance(UFOActivity.this).setAdEtClickTime(
-////                        System.currentTimeMillis());
-//            }
-//        });
+        mAdEngine = MobvistaEngine.getInstance();
+        mAdEngine.loadMobvista(this, new MobvistaListener() {
+
+            @Override
+            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                if (code == MobvistaEngine.ERR_OK) {
+                    mIsADLoaded = true;
+                    long currentTime = System.currentTimeMillis();
+                    AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);
+                    loadADPic(campaign.getIconUrl(),
+                            new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
+                                    DipPixelUtil
+                                            .dip2px(HomeBoostActivity.this, 48)),
+                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_icon));
+//                    ImageLoader.getInstance().displayImage(campaign.getImageUrl(), (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg));
+                    
+                    loadADPic(campaign.getImageUrl(),new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 262),DipPixelUtil.dip2px(HomeBoostActivity.this, 130)),
+                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg));
+
+                    TextView appname = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appname);
+                    appname.setText(campaign.getAppName());
+
+                    TextView appdesc = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appdesc);
+                    appdesc.setText(campaign.getAppDesc());
+
+                    Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ad_appcall);
+                    call.setText(campaign.getAdCall());
+                    mAdEngine.registerView(HomeBoostActivity.this, call);
+                }
+            }
+
+            @Override
+            public void onMobvistaClick(Campaign campaign) {
+                HomeBoostActivity.this.finish();
+                // AppMasterPreference.getInstance(UFOActivity.this).setAdEtClickTime(
+                // System.currentTimeMillis());
+            }
+        });
     }
-    
+
     private void loadADPic(String url, ImageSize size, final ImageView v) {
         ImageLoader.getInstance().loadImage(
                 url, size, new ImageLoadingListener() {
@@ -123,12 +138,13 @@ public class HomeBoostActivity extends Activity {
                             v.setImageBitmap(loadedImage);
                         }
                     }
+
                     @Override
                     public void onLoadingCancelled(String imageUri, View view) {
                     }
                 });
     }
-    
+
     private void handleIntent() {
         Intent intent = getIntent();
         String abc = intent.getStringExtra("for_sdk");
@@ -159,7 +175,7 @@ public class HomeBoostActivity extends Activity {
     private void initUI() {
         Display mDisplay = getWindowManager().getDefaultDisplay();
         mScreenH = mDisplay.getHeight();
-        mRlResultWithAD=(RelativeLayout) findViewById(R.id.rl_withAD);
+        mRlResultWithAD = (RelativeLayout) findViewById(R.id.rl_withAD);
         mStatusBar = findViewById(R.id.bg_statusbar);
         mIvRocket = (ImageView) findViewById(R.id.iv_rocket);
         mIvCloud = (ImageView) findViewById(R.id.iv_cloud);
@@ -203,7 +219,9 @@ public class HomeBoostActivity extends Activity {
                 cloudAlphaAnimator2.addListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        HomeBoostActivity.this.finish();
+                        if(!mIsADLoaded){
+                            HomeBoostActivity.this.finish();
+                        }
                     }
                 });
                 AnimatorSet cloudAnimatorSet = new AnimatorSet();
@@ -245,10 +263,7 @@ public class HomeBoostActivity extends Activity {
     }
 
     public void showCleanResault() {
-        LayoutInflater inflater = LayoutInflater.from(this);
-//        View view = inflater.inflate(R.layout.toast_self_make, null);
-        View view = inflater.inflate(R.layout.view_after_accelerate_new, null);
-        TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_accelerat_result);
+
         String mToast;
 
         if (isClean) {
@@ -270,35 +285,48 @@ public class HomeBoostActivity extends Activity {
             mToast = getString(R.string.the_best_status_toast);
         }
 
-        if(mIsADLoaded){
+        if (mIsADLoaded) {
+            mRlResultWithAD.setVisibility(View.VISIBLE);
             TextView resultText = (TextView) mRlResultWithAD.findViewById(R.id.tv_accelerat_result);
             resultText.setText(mToast);
-            
+            isClean = true;
+            mCdt = new CountDownTimer(5000, 1000) {
+                
+                @Override
+                public void onTick(long millisUntilFinished) {
+                    
+                }
+                
+                @Override
+                public void onFinish() {
+                    HomeBoostActivity.this.finish();
+                }
+            };
         }
-        
-        
-        
-        
-        
-        
-        
-        tv_clean_rocket.setText(mToast);
-        Toast toast = new Toast(this);
-        toast.setView(view);
-        toast.setDuration(0);
-        int marginTop = 0;
-        if (mScreenH >= 1920) {
-            marginTop = 150;
-        } else if (mScreenH >= 1280) {
-            marginTop = 120;
-        } else if (mScreenH >= 800) {
-            marginTop = 80;
-        } else {
-            marginTop = 30;
+        else {
+            LayoutInflater inflater = LayoutInflater.from(this);
+            // View view = inflater.inflate(R.layout.toast_self_make, null);
+            View view = inflater.inflate(R.layout.view_after_accelerate_new, null);
+            TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_accelerat_result);
+            tv_clean_rocket.setText(mToast);
+            Toast toast = new Toast(this);
+            toast.setView(view);
+            toast.setDuration(0);
+            int marginTop = 0;
+            if (mScreenH >= 1920) {
+                marginTop = 150;
+            } else if (mScreenH >= 1280) {
+                marginTop = 120;
+            } else if (mScreenH >= 800) {
+                marginTop = 80;
+            } else {
+                marginTop = 30;
+            }
+            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
+            toast.show();
+            isClean = true;
         }
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
-        toast.show();
-        isClean = true;
+
     }
 
     private void tryTransStatusbar() {
@@ -306,6 +334,14 @@ public class HomeBoostActivity extends Activity {
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         } else {
             mStatusBar.setVisibility(View.GONE);
+        }
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(mAdEngine!=null){
+        mAdEngine.release(this);
         }
     }
 

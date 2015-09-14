@@ -155,7 +155,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         }
                     }
                 }
-                LeoLog.e("poha", list.size()+"最终list size");  
+//                LeoLog.e("poha", list.size()+"最终list size");  
                 if(list.size()==0){
                     list=listBackup;
                 }
@@ -175,7 +175,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
                 
-                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
+//                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 144),
                         ufoActivity.mThemDialogBg);
                 
