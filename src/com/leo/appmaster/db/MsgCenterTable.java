@@ -275,7 +275,7 @@ public class MsgCenterTable extends BaseTable {
         try {
             cursor = db.query(TABLE_NAME, null,
                     COL_UNREAD + " = ?", new String[] { UNREADED + "" }, null, null, null);
-            if (cursor != null) {
+            if (cursor != null && cursor.getCount() > 0) {
                 int result = cursor.getCount();
                 cursor.moveToFirst();
                 do {
