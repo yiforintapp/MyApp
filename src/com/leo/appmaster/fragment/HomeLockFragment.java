@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -165,8 +166,8 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                     LeoLog.e("lockmore",
                             "enter lock lis tand set home to list true");
                 }
-//                QuickGestureManager.getInstance(getActivity()).privacyContactSendReceiverToSwipe(
-//                        QuickGestureManager.PRIVACY_CALL);
+                // QuickGestureManager.getInstance(getActivity()).privacyContactSendReceiverToSwipe(
+                // QuickGestureManager.PRIVACY_CALL);
                 break;
             case R.id.lock_theme:
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "theme");
@@ -195,6 +196,7 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                 // center[0] = locations[0] + width / 2;
                 // center[1] = locations[1] + height / 2;
 
+                // ((HomeActivity) mActivity).setAdIconInVisible();
                 ((HomeActivity) mActivity).showModePages(true/* , center */);
                 break;
 

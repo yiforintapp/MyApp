@@ -252,7 +252,10 @@
     <dimen name="privacy_ad_dec_m_top">4dp</dimen>
     <dimen name="privacy_ad_download_width">262dp</dimen>
     <dimen name="privacy_ad_download_height">28dp</dimen>
-                <dimen name="privacy_ad_right_content_p_r">18dp</dimen>
+    <dimen name="privacy_ad_right_content_p_r">18dp</dimen>
+    <dimen name="home_ad_icon_width">22dp</dimen>
+    <dimen name="home_ad_icon_height">38dp</dimen>
+    <dimen name="home_ad_icon_m_top">170dp</dimen>
     <!-- 2.9 end -->
 
 </resources>

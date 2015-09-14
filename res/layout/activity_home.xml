@@ -50,16 +50,16 @@
 
                 <com.leo.appmaster.ui.LeoPagerTab
                     android:id="@+id/tab_indicator"
-		            android:overScrollMode="never"
                     android:layout_width="match_parent"
-                    android:layout_height="56dp" />
+                    android:layout_height="56dp"
+                    android:overScrollMode="never" />
 
                 <android.support.v4.view.ViewPager
                     android:id="@+id/viewpager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:overScrollMode="never"
-                    android:background="@color/white" />
+                    android:background="@color/white"
+                    android:overScrollMode="never" />
             </LinearLayout>
 
             <ListView
@@ -68,10 +68,10 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="start"
                 android:background="#f5f5f5"
-		        android:overScrollMode="never"
                 android:divider="@drawable/line"
                 android:dividerHeight="1dp"
                 android:listSelector="@drawable/manager_backup_list_selecter"
+                android:overScrollMode="never"
                 android:scrollbars="none" >
             </ListView>
         </android.support.v4.widget.DrawerLayout>
@@ -86,5 +86,13 @@
     <include
         android:id="@+id/privacy_proposal_layout"
         layout="@layout/privacy_proposal_layout" />
+
+    <ImageView
+        android:id="@+id/iv_ad_icon"
+        android:layout_width="@dimen/home_ad_icon_width"
+        android:layout_height="@dimen/home_ad_icon_height"
+        android:layout_gravity="right"
+        android:layout_marginTop="@dimen/home_ad_icon_m_top"
+        android:background="@drawable/lockad1" />
 
 </FrameLayout>

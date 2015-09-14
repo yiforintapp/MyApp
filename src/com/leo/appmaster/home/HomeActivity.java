@@ -16,8 +16,10 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.net.wifi.WifiConfiguration.Visibility;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Bundle;
@@ -130,7 +132,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private Handler mHandler = new Handler();
     private DrawerArrowDrawable mDrawerArrowDrawable;
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
-//    private ImageView app_hot_tip_icon;
+    // private ImageView app_hot_tip_icon;
     private int type;
     private int REQUEST_IS_FROM_APP_LOCK_LIST = 1;
     private boolean mIsFromAppLockList = false;
@@ -141,6 +143,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private static final boolean DBG = true;
     private ImageView mLeftMenuRedTip;
     private AutoStartTipDialog mAutoStartGuideDialog;
+    private AnimationDrawable adAnimation;
+    private ImageView mAdIcon;
 
     private TextView mUnreadCountTv;
 
@@ -378,14 +382,30 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mShadeView = (HomeShadeView) findViewById(R.id.shadeview);
         mShadeView.setPosition(0);
         mShadeView.setColorChangedListener(this);
-//        app_hot_tip_icon = (ImageView) mTtileBar.findViewById(R.id.app_hot_tip_icon_);
-//        if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
-//            app_hot_tip_icon.setVisibility(View.VISIBLE);
-//        } else {
-//            app_hot_tip_icon.setVisibility(View.GONE);
-//        }
+
+        mAdIcon = (ImageView) findViewById(R.id.iv_ad_icon);
+        mAdIcon.setOnClickListener(this);
+        // app_hot_tip_icon = (ImageView)
+        // mTtileBar.findViewById(R.id.app_hot_tip_icon_);
+        // if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
+        // app_hot_tip_icon.setVisibility(View.VISIBLE);
+        // } else {
+        // app_hot_tip_icon.setVisibility(View.GONE);
+        // }
 
         mUnreadCountTv = (TextView) findViewById(R.id.home_mc_unread_tv);
+    }
+
+    public void setAdIconVisible() {
+        if (mAdIcon != null) {
+            mAdIcon.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void setAdIconInVisible() {
+        if (mAdIcon != null) {
+            mAdIcon.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void showModePages(boolean show/* , int[] center */) {
@@ -394,8 +414,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
 
         if (show) {
+            // mAdIcon.setVisibility(View.INVISIBLE);
             mMultiModeView.show();
         } else {
+            // mAdIcon.setVisibility(View.VISIBLE);
             mMultiModeView.hide();
         }
     }
@@ -507,11 +529,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             }
         }
 
-//        if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
-//            app_hot_tip_icon.setVisibility(View.VISIBLE);
-//        } else {
-//            app_hot_tip_icon.setVisibility(View.GONE);
-//        }
+        // if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
+        // app_hot_tip_icon.setVisibility(View.VISIBLE);
+        // } else {
+        // app_hot_tip_icon.setVisibility(View.GONE);
+        // }
         /* ISwipe升级对话框提示 */
         showIswipDialog();
         super.onResume();
@@ -706,6 +728,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 Intent msgCenter = new Intent();
                 msgCenter.setClass(this, MsgCenterActivity.class);
                 startActivity(msgCenter);
+                break;
+            case R.id.iv_ad_icon:
+                Intent mWallIntent = mWallAd.getWallIntent();
+                startActivity(mWallIntent);
                 break;
             default:
                 break;
@@ -1389,6 +1415,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             // preload the wall data
             mWallAd.preloadWall();
         }
+
+        mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
+        adAnimation = (AnimationDrawable)
+                mAdIcon.getBackground();
+        adAnimation.start();
 
     }
 
