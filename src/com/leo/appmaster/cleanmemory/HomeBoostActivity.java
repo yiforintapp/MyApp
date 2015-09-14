@@ -315,21 +315,6 @@ public class HomeBoostActivity extends Activity {
                 }
             };
             mCdt.start();
-//            PropertyValuesHolder countdown = PropertyValuesHolder.ofFloat("dd", 1f,2f,3f,4f,5f);
-//            
-//            ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(counter, countdown);
-//            animator.addUpdateListener(new AnimatorUpdateListener() {
-//                
-//                @Override
-//                public void onAnimationUpdate(ValueAnimator arg0) {
-//                    
-//                    counter.setText(mCountDownNum+" ");
-//                    mCountDownNum--;
-//                    counter.invalidate();
-//                }
-//            });
-//            animator.setDuration(5000);
-//            animator.start();
         }
         else {
             LayoutInflater inflater = LayoutInflater.from(this);
