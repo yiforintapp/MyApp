@@ -162,6 +162,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_AD_ICON_JUMP_CLICKED = "click_jump_adicon";
     public static final String PREF_AD_ICON_FROM_HOME = "click_home_ad_icom";
 
+    // ad desk icon
+    public static final String PREF_AD_ICON_DESK = "ad_icon_desk";
+
     // time to show notify that clean memory
     public static final String PREF_SHOW_NOTIFY_CLEAN_MEMORY = "show_notify_clean_memory";
     // lock mode
@@ -1462,6 +1465,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public long getAdClickTimeFromHome() {
         return mPref.getLong(PREF_AD_ICON_FROM_HOME, 0);
+    }
+
+    public void setAdDeskIcon(boolean value) {
+        mPref.edit().putBoolean(PREF_AD_ICON_DESK, value).apply();
+    }
+
+    public boolean getAdDeskIcon() {
+        return mPref.getBoolean(PREF_AD_ICON_DESK, false);
     }
 
     public void setAdEtClickTime(long time) {

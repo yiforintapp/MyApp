@@ -168,14 +168,15 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         tryTransStatusbar();
         // installShortcut();
 
+        // TODO
+        mobvistaCheck();
+
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
         showQuickGestureContinue();
         recordEnterHomeTimes();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
-        // TODO
-        mobvistaCheck();
         // AM-2128 偶现图片显示异常，先暂时注释掉
         // releaseSysResources();
         /* 获取是否从iswipe通知进入 */
@@ -898,6 +899,32 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     sendBroadcast(shortcut);
                     prefernece.edit().putBoolean("shortcut", true).apply();
                 }
+
+                boolean isInstall = AppMasterPreference.getInstance(HomeActivity.this)
+                        .getAdDeskIcon();
+                if (!isInstall) {
+                    // Intent newIntent = mWallAd.getWallIntent();
+                    Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(),
+                            DeskAdActivity.class);
+                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                    Intent appWallShortcut = new Intent(
+                            "com.android.launcher.action.INSTALL_SHORTCUT");
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                            getString(R.string.desk_ad_name));
+                    ShortcutIconResource appwallIconRes =
+                            Intent.ShortcutIconResource.fromContext(
+                                    HomeActivity.this,
+                                    R.drawable.ad_desktop_icon);
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                            appwallIconRes);
+                    appWallShortcut.putExtra("duplicate", false);
+                    appWallShortcut.putExtra("from_shortcut", true);
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
+                            appWallShortIntent);
+                    sendBroadcast(appWallShortcut);
+                    AppMasterPreference.getInstance(HomeActivity.this).setAdDeskIcon(true);
+                }
                 // boolean appwallFlag =
                 // prefernece.getBoolean("shortcut_appwall", false);
                 // if (appwallFlag) {
@@ -940,6 +967,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 // prefernece.edit().putBoolean("shortcut_appwall",
                 // true).commit();
                 // }
+
                 if (prefernece.getBoolean(KEY_ROOT_CHECK, true)) {
                     boolean root = RootChecker.isRoot();
                     if (root) {

@@ -344,6 +344,14 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" />
         <activity
+            android:name=".home.DeskAdActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:launchMode="singleInstance"
+            android:noHistory="true"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+            </activity>
+        <activity
             android:name=".applocker.RecommentAppLockListActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
@@ -775,7 +783,6 @@
                 <action android:name="com.leo.appmaster.action.SCHEDULE" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

@@ -28,16 +28,17 @@ public class TaskChangeHandler {
     public static final String GESTURE = "QuickGesturePopupActivity";
     public static final String WEBVIEW = "WebViewActivity";
     public static final String UPDATE = "UpdateActivity";
-//    public static final String AD = "AdMobvistaAct";
+    // public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
     public static final String LAUNCHERBOOST = "HomeBoostActivity";
+    public static final String DESKAD = "DeskAdActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
     private static final String DOWNLAOD_PKG_21 = "com.android.documentsui";
 
     private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
     private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
-    
+
     private static final boolean DBG = false;
 
     private Context mContext;
@@ -88,16 +89,16 @@ public class TaskChangeHandler {
             return;
         }
         String myPackage = mContext.getPackageName();
-        
+
         if (DBG) {
             LeoLog.i("handleAppLaunch", pkg + "/" + activity);
         }
-        
-        //fix bug AM-2134
-        if(TextUtils.equals(myPackage, pkg) && activity != null && activity.contains("Launcher")) {
+
+        // fix bug AM-2134
+        if (TextUtils.equals(myPackage, pkg) && activity != null && activity.contains("Launcher")) {
             return;
         }
-        
+
         // for gesture check
         if (activity.contains(GESTURE)) {
             /* 去除下面代码为了解决：关闭GESTURE这个Acitivty后启动创建热区任务时闪动创建问题 */
@@ -106,7 +107,6 @@ public class TaskChangeHandler {
             FloatWindowHelper.mGestureShowing = false;
         }
 
-        
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
         String checkPkg = amp.getDoubleCheck();
@@ -125,13 +125,14 @@ public class TaskChangeHandler {
             if (doubleCheck) {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
-                                && (activity.contains(DESKPROXYNAME) || activity
-                                        .contains(LAUNCHERBOOST) || activity
-                                        .contains(SPLASHNAME) || activity
-                                        .contains(GESTURE) || activity.contains(PROXYNAME)
+                                && (activity.contains(DESKPROXYNAME) || activity.contains(DESKAD)
+                                        || activity
+                                                .contains(LAUNCHERBOOST) || activity
+                                                .contains(SPLASHNAME) || activity
+                                                .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity
                                                 .contains(WAITNAME)
-                                         || activity.contains(UPDATE)
+                                        || activity.contains(UPDATE)
                                         || activity.contains(WEBVIEW))
                                 || (!unlocked && currentLockScreen))
                         || (unlocked && isLastSelf && mLastRuningActivity
@@ -143,10 +144,11 @@ public class TaskChangeHandler {
             } else {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
-                                && (activity.contains(DESKPROXYNAME) || activity
-                                        .contains(LAUNCHERBOOST) || activity
-                                        .contains(SPLASHNAME) || activity
-                                        .contains(GESTURE) || activity.contains(PROXYNAME)
+                                && (activity.contains(DESKPROXYNAME) || activity.contains(DESKAD)
+                                        || activity
+                                                .contains(LAUNCHERBOOST) || activity
+                                                .contains(SPLASHNAME) || activity
+                                                .contains(GESTURE) || activity.contains(PROXYNAME)
                                         || activity.contains(UPDATE)
                                         || activity
                                                 .contains(WAITNAME) || activity.contains(WEBVIEW)) || currentLockScreen)
@@ -158,19 +160,20 @@ public class TaskChangeHandler {
                     return;
                 }
             }
-            
+
             // reset this filter flag
             if (LockScreenActivity.sLockFilterFlag) {
                 LockScreenActivity.sLockFilterFlag = false;
             }
-          
+
             // No need to lock activities in lock screen's task
-            if(!currentLockScreen && (baseActivity != null && baseActivity.contains(LOCKSCREENNAME))) {
+            if (!currentLockScreen
+                    && (baseActivity != null && baseActivity.contains(LOCKSCREENNAME))) {
                 mLastRunningPkg = pkg;
                 mLastRuningActivity = activity;
                 return;
             }
-            
+
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
 
