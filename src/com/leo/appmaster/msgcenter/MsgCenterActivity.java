@@ -11,6 +11,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
+import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -48,6 +49,13 @@ public class MsgCenterActivity extends BaseActivity implements
 
         mAdapter = new MsgCenterAdapter();
         mMessageLv.setAdapter(mAdapter);
+
+        ThreadManager.executeOnNetworkThread(new Runnable() {
+            @Override
+            public void run() {
+                MsgCenterFetchJob.checkCacheAndRequest(null);
+            }
+        });
     }
 
     @Override
