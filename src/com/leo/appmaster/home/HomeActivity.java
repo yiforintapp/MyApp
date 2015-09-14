@@ -146,6 +146,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private AutoStartTipDialog mAutoStartGuideDialog;
     private AnimationDrawable adAnimation;
     private ImageView mAdIcon;
+    private boolean isEnterPrivacySuggest = false;
 
     private TextView mUnreadCountTv;
 
@@ -403,6 +404,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     // }
     // }
 
+    public void setEnterPrivacySuggest(boolean value) {
+        isEnterPrivacySuggest = value;
+    }
+
     public void setAdIconInVisible() {
         if (mAdIcon != null) {
             mAdIcon.setVisibility(View.INVISIBLE);
@@ -550,7 +555,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void shouldShowAd() {
         long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
         long nowTime = System.currentTimeMillis();
-        if (nowTime - clickTime > INTERVEL_CLICK_AD) {
+        if ((nowTime - clickTime > INTERVEL_CLICK_AD) && !isEnterPrivacySuggest) {
             mAdIcon.setVisibility(View.VISIBLE);
             mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
             adAnimation = (AnimationDrawable)
@@ -813,8 +818,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             listItems.add(new MenuItem(resources.getString(R.string.app_setting_update),
                     R.drawable.menu_updates_icon));
         }
-        /*卸载PG*/
-//        listItems.add(object)
+        /* 卸载PG */
+        // listItems.add(object)
         /* 关于 */
         listItems.add(new MenuItem(resources.getString(R.string.app_setting_about),
                 R.drawable.menu_about_icon));

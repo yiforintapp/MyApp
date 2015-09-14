@@ -30,7 +30,9 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:background="#444444" >
+            android:background="#444444"
+            android:paddingBottom="6dp"
+            android:paddingTop="6dp" >
 
             <ImageView
                 android:id="@+id/ad_theme_icon"
