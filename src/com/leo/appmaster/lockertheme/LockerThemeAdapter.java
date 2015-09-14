@@ -82,26 +82,12 @@ public class LockerThemeAdapter extends BaseAdapter {
             } else {
                 return NORMALTYEP;
             }
-            // if (position == 2 && isGetAd) {
-            // LeoLog.d("testAdapter", "THEME_TYPE_ONLINE ADTYPE");
-            // return ADTYPE;
-            // } else {
-            // LeoLog.d("testAdapter", "THEME_TYPE_ONLINE NORMALTYEP");
-            // return NORMALTYEP;
-            // }
         } else if (themes.get(position).themeType == Constants.THEME_TYPE_LOCAL) {
             if (themes.get(position).packageName.equals(LockerTheme.LOCAL_AD_NAME) && isGetAd) {
                 return ADTYPE;
             } else {
                 return NORMALTYEP;
             }
-            // if (position == 1 && isGetAd) {
-            // LeoLog.d("testAdapter", "THEME_TYPE_LOCAL ADTYPE");
-            // return ADTYPE;
-            // } else {
-            // LeoLog.d("testAdapter", "THEME_TYPE_LOCAL NORMALTYEP");
-            // return NORMALTYEP;
-            // }
         }
         return super.getItemViewType(position);
     }
@@ -184,7 +170,6 @@ public class LockerThemeAdapter extends BaseAdapter {
 
             viewItem2.setTag(adHolder);
             convertView = viewItem2;
-            // convertView.setTag(adHolder);
         }
 
         // icon

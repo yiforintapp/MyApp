@@ -242,13 +242,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     if (mThemeAdSwitchOpen == 1) {
                         mLocalThemeAdapter.setCampaign(campaign, isGetAd);
                         // 插入假数据，腾出广告位
-                        ThemeItemInfo localInfo = new ThemeItemInfo();
-                        localInfo.themeName = LOCAL_AD_NAME;
-                        localInfo.packageName = LOCAL_AD_NAME;
-                        localInfo.themeType = Constants.THEME_TYPE_LOCAL;
-                        if (mLocalThemes.size() > 0) {
-                            mLocalThemes.add(LOCAL_AD_LOCATION, localInfo);
-                        }
+                        addLocalAd();
                         mLocalThemeAdapter.notifyDataSetChanged();
                     }
                     // 2是在线有广告
@@ -277,6 +271,16 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 LockManager.getInstatnce().timeFilterSelf();
             }
         });
+    }
+
+    private void addLocalAd() {
+        ThemeItemInfo localInfo = new ThemeItemInfo();
+        localInfo.themeName = LOCAL_AD_NAME;
+        localInfo.packageName = LOCAL_AD_NAME;
+        localInfo.themeType = Constants.THEME_TYPE_LOCAL;
+        if (mLocalThemes.size() > 0) {
+            mLocalThemes.add(LOCAL_AD_LOCATION, localInfo);
+        }
     }
 
     private PackageChangedListener mPackageChangedListener = new PackageChangedListener() {
@@ -367,7 +371,11 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                                 break;
                             }
                         }
+
                         loadLocalTheme();
+                        if (isGetAd) {
+                            addLocalAd();
+                        }
                         mLocalThemeAdapter.notifyDataSetChanged();
                     }
                 }, 1000);
@@ -382,6 +390,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     @Override
                     public void run() {
                         loadLocalTheme();
+                        if (isGetAd) {
+                            addLocalAd();
+                        }
                         mLocalThemeAdapter.notifyDataSetChanged();
                         // if need to load online theme
                         ThemeItemInfo remove = null;
@@ -752,7 +763,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mAdEngine != null){
+        if (mAdEngine != null) {
             mAdEngine.release(this);
         }
 
