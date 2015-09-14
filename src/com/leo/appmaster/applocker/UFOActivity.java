@@ -74,6 +74,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private ImageView mThemDialogBg;
     private String mThemeName;
     private Button mBtnUseTheme;
+    private TextView mTvThemeName;
 
     private ImageView mClose;
     private RelativeLayout mWholeUFO;
@@ -94,27 +95,29 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_ad_ufo);
+        InitUI();
+        toLoad();
     };
     
     @Override
     protected void onStart() {
         super.onStart();
-        setContentView(R.layout.activity_ad_ufo);
-        InitUI();
-        toLoad();
+        
     }
     
     private void toLoad() {
         
         double themeChanceAfterUFO = (double)AppMasterPreference.getInstance(this).getThemeChanceAfterUFO();
         int ran = (int) (Math.random() * themeChanceAfterUFO + 1d);
+//        ran=2;
         if (ran == 1) {
-//            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
+            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
             mIsShowTheme = true;
             loadTheme();
             loadAD();
         } else {
-//            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
+            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
             loadAD();
         }
     }
@@ -175,9 +178,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 ufoActivity.mChosenTheme = list.get(ran);
                 
 //                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
-                ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 144),
+                ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 160),
                         ufoActivity.mThemDialogBg);
-                
+                ufoActivity.mTvThemeName.setText(ufoActivity.mThemeName);
                 ufoActivity.initButton();
             }
         }
@@ -225,7 +228,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 }
             }
         });
-        
     }
 
     private void loadAD() {
@@ -235,7 +237,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                if (code == MobvistaEngine.ERR_OK) {
+                if (code == MobvistaEngine.ERR_OK&&campaign!=null) {
                     mIsADLoaded = true;
                     loadADPic(campaign.getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
@@ -296,7 +298,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     private void InitUI() {
-
+        mTvThemeName=(TextView) findViewById(R.id.tv_ThemedialogName);
         mClose = (ImageView) findViewById(R.id.iv_close_ufo);
         mClose.setOnClickListener(new OnClickListener() {
             @Override
@@ -409,7 +411,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         // boolean hasGetLoadResult = false;
         mCdt = new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
-                if ((mIsADLoaded||mIsThemeLoaded) && !mHasGetLoadResult) {
+                if ((mIsADLoaded||(mIsThemeLoaded&&mIsShowTheme)) && !mHasGetLoadResult) {
                     if (mCdt != null) {
                         mCdt.onFinish();
                         mCdt.cancel();
@@ -454,13 +456,26 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                                 UFOActivity.this.finish();
                             }
                         });
+                
                 findViewById(R.id.rl_ADdialog_nodata).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_rollagain).setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent intent = new Intent(UFOActivity.this, UFOActivity.class);
-                        UFOActivity.this.finish();
-                        startActivity(intent);
+//                        Intent intent = new Intent(UFOActivity.this, UFOActivity.class);
+//                        UFOActivity.this.finish();
+//                        startActivity(intent);
+                        mWholeUFO.setY(DipPixelUtil.dip2px(UFOActivity.this, 30));
+                        mWholeUFO.setX(0);
+                        mWholeUFO.setVisibility(View.INVISIBLE);
+                        findViewById(R.id.rl_ADdialog_nodata).setVisibility(View.INVISIBLE);
+                        mIsADLoaded=false;
+                        mIsThemeLoaded=false;
+                        mHasPlayed = false;// 是否播放过动画，开始播放后置为true，以后每次WindowFocusChanged后就不播放动画了，
+                        mHasGetLoadResult = false;
+                        UFOActivity.this.onWindowFocusChanged(true);
+                        mAdEngine.release(UFOActivity.this);
+                        toLoad();
+                        
                     }
                 });
             }

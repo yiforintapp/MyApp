@@ -54,13 +54,13 @@
     </RelativeLayout>
 
     <RelativeLayout
-          android:clickable="true"
         android:id="@+id/rl_ADdialog_nodata"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="150dp"
         android:background="#00000000"
+        android:clickable="true"
         android:visibility="invisible" >
 
         <ImageView
@@ -99,114 +99,131 @@
     <RelativeLayout
         android:id="@+id/rl_Themedialog_root"
         android:layout_width="315dp"
-        android:layout_height="225dp" 
-        android:clickable="true"
-         android:layout_centerHorizontal="true"
-         android:layout_centerVertical="true"
-         android:visibility="invisible" 
-         >
-		
-        <RelativeLayout
-        android:id="@+id/rl_Themedialog"
-        android:layout_width="306dp"
-        android:layout_height="215dp"
-        android:layout_alignParentBottom="true"
-         android:layout_alignParentLeft="true"
+        android:layout_height="225dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@color/white"
-        android:visibility="visible" >
+        android:clickable="true"
+        android:visibility="invisible" >
 
-        <ImageView
-            android:id="@+id/iv_ThemedialogBg"
-            android:layout_width="290dp"
-            android:layout_height="144dp"
-            android:layout_marginTop="8dp"
-            android:layout_centerHorizontal="true"
-            android:visibility="visible" >
-        </ImageView>
-        
-        <ImageView
-            android:id="@+id/iv_ThemeIcon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
+        <RelativeLayout
+            android:id="@+id/rl_Themedialog"
+            android:layout_width="306dp"
+            android:layout_height="215dp"
             android:layout_alignParentBottom="true"
-        	 android:layout_alignParentLeft="true"
-        	 android:src="@drawable/ufo_theme_icon"
-            android:visibility="visible" >
-        </ImageView>
-        
-            <LinearLayout 
-            android:layout_width="180dp"
-            android:layout_height="35dp"
-            android:layout_marginLeft="45dp"
-            android:orientation="vertical"
-             android:layout_marginBottom="7dp"
-             android:layout_alignParentBottom="true"
-            >
-                 <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:text="@string/ufo_theme_title"
-            android:textColor="#333333"
-            android:textSize="11sp" />
-                 
-                <TextView
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3"
-            android:maxLines="2"
-            android:textColor="#999999"
-            android:text="@string/ufo_theme_content"
-            android:textSize="9sp" />
-            </LinearLayout>
-           
-
-        <Button
-            android:textColor="@color/white"
-            android:id="@+id/btn_usetheme"
-            android:layout_width="65dp"
-            android:layout_height="30dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/select_bt_halfscreen_install"
-            android:gravity="center"
-            android:text="@string/ufo_theme_down"
-            android:textSize="12sp" />
-        
-            <ImageView
-             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="18dp"
-            android:src="@drawable/ufo_theme_hot" />
-    </RelativeLayout>
-    <ImageView
-        android:id="@+id/iv_ufo_theme_close"
-             android:layout_alignParentTop="true"
-            android:layout_alignParentRight="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:background="@color/white"
+            android:visibility="visible" >
+
+            <RelativeLayout
+                android:layout_width="290dp"
+                android:layout_height="160dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="8dp" >
+
+                <ImageView
+                    android:scaleType="fitXY"
+                    android:id="@+id/iv_ThemedialogBg"
+                    android:layout_width="290dp"
+                    android:layout_height="160dp"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="visible" >
+                </ImageView>
+
+                <TextView
+                    android:layout_marginLeft="33dp"
+                    android:layout_marginBottom="8dp"
+                    android:textColor="#ffffff"
+                    android:id="@+id/tv_ThemedialogName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginTop="8dp"
+                    android:textSize="13dp"
+                    android:visibility="visible" >
+                </TextView>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_ThemeIcon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:src="@drawable/ufo_theme_icon"
+                android:visibility="visible" >
+            </ImageView>
+
+            <LinearLayout
+                android:layout_width="180dp"
+                android:layout_height="35dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="7dp"
+                android:layout_marginLeft="45dp"
+                android:orientation="vertical" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:text="@string/ufo_theme_title"
+                    android:textColor="#333333"
+                    android:textSize="11sp" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="3"
+                    android:maxLines="2"
+                    android:text="@string/ufo_theme_content"
+                    android:textColor="#999999"
+                    android:textSize="9sp" />
+            </LinearLayout>
+
+            <Button
+                android:id="@+id/btn_usetheme"
+                android:layout_width="65dp"
+                android:layout_height="30dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/select_bt_halfscreen_install"
+                android:gravity="center"
+                android:text="@string/ufo_theme_down"
+                android:textColor="@color/white"
+                android:textSize="12sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="18dp"
+                android:src="@drawable/ufo_theme_hot" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_ufo_theme_close"
             android:layout_width="30dp"
             android:layout_height="30dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
             android:src="@drawable/ufo_theme_dialog_close" />
-
     </RelativeLayout>
-
-    
 
     <RelativeLayout
         android:id="@+id/rl_ADdialog"
         android:layout_width="302dp"
         android:layout_height="285dp"
-          android:clickable="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@color/white"
+        android:clickable="true"
         android:visibility="invisible" >
 
         <!-- android:layout_marginTop="160dp" -->
@@ -230,10 +247,11 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="16dp"
+            android:gravity="center_vertical"
             android:background="@drawable/ad_bg_mask"
             android:text="Sponsored  "
             android:textColor="#ffffff"
-            android:textSize="8sp" />
+            android:textSize="9sp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
