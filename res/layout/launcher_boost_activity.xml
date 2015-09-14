@@ -18,13 +18,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true" >
+            android:layout_centerVertical="true" 
+             android:visibility="invisible">
 
             <TextView
+                android:gravity="center"
+                android:id="@+id/tv_counter"
+                android:textColor="#ffffff"
+                android:textSize="18dp"
+                   android:layout_width="30dp"
+            android:layout_height="30dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
-                android:background="#66ffffff"
-                android:text="ddddddddddddd5" />
+                 android:background="@drawable/accelerate_circle_corner_textview_bg"
+                android:text="5" />
 
             <!-- android:visibility="gone" > -->
 
@@ -33,11 +40,13 @@
                 android:layout_width="111dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="94dp"
+                  android:layout_centerHorizontal="true"
                 android:src="@drawable/acclerate_result_dial" />
 
             <!-- android:layout_below="@id/iv_dial" -->
 
             <RelativeLayout
+                  android:layout_centerHorizontal="true"
                 android:layout_width="300dp"
                 android:layout_height="260dp"
                 android:layout_marginTop="60dp"
@@ -126,9 +135,10 @@
             </RelativeLayout>
 
             <ImageView
+                  android:layout_centerHorizontal="true"
                 android:layout_width="44dp"
                 android:layout_height="27dp"
-                android:layout_marginLeft="137dp"
+                android:layout_marginLeft="22dp"
                 android:layout_marginTop="47dp"
                 android:src="@drawable/acclerate_result_zhizhen" />
         </RelativeLayout>

@@ -1,6 +1,8 @@
 
 package com.leo.appmaster.cleanmemory;
 
+import java.util.Timer;
+
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
@@ -22,9 +24,13 @@ import com.leo.imageloader.core.ImageSize;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Intent;
@@ -55,6 +61,7 @@ public class HomeBoostActivity extends Activity {
     private long mCleanMem;
     private boolean isCleanFinish = false;
     private int mScreenH;
+    private int mCountDownNum = 5;
     private boolean mIsADLoaded = false;
     private RelativeLayout mRlResultWithAD;
     private CountDownTimer mCdt;
@@ -71,8 +78,6 @@ public class HomeBoostActivity extends Activity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         long currentTime = System.currentTimeMillis();
         long lastBoostWithADTime = amp.getLastBoostWithADTime();
-//        if ((currentTime - lastBoostTime) < 10 * 1000) {
-//            isClean = false;
         if((currentTime-lastBoostWithADTime)>1000*60*60*24){
             loadAD();            
         }
@@ -114,6 +119,7 @@ public class HomeBoostActivity extends Activity {
             @Override
             public void onMobvistaClick(Campaign campaign) {
                 HomeBoostActivity.this.finish();
+             
                 // AppMasterPreference.getInstance(UFOActivity.this).setAdEtClickTime(
                 // System.currentTimeMillis());
             }
@@ -167,6 +173,9 @@ public class HomeBoostActivity extends Activity {
 
     @Override
     public void finish() {
+        if(mCdt!=null){
+            mCdt.cancel();
+        }
         overridePendingTransition(0, 0);
         LockManager.getInstatnce().filterAllOneTime(500);
         super.finish();
@@ -290,18 +299,37 @@ public class HomeBoostActivity extends Activity {
             TextView resultText = (TextView) mRlResultWithAD.findViewById(R.id.tv_accelerat_result);
             resultText.setText(mToast);
             isClean = true;
+            final TextView counter = (TextView) mRlResultWithAD.findViewById(R.id.tv_counter);
             mCdt = new CountDownTimer(5000, 1000) {
-                
+               
                 @Override
                 public void onTick(long millisUntilFinished) {
-                    
+                    mCountDownNum--;
+                    counter.setText(mCountDownNum+"");
                 }
                 
                 @Override
                 public void onFinish() {
+                    counter.setText(0+"");
                     HomeBoostActivity.this.finish();
                 }
             };
+            mCdt.start();
+//            PropertyValuesHolder countdown = PropertyValuesHolder.ofFloat("dd", 1f,2f,3f,4f,5f);
+//            
+//            ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(counter, countdown);
+//            animator.addUpdateListener(new AnimatorUpdateListener() {
+//                
+//                @Override
+//                public void onAnimationUpdate(ValueAnimator arg0) {
+//                    
+//                    counter.setText(mCountDownNum+" ");
+//                    mCountDownNum--;
+//                    counter.invalidate();
+//                }
+//            });
+//            animator.setDuration(5000);
+//            animator.start();
         }
         else {
             LayoutInflater inflater = LayoutInflater.from(this);
