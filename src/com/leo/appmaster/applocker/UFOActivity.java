@@ -110,12 +110,12 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         double themeChanceAfterUFO = (double)AppMasterPreference.getInstance(this).getThemeChanceAfterUFO();
         int ran = (int) (Math.random() * themeChanceAfterUFO + 1d);
         if (ran == 1) {
-            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
+//            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
             mIsShowTheme = true;
             loadTheme();
             loadAD();
         } else {
-            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
+//            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
             loadAD();
         }
     }
@@ -137,12 +137,12 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                     .parserJsonObject(ufoActivity, response);
             List<ThemeItemInfo> listBackup = new ArrayList<ThemeItemInfo>();
             listBackup.addAll(list);
-            Toast.makeText(ufoActivity, "firstly listBackup.size="+listBackup.size(), 0).show();
+//            Toast.makeText(ufoActivity, "firstly listBackup.size="+listBackup.size(), 0).show();
             
             for(int i=0;i<list.size();i++){
                 LeoLog.e("poha", list.get(i).packageName+"          "+list.get(i).themeName);
             }
-            LeoLog.e("poha", list.size()+"起始list size");  
+//            LeoLog.e("poha", list.size()+"起始list size");  
             if (list != null) {
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(ufoActivity).getHideThemeList();
@@ -203,10 +203,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             public void onClick(View v) {
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
-                if(mHideThemes.contains(mChosenTheme.packageName))
-                {
+                if(mHideThemes.contains(mChosenTheme.packageName)){
                     mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_use));
-                    Toast.makeText(UFOActivity.this, "已应用", 0).show();
+                    Toast.makeText(UFOActivity.this, UFOActivity.this.getResources().getString(R.string.ufo_theme_use_toast), 0).show();
                     UFOActivity.this.finish();
                 }
                 else{
