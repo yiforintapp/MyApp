@@ -58,7 +58,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     // 广告素材
     private MobvistaEngine mAdEngine;
     private boolean isFirstOpen = false;
-    private static int mPrivicyAdSwitchOpen = -1;
+    public static int mPrivicyAdSwitchOpen = -1;
 
     @Override
     public void onAttach(Activity activity) {

@@ -128,7 +128,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     private boolean mNeedLoadTheme;
 
     private MobvistaEngine mAdEngine;
-    private static int mThemeAdSwitchOpen = -1;
+    public static int mThemeAdSwitchOpen = -1;
     private boolean isGetAd = false;
 
     private static class EventHandler extends Handler {

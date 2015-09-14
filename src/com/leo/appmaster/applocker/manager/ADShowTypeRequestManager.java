@@ -20,8 +20,10 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.schedule.FetchScheduleJob.FetchScheduleListener;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
@@ -160,6 +162,8 @@ public class ADShowTypeRequestManager {
                     LeoLog.e("poha", "请求成功，加速后出现广告概率：" + response.getInt(AD_AFTER_ACCELERATING));
                     AppMasterPreference.getInstance(mContext).setIsADAfterPrivacyProtectionOpen(
                             (response.getInt(AD_AFTER_PRIVACY_PROTECTION)));
+                    HomePravicyFragment.mPrivicyAdSwitchOpen = response
+                            .getInt(AD_AFTER_PRIVACY_PROTECTION);
                     LeoLog.e("poha",
                             "请求成功，隐私保护后出现广告的开关：" + response.getInt(AD_AFTER_PRIVACY_PROTECTION));
                     AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(
@@ -167,6 +171,7 @@ public class ADShowTypeRequestManager {
                     LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
                     AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen(
                             (response.getInt(AD_AT_THEME)));
+                    LockerTheme.mThemeAdSwitchOpen = response.getInt(AD_AT_THEME);
                     LeoLog.e("poha", "请求成功，主题界面出现广告：" + response.getInt(AD_AT_THEME));
                     AppMasterPreference.getInstance(mContext).setIsGiftBoxNeedUpdate(
                             (response.getInt(GIFTBOX_UPDATE)));
