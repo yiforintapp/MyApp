@@ -5,14 +5,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.leo.appmaster.msgcenter.Message;
+import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * 消息中心数据库表
+ *  插入列表、删除列表、获取未读计数、获取列表、标记已读
  * Created by Jasper on 2015/9/10.
  */
 public class MsgCenterTable extends BaseTable {
@@ -82,12 +85,13 @@ public class MsgCenterTable extends BaseTable {
         for (Message oldMsg : oldList) {
             for (Message message : msgList) {
                 if (message.msgId == oldMsg.msgId) {
+                    // 仅仅保存已读/未读状态
                     message.unread = oldMsg.unread;
                     break;
                 }
             }
         }
-        deleteMsgList(oldList);
+        deleteMsgList(oldList, msgList);
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
@@ -176,16 +180,37 @@ public class MsgCenterTable extends BaseTable {
         }
     }
 
-    public void deleteMsgList(List<Message> list) {
-        if (list == null || list.isEmpty()) return;
+    public void deleteMsgList(List<Message> delList, List<Message> list) {
+        if (delList == null || delList.isEmpty()) return;
 
         SQLiteDatabase db = getHelper().getWritableDatabase();
         if (db == null) return;
 
         db.beginTransaction();
         try {
-            for (Message message : list) {
+            for (Message message : delList) {
                 db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[] { message.msgId + "" });
+                if (list == null || !message.isCategoryUpdate()) continue;
+
+                for (Message msg : list) {
+                    if (msg.msgId == message.msgId) {
+                        // 如果url不一致了，需要把旧的缓存文件删掉
+                        String name = MsgCenterFetchJob.getFileName(message.jumpUrl);
+                        String path = MsgCenterFetchJob.getFilePath(name);
+                        if (!msg.jumpUrl.equals(message.jumpUrl)) {
+                            File htmlFile = new File(path);
+                            if (htmlFile.exists()) {
+                                htmlFile.delete();
+                            }
+                        }
+                        if (!msg.resUrl.equals(message.resUrl)) {
+                            File zipFile = new File(path + ".zip");
+                            if (zipFile.exists()) {
+                                zipFile.delete();
+                            }
+                        }
+                    }
+                }
             }
             db.setTransactionSuccessful();
         } catch (Throwable e) {
@@ -228,27 +253,6 @@ public class MsgCenterTable extends BaseTable {
         }
 
         return message;
-    }
-
-    public void updateMessage(Message message) {
-        if (message == null) return;
-
-        SQLiteDatabase db = getHelper().getWritableDatabase();
-        if (db == null) return;
-
-        ContentValues values = new ContentValues();
-        values.put(COL_DESCRIPTION, message.description);
-        values.put(COL_IMAGE_URL, message.imageUrl);
-        values.put(COL_LINK, message.jumpUrl);
-        values.put(COL_MSG_ID, message.msgId);
-        values.put(COL_CATEGORY_NAME, message.categoryName);
-        values.put(COL_CATEGORY_CODE, message.categoryCode);
-        values.put(COL_TITLE, message.title);
-        values.put(COL_OFFLINE_TIME, message.offlineTime);
-        values.put(COL_TIME, message.time);
-        values.put(COL_RES, message.resUrl);
-        values.put(COL_UNREAD, message.unread ? UNREADED : READED);
-        db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { message.msgId + "" });
     }
 
     /**

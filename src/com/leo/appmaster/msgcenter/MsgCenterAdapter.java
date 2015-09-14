@@ -14,12 +14,14 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.MsgCenterTable;
+import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -70,6 +72,16 @@ public class MsgCenterAdapter extends BaseAdapter {
     private void onQueryResult(final List<Message> list) {
         if (list == null || list.isEmpty()) return;
 
+        Iterator<Message> iterator = list.iterator();
+        while (iterator.hasNext()) {
+            Message msg = iterator.next();
+            if (!msg.isCategoryUpdate()) continue;
+
+            // 更新日志，还没有缓存，则不显示
+            if (!MsgCenterFetchJob.hasCacheFile(msg.jumpUrl)) {
+                iterator.remove();
+            }
+        }
         ThreadManager.getUiThreadHandler().post(new Runnable() {
             @Override
             public void run() {

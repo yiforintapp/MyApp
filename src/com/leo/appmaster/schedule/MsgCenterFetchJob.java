@@ -5,29 +5,28 @@ import android.content.Context;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.FileRequest;
+import com.android.volley.toolbox.HttpStack;
+import com.android.volley.toolbox.HurlStack;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
-import java.util.zip.ZipFile;
 
 /**
  * 消息中心抓取任务
@@ -71,7 +70,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = (JSONObject) array.get(i);
 
-                Message message = new Message();
+                final Message message = new Message();
                 message.time = obj.getString("activity_time");
                 message.categoryName = obj.getString("category_name");
                 message.categoryCode = obj.getString("category_code");
@@ -87,7 +86,12 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
                 if (message.isCategoryUpdate()) {
                     // 如果是更新日志，开启更新日志下载功能
-                    checkCacheAndRequest(message);
+                    ThreadManager.executeOnNetworkThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            checkCacheAndRequest(message);
+                        }
+                    });
                 }
             }
         } catch (JSONException e) {
@@ -119,25 +123,26 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         String htmlFileName = fileNameNoSuffix + ".html";
         File htmlFile = new File(getFilePath(htmlFileName));
         if (msg.jumpUrl != null && !htmlFile.exists()) {
-            doRequestCache(msg, htmlFile.getAbsolutePath(), msg.jumpUrl);
+            requestHtml(htmlFile.getAbsolutePath(), msg.jumpUrl);
         }
 
         String resFileName = fileNameNoSuffix + ".zip";
         File resFile = new File(getFilePath(resFileName));
         if (msg.resUrl != null && !resFile.exists()) {
-            doRequestCache(msg, resFile.getAbsolutePath(), msg.resUrl);
+            // Volley不支持stream保存，蛋疼，自己写一套先
+            requestResFile(resFile.getAbsolutePath(), msg.resUrl);
         }
     }
 
-    private static void doRequestCache(Message msg, String filePath, String url) {
+    private static void requestHtml(String filePath, String url) {
         Context ctx = AppMasterApplication.getInstance();
         File file = new File(filePath);
         if (file.exists()) {
             // 文件存在，不继续请求
             return;
         }
-        
-        UpdateCacheListener listener = new UpdateCacheListener(msg);
+
+        UpdateCacheListener listener = new UpdateCacheListener();
         FileRequest request = new FileRequest(url, file.getAbsolutePath(), listener, listener);
         HttpRequestAgent.getInstance(ctx).getRequestQueue().add(request);
     }
@@ -151,11 +156,55 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         return ctx.getExternalCacheDir() + "/msgcenter/" + fileName;
     }
 
-    private static class UpdateCacheListener implements Response.Listener<File>, Response.ErrorListener {
-        Message msg;
-        UpdateCacheListener(Message msg) {
-            this.msg = msg;
+    public static String getFilePathByUrl(String url) {
+        return getFilePath(getFileName(url));
+    }
+
+    public static boolean hasCacheFile(String url) {
+        String fileName = getFileName(url);
+        String htmlFileStr = getFilePath(fileName + ".html");
+        File htmlFile = new File(htmlFileStr);
+        if (!htmlFile.exists()) return false;
+
+        String zipFileStr = getFilePath(fileName + ".zip");
+        File zipFile = new File(zipFileStr);
+        if (!zipFile.exists()) return false;
+
+        return true;
+    }
+
+    private static void requestResFile(String filePath, String url) {
+        File file = new File(filePath);
+        if (file.exists()) {
+            // 文件存在，不继续请求
+            return;
         }
+        HttpStack stack = new HurlStack();
+        FileRequest request = new FileRequest(url, null, null, null);
+
+        FileOutputStream fos = null;
+        InputStream inputStream = null;
+        try {
+            HttpResponse response = stack.performRequest(request, new HashMap<String, String>());
+            HttpEntity entity = response.getEntity();
+            inputStream = entity.getContent();
+            fos = new FileOutputStream(file);
+
+            int size = 2048;
+            byte[] buffer = new byte[size];
+            int n;
+            while ((n = inputStream.read(buffer, 0, size)) != -1) {
+                fos.write(buffer, 0, n);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            IoUtils.closeSilently(inputStream);
+            IoUtils.closeSilently(fos);
+        }
+    }
+
+    private static class UpdateCacheListener implements Response.Listener<File>, Response.ErrorListener {
 
         @Override
         public void onErrorResponse(VolleyError error) {
@@ -165,60 +214,6 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         @Override
         public void onResponse(File response, boolean noMidify) {
             LeoLog.i("MsgCenterFetchJob", "UpdateCacheListener, onResponse: " + response);
-            String nameString = response.getName();
-            if (!nameString.endsWith("html")) {
-//                try {
-//                    ZipFile zipFile = new ZipFile(response);
-//                    Enumeration enumeration = zipFile.entries();
-//
-//                    String zipName = zipFile.getName();
-//                    String outputDir = zipName.substring(0, zipName.lastIndexOf("."));
-//                    while (enumeration.hasMoreElements()) {
-//                        ZipEntry entry = (ZipEntry) enumeration.nextElement();
-//                        unzip(zipFile, entry, outputDir);
-//                    }
-//                } catch (ZipException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-                
-            }
-        }
-
-        private void unzip(ZipFile zipFile, ZipEntry entry, String outputDir) {
-            if (entry.isDirectory()) {
-                File file = new File(entry.getName());
-                if (!file.exists()) {
-                    file.mkdirs();
-                }
-                return;
-            }
-            File outputFile = new File(outputDir, entry.getName());
-            if (!outputFile.getParentFile().exists()) {
-                outputFile.getParentFile().mkdirs();
-            }
-
-            InputStream inputStream = null;
-            BufferedInputStream bufferedInputStream = null;
-            FileOutputStream fileOutputStream = null;
-            try {
-                inputStream = zipFile.getInputStream(entry);
-                bufferedInputStream = new BufferedInputStream(inputStream);
-                fileOutputStream = new FileOutputStream(outputFile);
-
-                byte[] buffer = new byte[1024];
-                int n;
-                while ((n = bufferedInputStream.read(buffer, 0, 1024)) != -1) {
-                    fileOutputStream.write(buffer, 0, n);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                IoUtils.closeSilently(fileOutputStream);
-                IoUtils.closeSilently(bufferedInputStream);
-            }
-
         }
     }
 
