@@ -105,7 +105,6 @@ public class MsgCenterTable extends BaseTable {
                 values.put(COL_OFFLINE_TIME, message.offlineTime);
                 values.put(COL_TIME, message.time);
                 values.put(COL_RES, message.resUrl);
-                values.put(COL_RES_PATH, message.resPath);
                 values.put(COL_UNREAD, message.unread ? UNREADED : READED);
                 db.insert(TABLE_NAME, null, values);
             }
@@ -143,7 +142,6 @@ public class MsgCenterTable extends BaseTable {
                     message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
                     message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
                     message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
-                    message.resPath = cursor.getString(cursor.getColumnIndex(COL_RES_PATH));
                     message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
                     result.add(message);
                 } while (cursor.moveToNext());
@@ -223,7 +221,6 @@ public class MsgCenterTable extends BaseTable {
                 message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
                 message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
                 message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
-                message.resPath = cursor.getString(cursor.getColumnIndex(COL_RES_PATH));
                 message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
             }
         } finally {
@@ -250,7 +247,6 @@ public class MsgCenterTable extends BaseTable {
         values.put(COL_OFFLINE_TIME, message.offlineTime);
         values.put(COL_TIME, message.time);
         values.put(COL_RES, message.resUrl);
-        values.put(COL_RES_PATH, message.resPath);
         values.put(COL_UNREAD, message.unread ? UNREADED : READED);
         db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { message.msgId + "" });
     }

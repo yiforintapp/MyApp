@@ -71,14 +71,14 @@
     <TextView
         android:id="@+id/home_mc_unread_tv"
         android:layout_width="wrap_content"
-        android:layout_height="13dp"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@id/bg_show_hotapp"
         android:layout_alignLeft="@id/bg_show_hotapp"
         android:layout_marginTop="7dp"
         android:layout_marginLeft="26dp"
+        android:includeFontPadding="false"
+        android:gravity="center"
         android:background="@drawable/ic_mc_unread_bg"
-        android:paddingLeft="4dp"
-        android:paddingRight="4dp"
         android:text="99+"
         android:textColor="@color/white"
         android:textSize="11sp" />

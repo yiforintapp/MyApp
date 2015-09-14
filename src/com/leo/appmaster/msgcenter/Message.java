@@ -32,8 +32,6 @@ public class Message {
 
     // 未读标志
     public boolean unread = true;
-    // 本地资源路径
-    public String resPath;
 
     public boolean isCategoryUpdate() {
         return CATEGORY_UPDATE.equals(categoryCode);

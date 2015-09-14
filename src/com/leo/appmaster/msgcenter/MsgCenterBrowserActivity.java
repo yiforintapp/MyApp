@@ -3,8 +3,12 @@ package com.leo.appmaster.msgcenter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Enumeration;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import android.app.Activity;
 import android.content.Context;
@@ -30,6 +34,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     private CommonTitleBar mTitleBar;
 
     private String mUrl;
+    private String mLocalUrl;
     // 是否是更新日志
     private boolean mIsUpdate;
 
@@ -56,8 +61,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mc_browser);
 
-//        mUrl = getIntent().getStringExtra(KEY_URL);
-        mUrl = "file:///" + MsgCenterFetchJob.getFilePath("-1131789247.html");
+        mUrl = getIntent().getStringExtra(KEY_URL);
         if (TextUtils.isEmpty(mUrl)) {
             finish();
             return;
@@ -72,7 +76,15 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         mTitleBar.setBackViewListener(this);
         mTitleBar.setOptionListener(this);
 
-        getWebView().loadUrl(mUrl);
+        if (mIsUpdate) {
+            // 更新日志从本地获取
+            String urlName = MsgCenterFetchJob.getFileName(mUrl) + ".html";
+            String path = MsgCenterFetchJob.getFilePath(urlName);
+            mLocalUrl = "file:///" + path;
+            getWebView().loadUrl(mLocalUrl);
+        } else {
+            getWebView().loadUrl(mUrl);
+        }
     }
 
     @Override
@@ -104,9 +116,9 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
 
     @Override
     protected WebResourceResponse shouldInterceptRequest(WebView view, String url) {
-//        if (!mIsUpdate) {
-//            return super.shouldInterceptRequest(view, url);
-//        }
+        if (!mIsUpdate) {
+            return super.shouldInterceptRequest(view, url);
+        }
 
         String fileName = null;
         int pIndex = url.lastIndexOf("/");
@@ -132,23 +144,26 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             mimeType = "text/html";
         }
 
-        String resDir = /*MsgCenterFetchJob.getFileName(url)*/MsgCenterFetchJob.getFilePath("-1131789247");
-        File file = new File(resDir);
-        if (!file.exists() || !file.isDirectory()) {
+        String resName = MsgCenterFetchJob.getFileName(mUrl) + ".zip";
+        String zipPath = MsgCenterFetchJob.getFilePath(resName);
+        File zf = new File(zipPath);
+        if (!zf.exists()) {
             return super.shouldInterceptRequest(view, url);
         }
+        try {
+            ZipFile zipFile = new ZipFile(zf);
+            Enumeration enumeration = zipFile.entries();
+            while (enumeration.hasMoreElements()) {
+                ZipEntry zipEntry = (ZipEntry) enumeration.nextElement();
+                if (zipEntry.isDirectory()) continue;
 
-        File[] files = file.listFiles();
-        for (File f : files) {
-            if (!f.isDirectory() && f.getName().equals(fileName)) {
-                try {
-                    FileInputStream fis = new FileInputStream(f);
-                    WebResourceResponse response = new WebResourceResponse(mimeType, "utf-8", fis);
-                    return response;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                String entryName = zipEntry.getName();
+                if (entryName.equals(fileName)) {
+                    return new WebResourceResponse(mimeType, "utf-8", zipFile.getInputStream(zipEntry));
                 }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         return super.shouldInterceptRequest(view, url);

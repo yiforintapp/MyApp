@@ -112,15 +112,17 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         if (msg == null) {
             MsgCenterTable table = new MsgCenterTable();
             msg = table.getUpdateMessage();
+            if (msg == null) return;
         }
 
-        String htmlFileName = getFileName(msg.jumpUrl) + ".html";
+        String fileNameNoSuffix = getFileName(msg.jumpUrl);
+        String htmlFileName = fileNameNoSuffix + ".html";
         File htmlFile = new File(getFilePath(htmlFileName));
         if (msg.jumpUrl != null && !htmlFile.exists()) {
             doRequestCache(msg, htmlFile.getAbsolutePath(), msg.jumpUrl);
         }
 
-        String resFileName = getFileName(msg.resUrl) + ".zip";
+        String resFileName = fileNameNoSuffix + ".zip";
         File resFile = new File(getFilePath(resFileName));
         if (msg.resUrl != null && !resFile.exists()) {
             doRequestCache(msg, resFile.getAbsolutePath(), msg.resUrl);
@@ -163,27 +165,23 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         @Override
         public void onResponse(File response, boolean noMidify) {
             LeoLog.i("MsgCenterFetchJob", "UpdateCacheListener, onResponse: " + response);
-            msg.resPath = response.getName();
-            MsgCenterTable table = new MsgCenterTable();
-            table.updateMessage(msg);
-            
             String nameString = response.getName();
             if (!nameString.endsWith("html")) {
-                try {
-                    ZipFile zipFile = new ZipFile(response);
-                    Enumeration enumeration = zipFile.entries();
-
-                    String zipName = zipFile.getName();
-                    String outputDir = zipFile.getName().substring(0, zipName.indexOf("."));
-                    while (enumeration.hasMoreElements()) {
-                        ZipEntry entry = (ZipEntry) enumeration.nextElement();
-                        unzip(zipFile, entry, outputDir);
-                    }
-                } catch (ZipException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+//                try {
+//                    ZipFile zipFile = new ZipFile(response);
+//                    Enumeration enumeration = zipFile.entries();
+//
+//                    String zipName = zipFile.getName();
+//                    String outputDir = zipName.substring(0, zipName.lastIndexOf("."));
+//                    while (enumeration.hasMoreElements()) {
+//                        ZipEntry entry = (ZipEntry) enumeration.nextElement();
+//                        unzip(zipFile, entry, outputDir);
+//                    }
+//                } catch (ZipException e) {
+//                    e.printStackTrace();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
                 
             }
         }
@@ -211,7 +209,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
                 byte[] buffer = new byte[1024];
                 int n;
-                while ((n = bufferedInputStream.read(buffer, 0, 1024)) != 0) {
+                while ((n = bufferedInputStream.read(buffer, 0, 1024)) != -1) {
                     fileOutputStream.write(buffer, 0, n);
                 }
             } catch (IOException e) {
