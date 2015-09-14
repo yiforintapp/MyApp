@@ -168,13 +168,10 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                    LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
 //                    UFOActivity.this.finish();
 //                }
-                
-                ran = 1;
+//                ran = 1;
 //                list.clear();
 //                list.addAll(listBackup);
-                list=listBackup;
-                
-                
+//                list=listBackup;
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
                 
@@ -183,7 +180,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         ufoActivity.mThemDialogBg);
                 
                 ufoActivity.initButton();
-                
             }
         }
 
@@ -210,8 +206,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 if(mHideThemes.contains(mChosenTheme.packageName))
                 {
                     mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_use));
-                    Toast.makeText(UFOActivity.this, "这个主题已经本地有了,更新按钮文字", 0).show();
-                    
+                    Toast.makeText(UFOActivity.this, "已应用", 0).show();
+                    UFOActivity.this.finish();
                 }
                 else{
                     ThemeItemInfo bean = new ThemeItemInfo();
