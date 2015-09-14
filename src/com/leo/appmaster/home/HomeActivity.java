@@ -1675,7 +1675,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
         boolean isAdvanceProtectTip = AppMasterPreference.getInstance(this)
                 .getAdvanceProtectDialogTip();
-        if (!isFilterChannel && isAdvanceProtectTip) {
+        /* 是否为新用户 */
+        boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
+                .getIsUpdateQuickGestureUser();
+        if (!isFilterChannel && isAdvanceProtectTip && !updateUser) {
             advanceProtectDialogTip();
         }
         return isFilterChannel;
