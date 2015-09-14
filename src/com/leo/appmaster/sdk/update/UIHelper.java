@@ -920,7 +920,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     private int updateRandomCount() {
         /* 解锁30次，随机弹3次，即生成10以内的随机整数,生成3次 */
-        LeoLog.i(TAG, "(此处存在用于自己测试时设置的值，注意检查！)开始产生随机数啦----------------");
+        LeoLog.i(TAG, "开始产生随机数啦----------------(此处存在用于自己测试时设置的值，注意检查！)");
         int random = 1 + (int) (Math.random() * UPDATE_TIP_FRE);
         if (DBG) {
             random = 2;
@@ -940,7 +940,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         if (DBG) {
             isUnLockUpdateTip = true;
         }
-        LeoLog.i(TAG, "(此处存在用于自己测试时设置的值，注意检查！)是否开启解锁成功升级提示：" + isUnLockUpdateTip);
+        LeoLog.i(TAG, "是否开启解锁成功升级提示-------(此处存在用于自己测试时设置的值，注意检查！)：" + isUnLockUpdateTip);
         if (netWorkStatus && isUnLockUpdateTip) {
             UpdateManager manager = mManager;
             try {

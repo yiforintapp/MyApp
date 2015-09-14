@@ -123,9 +123,11 @@ public class SplashActivity extends BaseActivity {
                     .getSplashSkipMode());
         }
         /**
-         * 可能存在的几种情况： @ 1.只有开始时间 @ 2.只有结束时间 @ 3.没有配置时间
-         * 
-         * @4.开始.结束时间都有
+         * 可能存在的几种情况：<br>
+         *  1.只有开始时间<br>
+         * 2.只有结束时间<br>
+         * 3.没有配置时间<br>
+         * 4.开始.结束时间都有<br>
          */
         if (startShowSplashTime > 0 || endShowSplashTime > 0) {
             /* 只有开始时间 */

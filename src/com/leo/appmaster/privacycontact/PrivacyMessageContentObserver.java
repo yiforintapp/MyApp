@@ -17,9 +17,6 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
-import android.util.Log;
-
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
@@ -27,7 +24,6 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
@@ -79,28 +75,15 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                                     "address =  " + "\"" + mLastMessage.getPhoneNumber()
                                             + "\" and " + "body = \""
                                             + mLastMessage.getMessageBody() + "\"", null);
+                            if (count > 0) {
+                                LeoLog.i(TAG, "在监控短信时，删除系统短信成功！！");
+                            }
                         }
                     });
                 } catch (Exception e) {
                 }
                 /* 快捷手势隐私短信未读提醒 */
                 noReadPrivacyMsmTipForQuickGesture(pref);
-            }
-            boolean flag = PrivacyContactManager.getInstance(mContext).testValue;
-            if (!flag) {
-                if (DBG) {
-                    Log.i(TAG, "onReceive没有执行");
-                }
-                /**
-                 * 因为联系人没有执行onReceive取拦截短信，通过onChanage查找拦截，并删除记录，（支持5.0以下系统，5.0
-                 * 以上不能对短信操作）
-                 */
-                // filterPrivacyContactMsm(cr);
-            } else {
-                if (DBG) {
-                    Log.i(TAG, "onReceive没有执行");
-                }
-                PrivacyContactManager.getInstance(mContext).testValue = false;
             }
             /* 快捷手势未读短信提醒 */
             noReadMsmTipForQuickGesture(cr);
@@ -112,19 +95,26 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             }
             /* 快捷手势未读通话记录提醒 */
             noReadCallForQuickGesture(call);
-            // TODO
-            // if (pcm.mIsOpenPrivacyContact) {
-            // pcm.updateCalls();
-            // }
+        }
+        boolean flag = PrivacyContactManager.getInstance(mContext).testValue;
+        if (!flag) {
+            if (DBG) {
+                LeoLog.i(TAG, "onReceive没有执行！！！");
+            }
+        } else {
+            if (DBG) {
+                LeoLog.i(TAG, "onReceive触发执行了！！！！");
+            }
+            PrivacyContactManager.getInstance(mContext).testValue = false;
         }
     }
 
     /* 测试来新短信或者来电能否触发系统数据库变化 */
     private void printTestObserverLog() {
         if (MESSAGE_MODEL.equals(mFlag)) {
-            Log.e(Constants.RUN_TAG, "短信变化引起系统短信数据库改变");
+            LeoLog.e(Constants.RUN_TAG, "短信变化引起系统短信数据库改变");
         } else if (CALL_LOG_MODEL.equals(mFlag)) {
-            Log.e(Constants.RUN_TAG, "有来电引起系统通话数据库改变");
+            LeoLog.e(Constants.RUN_TAG, "有来电引起系统通话数据库改变");
         }
     }
 
@@ -350,8 +340,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                         int count = PrivacyContactManager
                                 .getInstance(mContext).messageSize;
                         int currentCount = messageList.size();
-                        // Log.d(Constants.RUN_TAG,
-                        // "上一次数量："+count+",当前数量："+currentCount);
                         if (currentCount > count) {
                             if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
                                 QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
@@ -380,8 +368,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                 int count = PrivacyContactManager
                         .getInstance(mContext).mUnCalls;
                 int currentCount = callLogs.size();
-                // Log.d(Constants.RUN_TAG,
-                // "上一次数量："+count+",当前数量："+currentCount);
                 if (currentCount > count) {
                     if (QuickGestureManager.getInstance(mContext).isCallLogRead) {
                         QuickGestureManager.getInstance(mContext).isCallLogRead = false;
@@ -426,11 +412,11 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         @Override
         protected void onPostExecute(Cursor cursor) {
             super.onPostExecute(cursor);
-               String numberToIswipe=null;
+            String numberToIswipe = null;
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     final String number = cursor.getString(cursor.getColumnIndex("number"));
-                    numberToIswipe=number;
+                    numberToIswipe = number;
                     String name = call.getContactName();
                     cursor.getString(cursor.getColumnIndex("duration"));
                     Date date = new Date(Long.parseLong(cursor.getString(cursor
@@ -516,6 +502,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             if (count > 0) {
                                 // 过滤上面监控通话记录数据库，隐私联系人删除未接来电记录时引发数据库变化而做的操作（要在执行删除操作之前去赋值）
                                 PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag = true;
+                                LeoLog.i(TAG, "在监控通话时，删除系统通话记录成功！！！");
                             }
                         }
                     });
@@ -530,12 +517,14 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     if (call.getAnswerType() == 1) {
                         if (CallLog.Calls.OUTGOING_TYPE != type) {
                             if (CallLog.Calls.MISSED_TYPE == type) {
-                                new MessagePrivacyReceiver().callLogNotification(mContext,numberToIswipe);
+                                new MessagePrivacyReceiver().callLogNotification(mContext,
+                                        numberToIswipe);
                             }
                         }
                     } else if (call.getAnswerType() == 0) {
                         if (CallLog.Calls.OUTGOING_TYPE != type) {
-                            new MessagePrivacyReceiver().callLogNotification(mContext,numberToIswipe);
+                            new MessagePrivacyReceiver().callLogNotification(mContext,
+                                    numberToIswipe);
                         }
                     }
                 }

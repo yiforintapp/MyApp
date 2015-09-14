@@ -135,6 +135,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
             }
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
+            PrivacyContactManager.getInstance(mContext).testValue = true;
             // 获取来电号码
             final String phoneNumber =
                     intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
