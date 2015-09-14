@@ -12,6 +12,7 @@ import android.webkit.DownloadListener;
 import android.webkit.JsResult;
 import android.webkit.SslErrorHandler;
 import android.webkit.WebChromeClient;
+import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -203,6 +204,10 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 //        result.cancel();
         return false;
     }
+    
+    protected WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+        return null;
+    }
 
     protected class WebChromClientImpl extends WebChromeClient {
         @Override
@@ -230,6 +235,16 @@ public abstract class BaseBrowserActivity extends BaseActivity {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             return BaseBrowserActivity.this.shouldOverrideUrlLoading(view, url);
+        }
+
+        @Override
+        public WebResourceResponse shouldInterceptRequest(WebView view, String url) {
+            WebResourceResponse result = BaseBrowserActivity.this.shouldInterceptRequest(view, url);
+            if (result == null) {
+                return super.shouldInterceptRequest(view, url);
+            }
+            
+            return result;
         }
 
         @Override

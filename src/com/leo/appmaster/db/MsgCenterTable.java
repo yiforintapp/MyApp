@@ -22,17 +22,19 @@ public class MsgCenterTable extends BaseTable {
 
     protected static final String COL_MSG_ID = "msg_id";
     protected static final String COL_TIME = "activity_time";
-    protected static final String COL_NAME = "category_name";
+    protected static final String COL_CATEGORY_NAME = "category_name";
+    protected static final String COL_CATEGORY_CODE = "category_code";
     protected static final String COL_DESCRIPTION = "description";
     protected static final String COL_IMAGE_URL = "image_url";
     protected static final String COL_LINK = "link";
     protected static final String COL_OFFLINE_TIME = "offline_time";
     protected static final String COL_TITLE = "title";
-    protected static final String COL_TYPE_ID = "type_id";
     // 资源包地址
     protected static final String COL_RES = "res";
     // 1:未读  0:已读
     protected static final String COL_UNREAD = "unread";
+
+    protected static final String COL_RES_PATH = "respath";
 
     private static final int READED = 0;
     private static final int UNREADED = 1;
@@ -46,15 +48,16 @@ public class MsgCenterTable extends BaseTable {
                 "( _id INTEGER PRIMARY KEY," +
                 COL_MSG_ID + " INTEGER," +
                 COL_TIME + " TEXT," +
-                COL_NAME + " TEXT," +
+                COL_CATEGORY_NAME + " TEXT," +
+                COL_CATEGORY_CODE + " TEXT," +
                 COL_DESCRIPTION + " TEXT," +
                 COL_IMAGE_URL + " TEXT," +
                 COL_LINK + " TEXT," +
                 COL_OFFLINE_TIME + " TEXT," +
                 COL_TITLE + " TEXT," +
                 COL_RES + " TEXT," +
-                COL_UNREAD + " INTEGER," +
-                COL_TYPE_ID + " TEXT);");
+                COL_RES_PATH + " TEXT," +
+                COL_UNREAD + " INTEGER);");
     }
 
     @Override
@@ -78,7 +81,7 @@ public class MsgCenterTable extends BaseTable {
         List<Message> oldList = queryMsgList();
         for (Message oldMsg : oldList) {
             for (Message message : msgList) {
-                if (message.id == oldMsg.id) {
+                if (message.msgId == oldMsg.msgId) {
                     message.unread = oldMsg.unread;
                     break;
                 }
@@ -95,13 +98,14 @@ public class MsgCenterTable extends BaseTable {
                 values.put(COL_DESCRIPTION, message.description);
                 values.put(COL_IMAGE_URL, message.imageUrl);
                 values.put(COL_LINK, message.jumpUrl);
-                values.put(COL_MSG_ID, message.id);
-                values.put(COL_NAME, message.name);
+                values.put(COL_MSG_ID, message.msgId);
+                values.put(COL_CATEGORY_NAME, message.categoryName);
+                values.put(COL_CATEGORY_CODE, message.categoryCode);
                 values.put(COL_TITLE, message.title);
                 values.put(COL_OFFLINE_TIME, message.offlineTime);
                 values.put(COL_TIME, message.time);
-                values.put(COL_TYPE_ID, message.typeId);
                 values.put(COL_RES, message.resUrl);
+                values.put(COL_RES_PATH, message.resPath);
                 values.put(COL_UNREAD, message.unread ? UNREADED : READED);
                 db.insert(TABLE_NAME, null, values);
             }
@@ -119,7 +123,7 @@ public class MsgCenterTable extends BaseTable {
      */
     public List<Message> queryMsgList() {
         ArrayList<Message> result = new ArrayList<Message>();
-        SQLiteDatabase db = getHelper().getWritableDatabase();
+        SQLiteDatabase db = getHelper().getReadableDatabase();
         if (db == null) return result;
         
         Cursor cursor = null;
@@ -132,13 +136,14 @@ public class MsgCenterTable extends BaseTable {
                     message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
                     message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
                     message.jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
-                    message.id = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
-                    message.name = cursor.getString(cursor.getColumnIndex(COL_NAME));
+                    message.msgId = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
+                    message.categoryName = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_NAME));
+                    message.categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
                     message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
                     message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
                     message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
-                    message.typeId = cursor.getString(cursor.getColumnIndex(COL_TYPE_ID));
                     message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
+                    message.resPath = cursor.getString(cursor.getColumnIndex(COL_RES_PATH));
                     message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
                     result.add(message);
                 } while (cursor.moveToNext());
@@ -165,7 +170,7 @@ public class MsgCenterTable extends BaseTable {
         try {
             ContentValues values = new ContentValues();
             values.put(COL_UNREAD, READED);
-            db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { msg.id + "" });
+            db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { msg.msgId + "" });
 
             msg.unread = false;
         } catch (Throwable e) {
@@ -182,7 +187,7 @@ public class MsgCenterTable extends BaseTable {
         db.beginTransaction();
         try {
             for (Message message : list) {
-                db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[] { message.id + "" });
+                db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[] { message.msgId + "" });
             }
             db.setTransactionSuccessful();
         } catch (Throwable e) {
@@ -190,6 +195,64 @@ public class MsgCenterTable extends BaseTable {
         } finally {
             db.endTransaction();
         }
+    }
+
+    /**
+     * 获取更新日志
+     * @return
+     */
+    public Message getUpdateMessage() {
+        Message message = null;
+
+        SQLiteDatabase db = getHelper().getReadableDatabase();
+        if (db == null) return message;
+
+        Cursor cursor = null;
+        try {
+            cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
+            if (cursor != null && cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                message = new Message();
+                message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
+                message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
+                message.jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
+                message.msgId = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
+                message.categoryName = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_NAME));
+                message.categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
+                message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
+                message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
+                message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
+                message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
+                message.resPath = cursor.getString(cursor.getColumnIndex(COL_RES_PATH));
+                message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
+            }
+        } finally {
+            IoUtils.closeSilently(cursor);
+        }
+
+        return message;
+    }
+
+    public void updateMessage(Message message) {
+        if (message == null) return;
+
+        SQLiteDatabase db = getHelper().getWritableDatabase();
+        if (db == null) return;
+
+        ContentValues values = new ContentValues();
+        values.put(COL_DESCRIPTION, message.description);
+        values.put(COL_IMAGE_URL, message.imageUrl);
+        values.put(COL_LINK, message.jumpUrl);
+        values.put(COL_MSG_ID, message.msgId);
+        values.put(COL_CATEGORY_NAME, message.categoryName);
+        values.put(COL_CATEGORY_CODE, message.categoryCode);
+        values.put(COL_TITLE, message.title);
+        values.put(COL_OFFLINE_TIME, message.offlineTime);
+        values.put(COL_TIME, message.time);
+        values.put(COL_RES, message.resUrl);
+        values.put(COL_RES_PATH, message.resPath);
+        values.put(COL_UNREAD, message.unread ? UNREADED : READED);
+        db.update(TABLE_NAME, values, COL_MSG_ID + " = ?", new String[] { message.msgId + "" });
     }
 
     /**

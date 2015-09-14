@@ -63,6 +63,10 @@ public class HttpRequestAgent {
         return mInstance;
     }
 
+    public RequestQueue getRequestQueue() {
+        return mRequestQueue;
+    }
+
     public void getAppLockList(Listener<JSONObject> listener,
             ErrorListener eListener) {
         JsonObjectRequest request = new JsonObjectRequest(

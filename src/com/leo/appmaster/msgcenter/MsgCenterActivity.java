@@ -74,7 +74,7 @@ public class MsgCenterActivity extends BaseActivity implements
         final Message msg = (Message) mAdapter.getItem(position);
         if (msg == null) return;
 
-        MsgCenterBrowserActivity.startMsgCenterWeb(this, msg.title, msg.jumpUrl);
+        MsgCenterBrowserActivity.startMsgCenterWeb(this, msg.title, msg.jumpUrl, msg.isCategoryUpdate());
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {

@@ -49,7 +49,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     private static final int STATE_FAIL = 0;
 
     private static final String[] FETCH_JOBS = {
-        "com.leo.appmaster.schedule.MessageFetchJob",
+        "com.leo.appmaster.schedule.MsgCenterFetchJob",
         "com.leo.appmaster.schedule.ADFetchJob"
     };
 
@@ -198,7 +198,6 @@ public abstract class FetchScheduleJob extends ScheduleJob {
      * 拉取数据成功
      */
     protected void onFetchSuccess(Object response, boolean noMidify) {
-        LeoLog.i(getJobKey(), "onFetchSuccess, response: " + response + " | noModify: " + noMidify);
         AppMasterApplication context = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(context);
         // 保存时间
@@ -214,7 +213,6 @@ public abstract class FetchScheduleJob extends ScheduleJob {
      * 拉取时间失败
      */
     protected void onFetchFail(VolleyError error) {
-        LeoLog.i(getJobKey(), "onFetchFail, error: " + (error == null ? null : error.toString()));
         AppMasterApplication context = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(context);
         // 保存时间
