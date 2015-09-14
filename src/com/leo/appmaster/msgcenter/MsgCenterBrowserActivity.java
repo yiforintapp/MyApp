@@ -13,6 +13,7 @@ import java.util.zip.ZipFile;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,6 +24,7 @@ import android.widget.ProgressBar;
 import com.leo.appmaster.R;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseBrowserActivity;
+import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
@@ -30,6 +32,10 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     private static final String KEY_URL = "key_url";
     private static final String KEY_TITLE = "key_title";
     private static final String KEY_UPDATE = "key_update";
+
+    private static final String HOST_MSGCENTER = "msgcenter";
+    private static final String PATH_WEBVIEW = "webview";
+    private static final String PARAMS_URL = "url";
 
     private CommonTitleBar mTitleBar;
 
@@ -112,6 +118,25 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 mWebView.reload();
                 break;
         }
+    }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, String url) {
+        Uri uri = Uri.parse(url);
+        String schema = uri.getScheme();
+        if ("jsbridge".equals(schema)) {
+            String host = uri.getHost();
+            String path = uri.getPath();
+            if (HOST_MSGCENTER.equals(host) && PATH_WEBVIEW.equals(path)) {
+                String paramsUrl = uri.getQueryParameter("url");
+                Intent intent = new Intent(this, WebViewActivity.class);
+                intent.putExtra(WebViewActivity.WEB_URL, paramsUrl);
+                startActivity(intent);
+
+                return true;
+            }
+        }
+        return super.shouldOverrideUrlLoading(view, url);
     }
 
     @Override
