@@ -24,7 +24,6 @@ import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.baidu.mobstat.l;
 import com.leo.analytics.update.IUIHelper;
 import com.leo.analytics.update.UpdateHelper;
 import com.leo.analytics.update.UpdateManager;
@@ -970,8 +969,9 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             UpdateManager manager = mManager;
             try {
                 if (manager != null) {
+                    String appName = mContext.getString(R.string.app_name);
                     String version = manager.getVersion();
-                    // String feature = manager.getFeatureString();
+                    String feature = manager.getFeatureString();
                     int size = manager.getSize();
                     if (!Utilities.isEmpty(version)
                             && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {
@@ -980,6 +980,16 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                         relaunchActivity(IUIHelper.TYPE_CHECK_NEED_UPDATE,
                                 UpdateManager.NORMAL_UPDATE,
                                 false, true, lockPackage);
+                        if (UIHelper.mUpdateTipIsFilterLock) {
+                            LeoLog.e(UIHelper.TEST_TAG, "应用名称：" + appName);
+                            LeoLog.e(UIHelper.TEST_TAG, "版本号：" + version);
+                            LeoLog.e(UIHelper.TEST_TAG, "大小：" + size);
+                            if (!Utilities.isEmpty(feature)) {
+                                LeoLog.e(UIHelper.TEST_TAG, "版本特性：" + feature);
+                            } else {
+                                LeoLog.e(UIHelper.TEST_TAG, "版本特性,为空");
+                            }
+                        }
                     } else {
                         LeoLog.i(TAG, "没有加载到更新日志，因此不去显示对话框！");
                     }

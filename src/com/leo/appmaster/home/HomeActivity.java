@@ -813,6 +813,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             listItems.add(new MenuItem(resources.getString(R.string.app_setting_update),
                     R.drawable.menu_updates_icon));
         }
+        /*卸载PG*/
+//        listItems.add(object)
         /* 关于 */
         listItems.add(new MenuItem(resources.getString(R.string.app_setting_about),
                 R.drawable.menu_about_icon));
