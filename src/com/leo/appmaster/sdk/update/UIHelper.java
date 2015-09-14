@@ -43,7 +43,7 @@ import com.leo.appmaster.utils.Utilities;
 public class UIHelper extends BroadcastReceiver implements com.leo.analytics.update.IUIHelper {
 
     public final static String TAG = "UIHelper";
-
+    public final static String TEST_TAG = "test_uihelper";
     private final static String ACTION_SHOW_REMIND_TIP = "com.leo.appmaster.update.remind";
 
     public static final String _LAST_SHOW_DAY = "last_show_day";
@@ -656,14 +656,15 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         mContext.startActivity(i);
     }
 
-    private void relaunchActivity(int type, int param, boolean needRecord, boolean filterLockFlag/* 是否需要过滤锁 */, String lockPackage) {
+    private void relaunchActivity(int type, int param, boolean needRecord,
+            boolean filterLockFlag/* 是否需要过滤锁 */, String lockPackage) {
         if (!mManager.isFromUser() && needRecord) {
             LeoLog.d(TAG, "relaunchActivity");
             recordRemind();
         }
         Intent i = new Intent();
         i.setClass(mContext, UpdateActivity.class);
-        LeoLog.i(TAG, "当前所在应用："+lockPackage);
+        LeoLog.i(TAG, "当前所在应用：" + lockPackage);
         if (lockPackage != null && !lockPackage.equals(mContext.getPackageName())) {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -673,7 +674,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     | Intent.FLAG_ACTIVITY_CLEAR_TOP
                     | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         }
-        if(filterLockFlag){
+        if (filterLockFlag) {
             mUpdateTipIsFilterLock = true;
         }
         i.putExtra(LAYOUT_TYPE, type);
@@ -815,10 +816,10 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         boolean isFirstRandow = amp.getUnlockUpdateFirstRandom();
         if (isFirstRandow) {
             /* 首次生成随机次数 */
-            UIHelper.getInstance(mContext).mRandomCount = updateRandomCount();
+            UIHelper.getInstance(mContext).mRandomCount = randomIn10within();
             amp.setUnlockSucessRandom(UIHelper.getInstance(mContext).mRandomCount);
             amp.setUnlockUpdateFirstRandom(false);
-            LeoLog.i(TAG, "首次产生随机数：" + UIHelper.getInstance(mContext).mRandomCount);
+            LeoLog.i(TEST_TAG, "首次产生随机数：" + UIHelper.getInstance(mContext).mRandomCount);
         }
         String tipDate = amp.getUpdateTipDate();
         if (Utilities.isEmpty(tipDate)) {
@@ -834,9 +835,12 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             /* 弹出升级对话框 */
             updateTipDialog(lockPackage);
             /* 除了首次其余的次数需要在升级提示后生成随机数 */
-            UIHelper.getInstance(mContext).mRandomCount = updateRandomCount();
+            UIHelper.getInstance(mContext).mRandomCount = randomIn10within();
             amp.setUnlockSucessRandom(UIHelper.getInstance(mContext).mRandomCount);
-            LeoLog.i(TAG, "本次产生随机数为：" + UIHelper.getInstance(mContext).mRandomCount);
+            LeoLog.i(
+                    TEST_TAG,
+                    "第" + (amp.getUnlockUpdateTipCount() + 1) + "次产生随机数为："
+                            + UIHelper.getInstance(mContext).mRandomCount);
             /* 当天弹出次数累加 */
             amp.setUnlockUpdateTipCount(amp.getUnlockUpdateTipCount() + 1);
             /* 记录本次提示时解锁成功的次数 */
@@ -877,8 +881,17 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     if (amp.getChanageDateUnlockCount() < 0) {
                         amp.setChanageDateUnlockCount(lockCount - 1);
                     }
+                    if (amp.getRandomIn30Within() < 0) {
+                        int random30 = randomIn30within();
+                        if (random30 == 0) {
+                            random30 = 1;
+                        }
+                        LeoLog.i(TEST_TAG, "升级第二天产生的随机数：" + random30);
+                        amp.setRandomIn30Within(random30);
+                    }
                     int difCount = lockCount - amp.getChanageDateUnlockCount();
-                    if (difCount == 15) {
+                    int randowIn30Within = amp.getRandomIn30Within();
+                    if (difCount == randowIn30Within) {
                         LeoLog.i(TAG, "第二天提示一次！");
                         amp.setSecondDayTip(true);
                         /* 弹出升级对话框 */
@@ -915,13 +928,24 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         amp.setSecondDayTip(false);
         amp.setFirstUnlockCount(0);
         amp.setChanageDateUnlockCount(-1);
+        amp.setRandomIn30Within(-1);
 
     }
 
-    private int updateRandomCount() {
+    private int randomIn10within() {
         /* 解锁30次，随机弹3次，即生成10以内的随机整数,生成3次 */
         LeoLog.i(TAG, "开始产生随机数啦----------------(此处存在用于自己测试时设置的值，注意检查！)");
         int random = 1 + (int) (Math.random() * UPDATE_TIP_FRE);
+        if (DBG) {
+            random = 2;
+        }
+        return random;
+    }
+
+    private int randomIn30within() {
+        /* 解锁30次，即生成30以内的随机整数 */
+        LeoLog.i(TAG, "开始产生第二天的随机数啦----------------(此处存在用于自己测试时设置的值，注意检查！)");
+        int random = 1 + (int) (Math.random() * UPDATE_UNLOCK_COUNT);
         if (DBG) {
             random = 2;
         }
@@ -937,6 +961,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         /* 解锁成功弹出升级提示 */
         boolean isUnLockUpdateTip = AppMasterPreference.getInstance(mContext)
                 .getVersionUpdateTipsAfterUnlockOpen();
+        LeoLog.i(TEST_TAG, "是否显示升级提示对话框：" + isUnLockUpdateTip);
         if (DBG) {
             isUnLockUpdateTip = true;
         }

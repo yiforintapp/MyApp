@@ -286,6 +286,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_UPDATE_RECOVERY_DEFAULT_DATA = "update_recovery_defatult_data";
     public static final String PREF_PG_UNLOCK_UPDATE_TIP_FLAG = "pg_unlock_update_flag";
     public static final String PREF_PG_IS_FORCE_UPDATE = "pg_is_force_update";
+    public static final String PREF_RANDOM_IN_30_WITHIN = "randoom_in_30_within";
 
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
@@ -2836,5 +2837,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getPGIsForceUpdate() {
         return mPref.getBoolean(PREF_PG_IS_FORCE_UPDATE, false);
+    }
+
+    /* 保存第二天产生的随机数 */
+    public void setRandomIn30Within(int random) {
+        mPref.edit().putInt(PREF_RANDOM_IN_30_WITHIN, random).apply();
+    }
+
+    public int getRandomIn30Within() {
+        return mPref.getInt(PREF_RANDOM_IN_30_WITHIN, -1);
     }
 }
