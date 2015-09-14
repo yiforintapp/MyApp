@@ -93,6 +93,7 @@
         android:layout_height="@dimen/home_ad_icon_height"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/home_ad_icon_m_top"
-        android:background="@drawable/lockad1" />
+        android:background="@drawable/lockad1"
+        android:visibility="invisible" />
 
 </FrameLayout>

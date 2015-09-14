@@ -107,6 +107,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         OnPageChangeListener, OnShaderColorChangedLisetner {
 
     private final static String KEY_ROOT_CHECK = "root_check";
+    public final static long INTERVEL_CLICK_AD = 24 * 60 * 60 * 1000;
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
 
     // 释放系统预加载资源使用
@@ -396,11 +397,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mUnreadCountTv = (TextView) findViewById(R.id.home_mc_unread_tv);
     }
 
-    public void setAdIconVisible() {
-        if (mAdIcon != null) {
-            mAdIcon.setVisibility(View.VISIBLE);
-        }
-    }
+    // public void setAdIconVisible() {
+    // if (mAdIcon != null) {
+    // mAdIcon.setVisibility(View.VISIBLE);
+    // }
+    // }
 
     public void setAdIconInVisible() {
         if (mAdIcon != null) {
@@ -414,10 +415,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
 
         if (show) {
-            // mAdIcon.setVisibility(View.INVISIBLE);
             mMultiModeView.show();
         } else {
-            // mAdIcon.setVisibility(View.VISIBLE);
             mMultiModeView.hide();
         }
     }
@@ -489,6 +488,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void onResume() {
+
+        // Ad from Home
+        shouldShowAd();
+
         /* 分析是否需要升级红点显示 */
         boolean menuRedTipVisibility = (mLeftMenuRedTip.getVisibility() == View.GONE);
         if (mLeftMenuRedTip != null && menuRedTipVisibility) {
@@ -542,6 +545,20 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         ProcessDetectorCompat22.setForegroundScore();
         // 设置消息中心未读计数
         setMsgCenterUnread();
+    }
+
+    public void shouldShowAd() {
+        long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
+        long nowTime = System.currentTimeMillis();
+        if (nowTime - clickTime > INTERVEL_CLICK_AD) {
+            mAdIcon.setVisibility(View.VISIBLE);
+            mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
+            adAnimation = (AnimationDrawable)
+                    mAdIcon.getBackground();
+            adAnimation.start();
+        } else {
+            mAdIcon.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void setMsgCenterUnread() {
@@ -730,6 +747,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 startActivity(msgCenter);
                 break;
             case R.id.iv_ad_icon:
+                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
+                        System.currentTimeMillis());
                 Intent mWallIntent = mWallAd.getWallIntent();
                 startActivity(mWallIntent);
                 break;
@@ -1415,11 +1434,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             // preload the wall data
             mWallAd.preloadWall();
         }
-
-        mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
-        adAnimation = (AnimationDrawable)
-                mAdIcon.getBackground();
-        adAnimation.start();
 
     }
 
