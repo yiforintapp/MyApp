@@ -38,6 +38,7 @@ import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +54,7 @@ public class HomeBoostActivity extends Activity {
     private boolean isCleanFinish = false;
     private int mScreenH;
     private boolean mIsADLoaded = false;
+    private RelativeLayout mRlResultWithAD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,11 +63,11 @@ public class HomeBoostActivity extends Activity {
         handleIntent();
         overridePendingTransition(0, 0);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "boost", "launcher");
-//        loadAD();
+        loadAD();
     }
     
-//    private void loadAD() {
-//
+    private void loadAD() {
+
 //        mAdEngine = MobvistaEngine.getInstance();
 //        mAdEngine.loadMobvista(this, new MobvistaListener() {
 //
@@ -74,34 +76,34 @@ public class HomeBoostActivity extends Activity {
 //                if (code == MobvistaEngine.ERR_OK) {
 //                    mIsADLoaded = true;
 //                    loadADPic(campaign.getIconUrl(),
-//                            new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
-//                                    .dip2px(UFOActivity.this, 48)),
-//                            (ImageView) mDialog.findViewById(R.id.iv_ufo_ad_icon));
+//                            new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48), DipPixelUtil
+//                                    .dip2px(HomeBoostActivity.this, 48)),
+//                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_ufo_ad_icon));
 //                    loadADPic(campaign.getImageUrl(),
-//                            new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 302), DipPixelUtil
-//                                    .dip2px(UFOActivity.this, 158)),
-//                            (ImageView) mDialog.findViewById(R.id.iv_appbg_ufo));
+//                            new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 302), DipPixelUtil
+//                                    .dip2px(HomeBoostActivity.this, 158)),
+//                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_appbg_ufo));
 //
-//                    TextView appname = (TextView) mDialog.findViewById(R.id.tv_appname_ufo);
+//                    TextView appname = (TextView) mRlResultWithAD.findViewById(R.id.tv_appname_ufo);
 //                    appname.setText(campaign.getAppName());
 //
-//                    TextView appdesc = (TextView) mDialog.findViewById(R.id.tv_appdesc_ufo);
+//                    TextView appdesc = (TextView) mRlResultWithAD.findViewById(R.id.tv_appdesc_ufo);
 //                    appdesc.setText(campaign.getAppDesc());
 //
-//                    Button call = (Button) mDialog.findViewById(R.id.btn_ufo_dialog_install);
+//                    Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ufo_dialog_install);
 //                    call.setText(campaign.getAdCall());
-//                    mAdEngine.registerView(UFOActivity.this, call);
-//                }
+//                    mAdEngine.registerView(HomeBoostActivity.this, call);
+////                }
 //            }
 //
 //            @Override
 //            public void onMobvistaClick(Campaign campaign) {
-//                UFOActivity.this.finish();
+//                HomeBoostActivity.this.finish();
 ////                AppMasterPreference.getInstance(UFOActivity.this).setAdEtClickTime(
 ////                        System.currentTimeMillis());
 //            }
 //        });
-//    }
+    }
     
     private void loadADPic(String url, ImageSize size, final ImageView v) {
         ImageLoader.getInstance().loadImage(
@@ -157,7 +159,7 @@ public class HomeBoostActivity extends Activity {
     private void initUI() {
         Display mDisplay = getWindowManager().getDefaultDisplay();
         mScreenH = mDisplay.getHeight();
-
+        mRlResultWithAD=(RelativeLayout) findViewById(R.id.rl_withAD);
         mStatusBar = findViewById(R.id.bg_statusbar);
         mIvRocket = (ImageView) findViewById(R.id.iv_rocket);
         mIvCloud = (ImageView) findViewById(R.id.iv_cloud);
@@ -268,12 +270,19 @@ public class HomeBoostActivity extends Activity {
             mToast = getString(R.string.the_best_status_toast);
         }
 
+        if(mIsADLoaded){
+            TextView resultText = (TextView) mRlResultWithAD.findViewById(R.id.tv_accelerat_result);
+            resultText.setText(mToast);
+            
+        }
+        
+        
+        
+        
+        
+        
+        
         tv_clean_rocket.setText(mToast);
-        
-       //dfasdfads
-        Dialog mADDialog = new Dialog(this);
-
-        
         Toast toast = new Toast(this);
         toast.setView(view);
         toast.setDuration(0);

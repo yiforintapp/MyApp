@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.applocker;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
@@ -134,7 +135,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             UFOActivity ufoActivity = getOuterContext();
             List<ThemeItemInfo> list = ThemeJsonObjectParser
                     .parserJsonObject(ufoActivity, response);
-            List<ThemeItemInfo> listBackup = list;
+            List<ThemeItemInfo> listBackup = new ArrayList<ThemeItemInfo>();
+            listBackup.addAll(list);
+            Toast.makeText(ufoActivity, "firstly listBackup.size="+listBackup.size(), 0).show();
             
             for(int i=0;i<list.size();i++){
                 LeoLog.e("poha", list.get(i).packageName+"          "+list.get(i).themeName);
@@ -166,9 +169,16 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                    UFOActivity.this.finish();
 //                }
                 
-//                ran = 6;
+                ran = 1;
+//                list.clear();
+//                list.addAll(listBackup);
+                list=listBackup;
+                
+                
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
+                
+                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 144),
                         ufoActivity.mThemDialogBg);
                 
