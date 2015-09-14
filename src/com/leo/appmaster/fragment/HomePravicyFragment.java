@@ -364,6 +364,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     public void onScanningFinish() {
         if (mProposalView != null && mActivity instanceof HomeActivity
                 && ((HomeActivity) mActivity).getCurrentPage() == 1) {
+            ((HomeActivity) getActivity()).setAdIconInVisible();
             Rect rect = new Rect();
             mPrivacyLevel.getLevelRectOnScreen(rect);
             mProposalView.show(rect);

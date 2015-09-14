@@ -27,6 +27,7 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.privacy.PrivacyHelper.Level;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
@@ -85,17 +86,21 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
     private ValueAnimator mSecondAnimator;
     private ValueAnimator mCloseAnimator;
     private Paint mPaint;
+    private Context mContext;
 
     public PrivacyProposalLayout(Context context) {
         this(context, null);
+        this.mContext = context;
     }
 
     public PrivacyProposalLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        this.mContext = context;
     }
 
     public PrivacyProposalLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.mContext = context;
         mAnimDrawable = getResources().getDrawable(R.drawable.privacy_level_bg);
         mPaint = new Paint();
         mPaint.setStyle(Style.FILL);
@@ -149,7 +154,7 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
                 .findViewById(R.id.suggest_privacy_contact_description);
         mProposalContact.setOnClickListener(this);
 
-//        mProposalAd = findViewById(R.id.privacy_ad_item);
+        // mProposalAd = findViewById(R.id.privacy_ad_item);
     }
 
     @Override
@@ -260,7 +265,7 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
                 mTitleBar.setVisibility(View.VISIBLE);
                 mProposalList.setVisibility(View.VISIBLE);
 
-//                mProposalAd.setVisibility(View.VISIBLE);
+                // mProposalAd.setVisibility(View.VISIBLE);
 
             }
 
@@ -341,12 +346,14 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
             });
             mCloseAnimator.addListener(new AnimatorListenerAdapter() {
                 public void onAnimationEnd(Animator animation) {
+                    ((HomeActivity) mContext).shouldShowAd();
                     setVisibility(View.INVISIBLE);
                     setTranslationY(0);
                 }
             });
             mCloseAnimator.start();
         } else {
+            ((HomeActivity) mContext).shouldShowAd();
             setVisibility(View.INVISIBLE);
         }
     }
