@@ -79,7 +79,6 @@
         android:includeFontPadding="false"
         android:gravity="center"
         android:background="@drawable/ic_mc_unread_bg"
-        android:text="99+"
         android:textColor="@color/white"
         android:textSize="11sp" />
 
