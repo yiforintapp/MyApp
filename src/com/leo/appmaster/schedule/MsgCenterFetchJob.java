@@ -211,6 +211,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
         FileOutputStream fos = null;
         InputStream inputStream = null;
+        boolean success = false;
         try {
             while (retryCount < maxRetryCount) {
                 try {
@@ -235,6 +236,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
                     }
                     LeoLog.i(TAG, "download res file succ.");
                     LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_RES));
+                    success = true;
                     break;
                 } catch (SocketTimeoutException e) {
                     // retry
@@ -246,13 +248,15 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
                     LeoLog.e(TAG, "connect timeout ex, retrycount: " + retryCount);
                 } catch (Exception e) {
                     e.printStackTrace();
-                    file.delete();
                     break;
                 }
             }
         } finally {
             IoUtils.closeSilently(inputStream);
             IoUtils.closeSilently(fos);
+            if (!success) {
+                file.delete();
+            }
         }
     }
 
