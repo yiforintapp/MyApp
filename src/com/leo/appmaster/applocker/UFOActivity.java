@@ -75,7 +75,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private String mThemeName;
     private Button mBtnUseTheme;
     private TextView mTvThemeName;
-
+//    private RelativeLayout mADDialog;
+//    private RelativeLayout mThemeDialog;
+    
     private ImageView mClose;
     private RelativeLayout mWholeUFO;
     private RelativeLayout mDialog;
@@ -231,10 +233,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     private void loadAD() {
-
         mAdEngine = MobvistaEngine.getInstance();
         mAdEngine.loadMobvista(this, new MobvistaListener() {
-
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK&&campaign!=null) {
@@ -410,10 +410,10 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                ufoStartY + 3 * (yWhenFinal - ufoStartY) / 4,
 //                yWhenFinal
                 );
-        PropertyValuesHolder ufoSX = PropertyValuesHolder.ofFloat("scaleX", 0.1f, 0.1f,0.2f,0.2f, 0.3f, 0.3f, 0.4f,0.4f,
-                0.5f, 0.5f,1f, 1f, 1f, 1f ,1f,1f,1f,1f);
-        PropertyValuesHolder ufoSY = PropertyValuesHolder.ofFloat("scaleY", 0.1f, 0.1f,0.2f,0.2f, 0.3f, 0.3f, 0.4f,0.4f,
-                0.5f, 0.5f,1f, 1f, 1f, 1f ,1f,1f,1f,1f);
+        PropertyValuesHolder ufoSX = PropertyValuesHolder.ofFloat("scaleX", 0.1f, 0.15f,0.2f,0.25f, 0.3f, 0.35f, 0.4f,0.45f,
+                0.5f, 0.55f,1f, 1f, 1f, 1f ,1f,1f,1f,1f);
+        PropertyValuesHolder ufoSY = PropertyValuesHolder.ofFloat("scaleY", 0.1f, 0.15f,0.2f,0.25f, 0.3f, 0.35f, 0.4f,0.45f,
+                0.5f, 0.55f,1f, 1f, 1f, 1f ,1f,1f,1f,1f);
 
         final ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mWholeUFO, ufoX,
                 ufoY, ufoSX, ufoSY);
@@ -518,49 +518,50 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     protected void showAD() {
+        RelativeLayout finalView;
         if (mIsShowTheme&&mIsThemeLoaded) {
-            mDialog = (RelativeLayout) findViewById(R.id.rl_Themedialog_root);
+            finalView = (RelativeLayout) findViewById(R.id.rl_Themedialog_root);
         }
         else{
-            mDialog = (RelativeLayout) findViewById(R.id.rl_ADdialog);
+            finalView = (RelativeLayout) findViewById(R.id.rl_ADdialog);
         }
-        mDialog.setVisibility(View.VISIBLE);
-        mDialog.setPivotX(mDialog.getWidth() / 2);
-        mDialog.setPivotY(0);
-        mDialog.setY(mWholeUFO.getY() + mWholeUFO.getHeight()
+        finalView.setVisibility(View.VISIBLE);
+        finalView.setPivotX(finalView.getWidth() / 2);
+        finalView.setPivotY(0);
+        finalView.setY(mWholeUFO.getY() + mWholeUFO.getHeight()
                 + DipPixelUtil.dip2px(UFOActivity.this, 5));
-        float xWhenMiddle = (mWindowW - mDialog.getWidth()) / 2;
-        float yWhenMiddle = (mWindowH - mDialog.getHeight()) / 2;
+        float xWhenMiddle = (mWindowW - finalView.getWidth()) / 2;
+        float yWhenMiddle = (mWindowH - finalView.getHeight()) / 2;
         // 广告对话框的出现动画
         PropertyValuesHolder dialogy = PropertyValuesHolder.ofFloat(
                 "y",
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 5), mWindowH
-                        - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 15), mWindowH
-                        - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 25), mWindowH
-                        - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 55), mWindowH
-                        - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 75), mWindowH
-                        - mDialog.getHeight()),
-                Math.min(mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95), mWindowH
-                        - mDialog.getHeight()),
+                Math.min(finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 5), mWindowH
+                        - finalView.getHeight()),
+                Math.min(finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 15), mWindowH
+                        - finalView.getHeight()),
+                Math.min(finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 25), mWindowH
+                        - finalView.getHeight()),
+                Math.min(finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 55), mWindowH
+                        - finalView.getHeight()),
+                Math.min(finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 75), mWindowH
+                        - finalView.getHeight()),
+                Math.min(finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95), mWindowH
+                        - finalView.getHeight()),
                 yWhenMiddle
                         - (3 / (float) 4)
                         * (yWhenMiddle - Math.min(
-                                mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
-                                mWindowH - mDialog.getHeight())),
+                                finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
+                                mWindowH - finalView.getHeight())),
                 yWhenMiddle
                         - (2 / (float) 4)
                         * (yWhenMiddle - Math.min(
-                                mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
-                                mWindowH - mDialog.getHeight())),
+                                finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
+                                mWindowH - finalView.getHeight())),
                 yWhenMiddle
                         - (1 / (float) 4)
                         * (yWhenMiddle - Math.min(
-                                mDialog.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
-                                mWindowH - mDialog.getHeight())),
+                                finalView.getY() + DipPixelUtil.dip2px(UFOActivity.this, 95),
+                                mWindowH - finalView.getHeight())),
                 yWhenMiddle);
         PropertyValuesHolder dialogscalex = PropertyValuesHolder.ofFloat("scaleX", 0.1f, 0.1f,
                 0.1f, 0.1f, 0.1f, 0.4f, 0.6f, 0.8f, 0.9f, 1f);
@@ -568,7 +569,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 0.1f, 0.1f, 0.1f, 0.4f, 0.6f, 0.8f, 0.9f, 1f);
         PropertyValuesHolder dialogalpha = PropertyValuesHolder.ofFloat("Alpha", 0.3f, 0.3f, 0.5f,
                 0.7f, 1f, 1f, 1, 1f, 1f, 1f);
-        ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(mDialog, dialogscalex,
+        ObjectAnimator animator2 = ObjectAnimator.ofPropertyValuesHolder(finalView, dialogscalex,
                 dialogscaley, dialogy, dialogalpha);
         animator2.setDuration(2000);
         animator2.start();
@@ -576,8 +577,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             @Override
             public void onAnimationEnd(Animator animation) {
                 mUFODrawable.stop();
-                LeoLog.e("poha", mDialog.getX() + mDialog.getWidth() / 2 + "DX");
-                LeoLog.e("poha", mDialog.getY() + "DY");
                 mWholeUFO.setVisibility(View.INVISIBLE);
                 mSplashLight.setVisibility(View.INVISIBLE);
                 mLongLight.setVisibility(View.INVISIBLE);
