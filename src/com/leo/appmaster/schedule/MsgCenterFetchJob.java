@@ -111,15 +111,15 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         table.insertMsgList(list);
     }
 
-    @Override
-    protected int getPeriod() {
-        return 10 * 1000;
-    }
-
-    @Override
-    protected int getFailPeriod() {
-        return 10 * 1000;
-    }
+//    @Override
+//    protected int getPeriod() {
+//        return 10 * 1000;
+//    }
+//
+//    @Override
+//    protected int getFailPeriod() {
+//        return 10 * 1000;
+//    }
 
     public static void checkCacheAndRequest(Message message) {
         List<Message> list = new ArrayList<Message>();

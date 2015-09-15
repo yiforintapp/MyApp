@@ -22,6 +22,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -209,6 +210,13 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "onDestroy  ");
+        try {
+            // FIX: 2015/9/15 WebViewActivity has leaked window android.widget.ZoomButtonsController$Container
+            ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
+            viewGroup.removeAllViews();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mVideoFullLayout.removeAllViews();
         mWebView.loadUrl("about:blank");

@@ -33,8 +33,9 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     private static final String KEY_TITLE = "key_title";
     private static final String KEY_UPDATE = "key_update";
 
+    private static final String JSBRIDGE = "jsbridge";
     private static final String HOST_MSGCENTER = "msgcenter";
-    private static final String PATH_WEBVIEW = "webview";
+    private static final String PATH_WEBVIEW = "/webview";
     private static final String PARAMS_URL = "url";
 
     private CommonTitleBar mTitleBar;
@@ -124,11 +125,11 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         Uri uri = Uri.parse(url);
         String schema = uri.getScheme();
-        if ("jsbridge".equals(schema)) {
+        if (JSBRIDGE.equals(schema)) {
             String host = uri.getHost();
             String path = uri.getPath();
             if (HOST_MSGCENTER.equals(host) && PATH_WEBVIEW.equals(path)) {
-                String paramsUrl = uri.getQueryParameter("url");
+                String paramsUrl = uri.getQueryParameter(PARAMS_URL);
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(WebViewActivity.WEB_URL, paramsUrl);
                 startActivity(intent);
