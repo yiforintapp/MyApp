@@ -59,6 +59,8 @@ public class TaskDetectService extends Service {
 
     public static final String SYSTEMUI_PKG = "com.android.systemui";
     private static final String ES_UNINSTALL_ACTIVITY = ".app.UninstallMonitorActivity";
+
+    private static final String HTC_USAGE = "com.htc.usage";
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
@@ -484,11 +486,20 @@ public class TaskDetectService extends Service {
                             && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
                         String pkgList[] = pi.pkgList;
                         if (pkgList != null && pkgList.length > 0) {
-                            pkgName = pkgList[0];
+                            int index = 0;
+                            pkgName = pkgList[index];
                             if (SYSTEMUI_PKG.equals(pkgName)) {
                                 continue;
                             }
-                            activityName = pkgList[0];
+                            if (HTC_USAGE.equals(pkgName)) {
+                                // FIXME: 2015/9/15 AM-2330 htc机型，com.htc.usage会加载到com.android.settings进程中
+                                if (pkgList.length > 1) {
+                                    pkgName = pkgList[++index];
+                                } else {
+                                    continue;
+                                }
+                            }
+                            activityName = pkgList[index];
                             if (pkgName.equals(getPackageName())) {
                                 activityName = TaskChangeHandler.LOCKSCREENNAME;
                                 try {
