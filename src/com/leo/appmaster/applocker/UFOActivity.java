@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -94,6 +95,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private float mUFOH;
     private float mWindowW;
     private float mWindowH;
+    private int RANDOM_NUMERATOR=1;
 
     protected void onCreate(android.os.Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -109,17 +111,14 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
     
     private void toLoad() {
-        
         double themeChanceAfterUFO = (double)AppMasterPreference.getInstance(this).getThemeChanceAfterUFO();
         int ran = (int) (Math.random() * themeChanceAfterUFO + 1d);
 //        ran=2;
-        if (ran == 1) {
-            Toast.makeText(this, "这次的运气不错哦，roll到一个主题！ran=" + ran, 1).show();
+        if (ran == RANDOM_NUMERATOR) {
             mIsShowTheme = true;
             loadTheme();
             loadAD();
         } else {
-            Toast.makeText(this, "这次要去下载广告！ran=" + ran, 1).show();
             loadAD();
         }
     }
@@ -137,6 +136,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
             UFOActivity ufoActivity = getOuterContext();
+            if(ufoActivity==null){
+                return;
+            }
             List<ThemeItemInfo> list = ThemeJsonObjectParser
                     .parserJsonObject(ufoActivity, response);
             List<ThemeItemInfo> listBackup = new ArrayList<ThemeItemInfo>();
@@ -162,6 +164,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                LeoLog.e("poha", list.size()+"最终list size");  
                 if(list.size()==0){
                     list=listBackup;
+                }
+                if(list.size()==0){
+                    return;
                 }
                 double size = (double) list.size();
                 int ran = (int) (Math.random() * size);
