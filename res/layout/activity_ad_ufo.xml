@@ -92,7 +92,7 @@
             android:layout_below="@id/tv_nodata_tip"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="29dp"
-            android:background="@drawable/circle_corner_button_bg"
+            android:background="@drawable/selector_button_rollagain"
             android:text="@string/ufo_roll_again" />
     </RelativeLayout>
 

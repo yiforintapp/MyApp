@@ -353,33 +353,67 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         float yWhenTop = 0f;// UFO在最顶上的y
 
         PropertyValuesHolder ufoX = PropertyValuesHolder.ofFloat("x",
-                ufoStartX,
-                (xWhenBorder - ufoStartX) / 4,
-                2 * (xWhenBorder - ufoStartX) / 4,
-                3 * (xWhenBorder - ufoStartX) / 4,
-                4 * (xWhenBorder - ufoStartX) / 4,
-                xWhenMiddle + 4 * (xWhenBorder - xWhenMiddle) / 5,
-                xWhenMiddle + 3 * (xWhenBorder - xWhenMiddle) / 5,
-                xWhenMiddle + 2 * (xWhenBorder - xWhenMiddle) / 5,
-                xWhenMiddle + 1 * (xWhenBorder - xWhenMiddle) / 5, xWhenMiddle
+                0.13f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.14f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.16f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.21f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.27f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.34f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.43f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.53f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.64f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.74f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.73f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.69f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.64f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.59f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.55f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.53f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.51f*mWindowW-0.5f*mWholeUFO.getWidth(),
+                0.50f*mWindowW-0.5f*mWholeUFO.getWidth()
+//                (xWhenBorder - ufoStartX) / 4,
+//                2 * (xWhenBorder - ufoStartX) / 4,
+//                3 * (xWhenBorder - ufoStartX) / 4,
+//                4 * (xWhenBorder - ufoStartX) / 4,
+//                xWhenMiddle + 4 * (xWhenBorder - xWhenMiddle) / 5,
+//                xWhenMiddle + 3 * (xWhenBorder - xWhenMiddle) / 5,
+//                xWhenMiddle + 2 * (xWhenBorder - xWhenMiddle) / 5,
+//                xWhenMiddle + 1 * (xWhenBorder - xWhenMiddle) / 5, 
+//                xWhenMiddle
                 );
         PropertyValuesHolder ufoY = PropertyValuesHolder.ofFloat("y",
-                ufoStartY,
-                4 * (yWhenTop + ufoStartY) / 7,
-                yWhenTop,
-                4 * (yWhenTop + ufoStartY) / 7,
-                ufoStartY,
-                ufoStartY + 1 * (yWhenFinal - ufoStartY) / 4,
-                ufoStartY + 2 * (yWhenFinal - ufoStartY) / 4,
-                ufoStartY + 3 * (yWhenFinal - ufoStartY) / 4,
-                yWhenFinal
+                0.24f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.24f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.23f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.22f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.21f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.20f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.18f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.17f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.16f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.18f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.23f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.28f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.31f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.33f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.35f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.36f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.36f*mWindowH-0.5f*mWholeUFO.getHeight(),
+                0.36f*mWindowH-0.5f*mWholeUFO.getHeight()
+//                ufoStartY,
+//                4 * (yWhenTop + ufoStartY) / 7,
+//                yWhenTop,
+//                4 * (yWhenTop + ufoStartY) / 7,
+//                ufoStartY,
+//                ufoStartY + 1 * (yWhenFinal - ufoStartY) / 4,
+//                ufoStartY + 2 * (yWhenFinal - ufoStartY) / 4,
+//                ufoStartY + 3 * (yWhenFinal - ufoStartY) / 4,
+//                yWhenFinal
                 );
-        PropertyValuesHolder ufoSX = PropertyValuesHolder.ofFloat("scaleX", 0.1f, 0.2f, 0.3f, 0.4f,
-                0.5f, 1f, 1f, 1f, 1f
-                , 1f);
-        PropertyValuesHolder ufoSY = PropertyValuesHolder.ofFloat("scaleY", 0.1f, 0.2f, 0.3f, 0.4f,
-                0.5f, 1f, 1f, 1f, 1f
-                , 1f);
+        PropertyValuesHolder ufoSX = PropertyValuesHolder.ofFloat("scaleX", 0.1f, 0.1f,0.2f,0.2f, 0.3f, 0.3f, 0.4f,0.4f,
+                0.5f, 0.5f,1f, 1f, 1f, 1f ,1f,1f,1f,1f);
+        PropertyValuesHolder ufoSY = PropertyValuesHolder.ofFloat("scaleY", 0.1f, 0.1f,0.2f,0.2f, 0.3f, 0.3f, 0.4f,0.4f,
+                0.5f, 0.5f,1f, 1f, 1f, 1f ,1f,1f,1f,1f);
 
         final ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mWholeUFO, ufoX,
                 ufoY, ufoSX, ufoSY);
