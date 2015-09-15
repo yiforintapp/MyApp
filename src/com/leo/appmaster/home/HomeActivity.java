@@ -1632,6 +1632,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             intent.setAction(Intent.ACTION_DELETE);
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            LockManager.getInstatnce().timeFilterSelf();
             startActivity(intent);
             return true;
         } catch (Exception e) {
@@ -1684,7 +1685,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         /* 是否为新用户 */
         boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
                 .getIsUpdateQuickGestureUser();
-        if (!isFilterChannel && isAdvanceProtectTip && !updateUser) {
+        if (!isFilterChannel/* 是否为不是需要过滤不显示的渠道 */
+                && isAdvanceProtectTip /* 是否需要提示 */
+                && !updateUser /* 是否为新用户 */
+                && !isAdminActive() /* 是否为开启高级保护 */) {
             advanceProtectDialogTip();
         }
         return isFilterChannel;

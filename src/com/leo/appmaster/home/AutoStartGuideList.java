@@ -4,6 +4,7 @@ package com.leo.appmaster.home;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.utils.BuildProperties;
@@ -20,10 +21,10 @@ public class AutoStartGuideList extends WhiteList {
     private static final int XIAOMIREAD = 1;
     private static final int HUAWEI = 2;
     private static final int LENOVO = 3;
-    private static final int YIJIA = 4;
+    private static final int LETV = 4;
     // private static final int OPPO = 3;
     private static int[] LIST = {
-            XIAOMI4, XIAOMIREAD, HUAWEI, LENOVO, YIJIA
+            XIAOMI4, XIAOMIREAD, HUAWEI, LENOVO, LETV
     };
 
     public AutoStartGuideList() {
@@ -71,8 +72,8 @@ public class AutoStartGuideList extends WhiteList {
             case LENOVO:
                 list = new Lenovo();
                 break;
-            case YIJIA:
-                list=new YiJia();
+            case LETV:
+                list=new Letv();
                 break;
             default:
                 break;
@@ -184,11 +185,21 @@ public class AutoStartGuideList extends WhiteList {
     }
 
     /* YiJia */
-    public static class YiJia extends AutoStartGuideList {
+    public static class Letv extends AutoStartGuideList {
         @Override
         protected boolean doHandler() {
-            //TODO
-            
+            Intent intent = new Intent();
+            ComponentName cn = new ComponentName("com.letv.android.letvsafe",
+                    "com.letv.android.letvsafe.AutobootManageActivity");
+            intent.setComponent(cn);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                LockManager.getInstatnce().timeFilterSelf();
+                mContext.startActivity(intent);
+                Log.e("start_xiaomi_4", "跳转Letv成功！");
+            } catch (Exception e) {
+                Log.e("start_xiaomi_4", "跳转Letv失败！");
+            }
             return false;
         }
 
@@ -212,9 +223,9 @@ public class AutoStartGuideList extends WhiteList {
         if (lenovo) {
             return LENOVO;
         }
-        boolean yijia = BuildProperties.isYiJiaModel();
-        if (yijia) {
-            return YIJIA;
+        boolean letv = BuildProperties.isLetvModel();
+        if (letv) {
+            return LETV;
         }
         return -1;
     }

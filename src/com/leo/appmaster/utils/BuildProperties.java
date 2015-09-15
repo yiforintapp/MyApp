@@ -40,6 +40,8 @@ public class BuildProperties {
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
     private static final String KEY_LENOVO_VERSION_ROM_NAME = "ro.lenovo.lvp.version";
+    private static final String KEY_LETV_VERSION_ROM_NAME = "ro.letv.eui";
+    private static final String KEY_OPPO_VERSION_ROM_NAME = "ro.build.version.opporom";
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";// 解锁等待界面动画执行过快机型
     private final Properties properties;
 
@@ -346,9 +348,7 @@ public class BuildProperties {
     }
 
     public static boolean isOppoOs() {
-        if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom"))))
-            return false;
-        return true;
+        return isAppointModel(KEY_OPPO_VERSION_ROM_NAME);
     }
 
     // back:{true,false}(ture:sucessful,false:failure)
@@ -396,13 +396,17 @@ public class BuildProperties {
 
     /* 判断是否为联想的机型 */
     public static boolean isLenoveModel() {
-        if (TextUtils.isEmpty((CharSequence) (getSystemProperty(KEY_LENOVO_VERSION_ROM_NAME))))
-            return false;
-        return true;
+        return isAppointModel(KEY_LENOVO_VERSION_ROM_NAME);
     }
 
-    public static boolean isYiJiaModel() {
-        // TODO Auto-generated method stub
-        return false;
+    /* 是否为乐视机型 */
+    public static boolean isLetvModel() {
+        return isAppointModel(KEY_LETV_VERSION_ROM_NAME);
+    }
+
+    public static boolean isAppointModel(String model) {
+        if (TextUtils.isEmpty((CharSequence) (getSystemProperty(model))))
+            return false;
+        return true;
     }
 }
