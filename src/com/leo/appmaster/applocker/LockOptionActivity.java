@@ -275,6 +275,12 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
+                    intent.setClassName("com.android.settings",
+                            "com.android.settings.DeviceAdminAdd");
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e1) {
+                    }
                 }
             } else {
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
@@ -285,6 +291,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
             if ((Boolean) newValue) {
