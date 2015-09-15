@@ -1070,15 +1070,20 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
-    private void checkMobileData(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+    
+    private void checkMobileData(QuickSwitcherInfo sInfo, int iconSize, GestureItemView[] tvs) {
         boolean DataIsOpen = QuickSwitchManager.checkMoblieData();
         if (iconSize != mGetIcon) {
             if (DataIsOpen) {
                 sInfo.icon = sInfo.switchIcon[0];
-                tv.setItemIcon(sInfo.switchIcon[0], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[0], false);
+                }
             } else {
                 sInfo.icon = sInfo.switchIcon[1];
-                tv.setItemIcon(sInfo.switchIcon[1], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[1], false);
+                }
             }
         } else {
             if (DataIsOpen) {
@@ -1088,16 +1093,39 @@ public class AppleWatchContainer extends FrameLayout {
             }
         }
     }
+    
+//    private void checkMobileData(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+//        boolean DataIsOpen = QuickSwitchManager.checkMoblieData();
+//        if (iconSize != mGetIcon) {
+//            if (DataIsOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//                tv.setItemIcon(sInfo.switchIcon[0], false);
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//                tv.setItemIcon(sInfo.switchIcon[1], false);
+//            }
+//        } else {
+//            if (DataIsOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//            }
+//        }
+//    }
 
-    private void checkRotation(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+    private void checkRotation(QuickSwitcherInfo sInfo, int iconSize, GestureItemView[] tvs) {
         boolean isOpen = QuickSwitchManager.checkRotation();
         if (iconSize != mGetIcon) {
             if (isOpen) {
                 sInfo.icon = sInfo.switchIcon[0];
-                tv.setItemIcon(sInfo.switchIcon[0], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[0], false);
+                }
             } else {
                 sInfo.icon = sInfo.switchIcon[1];
-                tv.setItemIcon(sInfo.switchIcon[1], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[1], false);
+                }
             }
         } else {
             if (isOpen) {
@@ -1107,6 +1135,25 @@ public class AppleWatchContainer extends FrameLayout {
             }
         }
     }
+    
+//    private void checkRotation(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+//        boolean isOpen = QuickSwitchManager.checkRotation();
+//        if (iconSize != mGetIcon) {
+//            if (isOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//                tv.setItemIcon(sInfo.switchIcon[0], false);
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//                tv.setItemIcon(sInfo.switchIcon[1], false);
+//            }
+//        } else {
+//            if (isOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//            }
+//        }
+//    }
 
     private void checkFlyMode(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         boolean isOpen = QuickSwitchManager.checkFlyMode();
@@ -1182,25 +1229,35 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
-    private void checkLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+    private void checkLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView[] tvs) {
         int mLightStatus = QuickSwitchManager.checkLight();
         if (iconSize != mGetIcon) {
             if (mLightStatus == QuickSwitchManager.LIGHT_AUTO) {
                 sInfo.icon = sInfo.switchIcon[0];
-                tv.setItemIcon(sInfo.switchIcon[0], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[0], false);
+                }
             } else if (mLightStatus == QuickSwitchManager.LIGHT_NORMAL) {
                 sInfo.icon = sInfo.switchIcon[1];
-                tv.setItemIcon(sInfo.switchIcon[1], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[1], false);
+                }
             } else if (mLightStatus == QuickSwitchManager.LIGHT_50_PERCENT) {
                 sInfo.icon = sInfo.switchIcon[2];
-                tv.setItemIcon(sInfo.switchIcon[2], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[2], false);
+                }
             } else if (mLightStatus == QuickSwitchManager.LIGHT_100_PERCENT) {
                 sInfo.icon = sInfo.switchIcon[3];
-                tv.setItemIcon(sInfo.switchIcon[3], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[3], false);
+                }
             } else {
                 // err
                 sInfo.icon = sInfo.switchIcon[1];
-                tv.setItemIcon(sInfo.switchIcon[1], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[1], false);
+                }
             }
         } else {
             if (mLightStatus == QuickSwitchManager.LIGHT_AUTO) {
@@ -1218,19 +1275,63 @@ public class AppleWatchContainer extends FrameLayout {
         }
 
     }
+    
+//    private void checkLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+//        int mLightStatus = QuickSwitchManager.checkLight();
+//        if (iconSize != mGetIcon) {
+//            if (mLightStatus == QuickSwitchManager.LIGHT_AUTO) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//                tv.setItemIcon(sInfo.switchIcon[0], false);
+//            } else if (mLightStatus == QuickSwitchManager.LIGHT_NORMAL) {
+//                sInfo.icon = sInfo.switchIcon[1];
+//                tv.setItemIcon(sInfo.switchIcon[1], false);
+//            } else if (mLightStatus == QuickSwitchManager.LIGHT_50_PERCENT) {
+//                sInfo.icon = sInfo.switchIcon[2];
+//                tv.setItemIcon(sInfo.switchIcon[2], false);
+//            } else if (mLightStatus == QuickSwitchManager.LIGHT_100_PERCENT) {
+//                sInfo.icon = sInfo.switchIcon[3];
+//                tv.setItemIcon(sInfo.switchIcon[3], false);
+//            } else {
+//                // err
+//                sInfo.icon = sInfo.switchIcon[1];
+//                tv.setItemIcon(sInfo.switchIcon[1], false);
+//            }
+//        } else {
+//            if (mLightStatus == QuickSwitchManager.LIGHT_AUTO) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//            } else if (mLightStatus == QuickSwitchManager.LIGHT_NORMAL) {
+//                sInfo.icon = sInfo.switchIcon[1];
+//            } else if (mLightStatus == QuickSwitchManager.LIGHT_50_PERCENT) {
+//                sInfo.icon = sInfo.switchIcon[2];
+//            } else if (mLightStatus == QuickSwitchManager.LIGHT_100_PERCENT) {
+//                sInfo.icon = sInfo.switchIcon[3];
+//            } else {
+//                // err
+//                sInfo.icon = sInfo.switchIcon[1];
+//            }
+//        }
+//
+//    }
 
-    private void checkSoundStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+    
+    private void checkSoundStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView[] tvs) {
         int mSoundStatus = QuickSwitchManager.checkSound();
         if (iconSize != mGetIcon) {
             if (mSoundStatus == QuickSwitchManager.mSound) {
                 sInfo.icon = sInfo.switchIcon[0];
-                tv.setItemIcon(sInfo.switchIcon[0], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[0], false);
+                }
             } else if (mSoundStatus == QuickSwitchManager.mQuite) {
                 sInfo.icon = sInfo.switchIcon[1];
-                tv.setItemIcon(sInfo.switchIcon[1], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[1], false);
+                }
             } else {
                 sInfo.icon = sInfo.switchIcon[2];
-                tv.setItemIcon(sInfo.switchIcon[2], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[2], false);
+                }
             }
         } else {
             if (mSoundStatus == QuickSwitchManager.mSound) {
@@ -1242,6 +1343,29 @@ public class AppleWatchContainer extends FrameLayout {
             }
         }
     }
+//    private void checkSoundStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+//        int mSoundStatus = QuickSwitchManager.checkSound();
+//        if (iconSize != mGetIcon) {
+//            if (mSoundStatus == QuickSwitchManager.mSound) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//                tv.setItemIcon(sInfo.switchIcon[0], false);
+//            } else if (mSoundStatus == QuickSwitchManager.mQuite) {
+//                sInfo.icon = sInfo.switchIcon[1];
+//                tv.setItemIcon(sInfo.switchIcon[1], false);
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[2];
+//                tv.setItemIcon(sInfo.switchIcon[2], false);
+//            }
+//        } else {
+//            if (mSoundStatus == QuickSwitchManager.mSound) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//            } else if (mSoundStatus == QuickSwitchManager.mQuite) {
+//                sInfo.icon = sInfo.switchIcon[1];
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[2];
+//            }
+//        }
+//    }
 
     private void checkCrameStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
         if (iconSize != mGetIcon) {
@@ -1252,15 +1376,19 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
-    private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+    private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView[] tvs) {
         boolean isOpen = QuickSwitchManager.checkWlan();
         if (iconSize != mGetIcon) {
             if (isOpen) {
                 sInfo.icon = sInfo.switchIcon[0];
-                tv.setItemIcon(sInfo.switchIcon[0], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[0], false);
+                }
             } else {
                 sInfo.icon = sInfo.switchIcon[1];
-                tv.setItemIcon(sInfo.switchIcon[1], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[1], false);
+                }
             }
         } else {
             if (isOpen) {
@@ -1271,16 +1399,41 @@ public class AppleWatchContainer extends FrameLayout {
         }
 
     }
+    
+//    private void checkWlanStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+//        boolean isOpen = QuickSwitchManager.checkWlan();
+//        if (iconSize != mGetIcon) {
+//            if (isOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//                tv.setItemIcon(sInfo.switchIcon[0], false);
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//                tv.setItemIcon(sInfo.switchIcon[1], false);
+//            }
+//        } else {
+//            if (isOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//            }
+//        }
+//
+//    }
 
-    private void checkFlashLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+    private void checkFlashLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView[] tvs) {
         boolean isOpen = QuickSwitchManager.checkFlashLight();
         if (iconSize != mGetIcon) {
             if (isOpen) {
                 sInfo.icon = sInfo.switchIcon[0];
-                tv.setItemIcon(sInfo.switchIcon[0], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[0], false);
+                }
+
             } else {
                 sInfo.icon = sInfo.switchIcon[1];
-                tv.setItemIcon(sInfo.switchIcon[1], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[1], false);
+                }
             }
         } else {
             if (isOpen) {
@@ -1291,16 +1444,40 @@ public class AppleWatchContainer extends FrameLayout {
         }
 
     }
+    
+//    private void checkFlashLightStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+//        boolean isOpen = QuickSwitchManager.checkFlashLight();
+//        if (iconSize != mGetIcon) {
+//            if (isOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//                tv.setItemIcon(sInfo.switchIcon[0], false);
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//                tv.setItemIcon(sInfo.switchIcon[1], false);
+//            }
+//        } else {
+//            if (isOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//            }
+//        }
+//
+//    }
 
-    private void checkBlueToothStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+    private void checkBlueToothStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView[] tvs) {
         boolean isOpen = QuickSwitchManager.checkBlueTooth();
         if (iconSize != mGetIcon) {
             if (isOpen) {
                 sInfo.icon = sInfo.switchIcon[0];
-                tv.setItemIcon(sInfo.switchIcon[0], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[0], false);
+                }
             } else {
                 sInfo.icon = sInfo.switchIcon[1];
-                tv.setItemIcon(sInfo.switchIcon[1], false);
+                for (GestureItemView gestureItemView : tvs) {
+                    gestureItemView.setItemIcon(sInfo.switchIcon[1], false);
+                }
             }
         } else {
             if (isOpen) {
@@ -1311,6 +1488,26 @@ public class AppleWatchContainer extends FrameLayout {
         }
 
     }
+    
+//    private void checkBlueToothStatus(QuickSwitcherInfo sInfo, int iconSize, GestureItemView tv) {
+//        boolean isOpen = QuickSwitchManager.checkBlueTooth();
+//        if (iconSize != mGetIcon) {
+//            if (isOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//                tv.setItemIcon(sInfo.switchIcon[0], false);
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//                tv.setItemIcon(sInfo.switchIcon[1], false);
+//            }
+//        } else {
+//            if (isOpen) {
+//                sInfo.icon = sInfo.switchIcon[0];
+//            } else {
+//                sInfo.icon = sInfo.switchIcon[1];
+//            }
+//        }
+//
+//    }
 
     public GType getCurrentGestureType() {
         return mCurrentGestureType;
@@ -1498,34 +1695,56 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void checkStatus(QuickSwitcherInfo info) {
-        GestureItemView tv = null;
+        GestureItemView[] tvs = mSwitcherLayout.getChildWithTitle(info.label);
         int iconSize = mSwitcherLayout.getIconSize();
         if (info.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-            checkBlueToothStatus(info, iconSize, tv);
+            checkBlueToothStatus(info, iconSize, tvs);
         } else if (info.swtichIdentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-            checkFlashLightStatus(info, iconSize, tv);
+            checkFlashLightStatus(info, iconSize, tvs);
         } else if (info.swtichIdentiName.equals(QuickSwitchManager.WLAN)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-            checkWlanStatus(info, iconSize, tv);
+            checkWlanStatus(info, iconSize, tvs);
         } else if (info.swtichIdentiName.equals(QuickSwitchManager.SOUND)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-            checkSoundStatus(info, iconSize, tv);
+            checkSoundStatus(info, iconSize, tvs);
         } else if (info.swtichIdentiName.equals(QuickSwitchManager.LIGHT)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-            checkLightStatus(info, iconSize, tv);
+            checkLightStatus(info, iconSize, tvs);
         } else if (info.swtichIdentiName.equals(QuickSwitchManager.ROTATION)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-            checkRotation(info, iconSize, tv);
+            checkRotation(info, iconSize, tvs);
         } else if (info.swtichIdentiName.equals(QuickSwitchManager.MOBILEDATA)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-            checkMobileData(info, iconSize, tv);
+            checkMobileData(info, iconSize, tvs);
         } else if (info.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
-            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
-            speedUp(info, iconSize, tv);
+            speedUp(info, iconSize, tvs);
         }
     }
+    
+//    public void checkStatus(QuickSwitcherInfo info) {
+//        GestureItemView tv = null;
+//        int iconSize = mSwitcherLayout.getIconSize();
+//        if (info.swtichIdentiName.equals(QuickSwitchManager.BLUETOOTH)) {
+//            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            checkBlueToothStatus(info, iconSize, tv);
+//        } else if (info.swtichIdentiName.equals(QuickSwitchManager.FLASHLIGHT)) {
+//            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            checkFlashLightStatus(info, iconSize, tv);
+//        } else if (info.swtichIdentiName.equals(QuickSwitchManager.WLAN)) {
+//            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            checkWlanStatus(info, iconSize, tv);
+//        } else if (info.swtichIdentiName.equals(QuickSwitchManager.SOUND)) {
+//            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            checkSoundStatus(info, iconSize, tv);
+//        } else if (info.swtichIdentiName.equals(QuickSwitchManager.LIGHT)) {
+//            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            checkLightStatus(info, iconSize, tv);
+//        } else if (info.swtichIdentiName.equals(QuickSwitchManager.ROTATION)) {
+//            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            checkRotation(info, iconSize, tv);
+//        } else if (info.swtichIdentiName.equals(QuickSwitchManager.MOBILEDATA)) {
+//            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            checkMobileData(info, iconSize, tv);
+//        } else if (info.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
+//            tv = (GestureItemView) mSwitcherLayout.getChildAtPosition(info.gesturePosition);
+//            speedUp(info, iconSize, tv);
+//        }
+//    }
 
     private void cleanMem() {
 //        isCleanFinish = false;
@@ -1557,7 +1776,7 @@ public class AppleWatchContainer extends FrameLayout {
         }
     }
 
-    private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView tv) {
+    private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView[] tvs) {
         ThreadManager.executeOnAsyncThread(new Runnable() {
 
             @Override
@@ -1569,6 +1788,7 @@ public class AppleWatchContainer extends FrameLayout {
         isAnimating = true;
         // first - change to no roket icon
         info.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+        GestureItemView tv = tvs[1];
         tv.setItemIcon(info.switchIcon[1], false);
         // second - show roket in icon place
         int mLayoutTop = mSwitcherLayout.getTop();

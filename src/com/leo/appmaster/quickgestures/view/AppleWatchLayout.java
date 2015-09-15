@@ -2389,4 +2389,25 @@ public class AppleWatchLayout extends ViewGroup {
         set.playTogether(firstAnim, partOneSet, partTwoSet, partThreeSet, lastAnim);
         return set;
     }
+    
+    public GestureItemView[] getChildWithTitle(String title) {
+        GestureItemView[] tvs = new GestureItemView[3];
+        BaseInfo info = null;
+        int count = 0;
+        for (int i = 0; i < mHoriChildren.length; i++) {
+            for (GestureItemView gestureItemView : mHoriChildren[i]) {
+                info = (BaseInfo) gestureItemView.getTag();
+                if (TextUtils.equals(title, info.label)) {
+                    tvs[count] = gestureItemView;
+                    count++;
+                    if (count == 3) {
+                        return tvs;
+                    }
+                }
+            }
+        }
+
+        return tvs;
+    }
+    
 }
