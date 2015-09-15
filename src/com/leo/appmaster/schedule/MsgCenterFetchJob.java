@@ -2,6 +2,8 @@ package com.leo.appmaster.schedule;
 
 import android.content.Context;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.FileRequest;
@@ -17,22 +19,29 @@ import com.leo.imageloader.utils.IoUtils;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.ConnectException;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 /**
  * 消息中心抓取任务
  * Created by Jasper on 2015/9/8.
  */
 public class MsgCenterFetchJob extends FetchScheduleJob {
+    private static final String TAG = "MsgCenterFetchJob";
     private static final boolean DBG = true;
 
     public static void startByPush() {
@@ -147,8 +156,13 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             return;
         }
 
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         UpdateCacheListener listener = new UpdateCacheListener();
         FileRequest request = new FileRequest(url, file.getAbsolutePath(), listener, listener);
+        request.setRetryPolicy(policy);
+
         HttpRequestAgent.getInstance(ctx).getRequestQueue().add(request);
     }
 
@@ -178,6 +192,11 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         return true;
     }
 
+    /**
+     * 下载资源包
+     * @param filePath
+     * @param url
+     */
     private static void requestResFile(String filePath, String url) {
         File file = new File(filePath);
         if (file.exists()) {
@@ -187,22 +206,48 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         HttpStack stack = new HurlStack();
         FileRequest request = new FileRequest(url, null, null, null);
 
+        int maxRetryCount = 3;
+        int retryCount = 0;
+
         FileOutputStream fos = null;
         InputStream inputStream = null;
         try {
-            HttpResponse response = stack.performRequest(request, new HashMap<String, String>());
-            HttpEntity entity = response.getEntity();
-            inputStream = entity.getContent();
-            fos = new FileOutputStream(file);
+            while (retryCount < maxRetryCount) {
+                try {
+                    HttpResponse response = stack.performRequest(request, new HashMap<String, String>());
+                    HttpEntity entity = response.getEntity();
+                    inputStream = entity.getContent();
+                    fos = new FileOutputStream(file);
 
-            int size = 2048;
-            byte[] buffer = new byte[size];
-            int n;
-            while ((n = inputStream.read(buffer, 0, size)) != -1) {
-                fos.write(buffer, 0, n);
+                    int size = 2048;
+                    byte[] buffer = new byte[size];
+                    int n;
+                    while ((n = inputStream.read(buffer, 0, size)) != -1) {
+                        fos.write(buffer, 0, n);
+                    }
+                    break;
+                } catch (SocketTimeoutException e) {
+                    // retry
+                    retryCount++;
+                    LeoLog.e(TAG, "socket timeout ex, retrycount: " + retryCount);
+                } catch (ConnectTimeoutException e) {
+                    // retry
+                    retryCount++;
+                    LeoLog.e(TAG, "connect timeout ex, retrycount: " + retryCount);
+                } catch (AuthFailureError e) {
+                    e.printStackTrace();
+                    break;
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                    break;
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    break;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    break;
+                }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             IoUtils.closeSilently(inputStream);
             IoUtils.closeSilently(fos);
@@ -213,12 +258,12 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
         @Override
         public void onErrorResponse(VolleyError error) {
-            LeoLog.i("MsgCenterFetchJob", "UpdateCacheListener, onErrorResponse: " + error);
+            LeoLog.i(TAG, "UpdateCacheListener, onErrorResponse: " + error);
         }
 
         @Override
         public void onResponse(File response, boolean noMidify) {
-            LeoLog.i("MsgCenterFetchJob", "UpdateCacheListener, onResponse: " + response);
+            LeoLog.i(TAG, "UpdateCacheListener, onResponse: " + response);
         }
     }
 
