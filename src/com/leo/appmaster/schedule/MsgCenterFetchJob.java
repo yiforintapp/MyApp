@@ -12,6 +12,8 @@ import com.android.volley.toolbox.HurlStack;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.MsgCenterTable;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.utils.LeoLog;
@@ -29,12 +31,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.TimeoutException;
 
 /**
  * 消息中心抓取任务
@@ -159,7 +159,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        UpdateCacheListener listener = new UpdateCacheListener();
+        HtmlListener listener = new HtmlListener();
         FileRequest request = new FileRequest(url, file.getAbsolutePath(), listener, listener);
         request.setRetryPolicy(policy);
 
@@ -215,6 +215,14 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             while (retryCount < maxRetryCount) {
                 try {
                     HttpResponse response = stack.performRequest(request, new HashMap<String, String>());
+                    if (!file.exists()) {
+                        File parentFile = file.getParentFile();
+                        if (!parentFile.exists()) {
+                            parentFile.mkdirs();
+                        }
+                        file.createNewFile();
+                    }
+
                     HttpEntity entity = response.getEntity();
                     inputStream = entity.getContent();
                     fos = new FileOutputStream(file);
@@ -225,6 +233,8 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
                     while ((n = inputStream.read(buffer, 0, size)) != -1) {
                         fos.write(buffer, 0, n);
                     }
+                    LeoLog.i(TAG, "download res file succ.");
+                    LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_RES));
                     break;
                 } catch (SocketTimeoutException e) {
                     // retry
@@ -234,17 +244,9 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
                     // retry
                     retryCount++;
                     LeoLog.e(TAG, "connect timeout ex, retrycount: " + retryCount);
-                } catch (AuthFailureError e) {
-                    e.printStackTrace();
-                    break;
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    break;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    break;
                 } catch (Exception e) {
                     e.printStackTrace();
+                    file.delete();
                     break;
                 }
             }
@@ -254,16 +256,17 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         }
     }
 
-    private static class UpdateCacheListener implements Response.Listener<File>, Response.ErrorListener {
+    private static class HtmlListener implements Response.Listener<File>, Response.ErrorListener {
 
         @Override
         public void onErrorResponse(VolleyError error) {
-            LeoLog.i(TAG, "UpdateCacheListener, onErrorResponse: " + error);
+            LeoLog.i(TAG, "HtmlListener, onErrorResponse: " + error);
         }
 
         @Override
         public void onResponse(File response, boolean noMidify) {
-            LeoLog.i(TAG, "UpdateCacheListener, onResponse: " + response);
+            LeoLog.i(TAG, "HtmlListener, onResponse: " + response);
+            LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_HTML));
         }
     }
 

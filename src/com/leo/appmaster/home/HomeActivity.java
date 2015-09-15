@@ -75,6 +75,7 @@ import com.leo.appmaster.appwall.AppWallActivity;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
+import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -353,6 +354,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 mPagerTab.notifyDataSetChanged();
             }
         }
+    }
+
+    public void onEvent(MsgCenterEvent event) {
+        // 设置消息中心未读计数
+        setMsgCenterUnread();
     }
 
     private void initUI() {
