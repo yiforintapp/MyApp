@@ -159,7 +159,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        HtmlListener listener = new HtmlListener();
+        HtmlListener listener = new HtmlListener(file);
         FileRequest request = new FileRequest(url, file.getAbsolutePath(), listener, listener);
         request.setRetryPolicy(policy);
 
@@ -258,9 +258,26 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
     private static class HtmlListener implements Response.Listener<File>, Response.ErrorListener {
 
+        private File file;
+        public HtmlListener(File file) {
+            this.file = file;
+            if (!file.exists()) {
+                File parentFile = file.getParentFile();
+                if (!parentFile.exists()) {
+                    parentFile.mkdirs();
+                }
+                try {
+                    file.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
         @Override
         public void onErrorResponse(VolleyError error) {
             LeoLog.i(TAG, "HtmlListener, onErrorResponse: " + error);
+            file.delete();
         }
 
         @Override
