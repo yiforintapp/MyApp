@@ -1067,7 +1067,7 @@ public class PrivacyContactUtils {
                     pre.setMessageNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
                         /* ISwipe处理：通知没有未读 */
-                        QuickGestureManager.getInstance(context).cancelPrivacyTipFromPrivacyMsm();
+                        PrivacyContactManager.getInstance(context).cancelPrivacyTipFromPrivacyMsm();
                         // 没有未读去除隐私通知
                         if (pre.getCallLogNoReadCount() <= 0) {
                             NotificationManager notificationManager = (NotificationManager)

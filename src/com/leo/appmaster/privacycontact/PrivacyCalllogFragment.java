@@ -526,7 +526,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             }
                             if (temp <= 0) {
                                 /* ISwipe处理：通知没有未读 */
-                                QuickGestureManager.getInstance(mContext)
+                                PrivacyContactManager.getInstance(mContext)
                                         .cancelPrivacyTipFromPrivacyCall();
                                 // 没有未读去除隐私通知
                                 if (pre.getMessageNoReadCount() <= 0) {
@@ -604,7 +604,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     pre.setCallLogNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
                         /* ISwipe处理：通知没有未读 */
-                        QuickGestureManager.getInstance(context).cancelPrivacyTipFromPrivacyCall();
+                        PrivacyContactManager.getInstance(context).cancelPrivacyTipFromPrivacyCall();
                         // 没有未读去除隐私通知
                         if (pre.getMessageNoReadCount() <= 0) {
                             NotificationManager notificationManager = (NotificationManager)

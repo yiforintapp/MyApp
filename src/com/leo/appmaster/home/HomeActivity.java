@@ -342,6 +342,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mAdvanceProtectDialog.dismiss();
             mAdvanceProtectDialog = null;
         }
+        if (mQuickGestureTip != null) {
+            mQuickGestureTip.dismiss();
+            mQuickGestureTip = null;
+        }
+        if (mIswipDialog != null) {
+            mIswipDialog.dismiss();
+            mIswipDialog = null;
+        }
     }
 
     @Override
@@ -590,7 +598,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mDrawerLayout.postInvalidate();
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
-        } 
+        }
     }
 
     public void shouldShowAd() {
@@ -1431,6 +1439,15 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (mQuickGestureTip == null) {
             mQuickGestureTip = new QuickGestureTipDialog(this);
         }
+        mQuickGestureTip.setOnDismissListener(new OnDismissListener() {
+
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (mQuickGestureTip != null) {
+                    mQuickGestureTip = null;
+                }
+            }
+        });
         mQuickGestureTip.setLeftOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
@@ -1535,6 +1552,15 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (mIswipDialog == null) {
             mIswipDialog = new IswipUpdateTipDialog(context);
         }
+        mIswipDialog.setOnDismissListener(new OnDismissListener() {
+
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (mIswipDialog != null) {
+                    mIswipDialog = null;
+                }
+            }
+        });
         mIswipDialog.setLeftListener(new OnClickListener() {
 
             @Override

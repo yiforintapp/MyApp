@@ -299,8 +299,8 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
          */
         QuickGestureManager.getInstance(mContext).privacyLastRecord = QuickGestureManager.RECORD_CALL;
         /* 隐私联系人有未读 通话时发送广播 */
-        QuickGestureManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
-                QuickGestureManager.PRIVACY_CALL,0,number);
+        PrivacyContactManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
+                PrivacyContactManager.PRIVACY_CALL,0,number);
         LeoLog.e(TAG, "本次联系人："+number);
     }
 

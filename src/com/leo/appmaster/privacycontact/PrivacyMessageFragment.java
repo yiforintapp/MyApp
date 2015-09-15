@@ -525,7 +525,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                 }
                                 if (temp <= 0) {
                                     /* ISwipe处理：通知没有未读 */
-                                    QuickGestureManager.getInstance(mContext)
+                                    PrivacyContactManager.getInstance(mContext)
                                             .cancelPrivacyTipFromPrivacyMsm();
                                     // 没有未读去除隐私通知
                                     if (pre.getCallLogNoReadCount() <= 0) {

@@ -89,7 +89,7 @@ public class SplashActivity extends BaseActivity {
     private boolean mShowSplashFlag;
     private TextView mSkipText;
     private static final String TAG = "SplashActivity";
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
 
     /* Guide page stuff end */
     @Override
@@ -124,7 +124,7 @@ public class SplashActivity extends BaseActivity {
         }
         /**
          * 可能存在的几种情况：<br>
-         *  1.只有开始时间<br>
+         * 1.只有开始时间<br>
          * 2.只有结束时间<br>
          * 3.没有配置时间<br>
          * 4.开始.结束时间都有<br>
@@ -149,10 +149,18 @@ public class SplashActivity extends BaseActivity {
                 }
             }
             if (!mShowSplashFlag) {
-                showDefaultSplash();
+                if (!DBG) {
+                    showDefaultSplash();
+                } else {
+                    showSplash();
+                }
             }
         } else {
-            showDefaultSplash();
+            if (!DBG) {
+                showDefaultSplash();
+            } else {
+                showSplash();
+            }
         }
         PrivacyHelper.getInstance(this).setDirty(true);
     }
