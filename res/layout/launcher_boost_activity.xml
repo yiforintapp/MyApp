@@ -50,7 +50,7 @@
                 android:layout_width="300dp"
                 android:layout_height="260dp"
                 android:layout_marginTop="60dp"
-                android:background="@color/white" >
+                android:background="@drawable/accelerate_circle_corner_bg" >
 
                 <ImageView
                     android:id="@+id/iv_ad_icon"

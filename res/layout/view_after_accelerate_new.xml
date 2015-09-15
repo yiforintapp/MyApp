@@ -16,7 +16,7 @@
         android:layout_marginTop="60dp"
         android:layout_width="272dp"              	
         android:layout_height="69dp"
-        android:background="@color/white" >
+        android:background="@drawable/accelerate_circle_corner_bg" >
 		
         <TextView
             android:layout_marginTop="20dp"
@@ -25,6 +25,7 @@
             android:layout_marginRight="10dp"
             android:layout_centerVertical="true"
             android:textColor="#333333"
+            android:gravity="center"
             android:textSize="18dp" 
             android:id="@+id/tv_accelerat_result"
             android:layout_height="match_parent"
