@@ -221,6 +221,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             public void onClick(View arg0) {
                 mUIHelper.cancelDownloadNotification();
                 mManager.onCancelDownload();
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 finish();
             }
         });
@@ -233,6 +234,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 LeoLog.d(TAG,
                         "sendDownloadNotification in showDownloading, click hide window");
                 mUIHelper.sendDownloadNotification(mProgress);
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 finish();
             }
         });
