@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true" 
-             android:visibility="invisible">
+             android:visibility="visible">
 
             <TextView
                 android:gravity="center"
@@ -34,14 +34,14 @@
                 android:text="5" />
 
             <!-- android:visibility="gone" > -->
-
+<!-- 
             <ImageView
                 android:id="@+id/iv_dial"
                 android:layout_width="111dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="94dp"
                   android:layout_centerHorizontal="true"
-                android:src="@drawable/acclerate_result_dial" />
+                android:src="@drawable/acclerate_result_dial" /> -->
 
             <!-- android:layout_below="@id/iv_dial" -->
 
@@ -136,11 +136,10 @@
 
             <ImageView
                   android:layout_centerHorizontal="true"
-                android:layout_width="44dp"
-                android:layout_height="27dp"
-                android:layout_marginLeft="22dp"
-                android:layout_marginTop="47dp"
-                android:src="@drawable/acclerate_result_zhizhen" />
+                android:layout_width="111dp"
+                android:layout_height="64dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/accelerate_result_dial" />
         </RelativeLayout>
 
         <ImageView
