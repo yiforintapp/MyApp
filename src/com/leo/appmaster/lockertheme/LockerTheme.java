@@ -249,6 +249,14 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     }
                     // 2是在线有广告
                     else if (mThemeAdSwitchOpen == 2) {
+
+                        if (mLayoutEmptyTip.getVisibility() == View.VISIBLE) {
+                            mLayoutEmptyTip.setVisibility(View.INVISIBLE);
+                        }
+                        if(mErrorView.getVisibility() == View.VISIBLE){
+                            mErrorView.setVisibility(View.INVISIBLE);
+                        }
+
                         mOnlineThemeAdapter.setCampaign(campaign, isGetAd);
                         // 插入假数据，腾出广告位
                         ThemeItemInfo onlineInfo = new ThemeItemInfo();
@@ -375,7 +383,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         }
 
                         loadLocalTheme();
-                        if (isGetAd) {
+                        if (isGetAd && mThemeAdSwitchOpen == 1) {
                             addLocalAd();
                         }
                         mLocalThemeAdapter.notifyDataSetChanged();
@@ -392,7 +400,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     @Override
                     public void run() {
                         loadLocalTheme();
-                        if (isGetAd) {
+                        if (isGetAd && mThemeAdSwitchOpen == 1) {
                             addLocalAd();
                         }
                         mLocalThemeAdapter.notifyDataSetChanged();
@@ -411,7 +419,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                             }
                             mOnlineThemeAdapter.notifyDataSetChanged();
                             if (mOnlineThemes.isEmpty()) {
-                                mLayoutEmptyTip.setVisibility(View.VISIBLE);
+                                if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
+                                    mLayoutEmptyTip.setVisibility(View.VISIBLE);
+                                }
                             }
                         }
                     }
@@ -686,7 +696,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             }
             mOnlineThemeAdapter.notifyDataSetChanged();
             if (mOnlineThemes.isEmpty()) {
-                mLayoutEmptyTip.setVisibility(View.VISIBLE);
+                if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
+                    mLayoutEmptyTip.setVisibility(View.VISIBLE);
+                }
                 mOnlineThemeList.setVisibility(View.VISIBLE);
             } else {
                 mOnlineThemeList.setVisibility(View.VISIBLE);
@@ -694,7 +706,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             }
         } else {
             mOnlineThemeList.setVisibility(View.INVISIBLE);
-            mErrorView.setVisibility(View.VISIBLE);
+            if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
+                mErrorView.setVisibility(View.VISIBLE);
+            }
             mLayoutEmptyTip.setVisibility(View.INVISIBLE);
         }
         mProgressBar.setVisibility(View.INVISIBLE);

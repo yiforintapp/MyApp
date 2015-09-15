@@ -27,6 +27,6 @@ public class DeskAdActivity extends Activity {
         startActivity(mWallIntent);
         // Intent intent = new Intent(this,HomeActivity.class);
         // startActivity(intent);
-        // finish();
+         finish();
     }
 }
