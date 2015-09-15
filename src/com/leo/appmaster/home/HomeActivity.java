@@ -359,6 +359,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void onEvent(MsgCenterEvent event) {
         // 设置消息中心未读计数
         setMsgCenterUnread();
+        LeoLog.i(TAG, "onEvent, event: " + event);
     }
 
     private void initUI() {

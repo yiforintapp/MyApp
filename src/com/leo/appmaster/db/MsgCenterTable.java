@@ -82,7 +82,7 @@ public class MsgCenterTable extends BaseTable {
         if (db == null) return;
 
         // 先清空数据
-        List<Message> oldList = queryMsgList();
+        List<Message> oldList = queryMsgList(true);
         for (Message oldMsg : oldList) {
             for (Message message : msgList) {
                 if (message.msgId == oldMsg.msgId) {
@@ -123,9 +123,10 @@ public class MsgCenterTable extends BaseTable {
 
     /**
      * 获取消息列表
+     * @param forceAll 强制返回所有数据
      * @return
      */
-    public List<Message> queryMsgList() {
+    public List<Message> queryMsgList(boolean forceAll) {
         ArrayList<Message> result = new ArrayList<Message>();
         SQLiteDatabase db = getHelper().getReadableDatabase();
         if (db == null) return result;
@@ -136,13 +137,19 @@ public class MsgCenterTable extends BaseTable {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
+                    String categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
+                    String url = cursor.getString(cursor.getColumnIndex(COL_LINK));
+                    if (Message.CATEGORY_UPDATE.equals(categoryCode) && !MsgCenterFetchJob.hasCacheFile(url)
+                            && !forceAll) {
+                        continue;
+                    }
                     Message message = new Message();
                     message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
                     message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
-                    message.jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
+                    message.jumpUrl = url;
                     message.msgId = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
                     message.categoryName = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_NAME));
-                    message.categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
+                    message.categoryCode = categoryCode;
                     message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
                     message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
                     message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));

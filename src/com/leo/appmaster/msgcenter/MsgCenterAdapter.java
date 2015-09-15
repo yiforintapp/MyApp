@@ -65,7 +65,7 @@ public class MsgCenterAdapter extends BaseAdapter {
             @Override
             public void run() {
                 MsgCenterTable table = new MsgCenterTable();
-                List<Message> list = table.queryMsgList();
+                List<Message> list = table.queryMsgList(false);
                 onQueryResult(list);
             }
         });

@@ -22,7 +22,7 @@ import com.leo.appmaster.utils.LeoLog;
  * @author Jasper
  */
 public class InitAsyncBootstrap extends Bootstrap {
-    private static final String TAG = "InitBootstrap";
+    private static final String TAG = "InitAsyncBootstrap";
 
     InitAsyncBootstrap() {
         super();
