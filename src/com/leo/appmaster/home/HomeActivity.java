@@ -114,7 +114,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
     /* 数组中为不显示开启高级保护的渠道 */
     public static final String[] FILTER_CHANNEL = {
-            "0002a"
+            "0001a"
     };
 
     // 释放系统预加载资源使用

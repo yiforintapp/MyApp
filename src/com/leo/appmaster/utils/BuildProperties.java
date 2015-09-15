@@ -400,4 +400,9 @@ public class BuildProperties {
             return false;
         return true;
     }
+
+    public static boolean isYiJiaModel() {
+        // TODO Auto-generated method stub
+        return false;
+    }
 }

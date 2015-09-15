@@ -663,10 +663,11 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         }
         Intent i = new Intent();
         i.setClass(mContext, UpdateActivity.class);
-        LeoLog.i(TAG, "当前所在应用：" + lockPackage);
+        LeoLog.i(TAG, "升级对话框当前所在应用：" + lockPackage);
         if (lockPackage != null && !lockPackage.equals(mContext.getPackageName())) {
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
             LeoLog.i(UIHelper.TAG, "需要过滤锁是启动的Activity方式！");
         } else {
             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK

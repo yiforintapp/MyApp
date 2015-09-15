@@ -20,9 +20,10 @@ public class AutoStartGuideList extends WhiteList {
     private static final int XIAOMIREAD = 1;
     private static final int HUAWEI = 2;
     private static final int LENOVO = 3;
+    private static final int YIJIA = 4;
     // private static final int OPPO = 3;
     private static int[] LIST = {
-            XIAOMI4, XIAOMIREAD, HUAWEI, LENOVO
+            XIAOMI4, XIAOMIREAD, HUAWEI, LENOVO, YIJIA
     };
 
     public AutoStartGuideList() {
@@ -43,7 +44,7 @@ public class AutoStartGuideList extends WhiteList {
                             break;
                         }
                     } else {
-                        LeoLog.i(TAG, "该手机机型不存在于白名单");
+                        LeoLog.i(TAG, "该手机机型不存在于白名单~~~");
                         break;
                     }
                 }
@@ -67,9 +68,12 @@ public class AutoStartGuideList extends WhiteList {
             case HUAWEI:
                 list = new HuaWei();
                 break;
-             case LENOVO:
-             list = new Lenovo();
-             break;
+            case LENOVO:
+                list = new Lenovo();
+                break;
+            case YIJIA:
+                list=new YiJia();
+                break;
             default:
                 break;
         }
@@ -154,7 +158,7 @@ public class AutoStartGuideList extends WhiteList {
 
     }
 
-    /* oppo */
+    /* Lenovo */
     private static class Lenovo extends AutoStartGuideList {
 
         @Override
@@ -179,6 +183,17 @@ public class AutoStartGuideList extends WhiteList {
         }
     }
 
+    /* YiJia */
+    public static class YiJia extends AutoStartGuideList {
+        @Override
+        protected boolean doHandler() {
+            //TODO
+            
+            return false;
+        }
+
+    }
+
     /* 判断是否为添加自启动的白名单机型 */
     public static int isAutoWhiteListModel(Context context) {
         boolean miuiV5 = BuildProperties.isMiuiV5();
@@ -196,6 +211,10 @@ public class AutoStartGuideList extends WhiteList {
         boolean lenovo = BuildProperties.isLenoveModel();
         if (lenovo) {
             return LENOVO;
+        }
+        boolean yijia = BuildProperties.isYiJiaModel();
+        if (yijia) {
+            return YIJIA;
         }
         return -1;
     }
