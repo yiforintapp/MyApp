@@ -183,6 +183,10 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                list=listBackup;
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
+                if(ufoActivity.mChosenTheme.packageName.equals(AppMasterApplication.getSelectedTheme())){
+                    return;
+                }
+                    
                 
 //                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 160),
