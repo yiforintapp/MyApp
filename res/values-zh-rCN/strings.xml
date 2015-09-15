@@ -810,13 +810,12 @@
     <string name="iswip_update_notifi_button">立即更新</string>
     <string name="ad_timeout">Wow!我猜下次你会收到一些更精彩的东西！</string>
     <!-- 2.8 end -->
-    <!-- 2.9 start -->
+
+    <!-- 2.10 白名单引导 -->
     <string name="auto_start_guide_tip_title">需要启动权限</string>
     <string name="auto_start_guide_tip_content">开机启动隐私卫士，安全无忧。</string>
     <string name="auto_start_guide_tip_left_button">稍后设置</string>
     <string name="auto_start_guide_tip_right_button">立即设置</string>
-    <!-- 2.9 end -->
-
 
     <!-- 2.10 消息中心 -->
     <string name="msg_center_title">消息中心</string>
@@ -842,5 +841,6 @@
     <string name="auto_start_tip_redmi">请进入“自启动应用管理”，选择“添加自启动应用”，将隐私卫士接入到自启动列表</string>
     <string name="auto_start_tip_huawei">请进入“受保护应用”，将PG加入受保护名单中</string>
     <string name="auto_start_tip_lenovo">请进入“后台管理”，选择“自启动”，将隐私卫士接入到自启动列表</string>
+    <!-- 2.10 end -->
 
 </resources>
