@@ -88,27 +88,48 @@ public class ScreenOnOffListener extends BroadcastListener {
                     mWifiFetcher.enableDebug(false);
                     mWifiFetcher.setMinDistanceUpdateInterval(1000 * 10);
                     mWifiFetcher.start();
-                    List<APInfo> results = mWifiFetcher.getApInfoList();
-                    // 第一次统计
-                    if (results.size() > 0 && isWifiSwitch == 1 && isUploadData == 0) {
-                        LeoLog.d("testOpenScreen", "第一次统计，全量上报");
-                        addEvent(mContext, results);
-                    }
 
+                    // List<APInfo> results = mWifiFetcher.getApInfoList();
+                    // // 第一次统计
+                    // if (results.size() > 0 && isWifiSwitch == 1 &&
+                    // isUploadData == 0) {
+                    // LeoLog.d("testOpenScreen", "第一次统计，全量上报");
+                    // addEvent(mContext, results);
+                    // }
+
+                    List<APInfo> newresults = mWifiFetcher.prepareUploadData();
                     long nowTime = System.currentTimeMillis();
-                    // 后续统计，增量上报
-                    if (results.size() > 0 && isWifiSwitch == 1 && isUploadData > 0
-                            && (nowTime - isUploadData > mTwoDay)) {
-                        List<APInfo> newresults = mWifiFetcher.prepareUploadData();
-
-                        if (newresults.size() > 0) {
+                    if (newresults.size() > 0 && isWifiSwitch == 1
+                            && nowTime - isUploadData > mTwoDay) {
+                        if (isUploadData == 0) {
+                            LeoLog.d("testOpenScreen", "第一次统计，全量上报");
+                        } else {
                             LeoLog.d("testOpenScreen", "后续统计，增量上报！");
-                            addEvent(mContext, newresults);
-                            mWifiFetcher.afterUpload();
+                        }
+                        addEvent(mContext, newresults);
+                        mWifiFetcher.afterUpload();
+                    }else if(newresults.size() == 0){
+                        if (isUploadData == 0) {
+                            LeoLog.d("testOpenScreen", "未能获取到wifi信息！");
                         } else {
                             LeoLog.d("testOpenScreen", "暂无新增！");
                         }
                     }
+
+                    // // 后续统计，增量上报
+                    // if (newresults.size() > 0 && isWifiSwitch == 1 &&
+                    // isUploadData > 0
+                    // && (nowTime - isUploadData > mTwoDay)) {
+                    //
+                    //
+                    // if (newresults.size() > 0) {
+                    // LeoLog.d("testOpenScreen", "后续统计，增量上报！");
+                    // addEvent(mContext, newresults);
+                    // mWifiFetcher.afterUpload();
+                    // } else {
+                    // LeoLog.d("testOpenScreen", "暂无新增！");
+                    // }
+                    // }
                 }
             });
         }
