@@ -327,6 +327,7 @@ public class HttpRequestAgent {
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
+        request.setShouldCache(false);
         mRequestQueue.add(request);
     }
 
