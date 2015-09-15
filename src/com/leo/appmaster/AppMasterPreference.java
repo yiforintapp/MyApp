@@ -292,6 +292,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_PG_IS_FORCE_UPDATE = "pg_is_force_update";
     public static final String PREF_RANDOM_IN_30_WITHIN = "randoom_in_30_within";
     public static final String PREF_ADVANCE_PROTECT_DIALOG_TIP = "advance_protect_dialog_tip";
+    public static final String PREF_ADVANCE_PROTECT_OPEN_SUCCESSDIALOG_TIP = "advance_protect_open_success_dialog_tip";
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
     private List<String> mLockedAppList;
@@ -2875,6 +2876,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getAdvanceProtectDialogTip() {
         return mPref.getBoolean(PREF_ADVANCE_PROTECT_DIALOG_TIP, true);
+    }
+
+    /* 高级保护打开后在设置列表提示 */
+    public void setAdvanceProtectOpenSuccessDialogTip(boolean flag) {
+        mPref.edit().putBoolean(PREF_ADVANCE_PROTECT_OPEN_SUCCESSDIALOG_TIP, flag).apply();
+    }
+
+    public boolean getAdvanceProtectOpenSuccessDialogTip() {
+        return mPref.getBoolean(PREF_ADVANCE_PROTECT_OPEN_SUCCESSDIALOG_TIP, true);
     }
 
 }

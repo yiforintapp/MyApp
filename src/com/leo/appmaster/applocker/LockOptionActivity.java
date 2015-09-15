@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -23,7 +24,9 @@ import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -43,6 +46,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     public static final int FROM_HOME = 2;
 
     private int mComeFrom = FROM_APPLOCK;
+    private LEOMessageDialog mMessageDialog;
 
     private SharedPreferences mySharedPreferences;
     private boolean mNewTheme;
@@ -191,8 +195,40 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         // } else {
         // mLockerTheme.setTitle(R.string.lockerTheme);
         // }
+        /* 开启高级保护后提示 */
+        openAdvanceProtectDialogHandler();
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "enter");
+    }
+
+    private void openAdvanceProtectDialogHandler() {
+        boolean isTip = AppMasterPreference.getInstance(this)
+                .getAdvanceProtectOpenSuccessDialogTip();
+        if (isAdminActive() && isTip) {
+            openAdvanceProtectDialogTip();
+        }
+    }
+
+    private void openAdvanceProtectDialogTip() {
+        if (mMessageDialog == null) {
+            mMessageDialog = new LEOMessageDialog(this);
+            mMessageDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    if (mMessageDialog != null) {
+                        mMessageDialog = null;
+                    }
+                    AppMasterPreference.getInstance(LockOptionActivity.this)
+                            .setAdvanceProtectOpenSuccessDialogTip(false);
+                    LeoLog.i("openAdvanceProtectDialogTip", "高级保护开启成功--已经提示过了～～");
+                }
+            });
+        }
+        String title = getString(R.string.advance_protect_open_success_tip_title);
+        String content = getString(R.string.advance_protect_open_success_tip_content);
+        mMessageDialog.setTitle(title);
+        mMessageDialog.setContent(content);
+        mMessageDialog.show();
     }
 
     private boolean haveProtect() {
@@ -202,6 +238,10 @@ public class LockOptionActivity extends BasePreferenceActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mMessageDialog != null) {
+            mMessageDialog.dismiss();
+            mMessageDialog = null;
+        }
     }
 
     private void initUI() {
@@ -230,7 +270,8 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);
-                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getString(R.string.device_admin_extra));
+                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                        getString(R.string.device_admin_extra));
                 try {
                     startActivity(intent);
                 } catch (Exception e) {
@@ -239,7 +280,8 @@ public class LockOptionActivity extends BasePreferenceActivity implements
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
                         component);
-                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getString(R.string.device_admin_extra));
+                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
+                        getString(R.string.device_admin_extra));
                 try {
                     startActivity(intent);
                 } catch (Exception e) {

@@ -14,6 +14,8 @@ import android.app.admin.DevicePolicyManager;
 import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
@@ -336,6 +338,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mWallAd.release();
             mWallAd = null;
         }
+        if (mAdvanceProtectDialog != null) {
+            mAdvanceProtectDialog.dismiss();
+            mAdvanceProtectDialog = null;
+        }
     }
 
     @Override
@@ -384,7 +390,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 mDrawerArrowDrawable.setParameter(mDrawerOffset);
             }
         });
-
         mMenuList = (ListView) findViewById(R.id.menu_list);
         mMenuItems = getMenuItems();
         mMenuAdapter = new MenuAdapter(this, mMenuItems);
@@ -583,6 +588,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mMenuList.setAdapter(mMenuAdapter);
         }
         mDrawerLayout.postInvalidate();
+        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        } 
     }
 
     public void shouldShowAd() {
@@ -1652,6 +1660,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             @Override
             public void onClick(View v) {
                 mAdvanceProtectDialog.dismiss();
+            }
+        });
+        mAdvanceProtectDialog.setOnDismissListener(new OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialog) {
+                if (mAdvanceProtectDialog != null) {
+                    mAdvanceProtectDialog = null;
+                }
             }
         });
         mAdvanceProtectDialog.setRightListener(new OnClickListener() {
