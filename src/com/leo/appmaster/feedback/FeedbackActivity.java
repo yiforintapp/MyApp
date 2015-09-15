@@ -45,7 +45,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         OnFocusChangeListener {
 
     private static final String EMAIL_EXPRESSION = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
-    private static final String TAG = "FeedbackActivity";
+    public static final String TAG = "FeedbackActivity";
     private static final boolean DBG = true;
     private View mBtnCommit;
     private EditText mEditContent;

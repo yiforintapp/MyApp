@@ -168,6 +168,7 @@ public class FeedbackHelper {
         @Override
         public void onErrorResponse(VolleyError error) {
             LeoLog.d(TAG, "Feedback error, e" + error.getMessage());
+            LeoLog.d(FeedbackActivity.TAG, "上传用户反馈失败！！！");
         }
 
         @Override
@@ -182,6 +183,7 @@ public class FeedbackHelper {
                     ContentResolver resolver = AppMasterApplication.getInstance().getContentResolver();
                     resolver.delete(Constants.FEEDBACK_URI, Constants.ID + "=" + id, null); 
                 }
+                LeoLog.d(FeedbackActivity.TAG, "上传用户反馈成功～～～");
             } catch (JSONException e) {
                 LeoLog.e(TAG, "parse feedback ex.", e);
             } 
