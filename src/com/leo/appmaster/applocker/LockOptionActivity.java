@@ -206,7 +206,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     private void initUI() {
         mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setTitle(R.string.setting);
+        mTtileBar.setTitle(R.string.lock_setting);
         mTtileBar.openBackView();
     }
 
