@@ -88,8 +88,13 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             // 更新日志从本地获取
             String urlName = MsgCenterFetchJob.getFileName(mUrl) + ".html";
             String path = MsgCenterFetchJob.getFilePath(urlName);
-            mLocalUrl = "file:///" + path;
-            getWebView().loadUrl(mLocalUrl);
+            File file = new File(path);
+            if (file.exists()) {
+                mLocalUrl = "file:///" + path;
+                getWebView().loadUrl(mLocalUrl);
+            } else {
+                getWebView().loadUrl(mUrl);
+            }
         } else {
             getWebView().loadUrl(mUrl);
         }

@@ -37,8 +37,11 @@ public class MsgCenterTable extends BaseTable {
     protected static final String COL_RES = "res";
     // 1:未读  0:已读
     protected static final String COL_UNREAD = "unread";
+    // 失效时间
+    protected static final String COL_END_TIME = "end_time";
+    // 生效时间
+    protected static final String COL_START_TIME = "start_time";
 
-    protected static final String COL_RES_PATH = "respath";
 
     private static final int READED = 0;
     private static final int UNREADED = 1;
@@ -60,7 +63,8 @@ public class MsgCenterTable extends BaseTable {
                 COL_OFFLINE_TIME + " TEXT," +
                 COL_TITLE + " TEXT," +
                 COL_RES + " TEXT," +
-                COL_RES_PATH + " TEXT," +
+                COL_START_TIME + " TEXT," +
+                COL_END_TIME + " TEXT," +
                 COL_UNREAD + " INTEGER);");
     }
 
