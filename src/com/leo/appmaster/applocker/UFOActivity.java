@@ -174,7 +174,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         }
                     }
                 }
-                if(list.size()==0){
+                if(list.size()==0||list.size()==1){
                     return;
                 }
               
