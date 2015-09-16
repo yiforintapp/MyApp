@@ -253,23 +253,13 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         if (mLayoutEmptyTip.getVisibility() == View.VISIBLE) {
                             mLayoutEmptyTip.setVisibility(View.INVISIBLE);
                         }
-                        if(mErrorView.getVisibility() == View.VISIBLE){
+                        if (mErrorView.getVisibility() == View.VISIBLE) {
                             mErrorView.setVisibility(View.INVISIBLE);
                         }
 
                         mOnlineThemeAdapter.setCampaign(campaign, isGetAd);
                         // 插入假数据，腾出广告位
-                        ThemeItemInfo onlineInfo = new ThemeItemInfo();
-                        onlineInfo.themeName = ONLINE_AD_NAME;
-                        onlineInfo.packageName = ONLINE_AD_NAME;
-                        onlineInfo.themeType = Constants.THEME_TYPE_ONLINE;
-                        if (mOnlineThemes.size() > 1) {
-                            mOnlineThemes.add(ONLINE_AD_LOCATION, onlineInfo);
-                        } else if (mOnlineThemes.size() == 0) {
-                            mOnlineThemes.add(0, onlineInfo);
-                        } else if (mOnlineThemes.size() == 1) {
-                            mOnlineThemes.add(1, onlineInfo);
-                        }
+                        addOnlineAd();
                         mOnlineThemeAdapter.notifyDataSetChanged();
                     }
 
@@ -290,6 +280,20 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         localInfo.themeType = Constants.THEME_TYPE_LOCAL;
         if (mLocalThemes.size() > 0) {
             mLocalThemes.add(LOCAL_AD_LOCATION, localInfo);
+        }
+    }
+
+    private void addOnlineAd() {
+        ThemeItemInfo onlineInfo = new ThemeItemInfo();
+        onlineInfo.themeName = ONLINE_AD_NAME;
+        onlineInfo.packageName = ONLINE_AD_NAME;
+        onlineInfo.themeType = Constants.THEME_TYPE_ONLINE;
+        if (mOnlineThemes.size() > 1) {
+            mOnlineThemes.add(ONLINE_AD_LOCATION, onlineInfo);
+        } else if (mOnlineThemes.size() == 0) {
+            mOnlineThemes.add(0, onlineInfo);
+        } else if (mOnlineThemes.size() == 1) {
+            mOnlineThemes.add(1, onlineInfo);
         }
     }
 
@@ -376,6 +380,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                                     mHideThemes.remove(remove);
                                 } catch (Exception e) {
                                 }
+                                if (isGetAd && mThemeAdSwitchOpen == 2) {
+                                    removeOnlineAd();
+                                }
                                 loadMoreOnlineTheme();
 
                                 break;
@@ -429,6 +436,15 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             }
         }
 
+    }
+
+    protected void removeOnlineAd() {
+        for (int i = 0; i < mOnlineThemes.size(); i++) {
+            ThemeItemInfo onlineInfo = mOnlineThemes.get(i);
+            if (onlineInfo.themeName.equals(ONLINE_AD_NAME)) {
+                mOnlineThemes.remove(i);
+            }
+        }
     }
 
     private void loadData() {
@@ -694,6 +710,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 }
                 mOnlineThemes.removeAll(removeList);
             }
+
+            if (isGetAd && mThemeAdSwitchOpen == 2) {
+                addOnlineAd();
+            }
             mOnlineThemeAdapter.notifyDataSetChanged();
             if (mOnlineThemes.isEmpty()) {
                 if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
@@ -754,6 +774,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         }
         if (newTheme) {
             mLayoutEmptyTip.setVisibility(View.INVISIBLE);
+            if (isGetAd && mThemeAdSwitchOpen == 2) {
+                addOnlineAd();
+            }
             mOnlineThemeAdapter.notifyDataSetChanged();
         } else {
             Toast.makeText(this, R.string.no_more_theme, 0).show();
