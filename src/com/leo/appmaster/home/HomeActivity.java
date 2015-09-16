@@ -1685,6 +1685,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             intent.setAction(Intent.ACTION_DELETE);
             intent.setData(uri);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            // 从卸载入口过去，10秒内不对设置加锁
+            LockManager.getInstatnce().timeFilter("com.android.settings", 10 * 000);
             LockManager.getInstatnce().timeFilterSelf();
             startActivity(intent);
             return true;
