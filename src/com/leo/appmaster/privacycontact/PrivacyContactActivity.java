@@ -35,6 +35,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoPagerTab;
+import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactActivity extends BaseFragmentActivity implements OnClickListener {
 
@@ -158,6 +159,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
     private void toPrivacyContactHandler() {
         String fromPrivacyFlag = getIntent().getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
+        if(Utilities.isEmpty(fromPrivacyFlag)){
+            fromPrivacyFlag=PrivacyContactUtils.TO_PRIVACY_CONTACT_TAB; 
+        }
         mBackFlag = getIntent().getBooleanExtra("message_call_notifi", false);
         if (PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG.equals(fromPrivacyFlag)) {
             mTtileBar.setTitle(R.string.privacy_sms);

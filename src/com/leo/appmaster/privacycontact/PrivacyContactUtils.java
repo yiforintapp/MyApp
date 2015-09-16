@@ -53,6 +53,7 @@ public class PrivacyContactUtils {
     public static final String ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT = "add_conact_from_contact_no_repeat_event";
     public final static String KEY_PLAY_ANIM = "play_anim";
     public static final String TO_PRIVACY_CONTACT = "to_privacy_contact";
+    public static final String TO_PRIVACY_CONTACT_TAB = "to_privacy_contact_tab";
     public static final String TO_PRIVACY_MESSAGE_FLAG = "from_privacy_message";
     public static final String TO_PRIVACY_CALL_FLAG = "from_privacy_call";
     public static final String TO_PRIVACY_CONTACT_FLAG = "from_privacy_contact";
