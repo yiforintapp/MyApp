@@ -403,7 +403,9 @@ public class HttpRequestAgent {
                 .append(versionName).append("/")
                 .append(channelCode)
                 .append(".html");
-        JsonArrayRequest request = new JsonArrayRequest(stringBuilder.toString(), listener, errorListener);
+        String url = stringBuilder.toString();
+        LeoLog.i("MsgCenterFetchJob", "load url: " + url);
+        JsonArrayRequest request = new JsonArrayRequest(url, listener, errorListener);
         request.setShouldCache(true);
         // 最多重试3次
         int retryCount = 3;
