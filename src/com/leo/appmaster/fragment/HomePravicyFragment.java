@@ -300,7 +300,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                             .findViewById(R.id.privacy_ad_description);
                     addesc.setText(campaign.getAppDesc());
                     // call
-                    TextView adcall = (TextView) mProposalView
+                    Button adcall = (Button) mProposalView
                             .findViewById(R.id.ad_download);
 
                     adcall.setOnClickListener(new OnClickListener() {

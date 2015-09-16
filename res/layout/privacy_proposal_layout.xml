@@ -142,18 +142,17 @@
                         android:textSize="12sp" />
                 </LinearLayout>
 
-                <TextView
+                <Button
                     android:id="@+id/ad_download"
                     android:layout_width="@dimen/privacy_ad_download_width"
                     android:layout_height="@dimen/privacy_ad_download_height"
                     android:layout_below="@id/privacy_ad_text"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/privacy_suggest_icon_text_margin"
-                    android:background="@drawable/manager_traffic_button_selecter"
+                    android:background="@drawable/select_bt_halfscreen_install"
                     android:gravity="center"
-                    android:onClick="true"
                     android:text="@string/traff_first_page_small_set"
-                    android:textColor="@drawable/manager_traffic_text_selecter"
+                    android:textColor="@color/white"
                     android:textSize="14sp" />
             </RelativeLayout>
             <!-- ad item -->
