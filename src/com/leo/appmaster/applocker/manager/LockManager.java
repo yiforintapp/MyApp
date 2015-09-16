@@ -50,6 +50,7 @@ import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.bootstrap.CheckNewBootstrap;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.AppLockChangeEvent;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
@@ -607,6 +608,7 @@ public class LockManager {
             PrivacyHelper.getInstance(mContext).computePrivacyLevel(PrivacyHelper.VARABLE_APP_LOCK);
         }
         updateMode(mode);
+        LeoEventBus.getDefaultBus().post(new AppLockChangeEvent(AppLockChangeEvent.APP_ADD));
     }
 
     public void removePkgFromMode(List<String> pkgs, final LockMode mode) {

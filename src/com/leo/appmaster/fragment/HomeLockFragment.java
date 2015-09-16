@@ -27,6 +27,7 @@ import com.leo.appmaster.applocker.WeiZhuangActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.AppLockChangeEvent;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.AutoStartGuideList;
@@ -131,6 +132,15 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
     }
 
     public void onEventMainThread(LockModeEvent event) {
+        mLockModeCircle.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                updateModeUI();
+            }
+        }, 500);
+    }
+
+    public void onEventMainThread(AppLockChangeEvent event) {
         mLockModeCircle.postDelayed(new Runnable() {
             @Override
             public void run() {
