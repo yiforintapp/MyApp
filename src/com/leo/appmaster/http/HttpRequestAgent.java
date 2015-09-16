@@ -398,8 +398,8 @@ public class HttpRequestAgent {
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Utilities.getURL(Constants.MSG_CENTER_URL)).append("/")
-                .append(language).append("/")
                 .append(country).append("/")
+                .append(language).append("/")
                 .append(versionName).append("/")
                 .append(channelCode)
                 .append(".html");
