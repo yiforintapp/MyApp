@@ -160,6 +160,40 @@ public class ADShowTypeRequestManager {
                             "请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
                     AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating(
                             (response.getInt(AD_AFTER_ACCELERATING)));
+//                    LeoLog.e("poha", "请求成功，加速后出现广告概率：" + response.getInt(AD_AFTER_ACCELERATING));
+//                    AppMasterPreference.getInstance(mContext).setIsADAfterPrivacyProtectionOpen(
+//                            (response.getInt(AD_AFTER_PRIVACY_PROTECTION)));
+//                    HomePravicyFragment.mPrivicyAdSwitchOpen = response
+//                            .getInt(AD_AFTER_PRIVACY_PROTECTION);
+//                    LeoLog.e("poha",
+//                            "请求成功，隐私保护后出现广告的开关：" + response.getInt(AD_AFTER_PRIVACY_PROTECTION));
+//                    AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(
+//                            (response.getInt(AD_AT_APPLOCK_FRAGMENT)));
+//                    LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+//                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen(
+//                            (response.getInt(AD_AT_THEME)));
+//                    LockerTheme.mThemeAdSwitchOpen = response.getInt(AD_AT_THEME);
+//                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + response.getInt(AD_AT_THEME));
+//                    AppMasterPreference.getInstance(mContext).setIsGiftBoxNeedUpdate(
+//                            (response.getInt(GIFTBOX_UPDATE)));
+//                    if(mIsPushRequestADShowType&&response.getInt(GIFTBOX_UPDATE)==1){
+//                        AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
+//                        mIsPushRequestADShowType=false;
+//                    }
+//                    LeoLog.e("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
+//                    AppMasterPreference.getInstance(mContext).setVersionUpdateTipsAfterUnlockOpen(
+//                            (response.getInt(VERSION_UPDATE_AFTER_UNLOCK)));
+//                    LeoLog.e("poha",
+//                            "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));
+//                    AppMasterPreference.getInstance(mContext).setIsAppStatisticsOpen(
+//                            (response.getInt(APP_STATISTICS)));
+//                    LeoLog.e("poha", "请求成功，应用统计的开关：" + response.getInt(APP_STATISTICS));
+//                    AppMasterPreference.getInstance(mContext).setIsWifiStatistics(
+//                            (response.getInt(WIFI_STATISTICAL)));
+//                    LeoLog.e("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
+//                    
+                    AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating(
+                            (response.getInt(AD_AFTER_ACCELERATING)));
                     LeoLog.e("poha", "请求成功，加速后出现广告概率：" + response.getInt(AD_AFTER_ACCELERATING));
                     // int random = new Random().nextInt(10) + 1;
                     // LeoLog.e("poha",
@@ -175,9 +209,8 @@ public class ADShowTypeRequestManager {
                     // LeoLog.e("poha",
                     // "请求成功，隐私保护后出现广告的开关：" + random);
                     AppMasterPreference.getInstance(mContext).setIsADAfterPrivacyProtectionOpen(
-                            (response.getInt(AD_AFTER_PRIVACY_PROTECTION)));
-                    HomePravicyFragment.mPrivicyAdSwitchOpen = response
-                            .getInt(AD_AFTER_PRIVACY_PROTECTION);
+                            (1));
+                    HomePravicyFragment.mPrivicyAdSwitchOpen = 1;
                     LeoLog.e("poha",
                             "请求成功，隐私保护后出现广告的开关：" +
                                     response.getInt(AD_AFTER_PRIVACY_PROTECTION));
@@ -186,19 +219,14 @@ public class ADShowTypeRequestManager {
                     // random);
                     // HomeActivity.mHomeAdSwitchOpen = random;
                     // LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + random);
-                    AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(
-                            (response.getInt(AD_AT_APPLOCK_FRAGMENT)));
-                    HomeActivity.mHomeAdSwitchOpen =
-                            response.getInt(AD_AT_APPLOCK_FRAGMENT);
-                    LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" +
-                            response.getInt(AD_AT_APPLOCK_FRAGMENT));
+                    AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(1);
+                    HomeActivity.mHomeAdSwitchOpen =1;
 
-                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen(
-                            (response.getInt(AD_AT_THEME)));
+                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen( (2));
                     LockerTheme.mThemeAdSwitchOpen = response.getInt(AD_AT_THEME);
                     LeoLog.e("poha", "请求成功，主题界面出现广告：" + response.getInt(AD_AT_THEME));
                     AppMasterPreference.getInstance(mContext).setIsGiftBoxNeedUpdate(
-                            (response.getInt(GIFTBOX_UPDATE)));
+                            (1));
                     if(mIsPushRequestADShowType&&response.getInt(GIFTBOX_UPDATE)==1){
                         AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
                         mIsPushRequestADShowType=false;

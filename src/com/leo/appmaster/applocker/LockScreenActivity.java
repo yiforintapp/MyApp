@@ -340,10 +340,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         long mNowTime = System.currentTimeMillis();
         if ((mLastTime != 0 && mNowTime - mLastTime > CLICK_OVER_DAY) || mHaveNewThings) {// shake
             SHOW_AD_TYPE = AD_TYPE_SHAKE;
+            LeoLog.e("poha", "shake");
         } else { // jump
             if (!isClickJump && !clickShakeIcon) {
                 SHOW_AD_TYPE = AD_TYPE_JUMP;
+                LeoLog.e("poha", "jump");
             } else {
+                LeoLog.e("poha", "stay");
                 SHOW_AD_TYPE = AD_TYPE_STAY;
             }
         }

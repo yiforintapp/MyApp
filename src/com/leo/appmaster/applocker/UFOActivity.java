@@ -114,7 +114,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         double themeChanceAfterUFO = (double)AppMasterPreference.getInstance(this).getThemeChanceAfterUFO();
         int ran = (int) (Math.random() * themeChanceAfterUFO + 1d);
 //        ran=2;
-        if (ran == RANDOM_NUMERATOR) {
+        if (ran == RANDOM_NUMERATOR&&themeChanceAfterUFO!=0) {
             mIsShowTheme = true;
             loadTheme();
             loadAD();

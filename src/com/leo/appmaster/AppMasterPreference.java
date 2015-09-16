@@ -2636,7 +2636,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getADChanceAfterAccelerating() {
-        return mPref.getInt(PREF_AD_AFTER_ACCELERATING, 0);
+        return mPref.getInt(PREF_AD_AFTER_ACCELERATING, 1);
     }
 
     //隐私防护出现广告的开关
@@ -2645,7 +2645,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAfterPrivacyProtectionOpen() {
-        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 0);
+        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 1);
     }
 
     //主页出现钱钱的开关
@@ -2663,7 +2663,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAtLockThemeOpen() {
-        return mPref.getInt(PREF_AD_AT_THEME, 0);
+        return mPref.getInt(PREF_AD_AT_THEME, 1);
     }
 
     //push时是否需要更新礼物盒状态，只在push时有效
@@ -2672,7 +2672,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsGiftBoxNeedUpdate() {
-        return mPref.getInt(PREF_GIFTBOX_UPDATE, 0);
+        return mPref.getInt(PREF_GIFTBOX_UPDATE, 1);
     }
 
     /* 解锁成功升级提示标志 */
