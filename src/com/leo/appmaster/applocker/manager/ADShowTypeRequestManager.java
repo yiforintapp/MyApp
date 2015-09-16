@@ -193,7 +193,7 @@ public class ADShowTypeRequestManager {
 //                    LeoLog.e("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
 //                    
                     AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating(
-                            (response.getInt(AD_AFTER_ACCELERATING)));
+                            (1));
                     LeoLog.e("poha", "请求成功，加速后出现广告概率：" + response.getInt(AD_AFTER_ACCELERATING));
                     // int random = new Random().nextInt(10) + 1;
                     // LeoLog.e("poha",
@@ -226,15 +226,10 @@ public class ADShowTypeRequestManager {
                     LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" +
                             response.getInt(AD_AT_APPLOCK_FRAGMENT));
 
-                    // AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen(
-                    // (response.getInt(AD_AT_THEME)));
-                    // LockerTheme.mThemeAdSwitchOpen =
-                    // response.getInt(AD_AT_THEME);
-                    // LeoLog.e("poha", "请求成功，主题界面出现广告：" +
-                    // response.getInt(AD_AT_THEME));
-                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen(1);
-                    LockerTheme.mThemeAdSwitchOpen = 1;
-                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + 1);
+
+                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen( (2));
+                    LockerTheme.mThemeAdSwitchOpen = 2;
+                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + response.getInt(AD_AT_THEME));
 
                     AppMasterPreference.getInstance(mContext).setIsGiftBoxNeedUpdate(
                             (response.getInt(GIFTBOX_UPDATE)));

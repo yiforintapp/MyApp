@@ -78,7 +78,16 @@ public class HomeBoostActivity extends Activity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         long currentTime = System.currentTimeMillis();
         long lastBoostWithADTime = amp.getLastBoostWithADTime();
-        if((currentTime-lastBoostWithADTime)>1000*60*60*24&&amp.getADChanceAfterAccelerating()==1){
+        if((currentTime-lastBoostWithADTime)>1000*60*60*24){
+//            Toast.makeText(this, currentTime+"111111111", 0).show();        
+            Toast.makeText(this, amp.getADChanceAfterAccelerating()+"3333", 0).show();            
+        }
+        if(amp.getADChanceAfterAccelerating()==1){
+            Toast.makeText(this, currentTime+"3333", 0).show();            
+        }
+        
+        if(((currentTime-lastBoostWithADTime)>1000*60*60*24||amp.getLastBoostWithADTime()==0)&&amp.getADChanceAfterAccelerating()==1){
+            Toast.makeText(this, currentTime+"22222222", 0).show();
             loadAD();            
         }
     }
@@ -91,6 +100,7 @@ public class HomeBoostActivity extends Activity {
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
+                    Toast.makeText(HomeBoostActivity.this, "loaded"+"", 0).show();
                     mIsADLoaded = true;
                     long currentTime = System.currentTimeMillis();
                     AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);

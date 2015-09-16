@@ -2663,7 +2663,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAtLockThemeOpen() {
-        return mPref.getInt(PREF_AD_AT_THEME, 1);
+        return mPref.getInt(PREF_AD_AT_THEME, 2);
     }
 
     //push时是否需要更新礼物盒状态，只在push时有效
