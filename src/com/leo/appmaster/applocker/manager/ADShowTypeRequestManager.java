@@ -50,7 +50,7 @@ public class ADShowTypeRequestManager {
     private static ADShowTypeRequestManager mInstance;
     private Context mContext;
     private SimpleDateFormat mDateFormate;
-//    public boolean IsFromPush = false;
+    // public boolean IsFromPush = false;
     public boolean mIsPushRequestADShowType = false;
 
     public static Campaign mCampaign;
@@ -102,7 +102,7 @@ public class ADShowTypeRequestManager {
         // mIsPushRequestADShowType)
         // {
         // mIsPushRequestADShowType = false;
-//        LeoLog.e("poha", "满足发起请求的条件，正在发起请求");
+        // LeoLog.e("poha", "满足发起请求的条件，正在发起请求");
         UpdateADShowTypeRequestListener listenerr = new UpdateADShowTypeRequestListener(
                 AppMasterApplication.getInstance());
         HttpRequestAgent.getInstance(AppMasterApplication.getInstance()).loadADShowType(
@@ -219,17 +219,28 @@ public class ADShowTypeRequestManager {
                     // random);
                     // HomeActivity.mHomeAdSwitchOpen = random;
                     // LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + random);
-                    AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(1);
-                    HomeActivity.mHomeAdSwitchOpen =1;
+                    AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(
+                            (response.getInt(AD_AT_APPLOCK_FRAGMENT)));
+                    HomeActivity.mHomeAdSwitchOpen =
+                            response.getInt(AD_AT_APPLOCK_FRAGMENT);
+                    LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" +
+                            response.getInt(AD_AT_APPLOCK_FRAGMENT));
 
-                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen( (2));
-                    LockerTheme.mThemeAdSwitchOpen = response.getInt(AD_AT_THEME);
-                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + response.getInt(AD_AT_THEME));
+                    // AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen(
+                    // (response.getInt(AD_AT_THEME)));
+                    // LockerTheme.mThemeAdSwitchOpen =
+                    // response.getInt(AD_AT_THEME);
+                    // LeoLog.e("poha", "请求成功，主题界面出现广告：" +
+                    // response.getInt(AD_AT_THEME));
+                    AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen(1);
+                    LockerTheme.mThemeAdSwitchOpen = 1;
+                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + 1);
+
                     AppMasterPreference.getInstance(mContext).setIsGiftBoxNeedUpdate(
-                            (1));
-                    if(mIsPushRequestADShowType&&response.getInt(GIFTBOX_UPDATE)==1){
+                            (response.getInt(GIFTBOX_UPDATE)));
+                    if (mIsPushRequestADShowType && response.getInt(GIFTBOX_UPDATE) == 1) {
                         AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
-                        mIsPushRequestADShowType=false;
+                        mIsPushRequestADShowType = false;
                     }
                     LeoLog.e("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
                     AppMasterPreference.getInstance(mContext).setVersionUpdateTipsAfterUnlockOpen(
@@ -242,7 +253,7 @@ public class ADShowTypeRequestManager {
                     AppMasterPreference.getInstance(mContext).setIsWifiStatistics(
                             (response.getInt(WIFI_STATISTICAL)));
                     LeoLog.e("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
-                    
+
                     // 应用统计
                     addAppInfoEvent();
 
@@ -265,7 +276,7 @@ public class ADShowTypeRequestManager {
             if (mListener != null) {
                 mListener.onErrorResponse(error);
             }
-            
+
             LeoLog.e("poha", "请求失败。。。");
 
             AppMasterPreference sp = AppMasterPreference.getInstance(mContext);

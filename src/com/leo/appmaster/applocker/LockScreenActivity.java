@@ -268,9 +268,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     adAnimation = (AnimationDrawable)
                             mAdIcon.getBackground();
                     adAnimation.start();
+                    LeoLog.e("testLockScreen", "jump going!");
                 } else {
                     mAdIcon.setBackgroundDrawable((this.getResources()
                             .getDrawable(R.drawable.jump_1)));
+                    LeoLog.e("testLockScreen", "stay going!");
                 }
             }
         }

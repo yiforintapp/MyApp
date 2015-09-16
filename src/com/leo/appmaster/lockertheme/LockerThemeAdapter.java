@@ -28,6 +28,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -121,7 +122,8 @@ public class LockerThemeAdapter extends BaseAdapter {
 
     class AdHolder {
         ImageView ad_icon, ad_background;
-        TextView ad_title, ad_desc, ad_download;
+        TextView ad_title, ad_desc;
+        Button ad_download;
     }
 
     @Override
@@ -165,7 +167,7 @@ public class LockerThemeAdapter extends BaseAdapter {
                     .findViewById(R.id.ad_title_theme);
             adHolder.ad_desc = (TextView) viewItem2
                     .findViewById(R.id.ad_desc_theme);
-            adHolder.ad_download = (TextView) viewItem2
+            adHolder.ad_download = (Button) viewItem2
                     .findViewById(R.id.ad_download_theme);
 
             viewItem2.setTag(adHolder);
@@ -188,16 +190,17 @@ public class LockerThemeAdapter extends BaseAdapter {
         // download
         adHolder.ad_download.setText(mCampaign.getAdCall());
 
-        adHolder.ad_background.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // LeoLog.d("testclickview", "点击广告，timeFilterSelf !!");
-                // LockManager.getInstatnce().timeFilterSelf();
-            }
-        });
+        // adHolder.ad_background.setOnClickListener(new OnClickListener() {
+        // @Override
+        // public void onClick(View v) {
+        // LeoLog.d("testclickview", "点击广告，timeFilterSelf !!");
+        // LockManager.getInstatnce().timeFilterSelf();
+        // }
+        // });
 
         LockerTheme activity = (LockerTheme) mContext;
-        activity.regisClickView(adHolder.ad_background);
+        activity.regisClickView(adHolder.ad_download);
+//        activity.regisClickView(adHolder.ad_background);
 
         return convertView;
     }

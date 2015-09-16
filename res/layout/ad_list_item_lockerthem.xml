@@ -20,7 +20,6 @@
             android:layout_height="match_parent"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"
-            android:onClick="true"
             android:scaleType="fitXY"
             android:src="@color/white" />
 
@@ -65,22 +64,22 @@
                     android:layout_marginTop="5dp"
                     android:ellipsize="end"
                     android:maxLines="2"
-                    android:text="askjgfhakjshfglajdfbhgliadfbgliadgadhfgiahldfighaldifgul"
                     android:textColor="#ffffff"
                     android:textSize="10sp" />
             </LinearLayout>
 
-            <TextView
+            <Button
                 android:id="@+id/ad_download_theme"
                 android:layout_width="78dp"
                 android:layout_height="28dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="10dp"
-                android:background="@drawable/app_texts_btn"
+                android:background="@drawable/select_bt_halfscreen_install"
+                android:focusable="true"
                 android:gravity="center"
                 android:text="install"
-                android:textColor="@drawable/manager_traffic_text_selecter"
+                android:textColor="@color/white"
                 android:textSize="12sp" />
         </RelativeLayout>
 
