@@ -152,7 +152,7 @@ public class HttpRequestAgent {
                 + mContext.getPackageName();
         url += body;
         LeoLog.d("httpurl", "New Theme Http is :" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 "", listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
@@ -171,7 +171,7 @@ public class HttpRequestAgent {
                 + mContext.getPackageName();
         url += body;
         LeoLog.d("httpurl", "New Business Http is :" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 "", listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
