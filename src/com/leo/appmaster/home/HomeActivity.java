@@ -1617,7 +1617,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mAutoStartGuideDialog = new AutoStartTipDialog(this);
         }
         mAutoStartGuideDialog.setTitleText(getString(R.string.auto_start_guide_tip_title));
-        mAutoStartGuideDialog.setContentText(getString(R.string.auto_start_guide_tip_content));
+//        mAutoStartGuideDialog.setContentText(getString(R.string.auto_start_guide_tip_content));
+        int content = AutoStartGuideList
+                .getAutoWhiteListTipText(AppMasterApplication.getInstance());
+        mAdvanceProtectDialog.setContentTextId(content);
         mAutoStartGuideDialog
                 .setLeftButtonText(getString(R.string.auto_start_guide_tip_left_button));
         mAutoStartGuideDialog
@@ -1681,9 +1684,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (mAdvanceProtectDialog == null) {
             mAdvanceProtectDialog = new AdvanceProtectTipDialog(this);
         }
-        int content = AutoStartGuideList
-                .getAutoWhiteListTipText(AppMasterApplication.getInstance());
-        mAdvanceProtectDialog.setContentTextId(content);
         mAdvanceProtectDialog.setLeftListener(new OnClickListener() {
 
             @Override
