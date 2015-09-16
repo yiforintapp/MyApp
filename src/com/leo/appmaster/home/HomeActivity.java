@@ -1166,7 +1166,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             if (AppUtil.appInstalled(getApplicationContext(),
                     "com.android.vending")) {
                 intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri.parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                Uri uri = Uri
+                        .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
                 intent.setData(uri);
                 // ComponentName cn = new ComponentName(
                 // "com.android.vending",
@@ -1680,6 +1681,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (mAdvanceProtectDialog == null) {
             mAdvanceProtectDialog = new AdvanceProtectTipDialog(this);
         }
+        int content = AutoStartGuideList
+                .getAutoWhiteListTipText(AppMasterApplication.getInstance());
+        mAdvanceProtectDialog.setContentTextId(content);
         mAdvanceProtectDialog.setLeftListener(new OnClickListener() {
 
             @Override

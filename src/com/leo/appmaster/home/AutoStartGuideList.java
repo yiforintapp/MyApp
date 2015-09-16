@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -73,7 +74,7 @@ public class AutoStartGuideList extends WhiteList {
                 list = new Lenovo();
                 break;
             case LETV:
-                list=new Letv();
+                list = new Letv();
                 break;
             default:
                 break;
@@ -228,5 +229,30 @@ public class AutoStartGuideList extends WhiteList {
             return LETV;
         }
         return -1;
+    }
+
+    /* 获取不同机型的引导文案 */
+    public static int getAutoWhiteListTipText(Context context) {
+        boolean miuiV5 = BuildProperties.isMiuiV5();
+        if (miuiV5) {
+            return R.string.auto_start_tip_redmi;
+        }
+        boolean miuiv6Plus = BuildProperties.isMIUI();
+        if (miuiv6Plus && !miuiV5) {
+            return R.string.auto_start_tip_xiaomi4_and_letv;
+        }
+        boolean huawei = BuildProperties.isHuaWeiTipPhone(context);
+        if (huawei) {
+            return R.string.auto_start_tip_huawei;
+        }
+        boolean lenovo = BuildProperties.isLenoveModel();
+        if (lenovo) {
+            return R.string.auto_start_tip_lenovo;
+        }
+        boolean letv = BuildProperties.isLetvModel();
+        if (letv) {
+            return R.string.auto_start_tip_xiaomi4_and_letv;
+        }
+        return R.string.auto_start_guide_tip_content;
     }
 }
