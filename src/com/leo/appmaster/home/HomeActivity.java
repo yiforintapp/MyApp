@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
+import android.location.IGeocodeProvider;
 import android.net.Uri;
 import android.net.wifi.WifiConfiguration.Visibility;
 import android.os.Build;
@@ -161,6 +162,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private TextView mUnreadCountTv;
     private List<MenuItem> mMenuItems;
     private AdvanceProtectTipDialog mAdvanceProtectDialog;
+    public static int mHomeAdSwitchOpen = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -599,9 +601,19 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     public void shouldShowAd() {
+
+        // 默认是开，记得改回默认是关
+        if (mHomeAdSwitchOpen == -1) {
+            LeoLog.d("testPrivicyAd", "获取主页广告开关");
+            mHomeAdSwitchOpen = AppMasterPreference.getInstance(this)
+                    .getIsADAtAppLockFragmentOpen();
+        }
+        LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
+
         long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
         long nowTime = System.currentTimeMillis();
-        if ((nowTime - clickTime > INTERVEL_CLICK_AD) && !isEnterPrivacySuggest) {
+        if ((nowTime - clickTime > INTERVEL_CLICK_AD) && !isEnterPrivacySuggest
+                && mHomeAdSwitchOpen == 1) {
             mAdIcon.setVisibility(View.VISIBLE);
             mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
             adAnimation = (AnimationDrawable)
@@ -1534,13 +1546,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     private void mobvistaCheck() {
-        // -----------------Mobvista Sdk--------------------
 
-        // init wall controller
-        // newAdWallController(Context context,String unitid, String fbid)
         mWallAd = MobvistaEngine.getInstance().createAdWallController(this);
         if (mWallAd != null) {
-            // preload the wall data
             mWallAd.preloadWall();
         }
 

@@ -81,6 +81,28 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     @Override
     public void onResume() {
         super.onResume();
+        
+        shouldShowAd();
+        
+    }
+
+    private void shouldShowAd() {
+        // 默认是开，记得改回默认是关
+        if (mPrivicyAdSwitchOpen == -1) {
+            LeoLog.d("testPrivicyAd", "获取隐私防护广告开关");
+            mPrivicyAdSwitchOpen = AppMasterPreference.getInstance(getActivity())
+                    .getIsADAfterPrivacyProtectionOpen();
+        }
+
+        LeoLog.d("testPrivicyAd", "开关值是：" + mPrivicyAdSwitchOpen);
+
+        // 开启广告位
+        if (mPrivicyAdSwitchOpen == 1) {
+            loadAD();
+        }else {
+            View adview = mProposalView.findViewById(R.id.privacy_ad_item);
+            adview.setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -165,19 +187,6 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         isShowRedTip(mCallLogTv, 1);
         onLevelChange(PrivacyHelper.getInstance(mActivity).getCurLevelColor().toIntColor());
 
-        // 默认是开，记得改回默认是关
-        if (mPrivicyAdSwitchOpen == -1) {
-            LeoLog.d("testPrivicyAd", "获取隐私防护广告开关");
-            mPrivicyAdSwitchOpen = AppMasterPreference.getInstance(getActivity())
-                    .getIsADAfterPrivacyProtectionOpen();
-        }
-
-        LeoLog.d("testPrivicyAd", "开关值是：" + mPrivicyAdSwitchOpen);
-
-        // 开启广告位
-        if (mPrivicyAdSwitchOpen == 1) {
-            loadAD();
-        }
     }
 
     @Override

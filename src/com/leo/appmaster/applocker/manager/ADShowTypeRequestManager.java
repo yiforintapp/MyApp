@@ -4,6 +4,7 @@ package com.leo.appmaster.applocker.manager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -21,6 +22,7 @@ import com.leo.appmaster.AppMasterPreference;
 
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.fragment.HomePravicyFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.lockertheme.LockerTheme;
@@ -159,15 +161,38 @@ public class ADShowTypeRequestManager {
                     AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating(
                             (response.getInt(AD_AFTER_ACCELERATING)));
                     LeoLog.e("poha", "请求成功，加速后出现广告概率：" + response.getInt(AD_AFTER_ACCELERATING));
+                    // int random = new Random().nextInt(10) + 1;
+                    // LeoLog.e("poha",
+                    // "random：" + random);
+                    // if (random > 5) {
+                    // random = 1;
+                    // } else {
+                    // random = 0;
+                    // }
+                    // AppMasterPreference.getInstance(mContext).setIsADAfterPrivacyProtectionOpen(
+                    // random);
+                    // HomePravicyFragment.mPrivicyAdSwitchOpen = random;
+                    // LeoLog.e("poha",
+                    // "请求成功，隐私保护后出现广告的开关：" + random);
                     AppMasterPreference.getInstance(mContext).setIsADAfterPrivacyProtectionOpen(
                             (response.getInt(AD_AFTER_PRIVACY_PROTECTION)));
                     HomePravicyFragment.mPrivicyAdSwitchOpen = response
                             .getInt(AD_AFTER_PRIVACY_PROTECTION);
                     LeoLog.e("poha",
-                            "请求成功，隐私保护后出现广告的开关：" + response.getInt(AD_AFTER_PRIVACY_PROTECTION));
+                            "请求成功，隐私保护后出现广告的开关：" +
+                                    response.getInt(AD_AFTER_PRIVACY_PROTECTION));
+
+                    // AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(
+                    // random);
+                    // HomeActivity.mHomeAdSwitchOpen = random;
+                    // LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + random);
                     AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(
                             (response.getInt(AD_AT_APPLOCK_FRAGMENT)));
-                    LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+                    HomeActivity.mHomeAdSwitchOpen =
+                            response.getInt(AD_AT_APPLOCK_FRAGMENT);
+                    LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" +
+                            response.getInt(AD_AT_APPLOCK_FRAGMENT));
+
                     AppMasterPreference.getInstance(mContext).setIsADAtLockThemeOpen(
                             (response.getInt(AD_AT_THEME)));
                     LockerTheme.mThemeAdSwitchOpen = response.getInt(AD_AT_THEME);
