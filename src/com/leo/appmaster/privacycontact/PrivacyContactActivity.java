@@ -22,7 +22,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
@@ -45,6 +47,8 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     private AddPrivacyContactDialog mAddPrivacyContact;
     private boolean mCallLogTip = false;
     private boolean mBackFlag = false;
+    /* swipe到隐私联系人页面 */
+    public static final int EVENT_ISWIPE_TO_PRIVACY_CONTACT = 11;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +58,27 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         LeoEventBus.getDefaultBus().register(this);
         // PrivacyContactManager.getInstance(mContext).mIsOpenPrivacyContact =
         // true;
+        iswipToPrivacyContactHandler();
+    }
+
+    private void iswipToPrivacyContactHandler() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        if (amp.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+            finish();
+            String flag = getIntent().getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
+            Intent intent = new Intent(this, LockSettingActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, EVENT_ISWIPE_TO_PRIVACY_CONTACT);
+            if (PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG.equals(flag)) {
+                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                        PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+            } else if (PrivacyContactUtils.TO_PRIVACY_CALL_FLAG.equals(flag)) {
+                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                        PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+            }
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -407,7 +432,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         HomeFragmentHoler holder = new HomeFragmentHoler();
         holder.title = this.getString(R.string.privacy_contact_message);
         PrivacyMessageFragment messageFragment = new PrivacyMessageFragment();
-//        messageFragment.setContent(holder.title);
+        // messageFragment.setContent(holder.title);
         holder.fragment = messageFragment;
         mFragmentHolders[0] = holder;
         if (AppMasterPreference.getInstance(this).getMessageNoReadCount() > 0) {
@@ -419,7 +444,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         holder = new HomeFragmentHoler();
         holder.title = this.getString(R.string.privacy_contact_calllog);
         PrivacyCalllogFragment pravicyCalllogFragment = new PrivacyCalllogFragment();
-//        pravicyCalllogFragment.setContent(holder.title);
+        // pravicyCalllogFragment.setContent(holder.title);
         holder.fragment = pravicyCalllogFragment;
         mFragmentHolders[1] = holder;
         if (AppMasterPreference.getInstance(this).getCallLogNoReadCount() > 0) {
@@ -432,7 +457,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         holder.title = this.getString(R.string.privacy_contact_contact);
         PrivacyContactFragment appManagerFragment = new
                 PrivacyContactFragment();
-//        appManagerFragment.setContent(holder.title);
+        // appManagerFragment.setContent(holder.title);
         holder.fragment = appManagerFragment;
         mFragmentHolders[2] = holder;
 

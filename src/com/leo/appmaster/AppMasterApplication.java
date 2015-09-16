@@ -21,6 +21,7 @@ import android.os.UserManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
+import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -82,6 +83,9 @@ public class AppMasterApplication extends Application {
 
         // 启动引导程序，包含：前台、后台、延时程序
         mRootBootstrap.execute();
+        
+        PrivacyContactManager.getInstance(mInstance).getPrivacyCallIntent();
+        PrivacyContactManager.getInstance(mInstance).getPrivacyMsmIntent();
     }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private String getUserSerial() {

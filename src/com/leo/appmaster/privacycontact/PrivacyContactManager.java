@@ -530,14 +530,14 @@ public class PrivacyContactManager {
         }
     }
 
-    private Intent getPrivacyMsmIntent() {
+    public Intent getPrivacyMsmIntent() {
         Intent privacyMsmIntent = new Intent(mContext, PrivacyContactActivity.class);
         privacyMsmIntent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
                 PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
         return privacyMsmIntent;
     }
 
-    private Intent getPrivacyCallIntent() {
+    public Intent getPrivacyCallIntent() {
         Intent privacyCallIntent = new Intent(mContext,
                 PrivacyContactActivity.class);
         privacyCallIntent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
