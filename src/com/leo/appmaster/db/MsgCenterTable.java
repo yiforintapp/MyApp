@@ -130,31 +130,24 @@ public class MsgCenterTable extends BaseTable {
         ArrayList<Message> result = new ArrayList<Message>();
         SQLiteDatabase db = getHelper().getReadableDatabase();
         if (db == null) return result;
-        
+
+        List<Message> offlineList = new ArrayList<Message>();
         Cursor cursor = null;
         try {
             cursor = db.query(TABLE_NAME, null, null, null, null, null, null);
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
-                    String categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
-                    String url = cursor.getString(cursor.getColumnIndex(COL_LINK));
-                    if (Message.CATEGORY_UPDATE.equals(categoryCode) && !MsgCenterFetchJob.hasCacheFile(url)
+                    Message message = getMessage(cursor);
+                    boolean offline = message.isOffline();
+                    if (offline) {
+                        offlineList.add(message);
+                        continue;
+                    }
+                    if (message.isCategoryUpdate() && !MsgCenterFetchJob.hasCacheFile(message.jumpUrl)
                             && !forceAll) {
                         continue;
                     }
-                    Message message = new Message();
-                    message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
-                    message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
-                    message.jumpUrl = url;
-                    message.msgId = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
-                    message.categoryName = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_NAME));
-                    message.categoryCode = categoryCode;
-                    message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
-                    message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
-                    message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
-                    message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
-                    message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
                     result.add(message);
                 } while (cursor.moveToNext());
             }
@@ -163,7 +156,9 @@ public class MsgCenterTable extends BaseTable {
         } finally {
             IoUtils.closeSilently(cursor);
         }
-        
+        // 删除已下线的活动
+        deleteMsgList(offlineList, null);
+
         return result;
     }
 
@@ -199,6 +194,8 @@ public class MsgCenterTable extends BaseTable {
             for (Message message : delList) {
                 db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[] { message.msgId + "" });
                 if (list == null || !message.isCategoryUpdate()) continue;
+
+                if (list == null) continue;
 
                 for (Message msg : list) {
                     if (msg.msgId == message.msgId) {
@@ -244,21 +241,8 @@ public class MsgCenterTable extends BaseTable {
             if (cursor != null && cursor.getCount() > 0) {
                 cursor.moveToFirst();
                 do {
-                    String catrgoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
-                    if (!Message.CATEGORY_UPDATE.equals(catrgoryCode)) continue;
-
-                    Message message = new Message();
-                    message.categoryCode = catrgoryCode;
-                    message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
-                    message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
-                    message.jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
-                    message.msgId = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
-                    message.categoryName = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_NAME));
-                    message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
-                    message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
-                    message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
-                    message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
-                    message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
+                    Message message = getMessage(cursor);
+                    if (!message.isCategoryUpdate()) continue;
 
                     result.add(message);
                 } while (cursor.moveToNext());
@@ -280,6 +264,7 @@ public class MsgCenterTable extends BaseTable {
         SQLiteDatabase db = getHelper().getReadableDatabase();
         if (db == null) return 0;
 
+        List<Message> offlineList = new ArrayList<Message>();
         Cursor cursor = null;
         try {
             cursor = db.query(TABLE_NAME, null,
@@ -288,12 +273,14 @@ public class MsgCenterTable extends BaseTable {
                 int result = cursor.getCount();
                 cursor.moveToFirst();
                 do {
-                    String categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
-                    String jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
-                    if (Message.CATEGORY_UPDATE.equals(categoryCode)) {
-                        if (!MsgCenterFetchJob.hasCacheFile(jumpUrl)) {
-                            result--;
-                        }
+                    Message message = getMessage(cursor);
+                    boolean offline = message.isOffline();
+                    if ((message.isCategoryUpdate() && !MsgCenterFetchJob.hasCacheFile(message.jumpUrl))
+                            || offline) {
+                        result--;
+                    }
+                    if (offline) {
+                        offlineList.add(message);
                     }
                 } while (cursor.moveToNext());
                 return result;
@@ -303,8 +290,29 @@ public class MsgCenterTable extends BaseTable {
         } finally {
             IoUtils.closeSilently(cursor);
         }
+        // 删除已经下线的活动
+        deleteMsgList(offlineList, null);
 
         return 0;
+    }
+
+    private Message getMessage(Cursor cursor) {
+        Message message = new Message();
+        if (cursor == null) return message;
+
+        message.categoryCode = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_CODE));
+        message.description = cursor.getString(cursor.getColumnIndex(COL_DESCRIPTION));
+        message.imageUrl = cursor.getString(cursor.getColumnIndex(COL_IMAGE_URL));
+        message.jumpUrl = cursor.getString(cursor.getColumnIndex(COL_LINK));
+        message.msgId = cursor.getInt(cursor.getColumnIndex(COL_MSG_ID));
+        message.categoryName = cursor.getString(cursor.getColumnIndex(COL_CATEGORY_NAME));
+        message.offlineTime = cursor.getString(cursor.getColumnIndex(COL_OFFLINE_TIME));
+        message.time = cursor.getString(cursor.getColumnIndex(COL_TIME));
+        message.title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
+        message.resUrl = cursor.getString(cursor.getColumnIndex(COL_RES));
+        message.unread = cursor.getInt(cursor.getColumnIndex(COL_UNREAD)) == UNREADED;
+
+        return message;
     }
 
 }

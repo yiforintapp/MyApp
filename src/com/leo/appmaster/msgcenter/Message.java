@@ -1,6 +1,10 @@
 package com.leo.appmaster.msgcenter;
 
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 消息中心数据结构
  * Created by Jasper on 2015/9/10.
@@ -41,5 +45,21 @@ public class Message {
     public String toString() {
         return "msgId: " + msgId + " | categoryCode: " + categoryCode + " | title: " + title +
                 " | categoryName: " + categoryName;
+    }
+
+    /**
+     * 是否已经下线
+     * @return
+     */
+    public boolean isOffline() {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        try {
+            Date date = format.parse(time);
+            long ts = date.getTime();
+            return System.currentTimeMillis() > ts;
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
