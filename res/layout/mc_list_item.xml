@@ -10,7 +10,7 @@
     <RelativeLayout
         android:id="@+id/mc_title_lyout"
         android:layout_width="match_parent"
-        android:layout_height="17dp">
+        android:layout_height="18dp">
 
         <ImageView
             android:id="@+id/mc_unread_iv"

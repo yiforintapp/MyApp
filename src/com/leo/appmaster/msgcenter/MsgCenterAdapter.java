@@ -3,6 +3,8 @@ package com.leo.appmaster.msgcenter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.renderscript.Program;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +23,10 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -131,7 +136,18 @@ public class MsgCenterAdapter extends BaseAdapter {
 
         Message msg = (Message) getItem(position);
         holder.title.setText(msg.title);
-        holder.time.setText(msg.time);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat simpleFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String time = null;
+        try {
+            Date date = format.parse(msg.time);
+            time = simpleFormat.format(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        holder.time.setText(TextUtils.isEmpty(time) ? msg.time : time);
         holder.description.setText(msg.description);
         if (msg.unread) {
             holder.title.setPadding(mTitleLeftPadding, 0, 0, 0);
