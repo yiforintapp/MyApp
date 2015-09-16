@@ -858,34 +858,34 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         Resources resources = AppMasterApplication.getInstance().getResources();
         /* 亲给个好评 */
         listItems.add(new MenuItem(resources.getString(R.string.grade),
-                R.drawable.menu_star_icon_menu));
+                R.drawable.menu_star_icon_menu, false));
         /* 点个赞 */
         listItems
                 .add(new MenuItem(resources.getString(R.string.about_praise),
-                        R.drawable.menu_hot_icon));
+                        R.drawable.menu_hot_icon, false));
         /* 加入粉丝团 */
         listItems.add(new MenuItem(resources.getString(R.string.about_group),
-                R.drawable.menu_join_icon));
+                R.drawable.menu_join_icon, false));
         /* 吐个槽 */
         listItems.add(new MenuItem(resources.getString(R.string.feedback),
-                R.drawable.menu_feedbacks_icon));
+                R.drawable.menu_feedbacks_icon, false));
         /* 检查升级 */
         if (SDKWrapper.isUpdateAvailable()) {
-            listItems.add(new MenuItem(resources.getString(R.string.app_setting_has_update),
-                    R.drawable.menu_updates_icon));
+            listItems.add(new MenuItem(resources.getString(R.string.app_setting_update),
+                    R.drawable.menu_updates_icon, true));
         } else {
             listItems.add(new MenuItem(resources.getString(R.string.app_setting_update),
-                    R.drawable.menu_updates_icon));
+                    R.drawable.menu_updates_icon, false));
         }
         /* 关于 */
         listItems.add(new MenuItem(resources.getString(R.string.app_setting_about),
-                R.drawable.menu_about_icon));
+                R.drawable.menu_about_icon, false));
         /* 卸载PG */
         boolean isAdmin = isAdminActive();
         if (isAdmin) {
             // listItems.add(object)
             listItems.add(new MenuItem(resources.getString(R.string.menue_item_delete_pg),
-                    R.drawable.menu_delete));
+                    R.drawable.menu_delete, false));
             LeoLog.i("pg_delete_menue", "显示卸载按钮");
         } else {
             LeoLog.i("pg_delete_menue", "不显示卸载按钮");
@@ -1339,9 +1339,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2,
                     false);
             TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
+            ImageView redTip = (ImageView) layout.findViewById(R.id.update_red_tip);
             /* some item not HTML styled text, such as "check update" item */
             tv.setText(Html.fromHtml(items.get(arg0).itemName));
-
+            if (items.get(arg0).isRedTip) {
+                redTip.setVisibility(View.VISIBLE);
+            } else {
+                redTip.setVisibility(View.GONE);
+            }
             /**
              * 类似于阿拉伯语等从右往左显示的处理
              */
@@ -1362,11 +1367,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     class MenuItem {
         String itemName;
         int iconId;
+        boolean isRedTip;
 
-        public MenuItem(String itemName, int iconId) {
+        public MenuItem(String itemName, int iconId, boolean isRedTip) {
             super();
             this.itemName = itemName;
             this.iconId = iconId;
+            this.isRedTip = isRedTip;
         }
     }
 
@@ -1625,7 +1632,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mAutoStartGuideDialog = new AutoStartTipDialog(this);
         }
         mAutoStartGuideDialog.setTitleText(getString(R.string.auto_start_guide_tip_title));
-//        mAutoStartGuideDialog.setContentText(getString(R.string.auto_start_guide_tip_content));
+        // mAutoStartGuideDialog.setContentText(getString(R.string.auto_start_guide_tip_content));
         int content = AutoStartGuideList
                 .getAutoWhiteListTipText(AppMasterApplication.getInstance());
         mAutoStartGuideDialog.setContentTextId(content);
