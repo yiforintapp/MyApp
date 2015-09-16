@@ -596,9 +596,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mMenuList.setAdapter(mMenuAdapter);
         }
         mDrawerLayout.postInvalidate();
-        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-            mDrawerLayout.closeDrawer(Gravity.START);
-        }
     }
 
     public void shouldShowAd() {
@@ -1660,6 +1657,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     /* 卸载 PG */
     private boolean unistallPG() {
+        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        }
         try {
             Uri uri = Uri.fromParts("package", this.getPackageName(), null);
             Intent intent = new Intent();
