@@ -220,9 +220,9 @@ public class ADShowTypeRequestManager {
                     // HomeActivity.mHomeAdSwitchOpen = random;
                     // LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + random);
                     AppMasterPreference.getInstance(mContext).setIsADAtAppLockFragmentOpen(
-                            (response.getInt(AD_AT_APPLOCK_FRAGMENT)));
-                    HomeActivity.mHomeAdSwitchOpen =
-                            response.getInt(AD_AT_APPLOCK_FRAGMENT);
+                            (1));
+                    HomeActivity.mHomeAdSwitchOpen =1;
+                            
                     LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" +
                             response.getInt(AD_AT_APPLOCK_FRAGMENT));
 
