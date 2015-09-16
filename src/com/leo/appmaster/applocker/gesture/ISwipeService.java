@@ -1,5 +1,7 @@
+
 package com.leo.appmaster.applocker.gesture;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Service;
@@ -11,6 +13,8 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.ISwipeInterface;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.privacycontact.ContactBean;
+import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -52,6 +56,20 @@ public class ISwipeService extends Service {
                 return null;
             }
             return LockManager.getInstatnce().getLockMode();
+        }
+
+        @Override
+        public List<String> getPrivacyContacts() throws RemoteException {
+            List<ContactBean> contacts = PrivacyContactManager.getInstance(ISwipeService.this)
+                    .getPrivateContacts();
+            if (contacts != null && contacts.size() > 0) {
+                List<String> privacyNumbers = new ArrayList<String>();
+                for (ContactBean contactBean : contacts) {
+                    privacyNumbers.add(contactBean.getContactNumber());
+                }
+                return privacyNumbers;
+            }
+            return null;
         }
     };
 }
