@@ -93,6 +93,10 @@ public class AutoStartTipDialog extends LEOBaseDialog {
         }
     }
 
+    public void setContentTextId(int content) {
+            mContent.setText(content);
+    }
+
     public void setContentTextColor(int id) {
         mContent.setTextColor(ColorStateList.valueOf(id));
     }

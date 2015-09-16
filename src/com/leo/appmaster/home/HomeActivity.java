@@ -1620,7 +1620,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 //        mAutoStartGuideDialog.setContentText(getString(R.string.auto_start_guide_tip_content));
         int content = AutoStartGuideList
                 .getAutoWhiteListTipText(AppMasterApplication.getInstance());
-        mAdvanceProtectDialog.setContentTextId(content);
+        mAutoStartGuideDialog.setContentTextId(content);
         mAutoStartGuideDialog
                 .setLeftButtonText(getString(R.string.auto_start_guide_tip_left_button));
         mAutoStartGuideDialog
