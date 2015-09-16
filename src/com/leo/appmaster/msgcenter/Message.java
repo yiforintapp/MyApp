@@ -1,6 +1,11 @@
 package com.leo.appmaster.msgcenter;
 
 
+import android.text.TextUtils;
+
+import com.leo.appmaster.schedule.MsgCenterFetchJob;
+
+import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,6 +52,23 @@ public class Message {
                 " | categoryName: " + categoryName;
     }
 
+    public boolean hasCacheFile() {
+        String fileNameNoSuffix = MsgCenterFetchJob.getFileName(jumpUrl);
+        String htmlFileName = fileNameNoSuffix + ".html";
+        File htmlFile = new File(MsgCenterFetchJob.getFilePath(htmlFileName));
+        if (!TextUtils.isEmpty(jumpUrl) && !htmlFile.exists()) {
+            return false;
+        }
+
+        String resFileName = fileNameNoSuffix + ".zip";
+        File resFile = new File(MsgCenterFetchJob.getFilePath(resFileName));
+        if (!TextUtils.isEmpty(resUrl) && !resFile.exists()) {
+            return false;
+        }
+
+        return true;
+    }
+
     /**
      * 是否已经下线
      * @return
@@ -54,7 +76,7 @@ public class Message {
     public boolean isOffline() {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         try {
-            Date date = format.parse(time);
+            Date date = format.parse(offlineTime);
             long ts = date.getTime();
             return System.currentTimeMillis() > ts;
         } catch (ParseException e) {

@@ -1,6 +1,7 @@
 package com.leo.appmaster.schedule;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -93,6 +94,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
                 message.title = obj.getString("title");
                 message.resUrl =obj.getString("resource");
                 message.msgId = obj.getInt("id");
+                if (message.isOffline()) continue;
 
                 list.add(message);
 
@@ -138,13 +140,13 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             String fileNameNoSuffix = getFileName(msg.jumpUrl);
             String htmlFileName = fileNameNoSuffix + ".html";
             File htmlFile = new File(getFilePath(htmlFileName));
-            if (msg.jumpUrl != null && !htmlFile.exists()) {
+            if (!TextUtils.isEmpty(msg.jumpUrl) && !htmlFile.exists()) {
                 requestHtml(htmlFile.getAbsolutePath(), msg.jumpUrl);
             }
 
             String resFileName = fileNameNoSuffix + ".zip";
             File resFile = new File(getFilePath(resFileName));
-            if (msg.resUrl != null && !resFile.exists()) {
+            if (!TextUtils.isEmpty(msg.resUrl) && !resFile.exists()) {
                 // Volley不支持stream保存，蛋疼，自己写一套先
                 requestResFile(resFile.getAbsolutePath(), msg.resUrl);
             }
@@ -180,19 +182,6 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
     public static String getFilePathByUrl(String url) {
         return getFilePath(getFileName(url));
-    }
-
-    public static boolean hasCacheFile(String url) {
-        String fileName = getFileName(url);
-        String htmlFileStr = getFilePath(fileName + ".html");
-        File htmlFile = new File(htmlFileStr);
-        if (!htmlFile.exists()) return false;
-
-        String zipFileStr = getFilePath(fileName + ".zip");
-        File zipFile = new File(zipFileStr);
-        if (!zipFile.exists()) return false;
-
-        return true;
     }
 
     /**

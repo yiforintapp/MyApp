@@ -144,8 +144,7 @@ public class MsgCenterTable extends BaseTable {
                         offlineList.add(message);
                         continue;
                     }
-                    if (message.isCategoryUpdate() && !MsgCenterFetchJob.hasCacheFile(message.jumpUrl)
-                            && !forceAll) {
+                    if (message.isCategoryUpdate() && !message.hasCacheFile() && !forceAll) {
                         continue;
                     }
                     result.add(message);
@@ -275,8 +274,7 @@ public class MsgCenterTable extends BaseTable {
                 do {
                     Message message = getMessage(cursor);
                     boolean offline = message.isOffline();
-                    if ((message.isCategoryUpdate() && !MsgCenterFetchJob.hasCacheFile(message.jumpUrl))
-                            || offline) {
+                    if ((message.isCategoryUpdate() && !message.hasCacheFile()) || offline) {
                         result--;
                     }
                     if (offline) {
