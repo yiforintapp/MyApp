@@ -70,10 +70,13 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
-//        LeoLog.i(getJobKey(), "onFetchSuccess, response: " +array+ " | noModify: " + noMidify);
-        if (response == null || !(response instanceof JSONArray)) return;
+        if (response == null || !(response instanceof JSONArray)) {
+            LeoLog.i(TAG, "response: " + response);
+            return;
+        }
 
         JSONArray array = (JSONArray) response;
+        LeoLog.i(TAG, "onFetchSuccess, response: " + array.toString() + " | noModify: " + noMidify);
         List<Message> list = new ArrayList<Message>();
         try {
             for (int i = 0; i < array.length(); i++) {
@@ -234,7 +237,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
                     while ((n = inputStream.read(buffer, 0, size)) != -1) {
                         fos.write(buffer, 0, n);
                     }
-                    LeoLog.i(TAG, "download res file succ.");
+                    LeoLog.i(TAG, "download res file succ. file：" + file.getAbsolutePath());
                     LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_RES));
                     success = true;
                     break;
@@ -247,6 +250,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
                     retryCount++;
                     LeoLog.e(TAG, "connect timeout ex, retrycount: " + retryCount);
                 } catch (Exception e) {
+                    LeoLog.e(TAG, "socket timeout ex, e: " + e.toString());
                     e.printStackTrace();
                     break;
                 }
@@ -286,7 +290,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
         @Override
         public void onResponse(File response, boolean noMidify) {
-            LeoLog.i(TAG, "HtmlListener, onResponse: " + response);
+            LeoLog.i(TAG, "HtmlListener, onResponse: " + (response != null ? response.getAbsolutePath() : null));
             LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_HTML));
         }
     }
