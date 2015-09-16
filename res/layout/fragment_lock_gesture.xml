@@ -14,12 +14,13 @@
         <!-- android:layout_above="@+id/tv_gesture_tip" -->
 
         <ImageView
+            
             android:id="@+id/iv_app_icon_bottom"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:src="@color/transparent"
-            android:visibility="invisible" />
+            android:visibility="visible" />
 
         <ImageView
             android:id="@+id/iv_app_icon"
@@ -150,8 +151,8 @@
 
             <ImageView
                 android:id="@+id/iv_adsign"
-                android:layout_width="15dp"
-                android:layout_height="15dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:layout_marginLeft="2dp"
                 android:src="@drawable/ad_sign" />
 
@@ -168,7 +169,7 @@
         <TextView
             android:id="@+id/tv_appdesc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="24dp"
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="5dp"
             android:layout_marginLeft="58dp"

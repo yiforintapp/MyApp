@@ -67,6 +67,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     private boolean mIsADLoaded = false;// 是否从MobvistaEngine的接口中得到结果
     private boolean mIsThemeLoaded =false;
     private AnimationDrawable mUFODrawable;//
+    private AnimationDrawable mAlienDrawable;
     // 广告素材
     private MobvistaEngine mAdEngine;
     // 主题
@@ -457,7 +458,10 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
         mUFO.setImageResource(R.anim.ufo_light);
         mUFODrawable = (AnimationDrawable) mUFO.getDrawable();
+        mAlien.setImageResource(R.anim.alien_closeeyes);
+        mAlienDrawable = (AnimationDrawable) mAlien.getDrawable();
         mUFODrawable.start();
+        mAlienDrawable.start();
         // boolean hasGetLoadResult = false;
         mCdt = new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {

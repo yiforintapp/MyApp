@@ -2654,7 +2654,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAtAppLockFragmentOpen() {
-        return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 1);
+        return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 0);
     }
 
     //主题界面出现广告的开关
