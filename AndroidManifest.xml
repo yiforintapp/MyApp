@@ -287,7 +287,6 @@
             android:excludeFromRecents="true"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
         <activity
