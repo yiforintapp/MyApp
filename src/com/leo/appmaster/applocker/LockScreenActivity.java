@@ -157,7 +157,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private Handler handler;
     public static boolean interupAinimation = false;
     private boolean clickShakeIcon = false;
-    private boolean isClickAny = false;
 
     private MobvistaEngine mAdEngine;
 
@@ -254,7 +253,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             });
 
-            if (SHOW_AD_TYPE == AD_TYPE_SHAKE && !isClickAny) {
+            if (SHOW_AD_TYPE == AD_TYPE_SHAKE) {
                 mAdIconRedTip.setVisibility(View.VISIBLE);
                 mAdIcon.setBackgroundResource(R.drawable.adanimation2);
                 adAnimation = (AnimationDrawable)
@@ -263,7 +262,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             } else { // jump
                 mAdIconRedTip.setVisibility(View.GONE);
-                if (SHOW_AD_TYPE == AD_TYPE_JUMP && !isClickAny) {
+                if (SHOW_AD_TYPE == AD_TYPE_JUMP) {
                     mAdIcon.setBackgroundResource(R.drawable.adanimation);
                     adAnimation = (AnimationDrawable)
                             mAdIcon.getBackground();
@@ -306,7 +305,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // && NetWorkUtil.isNetworkAvailable(getApplicationContext()))
         {
             mADAnimalEntry.setVisibility(View.VISIBLE);
-            if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE && !isClickAny) {
+            if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE) {
                 startShakeRotateAnimation(true);
             }
         }
@@ -342,13 +341,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         long mNowTime = System.currentTimeMillis();
         if ((mLastTime != 0 && mNowTime - mLastTime > CLICK_OVER_DAY) || mHaveNewThings) {// shake
             SHOW_AD_TYPE = AD_TYPE_SHAKE;
-            LeoLog.e("poha", "shake");
         } else { // jump
             if (!isClickJump && !clickShakeIcon) {
                 SHOW_AD_TYPE = AD_TYPE_JUMP;
-                LeoLog.e("poha", "jump");
             } else {
-                LeoLog.e("poha", "stay");
                 SHOW_AD_TYPE = AD_TYPE_STAY;
             }
         }
@@ -750,7 +746,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mADAnimalEntry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                isClickAny = true;
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "draw");
                 interupAinimation = true;
                 // Toast.makeText(LockScreenActivity.this, showType + "",
@@ -1204,7 +1199,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             // amp.setLockerScreenThemeGuide(true);
             // break;
             case R.id.icon_ad_layout:
-                isClickAny = true;
                 sLockFilterFlag = true;
                 AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
                 mAmp.setUnlocked(true);
