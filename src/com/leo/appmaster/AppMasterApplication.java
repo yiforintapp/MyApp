@@ -11,7 +11,11 @@ import java.util.concurrent.ScheduledExecutorService;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Build;
@@ -21,10 +25,14 @@ import android.os.UserManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.imageloader.ImageLoader;
 
 public class AppMasterApplication extends Application {
@@ -83,9 +91,6 @@ public class AppMasterApplication extends Application {
 
         // 启动引导程序，包含：前台、后台、延时程序
         mRootBootstrap.execute();
-        
-        PrivacyContactManager.getInstance(mInstance).getPrivacyCallIntent();
-        PrivacyContactManager.getInstance(mInstance).getPrivacyMsmIntent();
     }
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private String getUserSerial() {
@@ -246,5 +251,4 @@ public class AppMasterApplication extends Application {
     public static String getSelectedTheme() {
         return usedThemePackage;
     }
-
 }

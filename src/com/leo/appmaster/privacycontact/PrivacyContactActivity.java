@@ -116,31 +116,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         mPrivacyContactViewPager.setAdapter(adapter);
         mPrivacyContactViewPager.setOffscreenPageLimit(2);
         mPrivacyContactPagerTab.setViewPager(mPrivacyContactViewPager);
-        Intent intent = getIntent();
-        String fromPrivacyFlag = intent.getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
-        mBackFlag = intent.getBooleanExtra("message_call_notifi", false);
-        if (PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG.equals(fromPrivacyFlag)) {
-            mTtileBar.setTitle(R.string.privacy_sms);
-            mPrivacyContactPagerTab.setCurrentItem(0);
-            pagerPosition = 0;
-            /* sdk market */
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "privacyview", "statusmesg");
-        } else if (PrivacyContactUtils.TO_PRIVACY_CALL_FLAG.equals(fromPrivacyFlag)) {
-            mTtileBar.setTitle(R.string.privacy_call);
-            mPrivacyContactPagerTab.setCurrentItem(1);
-            pagerPosition = 1;
-            /* sdk market */
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "privacyview", "statuscall");
-        } else {
-            mTtileBar.setTitle(R.string.privacy_contacts);
-            pagerPosition = 2;
-            mPrivacyContactPagerTab.setCurrentItem(2);
-            updateTitle();
-        }
-        if (!mIsEditModel && pagerPosition == 2) {
-            updateTitle();
-        }
-
         mPrivacyContactPagerTab.setOnPageChangeListener(new OnPageChangeListener() {
 
             @Override
@@ -179,6 +154,32 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
             }
         });
+    }
+
+    private void toPrivacyContactHandler() {
+        String fromPrivacyFlag = getIntent().getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
+        mBackFlag = getIntent().getBooleanExtra("message_call_notifi", false);
+        if (PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG.equals(fromPrivacyFlag)) {
+            mTtileBar.setTitle(R.string.privacy_sms);
+            mPrivacyContactPagerTab.setCurrentItem(0);
+            pagerPosition = 0;
+            /* sdk market */
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "privacyview", "statusmesg");
+        } else if (PrivacyContactUtils.TO_PRIVACY_CALL_FLAG.equals(fromPrivacyFlag)) {
+            mTtileBar.setTitle(R.string.privacy_call);
+            mPrivacyContactPagerTab.setCurrentItem(1);
+            pagerPosition = 1;
+            /* sdk market */
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "privacyview", "statuscall");
+        } else {
+            mTtileBar.setTitle(R.string.privacy_contacts);
+            pagerPosition = 2;
+            mPrivacyContactPagerTab.setCurrentItem(2);
+            updateTitle();
+        }
+        if (!mIsEditModel && pagerPosition == 2) {
+            updateTitle();
+        }
     }
 
     /**
@@ -478,6 +479,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     protected void onResume() {
+        toPrivacyContactHandler();
         super.onResume();
         PrivacyContactManager.getInstance(PrivacyContactActivity.this).mIsOpenPrivacyContact = true;
     }
