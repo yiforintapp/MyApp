@@ -256,6 +256,16 @@
     <dimen name="home_ad_icon_width">22dp</dimen>
     <dimen name="home_ad_icon_height">38dp</dimen>
     <dimen name="home_ad_icon_m_top">170dp</dimen>
+    <dimen name="theme_ad_icon_height">33dp</dimen>
+    <dimen name="theme_ad_icon_m_left">5dp</dimen>
+    <dimen name="theme_ad_test_width">120dp</dimen>
+    <dimen name="theme_ad_test_m_left">6dp</dimen>
+    <dimen name="theme_ad_test_size">10sp</dimen>
+    <dimen name="theme_ad_desc_size">7sp</dimen>
+    <dimen name="theme_ad_button_width">60dp</dimen>
+    <dimen name="theme_ad_button_height">25dp</dimen>
+    <dimen name="theme_ad_button_m_right">5dp</dimen>
+    <dimen name="theme_ad_button_test_size">10sp</dimen>
     <!-- 2.9 end -->
 
 </resources>
