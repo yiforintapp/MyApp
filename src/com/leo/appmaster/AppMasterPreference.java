@@ -2584,8 +2584,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     // 当天请求广告展示类型的失败次数
-    public int getADRequestShowtypeFailTimesCurrentDay()
-    {
+    public int getADRequestShowtypeFailTimesCurrentDay(){
         if (mADRequestFailTimes < 0) {
             mADRequestFailTimes = mPref.getInt(PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY, 0);
         }
@@ -2593,11 +2592,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     }
 
-    public void setADRequestShowtypeFailTimesCurrentDay(int times)
-    {
+    public void setADRequestShowtypeFailTimesCurrentDay(int times){
         mADRequestFailTimes = times;
         mPref.edit().putInt(PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY, times).apply();
-
     }
 
     // 广告展示的形式
@@ -2615,7 +2612,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mADShowType;
     }
 
-    // UFO动画的展示形式
+    // UFO动画的展示形式 //暂时没有使用
     public void setUFOAnimType(int type) {
         mPref.edit().putInt(PREF_UFO_ANIM_TYPE, type).apply();
     }
@@ -2624,15 +2621,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_UFO_ANIM_TYPE, 1);
     }
 
-    // THEME_CHANCE_AFTER_UFO
+    //roll出主题的概率 X分之一
     public void setThemeChanceAfterUFO(int chance) {
         mPref.edit().putInt(PREF_THEME_CHANCE_AFTER_UFO, chance).apply();
     }
 
     public int getThemeChanceAfterUFO() {
-        return mPref.getInt(PREF_THEME_CHANCE_AFTER_UFO, 0);
+        return mPref.getInt(PREF_THEME_CHANCE_AFTER_UFO, 3);
     }
 
+    //加速后出现广告的开关
     public void setADChanceAfterAccelerating(int flag) {
         mPref.edit().putInt(PREF_AD_AFTER_ACCELERATING, flag).apply();
     }
@@ -2641,6 +2639,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_AD_AFTER_ACCELERATING, 0);
     }
 
+    //隐私防护出现广告的开关
     public void setIsADAfterPrivacyProtectionOpen(int value) {
         mPref.edit().putInt(PREF_AD_AFTER_PRIVACY_PROTECTION, value).apply();
     }
@@ -2649,14 +2648,16 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 0);
     }
 
+    //主页出现钱钱的开关
     public void setIsADAtAppLockFragmentOpen(int value) {
         mPref.edit().putInt(PREF_AD_AT_APPLOCK_FRAGMENT, value).apply();
     }
 
     public int getIsADAtAppLockFragmentOpen() {
-        return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 0);
+        return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 1);
     }
 
+    //主题界面出现广告的开关
     public void setIsADAtLockThemeOpen(int value) {
         mPref.edit().putInt(PREF_AD_AT_THEME, value).apply();
     }
@@ -2665,6 +2666,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_AD_AT_THEME, 0);
     }
 
+    //push时是否需要更新礼物盒状态，只在push时有效
     public void setIsGiftBoxNeedUpdate(int value) {
         mPref.edit().putInt(PREF_GIFTBOX_UPDATE, value).apply();
     }

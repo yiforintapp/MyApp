@@ -303,6 +303,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                             v.setImageBitmap(loadedImage);
                             if (mIsShowTheme&&mChosenTheme!=null) {
                                 mIsThemeLoaded = true;
+                                LeoLog.e("poha", "主题图片已经下载好了！");
                             }
                         }
                     }
@@ -666,7 +667,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         if(mAdEngine!=null){
         mAdEngine.release(this);
         }
-        LockScreenActivity.interupAinimation = false;
+//        LockScreenActivity.interupAinimation = false;
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
     }
 

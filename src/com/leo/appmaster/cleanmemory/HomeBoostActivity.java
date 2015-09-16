@@ -78,7 +78,7 @@ public class HomeBoostActivity extends Activity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         long currentTime = System.currentTimeMillis();
         long lastBoostWithADTime = amp.getLastBoostWithADTime();
-        if((currentTime-lastBoostWithADTime)>1000*60*60*24){
+        if((currentTime-lastBoostWithADTime)>1000*60*60*24&&amp.getADChanceAfterAccelerating()==1){
             loadAD();            
         }
     }

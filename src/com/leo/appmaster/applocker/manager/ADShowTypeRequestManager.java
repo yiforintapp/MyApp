@@ -48,7 +48,7 @@ public class ADShowTypeRequestManager {
     private static ADShowTypeRequestManager mInstance;
     private Context mContext;
     private SimpleDateFormat mDateFormate;
-
+//    public boolean IsFromPush = false;
     public boolean mIsPushRequestADShowType = false;
 
     public static Campaign mCampaign;
@@ -100,8 +100,7 @@ public class ADShowTypeRequestManager {
         // mIsPushRequestADShowType)
         // {
         // mIsPushRequestADShowType = false;
-
-        LeoLog.e("poha", "满足发起请求的条件，正在发起请求");
+//        LeoLog.e("poha", "满足发起请求的条件，正在发起请求");
         UpdateADShowTypeRequestListener listenerr = new UpdateADShowTypeRequestListener(
                 AppMasterApplication.getInstance());
         HttpRequestAgent.getInstance(AppMasterApplication.getInstance()).loadADShowType(
@@ -175,6 +174,10 @@ public class ADShowTypeRequestManager {
                     LeoLog.e("poha", "请求成功，主题界面出现广告：" + response.getInt(AD_AT_THEME));
                     AppMasterPreference.getInstance(mContext).setIsGiftBoxNeedUpdate(
                             (response.getInt(GIFTBOX_UPDATE)));
+                    if(mIsPushRequestADShowType&&response.getInt(GIFTBOX_UPDATE)==1){
+                        AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
+                        mIsPushRequestADShowType=false;
+                    }
                     LeoLog.e("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
                     AppMasterPreference.getInstance(mContext).setVersionUpdateTipsAfterUnlockOpen(
                             (response.getInt(VERSION_UPDATE_AFTER_UNLOCK)));
@@ -186,7 +189,7 @@ public class ADShowTypeRequestManager {
                     AppMasterPreference.getInstance(mContext).setIsWifiStatistics(
                             (response.getInt(WIFI_STATISTICAL)));
                     LeoLog.e("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
-
+                    
                     // 应用统计
                     addAppInfoEvent();
 
@@ -209,6 +212,7 @@ public class ADShowTypeRequestManager {
             if (mListener != null) {
                 mListener.onErrorResponse(error);
             }
+            
             LeoLog.e("poha", "请求失败。。。");
 
             AppMasterPreference sp = AppMasterPreference.getInstance(mContext);

@@ -184,9 +184,8 @@ public class PushInvoke implements PushInvokeHelper {
 
     // FengShi do it
     private void invokeAd() {
-        ADShowTypeRequestManager.getInstance(mContext).mIsPushRequestADShowType = true;
+        ADShowTypeRequestManager.getInstance(mContext).mIsPushRequestADShowType=true;
         ADShowTypeRequestManager.getInstance(mContext).loadADCheckShowType(null);
-        AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
     }
 
     private void invokeUpdate() {
