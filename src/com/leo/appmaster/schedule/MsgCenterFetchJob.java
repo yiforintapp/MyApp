@@ -78,6 +78,12 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
         JSONArray array = (JSONArray) response;
         LeoLog.i(TAG, "onFetchSuccess, response: " + array.toString() + " | noModify: " + noMidify);
+
+        MsgCenterTable table = new MsgCenterTable();
+        if (array.length() == 0) {
+            table.clear();
+            return;
+        }
         List<Message> list = new ArrayList<Message>();
         try {
             for (int i = 0; i < array.length(); i++) {
@@ -112,7 +118,6 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             e.printStackTrace();
         }
 
-        MsgCenterTable table = new MsgCenterTable();
         table.insertMsgList(list);
     }
 

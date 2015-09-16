@@ -228,6 +228,45 @@ public class MsgCenterTable extends BaseTable {
         }
     }
 
+    public void clear() {
+        List<Message> list = queryMsgList(true);
+        if (list != null && list.size() > 0) {
+            SQLiteDatabase db = getHelper().getWritableDatabase();
+            db.beginTransaction();
+            try {
+                for (Message message : list) {
+                    db.delete(TABLE_NAME, COL_MSG_ID + " = ?", new String[]{message.msgId + ""});
+                }
+                db.setTransactionSuccessful();
+            } catch (Throwable e) {
+                e.printStackTrace();
+            } finally {
+                db.endTransaction();
+            }
+        }
+
+        String filePath = MsgCenterFetchJob.getFilePath("name");
+        File file = new File(filePath);
+        File parent = file.getParentFile();
+        if (!parent.exists()) return;
+
+        // 递归删除缓存文件
+        deleteRecursively(parent);
+    }
+
+    private void deleteRecursively(File file) {
+        if (file.isDirectory()) {
+            File[] listFile = file.listFiles();
+            if (listFile != null) {
+                for (File f : listFile) {
+                    deleteRecursively(f);
+                }
+            }
+        } else {
+            file.delete();
+        }
+    }
+
     /**
      * 获取更新日志
      * @return
