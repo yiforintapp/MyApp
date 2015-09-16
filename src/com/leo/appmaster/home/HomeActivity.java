@@ -1705,6 +1705,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             public void onClick(View v) {
                 mAdvanceProtectDialog.dismiss();
                 Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
+                intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_HOME);
                 startActivity(intent);
             }
         });
