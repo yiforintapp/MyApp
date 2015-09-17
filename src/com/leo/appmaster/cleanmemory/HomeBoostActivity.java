@@ -247,7 +247,7 @@ public class HomeBoostActivity extends Activity {
 
         });
         AnimatorSet as = new AnimatorSet();
-        as.play(rocketAnimator2).after(300).after(rocketAnimator1);
+        as.play(rocketAnimator2).after(10000).after(rocketAnimator1);
         as.start();
         as.setInterpolator(new LinearInterpolator());
         as.addListener(new AnimatorListenerAdapter() {
@@ -306,7 +306,7 @@ public class HomeBoostActivity extends Activity {
             resultText.setText(mToast);
             isClean = true;
             final TextView counter = (TextView) mRlResultWithAD.findViewById(R.id.tv_counter);
-            mCdt = new CountDownTimer(10000, 1000) {
+            mCdt = new CountDownTimer(4000, 1000) {
                
                 @Override
                 public void onTick(long millisUntilFinished) {
