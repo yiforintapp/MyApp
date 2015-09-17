@@ -152,7 +152,7 @@ public class ADShowTypeRequestManager {
                     amp.setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));
                     LeoLog.e("poha","请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
                     amp.setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
-                    LeoLog.e("poha", "请求成功，加速后出现广告概率：" + response.getInt(AD_AFTER_ACCELERATING));
+                    LeoLog.e("poha", "请求成功，加速后出现广告：" + response.getInt(AD_AFTER_ACCELERATING));
                     amp.setIsADAfterPrivacyProtectionOpen((response.getInt(AD_AFTER_PRIVACY_PROTECTION)));
                     HomePravicyFragment.mPrivicyAdSwitchOpen = response.getInt(AD_AFTER_PRIVACY_PROTECTION);
                     LeoLog.e("poha","请求成功，隐私保护后出现广告的开关：" + response.getInt(AD_AFTER_PRIVACY_PROTECTION));
