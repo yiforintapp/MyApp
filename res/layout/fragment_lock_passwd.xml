@@ -513,7 +513,7 @@
             android:layout_marginRight="120dp"
             android:id="@+id/tv_appdesc"
             android:layout_width="match_parent"
-            android:layout_height="27dp"
+            android:layout_height="28dp"
       		android:layout_alignParentBottom="true"
             android:layout_marginLeft="58dp"
             android:ellipsize="marquee"
