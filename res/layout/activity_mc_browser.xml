@@ -19,15 +19,6 @@
         android:overScrollMode="never"
         android:layout_below="@id/layout_title_bar" />
 
-    <ProgressBar
-        android:id="@+id/mc_progress"
-        style="@style/ProgressBar_webview"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_below="@id/layout_title_bar"
-        android:max="100"
-        android:visibility="gone" />
-
     <LinearLayout
         android:id="@+id/mc_error_ll"
         android:layout_width="match_parent"
@@ -54,5 +45,14 @@
             android:textSize="14sp" />
 
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/mc_progress"
+        style="@style/ProgressBar_webview"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/layout_title_bar"
+        android:max="100"
+        android:visibility="gone" />
 
 </RelativeLayout>

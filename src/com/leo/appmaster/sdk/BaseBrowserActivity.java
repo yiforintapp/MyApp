@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.NetworkUtils;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NetWorkUtil;
 
 /**
  * Created by zany on 2015/4/23.
@@ -29,12 +31,15 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     public static final int FLAG_HARDWARE_ACCELERATED = 16777216;
     protected static final String MX2 = "Meizu_M040";
 
+    private static final int ERR_404 = -2;
+
     protected WebViewClientImpl mWebViewClient;
     protected WebChromClientImpl mWebChromeClient;
 
     protected WebView mWebView;
     protected ProgressBar mLoadingView;
     protected View mErrorView;
+    private boolean mReceivedError;
 
     @Override
     protected void onDestroy() {
@@ -152,21 +157,27 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         LeoLog.d(TAG, "onPageStarted, url: " + url);
+        mReceivedError = false;
     }
 
     public void onPageFinished(WebView view, String url) {
         LeoLog.d(TAG, "onPageFinished, url: " + url);
-        mWebView.setVisibility(View.VISIBLE);
+        if (mReceivedError) {
+            mErrorView.setVisibility(View.VISIBLE);
+            mWebView.setVisibility(View.GONE);
+        } else {
+            mWebView.setVisibility(View.VISIBLE);
+            mErrorView.setVisibility(View.GONE);
+        }
         mLoadingView.setVisibility(View.GONE);
-        mErrorView.setVisibility(View.GONE);
     }
 
     public void onReceivedError(WebView view, int errorCode, String description, String failingUrl) {
-        LeoLog.d(TAG, "--->onReceivedError");
-//        if (!NetworkUtil.isNetworkActive() || errorCode == -2) {
-//            //-2, 找不到网页
-//            mReceivedError = true;
-//        }
+        LeoLog.d(TAG, "--->onReceivedError, errorCode: " + errorCode + " | des: " + description);
+        if (!NetWorkUtil.isNetworkAvailable(this) || errorCode == ERR_404) {
+            //-2, 找不到网页
+            mReceivedError = true;
+        }
         mWebView.setVisibility(View.GONE);
         mLoadingView.setVisibility(View.GONE);
         mErrorView.setVisibility(View.VISIBLE);
@@ -178,7 +189,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     }
 
     public void onProgressChanged(WebView view, int newProgress) {
-        LeoLog.d(TAG, "--->onProgressChanged");
+        LeoLog.d(TAG, "--->onProgressChanged, progress: " + newProgress);
         if (newProgress < 100) {
             mLoadingView.setProgress(newProgress);
             mLoadingView.setVisibility(View.VISIBLE);
