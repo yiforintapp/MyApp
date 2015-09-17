@@ -274,6 +274,7 @@
                 android:orientation="vertical" >
 
                 <TextView
+                    android:maxLines="1"
                     android:id="@+id/tv_appname_ufo"
                     android:layout_width="match_parent"
                     android:layout_height="17dp"
@@ -282,11 +283,11 @@
                     android:textSize="12sp" />
 
                 <TextView
+                    android:maxLines="2"
                     android:id="@+id/tv_appdesc_ufo"
                     android:layout_width="match_parent"
                     android:layout_height="33dp"
                     android:gravity="top"
-                    android:maxLines="2"
                     android:textColor="#333333"
                     android:textSize="10sp" />
             </LinearLayout>
