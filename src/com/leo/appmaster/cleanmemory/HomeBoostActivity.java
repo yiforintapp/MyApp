@@ -81,7 +81,8 @@ public class HomeBoostActivity extends Activity {
         LeoLog.e("poha", "currentTime - lastBoostWithADTime="+(currentTime - lastBoostWithADTime)+"=====24小时=8640000=====开关值="+amp.getADChanceAfterAccelerating());
         
         if ((currentTime - lastBoostWithADTime) > 1000 * 60 * 60 * 24
-                && amp.getADChanceAfterAccelerating()==1) {
+                && amp.getADChanceAfterAccelerating()==1)
+        {
             LeoLog.e("poha", "to load");
             loadAD();
         }
@@ -305,7 +306,7 @@ public class HomeBoostActivity extends Activity {
             resultText.setText(mToast);
             isClean = true;
             final TextView counter = (TextView) mRlResultWithAD.findViewById(R.id.tv_counter);
-            mCdt = new CountDownTimer(5000, 1000) {
+            mCdt = new CountDownTimer(50000, 1000) {
                
                 @Override
                 public void onTick(long millisUntilFinished) {
