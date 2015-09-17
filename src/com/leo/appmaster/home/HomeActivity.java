@@ -94,6 +94,7 @@ import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.ui.IswipUpdateTipDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureTipDialog;
+import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
@@ -190,6 +191,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         checkIswipeNotificationTo();
         /* 白名单引导 */
         autoStartDialogHandler();
+        // 进入首页拉取一次消息中心列表
+        MsgCenterFetchJob.startImmediately();
     }
 
     private void checkIswipeNotificationTo() {

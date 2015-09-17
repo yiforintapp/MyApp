@@ -45,7 +45,8 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
     private static final String TAG = "MsgCenterFetchJob";
     private static final boolean DBG = true;
 
-    public static void startByPush() {
+    public static void startImmediately() {
+        LeoLog.i(TAG, "startImmediately.....");
         MsgCenterFetchJob job = new MsgCenterFetchJob();
         FetchScheduleListener listener = job.newJsonArrayListener();
         Context ctx = AppMasterApplication.getInstance();

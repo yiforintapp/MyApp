@@ -87,7 +87,7 @@ public class PushInvoke implements PushInvokeHelper {
             invokeISwipe();
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "push_refresh", "iSwipe");
         } else if (MSG_CENTER.equals(type)) {
-            MsgCenterFetchJob.startByPush();
+            MsgCenterFetchJob.startImmediately();
         }
         // String mAction = getAction(type);
         // Log.d("PushInvoke", "mAction is : " + mAction);
