@@ -30,6 +30,7 @@
         android:layout_marginRight="10dp"
         android:background="@color/transparent"
         android:fadeScrollbars="true"
+        android:overScrollMode="never"
         android:scrollbars="none" >
 
         <RelativeLayout

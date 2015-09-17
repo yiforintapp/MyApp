@@ -150,6 +150,12 @@ public class HttpRequestAgent {
                 + requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
+//      String body = "?update_flag="
+//      + "abcdefg" + "&market_id="
+//      + mContext.getString(R.string.channel_code) + "&language="
+//      + requestLanguage + "&app_ver="
+//      + mContext.getString(R.string.version_name) + "&app_id="
+//      + mContext.getPackageName();
         url += body;
         LeoLog.d("httpurl", "New Theme Http is :" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
@@ -169,6 +175,12 @@ public class HttpRequestAgent {
                 + requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
+//        String body = "?update_flag="
+//                + "zyxrdx" + "&market_id="
+//                + mContext.getString(R.string.channel_code) + "&language="
+//                + requestLanguage + "&app_ver="
+//                + mContext.getString(R.string.version_name) + "&app_id="
+//                + mContext.getPackageName();
         url += body;
         LeoLog.d("httpurl", "New Business Http is :" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
