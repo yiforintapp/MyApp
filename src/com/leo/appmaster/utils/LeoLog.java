@@ -6,6 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -247,6 +249,42 @@ public class LeoLog {
 			String className = s.getClassName();
 			String methodName = s.getMethodName();
 			d(className, "<====" + methodName);
+		}
+	}
+
+	public static void f(String tag, String msg, String filename) {
+		msg = tag + "::" + msg;
+		writeToFile(msg, filename, true);
+	}
+
+	public static void writeToFile(String msg, String filename, boolean append) {
+		BufferedWriter bos = null;
+		try {
+			File dir = new File(Environment.getExternalStorageDirectory()
+					.getAbsolutePath() + File.separator + LOG_DIR);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+
+			File logFile = new File(dir, filename);
+			if (!logFile.exists()) {
+				logFile.createNewFile();
+			}
+			bos = new BufferedWriter(new FileWriter(logFile, append));
+			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			String time = format.format(new Date(System.currentTimeMillis()));
+			bos.write(time + " " + msg + "\r\n");
+			bos.flush();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			if (bos != null) {
+				try {
+					bos.close();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 

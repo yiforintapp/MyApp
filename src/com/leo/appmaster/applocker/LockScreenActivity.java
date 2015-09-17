@@ -55,7 +55,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ColorEvaluator;
@@ -196,6 +198,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (mode != null) {
                 if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     if (mode.defaultFlag != -1) {
+                        if (AppMasterConfig.LOGGABLE) {
+                            LeoLog.f(LockScreenActivity.class.getSimpleName(), "oncreate", Constants.LOCK_LOG);
+                        }
                         Intent intent = new Intent(this, LockSettingActivity.class);
                         intent.putExtra("from_quick_mode", true);
                         intent.putExtra("just_finish", true);
@@ -1343,6 +1348,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 ampp.setUnlocked(true);
                 ampp.setDoubleCheck(null);
                 // goto reset passwd
+                if (AppMasterConfig.LOGGABLE) {
+                    LeoLog.f(TAG, "onclick", Constants.LOCK_LOG);
+                }
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
                 this.startActivity(intent);

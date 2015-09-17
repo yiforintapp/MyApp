@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.sdk.push.ui;
 
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -364,6 +365,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                     tds.callPretendAppLaunch();
                 }
             } else {
+                if (AppMasterConfig.LOGGABLE) {
+                    LeoLog.f(TAG, "startHome", Constants.LOCK_LOG);
+                }
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

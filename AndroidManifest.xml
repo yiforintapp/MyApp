@@ -75,7 +75,7 @@
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <!-- baidu mtj permissions -->
 
-    <android:uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <!-- wifi -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />

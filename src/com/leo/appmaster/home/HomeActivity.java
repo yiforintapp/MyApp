@@ -60,6 +60,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -751,6 +752,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         if (position == 0) {
                             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                     "changepwd");
+                            if (AppMasterConfig.LOGGABLE) {
+                                LeoLog.f(TAG, "onclick positon = 0.", Constants.LOCK_LOG);
+                            }
                             Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);
                             startActivity(intent);
@@ -761,6 +765,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                              */
                             // Intent intent = new Intent(HomeActivity.this,
                             // LockChangeModeActivity.class);
+                            if (AppMasterConfig.LOGGABLE) {
+                                LeoLog.f(TAG, "onclick positon = 1.", Constants.LOCK_LOG);
+                            }
                             Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);
                             intent.putExtra(ROTATE_FRAGMENT, true);

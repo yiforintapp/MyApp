@@ -40,6 +40,7 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -391,6 +392,9 @@ public class SplashActivity extends BaseActivity {
                 amp.setDoubleCheck(null);
             }
         } else {
+            if (AppMasterConfig.LOGGABLE) {
+                LeoLog.f(TAG, "startHome", Constants.LOCK_LOG);
+            }
             Intent intent = new Intent(this, LockSettingActivity.class);
             startActivity(intent);
             finish();

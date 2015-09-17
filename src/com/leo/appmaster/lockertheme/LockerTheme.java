@@ -46,6 +46,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -82,6 +83,7 @@ import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class LockerTheme extends BaseActivity implements OnClickListener, ThemeChanageListener,
         OnRefreshListener2<ListView> {
+    private static final String TAG = "LockerTheme";
 
     private ViewPager mViewPager;
     private PullToRefreshListView localThemeList;
@@ -830,6 +832,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
+                if (AppMasterConfig.LOGGABLE) {
+                    LeoLog.f(TAG, "onBackPressed 1", Constants.LOCK_LOG);
+                }
                 intent = new Intent(this, LockSettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -859,6 +864,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                             }
                         });
             } else {
+                if (AppMasterConfig.LOGGABLE) {
+                    LeoLog.f(TAG, "onBackPressed 2", Constants.LOCK_LOG);
+                }
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 startActivity(intent);
                 super.onBackPressed();

@@ -338,4 +338,6 @@ public class Constants {
     /* Iswipe到浏览器的链接 */
     public static final String ISWIPE_TO_GP_BROWSER_RUL = "https://play.google.com/store/apps/details?id=com.leo.iswipe";
 
+    public static final String LOCK_LOG = "lock_setting.txt";
+
 }

@@ -19,6 +19,7 @@ import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -35,9 +36,11 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoPagerTab;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactActivity extends BaseFragmentActivity implements OnClickListener {
+    private static final String TAG = "PrivacyContactActivity";
 
     private CommonTitleBar mTtileBar;
     private LeoPagerTab mPrivacyContactPagerTab;
@@ -67,6 +70,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         if (amp.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
             finish();
             String flag = getIntent().getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
+            if (AppMasterConfig.LOGGABLE) {
+                LeoLog.f(TAG, "iswipToPrivacyContactHandler", Constants.LOCK_LOG);
+            }
             Intent intent = new Intent(this, LockSettingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_NEW_TASK);
