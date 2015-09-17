@@ -36,8 +36,8 @@ public class TipTextView extends TextView {
         int width = getMeasuredWidth();
         int height = getMeasuredHeight();
 
-        x = width * 0.8f;
-        y = height * 0.4f;
+        x = width * 0.9f;
+        y = height * 0.35f;
 
     }
 
