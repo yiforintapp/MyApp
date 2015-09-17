@@ -81,10 +81,6 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         LeoLog.i(TAG, "onFetchSuccess, response: " + array.toString() + " | noModify: " + noMidify);
 
         MsgCenterTable table = new MsgCenterTable();
-        if (array.length() == 0) {
-            table.clear();
-            return;
-        }
         List<Message> list = new ArrayList<Message>();
         try {
             for (int i = 0; i < array.length(); i++) {
@@ -119,7 +115,12 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             e.printStackTrace();
         }
 
-        table.insertMsgList(list);
+        if (array.length() == 0) {
+            table.clear();
+        } else {
+            table.insertMsgList(list);
+        }
+        LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_MSG));
     }
 
 //    @Override
