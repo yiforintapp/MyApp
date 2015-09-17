@@ -89,6 +89,7 @@ public class SplashActivity extends BaseActivity {
     private boolean mShowSplashFlag;
     private TextView mSkipText;
     private static final String TAG = "SplashActivity";
+    /*是否走测试模式：true--为测试模式，false--为正常模式*/
     private static final boolean DBG = false;
 
     /* Guide page stuff end */

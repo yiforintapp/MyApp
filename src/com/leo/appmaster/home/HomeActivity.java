@@ -1207,15 +1207,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     // }
                     // }, 1000);
                 } catch (Exception e) {
-
+                    goGpBrowser();
                 }
             } else {
-                intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri
-                        .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                intent.setData(uri);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                goGpBrowser();
             }
         } else if (position == 3) {
             /* sdk mark */
@@ -1253,6 +1248,16 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     AboutActivity.class);
             startActivity(intent);
         }
+    }
+
+    private void goGpBrowser() {
+        Intent intent;
+        intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri
+                .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     private void tryTransStatusbar() {
