@@ -26,6 +26,8 @@
                 android:id="@+id/tv_counter"
                 android:textColor="#ffffff"
                 android:textSize="18dp"
+                  android:layout_marginTop="10dp"
+                 android:layout_marginRight="7dp"
                    android:layout_width="30dp"
             android:layout_height="30dp"
                 android:layout_alignParentRight="true"

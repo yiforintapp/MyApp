@@ -306,7 +306,7 @@ public class HomeBoostActivity extends Activity {
             resultText.setText(mToast);
             isClean = true;
             final TextView counter = (TextView) mRlResultWithAD.findViewById(R.id.tv_counter);
-            mCdt = new CountDownTimer(3000, 1000) {
+            mCdt = new CountDownTimer(10000, 1000) {
                
                 @Override
                 public void onTick(long millisUntilFinished) {

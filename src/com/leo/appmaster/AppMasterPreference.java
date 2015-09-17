@@ -2636,7 +2636,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getADChanceAfterAccelerating() {
-        return mPref.getInt(PREF_AD_AFTER_ACCELERATING, 1);
+        return mPref.getInt(PREF_AD_AFTER_ACCELERATING, 0);
     }
 
     //隐私防护出现广告的开关
