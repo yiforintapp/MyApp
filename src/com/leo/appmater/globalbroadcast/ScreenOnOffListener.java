@@ -107,15 +107,14 @@ public class ScreenOnOffListener extends BroadcastListener {
                             LeoLog.d("testOpenScreen", "后续统计，增量上报！");
                         }
                         addEvent(mContext, newresults);
-                        mWifiFetcher.afterUpload();
-                    }else if(newresults.size() == 0){
+                    } else if (newresults.size() == 0) {
                         if (isUploadData == 0) {
                             LeoLog.d("testOpenScreen", "未能获取到wifi信息！");
                         } else {
                             LeoLog.d("testOpenScreen", "暂无新增！");
                         }
                     }
-
+                    mWifiFetcher.afterUpload();
                     // // 后续统计，增量上报
                     // if (newresults.size() > 0 && isWifiSwitch == 1 &&
                     // isUploadData > 0
