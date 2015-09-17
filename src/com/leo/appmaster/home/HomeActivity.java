@@ -160,7 +160,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private AutoStartTipDialog mAutoStartGuideDialog;
     private AnimationDrawable adAnimation;
     private ImageView mAdIcon;
-    private boolean isEnterPrivacySuggest = false;
+    // private boolean isEnterPrivacySuggest = false;
     private MenuAdapter mMenuAdapter;
     private TextView mUnreadCountTv;
     private List<MenuItem> mMenuItems;
@@ -178,6 +178,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         // TODO
         mobvistaCheck();
+        // Ad from Home
+        shouldShowAd();
 
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
@@ -437,14 +439,18 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mUnreadCountTv = (TextView) findViewById(R.id.home_mc_unread_tv);
     }
 
-    // public void setAdIconVisible() {
-    // if (mAdIcon != null) {
-    // mAdIcon.setVisibility(View.VISIBLE);
-    // }
+    // public void setEnterPrivacySuggest(boolean value) {
+    // isEnterPrivacySuggest = value;
     // }
 
-    public void setEnterPrivacySuggest(boolean value) {
-        isEnterPrivacySuggest = value;
+    public void setAdIconVisible() {
+        if (mAdIcon != null) {
+            mAdIcon.setVisibility(View.VISIBLE);
+            mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
+            adAnimation = (AnimationDrawable)
+                    mAdIcon.getBackground();
+            adAnimation.start();
+        }
     }
 
     public void setAdIconInVisible() {
@@ -533,9 +539,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     @Override
     protected void onResume() {
 
-        // Ad from Home
-        shouldShowAd();
-
         /* 分析是否需要升级红点显示 */
         boolean menuRedTipVisibility = (mLeftMenuRedTip.getVisibility() == View.GONE);
         if (mLeftMenuRedTip != null && menuRedTipVisibility) {
@@ -613,19 +616,17 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mHomeAdSwitchOpen = AppMasterPreference.getInstance(this)
                     .getIsADAtAppLockFragmentOpen();
         }
+        mHomeAdSwitchOpen = 1;
         LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
 
         long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
         long nowTime = System.currentTimeMillis();
-        if ((nowTime - clickTime > INTERVEL_CLICK_AD) && !isEnterPrivacySuggest
+        if ((nowTime - clickTime > INTERVEL_CLICK_AD)
+                // && !isEnterPrivacySuggest
                 && mHomeAdSwitchOpen == 1) {
-            mAdIcon.setVisibility(View.VISIBLE);
-            mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
-            adAnimation = (AnimationDrawable)
-                    mAdIcon.getBackground();
-            adAnimation.start();
+            setAdIconVisible();
         } else {
-            mAdIcon.setVisibility(View.INVISIBLE);
+            setAdIconInVisible();
         }
     }
 

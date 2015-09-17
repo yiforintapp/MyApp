@@ -81,9 +81,9 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     @Override
     public void onResume() {
         super.onResume();
-        
+
         shouldShowAd();
-        
+
     }
 
     private void shouldShowAd() {
@@ -99,7 +99,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         // 开启广告位
         if (mPrivicyAdSwitchOpen == 1) {
             loadAD();
-        }else {
+        } else {
             View adview = mProposalView.findViewById(R.id.privacy_ad_item);
             adview.setVisibility(View.GONE);
         }
@@ -374,7 +374,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         if (mProposalView != null && mActivity instanceof HomeActivity
                 && ((HomeActivity) mActivity).getCurrentPage() == 1) {
             ((HomeActivity) getActivity()).setAdIconInVisible();
-            ((HomeActivity) getActivity()).setEnterPrivacySuggest(true);
+            // ((HomeActivity) getActivity()).setEnterPrivacySuggest(true);
             Rect rect = new Rect();
             mPrivacyLevel.getLevelRectOnScreen(rect);
             mProposalView.show(rect);

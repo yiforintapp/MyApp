@@ -346,16 +346,18 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
             });
             mCloseAnimator.addListener(new AnimatorListenerAdapter() {
                 public void onAnimationEnd(Animator animation) {
-                    ((HomeActivity) mContext).setEnterPrivacySuggest(false);
-                    ((HomeActivity) mContext).shouldShowAd();
+                    // ((HomeActivity) mContext).setEnterPrivacySuggest(false);
+                    // ((HomeActivity) mContext).shouldShowAd();
+                    ((HomeActivity) mContext).setAdIconVisible();
                     setVisibility(View.INVISIBLE);
                     setTranslationY(0);
                 }
             });
             mCloseAnimator.start();
         } else {
-            ((HomeActivity) mContext).setEnterPrivacySuggest(false);
-            ((HomeActivity) mContext).shouldShowAd();
+            // ((HomeActivity) mContext).setEnterPrivacySuggest(false);
+            // ((HomeActivity) mContext).shouldShowAd();
+            ((HomeActivity) mContext).setAdIconVisible();
             setVisibility(View.INVISIBLE);
         }
     }

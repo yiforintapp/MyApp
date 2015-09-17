@@ -24,29 +24,14 @@ public class DeskAdActivity extends Activity {
             // preload the wall data
             mWallAd.preloadWall();
         }
-        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+
+         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent mWallIntent = mWallAd.getWallIntent();
-        mWallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        mWallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mWallIntent);
 
-        finish();
+         finish();
     }
-
-    // @Override
-    // protected void onResume() {
-    // mHandler.postDelayed(new Runnable() {
-    // @Override
-    // public void run() {
-    // finish();
-    // }
-    // }, 2000);
-    // super.onResume();
-    // }
-
-    // @Override
-    // public void finish() {
-    // LockManager.getInstatnce().filterAllOneTime(1000);
-    // super.finish();
-    // }
 
 }

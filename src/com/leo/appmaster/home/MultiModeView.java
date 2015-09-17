@@ -227,7 +227,8 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     }
 
     public void hide() {
-        ((HomeActivity) mContext).shouldShowAd();
+        // ((HomeActivity) mContext).shouldShowAd();
+        ((HomeActivity) mContext).setAdIconVisible();
         if (getVisibility() == View.VISIBLE) {
             setVisibility(View.GONE);
         }
