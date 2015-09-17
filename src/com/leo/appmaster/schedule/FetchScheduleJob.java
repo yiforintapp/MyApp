@@ -100,9 +100,9 @@ public abstract class FetchScheduleJob extends ScheduleJob {
         AppMasterApplication ctx = AppMasterApplication.getInstance();
         AppMasterPreference pref = AppMasterPreference.getInstance(ctx);
         long lastTime = pref.getScheduleTime(getJobTimeKey());
-        if (lastTime <= 0) {
+        if (lastTime <= 0 || AppMasterApplication.isAppUpgrade()) {
+            // 两种情况会直接开始执行：1、之前未加载过，2、升级
             LeoLog.i(getJobKey(), "Haven't worked before, start work.");
-            // 还没有执行过直接开始执行
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
