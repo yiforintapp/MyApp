@@ -102,13 +102,13 @@
                 <TextView
                     android:id="@+id/tv_accelerat_result"
                     android:layout_width="match_parent"
-                    android:layout_height="30dp"
+                    android:layout_height="35dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginTop="15dp"
                     android:gravity="center"
                     android:textColor="#333333"
-                    android:textSize="16dp" />
+                    android:textSize="14dp" />
 
                 <RelativeLayout
                     android:id="@+id/rl_ad_bg"
@@ -117,7 +117,7 @@
                     android:layout_below="@id/tv_accelerat_result"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="10dp" >
+                    android:layout_marginTop="5dp" >
 
                     <ImageView
                         android:id="@+id/iv_ad_bg"

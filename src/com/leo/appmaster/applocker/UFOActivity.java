@@ -475,6 +475,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             }
 
             public void onFinish() {
+                mAlienDrawable.stop();
                 if (!mHasGetLoadResult) {
                     //没有任何结果出来
                     if (!mIsADLoaded&&!mIsThemeLoaded) {
@@ -484,6 +485,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         mCircleLight.setVisibility(View.INVISIBLE);
 //                        mAlien.setVisibility(View.INVISIBLE);
                         onNothingToShow();
+                        
                     }
                     else {
                         showAD();
