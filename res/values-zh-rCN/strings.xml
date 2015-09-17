@@ -841,6 +841,8 @@
     <string name="auto_start_tip_redmi">开机启动隐私卫士，安全无忧。请进入“自启动应用管理”，选择“添加自启动应用”，将隐私卫士接入到自启动列表</string>
     <string name="auto_start_tip_huawei">开机启动隐私卫士，安全无忧。请进入“受保护应用”，将PG加入受保护名单中</string>
     <string name="auto_start_tip_lenovo">开机启动隐私卫士，安全无忧。请进入“后台管理”，选择“自启动”，将隐私卫士接入到自启动列表</string>
+    <string name="splash_guide_page_msg_title">消息中心</string>
+        <string name="splash_guide_page_msg_content">众多精彩活动，实用小技巧，一网打尽</string>
     <!-- 2.10 end -->
 
 </resources>

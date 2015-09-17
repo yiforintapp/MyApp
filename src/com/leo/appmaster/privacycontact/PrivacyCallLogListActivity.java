@@ -333,7 +333,9 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                     }
                 }
             } finally {
-                cursor.close();
+                if (cursor != null) {
+                    cursor.close();
+                }
             }
         }
     }

@@ -426,8 +426,6 @@ public class SplashActivity extends BaseActivity {
     /* add for Guide Screen begin */
     private void showGuide() {
         mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
-        // mPageColors[1] =
-        // getResources().getColor(R.color.guide_page2_background_color);
         mPageColors[1] = getResources().getColor(R.color.guide_page3_background_color);
         mPageColors[2] = getResources().getColor(R.color.guide_page4_background_color);
         Log.i("tag", mPageColors[0] + "  " + mPageColors[3]);
@@ -612,13 +610,11 @@ public class SplashActivity extends BaseActivity {
         TextView tvTitle, tvContent, tvMoreFunc;
         Button enterAppButton;
         ImageView bigImage = null;
-        mPageColors[4] = getResources().getColor(R.color.new_guide_page1_background_color);
-        mPageColors[5] = getResources().getColor(R.color.new_guide_page2_background_color);
-        // mPageColors[6] =
-        // getResources().getColor(R.color.new_guide_page3_background_color);
-        mPageColors[6] = getResources().getColor(R.color.guide_page2_background_color);
+        mPageColors[3] = getResources().getColor(R.color.new_guide_page1_background_color);
+        mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
+        mPageColors[5] = getResources().getColor(R.color.guide_page2_background_color);
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
-        mNewPageBackgroundView.initBackgroundColor(mPageColors[4]);
+        mNewPageBackgroundView.initBackgroundColor(mPageColors[3]);
         /* 显示跳过按钮 */
         setSkipClickListener();
         /* page1 */
@@ -643,11 +639,11 @@ public class SplashActivity extends BaseActivity {
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_2));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_4));
         tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page2_title));
+        tvTitle.setText(getResources().getString(R.string.splash_guide_page_msg_title));
         tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page2_content));
+        tvContent.setText(getResources().getString(R.string.splash_guide_page_msg_content));
         mNewFuncPageViews.add(page3);
         mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
         mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
@@ -661,7 +657,7 @@ public class SplashActivity extends BaseActivity {
         mNewFuncViewPager.setAdapter(new GuidePageAdapter(mNewFuncPageViews));
         mIndicator = (CirclePageIndicator) mNewGuideMain.findViewById(R.id.new_splash_indicator);
         mIndicator.setViewPager(mNewFuncViewPager);
-        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 4));
+        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 3));
 
         tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
         tvMoreFunc.setVisibility(View.VISIBLE);
