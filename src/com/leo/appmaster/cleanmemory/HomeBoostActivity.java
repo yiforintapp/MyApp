@@ -247,7 +247,7 @@ public class HomeBoostActivity extends Activity {
 
         });
         AnimatorSet as = new AnimatorSet();
-        as.play(rocketAnimator2).after(10000).after(rocketAnimator1);
+        as.play(rocketAnimator2).after(300).after(rocketAnimator1);
         as.start();
         as.setInterpolator(new LinearInterpolator());
         as.addListener(new AnimatorListenerAdapter() {
