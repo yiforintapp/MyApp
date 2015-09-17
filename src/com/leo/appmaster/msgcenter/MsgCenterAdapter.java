@@ -1,6 +1,7 @@
 package com.leo.appmaster.msgcenter;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.renderscript.Program;
@@ -45,6 +46,7 @@ public class MsgCenterAdapter extends BaseAdapter {
     private Context mContext;
 
     private int mTitleLeftPadding;
+    private int mUpdateBottomPadding;
 
     public MsgCenterAdapter() {
         mMessageList = new ArrayList<Message>();
@@ -66,7 +68,9 @@ public class MsgCenterAdapter extends BaseAdapter {
                 .decodingOptions(options)
                 .build();
 
-        mTitleLeftPadding = mContext.getResources().getDimensionPixelSize(R.dimen.mc_item_title_left_padding);
+        Resources res = mContext.getResources();
+        mTitleLeftPadding = res.getDimensionPixelSize(R.dimen.mc_item_title_left_padding);
+        mUpdateBottomPadding = res.getDimensionPixelSize(R.dimen.mc_item_update_bottom_padding);
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
@@ -160,8 +164,10 @@ public class MsgCenterAdapter extends BaseAdapter {
         if (msg.isCategoryUpdate()) {
             // 更新日志只显示标题，不显示描述
             holder.description.setVisibility(View.GONE);
+            holder.image.setPadding(0, 0, 0, mUpdateBottomPadding);
         } else {
             holder.description.setVisibility(View.VISIBLE);
+            holder.image.setPadding(0, 0, 0, 0);
         }
         ImageLoader.getInstance().displayImage(msg.imageUrl, holder.image, commonOption);
 
