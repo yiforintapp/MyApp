@@ -14,6 +14,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -35,6 +36,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.TaskDetectService;
+import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.privacycontact.ContactCallLog;
@@ -1896,46 +1898,47 @@ public class AppleWatchContainer extends FrameLayout {
 
     public void showBoostResault(QuickSwitcherInfo info) {
         // show Toast
-        LayoutInflater inflater = LayoutInflater.from(mContext);
-        View view = inflater.inflate(R.layout.toast_self_make, null);
-        TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
-        String mToast;
-        if (isClean) {
-            if (isCleanFinish) {
-                if (mCleanMem <= 0) {
-                    LeoLog.d("testspeed", "CleanMem <= 0");
-                    mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
-                } else {
-                    LeoLog.d("testspeed", "CleanMem > 0");
-                    mToast = mContext.getString(R.string.home_app_manager_mem_clean,
-                            TextFormater.dataSizeFormat(mCleanMem));
-                }
-            } else {
-                mToast = mContext.getString(R.string.home_app_manager_mem_clean,
-                        TextFormater.dataSizeFormat(230));
-            }
-
-        } else {
-            mToast = mContext.getString(R.string.the_best_status_toast);
-        }
-
-        tv_clean_rocket.setText(mToast);
-        Toast toast = new Toast(mContext);
-        toast.setView(view);
-        toast.setDuration(0);
-        int marginTop = 0;
-        if (screenH >= 1920) {
-            marginTop = 150;
-        } else if (screenH >= 1280) {
-            marginTop = 120;
-        } else if (screenH >= 800) {
-            marginTop = 80;
-        } else {
-            marginTop = 30;
-        }
-        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
-        toast.show();
-
+//        LayoutInflater inflater = LayoutInflater.from(mContext);
+//        View view = inflater.inflate(R.layout.toast_self_make, null);
+//        TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
+//        String mToast;
+//        if (isClean) {
+//            if (isCleanFinish) {
+//                if (mCleanMem <= 0) {
+//                    LeoLog.d("testspeed", "CleanMem <= 0");
+//                    mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
+//                } else {
+//                    LeoLog.d("testspeed", "CleanMem > 0");
+//                    mToast = mContext.getString(R.string.home_app_manager_mem_clean,
+//                            TextFormater.dataSizeFormat(mCleanMem));
+//                }
+//            } else {
+//                mToast = mContext.getString(R.string.home_app_manager_mem_clean,
+//                        TextFormater.dataSizeFormat(230));
+//            }
+//
+//        } else {
+//            mToast = mContext.getString(R.string.the_best_status_toast);
+//        }
+//
+//        tv_clean_rocket.setText(mToast);
+//        Toast toast = new Toast(mContext);
+//        toast.setView(view);
+//        toast.setDuration(0);
+//        int marginTop = 0;
+//        if (screenH >= 1920) {
+//            marginTop = 150;
+//        } else if (screenH >= 1280) {
+//            marginTop = 120;
+//        } else if (screenH >= 800) {
+//            marginTop = 80;
+//        } else {
+//            marginTop = 30;
+//        }
+//        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
+//        toast.show();
+        Intent intent = new Intent(getContext(), HomeBoostActivity.class);
+        getContext().startActivity(intent);
         // make Normal Icon
         GestureItemView tv = null;
         if (info.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
