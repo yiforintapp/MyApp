@@ -81,8 +81,8 @@ public class HomeBoostActivity extends Activity {
         LeoLog.e("poha", "currentTime - lastBoostWithADTime="+(currentTime - lastBoostWithADTime)+"=====24小时=8640000=====开关值="+amp.getADChanceAfterAccelerating());
         
         if ((currentTime - lastBoostWithADTime) > 1000 * 60 * 60 * 24
-                && amp.getADChanceAfterAccelerating() == 1) {
- 
+                && amp.getADChanceAfterAccelerating()==1) {
+            LeoLog.e("poha", "to load");
             loadAD();
         }
     }
@@ -96,6 +96,7 @@ public class HomeBoostActivity extends Activity {
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
                     mIsADLoaded = true;
+                    LeoLog.e("poha", "loaded!");
                     long currentTime = System.currentTimeMillis();
                     AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);
                     loadADPic(campaign.getIconUrl(),
