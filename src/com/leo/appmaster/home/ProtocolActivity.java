@@ -34,8 +34,6 @@ public class ProtocolActivity extends BaseActivity implements OnClickListener {
         String area = Locale.getDefault().getLanguage();
         if (area.equalsIgnoreCase("zh")) {
             webView.loadUrl("file:///android_asset/protocol_zh.html");
-        } else if (area.equalsIgnoreCase("hi")) {
-            webView.loadUrl("file:///android_asset/protocol_hi.html");
         } else {
             webView.loadUrl("file:///android_asset/protocol_en.html");
         }
