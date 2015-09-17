@@ -92,11 +92,14 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             if (file.exists()) {
                 mLocalUrl = "file:///" + path;
                 getWebView().loadUrl(mLocalUrl);
+                mTitleBar.setOptionImageVisibility(View.INVISIBLE);
             } else {
                 getWebView().loadUrl(mUrl);
+                mTitleBar.setOptionImageVisibility(View.VISIBLE);
             }
         } else {
             getWebView().loadUrl(mUrl);
+            mTitleBar.setOptionImageVisibility(View.VISIBLE);
         }
     }
 
