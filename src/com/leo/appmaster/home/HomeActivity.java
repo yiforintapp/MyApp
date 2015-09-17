@@ -950,7 +950,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(),
                             DeskAdActivity.class);
                     appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Intent appWallShortcut = new Intent(
                             "com.android.launcher.action.INSTALL_SHORTCUT");
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,

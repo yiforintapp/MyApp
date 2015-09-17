@@ -17,30 +17,36 @@ public class DeskAdActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         mHandler = new Handler();
         mWallAd = MobvistaEngine.getInstance().createAdWallController(this);
         if (mWallAd != null) {
             // preload the wall data
             mWallAd.preloadWall();
         }
-
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent mWallIntent = mWallAd.getWallIntent();
+        mWallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mWallIntent);
-        LockManager.getInstatnce().timeFilterSelf();
-        // Intent intent = new Intent(this,HomeActivity.class);
-        // startActivity(intent);
-        // finish();
+
+        finish();
     }
 
-    @Override
-    protected void onResume() {
-        mHandler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                finish();
-            }
-        }, 2000);
-        super.onResume();
-    }
+    // @Override
+    // protected void onResume() {
+    // mHandler.postDelayed(new Runnable() {
+    // @Override
+    // public void run() {
+    // finish();
+    // }
+    // }, 2000);
+    // super.onResume();
+    // }
+
+    // @Override
+    // public void finish() {
+    // LockManager.getInstatnce().filterAllOneTime(1000);
+    // super.finish();
+    // }
 
 }

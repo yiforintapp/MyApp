@@ -349,7 +349,7 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-            </activity>
+        </activity>
         <activity
             android:name=".applocker.RecommentAppLockListActivity"
             android:excludeFromRecents="true"
