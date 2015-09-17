@@ -1,6 +1,7 @@
 package com.leo.appmaster.schedule;
 
 import android.content.Context;
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.android.volley.AuthFailureError;
@@ -184,7 +185,16 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
     public static String getFilePath(String fileName) {
         Context ctx = AppMasterApplication.getInstance();
-        return ctx.getExternalCacheDir() + "/msgcenter/" + fileName;
+        File cacheDir = ctx.getExternalCacheDir();
+        if (cacheDir == null) {
+            File srcDir = Environment.getExternalStorageDirectory();
+            if (srcDir == null) {
+                cacheDir = ctx.getCacheDir();
+            } else {
+                cacheDir = new File(srcDir.getAbsolutePath() + "/appmaster");
+            }
+        }
+        return cacheDir + "/msgcenter/" + fileName;
     }
 
     public static String getFilePathByUrl(String url) {
