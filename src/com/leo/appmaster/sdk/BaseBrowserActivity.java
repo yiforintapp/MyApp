@@ -191,6 +191,9 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     public void onProgressChanged(WebView view, int newProgress) {
         LeoLog.d(TAG, "--->onProgressChanged, progress: " + newProgress);
         if (newProgress < 100) {
+            if (newProgress < 5) {
+                newProgress = 5;
+            }
             mLoadingView.setProgress(newProgress);
             mLoadingView.setVisibility(View.VISIBLE);
         } else {

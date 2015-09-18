@@ -29,16 +29,16 @@ public class Constants {
     public static final String UNIT_ID_66 = "66";
     public static final String UNIT_ID_67 = "67";
 
-    public static final String PLACEMENT_ID_58 = "1060111710674878_1060603603959022";
-    public static final String PLACEMENT_ID_59 = "1060111710674878_1077124758973573";
-    public static final String PLACEMENT_ID_60 = "1060111710674878_1077127125640003";
-    public static final String PLACEMENT_ID_61 = "1060111710674878_1082406031778779";
-    public static final String PLACEMENT_ID_62 = "1060111710674878_1082262738459775";
-    public static final String PLACEMENT_ID_63 = "1060111710674878_1082406181778764";
-    public static final String PLACEMENT_ID_64 = "1060111710674878_1082406415112074";
-    public static final String PLACEMENT_ID_65 = "1060111710674878_1082406548445394";
-    public static final String PLACEMENT_ID_66 = "1060111710674878_1082406641778718";
-    public static final String PLACEMENT_ID_67 = "1060111710674878_1082406765112039";
+    public static final String PLACEMENT_ID_58 = "1474823452846141_1475968499398303";
+    public static final String PLACEMENT_ID_59 = "1474823452846141_1475969219398231";
+    public static final String PLACEMENT_ID_60 = "1474823452846141_1475969139398239";
+    public static final String PLACEMENT_ID_61 = "1474823452846141_1475955509399602";
+    public static final String PLACEMENT_ID_62 = "1474823452846141_1475966676065152";
+    public static final String PLACEMENT_ID_63 = "1474823452846141_1475968946064925";
+    public static final String PLACEMENT_ID_64 = "1474823452846141_1475969332731553";
+    public static final String PLACEMENT_ID_65 = "1474823452846141_1475969502731536";
+    public static final String PLACEMENT_ID_66 = "1474823452846141_1475970336064786";
+    public static final String PLACEMENT_ID_67 = "1474823452846141_1475970436064776";
 
 
     
@@ -363,5 +363,8 @@ public class Constants {
     public static final String ISWIPE_TO_GP_BROWSER_RUL = "https://play.google.com/store/apps/details?id=com.leo.iswipe";
 
     public static final String LOCK_LOG = "lock_setting.txt";
+
+    public static final String PKG_WHAT_EVER = "what ever.";
+    public static final String PKG_LENOVO_SCREEN = "com.lenovo.coverapp.simpletime2";
 
 }

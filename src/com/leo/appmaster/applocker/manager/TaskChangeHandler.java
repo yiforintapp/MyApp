@@ -16,6 +16,7 @@ import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.utils.LeoLog;
 
 public class TaskChangeHandler {
+    private static final String TAG = "TaskChangeHandler";
 
     public static final String EXTRA_LOCKED_APP_PKG = "locked_app_pkg";
 
@@ -40,7 +41,7 @@ public class TaskChangeHandler {
     private static final String GOOGLE_LAUNCHER_PKG = "com.google.android.launcher";
     private static final String GOOGLE_LAUNCHER_PKG21 = "com.google.android.googlequicksearchbox";
 
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
 
     private Context mContext;
     private ActivityManager mAm;
@@ -48,6 +49,9 @@ public class TaskChangeHandler {
     private String mLastRuningActivity = "";
 
     private boolean mIsFirstDetect;
+
+    // 解锁前检测到的真正有效的pkg
+    private String mDetectedPkgBeforeScreeOff;
 
     public TaskChangeHandler(Context context) {
         mContext = context.getApplicationContext();
@@ -72,6 +76,14 @@ public class TaskChangeHandler {
 
     public String getLastRunningActivity() {
         return mLastRuningActivity;
+    }
+
+    public void setPkgBeforeScreenOff(String pkg) {
+        LeoLog.d(TAG, "setPkgBeforeScreenOff pkg: " + pkg);
+        if (Constants.PKG_WHAT_EVER.equals(pkg) ||
+                Constants.PKG_LENOVO_SCREEN.equals(pkg)) return;
+
+        mDetectedPkgBeforeScreeOff = pkg;
     }
 
     public void handleAppLaunch(String pkg, String activity, String baseActivity) {
@@ -126,19 +138,20 @@ public class TaskChangeHandler {
             if (doubleCheck) {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
-                                && (activity.contains(DESKPROXYNAME) || activity.contains(DESKAD)
+                                && (activity.contains(DESKPROXYNAME)
+                                        || activity.contains(DESKAD)
                                         || activity.contains(APPWALL)
-                                        || activity
-                                                .contains(LAUNCHERBOOST) || activity
-                                                .contains(SPLASHNAME) || activity
-                                                .contains(GESTURE) || activity.contains(PROXYNAME)
-                                        || activity
-                                                .contains(WAITNAME)
+                                        || activity.contains(LAUNCHERBOOST)
+                                        || activity.contains(SPLASHNAME)
+                                        || activity.contains(GESTURE)
+                                        || activity.contains(PROXYNAME)
+                                        || activity.contains(WAITNAME)
                                         || activity.contains(UPDATE)
-                                        || activity.contains(WEBVIEW))
+                                        || activity.contains(WEBVIEW)
+                                            // 如果锁屏前的pkg是联想的屏保，则不过滤掉webviewActivity
+                                            && !pkg.equals(mDetectedPkgBeforeScreeOff))
                                 || (!unlocked && currentLockScreen))
-                        || (unlocked && isLastSelf && mLastRuningActivity
-                                .contains(LOCKSCREENNAME))) {
+                        || (unlocked && isLastSelf && mLastRuningActivity.contains(LOCKSCREENNAME))) {
                     mLastRunningPkg = pkg;
                     mLastRuningActivity = activity;
                     return;
@@ -146,15 +159,19 @@ public class TaskChangeHandler {
             } else {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
-                                && (activity.contains(DESKPROXYNAME) || activity.contains(DESKAD)
+                                && (activity.contains(DESKPROXYNAME)
+                                        || activity.contains(DESKAD)
                                         || activity.contains(APPWALL)
-                                        || activity
-                                                .contains(LAUNCHERBOOST) || activity
-                                                .contains(SPLASHNAME) || activity
-                                                .contains(GESTURE) || activity.contains(PROXYNAME)
+                                        || activity.contains(LAUNCHERBOOST)
+                                        || activity.contains(SPLASHNAME)
+                                        || activity.contains(GESTURE)
+                                        || activity.contains(PROXYNAME)
                                         || activity.contains(UPDATE)
-                                        || activity
-                                                .contains(WAITNAME) || activity.contains(WEBVIEW)) || currentLockScreen)
+                                        || activity.contains(WAITNAME)
+                                        || (activity.contains(WEBVIEW)
+                                            // 如果锁屏前的pkg是联想的屏保，则不过滤掉webviewActivity
+                                            && !pkg.equals(mDetectedPkgBeforeScreeOff)))
+                                || currentLockScreen)
                         || (unlocked && isLastSelf && mLastRuningActivity.contains(LOCKSCREENNAME))
                         // 排出iswipe
                         || pkg.equals(Constants.ISWIPE_PACKAGE)) {
