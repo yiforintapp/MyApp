@@ -798,7 +798,40 @@
     <string name="iswip_update_notifi_button">อัพเดท</string>
     <string name="ad_timeout">ว้าว น่าอัศจรรย์</string>
     <!-- 2.8 end -->
+	<!-- 2.10 start -->
+	    <string name="auto_start_guide_tip_title">สิทธิเริ่มออโต</string>
+    <string name="auto_start_guide_tip_content">เรียกใช้ Privacy Guard เมื่อเริ่มต้น</string>
+    <string name="auto_start_guide_tip_left_button">ภายหลัง</string>
+    <string name="auto_start_guide_tip_right_button">ตอนนี้</string>
+
+
+    <string name="msg_center_title">ศูนย์ข้อความ</string>
+    <string name="msg_center_empty">ไม่มีข้อความใหม่</string>
+    <string name="msg_center_empty_say">บอกเราสิ่งที่คุณต้องการ</string>
+    <string name="msg_center_feedback">เสนอแนะ</string>
+   <string name="msg_center_load_fail">เซิร์ฟเวอร์ยุ่ง รีเฟรช</string>
+    <string name="ufo_roll_again">ลองใหม่</string>
+    <string name="ufo_theme_down">โหลดลง</string>
+    <string name="ufo_theme_use">ใช้</string>
+    <string name="ufo_theme_use_toast">ใช้รูปแบบ</string>
+    <string name="ufo_theme_content">ธีมใหม่ แต่งอินเตอร์เฟส</string>
+    <string name="ufo_theme_title">รูปแบบล็อคแอพ</string>
+    <string name="menue_item_delete_pg">ถอนการติดตั้ง</string>
+    <string name="advace_protect_dialog_left_text">ภายหลัง</string>
+    <string name="advace_protect_dialog_right_text">ตอนนี้</string>
+    <string name="advace_protect_dialog_title_text">ใช้ปกป้องขั้นสูง</string>
+    <string name="advace_protect_dialog_content_text">ล็อคแล้ว ใช้ปกป้องขั้นสูงเลี่ยงถอนติดตั้ง ถอนติดตั้ง Privacy Guard ที่แถบข้าง </string>
+    <string name="desk_ad_name">แอพที่ดี</string>
+    <string name="advance_protect_open_success_tip_title">ใช้ปกป้องขั้นสูง</string>
+    <string name="advance_protect_open_success_tip_content">การปกป้องขั้นสูงเปิดใช้งาน Privacy Guard ไม่สามารถถอนติดตั้ง ปิดใช้ในตั้งค่า</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">เรียกใช้ Privacy Guard เมื่อเริ่มต้น คลิก "จัดการเริ่มต้นอัตโนมัติ" และเพิ่ม Privacy Guard ที่การเริ่มต้นอัตโนมัติ</string>
+    <string name="auto_start_tip_redmi">เรียกใช้ Privacy Guard เมื่อเริ่มต้น ที่ "จัดการเริ่มอัตโนมัติ" ไป "เพิ่มแอพ" เพิ่ม Privacy Guard ที่เริ่มอัตโนมัติ</string>
+    <string name="auto_start_tip_huawei">เรียกใช้ Privacy Guard เมื่อเริ่มต้น เข้า "แอพป้องกัน" และเพิ่ม Privacy Guard ไปยังรายการการปกป้อง</string>
+    <string name="auto_start_tip_lenovo">เรียกใช้ Privacy Guard เมื่อเริ่มต้น ที่ "หลังฉาก" ไป "เริ่มต้นอัตโนมัติ" เพิ่ม Privacy Guard ที่เริ่มต้นอัตโนมัติ</string>
+    <string name="splash_guide_page_msg_title">ศูนย์ข้อความ</string>
+   <string name="splash_guide_page_msg_content">ทุกกิจกรรมและเคล็ดลับที่เป็นประโยชน์ที่นี่</string>
 	
+	<!-- 2.10 end -->
 	
 	
 	

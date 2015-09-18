@@ -787,26 +787,26 @@
     <string name="zipper_too_slow">哎喲，拉快一點嘛</string>
     <string name="theme_apply_title">是否應用解鎖主題：%1$s？</string>
     <!-- 2.6 end -->
-    
-    	<!-- 2.7 start -->
-	  <string name="clean_mem_notify_big">記憶體使用超過</string>
+
+
+    <!-- 2.7 start -->
+    <string name="clean_mem_notify_big">記憶體使用超過</string>
     <string name="clean_mem_notify_big_right">65%</string>
     <string name="clean_mem_notify_small">點擊壹鍵加速</string>
     <string name="clean_mem_notify_boost">立即加速</string>
-	
-	<string name="pg_appmanager_quick_gesture_option_trigger_type">觸發管道</string>
-	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白點側邊/底脚劃出</string>
-	<string name="pg_appmanager_quick_gesture_trigger_alide">從側邊/底角劃出</string>
-	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白點</string>
-	<string name="pg_appmanager_quick_gesture_trigger_tips">請至少選擇壹項</string>
-	
-	<string name="pg_appmanager_quick_gesture_conflict_content">快捷手勢是否影響您的常規操作？您可以選擇只開啟小白點模式，點擊設定</string>
-	<string name="pg_appmanager_quick_gesture_conflict_later">稍後再說</string>
-	<string name="pg_appmanager_quick_gesture_conflict_open">立刻開啟</string>
-	<string name="anti_conflict_mode_open">已開啟</string>
-	<!-- 2.7 end -->
-	
-		    <!-- 2.8 start -->
+    <string name="pg_appmanager_quick_gesture_option_trigger_type">觸發管道</string>
+    <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">小白點側邊/底脚劃出</string>
+    <string name="pg_appmanager_quick_gesture_trigger_alide">從側邊/底角劃出</string>
+    <string name="pg_appmanager_quick_gesture_trigger_wihtedot">小白點</string>
+    <string name="pg_appmanager_quick_gesture_trigger_tips">請至少選擇壹項</string>
+    <string name="pg_appmanager_quick_gesture_conflict_content">快捷手勢是否影響您的常規操作？您可以選擇只開啟小白點模式，點擊設定</string>
+    <string name="pg_appmanager_quick_gesture_conflict_later">稍後再說</string>
+    <string name="pg_appmanager_quick_gesture_conflict_open">立刻開啟</string>
+    <string name="anti_conflict_mode_open">已開啟</string>
+    <!-- 2.7 end -->
+
+
+    <!-- 2.8 start -->
     <string name="device_admin_extra">防止被協力廠商軟件或他人卸載</string>
     <string name="iswip_update_tip_title_text">快捷手勢更新了</string>
     <string name="iswip_update_tip_context_text">快捷手勢正式更名為ISwipe，更多功能等著你，馬上下載體驗吧！</string>
@@ -817,5 +817,36 @@
     <string name="iswip_update_notifi_button">立即更新</string>
     <string name="ad_timeout">Wow！我猜下次你會收到一些更精彩的東西！</string>
     <!-- 2.8 end -->
+    <!-- 2.10 start -->
+    <string name="auto_start_guide_tip_title">需要啟動許可權</string>
+    <string name="auto_start_guide_tip_content">開機啟動隱私衛士，安全無憂。</string>
+    <string name="auto_start_guide_tip_left_button">稍後設置</string>
+    <string name="auto_start_guide_tip_right_button">立即設置</string>
+    <string name="msg_center_title">消息中心</string>
+    <string name="msg_center_empty">沒有新消息哦</string>
+    <string name="msg_center_empty_say">有什麼想的，趕緊告訴我們吧~</string>
+    <string name="msg_center_feedback">意見回饋</string>
+    <string name="msg_center_load_fail">伺服器有點累，休息下刷新試試</string>
+    <string name="ufo_roll_again">再試一次</string>
+    <string name="ufo_theme_down">下載</string>
+    <string name="ufo_theme_use">應用</string>
+    <string name="ufo_theme_use_toast">主題已應用</string>
+    <string name="ufo_theme_content">拒絕枯燥，應用新主題美化你的手機</string>
+    <string name="ufo_theme_title">應用鎖主題</string>
+    <string name="menue_item_delete_pg">卸載隱私衛士</string>
+    <string name="advace_protect_dialog_left_text">稍後再說</string>
+    <string name="advace_protect_dialog_right_text">去設置</string>
+    <string name="advace_protect_dialog_title_text">建議打開高級保護</string>
+    <string name="advace_protect_dialog_content_text">恭喜您加鎖成功，為了防止隱私衛士被他人無意卸載後無法繼續加鎖應用，建議您進行高級保護。隨後您可以在側邊欄中卸載隱私衛士。</string>
+    <string name="desk_ad_name">歡樂APP</string>
+    <string name="advance_protect_open_success_tip_title">高級保護設置成功</string>
+    <string name="advance_protect_open_success_tip_content">高級保護成功啟動！您可以在應用鎖設置中停用高級保護。開啟高級保護時無法在應用鎖外部卸載隱私衛士</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">開機啟動隱私衛士，安全無憂。請點擊“自啟動管理”，選擇隱私衛士加入到自啟動列表</string>
+    <string name="auto_start_tip_redmi">開機啟動隱私衛士，安全無憂。請進入“自啟動應用管理”，選擇“添加自啟動應用”，將隱私衛士接入到自啟動列表</string>
+    <string name="auto_start_tip_huawei">開機啟動隱私衛士，安全無憂。請進入“受保護應用”，將PG加入受保護名單中</string>
+    <string name="auto_start_tip_lenovo">開機啟動隱私衛士，安全無憂。請進入“後臺管理”，選擇“自啟動”，將隱私衛士接入到自啟動列表</string>
+        <string name="splash_guide_page_msg_title">消息中心</string>
+            <string name="splash_guide_page_msg_content">眾多精彩活動，實用小技巧，一網打盡</string>
+    <!-- 2.10  edn -->
 
 </resources>
