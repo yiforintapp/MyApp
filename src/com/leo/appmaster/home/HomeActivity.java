@@ -166,6 +166,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private List<MenuItem> mMenuItems;
     private AdvanceProtectTipDialog mAdvanceProtectDialog;
     public static int mHomeAdSwitchOpen = -1;
+    private boolean isCanShow = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -616,17 +617,30 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mHomeAdSwitchOpen = AppMasterPreference.getInstance(this)
                     .getIsADAtAppLockFragmentOpen();
         }
-        // mHomeAdSwitchOpen = 1;
         LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
 
-        long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
-        long nowTime = System.currentTimeMillis();
-        if ((nowTime - clickTime > INTERVEL_CLICK_AD)
+        if (isTimetoShow()
                 // && !isEnterPrivacySuggest
                 && mHomeAdSwitchOpen == 1) {
             setAdIconVisible();
+            isCanShow = true;
         } else {
             setAdIconInVisible();
+            isCanShow = false;
+        }
+    }
+
+    public boolean isCanShow() {
+        return isCanShow;
+    }
+
+    public boolean isTimetoShow() {
+        long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
+        long nowTime = System.currentTimeMillis();
+        if (nowTime - clickTime > INTERVEL_CLICK_AD) {
+            return true;
+        } else {
+            return false;
         }
     }
 

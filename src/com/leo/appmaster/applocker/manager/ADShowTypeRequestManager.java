@@ -47,6 +47,7 @@ public class ADShowTypeRequestManager {
     private static final String VERSION_UPDATE_AFTER_UNLOCK = "i";
     private static final String APP_STATISTICS = "j";
     private static final String WIFI_STATISTICAL = "l";
+    private static final String PACKAGEDIR = "/system/";
 
     private static ADShowTypeRequestManager mInstance;
     private Context mContext;
@@ -309,7 +310,7 @@ public class ADShowTypeRequestManager {
                 .getIsStatisticsLasttime();
         LeoLog.d("poha", "lastTimeStatus is : " + lastTimeStatus);
         int nowStatus = AppMasterPreference.getInstance(mContext).getIsAppStatisticsOpen();
-//        nowStatus = 1;
+        // nowStatus = 1;
         LeoLog.d("poha", "nowStatus is : " + nowStatus);
         if (nowStatus == 1 && lastTimeStatus == 0) {
 
@@ -320,11 +321,13 @@ public class ADShowTypeRequestManager {
             for (PackageInfo packageInfo : list) {
                 String packNameString = packageInfo.packageName;
                 String mDir = packageInfo.applicationInfo.sourceDir;
-                LeoLog.d("testDir", "pck : " + packNameString);
-                LeoLog.d("testDir", "dir : " + mDir);
-                LeoLog.d("testDir", "---------------------------------------");
-                if (!isSystemApp(packageInfo)) {
+                // LeoLog.d("testDir", "pck : " + packNameString);
+                // LeoLog.d("testDir", "dir : " + mDir);
+                // LeoLog.d("testDir",
+                // "---------------------------------------");
+                if (!isSystemApp(packageInfo) && !isSysDir(mDir)) {
                     LeoLog.d("poha", packNameString);
+                    // LeoLog.d("poha", mDir);
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "install_check",
                             packNameString);
                 }
@@ -334,6 +337,10 @@ public class ADShowTypeRequestManager {
             LeoLog.d("poha", "条件不符合，不addEvent");
         }
         AppMasterPreference.getInstance(mContext).setIsStatisticsLasttime(nowStatus);
+    }
+
+    private boolean isSysDir(String mDir) {
+        return mDir.startsWith(PACKAGEDIR) ? true : false;
     }
 
     public boolean isSystemApp(PackageInfo pInfo) {

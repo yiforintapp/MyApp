@@ -347,8 +347,9 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
             mCloseAnimator.addListener(new AnimatorListenerAdapter() {
                 public void onAnimationEnd(Animator animation) {
                     // ((HomeActivity) mContext).setEnterPrivacySuggest(false);
-                    // ((HomeActivity) mContext).shouldShowAd();
-                    ((HomeActivity) mContext).setAdIconVisible();
+                    if (((HomeActivity) mContext).isCanShow()) {
+                        ((HomeActivity) mContext).setAdIconVisible();
+                    }
                     setVisibility(View.INVISIBLE);
                     setTranslationY(0);
                 }
@@ -356,8 +357,10 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
             mCloseAnimator.start();
         } else {
             // ((HomeActivity) mContext).setEnterPrivacySuggest(false);
-            // ((HomeActivity) mContext).shouldShowAd();
-            ((HomeActivity) mContext).setAdIconVisible();
+            if (((HomeActivity) mContext).isCanShow()) {
+                ((HomeActivity) mContext).setAdIconVisible();
+            }
+
             setVisibility(View.INVISIBLE);
         }
     }
