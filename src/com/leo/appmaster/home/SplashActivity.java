@@ -90,7 +90,7 @@ public class SplashActivity extends BaseActivity {
     private boolean mShowSplashFlag;
     private TextView mSkipText;
     private static final String TAG = "SplashActivity";
-    /*是否走测试模式：true--为测试模式，false--为正常模式*/
+    /* 是否走测试模式：true--为测试模式，false--为正常模式 */
     private static final boolean DBG = false;
 
     /* Guide page stuff end */
@@ -612,7 +612,7 @@ public class SplashActivity extends BaseActivity {
         ImageView bigImage = null;
         mPageColors[3] = getResources().getColor(R.color.new_guide_page1_background_color);
         mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
-        mPageColors[5] = getResources().getColor(R.color.guide_page2_background_color);
+        mPageColors[5] = getResources().getColor(R.color.new_guide_page4_background_color);
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
         mNewPageBackgroundView.initBackgroundColor(mPageColors[3]);
         /* 显示跳过按钮 */
@@ -661,6 +661,7 @@ public class SplashActivity extends BaseActivity {
 
         tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
         tvMoreFunc.setVisibility(View.VISIBLE);
+        tvMoreFunc.setTextColor(getResources().getColor(R.color.new_guide_page4_background_color));
         tvMoreFunc.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -672,7 +673,7 @@ public class SplashActivity extends BaseActivity {
         enterAppButton = (Button) page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
         enterAppButton.setTextColor(getResources().getColor(
-                R.color.guide_page2_background_color));
+                R.color.new_guide_page4_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             @Override
