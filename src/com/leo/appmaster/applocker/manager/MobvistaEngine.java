@@ -9,6 +9,7 @@ import java.util.Map;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.baidu.mobstat.ar;
@@ -49,6 +50,15 @@ public class MobvistaEngine {
      * 请求成功，但返回的结构体为null
      */
     public static final int ERR_MOBVISTA_RESULT_NULL = -1002;
+
+    /**
+     * unid id 为空
+     */
+    public static final int ERR_UNITID_NULL = -1003;
+    /**
+     * 找不到对应的placement id
+     */
+    public static final int ERR_NOT_FOUND_PLACEMENTID = -1004;
     /**
      * 请求成功
      */
@@ -64,6 +74,8 @@ public class MobvistaEngine {
     private Map<Activity, Mobvista> mMobvistaMap;
     private Map<Activity, MobvistaListener> mMobvistaListeners;
     private Map<Activity, MobvistaAdNative> mMobvistaNative;
+
+    private Map<String, String> mUnitIdToPlacementIdMap;
     
     static {
         Context context = AppMasterApplication.getInstance();
@@ -101,6 +113,23 @@ public class MobvistaEngine {
         mMobvistaMap = new HashMap<Activity, Mobvista>();
         mMobvistaListeners = new HashMap<Activity, MobvistaListener>();
         mMobvistaNative = new HashMap<Activity, MobvistaAdNative>();
+
+        mUnitIdToPlacementIdMap = new HashMap<String, String>();
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_58, Constants.PLACEMENT_ID_58);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_59, Constants.PLACEMENT_ID_59);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_60, Constants.PLACEMENT_ID_60);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_61, Constants.PLACEMENT_ID_61);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_62, Constants.PLACEMENT_ID_62);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_63, Constants.PLACEMENT_ID_63);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_64, Constants.PLACEMENT_ID_64);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_65, Constants.PLACEMENT_ID_65);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_66, Constants.PLACEMENT_ID_66);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_67, Constants.PLACEMENT_ID_67);
+    }
+
+    @Deprecated
+    public void loadMobvista(Activity activity, MobvistaListener listener) {
+        loadMobvista(activity, null, listener);
     }
     
     /**
@@ -108,13 +137,19 @@ public class MobvistaEngine {
      * @param activity
      * @param listener
      */
-    public void loadMobvista(Activity activity, MobvistaListener listener) {
+    public void loadMobvista(Activity activity, String unitId, MobvistaListener listener) {
         LeoLog.i(TAG, "start load mobvista.");
         if (listener == null) return;
         
         if (activity == null) {
             listener.onMobvistaFinished(ERR_PARAMS_NULL, null, null);
             LeoLog.i(TAG, "activity is null.");
+            return;
+        }
+
+        if (TextUtils.isEmpty(unitId)) {
+            LeoLog.i(TAG, "unit id is null.");
+            listener.onMobvistaFinished(ERR_UNITID_NULL, null, null);
             return;
         }
 
@@ -134,7 +169,13 @@ public class MobvistaEngine {
             LeoLog.i(TAG, "engine has startd.");
             return;
         }
-        
+
+        String placementId = mUnitIdToPlacementIdMap.get(unitId);
+        if (TextUtils.isEmpty(placementId)) {
+            LeoLog.i(TAG, "cannot find place mentid of this unitid.");
+            listener.onMobvistaFinished(ERR_NOT_FOUND_PLACEMENTID, null, null);
+            return;
+        }
 //        Activity requestActivity = mActivity == null ? activity : mActivity;
         MobvistaAdNative mobvistaAd = MobvistaAd.newNativeController(activity,
                 Constants.MOBVISTA_UNITID,

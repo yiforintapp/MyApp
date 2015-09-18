@@ -15,8 +15,32 @@ public class Constants {
     public static final String MOBVISTA_APPID="19242";
     public static final String MOBVISTA_APPKEY="8c8f18965dfd4377892a458f3b854401";        
     public static final String MOBVISTA_UNITID="25";
-    public static final String MOBVISTA_FACEBOOK_ID="1060111710674878_1060603623959020";        
-    
+    public static final String MOBVISTA_FACEBOOK_ID="1060111710674878_1060603623959020";
+
+    // mobvista 对应的广告位id
+    public static final String UNIT_ID_58 = "58";
+    public static final String UNIT_ID_59 = "59";
+    public static final String UNIT_ID_60 = "60";
+    public static final String UNIT_ID_61 = "61";
+    public static final String UNIT_ID_62 = "62";
+    public static final String UNIT_ID_63 = "63";
+    public static final String UNIT_ID_64 = "64";
+    public static final String UNIT_ID_65 = "65";
+    public static final String UNIT_ID_66 = "66";
+    public static final String UNIT_ID_67 = "67";
+
+    public static final String PLACEMENT_ID_58 = "1060111710674878_1060603603959022";
+    public static final String PLACEMENT_ID_59 = "1060111710674878_1077124758973573";
+    public static final String PLACEMENT_ID_60 = "1060111710674878_1077127125640003";
+    public static final String PLACEMENT_ID_61 = "1060111710674878_1082406031778779";
+    public static final String PLACEMENT_ID_62 = "1060111710674878_1082262738459775";
+    public static final String PLACEMENT_ID_63 = "1060111710674878_1082406181778764";
+    public static final String PLACEMENT_ID_64 = "1060111710674878_1082406415112074";
+    public static final String PLACEMENT_ID_65 = "1060111710674878_1082406548445394";
+    public static final String PLACEMENT_ID_66 = "1060111710674878_1082406641778718";
+    public static final String PLACEMENT_ID_67 = "1060111710674878_1082406765112039";
+
+
     
     public static final String TABLE_DOWNLOAD = "download";
     public static final String TABLE_FEEDBACK = "feedback";
