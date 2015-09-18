@@ -164,12 +164,24 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         }
                     }
                 }
+                
+                for(int i=0;i<list.size();i++){
+                    LeoLog.e("poha", list.get(i).packageName+"     已经筛选掉在线主题列表中本地已有     "+list.get(i).themeName);
+                }
+                
 //                LeoLog.e("poha", list.size()+"最终list size");  
                 if(list.size()==0){
                     list=listBackup;
                     if(list.size()==0){
                         return;
                     }
+                    
+                    for(int i=0;i<list.size();i++){
+                        LeoLog.e("poha", list.get(i).packageName+"     只有本地主题，在线没有主题     "+list.get(i).themeName);
+                    }
+                    
+          
+                    
                     for(int i=0;i<list.size();i++){
                         if(list.get(i).packageName.equals(AppMasterApplication.getSelectedTheme())){
                             list.remove(i);
@@ -177,7 +189,13 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         }
                     }
                 }
-                if(list.size()==0||list.size()==1){
+                
+                for(int i=0;i<list.size();i++){
+                    LeoLog.e("poha", list.get(i).packageName+"     已经筛选掉本地已经再使用的     "+list.get(i).themeName);
+                }
+                
+                
+                if(list.size()==0){
                     return;
                 }
               
