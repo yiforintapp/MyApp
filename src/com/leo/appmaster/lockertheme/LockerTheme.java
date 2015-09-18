@@ -727,9 +727,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                 mLayoutEmptyTip.setVisibility(View.INVISIBLE);
             }
         } else {
-            mOnlineThemeList.setVisibility(View.INVISIBLE);
             if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
                 mErrorView.setVisibility(View.VISIBLE);
+                mOnlineThemeList.setVisibility(View.INVISIBLE);
             }
             mLayoutEmptyTip.setVisibility(View.INVISIBLE);
         }
