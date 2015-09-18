@@ -31,6 +31,7 @@ public class TaskChangeHandler {
     // public static final String AD = "AdMobvistaAct";
     // public static final String GESTURESETTING = "QuickGestureActivity";
     public static final String LAUNCHERBOOST = "HomeBoostActivity";
+    public static final String APPWALL = "AdMobvistaAct";
     public static final String DESKAD = "DeskAdActivity";
 
     private static final String DOWNLAOD_PKG = "com.android.providers.downloads.ui";
@@ -126,6 +127,7 @@ public class TaskChangeHandler {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
                                 && (activity.contains(DESKPROXYNAME) || activity.contains(DESKAD)
+                                        || activity.contains(APPWALL)
                                         || activity
                                                 .contains(LAUNCHERBOOST) || activity
                                                 .contains(SPLASHNAME) || activity
@@ -145,6 +147,7 @@ public class TaskChangeHandler {
                 if (mLastRunningPkg.isEmpty()
                         || (isCurrentSelf
                                 && (activity.contains(DESKPROXYNAME) || activity.contains(DESKAD)
+                                        || activity.contains(APPWALL)
                                         || activity
                                                 .contains(LAUNCHERBOOST) || activity
                                                 .contains(SPLASHNAME) || activity

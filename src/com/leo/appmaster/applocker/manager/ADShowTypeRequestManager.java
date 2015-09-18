@@ -308,6 +308,7 @@ public class ADShowTypeRequestManager {
                 .getIsStatisticsLasttime();
         LeoLog.d("poha", "lastTimeStatus is : " + lastTimeStatus);
         int nowStatus = AppMasterPreference.getInstance(mContext).getIsAppStatisticsOpen();
+//        nowStatus = 1;
         LeoLog.d("poha", "nowStatus is : " + nowStatus);
         if (nowStatus == 1 && lastTimeStatus == 0) {
 
@@ -318,6 +319,9 @@ public class ADShowTypeRequestManager {
             for (PackageInfo packageInfo : list) {
                 String packNameString = packageInfo.packageName;
                 String mDir = packageInfo.applicationInfo.sourceDir;
+                LeoLog.d("testDir", "pck : " + packNameString);
+                LeoLog.d("testDir", "dir : " + mDir);
+                LeoLog.d("testDir", "---------------------------------------");
                 if (!isSystemApp(packageInfo)) {
                     LeoLog.d("poha", packNameString);
                     SDKWrapper.addEvent(mContext, SDKWrapper.P1, "install_check",
