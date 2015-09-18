@@ -5,7 +5,8 @@
 	<dimen name="fragment_password_vertical_space_big">20dp</dimen>
     <dimen name="fragment_password_vertical_space_small">9dp</dimen>
     <integer name="gridview_row_count">5</integer>
-
+	 <dimen name="ges_Pattern_m_top">12dp</dimen>
+	 <dimen name="testview_below_icon">13dp</dimen>
     <dimen name="about_logo_width">124dp</dimen>
     <dimen name="about_logo_height">132dp</dimen>
     <dimen name="gesture_setting_margintop">30dp</dimen>

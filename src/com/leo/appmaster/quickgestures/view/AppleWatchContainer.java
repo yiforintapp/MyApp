@@ -16,6 +16,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -25,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -32,9 +34,12 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
@@ -51,6 +56,11 @@ import com.leo.appmaster.quickgestures.view.AppleWatchLayout.Direction;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageSize;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 @SuppressLint("InflateParams")
 public class AppleWatchContainer extends FrameLayout {
@@ -64,7 +74,8 @@ public class AppleWatchContainer extends FrameLayout {
     private int mCurrentLayout = 3;
     private List<QuickSwitcherInfo> mSwitchList;
     private boolean isCleanFinish = false;
-
+    private MobvistaEngine mAdEngine;
+    private boolean mIsADLoaded=false;
     public static enum Orientation {
         Left, Right;
     }
@@ -1747,8 +1758,100 @@ public class AppleWatchContainer extends FrameLayout {
 //            speedUp(info, iconSize, tv);
 //        }
 //    }
+//    private void loadAD() {
+//      
+//        mAdEngine = MobvistaEngine.getInstance();
+//        mAdEngine.loadMobvista((Activity)mContext, Constants.UNIT_ID_62,new MobvistaListener() {
+//
+//            @Override
+//            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+//                if (code == MobvistaEngine.ERR_OK) {
+//                    mIsADLoaded = true;
+//                    LeoLog.e("poha", "loaded!");
+//                    long currentTime = System.currentTimeMillis();
+//                    AppMasterPreference.getInstance(mContext).setLastBoostWithADTime(currentTime);
+//                    loadADPic(campaign.getIconUrl(),
+//                            new ImageSize(DipPixelUtil.dip2px(mContext, 48),
+//                                    DipPixelUtil
+//                                            .dip2px(mContext, 48)),
+//                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_icon));
+////                    ImageLoader.getInstance().displayImage(campaign.getImageUrl(), (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg));
+//                    
+//                    loadADPic(campaign.getImageUrl(),new ImageSize(DipPixelUtil.dip2px(mContext, 262),DipPixelUtil.dip2px(mContext, 130)),
+//                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg));
+//
+//                    TextView appname = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appname);
+//                    appname.setText(campaign.getAppName());
+//
+//                    TextView appdesc = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appdesc);
+//                    appdesc.setText(campaign.getAppDesc());
+//
+//                    Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ad_appcall);
+//                    call.setText(campaign.getAdCall());
+//                    mAdEngine.registerView(HomeBoostActivity.this, call);
+//                }
+//            }
+//
+//            @Override
+//            public void onMobvistaClick(Campaign campaign) {
+//                ((Activity) mContext).finish();
+//             
+//                // AppMasterPreference.getInstance(UFOActivity.this).setAdEtClickTime(
+//                // System.currentTimeMillis());
+//            }
+//        });
+//    }
+//
+//    private void loadADPic(String url, ImageSize size, final ImageView v) {
+//        ImageLoader.getInstance().loadImage(
+//                url, size, new ImageLoadingListener() {
+//
+//                    @Override
+//                    public void onLoadingStarted(String imageUri, View view) {
+//                    }
+//
+//                    @Override
+//                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+//                    }
+//
+//                    @Override
+//                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+//                        if (loadedImage != null) {
+//                            v.setImageBitmap(loadedImage);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onLoadingCancelled(String imageUri, View view) {
+//                    }
+//                });
+//    }
+    
 
     private void cleanMem() {
+        
+        
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        long currentTime = System.currentTimeMillis();
+        long lastBoostWithADTime = amp.getLastBoostWithADTime();
+        LeoLog.e("poha", "currentTime - lastBoostWithADTime="+(currentTime - lastBoostWithADTime)+"=====24小时=8640000=====开关值="+amp.getADChanceAfterAccelerating());
+        
+//        if ((currentTime - lastBoostWithADTime) > 1000 * 60 * 60 * 24
+//                && amp.getADChanceAfterAccelerating()==1&&mContext instanceof Activity)
+//        {
+//            LeoLog.e("poha", "to load");
+//            loadAD();
+//        }
+        
+  
+        
+        
+        
+        
+        
+        
+        
+        
 //        isCleanFinish = false;
 //        // 清理内存
 //        mCleaner = ProcessCleaner.getInstance(mContext);
@@ -1760,8 +1863,6 @@ public class AppleWatchContainer extends FrameLayout {
 //        isCleanFinish = true;
         
         
-        AppMasterPreference amp = AppMasterPreference.getInstance(this.getContext());
-        long currentTime = System.currentTimeMillis();
         long lastBoostTime = amp.getLastBoostTime();
         if ((currentTime - lastBoostTime) < 10 * 1000) {
             isClean = false;
@@ -1779,27 +1880,31 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView[] tvs) {
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-
-            @Override
-            public void run() {
-                cleanMem();
-            }
-        });
-
-        isAnimating = true;
-        // first - change to no roket icon
-        info.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
-        GestureItemView tv = tvs[1];
-        tv.setItemIcon(info.switchIcon[1], false);
-        // second - show roket in icon place
-        int mLayoutTop = mSwitcherLayout.getTop();
-        int mLayoutBottom = mSwitcherLayout.getBottom();
-        int mRocketWidth = tv.getWidth();
-        int mRocketHeight = tv.getHeight();
-        int mRocketX = (int) tv.getX() + mRocketWidth / 2;
-        int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
-        rockeyAnimation(tv, mLayoutBottom, mRocketX, mRocketY, info);
+        
+        Intent intent = new Intent(mContext, HomeBoostActivity.class);
+        mContext.startActivity(intent);
+        
+//        ThreadManager.executeOnAsyncThread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+//                cleanMem();
+//            }
+//        });
+//
+//        isAnimating = true;
+//        // first - change to no roket icon
+//        info.switchIcon[1].setBounds(0, 0, iconSize, iconSize);
+//        GestureItemView tv = tvs[1];
+//        tv.setItemIcon(info.switchIcon[1], false);
+//        // second - show roket in icon place
+//        int mLayoutTop = mSwitcherLayout.getTop();
+//        int mLayoutBottom = mSwitcherLayout.getBottom();
+//        int mRocketWidth = tv.getWidth();
+//        int mRocketHeight = tv.getHeight();
+//        int mRocketX = (int) tv.getX() + mRocketWidth / 2;
+//        int mRocketY = (int) tv.getY() + mRocketHeight / 2 + mLayoutTop;
+//        rockeyAnimation(tv, mLayoutBottom, mRocketX, mRocketY, info);
     }
 
     public void rockeyAnimation(GestureItemView tv, final int mLayoutBottom, int mRocketX,
@@ -1897,48 +2002,69 @@ public class AppleWatchContainer extends FrameLayout {
     }
 
     public void showBoostResault(QuickSwitcherInfo info) {
-        // show Toast
-//        LayoutInflater inflater = LayoutInflater.from(mContext);
-//        View view = inflater.inflate(R.layout.toast_self_make, null);
-//        TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
-//        String mToast;
-//        if (isClean) {
-//            if (isCleanFinish) {
-//                if (mCleanMem <= 0) {
-//                    LeoLog.d("testspeed", "CleanMem <= 0");
-//                    mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
-//                } else {
-//                    LeoLog.d("testspeed", "CleanMem > 0");
-//                    mToast = mContext.getString(R.string.home_app_manager_mem_clean,
-//                            TextFormater.dataSizeFormat(mCleanMem));
-//                }
-//            } else {
-//                mToast = mContext.getString(R.string.home_app_manager_mem_clean,
-//                        TextFormater.dataSizeFormat(230));
-//            }
-//
-//        } else {
-//            mToast = mContext.getString(R.string.the_best_status_toast);
+//         show Toast
+//        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+//        long currentTime = System.currentTimeMillis();
+//        long lastBoostWithADTime = amp.getLastBoostWithADTime();
+//        LeoLog.e("poha", "currentTime - lastBoostWithADTime="+(currentTime - lastBoostWithADTime)+"=====24小时=8640000=====开关值="+amp.getADChanceAfterAccelerating());
+//        
+//        if ((currentTime - lastBoostWithADTime) > 1000 * 60 * 60 * 24
+//                && amp.getADChanceAfterAccelerating()==1)
+//        {
+//            LeoLog.e("poha", "to load");
+//            loadAD();
 //        }
-//
-//        tv_clean_rocket.setText(mToast);
-//        Toast toast = new Toast(mContext);
-//        toast.setView(view);
-//        toast.setDuration(0);
-//        int marginTop = 0;
-//        if (screenH >= 1920) {
-//            marginTop = 150;
-//        } else if (screenH >= 1280) {
-//            marginTop = 120;
-//        } else if (screenH >= 800) {
-//            marginTop = 80;
-//        } else {
-//            marginTop = 30;
-//        }
-//        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
-//        toast.show();
-        Intent intent = new Intent(getContext(), HomeBoostActivity.class);
-        getContext().startActivity(intent);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        LayoutInflater inflater = LayoutInflater.from(mContext);
+        View view = inflater.inflate(R.layout.view_after_accelerate_new, null);
+        TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
+        String mToast;
+        if (isClean) {
+            if (isCleanFinish) {
+                if (mCleanMem <= 0) {
+                    LeoLog.d("testspeed", "CleanMem <= 0");
+                    mToast = mContext.getString(R.string.home_app_manager_mem_clean_one);
+                } else {
+                    LeoLog.d("testspeed", "CleanMem > 0");
+                    mToast = mContext.getString(R.string.home_app_manager_mem_clean,
+                            TextFormater.dataSizeFormat(mCleanMem));
+                }
+            } else {
+                mToast = mContext.getString(R.string.home_app_manager_mem_clean,
+                        TextFormater.dataSizeFormat(230));
+            }
+
+        } else {
+            mToast = mContext.getString(R.string.the_best_status_toast);
+        }
+
+        tv_clean_rocket.setText(mToast);
+        Toast toast = new Toast(mContext);
+        toast.setView(view);
+        toast.setDuration(0);
+        int marginTop = 0;
+        if (screenH >= 1920) {
+            marginTop = 150;
+        } else if (screenH >= 1280) {
+            marginTop = 120;
+        } else if (screenH >= 800) {
+            marginTop = 80;
+        } else {
+            marginTop = 30;
+        }
+        toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
+        toast.show();
+//        Intent intent = new Intent(getContext(), HomeBoostActivity.class);
+//        getContext().startActivity(intent);
         // make Normal Icon
         GestureItemView tv = null;
         if (info.swtichIdentiName.equals(QuickSwitchManager.SPEEDUP)) {
