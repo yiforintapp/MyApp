@@ -1,6 +1,5 @@
 package com.leo.wifichecker.wifi;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -105,7 +104,7 @@ public class WifiParser {
                     } else if (line.startsWith("password=")) {
                         netInfo.mPassword = APInfo.stripLeadingAndTrailingQuotes(line.replace("password=", ""));
                     } else if (line.startsWith("key_mgmt=")) {
-                        netInfo.mKeyMgmt = line.replace("key_mgmt=", "");
+                        netInfo.setKeyMgmt(line.replace("key_mgmt=", ""));
                     } else if (line.startsWith("eap=")) {
                         netInfo.mEap = line.replace("eap=", "");
                     } else if (line.startsWith("identity=")) {

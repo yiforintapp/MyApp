@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.home;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
@@ -19,19 +20,21 @@ public class DeskAdActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         mHandler = new Handler();
-        mWallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        // mWallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        mWallAd = MobvistaEngine.getInstance().createAdWallController(this, Constants.UNIT_ID_61);
+
         if (mWallAd != null) {
             // preload the wall data
             mWallAd.preloadWall();
         }
 
-         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         Intent mWallIntent = mWallAd.getWallIntent();
         mWallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(mWallIntent);
 
-         finish();
+        finish();
     }
 
 }

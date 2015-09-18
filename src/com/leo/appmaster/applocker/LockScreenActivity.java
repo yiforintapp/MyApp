@@ -199,7 +199,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     if (mode.defaultFlag != -1) {
                         if (AppMasterConfig.LOGGABLE) {
-                            LeoLog.f(LockScreenActivity.class.getSimpleName(), "oncreate", Constants.LOCK_LOG);
+                            LeoLog.f(LockScreenActivity.class.getSimpleName(), "oncreate",
+                                    Constants.LOCK_LOG);
                         }
                         Intent intent = new Intent(this, LockSettingActivity.class);
                         intent.putExtra("from_quick_mode", true);
@@ -233,7 +234,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
-        wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        wallAd = MobvistaEngine.getInstance().createAdWallController(this, Constants.UNIT_ID_63);
         if (wallAd != null) {
             // preload the wall data
             wallAd.preloadWall();

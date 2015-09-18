@@ -217,7 +217,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
         LeoLog.d("testThemeAd", "开关值是：" + mThemeAdSwitchOpen);
         if (mThemeAdSwitchOpen == 1 || mThemeAdSwitchOpen == 2) {
-            loadAd();
+            String unitId = mThemeAdSwitchOpen == 1 ? Constants.UNIT_ID_65 : Constants.UNIT_ID_66;
+            loadAd(unitId);
         }
     }
 
@@ -229,18 +230,17 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
     }
 
-    private void loadAd() {
+    private void loadAd(String unitId) {
         LeoLog.d("testThemeAd", "loadAd");
         mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(this, new MobvistaListener() {
+        // mAdEngine.loadMobvista(this, new MobvistaListener() {
+        mAdEngine.loadMobvista(this, unitId, new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
                     LeoLog.d("testThemeAd", "loadAd -- OK!");
                     isGetAd = true;
-
-                    // mThemeAdSwitchOpen = 2;
 
                     // 1是本地有广告
                     if (mThemeAdSwitchOpen == 1) {

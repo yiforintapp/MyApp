@@ -1,4 +1,3 @@
-
 package com.leo.wifichecker.Location;
 
 import android.content.Context;
@@ -6,11 +5,10 @@ import android.location.Location;
 
 import com.leo.wifichecker.utils.LogEx;
 
-
 /**
  * Created by luqingyuan on 15/9/8.
  */
-public class LocationMgr implements ILocationProvider {
+public class LocationMgr implements  ILocationProvider{
     private static final String TAG = "LocationMgr";
     /**
      * 最小更新距离
@@ -19,7 +17,7 @@ public class LocationMgr implements ILocationProvider {
     /**
      * 最短更新时间间隔
      */
-    public static long MIN_UPDATE_TIME = 1000 * 60 * 1; // 1 minute
+    public static long MIN_UPDATE_TIME = 1000 * 60 * 1; //1 minute
     private ILocationProvider mCurrentLoc;
     private Context mContext;
 
@@ -36,12 +34,11 @@ public class LocationMgr implements ILocationProvider {
 
     /**
      * 定位服务是否可用
-     * 
      * @return 是否可用
      */
     @Override
     public boolean isAvalible() {
-        if (mCurrentLoc == null) {
+        if(mCurrentLoc == null) {
             return false;
         }
         return mCurrentLoc.isAvalible();
@@ -49,13 +46,12 @@ public class LocationMgr implements ILocationProvider {
 
     /**
      * 启动定位服务
-     * 
      * @return 是否成功
      */
     @Override
     public boolean start() {
         LogEx.enter();
-        if (mCurrentLoc == null) {
+        if(mCurrentLoc == null) {
             return false;
         }
         LogEx.leave();
@@ -68,7 +64,7 @@ public class LocationMgr implements ILocationProvider {
     @Override
     public void stop() {
         LogEx.enter();
-        if (mCurrentLoc == null) {
+        if(mCurrentLoc == null) {
             return;
         }
         mCurrentLoc.stop();
@@ -83,28 +79,26 @@ public class LocationMgr implements ILocationProvider {
         start();
         LogEx.leave();
     }
-
     /**
      * 获取最近一次定位的位置信息
-     * 
      * @return
      */
     @Override
     public Location getLastLocation() {
-        if (mCurrentLoc == null) {
+        if(mCurrentLoc == null) {
             return null;
         }
         Location lc = mCurrentLoc.getLastLocation();
-        // 当GoogleLoc未连接上时，获取地理位置为null, 此时尝试从系统获取
-        if (lc == null && !(mCurrentLoc instanceof SystemLoc)) {
+        //当GoogleLoc未连接上时，获取地理位置为null, 此时尝试从系统获取
+        if(lc == null && !(mCurrentLoc instanceof SystemLoc)) {
             SystemLoc location = new SystemLoc(mContext);
             lc = location.getLastLocation();
         }
         String msg = "getLastLocation null";
-        if (lc != null) {
-            msg = "getLastLocation lat=" + lc.toString();
+        if(lc != null) {
+            msg = "getLastLocation lat="+ lc.toString();
         }
-        LogEx.d(TAG, msg);
+        LogEx.d(TAG,msg);
         return lc;
     }
 }

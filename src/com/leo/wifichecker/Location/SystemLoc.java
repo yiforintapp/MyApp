@@ -9,7 +9,6 @@ import android.os.Bundle;
 
 import com.leo.wifichecker.utils.LogEx;
 
-
 /**
  * Created by luqingyuan on 15/9/8.
  */

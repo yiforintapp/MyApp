@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -278,7 +279,8 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
     private void loadAD() {
         LeoLog.d("testPrivicyAd", "loadAd");
         mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(getActivity(), new MobvistaListener() {
+        // mAdEngine.loadMobvista(getActivity(), new MobvistaListener() {
+        mAdEngine.loadMobvista(getActivity(), Constants.UNIT_ID_67, new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {

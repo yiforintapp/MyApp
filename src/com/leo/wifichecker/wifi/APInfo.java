@@ -49,15 +49,25 @@ public class APInfo implements Serializable{
 		mLongitude = 0;
 		mAccuracy = 0;
 		mIsChanged = true;
+		mSecLevel = SEC_UNKNOWN;
 	}
 
 	public void setCapabilities (String capabilities) {
         mCapabilities = capabilities;
-		if(capabilities.contains("WEP")) {
+		setSecLevel(capabilities);
+	}
+
+	public void setKeyMgmt(String keyMgmt) {
+		mKeyMgmt = keyMgmt;
+		setSecLevel(keyMgmt);
+	}
+
+	private void setSecLevel (String keyMgmt) {
+		if(keyMgmt.contains("WEP")) {
 			mSecLevel = SEC_WEP;
-		} else if(capabilities.contains("PSK")) {
+		} else if(keyMgmt.contains("PSK")) {
 			mSecLevel = SEC_PSK;
-		} else if(capabilities.contains("EAP")) {
+		} else if(keyMgmt.contains("EAP")) {
 			mSecLevel = SEC_EAP;
 		} else {
 			mSecLevel = SEC_OPEN;

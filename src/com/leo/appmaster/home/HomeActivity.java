@@ -616,7 +616,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mHomeAdSwitchOpen = AppMasterPreference.getInstance(this)
                     .getIsADAtAppLockFragmentOpen();
         }
-        mHomeAdSwitchOpen = 1;
+        // mHomeAdSwitchOpen = 1;
         LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
 
         long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
@@ -1571,7 +1571,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     private void mobvistaCheck() {
 
-        mWallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        // mWallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        mWallAd = MobvistaEngine.getInstance().createAdWallController(this, Constants.UNIT_ID_64);
         if (mWallAd != null) {
             mWallAd.preloadWall();
         }
