@@ -239,7 +239,7 @@ public class WifiInfoFetcher {
         }
         LogEx.enter();
         if (mApInfos == null) {
-            mApInfos = new Hashtable<>();
+            mApInfos = new Hashtable<String, APInfo>();
         }
         Location currentLoc = mLocationMgr.getLastLocation();
 

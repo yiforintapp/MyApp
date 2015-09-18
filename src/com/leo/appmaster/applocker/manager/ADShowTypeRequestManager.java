@@ -33,6 +33,7 @@ import com.mobvista.sdk.m.core.entity.Campaign;
 import com.tendcloud.tenddata.TCAgent;
 
 public class ADShowTypeRequestManager {
+    private static final String TAG = "ADShowTypeRequestManager";
     /* 是否升级 */
 
     private static final String AD_SHOW_TYPE = "a";// 广告的展示方式，如半屏广告，banner广告等等
@@ -79,7 +80,7 @@ public class ADShowTypeRequestManager {
     }
 
     public void requestADShowType() {
-
+        LeoLog.i(TAG, "start requestADShowType....");
         AppMasterPreference sp = AppMasterPreference.getInstance(mContext);
         // 当前时间（ms）
         // long currentTime = System.currentTimeMillis();
