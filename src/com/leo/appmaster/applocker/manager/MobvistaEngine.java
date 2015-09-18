@@ -177,9 +177,7 @@ public class MobvistaEngine {
             return;
         }
 //        Activity requestActivity = mActivity == null ? activity : mActivity;
-        MobvistaAdNative mobvistaAd = MobvistaAd.newNativeController(activity,
-                Constants.MOBVISTA_UNITID,
-                Constants.MOBVISTA_FACEBOOK_ID);
+        MobvistaAdNative mobvistaAd = MobvistaAd.newNativeController(activity, unitId, placementId);
         try {
             // 这个地方执行导致crash，直接catch住
             mobvistaAd.loadAd(new AdListenerImpl(activity));
@@ -194,13 +192,26 @@ public class MobvistaEngine {
     }
     
     /**
+     * @deprecated
      * 创建appwall广告接口
      * @param activity
      * @return
      */
     public MobvistaAdWall createAdWallController(Activity activity) {
-        return MobvistaAd.newAdWallController(activity, Constants.MOBVISTA_UNITID,
-                Constants.MOBVISTA_FACEBOOK_ID); 
+        return createAdWallController(activity, null);
+    }
+
+    public MobvistaAdWall createAdWallController(Activity activity, String unitId) {
+        if (TextUtils.isEmpty(unitId)) {
+            LeoLog.i(TAG, "unit id is null.");
+            return null;
+        }
+        String placementId = mUnitIdToPlacementIdMap.get(unitId);
+        if (TextUtils.isEmpty(placementId)) {
+            LeoLog.i(TAG, "cannot find place mentid of this unitid.");
+            return null;
+        }
+        return MobvistaAd.newAdWallController(activity, unitId, placementId);
     }
     
     /**
