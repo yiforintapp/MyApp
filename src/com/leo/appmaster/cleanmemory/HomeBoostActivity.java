@@ -329,6 +329,8 @@ public class HomeBoostActivity extends Activity {
             TextView tv_clean_rocket = (TextView) view.findViewById(R.id.tv_accelerat_result);
             tv_clean_rocket.setText(mToast);
             Toast toast = new Toast(this);
+            toast.setGravity(Gravity.CENTER, 0, -100);
+            
             toast.setView(view);
             toast.setDuration(0);
             int marginTop = 0;
@@ -341,7 +343,7 @@ public class HomeBoostActivity extends Activity {
             } else {
                 marginTop = 30;
             }
-            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
+//            toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.TOP, 0, marginTop);
             toast.show();
             isClean = true;
         }
