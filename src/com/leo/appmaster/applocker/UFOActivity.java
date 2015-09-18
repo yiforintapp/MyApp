@@ -121,10 +121,12 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             loadAD();
         } else {
             loadAD();
+            
         }
     }
 
     private void loadTheme() {
+        LeoLog.e("poha","loading theme...");
         mHideThemeList = AppMasterPreference.getInstance(this).getHideThemeList();
         HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemeList, new ThemeListener(this));
     }
@@ -194,7 +196,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                list=listBackup;
                 ufoActivity.mThemeName = list.get(ran).themeName;
                 ufoActivity.mChosenTheme = list.get(ran);
-                
 //                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 160),
                         ufoActivity.mThemDialogBg);
@@ -249,12 +250,14 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     private void loadAD() {
+        LeoLog.e("poha","loading ad...");
         mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(this, new MobvistaListener() {
+        mAdEngine.loadMobvista(this,Constants.UNIT_ID_58, new MobvistaListener() {
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK&&campaign!=null) {
                     mIsADLoaded = true;
+                    LeoLog.e("poha","ad loaded!");
                     loadADPic(campaign.getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
                                     .dip2px(UFOActivity.this, 48)),
@@ -465,7 +468,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         // boolean hasGetLoadResult = false;
         mCdt = new CountDownTimer(10000, 1000) {
             public void onTick(long millisUntilFinished) {
-                if ((mIsADLoaded||(mIsThemeLoaded&&mIsShowTheme)) && !mHasGetLoadResult) {
+                if (((mIsADLoaded&&!mIsShowTheme)||(mIsThemeLoaded&&mIsShowTheme)) && !mHasGetLoadResult) {
                     if (mCdt != null) {
                         mCdt.onFinish();
                         mCdt.cancel();

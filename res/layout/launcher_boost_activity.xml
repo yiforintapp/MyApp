@@ -73,7 +73,7 @@
                     android:layout_marginBottom="32dp"
                     android:layout_marginLeft="45dp"
                     android:layout_marginRight="88dp"
-                    android:gravity="center_vertical"
+                    android:gravity="bottom"
                     android:textColor="#333333"
                     android:textSize="11dp" />
 

@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -119,9 +120,17 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         if (!NetWorkUtil.isNetworkAvailable(mActivity)||windowH<=320) {
             return;
         }
-        
+        AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
+        String unitId;
         mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(mActivity, new MobvistaListener() {
+        if(amp.getADShowType()==1){
+            unitId=Constants.UNIT_ID_59;
+        }else if(amp.getADShowType()==2){
+            unitId=Constants.UNIT_ID_60;
+        }else{
+            return;
+        }
+        mAdEngine.loadMobvista(mActivity, unitId,new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, final Campaign campaign, String msg) {

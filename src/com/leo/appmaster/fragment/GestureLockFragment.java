@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
@@ -185,14 +186,23 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     private void loadMobvistaAd() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
+        String unitId;
         WindowManager wm = mActivity.getWindowManager();
         int windowH = wm.getDefaultDisplay().getHeight();
-        
         if (!NetWorkUtil.isNetworkAvailable(mActivity)||windowH<=320) {
             return;
         }
         mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(mActivity, new MobvistaListener() {
+        if(amp.getADShowType()==1){
+            unitId=Constants.UNIT_ID_59;
+        }else if(amp.getADShowType()==2){
+            unitId=Constants.UNIT_ID_60;
+        }else{
+            return;
+        }
+            
+        mAdEngine.loadMobvista(mActivity,unitId, new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, final Campaign campaign, String msg) {

@@ -5,6 +5,7 @@ import java.util.Timer;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
@@ -65,7 +66,6 @@ public class HomeBoostActivity extends Activity {
     private boolean mIsADLoaded = false;
     private RelativeLayout mRlResultWithAD;
     private CountDownTimer mCdt;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +91,7 @@ public class HomeBoostActivity extends Activity {
     private void loadAD() {
 
         mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(this, new MobvistaListener() {
+        mAdEngine.loadMobvista(this, Constants.UNIT_ID_62,new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
