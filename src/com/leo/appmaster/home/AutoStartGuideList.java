@@ -20,12 +20,13 @@ public class AutoStartGuideList extends WhiteList {
     public static final String TAG = "AutoStartGuideList";
     private static final int XIAOMI4 = 0;
     private static final int XIAOMIREAD = 1;
-    private static final int HUAWEI = 2;
+    private static final int HUAWEIP7_PLUS = 2;
     private static final int LENOVO = 3;
     private static final int LETV = 4;
+    private static final int HUAWEIP6 = 5;
     // private static final int OPPO = 3;
     private static int[] LIST = {
-            XIAOMI4, XIAOMIREAD, HUAWEI, LENOVO, LETV
+            XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6
     };
 
     public AutoStartGuideList() {
@@ -67,7 +68,7 @@ public class AutoStartGuideList extends WhiteList {
             case XIAOMIREAD:
                 list = new ReadMi();
                 break;
-            case HUAWEI:
+            case HUAWEIP7_PLUS:
                 list = new HuaWei();
                 break;
             case LENOVO:
@@ -76,6 +77,8 @@ public class AutoStartGuideList extends WhiteList {
             case LETV:
                 list = new Letv();
                 break;
+            case HUAWEIP6:
+                list=new HuaWeiP6();
             default:
                 break;
         }
@@ -185,7 +188,7 @@ public class AutoStartGuideList extends WhiteList {
         }
     }
 
-    /* YiJia */
+    /* Letv */
     public static class Letv extends AutoStartGuideList {
         @Override
         protected boolean doHandler() {
@@ -206,6 +209,28 @@ public class AutoStartGuideList extends WhiteList {
 
     }
 
+    /* huaweiP6 */
+    public static class HuaWeiP6 extends AutoStartGuideList {
+        @Override
+        protected boolean doHandler() {
+            Intent intent = new Intent();
+            ComponentName cn = new ComponentName("com.huawei.android.hwpowermanager",
+                    "com.huawei.android.hwpowermanager.BootApplicationActivity");
+            intent.setComponent(cn);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                LockManager.getInstatnce().timeFilterSelf();
+                mContext.startActivity(intent);
+                Log.e("start_xiaomi_4", "跳转huaweiP6成功！");
+            } catch (Exception e) {
+                Log.e("start_xiaomi_4", "跳转huaweiP6失败！");
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+    }
+
     /* 判断是否为添加自启动的白名单机型 */
     public static int isAutoWhiteListModel(Context context) {
         boolean miuiV5 = BuildProperties.isMiuiV5();
@@ -218,7 +243,7 @@ public class AutoStartGuideList extends WhiteList {
         }
         boolean huawei = BuildProperties.isHuaWeiTipPhone(context);
         if (huawei) {
-            return HUAWEI;
+            return HUAWEIP7_PLUS;
         }
         boolean lenovo = BuildProperties.isLenoveModel();
         if (lenovo) {
@@ -227,6 +252,11 @@ public class AutoStartGuideList extends WhiteList {
         boolean letv = BuildProperties.isLetvModel();
         if (letv) {
             return LETV;
+        }
+        boolean huaweiP6 = (BuildProperties.isHuaWeiModel()
+                && !BuildProperties.isHuaWeiTipPhone(context));
+        if(huaweiP6){
+            return HUAWEIP6;
         }
         return -1;
     }

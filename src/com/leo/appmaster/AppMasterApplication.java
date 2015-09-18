@@ -22,6 +22,8 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
 
 public class AppMasterApplication extends Application {
