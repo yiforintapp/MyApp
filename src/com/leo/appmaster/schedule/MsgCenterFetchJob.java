@@ -18,6 +18,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.msgcenter.Message;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
@@ -77,6 +78,9 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             LeoLog.i(TAG, "response: " + response);
             return;
         }
+
+        Context ctx = AppMasterApplication.getInstance();
+        SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_data");
 
         JSONArray array = (JSONArray) response;
         LeoLog.i(TAG, "onFetchSuccess, response: " + array.toString() + " | noModify: " + noMidify);

@@ -136,6 +136,14 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     }
 
     @Override
+    public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
+        if (getWebView().getVisibility() == View.VISIBLE) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "get", "get_dataOK");
+        }
+    }
+
+    @Override
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         Uri uri = Uri.parse(url);
         String schema = uri.getScheme();

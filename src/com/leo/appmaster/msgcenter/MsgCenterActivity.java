@@ -72,6 +72,7 @@ public class MsgCenterActivity extends BaseActivity implements
                 finish();
                 break;
             case R.id.msg_center_feedback_tv:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "Infofb", "Infofb_cnts");
                 Intent feedback = new Intent(this, FeedbackActivity.class);
                 startActivity(feedback);
                 break;
