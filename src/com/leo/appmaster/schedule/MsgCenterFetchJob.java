@@ -225,6 +225,10 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             while (retryCount < maxRetryCount) {
                 try {
                     HttpResponse response = stack.performRequest(request, new HashMap<String, String>());
+
+                    HttpEntity entity = response.getEntity();
+                    inputStream = entity.getContent();
+                    fos = new FileOutputStream(file);
                     if (!file.exists()) {
                         File parentFile = file.getParentFile();
                         if (!parentFile.exists()) {
@@ -232,10 +236,6 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
                         }
                         file.createNewFile();
                     }
-
-                    HttpEntity entity = response.getEntity();
-                    inputStream = entity.getContent();
-                    fos = new FileOutputStream(file);
 
                     int size = 2048;
                     byte[] buffer = new byte[size];
@@ -275,17 +275,17 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         private File file;
         public HtmlListener(File file) {
             this.file = file;
-            if (!file.exists()) {
-                File parentFile = file.getParentFile();
-                if (!parentFile.exists()) {
-                    parentFile.mkdirs();
-                }
-                try {
-                    file.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
+//            if (!file.exists()) {
+//                File parentFile = file.getParentFile();
+//                if (!parentFile.exists()) {
+//                    parentFile.mkdirs();
+//                }
+//                try {
+//                    file.createNewFile();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                }
+//            }
         }
 
         @Override
