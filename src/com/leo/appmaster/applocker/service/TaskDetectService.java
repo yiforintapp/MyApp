@@ -3,7 +3,6 @@ package com.leo.appmaster.applocker.service;
 
 import java.util.List;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -226,7 +225,7 @@ public class TaskDetectService extends Service {
         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> infos = am.getRunningAppProcesses();
 
-        if (infos.size() > 5)
+        if (infos != null && infos.size() > 5)
             return true;
 
         return false;

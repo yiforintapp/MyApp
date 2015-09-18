@@ -1865,6 +1865,7 @@ public class LockManager {
     public void loadAppLaunchReorder() {
         mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
         String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
+        QuickGestureManager qgm = QuickGestureManager.getInstance(mContext);
         AppLauncherRecorder temp = null;
         int sIndex = -1;
         if (!TextUtils.isEmpty(recoders)) {
@@ -1874,7 +1875,7 @@ public class LockManager {
                 // com.mobisystems.office:browser:3;这种情况貌似会crash
                 sIndex = recoder.indexOf(':');
                 if (sIndex != -1) {
-                    temp = QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
+                    temp = qgm.new AppLauncherRecorder();
                     temp.pkg = recoder.substring(0, sIndex);
                     try {
                         temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
