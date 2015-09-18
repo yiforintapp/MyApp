@@ -293,15 +293,15 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     R.drawable.ic_launcher_notification_big);
             notification.when = System.currentTimeMillis();
             notificationManager.notify(20140902, notification);
+            /* 隐私联系人有未读 通话时发送广播 */
+            PrivacyContactManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
+                    PrivacyContactManager.PRIVACY_CALL,0,number);
+            LeoLog.e(TAG, "本次联系人："+number);
         }
         /*
          * 记录最后隐私短信和隐私通话哪个最后记录(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)
          */
         QuickGestureManager.getInstance(mContext).privacyLastRecord = QuickGestureManager.RECORD_CALL;
-        /* 隐私联系人有未读 通话时发送广播 */
-        PrivacyContactManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
-                PrivacyContactManager.PRIVACY_CALL,0,number);
-        LeoLog.e(TAG, "本次联系人："+number);
     }
 
     private void saveCallLog(ContactBean contact) {
