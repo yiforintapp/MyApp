@@ -4,6 +4,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.utils.LeoLog;
 
+/**
+ * 广告拉去，父类维护启动类别，通过反射调用
+ */
 public class ADFetchJob extends FetchScheduleJob {
 
     @Override
