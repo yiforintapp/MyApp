@@ -83,7 +83,7 @@ public class MsgCenterAdapter extends BaseAdapter {
 
     private void onQueryResult(final List<Message> list) {
         if (list == null || list.isEmpty()) return;
-
+        LeoLog.d(TAG, "onQueryResult, list size: " + list.size());
 //        Iterator<Message> iterator = list.iterator();
 //        while (iterator.hasNext()) {
 //            Message msg = iterator.next();

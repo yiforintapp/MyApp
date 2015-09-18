@@ -127,10 +127,10 @@ public class MsgCenterTable extends BaseTable {
 
     /**
      * 获取消息列表
-     * @param forceAll 强制返回所有数据
+     * @param includeNoCacheMsg 强制返回所有数据, 包含更新日志没有cache的
      * @return
      */
-    public List<Message> queryMsgList(boolean forceAll) {
+    public List<Message> queryMsgList(boolean includeNoCacheMsg) {
         ArrayList<Message> result = new ArrayList<Message>();
         SQLiteDatabase db = getHelper().getReadableDatabase();
         if (db == null) return result;
@@ -148,7 +148,7 @@ public class MsgCenterTable extends BaseTable {
                         offlineList.add(message);
                         continue;
                     }
-                    if (message.isCategoryUpdate() && !message.hasCacheFile() && !forceAll) {
+                    if (message.isCategoryUpdate() && !message.hasCacheFile() && !includeNoCacheMsg) {
                         continue;
                     }
                     result.add(message);

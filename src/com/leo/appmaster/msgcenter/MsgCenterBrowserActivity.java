@@ -27,9 +27,11 @@ import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseBrowserActivity;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.LeoLog;
 
 public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         View.OnClickListener {
+    private static final String TAG = "MsgCenterBrowserActivity";
     private static final String KEY_URL = "key_url";
     private static final String KEY_TITLE = "key_title";
     private static final String KEY_UPDATE = "key_update";
@@ -101,6 +103,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             getWebView().loadUrl(mUrl);
             mTitleBar.setOptionImageVisibility(View.VISIBLE);
         }
+        LeoLog.i(TAG, "url : " + mUrl);
     }
 
     @Override

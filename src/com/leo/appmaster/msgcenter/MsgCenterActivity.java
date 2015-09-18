@@ -42,7 +42,6 @@ public class MsgCenterActivity extends BaseActivity implements
         mMessageLv.setOnItemClickListener(this);
 
         mEmptyView = findViewById(R.id.msg_center_empty_ll);
-        mMessageLv.setEmptyView(mEmptyView);
 
         mFeedbackTv = (TextView) findViewById(R.id.msg_center_feedback_tv);
         mFeedbackTv.setOnClickListener(this);
@@ -61,6 +60,7 @@ public class MsgCenterActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        mMessageLv.setEmptyView(mEmptyView);
         mAdapter.notifyDataSetChanged();
     }
 
