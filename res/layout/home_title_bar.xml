@@ -77,6 +77,8 @@
         android:layout_marginTop="7dp"
         android:layout_marginLeft="26dp"
         android:includeFontPadding="false"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
         android:visibility="gone"
         android:gravity="center"
         android:background="@drawable/ic_mc_unread_bg"
