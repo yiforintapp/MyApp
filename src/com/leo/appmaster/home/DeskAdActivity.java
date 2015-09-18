@@ -24,14 +24,12 @@ public class DeskAdActivity extends Activity {
             mWallAd.preloadWall();
         }
         // LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        // LockManager.getInstatnce().timeFilterSelf();
         Intent mWallIntent = mWallAd.getWallIntent();
         mWallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        LockManager.getInstatnce().timeFilterSelf();
         startActivity(mWallIntent);
-
         finish();
     }
-
 
 }
