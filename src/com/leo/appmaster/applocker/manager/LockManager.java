@@ -172,6 +172,8 @@ public class LockManager {
     public ColorMatcher mMatcher;
     private TimerTask mFillterAllTask;
 
+
+
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
         mDrawableColors = new HashMap<Drawable, Integer>();
@@ -1529,6 +1531,8 @@ public class LockManager {
             LeoLog.d(TAG, "mDetectService = null");
         }
     }
+
+
 
     protected void handleScreenChange(Intent intent) {
         if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {

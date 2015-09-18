@@ -364,4 +364,7 @@ public class Constants {
 
     public static final String LOCK_LOG = "lock_setting.txt";
 
+    public static final String PKG_WHAT_EVER = "what ever.";
+    public static final String PKG_LENOVO_SCREEN = "com.lenovo.coverapp.simpletime2";
+
 }
