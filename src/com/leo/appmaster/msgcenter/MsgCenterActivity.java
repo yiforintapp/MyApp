@@ -13,6 +13,7 @@ import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 
 /**
@@ -82,6 +83,15 @@ public class MsgCenterActivity extends BaseActivity implements
         final Message msg = (Message) mAdapter.getItem(position);
         if (msg == null) return;
 
+        String eventId = null;
+        if (msg.isCategoryFaq()) {
+            eventId = "faq";
+        } else if (msg.isCategoryActivity()) {
+            eventId = "act";
+        }
+        if (eventId != null) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, eventId, msg.title);
+        }
         MsgCenterBrowserActivity.startMsgCenterWeb(this, msg.title, msg.jumpUrl, msg.isCategoryUpdate());
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override

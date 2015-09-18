@@ -25,6 +25,7 @@ import android.widget.ProgressBar;
 import com.leo.appmaster.R;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseBrowserActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.utils.LeoLog;
@@ -128,6 +129,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 finish();
                 break;
             case R.id.tv_option_image:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "upd", "upd_cnts");
                 mWebView.reload();
                 break;
         }
@@ -141,6 +143,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             String host = uri.getHost();
             String path = uri.getPath();
             if (HOST_MSGCENTER.equals(host) && PATH_WEBVIEW.equals(path)) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "jump", "act_btn_clc");
                 String paramsUrl = uri.getQueryParameter(PARAMS_URL);
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(WebViewActivity.WEB_URL, paramsUrl);

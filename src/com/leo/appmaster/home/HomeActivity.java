@@ -817,20 +817,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 mLeoPopMenu.setListViewDivider(null);
                 break;
             case R.id.bg_show_hotapp:
-                // app_hot_tip_icon.setVisibility(View.GONE);
-                // AppMasterPreference.getInstance(this).setHomeFragmentRedTip(false);
-                // SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                // "hot");
-                // Intent nIntent = new Intent(HomeActivity.this,
-                // HotAppActivity.class);
-                // try {
-                // startActivity(nIntent);
-                // } catch (Exception e) {
-                // }
-                // AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
-                // System.currentTimeMillis());
-                // Intent mWallIntent = mWallAd.getWallIntent();
-                // startActivity(mWallIntent);
+                // 点击启动消息中心的次数
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoCtr", "InfoCtr_cnts");
                 Intent msgCenter = new Intent();
                 msgCenter.setClass(this, MsgCenterActivity.class);
                 startActivity(msgCenter);
