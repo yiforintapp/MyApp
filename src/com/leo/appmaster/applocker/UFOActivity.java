@@ -471,6 +471,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 if (((mIsADLoaded&&!mIsShowTheme)||(mIsThemeLoaded&&mIsShowTheme)) && !mHasGetLoadResult) {
                     if (mCdt != null) {
                         mCdt.onFinish();
+                        LeoLog.e("poha", "mIsADLoaded="+mIsADLoaded+"...mIsShowTheme="+mIsThemeLoaded+"...mIsThemeLoaded="+mIsThemeLoaded);
                         mCdt.cancel();
                     }
                     mHasGetLoadResult = true;
@@ -482,6 +483,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 if (!mHasGetLoadResult) {
                     //没有任何结果出来
                     if (!mIsADLoaded&&!mIsThemeLoaded) {
+                     
                         mUFODrawable.stop();
 //                        mWholeUFO.setVisibility(View.INVISIBLE);
                         mLongLight.setVisibility(View.INVISIBLE);
@@ -491,7 +493,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         
                     }
                     else {
-                        showAD();
+                        
+                        showResult();
                     }// else2 end
                 }// if1 end
                 mHasGetLoadResult = true;
@@ -542,7 +545,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         animator2.start();
     }
 
-    protected void showAD() {
+    protected void showResult() {
         RelativeLayout finalView;
         if (mIsShowTheme&&mIsThemeLoaded) {
             finalView = (RelativeLayout) findViewById(R.id.rl_Themedialog_root);
