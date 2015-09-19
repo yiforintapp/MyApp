@@ -147,7 +147,9 @@ public class PrivacyLevelView extends View {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        computeDrawBounds(right - left, bottom - top);
+        if(right > left && bottom > top) {
+            computeDrawBounds(right - left, bottom - top);
+        }
     }
 
     private void computeDrawBounds(int width, int height) {
@@ -280,15 +282,20 @@ public class PrivacyLevelView extends View {
     }
 
     private int computeTextSize(String text, int maxTextSize, int maxWidth, Paint paint) {
-        int textSize = maxTextSize;
-        paint.setTextSize(textSize);
-        int textWidth = (int) paint.measureText(text);
-            while (textWidth > maxWidth) {
-                textSize = textSize - 3;
-                paint.setTextSize(textSize);
-                textWidth = (int) paint.measureText(text);
-            }
-        return textWidth;
+        if(maxWidth > 0) {
+            int textSize = maxTextSize;
+            paint.setTextSize(textSize);
+            int textWidth = (int) paint.measureText(text);
+                while (textWidth > maxWidth) {
+                    textSize = textSize - 3;
+                    paint.setTextSize(textSize);
+                    textWidth = (int) paint.measureText(text);
+                }
+            return textWidth;
+        }
+        
+        return 0;
+
     }
 
     public void getLevelRectOnScreen(Rect rect) {

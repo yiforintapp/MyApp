@@ -264,9 +264,8 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
                 setBackgroundColor(mBgColor);
                 mTitleBar.setVisibility(View.VISIBLE);
                 mProposalList.setVisibility(View.VISIBLE);
-
-                // mProposalAd.setVisibility(View.VISIBLE);
-
+                mLevelView.requestLayout();
+                mProposalStatus.requestLayout();
             }
 
             @Override
@@ -276,6 +275,8 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
                 setBackgroundColor(mBgColor);
                 mTitleBar.setVisibility(View.VISIBLE);
                 mProposalList.setVisibility(View.VISIBLE);
+                mLevelView.requestLayout();
+                mProposalStatus.requestLayout();
             }
         });
         mFirstAnimator.start();
