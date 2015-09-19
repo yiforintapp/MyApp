@@ -4,14 +4,13 @@ package com.leo.appmaster.applocker.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.R;
-
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.R;
 
 public class LockMode implements Parcelable {
     /**
