@@ -22,6 +22,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -210,6 +211,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         boolean isTip = AppMasterPreference.getInstance(this)
                 .getAdvanceProtectOpenSuccessDialogTip();
         if (isAdminActive() && isTip) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dput", "gd_dput_real");
             openAdvanceProtectDialogTip();
         }
     }

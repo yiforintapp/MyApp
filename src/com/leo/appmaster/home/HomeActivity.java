@@ -125,8 +125,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     };
 
     // 释放系统预加载资源使用
-    private static LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawables =
-            new LongSparseArray[2];
+    private static LongSparseArray<Drawable.ConstantState>[] sPreloadedDrawables = new LongSparseArray[2];
 
     private ViewStub mViewStub;
     private MultiModeView mMultiModeView;
@@ -257,11 +256,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 && LockManager.getInstatnce().getLockedAppCount() > 0
                 && AppMasterPreference.getInstance(this).getPretendLock() == 0 &&
-                AppMasterPreference.getInstance(this).getIsFromLockList() == true)
-        {
+                AppMasterPreference.getInstance(this).getIsFromLockList() == true) {
             if (showAdvanceProtectDialog()) {
-                if (mSelfIconDialog == null)
-                {
+                if (mSelfIconDialog == null) {
                     mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
                     mSelfIconDialog.setIcon(R.drawable.pretend_guide);
                     mSelfIconDialog
@@ -269,23 +266,19 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
                                 @Override
                                 public void onClick(int which) {
-                                    if (which == 1)
-                                    {
+                                    if (which == 1) {
                                         SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
                                                 "coverguide", "cli_y");
 
                                         mSelfIconDialog.dismiss();
-                                        if (mFragmentHolders[0].fragment != null)
-                                        {
+                                        if (mFragmentHolders[0].fragment != null) {
 
                                             HomeLockFragment fragment = (HomeLockFragment) mFragmentHolders[0].fragment;
 
                                             mPagerTab.setCurrentItem(0);
                                             fragment.playPretendEnterAnim();
                                         }
-                                    }
-                                    else if (which == 0)
-                                    {
+                                    } else if (which == 0) {
                                         SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
                                                 "coverguide", "cli_n");
                                     }
@@ -448,8 +441,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (mAdIcon != null) {
             mAdIcon.setVisibility(View.VISIBLE);
             mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
-            adAnimation = (AnimationDrawable)
-                    mAdIcon.getBackground();
+            adAnimation = (AnimationDrawable) mAdIcon.getBackground();
             adAnimation.start();
         }
     }
@@ -773,7 +765,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             if (AppMasterConfig.LOGGABLE) {
                                 LeoLog.f(TAG, "onclick positon = 0.", Constants.LOCK_LOG);
                             }
-                            Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
+                            Intent intent = new Intent(HomeActivity.this,
+                                    LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);
                             startActivity(intent);
                         } else if (position == 1) {
@@ -786,7 +779,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             if (AppMasterConfig.LOGGABLE) {
                                 LeoLog.f(TAG, "onclick positon = 1.", Constants.LOCK_LOG);
                             }
-                            Intent intent = new Intent(HomeActivity.this, LockSettingActivity.class);
+                            Intent intent = new Intent(HomeActivity.this,
+                                    LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);
                             intent.putExtra(ROTATE_FRAGMENT, true);
                             startActivity(intent);
@@ -958,10 +952,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             "com.android.launcher.action.INSTALL_SHORTCUT");
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
                             getString(R.string.desk_ad_name));
-                    ShortcutIconResource appwallIconRes =
-                            Intent.ShortcutIconResource.fromContext(
-                                    HomeActivity.this,
-                                    R.drawable.ad_desktop_icon);
+                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
+                            HomeActivity.this,
+                            R.drawable.ad_desktop_icon);
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
                             appwallIconRes);
                     appWallShortcut.putExtra("duplicate", false);
@@ -1663,9 +1656,20 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mAutoStartGuideDialog.setIswipeUpdateDialogBackground(R.drawable.auto_start_dialog_tip_bg);
         mAutoStartGuideDialog.setContentImage(R.drawable.shouquan);
         mAutoStartGuideDialog.setFlag(AutoStartTipDialog.AUTOSTART_TIP_DIALOG);
+        mAutoStartGuideDialog.setOnDismissListener(new OnDismissListener() {
+
+            @Override
+            public void onDismiss(DialogInterface arg0) {
+                if (mAutoStartGuideDialog != null) {
+                    mAutoStartGuideDialog = null;
+                }
+
+            }
+        });
         mAutoStartGuideDialog.setLeftListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_ltr");
                 mAutoStartGuideDialog.dismiss();
             }
         });
@@ -1673,6 +1677,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
             @Override
             public void onClick(View v) {
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_fn");
                 mAutoStartGuideDialog.dismiss();
                 new AutoStartGuideList().executeGuide();
             }
@@ -1721,13 +1726,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (mAdvanceProtectDialog == null) {
             mAdvanceProtectDialog = new AdvanceProtectTipDialog(this);
         }
-        mAdvanceProtectDialog.setLeftListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                mAdvanceProtectDialog.dismiss();
-            }
-        });
         mAdvanceProtectDialog.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
@@ -1736,10 +1734,19 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 }
             }
         });
+        mAdvanceProtectDialog.setLeftListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "gd_dcnts", "gd_dcnts_ltr");
+                mAdvanceProtectDialog.dismiss();
+            }
+        });
         mAdvanceProtectDialog.setRightListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "gd_dcnts", "gd_dcnts_fn");
                 mAdvanceProtectDialog.dismiss();
                 Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
                 intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_HOME);
