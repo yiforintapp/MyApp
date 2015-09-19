@@ -17,6 +17,10 @@ import java.util.Date;
 public class Message {
     // 更新日志
     public static final String CATEGORY_UPDATE = "001";
+    // 使用小技巧
+    public static final String CATEGORY_FAQ = "003";
+    // 活动
+    public static final String CATEGORY_ACTIVITY = "002";
 
     // 活动时间
     public String time;
@@ -44,6 +48,14 @@ public class Message {
 
     public boolean isCategoryUpdate() {
         return CATEGORY_UPDATE.equals(categoryCode);
+    }
+
+    public boolean isCategoryFaq() {
+        return CATEGORY_FAQ.equals(categoryCode);
+    }
+
+    public boolean isCategoryActivity() {
+        return CATEGORY_ACTIVITY.equals(categoryCode);
     }
 
     @Override
