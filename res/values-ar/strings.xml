@@ -298,7 +298,7 @@
 
     <!-- TODO -->
     <!-- <string name="locker_clean">优化成功，已提速&#160;%1$s</string> -->
-    <string name="locker_clean">    تم التحسن، ترفع السرعة إلى &#160;<xliff:g>%1$s</xliff:g> </string>
+    <string name="locker_clean">    تم التحسن، ترفع السرعة إلى &#160;<xliff:g>%1$s</xliff:g></string>
     <!--  -->
 
     <string name="setting_locker_clean">يسرع بعد فتح قفل</string>
@@ -913,26 +913,26 @@
     <string name="zipper_too_slow">اسحب بسرعة </string>
     <string name="theme_apply_title">هل تريد في تطبيق موضوع الغاء القفل: <xliff:g>%1$s</xliff:g> ؟ </string>
     <!-- 2.6 end -->
-    
-        <!-- 2.7 start -->
+
+
+    <!-- 2.7 start -->
     <string name="clean_mem_notify_big">تتجاوز نسبة استخدام الذاكرة</string>
     <string name="clean_mem_notify_big_right">65%</string>
     <string name="clean_mem_notify_small">انقر على الزر للتسريع</string>
     <string name="clean_mem_notify_boost">قم بالتسريع الآن</string>
-	
-	<string name="pg_appmanager_quick_gesture_option_trigger_type">وضع الزناد</string>
-	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">النقطة البيضاء الصغيرة تنزلق من الجانب / الزاوية السفلي</string>
-	<string name="pg_appmanager_quick_gesture_trigger_alide">تنزلق من الجانب / الزاوية السفلي</string>
-	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">النقطة البيضاء الصغيرة</string>
-	<string name="pg_appmanager_quick_gesture_trigger_tips">يرجي اختيار واحد على الأقل</string>
-	
-	<string name="pg_appmanager_quick_gesture_conflict_content">هل اللفتات السريعة تؤثر على العمليات العادية الخاصة بكم؟ يمكنك اختيار تشغيل وضع النقطة البيضاء الصغيرة، و انقر على الإعدادات</string>
-	<string name="pg_appmanager_quick_gesture_conflict_later">يقوم بالاجراء في وقت لاحق</string>
-	<string name="pg_appmanager_quick_gesture_conflict_open">قم بالتشغيل الان</string>	
-	<string name="anti_conflict_mode_open">تم تشغيل</string>
-	<!-- 2.7 end -->
-	
-	    <!-- 2.8 start -->
+    <string name="pg_appmanager_quick_gesture_option_trigger_type">وضع الزناد</string>
+    <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">النقطة البيضاء الصغيرة تنزلق من الجانب / الزاوية السفلي</string>
+    <string name="pg_appmanager_quick_gesture_trigger_alide">تنزلق من الجانب / الزاوية السفلي</string>
+    <string name="pg_appmanager_quick_gesture_trigger_wihtedot">النقطة البيضاء الصغيرة</string>
+    <string name="pg_appmanager_quick_gesture_trigger_tips">يرجي اختيار واحد على الأقل</string>
+    <string name="pg_appmanager_quick_gesture_conflict_content">هل اللفتات السريعة تؤثر على العمليات العادية الخاصة بكم؟ يمكنك اختيار تشغيل وضع النقطة البيضاء الصغيرة، و انقر على الإعدادات</string>
+    <string name="pg_appmanager_quick_gesture_conflict_later">يقوم بالاجراء في وقت لاحق</string>
+    <string name="pg_appmanager_quick_gesture_conflict_open">قم بالتشغيل الان</string>
+    <string name="anti_conflict_mode_open">تم تشغيل</string>
+    <!-- 2.7 end -->
+
+
+    <!-- 2.8 start -->
     <string name="device_admin_extra">منع إلغاء التثبيت بواسطة الآخرين</string>
     <string name="iswip_update_tip_title_text">تحديث الاختصارات السهلة!</string>
     <string name="iswip_update_tip_context_text">تم إعادة تسمية الاختصار السهل إلى iSwipe. قم بتنزيله وتجربته!</string>
@@ -943,13 +943,11 @@
     <string name="iswip_update_notifi_button">التحديث الآن</string>
     <string name="ad_timeout">رائع! المزيد من المفاجآت بانتظارك!</string>
     <!-- 2.8 end -->
-<!-- 2.10start -->
+    <!-- 2.10start -->
     <string name="auto_start_guide_tip_title">يتطلب إذنا</string>
     <string name="auto_start_guide_tip_content">تشغيل حارس الخصوصية عند البدء</string>
     <string name="auto_start_guide_tip_left_button">لاحقا</string>
     <string name="auto_start_guide_tip_right_button">الآن</string>
-
-
     <string name="msg_center_title">مركز الرسائل</string>
     <string name="msg_center_empty">لا توجد رسائل جديدة</string>
     <string name="msg_center_empty_say">أخبرنا بما تريد قوله</string>
@@ -967,13 +965,14 @@
     <string name="advace_protect_dialog_title_text">حماية متقدمة</string>
     <string name="advace_protect_dialog_content_text">تم إضافة القفل بنجاح. تم اقتراح الحماية المتقدمة لتجنب إلغاء تثبيت الآخرين. يمكنك إلغاء تثبيت حارس الخصوصية في الشريط الجانبي. يمكنك إلغاء تثبيت حارس الخصوصية في الشريط الجانبي.</string>
     <string name="desk_ad_name">تطبيق سعيد</string>
+    <string name="splash_guide_page_msg_title">مركز الرسائل</string>
+    <string name="splash_guide_page_msg_content">جميع الأنشطة والنصائح المفيدة هنا </string>
     <string name="advance_protect_open_success_tip_title">تنجح!</string>
     <string name="advance_protect_open_success_tip_content">تم تمكين الحماية المتقدمة. لن يمكن إلغاء تثبيت حارس الخصوصية الآن. يمكنك تعطيل ذلك في الإعدادات.</string>
     <string name="auto_start_tip_xiaomi4_and_letv">انقر "إدارة البدء التلقائي" وأضف حارس الخصوصية لقائمة البدء التلقائيتشغيل حارس الخصوصية عند البدء</string>
     <string name="auto_start_tip_redmi">ادخل "إدارة البدء التلقائي"، اختر "أضف تطبيق" وأضف حارس تشغيل حارس الخصوصية عند البدءالخصوصية لقائمة البدء التلقائي</string>
     <string name="auto_start_tip_huawei">ادخل "التطبيقات المحمية" وأضف حارس الخصوصية لقائمة الحمايةتشغيل حارس الخصوصية عند البدء</string>
     <string name="auto_start_tip_lenovo">ادخل "الكواليس"، واختر "البدء التلقائي" وأضف حارس الخصوصية تشغيل حارس الخصوصية عند البدءلقائمة البدء التلقائي</string>
-    <string name="splash_guide_page_msg_title">مركز الرسائل</string>
-   <string name="splash_guide_page_msg_content">جميع الأنشطة والنصائح المفيدة هنا </string>
-<!-- 2.10 end -->
+    <!-- 2.10 end -->
+
 </resources>

@@ -805,9 +805,8 @@
     <string name="auto_start_tip_redmi">Запуск Privacy Guard при старте.В "Управл. автозапуском" выберите "Доб. прил." и доб. PrivGuard в список автозапуска</string>
     <string name="auto_start_tip_huawei">Запуск Privacy Guard при старте.В "Защищенных приложениях" добавьте Privacy Guard в список защиты</string>
     <string name="auto_start_tip_lenovo">Запуск Privacy Guard при старте.В "Тайнах" выберите "Автозапуск" и добавьте Privacy Guard в список автозапуска</string>
-        <string name="splash_guide_page_msg_title">Центр сообщений</string>
-     <string name="splash_guide_page_msg_content">все мероприятия и полезные советы здесь</string>
-
+    <string name="splash_guide_page_msg_title">Центр сообщений</string>
+    <string name="splash_guide_page_msg_content">все мероприятия и полезные советы здесь</string>
     <!-- 2.10 end -->
 
 </resources>
