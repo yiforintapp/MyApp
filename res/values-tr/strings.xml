@@ -489,7 +489,7 @@
 
     <!-- My Apps -->
     <string name="myapp_details">UYGULAMA DETAYLARI</string>
-    <string name="app_manager">"Uygulamalarım"</string>
+    <string name="app_manager">Yönetimi</string>
     <string name="first_backup">Yedekleme</string>
     <string name="first_usage">Veri Kullanımı</string>
     <string name="first_battery">Batarya</string>
