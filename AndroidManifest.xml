@@ -378,7 +378,7 @@
             android:name=".privacycontact.PrivacyContactActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTop"
+            android:launchMode="singleInstance"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
