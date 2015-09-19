@@ -47,7 +47,7 @@
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <!-- 统计sdk end -->
 
-
+ Neon_Light
     <!-- LEO push: begin -->
     <!-- <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" /> -->
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
