@@ -55,7 +55,7 @@
             android:layout_marginBottom="20dp"
             android:text="@string/about_copy"
             android:textColor="#FFABCEFF"
-            android:textSize="10dp" />
+            android:textSize="@dimen/app_about_content" />
     </RelativeLayout>
 
     <LinearLayout

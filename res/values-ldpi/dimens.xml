@@ -272,7 +272,8 @@
     <dimen name="privacy_ad_dec_m_top">3dp</dimen>
     <dimen name="privacy_ad_download_width">242dp</dimen>
     <dimen name="privacy_ad_download_height">25dp</dimen>
-                    <dimen name="privacy_ad_right_content_p_r">15dp</dimen>
+    <dimen name="privacy_ad_right_content_p_r">15dp</dimen>
     <!-- 2.9 end -->
+    <dimen name="app_about_content">7dp</dimen>
 
 </resources>

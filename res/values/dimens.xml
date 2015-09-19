@@ -290,16 +290,17 @@
     <dimen name="iswipe_update_tip_content_size">12sp</dimen>
     <!-- 2.8 end -->
     <dimen name="home_left_iv_menu_margin_right">2dp</dimen>
-     <dimen name="home_left_iv_menu_margin_top">8dp</dimen>
+    <dimen name="home_left_iv_menu_margin_top">8dp</dimen>
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
 
-    <!-- 2.10 msg center-->
+    <!-- 2.10 msg center -->
     <dimen name="mc_list_hori_padding">20dp</dimen>
     <dimen name="mc_list_item_top_padding">16dp</dimen>
     <dimen name="mc_list_item_height">163dp</dimen>
     <dimen name="mc_item_title_left_padding">22dp</dimen>
     <dimen name="mc_item_update_bottom_padding">12dp</dimen>
+    <dimen name="app_about_content">10dp</dimen>
 
 </resources>
