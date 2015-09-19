@@ -834,7 +834,7 @@
     <string name="advace_protect_dialog_right_text">去设置</string>
     <string name="advace_protect_dialog_title_text">建议打开高级保护</string>
     <string name="advace_protect_dialog_content_text">恭喜您加锁成功，为了防止隐私卫士被他人无意卸载后无法继续加锁应用，建议您进行高级保护。随后您可以在侧边栏中卸载隐私卫士。</string>
-    <string name="desk_ad_name">欢乐APP</string>
+    <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">高级保护设置成功</string>
     <string name="advance_protect_open_success_tip_content">高级保护成功启动！您可以在应用锁设置中停用高级保护。开启高级保护时无法在应用锁外部卸载隐私卫士</string>
     <string name="auto_start_tip_xiaomi4_and_letv">为了保证隐私卫士能够正常保护您的隐私。请点击“自启动管理”，选择隐私卫士加入到自启动列表 </string>

@@ -838,7 +838,7 @@
     <string name="advace_protect_dialog_right_text">去設置</string>
     <string name="advace_protect_dialog_title_text">建議打開高級保護</string>
     <string name="advace_protect_dialog_content_text">恭喜您加鎖成功，為了防止隱私衛士被他人無意卸載後無法繼續加鎖應用，建議您進行高級保護。隨後您可以在側邊欄中卸載隱私衛士。</string>
-    <string name="desk_ad_name">歡樂APP</string>
+    <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">高級保護設置成功</string>
     <string name="splash_guide_page_msg_title">消息中心</string>
     <string name="splash_guide_page_msg_content">眾多精彩活動，實用小技巧，一網打盡</string>
