@@ -302,5 +302,6 @@
     <dimen name="mc_item_title_left_padding">22dp</dimen>
     <dimen name="mc_item_update_bottom_padding">12dp</dimen>
     <dimen name="app_about_content">10dp</dimen>
+     <dimen name="app_about_version">18dp</dimen>
 
 </resources>
