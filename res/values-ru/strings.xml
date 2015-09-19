@@ -787,7 +787,7 @@
     <string name="msg_center_empty_say">Расскажите, что вы хотите</string>
     <string name="msg_center_feedback">Обр. связь</string>
     <string name="msg_center_load_fail">Сервер занят, пжл, обновите</string>
-    <string name="ufo_roll_again">Попробуйте еще раз</string>
+    <string name="ufo_roll_again">Повторите</string>
     <string name="ufo_theme_down">Скач.</string>
     <string name="ufo_theme_use">Прим.</string>
     <string name="ufo_theme_use_toast">Тема применяется</string>

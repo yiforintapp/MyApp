@@ -26,8 +26,8 @@
     <string name="features">Какво е новото</string>
     <string name="size">Размер</string>
     <!-- notification -->
-    <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>актуализирани</string>
-    <string name="version_found">Намерена е нова версия<xliff:g id="new_version">%1$s</xliff:g>щракнете за актуализиране</string>
+    <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g> upgrade</string>
+    <string name="version_found">Hовата версия <xliff:g id="new_version">%1$s</xliff:g>, kликнете</string>
     <string name="click_to_update">Щракнете за актуализиране</string>
     <!-- push -->
     <string name="phone_number">Номер на мобилен телефон</string>
