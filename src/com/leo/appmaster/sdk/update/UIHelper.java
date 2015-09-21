@@ -624,7 +624,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         if (isActivityOnTop(mContext) && listener != null) {
             LeoLog.d(TAG, "activity on top");
             listener.onChangeState(type, param);
-        } else if (isAppOnTop(mContext)) {
+        } else if (isAppOnTop(mContext) || mManager.isFromUser()) {
             // TODO check auto check update
             // relaunchActivity(type, param);
             checkShowRemindActivity();
@@ -632,6 +632,22 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             showNotification(type);
         }
     }
+
+    // private void showUI(int type, int param) {
+    // LeoLog.d(TAG, "type=" + type + "; param=" + param);
+    // if (isActivityOnTop(mContext) && listener != null) {
+    // LeoLog.d(TAG, "activity on top");
+    // listener.onChangeState(type, param);
+    // } else if (isAppOnTop(mContext) || mManager.isFromUser()) {
+    // if (param == UpdateManager.FORCE_UPDATE) {
+    // checkShowRemindActivity();
+    // } else {
+    // checkShowRemindActivity();
+    // }
+    // } else {
+    // showNotification(type);
+    // }
+    // }
 
     private void showNotification(int type) {
         switch (type) {
