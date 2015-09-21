@@ -24,9 +24,10 @@ public class AutoStartGuideList extends WhiteList {
     private static final int LENOVO = 3;
     private static final int LETV = 4;
     private static final int HUAWEIP6 = 5;
+    private static final int IUNI = 6;
     // private static final int OPPO = 3;
     private static int[] LIST = {
-            XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6
+            XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6, IUNI
     };
 
     public AutoStartGuideList() {
@@ -78,7 +79,9 @@ public class AutoStartGuideList extends WhiteList {
                 list = new Letv();
                 break;
             case HUAWEIP6:
-                list=new HuaWeiP6();
+                list = new HuaWeiP6();
+            case IUNI:
+                list=new Iuini();
             default:
                 break;
         }
@@ -200,9 +203,10 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
-                Log.e("start_xiaomi_4", "跳转Letv成功！");
+                Log.e(TAG, "跳转Letv成功！");
             } catch (Exception e) {
-                Log.e("start_xiaomi_4", "跳转Letv失败！");
+                Log.e(TAG, "跳转Letv失败！");
+                e.printStackTrace();
             }
             return false;
         }
@@ -221,14 +225,34 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
-                Log.e("start_xiaomi_4", "跳转huaweiP6成功！");
+                LeoLog.e(TAG, "跳转huaweiP6成功！");
             } catch (Exception e) {
-                Log.e("start_xiaomi_4", "跳转huaweiP6失败！");
+                LeoLog.e(TAG, "跳转huaweiP6失败！");
                 e.printStackTrace();
             }
             return false;
         }
 
+    }
+
+    /* inui */
+    public static class Iuini extends AutoStartGuideList {
+        @Override
+        protected boolean doHandler() {
+            Intent intent = new Intent();
+            ComponentName cn = new ComponentName("com.aurora.secure",
+                    "com.secure.activity.MainActivity");
+            intent.setComponent(cn);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                mContext.startActivity(intent);
+                LeoLog.e(TAG, "跳转inui成功！");
+            } catch (Exception e) {
+                LeoLog.e(TAG, "跳转inui失败！");
+                e.printStackTrace();
+            }
+            return false;
+        }
     }
 
     /* 判断是否为添加自启动的白名单机型 */
@@ -255,8 +279,12 @@ public class AutoStartGuideList extends WhiteList {
         }
         boolean huaweiP6 = (BuildProperties.isHuaWeiModel()
                 && !BuildProperties.isHuaWeiTipPhone(context));
-        if(huaweiP6){
+        if (huaweiP6) {
             return HUAWEIP6;
+        }
+        boolean inui = BuildProperties.isIuniModel();
+        if(inui){
+            return IUNI;
         }
         return -1;
     }

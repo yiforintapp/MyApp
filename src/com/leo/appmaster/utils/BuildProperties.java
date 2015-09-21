@@ -44,6 +44,7 @@ public class BuildProperties {
     private static final String KEY_LETV_VERSION_ROM_NAME = "ro.letv.eui";
     private static final String KEY_OPPO_VERSION_ROM_NAME = "ro.build.version.opporom";
     private static final String KEY_HUAWEI_VERSION_ROM_NAME = "ro.build.version.emui";
+    private static final String KEY_IUNI_VERSION_ROM_NAME="ro.iuni.internalmemory";
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";// 解锁等待界面动画执行过快机型
     private final Properties properties;
 
@@ -414,5 +415,9 @@ public class BuildProperties {
     /*是否为华为机型*/
     public static boolean isHuaWeiModel(){
         return isAppointModel(KEY_HUAWEI_VERSION_ROM_NAME);
+    }
+
+    public static boolean isIuniModel() {
+        return isAppointModel(KEY_IUNI_VERSION_ROM_NAME);
     }
 }
