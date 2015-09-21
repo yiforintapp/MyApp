@@ -126,8 +126,8 @@ public class HomeBoostActivity extends Activity {
             public void onMobvistaClick(Campaign campaign) {
                 HomeBoostActivity.this.finish();
              
-                // AppMasterPreference.getInstance(UFOActivity.this).setAdEtClickTime(
-                // System.currentTimeMillis());
+                SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1, "ad_cli",
+                        "adv_cnts_bst");
             }
         });
     }
@@ -301,6 +301,8 @@ public class HomeBoostActivity extends Activity {
         }
 
         if (mIsADLoaded) {
+            SDKWrapper.addEvent(HomeBoostActivity.this, SDKWrapper.P1, "ad_act",
+                    "adv_shws_bst");
             mRlResultWithAD.setVisibility(View.VISIBLE);
             TextView resultText = (TextView) mRlResultWithAD.findViewById(R.id.tv_accelerat_result);
             resultText.setText(mToast);

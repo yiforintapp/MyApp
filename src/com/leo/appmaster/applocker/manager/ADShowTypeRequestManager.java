@@ -154,7 +154,17 @@ public class ADShowTypeRequestManager {
                     amp.setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));
                     LeoLog.e("poha",
                             "请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
-                    amp.setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
+                    if(response.getInt(AD_AFTER_ACCELERATING)!=amp.getADChanceAfterAccelerating()){
+                        amp.setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
+                        if(amp.getADChanceAfterAccelerating()==1){
+                            SDKWrapper
+                            .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
+                        }else{
+                            SDKWrapper
+                            .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_off");
+                        }
+                    }
+                   
                     LeoLog.e("poha", "请求成功，加速后出现广告：" + response.getInt(AD_AFTER_ACCELERATING));
                     // 隐私防护
                     int lastPrivacyType = amp.getIsADAfterPrivacyProtectionOpen();

@@ -23,15 +23,15 @@
             android:id="@+id/tv_appname3"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="19dp"
             android:layout_marginLeft="70dp"
            android:layout_marginTop="6dp"
             android:layout_marginRight="60dp"
             android:textColor="#333333"
-            android:textSize="14sp" />
+            android:textSize="13sp" />
 
         <TextView
-            android:layout_marginTop="6dp"
+            android:layout_marginTop="3dp"
             android:id="@+id/tv_appdesc3"
             android:layout_width="match_parent"
             android:layout_height="35dp"
@@ -39,7 +39,7 @@
             android:layout_below="@id/tv_appname3"
             android:layout_marginLeft="70dp"
             android:ellipsize="marquee"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:maxLines="2"
            
             android:textColor="#333333"

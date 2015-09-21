@@ -240,6 +240,8 @@ public class GestureLockFragment extends LockFragment implements
                                 @Override
                                 public void onClick(View v) {
                                     mNormalBannerAD.setVisibility(View.GONE);
+                                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli",
+                                            "ad_banner_off");
                                 }
                             });
                             mNormalBannerAD.setVisibility(View.VISIBLE);

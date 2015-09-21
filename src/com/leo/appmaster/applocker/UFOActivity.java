@@ -39,6 +39,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.R.id;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
+import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
@@ -240,6 +241,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mBtnUseTheme.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli",
+                        "adv_cnts_alTP");
+                
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
                 if(mHideThemes.contains(mChosenTheme.packageName)){
@@ -300,6 +304,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             @Override
             public void onMobvistaClick(Campaign campaign) {
                 UFOActivity.this.finish();
+                SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_alAP");
                 SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli", "draw_gp");
                 AppMasterPreference.getInstance(UFOActivity.this).setAdEtClickTime(
                         System.currentTimeMillis());
@@ -536,7 +541,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                                 UFOActivity.this.finish();
                             }
                         });
-                
+                SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_act",
+                        "adv_shws_alNA");
                 findViewById(R.id.rl_ADdialog_nodata).setVisibility(View.VISIBLE);
                 findViewById(R.id.btn_rollagain).setOnClickListener(new OnClickListener() {
                     @Override
@@ -544,6 +550,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                        Intent intent = new Intent(UFOActivity.this, UFOActivity.class);
 //                        UFOActivity.this.finish();
 //                        startActivity(intent);
+                        SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli",
+                                "adv_cnts_alNA");
                         mWholeUFO.setY(DipPixelUtil.dip2px(UFOActivity.this, 30));
                         mWholeUFO.setX(0);
                         mWholeUFO.setVisibility(View.INVISIBLE);
@@ -567,9 +575,13 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         RelativeLayout finalView;
         if (mIsShowTheme&&mIsThemeLoaded) {
             finalView = (RelativeLayout) findViewById(R.id.rl_Themedialog_root);
+            SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_act",
+                    "adv_shws_alTP");
         }
         else{
             finalView = (RelativeLayout) findViewById(R.id.rl_ADdialog);
+            SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_act",
+                    "adv_shws_alAP");
         }
         finalView.setVisibility(View.VISIBLE);
         finalView.setPivotX(finalView.getWidth() / 2);
