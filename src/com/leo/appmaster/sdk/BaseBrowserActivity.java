@@ -8,6 +8,7 @@ import android.net.NetworkUtils;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;
+import android.os.SystemClock;
 import android.view.View;
 import android.webkit.DownloadListener;
 import android.webkit.JsResult;
@@ -31,6 +32,9 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     public static final int FLAG_HARDWARE_ACCELERATED = 16777216;
     protected static final String MX2 = "Meizu_M040";
 
+    // 解决部分浏览器内核连续调用onPageStarted，导致页面显示异常的问题
+    private static final long INTERVAL = 1000;
+
     private static final int ERR_404 = -2;
 
     protected WebViewClientImpl mWebViewClient;
@@ -40,6 +44,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     protected ProgressBar mLoadingView;
     protected View mErrorView;
     protected boolean mReceivedError;
+    private long mLastPageStartedTs;
 
     @Override
     protected void onDestroy() {
@@ -157,7 +162,12 @@ public abstract class BaseBrowserActivity extends BaseActivity {
 
     public void onPageStarted(WebView view, String url, Bitmap favicon) {
         LeoLog.d(TAG, "onPageStarted, url: " + url);
-        mReceivedError = false;
+        long currentTs = SystemClock.elapsedRealtime();
+        if (currentTs - mLastPageStartedTs > INTERVAL) {
+            // FIXME: 2015/9/21 AM-2474 浏览器内核连续回调2次，导致mReceivedError被重置为false
+            mReceivedError = false;
+        }
+        mLastPageStartedTs = currentTs;
     }
 
     public void onPageFinished(WebView view, String url) {
