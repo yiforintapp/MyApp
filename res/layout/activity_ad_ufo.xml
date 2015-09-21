@@ -102,7 +102,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:clickable="true"
-        android:visibility="visible" >
+        android:visibility="invisible" >
 
         <RelativeLayout
             android:id="@+id/rl_Themedialog"
