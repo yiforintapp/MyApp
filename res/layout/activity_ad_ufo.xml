@@ -147,11 +147,11 @@
 
             <ImageView
                 android:id="@+id/iv_ThemeIcon"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="37dp"
+                android:layout_height="37dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentLeft="true"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="5dp"
                 android:layout_marginLeft="8dp"
                 android:src="@drawable/ufo_theme_icon"
                 android:visibility="visible" >
@@ -162,7 +162,7 @@
                 android:layout_height="35dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="7dp"
-                android:layout_marginLeft="45dp"
+                android:layout_marginLeft="52dp"
                 android:orientation="vertical" >
 
                 <TextView
