@@ -80,8 +80,10 @@ public class AutoStartGuideList extends WhiteList {
                 break;
             case HUAWEIP6:
                 list = new HuaWeiP6();
+                break;
             case IUNI:
                 list=new Iuini();
+                break;
             default:
                 break;
         }

@@ -1643,7 +1643,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     /* 自启动引导对话框 */
-    private void autoStartGuideDialog() {
+    private void showAutoStartGuideDialog() {
         if (mAutoStartGuideDialog == null) {
             mAutoStartGuideDialog = new AutoStartTipDialog(this);
         }
@@ -1697,7 +1697,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             /* 是否存在于白名单 */
             int model = AutoStartGuideList.isAutoWhiteListModel(this);
             if (model != -1) {
-                autoStartGuideDialog();
+                showAutoStartGuideDialog();
             }
         }
     }
