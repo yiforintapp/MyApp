@@ -47,9 +47,16 @@ public class MsgCenterAdapter extends BaseAdapter {
     private Context mContext;
 
     private int mTitleLeftPadding;
-    private int mUpdateBottomPadding;
+    private int mDesUpdatePadding;
+    private int mDesPadding;
 
-    public MsgCenterAdapter() {
+    private ListView mListView;
+    private View mEmptyView;
+
+    public MsgCenterAdapter(ListView listView, View empty) {
+        mListView = listView;
+        mEmptyView = empty;
+
         mMessageList = new ArrayList<Message>();
 
         mContext = AppMasterApplication.getInstance();
@@ -71,7 +78,8 @@ public class MsgCenterAdapter extends BaseAdapter {
 
         Resources res = mContext.getResources();
         mTitleLeftPadding = res.getDimensionPixelSize(R.dimen.mc_item_title_left_padding);
-        mUpdateBottomPadding = res.getDimensionPixelSize(R.dimen.mc_item_update_bottom_padding);
+        mDesUpdatePadding = res.getDimensionPixelSize(R.dimen.mc_item_update_des_padding);
+        mDesPadding = res.getDimensionPixelSize(R.dimen.mc_item_des_padding);
         ThreadManager.executeOnFileThread(new Runnable() {
             @Override
             public void run() {
@@ -92,6 +100,7 @@ public class MsgCenterAdapter extends BaseAdapter {
                 mMessageList.clear();
                 mMessageList.addAll(list);
 
+                mListView.setEmptyView(mEmptyView);
                 notifyDataSetChanged();
             }
         });
@@ -154,11 +163,13 @@ public class MsgCenterAdapter extends BaseAdapter {
         }
         if (msg.isCategoryUpdate()) {
             // 更新日志只显示标题，不显示描述
-            holder.description.setVisibility(View.GONE);
-            holder.image.setPadding(0, 0, 0, mUpdateBottomPadding);
+            holder.description.setVisibility(View.INVISIBLE);
+            holder.description.setPadding(0, mDesUpdatePadding, 0, mDesUpdatePadding);
+//            holder.image.setPadding(0, 0, 0, mUpdateBottomPadding);
         } else {
             holder.description.setVisibility(View.VISIBLE);
-            holder.image.setPadding(0, 0, 0, 0);
+            holder.description.setPadding(0, mDesPadding, 0, mDesPadding);
+//            holder.image.setPadding(0, 0, 0, 0);
         }
         ImageLoader.getInstance().displayImage(msg.imageUrl, holder.image, commonOption);
 

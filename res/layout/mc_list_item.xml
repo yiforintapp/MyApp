@@ -44,8 +44,8 @@
     
     <ImageView
         android:id="@+id/mc_iv"
-        android:scaleType="centerCrop"
         android:layout_marginTop="8dp"
+        android:scaleType="centerCrop"
         android:layout_width="match_parent"
         android:layout_height="@dimen/mc_list_item_height" />
 

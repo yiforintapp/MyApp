@@ -47,7 +47,7 @@ public class MsgCenterActivity extends BaseActivity implements
         mFeedbackTv = (TextView) findViewById(R.id.msg_center_feedback_tv);
         mFeedbackTv.setOnClickListener(this);
 
-        mAdapter = new MsgCenterAdapter();
+        mAdapter = new MsgCenterAdapter(mMessageLv, mEmptyView);
         mMessageLv.setAdapter(mAdapter);
 
         ThreadManager.executeOnNetworkThread(new Runnable() {
@@ -61,7 +61,6 @@ public class MsgCenterActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        mMessageLv.setEmptyView(mEmptyView);
         mAdapter.notifyDataSetChanged();
     }
 
