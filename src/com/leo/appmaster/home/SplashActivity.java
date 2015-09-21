@@ -387,6 +387,7 @@ public class SplashActivity extends BaseActivity {
                 finish();
             } else {
                 LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
+                amp.setLastFilterSelfTime(0);
                 LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                         getPackageName(), true, null);
                 amp.setDoubleCheck(null);
