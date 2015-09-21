@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
@@ -84,17 +85,7 @@ public class MsgCenterAdapter extends BaseAdapter {
     private void onQueryResult(final List<Message> list) {
         if (list == null || list.isEmpty()) return;
         LeoLog.d(TAG, "onQueryResult, list size: " + list.size());
-//        Iterator<Message> iterator = list.iterator();
-//        while (iterator.hasNext()) {
-//            Message msg = iterator.next();
-//            if (!msg.isCategoryUpdate()) continue;
-//
-//            // 更新日志，还没有缓存，则不显示
-//            if (!MsgCenterFetchJob.hasCacheFile(msg.jumpUrl)) {
-//                iterator.remove();
-//                LeoLog.i(TAG, "remove from list, becase there is no cache.");
-//            }
-//        }
+
         ThreadManager.getUiThreadHandler().post(new Runnable() {
             @Override
             public void run() {

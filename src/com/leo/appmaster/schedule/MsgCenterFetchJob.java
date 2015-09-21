@@ -38,6 +38,7 @@ import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * 消息中心抓取任务
@@ -46,6 +47,11 @@ import java.util.List;
 public class MsgCenterFetchJob extends FetchScheduleJob {
     private static final String TAG = "MsgCenterFetchJob";
     private static final boolean DBG = true;
+
+    private static final int REQUEST_DONE = -1;
+
+    private static AtomicInteger sRequestState = new AtomicInteger(0);
+    private static final int REQUEST_SUCC = 2;
 
     public static void startImmediately() {
         LeoLog.i(TAG, "startImmediately.....");
@@ -63,6 +69,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
         FetchScheduleListener listener = newJsonArrayListener();
         HttpRequestAgent.getInstance(ctx).loadMessageCenterList(listener, listener);
+        sRequestState.set(0);
     }
 
     @Override
@@ -148,6 +155,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             list.add(message);
         }
 
+        sRequestState.set(0);
         for (Message msg : list) {
             String fileNameNoSuffix = getFileName(msg.jumpUrl);
             String htmlFileName = fileNameNoSuffix + ".html";
@@ -271,6 +279,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             if (!success) {
                 file.delete();
             }
+            checkAndAddResSuccEvent(success);
         }
     }
 
@@ -296,12 +305,35 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         public void onErrorResponse(VolleyError error) {
             LeoLog.i(TAG, "HtmlListener, onErrorResponse: " + error);
             file.delete();
+            checkAndAddResSuccEvent(false);
         }
 
         @Override
         public void onResponse(File response, boolean noMidify) {
             LeoLog.i(TAG, "HtmlListener, onResponse: " + (response != null ? response.getAbsolutePath() : null));
             LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_HTML));
+            checkAndAddResSuccEvent(true);
+        }
+    }
+
+    /**
+     * 更新日志缓存信息的上报接口
+     * @param success
+     */
+    private static void checkAndAddResSuccEvent(boolean success) {
+        Context ctx = AppMasterApplication.getInstance();
+        int value = sRequestState.get();
+        LeoLog.i(TAG, "checkAndAddResSuccEvent, value: " + value + " | success:" + success);
+        if (!success && value != REQUEST_DONE) {
+            LeoLog.i(TAG, "checkAndAddResSuccEvent, request fail add event.");
+            // 失败只需要上报一次
+            SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_cacheFail");
+            sRequestState.set(REQUEST_DONE);
+            return;
+        }
+        if (sRequestState.incrementAndGet() == REQUEST_SUCC) {
+            LeoLog.i(TAG, "checkAndAddResSuccEvent, request all succ.");
+            SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_cacheOK");
         }
     }
 
