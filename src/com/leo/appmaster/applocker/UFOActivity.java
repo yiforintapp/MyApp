@@ -266,6 +266,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         AppwallHttpUtil.requestUrl(UFOActivity.this,
                                 mChosenTheme.downloadUrl);
                     }
+                    UFOActivity.this.finish();
                 }
             }
         });
