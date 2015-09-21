@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
@@ -22,6 +23,7 @@ import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.toolbox.FileRequest;
 import com.android.volley.toolbox.ImageRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.leo.appmaster.AppMasterApplication;
@@ -59,6 +61,10 @@ public class HttpRequestAgent {
             mInstance = new HttpRequestAgent(ctx);
         }
         return mInstance;
+    }
+
+    public RequestQueue getRequestQueue() {
+        return mRequestQueue;
     }
 
     public void getAppLockList(Listener<JSONObject> listener,
@@ -144,9 +150,15 @@ public class HttpRequestAgent {
                 + requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
+//      String body = "?update_flag="
+//      + "abcdefg" + "&market_id="
+//      + mContext.getString(R.string.channel_code) + "&language="
+//      + requestLanguage + "&app_ver="
+//      + mContext.getString(R.string.version_name) + "&app_id="
+//      + mContext.getPackageName();
         url += body;
         LeoLog.d("httpurl", "New Theme Http is :" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 "", listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
@@ -163,9 +175,15 @@ public class HttpRequestAgent {
                 + requestLanguage + "&app_ver="
                 + mContext.getString(R.string.version_name) + "&app_id="
                 + mContext.getPackageName();
+//        String body = "?update_flag="
+//                + "zyxrdx" + "&market_id="
+//                + mContext.getString(R.string.channel_code) + "&language="
+//                + requestLanguage + "&app_ver="
+//                + mContext.getString(R.string.version_name) + "&app_id="
+//                + mContext.getPackageName();
         url += body;
         LeoLog.d("httpurl", "New Business Http is :" + url);
-        JsonObjectRequest request = new JsonObjectRequest(Method.POST, url,
+        JsonObjectRequest request = new JsonObjectRequest(Method.GET, url,
                 "", listener, eListener);
         request.setShouldCache(false);
         mRequestQueue.add(request);
@@ -321,6 +339,7 @@ public class HttpRequestAgent {
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         request.setRetryPolicy(policy);
+        request.setShouldCache(false);
         mRequestQueue.add(request);
     }
 
@@ -351,6 +370,7 @@ public class HttpRequestAgent {
         mRequestQueue.add(request);
     }
 
+    
     /* 加载ISwip更新提示 */
     public void loadISwipCheckNew(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
@@ -373,6 +393,37 @@ public class HttpRequestAgent {
                 errorListener);
         LeoLog.e("poha", "adtype，访问连接：" + url);
         request.setShouldCache(false);
+        mRequestQueue.add(request);
+    }
+
+    /**
+     * 加载消息中心列表
+     * @param listener
+     * @param errorListener
+     */
+    public void loadMessageCenterList(Listener<JSONArray> listener, ErrorListener errorListener) {
+        Context context = AppMasterApplication.getInstance();
+        String language = getPostLanguage();
+        String country = Utilities.getCountryID(context);
+        String versionName = mContext.getString(R.string.version_name);
+        String channelCode = mContext.getString(R.string.channel_code);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(Utilities.getURL(Constants.MSG_CENTER_URL)).append("/")
+                .append(country).append("/")
+                .append(language).append("/")
+                .append(versionName).append("/")
+                .append(channelCode)
+                .append(".html");
+        String url = stringBuilder.toString();
+        LeoLog.i("MsgCenterFetchJob", "load url: " + url);
+        JsonArrayRequest request = new JsonArrayRequest(url, listener, errorListener);
+        request.setShouldCache(true);
+        // 最多重试3次
+        int retryCount = 3;
+        DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
+                retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        request.setRetryPolicy(policy);
         mRequestQueue.add(request);
     }
 

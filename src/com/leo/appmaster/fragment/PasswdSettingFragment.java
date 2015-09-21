@@ -30,6 +30,7 @@ import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
@@ -41,6 +42,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 public class PasswdSettingFragment extends BaseFragment implements
@@ -403,9 +405,11 @@ public class PasswdSettingFragment extends BaseFragment implements
                     gotoBackUp(type);
                 } else if (type == ((LockSettingActivity) mActivity).mQuickGues) {
                     gotoQuickGues(type);
-                }else if (type == ((LockSettingActivity) mActivity).mLockThem) {
+                } else if (type == ((LockSettingActivity) mActivity).mLockThem) {
                     gotoLockThem(type);
-                }else {
+                } else if (type == ((LockSettingActivity) mActivity).mPrivacyContact) {
+                    gotoPrivacyContact(type);
+                } else {
                     gotoHome();
                 }
             } else {
@@ -450,19 +454,37 @@ public class PasswdSettingFragment extends BaseFragment implements
         Intent intent = new Intent(mActivity, HomeActivity.class);
         mActivity.startActivity(intent);
     }
-    
+
+    private void gotoPrivacyContact(int type) {
+        String flag = ((LockSettingActivity) mActivity).mIswipeToPrivacyContact;
+        Intent intent = new Intent(mActivity, PrivacyContactActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (!Utilities.isEmpty(flag)) {
+            if (PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG.equals(flag)) {
+                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                        PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+            } else if (PrivacyContactUtils.TO_PRIVACY_CALL_FLAG.equals(flag)) {
+                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                        PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+            }
+        }
+        startActivity(intent);
+        AppMasterPreference.getInstance(mActivity).setGuidePageFirstUse(false);
+    }
+
     private void gotoLockThem(int type) {
         Intent intent = new Intent(mActivity, LockerTheme.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
-    
+
     private void gotoQuickGues(int type) {
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(mActivity);
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(mActivity);
         boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isOppoOs();
+        boolean isOppoOs = BuildProperties.isYiJia();
         boolean isOpenWindow =
                 BuildProperties.isFloatWindowOpAllowed(mActivity);
 

@@ -15,16 +15,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
-        <ImageView
-            android:id="@+id/iv_AD_entry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/layout_title_bar"
-            android:layout_marginLeft="40dp"
-            android:background="@drawable/alien_bg1"
-            android:focusable="true"
-            android:onClick="true"
-            android:visibility="invisible" />
+        
 
         <FrameLayout
             android:id="@+id/fragment_contain"
@@ -82,6 +73,18 @@
                 android:textColor="@color/common_button_selecter"
                 android:textSize="13sp" />
         </RelativeLayout>
+        
+        <ImageView
+            android:id="@+id/iv_AD_entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layout_title_bar"
+            android:layout_marginLeft="40dp"
+            android:background="@drawable/alien_bg1"
+            android:focusable="true"
+            android:onClick="true"
+            android:visibility="invisible" />
+        
     </RelativeLayout>
 
     <RelativeLayout

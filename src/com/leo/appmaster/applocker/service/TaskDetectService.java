@@ -3,7 +3,6 @@ package com.leo.appmaster.applocker.service;
 
 import java.util.List;
 import java.util.TimerTask;
-import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +32,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
@@ -58,6 +58,8 @@ public class TaskDetectService extends Service {
 
     public static final String SYSTEMUI_PKG = "com.android.systemui";
     private static final String ES_UNINSTALL_ACTIVITY = ".app.UninstallMonitorActivity";
+
+    private static final String HTC_USAGE = "com.htc.usage";
     private static final String STATE_NORMAL = "normal";
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
@@ -109,7 +111,7 @@ public class TaskDetectService extends Service {
         mCleaner = ProcessCleaner.getInstance(getApplicationContext());
 
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
-        mScheduledExecutor = Executors.newScheduledThreadPool(2);
+        mScheduledExecutor = ThreadManager.getAsyncExecutor();
         flowDetecTask = new FlowTask();
         // mflowDatectFuture =
         // mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
@@ -223,7 +225,7 @@ public class TaskDetectService extends Service {
         ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> infos = am.getRunningAppProcesses();
 
-        if (infos.size() > 5)
+        if (infos != null && infos.size() > 5)
             return true;
 
         return false;
@@ -483,11 +485,20 @@ public class TaskDetectService extends Service {
                             && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
                         String pkgList[] = pi.pkgList;
                         if (pkgList != null && pkgList.length > 0) {
-                            pkgName = pkgList[0];
+                            int index = 0;
+                            pkgName = pkgList[index];
                             if (SYSTEMUI_PKG.equals(pkgName)) {
                                 continue;
                             }
-                            activityName = pkgList[0];
+                            if (HTC_USAGE.equals(pkgName)) {
+                                // FIXME: 2015/9/15 AM-2330 htc机型，com.htc.usage会加载到com.android.settings进程中
+                                if (pkgList.length > 1) {
+                                    pkgName = pkgList[++index];
+                                } else {
+                                    continue;
+                                }
+                            }
+                            activityName = pkgList[index];
                             if (pkgName.equals(getPackageName())) {
                                 activityName = TaskChangeHandler.LOCKSCREENNAME;
                                 try {

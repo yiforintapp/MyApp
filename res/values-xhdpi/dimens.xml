@@ -2,8 +2,9 @@
 <resources>
 
     <dimen name="gridview_vertical_spacing">12dip</dimen>
-	<dimen name="fragment_password_vertical_space_big">20dp</dimen>
+    <dimen name="fragment_password_vertical_space_big">20dp</dimen>
     <dimen name="fragment_password_vertical_space_small">9dp</dimen>
+
     <integer name="gridview_row_count">5</integer>
 
     <dimen name="splash_width">206dp</dimen>
@@ -62,8 +63,8 @@
     <dimen name="help_icon_height">24dp</dimen>
     <dimen name="help_setting_margintop">18dp</dimen>
     <dimen name="fragment_lock_password_passwd_input_tip_margintop">10dp</dimen>
-    <dimen name="fragment_lock_password_appicon_width">48dp</dimen>
-    <dimen name="fragment_lock_password_appicon_height">48dp</dimen>
+    <dimen name="fragment_lock_password_appicon_width">68dp</dimen>
+    <dimen name="fragment_lock_password_appicon_height">68dp</dimen>
     <dimen name="fragment_lock_password_passwd_input_tip_textsize">16sp</dimen>
     <dimen name="fragment_lock_password_layout_passwd_height">20dp</dimen>
     <dimen name="fragment_lock_password_tv_passwd_width">20dp</dimen>
@@ -268,5 +269,28 @@
     <dimen name="ges_icon_padding">10dp</dimen>
 
     <!-- 2.8 end -->
+
+
+    <!-- 2.9 start -->
+    <dimen name="privacy_ad_layout_height">118dp</dimen>
+    <dimen name="privacy_ad_icon_m_left">19dp</dimen>
+    <dimen name="privacy_ad_dec_m_top">5dp</dimen>
+    <dimen name="privacy_ad_download_width">302dp</dimen>
+    <dimen name="privacy_ad_download_height">35dp</dimen>
+    <dimen name="privacy_ad_right_content_p_r">25dp</dimen>
+    <dimen name="home_ad_icon_width">26dp</dimen>
+    <dimen name="home_ad_icon_height">45dp</dimen>
+    <dimen name="home_ad_icon_m_top">230dp</dimen>
+    <dimen name="theme_ad_icon_height">38dp</dimen>
+    <dimen name="theme_ad_icon_m_left">10dp</dimen>
+    <dimen name="theme_ad_test_width">180dp</dimen>
+    <dimen name="theme_ad_test_m_left">7dp</dimen>
+    <dimen name="theme_ad_test_size">13sp</dimen>
+    <dimen name="theme_ad_desc_size">10sp</dimen>
+    <dimen name="theme_ad_button_width">78dp</dimen>
+    <dimen name="theme_ad_button_height">28dp</dimen>
+    <dimen name="theme_ad_button_m_right">7dp</dimen>
+        <dimen name="theme_ad_button_test_size">12sp</dimen>
+    <!-- 2.9 end -->
 
 </resources>

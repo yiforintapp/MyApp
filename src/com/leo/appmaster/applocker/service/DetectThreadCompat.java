@@ -14,6 +14,7 @@ import android.os.FileObserver;
 import android.os.Process;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.ProcessAdj;
@@ -97,6 +98,7 @@ public class DetectThreadCompat extends Thread {
             mForegroundAdj = needToListenAdj;
             
             if (needToListenAdj != null) {
+                mLockHandler.setPkgBeforeScreenOff(needToListenAdj.pkg);
                 notFoundAppCount = 0;
                 if (DBG) {
                     LeoLog.i(TAG, needToListenAdj.pkg);
@@ -104,7 +106,8 @@ public class DetectThreadCompat extends Thread {
                 
                 AdjFileObserver observer = createAdjFileObserver(needToListenAdj);
                 if (observer == null) continue;
-                
+
+                mAdjObserver = observer;
                 if (!needToListenAdj.equals(lastProcessAdj)) {
                     if (DBG) {
                         LeoLog.i(TAG, "neet to stop and restart watching.");
@@ -115,7 +118,6 @@ public class DetectThreadCompat extends Thread {
                     if (mAdjObserver != null) {
                         mAdjObserver.stopWatching();
                     }
-                    mAdjObserver = observer;
                     mAdjObserver.startWatching();
                 } else {
                     if (DBG) {
@@ -144,7 +146,7 @@ public class DetectThreadCompat extends Thread {
                 // MAX_NOT_FOUND_COUNT之后如果还找不到才认为是真的没找到，避免误操作
                 if (++notFoundAppCount >= MAX_NOT_FOUND_COUNT) {
                     // 在加锁app，回到google页面，找不到监控的app，所以没有把之前加锁app的状态清理掉
-                    mLockHandler.handleAppLaunch("what ever.", "", "");
+                    mLockHandler.handleAppLaunch(Constants.PKG_WHAT_EVER, "", "");
                 }
             }
             

@@ -21,6 +21,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
@@ -39,6 +40,10 @@ public class SplashBootstrap extends Bootstrap {
     public static volatile boolean mSplashFlag;
     public static volatile boolean mIsEmptyForSplashUrl;
     public static volatile int mSplashDelayTime;
+
+    SplashBootstrap() {
+        super();
+    }
 
     @Override
     protected boolean doStrap() {
@@ -119,7 +124,7 @@ public class SplashBootstrap extends Bootstrap {
                     loadSplashDate(false);
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             long delay = pref.getSplashCurrentStrategy() - (curTime - lastLoadTime);
             if (delay < 0) {
                 delay = AppMasterConfig.TIME_12_HOUR;
@@ -280,7 +285,7 @@ public class SplashBootstrap extends Bootstrap {
                     loadSplashDate(false);
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             long delay = pref.getSplashCurrentStrategy();
 
             if (delay < 0) {
@@ -324,7 +329,7 @@ public class SplashBootstrap extends Bootstrap {
                     loadSplashDate(false);
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             long delay = pref.getSplashCurrentStrategy();
 
             if (delay < 0) {
@@ -379,7 +384,7 @@ public class SplashBootstrap extends Bootstrap {
                         loadSplashDate(false);
                     }
                 };
-                Timer timer = new Timer();
+                Timer timer = ThreadManager.getTimer();
                 timer.schedule(recheckTask, pref.getSplashCurrentStrategy());
             }
         });

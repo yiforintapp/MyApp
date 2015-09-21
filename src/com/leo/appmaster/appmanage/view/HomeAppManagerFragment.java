@@ -44,6 +44,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
@@ -181,7 +182,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         homeAppManagerTask = new HomeAppAsyncTask();
         homeAppManagerTask.execute();
 
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 cleanView();
@@ -244,7 +245,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     public void showdonghua() {
         LeoLog.d("shodonghua", "SHOW DONG HUA");
-        new Thread() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
             public void run() {
                 if (isGestureAnimating) {
                     if (roundProgressBar != null) {
@@ -282,8 +284,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     e.printStackTrace();
                 }
                 isShowIng = false;
-            };
-        }.start();
+            }
+        });
     }
 
     private void InitHeadView() {
@@ -557,7 +559,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     private void donghua_show_clean() {
-        new Thread() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
             public void run() {
                 if (isStopDongHua) {
                     mProgress = mNowDongHuaWhere;
@@ -577,8 +580,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
                     msg.obj = mProgress;
                     handler.sendMessage(msg);
                 }
-            };
-        }.start();
+            }
+        });
 
         ScaleAnimation show = new ScaleAnimation(1.0f, 0.0f, 1.0f,
                 0.0f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f,
@@ -794,7 +797,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(getActivity());
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(getActivity());
         boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isOppoOs();
+        boolean isOppoOs = BuildProperties.isYiJia();
         boolean isOpenWindow =
                 BuildProperties.isFloatWindowOpAllowed(getActivity());
         if (!checkFloatWindow) {
@@ -924,7 +927,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         mAppManagerIswipDialog.setVisiblilyTitle(false);
         String contentButtonText = context.getResources().getString(
                 R.string.first_open_quick_gesture_dialog_tip_cotent);
-        mAppManagerIswipDialog.setContextText(contentButtonText);
+        mAppManagerIswipDialog.setContentText(contentButtonText);
         String leftButtonText = context.getResources().getString(
                 R.string.quick_first_tip_dialog_left_bt);
         mAppManagerIswipDialog.setLeftButtonText(leftButtonText);

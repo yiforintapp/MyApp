@@ -1,16 +1,18 @@
 
 package com.leo.appmaster.applocker.model;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 
-import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-
-public class LockMode {
+public class LockMode implements Parcelable {
     /**
      * 访客模式
      */
@@ -43,7 +45,7 @@ public class LockMode {
 
     public LockMode() {
     }
-    
+
     public Drawable getModeDrawable() {
         int drawableId = 0;
         switch (defaultFlag) {
@@ -62,4 +64,52 @@ public class LockMode {
         Context ctx = AppMasterApplication.getInstance();
         return ctx.getResources().getDrawable(drawableId);
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(modeId);
+        dest.writeString(modeName);
+        dest.writeInt(defaultFlag);
+        dest.writeInt(isCurrentUsed ? 1 : 0);
+        dest.writeInt(haveEverOpened ? 1 : 0);
+        dest.writeInt(selected ? 1 : 0);
+        
+        // 写入列表的长度
+        dest.writeInt(lockList != null ? lockList.size() : 0);
+        for (String lock : lockList) {
+            dest.writeString(lock);
+        }
+    }
+
+    public static final Creator<LockMode> CREATOR = new Creator<LockMode>() {
+        @Override
+        public LockMode createFromParcel(Parcel source) {
+            LockMode lockMode = new LockMode();
+            lockMode.modeId = source.readInt();
+            lockMode.modeName = source.readString();
+            lockMode.defaultFlag = source.readInt();
+            lockMode.isCurrentUsed = source.readInt() == 1 ? true : false;
+            lockMode.haveEverOpened = source.readInt() == 1 ? true : false;
+            lockMode.selected = source.readInt() == 1 ? true : false;
+            
+            int listSize = source.readInt();
+            for (int i = 0; i < listSize; i++) {
+                if (lockMode.lockList == null) {
+                    lockMode.lockList = new ArrayList<String>();
+                }
+                lockMode.lockList.add(source.readString());
+            }
+            return lockMode;
+        }
+
+        @Override
+        public LockMode[] newArray(int size) {
+            return new LockMode[size];
+        }
+    };
 }

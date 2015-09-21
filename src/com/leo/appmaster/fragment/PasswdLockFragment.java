@@ -26,6 +26,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -119,9 +120,17 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         if (!NetWorkUtil.isNetworkAvailable(mActivity)||windowH<=320) {
             return;
         }
-        
+        AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
+        String unitId;
         mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(mActivity, new MobvistaListener() {
+        if(amp.getADShowType()==1){
+            unitId=Constants.UNIT_ID_59;
+        }else if(amp.getADShowType()==2){
+            unitId=Constants.UNIT_ID_60;
+        }else{
+            return;
+        }
+        mAdEngine.loadMobvista(mActivity, unitId,new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
@@ -151,7 +160,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                             Button call1 = (Button) mNormalBannerAD
                                     .findViewById(R.id.iv_ad_app_download);
                             call1.setText(campaign.getAdCall());
-                            mAdEngine.registerView(mNormalBannerAD);
+                            mAdEngine.registerView(getActivity(), mNormalBannerAD);
                             mCurrentRegisterView=1;
                             ImageView close1=(ImageView) mNormalBannerAD.findViewById(R.id.iv_adclose);
                             close1.setOnClickListener(new OnClickListener() {
@@ -234,7 +243,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                                     });
                                     Button install = (Button) view.findViewById(R.id.bt_installapp);
                                     install.setText(campaign.getAdCall());
-                                    mAdEngine.registerView(install);
+                                    mAdEngine.registerView(getActivity(), install);
                                     mCurrentRegisterView = 2;
                                     View close = view.findViewById(R.id.iv_adclose);
                                     close.setOnClickListener(new OnClickListener() {
@@ -742,7 +751,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     public void onDestroy() {
         super.onDestroy();
 
-        MobvistaEngine.getInstance().release();
+        MobvistaEngine.getInstance().release(getActivity());
     }
 
     @Override

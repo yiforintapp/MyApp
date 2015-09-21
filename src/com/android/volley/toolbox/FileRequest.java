@@ -25,6 +25,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.leo.appmaster.home.MultiModeView;
 
 /**
  * A canned request for retrieving the response body at a given URL as a String.
@@ -67,6 +68,15 @@ public class FileRequest extends Request<File> {
     @Override
     protected Response<File> parseNetworkResponse(NetworkResponse response) {
         try {
+            File file = new File(mFile);
+            if (!file.exists()) {
+                File parentFile = file.getParentFile();
+                if (!parentFile.exists()) {
+                    parentFile.mkdirs();
+                }
+                file.createNewFile();
+            }
+
             FileOutputStream fout = new FileOutputStream(mFile);
             byte[] bytes = response.data;
             fout.write(bytes);

@@ -48,15 +48,16 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
                 Uri uri = Uri
                         .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
                 intent.setData(uri);
-                ComponentName cn = new ComponentName("com.android.vending",
-                        "com.google.android.finsky.activities.MainActivity");
-                intent.setComponent(cn);
+                // ComponentName cn = new ComponentName("com.android.vending",
+                // "com.google.android.finsky.activities.MainActivity");
+                // intent.setComponent(cn);
+                intent.setPackage("com.android.vending");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 LockManager.getInstatnce().timeFilterSelf();
-                Intent intent2 = new Intent(this, GooglePlayGuideActivity.class);
-                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent2);
+//                Intent intent2 = new Intent(this, GooglePlayGuideActivity.class);
+//                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                startActivity(intent2);
                 showGP = true;
             } catch (Exception e) {
 

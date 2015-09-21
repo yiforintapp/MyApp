@@ -40,9 +40,11 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
@@ -88,7 +90,8 @@ public class SplashActivity extends BaseActivity {
     private boolean mShowSplashFlag;
     private TextView mSkipText;
     private static final String TAG = "SplashActivity";
-    private static final boolean DBG = true;
+    /* 是否走测试模式：true--为测试模式，false--为正常模式 */
+    private static final boolean DBG = false;
 
     /* Guide page stuff end */
     @Override
@@ -122,9 +125,11 @@ public class SplashActivity extends BaseActivity {
                     .getSplashSkipMode());
         }
         /**
-         * 可能存在的几种情况： @ 1.只有开始时间 @ 2.只有结束时间 @ 3.没有配置时间
-         * 
-         * @4.开始.结束时间都有
+         * 可能存在的几种情况：<br>
+         * 1.只有开始时间<br>
+         * 2.只有结束时间<br>
+         * 3.没有配置时间<br>
+         * 4.开始.结束时间都有<br>
          */
         if (startShowSplashTime > 0 || endShowSplashTime > 0) {
             /* 只有开始时间 */
@@ -146,10 +151,18 @@ public class SplashActivity extends BaseActivity {
                 }
             }
             if (!mShowSplashFlag) {
-                showDefaultSplash();
+                if (!DBG) {
+                    showDefaultSplash();
+                } else {
+                    showSplash();
+                }
             }
         } else {
-            showDefaultSplash();
+            if (!DBG) {
+                showDefaultSplash();
+            } else {
+                showSplash();
+            }
         }
         PrivacyHelper.getInstance(this).setDirty(true);
     }
@@ -379,6 +392,9 @@ public class SplashActivity extends BaseActivity {
                 amp.setDoubleCheck(null);
             }
         } else {
+            if (AppMasterConfig.LOGGABLE) {
+                LeoLog.f(TAG, "startHome", Constants.LOCK_LOG);
+            }
             Intent intent = new Intent(this, LockSettingActivity.class);
             startActivity(intent);
             finish();
@@ -389,8 +405,7 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void startInitTask() {
-        new Thread(new Runnable() {
-
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 // get recommend app lock list
@@ -405,14 +420,12 @@ public class SplashActivity extends BaseActivity {
                             listener);
                 }
             }
-        }).start();
+        });
     }
 
     /* add for Guide Screen begin */
     private void showGuide() {
         mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
-        // mPageColors[1] =
-        // getResources().getColor(R.color.guide_page2_background_color);
         mPageColors[1] = getResources().getColor(R.color.guide_page3_background_color);
         mPageColors[2] = getResources().getColor(R.color.guide_page4_background_color);
         Log.i("tag", mPageColors[0] + "  " + mPageColors[3]);
@@ -597,13 +610,11 @@ public class SplashActivity extends BaseActivity {
         TextView tvTitle, tvContent, tvMoreFunc;
         Button enterAppButton;
         ImageView bigImage = null;
-        mPageColors[4] = getResources().getColor(R.color.new_guide_page1_background_color);
-        mPageColors[5] = getResources().getColor(R.color.new_guide_page2_background_color);
-        // mPageColors[6] =
-        // getResources().getColor(R.color.new_guide_page3_background_color);
-        mPageColors[6] = getResources().getColor(R.color.guide_page2_background_color);
+        mPageColors[3] = getResources().getColor(R.color.new_guide_page1_background_color);
+        mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
+        mPageColors[5] = getResources().getColor(R.color.new_guide_page4_background_color);
         mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
-        mNewPageBackgroundView.initBackgroundColor(mPageColors[4]);
+        mNewPageBackgroundView.initBackgroundColor(mPageColors[3]);
         /* 显示跳过按钮 */
         setSkipClickListener();
         /* page1 */
@@ -628,11 +639,11 @@ public class SplashActivity extends BaseActivity {
         /* page3 */
         ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
         bigImage = (ImageView) page3.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_2));
+        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_4));
         tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page2_title));
+        tvTitle.setText(getResources().getString(R.string.splash_guide_page_msg_title));
         tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page2_content));
+        tvContent.setText(getResources().getString(R.string.splash_guide_page_msg_content));
         mNewFuncPageViews.add(page3);
         mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
         mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
@@ -646,10 +657,11 @@ public class SplashActivity extends BaseActivity {
         mNewFuncViewPager.setAdapter(new GuidePageAdapter(mNewFuncPageViews));
         mIndicator = (CirclePageIndicator) mNewGuideMain.findViewById(R.id.new_splash_indicator);
         mIndicator.setViewPager(mNewFuncViewPager);
-        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 4));
+        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 3));
 
         tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
         tvMoreFunc.setVisibility(View.VISIBLE);
+        tvMoreFunc.setTextColor(getResources().getColor(R.color.new_guide_page4_background_color));
         tvMoreFunc.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -661,7 +673,7 @@ public class SplashActivity extends BaseActivity {
         enterAppButton = (Button) page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
         enterAppButton.setTextColor(getResources().getColor(
-                R.color.guide_page2_background_color));
+                R.color.new_guide_page4_background_color));
         enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
         enterAppButton.setOnClickListener(new OnClickListener() {
             @Override

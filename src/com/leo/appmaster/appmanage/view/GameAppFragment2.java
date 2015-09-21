@@ -37,6 +37,7 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -461,21 +462,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     }
 
     private void sendtoLoad() {
-        new Thread() {
-            public void run() {
-
-                try {
-                    sleep(2000);
-
-                    Message msg = mHandler.obtainMessage(MSG_LOAD_MORE_SUCCESSED);
-                    mHandler.sendMessage(msg);
-
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-
-            };
-        }.start();
+        mHandler.sendEmptyMessageDelayed(MSG_LOAD_MORE_SUCCESSED, 2000);
     }
     
     private static class LoadGameLisener extends RequestListener<GameAppFragment2> {

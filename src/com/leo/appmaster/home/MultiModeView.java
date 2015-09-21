@@ -69,13 +69,16 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     private LockManager mLockManager;
     private int currModePosition;
     private Bitmap grayBitmap;
+    private Context mContext;
 
     public MultiModeView(Context context) {
         super(context);
+        this.mContext = context;
     }
 
     public MultiModeView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.mContext = context;
         mLockManager = LockManager.getInstatnce();
     }
 
@@ -142,14 +145,15 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                     public void run() {
                         LockMode mode = (LockMode) mSelected.getTag();
                         BitmapDrawable drawable = (BitmapDrawable) mode.getModeDrawable();
-                        
+
                         grayBitmap = BitmapUtils.createGaryBitmap(drawable.getBitmap());
                     }
                 });
             }
             selectedImg.setVisibility(View.GONE);
-//            modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
-//                    lockMode.modeIcon)));
+            // modeIcon.setBackgroundDrawable((new
+            // BitmapDrawable(getResources(),
+            // lockMode.modeIcon)));
             modeIcon.setBackgroundDrawable(lockMode.getModeDrawable());
 
             mHolder.setTag(lockMode);
@@ -168,6 +172,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
         mModeNameTv.setVisibility(View.INVISIBLE);
         mIvAdd.setVisibility(View.INVISIBLE);
         backgroundAnimtion();
+        ((HomeActivity) mContext).setAdIconInVisible();
         if (getVisibility() != View.VISIBLE) {
             setVisibility(View.VISIBLE);
         }
@@ -222,6 +227,10 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
     }
 
     public void hide() {
+        // ((HomeActivity) mContext).shouldShowAd();
+        if (((HomeActivity) mContext).isCanShow()) {
+            ((HomeActivity) mContext).setAdIconVisible();
+        }
         if (getVisibility() == View.VISIBLE) {
             setVisibility(View.GONE);
         }
@@ -403,21 +412,26 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                             modeIcon = (TextView) mSelected.findViewById(R.id.tv_lock_mode_icon);
                             selectedImg = (ImageView) mSelected.findViewById(R.id.img_selected);
                             selectedImg.setVisibility(View.GONE);
-//                            modeIcon.setBackgroundDrawable((new BitmapDrawable(getResources(),
-//                                    lastSelectedMode.modeIcon)));
+                            // modeIcon.setBackgroundDrawable((new
+                            // BitmapDrawable(getResources(),
+                            // lastSelectedMode.modeIcon)));
                             modeIcon.setBackgroundDrawable(lastSelectedMode.getModeDrawable());
 
                             modeIcon = (TextView) view.findViewById(R.id.tv_lock_mode_icon);
                             post(new Runnable() {
                                 @Override
                                 public void run() {
-                                    if (mode != null/* && mode.modeIcon != null*/) {
-//                                        modeIcon.setBackgroundDrawable((new BitmapDrawable(
-//                                                getResources(),
-//                                                BitmapUtils.createGaryBitmap(mode.modeIcon))));
-                                        BitmapDrawable drawable = (BitmapDrawable) mode.getModeDrawable();
-                                        Bitmap grayBitmap = BitmapUtils.createGaryBitmap(drawable.getBitmap());
-                                        modeIcon.setBackgroundDrawable(new BitmapDrawable(getResources(), grayBitmap));
+                                    if (mode != null/* && mode.modeIcon != null */) {
+                                        // modeIcon.setBackgroundDrawable((new
+                                        // BitmapDrawable(
+                                        // getResources(),
+                                        // BitmapUtils.createGaryBitmap(mode.modeIcon))));
+                                        BitmapDrawable drawable = (BitmapDrawable) mode
+                                                .getModeDrawable();
+                                        Bitmap grayBitmap = BitmapUtils.createGaryBitmap(drawable
+                                                .getBitmap());
+                                        modeIcon.setBackgroundDrawable(new BitmapDrawable(
+                                                getResources(), grayBitmap));
                                     }
                                     selectedImg.setVisibility(View.VISIBLE);
                                 }
@@ -428,15 +442,9 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                             mLockManager.setCurrentLockMode(mode, true);
                             checkLockTip();
                             SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "modeschage", "home");
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    LeoEventBus.getDefaultBus().post(
-                                            new LockModeEvent(EventId.EVENT_MODE_CHANGE,
-                                                    "multi mode page selectd"));
-                                }
-                            }).start();
-
+                            LeoEventBus.getDefaultBus().post(
+                                    new LockModeEvent(EventId.EVENT_MODE_CHANGE,
+                                            "multi mode page selectd"));
                             disappearAnim(curPosition, selectedImg);
                             break;
                         case MotionEvent.ACTION_CANCEL:
@@ -452,7 +460,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             return false;
         }
     }
-    
+
     private void checkLockTip() {
         int switchCount = AppMasterPreference.getInstance(this.getContext()).getSwitchModeCount();
         switchCount++;
@@ -499,15 +507,16 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                         }
                     }
                 });
-//                dialog.getWindow().setType(
-//                        WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                // dialog.getWindow().setType(
+                // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
                 dialog.show();
             } else {
                 if (timeLockCount == 0 && locationLockCount != 0) {
                     // show time lock btn dialog
                     LEOAlarmDialog dialog = new LEOAlarmDialog(this.getContext());
                     dialog.setTitle(R.string.time_location_lock_tip_title);
-                    String tip = this.getContext().getString(R.string.time_location_lock_tip_content);
+                    String tip = this.getContext().getString(
+                            R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(this.getContext().getString(R.string.lock_mode_time));
                     dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
@@ -537,7 +546,8 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                     // show lcaotion btn dialog
                     LEOAlarmDialog dialog = new LEOAlarmDialog(this.getContext());
                     dialog.setTitle(R.string.time_location_lock_tip_title);
-                    String tip = this.getContext().getString(R.string.time_location_lock_tip_content);
+                    String tip = this.getContext().getString(
+                            R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(this.getContext().getString(R.string.lock_mode_location));
                     dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
@@ -549,7 +559,8 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
                                 // cancel
                             } else if (which == 1) {
                                 // new time lock
-                                Intent intent = new Intent(getContext(), LocationLockEditActivity.class);
+                                Intent intent = new Intent(getContext(),
+                                        LocationLockEditActivity.class);
                                 intent.putExtra("new_location_lock", true);
                                 intent.putExtra("from_dialog", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -558,8 +569,8 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
 
                         }
                     });
-//                    dialog.getWindow().setType(
-//                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    // dialog.getWindow().setType(
+                    // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
                     dialog.show();
                 }
             }

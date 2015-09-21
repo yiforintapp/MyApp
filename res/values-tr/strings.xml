@@ -489,7 +489,7 @@
 
     <!-- My Apps -->
     <string name="myapp_details">UYGULAMA DETAYLARI</string>
-    <string name="app_manager">"Uygulamalarım"</string>
+    <string name="app_manager">Yönetimi</string>
     <string name="first_backup">Yedekleme</string>
     <string name="first_usage">Veri Kullanımı</string>
     <string name="first_battery">Batarya</string>
@@ -812,7 +812,7 @@
     <string name="iswip_update_notifi_button">Şimdi Güncelle</string>
     <string name="ad_timeout">Harika! Daha fazla sürpriz seni bekliyor!</string>
     <!-- 2.8 end -->
-    <!-- 2.10 start -->
+    <!-- 2.10 srart -->
     <string name="auto_start_guide_tip_title">Ayrıcalığı gerekli </string>
     <string name="auto_start_guide_tip_content">Başlangıçta Gizlilik Korumayı Çalıştır  </string>
     <string name="auto_start_guide_tip_left_button">Sonra</string>

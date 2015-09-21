@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
@@ -473,7 +474,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     } else if (flag == DIALOG_DELECTE_VIDEO) {
                          DeleteTask task = new DeleteTask(VideoViewPager.this);
                           task.execute(true);
-                        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                        ThreadManager.executeOnAsyncThread(new Runnable() {
                             @Override
                             public void run() {
                                 deleteVideo();

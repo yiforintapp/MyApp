@@ -8,6 +8,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
+import java.util.concurrent.locks.Lock;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
@@ -22,13 +23,16 @@ import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.database.ContentObserver;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.provider.CallLog.Calls;
@@ -43,7 +47,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -53,6 +59,8 @@ import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.ContactCallLog;
 import com.leo.appmaster.privacycontact.MessageBean;
+import com.leo.appmaster.privacycontact.PrivacyContactActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.model.QuickGestureContactTipInfo;
 import com.leo.appmaster.quickgestures.model.QuickGsturebAppInfo;
 import com.leo.appmaster.quickgestures.ui.QuickGestureFilterAppDialog;
@@ -60,10 +68,11 @@ import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
+import com.leo.appmaster.utils.Utilities;
 
 public class QuickGestureManager {
     public static final String TAG = "QuickGestureManager";
-
+    public static final boolean DBG = true;
     protected static final String AppLauncherRecorder = null;
     public static boolean isFromDialog = false;
     public static boolean isClickSure = false;
@@ -117,7 +126,7 @@ public class QuickGestureManager {
         }
         return mInstance;
     }
-    
+
     public void init() {
         if (!mInited) {
             mInited = true;

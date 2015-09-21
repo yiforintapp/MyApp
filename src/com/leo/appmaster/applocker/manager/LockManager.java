@@ -9,7 +9,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -25,6 +24,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
+import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -36,6 +36,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.TimeLockEditActivity;
@@ -49,6 +50,7 @@ import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.bootstrap.CheckNewBootstrap;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.AppLockChangeEvent;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
@@ -78,6 +80,10 @@ public class LockManager {
     public static final String TAG = "LockManager";
 
     public static final String ACTION_TIME_LOCK = "action_time_lock";
+    private static final String ACTION_FIRST_USE_LOCK_MODE = "com.leo.appmaster.ACTION_FIRST_USE_LOCK_MODE";
+    private static final String ACTION_LOCK_MODE_CHANGE = "com.leo.appmaster.ACTION_LOCK_MODE_CHANGE";
+    
+    private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
 
     public static final int LOCK_MODE_FULL = 1;
     public static final int LOCK_MODE_PURE = 2;
@@ -153,7 +159,7 @@ public class LockManager {
     /*
      * for time lock, and other time task
      */
-    private ScheduledExecutorService mScheduler = Executors.newScheduledThreadPool(2);
+    private ScheduledExecutorService mScheduler = ThreadManager.getAsyncExecutor();
 
     /*
      * for data operation
@@ -164,6 +170,8 @@ public class LockManager {
     private HashMap<Drawable, Integer> mDrawableColors;
     public ColorMatcher mMatcher;
     private TimerTask mFillterAllTask;
+
+
 
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
@@ -249,6 +257,20 @@ public class LockManager {
             @Override
             public void run() {
                 initTimeLock();
+            }
+        });
+        
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            sendFirstUseLockModeToISwipe();
+        }
+        
+        final Handler handler = new Handler(Looper.myLooper());
+        mContext.getContentResolver().registerContentObserver(Constants.LOCK_MODE_URI, true,
+                new ContentObserver(handler) {
+            @Override
+            public void onChange(boolean selfChange) {
+                sendLockModeChangeToISwipe();
             }
         });
     }
@@ -588,6 +610,7 @@ public class LockManager {
             PrivacyHelper.getInstance(mContext).computePrivacyLevel(PrivacyHelper.VARABLE_APP_LOCK);
         }
         updateMode(mode);
+        LeoEventBus.getDefaultBus().post(new AppLockChangeEvent(AppLockChangeEvent.APP_ADD));
     }
 
     public void removePkgFromMode(List<String> pkgs, final LockMode mode) {
@@ -1149,10 +1172,6 @@ public class LockManager {
                     lockMode.modeName = mContext.getString(R.string.vistor_mode);
                     lockMode.isCurrentUsed = true;
                     lockMode.defaultFlag = 1;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.lock_mode_visitor);
-                    // lockMode.modeIconId = R.drawable.lock_mode_visitor;
                     List<String> list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     lockMode.lockList = list;
@@ -1160,43 +1179,11 @@ public class LockManager {
                     mCurrentMode = lockMode;
                     lmd.insertLockMode(lockMode);
 
-                    // add unlock all
-                    // lockMode = new LockMode();
-                    // lockMode.modeName =
-                    // mContext.getString(R.string.unlock_all_mode);
-                    // lockMode.isCurrentUsed = false;
-                    // lockMode.defaultFlag = 0;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.lock_mode_unlock);
-                    // list = new LinkedList<String>();
-                    // list.add(mContext.getPackageName());
-                    // lockMode.lockList = list;
-                    // mLockModeList.add(lockMode);
-                    // lmd.insertLockMode(lockMode);
-                    // add office
-                    // lockMode = new LockMode();
-                    // lockMode.modeName = getString(R.string.office_mode);
-                    // lockMode.isCurrentUsed = false;
-                    // lockMode.defaultFlag = 2;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(getResources(),
-                    // R.drawable.lock_mode_office);
-                    // list = new LinkedList<String>();
-                    // list.add(mActivity.getPackageName());
-                    // lockMode.lockList = list;
-                    // mLockModeList.add(lockMode);
-                    // lmd.insertLockMode(lockMode);
-
                     // add family mode
                     lockMode = new LockMode();
                     lockMode.modeName = mContext.getString(R.string.family_mode);
                     lockMode.isCurrentUsed = false;
                     lockMode.defaultFlag = 3;
-                    // lockMode.modeIcon =
-                    // BitmapFactory.decodeResource(mContext.getResources(),
-                    // R.drawable.lock_mode_family);
-                    // lockMode.modeIconId = R.drawable.lock_mode_family;
                     list = Collections.synchronizedList(new LinkedList<String>());
                     list.add(mContext.getPackageName());
                     for (String pkg : Constants.sDefaultHomeModeList) {
@@ -1422,7 +1409,6 @@ public class LockManager {
 
     public void filterAllOneTime(long outtime) {
         mFilterAll = true;
-        Timer timer = new Timer();
 
         if (mFillterAllTask != null) {
             mFillterAllTask.cancel();
@@ -1436,13 +1422,12 @@ public class LockManager {
             }
         };
 
-        timer.schedule(mFillterAllTask, outtime);
+        ThreadManager.getTimer().schedule(mFillterAllTask, outtime);
     }
 
     public void timeFilter(final String packageName, long outtime) {
         addFilterLockPackage(packageName, true);
-        Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
+        ThreadManager.getTimer().schedule(new TimerTask() {
             @Override
             public void run() {
                 mFilterPgks.remove(packageName);
@@ -1545,6 +1530,8 @@ public class LockManager {
             LeoLog.d(TAG, "mDetectService = null");
         }
     }
+
+
 
     protected void handleScreenChange(Intent intent) {
         if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
@@ -1881,6 +1868,7 @@ public class LockManager {
     public void loadAppLaunchReorder() {
         mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
         String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
+        QuickGestureManager qgm = QuickGestureManager.getInstance(mContext);
         AppLauncherRecorder temp = null;
         int sIndex = -1;
         if (!TextUtils.isEmpty(recoders)) {
@@ -1890,7 +1878,7 @@ public class LockManager {
                 // com.mobisystems.office:browser:3;这种情况貌似会crash
                 sIndex = recoder.indexOf(':');
                 if (sIndex != -1) {
-                    temp = QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
+                    temp = qgm.new AppLauncherRecorder();
                     temp.pkg = recoder.substring(0, sIndex);
                     try {
                         temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
@@ -1968,6 +1956,42 @@ public class LockManager {
 
     public void putDrawableColorId(Drawable drawable, int id) {
         mDrawableColors.put(drawable, id);
+    }
+    
+    public void sendFirstUseLockModeToISwipe() {
+        Intent intent = new Intent(ACTION_FIRST_USE_LOCK_MODE);
+
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            List<LockMode> list = LockManager.getInstatnce().getLockMode();
+            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
+            arrayList.addAll(list);
+            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
+        }
+        try {
+            mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
+            LeoLog.e(TAG, "send first use lock mode .");
+        } catch (Exception e) {
+            LeoLog.e(TAG, "send first use lock mode failed.", e);
+        }
+    }
+
+    public void sendLockModeChangeToISwipe() {
+        Intent intent = new Intent(ACTION_LOCK_MODE_CHANGE);
+        
+        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            List<LockMode> list = LockManager.getInstatnce().getLockMode();
+            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
+            arrayList.addAll(list);
+            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
+        }
+        try {
+            mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
+            LeoLog.e(TAG, "send lock mode changed .");
+        } catch (Exception e) {
+            LeoLog.e(TAG, "send lock mode changed failed.", e);
+        }
     }
 
 }

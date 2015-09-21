@@ -695,10 +695,10 @@
     <string name="pass_gesture_change">Switch password pattern</string>
     <string name="permission_open_tip_notification_title">Set shortcuts</string>
     <string name="permission_open_tip_notification_content">Click to start shortcuts</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">Install iSwipe to make your phone cool as Apple Watch</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Swipe to reach quick switch and applications just with one-hand, immediately install and experience this amazing App.</string>
     <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
     <string name="grade_tip_feedback">Feedback</string>
-    <string name="quick_first_tip_dialog_right_bt">Install</string>
+    <string name="quick_first_tip_dialog_right_bt">Enable</string>
     <string name="quick_first_tip_dialog_left_bt">Later</string>
     <!-- version 2.4 end -->
 
@@ -789,7 +789,7 @@
     <string name="pg_appmanager_quick_gesture_conflict_content">Feel annoyed of shortcuts? Click setting to enable little white dot.</string>
     <string name="pg_appmanager_quick_gesture_conflict_later">Later</string>
     <string name="pg_appmanager_quick_gesture_conflict_open">Enable now</string>
-  <string name="anti_conflict_mode_open">Enable</string>
+    <string name="anti_conflict_mode_open">Enable</string>
     <!-- 2.7 end -->
 
 
@@ -802,7 +802,45 @@
     <string name="iswip_update_notifi_title">Easy Shortcuts updated!</string>
     <string name="iswip_update_notifi_content">Easy Shortcuts is renamed as iSwipe</string>
     <string name="iswip_update_notifi_button">Update Now</string>
-        <string name="ad_timeout">Wow! More surprises are waiting for you!</string>
+    <string name="ad_timeout">Wow! More surprises are waiting for you!</string>
+    <string name="title_activity_msg_center_browser">MsgCenterBrowserActivity</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
     <!-- 2.8 end -->
+
+
+    <!-- 2.10 白名单引导 -->
+    <string name="auto_start_guide_tip_title">Require lauch permission</string>
+    <string name="auto_start_guide_tip_content">Start Leo Privacy Guard after booting，safe and sound</string>
+    <string name="auto_start_guide_tip_left_button">Later</string>
+    <string name="auto_start_guide_tip_right_button">Go settings</string>
+
+    <!-- 2.10 消息中心 -->
+    <string name="msg_center_title">Message Center</string>
+    <string name="msg_center_empty">No New Message</string>
+    <string name="msg_center_empty_say">Any questions or advice? Just tell us!</string>
+    <string name="msg_center_feedback">Feedback</string>
+    <string name="msg_center_load_fail">Server is bit tired，have a rest and refresh again.</string>
+    <string name="ufo_roll_again">Try again</string>
+    <string name="ufo_theme_down">Download</string>
+    <string name="ufo_theme_use">Apply</string>
+    <string name="ufo_theme_use_toast">Theme Applied</string>
+    <string name="ufo_theme_content">Feel boring about your phone? Many cool new themes here!</string>
+    <string name="ufo_theme_title">Applock Theme</string>
+    <string name="menue_item_delete_pg">Uninstall Privacy Guard</string>
+    <string name="advace_protect_dialog_left_text">Not Now</string>
+    <string name="advace_protect_dialog_right_text">Go Settings</string>
+    <string name="advace_protect_dialog_title_text">Suggest enable Advanced Protection</string>
+    <string name="advace_protect_dialog_content_text">Congrats! Applock applied successfully.Tips: Enable "Advanced Protection", then no one can peek at your secrets by uninstalling Privacy Guard. But if really want uninstall our app, please check the side bar.</string>
+    <string name="desk_ad_name">App Joy</string>
+    <string name="advance_protect_open_success_tip_title">Succeed!</string>
+    <string name="advance_protect_open_success_tip_content">Succeed! You can deactivate Advanced Protection in Applock settings. Unable to uninstall our app from outside under this Advanced Protection</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">Please click "Autostart", choose LEO Privacy Guard to add to Autostart List</string>
+    <string name="auto_start_tip_redmi">Please go to"Permissions", add Privacy Guard to Autostart Applications</string>
+    <string name="auto_start_tip_huawei">Please go to"Protected Apps", add PG to protected list</string>
+    <string name="auto_start_tip_lenovo">Please go to "Apps ", choose "Autostart", add LEO Privacy Guard to Autostart List</string>
+    <string name="splash_guide_page_msg_title">Message Center</string>
+    <string name="splash_guide_page_msg_content">Come and check out interesting activities  useful tips here</string>
+    <!-- 2.10 end -->
 
 </resources>

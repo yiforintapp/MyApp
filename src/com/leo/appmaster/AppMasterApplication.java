@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
@@ -23,12 +22,14 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.ImageLoader;
 
 public class AppMasterApplication extends Application {
 
-    private static AppMasterApplication mInstance;
-    private static List<WeakReference<Activity>> mActivityList;
+    private static AppMasterApplication sInstance;
+    private static List<WeakReference<Activity>> sActivityList;
     private static List<WeakReference<Activity>> sResumedList;
 
     private static int[] mRootSteps = {
@@ -40,11 +41,9 @@ public class AppMasterApplication extends Application {
     public Handler mHandler;
     public static SharedPreferences sharedPreferences;
     public static String usedThemePackage;
-
-    private ScheduledExecutorService mExecutorService;
+    private static int sLastVersion;
 
     private Bootstrap mRootBootstrap;
-    private Thread mUiThread;
 
     static {
         // For android L and above, daemon service is not work, so disable it
@@ -58,14 +57,19 @@ public class AppMasterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (mInstance != null)
+        if (sInstance != null)
             return;
 
-        mUiThread = Thread.currentThread();
-        mInstance = this;
-        mActivityList = new ArrayList<WeakReference<Activity>>();
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        String lastVer = pref.getLastVersion();
+        try {
+            sLastVersion = Integer.parseInt(lastVer);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+        }
+        sInstance = this;
+        sActivityList = new ArrayList<WeakReference<Activity>>();
         sResumedList = new ArrayList<WeakReference<Activity>>();
-        mExecutorService = Executors.newScheduledThreadPool(3);
         mHandler = new Handler();
 
         sharedPreferences = getSharedPreferences("lockerTheme", Context.MODE_WORLD_WRITEABLE);
@@ -81,8 +85,8 @@ public class AppMasterApplication extends Application {
 
         // 启动引导程序，包含：前台、后台、延时程序
         mRootBootstrap.execute();
-      
     }
+
     @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 	private String getUserSerial() {
         String userSerial = null;
@@ -124,29 +128,29 @@ public class AppMasterApplication extends Application {
     }
 
     public static AppMasterApplication getInstance() {
-        return mInstance;
+        return sInstance;
     }
 
-    public void postInAppThreadPool(Runnable runable) {
-        mExecutorService.execute(runable);
-    }
+//    public void postInAppThreadPool(Runnable runable) {
+//        mExecutorService.execute(runable);
+//    }
+//
+//    public void postInAppThreadPool(Runnable runable, long delay) {
+//        mExecutorService.schedule(runable, delay, TimeUnit.MILLISECONDS);
+//    }
 
-    public void postInAppThreadPool(Runnable runable, long delay) {
-        mExecutorService.schedule(runable, delay, TimeUnit.MILLISECONDS);
-    }
+//    public void postInMainThread(Runnable runnable) {
+//        mHandler.post(runnable);
+//    }
 
-    public void postInMainThread(Runnable runnable) {
-        mHandler.post(runnable);
-    }
-
-    public boolean isUiThread() {
-        return Thread.currentThread() == mUiThread;
-    }
+//    public boolean isUiThread() {
+//        return Thread.currentThread() == mUiThread;
+//    }
 
     // for force update strategy to exit application completely
     public synchronized void addActivity(Activity activity) {
-        // mActivityList.add(activity);
-        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        // sActivityList.add(activity);
+        Iterator<WeakReference<Activity>> iterator = sActivityList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
             Activity ac = reference.get();
@@ -158,11 +162,11 @@ public class AppMasterApplication extends Application {
             }
         }
 
-        mActivityList.add(new WeakReference<Activity>(activity));
+        sActivityList.add(new WeakReference<Activity>(activity));
     }
 
     public synchronized void removeActivity(Activity activity) {
-        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        Iterator<WeakReference<Activity>> iterator = sActivityList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
             Activity ac = reference.get();
@@ -174,7 +178,7 @@ public class AppMasterApplication extends Application {
     }
 
     public synchronized void exitApplication() {
-        Iterator<WeakReference<Activity>> iterator = mActivityList.iterator();
+        Iterator<WeakReference<Activity>> iterator = sActivityList.iterator();
         while (iterator.hasNext()) {
             WeakReference<Activity> reference = iterator.next();
             Activity ac = reference.get();
@@ -243,4 +247,13 @@ public class AppMasterApplication extends Application {
         return usedThemePackage;
     }
 
+    /**
+     * 是否是升级
+     *  注意：进程起来后，此接口会一直有效，除非进程挂掉
+     * @return
+     */
+    public static boolean isAppUpgrade() {
+        int versionCode = PhoneInfo.getVersionCode(sInstance);
+        return versionCode > sLastVersion;
+    }
 }

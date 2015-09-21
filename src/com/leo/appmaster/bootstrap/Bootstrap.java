@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -43,7 +44,7 @@ public abstract class Bootstrap {
     
     protected LongSparseArray<Bootstrap> mStrapArray;
     
-    public Bootstrap() {
+    Bootstrap() {
         mApp = AppMasterApplication.getInstance();
         mStrapArray = new LongSparseArray<Bootstrap>();
     }
@@ -91,7 +92,7 @@ public abstract class Bootstrap {
         long cost = SystemClock.elapsedRealtime() - start;
         if (!(this instanceof BootstrapGroup)) {
             LeoLog.i(TAG, "-->" + getClassTag() + " cost: " + cost);
-            if (AppMasterApplication.getInstance().isUiThread()) {
+            if (ThreadManager.isUiThread()) {
                 if (cost > TIME_UI_ALARM && AppMasterConfig.LOGGABLE) {
                     String msg = getClassTag() + "耗时超过 " + TIME_UI_ALARM + " ms, 需要优化";
                     toast(msg);
@@ -106,8 +107,8 @@ public abstract class Bootstrap {
     }
     
     private void toast(final String msg) {
-        AppMasterApplication.getInstance().postInMainThread(new Runnable() {
-            
+        ThreadManager.executeOnUiThread(new Runnable() {
+
             @Override
             public void run() {
                 Toast.makeText(mApp, msg, Toast.LENGTH_LONG).show();

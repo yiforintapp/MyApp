@@ -18,20 +18,34 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.Bundle;
 import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
+import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactManager {
+    public static final String TAG="PrivacyContactManager";
+    /* 接受隐私联系人存在未读广播的权限 */
+    private static final String SEND_RECEIVER_TO_SWIPE_PERMISSION = "com.leo.appmaster.RECEIVER_TO_ISWIPE";
+    private static final String RECEIVER_TO_SWIPE_ACTION = "com.leo.appmaster.ACTION_PRIVACY_CONTACT";
+    private static final String RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP = "com.leo.appmaster.ACTION_CANCEL_PRIVACY_TIP";
+    private static final String PRIVACY_MSM_OR_CALL = "privacy_msm_or_call";
+    public static final String PRIVACY_MSM = "privacy_msm";
+    public static final String PRIVACY_CALL = "privacy_call";
+    public static final String PRIVACYCONTACT_TO_IWIPE_KEY = "privacycontact_to_iswipe";
+    public static final String PRIVACY_CONTACT_NUMBER = "private_number";
     /* 手机名称 */
     public static String COOLPAD_YULONG = "YuLong";
     public static String NUBIA = "nubia";
@@ -249,7 +263,6 @@ public class PrivacyContactManager {
                     notification.when = System.currentTimeMillis();
                     notificationManager.notify(20140901, notification);
                     AppMasterPreference.getInstance(mContext).setQuickGestureMsmTip(true);
-
                 }
                 String dateFrom = sdf.format(new Date(sendDate));
                 message.setMessageTime(dateFrom);
@@ -312,6 +325,9 @@ public class PrivacyContactManager {
         message.setMessageTime(dateFrom);
         mMessage = message;
         mLastMessage = message;
+        /* 隐私联系人有未读短信时发送广播 */
+       privacyContactSendReceiverToSwipe(
+                PRIVACY_MSM,0,mLastMessage.getPhoneNumber());
     }
 
     /* 对快捷手势隐私联系人,消费(查看或者删除)隐私通话时，红点去除操作 */
@@ -425,7 +441,7 @@ public class PrivacyContactManager {
     }
 
     public void initLoadData() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 PrivacyContactManager.getInstance(mContext).destroyCalls();
@@ -436,7 +452,7 @@ public class PrivacyContactManager {
 
     public void uninitLoadData() {
         mIsOpenPrivacyContact = false;
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
 
             @Override
             public void run() {
@@ -473,4 +489,75 @@ public class PrivacyContactManager {
         return BuildProperties.checkPhoneModel(ZTEU817)
                 || BuildProperties.checkPhoneBrand(COOLPAD_YULONG);
     }
+    /* 隐私联系人有未读发送广播到iswipe */
+    public void privacyContactSendReceiverToSwipe(final String flag, int actiontype, String number) {
+        Intent privacyIntent = null;
+        String msmOrCall = null;
+        if (!Utilities.isEmpty(flag)) {
+            if (PRIVACY_MSM.equals(flag)) {
+                LeoLog.i(TAG, "隐私联系人有未读短信");
+                privacyIntent = getPrivacyMsmIntent();
+                msmOrCall = PRIVACY_MSM;
+            } else if (PRIVACY_CALL.equals(flag)) {
+                LeoLog.i(TAG, "隐私联系人有未读通话");
+                privacyIntent = getPrivacyCallIntent();
+                msmOrCall = PRIVACY_CALL;
+            }
+        }
+        Intent intent = new Intent();
+        if (actiontype == 0) {
+            LeoLog.i(TAG, "有未读隐私");
+            /* 通知有未读 */
+            intent.setAction(RECEIVER_TO_SWIPE_ACTION);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable(PRIVACYCONTACT_TO_IWIPE_KEY, privacyIntent);
+            intent.putExtras(bundle);
+            if (!Utilities.isEmpty(number)) {
+                intent.putExtra(PRIVACY_CONTACT_NUMBER, number);
+            }
+            intent.putExtra(PRIVACY_MSM_OR_CALL, msmOrCall);
+        } else if (actiontype == 1) {
+            /* 通知取消未读 */
+            intent.setAction(RECEIVER_TO_SWIPE_ACTION_CANCEL_PRIVACY_TIP);
+            LeoLog.i(TAG, "通知取消隐私未读标志！！");
+        }
+        // intent.putExtra(PRIVACYCONTACT_TO_IWIPE_KEY, flag);
+        try {
+            mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
+            LeoLog.i(TAG, "隐私联系人广播发送成功～～～");
+        } catch (Exception e) {
+            LeoLog.i(TAG, "隐私联系人广播发送失败！！");
+        }
+    }
+
+    public Intent getPrivacyMsmIntent() {
+        Intent privacyMsmIntent = new Intent(mContext, PrivacyContactActivity.class);
+        privacyMsmIntent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+        return privacyMsmIntent;
+    }
+
+    public Intent getPrivacyCallIntent() {
+        Intent privacyCallIntent = new Intent(mContext,
+                PrivacyContactActivity.class);
+        privacyCallIntent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+        return privacyCallIntent;
+    }
+
+    /* 对于iswipe没有隐私未读处理 */
+    public void cancelPrivacyTipFromPrivacyCall() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        if (amp.getMessageNoReadCount() <= 0) {
+            privacyContactSendReceiverToSwipe(null, 1, null);
+        }
+    }
+
+    public void cancelPrivacyTipFromPrivacyMsm() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+        if (amp.getCallLogNoReadCount() <= 0) {
+            privacyContactSendReceiverToSwipe(null, 1, null);
+        }
+    }
+
 }

@@ -39,6 +39,7 @@ import android.widget.VideoView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
@@ -95,7 +96,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
         super.onResume();
         if (!mPre.getSwitchOpenQuickGesture()) {
             // 初始化快捷手势数据
-            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     QuickGestureManager.getInstance(getApplicationContext()).init();
@@ -116,7 +117,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
             mRightTopView.setOnTouchListener(this);
             mRightBottomView.setOnTouchListener(this);
             // 初始化快捷手势数据
-            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     QuickGestureManager.getInstance(getApplicationContext()).init();
@@ -142,7 +143,7 @@ public class QuickGestureActivity extends BaseActivity implements OnTouchListene
     protected void onDestroy() {
         super.onDestroy();
         if (!mPre.getFristSlidingTip() || !mPre.getSwitchOpenQuickGesture()) {
-            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+            ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     // 反初始化快捷手势数据

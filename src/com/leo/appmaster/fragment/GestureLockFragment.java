@@ -4,7 +4,6 @@ package com.leo.appmaster.fragment;
 import java.util.List;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -13,8 +12,8 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -24,6 +23,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
@@ -41,7 +41,6 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leo.appmaster.utils.NetWorkUtil;
-import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -187,14 +186,23 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     private void loadMobvistaAd() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
+        String unitId;
         WindowManager wm = mActivity.getWindowManager();
         int windowH = wm.getDefaultDisplay().getHeight();
-        
         if (!NetWorkUtil.isNetworkAvailable(mActivity)||windowH<=320) {
             return;
         }
         mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(mActivity, new MobvistaListener() {
+        if(amp.getADShowType()==1){
+            unitId=Constants.UNIT_ID_59;
+        }else if(amp.getADShowType()==2){
+            unitId=Constants.UNIT_ID_60;
+        }else{
+            return;
+        }
+            
+        mAdEngine.loadMobvista(mActivity,unitId, new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
@@ -223,7 +231,7 @@ public class GestureLockFragment extends LockFragment implements
                             Button call1 = (Button) mNormalBannerAD
                                     .findViewById(R.id.iv_ad_app_download);
                             call1.setText(campaign.getAdCall());
-                            mAdEngine.registerView(mNormalBannerAD);
+                            mAdEngine.registerView(getActivity(), mNormalBannerAD);
                             mCurrentRegisterView = 1;
                             ImageView close1 = (ImageView) mNormalBannerAD
                                     .findViewById(R.id.iv_adclose);
@@ -308,7 +316,7 @@ public class GestureLockFragment extends LockFragment implements
                                     });
                                     Button install = (Button) view.findViewById(R.id.bt_installapp);
                                     install.setText(campaign.getAdCall());
-                                    mAdEngine.registerView(install);
+                                    mAdEngine.registerView(getActivity(), install);
                                     mCurrentRegisterView = 2;
                                     View close = view.findViewById(R.id.iv_adclose);
                                     close.setOnClickListener(new OnClickListener() {
@@ -364,7 +372,7 @@ public class GestureLockFragment extends LockFragment implements
     public void onDestroy() {
         super.onDestroy();
 
-        MobvistaEngine.getInstance().release();
+        MobvistaEngine.getInstance().release(getActivity());
     }
 
     @Override

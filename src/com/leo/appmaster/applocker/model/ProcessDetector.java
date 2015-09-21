@@ -218,7 +218,7 @@ public class ProcessDetector {
                     target = processAdj;
                 }
             }
-        } else {
+        } else if (result.size() > 0) {
             target = result.get(0);
         }
 

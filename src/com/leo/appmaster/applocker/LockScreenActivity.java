@@ -55,8 +55,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -81,6 +84,7 @@ import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
+import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoCircleView;
@@ -155,7 +159,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private Handler handler;
     public static boolean interupAinimation = false;
     private boolean clickShakeIcon = false;
-    private boolean isClickAny = false;
 
     private MobvistaEngine mAdEngine;
 
@@ -195,6 +198,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (mode != null) {
                 if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     if (mode.defaultFlag != -1) {
+                        if (AppMasterConfig.LOGGABLE) {
+                            LeoLog.f(LockScreenActivity.class.getSimpleName(), "oncreate",
+                                    Constants.LOCK_LOG);
+                        }
                         Intent intent = new Intent(this, LockSettingActivity.class);
                         intent.putExtra("from_quick_mode", true);
                         intent.putExtra("just_finish", true);
@@ -227,7 +234,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
-        wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        wallAd = MobvistaEngine.getInstance().createAdWallController(this, Constants.UNIT_ID_63);
         if (wallAd != null) {
             // preload the wall data
             wallAd.preloadWall();
@@ -252,7 +260,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             });
 
-            if (SHOW_AD_TYPE == AD_TYPE_SHAKE && !isClickAny) {
+            if (SHOW_AD_TYPE == AD_TYPE_SHAKE) {
                 mAdIconRedTip.setVisibility(View.VISIBLE);
                 mAdIcon.setBackgroundResource(R.drawable.adanimation2);
                 adAnimation = (AnimationDrawable)
@@ -261,14 +269,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             } else { // jump
                 mAdIconRedTip.setVisibility(View.GONE);
-                if (SHOW_AD_TYPE == AD_TYPE_JUMP && !isClickAny) {
+                if (SHOW_AD_TYPE == AD_TYPE_JUMP) {
                     mAdIcon.setBackgroundResource(R.drawable.adanimation);
                     adAnimation = (AnimationDrawable)
                             mAdIcon.getBackground();
                     adAnimation.start();
+                    LeoLog.e("testLockScreen", "jump going!");
                 } else {
                     mAdIcon.setBackgroundDrawable((this.getResources()
                             .getDrawable(R.drawable.jump_1)));
+                    LeoLog.e("testLockScreen", "stay going!");
                 }
             }
         }
@@ -297,11 +307,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
-        
-        if (AppMasterPreference.getInstance(this).getADShowType() == 3
-                && NetWorkUtil.isNetworkAvailable(getApplicationContext())){
+
+        // if (AppMasterPreference.getInstance(this).getADShowType() == 3
+        // && NetWorkUtil.isNetworkAvailable(getApplicationContext()))
+        {
             mADAnimalEntry.setVisibility(View.VISIBLE);
-            if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE && !isClickAny) {
+            if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE) {
                 startShakeRotateAnimation(true);
             }
         }
@@ -742,7 +753,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mADAnimalEntry.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                isClickAny = true;
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "draw");
                 interupAinimation = true;
                 // Toast.makeText(LockScreenActivity.this, showType + "",
@@ -882,6 +892,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     public void onUnlockSucceed() {
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
         if (mQuickLockMode) {
             LockManager lm = LockManager.getInstatnce();
             List<LockMode> modeList = lm.getLockMode();
@@ -931,7 +942,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
              */
             LeoEventBus.getDefaultBus().post(
                     new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY));
-            AppMasterPreference pref = AppMasterPreference.getInstance(this);
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
                 if (AppMasterPreference.getInstance(LockScreenActivity.this)
                         .isLockerClean()) {
@@ -980,6 +990,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         amp.setLockerScreenThemeGuide(true);
         amp.setUnlocked(true);
         amp.setDoubleCheck(null);
+
+        /* 是否为强制升级 */
+        boolean isForceUpdate = AppMasterPreference.getInstance(this).getPGIsForceUpdate();
+        if (!isForceUpdate) {
+            ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                @Override
+                public void run() {
+                    UIHelper.getInstance(AppMasterApplication.getInstance())
+                            .unlockSuccessUpdateTip(mLockedPackage);
+                }
+            }, 200);
+        }
     }
 
     private void checkLockTip() {
@@ -1184,7 +1206,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             // amp.setLockerScreenThemeGuide(true);
             // break;
             case R.id.icon_ad_layout:
-                isClickAny = true;
                 sLockFilterFlag = true;
                 AppMasterPreference mAmp = AppMasterPreference.getInstance(this);
                 mAmp.setUnlocked(true);
@@ -1329,6 +1350,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 ampp.setUnlocked(true);
                 ampp.setDoubleCheck(null);
                 // goto reset passwd
+                if (AppMasterConfig.LOGGABLE) {
+                    LeoLog.f(TAG, "onclick", Constants.LOCK_LOG);
+                }
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
                 this.startActivity(intent);

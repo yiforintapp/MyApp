@@ -5,27 +5,31 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.sdk.SDKWrapper;
+
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.WindowManager;
-
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.sdk.SDKWrapper;
 
 /**
  * 判断小米系统工具类
@@ -36,6 +40,10 @@ public class BuildProperties {
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
+    private static final String KEY_LENOVO_VERSION_ROM_NAME = "ro.lenovo.lvp.version";
+    private static final String KEY_LETV_VERSION_ROM_NAME = "ro.letv.eui";
+    private static final String KEY_OPPO_VERSION_ROM_NAME = "ro.build.version.opporom";
+    private static final String KEY_HUAWEI_VERSION_ROM_NAME = "ro.build.version.emui";
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";// 解锁等待界面动画执行过快机型
     private final Properties properties;
 
@@ -333,12 +341,16 @@ public class BuildProperties {
         return TextUtils.equals("GT-S5282", android.os.Build.MODEL);
     }
 
-    public static boolean isOppoOs() {
+    public static boolean isYiJia() {
         // 说明：一加手机在4.4系统以下，无需手动开启悬浮窗
         if (TextUtils.isEmpty((CharSequence) (getSystemProperty("ro.build.version.opporom")))
                 || Build.VERSION.SDK_INT < 19)
             return false;
         return true;
+    }
+
+    public static boolean isOppoOs() {
+        return isAppointModel(KEY_OPPO_VERSION_ROM_NAME);
     }
 
     // back:{true,false}(ture:sucessful,false:failure)
@@ -382,5 +394,25 @@ public class BuildProperties {
             }
         }
         return false;
+    }
+
+    /* 判断是否为联想的机型 */
+    public static boolean isLenoveModel() {
+        return isAppointModel(KEY_LENOVO_VERSION_ROM_NAME);
+    }
+
+    /* 是否为乐视机型 */
+    public static boolean isLetvModel() {
+        return isAppointModel(KEY_LETV_VERSION_ROM_NAME);
+    }
+
+    public static boolean isAppointModel(String model) {
+        if (TextUtils.isEmpty((CharSequence) (getSystemProperty(model))))
+            return false;
+        return true;
+    }
+    /*是否为华为机型*/
+    public static boolean isHuaWeiModel(){
+        return isAppointModel(KEY_HUAWEI_VERSION_ROM_NAME);
     }
 }

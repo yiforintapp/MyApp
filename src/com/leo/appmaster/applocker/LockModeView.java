@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -30,7 +28,6 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class LockModeView extends View {
@@ -281,13 +278,18 @@ public class LockModeView extends View {
      */
     private String subStringModetext(String text, int maxTextSize, int maxWidth, Paint paint) {
         int textSize = maxTextSize,textLength;
+        int region = 0;
         String omission = "...";
         paint.setTextSize(textSize);
         text.concat(omission);
         int textWidth = (int) paint.measureText(text);
         while (textWidth > maxWidth) {
             textLength = text.length();
-            text = text.substring(0, textLength-4);
+            region = textLength - 4;
+            if(region < 1) {
+                region = 1;
+            }
+            text = text.substring(0, region);
             text = text.concat(omission);
             textWidth = (int) paint.measureText(text);
             Log.i("tag",text);

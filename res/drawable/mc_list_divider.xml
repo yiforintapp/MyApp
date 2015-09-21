@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:left="@dimen/mc_list_hori_padding" android:right="@dimen/mc_list_hori_padding">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/mc_list_divider"/>
+        </shape>
+    </item>
+</layer-list>

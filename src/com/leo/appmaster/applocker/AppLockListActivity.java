@@ -269,49 +269,71 @@ public class AppLockListActivity extends BaseActivity implements
             return;
         }
 
+        if (view == null) return;
+
         mLastSelectApp = (AppInfo) view.getTag();
+        if (mLastSelectApp == null) return;
+
         AppInfo info = null;
         if (mLastSelectApp.isLocked) {
             mLastSelectApp.isLocked = false;
             for (AppInfo baseInfo : mLockedList) {
-                if (baseInfo.packageName.equals(mLastSelectApp.packageName)) {
+                if (baseInfo.packageName != null
+                        && baseInfo.packageName.equals(mLastSelectApp.packageName)) {
                     info = baseInfo;
                     info.isLocked = false;
                     break;
                 }
             }
-            mUnlockList.add(info);
 
-            mLockedList.remove(info);
+            if (info == null) return;
+
+            if (!mUnlockList.contains(info)) {
+                mUnlockList.add(info);
+            }
+            if (mLockedList.contains(info)) {
+                mLockedList.remove(info);
+            }
             List<String> list = new LinkedList<String>();
             list.add(info.packageName);
             lm.removePkgFromMode(list, lm.getCurLockMode());
 
             // to set view unlocked
-            ((LockImageView) view.findViewById(R.id.iv_app_icon))
-                    .setLocked(false);
+            LockImageView lockImageView = (LockImageView) view.findViewById(R.id.iv_app_icon);
+            if (lockImageView != null) {
+                lockImageView.setLocked(false);
+            }
             SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock_" + curMode.modeName + "_"
                     + mLastSelectApp.packageName);
         } else {
             mLastSelectApp.isLocked = true;
             for (AppInfo baseInfo : mUnlockList) {
-                if (baseInfo.packageName.equals(mLastSelectApp.packageName)) {
+                if (baseInfo.packageName != null
+                        && baseInfo.packageName.equals(mLastSelectApp.packageName)) {
                     info = baseInfo;
                     info.isLocked = true;
                     break;
                 }
             }
+            if (info == null) return;
+
+            if (mLockedList.contains(info)) {
+                mLockedList.remove(info);
+            }
             mLockedList.add(0, info);
-            mUnlockList.remove(info);
+            if (mUnlockList.contains(info)) {
+                mUnlockList.remove(info);
+            }
 
             List<String> list = new LinkedList<String>();
             list.add(info.packageName);
             lm.addPkg2Mode(list, lm.getCurLockMode());
 
             // to set view lock
-            ((LockImageView) view.findViewById(R.id.iv_app_icon))
-                    .setLocked(true);
-
+            LockImageView lockImageView = (LockImageView) view.findViewById(R.id.iv_app_icon);
+            if (lockImageView != null) {
+                lockImageView.setLocked(true);
+            }
             SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "lock_" + curMode.modeName + "_"
                     + mLastSelectApp.packageName);
         }

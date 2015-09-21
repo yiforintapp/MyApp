@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.sdk.push.ui;
 
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -22,6 +23,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.webkit.DownloadListener;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -209,6 +211,13 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     protected void onDestroy() {
         super.onDestroy();
         Log.i(TAG, "onDestroy  ");
+        try {
+            // FIX: 2015/9/15 WebViewActivity has leaked window android.widget.ZoomButtonsController$Container
+            ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
+            viewGroup.removeAllViews();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         mVideoFullLayout.removeAllViews();
         mWebView.loadUrl("about:blank");
@@ -356,6 +365,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                     tds.callPretendAppLaunch();
                 }
             } else {
+                if (AppMasterConfig.LOGGABLE) {
+                    LeoLog.f(TAG, "startHome", Constants.LOCK_LOG);
+                }
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

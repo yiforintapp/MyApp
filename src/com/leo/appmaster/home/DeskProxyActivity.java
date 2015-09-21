@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings;
 
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.AppLockListActivity;
@@ -89,6 +90,9 @@ public class DeskProxyActivity extends Activity {
                 } else if (type == mAd) {
                     gotoAd(type);
                 } else {
+                    if (AppMasterConfig.LOGGABLE) {
+                        LeoLog.f(DeskProxyActivity.class.getSimpleName(), "oncreate", Constants.LOCK_LOG);
+                    }
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -195,7 +199,7 @@ public class DeskProxyActivity extends Activity {
         boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(this);
         boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(this);
         boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isOppoOs();
+        boolean isOppoOs = BuildProperties.isYiJia();
         boolean isOpenWindow =
                 BuildProperties.isFloatWindowOpAllowed(this);
 

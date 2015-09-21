@@ -5,6 +5,7 @@
     android:gravity="center" >
 
     <LinearLayout
+        android:id="@+id/iswipe_update_tip_dialog"
         android:layout_width="@dimen/iswipe_update_tip_dialog_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -17,7 +18,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="25dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="21dp"
             android:src="@drawable/iswip_pic" />
 
         <TextView
@@ -26,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="6dp"
             android:text="@string/iswip_update_tip_title_text"
             android:textColor="#ffffff"
             android:textSize="18dp" />

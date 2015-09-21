@@ -6,6 +6,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
 
@@ -38,6 +39,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public final int mBackup = 8;
     public final int mQuickGues = 9;
     public final int mLockThem = 10;
+    public final int mPrivacyContact=11;
     // private int mLockType = LOCK_TYPE_PASSWD;
     private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
@@ -58,7 +60,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public int mModeId;
     public int mFromDeskId = -1;
     public String mCoolBrowserPath;
-
+    public String mIswipeToPrivacyContact;
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -97,6 +99,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         mJustFinish = intent.getBooleanExtra("just_finish", false);
         mFromQuickMode = intent.getBooleanExtra("from_quick_mode", false);
         mModeId = intent.getIntExtra("mode_id", -1);
+        mIswipeToPrivacyContact=intent.getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
     }
 
     private void initFragment() {

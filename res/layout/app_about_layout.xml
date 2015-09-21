@@ -35,7 +35,7 @@
             android:layout_centerHorizontal="true"
             android:text="1.00"
             android:textColor="#FFABCEFF"
-            android:textSize="18dp" />
+            android:textSize="@dimen/app_about_version" />
 
         <ImageView
             android:id="@+id/app_name"
@@ -55,7 +55,7 @@
             android:layout_marginBottom="20dp"
             android:text="@string/about_copy"
             android:textColor="#FFABCEFF"
-            android:textSize="10dp" />
+            android:textSize="@dimen/app_about_content" />
     </RelativeLayout>
 
     <LinearLayout

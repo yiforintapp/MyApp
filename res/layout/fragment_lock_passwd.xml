@@ -26,7 +26,7 @@
             android:layout_width="@dimen/fragment_lock_password_appicon_width"
             android:layout_height="@dimen/fragment_lock_password_appicon_height"
             android:layout_centerInParent="true"
-            android:scaleType="fitCenter"
+            android:scaleType="centerInside"
             android:src="@drawable/ic_launcher"
             android:visibility="invisible" />
 
@@ -492,15 +492,16 @@
             
             <ImageView
             android:id="@+id/iv_adsign"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
+            android:layout_width="21dp"
+            android:layout_height="21dp"
             android:layout_marginLeft="2dp"
             android:src="@drawable/ad_sign" />
 
         <TextView
+            android:maxLines="1"
             android:id="@+id/tv_appname"
             android:layout_width="match_parent"
-            android:layout_height="15dp"
+            android:layout_height="18dp"
             android:layout_marginLeft="5dp"
             android:gravity="center_vertical"
             android:textColor="#333333"
@@ -513,11 +514,11 @@
             android:layout_marginRight="120dp"
             android:id="@+id/tv_appdesc"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="28dp"
       		android:layout_alignParentBottom="true"
             android:layout_marginLeft="58dp"
             android:ellipsize="marquee"
-            android:gravity="center_vertical"
+            android:gravity="top"
             android:maxLines="2"    		
             android:textColor="#333333"
             android:textSize="10sp" />
@@ -539,8 +540,8 @@
             android:id="@+id/iv_adclose"
             android:layout_width="14dp"
             android:layout_height="14dp"
-            android:layout_marginTop="2dp"
-            android:layout_marginRight="2dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="4dp"
             android:layout_alignParentRight="true"
             android:src="@drawable/ad_close_small" />
     </RelativeLayout>

@@ -28,12 +28,14 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -111,7 +113,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             messageBean.setMessageType(mAnswer);
                             // 过滤监控短信记录数据库，隐私联系人删除未读短信记录时引发数据库变化而做的操作（要在执行删除操作之前去赋值）
                             PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag = true;
-                            AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                            ThreadManager.executeOnAsyncThread(new Runnable() {
                                 @Override
                                 public void run() {
                                     PrivacyContactManager.getInstance(mContext).synMessage(
@@ -133,6 +135,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
 
             }
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
+            PrivacyContactManager.getInstance(mContext).testValue = true;
             // 获取来电号码
             final String phoneNumber =
                     intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
@@ -254,7 +257,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         return flagContact;
     }
 
-    public void callLogNotification(Context context) {
+    public void callLogNotification(Context context,String number) {
         boolean callLogRuningStatus = AppMasterPreference.getInstance(
                 context)
                 .getCallLogItemRuning();
@@ -290,6 +293,10 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     R.drawable.ic_launcher_notification_big);
             notification.when = System.currentTimeMillis();
             notificationManager.notify(20140902, notification);
+            /* 隐私联系人有未读 通话时发送广播 */
+            PrivacyContactManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
+                    PrivacyContactManager.PRIVACY_CALL,0,number);
+            LeoLog.e(TAG, "本次联系人："+number);
         }
         /*
          * 记录最后隐私短信和隐私通话哪个最后记录(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)
@@ -322,7 +329,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             AppMasterPreference pre = AppMasterPreference
                     .getInstance(mContext);
             int count = pre.getCallLogNoReadCount();
-            if (count > 0) {
+            if (count >0) {
                 pre.setCallLogNoReadCount(count + 1);
             } else {
                 pre.setCallLogNoReadCount(1);
@@ -342,7 +349,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
             // 发送通知
-            callLogNotification(mContext);
+            callLogNotification(mContext,contact.getContactNumber());
         }
     }
 

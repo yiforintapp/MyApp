@@ -122,9 +122,9 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             case IUIHelper.TYPE_DOWNLOAD_FAILED:
                 showDownloadFailed();
                 break;
-//            case IUIHelper.BACK_DOWNLOAD_DONE:
-//                showNeedUpdate();
-//                break;
+        // case IUIHelper.BACK_DOWNLOAD_DONE:
+        // showNeedUpdate();
+        // break;
         }
     }
 
@@ -221,6 +221,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             public void onClick(View arg0) {
                 mUIHelper.cancelDownloadNotification();
                 mManager.onCancelDownload();
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 finish();
             }
         });
@@ -233,6 +234,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 LeoLog.d(TAG,
                         "sendDownloadNotification in showDownloading, click hide window");
                 mUIHelper.sendDownloadNotification(mProgress);
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 finish();
             }
         });
@@ -351,13 +353,13 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
         int size = mManager.getSize();
         float fsize = (float) size / 1024 / 1024;
         setContentView(R.layout.dialog_update_alarm);
-        
+
         TextView tvMsg = (TextView) findViewById(R.id.dlg_content);
         Spanned msgText = Html.fromHtml(getString(R.string.update_datail_msg, appName, version,
-                        fsize, feature));
+                fsize, feature));
         tvMsg.setText(msgText);
         tvMsg.setMovementMethod(ScrollingMovementMethod.getInstance());
-        
+
         TextView tvYes = (TextView) findViewById(R.id.dlg_right_btn);
         tvYes.setText(getString(R.string.do_update));
         tvYes.setOnClickListener(new View.OnClickListener() {
@@ -371,6 +373,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 }
                 mManager.onConfirmDownload();
                 // finish(); do not finish, downloading UI need the activity
+//                updateTipFilterLock();
             }
         });
         TextView tvNo = (TextView) findViewById(R.id.dlg_left_btn);
@@ -381,9 +384,18 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
                 /* sdk mark */
                 SDKWrapper.addEvent(UpdateActivity.this, SDKWrapper.P1, "update", "cancel");
                 mManager.onCancelUpdate();
+                LockManager lockManager = LockManager.getInstatnce();
+                LeoLog.i("UpdateActivity", "加锁应用："+lockManager.getLastPackage());
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 finish();
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        LockManager.getInstatnce().filterAllOneTime(1000);
+        super.onBackPressed();
     }
 
     private boolean isOutOfBounds(Activity context, MotionEvent event) {

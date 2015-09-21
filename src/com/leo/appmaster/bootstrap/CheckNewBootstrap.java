@@ -30,6 +30,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.R.drawable;
 import com.leo.appmaster.R.string;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -57,7 +58,7 @@ public class CheckNewBootstrap extends Bootstrap {
     public static final int CHECKHOTAPP = 1;
     private static boolean isFromPush = false;
 
-    public CheckNewBootstrap() {
+    CheckNewBootstrap() {
         super();
 
         mAppRequestListener = new NewAppRequestListener();
@@ -103,7 +104,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     checkNewTheme();
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             if (lastCheckTime == 0) { // First time, check theme after 24 hours
                 lastCheckTime = curTime;
                 pref.setLastCheckThemeTime(curTime);
@@ -141,7 +142,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     checkNewAppBusiness();
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             if (lastCheckTime == 0) { // First time, check business after 24
                                       // hours
                 lastCheckTime = curTime;
@@ -281,7 +282,7 @@ public class CheckNewBootstrap extends Bootstrap {
 
     public static void checkUBC() {
         final AppMasterApplication application = AppMasterApplication.getInstance();
-        application.postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 String pkgName = getTopPackage();
@@ -294,7 +295,7 @@ public class CheckNewBootstrap extends Bootstrap {
                 if (Math.abs(curTime - lastUBC) > AppMasterConfig.TIME_12_HOUR) {
                     pref.setLastUBCTime(curTime);
                     if (lastUBC > 0) {
-                        application.postInMainThread(new Runnable() {
+                        ThreadManager.executeOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 Intent intent = new Intent();
@@ -367,7 +368,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     checkNewTheme();
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             timer.schedule(recheckTask, pref.getThemeCurrentStrategy());
         }
 
@@ -429,7 +430,7 @@ public class CheckNewBootstrap extends Bootstrap {
                             checkNewTheme();
                         }
                     };
-                    Timer timer = new Timer();
+                    Timer timer = ThreadManager.getTimer();
                     timer.schedule(recheckTask, pref.getThemeCurrentStrategy());
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -455,7 +456,7 @@ public class CheckNewBootstrap extends Bootstrap {
                     checkNewAppBusiness();
                 }
             };
-            Timer timer = new Timer();
+            Timer timer = ThreadManager.getTimer();
             timer.schedule(recheckTask, pref.getBusinessCurrentStrategy());
         }
 
@@ -513,7 +514,7 @@ public class CheckNewBootstrap extends Bootstrap {
                             checkNewAppBusiness();
                         }
                     };
-                    Timer timer = new Timer();
+                    Timer timer = ThreadManager.getTimer();
                     timer.schedule(recheckTask, pref.getBusinessCurrentStrategy());
 
                 } catch (JSONException e) {
@@ -523,7 +524,7 @@ public class CheckNewBootstrap extends Bootstrap {
         }
     }
 
-    public void setFromPush(boolean b) {
+    public static void setFromPush(boolean b) {
         isFromPush = b;
     }
 

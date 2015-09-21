@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.utils.LeoLog;
@@ -28,7 +29,7 @@ public class IswipePackageChangedListener extends PackageChangedListener {
         String packageName = intent.getData().getSchemeSpecificPart();
         if (Intent.ACTION_PACKAGE_ADDED.equals(intent.getAction())) {
             if (AppLoadEngine.ISWIPE_PACKAGENAME.equals(packageName)) {
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
                         /* 让主页iswipe不显示 */
@@ -48,7 +49,7 @@ public class IswipePackageChangedListener extends PackageChangedListener {
             }
         } else if (Intent.ACTION_PACKAGE_REMOVED.equals(intent.getAction())) {
             if (AppLoadEngine.ISWIPE_PACKAGENAME.equals(packageName)) {
-                AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+                ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
                         /* 让主页iswipe不显示 */

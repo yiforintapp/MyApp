@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.privacycontact;
 
 import java.io.ByteArrayOutputStream;
@@ -52,6 +53,7 @@ public class PrivacyContactUtils {
     public static final String ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT = "add_conact_from_contact_no_repeat_event";
     public final static String KEY_PLAY_ANIM = "play_anim";
     public static final String TO_PRIVACY_CONTACT = "to_privacy_contact";
+    public static final String TO_PRIVACY_CONTACT_TAB = "to_privacy_contact_tab";
     public static final String TO_PRIVACY_MESSAGE_FLAG = "from_privacy_message";
     public static final String TO_PRIVACY_CALL_FLAG = "from_privacy_call";
     public static final String TO_PRIVACY_CONTACT_FLAG = "from_privacy_contact";
@@ -1065,6 +1067,8 @@ public class PrivacyContactUtils {
                 if (temp > 0) {
                     pre.setMessageNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
+                        /* ISwipe处理：通知没有未读 */
+                        PrivacyContactManager.getInstance(context).cancelPrivacyTipFromPrivacyMsm();
                         // 没有未读去除隐私通知
                         if (pre.getCallLogNoReadCount() <= 0) {
                             NotificationManager notificationManager = (NotificationManager)
@@ -1080,9 +1084,11 @@ public class PrivacyContactUtils {
                             // = false;
                             QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
                             AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
-                            if ((QuickGestureManager.getInstance(context).getQuiQuickNoReadMessage() == null || QuickGestureManager
+                            if ((QuickGestureManager.getInstance(context)
+                                    .getQuiQuickNoReadMessage() == null || QuickGestureManager
                                     .getInstance(context).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
-                                    && (QuickGestureManager.getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
+                                    && (QuickGestureManager.getInstance(context)
+                                            .getQuickNoReadCall() == null || QuickGestureManager
                                             .getInstance(context).getQuickNoReadCall().size() <= 0)/* 未读通话 */
                                     && AppMasterPreference.getInstance(context)
                                             .getCallLogNoReadCount() <= 0/* 隐私通话 */

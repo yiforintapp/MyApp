@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.GestureRelative;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CirCleDongHua;
@@ -229,18 +230,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     }
 
     public void setPlace() {
-        new Thread() {
-            public void run() {
-                try {
-                     mHandler.sendEmptyMessage(2);
-                     sleep(50);
-                    mHandler.sendEmptyMessage(1);
-                    // LeoLog.d("testFragment", "setPlace ! ");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            };
-        }.start();
+        mHandler.sendEmptyMessage(2);
+        mHandler.sendEmptyMessageDelayed(1, 50);
     }
 
     @Override
@@ -486,18 +477,8 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
     }
 
     public void setFinishView() {
-        new Thread() {
-            public void run() {
-                try {
-                    mHandler.sendEmptyMessage(3);
-                    sleep(1000);
-                    mHandler.sendEmptyMessage(4);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-            };
-        }.start();
+        mHandler.sendEmptyMessage(3);
+        mHandler.sendEmptyMessageDelayed(4, 1000);
     }
 
     public void guaTurnBig() {

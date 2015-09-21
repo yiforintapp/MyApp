@@ -10,7 +10,7 @@ import com.leo.appmaster.Constants;
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "appmaster.db";
-    private static final int DB_VERSION = 6;
+    public static final int DB_VERSION = 7;
 
     private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
             + Constants.TABLE_DOWNLOAD
@@ -152,7 +152,20 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
             + " INTEGER"
             + ");";
 
-    public AppMasterDBHelper(Context ctx) {
+    private static final String[] TABLES = {
+        "com.leo.appmaster.db.MsgCenterTable"
+    };
+
+    private static AppMasterDBHelper sInstance;
+    public static synchronized AppMasterDBHelper getInstance(Context ctx) {
+        if (sInstance == null) {
+            sInstance = new AppMasterDBHelper(ctx);
+        }
+
+        return sInstance;
+    }
+
+    private AppMasterDBHelper(Context ctx) {
         super(ctx, DB_NAME, null, DB_VERSION);
     }
 
@@ -198,6 +211,24 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_LOCK_MODE);
         db.execSQL(CREATE_TIME_LOCK);
         db.execSQL(CREATE_LOCATION_LOCK);
+
+        for (String table : TABLES) {
+            try {
+                Class<?> clazz = Class.forName(table);
+                Object object = clazz.newInstance();
+
+                if (object instanceof BaseTable) {
+                    final BaseTable t = (BaseTable) object;
+                    t.createTable(db);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -262,6 +293,24 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
                     + "download_count TEXT," + "desc TEXT,"
                     + "gp_priority INTEGER," + "gp_url TEXT,"
                     + "app_size INTEGER," + "icon_status INTEGER" + ");");
+        }
+
+        for (String table : TABLES) {
+            try {
+                Class<?> clazz = Class.forName(table);
+                Object object = clazz.newInstance();
+
+                if (object instanceof BaseTable) {
+                    final BaseTable t = (BaseTable) object;
+                    t.upgradeTable(db, oldVersion, newVersion);
+                }
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            } catch (InstantiationException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

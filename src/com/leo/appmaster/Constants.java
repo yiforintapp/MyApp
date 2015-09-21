@@ -15,8 +15,32 @@ public class Constants {
     public static final String MOBVISTA_APPID="19242";
     public static final String MOBVISTA_APPKEY="8c8f18965dfd4377892a458f3b854401";        
     public static final String MOBVISTA_UNITID="25";
-    public static final String MOBVISTA_FACEBOOK_ID="1060111710674878_1060603623959020";        
-    
+    public static final String MOBVISTA_FACEBOOK_ID="1060111710674878_1060603623959020";
+
+    // mobvista 对应的广告位id
+    public static final String UNIT_ID_58 = "58";
+    public static final String UNIT_ID_59 = "59";
+    public static final String UNIT_ID_60 = "60";
+    public static final String UNIT_ID_61 = "61";
+    public static final String UNIT_ID_62 = "62";
+    public static final String UNIT_ID_63 = "63";
+    public static final String UNIT_ID_64 = "64";
+    public static final String UNIT_ID_65 = "65";
+    public static final String UNIT_ID_66 = "66";
+    public static final String UNIT_ID_67 = "67";
+
+    public static final String PLACEMENT_ID_58 = "1474823452846141_1475968499398303";
+    public static final String PLACEMENT_ID_59 = "1474823452846141_1475969219398231";
+    public static final String PLACEMENT_ID_60 = "1474823452846141_1475969139398239";
+    public static final String PLACEMENT_ID_61 = "1474823452846141_1475955509399602";
+    public static final String PLACEMENT_ID_62 = "1474823452846141_1475966676065152";
+    public static final String PLACEMENT_ID_63 = "1474823452846141_1475968946064925";
+    public static final String PLACEMENT_ID_64 = "1474823452846141_1475969332731553";
+    public static final String PLACEMENT_ID_65 = "1474823452846141_1475969502731536";
+    public static final String PLACEMENT_ID_66 = "1474823452846141_1475970336064786";
+    public static final String PLACEMENT_ID_67 = "1474823452846141_1475970436064776";
+
+
     
     public static final String TABLE_DOWNLOAD = "download";
     public static final String TABLE_FEEDBACK = "feedback";
@@ -150,6 +174,8 @@ public class Constants {
      */
     public static final String ONLINE_THEME_URL = "/appmaster/themes";
     public static final String CHECK_NEW_THEME = "/appmaster/themesupdatecheck";
+
+    public static final String MSG_CENTER_URL = "/appmaster/activity";
 
     /**
      * 应用推荐游戏
@@ -335,5 +361,10 @@ public class Constants {
     public static final String ISWIPE_TO_GP_CLIENT_RUL = "market://details?id=com.leo.iswipe&referrer=utm_source%3Dam_shengji_01;;com.android.vending";
     /* Iswipe到浏览器的链接 */
     public static final String ISWIPE_TO_GP_BROWSER_RUL = "https://play.google.com/store/apps/details?id=com.leo.iswipe";
+
+    public static final String LOCK_LOG = "lock_setting.txt";
+
+    public static final String PKG_WHAT_EVER = "what ever.";
+    public static final String PKG_LENOVO_SCREEN = "com.lenovo.coverapp.simpletime2";
 
 }

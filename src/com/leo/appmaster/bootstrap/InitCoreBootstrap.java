@@ -11,15 +11,14 @@ import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.Intent.ShortcutIconResource;
+import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.android.internal.telephony.ITelephony;
 import com.leo.appmaster.AppMasterApplication;
@@ -27,8 +26,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
-import com.leo.appmaster.R.drawable;
-import com.leo.appmaster.R.string;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
@@ -36,7 +34,6 @@ import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
@@ -45,6 +42,7 @@ import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -66,6 +64,10 @@ public class InitCoreBootstrap extends Bootstrap {
     private ITelephony mITelephony;
     private AudioManager mAudioManager;
     public Handler mHandler = new Handler(Looper.getMainLooper());
+
+    InitCoreBootstrap() {
+        super();
+    }
 
     @Override
     protected boolean doStrap() {
@@ -89,6 +91,7 @@ public class InitCoreBootstrap extends Bootstrap {
         checkUpdateFinish();
         initIswipeUpdateTip();
         initSplashDelayTime();
+        UIHelper.getInstance(mApp).mRandomCount = preference.getUnlockSucessRandom();
         return true;
     }
 
@@ -106,6 +109,8 @@ public class InitCoreBootstrap extends Bootstrap {
     private void initImageLoader() {
         DisplayImageOptions options = new DisplayImageOptions.Builder().cacheOnDisk(true).build();
         ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(mApp)
+                .taskExecutor(ThreadManager.getNetworkExecutor())
+                .taskExecutorForCachedImages(ThreadManager.getAsyncExecutor())
                 .threadPoolSize(Constants.MAX_THREAD_POOL_SIZE)
                 .threadPriority(Thread.NORM_PRIORITY)
                 .memoryCacheSizePercentage(8)
@@ -209,6 +214,7 @@ public class InitCoreBootstrap extends Bootstrap {
                 installBoostShortcut();
             }
             pref.setIsUpdateQuickGestureUser(false);
+            setUpdateTipData();
         } else {
             int lastCode = Integer.parseInt(lastVercode);
             if (lastCode < versionCode) {
@@ -228,10 +234,28 @@ public class InitCoreBootstrap extends Bootstrap {
                 pref.setIsUpdateQuickGestureUser(true);
                 /* 每次升级都重新刷新googleplay提示规则 */
                 uninitGooglePlayScorTip();
+                recoveryUpdateTipDefaultData();
             }
         }
         pref.setLastVersion(String.valueOf(versionCode));
         tryRemoveUnlockAllShortcut(mApp);
+    }
+
+    /* case1对于老用户: 恢复“每次发现更新升级，恢复升级提示为默认值”的该方法是否执行的默认值 */
+    private void recoveryUpdateTipDefaultData() {
+        LeoLog.i(UIHelper.TAG, "重置‘是否恢复发现升级提示’标识的默认值");
+        AppMasterPreference.getInstance(mApp)
+                .setUpdateRecoveryDefaultData(false);
+    }
+
+    /**
+     * case2对于新用户: 设置“每次发现更新升级，恢复升级提示为默认值”的该方法为已经执行true，
+     * 这样不再去执行,因为新用户本来已经为默认值所以不用恢复数据
+     */
+    private void setUpdateTipData() {
+        LeoLog.i(UIHelper.TAG, "设置‘是否恢复发现升级提示’标识的值为true");
+        AppMasterPreference.getInstance(mApp)
+                .setUpdateRecoveryDefaultData(true);
     }
 
     private void updateShowGuidePage(boolean flag) {

@@ -29,8 +29,9 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/transparent"
-        android:scrollbars="none"
-        android:fadeScrollbars="true" >
+        android:fadeScrollbars="true"
+        android:overScrollMode="never"
+        android:scrollbars="none" >
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -75,11 +76,93 @@
                     android:layout_centerHorizontal="true" />
             </RelativeLayout>
 
+            <!-- ad item -->
+
+            <RelativeLayout
+                android:id="@+id/privacy_ad_item"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/top_layout"
+                android:layout_marginTop="@dimen/privacy_suggest_padding"
+                android:background="@color/white"
+                android:paddingBottom="10dp"
+                android:visibility="gone" >
+
+                <ImageView
+                    android:id="@+id/privacy_ad_icon"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginLeft="@dimen/privacy_ad_icon_m_left"
+                    android:layout_marginTop="@dimen/privacy_suggest_padding" />
+
+                <LinearLayout
+                    android:id="@+id/privacy_ad_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/privacy_suggest_icon_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_icon_text_margin"
+                    android:layout_toRightOf="@id/privacy_ad_icon"
+                    android:orientation="vertical"
+                    android:paddingRight="@dimen/privacy_ad_right_content_p_r" >
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <ImageView
+                            android:id="@+id/small_icon_ad"
+                            android:layout_width="22dp"
+                            android:layout_height="14dp"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ad_sign" />
+
+                        <TextView
+                            android:id="@+id/privacy_ad_title"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="4dp"
+                            android:layout_toRightOf="@id/small_icon_ad"
+                            android:singleLine="true"
+                            android:text="@string/privacy_title_applcok"
+                            android:textColor="#646464"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/privacy_ad_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/privacy_ad_dec_m_top"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:text="@string/privacy_no_app_lock_des"
+                        android:textColor="#999999"
+                        android:textSize="12sp" />
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/ad_download"
+                    android:layout_width="@dimen/privacy_ad_download_width"
+                    android:layout_height="@dimen/privacy_ad_download_height"
+                    android:layout_below="@id/privacy_ad_text"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/privacy_suggest_icon_text_margin"
+                    android:background="@drawable/select_bt_halfscreen_install"
+                    android:gravity="center"
+                    android:text="@string/traff_first_page_small_set"
+                    android:textColor="@color/white"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+            <!-- ad item -->
+
             <RelativeLayout
                 android:id="@+id/privacy_suggest_applock"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/privacy_suggest_height"
-                android:layout_below="@id/top_layout"
+                android:layout_below="@id/privacy_ad_item"
                 android:layout_marginBottom="@dimen/privacy_suggest_padding"
                 android:layout_marginTop="@dimen/privacy_suggest_padding"
                 android:background="@drawable/privacy_suggest_applock_selector"

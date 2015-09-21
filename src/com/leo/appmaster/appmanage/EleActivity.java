@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
@@ -91,12 +92,13 @@ public class EleActivity extends BaseFragmentActivity {
     }
 
     private void getBatteryStats() {
-        new Thread() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
             public void run() {
                 mList = info.getBatteryStats();
                 mHandler.sendEmptyMessage(1);
             }
-        }.start();
+        });
     }
 
     private Handler mHandler = new Handler() {

@@ -153,36 +153,50 @@ public class ZipperView extends View {
         mScaleW = (float) mWidth / (float) cowBoy.getWidth();
 
         if (mFLeft == null) {
-            Bitmap left = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.beauty_zipper_left);
-            int width = (int) (left.getWidth() * mScaleW);
-            int height = (int) (left.getHeight() * mScaleH);
-            mFLeft = Bitmap.createScaledBitmap(left, width, height, true);
+            LeoLog.e("zipper", "mfleft=null,to create now");
+            mFLeft = createScaledBitmap(R.drawable.beauty_zipper_left, 0);
         }
+
         if (mFRight == null) {
-            Bitmap right = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.beauty_zipper_right);
-            int width = (int) (right.getWidth() * mScaleW);
-            int height = (int) (right.getHeight() * mScaleH);
-            mFRight = Bitmap.createScaledBitmap(right, width, height, true);
+            LeoLog.e("zipper", "mfleft=null,to create now");
+            mFRight = createScaledBitmap(R.drawable.beauty_zipper_right, 0);
         }
-        if (mFZipper == null){
-            Bitmap zipper = BitmapFactory.decodeResource(getResources(), R.drawable.beauty_zipper);
-            int width = (int) (zipper.getWidth() * mScaleW * 0.8f);
-            int height = (int) (zipper.getHeight() * mScaleH * 0.8f);
-            mFZipper = Bitmap.createScaledBitmap(zipper, width, height, true);
+
+        if (mFZipper == null) {
+            LeoLog.e("zipper", "mfleft=null,to create now");
+            mFZipper = createScaledBitmap(R.drawable.beauty_zipper, 0.8f);
         }
-        if (mFCowBoy == null){
+
+        if (mFCowBoy == null) {
             mFCowBoy = Bitmap.createScaledBitmap(cowBoy, mWidth, mHeight, true);
         }
-        if (mFMask == null){
+
+        if (mFMask == null) {
             Bitmap mask = BitmapFactory.decodeResource(getResources(), R.drawable.zipper_bg_mask);
             mFMask = Bitmap.createScaledBitmap(mask, mWidth, mHeight, true);
         }
         mFBitmap = Bitmap.createBitmap(mWidth, mHeight, Bitmap.Config.ARGB_8888);
-
         mCanvas = new Canvas(mFBitmap);
+    }
 
+    private Bitmap createScaledBitmap(int resId, float factor) {
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), resId);
+
+        float f = factor == 0 ? 1 : factor;
+        int width = (int) (bitmap.getWidth() * mScaleW * f);
+        int height = (int) (bitmap.getHeight() * mScaleH * f);
+
+        if (width <= 0 || height <= 0) {
+            // 担心缩放以后直接变为0了，所以取缩放之前的值
+            width = bitmap.getWidth();
+            height = bitmap.getHeight();
+            if (width <= 0 || height <= 0) {
+                // 缩放之前的值如果还为0，直接返回原图
+                return bitmap;
+            }
+        }
+
+        return Bitmap.createScaledBitmap(bitmap, width, height, true);
     }
 
     @Override

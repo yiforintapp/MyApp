@@ -24,6 +24,7 @@ import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.model.BaseInfo;
@@ -149,7 +150,7 @@ public class AppBusinessManager {
                         return mBusinessList;
                     }
                 });
-        AppMasterApplication.getInstance().postInAppThreadPool(mLoadInitDataTask);
+        ThreadManager.executeOnAsyncThread(mLoadInitDataTask);
     }
 
     public static synchronized AppBusinessManager getInstance(Context ctx) {
@@ -200,7 +201,7 @@ public class AppBusinessManager {
             }
         };
 
-        AppMasterApplication.getInstance().postInAppThreadPool(deleteTask);
+        ThreadManager.executeOnAsyncThread(deleteTask);
     }
 
     public boolean hasBusinessData(int type) {
@@ -262,7 +263,7 @@ public class AppBusinessManager {
                                             syncServerGestureData(false);
                                         }
                                     };
-                                    Timer timer = new Timer();
+                                    Timer timer = ThreadManager.getTimer();
                                     timer.schedule(recheckTask, DELAY_12_HOUR);
                                 }
                             }
@@ -279,7 +280,7 @@ public class AppBusinessManager {
                                         syncServerGestureData(false);
                                     }
                                 };
-                                Timer timer = new Timer();
+                                Timer timer = ThreadManager.getTimer();
                                 timer.schedule(recheckTask, DELAY_2_HOUR);
                                 mErrorTryCount++;
                             } else {
@@ -289,7 +290,7 @@ public class AppBusinessManager {
                                         syncServerGestureData(false);
                                     }
                                 };
-                                Timer timer = new Timer();
+                                Timer timer = ThreadManager.getTimer();
                                 timer.schedule(recheckTask,
                                         DELAY_12_HOUR / 2);
                             }
@@ -303,7 +304,7 @@ public class AppBusinessManager {
                         syncServerGestureData(false);
                     }
                 };
-                Timer timer = new Timer();
+                Timer timer = ThreadManager.getTimer();
                 timer.schedule(recheckTask,
                         DELAY_12_HOUR - (curTime - pref.getLastSyncBusinessTime()));
             }
@@ -348,7 +349,7 @@ public class AppBusinessManager {
                                         syncOtherRecommend(type);
                                     }
                                 };
-                                Timer timer = new Timer();
+                                Timer timer = ThreadManager.getTimer();
                                 timer.schedule(recheckTask, DELAY_12_HOUR);
                             }
                         }
@@ -364,7 +365,7 @@ public class AppBusinessManager {
                                 syncOtherRecommend(type);
                             }
                         };
-                        Timer timer = new Timer();
+                        Timer timer = ThreadManager.getTimer();
                         timer.schedule(recheckTask, DELAY_2_HOUR);
 
                         // if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
@@ -390,7 +391,7 @@ public class AppBusinessManager {
 
     protected void syncGestureData(final int containerType,
             final List<BusinessItemInfo> list) {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 final ContentResolver resolver = mContext.getContentResolver();
@@ -476,7 +477,7 @@ public class AppBusinessManager {
                 resolver.delete(Constants.APPLIST_BUSINESS_URI, "lebal=" + info.label, null);
             }
         };
-        AppMasterApplication.getInstance().postInAppThreadPool(runnable);
+        ThreadManager.executeOnAsyncThread(runnable);
         mBusinessList.remove(info);
     }
 }

@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.engine.BatteryComsuption;
 import com.leo.appmaster.engine.BatteryInfoProvider;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -59,12 +60,13 @@ public class ManagerElecFragment extends BaseFragment {
 
     private void getBatteryStats() {
 //        showDialog(PROGRESS_DIALOG_ID);
-        new Thread() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
             public void run() {
                 mList = info.getBatteryStats();
                 mHandler.sendEmptyMessage(1);
             }
-        }.start();
+        });
     }
     
     private Handler mHandler = new Handler() {

@@ -2,13 +2,17 @@
 package com.leo.appmaster.quickgestures.ui;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.handmark.pulltorefresh.library.internal.Utils;
+import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
@@ -23,6 +27,8 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
     private TextView mContent;
     private TextView mLeftBt;
     private TextView mRightBt;
+    private ImageView mContentImage;
+    private LinearLayout mLinearLayout;
     String mDialgFlag;
 
     public interface OnDiaogClickListener {
@@ -42,8 +48,18 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
         mContent = (TextView) dlgView.findViewById(R.id.iswip_tip_content_text);
         mLeftBt = (TextView) dlgView.findViewById(R.id.iswip_left_bt);
         mRightBt = (TextView) dlgView.findViewById(R.id.iswip_right_bt);
+        mContentImage = (ImageView) dlgView.findViewById(R.id.iswip_tip_title_pic);
+        mLinearLayout = (LinearLayout) dlgView.findViewById(R.id.iswipe_update_tip_dialog);
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
+    }
+
+    public void setContentImage(int image) {
+        mContentImage.setImageResource(image);
+    }
+
+    public void setIswipeUpdateDialogBackground(int background) {
+        mLinearLayout.setBackgroundResource(background);
     }
 
     public void setFlag(String flag) {
@@ -58,6 +74,10 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
         }
     }
 
+    public void setTitleTextColor(int id) {
+        mTitle.setTextColor(id);
+    }
+
     public void setVisiblilyTitle(boolean flag) {
         if (flag) {
             mTitle.setVisibility(View.VISIBLE);
@@ -66,10 +86,14 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
         }
     }
 
-    public void setContextText(String content) {
+    public void setContentText(String content) {
         if (!Utilities.isEmpty(content)) {
             mContent.setText(content);
         }
+    }
+
+    public void setContentTextColor(int id) {
+        mContent.setTextColor(ColorStateList.valueOf(id));
     }
 
     public void setVisiblilyContent(boolean flag) {
@@ -85,12 +109,23 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
             mLeftBt.setText(left);
         }
 
+    } 
+
+    public void setLeftButtonTextColor(int id) {
+        mLeftBt.setTextColor(id);
+    }
+    public void setLeftOnKeyListener(android.view.View.OnKeyListener listener){
+        mLeftBt.setOnKeyListener(listener);
     }
 
     public void setRightButtonText(String right) {
         if (!Utilities.isEmpty(right)) {
             mRightBt.setText(right);
         }
+    }
+
+    public void setRightButtonTextColor(int id) {
+        mRightBt.setTextColor(id);
     }
 
     public void setLeftListener(android.view.View.OnClickListener listent) {
@@ -109,7 +144,7 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
             /* 主页弹出的对话框初始化弹出标志值 */
             ISwipUpdateRequestManager.getInstance(mContext).cancelShowIswipUpdate();
             mDialgFlag = null;
-        }
+        } 
         super.dismiss();
     }
 }

@@ -27,6 +27,7 @@ import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.privacy.PrivacyHelper.Level;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
@@ -35,11 +36,11 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
-public class PrivacyProposalLayout extends RelativeLayout implements OnClickListener{
-    
+public class PrivacyProposalLayout extends RelativeLayout implements OnClickListener {
+
     private final static int APPTRANSIONY = 60;
     private final static int OTHERTRANSIONY = 100;
-    
+
     private View mStatusBar;
     private CommonTitleBar mTitleBar;
     private TextView mProposalTip;
@@ -50,7 +51,8 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
     private View mProposalPic;
     private View mProposalVideo;
     private View mProposalContact;
-    
+    // private View mProposalAd;
+
     private TextView mAppLockSuggest;
     private TextView mAppLockDes;
     private TextView mHidePicSuggest;
@@ -59,19 +61,19 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
     private TextView mHideVideoDes;
     private TextView mPrivacyContactSuggest;
     private TextView mPrivacyContactDes;
-    
+
     private int mColor;
     private int mBgColor;
     private int mWhiteColor;
     private int mTransColor;
-    
+
     private boolean mFirstAnimating = false;
     private boolean mSecondAnimating = false;
     private Drawable mAnimDrawable;
     private Rect mAnimStartRect = new Rect();
     private Rect mAnimEndRect = new Rect();
     private Rect mAnimDrawRect = new Rect();
-    
+
     private int mHomeTitleHeight;
     private int mStatusBarHeight;
     private int mTitleAlpha;
@@ -79,23 +81,26 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
     private Rect mOverlayStartRect = new Rect();
     private Rect mOverlayEndRect = new Rect();
     private Rect mOverlayDrawRect = new Rect();
-    
+
     private ValueAnimator mFirstAnimator;
     private ValueAnimator mSecondAnimator;
     private ValueAnimator mCloseAnimator;
     private Paint mPaint;
-
+    private Context mContext;
 
     public PrivacyProposalLayout(Context context) {
         this(context, null);
+        this.mContext = context;
     }
 
     public PrivacyProposalLayout(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        this.mContext = context;
     }
 
     public PrivacyProposalLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.mContext = context;
         mAnimDrawable = getResources().getDrawable(R.drawable.privacy_level_bg);
         mPaint = new Paint();
         mPaint.setStyle(Style.FILL);
@@ -114,80 +119,83 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
         if (VERSION.SDK_INT < 19) {
             mStatusBar.setVisibility(View.GONE);
         }
-        
+
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
         mTitleBar.setTitle(R.string.privacy_suggest_title);
         mTitleBar.openBackView();
         mTitleBar.setBackViewListener(this);
         mTitleBar.setBackArrowImg(R.drawable.arrow_down_icon);
-        
+
         mProposalTip = (TextView) findViewById(R.id.proposal_tip);
-        mProposalStatus = (PrivacyStatusView)findViewById(R.id.proposal_status);
+        mProposalStatus = (PrivacyStatusView) findViewById(R.id.proposal_status);
         mLevelView = (PrivacyLevelSmallView) findViewById(R.id.proposal_level);
-        
-        mProposalList = (ScrollView)findViewById(R.id.proposal_list);
+
+        mProposalList = (ScrollView) findViewById(R.id.proposal_list);
         mProposalApp = findViewById(R.id.privacy_suggest_applock);
+
         mAppLockSuggest = (TextView) mProposalApp.findViewById(R.id.suggest_applock_suggest);
         mAppLockDes = (TextView) mProposalApp.findViewById(R.id.suggest_applock_description);
         mProposalApp.setOnClickListener(this);
-        
+
         mProposalPic = findViewById(R.id.privacy_suggest_hide_pic);
         mHidePicSuggest = (TextView) mProposalPic.findViewById(R.id.suggest_hide_pic_suggest);
         mHidePicDes = (TextView) mProposalPic.findViewById(R.id.suggest_hide_pic_description);
         mProposalPic.setOnClickListener(this);
-        
+
         mProposalVideo = findViewById(R.id.privacy_suggest_hide_video);
         mHideVideoSuggest = (TextView) mProposalVideo.findViewById(R.id.suggest_hide_video_suggest);
         mHideVideoDes = (TextView) mProposalVideo.findViewById(R.id.suggest_hide_video_description);
         mProposalVideo.setOnClickListener(this);
-        
+
         mProposalContact = findViewById(R.id.privacy_suggest_privacy_contact);
         mPrivacyContactSuggest = (TextView) mProposalContact
                 .findViewById(R.id.suggest_privacy_contact_suggest);
         mPrivacyContactDes = (TextView) mProposalContact
                 .findViewById(R.id.suggest_privacy_contact_description);
         mProposalContact.setOnClickListener(this);
+
+        // mProposalAd = findViewById(R.id.privacy_ad_item);
     }
-    
+
     @Override
     protected void dispatchDraw(Canvas canvas) {
         super.dispatchDraw(canvas);
-        if(mFirstAnimating) {         
+        if (mFirstAnimating) {
             mPaint.setAlpha(255);
             mPaint.setColor(mWhiteColor);
-            canvas.drawRect(mOverlayDrawRect.left, mOverlayDrawRect.bottom, mOverlayDrawRect.right, getHeight(), mPaint);
-            
+            canvas.drawRect(mOverlayDrawRect.left, mOverlayDrawRect.bottom, mOverlayDrawRect.right,
+                    getHeight(), mPaint);
+
             mPaint.setColor(mColor);
             mPaint.setAlpha(mTitleAlpha);
             canvas.drawRect(mOverlayDrawRect, mPaint);
-            
+
             mPaint.setAlpha(255);
             canvas.drawRect(mAnimDrawRect, mPaint);
             mAnimDrawable.setBounds(mAnimDrawRect);
             mAnimDrawable.draw(canvas);
-        } else if(mSecondAnimating) {
+        } else if (mSecondAnimating) {
             mPaint.setColor(mColor);
             mPaint.setAlpha(mLayerAlpha);
             canvas.drawRect(mOverlayDrawRect, mPaint);
-            
+
             mPaint.setAlpha(mLayerAlpha);
             mPaint.setColor(Color.argb(mLayerAlpha, 255, 255, 255));
             int top = 0;
             if (VERSION.SDK_INT >= 19) {
                 top = mStatusBarHeight;
             }
-            canvas.drawRect(0, top + mAnimEndRect.bottom, getWidth(),  getHeight(), mPaint);
+            canvas.drawRect(0, top + mAnimEndRect.bottom, getWidth(), getHeight(), mPaint);
         }
     }
 
-    
     public void show(Rect animRect) {
         onLevelChange(-1, true);
         playAnim(animRect);
     }
-    
+
     private void playAnim(Rect animRect) {
-        if(mFirstAnimator != null) {
+        if (mFirstAnimator != null) {
             mFirstAnimator.cancel();
         }
         int top = 0;
@@ -196,7 +204,7 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
         }
         mOverlayStartRect.set(0, top, getWidth(), top + mHomeTitleHeight);
         mOverlayEndRect.set(0, top, getWidth(), top + mTitleBar.getMeasuredHeight());
-        
+
         int[] pos = new int[2];
         getLocationOnScreen(pos);
         mAnimStartRect.set(animRect);
@@ -221,18 +229,18 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
                                 .round(((mAnimEndRect.top - mAnimStartRect.top) * percent));
                 int size = fromSize + (int) Math.round((toSize - fromSize) * percent);
                 mAnimDrawRect.set(left, top, left + size, top + size);
-                
-                mTitleAlpha = (int)(255 * percent);
+
+                mTitleAlpha = (int) (255 * percent);
                 fromSize = mOverlayStartRect.height();
                 toSize = mOverlayEndRect.height();
                 size = fromSize + (int) Math.round((toSize - fromSize) * percent);
                 left = mOverlayStartRect.left;
                 top = mOverlayStartRect.top;
                 mOverlayDrawRect.set(left, top, getWidth(), top + size);
-                
+
                 invalidate();
 
-                if(percent > 0.95f) {
+                if (percent > 0.95f) {
                     fadeOut();
                 }
             }
@@ -256,6 +264,8 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
                 setBackgroundColor(mBgColor);
                 mTitleBar.setVisibility(View.VISIBLE);
                 mProposalList.setVisibility(View.VISIBLE);
+                mLevelView.requestLayout();
+                mProposalStatus.requestLayout();
             }
 
             @Override
@@ -265,16 +275,18 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
                 setBackgroundColor(mBgColor);
                 mTitleBar.setVisibility(View.VISIBLE);
                 mProposalList.setVisibility(View.VISIBLE);
+                mLevelView.requestLayout();
+                mProposalStatus.requestLayout();
             }
         });
         mFirstAnimator.start();
     }
 
     private void fadeOut() {
-        if(mSecondAnimating) {
+        if (mSecondAnimating) {
             return;
         }
-        if(mSecondAnimator != null) {
+        if (mSecondAnimator != null) {
             mSecondAnimator.cancel();
         }
         mSecondAnimator = new ValueAnimator();
@@ -284,12 +296,12 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
         mSecondAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
                 final float percent = (Float) animation.getAnimatedValue();
-                mLayerAlpha = (int)(255 * percent);
-                int appTrans = (int)(APPTRANSIONY * percent);
-                int otherTrans = (int)(OTHERTRANSIONY * percent);
+                mLayerAlpha = (int) (255 * percent);
+                int appTrans = (int) (APPTRANSIONY * percent);
+                int otherTrans = (int) (OTHERTRANSIONY * percent);
                 setChildTransion(appTrans, otherTrans);
                 invalidate();
-                if(percent < 0.05f) {
+                if (percent < 0.05f) {
                     mProposalStatus.playAnim();
                 }
             }
@@ -313,17 +325,17 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
         });
         mSecondAnimator.start();
     }
-    
+
     private void setChildTransion(int appTrans, int otherTrans) {
         mProposalApp.setTranslationY(appTrans);
         mProposalPic.setTranslationY(otherTrans);
         mProposalVideo.setTranslationY(otherTrans);
         mProposalContact.setTranslationY(otherTrans);
     }
-    
+
     public void close(boolean animation) {
         cancelAnimations();
-        if(animation) {
+        if (animation) {
             mCloseAnimator = new ValueAnimator();
             mCloseAnimator.setDuration(300);
             mCloseAnimator.setIntValues(0, getHeight());
@@ -335,27 +347,36 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
             });
             mCloseAnimator.addListener(new AnimatorListenerAdapter() {
                 public void onAnimationEnd(Animator animation) {
+                    // ((HomeActivity) mContext).setEnterPrivacySuggest(false);
+                    if (((HomeActivity) mContext).isCanShow()) {
+                        ((HomeActivity) mContext).setAdIconVisible();
+                    }
                     setVisibility(View.INVISIBLE);
                     setTranslationY(0);
                 }
             });
             mCloseAnimator.start();
         } else {
+            // ((HomeActivity) mContext).setEnterPrivacySuggest(false);
+            if (((HomeActivity) mContext).isCanShow()) {
+                ((HomeActivity) mContext).setAdIconVisible();
+            }
+
             setVisibility(View.INVISIBLE);
         }
     }
-    
+
     private void cancelAnimations() {
-        if(mFirstAnimator != null) {
+        if (mFirstAnimator != null) {
             mFirstAnimator.cancel();
         }
-        if(mSecondAnimator != null) {
+        if (mSecondAnimator != null) {
             mSecondAnimator.cancel();
         }
-        if(mProposalStatus != null) {
+        if (mProposalStatus != null) {
             mProposalStatus.cancelAnimation();
         }
-        if(mCloseAnimator != null) {
+        if (mCloseAnimator != null) {
             mCloseAnimator.cancel();
         }
     }
@@ -412,19 +433,20 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
     public void onLevelChange(int color, boolean init) {
         PrivacyHelper ph = PrivacyHelper.getInstance(getContext());
         Level level = ph.getPrivacyLevel();
-        if(color == -1) {
+        if (color == -1) {
             color = ph.getCurLevelColor().toIntColor();
         }
         mColor = color;
         mStatusBar.setBackgroundColor(color);
         mTitleBar.setBackgroundColor(color);
-        mLevelView.invalidate(color);      
-        mProposalStatus.invalidate(level, init);       
-        if(init){
+        mLevelView.invalidate(color);
+        mProposalStatus.invalidate(level, init);
+        if (init) {
             mProposalList.scrollTo(0, 0);
         }
-        mProposalTip.setText(getResources().getString(R.string.privacy_proposal_tip,  ph.getLevelDescription(level)));
-        
+        mProposalTip.setText(getResources().getString(R.string.privacy_proposal_tip,
+                ph.getLevelDescription(level)));
+
         boolean appLockActive = ph.isVariableActived(PrivacyHelper.VARABLE_APP_LOCK);
         mAppLockSuggest.setText(appLockActive ? R.string.privacy_more_app_lock
                 : R.string.privacy_no_app_lock);
@@ -449,7 +471,7 @@ public class PrivacyProposalLayout extends RelativeLayout implements OnClickList
         mPrivacyContactDes.setText(privacyContactActive ? R.string.privacy_more_privacy_contact_des
                 : R.string.privacy_no_privacy_contact_des);
     }
-    
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         return true;

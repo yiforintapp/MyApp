@@ -1,5 +1,7 @@
 package com.leo.appmaster.bootstrap;
 
+import com.leo.appmaster.ThreadManager;
+
 /**
  * 后台任务初始化组
  * 1、初始化部分异步任务
@@ -26,7 +28,7 @@ public class BackgroundBootstrap extends BootstrapGroup {
      */
     private static final int[] STEPS = {STEP_INIT, STEP_SPLASH};
 
-    public BackgroundBootstrap() {
+    BackgroundBootstrap() {
         super();
         mStepIds = STEPS;
         
@@ -55,8 +57,8 @@ public class BackgroundBootstrap extends BootstrapGroup {
 
     @Override
     public final void execute() {
-        mApp.postInAppThreadPool(new Runnable() {
-            
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+
             @Override
             public void run() {
                 strap();

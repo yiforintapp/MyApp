@@ -23,7 +23,7 @@ public class SerializableTable extends SQLiteOpenHelper {
 	
 	protected static final String DATABASE_NAME = AppMasterDBHelper.DB_NAME;
 	protected static final String TABLE_NAME = "serialize_data";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = AppMasterDBHelper.DB_VERSION;
 	
 	protected static final String COL_KEY = "key";
 	protected static final String COL_BLOB = "blob";

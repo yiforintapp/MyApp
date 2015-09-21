@@ -67,8 +67,8 @@
     <dimen name="help_icon_height">24dp</dimen>
     <dimen name="help_setting_margintop">18dp</dimen>
     <dimen name="fragment_lock_password_passwd_input_tip_margintop">10dp</dimen>
-    <dimen name="fragment_lock_password_appicon_width">64dp</dimen>
-    <dimen name="fragment_lock_password_appicon_height">64dp</dimen>
+    <dimen name="fragment_lock_password_appicon_width">80dp</dimen>
+    <dimen name="fragment_lock_password_appicon_height">80dp</dimen>
     <dimen name="fragment_lock_password_passwd_input_tip_textsize">16sp</dimen>
     <dimen name="fragment_lock_password_layout_passwd_height">20dp</dimen>
     <dimen name="fragment_lock_password_tv_passwd_width">20dp</dimen>
@@ -403,4 +403,6 @@
     <!-- 2.7 start -->
     <integer name="home_page_tab_text_size">16</integer>
     <!-- 2.7 end -->
+
+
 </resources>

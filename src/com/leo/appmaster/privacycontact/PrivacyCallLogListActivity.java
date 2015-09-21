@@ -289,49 +289,54 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                     "%" + number
                 }, Constants.COLUMN_CALL_LOG_DATE + " desc");
         if (cursor != null) {
-            while (cursor.moveToNext()) {
-                ContactCallLog callLog = new ContactCallLog();
-                callLog.setCallLogCount(cursor.getCount());
-                String numberCall = cursor.getString(cursor
-                        .getColumnIndex(Constants.COLUMN_CALL_LOG_PHONE_NUMBER));
-                callLog.setCallLogNumber(numberCall);
-                callLog.setCallLogName(cursor.getString(cursor
-                        .getColumnIndex(Constants.COLUMN_CALL_LOG_CONTACT_NAME)));
-                String date = cursor
-                        .getString(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_DATE));
-                callLog.setClallLogDate(date);
-                callLog.setClallLogType(cursor.getInt(cursor
-                        .getColumnIndex(Constants.COLUMN_CALL_LOG_TYPE)));
-                int isRead = cursor
-                        .getInt(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_IS_READ));
-                if (isRead == 0) {
-                    String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(numberCall);
-                    PrivacyCalllogFragment.updateCallLogMyselfIsRead(1,
-                            "call_log_phone_number LIKE ? ",
-                            new String[] {
-                                "%" + readNumberFlag
-                            }, this);
-                }
-                // 同一天只显示一次
-                Date time = new Date(date);
-                SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd");
-                try {
-                    String showDateTemp = sd.format(time);
-                    if (showDate == null || showDate.size() == 0) {
-                        showDate.add(showDateTemp);
-                        callLog.setShowDate(showDateTemp);
-                    } else {
-                        if (!showDate.contains(showDateTemp)) {
+            try {
+                while (cursor.moveToNext()) {
+                    ContactCallLog callLog = new ContactCallLog();
+                    callLog.setCallLogCount(cursor.getCount());
+                    String numberCall = cursor.getString(cursor
+                            .getColumnIndex(Constants.COLUMN_CALL_LOG_PHONE_NUMBER));
+                    callLog.setCallLogNumber(numberCall);
+                    callLog.setCallLogName(cursor.getString(cursor
+                            .getColumnIndex(Constants.COLUMN_CALL_LOG_CONTACT_NAME)));
+                    String date = cursor
+                            .getString(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_DATE));
+                    callLog.setClallLogDate(date);
+                    callLog.setClallLogType(cursor.getInt(cursor
+                            .getColumnIndex(Constants.COLUMN_CALL_LOG_TYPE)));
+                    int isRead = cursor
+                            .getInt(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_IS_READ));
+                    if (isRead == 0) {
+                        String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(numberCall);
+                        PrivacyCalllogFragment.updateCallLogMyselfIsRead(1,
+                                "call_log_phone_number LIKE ? ",
+                                new String[] {
+                                    "%" + readNumberFlag
+                                }, this);
+                    }
+                    // 同一天只显示一次
+                    Date time = new Date(date);
+                    SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd");
+                    try {
+                        String showDateTemp = sd.format(time);
+                        if (showDate == null || showDate.size() == 0) {
                             showDate.add(showDateTemp);
                             callLog.setShowDate(showDateTemp);
+                        } else {
+                            if (!showDate.contains(showDateTemp)) {
+                                showDate.add(showDateTemp);
+                                callLog.setShowDate(showDateTemp);
+                            }
                         }
-                    }
-                    mContactCallLogs.add(callLog);
-                } catch (Exception e) {
+                        mContactCallLogs.add(callLog);
+                    } catch (Exception e) {
 
+                    }
+                }
+            } finally {
+                if (cursor != null) {
+                    cursor.close();
                 }
             }
-            cursor.close();
         }
     }
 

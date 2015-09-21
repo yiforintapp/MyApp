@@ -747,26 +747,26 @@
     <string name="zipper_too_slow">давайте побыстрее</string>
     <string name="theme_apply_title">использовать тон деблокирови%1$s?</string>
     <!-- 2.6 end -->
-    
-        <!-- 2.7 start -->
+
+
+    <!-- 2.7 start -->
     <string name="clean_mem_notify_big">памяти нет</string>
     <string name="clean_mem_notify_big_right">65%</string>
     <string name="clean_mem_notify_small">пуск</string>
     <string name="clean_mem_notify_boost">ускорить</string>
-	
-	<string name="pg_appmanager_quick_gesture_option_trigger_type">метод запуска</string>
-	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">белая точка боку / снизу</string>
-	<string name="pg_appmanager_quick_gesture_trigger_alide">боку/ снизу</string>
-	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">белая точка</string>
-	<string name="pg_appmanager_quick_gesture_trigger_tips">выбирай один,по минимуму</string>
-	
-	<string name="pg_appmanager_quick_gesture_conflict_content">жест вам мешает? Вы сможете открыть только бклую точкую для настройки</string>
-	<string name="pg_appmanager_quick_gesture_conflict_later">потом</string>
-	<string name="pg_appmanager_quick_gesture_conflict_open">включить</string>		
-	<string name="anti_conflict_mode_open">Оказалось</string>
-	<!-- 2.7 end -->
-	
-		    <!-- 2.8 start -->
+    <string name="pg_appmanager_quick_gesture_option_trigger_type">метод запуска</string>
+    <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">белая точка боку / снизу</string>
+    <string name="pg_appmanager_quick_gesture_trigger_alide">боку/ снизу</string>
+    <string name="pg_appmanager_quick_gesture_trigger_wihtedot">белая точка</string>
+    <string name="pg_appmanager_quick_gesture_trigger_tips">выбирай один,по минимуму</string>
+    <string name="pg_appmanager_quick_gesture_conflict_content">жест вам мешает? Вы сможете открыть только бклую точкую для настройки</string>
+    <string name="pg_appmanager_quick_gesture_conflict_later">потом</string>
+    <string name="pg_appmanager_quick_gesture_conflict_open">включить</string>
+    <string name="anti_conflict_mode_open">Оказалось</string>
+    <!-- 2.7 end -->
+
+
+    <!-- 2.8 start -->
     <string name="device_admin_extra">Против удал. чужими</string>
     <string name="iswip_update_tip_title_text">Обновл. E. Shortcuts</string>
     <string name="iswip_update_tip_context_text">Easy Shortcuts поменялись на iSwipe. Попробуй скачать их!</string>
@@ -777,5 +777,36 @@
     <string name="iswip_update_notifi_button">Обновить сейчас</string>
     <string name="ad_timeout">Вас ждут сюрпризы!</string>
     <!-- 2.8 end -->
+    <!-- 2.10 start -->
+    <string name="auto_start_guide_tip_title">Нужна прив. автозап.</string>
+    <string name="auto_start_guide_tip_content">Запуск Privacy Guard при старте</string>
+    <string name="auto_start_guide_tip_left_button">Позже</string>
+    <string name="auto_start_guide_tip_right_button">Сейчас</string>
+    <string name="msg_center_title">Центр сообщений</string>
+    <string name="msg_center_empty">Нет новых сообщений</string>
+    <string name="msg_center_empty_say">Расскажите, что вы хотите</string>
+    <string name="msg_center_feedback">Обр. связь</string>
+    <string name="msg_center_load_fail">Сервер занят, пжл, обновите</string>
+    <string name="ufo_roll_again">Повторите</string>
+    <string name="ufo_theme_down">Скач.</string>
+    <string name="ufo_theme_use">Прим.</string>
+    <string name="ufo_theme_use_toast">Тема применяется</string>
+    <string name="ufo_theme_content">Прим. нв. тему, укр. Ин-фейс</string>
+    <string name="ufo_theme_title">Тема с закр. прил.</string>
+    <string name="menue_item_delete_pg">Удаление</string>
+    <string name="advace_protect_dialog_left_text">Позже</string>
+    <string name="advace_protect_dialog_right_text">Сейчас</string>
+    <string name="advace_protect_dialog_title_text">Предл. улучш. защита</string>
+    <string name="advace_protect_dialog_content_text">Блок. добавл. Предл. улучш. защиту от удал. постор. PrivGuard удал. из бок. панели.</string>
+    <string name="desk_ad_name">App Joy</string>
+    <string name="advance_protect_open_success_tip_title">Улучш. защита вкл.</string>
+    <string name="advance_protect_open_success_tip_content">Улучш. защита вкл. PrivGuard теперь нельзя удалить. Вы можете откл. его в настр.</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">Запуск Privacy Guard при старте.Нажмите кнопку "Управление автозапуском" и добавьте PrivGuard в список автозапуска</string>
+    <string name="auto_start_tip_redmi">Запуск Privacy Guard при старте.В "Управл. автозапуском" выберите "Доб. прил." и доб. PrivGuard в список автозапуска</string>
+    <string name="auto_start_tip_huawei">Запуск Privacy Guard при старте.В "Защищенных приложениях" добавьте Privacy Guard в список защиты</string>
+    <string name="auto_start_tip_lenovo">Запуск Privacy Guard при старте.В "Тайнах" выберите "Автозапуск" и добавьте Privacy Guard в список автозапуска</string>
+    <string name="splash_guide_page_msg_title">Центр сообщений</string>
+    <string name="splash_guide_page_msg_content">все мероприятия и полезные советы здесь</string>
+    <!-- 2.10 end -->
 
 </resources>

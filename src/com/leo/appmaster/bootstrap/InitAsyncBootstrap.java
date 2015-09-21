@@ -11,6 +11,7 @@ import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
 import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.schedule.FetchScheduleJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -21,7 +22,11 @@ import com.leo.appmaster.utils.LeoLog;
  * @author Jasper
  */
 public class InitAsyncBootstrap extends Bootstrap {
-    private static final String TAG = "InitBootstrap";
+    private static final String TAG = "InitAsyncBootstrap";
+
+    InitAsyncBootstrap() {
+        super();
+    }
 
     @Override
     protected boolean doStrap() {
@@ -48,6 +53,8 @@ public class InitAsyncBootstrap extends Bootstrap {
         if (!isAppInstalled) {
             SDKWrapper.addEvent(mApp, SDKWrapper.P1, "gp_check", "nogp");
         }
+
+        FetchScheduleJob.startFetchJobs();
         return true;
     }
 

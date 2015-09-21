@@ -17,7 +17,7 @@ public class ForegroundBootstrap extends BootstrapGroup {
     
     private static final int[] STEPS = { STEP_INIT_CORE };
     
-    public ForegroundBootstrap() {
+    ForegroundBootstrap() {
         super();
         mStepIds = STEPS;
         

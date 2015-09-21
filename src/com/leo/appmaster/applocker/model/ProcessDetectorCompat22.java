@@ -12,6 +12,7 @@ import android.os.Process;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.LeoLog;
 
 public class ProcessDetectorCompat22 extends ProcessDetector {
@@ -41,13 +42,13 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
      * 设置oom_score值，后续作为参考值, leo到前台后会触发设置
      */
     public static void setForegroundScore() {
-        AppMasterApplication.getInstance().postInAppThreadPool(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
 
             @Override
             public void run() {
                 int score = getOomScore(Process.myPid());
                 score = score > MAX_SCORE ? MAX_SCORE : score;
-                
+
                 score /= 2;
                 MIN_SCORE = score / 2;
 
@@ -137,8 +138,6 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
                     List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent, 0);
                     if (list == null || list.isEmpty())
                         continue;
-//                    Intent intent = context.getPackageManager().getLaunchIntentForPackage(processAdj.pkg);
-//                    if (intent == null) continue;
 
                     minDiff = diff;
                     minAdj = processAdj;

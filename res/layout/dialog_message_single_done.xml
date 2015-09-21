@@ -40,7 +40,6 @@
             android:layout_height="wrap_content"
            android:gravity="center"
             android:fadeScrollbars="false"
-            android:maxLines="4"
             android:scrollbars="vertical"
             android:text="content" />
 
