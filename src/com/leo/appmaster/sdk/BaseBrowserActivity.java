@@ -39,7 +39,7 @@ public abstract class BaseBrowserActivity extends BaseActivity {
     protected WebView mWebView;
     protected ProgressBar mLoadingView;
     protected View mErrorView;
-    private boolean mReceivedError;
+    protected boolean mReceivedError;
 
     @Override
     protected void onDestroy() {
@@ -176,8 +176,8 @@ public abstract class BaseBrowserActivity extends BaseActivity {
         LeoLog.d(TAG, "--->onReceivedError, errorCode: " + errorCode + " | des: " + description);
         if (!NetWorkUtil.isNetworkAvailable(this) || errorCode == ERR_404) {
             //-2, 找不到网页
-            mReceivedError = true;
         }
+        mReceivedError = true;
         mWebView.setVisibility(View.GONE);
         mLoadingView.setVisibility(View.GONE);
         mErrorView.setVisibility(View.VISIBLE);

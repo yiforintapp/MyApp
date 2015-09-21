@@ -80,7 +80,7 @@ public class MsgCenterAdapter extends BaseAdapter {
         mTitleLeftPadding = res.getDimensionPixelSize(R.dimen.mc_item_title_left_padding);
         mDesUpdatePadding = res.getDimensionPixelSize(R.dimen.mc_item_update_des_padding);
         mDesPadding = res.getDimensionPixelSize(R.dimen.mc_item_des_padding);
-        ThreadManager.executeOnFileThread(new Runnable() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
                 MsgCenterTable table = new MsgCenterTable();
@@ -91,6 +91,12 @@ public class MsgCenterAdapter extends BaseAdapter {
     }
 
     private void onQueryResult(final List<Message> list) {
+        ThreadManager.getUiThreadHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                mListView.setEmptyView(mEmptyView);
+            }
+        });
         if (list == null || list.isEmpty()) return;
         LeoLog.d(TAG, "onQueryResult, list size: " + list.size());
 
@@ -100,7 +106,6 @@ public class MsgCenterAdapter extends BaseAdapter {
                 mMessageList.clear();
                 mMessageList.addAll(list);
 
-                mListView.setEmptyView(mEmptyView);
                 notifyDataSetChanged();
             }
         });
