@@ -4,6 +4,7 @@ package com.leo.appmaster.bootstrap;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
@@ -35,7 +36,13 @@ public class InitAsyncBootstrap extends Bootstrap {
         AppLoadEngine.getInstance(mApp).preloadAllBaseInfo();
         // 初始化快捷手势数据
         if (AppMasterPreference.getInstance(mApp).getSwitchOpenQuickGesture()) {
-            QuickGestureManager.getInstance(mApp).init();
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                
+                @Override
+                public void run() {
+                    QuickGestureManager.getInstance(mApp).init();
+                }
+            });
         }
         /* checkUpdateFinish(); */
         quickGestureTipInit();
