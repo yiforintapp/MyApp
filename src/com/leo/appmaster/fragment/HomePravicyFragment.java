@@ -264,6 +264,8 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             case R.id.privacy_level:
 
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "home", "privacylevel");
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "proposals", "proposals_cnts");
+                
                 Level level = PrivacyHelper.getInstance(mActivity).getPrivacyLevel();
                 if (level == Level.LEVEL_FIVE) {
                     Toast.makeText(mActivity, R.string.privacy_suggest_perfect_toast,
@@ -321,6 +323,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
 
             @Override
             public void onMobvistaClick(Campaign campaign) {
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_sugs");
                 LockManager.getInstatnce().timeFilterSelf();
             }
         });

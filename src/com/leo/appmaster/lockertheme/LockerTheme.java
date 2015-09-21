@@ -270,6 +270,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
             @Override
             public void onMobvistaClick(Campaign campaign) {
+                SDKWrapper.addEvent(LockerTheme.this, SDKWrapper.P1, "ad_cli", "adv_cnts_theme");
                 LockManager.getInstatnce().timeFilterSelf();
             }
         });

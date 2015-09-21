@@ -4,6 +4,8 @@ package com.leo.appmaster.home;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 import android.app.Activity;
@@ -25,6 +27,7 @@ public class DeskAdActivity extends Activity {
         }
         // LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         // LockManager.getInstatnce().timeFilterSelf();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_cli", "adv_cnts_desktop");
         Intent mWallIntent = mWallAd.getWallIntent();
         mWallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
