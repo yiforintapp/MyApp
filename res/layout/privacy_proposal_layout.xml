@@ -90,8 +90,8 @@
 
                 <ImageView
                     android:id="@+id/privacy_ad_icon"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="@dimen/privacy_ad_icon_m_left"
                     android:layout_marginTop="@dimen/privacy_suggest_padding" />
@@ -101,7 +101,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="@dimen/privacy_suggest_icon_text_margin"
-                    android:layout_marginTop="@dimen/privacy_suggest_icon_text_margin"
+                    android:layout_marginTop="@dimen/privacy_suggest_padding"
                     android:layout_toRightOf="@id/privacy_ad_icon"
                     android:orientation="vertical"
                     android:paddingRight="@dimen/privacy_ad_right_content_p_r" >
@@ -135,9 +135,8 @@
                         android:id="@+id/privacy_ad_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/privacy_ad_dec_m_top"
                         android:ellipsize="end"
-                        android:maxLines="3"
+                        android:maxLines="2"
                         android:text="@string/privacy_no_app_lock_des"
                         android:textColor="#999999"
                         android:textSize="12sp" />
