@@ -1883,7 +1883,9 @@ public class AppleWatchContainer extends FrameLayout {
         
         Intent intent = new Intent(mContext, HomeBoostActivity.class);
         mContext.startActivity(intent);
-        
+        if(mContext instanceof QuickGesturePopupActivity){
+            ((QuickGesturePopupActivity) mContext).finish();
+        }
 //        ThreadManager.executeOnAsyncThread(new Runnable() {
 //
 //            @Override
