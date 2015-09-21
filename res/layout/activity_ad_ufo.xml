@@ -102,7 +102,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:clickable="true"
-        android:visibility="invisible" >
+        android:visibility="visible" >
 
         <RelativeLayout
             android:id="@+id/rl_Themedialog"
@@ -158,7 +158,7 @@
             </ImageView>
 
             <LinearLayout
-                android:layout_width="180dp"
+                android:layout_width="170dp"
                 android:layout_height="35dp"
                 android:layout_alignParentBottom="true"
                 android:layout_marginBottom="7dp"

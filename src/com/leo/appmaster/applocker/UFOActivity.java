@@ -171,25 +171,24 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                }
                 
 //                LeoLog.e("poha", list.size()+"最终list size");  
-                if(list.size()==0){
-                    list=listBackup;
-                    if(list.size()==0){
-                        return;
-                    }
-                    
-//                    for(int i=0;i<list.size();i++){
-//                        LeoLog.e("poha", list.get(i).packageName+"     只有本地主题，在线没有主题     "+list.get(i).themeName);
+//                if(list.size()==0){
+//                    list=listBackup;
+//                    if(list.size()==0){
+//                        return;
 //                    }
-                    
-          
-                    
-                    for(int i=0;i<list.size();i++){
-                        if(list.get(i).packageName.equals(AppMasterApplication.getSelectedTheme())){
-                            list.remove(i);
-                           break;
-                        }
-                    }
-                }
+//                    
+////                    for(int i=0;i<list.size();i++){
+////                        LeoLog.e("poha", list.get(i).packageName+"     只有本地主题，在线没有主题     "+list.get(i).themeName);
+////                    }
+//                    
+//                    
+//                    for(int i=0;i<list.size();i++){
+//                        if(list.get(i).packageName.equals(AppMasterApplication.getSelectedTheme())){
+//                            list.remove(i);
+//                           break;
+//                        }
+//                    }
+//                }
                 
 //                for(int i=0;i<list.size();i++){
 //                    LeoLog.e("poha", list.get(i).packageName+"     已经筛选掉本地已经再使用的     "+list.get(i).themeName);
