@@ -5,30 +5,31 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.sdk.SDKWrapper;
+
 import android.annotation.TargetApi;
 import android.app.AppOpsManager;
-import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Binder;
 import android.os.Build;
 import android.os.Environment;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.WindowManager;
-
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.receiver.DeviceReceiver;
-import com.leo.appmaster.sdk.SDKWrapper;
 
 /**
  * 判断小米系统工具类

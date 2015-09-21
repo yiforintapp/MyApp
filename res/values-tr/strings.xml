@@ -782,26 +782,26 @@
     <string name="video_cancel_hide_fail">Fotoğraflar gösterilemedi</string>
     <string name="beauty_mode_ok">Güzellik Kamuflajı modu etkin olduğunda</string>
     <!-- 2.6 end -->
-    
-        <!-- 2.7 start -->
+
+
+    <!-- 2.7 start -->
     <string name="clean_mem_notify_big">Bellek kullanımı aşarsa</string>
     <string name="clean_mem_notify_big_right">65%</string>
     <string name="clean_mem_notify_small"> Tıklayın ve hızlandırın</string>
     <string name="clean_mem_notify_boost">Hemen hızlandırın</string>
-	
-	<string name="pg_appmanager_quick_gesture_option_trigger_type">Tetik modu</string>
-	<string name="pg_appmanager_quick_gesture_option_trigger_type_summary">Beyaz nokta tarafı/alt tabanı çizin</string>
-	<string name="pg_appmanager_quick_gesture_trigger_alide">Yan tarafı/tabanından çizin</string>
-	<string name="pg_appmanager_quick_gesture_trigger_wihtedot">Beyaz nokta</string>
-	<string name="pg_appmanager_quick_gesture_trigger_tips">En az birini seçiniz</string>
-	
-	<string name="pg_appmanager_quick_gesture_conflict_content">Hızlı jest normal işlemlerinizi etkiler mi?Ayarları\'ı tıklayarak beyaz nokta modunu açmayı tercih edebilirsiniz</string>
-	<string name="pg_appmanager_quick_gesture_conflict_later">Daha sonra</string>
-	<string name="pg_appmanager_quick_gesture_conflict_open">Hemen açın</string>
-	<string name="anti_conflict_mode_open">Dönük</string>
-	<!-- 2.7 end -->
-	
-		    <!-- 2.8 start -->
+    <string name="pg_appmanager_quick_gesture_option_trigger_type">Tetik modu</string>
+    <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">Beyaz nokta tarafı/alt tabanı çizin</string>
+    <string name="pg_appmanager_quick_gesture_trigger_alide">Yan tarafı/tabanından çizin</string>
+    <string name="pg_appmanager_quick_gesture_trigger_wihtedot">Beyaz nokta</string>
+    <string name="pg_appmanager_quick_gesture_trigger_tips">En az birini seçiniz</string>
+    <string name="pg_appmanager_quick_gesture_conflict_content">Hızlı jest normal işlemlerinizi etkiler mi?Ayarları\'ı tıklayarak beyaz nokta modunu açmayı tercih edebilirsiniz</string>
+    <string name="pg_appmanager_quick_gesture_conflict_later">Daha sonra</string>
+    <string name="pg_appmanager_quick_gesture_conflict_open">Hemen açın</string>
+    <string name="anti_conflict_mode_open">Dönük</string>
+    <!-- 2.7 end -->
+
+
+    <!-- 2.8 start -->
     <string name="device_admin_extra">Başkaları tarafından kaldırılmayı önle</string>
     <string name="iswip_update_tip_title_text">Easy Shortcuts\'ı Güncelle!</string>
     <string name="iswip_update_tip_context_text">Easy Shortcuts\'ın adı iSwipe olarak değiştirildi. Yükleyip deneyin!</string>
@@ -812,5 +812,36 @@
     <string name="iswip_update_notifi_button">Şimdi Güncelle</string>
     <string name="ad_timeout">Harika! Daha fazla sürpriz seni bekliyor!</string>
     <!-- 2.8 end -->
+    <!-- 2.10 srart -->
+    <string name="auto_start_guide_tip_title">Ayrıcalığı gerekli </string>
+    <string name="auto_start_guide_tip_content">Başlangıçta Gizlilik Korumayı Çalıştır  </string>
+    <string name="auto_start_guide_tip_left_button">Sonra</string>
+    <string name="auto_start_guide_tip_right_button">Şimdi</string>
+    <string name="msg_center_title">İleti merkezi </string>
+    <string name="msg_center_empty">Yeni mesaj yok</string>
+    <string name="msg_center_empty_say">Bize ne söylemek istediğini söyle</string>
+    <string name="msg_center_feedback">FeedBack</string>
+    <string name="msg_center_load_fail">Sunucu meşgul, lütfen yenileyin</string>
+    <string name="ufo_roll_again">Tekrar Deneyin</string>
+    <string name="ufo_theme_down">İndir</string>
+    <string name="ufo_theme_use">Uygulayın</string>
+    <string name="ufo_theme_use_toast">Uygulanan Tema</string>
+    <string name="ufo_theme_content">Yeni temayı uygulayın, arabirimi güzelleştirin</string>
+    <string name="ufo_theme_title">Teması</string>
+    <string name="menue_item_delete_pg">Kaldırın</string>
+    <string name="advace_protect_dialog_left_text">Sonra</string>
+    <string name="advace_protect_dialog_right_text">Şimdi </string>
+    <string name="advace_protect_dialog_title_text">Gelişmiş Koruma</string>
+    <string name="advace_protect_dialog_content_text">Kilit başarıyla eklendi. Programın başkaları tarafından kaldırılmasını önlemek için Gelişmiş Koruma önerildi. Gizlilik Korumayı yan çubuktan kaldırabilirsiniz. Gizlilik Korumayı yan çubuktan kaldırabilirsiniz.   </string>
+    <string name="desk_ad_name">Mutlu Uygulama</string>
+    <string name="advance_protect_open_success_tip_title">başarıya ulaşmak</string>
+    <string name="advance_protect_open_success_tip_content">Gelişmiş Koruma etkin. Gizlilik koruması şimdi kaldırılamaz. Onu Ayarlardan devre dışı bırakabilirsiniz. </string>
+    <string name="auto_start_tip_xiaomi4_and_letv">Başlangıçta Gizlilik Korumayı Çalıştır.“Otomatik başlatma yönetimi”ni tıklayın ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin. </string>
+    <string name="auto_start_tip_redmi">Başlangıçta Gizlilik Korumayı Çalıştır."Otomatik başlatma yönetimi" girin, “Uygulama Ekle”yi seçin ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin.</string>
+    <string name="auto_start_tip_huawei">Başlangıçta Gizlilik Korumayı Çalıştır.“Korunan Uygulama”yı girin ve Gizlilik Korumayı koruma listesine ekleyin.  </string>
+    <string name="auto_start_tip_lenovo">Başlangıçta Gizlilik Korumayı Çalıştır."Backstage" girin, “Otomatik başlatmayı seçin ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin.</string>
+    <string name="splash_guide_page_msg_title">İleti Merkezi</string>
+    <string name="splash_guide_page_msg_content">Faaliyetler ve ipuçları</string>
+    <!-- 2.10 end -->
 
 </resources>
