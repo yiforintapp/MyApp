@@ -614,6 +614,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (isTimetoShow()
                 // && !isEnterPrivacySuggest
                 && mHomeAdSwitchOpen == 1) {
+            SDKWrapper
+                    .addEvent(this, SDKWrapper.P1, "ad-act", "adv_shws_homeAppWall");
             setAdIconVisible();
             isCanShow = true;
         } else {

@@ -240,6 +240,8 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
                     LeoLog.d("testThemeAd", "loadAd -- OK!");
+                    SDKWrapper
+                            .addEvent(LockerTheme.this, SDKWrapper.P1, "ad-act", "adv_shws_theme");
                     isGetAd = true;
 
                     // 1是本地有广告

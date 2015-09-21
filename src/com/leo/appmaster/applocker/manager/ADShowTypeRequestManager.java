@@ -156,17 +156,44 @@ public class ADShowTypeRequestManager {
                             "请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
                     amp.setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
                     LeoLog.e("poha", "请求成功，加速后出现广告：" + response.getInt(AD_AFTER_ACCELERATING));
-                    amp.setIsADAfterPrivacyProtectionOpen((response
-                            .getInt(AD_AFTER_PRIVACY_PROTECTION)));
-                    HomePravicyFragment.mPrivicyAdSwitchOpen = response
-                            .getInt(AD_AFTER_PRIVACY_PROTECTION);
+                    // 隐私防护
+                    int lastPrivacyType = amp.getIsADAfterPrivacyProtectionOpen();
+                    int nowPrivacyType = response.getInt(AD_AFTER_PRIVACY_PROTECTION);
+                    if (lastPrivacyType != nowPrivacyType) {
+                        if (nowPrivacyType == 1) {
+                            SDKWrapper
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_privacy_on");
+                        } else {
+                            SDKWrapper
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_privacy_off");
+                        }
+                    }
+                    amp.setIsADAfterPrivacyProtectionOpen(nowPrivacyType);
+                    HomePravicyFragment.mPrivicyAdSwitchOpen = nowPrivacyType;
                     LeoLog.e("poha",
-                            "请求成功，隐私保护后出现广告的开关：" + response.getInt(AD_AFTER_PRIVACY_PROTECTION));
+                            "请求成功，隐私保护后出现广告的开关：" + nowPrivacyType);
+                    // 主页ad
                     amp.setIsADAtAppLockFragmentOpen((response.getInt(AD_AT_APPLOCK_FRAGMENT)));
                     LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
-                    amp.setIsADAtLockThemeOpen((response.getInt(AD_AT_THEME)));
-                    LockerTheme.mThemeAdSwitchOpen = response.getInt(AD_AT_THEME);
-                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + response.getInt(AD_AT_THEME));
+                    // 主题
+                    int lastThemeType = amp.getIsADAtLockThemeOpen();
+                    int nowThemeType = response.getInt(AD_AT_THEME);
+                    if (lastThemeType != nowThemeType) {
+                        if (lastThemeType == 1) {
+                            SDKWrapper
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_local");
+                        } else if (lastThemeType == 2) {
+                            SDKWrapper
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_online");
+                        } else {
+                            SDKWrapper
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_off");
+                        }
+                    }
+                    amp.setIsADAtLockThemeOpen(nowThemeType);
+                    LockerTheme.mThemeAdSwitchOpen = nowThemeType;
+                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + nowThemeType);
+
                     amp.setIsGiftBoxNeedUpdate((response.getInt(GIFTBOX_UPDATE)));
                     if (mIsPushRequestADShowType && response.getInt(GIFTBOX_UPDATE) == 1) {
                         AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);

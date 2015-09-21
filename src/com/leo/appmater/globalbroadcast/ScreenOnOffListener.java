@@ -10,8 +10,10 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.wifichecker.utils.ExecTerminal;
 import com.leo.wifichecker.wifi.APInfo;
 import com.leo.wifichecker.wifi.WifiInfoFetcher;
 
@@ -123,6 +125,18 @@ public class ScreenOnOffListener extends BroadcastListener {
                     break;
                 }
             }
+
+            boolean isRoot = new ExecTerminal().checkSu();
+            if (isRoot) {
+                SDKWrapper
+                        .addEvent(mContext, SDKWrapper.P1, "wifi_info", "wifi_info_pw");
+                LeoLog.d("testOpenScreen", "已root手机");
+            } else {
+                SDKWrapper
+                        .addEvent(mContext, SDKWrapper.P1, "wifi_info", "wifi_info_usual");
+                LeoLog.d("testOpenScreen", "非root手机");
+            }
+
             LeoLog.d("testOpenScreen", abc);
             LeoAgent.addEvent("wifi_upload", abc);
             AppMasterPreference.getInstance(mContext).setIsWifiStatisticsIsLoad(
