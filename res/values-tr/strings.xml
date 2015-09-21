@@ -839,8 +839,9 @@
     <string name="auto_start_tip_xiaomi4_and_letv">Başlangıçta Gizlilik Korumayı Çalıştır.“Otomatik başlatma yönetimi”ni tıklayın ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin. </string>
     <string name="auto_start_tip_redmi">Başlangıçta Gizlilik Korumayı Çalıştır."Otomatik başlatma yönetimi" girin, “Uygulama Ekle”yi seçin ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin.</string>
     <string name="auto_start_tip_huawei">Başlangıçta Gizlilik Korumayı Çalıştır.“Korunan Uygulama”yı girin ve Gizlilik Korumayı koruma listesine ekleyin.  </string>
-    <string name="auto_start_tip_lenovo">Başlangıçta Gizlilik Korumayı Çalıştır."Backstage" girin, “Otomatik başlatmayı seçin ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin.</string>
-    <string name="splash_guide_page_msg_title">İleti Merkezi</string>
+   <!--  <string name="auto_start_tip_lenovo">Başlangıçta Gizlilik Korumayı Çalıştır."Backstage" girin, “Otomatik başlatmayı seçin ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin.</string>
+     -->
+     <string name="splash_guide_page_msg_title">İleti Merkezi</string>
     <string name="splash_guide_page_msg_content">Faaliyetler ve ipuçları</string>
     <!-- 2.10 end -->
 

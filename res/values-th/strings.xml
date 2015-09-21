@@ -827,7 +827,8 @@
     <string name="auto_start_tip_xiaomi4_and_letv">เรียกใช้ Privacy Guard เมื่อเริ่มต้น คลิก "จัดการเริ่มต้นอัตโนมัติ" และเพิ่ม Privacy Guard ที่การเริ่มต้นอัตโนมัติ</string>
     <string name="auto_start_tip_redmi">เรียกใช้ Privacy Guard เมื่อเริ่มต้น ที่ "จัดการเริ่มอัตโนมัติ" ไป "เพิ่มแอพ" เพิ่ม Privacy Guard ที่เริ่มอัตโนมัติ</string>
     <string name="auto_start_tip_huawei">เรียกใช้ Privacy Guard เมื่อเริ่มต้น เข้า "แอพป้องกัน" และเพิ่ม Privacy Guard ไปยังรายการการปกป้อง</string>
-    <string name="auto_start_tip_lenovo">เรียกใช้ Privacy Guard เมื่อเริ่มต้น ที่ "หลังฉาก" ไป "เริ่มต้นอัตโนมัติ" เพิ่ม Privacy Guard ที่เริ่มต้นอัตโนมัติ</string>
-    <!-- 2.10 end -->
+    <!-- <string name="auto_start_tip_lenovo">เรียกใช้ Privacy Guard เมื่อเริ่มต้น ที่ "หลังฉาก" ไป "เริ่มต้นอัตโนมัติ" เพิ่ม Privacy Guard ที่เริ่มต้นอัตโนมัติ</string>
+     -->
+     <!-- 2.10 end -->
 
 </resources>
