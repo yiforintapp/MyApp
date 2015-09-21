@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Environment;
 import android.renderscript.Program;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -176,7 +177,9 @@ public class MsgCenterAdapter extends BaseAdapter {
             holder.description.setPadding(0, mDesPadding, 0, mDesPadding);
 //            holder.image.setPadding(0, 0, 0, 0);
         }
-        ImageLoader.getInstance().displayImage(msg.imageUrl, holder.image, commonOption);
+        String url = "file://" + Environment.getExternalStorageDirectory() + "/banner.png";
+//        ImageLoader.getInstance().displayImage(msg.imageUrl, holder.image, commonOption);
+        ImageLoader.getInstance().displayImage(url, holder.image, commonOption);
 
         return convertView;
     }

@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.media.AudioManager;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
@@ -71,22 +72,57 @@ public class InitCoreBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        long start = SystemClock.elapsedRealtime();
         AppLoadEngine.getInstance(mApp);
+        long end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, AppLoadEngine.getInstance: " + (end - start));
+
         AppBackupRestoreManager.getInstance(mApp);
+
+        start = SystemClock.elapsedRealtime();
         initImageLoader();
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, initImageLoader: " + (end - start));
+
         registerPackageChangedBroadcast();
+
+        start = SystemClock.elapsedRealtime();
         SDKWrapper.iniSDK(mApp);
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
+
+        start = SystemClock.elapsedRealtime();
         AppBusinessManager.getInstance(mApp).init();
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, AppBusinessManager.getInstance.init: " + (end - start));
+
         // init lock manager
+        start = SystemClock.elapsedRealtime();
         LockManager.getInstatnce().init();
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, LockManager.getInstance.init: " + (end - start));
+
+        start = SystemClock.elapsedRealtime();
         registerReceiveMessageCallIntercept();
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, registerReceiveMessageCallIntercept: " + (end - start));
+
         AppMasterPreference preference = AppMasterPreference.getInstance(mApp);
         if (preference.getIsFirstInstallApp()) {
             SplashActivity.deleteImage();
             preference.setIsFirstInstallApp(false);
         }
+
+        start = SystemClock.elapsedRealtime();
         PrivacyHelper.getInstance(mApp).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, computePrivacyLevel: " + (end - start));
+
+        start = SystemClock.elapsedRealtime();
         QuickGestureManager.getInstance(mApp);
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, QuickGestureManager.getInstance: " + (end - start));
+
         registerLanguageChangeReceiver();
         checkUpdateFinish();
         initIswipeUpdateTip();

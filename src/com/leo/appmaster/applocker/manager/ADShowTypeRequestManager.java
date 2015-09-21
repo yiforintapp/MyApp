@@ -14,6 +14,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.android.volley.VolleyError;
@@ -122,6 +123,7 @@ public class ADShowTypeRequestManager {
 
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
+            long start = SystemClock.elapsedRealtime();
             LeoLog.e("poha", "请求成功：" + response.toString());
             if (mListener != null) {
                 mListener.onResponse(response, noMidify);
@@ -287,7 +289,8 @@ public class ADShowTypeRequestManager {
                     //
                     // 应用统计
                     addAppInfoEvent();
-
+                    LeoLog.i(TAG, "cost, UpdateADShowTypeRequestListener.onResponse: " +
+                            (SystemClock.elapsedRealtime() - start));
                 } catch (JSONException e) {
 
                     LeoLog.e("poha", "请求成功，JSON解析出错");

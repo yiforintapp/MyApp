@@ -2,6 +2,7 @@ package com.leo.appmaster.schedule;
 
 import android.content.Context;
 import android.os.Environment;
+import android.os.SystemClock;
 import android.text.TextUtils;
 
 import com.android.volley.DefaultRetryPolicy;
@@ -75,6 +76,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
+        long start = SystemClock.elapsedRealtime();
         super.onFetchSuccess(response, noMidify);
         if (response == null || !(response instanceof JSONArray)) {
             LeoLog.i(TAG, "response: " + response);
@@ -128,6 +130,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             table.insertMsgList(list);
         }
         LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_MSG));
+        LeoLog.i(TAG, "cost, onFetchSuccess: " + (SystemClock.elapsedRealtime() - start));
     }
 
 //    @Override

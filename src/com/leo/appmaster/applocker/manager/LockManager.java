@@ -28,6 +28,7 @@ import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.WindowManager;
 
@@ -244,7 +245,10 @@ public class LockManager {
         mContext.registerReceiver(mTimeChangeReceiver, filter);
 
         // to load lock mode, time and location lock
+        long start = SystemClock.elapsedRealtime();
         tryLoadLockMode();
+        long end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, tryLoadLockMode: " + (end - start));
         // init location lock
         mTaskExecutor.execute(new Runnable() {
             @Override
@@ -266,13 +270,16 @@ public class LockManager {
         }
         
         final Handler handler = new Handler(Looper.myLooper());
+        start = SystemClock.elapsedRealtime();
         mContext.getContentResolver().registerContentObserver(Constants.LOCK_MODE_URI, true,
                 new ContentObserver(handler) {
-            @Override
-            public void onChange(boolean selfChange) {
-                sendLockModeChangeToISwipe();
-            }
-        });
+                    @Override
+                    public void onChange(boolean selfChange) {
+                        sendLockModeChangeToISwipe();
+                    }
+                });
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, registerContentObserver: " + (end - start));
     }
 
     private void initTimeLock() {
@@ -584,7 +591,12 @@ public class LockManager {
     private void tryLoadLockMode() {
         if (mLockModeLoaded)
             return;
-        loadLockMode();
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                loadLockMode();
+            }
+        });
     }
 
     public void addPkg2Mode(List<String> pkgs, final LockMode mode) {

@@ -36,7 +36,8 @@ public class ExecutorDelivery implements ResponseDelivery {
         mResponsePoster = new Executor() {
             @Override
             public void execute(Runnable command) {
-                handler.post(command);
+//                handler.post(command);
+                command.run();
             }
         };
     }
