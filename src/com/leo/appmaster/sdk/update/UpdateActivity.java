@@ -150,6 +150,7 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
             @Override
             public void onClick(View arg0) {
                 mManager.onCancelDownload();
+                LockManager.getInstatnce().filterAllOneTime(1000);
                 if (mParam == UpdateManager.FORCE_UPDATE) {
                     finish();
                     AppMasterApplication.getInstance().exitApplication();
