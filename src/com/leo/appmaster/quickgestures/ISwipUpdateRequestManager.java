@@ -503,10 +503,11 @@ public class ISwipUpdateRequestManager {
         intent = new Intent(Intent.ACTION_VIEW);
         Uri uri = Uri.parse(gpDownLoadUrl);
         intent.setData(uri);
-        ComponentName cn = new ComponentName(
-                "com.android.vending",
-                "com.google.android.finsky.activities.MainActivity");
-        intent.setComponent(cn);
+//        ComponentName cn = new ComponentName(
+//                "com.android.vending",
+//                "com.google.android.finsky.activities.MainActivity");
+//        intent.setComponent(cn);
+        intent.setPackage("com.android.vending");
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         return intent;
     }
