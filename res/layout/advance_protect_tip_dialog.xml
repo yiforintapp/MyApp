@@ -19,7 +19,7 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="@dimen/advance_protect_pic_top"
             android:src="@drawable/gaoji" />
 
         <TextView
@@ -28,10 +28,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="@dimen/advance_protect_title_text_top"
             android:text="@string/advace_protect_dialog_title_text"
             android:textColor="#ffffff"
-            android:textSize="18dp" />
+            android:textSize="@dimen/advance_protect_title_text_size" />
 
         <TextView
             android:id="@+id/iswip_tip_content_text"
@@ -39,10 +39,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:layout_marginTop="14dp"
+            android:layout_marginTop="@dimen/advance_protect_context_text_top"
             android:text="@string/advace_protect_dialog_content_text"
             android:textColor="#e7f0ff"
-            android:textSize="13dp" />
+            android:textSize="@dimen/advance_protect_context_text_size" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -66,7 +66,7 @@
                 android:layout_width="110dp"
                 android:layout_height="39dp"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="@dimen/advance_protect_button_top"
                 android:background="@drawable/iswip_update_right_button_selector"
                 android:gravity="center"
                 android:text="@string/advace_protect_dialog_right_text"

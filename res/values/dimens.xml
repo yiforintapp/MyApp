@@ -307,6 +307,12 @@
     <dimen name="mc_empty_tv2_top_margin">10dp</dimen>
     <dimen name="mc_empty_tv3_top_margin">20dp</dimen>
     <dimen name="app_about_content">10dp</dimen>
-     <dimen name="app_about_version">18dp</dimen>
+    <dimen name="app_about_version">18dp</dimen>
+    <dimen name="advance_protect_pic_top">25dp</dimen>
+    <dimen name="advance_protect_title_text_top">20dp</dimen>
+    <dimen name="advance_protect_title_text_size">18dp</dimen>
+    <dimen name="advance_protect_context_text_top">14dp</dimen>
+    <dimen name="advance_protect_context_text_size">13dp</dimen>
+    <dimen name="advance_protect_button_top">20dp</dimen>
 
 </resources>

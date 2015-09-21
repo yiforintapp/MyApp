@@ -276,10 +276,16 @@
     <!-- 2.9 end -->
     <dimen name="app_about_content">7dp</dimen>
 
-    <!--2.10 msgcenter -->
+    <!-- 2.10 msgcenter -->
     <dimen name="mc_empty_iv_top_margin">62dp</dimen>
     <dimen name="mc_empty_tv1_top_margin">8dp</dimen>
     <dimen name="mc_empty_tv2_top_margin">5dp</dimen>
     <dimen name="mc_empty_tv3_top_margin">10dp</dimen>
+    <dimen name="advance_protect_pic_top">15dp</dimen>
+    <dimen name="advance_protect_title_text_top">10dp</dimen>
+    <dimen name="advance_protect_title_text_size">15dp</dimen>
+    <dimen name="advance_protect_context_text_top">12dp</dimen>
+    <dimen name="advance_protect_context_text_size">10dp</dimen>
+    <dimen name="advance_protect_button_top">10dp</dimen>
 
 </resources>
