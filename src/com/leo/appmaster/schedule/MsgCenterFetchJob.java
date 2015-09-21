@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Environment;
 import android.text.TextUtils;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -30,9 +29,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -48,10 +45,9 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
     private static final String TAG = "MsgCenterFetchJob";
     private static final boolean DBG = true;
 
-    private static final int REQUEST_DONE = -1;
+    private static final int REQUEST_FAIL = -1;
 
-    private static AtomicInteger sRequestState = new AtomicInteger(0);
-    private static final int REQUEST_SUCC = 2;
+    private static HashMap<String, AtomicInteger> sAtomicIntegerHashMap = new HashMap<String, AtomicInteger>();
 
     public static void startImmediately() {
         LeoLog.i(TAG, "startImmediately.....");
@@ -69,7 +65,6 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
         FetchScheduleListener listener = newJsonArrayListener();
         HttpRequestAgent.getInstance(ctx).loadMessageCenterList(listener, listener);
-        sRequestState.set(0);
     }
 
     @Override
@@ -155,25 +150,27 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             list.add(message);
         }
 
-        sRequestState.set(0);
         for (Message msg : list) {
+            AtomicInteger atomicInteger = new AtomicInteger(0);
+            sAtomicIntegerHashMap.put(msg.jumpUrl, atomicInteger);
+
             String fileNameNoSuffix = getFileName(msg.jumpUrl);
             String htmlFileName = fileNameNoSuffix + ".html";
             File htmlFile = new File(getFilePath(htmlFileName));
             if (!TextUtils.isEmpty(msg.jumpUrl) && !htmlFile.exists()) {
-                requestHtml(htmlFile.getAbsolutePath(), msg.jumpUrl);
+                requestHtml(htmlFile.getAbsolutePath(), msg.jumpUrl, msg);
             }
 
             String resFileName = fileNameNoSuffix + ".zip";
             File resFile = new File(getFilePath(resFileName));
             if (!TextUtils.isEmpty(msg.resUrl) && !resFile.exists()) {
                 // Volley不支持stream保存，蛋疼，自己写一套先
-                requestResFile(resFile.getAbsolutePath(), msg.resUrl);
+                requestResFile(resFile.getAbsolutePath(), msg.resUrl, msg);
             }
         }
     }
 
-    private static void requestHtml(String filePath, String url) {
+    private static void requestHtml(String filePath, String url, Message msg) {
         Context ctx = AppMasterApplication.getInstance();
         File file = new File(filePath);
         if (file.exists()) {
@@ -184,7 +181,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         int retryCount = 3;
         DefaultRetryPolicy policy = new DefaultRetryPolicy(DefaultRetryPolicy.DEFAULT_TIMEOUT_MS,
                 retryCount, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        HtmlListener listener = new HtmlListener(file);
+        HtmlListener listener = new HtmlListener(msg, file);
         FileRequest request = new FileRequest(url, file.getAbsolutePath(), listener, listener);
         request.setRetryPolicy(policy);
 
@@ -218,7 +215,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
      * @param filePath
      * @param url
      */
-    private static void requestResFile(String filePath, String url) {
+    private static void requestResFile(String filePath, String url, Message msg) {
         File file = new File(filePath);
         if (file.exists()) {
             // 文件存在，不继续请求
@@ -279,15 +276,17 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
             if (!success) {
                 file.delete();
             }
-            checkAndAddResSuccEvent(success);
+            checkAndAddResSuccEvent(msg, success);
         }
     }
 
     private static class HtmlListener implements Response.Listener<File>, Response.ErrorListener {
 
         private File file;
-        public HtmlListener(File file) {
+        private Message msg;
+        public HtmlListener(Message msg, File file) {
             this.file = file;
+            this.msg = msg;
 //            if (!file.exists()) {
 //                File parentFile = file.getParentFile();
 //                if (!parentFile.exists()) {
@@ -305,14 +304,14 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         public void onErrorResponse(VolleyError error) {
             LeoLog.i(TAG, "HtmlListener, onErrorResponse: " + error);
             file.delete();
-            checkAndAddResSuccEvent(false);
+            checkAndAddResSuccEvent(msg, false);
         }
 
         @Override
         public void onResponse(File response, boolean noMidify) {
             LeoLog.i(TAG, "HtmlListener, onResponse: " + (response != null ? response.getAbsolutePath() : null));
             LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_HTML));
-            checkAndAddResSuccEvent(true);
+            checkAndAddResSuccEvent(msg, true);
         }
     }
 
@@ -320,20 +319,21 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
      * 更新日志缓存信息的上报接口
      * @param success
      */
-    private static void checkAndAddResSuccEvent(boolean success) {
+    private static void checkAndAddResSuccEvent(Message msg, boolean success) {
         Context ctx = AppMasterApplication.getInstance();
-        int value = sRequestState.get();
-        LeoLog.i(TAG, "checkAndAddResSuccEvent, value: " + value + " | success:" + success);
-        if (!success && value != REQUEST_DONE) {
-            LeoLog.i(TAG, "checkAndAddResSuccEvent, request fail add event.");
-            // 失败只需要上报一次
-            SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_cacheFail");
-            sRequestState.set(REQUEST_DONE);
-            return;
-        }
-        if (sRequestState.incrementAndGet() == REQUEST_SUCC) {
-            LeoLog.i(TAG, "checkAndAddResSuccEvent, request all succ.");
+
+        AtomicInteger atomicInteger = sAtomicIntegerHashMap.get(msg.jumpUrl);
+        LeoLog.i(TAG, "checkAndAddResSuccEvent, value: " + atomicInteger.get() + " | success:" + success);
+        if (success && msg.hasCacheFile()) {
+            // 所有资源文件都缓存成功
             SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_cacheOK");
+        } else if (!success) {
+            // 只要有一个失败，则都认为失败
+            if (atomicInteger.get() != REQUEST_FAIL) {
+                // 只报一次
+                SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_cacheFail");
+                atomicInteger.set(REQUEST_FAIL);
+            }
         }
     }
 
