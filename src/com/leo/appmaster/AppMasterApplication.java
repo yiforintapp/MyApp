@@ -14,6 +14,7 @@ import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Handler;
 import android.os.UserManager;
@@ -31,6 +32,11 @@ public class AppMasterApplication extends Application {
     private static AppMasterApplication sInstance;
     private static List<WeakReference<Activity>> sActivityList;
     private static List<WeakReference<Activity>> sResumedList;
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+    }
 
     private static int[] mRootSteps = {
             Bootstrap.STEP_FOREGROUND,

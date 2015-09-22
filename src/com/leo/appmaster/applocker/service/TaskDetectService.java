@@ -489,7 +489,7 @@ public class TaskDetectService extends Service {
                             foundHuaweiLauncher = true;
                         }
                         if (foundHuaweiLauncher
-                                && BuildProperties.isHuaWeiTipPhone(TaskDetectService.this)
+                                && BuildProperties.isHuaWeiP8Model()
                                 && pi.processName.equals("com.tencent.mm")) {
                             // FIXME: 2015/9/22 AM-2336 华为P8打开最近历史，莫名把微信拉起来，做特殊处理
                             break;

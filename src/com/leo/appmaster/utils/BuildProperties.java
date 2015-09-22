@@ -37,6 +37,7 @@ import android.view.WindowManager;
  * @author run
  */
 public class BuildProperties {
+    private static final String TAG="BuildProperties";
     private static final String KEY_MIUI_VERSION_CODE = "ro.miui.ui.version.code";
     private static final String KEY_MIUI_VERSION_NAME = "ro.miui.ui.version.name";
     private static final String KEY_MIUI_INTERNAL_STORAGE = "ro.miui.internal.storage";
@@ -45,7 +46,9 @@ public class BuildProperties {
     private static final String KEY_OPPO_VERSION_ROM_NAME = "ro.build.version.opporom";
     private static final String KEY_HUAWEI_VERSION_ROM_NAME = "ro.build.version.emui";
     private static final String KEY_IUNI_VERSION_ROM_NAME="ro.iuni.internalmemory";
+    private static final String KEY_HUAWEIP8_PAI_LEVEL="ro.build.hw_emui_api_level";
     public static final String I_STYLE_MODEL = "i-mobile I-STYLE 217";// 解锁等待界面动画执行过快机型
+    public static final String HUAWEI_P8_API_LEVEL="8";
     private final Properties properties;
 
     private BuildProperties() throws IOException {
@@ -184,7 +187,6 @@ public class BuildProperties {
      * 本机制造商名称识别
      * 
      * @param brandName品牌名称
-     * @return
      */
     public static boolean checkPhoneBrand(String brandName) {
         return Build.MANUFACTURER.toLowerCase().equalsIgnoreCase(brandName);
@@ -279,9 +281,22 @@ public class BuildProperties {
 
         return false;
     }
-
+    /*华为P7,P8+*/
     public static boolean isHuaWeiTipPhone(Context context) {
         return isPackageInfo(context, "com.huawei.systemmanager");
+    }
+    /*是否为华为P8*/
+    public static boolean isHuaWeiP8Model(){
+        String value=getSystemProperty(KEY_HUAWEIP8_PAI_LEVEL);
+
+        if(!Utilities.isEmpty(value)
+                && HUAWEI_P8_API_LEVEL.equals(value)){
+            LeoLog.i(TAG, "华为系统level："+value);
+            return true;
+        }else{
+            LeoLog.i(TAG, "不是华为P系列系统！！！");
+        }
+    return false;
     }
 
     public static void startHuaWeiSysManageIntent(Context context) {
@@ -411,6 +426,9 @@ public class BuildProperties {
         if (TextUtils.isEmpty((CharSequence) (getSystemProperty(model))))
             return false;
         return true;
+    }
+    public static String getAppointModel(String key){
+        return getSystemProperty(key);
     }
     /*是否为华为机型*/
     public static boolean isHuaWeiModel(){
