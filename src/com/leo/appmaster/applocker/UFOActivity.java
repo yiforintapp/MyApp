@@ -127,7 +127,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     private void loadTheme() {
-        LeoLog.e("poha","loading theme...");
+        LeoLog.e("poha","loading themeeeeeeeeeeeeeee...");
         mHideThemeList = AppMasterPreference.getInstance(this).getHideThemeList();
         HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemeList, new ThemeListener(this));
     }
@@ -139,7 +139,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
-            UFOActivity ufoActivity = getOuterContext();
+            final UFOActivity ufoActivity = getOuterContext();
             if(ufoActivity==null){
                 return;
             }
@@ -166,9 +166,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                     }
                 }
                 
-//                for(int i=0;i<list.size();i++){
-//                    LeoLog.e("poha", list.get(i).packageName+"     已经筛选掉在线主题列表中本地已有     "+list.get(i).themeName);
-//                }
+                for(int i=0;i<list.size();i++){
+                    LeoLog.e("poha", list.get(i).packageName+"     已经筛选掉在线主题列表中本地已有     "+list.get(i).themeName);
+                }
                 
 //                LeoLog.e("poha", list.size()+"最终list size");  
 //                if(list.size()==0){
@@ -208,6 +208,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                    LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
 //                    UFOActivity.this.finish();
 //                }
+                LeoLog.e("poha", list.get(ran).themeName+"     最终选择的主题     "+list.get(ran).themeName);
 //                ran = 1;
 //                list.clear();
 //                list.addAll(listBackup);
@@ -217,8 +218,18 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 160),
                         ufoActivity.mThemDialogBg);
-                ufoActivity.mTvThemeName.setText(ufoActivity.mThemeName);
-                ufoActivity.initButton();
+                LeoLog.e("poha", "to load Pic");
+                
+                ufoActivity.runOnUiThread(new Runnable() {
+                    
+                    @Override
+                    public void run() {
+                        ufoActivity.mTvThemeName.setText(ufoActivity.mThemeName);
+                        LeoLog.e("poha", "set text");
+                        ufoActivity.initButton();
+                        LeoLog.e("poha", "init button");
+                    }
+                });
             }
         }
 
@@ -242,7 +253,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             public void onClick(View v) {
                 SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli",
                         "adv_cnts_alTP");
-                
+                LeoLog.e("xxx", "clicked");
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
                 if(mHideThemes.contains(mChosenTheme.packageName)){
