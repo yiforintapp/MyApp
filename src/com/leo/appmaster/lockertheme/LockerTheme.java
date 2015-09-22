@@ -32,14 +32,11 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -52,8 +49,8 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.ThemeChanageListener;
@@ -72,13 +69,11 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.AppwallHttpUtil;
-import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.PackageChangedListener;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.ImageSize;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class LockerTheme extends BaseActivity implements OnClickListener, ThemeChanageListener,
@@ -245,7 +240,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     isGetAd = true;
 
                     // 1是本地有广告
-                    if (mThemeAdSwitchOpen == 1) {
+                    if (mThemeAdSwitchOpen == 1 && mLocalThemeAdapter != null) {
                         mLocalThemeAdapter.setCampaign(campaign, isGetAd);
                         // 插入假数据，腾出广告位
                         addLocalAd();
@@ -260,11 +255,12 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         if (mErrorView.getVisibility() == View.VISIBLE) {
                             mErrorView.setVisibility(View.INVISIBLE);
                         }
-
-                        mOnlineThemeAdapter.setCampaign(campaign, isGetAd);
-                        // 插入假数据，腾出广告位
-                        addOnlineAd();
-                        mOnlineThemeAdapter.notifyDataSetChanged();
+                        if(mOnlineThemeAdapter != null) {
+                            mOnlineThemeAdapter.setCampaign(campaign, isGetAd);
+                            // 插入假数据，腾出广告位
+                            addOnlineAd();
+                            mOnlineThemeAdapter.notifyDataSetChanged();
+                        }
                     }
 
                 }
@@ -415,7 +411,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         if (isGetAd && mThemeAdSwitchOpen == 1) {
                             addLocalAd();
                         }
-                        mLocalThemeAdapter.notifyDataSetChanged();
+                        if(mLocalThemeAdapter != null) {
+                            mLocalThemeAdapter.notifyDataSetChanged();
+                        }
                         // if need to load online theme
                         ThemeItemInfo remove = null;
                         for (ThemeItemInfo info : mOnlineThemes) {
@@ -429,7 +427,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                                 mOnlineThemes.remove(remove);
                             } catch (Exception e) {
                             }
-                            mOnlineThemeAdapter.notifyDataSetChanged();
+                            if(mOnlineThemeAdapter != null) {
+                                mOnlineThemeAdapter.notifyDataSetChanged();
+                            }
                             if (mOnlineThemes.isEmpty()) {
                                 if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
                                     mLayoutEmptyTip.setVisibility(View.VISIBLE);
@@ -693,50 +693,52 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     }
 
     private void onLoadInitThemeFinish(boolean succeed, Object object) {
-        mOnlineThemeHolder.setVisibility(View.VISIBLE);
-        if (succeed) {
+        if(mOnlineThemeAdapter != null) {
             mOnlineThemeHolder.setVisibility(View.VISIBLE);
-            mErrorView.setVisibility(View.INVISIBLE);
-            mOnlineThemes.clear();
-            if (object != null) {
-                mOnlineThemes.addAll((List<ThemeItemInfo>) object);
-            }
+            if (succeed) {
+                mOnlineThemeHolder.setVisibility(View.VISIBLE);
+                mErrorView.setVisibility(View.INVISIBLE);
+                mOnlineThemes.clear();
+                if (object != null) {
+                    mOnlineThemes.addAll((List<ThemeItemInfo>) object);
+                }
 
-            // filter local theme
-            if (!mOnlineThemes.isEmpty()) {
-                List<ThemeItemInfo> removeList = new ArrayList<ThemeItemInfo>();
-                for (ThemeItemInfo themeInfo : mOnlineThemes) {
-                    for (ThemeItemInfo localInfo : mLocalThemes) {
-                        if (themeInfo.packageName.equals(localInfo.packageName)) {
-                            removeList.add(themeInfo);
-                            break;
+                // filter local theme
+                if (!mOnlineThemes.isEmpty()) {
+                    List<ThemeItemInfo> removeList = new ArrayList<ThemeItemInfo>();
+                    for (ThemeItemInfo themeInfo : mOnlineThemes) {
+                        for (ThemeItemInfo localInfo : mLocalThemes) {
+                            if (themeInfo.packageName.equals(localInfo.packageName)) {
+                                removeList.add(themeInfo);
+                                break;
+                            }
                         }
                     }
+                    mOnlineThemes.removeAll(removeList);
                 }
-                mOnlineThemes.removeAll(removeList);
-            }
 
-            if (isGetAd && mThemeAdSwitchOpen == 2) {
-                addOnlineAd();
-            }
-            mOnlineThemeAdapter.notifyDataSetChanged();
-            if (mOnlineThemes.isEmpty()) {
-                if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
-                    mLayoutEmptyTip.setVisibility(View.VISIBLE);
+                if (isGetAd && mThemeAdSwitchOpen == 2) {
+                    addOnlineAd();
                 }
-                mOnlineThemeList.setVisibility(View.VISIBLE);
+                mOnlineThemeAdapter.notifyDataSetChanged();
+                if (mOnlineThemes.isEmpty()) {
+                    if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
+                        mLayoutEmptyTip.setVisibility(View.VISIBLE);
+                    }
+                    mOnlineThemeList.setVisibility(View.VISIBLE);
+                } else {
+                    mOnlineThemeList.setVisibility(View.VISIBLE);
+                    mLayoutEmptyTip.setVisibility(View.INVISIBLE);
+                }
             } else {
-                mOnlineThemeList.setVisibility(View.VISIBLE);
+                if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
+                    mErrorView.setVisibility(View.VISIBLE);
+                    mOnlineThemeList.setVisibility(View.INVISIBLE);
+                }
                 mLayoutEmptyTip.setVisibility(View.INVISIBLE);
             }
-        } else {
-            if (!isGetAd || (isGetAd && mThemeAdSwitchOpen != 2)) {
-                mErrorView.setVisibility(View.VISIBLE);
-                mOnlineThemeList.setVisibility(View.INVISIBLE);
-            }
-            mLayoutEmptyTip.setVisibility(View.INVISIBLE);
+            mProgressBar.setVisibility(View.INVISIBLE);
         }
-        mProgressBar.setVisibility(View.INVISIBLE);
     }
 
     private void loadMoreOnlineTheme() {
@@ -913,7 +915,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         lastSelectedItem.curUsedTheme = true;
                         lastSelectedItem.label = (String) LockerTheme.this
                                 .getResources().getText(R.string.localtheme);
-                        mLocalThemeAdapter.notifyDataSetChanged();
+                        if(mLocalThemeAdapter != null) {
+                            mLocalThemeAdapter.notifyDataSetChanged();
+                        }
 
                         SDKWrapper.addEvent(LockerTheme.this, SDKWrapper.P1,
                                 "theme_apply", lastSelectedItem.packageName);
@@ -929,7 +933,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         mLocalThemes.get(0).curUsedTheme = true;
                         lastSelectedItem.label = (String) LockerTheme.this
                                 .getResources().getText(R.string.localtheme);
-                        mLocalThemeAdapter.notifyDataSetChanged();
+                        if(mLocalThemeAdapter != null) {
+                            mLocalThemeAdapter.notifyDataSetChanged();
+                        }
                         dialog.cancel();
                     }
                 } else if (which == 2) {

@@ -4,7 +4,6 @@ package com.leo.appmaster.applocker.manager;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,17 +12,13 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-
 import android.os.SystemClock;
-import android.util.Log;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
-
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.fragment.HomePravicyFragment;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.lockertheme.LockerTheme;
@@ -31,7 +26,6 @@ import com.leo.appmaster.schedule.FetchScheduleJob.FetchScheduleListener;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.mobvista.sdk.m.core.entity.Campaign;
-import com.tendcloud.tenddata.TCAgent;
 
 public class ADShowTypeRequestManager {
     private static final String TAG = "ADShowTypeRequestManager";
