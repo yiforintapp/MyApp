@@ -44,6 +44,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
 
     private CommonTitleBar mTitleBar;
 
+    private String mTitle;
     private String mUrl;
     private String mLocalUrl;
     // 是否是更新日志
@@ -79,9 +80,9 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         }
         mIsUpdate = getIntent().getBooleanExtra(KEY_UPDATE, false);
 
-        String title = getIntent().getStringExtra(KEY_TITLE);
+        mTitle = getIntent().getStringExtra(KEY_TITLE);
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTitleBar.setTitle(title);
+        mTitleBar.setTitle(mTitle);
         mTitleBar.setBackArrowVisibility(View.VISIBLE);
         mTitleBar.setOptionImage(R.drawable.ic_msg_center_refresh);
         mTitleBar.setBackViewListener(this);
@@ -129,7 +130,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 finish();
                 break;
             case R.id.tv_option_image:
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "upd", "upd_cnts");
+//                SDKWrapper.addEvent(this, SDKWrapper.P1, "upd", "upd_cnts");
                 mWebView.reload();
                 break;
         }
@@ -139,7 +140,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     public void onPageFinished(WebView view, String url) {
         super.onPageFinished(view, url);
         if (getWebView().getVisibility() == View.VISIBLE) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "get", "get_dataOK");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoGet", "get_dataOK");
         }
     }
 
@@ -151,7 +152,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             String host = uri.getHost();
             String path = uri.getPath();
             if (HOST_MSGCENTER.equals(host) && PATH_WEBVIEW.equals(path)) {
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "jump", "act_btn_clc");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoJump_cnts", "act_" + mTitle);
                 String paramsUrl = uri.getQueryParameter(PARAMS_URL);
                 Intent intent = new Intent(this, WebViewActivity.class);
                 intent.putExtra(WebViewActivity.WEB_URL, paramsUrl);

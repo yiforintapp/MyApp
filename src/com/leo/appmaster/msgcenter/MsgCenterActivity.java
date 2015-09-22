@@ -77,14 +77,16 @@ public class MsgCenterActivity extends BaseActivity implements
         final Message msg = (Message) mAdapter.getItem(position);
         if (msg == null) return;
 
-        String eventId = null;
+        String descPrefix = null;
         if (msg.isCategoryFaq()) {
-            eventId = "faq";
+            descPrefix = "faq_";
         } else if (msg.isCategoryActivity()) {
-            eventId = "act";
+            descPrefix = "act_";
+        } else if (msg.isCategoryUpdate()) {
+            descPrefix = "upd_";
         }
-        if (eventId != null) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, eventId, msg.title);
+        if (descPrefix != null) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoContent_cnts", descPrefix + msg.title);
         }
         MsgCenterBrowserActivity.startMsgCenterWeb(this, msg.title, msg.jumpUrl, msg.isCategoryUpdate());
         ThreadManager.executeOnFileThread(new Runnable() {

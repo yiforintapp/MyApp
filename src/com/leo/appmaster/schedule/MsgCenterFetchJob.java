@@ -84,7 +84,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         }
 
         Context ctx = AppMasterApplication.getInstance();
-        SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_data");
+        SDKWrapper.addEvent(ctx, SDKWrapper.P1, "InfoGet", "get_data");
 
         JSONArray array = (JSONArray) response;
         LeoLog.i(TAG, "onFetchSuccess, response: " + array.toString() + " | noModify: " + noMidify);
@@ -329,12 +329,12 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         LeoLog.i(TAG, "checkAndAddResSuccEvent, value: " + atomicInteger.get() + " | success:" + success);
         if (success && msg.hasCacheFile()) {
             // 所有资源文件都缓存成功
-            SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_cacheOK");
+            SDKWrapper.addEvent(ctx, SDKWrapper.P1, "InfoGet", "get_cacheOK");
         } else if (!success) {
             // 只要有一个失败，则都认为失败
             if (atomicInteger.get() != REQUEST_FAIL) {
                 // 只报一次
-                SDKWrapper.addEvent(ctx, SDKWrapper.P1, "get", "get_cacheFail");
+                SDKWrapper.addEvent(ctx, SDKWrapper.P1, "InfoGet", "get_cacheFail");
                 atomicInteger.set(REQUEST_FAIL);
             }
         }
