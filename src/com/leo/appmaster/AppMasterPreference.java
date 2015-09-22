@@ -2627,7 +2627,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getThemeChanceAfterUFO() {
-        return mPref.getInt(PREF_THEME_CHANCE_AFTER_UFO, 10);
+        return mPref.getInt(PREF_THEME_CHANCE_AFTER_UFO, 0);
     }
 
     //加速后出现广告的开关
