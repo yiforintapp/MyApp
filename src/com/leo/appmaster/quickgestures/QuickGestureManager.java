@@ -811,8 +811,7 @@ public class QuickGestureManager {
      */
     public void showCommonAppDialog(final Context context) {
         isFromDialog = true;
-        commonApp = new QuickGestureFilterAppDialog(
-                context.getApplicationContext(), 3);
+        commonApp = new QuickGestureFilterAppDialog(context, 3);
         final AppMasterPreference pref = AppMasterPreference.getInstance(context);
         commonApp.setIsShowCheckBox(true);
         commonApp.setCheckBoxText(R.string.quick_gesture_change_common_app_dialog_checkbox_text);
@@ -948,10 +947,10 @@ public class QuickGestureManager {
         // commonApp.getWindow().setType(
         // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         // commonApp.getWindow().setType(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        commonApp.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_TOAST
-                        | WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
-                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        commonApp.getWindow().setType(
+//                WindowManager.LayoutParams.TYPE_TOAST
+//                        | WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+//                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         commonApp.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
