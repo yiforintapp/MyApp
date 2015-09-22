@@ -331,7 +331,7 @@ public class InitCoreBootstrap extends Bootstrap {
 
     private void installBoostShortcut() {
         /*系统是否安装有Iswipe*/
-        boolean isInstalllIswipe=ISwipUpdateRequestManager.isInstallIsiwpe(mApp);
+        boolean isInstalllIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(mApp);
         LeoLog.i(TAG, "System install :"+isInstalllIswipe);
         if(!isInstalllIswipe) {
             Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
