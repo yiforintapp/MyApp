@@ -48,7 +48,11 @@ public class AppMasterApplication extends Application {
     static {
         // For android L and above, daemon service is not work, so disable it
         if (PhoneInfo.getAndroidVersion() < 20) {
-            System.loadLibrary("leo_service");
+            try {
+                System.loadLibrary("leo_service");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -77,7 +81,11 @@ public class AppMasterApplication extends Application {
 
         // For android L and above, daemon service is not work, so disable it
         if (PhoneInfo.getAndroidVersion() < 20) {
-            restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
+            try {
+                restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
         mRootBootstrap = new BootstrapGroup();
