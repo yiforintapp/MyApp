@@ -236,7 +236,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         }
 
         
-        
         @Override
         public void onErrorResponse(VolleyError error) {
         }

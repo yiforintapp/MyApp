@@ -308,8 +308,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
 
-        // if (AppMasterPreference.getInstance(this).getADShowType() == 3
-        // && NetWorkUtil.isNetworkAvailable(getApplicationContext()))
+         if (AppMasterPreference.getInstance(this).getADShowType() == 3
+         && NetWorkUtil.isNetworkAvailable(getApplicationContext()))
         {
             mADAnimalEntry.setVisibility(View.VISIBLE);
             if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE) {
