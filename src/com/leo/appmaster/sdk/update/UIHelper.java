@@ -300,7 +300,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             AppMasterPreference.getInstance(mContext).setPGIsForceUpdate(true);
         }
         if (ui_type == IUIHelper.TYPE_CHECK_NEED_UPDATE
-                && !isAppOnTop(mContext)) {
+                && !isAppOnTop(mContext) && !mManager.isFromUser()) {
             // || ui_type == IUIHelper.BACK_DOWNLOAD_DONE
             checkShowRemindNotification();
         } else {
