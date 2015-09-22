@@ -91,7 +91,8 @@ public class DeskProxyActivity extends Activity {
                     gotoAd(type);
                 } else {
                     if (AppMasterConfig.LOGGABLE) {
-                        LeoLog.f(DeskProxyActivity.class.getSimpleName(), "oncreate", Constants.LOCK_LOG);
+                        LeoLog.f(DeskProxyActivity.class.getSimpleName(), "oncreate",
+                                Constants.LOCK_LOG);
                     }
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -161,7 +162,7 @@ public class DeskProxyActivity extends Activity {
             finish();
         }
     }
-    
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -173,7 +174,9 @@ public class DeskProxyActivity extends Activity {
 
     private void gotoAd(int type) {
         LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
-        wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
+        wallAd = MobvistaEngine.getInstance().createAdWallController(this, Constants.UNIT_ID_61);
+
         if (wallAd != null) {
             wallAd.preloadWall();
             wallAd.clickWall();
