@@ -686,7 +686,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     private void saveIswipUpdateDate(int checkUpdate, int frequency, int number, String gpUrl,
             String browserUrl, int downType) {
-        LeoLog.e(Constants.RUN_TAG, "初始化测试数据");
+        LeoLog.e(TAG, "初始化测试数据");
         AppMasterPreference preference = AppMasterPreference.getInstance(AppMasterApplication
                 .getInstance());
         preference.setIswipUpdateFlag(checkUpdate);
