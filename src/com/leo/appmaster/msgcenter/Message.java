@@ -68,13 +68,15 @@ public class Message {
         String fileNameNoSuffix = MsgCenterFetchJob.getFileName(jumpUrl);
         String htmlFileName = fileNameNoSuffix + ".html";
         File htmlFile = new File(MsgCenterFetchJob.getFilePath(htmlFileName));
-        if (!TextUtils.isEmpty(jumpUrl) && !htmlFile.exists()) {
+        if (!TextUtils.isEmpty(jumpUrl)
+                && (!htmlFile.exists() || htmlFile.length() <= 0)) {
             return false;
         }
 
         String resFileName = fileNameNoSuffix + ".zip";
         File resFile = new File(MsgCenterFetchJob.getFilePath(resFileName));
-        if (!TextUtils.isEmpty(resUrl) && !resFile.exists()) {
+        if (!TextUtils.isEmpty(resUrl)
+                && (!resFile.exists() || resFile.length() <= 0)) {
             return false;
         }
 
