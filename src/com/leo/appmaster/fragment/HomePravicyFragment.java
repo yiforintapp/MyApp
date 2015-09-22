@@ -288,7 +288,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
                     SDKWrapper
-                            .addEvent(mActivity, SDKWrapper.P1, "ad-act", "adv_shws_sugs");
+                            .addEvent(mActivity, SDKWrapper.P1, "ad_act", "adv_shws_sugs");
 
                     LeoLog.d("testPrivicyAd", "loadAd -- OK!");
                     ImageView adicon = (ImageView) mProposalView

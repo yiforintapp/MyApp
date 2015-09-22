@@ -88,6 +88,7 @@ import com.leo.appmaster.fragment.HomeLockFragment;
 import com.leo.appmaster.fragment.HomePravicyFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
+import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
@@ -617,7 +618,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 // && !isEnterPrivacySuggest
                 && mHomeAdSwitchOpen == 1) {
             SDKWrapper
-                    .addEvent(this, SDKWrapper.P1, "ad-act", "adv_shws_homeAppWall");
+                    .addEvent(this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
             setAdIconVisible();
             isCanShow = true;
         } else {
