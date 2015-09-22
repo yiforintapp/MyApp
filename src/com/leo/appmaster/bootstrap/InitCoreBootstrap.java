@@ -330,17 +330,22 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void installBoostShortcut() {
-        Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
-        ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
-                R.drawable.booster_icon);
-        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-        shortcut.putExtra("duplicate", false);
-        shortcut.putExtra("from_shortcut", true);
-        mApp.sendBroadcast(shortcut);
-    }
+        /*系统是否安装有Iswipe*/
+        boolean isInstalllIswipe=ISwipUpdateRequestManager.isInstallIsiwpe(mApp);
+        LeoLog.i(TAG, "System install :"+isInstalllIswipe);
+        if(!isInstalllIswipe) {
+            Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
+            ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
+                    R.drawable.booster_icon);
+            Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+            shortcut.putExtra("duplicate", false);
+            shortcut.putExtra("from_shortcut", true);
+            mApp.sendBroadcast(shortcut);
+        }
+        }
 
     private void judgeLockAlert() {
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);

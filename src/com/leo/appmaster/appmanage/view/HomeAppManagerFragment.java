@@ -475,7 +475,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
 
     private void startQuickGestureHandler() {
         boolean installISwipe = ISwipUpdateRequestManager.getInstance(getActivity())
-                .isInstallIsiwpe();
+                .isInstallIsiwpe(mActivity);
         // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
         if (!ISwipUpdateRequestManager.getInstance(getActivity()).isUseIswipUser()) {
             /* 新用户 */

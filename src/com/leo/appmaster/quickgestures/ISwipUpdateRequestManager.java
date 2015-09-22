@@ -557,10 +557,10 @@ public class ISwipUpdateRequestManager {
     }
 
     /* 判断是否安装ISwipe，true：安装，false：未安装 */
-    public boolean isInstallIsiwpe() {
+    public static boolean isInstallIsiwpe(Context context) {
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.setPackage(AppLoadEngine.ISWIPE_PACKAGENAME);
-        List<ResolveInfo> resolveInfo = mContext.getPackageManager().queryIntentActivities(
+        List<ResolveInfo> resolveInfo = context.getPackageManager().queryIntentActivities(
                 intent, 0);
         if (resolveInfo.size() > 0) {
             return true;
@@ -586,8 +586,7 @@ public class ISwipUpdateRequestManager {
             if (im.getNetworkStatus()) {
                 if ((alarmNumber > 0 && alarmUseNumbers <= alarmNumber) || alarmNumber == 0) {
                     /* 每次执行定时器任务时，查看是否已安装ISwipe */
-                    boolean installIswipe = ISwipUpdateRequestManager.getInstance(mContext)
-                            .isInstallIsiwpe();
+                    boolean installIswipe =isInstallIsiwpe(mContext);
                     if (!installIswipe) {
                         if (DBG) {
                             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd H:m:s");
@@ -628,7 +627,7 @@ public class ISwipUpdateRequestManager {
 
     /* 是否拉取iswip更新判断,true:加载iswipe更新数据，false：不加载iswipe更新数据 */
     public boolean isLoadIswipeData() {
-        return !isInstallIsiwpe();
+        return !isInstallIsiwpe(mContext);
     }
 
     private void showDownLoadISwipDialog(Context context, final boolean isShow) {
@@ -669,7 +668,7 @@ public class ISwipUpdateRequestManager {
     /* 显示iswipe更新对话框 */
     public void showIswipeUpdateTip(Context context, boolean iswipeUpdateShow) {
         boolean flag = ISwipUpdateRequestManager.getInstance(mContext).getIswipeUpdateTip();
-        if ((flag && !isInstallIsiwpe()) || iswipeUpdateShow/* 是否直接显示对话框 */) {
+        if ((flag && !isInstallIsiwpe(mContext)) || iswipeUpdateShow/* 是否直接显示对话框 */) {
             showDownLoadISwipDialog(context, iswipeUpdateShow);
         }
     }

@@ -84,7 +84,7 @@ public class InitAsyncBootstrap extends Bootstrap {
         boolean isOpenIswipe = AppMasterPreference.getInstance(mApp)
                 .getSwitchOpenQuickGesture();
         /* 是否安装了iswipe */
-        boolean isIntsallIswipe = ISwipUpdateRequestManager.getInstance(mApp).isInstallIsiwpe();
+        boolean isIntsallIswipe = ISwipUpdateRequestManager.getInstance(mApp).isInstallIsiwpe(mApp);
         /* 是否使用过pg内快捷手势 */
         boolean isUseIswipe = ISwipUpdateRequestManager.getInstance(mApp).isUseIswipUser();
         if (isUseIswipe && isOpenIswipe && isIntsallIswipe) {

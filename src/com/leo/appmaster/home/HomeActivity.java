@@ -669,7 +669,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         /* ISwipe升级对话框提示 */
         if (mShowIswipeFromNotfi) {
             mShowIswipeFromNotfi = false;
-            boolean installIswipe = ISwipUpdateRequestManager.getInstance(this).isInstallIsiwpe();
+            boolean installIswipe = ISwipUpdateRequestManager.getInstance(this).isInstallIsiwpe(this);
             if (!installIswipe) {
                 LeoLog.e(TAG, "直接显示的iswipe对话框,不用赋值");
                 showDownLoadISwipDialog(this, null);
@@ -1068,7 +1068,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 } else {
                                     /* 系统是否安装iswipe */
                                     boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
-                                            getApplicationContext()).isInstallIsiwpe();
+                                            getApplicationContext()).isInstallIsiwpe(getApplicationContext());
                                     if (!isIswipInstall) {
                                         showFirstOpenQuickGestureTipDialog();
                                     } else {
@@ -1083,7 +1083,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             if (!firstDilaogTip) {
                                 LeoLog.i(TAG, "升级用户提示！");
                                 boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
-                                        getApplicationContext()).isInstallIsiwpe();
+                                        getApplicationContext()).isInstallIsiwpe(getApplicationContext());
                                 if (!isIswipInstall) {
                                     showFirstOpenQuickGestureTipDialog();
                                 } else {
@@ -1497,7 +1497,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         "firstd_y");
                 /* 系统是否安装iswipe */
                 boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
-                        getApplicationContext()).isInstallIsiwpe();
+                        getApplicationContext()).isInstallIsiwpe(getApplicationContext());
                 AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
                 AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
                 if (isIswipInstall) {

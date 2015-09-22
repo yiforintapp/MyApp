@@ -74,7 +74,7 @@ public class StatusBarEventService extends IntentService {
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (eventType == EVENT_BUSINESS_QUICK_GUESTURE) {
-            boolean installIswipe = ISwipUpdateRequestManager.getInstance(this).isInstallIsiwpe();
+            boolean installIswipe = ISwipUpdateRequestManager.getInstance(this).isInstallIsiwpe(this);
             if (!installIswipe) {
                 LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
                 targetIntent = new Intent(this, QuickGestureActivity.class);
