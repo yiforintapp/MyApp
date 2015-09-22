@@ -211,7 +211,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         boolean isTip = AppMasterPreference.getInstance(this)
                 .getAdvanceProtectOpenSuccessDialogTip();
         if (isAdminActive() && isTip) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dput", "gd_dput_real");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_dcnts", "gd_dput_real");
             openAdvanceProtectDialogTip();
         }
     }

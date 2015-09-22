@@ -268,7 +268,7 @@ public class InitCoreBootstrap extends Bootstrap {
                 updateShowGuidePage(lastCode < 41 || currentGuideVersion > lastGuideVersion);
                 pref.setLastGuideVersion(currentGuideVersion);
                 pref.setIsUpdateQuickGestureUser(true);
-                /* 每次升级都重新刷新googleplay提示规则 */
+                // 每次升级都重新刷新googleplay提示规则
                 uninitGooglePlayScorTip();
                 recoveryUpdateTipDefaultData();
             }
