@@ -1014,5 +1014,6 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                 LeoLog.i(TAG, "没有检查到更新内容，有异常，不显示对话框！");
             }
         }
+        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "update_unlock", "unlock");
     }
 }
