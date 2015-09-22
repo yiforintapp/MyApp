@@ -972,8 +972,7 @@ public class QuickGestureManager {
      */
     public void showQuickSwitchDialog(final Context context) {
         isFromDialog = true;
-        quickSwitch = new QuickGestureFilterAppDialog(
-                context.getApplicationContext(), 2);
+        quickSwitch = new QuickGestureFilterAppDialog(context, 2);
         quickSwitch.setTitle(R.string.pg_appmanager_quick_switch_dialog_title);
         quickSwitch.setRightBt(new OnClickListener() {
             @Override
@@ -1115,10 +1114,10 @@ public class QuickGestureManager {
         // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
         // quickSwitch.getWindow().setType(
         // WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        quickSwitch.getWindow().setType(
-                WindowManager.LayoutParams.TYPE_TOAST
-                        | WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
-                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        quickSwitch.getWindow().setType(
+//                WindowManager.LayoutParams.TYPE_TOAST
+//                        | WindowManager.LayoutParams.TYPE_SYSTEM_ALERT
+//                        | WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         quickSwitch.setOnDismissListener(new OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialog) {
