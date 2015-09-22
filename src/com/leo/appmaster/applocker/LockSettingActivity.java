@@ -71,7 +71,9 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+
+        boolean fromSplash = getIntent().getBooleanExtra("from_splash", false);
+        if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE && fromSplash) {
             if (AppMasterConfig.LOGGABLE) {
                 LeoLog.f(TAG, "onCreate, locktype is not none", Constants.LOCK_LOG);
             }

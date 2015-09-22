@@ -397,6 +397,7 @@ public class SplashActivity extends BaseActivity {
                 LeoLog.f(TAG, "startHome", Constants.LOCK_LOG);
             }
             Intent intent = new Intent(this, LockSettingActivity.class);
+            intent.putExtra("from_splash", true);
             startActivity(intent);
             finish();
         }
