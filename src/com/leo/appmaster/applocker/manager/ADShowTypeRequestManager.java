@@ -190,8 +190,12 @@ public class ADShowTypeRequestManager {
                     if (lastThemeType != nowThemeType) {
                         if (lastThemeType == 1) {
                             SDKWrapper
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
+                            SDKWrapper
                                     .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_local");
                         } else if (lastThemeType == 2) {
+                            SDKWrapper
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
                             SDKWrapper
                                     .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_online");
                         } else {
