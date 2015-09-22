@@ -1,14 +1,19 @@
 
 package com.leo.appmaster.applocker;
 
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.R.integer;
 import android.content.Intent;
@@ -24,6 +29,7 @@ import android.widget.TextView;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
+    private static final String TAG = "LockSettingActivity";
 
     public static final String RESET_PASSWD_FLAG = "reset_passwd";
     public static final String ROTATE_FRAGMENT = "rotate_fragment";
@@ -64,6 +70,26 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+            if (AppMasterConfig.LOGGABLE) {
+                LeoLog.f(TAG, "onCreate, locktype is not none", Constants.LOCK_LOG);
+            }
+            // FIXME: 2015/9/22 AM-2421 修复已经设置过锁，再次打开设置锁的问题，加上二次保护确认
+            if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            } else {
+                amp.setLastFilterSelfTime(0);
+                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                        getPackageName(), true, null);
+                amp.setDoubleCheck(null);
+            }
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_lock_setting);
         handleIntent();
         initUI();
