@@ -104,7 +104,8 @@ public class StatusBarEventService extends IntentService {
             targetIntent = new Intent(this, HomeActivity.class);
             targetIntent.putExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME,
                     ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
-            targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else {
             return;
         }

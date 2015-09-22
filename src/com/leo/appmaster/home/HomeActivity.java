@@ -189,8 +189,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         LeoEventBus.getDefaultBus().register(this);
         // AM-2128 偶现图片显示异常，先暂时注释掉
         // releaseSysResources();
-        /* 获取是否从iswipe通知进入 */
-        checkIswipeNotificationTo();
+//        /* 获取是否从iswipe通知进入 */
+//        checkIswipeNotificationTo();
         /* 白名单引导 */
         autoStartDialogHandler();
         // 进入首页拉取一次消息中心列表
@@ -200,8 +200,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private void checkIswipeNotificationTo() {
         String fromPrivacyFlag = getIntent()
                 .getStringExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
-        if (fromPrivacyFlag != null && ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME
-                .equals(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME)) {
+        if (ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME
+                .equals(fromPrivacyFlag)) {
             ISwipUpdateRequestManager.getInstance(getApplicationContext());
             mShowIswipeFromNotfi = true;
             mPagerTab.setCurrentItem(2);
@@ -531,7 +531,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void onResume() {
-
+        /* 获取是否从iswipe通知进入 */
+        checkIswipeNotificationTo();
         /* 分析是否需要升级红点显示 */
         boolean menuRedTipVisibility = (mLeftMenuRedTip.getVisibility() == View.GONE);
         if (mLeftMenuRedTip != null && menuRedTipVisibility) {
