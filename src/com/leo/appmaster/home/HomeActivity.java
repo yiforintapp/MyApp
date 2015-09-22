@@ -189,8 +189,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         LeoEventBus.getDefaultBus().register(this);
         // AM-2128 偶现图片显示异常，先暂时注释掉
         // releaseSysResources();
-//        /* 获取是否从iswipe通知进入 */
-//        checkIswipeNotificationTo();
+        // /* 获取是否从iswipe通知进入 */
+        // checkIswipeNotificationTo();
         /* 白名单引导 */
         autoStartDialogHandler();
         // 进入首页拉取一次消息中心列表
@@ -606,7 +606,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         // 默认是开，记得改回默认是关
         if (mHomeAdSwitchOpen == -1) {
-            LeoLog.d("testPrivicyAd", "获取主页广告开关");
+            LeoLog.d("testHomeAd", "获取主页广告开关");
             mHomeAdSwitchOpen = AppMasterPreference.getInstance(this)
                     .getIsADAtAppLockFragmentOpen();
         }
@@ -633,8 +633,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
         long nowTime = System.currentTimeMillis();
         if (nowTime - clickTime > INTERVEL_CLICK_AD) {
+            LeoLog.d("testHomeAd", "isTimetoShow true");
             return true;
         } else {
+            LeoLog.d("testHomeAd", "isTimetoShow false");
             return false;
         }
     }
@@ -670,7 +672,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         /* ISwipe升级对话框提示 */
         if (mShowIswipeFromNotfi) {
             mShowIswipeFromNotfi = false;
-            boolean installIswipe = ISwipUpdateRequestManager.getInstance(this).isInstallIsiwpe(this);
+            boolean installIswipe = ISwipUpdateRequestManager.getInstance(this).isInstallIsiwpe(
+                    this);
             if (!installIswipe) {
                 LeoLog.e(TAG, "直接显示的iswipe对话框,不用赋值");
                 showDownLoadISwipDialog(this, null);
@@ -1069,7 +1072,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 } else {
                                     /* 系统是否安装iswipe */
                                     boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
-                                            getApplicationContext()).isInstallIsiwpe(getApplicationContext());
+                                            getApplicationContext()).isInstallIsiwpe(
+                                            getApplicationContext());
                                     if (!isIswipInstall) {
                                         showFirstOpenQuickGestureTipDialog();
                                     } else {
@@ -1084,7 +1088,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             if (!firstDilaogTip) {
                                 LeoLog.i(TAG, "升级用户提示！");
                                 boolean isIswipInstall = ISwipUpdateRequestManager.getInstance(
-                                        getApplicationContext()).isInstallIsiwpe(getApplicationContext());
+                                        getApplicationContext()).isInstallIsiwpe(
+                                        getApplicationContext());
                                 if (!isIswipInstall) {
                                     showFirstOpenQuickGestureTipDialog();
                                 } else {

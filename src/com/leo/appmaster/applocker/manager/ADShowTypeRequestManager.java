@@ -150,17 +150,18 @@ public class ADShowTypeRequestManager {
                     amp.setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));
                     LeoLog.e("poha",
                             "请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
-                    if(response.getInt(AD_AFTER_ACCELERATING)!=amp.getADChanceAfterAccelerating()){
+                    if (response.getInt(AD_AFTER_ACCELERATING) != amp
+                            .getADChanceAfterAccelerating()) {
                         amp.setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
-                        if(amp.getADChanceAfterAccelerating()==1){
+                        if (amp.getADChanceAfterAccelerating() == 1) {
                             SDKWrapper
-                            .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
-                        }else{
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
+                        } else {
                             SDKWrapper
-                            .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_off");
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_off");
                         }
                     }
-                   
+
                     LeoLog.e("poha", "请求成功，加速后出现广告：" + response.getInt(AD_AFTER_ACCELERATING));
                     // 隐私防护
                     int lastPrivacyType = amp.getIsADAfterPrivacyProtectionOpen();
@@ -180,6 +181,7 @@ public class ADShowTypeRequestManager {
                             "请求成功，隐私保护后出现广告的开关：" + nowPrivacyType);
                     // 主页ad
                     amp.setIsADAtAppLockFragmentOpen((response.getInt(AD_AT_APPLOCK_FRAGMENT)));
+                    HomeActivity.mHomeAdSwitchOpen = response.getInt(AD_AT_APPLOCK_FRAGMENT);
                     LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
                     // 主题
                     int lastThemeType = amp.getIsADAtLockThemeOpen();
