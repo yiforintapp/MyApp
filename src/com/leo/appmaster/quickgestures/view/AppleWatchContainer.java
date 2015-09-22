@@ -1882,8 +1882,9 @@ public class AppleWatchContainer extends FrameLayout {
     private void speedUp(QuickSwitcherInfo info, int iconSize, GestureItemView[] tvs) {
         
         Intent intent = new Intent(mContext, HomeBoostActivity.class);
-        mContext.startActivity(intent);
-        if(mContext instanceof QuickGesturePopupActivity && mContext!=null){
+        
+        if(mContext instanceof QuickGesturePopupActivity){
+            mContext.startActivity(intent);
             ((QuickGesturePopupActivity) mContext).finish();
         }
 //        ThreadManager.executeOnAsyncThread(new Runnable() {
