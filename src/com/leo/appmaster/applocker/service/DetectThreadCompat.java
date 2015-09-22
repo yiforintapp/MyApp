@@ -15,6 +15,7 @@ import android.os.Process;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.ProcessAdj;
@@ -51,13 +52,18 @@ public class DetectThreadCompat extends Thread {
         if (handler == null) {
             throw new RuntimeException("TaskChangeHandler is null.");
         }
-        
-        ProcessDetector detector = new ProcessDetector();
-        if (detector.checkAvailable()) {
-            mDetector = detector;
-        } else {
-            mDetector = new ProcessDetectorCompat22();
-        }
+
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                ProcessDetector detector = new ProcessDetector();
+                if (detector.checkAvailable()) {
+                    mDetector = detector;
+                } else {
+                    mDetector = new ProcessDetectorCompat22();
+                }
+            }
+        });
         mLockHandler = handler;
         
     }
@@ -68,7 +74,7 @@ public class DetectThreadCompat extends Thread {
         int doubleCheckCount = 0;
         int notFoundAppCount = 0;
         while (true && !isInterrupted()) {
-            if (!mDetector.ready()) continue;
+            if (mDetector == null || !mDetector.ready()) continue;
             
             lastProcessAdj = mForegroundAdj;
             
