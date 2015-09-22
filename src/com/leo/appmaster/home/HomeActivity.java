@@ -195,11 +195,13 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         autoStartDialogHandler();
         // 进入首页拉取一次消息中心列表
         MsgCenterFetchJob.startImmediately();
+        ISwipUpdateRequestManager.getInstance(this).showISwipCheckNewNotification();
     }
 
     private void checkIswipeNotificationTo() {
         String fromPrivacyFlag = getIntent()
                 .getStringExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+        LeoLog.i(TAG, "来自iswipe："+fromPrivacyFlag);
         if (ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME
                 .equals(fromPrivacyFlag)) {
             ISwipUpdateRequestManager.getInstance(getApplicationContext());
@@ -710,6 +712,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     public void onBackPressed() {
+        if(mShowIswipeFromNotfi){
+        getIntent().removeExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+        }
         if (mQuickGestureSettingDialog != null) {
             AppMasterPreference.getInstance(HomeActivity.this).setQGSettingFirstDialogTip(
                     true);
@@ -1596,6 +1601,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 }
             }
         });
+
         mIswipDialog.setLeftListener(new OnClickListener() {
 
             @Override
@@ -1636,6 +1642,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 ISwipUpdateRequestManager.getInstance(HomeActivity.this).iSwipDownLoadHandler();
             }
         });
+        getIntent().removeExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
         mIswipDialog.setFlag(flag);
         mIswipDialog.show();
     }
