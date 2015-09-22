@@ -96,5 +96,20 @@ public class MsgCenterActivity extends BaseActivity implements
                 table.readMessage(msg);
             }
         });
+        try {
+            final MsgCenterAdapter.MsgCenterHolder holder = (MsgCenterAdapter.MsgCenterHolder) view.getTag();
+            if (holder != null) {
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.unread.setVisibility(View.GONE);
+                        holder.title.setPadding(0, 0, 0, 0);
+                    }
+                }, 200);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 }

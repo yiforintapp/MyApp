@@ -184,7 +184,7 @@ public class MsgCenterAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private static class MsgCenterHolder {
+    public static class MsgCenterHolder {
         ImageView unread;
         TextView title;
         TextView time;
