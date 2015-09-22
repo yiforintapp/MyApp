@@ -186,7 +186,6 @@ public class BuildProperties {
     /**
      * 本机制造商名称识别
      * 
-     * @param brandName品牌名称
      */
     public static boolean checkPhoneBrand(String brandName) {
         return Build.MANUFACTURER.toLowerCase().equalsIgnoreCase(brandName);
@@ -287,10 +286,9 @@ public class BuildProperties {
     }
     /*是否为华为P8*/
     public static boolean isHuaWeiP8Model(){
-        String value=getSystemProperty(KEY_HUAWEIP8_PAI_LEVEL);
+        String value = getSystemProperty(KEY_HUAWEIP8_PAI_LEVEL);
 
-        if(!Utilities.isEmpty(value)
-                && HUAWEI_P8_API_LEVEL.equals(value)){
+        if(HUAWEI_P8_API_LEVEL.equals(value)){
             LeoLog.i(TAG, "华为系统level："+value);
             return true;
         }else{
