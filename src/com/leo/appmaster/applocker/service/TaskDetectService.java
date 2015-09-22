@@ -28,6 +28,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import com.baidu.mobstat.p;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
@@ -473,6 +474,7 @@ public class TaskDetectService extends Service {
             String baseActivity = null;
             if (Build.VERSION.SDK_INT > 19) { // Android L and above
                 List<RunningAppProcessInfo> list = mActivityManager.getRunningAppProcesses();
+                boolean foundHuaweiLauncher = false;
                 for (RunningAppProcessInfo pi : list) {
                     // Foreground or Visible
                     if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
@@ -483,6 +485,15 @@ public class TaskDetectService extends Service {
                             && (0x4 & pi.flags) > 0
                             // one activity is on the top
                             && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
+                        if (pi.processName.equals("com.huawei.android.launcher")) {
+                            foundHuaweiLauncher = true;
+                        }
+                        if (foundHuaweiLauncher
+                                && BuildProperties.isHuaWeiTipPhone(TaskDetectService.this)
+                                && pi.processName.equals("com.tencent.mm")) {
+                            // FIXME: 2015/9/22 AM-2336 华为P8打开最近历史，莫名把微信拉起来，做特殊处理
+                            break;
+                        }
                         String pkgList[] = pi.pkgList;
                         if (pkgList != null && pkgList.length > 0) {
                             int index = 0;
