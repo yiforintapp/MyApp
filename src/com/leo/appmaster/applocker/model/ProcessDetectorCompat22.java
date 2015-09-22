@@ -18,26 +18,19 @@ import com.leo.appmaster.utils.LeoLog;
 public class ProcessDetectorCompat22 extends ProcessDetector {
     private static final String TAG = "ProcessDetectorCompat22"; 
     private static final String OOM_SCORE = "oom_score";
-    
+
     // oom_score收不到文件监控消息，需要按频率扫描
     private static final int WAIT_HOME_TIMEOUT = 0;
     private static final int MAX_SCORE = 80;
-    private static int MIN_SCORE = 30;
-    // min_score被减小的值
-    private static final int MIN_DIFF_DEC = 15;
+    private static final int MIN_SCORE = 30;
     // 最小diff上限
     private static final int MIN_DIFF_UP_LIMIT = MAX_SCORE - MIN_SCORE;
-    
+
     // zygote进程的最大值，父进程大于这个值便不是zygote孵化
     private static final int MAX_ZYGOTE = 1000;
-    
+
     private static int mForegroundScore = 0;
-    
-    static {
-        AppMasterApplication context = AppMasterApplication.getInstance();
-        MIN_SCORE = AppMasterPreference.getInstance(context).getForegroundMinScore();
-    }
-    
+
     /**
      * 设置oom_score值，后续作为参考值, leo到前台后会触发设置
      */
@@ -49,26 +42,21 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
                 int score = getOomScore(Process.myPid());
                 score = score > MAX_SCORE ? MAX_SCORE : score;
 
-                score /= 2;
-                MIN_SCORE = score / 2;
-
-                AppMasterApplication context = AppMasterApplication.getInstance();
-                AppMasterPreference.getInstance(context).setForegroundMinScore(MIN_SCORE);
-
                 mForegroundScore = score;
+                Context context = AppMasterApplication.getInstance();
                 AppMasterPreference.getInstance(context).setForegroundScore(mForegroundScore);
                 LeoLog.i(TAG, "setForegroundScore async, score: " + mForegroundScore);
             }
         });
     }
-    
+
     private static void setForegroundScore(int score) {
         score = score > MAX_SCORE ? MAX_SCORE : score;
         score = score < MIN_SCORE ? MIN_SCORE : score;
         if (score > mForegroundScore && mForegroundScore > 0) {
             score = (mForegroundScore + score) / 2;
         }
-        
+
         if (score < mForegroundScore) {
             Context context = AppMasterApplication.getInstance();
             AppMasterPreference.getInstance(context).setForegroundScore(score);
