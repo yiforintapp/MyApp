@@ -37,6 +37,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.R.id;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
@@ -220,7 +221,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         ufoActivity.mThemDialogBg);
                 LeoLog.e("poha", "to load Pic");
                 
-                ufoActivity.runOnUiThread(new Runnable() {
+                ThreadManager.executeOnUiThread(new Runnable() {
                     
                     @Override
                     public void run() {
@@ -230,6 +231,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         LeoLog.e("poha", "init button");
                     }
                 });
+                
             }
         }
 
@@ -302,10 +304,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 
                     TextView appname = (TextView) mDialog.findViewById(R.id.tv_appname_ufo);
                     appname.setText(campaign.getAppName());
-
                     TextView appdesc = (TextView) mDialog.findViewById(R.id.tv_appdesc_ufo);
                     appdesc.setText(campaign.getAppDesc());
-
                     Button call = (Button) mDialog.findViewById(R.id.btn_ufo_dialog_install);
                     call.setText(campaign.getAdCall());
                     mAdEngine.registerView(UFOActivity.this, call);
