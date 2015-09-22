@@ -19,6 +19,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.fragment.HomePravicyFragment;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.lockertheme.LockerTheme;
