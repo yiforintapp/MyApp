@@ -195,7 +195,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         autoStartDialogHandler();
         // 进入首页拉取一次消息中心列表
         MsgCenterFetchJob.startImmediately();
-        ISwipUpdateRequestManager.getInstance(this).showISwipCheckNewNotification();
     }
 
     private void checkIswipeNotificationTo() {
