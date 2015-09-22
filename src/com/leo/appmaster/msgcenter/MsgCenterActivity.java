@@ -59,12 +59,6 @@ public class MsgCenterActivity extends BaseActivity implements
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        mAdapter.notifyDataSetChanged();
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_title_back:
