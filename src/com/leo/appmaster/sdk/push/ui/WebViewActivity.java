@@ -362,6 +362,9 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                if (!mIsFromMsgCenter) {
+                    intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TASK);
+                }
                 startActivity(intent);
                 finish();
                 TaskDetectService tds = TaskDetectService.getService();
