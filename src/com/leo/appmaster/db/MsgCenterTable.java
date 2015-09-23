@@ -258,6 +258,9 @@ public class MsgCenterTable extends BaseTable {
                 e.printStackTrace();
             } finally {
                 db.endTransaction();
+                MsgCenterEvent msgCenterEvent = new MsgCenterEvent(MsgCenterEvent.ID_MSG);
+                msgCenterEvent.count = 0;
+                LeoEventBus.getDefaultBus().post(msgCenterEvent);
             }
         }
 
