@@ -155,6 +155,14 @@ public class BuildProperties {
 
     }
 
+    public static boolean isZTEAndApiLevel14() {
+        return isZTE() && Build.VERSION.SDK_INT <= 15;
+    }
+
+    public static boolean isZTE() {
+        return Build.MODEL != null && Build.MODEL.toUpperCase().contains("ZTE");
+    }
+
     // 是否为MIUI系统
     public static boolean isMIUI() {
         try {

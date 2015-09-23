@@ -11,6 +11,7 @@ import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 import org.json.JSONArray;
@@ -60,6 +61,9 @@ public abstract class FetchScheduleJob extends ScheduleJob {
                 Object object = clazz.newInstance();
 
                 if (object instanceof ScheduleJob) {
+                    if (object instanceof MsgCenterFetchJob && BuildProperties.isZTEAndApiLevel14()) {
+                        continue;
+                    }
                     final ScheduleJob job = (ScheduleJob) object;
                     job.start();
                 }

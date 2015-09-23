@@ -11,8 +11,14 @@ public class MsgCenterEvent extends BaseEvent {
     // 消息列表拉取成功
     public static final int ID_MSG = 102;
 
+    public int count;
+
     public MsgCenterEvent(int id) {
         super(id, "MsgCenterEvent");
+    }
+
+    public int getEventId() {
+        return mEventId;
     }
 
 
