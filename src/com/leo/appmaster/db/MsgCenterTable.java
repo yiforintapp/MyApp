@@ -5,8 +5,11 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
@@ -51,6 +54,8 @@ public class MsgCenterTable extends BaseTable {
 
     @Override
     public void createTable(SQLiteDatabase db) {
+        if (BuildProperties.isZTEAndApiLevel14()) return;
+
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                 "( _id INTEGER PRIMARY KEY," +
                 COL_MSG_ID + " INTEGER," +
@@ -70,6 +75,8 @@ public class MsgCenterTable extends BaseTable {
 
     @Override
     public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
+        if (BuildProperties.isZTEAndApiLevel14()) return;
+
         db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         createTable(db);
     }
@@ -97,6 +104,8 @@ public class MsgCenterTable extends BaseTable {
             }
         }
         deleteMsgList(oldList, msgList);
+
+        int count = 0;
         db.beginTransaction();
         try {
             ContentValues values = new ContentValues();
@@ -116,12 +125,19 @@ public class MsgCenterTable extends BaseTable {
                 values.put(COL_RES, message.resUrl);
                 values.put(COL_UNREAD, message.unread ? UNREADED : READED);
                 db.insert(TABLE_NAME, null, values);
+
+                if (message.unread) {
+                    count++;
+                }
             }
             db.setTransactionSuccessful();
         } catch (Throwable e) {
             e.printStackTrace();
         } finally {
             db.endTransaction();
+            MsgCenterEvent msgCenterEvent = new MsgCenterEvent(MsgCenterEvent.ID_MSG);
+            msgCenterEvent.count = count;
+            LeoEventBus.getDefaultBus().post(msgCenterEvent);
         }
     }
 

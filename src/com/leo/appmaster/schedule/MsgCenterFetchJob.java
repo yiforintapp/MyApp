@@ -19,6 +19,7 @@ import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
 
@@ -52,6 +53,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
     public static void startImmediately() {
         LeoLog.i(TAG, "startImmediately.....");
+        if (BuildProperties.isZTEAndApiLevel14()) return;
         MsgCenterFetchJob job = new MsgCenterFetchJob();
         FetchScheduleListener listener = job.newJsonArrayListener();
         Context ctx = AppMasterApplication.getInstance();
@@ -129,7 +131,6 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
         } else {
             table.insertMsgList(list);
         }
-        LeoEventBus.getDefaultBus().post(new MsgCenterEvent(MsgCenterEvent.ID_MSG));
         LeoLog.i(TAG, "cost, onFetchSuccess: " + (SystemClock.elapsedRealtime() - start));
     }
 
