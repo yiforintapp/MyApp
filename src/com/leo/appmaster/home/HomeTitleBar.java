@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.utils.BuildProperties;
 
 public class HomeTitleBar extends FrameLayout implements OnClickListener {
 
@@ -40,6 +41,9 @@ public class HomeTitleBar extends FrameLayout implements OnClickListener {
         mTvOptionImage = (ImageView) findViewById(R.id.iv_option_image);
         mIvLogo = (ImageView) findViewById(R.id.iv_logo);
         mIvHotApp = (RelativeLayout) findViewById(R.id.bg_show_hotapp);
+        if (BuildProperties.isZTEAndApiLevel14()) {
+            mIvHotApp.setVisibility(View.GONE);
+        }
         super.onFinishInflate();
     }
 
