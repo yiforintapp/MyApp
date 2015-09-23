@@ -28,6 +28,7 @@ public class DeskAdActivity extends Activity {
         // LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
         // LockManager.getInstatnce().timeFilterSelf();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_cli", "adv_cnts_desktop");
+        LockManager.getInstatnce().timeFilter(getPackageName(), 5 * 1000);
         Intent mWallIntent = mWallAd.getWallIntent();
         mWallIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
                 Intent.FLAG_ACTIVITY_CLEAR_TASK);
