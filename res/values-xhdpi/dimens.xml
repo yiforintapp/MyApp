@@ -18,8 +18,8 @@
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
     <dimen name="hide_picture_checkbox_left">107dp</dimen>
     <dimen name="hide_picture_checkbox_top">107dp</dimen>
-    <dimen name="digital_item_width">65dp</dimen>
-    <dimen name="digital_item_height">65dp</dimen>
+    <dimen name="digital_item_width">60dp</dimen>
+    <dimen name="digital_item_height">60dp</dimen>
     <dimen name="digital_item_marginTop">8dp</dimen>
     <dimen name="digital_item_marginBottom">8dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
