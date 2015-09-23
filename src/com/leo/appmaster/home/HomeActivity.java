@@ -442,9 +442,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void setAdIconVisible() {
         if (mAdIcon != null) {
             mAdIcon.setVisibility(View.VISIBLE);
-            mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
-            adAnimation = (AnimationDrawable) mAdIcon.getBackground();
-            adAnimation.start();
+            if(Build.VERSION.SDK_INT > 15) {
+                mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
+                adAnimation = (AnimationDrawable) mAdIcon.getBackground();
+                adAnimation.start();
+            }
         }
     }
 
@@ -605,26 +607,30 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     public void shouldShowAd() {
+        mHandler.postDelayed((new Runnable() {         
+            @Override
+            public void run() {
+                // 默认是开，记得改回默认是关
+                if (mHomeAdSwitchOpen == -1) {
+                    LeoLog.d("testHomeAd", "获取主页广告开关");
+                    mHomeAdSwitchOpen = AppMasterPreference.getInstance(HomeActivity.this)
+                            .getIsADAtAppLockFragmentOpen();
+                }
+                LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
+                if (isTimetoShow()
+                        // && !isEnterPrivacySuggest
+                        && mHomeAdSwitchOpen == 1) {
+                    SDKWrapper
+                            .addEvent(HomeActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
+                      setAdIconVisible();
+                    isCanShow = true;
+                } else {
+                    setAdIconInVisible();
+                    isCanShow = false;
+                }
+            }
+        }), 1000);
 
-        // 默认是开，记得改回默认是关
-        if (mHomeAdSwitchOpen == -1) {
-            LeoLog.d("testHomeAd", "获取主页广告开关");
-            mHomeAdSwitchOpen = AppMasterPreference.getInstance(this)
-                    .getIsADAtAppLockFragmentOpen();
-        }
-        LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
-
-        if (isTimetoShow()
-                // && !isEnterPrivacySuggest
-                && mHomeAdSwitchOpen == 1) {
-            SDKWrapper
-                    .addEvent(this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
-            setAdIconVisible();
-            isCanShow = true;
-        } else {
-            setAdIconInVisible();
-            isCanShow = false;
-        }
     }
 
     public boolean isCanShow() {
