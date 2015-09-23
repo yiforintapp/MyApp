@@ -557,8 +557,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_act",
                         "adv_shws_alNA");
                 findViewById(R.id.rl_ADdialog_nodata).setVisibility(View.VISIBLE);
-                
-                findViewById(R.id.btn_rollagain).setOnClickListener(new OnClickListener() {
+                Button rag = (Button) findViewById(R.id.btn_rollagain);
+                rag.setAllCaps(false);
+                rag.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
 //                        Intent intent = new Intent(UFOActivity.this, UFOActivity.class);
