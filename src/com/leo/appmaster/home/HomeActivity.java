@@ -858,7 +858,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             case R.id.iv_ad_icon:
                 AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
                         System.currentTimeMillis());
-                LockManager.getInstatnce().timeFilterSelf();
+//                LockManager.getInstatnce().timeFilterSelf();
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_cli", "adv_cnts_homeAppWall");
                 Intent mWallIntent = mWallAd.getWallIntent();
                 startActivity(mWallIntent);
