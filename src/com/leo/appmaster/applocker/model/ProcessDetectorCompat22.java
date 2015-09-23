@@ -14,6 +14,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.utils.IoUtils;
 
 public class ProcessDetectorCompat22 extends ProcessDetector {
     private static final String TAG = "ProcessDetectorCompat22"; 
@@ -142,21 +143,7 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
         
         return null;
     }
-    
-    private boolean isOOMScoreAdjModified(ProcessAdj adj) {
-        String path = "/proc/" + adj.pid + File.separator + "oom_adj";
-        File file = new File(path);
-        
-        if (!file.exists()) return false;
-        
-        long lastModify = file.lastModified();
-        
-        long current = System.currentTimeMillis();
-        
-        // 差值小于2秒
-        return Math.abs(current - lastModify) < 1000;
-    }
-    
+
     public static int getOomScore(int pid) {
         String path = "/proc/" + pid + File.separator + OOM_SCORE;
         
@@ -177,8 +164,8 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
         } catch (Exception e) {
             LeoLog.e(TAG, "getAdjByProcessPath ex path: " + path  + " | " + e.getMessage());
         } finally {
-            close(baos);
-            close(fis);
+            IoUtils.closeSilently(baos);
+            IoUtils.closeSilently(fis);
         }
         return PERMISSION_DENY;
     }

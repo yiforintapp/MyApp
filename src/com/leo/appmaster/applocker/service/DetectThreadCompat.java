@@ -21,6 +21,7 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
+import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -73,14 +74,23 @@ public class DetectThreadCompat extends Thread {
         ProcessAdj lastProcessAdj = null;
         int doubleCheckCount = 0;
         int notFoundAppCount = 0;
+
+        ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
+        ProcessDetector detector = null;
         while (true && !isInterrupted()) {
             if (mDetector == null || !mDetector.ready()) continue;
-            
+
+            if (usageStats.checkAvailable()) {
+                detector = usageStats;
+            } else {
+                detector = mDetector;
+            }
             lastProcessAdj = mForegroundAdj;
             
-            if (lastProcessAdj != null && !mDetector.isOOMScoreMode() &&
-                    !mDetector.isHomePackage(lastProcessAdj)) {
-                int scoreAdj = mDetector.getOomScoreAdj(lastProcessAdj.pid); 
+            if (lastProcessAdj != null && lastProcessAdj.pid > 0
+                    && !detector.isOOMScoreMode()
+                    && !detector.isHomePackage(lastProcessAdj)) {
+                int scoreAdj = detector.getOomScoreAdj(lastProcessAdj.pid);
                 if (scoreAdj == lastProcessAdj.oomAdj && scoreAdj == 0) {
                     if (!parseAdjAndDeliver(lastProcessAdj)) continue;
 
@@ -100,7 +110,7 @@ public class DetectThreadCompat extends Thread {
             }
 
             // 加锁app列表里是否包含oom_adj为0的app
-            ProcessAdj needToListenAdj = findNeedToLockAndListenApp();
+            ProcessAdj needToListenAdj = findNeedToLockAndListenApp(detector);
             mForegroundAdj = needToListenAdj;
             
             if (needToListenAdj != null) {
@@ -109,32 +119,36 @@ public class DetectThreadCompat extends Thread {
                 if (DBG) {
                     LeoLog.i(TAG, needToListenAdj.pkg);
                 }
-                
-                AdjFileObserver observer = createAdjFileObserver(needToListenAdj);
-                if (observer == null) continue;
 
-                mAdjObserver = observer;
-                if (!needToListenAdj.equals(lastProcessAdj)) {
-                    if (DBG) {
-                        LeoLog.i(TAG, "neet to stop and restart watching.");
-                    }
-                    if (!parseAdjAndDeliver(needToListenAdj)) continue;
+                int timeout = detector.getTimeoutMs(needToListenAdj);
+                if (needToListenAdj.pid > 0) {
+                    AdjFileObserver observer = createAdjFileObserver(needToListenAdj);
+                    if (observer == null) continue;
 
-                    doubleCheckCount = 0;
-                    if (mAdjObserver != null) {
-                        mAdjObserver.stopWatching();
+                    mAdjObserver = observer;
+                    if (!needToListenAdj.equals(lastProcessAdj)) {
+                        if (DBG) {
+                            LeoLog.i(TAG, "neet to stop and restart watching.");
+                        }
+
+                        doubleCheckCount = 0;
+                        if (mAdjObserver != null) {
+                            mAdjObserver.stopWatching();
+                        }
+                        mAdjObserver.startWatching();
+                    } else {
+                        if (DBG) {
+                            LeoLog.i(TAG, "keeping watching.");
+                        }
+                        mAdjObserver.startWatching();
+                        doubleCheckCount++;
                     }
-                    mAdjObserver.startWatching();
-                } else {
-                    if (DBG) {
-                        LeoLog.i(TAG, "keeping watching.");
-                    }
-                    mAdjObserver.startWatching();
-                    doubleCheckCount++;
+
+                    boolean needDoubleCheck = mFoundLockApp && (doubleCheckCount < MAX_DOUBLE_CHECK_COUNT);
+                    timeout = needDoubleCheck ? WAIT_DOUBLE_CHECK_TIMEOUT : timeout;
                 }
-                
-                boolean needDoubleCheck = mFoundLockApp && (doubleCheckCount < MAX_DOUBLE_CHECK_COUNT);
-                int timeout = needDoubleCheck ? WAIT_DOUBLE_CHECK_TIMEOUT : mDetector.getTimeoutMs(needToListenAdj);
+                if (!parseAdjAndDeliver(needToListenAdj)) continue;
+
                 if (timeout <= 0) continue;
                 // 如果当前是加锁app，wait时间修改为200ms，以解决部分进程创建慢，比锁页面晚出来的问题
                 synchronized (this) {
@@ -229,13 +243,13 @@ public class DetectThreadCompat extends Thread {
         return true;
     }
     
-    private ProcessAdj findNeedToLockAndListenApp() {
+    private ProcessAdj findNeedToLockAndListenApp(ProcessDetector detector) {
         mFoundLockApp = false;
         List<ProcessAdj> filteredLockList = new ArrayList<ProcessAdj>();
         
         List<String> lockList = LockManager.getInstatnce().getCurLockList();
         // oom_adj为0的列表
-        ProcessAdj needToListenAdj = mDetector.getForegroundProcess();
+        ProcessAdj needToListenAdj = detector.getForegroundProcess();
 
         needToListenAdj = checkSelfForeground(needToListenAdj);
         if (needToListenAdj == null) return null;

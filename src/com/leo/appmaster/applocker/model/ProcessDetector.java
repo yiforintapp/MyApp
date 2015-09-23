@@ -23,6 +23,7 @@ import android.text.TextUtils;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.imageloader.utils.IoUtils;
 import com.tendcloud.tenddata.ad;
 
 public class ProcessDetector {
@@ -108,9 +109,9 @@ public class ProcessDetector {
         } catch (Exception e) {
             LeoLog.e(TAG, "getForegroundProcess ex  " + e.getMessage());
         } finally {
-            close(br);
-            close(is);
-            
+            IoUtils.closeSilently(br);
+            IoUtils.closeSilently(is);
+
             if (p != null) {
                 p.destroy();
             }
@@ -155,9 +156,9 @@ public class ProcessDetector {
         } catch (Exception e) {
             LeoLog.e(TAG, "getForegroundProcess ex  " + e.getMessage(), e);
         } finally {
-            close(br);
-            close(is);
-            
+            IoUtils.closeSilently(br);
+            IoUtils.closeSilently(is);
+
             if (p != null) {
                 p.destroy();
             }
@@ -345,8 +346,8 @@ public class ProcessDetector {
         } catch (Exception e) {
             LeoLog.e(TAG, "getAdjByProcessPath ex path: " + path  + " | " + e.getMessage());
         } finally {
-            close(baos);
-            close(fis);
+            IoUtils.closeSilently(baos);
+            IoUtils.closeSilently(fis);
         }
         return PERMISSION_DENY;
     }
@@ -364,16 +365,14 @@ public class ProcessDetector {
         
         return cmdline.endsWith("zygote");
     }
-    
-    protected static void close(Closeable stream ){
-        if (stream == null) {
-            return ;
-        }
-        try {
-            stream.close();
-        } catch (Exception e) {
-        }
-        
+
+    /**
+     * Usage是否可用
+     * @return
+     */
+    public static boolean isUsageAvailable() {
+        ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
+        return usageStats.checkAvailable();
     }
     
     private static interface ProcessFilter {

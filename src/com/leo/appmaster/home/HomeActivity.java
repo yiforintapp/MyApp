@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.IGeocodeProvider;
+import android.media.Image;
 import android.net.Uri;
 import android.net.wifi.WifiConfiguration.Visibility;
 import android.os.Build;
@@ -30,6 +31,7 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -72,6 +74,7 @@ import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
+import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -167,6 +170,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private AdvanceProtectTipDialog mAdvanceProtectDialog;
     public static int mHomeAdSwitchOpen = -1;
     private boolean isCanShow = false;
+
+    private ImageView mLogoIv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -433,6 +438,17 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // }
 
         mUnreadCountTv = (TextView) findViewById(R.id.home_mc_unread_tv);
+        mLogoIv = (ImageView) findViewById(R.id.iv_logo);
+        mLogoIv.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
+                if (!usageStats.checkAvailable()) {
+                    Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    startActivity(intent);
+                }
+            }
+        });
     }
 
     // public void setEnterPrivacySuggest(boolean value) {

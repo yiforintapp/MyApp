@@ -32,6 +32,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetector;
+import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -596,6 +597,11 @@ public class AppLockListActivity extends BaseActivity implements
         listItems.add(mSortType[DEFAULT_SORT]);
         listItems.add(mSortType[NAME_SORT]);
         listItems.add(mSortType[INSTALL_TIME_SORT]);
+
+        ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
+        if (!usageStats.checkAvailable()) {
+            listItems.add("开启权限");
+        }
         return listItems;
     }
 
