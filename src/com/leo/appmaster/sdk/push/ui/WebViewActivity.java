@@ -51,7 +51,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private MyWebChromeClient myWebChromeClient;
     private View mPlayView;
     private boolean mIsFromSplash;
-    private boolean mIsFromMsgCenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,8 +64,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                 mIsFromSplash = true;
             }
         }
-        mIsFromMsgCenter = intent.getBooleanExtra(MSGCENTER_TO_WEBVIEW, false);
-
         if (TextUtils.isEmpty(mURL)) {
             Log.i(TAG, "URL为空");
             finish();
@@ -357,14 +354,11 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     /* 进入主页 */
     private void startHome() {
         Log.i(TAG, "是否来自闪屏：" + mIsFromSplash);
-        if (mIsFromSplash || !mIsFromMsgCenter) {
+        if (mIsFromSplash) {
             AppMasterPreference amp = AppMasterPreference.getInstance(this);
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                if (!mIsFromMsgCenter) {
-                    intent.addFlags(intent.FLAG_ACTIVITY_CLEAR_TASK);
-                }
                 startActivity(intent);
                 finish();
                 TaskDetectService tds = TaskDetectService.getService();

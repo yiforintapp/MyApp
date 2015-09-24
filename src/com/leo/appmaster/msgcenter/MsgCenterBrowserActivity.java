@@ -155,7 +155,6 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoJump_cnts", "act_" + mTitle);
                 String paramsUrl = uri.getQueryParameter(PARAMS_URL);
                 Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra(WebViewActivity.MSGCENTER_TO_WEBVIEW, true);
                 intent.putExtra(WebViewActivity.WEB_URL, paramsUrl);
                 startActivity(intent);
 
