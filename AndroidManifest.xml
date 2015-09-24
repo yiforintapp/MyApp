@@ -554,11 +554,12 @@
         </activity>
         <activity
             android:name=".sdk.push.ui.WebViewActivity"
+            android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleTask"
-            android:taskAffinity="com.leo.appmaster.home"
             android:hardwareAccelerated="true"
+            android:launchMode="singleInstance"
+            android:noHistory="false"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
@@ -718,7 +719,7 @@
         <meta-data
             android:name="BaiduMobAd_STAT_ID"
             android:value="88ce739ea6" /> <!-- debug key -->
-        <!-- meta-data android:name="BaiduMobAd_STAT_ID" android:value="1004e462a2" / -->
+<!--         <meta-data android:name="BaiduMobAd_STAT_ID" android:value="1004e462a2" />-->
         <!-- release key -->
         <!-- 渠道商编号 -->
         <meta-data

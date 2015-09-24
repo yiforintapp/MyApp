@@ -26,7 +26,7 @@ public class AppMasterConfig {
 //	/*-----     Release configurations   ------*/
 //	public static final boolean LOGGABLE = false;
 //
-///* change this to Log.ERROR when release */
+/* change this to Log.ERROR when release */
 //	public static final int SDK_LOG_LEVEL = Log.ERROR;
 //	/*
 //	 * RECOMMEND URL

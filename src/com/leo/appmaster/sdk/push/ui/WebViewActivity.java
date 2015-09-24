@@ -38,6 +38,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     private static final String TAG = "WebViewActivity";
     public static final String SPLASH_TO_WEBVIEW = "splash_to_webview";
+    public static final String MSGCENTER_TO_WEBVIEW = "msgcenter_to_webview";
     private WebView mWebView;
     private TextView mTitleView;
     private ImageView mCloseView, mBackView, mNextView, mFlushView;

@@ -380,9 +380,28 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    public void onEvent(MsgCenterEvent event) {
+    public void onEvent(final MsgCenterEvent event) {
         // 设置消息中心未读计数
-        setMsgCenterUnread();
+        if (event.getEventId() != MsgCenterEvent.ID_MSG)
+            return;
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                int count = event.count;
+                String unreadCountStr = count + "";
+                if (count > 99) {
+                    unreadCountStr = "99+";
+                }
+
+                if (count <= 0) {
+                    mUnreadCountTv.setVisibility(View.GONE);
+                } else {
+                    mUnreadCountTv.setVisibility(View.VISIBLE);
+                    mUnreadCountTv.setText(unreadCountStr);
+                }
+            }
+        });
         LeoLog.i(TAG, "onEvent, event: " + event);
     }
 
@@ -458,9 +477,11 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public void setAdIconVisible() {
         if (mAdIcon != null) {
             mAdIcon.setVisibility(View.VISIBLE);
-            mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
-            adAnimation = (AnimationDrawable) mAdIcon.getBackground();
-            adAnimation.start();
+            if(Build.VERSION.SDK_INT > 15) {
+                mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
+                adAnimation = (AnimationDrawable) mAdIcon.getBackground();
+                adAnimation.start();
+            }
         }
     }
 
@@ -602,8 +623,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
 
         ProcessDetectorCompat22.setForegroundScore();
-        // 设置消息中心未读计数
-        setMsgCenterUnread();
+        if (!BuildProperties.isZTEAndApiLevel14()) {
+            // 设置消息中心未读计数
+            setMsgCenterUnread();
+        }
         /* 判断是否打开高级保护，显示“卸载”项 */
         addUninstallPgTOMenueItem();
     }
@@ -621,26 +644,30 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     public void shouldShowAd() {
+        mHandler.postDelayed((new Runnable() {         
+            @Override
+            public void run() {
+                // 默认是开，记得改回默认是关
+                if (mHomeAdSwitchOpen == -1) {
+                    LeoLog.d("testHomeAd", "获取主页广告开关");
+                    mHomeAdSwitchOpen = AppMasterPreference.getInstance(HomeActivity.this)
+                            .getIsADAtAppLockFragmentOpen();
+                }
+                LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
+                if (isTimetoShow()
+                        // && !isEnterPrivacySuggest
+                        && mHomeAdSwitchOpen == 1) {
+                    SDKWrapper
+                            .addEvent(HomeActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
+                      setAdIconVisible();
+                    isCanShow = true;
+                } else {
+                    setAdIconInVisible();
+                    isCanShow = false;
+                }
+            }
+        }), 1000);
 
-        // 默认是开，记得改回默认是关
-        if (mHomeAdSwitchOpen == -1) {
-            LeoLog.d("testHomeAd", "获取主页广告开关");
-            mHomeAdSwitchOpen = AppMasterPreference.getInstance(this)
-                    .getIsADAtAppLockFragmentOpen();
-        }
-        LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
-
-        if (isTimetoShow()
-                // && !isEnterPrivacySuggest
-                && mHomeAdSwitchOpen == 1) {
-            SDKWrapper
-                    .addEvent(this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
-            setAdIconVisible();
-            isCanShow = true;
-        } else {
-            setAdIconInVisible();
-            isCanShow = false;
-        }
     }
 
     public boolean isCanShow() {
@@ -847,7 +874,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             case R.id.iv_ad_icon:
                 AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
                         System.currentTimeMillis());
-                LockManager.getInstatnce().timeFilterSelf();
+//                LockManager.getInstatnce().timeFilterSelf();
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_cli", "adv_cnts_homeAppWall");
                 Intent mWallIntent = mWallAd.getWallIntent();
                 startActivity(mWallIntent);

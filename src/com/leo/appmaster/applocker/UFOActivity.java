@@ -242,13 +242,16 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
     
     private void initButton(){
-        mBtnUseTheme = (Button) findViewById(R.id.btn_usetheme);
+//        mBtnUseTheme = (Button) findViewById(R.id.btn_usetheme);
+        mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_down));
+//        mBtnUseTheme.setText("asdfasdfa");
+        mBtnUseTheme.setAllCaps(false);
         List<String> mHideThemes;
         mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
-        if(mHideThemes.contains(mChosenTheme.packageName))
-        {
-            mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_use));
-        }
+//        if(mHideThemes.contains(mChosenTheme.packageName))
+//        {
+//            mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_use));
+//        }
         mBtnUseTheme.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -379,7 +382,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
         mWindowW = wm.getDefaultDisplay().getWidth();
         mWindowH = wm.getDefaultDisplay().getHeight();
         mBtnUseTheme = (Button) findViewById(R.id.btn_usetheme);
-        
+        mBtnUseTheme.setText(UFOActivity.this.getResources().getString(R.string.ufo_theme_down));
     }
 
     @Override
@@ -534,7 +537,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             }
         }.start();
     }
-
+    
     protected void onNothingToShow() {
         float sx = mWholeUFO.getX();
         
@@ -554,7 +557,9 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_act",
                         "adv_shws_alNA");
                 findViewById(R.id.rl_ADdialog_nodata).setVisibility(View.VISIBLE);
-                findViewById(R.id.btn_rollagain).setOnClickListener(new OnClickListener() {
+                Button rag = (Button) findViewById(R.id.btn_rollagain);
+                rag.setAllCaps(false);
+                rag.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
 //                        Intent intent = new Intent(UFOActivity.this, UFOActivity.class);

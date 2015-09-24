@@ -9,6 +9,7 @@ import java.util.TimerTask;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.RejectedExecutionHandler;
@@ -56,10 +57,10 @@ public class ThreadManager {
     /**
      * 异步线程池核心线程个数
      */
-    private static final int ASYNCTASK_CORE_SIZE = 4;
+    private static final int ASYNCTASK_CORE_SIZE = 2;
 
-    private static final int MAX_ASYNC_SIZE = 128;
-    private static final int MAX_NETWORK_SIZE = 32;
+    private static final int MAX_ASYNC_SIZE = 6;
+    private static final int MAX_NETWORK_SIZE = 4;
 
     /**
      * AsyncTask的默认Executor，负责长时间网络请求，2个线程

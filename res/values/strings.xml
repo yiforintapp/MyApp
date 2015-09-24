@@ -75,7 +75,7 @@
     <string name="passwd_hint_tip">Password Prompt: </string>
     <string name="set_protect_or_not">Security Question</string>
     <string name="set_protect_message">Create a security question in case you forgot your password. Continue?</string>
-    <string name="find_gesture">Forget passwd</string>
+    <string name="find_gesture">Forget password</string>
     <string name="pp_success">Password set successfully</string>
     <string name="passwd_setting">Password Settings</string>
     <string name="set_success">Set successfully</string>

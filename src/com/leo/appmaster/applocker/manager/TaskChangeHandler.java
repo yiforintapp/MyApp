@@ -140,7 +140,7 @@ public class TaskChangeHandler {
                         || (isCurrentSelf
                                 && (activity.contains(DESKPROXYNAME)
                                         || activity.contains(DESKAD)
-                                        || activity.contains(APPWALL)
+//                                        || activity.contains(APPWALL)
                                         || activity.contains(LAUNCHERBOOST)
                                         || activity.contains(SPLASHNAME)
                                         || activity.contains(GESTURE)
@@ -161,7 +161,7 @@ public class TaskChangeHandler {
                         || (isCurrentSelf
                                 && (activity.contains(DESKPROXYNAME)
                                         || activity.contains(DESKAD)
-                                        || activity.contains(APPWALL)
+//                                        || activity.contains(APPWALL)
                                         || activity.contains(LAUNCHERBOOST)
                                         || activity.contains(SPLASHNAME)
                                         || activity.contains(GESTURE)
