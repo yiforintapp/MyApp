@@ -1,4 +1,3 @@
-
 package com.leo.appmaster;
 
 import java.lang.ref.WeakReference;
@@ -15,6 +14,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.os.UserManager;
 
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -63,6 +63,7 @@ public class AppMasterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        sAppCreate = SystemClock.elapsedRealtime();
         if (sInstance != null)
             return;
 
@@ -199,7 +200,10 @@ public class AppMasterApplication extends Application {
         }
 
     }
+    private Thread mUiThread;
     
+    public static boolean sCheckStartTs = true;
+    public static long sAppCreate;
     /**
      * 添加resumed过的Activity
      * @param activity

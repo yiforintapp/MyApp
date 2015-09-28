@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.home;
 
 import java.io.File;
@@ -23,6 +22,7 @@ import android.graphics.drawable.NinePatchDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.SystemClock;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -93,10 +93,15 @@ public class SplashActivity extends BaseActivity {
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
     private static final boolean DBG = false;
 
+    private long mOnCreateTs;
+    private boolean mChenckTs;
+
     /* Guide page stuff end */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mChenckTs = true;
+        mOnCreateTs = SystemClock.elapsedRealtime();
         LeoLog.d("SplashActivity", "onCreate");
         setContentView(R.layout.activity_splash_guide);
         initSplash();
@@ -295,6 +300,16 @@ public class SplashActivity extends BaseActivity {
         LockManager lm = LockManager.getInstatnce();
         lm.clearFilterList();
         super.onResume();
+
+        long currentTs = SystemClock.elapsedRealtime();
+        if (AppMasterApplication.sCheckStartTs) {
+            LeoLog.i("TsCost", "app oncreate to splash onresume, cost: " + (currentTs - AppMasterApplication.sAppCreate));
+            AppMasterApplication.sCheckStartTs = false;
+        }
+        if (mChenckTs) {
+            LeoLog.i("TsCost", "splash onCreate to onResume, cost: " + (currentTs - mOnCreateTs));
+            mChenckTs = false;
+        }
     }
 
     private void splashDelayShow() {
