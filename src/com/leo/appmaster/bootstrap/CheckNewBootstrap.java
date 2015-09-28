@@ -292,7 +292,7 @@ public class CheckNewBootstrap extends Bootstrap {
                 AppMasterPreference pref = AppMasterPreference.getInstance(application);
                 long curTime = System.currentTimeMillis();
                 long lastUBC = pref.getLastUBCTime();
-                if (Math.abs(curTime - lastUBC) > AppMasterConfig.TIME_12_HOUR) {
+                if (Math.abs(curTime - lastUBC) > AppMasterConfig.TIME_6_HOUR) {
                     pref.setLastUBCTime(curTime);
                     if (lastUBC > 0) {
                         ThreadManager.executeOnUiThread(new Runnable() {

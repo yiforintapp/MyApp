@@ -129,7 +129,7 @@ public class ADShowTypeRequestManager {
                 try {
                     int adtype = response.getInt(AD_SHOW_TYPE);
                     LeoLog.e("poha", "请求成功，广告展示形式是：" + adtype);
-                    if (adtype != AppMasterPreference.getInstance(mContext).getADShowType()) {
+                    if (adtype != sp.getADShowType()) {
                         if (adtype == 1) {
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_banner");
                         }
@@ -143,18 +143,16 @@ public class ADShowTypeRequestManager {
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
                         }
                     }
-                    AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
-
-                    amp.setADShowType(adtype);
-                    amp.setUFOAnimType((response.getInt(UFO_ANIM_TYPE)));
+                    sp.setADShowType(adtype);
+                    sp.setUFOAnimType((response.getInt(UFO_ANIM_TYPE)));
                     LeoLog.e("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
-                    amp.setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));
+                    sp.setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));
                     LeoLog.e("poha",
                             "请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
-                    if (response.getInt(AD_AFTER_ACCELERATING) != amp
+                    if (response.getInt(AD_AFTER_ACCELERATING) != sp
                             .getADChanceAfterAccelerating()) {
-                        amp.setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
-                        if (amp.getADChanceAfterAccelerating() == 1) {
+                        sp.setADChanceAfterAccelerating((response.getInt(AD_AFTER_ACCELERATING)));
+                        if (sp.getADChanceAfterAccelerating() == 1) {
                             SDKWrapper
                                     .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_toast_on");
                         } else {
@@ -165,7 +163,7 @@ public class ADShowTypeRequestManager {
 
                     LeoLog.e("poha", "请求成功，加速后出现广告：" + response.getInt(AD_AFTER_ACCELERATING));
                     // 隐私防护
-                    int lastPrivacyType = amp.getIsADAfterPrivacyProtectionOpen();
+                    int lastPrivacyType = sp.getIsADAfterPrivacyProtectionOpen();
                     int nowPrivacyType = response.getInt(AD_AFTER_PRIVACY_PROTECTION);
                     if (lastPrivacyType != nowPrivacyType) {
                         if (nowPrivacyType == 1) {
@@ -176,16 +174,16 @@ public class ADShowTypeRequestManager {
                                     .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_privacy_off");
                         }
                     }
-                    amp.setIsADAfterPrivacyProtectionOpen(nowPrivacyType);
+                    sp.setIsADAfterPrivacyProtectionOpen(nowPrivacyType);
                     HomePravicyFragment.mPrivicyAdSwitchOpen = nowPrivacyType;
                     LeoLog.e("poha",
                             "请求成功，隐私保护后出现广告的开关：" + nowPrivacyType);
                     // 主页ad
-                    amp.setIsADAtAppLockFragmentOpen((response.getInt(AD_AT_APPLOCK_FRAGMENT)));
+                    sp.setIsADAtAppLockFragmentOpen((response.getInt(AD_AT_APPLOCK_FRAGMENT)));
                     HomeActivity.mHomeAdSwitchOpen = response.getInt(AD_AT_APPLOCK_FRAGMENT);
                     LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
                     // 主题
-                    int lastThemeType = amp.getIsADAtLockThemeOpen();
+                    int lastThemeType = sp.getIsADAtLockThemeOpen();
                     int nowThemeType = response.getInt(AD_AT_THEME);
                     if (lastThemeType != nowThemeType) {
                         if (lastThemeType == 1) {
@@ -203,23 +201,23 @@ public class ADShowTypeRequestManager {
                                     .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_off");
                         }
                     }
-                    amp.setIsADAtLockThemeOpen(nowThemeType);
+                    sp.setIsADAtLockThemeOpen(nowThemeType);
                     LockerTheme.mThemeAdSwitchOpen = nowThemeType;
                     LeoLog.e("poha", "请求成功，主题界面出现广告：" + nowThemeType);
 
-                    amp.setIsGiftBoxNeedUpdate((response.getInt(GIFTBOX_UPDATE)));
+                    sp.setIsGiftBoxNeedUpdate((response.getInt(GIFTBOX_UPDATE)));
                     if (mIsPushRequestADShowType && response.getInt(GIFTBOX_UPDATE) == 1) {
                         AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
                         mIsPushRequestADShowType = false;
                     }
                     LeoLog.e("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
-                    amp.setVersionUpdateTipsAfterUnlockOpen((response
+                    sp.setVersionUpdateTipsAfterUnlockOpen((response
                             .getInt(VERSION_UPDATE_AFTER_UNLOCK)));
                     LeoLog.e("poha",
                             "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));
-                    amp.setIsAppStatisticsOpen((response.getInt(APP_STATISTICS)));
+                    sp.setIsAppStatisticsOpen((response.getInt(APP_STATISTICS)));
                     LeoLog.e("poha", "请求成功，应用统计的开关：" + response.getInt(APP_STATISTICS));
-                    amp.setIsWifiStatistics((response.getInt(WIFI_STATISTICAL)));
+                    sp.setIsWifiStatistics((response.getInt(WIFI_STATISTICAL)));
                     LeoLog.e("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
                     //
                     // AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating(
