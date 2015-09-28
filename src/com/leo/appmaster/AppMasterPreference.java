@@ -3,7 +3,9 @@ package com.leo.appmaster;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.Executor;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -369,7 +371,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private String mSplashSkipMode = null;
     private String mSplashSkipUrl = null;
 
+    private Executor mSerialExecutor;
+    private HashMap<String, Object> mValues;
+
     private AppMasterPreference(Context context) {
+        mSerialExecutor = ThreadManager.newSerialExecutor();
+
+        mValues = new HashMap<String, Object>();
         Context ctx = context.getApplicationContext();
         mPref = PreferenceManager.getDefaultSharedPreferences(ctx);
         mPref.registerOnSharedPreferenceChangeListener(this);
@@ -386,11 +394,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setUseThemeGuide(boolean flag) {
-        mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_USE_LOCK_THEME_GUIDE, flag));
     }
 
     public void setLastFilterSelfTime(long time) {
-        mPref.edit().putLong(PREF_LAST_FILTER_SELF_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_FILTER_SELF_TIME, time));
     }
 
     public long getLastFilterSelfTime() {
@@ -444,7 +452,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             }
         }
         if (editor != null) {
-            editor.apply();
+            commitAsync(editor);
         }
     }
 
@@ -495,12 +503,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             }
         }
         if (editor != null) {
-            editor.apply();
+            commitAsync(editor);
         }
 
         if (mCurrentThemeStrategy != currentStrategy) {
             mCurrentThemeStrategy = currentStrategy;
-            mPref.edit().putLong(PREF_CURRENT_THEME_STRATEGY, currentStrategy).apply();
+            commitAsync(mPref.edit().putLong(PREF_CURRENT_THEME_STRATEGY, currentStrategy));
         }
     }
 
@@ -513,7 +521,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setThemeLastShowTime(long lastShowTime) {
         mLastShowTime = lastShowTime;
-        mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime).apply();
+        commitAsync(mPref.edit().putLong(PREF_SHOW_TIP_KEY, lastShowTime));
     }
 
     public long getHotAppLastShowTime() {
@@ -525,7 +533,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setHotAppLastShowTime(long lastShowTime) {
         mLastShowTime = lastShowTime;
-        mPref.edit().putLong(PREF_SHOW_TIP_HOT_APP_KEY, lastShowTime).apply();
+        commitAsync(mPref.edit().putLong(PREF_SHOW_TIP_HOT_APP_KEY, lastShowTime));
     }
 
     public long getLastUBCTime() {
@@ -537,7 +545,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLastUBCTime(long time) {
         mLastUBCTime = time;
-        mPref.edit().putLong(PREF_LAST_UBC, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_UBC, time));
     }
 
     public boolean getMessageRedTip() {
@@ -545,7 +553,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setMessageRedTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, flag));
     }
 
     public boolean getIsFromLockList()
@@ -555,7 +563,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setIsFromLockList(boolean flag)
     {
-        mPref.edit().putBoolean(PREF_FROM_LOCKLIST, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_FROM_LOCKLIST, flag));
     }
 
     public boolean getIsHomeToLockList()
@@ -565,7 +573,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setIsHomeToLockList(boolean flag)
     {
-        mPref.edit().putBoolean(PREF_HOME_TO_LOCKLIST, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_HOME_TO_LOCKLIST, flag));
     }
 
     public boolean getIsNeedDisguiseTip()
@@ -575,7 +583,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setIsNeedDisguiseTip(boolean flag)
     {
-        mPref.edit().putBoolean(PREF_NEED_DISGUISE_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_NEED_DISGUISE_TIP, flag));
     }
 
     // phtd
@@ -586,7 +594,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setIsWhiteDotResponsing(boolean flag)
     {
-        mPref.edit().putBoolean(PREF_WHITE_DOT_RESPONSING, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_WHITE_DOT_RESPONSING, flag));
     }
 
     public boolean getIsClockToLockList()
@@ -596,7 +604,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setIsClockToLockList(boolean flag)
     {
-        mPref.edit().putBoolean(PREF_CLOCK_TO_LOCKLIST, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_CLOCK_TO_LOCKLIST, flag));
     }
 
     public boolean getCallLogRedTip() {
@@ -604,7 +612,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setCallLogRedTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, flag));
     }
 
     public boolean getIsNeedCloseBeauty() {
@@ -612,7 +620,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsNeedCloseBeauty(boolean flag) {
-        mPref.edit().putBoolean(PREF_NEED_CLOSE_BEAUTY, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_NEED_CLOSE_BEAUTY, flag));
     }
 
     public boolean getIsDeterminCloseBeautyFirstly() {
@@ -620,7 +628,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsDeterminCloseBeautyFirstly(boolean flag) {
-        mPref.edit().putBoolean(PREF_DETERMIN_CLOSE_BEAUTY, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_DETERMIN_CLOSE_BEAUTY, flag));
     }
 
     public boolean getHomeFragmentRedTip() {
@@ -628,7 +636,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setHomeFragmentRedTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_APP_HOME_APP_FRAGMENT_RED_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_APP_HOME_APP_FRAGMENT_RED_TIP, flag));
     }
 
     public boolean getHotAppActivityRedTip() {
@@ -636,7 +644,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setHotAppActivityRedTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_APP_HOT_APP_ACTIVITY_RED_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_APP_HOT_APP_ACTIVITY_RED_TIP, flag));
     }
 
     public boolean getLockerScreenThemeGuid() {
@@ -644,7 +652,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLockerScreenThemeGuide(boolean flag) {
-        mPref.edit().putBoolean(PREF_THEME_LOCK_GUIDE, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_THEME_LOCK_GUIDE, flag));
     }
 
     public boolean getHomeBusinessTipClick() {
@@ -656,7 +664,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setFirstUseLockMode(boolean firstUse) {
-        mPref.edit().putBoolean(PREF_FIRST_USE_LOCK_MODE, firstUse).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_FIRST_USE_LOCK_MODE, firstUse));
     }
 
     public boolean getHomeLocked() {
@@ -668,7 +676,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setHomeBusinessTipClick(boolean flag) {
-        mPref.edit().putBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_HOME_BUSINESS_NEW_TIP_CLICK, flag));
     }
 
     public List<String> getRecommentTipList() {
@@ -694,11 +702,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         // // AppMasterApplication.getInstance().startService(serviceIntent);
         // LockManager.getInstatnce().startLockService();
         // }
-        mPref.edit().putString(PREF_RECOMMENT_TIP_LIST, combined).apply();
+        commitAsync(mPref.edit().putString(PREF_RECOMMENT_TIP_LIST, combined));
     }
 
     public void setHaveEverAppLoaded(boolean loaded) {
-        mPref.edit().putBoolean(PREF_HAVE_EVER_LOAD_APPS, loaded).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_HAVE_EVER_LOAD_APPS, loaded));
     }
 
     public boolean haveEverAppLoaded() {
@@ -714,7 +722,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setOnlineThemeSerialNumber(String serial) {
         mOnlineThemeSerial = serial;
-        mPref.edit().putString(PREF_ONLINE_THEME_SERIAL, serial).apply();
+        commitAsync(mPref.edit().putString(PREF_ONLINE_THEME_SERIAL, serial));
     }
 
     public boolean getLaunchOtherApp() {
@@ -734,7 +742,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLocalThemeSerialNumber(String serial) {
         mLocalThemeSerial = serial;
-        mPref.edit().putString(PREF_LOCAL_THEME_SERIAL, serial).apply();
+        commitAsync(mPref.edit().putString(PREF_LOCAL_THEME_SERIAL, serial));
     }
 
     public long getLastCheckThemeTime() {
@@ -746,7 +754,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLastCheckThemeTime(long lastTime) {
         mLastCheckThemeTime = lastTime;
-        mPref.edit().putLong(PREF_LAST_CHECK_NEW_THEME, lastTime).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_CHECK_NEW_THEME, lastTime));
     }
 
     public long getLastSyncBusinessTime() {
@@ -758,7 +766,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLastSyncBusinessTime(long lastTime) {
         mLastSyncBusinessTime = lastTime;
-        mPref.edit().putLong(PREF_LAST_SYNC_BUSINESS_TIME, lastTime).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_SYNC_BUSINESS_TIME, lastTime));
     }
 
     public long getLastCheckBusinessTime() {
@@ -770,8 +778,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLastCheckBusinessTime(long lastTime) {
         mLastCheckBusinessTime = lastTime;
-        mPref.edit().putLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, lastTime)
-                .apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_CHECK_NEW_BUSINESS_APP_TIME, lastTime)
+                );
     }
 
     public String getOnlineBusinessSerialNumber() {
@@ -783,7 +791,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setOnlineBusinessSerialNumber(String serial) {
         mOnlineBusinessSerial = serial;
-        mPref.edit().putString(PREF_ONLINE_BUSINESS_SERIAL, serial).apply();
+        commitAsync(mPref.edit().putString(PREF_ONLINE_BUSINESS_SERIAL, serial));
     }
 
     public String getLocalBusinessSerialNumber() {
@@ -795,7 +803,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLocalBusinessSerialNumber(String serial) {
         mLocalBusinessSerial = serial;
-        mPref.edit().putString(PREF_LOCAL_BUSINESS_SERIAL, serial).apply();
+        commitAsync(mPref.edit().putString(PREF_LOCAL_BUSINESS_SERIAL, serial));
     }
 
     public void setHideThemeList(List<String> themeList) {
@@ -804,7 +812,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         for (String string : mHideThemeList) {
             combined = combined + string + ";";
         }
-        mPref.edit().putString(PREF_HIDE_THEME_PKGS, combined).apply();
+        commitAsync(mPref.edit().putString(PREF_HIDE_THEME_PKGS, combined));
     }
 
     public List<String> getHideThemeList() {
@@ -812,7 +820,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setGoogleTipShowed(boolean show) {
-        mPref.edit().putBoolean(PREF_GUIDE_TIP_SHOW, show).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_GUIDE_TIP_SHOW, show));
     }
 
     public boolean getGoogleTipShowed() {
@@ -821,7 +829,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setUnlockCount(long count) {
         mUnlockCount = count;
-        mPref.edit().putLong(PREF_UNLOCK_COUNT, count).apply();
+        commitAsync(mPref.edit().putLong(PREF_UNLOCK_COUNT, count));
     }
 
     public long getUnlockCount() {
@@ -834,7 +842,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // TODO
     public void setNewUserUnlockCount(long count) {
         mNewUserUnlockCount = count;
-        mPref.edit().putLong(PREF_NEW_USER_UNLOCK_COUNT, count).apply();
+        commitAsync(mPref.edit().putLong(PREF_NEW_USER_UNLOCK_COUNT, count));
     }
 
     public long getNewUserUnlockCount() {
@@ -845,7 +853,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setRecommendLockPercent(float percent) {
-        mPref.edit().putFloat(PREF_RECOMMEND_LOCK_PERCENT, percent).apply();
+        commitAsync(mPref.edit().putFloat(PREF_RECOMMEND_LOCK_PERCENT, percent));
     }
 
     public float getRecommendLockPercent() {
@@ -853,7 +861,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setReminded(boolean reminded) {
-        mPref.edit().putBoolean(PREF_LOCK_REMIND, reminded).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_LOCK_REMIND, reminded));
     }
 
     public boolean isReminded() {
@@ -861,7 +869,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastVersion(String lastVersion) {
-        mPref.edit().putString(PREF_LAST_VERSION, lastVersion).apply();
+        commitAsync(mPref.edit().putString(PREF_LAST_VERSION, lastVersion));
     }
 
     public String getLastVersion() {
@@ -869,7 +877,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastGuideVersion(int lastVersion) {
-        mPref.edit().putInt(PREF_LAST_GUIDE_VERSION, lastVersion).apply();
+        commitAsync(mPref.edit().putInt(PREF_LAST_GUIDE_VERSION, lastVersion));
     }
 
     public int getLastGuideVersion() {
@@ -877,7 +885,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastVersionInstallTime(long time) {
-        mPref.edit().putLong(PREF_LAST_VERSION_INSTALL_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_VERSION_INSTALL_TIME, time));
     }
 
     public long getLastVersionInstallTime() {
@@ -889,7 +897,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setHideLine(boolean isHide) {
-        mPref.edit().putBoolean(PREF_HIDE_LOCK_LINE, isHide).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_HIDE_LOCK_LINE, isHide));
     }
 
     public boolean getIsHideLine() {
@@ -897,7 +905,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSortType(int type) {
-        mPref.edit().putInt(PREF_SORT_TYPE, type).apply();
+        commitAsync(mPref.edit().putInt(PREF_SORT_TYPE, type));
     }
 
     public int getSortType() {
@@ -909,7 +917,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLockerUsed() {
-        mPref.edit().putBoolean(PREF_FIRST_USE_LOCKER, false).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_FIRST_USE_LOCKER, false));
     }
 
     public boolean getGuidePageFirstUse() {
@@ -917,7 +925,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setGuidePageFirstUse(boolean flag) {
-        mPref.edit().putBoolean(PREF_FIRST_USE_APP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_FIRST_USE_APP, flag));
     }
 
     public String getLockPolicy() {
@@ -926,7 +934,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLockPolicy(String policy) {
         mLockPolicy = policy;
-        mPref.edit().putString(PREF_LOCK_POLICY, policy).apply();
+        commitAsync(mPref.edit().putString(PREF_LOCK_POLICY, policy));
     }
 
     public int getRelockTimeout() {
@@ -947,7 +955,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         } catch (Exception e) {
             mRelockTimeOut = 0;
         }
-        mPref.edit().putString(PREF_RELOCK_TIME, timeout + "").apply();
+        commitAsync(mPref.edit().putString(PREF_RELOCK_TIME, timeout + ""));
     }
 
     public String getRelockStringTime() {
@@ -955,7 +963,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setUnlockAllApp(boolean flag) {
-        mPref.edit().putBoolean(PREF_UNLOCK_ALL_APP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_UNLOCK_ALL_APP, flag));
     }
 
     public boolean isUnlockAll() {
@@ -982,7 +990,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         editor.putString(PREF_PASSWORD, password);
         editor.putInt(PREF_LOCK_TYPE, LOCK_TYPE_PASSWD);
 
-        editor.apply();
+        commitAsync(editor);
         mLockType = LOCK_TYPE_PASSWD;
     }
 
@@ -996,7 +1004,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         editor.putString(PREF_GESTURE, gesture);
         editor.putInt(PREF_LOCK_TYPE, LOCK_TYPE_GESTURE);
 
-        editor.apply();
+        commitAsync(editor);
         mLockType = LOCK_TYPE_GESTURE;
 
     }
@@ -1031,7 +1039,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         for (String string : applicationList) {
             combined = combined + string + ";";
         }
-        mPref.edit().putString(PREF_RECOMMEND_LOCK_LIST, combined).apply();
+        commitAsync(mPref.edit().putString(PREF_RECOMMEND_LOCK_LIST, combined));
     }
 
     private void loadPreferences() {
@@ -1103,11 +1111,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         editor.putString(PREF_PASSWD_ANWSER, answer);
         editor.putString(PREF_PASSWD_TIP, tip);
 
-        editor.apply();
+        commitAsync(editor);
     }
 
     public void setAtuoLock(boolean autoLock) {
-        mPref.edit().putBoolean(PREF_AUTO_LOCK, autoLock).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_AUTO_LOCK, autoLock));
     }
 
     public boolean isAutoLock() {
@@ -1120,7 +1128,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setMonthGprsAll(long value) {
         mMonthGprsAll = value;
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MONTH_ALL, value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MONTH_ALL, value));
     }
 
     public long getMonthGprsAll() {
@@ -1132,7 +1140,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setItSelfTodayBase(long value) {
         mItSelfTodayBase = value;
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_TODAY_BASE, value));
     }
 
     public long getItSelfTodayBase() {
@@ -1144,7 +1152,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setMonthGprsBase(long value) {
         mMonthGprsBase = value;
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MONTH_BASE, value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MONTH_BASE, value));
     }
 
     public long getMonthGprsBase() {
@@ -1156,7 +1164,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setYearAppTraf(int value) {
         mYearAppTraf = value;
-        mPref.edit().putInt(PREF_APP_MANAGER_FLOW_YEAR_TRAF, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_MANAGER_FLOW_YEAR_TRAF, value));
     }
 
     public int getYearAppTraf() {
@@ -1168,7 +1176,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setMonthAppTraf(int value) {
         mMonthAppTraf = value;
-        mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MONTH_TRAF, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MONTH_TRAF, value));
     }
 
     public int getMonthAppTraf() {
@@ -1180,7 +1188,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setGprsSend(long value) {
         mGprsSend = value;
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_GPRS_SEND, value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW_GPRS_SEND, value));
     }
 
     public long getGprsSend() {
@@ -1192,7 +1200,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setGprsRev(long value) {
         mGprsRev = value;
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_GPRS_REV, value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW_GPRS_REV, value));
     }
 
     public long getGprsRev() {
@@ -1204,7 +1212,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setBaseSend(long value) {
         mBaseSend = value;
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_BE_SEND, value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW_BE_SEND, value));
     }
 
     public long getBaseSend() {
@@ -1216,7 +1224,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setBaseRev(long value) {
         mBaseRev = value;
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW__BE_REV, value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW__BE_REV, value));
     }
 
     public long getBaseRev() {
@@ -1228,7 +1236,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setRenewDay(int value) {
         mRenewDay = value;
-        mPref.edit().putInt(PREF_APP_MANAGER_FLOW_RENEWDAY, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_MANAGER_FLOW_RENEWDAY, value));
     }
 
     public int getRenewDay() {
@@ -1240,7 +1248,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setTotalTraffic(int value) {
         mTotalTraffic = value;
-        mPref.edit().putInt(PREF_APP_MANAGER_FLOW_TOTAL_TRAFFIC, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_MANAGER_FLOW_TOTAL_TRAFFIC, value));
     }
 
     public int getTotalTraffic() {
@@ -1252,8 +1260,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setUsedTraffic(int value) {
         mUsedTraffic = value;
-        mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC,
-                value).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_MANAGER_FLOW_MONTH_USED_TRAFFIC,
+                value));
     }
 
     public long getUsedTraffic() {
@@ -1265,8 +1273,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setItselfMonthTraffic(long value) {
         mItselfMonthTraffic = value;
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC,
-                value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW_MAKE_ITSELF_MONTH_TRAFFIC,
+                value));
     }
 
     public long getItselfMonthTraffic() {
@@ -1278,7 +1286,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // Single App Flow
     public void setAppBaseSend(int uid, long value) {
-        mPref.edit().putLong(uid + "_app_base_send", value).apply();
+        commitAsync(mPref.edit().putLong(uid + "_app_base_send", value));
     }
 
     public long getAppBaseSend(int uid) {
@@ -1286,7 +1294,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAppBaseRev(int uid, long value) {
-        mPref.edit().putLong(uid + "_app_base_rev", value).apply();
+        commitAsync(mPref.edit().putLong(uid + "_app_base_rev", value));
     }
 
     public long getAppBaseRev(int uid) {
@@ -1294,7 +1302,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAppGprsSend(int uid, long value) {
-        mPref.edit().putLong(uid + "_app_gprs_send", value).apply();
+        commitAsync(mPref.edit().putLong(uid + "_app_gprs_send", value));
     }
 
     public long getAppGprsSend(int uid) {
@@ -1302,7 +1310,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAppGprsRev(int uid, long value) {
-        mPref.edit().putLong(uid + "_app_gprs_rev", value).apply();
+        commitAsync(mPref.edit().putLong(uid + "_app_gprs_rev", value));
     }
 
     public long getAppGprsRev(int uid) {
@@ -1310,7 +1318,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setWifiSend(int uid, long value) {
-        mPref.edit().putLong(uid + PREF_APP_MANAGER_FLOW_WIFI_SEND, value).apply();
+        commitAsync(mPref.edit().putLong(uid + PREF_APP_MANAGER_FLOW_WIFI_SEND, value));
     }
 
     public long getWifiSend(int uid) {
@@ -1318,7 +1326,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setWifiRev(int uid, long value) {
-        mPref.edit().putLong(uid + PREF_APP_MANAGER_FLOW_WIFI_REV, value).apply();
+        commitAsync(mPref.edit().putLong(uid + PREF_APP_MANAGER_FLOW_WIFI_REV, value));
     }
 
     public long getWifiRev(int uid) {
@@ -1326,7 +1334,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setFlowSetting(boolean mSwtich) {
-        mPref.edit().putBoolean(PREF_APP_MANAGER_FLOW_SETTING_SWTICH, mSwtich).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_APP_MANAGER_FLOW_SETTING_SWTICH, mSwtich));
     }
 
     public boolean getFlowSetting() {
@@ -1334,7 +1342,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setFlowSettingBar(int progress) {
-        mPref.edit().putInt(PREF_APP_MANAGER_FLOW_SETTING_SEEKBAR, progress).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_MANAGER_FLOW_SETTING_SEEKBAR, progress));
     }
 
     public int getFlowSettingBar() {
@@ -1342,7 +1350,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAlotNotice(boolean Alot) {
-        mPref.edit().putBoolean(PREF_APP_MANAGER_FLOW_ALOT_NOTICE, Alot).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_APP_MANAGER_FLOW_ALOT_NOTICE, Alot));
     }
 
     public boolean getAlotNotice() {
@@ -1350,7 +1358,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setFinishNotice(boolean Alot) {
-        mPref.edit().putBoolean(PREF_APP_MANAGER_FLOW_FINISH_NOTICE, Alot).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_APP_MANAGER_FLOW_FINISH_NOTICE, Alot));
     }
 
     public boolean getFinishNotice() {
@@ -1362,7 +1370,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setFirstTime(long time) {
-        mPref.edit().putLong(PREF_APP_MANAGER_FLOW_BROADCAST_FIRST_IN, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FLOW_BROADCAST_FIRST_IN, time));
     }
 
     public long getFragmentFirstIn() {
@@ -1370,20 +1378,20 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setFragmentFirstIn(long time) {
-        mPref.edit().putLong(PREF_APP_MANAGER_FRAGMENT_FIRST_IN, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_MANAGER_FRAGMENT_FIRST_IN, time));
     }
 
     public void setLockerClean(boolean lockerClean) {
-        mPref.edit().putBoolean(PREF_SETTING_LOCKER_CLEAN, lockerClean)
-                .apply();
+        commitAsync(mPref.edit().putBoolean(PREF_SETTING_LOCKER_CLEAN, lockerClean)
+                );
     }
 
     public void setLastLocklistPullTime(long time) {
-        mPref.edit().putLong(PREF_LAST_PULL_LOCK_LIST_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_PULL_LOCK_LIST_TIME, time));
     }
 
     public void setPullInterval(long interval) {
-        mPref.edit().putLong(PREF_PULL_INTERVAL, interval).apply();
+        commitAsync(mPref.edit().putLong(PREF_PULL_INTERVAL, interval));
     }
 
     public long getLastLocklistPullTime() {
@@ -1395,8 +1403,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastAlarmSetTime(long currentTimeMillis) {
-        mPref.edit().putLong(PREF_LAST_ALARM_SET_TIME, currentTimeMillis)
-                .apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_ALARM_SET_TIME, currentTimeMillis)
+                );
     }
 
     public long getInstallTime() {
@@ -1438,8 +1446,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastDir(String path) {
-        mPref.edit().putString(PREF_HIDE_VIDEO_LAST_DIR, path)
-                .apply();
+        commitAsync(mPref.edit().putString(PREF_HIDE_VIDEO_LAST_DIR, path)
+                );
     }
 
     public String getSecondDir() {
@@ -1448,12 +1456,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSecondDi(String path) {
-        mPref.edit().putString(PREF_HIDE_VIDEO_SECOND_DIR, path)
-                .apply();
+        commitAsync(mPref.edit().putString(PREF_HIDE_VIDEO_SECOND_DIR, path)
+                );
     }
 
     public void setAdClickTime(long time) {
-        mPref.edit().putLong(PREF_AD_ICON_CLICK_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_AD_ICON_CLICK_TIME, time));
     }
 
     public long getAdClickTime() {
@@ -1461,7 +1469,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAdClickTimeFromHome(long time) {
-        mPref.edit().putLong(PREF_AD_ICON_FROM_HOME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_AD_ICON_FROM_HOME, time));
     }
 
     public long getAdClickTimeFromHome() {
@@ -1469,7 +1477,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAdDeskIcon(boolean value) {
-        mPref.edit().putBoolean(PREF_AD_ICON_DESK, value).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_AD_ICON_DESK, value));
     }
 
     public boolean getAdDeskIcon() {
@@ -1477,7 +1485,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAdEtClickTime(long time) {
-        mPref.edit().putLong(PREF_AD_ICON_ET_CLICK_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_AD_ICON_ET_CLICK_TIME, time));
     }
 
     public long getAdEtClickTime() {
@@ -1485,7 +1493,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAdBannerClickTime(long time) {
-        mPref.edit().putLong(PREF_AD_BANNER_BOTTOM, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_AD_BANNER_BOTTOM, time));
     }
 
     public long getAdBannerClickTime() {
@@ -1493,7 +1501,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setHalfScreenBannerClickTime(long time) {
-        mPref.edit().putLong(PREF_AD_HALF_SCREEN_BANNER, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_AD_HALF_SCREEN_BANNER, time));
     }
 
     public long getHalfScreenBannerClickTime() {
@@ -1501,7 +1509,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setJumpIcon(boolean isClick) {
-        mPref.edit().putBoolean(PREF_AD_ICON_JUMP_CLICKED, isClick).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_AD_ICON_JUMP_CLICKED, isClick));
     }
 
     public boolean getJumpIcon() {
@@ -1509,7 +1517,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     // public void setAdClicked(boolean value) {
-    // mPref.edit().putBoolean(PREF_AD_ICON_CLICKED_TOTAY, value).commit();
+    // commitAsync(mPref.edit().putBoolean(PREF_AD_ICON_CLICKED_TOTAY, value).commit();
     // }
     //
     // public boolean getAdClicked() {
@@ -1517,7 +1525,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // }
 
     public void setMessageItemRuning(boolean flag) {
-        mPref.edit().putBoolean(PREF_MESSAGE_ITEM_RUNING, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_MESSAGE_ITEM_RUNING, flag));
     }
 
     public boolean getCallLogItemRuning() {
@@ -1527,7 +1535,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setCallLogItemRuning(boolean flag) {
         // 隐私通话记录是否查看详情状态，如果true，则发送通知，如果为false，不用发送通知
-        mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_CALL_LOG_ITEM_RUNING, flag));
     }
 
     public boolean getTimeLockModeGuideClicked() {
@@ -1535,7 +1543,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setTimeLockModeGuideClicked(boolean flag) {
-        mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_GUIDE_USER_CLICKED, flag));
     }
 
     public boolean getLocationLockModeGuideClicked() {
@@ -1543,11 +1551,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLocationLockModeGuideClicked(boolean flag) {
-        mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_GUIDE_USER_CLICKED, flag));
     }
 
     public void setWeiZhuang(boolean isfirstin) {
-        mPref.edit().putBoolean(PREF_WEIZHUANG_FIRST_IN, isfirstin).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_WEIZHUANG_FIRST_IN, isfirstin));
     }
 
     public boolean getWeiZhuang() {
@@ -1560,7 +1568,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsNeedPretendTips(boolean isfirstin) {
-        mPref.edit().putBoolean(PREF_PRETEND_TIPS, isfirstin).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_PRETEND_TIPS, isfirstin));
     }
 
     public int getPretendLock() {
@@ -1572,7 +1580,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setPretendLock(int selected) {
         mPretendLock = selected;
-        mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, selected).apply();
+        commitAsync(mPref.edit().putInt(PREF_CUR_PRETNED_LOCK, selected));
     }
 
     public int getSwitchModeCount() {
@@ -1580,11 +1588,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSwitchModeCount(int count) {
-        mPref.edit().putInt(PREF_SWITCH_MODE_COUNT, count).apply();
+        commitAsync(mPref.edit().putInt(PREF_SWITCH_MODE_COUNT, count));
     }
 
     public void setSplashStartShowTime(long time) {
-        mPref.edit().putLong(PREF_SPLASH_START_SHOW_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_SPLASH_START_SHOW_TIME, time));
     }
 
     public long getSplashStartShowTime() {
@@ -1592,7 +1600,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSplashEndShowTime(long time) {
-        mPref.edit().putLong(PREF_SPLASH_END_SHOW_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_SPLASH_END_SHOW_TIME, time));
     }
 
     public long getSplashEndShowTime() {
@@ -1622,7 +1630,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             }
         }
         if (editor != null) {
-            editor.apply();
+            commitAsync(editor);
         }
     }
 
@@ -1653,7 +1661,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 加载闪屏失败的时间 */
     public void setLastLoadSplashTime(long lashTime) {
-        mPref.edit().putLong(PREF_LAST_LOAD_SPLASH_TIME, lashTime).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_LOAD_SPLASH_TIME, lashTime));
     }
 
     public long getLastLoadSplashTime() {
@@ -1661,7 +1669,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setStartLoadSplashTime(long time) {
-        mPref.edit().putLong(PREF_SPLASH_LOAD_START_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_SPLASH_LOAD_START_TIME, time));
     }
 
     public long getStartLoadSplashTime() {
@@ -1669,7 +1677,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setMessageNoReadCount(int count) {
-        mPref.edit().putInt(PREF_MESSAGE_NO_READ_COUNT, count).apply();
+        commitAsync(mPref.edit().putInt(PREF_MESSAGE_NO_READ_COUNT, count));
     }
 
     public int getMessageNoReadCount() {
@@ -1678,7 +1686,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 加载闪屏首次失败的当天日期 */
     public void setSplashLoadFailDate(String date) {
-        mPref.edit().putString(PREF_SPLASH_LOAD_FAIL_DATE, date).apply();
+        commitAsync(mPref.edit().putString(PREF_SPLASH_LOAD_FAIL_DATE, date));
     }
 
     public String getSplashLoadFailDate() {
@@ -1687,7 +1695,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 加载闪屏当天失败的次数 */
     public void setSplashLoadFailNumber(int number) {
-        mPref.edit().putInt(PREF_SPLASH_LOAD_FAIL_NUMBER, number).apply();
+        commitAsync(mPref.edit().putInt(PREF_SPLASH_LOAD_FAIL_NUMBER, number));
     }
 
     public int getSplashLoadFailNumber() {
@@ -1695,7 +1703,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSplashUriFlag(String string) {
-        mPref.edit().putString(PREF_SPLASH_URL_FLAG, string).apply();
+        commitAsync(mPref.edit().putString(PREF_SPLASH_URL_FLAG, string));
     }
 
     public String getSplashUriFlag() {
@@ -1703,7 +1711,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setRemoveUnlockAllShortcutFlag(boolean removed) {
-        mPref.edit().putBoolean(PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG, removed).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_REMOVE_UNLOCK_ALL_SHORTCUT_FLAG, removed));
     }
 
     public boolean getRemoveUnlockAllShortcutFlag() {
@@ -1711,7 +1719,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSaveSplashIsMemeryEnough(int flag) {
-        mPref.edit().putInt(PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_SAVE_SPLASH_MEMERY_NO_ENOUGH, flag));
     }
 
     public int getSaveSplashIsMemeryEnough() {
@@ -1720,7 +1728,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setCallLogNoReadCount(int count) {
         LeoLog.i("MessagePrivacyReceiver", "保存未读数：" + count);
-        mPref.edit().putInt(PREF_CALL_LOG_NO_READ_COUNT, count).apply();
+        commitAsync(mPref.edit().putInt(PREF_CALL_LOG_NO_READ_COUNT, count));
     }
 
     public int getCallLogNoReadCount() {
@@ -1728,7 +1736,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setTimeLockModeSetOver(boolean setted) {
-        mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_SET_OVER, setted).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_TIME_LOCK_MODE_SET_OVER, setted));
     }
 
     public boolean getTimeLockModeSetOVer() {
@@ -1736,7 +1744,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLocationLockModeSetOver(boolean setted) {
-        mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, setted).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_LOCATION_LOCK_MODE_SET_OVER, setted));
     }
 
     public boolean getLocationLockModeSetOVer() {
@@ -1744,7 +1752,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsFirstInstallApp(boolean flag) {
-        mPref.edit().putBoolean(PREF_FIRST_INSTALL_APP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_FIRST_INSTALL_APP, flag));
     }
 
     public boolean getIsFirstInstallApp() {
@@ -1752,7 +1760,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setAppVersionName(String name) {
-        mPref.edit().putString(PREF_APP_VERSION_NAME, name).apply();
+        commitAsync(mPref.edit().putString(PREF_APP_VERSION_NAME, name));
     }
 
     public String getAppVersionName() {
@@ -1760,7 +1768,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSwitchOpenQuickGesture(boolean flag) {
-        mPref.edit().putBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_SWITCH_OPEN_QUICK_GESTURE, flag));
     }
 
     public boolean getSwitchOpenQuickGesture() {
@@ -1768,7 +1776,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSwitchOpenNoReadMessageTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_SWITCH_OPEN_NO_READ_MESSAGE_TIP, flag));
     }
 
     public boolean getSwitchOpenNoReadMessageTip() {
@@ -1776,7 +1784,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSwitchOpenRecentlyContact(boolean flag) {
-        mPref.edit().putBoolean(PREF_SWITCH_OPEN_RECENTLY_CONTACT, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_SWITCH_OPEN_RECENTLY_CONTACT, flag));
     }
 
     public boolean getSwitchOpenRecentlyContact() {
@@ -1784,7 +1792,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSwitchOpenPrivacyContactMessageTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_SWITCH_OPEN_PRIVACY_CONTACT_MESSAGE_TIP, flag));
     }
 
     public boolean getSwitchOpenPrivacyContactMessageTip() {
@@ -1792,7 +1800,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setDialogRadioLeftBottom(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_BOTTOM, flag));
     }
 
     public boolean getDialogRadioLeftBottom() {
@@ -1800,8 +1808,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setDialogRadioRightBottom(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM, flag)
-                .apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_BOTTOM, flag)
+                );
     }
 
     public boolean getDialogRadioRightBottom() {
@@ -1809,7 +1817,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setDialogRadioLeftCenter(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_CENTER, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_LEFT_CENTER, flag));
     }
 
     public boolean getDialogRadioLeftCenter() {
@@ -1817,8 +1825,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setDialogRadioRightCenter(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_CENTER, flag)
-                .apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_RADIO_SETTING_RIGHT_CENTER, flag)
+                );
     }
 
     public boolean getDialogRadioRightCenter() {
@@ -1826,8 +1834,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQuickGestureDialogSeekBarValue(int value) {
-        mPref.edit().putInt(PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE, value)
-                .apply();
+        commitAsync(mPref.edit().putInt(PREF_QUICK_GESTURE_DIALOG_SEEKBAR_PROGRESS_VALUE, value)
+                );
     }
 
     public int getQuickGestureDialogSeekBarValue() {
@@ -1835,8 +1843,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSlideTimeJustHome(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_JUST_HOME, flag)
-                .apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_JUST_HOME, flag)
+                );
     }
 
     public boolean getSlideTimeJustHome() {
@@ -1844,9 +1852,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSlideTimeAllAppAndHome(boolean flag) {
-        mPref.edit()
+        commitAsync(mPref.edit()
                 .putBoolean(PREF_QUICK_GESTURE_DIALOG_SLIDE_TIME_SETTING_ALL_APP_AND_HOME, flag)
-                .apply();
+                );
     }
 
     public boolean getSlideTimeAllAppAndHome() {
@@ -1865,14 +1873,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         } else {
             packageNames = name + ";";
         }
-        mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
-                .apply();
+        commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
+                );
     }
 
     // TODO
     public void setFreeDisturbAppPackageName(String packageNames) {
-        mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
-                .apply();
+        commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME, packageNames)
+                );
     }
 
     public void setFreeDisturbAppPackageNameRemove(String name) {
@@ -1881,9 +1889,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         if (!PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME.equals(string)) {
             packageNames = string.replace(name + ";", "");
         }
-        mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME,
+        commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_FREE_DISTURB_APP_PACKAGE_NAME,
                 packageNames)
-                .apply();
+                );
     }
 
     public String getFreeDisturbAppPackageName() {
@@ -1902,8 +1910,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSwitchList(String mSwitchList) {
-        mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST, mSwitchList)
-                .apply();
+        commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_QUICKSWITCH_LIST, mSwitchList)
+                );
     }
 
     public boolean getLoadedSwitchList() {
@@ -1912,8 +1920,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLoadedSwitchList(boolean isLoaded) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_LOADED_QUICKSWITCH_LIST, isLoaded)
-                .apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_LOADED_QUICKSWITCH_LIST, isLoaded)
+                );
     }
 
     public int getSwitchListSize() {
@@ -1922,18 +1930,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSwitchListSize(int mSwitchListSize) {
-        mPref.edit().putInt(PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE, mSwitchListSize)
-                .apply();
+        commitAsync(mPref.edit().putInt(PREF_QUICK_GESTURE_QUICKSWITCH_LIST_SIZE, mSwitchListSize)
+                );
     }
 
     public void setAppLaunchRecoder(String recoders) {
-        mPref.edit().putString(PREF_QUICK_GESTURE_APP_LAUNCH_RECODER, recoders)
-                .apply();
+        commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_APP_LAUNCH_RECODER, recoders)
+                );
     }
 
     public void setFristSlidingTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_FIRST_SLIDING_TIP, flag)
-                .apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_FIRST_SLIDING_TIP, flag)
+                );
     }
 
     public boolean getFristSlidingTip() {
@@ -1942,8 +1950,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setFristDialogTip(boolean flag) {
         if (getFristDialogTip() != flag) {
-            mPref.edit().putBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_TIP, flag)
-                    .apply();
+            commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_TIP, flag)
+                    );
         }
     }
 
@@ -1952,7 +1960,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQuickGestureRedTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_RED_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_RED_TIP, flag));
     }
 
     public boolean getQuickGestureRedTip() {
@@ -1970,8 +1978,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         } else {
             packageNames = name + ";";
         }
-        mPref.edit().putString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME, packageNames)
-                .apply();
+        commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME, packageNames)
+                );
     }
 
     public void setQuickSwitchPackageNameRemove(String name) {
@@ -1979,9 +1987,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         String packageNames = null;
         if (!PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME.equals(string)) {
             packageNames = string.replace(name, "");
-            mPref.edit().putString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME,
+            commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_QUICK_SWITCH_PACKAGE_NAME,
                     packageNames)
-                    .apply();
+                    );
         }
     }
 
@@ -2005,14 +2013,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // packageNames = name + ";";
     // }
     // LeoLog.d("testSp", "packageNames : " + packageNames);
-    // mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
+    // commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
     // packageNames)
     // .commit();
     // }
 
     public void setCommonAppPackageName(String name) {
-        mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, name)
-                .apply();
+        commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME, name)
+                );
     }
 
     public void setCommonAppPackageNameRemove(String name) {
@@ -2034,9 +2042,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
                 }
             }
         }
-        mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
+        commitAsync(mPref.edit().putString(PREF_QUICK_GESTURE_COMMON_APP_PACKAGE_NAME,
                 packageNames)
-                .apply();
+                );
     }
 
     // 获取添加到快捷手势中的快捷常用应用包名
@@ -2046,7 +2054,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQuickGestureCommonAppDialogCheckboxValue(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_COMMON_APP_DIALOG_CHECKBOX_FLAG, flag));
     }
 
     // 获取常用应用是否开启了习惯记录
@@ -2055,8 +2063,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQuickGestureMiuiSettingFirstDialogTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP,
-                flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_MIUI_SETTING_OPEN_FLOAT_WINDOW_FIRST_DIALOG_TIP,
+                flag));
     }
 
     public int getLastTimeLayout() {
@@ -2068,8 +2076,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setLastTimeLayout(int mLayoutNum) {
         mLastTimeLayout = mLayoutNum;
-        mPref.edit().putInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT,
-                mLayoutNum).apply();
+        commitAsync(mPref.edit().putInt(PREF_QUICK_GESTURE_LAST_TIME_LAYOUT,
+                mLayoutNum));
     }
 
     public boolean getQuickGestureMiuiSettingFirstDialogTip() {
@@ -2078,8 +2086,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQGSettingFirstDialogTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_SHOW,
-                flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_FIRST_DIALOG_SHOW,
+                flag));
     }
 
     public boolean getQGSettingFirstDialogTip() {
@@ -2088,7 +2096,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQuickPermissonOpenFirstNotificatioin(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_GESTURE_PERMISSON_OPEN_NOTIFICATION, flag));
     }
 
     public boolean getQuickPermissonOpenFirstNotificatioin() {
@@ -2096,8 +2104,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsUpdateQuickGestureUser(boolean flag) {
-        mPref.edit().putBoolean(PREF_UPDATE_QUICK_GESTURE_USER,
-                flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_UPDATE_QUICK_GESTURE_USER,
+                flag));
     }
 
     public boolean getIsUpdateQuickGestureUser() {
@@ -2105,7 +2113,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setCurrentAppVersionCode(int versionCode) {
-        mPref.edit().putInt(PREF_CURRENT_APP_VERSION_CODE, versionCode).apply();
+        commitAsync(mPref.edit().putInt(PREF_CURRENT_APP_VERSION_CODE, versionCode));
     }
 
     public int getCurrentAppVersionCode() {
@@ -2113,7 +2121,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQuickFirstDialogTipIsHavePassword(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_FIRST_DIALOG_TIP_IS_HAVE_PASSWORD, flag));
     }
 
     public boolean getQuickFirstDialogTipIsHavePassword() {
@@ -2121,7 +2129,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setRootViewAndWindowHeighSpace(int flag) {
-        mPref.edit().putInt(PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_ROOTVIEW_AND_WINDOW_HEIGHT_SPACE, flag));
     }
 
     public int getRootViewAndWindowHeighSpace() {
@@ -2133,11 +2141,11 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setDeletedBusinessItems(String detail) {
-        mPref.edit().putString(PREF_DELETED_BUSINESS_ITEMS, detail).apply();
+        commitAsync(mPref.edit().putString(PREF_DELETED_BUSINESS_ITEMS, detail));
     }
 
     public void setLastBusinessRedTipShow(boolean b) {
-        mPref.edit().putBoolean(PREF_LAST_BUSINESS_RED_TIP, b).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_LAST_BUSINESS_RED_TIP, b));
     }
 
     public boolean getLastBusinessRedTipShow() {
@@ -2149,7 +2157,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQuickGestureCallLogTip(boolean b) {
-        mPref.edit().putBoolean(PREF_QUICK_NO_CALL_LOG_TIP, b).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_NO_CALL_LOG_TIP, b));
 
     }
 
@@ -2158,12 +2166,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setQuickGestureMsmTip(boolean b) {
-        mPref.edit().putBoolean(PREF_QUICK_NO_MSM_TIP, b).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_NO_MSM_TIP, b));
     }
 
     public void setEnterHomeTimes(int times) {
         mEnterHomeTimes = times;
-        mPref.edit().putInt(PREF_ENTER_HOME_TIMES, times).apply();
+        commitAsync(mPref.edit().putInt(PREF_ENTER_HOME_TIMES, times));
     }
 
     public int getEnterHomeTimes() {
@@ -2176,7 +2184,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public void setSwitchOpenStrengthenMode(boolean flag, boolean persistence) {
         mShowWhiteDot = flag;
         if (persistence) {
-            mPref.edit().putBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, flag).apply();
+            commitAsync(mPref.edit().putBoolean(PREF_SWTICH_OPEN_STRENGTH_MODE, flag));
         }
     }
 
@@ -2186,7 +2194,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setMessageIsRedTip(boolean flag) {
         // 设置未读短信是否已经红点提示过
-        mPref.edit().putBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_MESSAGE_IS_RED_TIP, flag));
     }
 
     public boolean getMessageIsRedTip() {
@@ -2195,7 +2203,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setIsOpenFloatWindows(boolean flag) {
 
-        mPref.edit().putBoolean(PREF_QUICK_SWITCH_FLOAT_WINDOWS, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_SWITCH_FLOAT_WINDOWS, flag));
     }
 
     public boolean getIsOpenFloatWindows() {
@@ -2203,7 +2211,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setWhiteFloatViewCoordinate(int x, int y) {
-        mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x + ":" + y).apply();
+        commitAsync(mPref.edit().putString(PREF_WHITE_FLOAT_COORDINATE, x + ":" + y));
     }
 
     public int[] getWhiteFloatViewCoordinate() {
@@ -2219,7 +2227,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
             mUseStrengthModeTimes = getUseStrengthenModeTimes();
         }
         mUseStrengthModeTimes++;
-        mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, mUseStrengthModeTimes).apply();
+        commitAsync(mPref.edit().putInt(PREF_USE_STRENGTHTNEN_MODE_TIMES, mUseStrengthModeTimes));
     }
 
     public int getUseStrengthenModeTimes() {
@@ -2235,14 +2243,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setEverCloseWhiteDot(boolean b) {
         mHasEverCloseWhiteDot = b;
-        mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_HAS_EVER_CLOSE_WHITE_DOT, b));
     }
 
     /**
      * set when success slide quick watch whether tiped
      */
     public void setQuickGestureSuccSlideTiped(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUCIK_GESTURE_SUCCESS_SLIDE_TIPED, flag));
     }
 
     public boolean getQuickGestureSuccSlideTiped() {
@@ -2254,12 +2262,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setNeedShowWhiteDotSlideTip(boolean need) {
-        mPref.edit().putBoolean(PREF_NEED_WHITE_DOT_SLIDE_TIP, need).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_NEED_WHITE_DOT_SLIDE_TIP, need));
     }
 
     public void setCallLogIsRedTip(boolean flag) {
         // 设置未读通话是否已经红点提示过
-        mPref.edit().putBoolean(PREF_QUICK_CALL_LOG_IS_RED_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_CALL_LOG_IS_RED_TIP, flag));
     }
 
     public boolean getCallLogIsRedTip() {
@@ -2267,7 +2275,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setRemoveQuickGestureIcon(boolean flag) {
-        mPref.edit().putBoolean(PREF_QUICK_REMOVE_ICON, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_QUICK_REMOVE_ICON, flag));
     }
 
     public boolean getRemoveQuickGestureIcon() {
@@ -2283,7 +2291,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         }
         if (mGestureSlideAnimShowTimes < 2) {
             mGestureSlideAnimShowTimes++;
-            mPref.edit().putInt(PREF_QUICK_SLIDE_ANIM_SHOW_TIMES, mGestureSlideAnimShowTimes);
+            commitAsync(mPref.edit().putInt(PREF_QUICK_SLIDE_ANIM_SHOW_TIMES, mGestureSlideAnimShowTimes));
         }
     }
 
@@ -2300,7 +2308,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLockScreenMenuClicked(boolean flag) {
-        mPref.edit().putBoolean(PREF_IF_LOCK_SCREEN_MENU_CLICKED, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_IF_LOCK_SCREEN_MENU_CLICKED, flag));
     }
 
     public boolean getLockScreenMenuClicked() {
@@ -2312,7 +2320,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastBoostTime(long lastBoostTime) {
-        mPref.edit().putLong(PREF_LAST_BOOST_TIMES, lastBoostTime).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_BOOST_TIMES, lastBoostTime));
     }
 
     public long getLastBoostWithADTime() {
@@ -2320,13 +2328,13 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastBoostWithADTime(long lastBoostTime) {
-        mPref.edit().putLong(PREF_LAST_BOOST_WITH_AD_TIMES, lastBoostTime).apply();
+        commitAsync(mPref.edit().putLong(PREF_LAST_BOOST_WITH_AD_TIMES, lastBoostTime));
     }
 
     /* 保存闪屏跳转链接 */
     public void setSplashSkipUrl(String url) {
         mSplashSkipUrl = url;
-        mPref.edit().putString(PREF_SPLASH_SKIP_URL, url).apply();
+        commitAsync(mPref.edit().putString(PREF_SPLASH_SKIP_URL, url));
     }
 
     public String getSplashSkipUrl() {
@@ -2341,7 +2349,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     /* 保存闪屏跳转方式 */
     public void setSplashSkipMode(String flag) {
         mSplashSkipMode = flag;
-        mPref.edit().putString(PREF_SPLASH_SKIP_MODE, flag).apply();
+        commitAsync(mPref.edit().putString(PREF_SPLASH_SKIP_MODE, flag));
     }
 
     public String getSplashSkipMode() {
@@ -2354,7 +2362,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存闪屏延迟时间 */
     public void setSplashDelayTime(int delayTime) {
-        mPref.edit().putInt(PREF_SPLASH_DElAY_TIME, delayTime).apply();
+        commitAsync(mPref.edit().putInt(PREF_SPLASH_DElAY_TIME, delayTime));
     }
 
     public int getSplashDelayTime() {
@@ -2363,7 +2371,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存闪屏跳转的客户端的链接 */
     public void setSplashSkipToClient(String clientUrl) {
-        mPref.edit().putString(PREF_SPLASH_SKIP_TO_CLIENT, clientUrl).apply();
+        commitAsync(mPref.edit().putString(PREF_SPLASH_SKIP_TO_CLIENT, clientUrl));
     }
 
     public String getSplashSkipToClient() {
@@ -2371,7 +2379,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastShowNotifyTime(long savetime) {
-        mPref.edit().putLong(PREF_SHOW_NOTIFY_CLEAN_MEMORY, savetime).apply();
+        commitAsync(mPref.edit().putLong(PREF_SHOW_NOTIFY_CLEAN_MEMORY, savetime));
     }
 
     public long getLastShowNotifyTime() {
@@ -2383,7 +2391,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setForegroundScore(int score) {
-        mPref.edit().putInt(PREF_FOREGROUND_SCORE, score).apply();
+        commitAsync(mPref.edit().putInt(PREF_FOREGROUND_SCORE, score));
     }
 
     public int getForegroundMinScore() {
@@ -2391,12 +2399,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setForegroundMinScore(int score) {
-        mPref.edit().putInt(PREF_FOREGROUND_MIN_SCORE, score).apply();
+        commitAsync(mPref.edit().putInt(PREF_FOREGROUND_MIN_SCORE, score));
     }
 
     /* 保存iswip是否有更新 */
     public void setIswipUpdateFlag(int flag) {
-        mPref.edit().putInt(PREF_ISWIP_UPDATE_FALG, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_ISWIP_UPDATE_FALG, flag));
     }
 
     public int getIswipUpdateFlag() {
@@ -2405,7 +2413,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存iswip更新提醒频率 */
     public void setIswipUpdateFre(int flag) {
-        mPref.edit().putInt(PREF_ISWIP_UPDATE_TIP_FRE, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_ISWIP_UPDATE_TIP_FRE, flag));
     }
 
     public int getIswipUpdateFre() {
@@ -2414,7 +2422,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存iswip更新提醒次数 */
     public void setIswipUpdateNumber(int flag) {
-        mPref.edit().putInt(PREF_ISWIP_UPDATE_TIP_NUMBER, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_ISWIP_UPDATE_TIP_NUMBER, flag));
     }
 
     public int getIswipUpdateNumber() {
@@ -2423,7 +2431,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存iswip的GP下载地址 */
     public void setIswipUpdateGpUrl(String url) {
-        mPref.edit().putString(PREF_ISWIP_UPDATE_GP_URL, url).apply();
+        commitAsync(mPref.edit().putString(PREF_ISWIP_UPDATE_GP_URL, url));
     }
 
     public String getIswipUpdateGpUrl() {
@@ -2432,7 +2440,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存iswip浏览器下载地址 */
     public void setIswipUpdateBrowserUrl(String url) {
-        mPref.edit().putString(PREF_ISWIP_UPDATE_BROWSER_URL, url).apply();
+        commitAsync(mPref.edit().putString(PREF_ISWIP_UPDATE_BROWSER_URL, url));
     }
 
     public String getIswipUpdateBrowserUrl() {
@@ -2441,7 +2449,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存iswip下载方式 */
     public void setIswipUpdateDownType(int flag) {
-        mPref.edit().putInt(PREF_ISWIP_UPDATE_DOWN_TYPE, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_ISWIP_UPDATE_DOWN_TYPE, flag));
     }
 
     public int getIswipUpdateDownType() {
@@ -2450,7 +2458,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存iswip更新最后拉取时间 */
     public void setIswipUpateLastLoadingTime(long time) {
-        mPref.edit().putLong(PREF_ISWIP_UPDATE_LOADING_LAST_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_ISWIP_UPDATE_LOADING_LAST_TIME, time));
     }
 
     public long getIswipUpateLastLoadingTime() {
@@ -2459,7 +2467,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存iswip更新拉取数据的策略 */
     public void setIswipUpdateLoadingStrategy(long loadingStrategy) {
-        mPref.edit().putLong(PREF_ISWIP_UPDATE_LOADING_STRATEGT, loadingStrategy).apply();
+        commitAsync(mPref.edit().putLong(PREF_ISWIP_UPDATE_LOADING_STRATEGT, loadingStrategy));
     }
 
     public long getIswipUpdateLoadingStrategy() {
@@ -2468,7 +2476,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存iswip更新拉取失败次数 */
     public void setIswipUpdateLoadingNumber(int number) {
-        mPref.edit().putInt(PREF_ISWIP_UPDATE_LOADING_NUMBER, number).apply();
+        commitAsync(mPref.edit().putInt(PREF_ISWIP_UPDATE_LOADING_NUMBER, number));
     }
 
     public int getIswipUpdateLoadingNumber() {
@@ -2477,7 +2485,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存本次拉取失败日期 */
     public void setIswipeLoadFailDate(String date) {
-        mPref.edit().putString(PREF_ISWIP_LOAD_FAIL_DATE, date).apply();
+        commitAsync(mPref.edit().putString(PREF_ISWIP_LOAD_FAIL_DATE, date));
     }
 
     public String getIswipeLoadFailDate() {
@@ -2487,7 +2495,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     /* iswipe更新通知次数 */
     public void setIswipeAlarmNotifiNumber(int number) {
         mISwipeAlarm = number;
-        mPref.edit().putInt(PREF_ISWIPE_ALARM_NORI_NUMBER, number).apply();
+        commitAsync(mPref.edit().putInt(PREF_ISWIPE_ALARM_NORI_NUMBER, number));
     }
 
     public int getIswipeAlarmNotifiNumber() {
@@ -2499,7 +2507,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* ISwipe升级对话框提示标志 */
     public void setIswipeDialogTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_ISWIPE_DIALOG_TIP_FLAG, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_ISWIPE_DIALOG_TIP_FLAG, flag));
     }
 
     public boolean getIswipeDialogTip() {
@@ -2509,7 +2517,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     /* 上次iwipe更新提示时间 */
     public void setIswipeUpdateTipTime(long time) {
         mISwipeLoadTime = time;
-        mPref.edit().putLong(PREF_ISWIPE_TIP_LAST_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_ISWIPE_TIP_LAST_TIME, time));
     }
 
     public long getIswipeUpdateTipTime() {
@@ -2525,10 +2533,10 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         if (lastLoadVersion != null && !lastLoadVersion.equals(version)) {
             /* 版本更新后保存本次拉取的版本号，恢复iswipe更新升级提示默认值 */
             setIswipeUpdateTip(-1);
-            mPref.edit().putString(PREF_ISWIPE_LAST_LOAD_VERSION, version).apply();
+            commitAsync(mPref.edit().putString(PREF_ISWIPE_LAST_LOAD_VERSION, version));
         } else {
             if (lastLoadVersion == null) {
-                mPref.edit().putString(PREF_ISWIPE_LAST_LOAD_VERSION, version).apply();
+                commitAsync(mPref.edit().putString(PREF_ISWIPE_LAST_LOAD_VERSION, version));
             }
         }
     }
@@ -2536,7 +2544,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     // 上次加载广告素材的时间
     public void setLastLoadADTime(long time) {
         mADLastLoadTime = time;
-        mPref.edit().putLong(PREF_AD_LAST_LOAD_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_AD_LAST_LOAD_TIME, time));
     }
 
     public long getLastLoadADTime() {
@@ -2548,7 +2556,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // 是否需要更新广告的appwall图标
     public void setIsADAppwallNeedUpdate(boolean flag) {
-        mPref.edit().putBoolean(PREF_AD_APPWAL_UPDATE, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_AD_APPWAL_UPDATE, flag));
     }
 
     public boolean getIsADAppwallNeedUpdate() {
@@ -2566,7 +2574,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setADRequestShowTypeLastTime(long time) {
         mADLastRequestTime = time;
-        mPref.edit().putLong(PREF_AD_REQUEST_SHOWTYPE_LAST_TIME, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_AD_REQUEST_SHOWTYPE_LAST_TIME, time));
     }
 
     // 下一次请求广告展示类型需要的时间间隔
@@ -2580,7 +2588,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setADRequestShowTypeNextTimeSpacing(long time) {
         mADRequestInternal = time;
-        mPref.edit().putLong(PREF_AD_REQUEST_SHOWTYPE_NEXT_TIME_SPACING, time).apply();
+        commitAsync(mPref.edit().putLong(PREF_AD_REQUEST_SHOWTYPE_NEXT_TIME_SPACING, time));
     }
 
     // 当天请求广告展示类型的失败次数
@@ -2594,14 +2602,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setADRequestShowtypeFailTimesCurrentDay(int times){
         mADRequestFailTimes = times;
-        mPref.edit().putInt(PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY, times).apply();
+        commitAsync(mPref.edit().putInt(PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY, times));
     }
 
     // 广告展示的形式
     public void setADShowType(int type)
     {
         mADShowType = type;
-        mPref.edit().putInt(PREF_AD_SHOW_TYPE, type).apply();
+        commitAsync(mPref.edit().putInt(PREF_AD_SHOW_TYPE, type));
     }
 
     public int getADShowType()
@@ -2614,7 +2622,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     // UFO动画的展示形式 //暂时没有使用
     public void setUFOAnimType(int type) {
-        mPref.edit().putInt(PREF_UFO_ANIM_TYPE, type).apply();
+        commitAsync(mPref.edit().putInt(PREF_UFO_ANIM_TYPE, type));
     }
 
     public int getUFOAnimType() {
@@ -2623,7 +2631,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     //roll出主题的概率 X分之一
     public void setThemeChanceAfterUFO(int chance) {
-        mPref.edit().putInt(PREF_THEME_CHANCE_AFTER_UFO, chance).apply();
+        commitAsync(mPref.edit().putInt(PREF_THEME_CHANCE_AFTER_UFO, chance));
     }
 
     public int getThemeChanceAfterUFO() {
@@ -2632,7 +2640,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     //加速后出现广告的开关
     public void setADChanceAfterAccelerating(int flag) {
-        mPref.edit().putInt(PREF_AD_AFTER_ACCELERATING, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_AD_AFTER_ACCELERATING, flag));
     }
 
     public int getADChanceAfterAccelerating() {
@@ -2641,7 +2649,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     //隐私防护出现广告的开关
     public void setIsADAfterPrivacyProtectionOpen(int value) {
-        mPref.edit().putInt(PREF_AD_AFTER_PRIVACY_PROTECTION, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_AD_AFTER_PRIVACY_PROTECTION, value));
     }
 
     public int getIsADAfterPrivacyProtectionOpen() {
@@ -2650,7 +2658,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     //主页出现钱钱的开关
     public void setIsADAtAppLockFragmentOpen(int value) {
-        mPref.edit().putInt(PREF_AD_AT_APPLOCK_FRAGMENT, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_AD_AT_APPLOCK_FRAGMENT, value));
     }
 
     public int getIsADAtAppLockFragmentOpen() {
@@ -2659,7 +2667,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     //主题界面出现广告的开关
     public void setIsADAtLockThemeOpen(int value) {
-        mPref.edit().putInt(PREF_AD_AT_THEME, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_AD_AT_THEME, value));
     }
 
     public int getIsADAtLockThemeOpen() {
@@ -2668,7 +2676,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     //push时是否需要更新礼物盒状态，只在push时有效
     public void setIsGiftBoxNeedUpdate(int value) {
-        mPref.edit().putInt(PREF_GIFTBOX_UPDATE, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_GIFTBOX_UPDATE, value));
     }
 
     public int getIsGiftBoxNeedUpdate() {
@@ -2678,7 +2686,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     /* 解锁成功升级提示标志 */
     /* 解锁成功升级提示开关（1标示开，0标示关） */
     public void setVersionUpdateTipsAfterUnlockOpen(int value) {
-        mPref.edit().putInt(PREF_VERSION_UPDATE_AFTER_UNLOCK, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_VERSION_UPDATE_AFTER_UNLOCK, value));
     }
 
     public boolean getVersionUpdateTipsAfterUnlockOpen() {
@@ -2690,7 +2698,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsAppStatisticsOpen(int value) {
-        mPref.edit().putInt(PREF_APP_STATISTICS, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_STATISTICS, value));
     }
 
     public int getIsAppStatisticsOpen() {
@@ -2698,7 +2706,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsWifiStatistics(int value) {
-        mPref.edit().putInt(PREF_APP_WIFI_STATISTICS, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_WIFI_STATISTICS, value));
     }
 
     public int getIsWifiStatistics() {
@@ -2706,7 +2714,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsWifiStatisticsIsLoad(long value) {
-        mPref.edit().putLong(PREF_APP_WIFI_STATISTICS_IS_LOADED, value).apply();
+        commitAsync(mPref.edit().putLong(PREF_APP_WIFI_STATISTICS_IS_LOADED, value));
     }
 
     public long getIsWifiStatisticsIsLoad() {
@@ -2714,7 +2722,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIsStatisticsLasttime(int value) {
-        mPref.edit().putInt(PREF_APP_STATISTICS_LASTTIME, value).apply();
+        commitAsync(mPref.edit().putInt(PREF_APP_STATISTICS_LASTTIME, value));
     }
 
     public int getIsStatisticsLasttime() {
@@ -2726,7 +2734,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setIswipeUpdateTip(int flag) {
-        mPref.edit().putInt(PREF_ISWIPE_UPDATE_TIP, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_ISWIPE_UPDATE_TIP, flag));
     }
 
     public int getIswipeUpdateTip() {
@@ -2734,7 +2742,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setMobvistaClicked() {
-        mPref.edit().putBoolean(PREF_MOBVISTA_LOADED, true).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_MOBVISTA_LOADED, true));
     }
 
     public boolean isMobvistaClicked() {
@@ -2743,7 +2751,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 是否为首次生成解锁随机次数 */
     public void setUnlockUpdateFirstRandom(boolean flag) {
-        mPref.edit().putBoolean(PREF_UNLOCK_UPDATE_FIRST_RANDOM, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_UNLOCK_UPDATE_FIRST_RANDOM, flag));
     }
 
     public boolean getUnlockUpdateFirstRandom() {
@@ -2752,7 +2760,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 解锁成功升级提示的次数 */
     public void setUnlockUpdateTipCount(int flag) {
-        mPref.edit().putInt(PREF_UNLOCK_UPDATE_TIP_COUNT, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_UNLOCK_UPDATE_TIP_COUNT, flag));
     }
 
     public int getUnlockUpdateTipCount() {
@@ -2761,7 +2769,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 记录升级提示后本次总共解锁成功次数 */
     public void setRecordUpdateTipUnlockCount(int flag) {
-        mPref.edit().putInt(PREF_UNLOCK_UPDATE_TIP_COUNT_RECORD, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_UNLOCK_UPDATE_TIP_COUNT_RECORD, flag));
     }
 
     public int getRecordUpdateTipUnlockCount() {
@@ -2770,7 +2778,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存本次产生的随机数 */
     public void setUnlockSucessRandom(int flag) {
-        mPref.edit().putInt(PREF_UNLOCK_SUCCESS_TIP_RANDOM, flag).apply();
+        commitAsync(mPref.edit().putInt(PREF_UNLOCK_SUCCESS_TIP_RANDOM, flag));
     }
 
     public int getUnlockSucessRandom() {
@@ -2779,7 +2787,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 存储下升级的当前日期 */
     public void setUpdateTipDate(String date) {
-        mPref.edit().putString(PREF_UPDATE_TIP_DATE, date).apply();
+        commitAsync(mPref.edit().putString(PREF_UPDATE_TIP_DATE, date));
     }
 
     public String getUpdateTipDate() {
@@ -2788,7 +2796,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存升级第二天提示一次标志 */
     public void setSecondDayTip(boolean b) {
-        mPref.edit().putBoolean(PREF_UPDATE_SECOND_TIP_FLAG, b).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_UPDATE_SECOND_TIP_FLAG, b));
     }
 
     public boolean getSecondDayTip() {
@@ -2802,24 +2810,36 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
      * @param time
      */
     public void setScheduleTime(String jobKey, long time) {
-        mPref.edit().putLong(jobKey, time).apply();
+        mValues.put(jobKey, time);
+        commitAsync(mPref.edit().putLong(jobKey, time));
     }
 
     public long getScheduleTime(String jobKey) {
-        return mPref.getLong(jobKey, 0);
+        Long obj = (Long) mValues.get(jobKey);
+        if (obj == null) {
+            obj = mPref.getLong(jobKey, 0);
+        }
+        mValues.put(jobKey, obj);
+        return obj;
     }
 
     public void setScheduleValue(String key, int state) {
-        mPref.edit().putInt(key, state).apply();
+        mValues.put(key, state);
+        commitAsync(mPref.edit().putInt(key, state));
     }
 
     public int getScheduleValue(String key, int def) {
-        return mPref.getInt(key, def);
+        Integer obj = (Integer) mValues.get(key);
+        if (obj == null) {
+            obj = mPref.getInt(key, 0);
+        }
+        mValues.put(key, obj);
+        return obj;
     }
 
     /* 保存不同版本首次使用时的初始解锁次数 */
     public void setFirstUnlockCount(int count) {
-        mPref.edit().putInt(PREF_RECORD_FIRST_UNLOCK_COUNT, count).apply();
+        commitAsync(mPref.edit().putInt(PREF_RECORD_FIRST_UNLOCK_COUNT, count));
     }
 
     public int getFirstUnlockCount() {
@@ -2828,7 +2848,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存第二天首次解锁的初始次数 */
     public void setChanageDateUnlockCount(int count) {
-        mPref.edit().putInt(PREF_RECORD_CHANGE_DATE_UNLOCK_COUNT, count).apply();
+        commitAsync(mPref.edit().putInt(PREF_RECORD_CHANGE_DATE_UNLOCK_COUNT, count));
     }
 
     public int getChanageDateUnlockCount() {
@@ -2837,7 +2857,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存有升级更新时是否已经对升级解锁提示数据初始化 */
     public void setUpdateRecoveryDefaultData(boolean flag) {
-        mPref.edit().putBoolean(PREF_UPDATE_RECOVERY_DEFAULT_DATA, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_UPDATE_RECOVERY_DEFAULT_DATA, flag));
     }
 
     public boolean getUpdateRecoveryDefaultData() {
@@ -2846,7 +2866,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 首次进入PG自启动提示标志 */
     public void setPGUnlockUpdateTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_PG_UNLOCK_UPDATE_TIP_FLAG, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_PG_UNLOCK_UPDATE_TIP_FLAG, flag));
     }
 
     public boolean getPGUnlockUpdateTip() {
@@ -2855,7 +2875,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存是否为强制升级 */
     public void setPGIsForceUpdate(boolean flag) {
-        mPref.edit().putBoolean(PREF_PG_IS_FORCE_UPDATE, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_PG_IS_FORCE_UPDATE, flag));
     }
 
     public boolean getPGIsForceUpdate() {
@@ -2864,7 +2884,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 保存第二天产生的随机数 */
     public void setRandomIn30Within(int random) {
-        mPref.edit().putInt(PREF_RANDOM_IN_30_WITHIN, random).apply();
+        commitAsync(mPref.edit().putInt(PREF_RANDOM_IN_30_WITHIN, random));
     }
 
     public int getRandomIn30Within() {
@@ -2873,7 +2893,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 高级保护打开提示 */
     public void setAdvanceProtectDialogTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_ADVANCE_PROTECT_DIALOG_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_ADVANCE_PROTECT_DIALOG_TIP, flag));
     }
 
     public boolean getAdvanceProtectDialogTip() {
@@ -2882,11 +2902,22 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     /* 高级保护打开后在设置列表提示 */
     public void setAdvanceProtectOpenSuccessDialogTip(boolean flag) {
-        mPref.edit().putBoolean(PREF_ADVANCE_PROTECT_OPEN_SUCCESSDIALOG_TIP, flag).apply();
+        commitAsync(mPref.edit().putBoolean(PREF_ADVANCE_PROTECT_OPEN_SUCCESSDIALOG_TIP, flag));
     }
 
     public boolean getAdvanceProtectOpenSuccessDialogTip() {
         return mPref.getBoolean(PREF_ADVANCE_PROTECT_OPEN_SUCCESSDIALOG_TIP, true);
+    }
+
+    public void commitAsync(final Editor editor) {
+        if (editor == null) return;
+
+        mSerialExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                editor.commit();
+            }
+        });
     }
 
 }
