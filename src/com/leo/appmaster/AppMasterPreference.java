@@ -266,6 +266,9 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public static final String PREF_APP_WIFI_STATISTICS = "wifi_statistics";
     public static final String PREF_APP_WIFI_STATISTICS_IS_LOADED = "wifi_statistics_isloaded";
+    
+    public static final String PREF_AD_LOCK_WALL = "ad_lock_wall";
+
 
     public static final String PREF_AD_AFTER_PRIVACY_PROTECTION = "ad_after_privacy_protection";
     public static final String PREF_AD_AFTER_ACCELERATING = "ad_after_accelerating";
@@ -2711,6 +2714,14 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getIsWifiStatistics() {
         return mPref.getInt(PREF_APP_WIFI_STATISTICS, 0);
+    }
+    
+    public void setIsLockAppWallOpen(int value) {
+        commitAsync(mPref.edit().putInt(PREF_AD_LOCK_WALL, value));
+    }
+
+    public int getIsLockAppWallOpen() {
+        return mPref.getInt(PREF_AD_LOCK_WALL, 1);
     }
 
     public void setIsWifiStatisticsIsLoad(long value) {

@@ -245,7 +245,7 @@ public class WifiInfoFetcher {
 
         boolean hasChanged = false;
         for (APInfo info : newData) {
-            if (info.mSSID == null) {
+            if (info == null || info.mSSID == null) {
                 continue;
             }
             if (currentLoc != null) {
@@ -383,14 +383,13 @@ public class WifiInfoFetcher {
             toByte = new ByteArrayOutputStream();
             ObjectOutputStream oos = new ObjectOutputStream(toByte);
             oos.writeObject(value);
+            // 对byte[]进行Base64编码
+            String mapBase64 = new String(Base64.encode(toByte.toByteArray(), Base64.DEFAULT));
+            // 存储
+            editor.putString(name, mapBase64);
+            editor.commit();
         } catch (IOException e) {
-            e.printStackTrace();
         }
-        // 对byte[]进行Base64编码
-        String mapBase64 = new String(Base64.encode(toByte.toByteArray(), Base64.DEFAULT));
-        // 存储
-        editor.putString(name, mapBase64);
-        editor.commit();
     }
 
     private Hashtable<String, APInfo> restoreAPInfo(Context context, String prefFileName,

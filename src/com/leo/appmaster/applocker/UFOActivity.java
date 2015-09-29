@@ -5,22 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.json.JSONObject;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
-import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.CountDownTimer;
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
@@ -32,20 +24,16 @@ import android.widget.Toast;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.R.id;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
-import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
-import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.lockertheme.ThemeJsonObjectParser;
 import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -58,8 +46,6 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
-import com.mobvista.sdk.m.core.MobvistaAd;
-import com.mobvista.sdk.m.core.MobvistaAdNative;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class UFOActivity extends BaseActivity implements ImageLoadingListener {

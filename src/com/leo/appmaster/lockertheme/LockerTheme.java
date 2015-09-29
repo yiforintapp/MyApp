@@ -829,55 +829,59 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
     @Override
     public void onBackPressed() {
-        if (mFromTheme != null && !mFromTheme.equals("")) {
-            LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
-            Intent intent = null;
-            if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                intent = new Intent(this, HomeActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            } else {
-                if (AppMasterConfig.LOGGABLE) {
-                    LeoLog.f(TAG, "onBackPressed 1", Constants.LOCK_LOG);
+        try {
+            if (mFromTheme != null && !mFromTheme.equals("")) {
+                LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
+                Intent intent = null;
+                if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                    intent = new Intent(this, HomeActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                } else {
+                    if (AppMasterConfig.LOGGABLE) {
+                        LeoLog.f(TAG, "onBackPressed 1", Constants.LOCK_LOG);
+                    }
+                    intent = new Intent(this, LockSettingActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
                 }
-                intent = new Intent(this, LockSettingActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-            super.onBackPressed();
-        } else if (TextUtils.equals(mFrom, "new_theme_tip")) {
-            if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
-                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                        getPackageName(), true, new OnUnlockedListener() {
-                            @Override
-                            public void onUnlocked() {
-                                LockManager.getInstatnce().timeFilter(getPackageName(), 500);
-                                Intent intent = new Intent(LockerTheme.this, HomeActivity.class);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                AppMasterApplication.getInstance().startActivity(intent);
-                                LockerTheme.this.finish();
-                            }
+                super.onBackPressed();
+            } else if (TextUtils.equals(mFrom, "new_theme_tip")) {
+                if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                    LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
+                    LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
+                            getPackageName(), true, new OnUnlockedListener() {
+                                @Override
+                                public void onUnlocked() {
+                                    LockManager.getInstatnce().timeFilter(getPackageName(), 500);
+                                    Intent intent = new Intent(LockerTheme.this, HomeActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    AppMasterApplication.getInstance().startActivity(intent);
+                                    LockerTheme.this.finish();
+                                }
 
-                            @Override
-                            public void onUnlockOutcount() {
+                                @Override
+                                public void onUnlockOutcount() {
 
-                            }
+                                }
 
-                            @Override
-                            public void onUnlockCanceled() {
-                            }
-                        });
-            } else {
-                if (AppMasterConfig.LOGGABLE) {
-                    LeoLog.f(TAG, "onBackPressed 2", Constants.LOCK_LOG);
+                                @Override
+                                public void onUnlockCanceled() {
+                                }
+                            });
+                } else {
+                    if (AppMasterConfig.LOGGABLE) {
+                        LeoLog.f(TAG, "onBackPressed 2", Constants.LOCK_LOG);
+                    }
+                    Intent intent = new Intent(this, LockSettingActivity.class);
+                    startActivity(intent);
+                    super.onBackPressed();
                 }
-                Intent intent = new Intent(this, LockSettingActivity.class);
-                startActivity(intent);
+            } else {
                 super.onBackPressed();
             }
-        } else {
-            super.onBackPressed();
+        } catch (Exception e) {
+            
         }
     }
 

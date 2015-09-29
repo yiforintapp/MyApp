@@ -246,7 +246,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @SuppressWarnings("deprecation")
     private void setMobvistaIcon() {
         // In some case, we have no AD
-        if (wallAd != null) {
+        if (wallAd != null &&  AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
             wallAd.loadWallIcon(new WallIconCallback() {
 
                 @Override
@@ -815,9 +815,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
         mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
-        ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
-        mAdIcon.setVisibility(View.VISIBLE);
-        mAdIcon.setOnClickListener(this);
+        
+        if(AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {          
+            ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
+            mAdIcon.setVisibility(View.VISIBLE);
+            mAdIcon.setOnClickListener(this);
+        }
 
         // mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         // ((View) mThemeView.getParent()).setVisibility(View.VISIBLE);
