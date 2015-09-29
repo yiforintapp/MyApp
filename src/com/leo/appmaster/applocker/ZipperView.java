@@ -8,19 +8,16 @@ import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffXfermode;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.LeoLog;
@@ -145,6 +142,9 @@ public class ZipperView extends View {
     }
 
     private void initScaleBitmap() {
+        if(mWidth <=0 || mHeight <= 0) {
+            return;
+        }      
         Options options = new Options();
         options.inPreferredConfig = Config.RGB_565;
         // 大背景图没有必要使用8888，替换为565
