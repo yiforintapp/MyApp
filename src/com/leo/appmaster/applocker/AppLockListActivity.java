@@ -10,21 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
-
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -39,6 +25,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
+import com.leo.appmaster.home.AutoStartGuideList;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
@@ -51,29 +38,56 @@ import com.leo.appmaster.ui.PagedGridView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
+
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Phone;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 public class AppLockListActivity extends BaseActivity implements
         AppChangeListener, OnItemClickListener, OnClickListener {
 
     public LayoutInflater mInflater;
     private TextView mTvModeName;
-    private ImageView mIvBack, mIvSortSelected;
+    private ImageView mIvBack, mIvSortSelected, mGuideHelpTipBt;
     private View mLyoutModeName, mMaskLayer;
     private List<AppInfo> mLockedList;
     private List<AppInfo> mUnlockList;
     private PagedGridView mAppPager;
     private LeoPopMenu mLeoPopMenu;
     private LeoLockSortPopMenu mLeoLockSortPopMenu;
-
     private AppInfo mLastSelectApp;
     private String[] mSortType;
-
+    private TextView mSecurityGuideBt, mAutoGuideBt, mBackageGroundBt;
+    private Button mFinishBt;
+    private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL, mFinishRL;
+    private TextView mSecurityText, mAutoText, mBackGroudText, mFinishLine;
+    private ScrollView mGuideTip;
     public static final int DEFAULT_SORT = 0;
     public static final int NAME_SORT = 1;
     public static final int INSTALL_TIME_SORT = 2;
     private int mCurSortType = DEFAULT_SORT;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
+    private static final boolean DBG = false;
 
     private int mType = -1;
 
@@ -126,33 +140,31 @@ public class AppLockListActivity extends BaseActivity implements
 
                 boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
                 LeoLog.e("lockmore", "fromLockMore==" + fromLockMore);
-                boolean isStartFromLockmode=getIntent().getBooleanExtra("enter_from_lockmode", false);
+                boolean isStartFromLockmode = getIntent().getBooleanExtra("enter_from_lockmode",
+                        false);
                 LeoLog.e("lockmore", "isStartFromLockmode==" + isStartFromLockmode);
-//                if(isStartFromLockmode)
-//                {
-//        
-////                    Intent intent = new Intent(this, LockModeActivity.class);
-////                    startActivity(intent);
-//                       this.finish();
-//                }                
-//                else 
-                if (fromLockMore)
-                {
+                // if(isStartFromLockmode)
+                // {
+                //
+                //// Intent intent = new Intent(this, LockModeActivity.class);
+                //// startActivity(intent);
+                // this.finish();
+                // }
+                // else
+                if (fromLockMore) {
                     LockManager.getInstatnce().timeFilter(getPackageName(), 1000);
                     Intent intent = new Intent(this, HomeActivity.class);
-                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList()||AppMasterPreference.getInstance(this).getIsClockToLockList())
-                    {
+                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList()
+                            || AppMasterPreference.getInstance(this).getIsClockToLockList()) {
                         LeoLog.e("lockmore", "inif is home");
                         AppMasterPreference.getInstance(this).setIsFromLockList(true);
                     }
                     Log.e("lockmore", "settrue");
                     startActivity(intent);
 
-                }
-                else
-                {
-                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList()||AppMasterPreference.getInstance(this).getIsClockToLockList())
-                    {
+                } else {
+                    if (AppMasterPreference.getInstance(this).getIsHomeToLockList()
+                            || AppMasterPreference.getInstance(this).getIsClockToLockList()) {
                         LeoLog.e("lockmore", "inif is home");
                         LeoLog.e("lockmore", "settrue");
                         AppMasterPreference.getInstance(this).setIsFromLockList(true);
@@ -204,6 +216,36 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList = new ArrayList<AppInfo>();
         mAppPager = (PagedGridView) findViewById(R.id.pager_unlock);
         mAppPager.setItemClickListener(this);
+        mGuideTip = (ScrollView) findViewById(R.id.guide_tip_scv);
+        mSecurityGuideBt = (TextView) findViewById(R.id.security_guide_button);
+        mSecurityGuideBt.setOnClickListener(this);
+        mAutoGuideBt = (TextView) findViewById(R.id.auto_guide_button);
+        mAutoGuideBt.setOnClickListener(this);
+        mBackageGroundBt = (TextView) findViewById(R.id.background_guide_button);
+        mBackageGroundBt.setOnClickListener(this);
+        mSecurityRL = (RelativeLayout) findViewById(R.id.security_guide);
+        mAutoRL = (RelativeLayout) findViewById(R.id.auto_guide);
+        mBackgroundRL = (RelativeLayout) findViewById(R.id.background_guide);
+        mFinishBt = (Button) findViewById(R.id.finish);
+        mFinishBt.setOnClickListener(this);
+        mGuideHelpTipBt = (ImageView) findViewById(R.id.tip_help);
+        /* 系统是否大于Android5.1 */
+        boolean androidApiMore = BuildProperties.isMoreAndroid22();
+        /* 是否存在于白名单:-1-----不存在百名单 */
+        int model = AutoStartGuideList.isAutoWhiteListModel(this);
+        if (DBG) {
+            model = AutoStartGuideList.HUAWEIP7_PLUS;
+        }
+        if (model == -1 && !androidApiMore) {
+            mGuideHelpTipBt.setVisibility(View.GONE);
+        } else {
+            mGuideHelpTipBt.setOnClickListener(this);
+        }
+        mSecurityText = (TextView) findViewById(R.id.security_guide_text);
+        mAutoText = (TextView) findViewById(R.id.auto_guide_text);
+        mBackGroudText = (TextView) findViewById(R.id.background_guide_text);
+        mFinishRL = (RelativeLayout) findViewById(R.id.finish_RL);
+        mFinishLine = (TextView) findViewById(R.id.finish_line);
     }
 
     private void loadData() {
@@ -216,7 +258,7 @@ public class AppLockListActivity extends BaseActivity implements
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(this)
                 .getAllPkgInfo();
         List<String> lockList = LockManager.getInstatnce().getCurLockList();
-        
+
         ProcessDetector detector = new ProcessDetector();
         for (AppItemInfo appDetailInfo : list) {
             if (appDetailInfo.packageName.equals(this.getPackageName())
@@ -270,10 +312,12 @@ public class AppLockListActivity extends BaseActivity implements
             return;
         }
 
-        if (view == null) return;
+        if (view == null)
+            return;
 
         mLastSelectApp = (AppInfo) view.getTag();
-        if (mLastSelectApp == null) return;
+        if (mLastSelectApp == null)
+            return;
 
         AppInfo info = null;
         if (mLastSelectApp.isLocked) {
@@ -287,7 +331,8 @@ public class AppLockListActivity extends BaseActivity implements
                 }
             }
 
-            if (info == null) return;
+            if (info == null)
+                return;
 
             if (!mUnlockList.contains(info)) {
                 mUnlockList.add(info);
@@ -316,7 +361,8 @@ public class AppLockListActivity extends BaseActivity implements
                     break;
                 }
             }
-            if (info == null) return;
+            if (info == null)
+                return;
 
             if (mLockedList.contains(info)) {
                 mLockedList.remove(info);
@@ -388,7 +434,7 @@ public class AppLockListActivity extends BaseActivity implements
                         loadData();
                         AppMasterPreference.getInstance(
                                 AppLockListActivity.this).setSortType(
-                                mCurSortType);
+                                        mCurSortType);
                         if (mLeoLockSortPopMenu != null) {
                             mLeoLockSortPopMenu.dismissSnapshotList();
                         }
@@ -408,9 +454,10 @@ public class AppLockListActivity extends BaseActivity implements
                     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
 
-                    	  List<Integer> list = mLeoPopMenu.getPopMenuItemIds();
-                          int selectModeID = list.get(position);
-                          if (selectModeID == LockMode.MODE_OTHER) { //add new mode item
+                        List<Integer> list = mLeoPopMenu.getPopMenuItemIds();
+                        int selectModeID = list.get(position);
+                        if (selectModeID == LockMode.MODE_OTHER) { // add new
+                                                                   // mode item
                             addLockMode();
                             SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "modesadd",
                                     "applock");
@@ -419,7 +466,13 @@ public class AppLockListActivity extends BaseActivity implements
                             LockManager lm = LockManager.getInstatnce();
                             List<LockMode> lockModes = lm.getLockMode();
                             for (LockMode lockMode : lockModes) {
-                            	if (selectModeID == lockMode.modeId) {// the first time show lock app list
+                                if (selectModeID == lockMode.modeId) {// the
+                                                                      // first
+                                                                      // time
+                                                                      // show
+                                                                      // lock
+                                                                      // app
+                                                                      // list
                                     if (lockMode.defaultFlag == 1
                                             && !lockMode.haveEverOpened) {
                                         lm.setCurrentLockMode(lockMode, true);
@@ -460,10 +513,129 @@ public class AppLockListActivity extends BaseActivity implements
             case R.id.mask_layer:
                 mMaskLayer.setVisibility(View.INVISIBLE);
                 AppMasterPreference.getInstance(this).setLockerUsed();
+                /* 锁提示蒙层消失，引导蒙层显示 */
+                setGuideTipShow();
+                break;
+            case R.id.security_guide_button:
+                /* Android5.01+ */
+                Intent intent = new Intent();
+                intent.setAction("android.intent.action.MAIN");
+                ComponentName cn = new ComponentName("com.android.settings",
+                        "com.android.settings.Settings");
+                intent.setComponent(cn);
+                startActivity(intent);
+                break;
+            case R.id.auto_guide_button:
+                int model = AutoStartGuideList.isAutoWhiteListModel(this);
+                /* 华为P7类rom */
+                if (AutoStartGuideList.HUAWEIP7_PLUS == model) {
+                    Intent autoIntent = new Intent();
+                    autoIntent.setAction("android.intent.action.MAIN");
+                    ComponentName autoCn = new ComponentName("com.huawei.systemmanager",
+                            "com.huawei.systemmanager.optimize.bootstart.BootStartActivity");
+                    autoIntent.setComponent(autoCn);
+                    startActivity(autoIntent);
+                } else {
+                    new AutoStartGuideList().executeGuide();
+                }
+                break;
+            case R.id.background_guide_button:
+                new AutoStartGuideList().executeGuide();
+                break;
+            case R.id.finish:
+                if (AppMasterPreference.getInstance(this).getPGUnlockUpdateTip()) {
+                    AppMasterPreference.getInstance(this).setPGUnlockUpdateTip(false);
+                }
+                if (mGuideTip.getVisibility() == View.VISIBLE) {
+                    mGuideTip.setVisibility(View.GONE);
+                    mGuideTip.startAnimation(AnimationUtils
+                            .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
+                }
+                mFinishRL.startAnimation(AnimationUtils
+                        .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
+                mFinishLine.startAnimation(AnimationUtils
+                        .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
+                break;
+            case R.id.tip_help:
+                if (mGuideTip.getVisibility() == View.GONE) {
+                    mGuideTip.setVisibility(View.VISIBLE);
+                    Animation animation = AnimationUtils.loadAnimation(AppLockListActivity.this,
+                            R.anim.lock_mode_guide_in);
+                    mGuideTip.startAnimation(animation);
+                    showGuideTip();
+                    mFinishRL.setVisibility(View.VISIBLE);
+                    mFinishLine.setVisibility(View.VISIBLE);
+                    mFinishRL.setVisibility(View.VISIBLE);
+                } else if (mGuideTip.getVisibility() == View.VISIBLE) {
+                    mGuideTip.setVisibility(View.GONE);
+                    mGuideTip.startAnimation(AnimationUtils
+                            .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
+                    Animation animation = AnimationUtils.loadAnimation(AppLockListActivity.this,
+                            R.anim.help_tip_show);
+                    mGuideHelpTipBt.startAnimation(animation);
+                    mFinishRL.setVisibility(View.GONE);
+                    mFinishLine.setVisibility(View.GONE);
+                }
                 break;
         }
     }
-    
+
+    private void showGuideTip() {
+        setGuideTipShow();
+    }
+
+    private void setGuideTipShow() {
+        /* 是否需要提示 */
+        boolean autoStartGuideFlag = AppMasterPreference.getInstance(this).getPGUnlockUpdateTip();
+        if (DBG) {
+            autoStartGuideFlag = true;
+        }
+        boolean moreAndroid22 = BuildProperties.isMoreAndroid22();
+        int model = AutoStartGuideList.isAutoWhiteListModel(this);
+        if (autoStartGuideFlag) {
+            /* 是否存在于白名单 */
+            if (DBG) {
+                model = AutoStartGuideList.HUAWEIP7_PLUS;
+            }
+            if (model != -1 || moreAndroid22) {
+                mGuideTip.setVisibility(View.VISIBLE);
+                mFinishRL.setVisibility(View.VISIBLE);
+                mFinishLine.setVisibility(View.VISIBLE);
+            }
+        }
+        if (moreAndroid22) {
+            mSecurityRL.setVisibility(View.VISIBLE);
+        } else {
+            if (mSecurityRL.getVisibility() == View.VISIBLE) {
+                mSecurityRL.setVisibility(View.GONE);
+            }
+        }
+        if (DBG) {
+            model = AutoStartGuideList.HUAWEIP7_PLUS;
+        }
+        /*返回值为-1,则不再白名单中*/
+        if (model != -1) {
+            /* 华为P7类rom */
+            if (AutoStartGuideList.isDoubleTipOPenPhone(model)) {
+                mAutoRL.setVisibility(View.VISIBLE);
+                mBackgroundRL.setVisibility(View.VISIBLE);
+                mAutoText.setText(R.string.auto_start_tip_text_p7plus);
+                int content = AutoStartGuideList
+                        .getAutoWhiteListTipText(AppMasterApplication.getInstance());
+                mBackGroudText.setText(content);
+            } else {
+                int content = AutoStartGuideList
+                        .getAutoWhiteListTipText(AppMasterApplication.getInstance());
+                mAutoText.setText(content);
+                mAutoRL.setVisibility(View.VISIBLE);
+                if (mBackgroundRL.getVisibility() == View.VISIBLE) {
+                    mBackgroundRL.setVisibility(View.GONE);
+                }
+            }
+            
+        }
+    }
+
     public void onEventMainThread(LockModeEvent event) {
         LockManager lm = LockManager.getInstatnce();
         LockMode lockMode = lm.getCurLockMode();
@@ -473,7 +645,6 @@ public class AppLockListActivity extends BaseActivity implements
         }
     }
 
-    
     private void checkLockTip() {
         int switchCount = AppMasterPreference.getInstance(this).getSwitchModeCount();
         switchCount++;
@@ -505,14 +676,16 @@ public class AppLockListActivity extends BaseActivity implements
                             // cancel
                         } else if (which == 1) {
                             // new time lock
-                            intent = new Intent(AppLockListActivity.this, TimeLockEditActivity.class);
+                            intent = new Intent(AppLockListActivity.this,
+                                    TimeLockEditActivity.class);
                             intent.putExtra("new_time_lock", true);
                             intent.putExtra("from_dialog", true);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             AppLockListActivity.this.startActivity(intent);
                         } else if (which == 2) {
                             // new location lock
-                            intent = new Intent(AppLockListActivity.this, LocationLockEditActivity.class);
+                            intent = new Intent(AppLockListActivity.this,
+                                    LocationLockEditActivity.class);
                             intent.putExtra("new_location_lock", true);
                             intent.putExtra("from_dialog", true);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -520,8 +693,8 @@ public class AppLockListActivity extends BaseActivity implements
                         }
                     }
                 });
-//                dialog.getWindow().setType(
-//                        WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                // dialog.getWindow().setType(
+                // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
                 dialog.show();
             } else {
                 if (timeLockCount == 0 && locationLockCount != 0) {
@@ -541,7 +714,8 @@ public class AppLockListActivity extends BaseActivity implements
                                 // cancel
                             } else if (which == 1) {
                                 // new time lock
-                                intent = new Intent(AppLockListActivity.this, TimeLockEditActivity.class);
+                                intent = new Intent(AppLockListActivity.this,
+                                        TimeLockEditActivity.class);
                                 intent.putExtra("new_time_lock", true);
                                 intent.putExtra("from_dialog", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -570,7 +744,8 @@ public class AppLockListActivity extends BaseActivity implements
                                 // cancel
                             } else if (which == 1) {
                                 // new time lock
-                                Intent intent = new Intent(AppLockListActivity.this, LocationLockEditActivity.class);
+                                Intent intent = new Intent(AppLockListActivity.this,
+                                        LocationLockEditActivity.class);
                                 intent.putExtra("new_location_lock", true);
                                 intent.putExtra("from_dialog", true);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -579,14 +754,14 @@ public class AppLockListActivity extends BaseActivity implements
 
                         }
                     });
-//                    dialog.getWindow().setType(
-//                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
+                    // dialog.getWindow().setType(
+                    // WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
                     dialog.show();
                 }
             }
         }
     }
-    
+
     private void startRcommendLock() {
         Intent intent = new Intent(this, RecommentAppLockListActivity.class);
         startActivity(intent);
@@ -607,17 +782,19 @@ public class AppLockListActivity extends BaseActivity implements
 
     /**
      * return a map,the key is modeId,and value is modeName
+     * 
      * @return
      */
-    private Map<Integer, String> getLockModeMenuMapItems(){
-        Map<Integer,String> lockMap = new LinkedHashMap<Integer, String>();
+    private Map<Integer, String> getLockModeMenuMapItems() {
+        Map<Integer, String> lockMap = new LinkedHashMap<Integer, String>();
         List<LockMode> lockModes = LockManager.getInstatnce().getLockMode();
         LockMode curMode = LockManager.getInstatnce().getCurLockMode();
         if (curMode != null) {
             for (LockMode lockMode : lockModes) {
-                if(lockMode.modeId != curMode.modeId){
+                if (lockMode.modeId != curMode.modeId) {
                     lockMap.put(lockMode.modeId, lockMode.modeName);
-                    //Log.i("mode", lockMode.modeName + "  --> "+lockMode.modeId);
+                    // Log.i("mode", lockMode.modeName + " -->
+                    // "+lockMode.modeId);
                 }
             }
         }

@@ -444,4 +444,8 @@ public class BuildProperties {
     public static boolean isIuniModel() {
         return isAppointModel(KEY_IUNI_VERSION_ROM_NAME);
     }
+    /*大于Android API22 5.1以上*/
+    public static boolean isMoreAndroid22(){
+       return Build.VERSION.SDK_INT>=22;
+    }
 }

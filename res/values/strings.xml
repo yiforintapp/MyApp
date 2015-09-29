@@ -843,4 +843,6 @@
     <string name="splash_guide_page_msg_content">Come and check out interesting activities  useful tips here</string>
     <!-- 2.10 end -->
 
+    <string name="title_activity_auto_background_guide">AutoBackgroundGuideActivity</string>
+
 </resources>

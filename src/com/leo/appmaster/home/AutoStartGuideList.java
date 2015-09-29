@@ -18,16 +18,19 @@ import com.leo.appmaster.utils.LeoLog;
  */
 public class AutoStartGuideList extends WhiteList {
     public static final String TAG = "AutoStartGuideList";
-    private static final int XIAOMI4 = 0;
-    private static final int XIAOMIREAD = 1;
-    private static final int HUAWEIP7_PLUS = 2;
-    private static final int LENOVO = 3;
-    private static final int LETV = 4;
-    private static final int HUAWEIP6 = 5;
-    private static final int IUNI = 6;
+    public static final int XIAOMI4 = 0;
+    public static final int XIAOMIREAD = 1;
+    public static final int HUAWEIP7_PLUS = 2;
+    public static final int LENOVO = 3;
+    public static final int LETV = 4;
+    public static final int HUAWEIP6 = 5;
+    public static final int IUNI = 6;
     // private static final int OPPO = 3;
-    private static int[] LIST = {
+    public static int[] LIST = {
             XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6, IUNI
+    };
+    public static int[] DOUBLE_OPEN_TIP_PHONE = {
+            HUAWEIP7_PLUS
     };
 
     public AutoStartGuideList() {
@@ -82,7 +85,7 @@ public class AutoStartGuideList extends WhiteList {
                 list = new HuaWeiP6();
                 break;
             case IUNI:
-                list=new Iuini();
+                list = new Iuini();
                 break;
             default:
                 break;
@@ -285,7 +288,7 @@ public class AutoStartGuideList extends WhiteList {
             return HUAWEIP6;
         }
         boolean inui = BuildProperties.isIuniModel();
-        if(inui){
+        if (inui) {
             return IUNI;
         }
         return -1;
@@ -314,5 +317,15 @@ public class AutoStartGuideList extends WhiteList {
             return R.string.auto_start_tip_xiaomi4_and_letv;
         }
         return R.string.auto_start_guide_tip_content;
+    }
+
+    /* 查询是否为双提示打开系统权限的机型 */
+    public static boolean isDoubleTipOPenPhone(int phoneModel) {
+        for (int i : DOUBLE_OPEN_TIP_PHONE) {
+            if (i == phoneModel) {
+                return true;
+            }
+        }
+        return false;
     }
 }

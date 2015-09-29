@@ -198,7 +198,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // /* 获取是否从iswipe通知进入 */
         // checkIswipeNotificationTo();
         /* 白名单引导 */
-        autoStartDialogHandler();
+//        autoStartDialogHandler();
         // 进入首页拉取一次消息中心列表
         MsgCenterFetchJob.startImmediately();
     }
@@ -1757,7 +1757,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             }
         }
     }
-
     /* 卸载 PG */
     private boolean unistallPG() {
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
