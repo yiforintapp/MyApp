@@ -2716,12 +2716,12 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getInt(PREF_APP_WIFI_STATISTICS, 0);
     }
     
-    public void setIsLockAppWallOpen(boolean value) {
-        commitAsync(mPref.edit().putBoolean(PREF_AD_LOCK_WALL, value));
+    public void setIsLockAppWallOpen(int value) {
+        commitAsync(mPref.edit().putInt(PREF_AD_LOCK_WALL, value));
     }
 
-    public boolean getIsLockAppWallOpen() {
-        return mPref.getBoolean(PREF_AD_LOCK_WALL, true);
+    public int getIsLockAppWallOpen() {
+        return mPref.getInt(PREF_AD_LOCK_WALL, 1);
     }
 
     public void setIsWifiStatisticsIsLoad(long value) {

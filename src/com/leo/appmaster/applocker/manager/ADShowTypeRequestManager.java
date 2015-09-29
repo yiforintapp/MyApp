@@ -43,6 +43,7 @@ public class ADShowTypeRequestManager {
     private static final String VERSION_UPDATE_AFTER_UNLOCK = "i";
     private static final String APP_STATISTICS = "j";
     private static final String WIFI_STATISTICAL = "l";
+    private static final String AD_LOCK_WALL = "m";
     private static final String PACKAGEDIR = "/system/";
 
     private static ADShowTypeRequestManager mInstance;
@@ -219,6 +220,9 @@ public class ADShowTypeRequestManager {
                     LeoLog.e("poha", "请求成功，应用统计的开关：" + response.getInt(APP_STATISTICS));
                     sp.setIsWifiStatistics((response.getInt(WIFI_STATISTICAL)));
                     LeoLog.e("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
+                    
+                    sp.setIsLockAppWallOpen((response.getInt(AD_LOCK_WALL)));
+                    LeoLog.e("poha", "请求成功，解锁应用墙的开关：" + response.getInt(AD_LOCK_WALL));
                     //
                     // AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating(
                     // (1));
