@@ -50,6 +50,7 @@ public class PushInvoke implements PushInvokeHelper {
     public static final String PUSH_GOTO_PAGE_THEME = ".lockertheme.LockerTheme";
     public static final String PUSH_GOTO_PAGE_HotApp = ".appmanage.HotAppActivity";
     public static final String PUSH_GOTO_GAME = ".appwall.AppWallActivity";
+    public static final String PUSH_GOTO_MSGCENTER = ".msgcenter.MsgCenterActivity";
 
     public PushInvoke(Context ctx) {
         this.mContext = ctx;
@@ -130,7 +131,8 @@ public class PushInvoke implements PushInvokeHelper {
                 || mType.equals(PUSH_GOTO_PAGE_ISWIPE)
                 || mType.equals(PUSH_GOTO_PAGE_THEME)
                 || mType.equals(PUSH_GOTO_PAGE_HotApp)
-                || mType.equals(PUSH_GOTO_GAME))
+                || mType.equals(PUSH_GOTO_GAME)
+                || mType.equals(PUSH_GOTO_MSGCENTER))
         {
             LockManager.getInstatnce().timeFilter(mContext.getPackageName(), 1000);
         }
