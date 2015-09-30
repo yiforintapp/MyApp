@@ -1735,18 +1735,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mAutoStartGuideDialog.show();
     }
 
-    /* 首次进入PG自启动引导 */
-    private void autoStartDialogHandler() {
-        /* 是否需要提示 */
-        boolean autoStartGuideFlag = AppMasterPreference.getInstance(this).getPGUnlockUpdateTip();
-        if (autoStartGuideFlag) {
-            /* 是否存在于白名单 */
-            int model = AutoStartGuideList.isAutoWhiteListModel(this);
-            if (model != -1) {
-                showAutoStartGuideDialog();
-            }
-        }
-    }
     /* 卸载 PG */
     private boolean unistallPG() {
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {

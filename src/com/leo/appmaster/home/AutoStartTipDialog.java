@@ -150,7 +150,7 @@ public class AutoStartTipDialog extends LEOBaseDialog {
             ISwipUpdateRequestManager.getInstance(mContext).cancelShowIswipUpdate();
             mDialgFlag = null;
         } else if (noEmpty && AUTOSTART_TIP_DIALOG.equals(mDialgFlag)) {
-            AppMasterPreference.getInstance(mContext).setPGUnlockUpdateTip(false);
+//            AppMasterPreference.getInstance(mContext).setPGUnlockUpdateTip(false);
         }
         super.dismiss();
     }

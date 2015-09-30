@@ -10,6 +10,27 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.os.Bundle;
+import android.provider.Settings;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -41,28 +62,6 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.os.Bundle;
-import android.provider.ContactsContract.CommonDataKinds.Phone;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
-import android.widget.Toast;
-
 public class AppLockListActivity extends BaseActivity implements
         AppChangeListener, OnItemClickListener, OnClickListener {
 
@@ -79,9 +78,9 @@ public class AppLockListActivity extends BaseActivity implements
     private String[] mSortType;
     private TextView mSecurityGuideBt, mAutoGuideBt, mBackageGroundBt;
     private Button mFinishBt;
-    private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL, mFinishRL;
-    private TextView mSecurityText, mAutoText, mBackGroudText, mFinishLine;
-    private ScrollView mGuideTip;
+    private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL;
+    private TextView mSecurityText, mAutoText, mBackGroudText;
+    private View mGuideTip;
     public static final int DEFAULT_SORT = 0;
     public static final int NAME_SORT = 1;
     public static final int INSTALL_TIME_SORT = 2;
@@ -146,8 +145,8 @@ public class AppLockListActivity extends BaseActivity implements
                 // if(isStartFromLockmode)
                 // {
                 //
-                //// Intent intent = new Intent(this, LockModeActivity.class);
-                //// startActivity(intent);
+                // // Intent intent = new Intent(this, LockModeActivity.class);
+                // // startActivity(intent);
                 // this.finish();
                 // }
                 // else
@@ -216,7 +215,7 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList = new ArrayList<AppInfo>();
         mAppPager = (PagedGridView) findViewById(R.id.pager_unlock);
         mAppPager.setItemClickListener(this);
-        mGuideTip = (ScrollView) findViewById(R.id.guide_tip_scv);
+        mGuideTip = findViewById(R.id.guide_tip_layout);
         mSecurityGuideBt = (TextView) findViewById(R.id.security_guide_button);
         mSecurityGuideBt.setOnClickListener(this);
         mAutoGuideBt = (TextView) findViewById(R.id.auto_guide_button);
@@ -244,8 +243,8 @@ public class AppLockListActivity extends BaseActivity implements
         mSecurityText = (TextView) findViewById(R.id.security_guide_text);
         mAutoText = (TextView) findViewById(R.id.auto_guide_text);
         mBackGroudText = (TextView) findViewById(R.id.background_guide_text);
-        mFinishRL = (RelativeLayout) findViewById(R.id.finish_RL);
-        mFinishLine = (TextView) findViewById(R.id.finish_line);
+        
+        mSecurityGuideBt.setVisibility(needGuide() ? View.VISIBLE : View.GONE);
     }
 
     private void loadData() {
@@ -434,7 +433,7 @@ public class AppLockListActivity extends BaseActivity implements
                         loadData();
                         AppMasterPreference.getInstance(
                                 AppLockListActivity.this).setSortType(
-                                        mCurSortType);
+                                mCurSortType);
                         if (mLeoLockSortPopMenu != null) {
                             mLeoLockSortPopMenu.dismissSnapshotList();
                         }
@@ -514,16 +513,20 @@ public class AppLockListActivity extends BaseActivity implements
                 mMaskLayer.setVisibility(View.INVISIBLE);
                 AppMasterPreference.getInstance(this).setLockerUsed();
                 /* 锁提示蒙层消失，引导蒙层显示 */
-                setGuideTipShow();
+                if(mSecurityGuideBt.getVisibility() == View.VISIBLE) {
+                    setGuideTipShow();
+                }
                 break;
             case R.id.security_guide_button:
                 /* Android5.01+ */
-                Intent intent = new Intent();
-                intent.setAction("android.intent.action.MAIN");
-                ComponentName cn = new ComponentName("com.android.settings",
-                        "com.android.settings.Settings");
-                intent.setComponent(cn);
-                startActivity(intent);
+                ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
+                if (!usageStats.checkAvailable()) {
+                    Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
+                    try {
+                        startActivity(intent);
+                    } catch (Exception e) {                     
+                    }
+                }
                 break;
             case R.id.auto_guide_button:
                 int model = AutoStartGuideList.isAutoWhiteListModel(this);
@@ -543,18 +546,11 @@ public class AppLockListActivity extends BaseActivity implements
                 new AutoStartGuideList().executeGuide();
                 break;
             case R.id.finish:
-                if (AppMasterPreference.getInstance(this).getPGUnlockUpdateTip()) {
-                    AppMasterPreference.getInstance(this).setPGUnlockUpdateTip(false);
-                }
                 if (mGuideTip.getVisibility() == View.VISIBLE) {
                     mGuideTip.setVisibility(View.GONE);
                     mGuideTip.startAnimation(AnimationUtils
                             .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
                 }
-                mFinishRL.startAnimation(AnimationUtils
-                        .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
-                mFinishLine.startAnimation(AnimationUtils
-                        .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
                 break;
             case R.id.tip_help:
                 if (mGuideTip.getVisibility() == View.GONE) {
@@ -562,10 +558,7 @@ public class AppLockListActivity extends BaseActivity implements
                     Animation animation = AnimationUtils.loadAnimation(AppLockListActivity.this,
                             R.anim.lock_mode_guide_in);
                     mGuideTip.startAnimation(animation);
-                    showGuideTip();
-                    mFinishRL.setVisibility(View.VISIBLE);
-                    mFinishLine.setVisibility(View.VISIBLE);
-                    mFinishRL.setVisibility(View.VISIBLE);
+                    setGuideTipShow();
                 } else if (mGuideTip.getVisibility() == View.VISIBLE) {
                     mGuideTip.setVisibility(View.GONE);
                     mGuideTip.startAnimation(AnimationUtils
@@ -573,67 +566,46 @@ public class AppLockListActivity extends BaseActivity implements
                     Animation animation = AnimationUtils.loadAnimation(AppLockListActivity.this,
                             R.anim.help_tip_show);
                     mGuideHelpTipBt.startAnimation(animation);
-                    mFinishRL.setVisibility(View.GONE);
-                    mFinishLine.setVisibility(View.GONE);
                 }
                 break;
         }
     }
 
-    private void showGuideTip() {
-        setGuideTipShow();
-    }
 
     private void setGuideTipShow() {
-        /* 是否需要提示 */
-        boolean autoStartGuideFlag = AppMasterPreference.getInstance(this).getPGUnlockUpdateTip();
-        if (DBG) {
-            autoStartGuideFlag = true;
-        }
         boolean moreAndroid22 = BuildProperties.isMoreAndroid22();
-        int model = AutoStartGuideList.isAutoWhiteListModel(this);
-        if (autoStartGuideFlag) {
-            /* 是否存在于白名单 */
-            if (DBG) {
-                model = AutoStartGuideList.HUAWEIP7_PLUS;
-            }
-            if (model != -1 || moreAndroid22) {
-                mGuideTip.setVisibility(View.VISIBLE);
-                mFinishRL.setVisibility(View.VISIBLE);
-                mFinishLine.setVisibility(View.VISIBLE);
-            }
-        }
         if (moreAndroid22) {
             mSecurityRL.setVisibility(View.VISIBLE);
         } else {
-            if (mSecurityRL.getVisibility() == View.VISIBLE) {
-                mSecurityRL.setVisibility(View.GONE);
-            }
+            mSecurityRL.setVisibility(View.GONE);
         }
+        
+        int model = AutoStartGuideList.isAutoWhiteListModel(this);
         if (DBG) {
             model = AutoStartGuideList.HUAWEIP7_PLUS;
         }
-        /*返回值为-1,则不再白名单中*/
+        /* 返回值为-1,则不再白名单中 */
         if (model != -1) {
+            int content = AutoStartGuideList
+                    .getAutoWhiteListTipText(AppMasterApplication.getInstance());
+            mAutoText.setText(content);
+            mAutoRL.setVisibility(View.VISIBLE);
+            mBackgroundRL.setVisibility(View.GONE);
+            
             /* 华为P7类rom */
             if (AutoStartGuideList.isDoubleTipOPenPhone(model)) {
-                mAutoRL.setVisibility(View.VISIBLE);
                 mBackgroundRL.setVisibility(View.VISIBLE);
                 mAutoText.setText(R.string.auto_start_tip_text_p7plus);
-                int content = AutoStartGuideList
-                        .getAutoWhiteListTipText(AppMasterApplication.getInstance());
                 mBackGroudText.setText(content);
-            } else {
-                int content = AutoStartGuideList
-                        .getAutoWhiteListTipText(AppMasterApplication.getInstance());
-                mAutoText.setText(content);
-                mAutoRL.setVisibility(View.VISIBLE);
-                if (mBackgroundRL.getVisibility() == View.VISIBLE) {
-                    mBackgroundRL.setVisibility(View.GONE);
-                }
             }
-            
+        } else {
+            mAutoRL.setVisibility(View.GONE);
+            mBackgroundRL.setVisibility(View.GONE);
         }
+    }
+    
+    private boolean needGuide() {
+        return BuildProperties.isMoreAndroid22() ||  AutoStartGuideList.isAutoWhiteListModel(this) != -1;
     }
 
     public void onEventMainThread(LockModeEvent event) {

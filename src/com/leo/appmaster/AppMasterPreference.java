@@ -2875,14 +2875,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         return mPref.getBoolean(PREF_UPDATE_RECOVERY_DEFAULT_DATA, false);
     }
 
-    /* 首次进入PG自启动提示标志 */
-    public void setPGUnlockUpdateTip(boolean flag) {
-        commitAsync(mPref.edit().putBoolean(PREF_PG_UNLOCK_UPDATE_TIP_FLAG, flag));
-    }
-
-    public boolean getPGUnlockUpdateTip() {
-        return mPref.getBoolean(PREF_PG_UNLOCK_UPDATE_TIP_FLAG, true);
-    }
 
     /* 保存是否为强制升级 */
     public void setPGIsForceUpdate(boolean flag) {

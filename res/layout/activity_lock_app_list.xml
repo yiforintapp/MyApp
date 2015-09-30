@@ -118,243 +118,242 @@
     </RelativeLayout>
 
     <!-- 引导提示 -->
-
-    <ScrollView
-        android:id="@+id/guide_tip_scv"
+    <RelativeLayout
+        android:id="@+id/guide_tip_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
         android:layout_below="@id/layout_title_bar"
-        android:layout_marginBottom="62dp"
         android:background="#f3f3f3"
         android:visibility="gone" >
 
-        <LinearLayout
-            android:id="@+id/guide_tip"
+        <TextView
+            android:id="@+id/finish_line"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="64dp"
+            android:background="#e8e8e8" />
+
+        <RelativeLayout
+            android:id="@+id/finish_RL"
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:layout_alignParentBottom="true"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/finish"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:background="@drawable/manager_done_button_selecter"
+                android:text="@string/applock_guide_set_finish"
+                android:textColor="#ffffff"
+                android:textSize="18dp" />
+        </RelativeLayout>
+
+        <ScrollView
+            android:id="@+id/guide_tip_scv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/layout_title_bar"
-            android:orientation="vertical" >
+            android:layout_above="@id/finish_line"
+            android:background="#f3f3f3">
 
-            <TextView
-                android:id="@+id/guide_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="24dp"
-                android:text="@string/applock_guide_tip_title"
-                android:textColor="#5B5B5B"
-                android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/guide_sub_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/guide_title"
-                android:layout_centerHorizontal="true"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/applock_guide_tip_subtitle"
-                android:textColor="#5e5e5e"
-                android:textSize="14sp" />
-            <!-- 横线 -->
-
-            <RelativeLayout
-                android:id="@+id/security_guide"
+            <LinearLayout
+                android:id="@+id/guide_tip"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg"
-                android:gravity="center_vertical" >
-
-                <LinearLayout
-                    android:id="@+id/security_LT"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp" >
-
-                    <ImageView
-                        android:id="@+id/security_icon"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        
-                        android:src="@drawable/safe_open" />
-
-                    <TextView
-                        android:id="@+id/security_guide_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
-                        android:textSize="14sp"
-                        android:text="@string/applock_guide_tip_security_text"
-                        android:textColor="#414141" />
-                </LinearLayout>
+                android:layout_height="match_parent"
+                android:layout_below="@id/layout_title_bar"
+                android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/security_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/security_LT"
-                    android:background="#e8e8e8" />
-
-                <TextView
-                    android:id="@+id/security_guide_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_below="@id/security_line"
-                    android:background="@drawable/applock_guide_set_press"
-                    android:gravity="center"
-                    android:text="@string/applock_guide_set_text"
-                    android:textColor="#4285f4"
-                    android:textSize="16dp" />
-            </RelativeLayout>
-            <!-- 横线 -->
-
-            <RelativeLayout
-                android:id="@+id/auto_guide"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg"
-                android:gravity="center_vertical" >
-
-                <LinearLayout
-                    android:id="@+id/auto_LT"
+                    android:id="@+id/guide_title"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp" >
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginTop="32dp"
+                    android:text="@string/applock_guide_tip_title"
+                    android:textColor="#5B5B5B"
+                    android:textSize="18sp" />
 
-                    <ImageView
-                        android:id="@+id/auto_icon"
+                <TextView
+                    android:id="@+id/guide_sub_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/guide_title"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/applock_guide_tip_subtitle"
+                    android:textColor="#5e5e5e"
+                    android:textSize="14sp" />
+                <!-- 横线 -->
+
+                <RelativeLayout
+                    android:id="@+id/security_guide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg"
+                    android:gravity="center_vertical" >
+
+                    <LinearLayout
+                        android:id="@+id/security_LT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/power_star" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/security_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/safe_open" />
+
+                        <TextView
+                            android:id="@+id/security_guide_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:text="@string/applock_guide_tip_security_text"
+                            android:textColor="#414141"
+                            android:textSize="14sp" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/auto_guide_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
+                        android:id="@+id/security_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/security_LT"
+                        android:background="#e8e8e8" />
+
+                    <TextView
+                        android:id="@+id/security_guide_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_below="@id/security_line"
+                        android:background="@drawable/applock_guide_set_press"
                         android:gravity="center"
-                        android:textColor="#414141"
-                        android:textSize="14dp" />
-                </LinearLayout>
+                        android:text="@string/applock_guide_set_text"
+                        android:textColor="#4285f4"
+                        android:textSize="16dp" />
+                </RelativeLayout>
+                <!-- 横线 -->
 
-                <TextView
-                    android:id="@+id/quto_line"
+                <RelativeLayout
+                    android:id="@+id/auto_guide"
                     android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/auto_LT"
-                    android:background="#e8e8e8" />
-
-                <TextView
-                    android:id="@+id/auto_guide_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_below="@id/quto_line"
-                    android:background="@drawable/applock_guide_set_press"
-                    android:gravity="center"
-                    android:text="@string/applock_guide_set_text"
-                    android:textColor="#4285f4"
-                    android:textSize="16dp" />
-            </RelativeLayout>
-            <!-- 横线 -->
-
-            <RelativeLayout
-                android:id="@+id/background_guide"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_marginTop="16dp"
-                android:background="@drawable/bg"
-                android:gravity="center_vertical" >
-
-                <LinearLayout
-                    android:id="@+id/background_LT"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="8dp"
-                    android:paddingRight="8dp" >
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg"
+                    android:gravity="center_vertical" >
 
-                    <ImageView
-                        android:id="@+id/background_icon"
+                    <LinearLayout
+                        android:id="@+id/auto_LT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/backstage_protection" />
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="8dp" >
+
+                        <ImageView
+                            android:id="@+id/auto_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/power_star" />
+
+                        <TextView
+                            android:id="@+id/auto_guide_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:gravity="center"
+                            android:textColor="#414141"
+                            android:textSize="14dp" />
+                    </LinearLayout>
 
                     <TextView
-                        android:id="@+id/background_guide_text"
+                        android:id="@+id/quto_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/auto_LT"
+                        android:background="#e8e8e8" />
+
+                    <TextView
+                        android:id="@+id/auto_guide_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_below="@id/quto_line"
+                        android:background="@drawable/applock_guide_set_press"
+                        android:gravity="center"
+                        android:text="@string/applock_guide_set_text"
+                        android:textColor="#4285f4"
+                        android:textSize="16dp" />
+                </RelativeLayout>
+                <!-- 横线 -->
+
+                <RelativeLayout
+                    android:id="@+id/background_guide"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/bg"
+                    android:gravity="center_vertical" >
+
+                    <LinearLayout
+                        android:id="@+id/background_LT"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="16dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="8dp">
+
+                        <ImageView
+                            android:id="@+id/background_icon"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/backstage_protection" />
+
+                        <TextView
+                            android:id="@+id/background_guide_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:gravity="center"
+                            android:textColor="#414141"
+                            android:textSize="14dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/background_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_below="@id/background_LT"
+                        android:background="#e8e8e8" />
+
+                    <TextView
+                        android:id="@+id/background_guide_button"
+                        android:layout_width="match_parent"
+                        android:layout_height="42dp"
+                        android:layout_below="@id/background_line"
+                        android:background="@drawable/applock_guide_set_press"
                         android:gravity="center"
-                        android:textColor="#414141"
-                        android:textSize="14dp" />
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/background_line"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_below="@id/background_LT"
-                    android:background="#e8e8e8" />
-
-                <TextView
-                    android:id="@+id/background_guide_button"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:layout_below="@id/background_line"
-                    android:background="@drawable/applock_guide_set_press"
-                    android:gravity="center"
-                    android:text="@string/applock_guide_set_text"
-                    android:textColor="#4285f4"
-                    android:textSize="16dp" />
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
-
-    <TextView
-        android:id="@+id/finish_line"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="61dp"
-        android:background="#e8e8e8"
-        android:visibility="gone"  />
-
-    <RelativeLayout
-        android:id="@+id/finish_RL"
-        android:layout_width="match_parent"
-        android:layout_height="62dp"
-        android:layout_alignParentBottom="true"
-        android:gravity="center" 
-        android:visibility="gone" >
-
-        <Button
-            android:id="@+id/finish"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:background="@drawable/manager_done_button_selecter"
-            android:text="@string/applock_guide_set_finish"
-            android:textColor="#ffffff"
-            android:textSize="18dp" />
+                        android:text="@string/applock_guide_set_text"
+                        android:textColor="#4285f4"
+                        android:textSize="16dp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
     </RelativeLayout>
 
 </RelativeLayout>
