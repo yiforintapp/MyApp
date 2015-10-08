@@ -133,9 +133,9 @@ public class AppLockListActivity extends BaseActivity implements
     @Override
     public void onBackPressed() {
         if (mType == StatusBarEventService.EVENT_EMPTY) {
-            if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
-                mMaskLayer.setVisibility(View.GONE);
-            } else {
+//            if (mMaskLayer != null && mMaskLayer.getVisibility() == View.VISIBLE) {
+//                mMaskLayer.setVisibility(View.GONE);
+//            } else {
 
                 boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
                 LeoLog.e("lockmore", "fromLockMore==" + fromLockMore);
@@ -170,7 +170,7 @@ public class AppLockListActivity extends BaseActivity implements
                     }
                 }
                 super.onBackPressed();
-            }
+//            }
         } else {
             super.onBackPressed();
         }
@@ -191,13 +191,12 @@ public class AppLockListActivity extends BaseActivity implements
         mCurSortType = AppMasterPreference.getInstance(this).getSortType();
 
         mInflater = LayoutInflater.from(this);
-        if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
-            mMaskLayer = findViewById(R.id.mask_layer);
-            mMaskLayer.setOnClickListener(this);
-            mMaskLayer.setVisibility(View.VISIBLE);
-            AppMasterPreference.getInstance(this).setLockerUsed();
-        }
-
+//        if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
+//            mMaskLayer = findViewById(R.id.mask_layer);
+//            mMaskLayer.setOnClickListener(this);
+//            mMaskLayer.setVisibility(View.VISIBLE);
+//            AppMasterPreference.getInstance(this).setLockerUsed();
+//        }
         mIvBack = (ImageView) findViewById(R.id.iv_back);
         mLyoutModeName = findViewById(R.id.mode_select_layout);
         mTvModeName = (TextView) findViewById(R.id.mode_name_tv);
@@ -243,15 +242,22 @@ public class AppLockListActivity extends BaseActivity implements
         mSecurityText = (TextView) findViewById(R.id.security_guide_text);
         mAutoText = (TextView) findViewById(R.id.auto_guide_text);
         mBackGroudText = (TextView) findViewById(R.id.background_guide_text);
-        
+
         mSecurityGuideBt.setVisibility(needGuide() ? View.VISIBLE : View.GONE);
+        /* 锁提示蒙层消失，引导蒙层显示 */
+        boolean  isShowLockAutoTip=AppMasterPreference.getInstance(this).getLockAndAutoStartGuide();
+        if(!isShowLockAutoTip){
+            setGuideTipShow();
+            mGuideTip.setVisibility(View.VISIBLE);
+        }
+        
     }
 
     private void loadData() {
-        if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
-            mMaskLayer.setVisibility(View.VISIBLE);
-            mMaskLayer.setOnClickListener(this);
-        }
+//        if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
+//            mMaskLayer.setVisibility(View.VISIBLE);
+//            mMaskLayer.setOnClickListener(this);
+//        }
         mUnlockList.clear();
         mLockedList.clear();
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(this)
@@ -433,7 +439,7 @@ public class AppLockListActivity extends BaseActivity implements
                         loadData();
                         AppMasterPreference.getInstance(
                                 AppLockListActivity.this).setSortType(
-                                mCurSortType);
+                                        mCurSortType);
                         if (mLeoLockSortPopMenu != null) {
                             mLeoLockSortPopMenu.dismissSnapshotList();
                         }
@@ -510,12 +516,8 @@ public class AppLockListActivity extends BaseActivity implements
                 mLeoPopMenu.showPopMenu(this, mIvBack, null, null);
                 break;
             case R.id.mask_layer:
-                mMaskLayer.setVisibility(View.INVISIBLE);
-                AppMasterPreference.getInstance(this).setLockerUsed();
-                /* 锁提示蒙层消失，引导蒙层显示 */
-                if(mSecurityGuideBt.getVisibility() == View.VISIBLE) {
-                    setGuideTipShow();
-                }
+//                mMaskLayer.setVisibility(View.INVISIBLE);
+//                AppMasterPreference.getInstance(this).setLockerUsed();
                 break;
             case R.id.security_guide_button:
                 /* Android5.01+ */
@@ -523,10 +525,12 @@ public class AppLockListActivity extends BaseActivity implements
                 if (!usageStats.checkAvailable()) {
                     Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
                     try {
+                        LockManager.getInstatnce().timeFilterSelf();
                         startActivity(intent);
-                    } catch (Exception e) {                     
+                    } catch (Exception e) {
                     }
                 }
+                AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
             case R.id.auto_guide_button:
                 int model = AutoStartGuideList.isAutoWhiteListModel(this);
@@ -537,10 +541,12 @@ public class AppLockListActivity extends BaseActivity implements
                     ComponentName autoCn = new ComponentName("com.huawei.systemmanager",
                             "com.huawei.systemmanager.optimize.bootstart.BootStartActivity");
                     autoIntent.setComponent(autoCn);
+                    LockManager.getInstatnce().timeFilterSelf();
                     startActivity(autoIntent);
                 } else {
                     new AutoStartGuideList().executeGuide();
                 }
+                AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
             case R.id.background_guide_button:
                 new AutoStartGuideList().executeGuide();
@@ -550,7 +556,11 @@ public class AppLockListActivity extends BaseActivity implements
                     mGuideTip.setVisibility(View.GONE);
                     mGuideTip.startAnimation(AnimationUtils
                             .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
+                    Animation animation = AnimationUtils.loadAnimation(AppLockListActivity.this,
+                            R.anim.help_tip_show);
+                    mGuideHelpTipBt.startAnimation(animation);
                 }
+                AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
             case R.id.tip_help:
                 if (mGuideTip.getVisibility() == View.GONE) {
@@ -567,35 +577,35 @@ public class AppLockListActivity extends BaseActivity implements
                             R.anim.help_tip_show);
                     mGuideHelpTipBt.startAnimation(animation);
                 }
+                AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
         }
     }
 
-
     private void setGuideTipShow() {
+        /* 是否为Android5.1+ */
         boolean moreAndroid22 = BuildProperties.isMoreAndroid22();
+        /* 是否存在于白名单，返回值为-1,则不再白名单中 */
+        int model = AutoStartGuideList.isAutoWhiteListModel(this);
         if (moreAndroid22) {
             mSecurityRL.setVisibility(View.VISIBLE);
         } else {
             mSecurityRL.setVisibility(View.GONE);
         }
-        
-        int model = AutoStartGuideList.isAutoWhiteListModel(this);
         if (DBG) {
             model = AutoStartGuideList.HUAWEIP7_PLUS;
         }
-        /* 返回值为-1,则不再白名单中 */
         if (model != -1) {
             int content = AutoStartGuideList
                     .getAutoWhiteListTipText(AppMasterApplication.getInstance());
             mAutoText.setText(content);
             mAutoRL.setVisibility(View.VISIBLE);
             mBackgroundRL.setVisibility(View.GONE);
-            
-            /* 华为P7类rom */
+
+            /* 查询是否为双提示打开系统权限的机型 */
             if (AutoStartGuideList.isDoubleTipOPenPhone(model)) {
                 mBackgroundRL.setVisibility(View.VISIBLE);
-                mAutoText.setText(R.string.auto_start_tip_text_p7plus);
+                mAutoText.setText(R.string.auto_start_tip_text_huawei_plus);
                 mBackGroudText.setText(content);
             }
         } else {
@@ -603,9 +613,10 @@ public class AppLockListActivity extends BaseActivity implements
             mBackgroundRL.setVisibility(View.GONE);
         }
     }
-    
+
     private boolean needGuide() {
-        return BuildProperties.isMoreAndroid22() ||  AutoStartGuideList.isAutoWhiteListModel(this) != -1;
+        return BuildProperties.isMoreAndroid22()
+                || AutoStartGuideList.isAutoWhiteListModel(this) != -1;
     }
 
     public void onEventMainThread(LockModeEvent event) {

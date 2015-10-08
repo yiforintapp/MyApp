@@ -849,7 +849,7 @@
     <string name="applock_guide_tip_title">打开权限保证应用锁完美使用</string>
     <string name="applock_guide_tip_subtitle">检测到您的系统有部分限制，隐私卫士需要开启以下权限以更好的保护您的应用</string>
     <string name="applock_guide_tip_security_text">进入查看应用使用权限设置，将隐私卫士的权限打开</string>
-    <string  name="auto_start_tip_text_p7plus">在开机自启权限中，选择打开隐私卫士自启动权限</string>
+    <string  name="auto_start_tip_text_huawei_plus">在开机自启权限中，选择打开隐私卫士自启动权限</string>
     <string name="applock_guide_set_text">去设置</string>
      <string name="applock_guide_set_finish">完成</string>
     <!-- 2.12 end -->
