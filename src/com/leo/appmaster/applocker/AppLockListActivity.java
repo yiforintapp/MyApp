@@ -86,7 +86,7 @@ public class AppLockListActivity extends BaseActivity implements
     public static final int INSTALL_TIME_SORT = 2;
     private int mCurSortType = DEFAULT_SORT;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
     
 
     private int mType = -1;
@@ -429,6 +429,13 @@ public class AppLockListActivity extends BaseActivity implements
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
+                        /*如果提示界面存在，让其消失*/
+                        if (mGuideTip.getVisibility() == View.VISIBLE) {
+                            mGuideTip.setVisibility(View.GONE);
+                            mGuideTip.startAnimation(AnimationUtils
+                                    .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
+                        }
+                        AppMasterPreference.getInstance(AppLockListActivity.this).setLockAndAutoStartGuide(true);
                         if (position == 0) {
                             mCurSortType = DEFAULT_SORT;
                         } else if (position == 1) {
@@ -458,7 +465,13 @@ public class AppLockListActivity extends BaseActivity implements
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view,
                             int position, long id) {
-
+                        /*如果提示界面存在，让其消失*/
+                        if (mGuideTip.getVisibility() == View.VISIBLE) {
+                            mGuideTip.setVisibility(View.GONE);
+                            mGuideTip.startAnimation(AnimationUtils
+                                    .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
+                        }
+                        AppMasterPreference.getInstance(AppLockListActivity.this).setLockAndAutoStartGuide(true);
                         List<Integer> list = mLeoPopMenu.getPopMenuItemIds();
                         int selectModeID = list.get(position);
                         if (selectModeID == LockMode.MODE_OTHER) { // add new
@@ -587,7 +600,9 @@ public class AppLockListActivity extends BaseActivity implements
         boolean moreAndroid22 = BuildProperties.isMoreAndroid22();
         /* 是否存在于白名单，返回值为-1,则不再白名单中 */
         int model = AutoStartGuideList.isAutoWhiteListModel(this);
-        if (moreAndroid22) {
+        /*联想k50android5.1以上不用显示应用锁提示*/
+        boolean lenovo = BuildProperties.isLenoveModel();
+        if (moreAndroid22 && !lenovo) {
             mGuideTip.setVisibility(View.VISIBLE);
             mSecurityRL.setVisibility(View.VISIBLE);
         } else {
