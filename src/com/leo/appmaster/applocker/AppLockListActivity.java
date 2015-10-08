@@ -42,6 +42,7 @@ import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -90,6 +91,8 @@ public class AppLockListActivity extends BaseActivity implements
     
 
     private int mType = -1;
+    
+    private int mWhiteMode = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,6 +114,7 @@ public class AppLockListActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
+        updateHelpState();
     }
 
     @Override
@@ -187,7 +191,9 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private void initUI() {
-
+        
+        /* 是否存在于白名单:-1-----不存在百名单 */
+        mWhiteMode = AutoStartGuideList.isAutoWhiteListModel(this);
         mSortType = getResources().getStringArray(R.array.sort_type);
         mCurSortType = AppMasterPreference.getInstance(this).getSortType();
 
@@ -228,23 +234,11 @@ public class AppLockListActivity extends BaseActivity implements
         mFinishBt = (Button) findViewById(R.id.finish);
         mFinishBt.setOnClickListener(this);
         mGuideHelpTipBt = (ImageView) findViewById(R.id.tip_help);
-        /* 系统是否大于Android5.1 */
-        boolean androidApiMore = BuildProperties.isMoreAndroid22();
-        /* 是否存在于白名单:-1-----不存在百名单 */
-        int model = AutoStartGuideList.isAutoWhiteListModel(this);
-        if (DBG) {
-            model = AutoStartGuideList.HUAWEIP7_PLUS;
-        }
-        if (model == -1 && !androidApiMore) {
-            mGuideHelpTipBt.setVisibility(View.GONE);
-        } else {
-            mGuideHelpTipBt.setOnClickListener(this);
-        }
+        mGuideHelpTipBt.setOnClickListener(this);
         mSecurityText = (TextView) findViewById(R.id.security_guide_text);
         mAutoText = (TextView) findViewById(R.id.auto_guide_text);
         mBackGroudText = (TextView) findViewById(R.id.background_guide_text);
-
-        mSecurityGuideBt.setVisibility(needGuide() ? View.VISIBLE : View.GONE);
+        
         /* 锁提示蒙层消失，引导蒙层显示 */
         boolean  isShowLockAutoTip=AppMasterPreference.getInstance(this).getLockAndAutoStartGuide();
         if(!isShowLockAutoTip){
@@ -252,12 +246,25 @@ public class AppLockListActivity extends BaseActivity implements
         }
         
     }
+    
+    private void updateHelpState() {
+        if (DBG) {
+            mWhiteMode = AutoStartGuideList.HUAWEIP7_PLUS;
+        }
+        if (needGuide()) {
+            mGuideHelpTipBt.setVisibility(View.VISIBLE);
+        } else {
+            mGuideHelpTipBt.setVisibility(View.GONE);
+            mGuideTip.setVisibility(View.GONE);
+        }
+    }
 
     private void loadData() {
 //        if (AppMasterPreference.getInstance(this).isFisrtUseLocker()) {
 //            mMaskLayer.setVisibility(View.VISIBLE);
 //            mMaskLayer.setOnClickListener(this);
 //        }
+        
         mUnlockList.clear();
         mLockedList.clear();
         ArrayList<AppItemInfo> list = AppLoadEngine.getInstance(this)
@@ -546,9 +553,8 @@ public class AppLockListActivity extends BaseActivity implements
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
             case R.id.auto_guide_button:
-                int model = AutoStartGuideList.isAutoWhiteListModel(this);
                 /* 华为P7类rom */
-                if (AutoStartGuideList.HUAWEIP7_PLUS == model) {
+                if (AutoStartGuideList.HUAWEIP7_PLUS == mWhiteMode) {
                     Intent autoIntent = new Intent();
                     autoIntent.setAction("android.intent.action.MAIN");
                     ComponentName autoCn = new ComponentName("com.huawei.systemmanager",
@@ -596,13 +602,9 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private void setGuideTipShow() {
-        /* 是否为Android5.1+ */
-        boolean moreAndroid22 = BuildProperties.isMoreAndroid22();
-        /* 是否存在于白名单，返回值为-1,则不再白名单中 */
-        int model = AutoStartGuideList.isAutoWhiteListModel(this);
         /*联想k50android5.1以上不用显示应用锁提示*/
         boolean lenovo = BuildProperties.isLenoveModel();
-        if (moreAndroid22 && !lenovo) {
+        if (TaskDetectService.sDetectSpecial && !lenovo) {
             mGuideTip.setVisibility(View.VISIBLE);
             mSecurityRL.setVisibility(View.VISIBLE);
         } else {
@@ -610,9 +612,9 @@ public class AppLockListActivity extends BaseActivity implements
             mGuideTip.setVisibility(View.GONE);
         }
         if (DBG) {
-            model = AutoStartGuideList.HUAWEIP7_PLUS;
+            mWhiteMode = AutoStartGuideList.HUAWEIP7_PLUS;
         }
-        if (model != -1) {
+        if (mWhiteMode != -1) {
             mGuideTip.setVisibility(View.VISIBLE);
             int content = AutoStartGuideList
                     .getAutoWhiteListTipText(AppMasterApplication.getInstance());
@@ -621,7 +623,7 @@ public class AppLockListActivity extends BaseActivity implements
             mBackgroundRL.setVisibility(View.GONE);
 
             /* 查询是否为双提示打开系统权限的机型 */
-            if (AutoStartGuideList.isDoubleTipOPenPhone(model)) {
+            if (AutoStartGuideList.isDoubleTipOPenPhone(mWhiteMode)) {
                 mBackgroundRL.setVisibility(View.VISIBLE);
                 mAutoText.setText(R.string.auto_start_tip_text_huawei_plus);
                 mBackGroudText.setText(content);
@@ -634,8 +636,16 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private boolean needGuide() {
-        return BuildProperties.isMoreAndroid22()
-                || AutoStartGuideList.isAutoWhiteListModel(this) != -1;
+        if(mWhiteMode != -1) {
+            return true;
+        }
+        if(TaskDetectService.sDetectSpecial) {
+            ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
+            if (!usageStats.checkAvailable()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public void onEventMainThread(LockModeEvent event) {

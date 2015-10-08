@@ -93,6 +93,8 @@ public class TaskDetectService extends Service {
     private static TaskDetectService sService;
     private static Notification sNotification;
     private String language = "zh";
+    
+    public static boolean sDetectSpecial = false;
 
     public class TaskDetectBinder extends Binder {
         public TaskDetectService getService() {
@@ -212,6 +214,7 @@ public class TaskDetectService extends Service {
             mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period,
                     TimeUnit.MILLISECONDS);
         } else {
+            sDetectSpecial = true;
             mDetectThreadCompat = new DetectThreadCompat(mLockHandler);
             mDetectThreadCompat.start();
         }
