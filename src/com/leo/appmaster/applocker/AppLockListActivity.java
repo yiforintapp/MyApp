@@ -87,6 +87,7 @@ public class AppLockListActivity extends BaseActivity implements
     private int mCurSortType = DEFAULT_SORT;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
     private static final boolean DBG = false;
+    
 
     private int mType = -1;
 

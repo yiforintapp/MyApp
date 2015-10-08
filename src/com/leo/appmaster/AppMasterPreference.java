@@ -2640,7 +2640,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAtAppLockFragmentOpen() {
-        return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 0);
+        return mPref.getInt(PREF_AD_AT_APPLOCK_FRAGMENT, 1);
     }
 
     // 主题界面出现广告的开关
@@ -2649,7 +2649,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAtLockThemeOpen() {
-        return mPref.getInt(PREF_AD_AT_THEME, 2);
+        return mPref.getInt(PREF_AD_AT_THEME, 0);
     }
 
     // push时是否需要更新礼物盒状态，只在push时有效
