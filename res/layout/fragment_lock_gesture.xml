@@ -124,11 +124,10 @@
     <RelativeLayout
         android:id="@+id/rl_nomalBannerAD"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
+        android:layout_height="72dp"
         android:layout_alignParentBottom="true"
-        android:layout_margin="7dp"
         android:background="@drawable/ad_banner_bg"
-        android:visibility="gone" >
+      >
 
         <ImageView
             android:id="@+id/iv_adicon"
@@ -204,16 +203,17 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true" >
+        android:layout_height="wrap_content" 
+        android:layout_alignParentBottom="true">
 
         <ImageView
             android:id="@+id/banner_ad_anim_image"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:src="@drawable/lock_banner_ad_anim"
             android:layout_marginLeft="36dp"
-            android:src="@drawable/lock_banner_ad_anim" />
+             android:layout_alignParentBottom="true"
+             />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -76,7 +76,8 @@ public class GestureLockFragment extends LockFragment implements
     private ImageView mAppIconBottom;
     private int mBottomIconRes = 0;
     private int mTopIconRes = 0;
-    private boolean mAlphaExcute = false;
+    private boolean mAlphaExcuteAnim;
+    private boolean mBannerAdExcuteAnim;
     // private ImageView mAdPic;
 
     private Animation mShake;
@@ -147,7 +148,7 @@ public class GestureLockFragment extends LockFragment implements
     public void onResume() {
 
         super.onResume();
-//        bannerAdSuccessAnim(mBannerAnimImage);
+        adSuccessSupermanAnim(mBannerAnimImage,mNormalBannerAD);
     }
 
     //
@@ -536,27 +537,39 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     /* banner广告拉去成功超人动画 */
-    private void bannerAdSuccessAnim(final ImageView view) {
+    private void adSuccessSupermanAnim(final ImageView imageView,final View view) {
 
-        view.setImageResource(R.drawable.superman_success);
-        ObjectAnimator supermanAnim = ObjectAnimator.ofFloat(view, "translationY", 50, 0, -1024);
+        imageView.setImageResource(R.drawable.superman_success);
+        ObjectAnimator supermanAnim = ObjectAnimator.ofFloat(imageView, "translationY", 50, 0, -1024);
         supermanAnim.setDuration(1120);
-        supermanAnim.setStartDelay(1280);
         supermanAnim.setRepeatCount(0);
         supermanAnim.addUpdateListener(new AnimatorUpdateListener() {
 
             @Override
             public void onAnimationUpdate(ValueAnimator arg0) {
                 long currentTime = arg0.getCurrentPlayTime();
-                if (currentTime >= 920 && !mAlphaExcute) {
-                    ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(view, "alpha", 1.0f, 0f);
+                if(currentTime >= 60 && !mBannerAdExcuteAnim){
+                    bannerAdInAnim(view);
+                    mBannerAdExcuteAnim=true;
+                }
+                if (currentTime >= 920 && !mAlphaExcuteAnim) {
+                    ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(imageView, "alpha", 1.0f, 0f);
                     alphaAnim.setDuration(200);
                     alphaAnim.start();
-                    mAlphaExcute = true;
+                    mAlphaExcuteAnim = true;
                 }
             }
         });
         supermanAnim.start();
     }
-
+    /*banner广告进入动画*/
+    private void bannerAdInAnim(View view){
+        ObjectAnimator bannerAnim = new ObjectAnimator();
+        bannerAnim.setPropertyName("translationY");
+        bannerAnim.setTarget(view);
+        bannerAnim.setFloatValues(300,0);
+        bannerAnim.setDuration(1280);
+        bannerAnim.setRepeatCount(0);
+        bannerAnim.start();
+    }
 }
