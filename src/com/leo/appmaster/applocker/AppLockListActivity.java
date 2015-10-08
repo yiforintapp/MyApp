@@ -86,7 +86,7 @@ public class AppLockListActivity extends BaseActivity implements
     public static final int INSTALL_TIME_SORT = 2;
     private int mCurSortType = DEFAULT_SORT;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
     
 
     private int mType = -1;
@@ -249,7 +249,6 @@ public class AppLockListActivity extends BaseActivity implements
         boolean  isShowLockAutoTip=AppMasterPreference.getInstance(this).getLockAndAutoStartGuide();
         if(!isShowLockAutoTip){
             setGuideTipShow();
-            mGuideTip.setVisibility(View.VISIBLE);
         }
         
     }
@@ -574,9 +573,9 @@ public class AppLockListActivity extends BaseActivity implements
                     mGuideTip.setVisibility(View.GONE);
                     mGuideTip.startAnimation(AnimationUtils
                             .loadAnimation(AppLockListActivity.this, R.anim.lock_mode_guide_out));
-                    Animation animation = AnimationUtils.loadAnimation(AppLockListActivity.this,
-                            R.anim.help_tip_show);
-                    mGuideHelpTipBt.startAnimation(animation);
+//                    Animation animation = AnimationUtils.loadAnimation(AppLockListActivity.this,
+//                            R.anim.help_tip_show);
+//                    mGuideHelpTipBt.startAnimation(animation);
                 }
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
@@ -589,14 +588,17 @@ public class AppLockListActivity extends BaseActivity implements
         /* 是否存在于白名单，返回值为-1,则不再白名单中 */
         int model = AutoStartGuideList.isAutoWhiteListModel(this);
         if (moreAndroid22) {
+            mGuideTip.setVisibility(View.VISIBLE);
             mSecurityRL.setVisibility(View.VISIBLE);
         } else {
             mSecurityRL.setVisibility(View.GONE);
+            mGuideTip.setVisibility(View.GONE);
         }
         if (DBG) {
             model = AutoStartGuideList.HUAWEIP7_PLUS;
         }
         if (model != -1) {
+            mGuideTip.setVisibility(View.VISIBLE);
             int content = AutoStartGuideList
                     .getAutoWhiteListTipText(AppMasterApplication.getInstance());
             mAutoText.setText(content);
@@ -612,6 +614,7 @@ public class AppLockListActivity extends BaseActivity implements
         } else {
             mAutoRL.setVisibility(View.GONE);
             mBackgroundRL.setVisibility(View.GONE);
+            mGuideTip.setVisibility(View.GONE);
         }
     }
 
