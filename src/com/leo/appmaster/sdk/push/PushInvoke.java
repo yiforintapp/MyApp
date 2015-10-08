@@ -33,7 +33,8 @@ public class PushInvoke implements PushInvokeHelper {
     public static final String ADWALL = "6";
     public static final String ISWIPE = "7";
     public static final String MSG_CENTER = "8";
-
+    /*应用锁，白名单引导支持push*/
+    public static final String LOCK_AUTO_GUIDE="9";
     
     public static final String ACTION_UPDATE_I = "com.leo.appmaster.invoke.update";
     public static final String ACTION_THEME_I = "com.leo.appmaster.invoke.theme";
@@ -90,6 +91,9 @@ public class PushInvoke implements PushInvokeHelper {
         } else if (MSG_CENTER.equals(type)) {
             MsgCenterFetchJob.startImmediately();
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "push_refresh", "push_Info_cnts");
+        }else if(LOCK_AUTO_GUIDE.equals(type)){
+            /*应用锁，白名单引导，push掉起显示*/
+            AppMasterPreference.getInstance(mContext).setLockAndAutoStartGuide(false);
         }
         // String mAction = getAction(type);
         // Log.d("PushInvoke", "mAction is : " + mAction);
