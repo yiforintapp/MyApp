@@ -3,24 +3,6 @@ package com.leo.appmaster.fragment;
 
 import java.util.List;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.text.TextUtils;
-import android.view.Gravity;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.WindowManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -41,11 +23,33 @@ import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leo.appmaster.utils.NetWorkUtil;
+import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
 import com.mobvista.sdk.m.core.entity.Campaign;
+
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 public class GestureLockFragment extends LockFragment implements
         OnPatternListener {
@@ -62,6 +66,7 @@ public class GestureLockFragment extends LockFragment implements
     // 半屏广告
 
     private RelativeLayout mToShowHalfScreenBanner;
+    private ImageView mBannerAnimImage;
     // ----------------------
 
     private TextView mGestureTip;
@@ -71,7 +76,7 @@ public class GestureLockFragment extends LockFragment implements
     private ImageView mAppIconBottom;
     private int mBottomIconRes = 0;
     private int mTopIconRes = 0;
-
+    private boolean mAlphaExcute = false;
     // private ImageView mAdPic;
 
     private Animation mShake;
@@ -135,13 +140,14 @@ public class GestureLockFragment extends LockFragment implements
 
         mToShowHalfScreenBanner = (RelativeLayout) findViewById(R.id.rl_halfSreenBannerAD);
         mNormalBannerAD = (RelativeLayout) findViewById(R.id.rl_nomalBannerAD);
+        mBannerAnimImage = (ImageView) findViewById(R.id.banner_ad_anim_image);
     }
 
     @Override
     public void onResume() {
 
         super.onResume();
-
+//        bannerAdSuccessAnim(mBannerAnimImage);
     }
 
     //
@@ -152,8 +158,7 @@ public class GestureLockFragment extends LockFragment implements
 
     }
 
-    private void loadADPic(String url, ImageSize size, final ImageView v)
-    {
+    private void loadADPic(String url, ImageSize size, final ImageView v) {
 
         ImageLoader.getInstance().loadImage(
                 url, size, new ImageLoadingListener() {
@@ -171,8 +176,7 @@ public class GestureLockFragment extends LockFragment implements
                     @Override
                     public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
 
-                        if (loadedImage != null)
-                        {
+                        if (loadedImage != null) {
                             v.setImageBitmap(loadedImage);
                         }
                     }
@@ -190,26 +194,26 @@ public class GestureLockFragment extends LockFragment implements
         String unitId;
         WindowManager wm = mActivity.getWindowManager();
         int windowH = wm.getDefaultDisplay().getHeight();
-        if (!NetWorkUtil.isNetworkAvailable(mActivity)||windowH<=320) {
+        if (!NetWorkUtil.isNetworkAvailable(mActivity) || windowH <= 320) {
             return;
         }
         mAdEngine = MobvistaEngine.getInstance();
-        if(amp.getADShowType()==1){
-            unitId=Constants.UNIT_ID_59;
-        }else if(amp.getADShowType()==2){
-            unitId=Constants.UNIT_ID_60;
-        }else{
+        if (amp.getADShowType() == 1) {
+            unitId = Constants.UNIT_ID_59;
+        } else if (amp.getADShowType() == 2) {
+            unitId = Constants.UNIT_ID_60;
+        } else {
             return;
         }
-            
-        mAdEngine.loadMobvista(mActivity,unitId, new MobvistaListener() {
+
+        mAdEngine.loadMobvista(mActivity, unitId, new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
 
                     int showType = AppMasterPreference.getInstance(mActivity).getADShowType();
-//                     int showType = 2;
+                    // int showType = 2;
                     switch (showType) {
                         case 1:
                             // app图标
@@ -218,7 +222,8 @@ public class GestureLockFragment extends LockFragment implements
                             loadADPic(
                                     campaign.getIconUrl(),
                                     new ImageSize(DipPixelUtil.dip2px(mActivity, 44), DipPixelUtil
-                                            .dip2px(mActivity, 44)), icon1);
+                                            .dip2px(mActivity, 44)),
+                                    icon1);
                             // app名字
                             TextView appname1 = (TextView) mNormalBannerAD
                                     .findViewById(R.id.tv_appname);
@@ -254,7 +259,8 @@ public class GestureLockFragment extends LockFragment implements
                             loadADPic(
                                     campaign.getIconUrl(),
                                     new ImageSize(DipPixelUtil.dip2px(mActivity, 44), DipPixelUtil
-                                            .dip2px(mActivity, 44)), icon2);
+                                            .dip2px(mActivity, 44)),
+                                    icon2);
                             // name
                             TextView appname2 = (TextView) mToShowHalfScreenBanner
                                     .findViewById(R.id.tv_appname2);
@@ -274,9 +280,9 @@ public class GestureLockFragment extends LockFragment implements
 
                                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli",
                                             "bannerpop");
-                                    if(mHalfScreenDialog==null){
+                                    if (mHalfScreenDialog == null) {
                                         mHalfScreenDialog = new AlertDialog.Builder(mActivity)
-                                        .create();
+                                                .create();
                                     }
 
                                     mHalfScreenDialog.setCanceledOnTouchOutside(false);
@@ -293,7 +299,8 @@ public class GestureLockFragment extends LockFragment implements
                                             .findViewById(R.id.iv_adicon3);
                                     loadADPic(campaign.getIconUrl(),
                                             new ImageSize(DipPixelUtil.dip2px(mActivity, 48),
-                                                    DipPixelUtil.dip2px(mActivity, 48)), appIcon3);
+                                                    DipPixelUtil.dip2px(mActivity, 48)),
+                                            appIcon3);
                                     ImageView bg = (ImageView) view.findViewById(R.id.iv_ADapp_bg);
 
                                     loadADPic(campaign.getImageUrl(), new ImageSize(bg.getWidth(),
@@ -349,17 +356,15 @@ public class GestureLockFragment extends LockFragment implements
                 mToShowHalfScreenBanner.setVisibility(View.GONE);
                 mNormalBannerAD.setVisibility(View.GONE);
 
-                if (mCurrentRegisterView == 1)
-                {
+                if (mCurrentRegisterView == 1) {
                     AppMasterPreference.getInstance(mActivity).setAdBannerClickTime(
                             System.currentTimeMillis());
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "banner");
                 }
-                if (mCurrentRegisterView == 2)
-                {
-                    if(mHalfScreenDialog!=null){
-                        if(mHalfScreenDialog.isShowing()){
-                            mHalfScreenDialog.dismiss();                            
+                if (mCurrentRegisterView == 2) {
+                    if (mHalfScreenDialog != null) {
+                        if (mHalfScreenDialog.isShowing()) {
+                            mHalfScreenDialog.dismiss();
                         }
                     }
                     AppMasterPreference.getInstance(mActivity).setHalfScreenBannerClickTime(
@@ -528,6 +533,30 @@ public class GestureLockFragment extends LockFragment implements
 
     public void reInvalideGestureView() {
         mLockPatternView.resetIfHideLine();
+    }
+
+    /* banner广告拉去成功超人动画 */
+    private void bannerAdSuccessAnim(final ImageView view) {
+
+        view.setImageResource(R.drawable.superman_success);
+        ObjectAnimator supermanAnim = ObjectAnimator.ofFloat(view, "translationY", 50, 0, -1024);
+        supermanAnim.setDuration(1120);
+        supermanAnim.setStartDelay(1280);
+        supermanAnim.setRepeatCount(0);
+        supermanAnim.addUpdateListener(new AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator arg0) {
+                long currentTime = arg0.getCurrentPlayTime();
+                if (currentTime >= 920 && !mAlphaExcute) {
+                    ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(view, "alpha", 1.0f, 0f);
+                    alphaAnim.setDuration(200);
+                    alphaAnim.start();
+                    mAlphaExcute = true;
+                }
+            }
+        });
+        supermanAnim.start();
     }
 
 }

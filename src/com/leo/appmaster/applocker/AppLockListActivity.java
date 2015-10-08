@@ -629,7 +629,7 @@ public class AppLockListActivity extends BaseActivity implements
         } else {
             mAutoRL.setVisibility(View.GONE);
             mBackgroundRL.setVisibility(View.GONE);
-            mGuideTip.setVisibility(View.GONE);
+//            mGuideTip.setVisibility(View.GONE);
         }
     }
 
