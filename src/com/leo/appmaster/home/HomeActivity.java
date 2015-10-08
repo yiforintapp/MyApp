@@ -161,8 +161,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     public static int mHomeAdSwitchOpen = -1;
     private boolean isCanShow = false;
 
-    private ImageView mLogoIv;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -447,17 +445,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         // }
 
         mUnreadCountTv = (TextView) findViewById(R.id.home_mc_unread_tv);
-        mLogoIv = (ImageView) findViewById(R.id.iv_logo);
-        mLogoIv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
-                if (!usageStats.checkAvailable()) {
-                    Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
-                    startActivity(intent);
-                }
-            }
-        });
     }
 
     // public void setEnterPrivacySuggest(boolean value) {
