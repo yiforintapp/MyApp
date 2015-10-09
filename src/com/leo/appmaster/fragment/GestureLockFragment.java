@@ -7,8 +7,6 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.LoadADFailActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
@@ -17,11 +15,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.LoadAdFailEvent;
-import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.lockertheme.ResourceName;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
@@ -36,6 +30,8 @@ import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
@@ -47,13 +43,13 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
-import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -66,7 +62,7 @@ public class GestureLockFragment extends LockFragment implements
     private int mCurrentRegisterView = 0;// 1.普通banner的install 2半屏广告的install
     private MobvistaEngine mAdEngine;
     private static String TAG = "GestureLockFragment";
-    private boolean DBG = true;
+    private boolean DBG = false;
     // 普通Banner广告
     private RelativeLayout mNormalBannerAD, mSupermanBannerAD, mSupermanBanner;
     private AlertDialog mHalfScreenDialog;
@@ -101,7 +97,7 @@ public class GestureLockFragment extends LockFragment implements
 
     @Override
     protected void onInitUI() {
-        
+
         InitADUI();
 
         mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
@@ -147,7 +143,6 @@ public class GestureLockFragment extends LockFragment implements
             }
         }
         loadMobvistaAd();
-        LeoEventBus.getDefaultBus().register(this);
     }
 
     private void InitADUI() {
@@ -157,46 +152,12 @@ public class GestureLockFragment extends LockFragment implements
         mSupermanBannerAD = (RelativeLayout) findViewById(R.id.rl_superman_bannerAD);
         mSupermanBanner = (RelativeLayout) findViewById(R.id.superman_banner);
         mBannerAnimImage = (ImageView) findViewById(R.id.banner_ad_anim_image);
-        mBannerAnimImage.setOnClickListener(this);
-
     }
 
     @Override
     public void onResume() {
-        initShowAd();
+        // initShowAd();
         super.onResume();
-    }
-
-    public void onEventMainThread(LoadAdFailEvent event) {
-        String message = event.eventMsg;
-        if (LoadADFailActivity.LOAD_FAIL_EVENT_MESSAGE.equals(message)) {
-//            mSupermanBanner.setVisibility(View.VISIBLE);
-            initShowAd();
-            AnimationDrawable anim=(AnimationDrawable) mBannerAnimImage.getDrawable();
-            anim.stop();
-            mBannerAnimImage.setImageDrawable(null);
-            mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
-            loadMobvistaAd();
-        }
-
-    }
-
-    /* 初始化超人动画是否显示 */
-    private void initShowAd() {
-//        ThreadManager.executeOnAsyncThread(new Runnable() {
-//
-//            @Override
-//            public void run() {
-                /* 当前动画展示方式是否为超人动画方式 */
-                int showType = AppMasterPreference.getInstance(mActivity).getADShowType();
-                /* 当前是否有网络 */
-                boolean isNetwork = ISwipUpdateRequestManager.getInstance(mActivity)
-                        .getNetworkStatus();
-                if (showType == 4 && isNetwork) {
-                    mSupermanBanner.setVisibility(View.VISIBLE);
-                }
-//            }
-//        });
     }
 
     @Override
@@ -237,7 +198,6 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     private void loadMobvistaAd() {
-        LeoLog.i("caocao", "加载广告！");
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         String unitId;
         WindowManager wm = mActivity.getWindowManager();
@@ -246,13 +206,19 @@ public class GestureLockFragment extends LockFragment implements
             return;
         }
         mAdEngine = MobvistaEngine.getInstance();
-//        if (amp.getADShowType() == 1) {
+        if (DBG) {
+            LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
+            amp.setADShowType(5);
+        }
+        if (amp.getADShowType() == 1) {
             unitId = Constants.UNIT_ID_59;
-//        } else if (amp.getADShowType() == 2) {
-//            unitId = Constants.UNIT_ID_60;
-//        } else {
-//            return;
-//        }
+        } else if (amp.getADShowType() == 2) {
+            unitId = Constants.UNIT_ID_60;
+        } else if (amp.getADShowType() == 5) {
+            unitId = Constants.UNIT_ID_86;
+        } else {
+            return;
+        }
 
         mAdEngine.loadMobvista(mActivity, unitId, new MobvistaListener() {
 
@@ -260,8 +226,8 @@ public class GestureLockFragment extends LockFragment implements
             public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
 
-//                    int showType = AppMasterPreference.getInstance(mActivity).getADShowType();
-                     int showType = 5;
+                    int showType = AppMasterPreference.getInstance(mActivity).getADShowType();
+                    // int showType = 5;
                     switch (showType) {
                         case 1:
                             // app图标
@@ -428,8 +394,19 @@ public class GestureLockFragment extends LockFragment implements
                                 LeoLog.i(TAG, "APP描述：" + campaign.getAppDesc());
                                 LeoLog.i(TAG, "APPCALL：" + campaign.getAdCall());
                             }
-                            mSupermanBannerAD.setVisibility(View.VISIBLE);
-                            adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
+                            mSupermanBanner.setVisibility(View.VISIBLE);
+                            AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
+                                    .getDrawable();
+                            anim.stop();
+                            mBannerAnimImage.setImageDrawable(null);
+                            mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
+                            anim.start();
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
+                                }
+                            }, 1280);
                             break;
                         default:
                             break;
@@ -465,9 +442,11 @@ public class GestureLockFragment extends LockFragment implements
 
     @Override
     public void onDestroy() {
-        LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
         MobvistaEngine.getInstance().release(getActivity());
+        if (mSupermanAnim != null) {
+            mSupermanAnim = null;
+        }
     }
 
     @Override
@@ -625,12 +604,12 @@ public class GestureLockFragment extends LockFragment implements
 
     /* banner广告拉去成功超人动画 */
     private void adSuccessSupermanAnim(final ImageView imageView, final View view) {
-        if(mSupermanAnim!=null){
-        mSupermanAnim.cancel();
+        if (mSupermanAnim != null) {
+            mSupermanAnim.cancel();
         }
         imageView.setImageResource(R.drawable.superman_success);
         if (mSupermanAnim == null) {
-            mSupermanAnim = ObjectAnimator.ofFloat(imageView, "translationY", 60, 0, -2024);
+            mSupermanAnim = ObjectAnimator.ofFloat(imageView, "translationY", 60, -1148);
         }
         mSupermanAnim.setDuration(1120);
         mSupermanAnim.setRepeatCount(0);
@@ -662,27 +641,33 @@ public class GestureLockFragment extends LockFragment implements
         bannerAnim.setFloatValues(400, 0);
         bannerAnim.setDuration(1280);
         bannerAnim.setRepeatCount(0);
+        bannerAnim.addListener(new AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(Animator arg0) {
+                mSupermanBannerAD.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator arg0) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator arg0) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator arg0) {
+
+            }
+        });
         bannerAnim.start();
     }
 
     @Override
     public void onClick(View arg0) {
-        int id = arg0.getId();
-        switch (id) {
-            case R.id.banner_ad_anim_image:
-                supermanRollAginHandler();
-                break;
-            default:
-                break;
-        }
-
-    }
-
-    /* 超人拉去失败，点击重试处理 */
-    private void supermanRollAginHandler() {
-        mSupermanBanner.setVisibility(View.GONE);
-        // mSupermanRollAgain.setVisibility(View.VISIBLE);
-        Intent intent = new Intent(mActivity, LoadADFailActivity.class);
-        mActivity.startActivity(intent);
+        // TODO
     }
 }

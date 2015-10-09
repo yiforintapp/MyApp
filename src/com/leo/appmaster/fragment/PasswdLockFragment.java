@@ -3,6 +3,11 @@ package com.leo.appmaster.fragment;
 
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.res.Resources;
@@ -10,6 +15,7 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -39,6 +45,7 @@ import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
@@ -53,7 +60,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     // 普通Banner广告
     private RelativeLayout mNormalBannerAD;
     // 半屏广告
-    private RelativeLayout mToShowHalfScreenBanner;
+    private RelativeLayout mToShowHalfScreenBanner,mSupermanBannerAD, mSupermanBanner;
+    private ImageView mBannerAnimImage;
     private int mCurrentRegisterView = 0;// 1.普通banner的install 2半屏广告的install
     private ImageView mAppIcon;
     private ImageView mAppIconTop;
@@ -99,7 +107,12 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     private Drawable[] mDigitalBgNormalDrawables = new Drawable[10];
     private Drawable[] mDigitalBgActiveDrawables = new Drawable[10];
-
+    /* 超人banner广告动画 */
+    private ObjectAnimator mSupermanAnim;
+    private boolean mAlphaExcuteAnim;
+    private boolean mBannerAdExcuteAnim;
+    private static String TAG = "PasswdLockFragment";
+    private boolean DBG = false;
     /*-------------------end-------------------*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,10 +136,16 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         String unitId;
         mAdEngine = MobvistaEngine.getInstance();
+        if (DBG) {
+            LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
+            amp.setADShowType(5);
+        }
         if(amp.getADShowType()==1){
             unitId=Constants.UNIT_ID_59;
         }else if(amp.getADShowType()==2){
             unitId=Constants.UNIT_ID_60;
+        }else if(amp.getADShowType() == 5){
+            unitId=Constants.UNIT_ID_86;
         }else{
             return;
         }
@@ -262,7 +281,58 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                             mToShowHalfScreenBanner.setVisibility(View.VISIBLE);
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "ad_bannerpop");
                             break;
+                        case 5:
+                            // app图标
+                            ImageView icon4 = (ImageView) mSupermanBannerAD
+                                    .findViewById(R.id.iv_superman_adicon);
+                            loadADPic(
+                                    campaign.getIconUrl(),
+                                    new ImageSize(DipPixelUtil.dip2px(mActivity, 44), DipPixelUtil
+                                            .dip2px(mActivity, 44)),
+                                    icon4);
+                            // app名字
+                            TextView appname4 = (TextView) mSupermanBannerAD
+                                    .findViewById(R.id.tv_superman_appname);
+                            appname4.setText(campaign.getAppName());
+                            // app描述
+                            TextView appdesc4 = (TextView) mSupermanBannerAD
+                                    .findViewById(R.id.tv_superman_ppdesc);
+                            appdesc4.setText(campaign.getAppDesc());
+                            // appcall
+                            Button call4 = (Button) mSupermanBannerAD
+                                    .findViewById(R.id.iv_superman_ad_app_download);
+                            call4.setText(campaign.getAdCall());
+                            mAdEngine.registerView(getActivity(), mSupermanBannerAD);
+                            mCurrentRegisterView = 1;
+                            ImageView close4 = (ImageView) mSupermanBannerAD
+                                    .findViewById(R.id.iv_superman_adclose);
+                            close4.setOnClickListener(new OnClickListener() {
 
+                                @Override
+                                public void onClick(View v) {
+                                    mSupermanBannerAD.setVisibility(View.GONE);
+                                }
+                            });
+                            if (DBG) {
+                                LeoLog.i(TAG, "APP图标：" + campaign.getIconUrl());
+                                LeoLog.i(TAG, "APP名字：" + campaign.getAppName());
+                                LeoLog.i(TAG, "APP描述：" + campaign.getAppDesc());
+                                LeoLog.i(TAG, "APPCALL：" + campaign.getAdCall());
+                            }
+                            mSupermanBanner.setVisibility(View.VISIBLE);
+                            AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
+                                    .getDrawable();
+                            anim.stop();
+                            mBannerAnimImage.setImageDrawable(null);
+                            mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
+                            anim.start();
+                            Handler handler = new Handler();
+                            handler.postDelayed(new Runnable() {
+                                public void run() {
+                                    adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
+                                }
+                            }, 1280);
+                            break;
                         default:
                             break;
 
@@ -341,6 +411,10 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
         mToShowHalfScreenBanner = (RelativeLayout) findViewById(R.id.rl_halfSreenBannerAD2);
         mNormalBannerAD = (RelativeLayout) findViewById(R.id.rl_nomalBannerAD2);
+        
+        mSupermanBannerAD = (RelativeLayout) findViewById(R.id.rl_superman_bannerAD);
+        mSupermanBanner = (RelativeLayout) findViewById(R.id.superman_banner);
+        mBannerAnimImage = (ImageView) findViewById(R.id.banner_ad_anim_image);
 
     }
 
@@ -752,7 +826,9 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     @Override
     public void onDestroy() {
         super.onDestroy();
-
+        if(mSupermanAnim!=null){
+            mSupermanAnim=null;
+        }
         MobvistaEngine.getInstance().release(getActivity());
     }
 
@@ -1170,6 +1246,69 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
         mAppIcon.setVisibility(View.VISIBLE);
 
+    }
+    /* banner广告拉去成功超人动画 */
+    private void adSuccessSupermanAnim(final ImageView imageView, final View view) {
+        if (mSupermanAnim != null) {
+            mSupermanAnim.cancel();
+        }
+        imageView.setImageResource(R.drawable.superman_success);
+        if (mSupermanAnim == null) {
+            mSupermanAnim = ObjectAnimator.ofFloat(imageView, "translationY", 60, -1148);
+        }
+        mSupermanAnim.setDuration(1120);
+        mSupermanAnim.setRepeatCount(0);
+        mSupermanAnim.addUpdateListener(new AnimatorUpdateListener() {
+
+            @Override
+            public void onAnimationUpdate(ValueAnimator arg0) {
+                long currentTime = arg0.getCurrentPlayTime();
+                if (currentTime >= 60 && !mBannerAdExcuteAnim) {
+                    bannerAdInAnim(view);
+                    mBannerAdExcuteAnim = true;
+                }
+                if (currentTime >= 920 && !mAlphaExcuteAnim) {
+                    ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(imageView, "alpha", 1.0f, 0f);
+                    alphaAnim.setDuration(200);
+                    alphaAnim.start();
+                    mAlphaExcuteAnim = true;
+                }
+            }
+        });
+        mSupermanAnim.start();
+    }
+
+    /* banner广告进入动画 */
+    private void bannerAdInAnim(View view) {
+        ObjectAnimator bannerAnim = new ObjectAnimator();
+        bannerAnim.setPropertyName("translationY");
+        bannerAnim.setTarget(view);
+        bannerAnim.setFloatValues(400, 0);
+        bannerAnim.setDuration(1280);
+        bannerAnim.setRepeatCount(0);
+        bannerAnim.addListener(new AnimatorListener() {
+
+            @Override
+            public void onAnimationStart(Animator arg0) {
+                mSupermanBannerAD.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator arg0) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator arg0) {
+
+            }
+
+            @Override
+            public void onAnimationCancel(Animator arg0) {
+
+            }
+        });
+        bannerAnim.start();
     }
 
 }

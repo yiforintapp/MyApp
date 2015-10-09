@@ -640,10 +640,6 @@
             android:taskAffinity="com.leo.appmaster.proxy"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
-        <activity
-            android:name="com.leo.appmaster.applocker.LoadADFailActivity"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
 
         <service
             android:name=".applocker.service.TaskDetectService"

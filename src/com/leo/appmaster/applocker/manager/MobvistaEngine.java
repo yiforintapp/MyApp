@@ -125,6 +125,8 @@ public class MobvistaEngine {
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_65, Constants.PLACEMENT_ID_65);
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_66, Constants.PLACEMENT_ID_66);
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_67, Constants.PLACEMENT_ID_67);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_86, Constants.PLACEMENT_ID_86);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_87, Constants.PLACEMENT_ID_87);
     }
 
     @Deprecated
