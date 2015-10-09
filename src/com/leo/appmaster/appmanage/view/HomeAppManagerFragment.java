@@ -3,7 +3,6 @@ package com.leo.appmaster.appmanage.view;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.List;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -14,7 +13,6 @@ import android.animation.ValueAnimator;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -42,7 +40,6 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -61,7 +58,6 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.quickgestures.ui.IswipUpdateTipDialog;
 import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;

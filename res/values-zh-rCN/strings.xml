@@ -814,7 +814,7 @@
 
     <!-- 2.10 白名单引导 -->
     <string name="auto_start_guide_tip_title">需要启动权限</string>
-    <string name="auto_start_guide_tip_content">开机启动隐私卫士，安全无忧。</string>
+    <string name="auto_start_guide_tip_content">为了重启后依然保持对应用的保护，请打开隐私卫士自启动权限</string>
     <string name="auto_start_guide_tip_left_button">稍后设置</string>
     <string name="auto_start_guide_tip_right_button">立即设置</string>
 
