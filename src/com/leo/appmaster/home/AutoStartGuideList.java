@@ -250,6 +250,7 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
+                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
                 LeoLog.e(TAG, "跳转inui成功！");
             } catch (Exception e) {
