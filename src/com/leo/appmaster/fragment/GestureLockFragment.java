@@ -208,7 +208,7 @@ public class GestureLockFragment extends LockFragment implements
         mAdEngine = MobvistaEngine.getInstance();
         if (DBG) {
             LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
-            amp.setADShowType(5);
+//            amp.setADShowType(5);
         }
         if (amp.getADShowType() == 1) {
             unitId = Constants.UNIT_ID_59;
