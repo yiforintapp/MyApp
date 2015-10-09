@@ -88,8 +88,8 @@ public class AppLockListActivity extends BaseActivity implements
     private int mCurSortType = DEFAULT_SORT;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
     private static final boolean DBG = false;
+    private static String LOCK_AUTO_START_GUIDE_PUSH="lock_auto_start_guide_push";
     
-
     private int mType = -1;
     
     private int mWhiteMode = -1;
@@ -109,6 +109,11 @@ public class AppLockListActivity extends BaseActivity implements
         Intent intent = getIntent();
         mType = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                 StatusBarEventService.EVENT_EMPTY);
+        boolean isShowGuide=intent.getBooleanExtra(LOCK_AUTO_START_GUIDE_PUSH, false);
+        if(isShowGuide){
+            /*应用锁，白名单引导，push掉起显示*/
+            AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(false);
+        }
     }
 
     @Override

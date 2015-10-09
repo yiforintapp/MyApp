@@ -7,6 +7,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.LoadADFailActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
@@ -15,15 +17,19 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.LoadAdFailEvent;
+import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.lockertheme.ResourceName;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LockPatternUtils;
 import com.leo.appmaster.utils.NetWorkUtil;
-import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
@@ -35,8 +41,10 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -45,6 +53,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -52,13 +61,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 public class GestureLockFragment extends LockFragment implements
-        OnPatternListener {
+        OnPatternListener, OnClickListener {
     private LockPatternView mLockPatternView;
     private int mCurrentRegisterView = 0;// 1.普通banner的install 2半屏广告的install
     private MobvistaEngine mAdEngine;
-
+    private static String TAG = "GestureLockFragment";
+    private boolean DBG = true;
     // 普通Banner广告
-    private RelativeLayout mNormalBannerAD;
+    private RelativeLayout mNormalBannerAD, mSupermanBannerAD, mSupermanBanner;
     private AlertDialog mHalfScreenDialog;
     // GP包
     public static final String GPPACKAGE = "com.android.vending";
@@ -81,6 +91,8 @@ public class GestureLockFragment extends LockFragment implements
     // private ImageView mAdPic;
 
     private Animation mShake;
+    /* 超人banner广告动画 */
+    private ObjectAnimator mSupermanAnim;
 
     @Override
     protected int layoutResourceId() {
@@ -89,7 +101,7 @@ public class GestureLockFragment extends LockFragment implements
 
     @Override
     protected void onInitUI() {
-
+        
         InitADUI();
 
         mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
@@ -135,23 +147,57 @@ public class GestureLockFragment extends LockFragment implements
             }
         }
         loadMobvistaAd();
+        LeoEventBus.getDefaultBus().register(this);
     }
 
     private void InitADUI() {
 
         mToShowHalfScreenBanner = (RelativeLayout) findViewById(R.id.rl_halfSreenBannerAD);
         mNormalBannerAD = (RelativeLayout) findViewById(R.id.rl_nomalBannerAD);
+        mSupermanBannerAD = (RelativeLayout) findViewById(R.id.rl_superman_bannerAD);
+        mSupermanBanner = (RelativeLayout) findViewById(R.id.superman_banner);
         mBannerAnimImage = (ImageView) findViewById(R.id.banner_ad_anim_image);
+        mBannerAnimImage.setOnClickListener(this);
+
     }
 
     @Override
     public void onResume() {
-
+        initShowAd();
         super.onResume();
-        adSuccessSupermanAnim(mBannerAnimImage,mNormalBannerAD);
     }
 
-    //
+    public void onEventMainThread(LoadAdFailEvent event) {
+        String message = event.eventMsg;
+        if (LoadADFailActivity.LOAD_FAIL_EVENT_MESSAGE.equals(message)) {
+//            mSupermanBanner.setVisibility(View.VISIBLE);
+            initShowAd();
+            AnimationDrawable anim=(AnimationDrawable) mBannerAnimImage.getDrawable();
+            anim.stop();
+            mBannerAnimImage.setImageDrawable(null);
+            mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
+            loadMobvistaAd();
+        }
+
+    }
+
+    /* 初始化超人动画是否显示 */
+    private void initShowAd() {
+//        ThreadManager.executeOnAsyncThread(new Runnable() {
+//
+//            @Override
+//            public void run() {
+                /* 当前动画展示方式是否为超人动画方式 */
+                int showType = AppMasterPreference.getInstance(mActivity).getADShowType();
+                /* 当前是否有网络 */
+                boolean isNetwork = ISwipUpdateRequestManager.getInstance(mActivity)
+                        .getNetworkStatus();
+                if (showType == 4 && isNetwork) {
+                    mSupermanBanner.setVisibility(View.VISIBLE);
+                }
+//            }
+//        });
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -191,6 +237,7 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     private void loadMobvistaAd() {
+        LeoLog.i("caocao", "加载广告！");
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         String unitId;
         WindowManager wm = mActivity.getWindowManager();
@@ -199,13 +246,13 @@ public class GestureLockFragment extends LockFragment implements
             return;
         }
         mAdEngine = MobvistaEngine.getInstance();
-        if (amp.getADShowType() == 1) {
+//        if (amp.getADShowType() == 1) {
             unitId = Constants.UNIT_ID_59;
-        } else if (amp.getADShowType() == 2) {
-            unitId = Constants.UNIT_ID_60;
-        } else {
-            return;
-        }
+//        } else if (amp.getADShowType() == 2) {
+//            unitId = Constants.UNIT_ID_60;
+//        } else {
+//            return;
+//        }
 
         mAdEngine.loadMobvista(mActivity, unitId, new MobvistaListener() {
 
@@ -213,8 +260,8 @@ public class GestureLockFragment extends LockFragment implements
             public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
 
-                    int showType = AppMasterPreference.getInstance(mActivity).getADShowType();
-                    // int showType = 2;
+//                    int showType = AppMasterPreference.getInstance(mActivity).getADShowType();
+                     int showType = 5;
                     switch (showType) {
                         case 1:
                             // app图标
@@ -343,7 +390,47 @@ public class GestureLockFragment extends LockFragment implements
                             mToShowHalfScreenBanner.setVisibility(View.VISIBLE);
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "ad_bannerpop");
                             break;
+                        case 5:
+                            // app图标
+                            ImageView icon4 = (ImageView) mSupermanBannerAD
+                                    .findViewById(R.id.iv_superman_adicon);
+                            loadADPic(
+                                    campaign.getIconUrl(),
+                                    new ImageSize(DipPixelUtil.dip2px(mActivity, 44), DipPixelUtil
+                                            .dip2px(mActivity, 44)),
+                                    icon4);
+                            // app名字
+                            TextView appname4 = (TextView) mSupermanBannerAD
+                                    .findViewById(R.id.tv_superman_appname);
+                            appname4.setText(campaign.getAppName());
+                            // app描述
+                            TextView appdesc4 = (TextView) mSupermanBannerAD
+                                    .findViewById(R.id.tv_superman_ppdesc);
+                            appdesc4.setText(campaign.getAppDesc());
+                            // appcall
+                            Button call4 = (Button) mSupermanBannerAD
+                                    .findViewById(R.id.iv_superman_ad_app_download);
+                            call4.setText(campaign.getAdCall());
+                            mAdEngine.registerView(getActivity(), mSupermanBannerAD);
+                            mCurrentRegisterView = 1;
+                            ImageView close4 = (ImageView) mSupermanBannerAD
+                                    .findViewById(R.id.iv_superman_adclose);
+                            close4.setOnClickListener(new OnClickListener() {
 
+                                @Override
+                                public void onClick(View v) {
+                                    mSupermanBannerAD.setVisibility(View.GONE);
+                                }
+                            });
+                            if (DBG) {
+                                LeoLog.i(TAG, "APP图标：" + campaign.getIconUrl());
+                                LeoLog.i(TAG, "APP名字：" + campaign.getAppName());
+                                LeoLog.i(TAG, "APP描述：" + campaign.getAppDesc());
+                                LeoLog.i(TAG, "APPCALL：" + campaign.getAdCall());
+                            }
+                            mSupermanBannerAD.setVisibility(View.VISIBLE);
+                            adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
+                            break;
                         default:
                             break;
 
@@ -378,8 +465,8 @@ public class GestureLockFragment extends LockFragment implements
 
     @Override
     public void onDestroy() {
+        LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
-
         MobvistaEngine.getInstance().release(getActivity());
     }
 
@@ -537,20 +624,24 @@ public class GestureLockFragment extends LockFragment implements
     }
 
     /* banner广告拉去成功超人动画 */
-    private void adSuccessSupermanAnim(final ImageView imageView,final View view) {
-
+    private void adSuccessSupermanAnim(final ImageView imageView, final View view) {
+        if(mSupermanAnim!=null){
+        mSupermanAnim.cancel();
+        }
         imageView.setImageResource(R.drawable.superman_success);
-        ObjectAnimator supermanAnim = ObjectAnimator.ofFloat(imageView, "translationY", 50, 0, -1024);
-        supermanAnim.setDuration(1120);
-        supermanAnim.setRepeatCount(0);
-        supermanAnim.addUpdateListener(new AnimatorUpdateListener() {
+        if (mSupermanAnim == null) {
+            mSupermanAnim = ObjectAnimator.ofFloat(imageView, "translationY", 60, 0, -2024);
+        }
+        mSupermanAnim.setDuration(1120);
+        mSupermanAnim.setRepeatCount(0);
+        mSupermanAnim.addUpdateListener(new AnimatorUpdateListener() {
 
             @Override
             public void onAnimationUpdate(ValueAnimator arg0) {
                 long currentTime = arg0.getCurrentPlayTime();
-                if(currentTime >= 60 && !mBannerAdExcuteAnim){
+                if (currentTime >= 60 && !mBannerAdExcuteAnim) {
                     bannerAdInAnim(view);
-                    mBannerAdExcuteAnim=true;
+                    mBannerAdExcuteAnim = true;
                 }
                 if (currentTime >= 920 && !mAlphaExcuteAnim) {
                     ObjectAnimator alphaAnim = ObjectAnimator.ofFloat(imageView, "alpha", 1.0f, 0f);
@@ -560,16 +651,38 @@ public class GestureLockFragment extends LockFragment implements
                 }
             }
         });
-        supermanAnim.start();
+        mSupermanAnim.start();
     }
-    /*banner广告进入动画*/
-    private void bannerAdInAnim(View view){
+
+    /* banner广告进入动画 */
+    private void bannerAdInAnim(View view) {
         ObjectAnimator bannerAnim = new ObjectAnimator();
         bannerAnim.setPropertyName("translationY");
         bannerAnim.setTarget(view);
-        bannerAnim.setFloatValues(300,0);
+        bannerAnim.setFloatValues(400, 0);
         bannerAnim.setDuration(1280);
         bannerAnim.setRepeatCount(0);
         bannerAnim.start();
+    }
+
+    @Override
+    public void onClick(View arg0) {
+        int id = arg0.getId();
+        switch (id) {
+            case R.id.banner_ad_anim_image:
+                supermanRollAginHandler();
+                break;
+            default:
+                break;
+        }
+
+    }
+
+    /* 超人拉去失败，点击重试处理 */
+    private void supermanRollAginHandler() {
+        mSupermanBanner.setVisibility(View.GONE);
+        // mSupermanRollAgain.setVisibility(View.VISIBLE);
+        Intent intent = new Intent(mActivity, LoadADFailActivity.class);
+        mActivity.startActivity(intent);
     }
 }

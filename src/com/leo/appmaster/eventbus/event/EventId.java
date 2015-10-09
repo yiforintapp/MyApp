@@ -35,4 +35,5 @@ public interface EventId {
     /* Quick gesture floatWindow end */
 
     public static final int EVENT_CLICKQUICKITEM = 1014;
+    public static final int EVENT_LOAD_FAIL_ROLL_AGAIN=1015;
 }

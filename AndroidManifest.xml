@@ -181,8 +181,8 @@
         </activity>
         <activity
             android:name=".msgcenter.MsgCenterActivity"
-            android:exported="true"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
@@ -638,6 +638,10 @@
             android:launchMode="singleInstance"
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.proxy"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
+        </activity>
+        <activity
+            android:name="com.leo.appmaster.applocker.LoadADFailActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
 
