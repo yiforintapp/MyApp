@@ -270,20 +270,26 @@
             android:layout_height="30dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="7dp"
-            android:layout_toLeftOf="@+id/iv_superman_adclose"
+            android:layout_toLeftOf="@+id/iv_gesture_superman_adclose_RL"
             android:background="@drawable/select_bt_halfscreen_install"
             android:clickable="false"
             android:textColor="@color/white"
             android:textSize="10sp" />
 
-        <ImageView
-            android:id="@+id/iv_superman_adclose"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
+        <RelativeLayout
+            android:id="@+id/iv_gesture_superman_adclose_RL"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="18dp"
-            android:layout_marginTop="12dp"
-            android:src="@drawable/ad_close_small" />
+            android:paddingRight="18dp"
+            android:paddingTop="12dp" >
+
+            <ImageView
+                android:id="@+id/iv_superman_adclose"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ad_close_small" />
+        </RelativeLayout>
     </RelativeLayout>
 <!-- 超人动画布局 -->
     <RelativeLayout

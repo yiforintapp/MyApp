@@ -304,8 +304,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                             call4.setText(campaign.getAdCall());
                             mAdEngine.registerView(getActivity(), mSupermanBannerAD);
                             mCurrentRegisterView = 1;
-                            ImageView close4 = (ImageView) mSupermanBannerAD
-                                    .findViewById(R.id.iv_superman_adclose);
+                            RelativeLayout close4 = (RelativeLayout) mSupermanBannerAD
+                                    .findViewById(R.id.iv_superman_adclose_RL);
                             close4.setOnClickListener(new OnClickListener() {
 
                                 @Override
