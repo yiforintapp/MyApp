@@ -34,6 +34,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
@@ -326,7 +327,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                             mBannerAnimImage.setImageDrawable(null);
                             mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
                             anim.start();
-                            Handler handler = new Handler();
+                            Handler handler = ThreadManager.getUiThreadHandler();
                             handler.postDelayed(new Runnable() {
                                 public void run() {
                                     adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
