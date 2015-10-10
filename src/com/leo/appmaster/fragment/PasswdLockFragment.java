@@ -139,7 +139,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         mAdEngine = MobvistaEngine.getInstance();
         if (DBG) {
             LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
-//            amp.setADShowType(5);
+            amp.setADShowType(5);
         }
         if(amp.getADShowType()==1){
             unitId=Constants.UNIT_ID_59;
@@ -323,9 +323,11 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                             mSupermanBanner.setVisibility(View.VISIBLE);
                             AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
                                     .getDrawable();
+                            if(anim!=null){
                             anim.stop();
                             mBannerAnimImage.setImageDrawable(null);
-                            mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
+//                            mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
+                            mBannerAnimImage.setImageDrawable(anim);
                             anim.start();
                             Handler handler = ThreadManager.getUiThreadHandler();
                             handler.postDelayed(new Runnable() {
@@ -333,6 +335,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                                     adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
                                 }
                             }, 1280);
+                            }
                             break;
                         default:
                             break;
@@ -346,6 +349,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             public void onMobvistaClick(Campaign campaign) {
                 mToShowHalfScreenBanner.setVisibility(View.GONE);
                 mNormalBannerAD.setVisibility(View.GONE);
+                mSupermanBannerAD.setVisibility(View.GONE);
 
                 if (mCurrentRegisterView == 1)
                 {

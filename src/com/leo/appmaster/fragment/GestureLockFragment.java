@@ -422,6 +422,7 @@ public class GestureLockFragment extends LockFragment implements
 
             @Override
             public void onMobvistaClick(Campaign campaign) {
+                mSupermanBannerAD.setVisibility(View.GONE);
                 mToShowHalfScreenBanner.setVisibility(View.GONE);
                 mNormalBannerAD.setVisibility(View.GONE);
 
