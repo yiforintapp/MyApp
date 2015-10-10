@@ -108,6 +108,7 @@ public class SplashActivity extends BaseActivity {
         mEventHandler = new EventHandler();
         startInitTask();
         LeoEventBus.getDefaultBus().register(this, 2);
+        splashDelayShow();
     }
 
     @SuppressLint("NewApi")
