@@ -368,10 +368,10 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
 
                         // if need to load online theme
                         for (ThemeItemInfo info : mLocalThemes) {
-                            if (info.packageName.equals(packageName)) {
+                            if (packageName.equals(info.packageName)) {
                                 String remove = null;
                                 for (String hide : mHideThemes) {
-                                    if (info.packageName.equals(hide)) {
+                                    if (hide.equals(info.packageName)) {
                                         remove = hide;
                                         break;
                                     }
@@ -394,7 +394,9 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         if (isGetAd && mThemeAdSwitchOpen == 1) {
                             addLocalAd();
                         }
-                        mLocalThemeAdapter.notifyDataSetChanged();
+                        if(mLocalThemeAdapter != null) {
+                            mLocalThemeAdapter.notifyDataSetChanged();
+                        }
                     }
                 }, 1000);
             }
@@ -754,39 +756,41 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
     }
 
     public void addMoreOnlineTheme(List<ThemeItemInfo> loadList) {
-        boolean add;
-        boolean newTheme = false;
-        for (ThemeItemInfo appLockerThemeBean : loadList) {
-            add = true;
-            for (ThemeItemInfo themeInfo : mLocalThemes) {
-                if (themeInfo.packageName
-                        .equals(appLockerThemeBean.packageName)) {
-                    add = false;
-                    break;
-                }
-            }
-            if (add) {
-                for (ThemeItemInfo themeInfo : mOnlineThemes) {
+        if(mOnlineThemeAdapter != null) {
+            boolean add;
+            boolean newTheme = false;
+            for (ThemeItemInfo appLockerThemeBean : loadList) {
+                add = true;
+                for (ThemeItemInfo themeInfo : mLocalThemes) {
                     if (themeInfo.packageName
                             .equals(appLockerThemeBean.packageName)) {
                         add = false;
                         break;
                     }
                 }
+                if (add) {
+                    for (ThemeItemInfo themeInfo : mOnlineThemes) {
+                        if (themeInfo.packageName
+                                .equals(appLockerThemeBean.packageName)) {
+                            add = false;
+                            break;
+                        }
+                    }
+                }
+                if (add) {
+                    newTheme = true;
+                    mOnlineThemes.add(appLockerThemeBean);
+                }
             }
-            if (add) {
-                newTheme = true;
-                mOnlineThemes.add(appLockerThemeBean);
+            if (newTheme) {
+                mLayoutEmptyTip.setVisibility(View.INVISIBLE);
+                if (isGetAd && mThemeAdSwitchOpen == 2) {
+                    addOnlineAd();
+                }
+                mOnlineThemeAdapter.notifyDataSetChanged();
+            } else {
+                Toast.makeText(this, R.string.no_more_theme, 0).show();
             }
-        }
-        if (newTheme) {
-            mLayoutEmptyTip.setVisibility(View.INVISIBLE);
-            if (isGetAd && mThemeAdSwitchOpen == 2) {
-                addOnlineAd();
-            }
-            mOnlineThemeAdapter.notifyDataSetChanged();
-        } else {
-            Toast.makeText(this, R.string.no_more_theme, 0).show();
         }
     }
 

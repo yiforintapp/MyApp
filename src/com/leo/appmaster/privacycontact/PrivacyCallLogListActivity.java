@@ -313,10 +313,10 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                                     "%" + readNumberFlag
                                 }, this);
                     }
-                    // 同一天只显示一次
-                    Date time = new Date(date);
-                    SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd");
                     try {
+                        // 同一天只显示一次
+                        Date time = new Date(date);
+                        SimpleDateFormat sd = new SimpleDateFormat("yyyy/MM/dd");
                         String showDateTemp = sd.format(time);
                         if (showDate == null || showDate.size() == 0) {
                             showDate.add(showDateTemp);

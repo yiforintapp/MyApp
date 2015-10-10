@@ -59,11 +59,15 @@ public class LeoGlobalBroadcast {
     public static class BasicReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            String action = intent.getAction();
-            BroadcastListener[] listeners = sListenerList.toArray(new BroadcastListener[0]);
-            for (BroadcastListener lis : listeners) {
-                lis.setIntent(intent);
-                lis.onEvent(action);
+            if(intent != null) {
+                String action = intent.getAction();
+                if(sListenerList != null) {
+                    BroadcastListener[] listeners = sListenerList.toArray(new BroadcastListener[0]);
+                    for (BroadcastListener lis : listeners) {
+                        lis.setIntent(intent);
+                        lis.onEvent(action);
+                    }
+                }
             }
         }
     }

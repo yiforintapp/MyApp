@@ -120,7 +120,7 @@ public class ADShowTypeRequestManager {
         @Override
         public void onResponse(JSONObject response, boolean noMidify) {
             long start = SystemClock.elapsedRealtime();
-            LeoLog.e("poha", "请求成功：" + response.toString());
+            LeoLog.d("poha", "请求成功：" + response.toString());
             if (mListener != null) {
                 mListener.onResponse(response, noMidify);
             }
@@ -129,7 +129,7 @@ public class ADShowTypeRequestManager {
 
                 try {
                     int adtype = response.getInt(AD_SHOW_TYPE);
-                    LeoLog.e("poha", "请求成功，广告展示形式是：" + adtype);
+                    LeoLog.d("poha", "请求成功，广告展示形式是：" + adtype);
                     if (adtype != sp.getADShowType()) {
                         if (adtype == 1) {
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_banner");
@@ -146,9 +146,9 @@ public class ADShowTypeRequestManager {
                     }
                     sp.setADShowType(adtype);
                     sp.setUFOAnimType((response.getInt(UFO_ANIM_TYPE)));
-                    LeoLog.e("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
+                    LeoLog.d("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
                     sp.setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));
-                    LeoLog.e("poha",
+                    LeoLog.d("poha",
                             "请求成功，UFO动画roll出主题概率：" + response.getInt(THEME_CHANCE_AFTER_UFO));
                     if (response.getInt(AD_AFTER_ACCELERATING) != sp
                             .getADChanceAfterAccelerating()) {
@@ -162,7 +162,7 @@ public class ADShowTypeRequestManager {
                         }
                     }
 
-                    LeoLog.e("poha", "请求成功，加速后出现广告：" + response.getInt(AD_AFTER_ACCELERATING));
+                    LeoLog.d("poha", "请求成功，加速后出现广告：" + response.getInt(AD_AFTER_ACCELERATING));
                     // 隐私防护
                     int lastPrivacyType = sp.getIsADAfterPrivacyProtectionOpen();
                     int nowPrivacyType = response.getInt(AD_AFTER_PRIVACY_PROTECTION);
@@ -177,12 +177,12 @@ public class ADShowTypeRequestManager {
                     }
                     sp.setIsADAfterPrivacyProtectionOpen(nowPrivacyType);
                     HomePravicyFragment.mPrivicyAdSwitchOpen = nowPrivacyType;
-                    LeoLog.e("poha",
+                    LeoLog.d("poha",
                             "请求成功，隐私保护后出现广告的开关：" + nowPrivacyType);
                     // 主页ad
                     sp.setIsADAtAppLockFragmentOpen((response.getInt(AD_AT_APPLOCK_FRAGMENT)));
                     HomeActivity.mHomeAdSwitchOpen = response.getInt(AD_AT_APPLOCK_FRAGMENT);
-                    LeoLog.e("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+                    LeoLog.d("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
                     // 主题
                     int lastThemeType = sp.getIsADAtLockThemeOpen();
                     int nowThemeType = response.getInt(AD_AT_THEME);
@@ -204,25 +204,25 @@ public class ADShowTypeRequestManager {
                     }
                     sp.setIsADAtLockThemeOpen(nowThemeType);
                     LockerTheme.mThemeAdSwitchOpen = nowThemeType;
-                    LeoLog.e("poha", "请求成功，主题界面出现广告：" + nowThemeType);
+                    LeoLog.d("poha", "请求成功，主题界面出现广告：" + nowThemeType);
 
                     sp.setIsGiftBoxNeedUpdate((response.getInt(GIFTBOX_UPDATE)));
                     if (mIsPushRequestADShowType && response.getInt(GIFTBOX_UPDATE) == 1) {
                         AppMasterPreference.getInstance(mContext).setIsADAppwallNeedUpdate(true);
                         mIsPushRequestADShowType = false;
                     }
-                    LeoLog.e("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
+                    LeoLog.d("poha", "请求成功，礼物盒是否需要更新：" + response.getInt(GIFTBOX_UPDATE));
                     sp.setVersionUpdateTipsAfterUnlockOpen((response
                             .getInt(VERSION_UPDATE_AFTER_UNLOCK)));
-                    LeoLog.e("poha",
+                    LeoLog.d("poha",
                             "请求成功，解锁后提示更新版本的开关：" + response.getInt(VERSION_UPDATE_AFTER_UNLOCK));
                     sp.setIsAppStatisticsOpen((response.getInt(APP_STATISTICS)));
-                    LeoLog.e("poha", "请求成功，应用统计的开关：" + response.getInt(APP_STATISTICS));
+                    LeoLog.d("poha", "请求成功，应用统计的开关：" + response.getInt(APP_STATISTICS));
                     sp.setIsWifiStatistics((response.getInt(WIFI_STATISTICAL)));
-                    LeoLog.e("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
+                    LeoLog.d("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
                     
                     sp.setIsLockAppWallOpen((response.getInt(AD_LOCK_WALL)));
-                    LeoLog.e("poha", "请求成功，解锁应用墙的开关：" + response.getInt(AD_LOCK_WALL));
+                    LeoLog.d("poha", "请求成功，解锁应用墙的开关：" + response.getInt(AD_LOCK_WALL));
                     //
                     // AppMasterPreference.getInstance(mContext).setADChanceAfterAccelerating(
                     // (1));
@@ -296,14 +296,14 @@ public class ADShowTypeRequestManager {
                             (SystemClock.elapsedRealtime() - start));
                 } catch (JSONException e) {
 
-                    LeoLog.e("poha", "请求成功，JSON解析出错");
+                    LeoLog.d("poha", "请求成功，JSON解析出错");
 
                     e.printStackTrace();
                 }
             }
             else
             {
-                LeoLog.e("poha", "请求成功，JSON是null");
+                LeoLog.d("poha", "请求成功，JSON是null");
             }
 
         }
@@ -314,7 +314,7 @@ public class ADShowTypeRequestManager {
                 mListener.onErrorResponse(error);
             }
 
-            LeoLog.e("poha", "请求失败。。。");
+            LeoLog.d("poha", "请求失败。。。");
 
             AppMasterPreference sp = AppMasterPreference.getInstance(mContext);
             long currentTime = System.currentTimeMillis();
