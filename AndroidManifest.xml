@@ -427,6 +427,7 @@
         <activity
             android:name=".appmanage.BackUpActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
