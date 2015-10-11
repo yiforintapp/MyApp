@@ -190,6 +190,8 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         if (!mIsEditModel && pagerPosition == 2) {
             updateTitle();
         }
+        getIntent().removeExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
+        getIntent().removeExtra("message_call_notifi");
     }
 
     /**
