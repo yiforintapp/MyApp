@@ -40,6 +40,8 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.SubmaineFullScreenlEvent;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.theme.LeoResources;
@@ -113,7 +115,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private boolean mAlphaExcuteAnim;
     private boolean mBannerAdExcuteAnim;
     private static String TAG = "PasswdLockFragment";
-    private boolean DBG = true;
+    private boolean DBG = false;
     /*-------------------end-------------------*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,7 +128,6 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         super.onResume();
 
     }
-
     private void loadMobvistaAd() {
         WindowManager wm = mActivity.getWindowManager();
         int windowH = wm.getDefaultDisplay().getHeight();
@@ -139,7 +140,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         mAdEngine = MobvistaEngine.getInstance();
         if (DBG) {
             LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
-            amp.setADShowType(5);
+            amp.setADShowType(6);
         }
         if(amp.getADShowType()==1){
             unitId=Constants.UNIT_ID_59;

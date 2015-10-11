@@ -15,8 +15,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true" />
 
-        
-
         <FrameLayout
             android:id="@+id/fragment_contain"
             android:layout_width="match_parent"
@@ -73,7 +71,7 @@
                 android:textColor="@color/common_button_selecter"
                 android:textSize="13sp" />
         </RelativeLayout>
-        
+
         <ImageView
             android:id="@+id/iv_AD_entry"
             android:layout_width="wrap_content"
@@ -84,7 +82,46 @@
             android:focusable="true"
             android:onClick="true"
             android:visibility="invisible" />
-        
+        <!-- 潜水艇广告 -->
+
+        <LinearLayout
+            android:id="@+id/submarine_ad_LT"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/layout_title_bar"
+            android:layout_marginRight="-218dp"
+            android:orientation="horizontal"
+            android:visibility="gone" >
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" >
+
+                <!-- 艇身 -->
+
+                <ImageView
+                    android:id="@+id/submarine_content_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@anim/submarine1_anim" />
+
+                <!-- 螺旋浆 -->
+
+                <ImageView
+                    android:id="@+id/submarine_end_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@anim/submarine_end_anim" />
+            </FrameLayout>
+            <!-- 艇尾气泡 -->
+
+            <ImageView
+                android:id="@+id/submarine_end_bubble_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@anim/submarine_bubble_anim" />
+        </LinearLayout>
     </RelativeLayout>
 
     <RelativeLayout
@@ -92,6 +129,23 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center" >
+    </RelativeLayout>
+    <!-- 全屏广告 -->
+
+    <RelativeLayout
+        android:id="@+id/submarine_full_screen_ad_RT"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:visibility="gone" >
+
+        <ImageView
+            android:id="@+id/submarine_full_screen_ad_close_IV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="16dp"
+            android:src="@drawable/ufo_theme_dialog_close" />
     </RelativeLayout>
 
 </FrameLayout>

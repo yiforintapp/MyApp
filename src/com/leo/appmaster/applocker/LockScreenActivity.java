@@ -7,8 +7,10 @@ import java.util.List;
 import java.util.Map;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
@@ -25,6 +27,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -48,9 +51,12 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,6 +70,7 @@ import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
+import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
@@ -72,6 +79,7 @@ import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
+import com.leo.appmaster.eventbus.event.SubmaineFullScreenlEvent;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
@@ -99,9 +107,15 @@ import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.ProcessUtils;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageSize;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 import com.mobvista.sdk.m.core.WallIconCallback;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
+@SuppressLint("NewApi")
 public class LockScreenActivity extends BaseFragmentActivity implements
         OnClickListener, OnDiaogClickListener {
 
@@ -119,6 +133,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final int AD_TYPE_SHAKE = 1;
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
+
+    private static final boolean DBG = true;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -159,16 +175,25 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private Handler handler;
     public static boolean interupAinimation = false;
     private boolean clickShakeIcon = false;
-
     private MobvistaEngine mAdEngine;
-
+    private LinearLayout mSubmarineAdLt;
+    private ImageView mBubbleIv, mSubmarineEndIv, mSubmarineContentIv, mFullScreenAdCloseIv;
+    private RelativeLayout mFullScreenAdRt;
+    private ObjectAnimator mSubmarineAnim;
+    private boolean mSubmarine, mIsClickSubmarine;
+    private boolean mIsSubmarineAnim = true;
+    private boolean mIsShowFullScreenAd = true;
+    private boolean mIsNormalStop = true;
+    private float mSubmarineCurrentAnimValue = 0;
+    private float mCurrentAnimValue = 0;
+    private int mSubmarineTranYRandom;
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case SHOW_RED_MAN:
                     mADAnimalEntry.setBackgroundResource(R.drawable.adanimation3);
-                    AnimationDrawable redmanAnimation = (AnimationDrawable)
-                            mADAnimalEntry.getBackground();
+                    AnimationDrawable redmanAnimation = (AnimationDrawable) mADAnimalEntry
+                            .getBackground();
                     redmanAnimation.start();
                     break;
             }
@@ -180,7 +205,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
         LeoLog.e("LockScreenActivity", "onCreate");
-
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
         LockManager lm = LockManager.getInstatnce();
@@ -196,7 +220,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
             if (mode != null) {
-                if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+                if (AppMasterPreference.getInstance(this)
+                        .getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     if (mode.defaultFlag != -1) {
                         if (AppMasterConfig.LOGGABLE) {
                             LeoLog.f(LockScreenActivity.class.getSimpleName(), "oncreate",
@@ -223,6 +248,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
         handler = new Handler();
+        ThreadManager.getUiThreadHandler().post(new Runnable() {
+
+            @Override
+            public void run() {
+                mSubmarineTranYRandom = submarineTopMargin();
+                // float width = mSubmarineAdLt.getWidth();
+                // LeoLog.i("asdf", "width=" + width);
+                submarineAnim(0);
+            }
+        });
     }
 
     private void mobvistaCheck() {
@@ -246,7 +281,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @SuppressWarnings("deprecation")
     private void setMobvistaIcon() {
         // In some case, we have no AD
-        if (wallAd != null &&  AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
+        if (wallAd != null && AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
             wallAd.loadWallIcon(new WallIconCallback() {
 
                 @Override
@@ -263,16 +298,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (SHOW_AD_TYPE == AD_TYPE_SHAKE) {
                 mAdIconRedTip.setVisibility(View.VISIBLE);
                 mAdIcon.setBackgroundResource(R.drawable.adanimation2);
-                adAnimation = (AnimationDrawable)
-                        mAdIcon.getBackground();
+                adAnimation = (AnimationDrawable) mAdIcon.getBackground();
                 adAnimation.start();
 
             } else { // jump
                 mAdIconRedTip.setVisibility(View.GONE);
                 if (SHOW_AD_TYPE == AD_TYPE_JUMP) {
                     mAdIcon.setBackgroundResource(R.drawable.adanimation);
-                    adAnimation = (AnimationDrawable)
-                            mAdIcon.getBackground();
+                    adAnimation = (AnimationDrawable) mAdIcon.getBackground();
                     adAnimation.start();
                     LeoLog.e("testLockScreen", "jump going!");
                 } else {
@@ -308,9 +341,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
 
-         if (AppMasterPreference.getInstance(this).getADShowType() == 3
-         && NetWorkUtil.isNetworkAvailable(getApplicationContext()))
-        {
+        if (AppMasterPreference.getInstance(this).getADShowType() == 3
+                && NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
             mADAnimalEntry.setVisibility(View.VISIBLE);
             if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE) {
                 startShakeRotateAnimation(true);
@@ -334,8 +366,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             AppMasterPreference.getInstance(this).setUnlocked(false);
         }
         super.onResume();
-
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
+
     }
 
     private void whichTypeShow() {
@@ -714,6 +746,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         LeoLog.d("LockScreenActivity", "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
+        if (mSubmarineAnim != null) {
+            mSubmarineAnim = null;
+        }
     }
 
     @Override
@@ -815,8 +850,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
         mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
-        
-        if(AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {          
+
+        if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
             ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
             mAdIcon.setVisibility(View.VISIBLE);
             mAdIcon.setOnClickListener(this);
@@ -834,6 +869,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         handlePretendLock();
 
+        initAD();
+    }
+
+    /* 初始化广告UI */
+    private void initAD() {
+        /* 潜水艇广告 */
+        mSubmarineAdLt = (LinearLayout) findViewById(R.id.submarine_ad_LT);
+        mSubmarineAdLt.setOnClickListener(this);
+        mBubbleIv = (ImageView) findViewById(R.id.submarine_end_bubble_iv);
+        mSubmarineEndIv = (ImageView) findViewById(R.id.submarine_end_iv);
+        mSubmarineContentIv = (ImageView) findViewById(R.id.submarine_content_iv);
+        mFullScreenAdRt = (RelativeLayout) findViewById(R.id.submarine_full_screen_ad_RT);
+        mFullScreenAdCloseIv = (ImageView) findViewById(R.id.submarine_full_screen_ad_close_IV);
     }
 
     // handle pretend lock
@@ -884,9 +932,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             } else if (pretendLock == 3) {/* fingerprint */
                 PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
                 return weizhuang;
-            }
-            else if (pretendLock == 4)
-            {
+            } else if (pretendLock == 4) {
                 PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;
             }
@@ -1183,7 +1229,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         }
                     });
                 }
-                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
+                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(),
+                        getMenuIcons());
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
                 mLeoPopMenu.setListViewDivider(null);
@@ -1230,6 +1277,30 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             "ad_cli", "unlocktop");
                 }
                 break;
+            case R.id.submarine_ad_LT:
+                /* 加载广告 */
+                loadSubmarineAD();
+                mIsClickSubmarine = true;
+                if (mSubmarineAdLt != null) {
+                    mSubmarineAdLt.clearAnimation();
+                }
+                if (mSubmarineAnim != null) {
+                    mSubmarineAnim.cancel();
+                }
+
+                /* 切换为潜水艇闪灯动画 */
+                submarinLightingAnim();
+                Handler handler = ThreadManager.getUiThreadHandler();
+                handler.postDelayed(new Runnable() {
+                    public void run() {
+                        mSubmarineAdLt
+                                .setTranslationX(mSubmarineCurrentAnimValue + mCurrentAnimValue);
+                        submarineAnim(mCurrentAnimValue);
+                    }
+                }, 6000);
+                /* 点击后注销潜水艇点击事件 */
+                mSubmarineAdLt.setOnClickListener(null);
+                break;
             default:
                 break;
         }
@@ -1244,9 +1315,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         List<String> listItems = new ArrayList<String>();
         Resources resources = AppMasterApplication.getInstance().getResources();
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-            if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
+            if (AppMasterPreference.getInstance(this)
+                    .getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
                 listItems.add(resources.getString(R.string.find_gesture));
-            } else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            } else if (AppMasterPreference.getInstance(this)
+                    .getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
                 listItems.add(resources.getString(R.string.find_passwd));
             }
         }
@@ -1300,8 +1373,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 LockerTheme.class);
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                 "theme_enter", "unlock");
-        AppMasterPreference amp =
-                AppMasterPreference.getInstance(this);
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
         amp.setUnlocked(true);
         amp.setDoubleCheck(null);
         startActivityForResult(intent, 0);
@@ -1632,5 +1704,225 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         toast.setGravity(Gravity.CENTER_HORIZONTAL | Gravity.CENTER_VERTICAL, 0, 0);
         toast.setDuration(Toast.LENGTH_SHORT);
         toast.show();
+    }
+
+    /* 潜水艇移动动画 */
+    private void submarineAnim(float offset) {
+        if (mIsSubmarineAnim) {
+            mSubmarineContentIv.setImageResource(R.drawable.submarine_open);
+            if (mSubmarineAdLt != null) {
+                mSubmarineAdLt.setVisibility(View.VISIBLE);
+                mSubmarineAdLt.clearAnimation();
+            }
+            /* 尾部动画 */
+            bubbleAndEndAnim();
+
+            if (mSubmarineAnim != null) {
+                mSubmarineAnim.cancel();
+            }
+
+            mSubmarineAdLt.setTranslationY(mSubmarineTranYRandom);
+             LeoLog.i(TAG, "潜艇距离顶部的随机数：" + mSubmarineTranYRandom);
+            int x = this.getResources().getInteger(R.integer.submarine_offset);
+            mSubmarineAnim = ObjectAnimator.ofFloat(mSubmarineAdLt, "translationX", offset,
+                    -getWindowWidth() - x);
+            mSubmarineAnim.setDuration(4000);
+            mSubmarineAnim.setRepeatCount(0);
+            mSubmarineAnim.start();
+            mSubmarineAnim.addListener(new AnimatorListener() {
+
+                @Override
+                public void onAnimationStart(Animator arg0) {
+                    mFullScreenAdRt.setVisibility(View.GONE);
+                    mIsShowFullScreenAd = false;
+                }
+
+                @Override
+                public void onAnimationRepeat(Animator arg0) {
+
+                }
+
+                @Override
+                public void onAnimationEnd(Animator arg0) {
+
+                }
+
+                @Override
+                public void onAnimationCancel(Animator arg0) {
+                    if (!mIsClickSubmarine) {
+                        mIsNormalStop = false;
+                        /* 停留1s，继续上次位置执行潜艇前进动画 */
+                        Handler handler = ThreadManager.getUiThreadHandler();
+                        handler.postDelayed(new Runnable() {
+
+                            @Override
+                            public void run() {
+                                submarineStopAnim();
+                            }
+                        }, 1000);
+                    }
+                }
+            });
+
+            mSubmarineAnim.addUpdateListener(new AnimatorUpdateListener() {
+
+                @Override
+                public void onAnimationUpdate(ValueAnimator arg0) {
+                    mCurrentAnimValue = (Float) arg0.getAnimatedValue();
+                    long currentTime = arg0.getCurrentPlayTime();
+                    if (currentTime >= 2000 && !mSubmarine && !mIsClickSubmarine) {
+                        mSubmarineCurrentAnimValue = mCurrentAnimValue;
+                        LeoLog.i("caocao", "暂停的位置：" + mSubmarineCurrentAnimValue);
+                        mSubmarineAnim.cancel();
+                        mSubmarine = true;
+                        // 切换为闭眼睁眼动画
+                        submarinOpenCloseEyesAnim();
+                    }
+                    LeoLog.i("caocao", "当前位置：" + mCurrentAnimValue);
+                }
+            });
+        }
+    }
+
+    /* 潜水艇停留时动画 */
+    private void submarineStopAnim() {
+        LeoLog.i(TAG, "递归执行动画！");
+        if (!mIsClickSubmarine) {
+            submarineAnim(mSubmarineCurrentAnimValue);
+            mIsNormalStop = false;
+        }
+    }
+
+    private void bubbleAndEndAnim() {
+        /* 气泡动画 */
+        AnimationDrawable bubbleAnim = (AnimationDrawable) mBubbleIv.getDrawable();
+        if (bubbleAnim != null) {
+            bubbleAnim.stop();
+            mBubbleIv.setImageDrawable(null);
+            mBubbleIv.setImageDrawable(bubbleAnim);
+            bubbleAnim.start();
+        }
+        /* 螺旋浆动画 */
+        AnimationDrawable submarinEndAnim = (AnimationDrawable) mSubmarineEndIv.getDrawable();
+        if (submarinEndAnim != null) {
+            submarinEndAnim.stop();
+            mSubmarineEndIv.setImageDrawable(null);
+            mSubmarineEndIv.setImageDrawable(submarinEndAnim);
+            submarinEndAnim.start();
+        }
+    }
+
+    /* 潜水艇闭眼睁眼动画 */
+    private void submarinOpenCloseEyesAnim() {
+        mSubmarineContentIv.setImageDrawable(null);
+        mSubmarineContentIv.setImageResource(R.anim.submarine1_anim);
+    }
+
+    /* 潜水艇闪灯动画 */
+    private void submarinLightingAnim() {
+        mSubmarineContentIv.setImageDrawable(null);
+        mSubmarineContentIv.setImageResource(R.anim.submarine2_anim);
+    }
+
+    /* 计算潜艇出现的随机位置 */
+    private int submarineTopMargin() {
+        int random = 1 + (int) (Math.random() * 200);
+        return random;
+    }
+
+    /* 全屏广告进入动画 */
+    private void submarineFullScreenAnim() {
+        ObjectAnimator fullScreenAdAnim = ObjectAnimator.ofFloat(mFullScreenAdRt, "alpha", 0.0f,
+                1.0f);
+        fullScreenAdAnim.setDuration(800);
+        fullScreenAdAnim.setRepeatCount(0);
+        fullScreenAdAnim.start();
+    }
+
+    private int getWindowWidth() {
+        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        return windowManager.getDefaultDisplay().getWidth();
+    }
+
+    private int getWindowHeight() {
+        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+        return windowManager.getDefaultDisplay().getHeight();
+    }
+
+    private void loadSubmarineAD() {
+        mAdEngine = MobvistaEngine.getInstance();
+        String uintId = null;
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        if (DBG) {
+            LeoLog.i(TAG, "该处存在测试值，注意查看修改;当前广告形式：" + amp.getADShowType());
+            /* 为了便于测试广告形式6,如果当前广告形式不为6,主动设置为形式6 */
+            amp.setADShowType(6);
+        }
+        if (amp.getADShowType() == 6) {
+            uintId = Constants.UNIT_ID_87;
+        } else {
+            return;
+        }
+        mAdEngine.loadMobvista(this, uintId, new MobvistaListener() {
+            @Override
+            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                if (code == MobvistaEngine.ERR_OK) {
+                    LeoLog.i(TAG, "广告加载成功");
+                    loadADPic(campaign.getImageUrl(),
+                            new ImageSize(getWindowWidth(), getWindowHeight()), mFullScreenAdRt);
+                    mAdEngine.registerView(LockScreenActivity.this, mFullScreenAdRt);
+                    if (mSubmarineAnim != null) {
+                        mSubmarineAnim.cancel();
+                    }
+                    if (mSubmarineAdLt != null) {
+                        mSubmarineAdLt.setVisibility(View.GONE);
+                        mSubmarineAdLt.clearAnimation();
+                    }
+                    if (mFullScreenAdRt != null && mIsShowFullScreenAd) {
+                        mFullScreenAdRt.setVisibility(View.VISIBLE);
+                    }
+                    mIsSubmarineAnim = false;
+                    submarineFullScreenAnim();
+                    mFullScreenAdCloseIv.setOnClickListener(new OnClickListener() {
+
+                        @Override
+                        public void onClick(View arg0) {
+                            mFullScreenAdRt.setVisibility(View.GONE);
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onMobvistaClick(Campaign campaign) {
+                mFullScreenAdRt.setVisibility(View.GONE);
+            }
+        });
+    }
+
+    private void loadADPic(String url, ImageSize size, final RelativeLayout v) {
+        ImageLoader.getInstance().loadImage(
+                url, size, new ImageLoadingListener() {
+
+                    @Override
+                    public void onLoadingStarted(String imageUri, View view) {
+                    }
+
+                    @Override
+                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                    }
+
+                    @Override
+                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                        if (loadedImage != null) {
+                            BitmapDrawable drawabl = new BitmapDrawable(loadedImage);
+                            v.setBackgroundDrawable(drawabl);
+                        }
+                    }
+
+                    @Override
+                    public void onLoadingCancelled(String imageUri, View view) {
+                    }
+                });
     }
 }

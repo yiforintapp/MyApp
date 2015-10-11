@@ -16,6 +16,9 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.eventbus.event.SubmaineFullScreenlEvent;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.theme.LeoResources;
@@ -63,7 +66,7 @@ public class GestureLockFragment extends LockFragment implements
     private int mCurrentRegisterView = 0;// 1.普通banner的install 2半屏广告的install
     private MobvistaEngine mAdEngine;
     private static String TAG = "GestureLockFragment";
-    private boolean DBG = true;
+    private boolean DBG = false;
     // 普通Banner广告
     private RelativeLayout mNormalBannerAD, mSupermanBannerAD, mSupermanBanner;
     private AlertDialog mHalfScreenDialog;
@@ -141,11 +144,17 @@ public class GestureLockFragment extends LockFragment implements
                 mAppIconTop.setVisibility(View.VISIBLE);
                 mAppIconBottom.setVisibility(View.VISIBLE);
                 checkApplyTheme();
-            }
+      }
         }
         loadMobvistaAd();
     }
-
+    public void onEventMainThread(SubmaineFullScreenlEvent event) {
+        String eventMessage=event.eventMsg;
+        if("submarine_full_screen_ad".equals(eventMessage)){
+            LeoLog.i("caocao", "准备拉去广告");
+            loadMobvistaAd();
+        }
+    }
     private void InitADUI() {
 
         mToShowHalfScreenBanner = (RelativeLayout) findViewById(R.id.rl_halfSreenBannerAD);
@@ -209,7 +218,7 @@ public class GestureLockFragment extends LockFragment implements
         mAdEngine = MobvistaEngine.getInstance();
         if (DBG) {
             LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
-            amp.setADShowType(5);
+            amp.setADShowType(6);
         }
         if (amp.getADShowType() == 1) {
             unitId = Constants.UNIT_ID_59;
