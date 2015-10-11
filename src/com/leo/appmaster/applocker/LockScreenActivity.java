@@ -309,7 +309,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 + ":current ad show type");
 
          if (AppMasterPreference.getInstance(this).getADShowType() == 3
-         && NetWorkUtil.isNetworkAvailable(getApplicationContext()))
+         && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mADAnimalEntry != null)
         {
             mADAnimalEntry.setVisibility(View.VISIBLE);
             if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE) {
