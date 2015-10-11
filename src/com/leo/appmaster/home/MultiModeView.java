@@ -23,16 +23,15 @@ import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockModeEditActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
@@ -47,8 +46,8 @@ import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -397,7 +396,7 @@ public class MultiModeView extends RelativeLayout implements OnClickListener {
             int action = event.getAction();
             int position = mViews.indexOf(view.getParent());
             int curPosition = mViewPager.getCurrentItem();
-            if (view.getId() == R.id.mode_holder) {
+            if (view.getId() == R.id.mode_holder && mSelected != null) {
                 if (view != mSelected && curPosition == position) {
                     final LockMode mode = (LockMode) view.getTag();
                     switch (action) {

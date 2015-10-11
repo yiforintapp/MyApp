@@ -601,7 +601,7 @@ public class LockManager {
 
     public void addPkg2Mode(List<String> pkgs, final LockMode mode) {
 
-        if (pkgs != null && mode != null && mode.defaultFlag != 0) {
+        if (pkgs != null && mode != null && mode.lockList != null && mode.defaultFlag != 0) {
             for (String pkg : pkgs) {
                 if (!TextUtils.isEmpty(pkg) && !mode.lockList.contains(pkg)) {
                     mode.lockList.add(0, pkg);
@@ -627,7 +627,7 @@ public class LockManager {
 
     public void removePkgFromMode(List<String> pkgs, final LockMode mode) {
 
-        if (pkgs != null && mode != null) {
+        if (pkgs != null && mode != null && mode.lockList != null) {
             for (String pkg : pkgs) {
                 if (mode.lockList.contains(pkg)) {
                     mode.lockList.remove(pkg);
@@ -646,7 +646,7 @@ public class LockManager {
     }
 
     public void updateMode(final LockMode mode) {
-        if (mode == null)
+        if (mode == null || mode.lockList == null)
             return;
 
         // add self pkg
@@ -1666,8 +1666,11 @@ public class LockManager {
     }
 
     public synchronized int getLockedAppCount() {
-        return mCurrentMode == null ? 0 : (mCurrentMode.lockList.size() > 0 ? mCurrentMode.lockList
-                .size() - 1 : 0);
+        if(mCurrentMode == null || mCurrentMode.lockList == null) {
+            return 0;
+        }
+        int size = mCurrentMode.lockList.size();
+        return size > 0 ? size - 1 : 0;
     }
 
     public String getLastActivity() {
@@ -1971,16 +1974,15 @@ public class LockManager {
     }
     
     public void sendFirstUseLockModeToISwipe() {
-        Intent intent = new Intent(ACTION_FIRST_USE_LOCK_MODE);
-
-        AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
-        if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-            List<LockMode> list = LockManager.getInstatnce().getLockMode();
-            ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
-            arrayList.addAll(list);
-            intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
-        }
         try {
+            Intent intent = new Intent(ACTION_FIRST_USE_LOCK_MODE);
+            AppMasterPreference pref = AppMasterPreference.getInstance(mContext);
+            if (pref.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                List<LockMode> list = LockManager.getInstatnce().getLockMode();
+                ArrayList<LockMode> arrayList = new ArrayList<LockMode>();
+                arrayList.addAll(list);
+                intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
+            }
             mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
             LeoLog.e(TAG, "send first use lock mode .");
         } catch (Exception e) {

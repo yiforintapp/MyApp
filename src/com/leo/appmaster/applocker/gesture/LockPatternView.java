@@ -711,9 +711,13 @@ public class LockPatternView extends ViewGroup {
             }
             addCellToPattern(cell);
             if (mEnableHapticFeedback) {
-                performHapticFeedback(
-                        HapticFeedbackConstants.VIRTUAL_KEY,
-                        HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING);
+                try {
+                    performHapticFeedback(
+                            HapticFeedbackConstants.VIRTUAL_KEY,
+                            HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING);
+                } catch (Error e) {
+                    
+                }
             }
             return cell;
         }

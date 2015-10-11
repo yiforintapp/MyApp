@@ -40,8 +40,6 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 
@@ -252,40 +250,41 @@ public class PrivacyContactFragment extends BaseFragment {
             } else {
                 vh = (ViewHolder) convertView.getTag();
             }
-            ContactBean mb = mContacts.get(position);
-            if (mb.getContactName() != null && !"".equals(mb.getContactName())) {
-                vh.name.setText(mb.getContactName());
-            } else {
-                vh.name.setText(mb.getContactNumber());
-            }
-            vh.number.setText(mb.getContactNumber());
-            if (mb.getContactIcon() != null) {
-                vh.contactIcon.setImageBitmap(mb.getContactIcon());
-            } else {
-                vh.contactIcon.setImageResource(R.drawable.default_user_avatar);
-            }
-            if (mIsEditModel) {
-                vh.editImage.setImageResource(R.drawable.unselect);
-                if (mb.isCheck()) {
-                    vh.editImage.setImageResource(R.drawable.select);
+            if (mContacts != null && mContacts.size() > position) {
+                ContactBean mb = mContacts.get(position);
+                if (mb.getContactName() != null && !"".equals(mb.getContactName())) {
+                    vh.name.setText(mb.getContactName());
                 } else {
+                    vh.name.setText(mb.getContactNumber());
+                }
+                vh.number.setText(mb.getContactNumber());
+                if (mb.getContactIcon() != null) {
+                    vh.contactIcon.setImageBitmap(mb.getContactIcon());
+                } else {
+                    vh.contactIcon.setImageResource(R.drawable.default_user_avatar);
+                }
+                if (mIsEditModel) {
                     vh.editImage.setImageResource(R.drawable.unselect);
-                }
-            } else {
-                if (mb.getAnswerType() == 1) {
-                    vh.editImage.setImageResource(R.drawable.answer_icon);
-                } else if (mb.getAnswerType() == 0) {
-                    vh.editImage.setImageResource(R.drawable.decline_icon);
-                }
+                    if (mb.isCheck()) {
+                        vh.editImage.setImageResource(R.drawable.select);
+                    } else {
+                        vh.editImage.setImageResource(R.drawable.unselect);
+                    }
+                } else {
+                    if (mb.getAnswerType() == 1) {
+                        vh.editImage.setImageResource(R.drawable.answer_icon);
+                    } else if (mb.getAnswerType() == 0) {
+                        vh.editImage.setImageResource(R.drawable.decline_icon);
+                    }
 
-            }
-            if (mContacts != null && mContacts.size() > 0) {
+                }
                 if (position == mContacts.size() - 1) {
                     vh.bottomLine.setVisibility(View.GONE);
                 } else {
                     vh.bottomLine.setVisibility(View.VISIBLE);
                 }
             }
+           
             return convertView;
         }
     }

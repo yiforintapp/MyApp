@@ -28,7 +28,6 @@ import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -67,7 +66,6 @@ import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
-import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
 import com.leo.appmaster.appsetting.AboutActivity;
@@ -1136,158 +1134,166 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     @Override
-    public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-        Intent intent = null;
-        if (position == 2) {
-            /* 加入粉丝团 */
+    public void onItemClick(final AdapterView<?> arg0, final View arg1, final int position, final long arg3) {    
+        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        }
+        mHandler.postDelayed(new Runnable() {         
+            @Override
+            public void run() {
+                Intent intent = null;
+                if (position == 2) {
+                    /* 加入粉丝团 */
 
-            /* sdk mark */
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                    "google+");
-            Intent intentBeta = null;
-            LockManager.getInstatnce().timeFilterSelf();
-            if (AppUtil.appInstalled(getApplicationContext(),
-                    "com.google.android.apps.plus")) {
-                intentBeta = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri
-                        .parse("https://plus.google.com/u/0/communities/112552044334117834440");
-                intentBeta.setData(uri);
-                ComponentName cn = new ComponentName(
-                        "com.google.android.apps.plus",
-                        "com.google.android.libraries.social.gateway.GatewayActivity");
-                intentBeta.setComponent(cn);
-                intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(intentBeta);
-                } catch (Exception e) {
-                    intentBeta = new Intent(Intent.ACTION_VIEW, uri);
-                    ComponentName componentName = new ComponentName(
-                            "com.google.android.apps.plus",
-                            "com.google.android.apps.plus.phone.UrlGatewayActivity");
-                    intentBeta.setComponent(componentName);
-                    intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    try {
-                        startActivity(intentBeta);
-                    } catch (Exception e1) {
+                    /* sdk mark */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                            "google+");
+                    Intent intentBeta = null;
+                    LockManager.getInstatnce().timeFilterSelf();
+                    if (AppUtil.appInstalled(getApplicationContext(),
+                            "com.google.android.apps.plus")) {
+                        intentBeta = new Intent(Intent.ACTION_VIEW);
+                        Uri uri = Uri
+                                .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                        intentBeta.setData(uri);
+                        ComponentName cn = new ComponentName(
+                                "com.google.android.apps.plus",
+                                "com.google.android.libraries.social.gateway.GatewayActivity");
+                        intentBeta.setComponent(cn);
+                        intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        try {
+                            startActivity(intentBeta);
+                        } catch (Exception e) {
+                            intentBeta = new Intent(Intent.ACTION_VIEW, uri);
+                            ComponentName componentName = new ComponentName(
+                                    "com.google.android.apps.plus",
+                                    "com.google.android.apps.plus.phone.UrlGatewayActivity");
+                            intentBeta.setComponent(componentName);
+                            intentBeta.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            try {
+                                startActivity(intentBeta);
+                            } catch (Exception e1) {
+                                intentBeta = new Intent(Intent.ACTION_VIEW, uri);
+                                startActivity(intentBeta);
+                            }
+                        }
+                    } else {
+                        Uri uri = Uri
+                                .parse("https://plus.google.com/u/0/communities/112552044334117834440");
                         intentBeta = new Intent(Intent.ACTION_VIEW, uri);
                         startActivity(intentBeta);
                     }
-                }
-            } else {
-                Uri uri = Uri
-                        .parse("https://plus.google.com/u/0/communities/112552044334117834440");
-                intentBeta = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intentBeta);
-            }
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "about", "like");
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "about", "like");
 
-        } else if (position == 1) {
-            /* Facebook */
-            /* sdk mark */
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                    "Facebook");
-            Intent intentLikeUs = null;
-            LockManager.getInstatnce().timeFilterSelf();
-            if (AppUtil.appInstalled(getApplicationContext(),
-                    "com.facebook.katana")) {
-                intentLikeUs = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri
-                        .parse("fb://page/1709302419294051");
-                intentLikeUs.setData(uri);
-                ComponentName cn = new ComponentName("com.facebook.katana",
-                        "com.facebook.katana.IntentUriHandler");
-                intentLikeUs.setComponent(cn);
-                intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
-                    startActivity(intentLikeUs);
-                } catch (Exception e) {
-                }
-            } else {
-                intentLikeUs = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri
-                        .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
-                intentLikeUs.setData(uri);
-                intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intentLikeUs);
-            }
-        } else if (position == 0) {
-            /* google play */
-            /* sdk mark */
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                    "googleplay");
-            LockManager.getInstatnce().timeFilterSelf();
-            if (AppUtil.appInstalled(getApplicationContext(),
-                    "com.android.vending")) {
-                intent = new Intent(Intent.ACTION_VIEW);
-                Uri uri = Uri
-                        .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                intent.setData(uri);
-                // ComponentName cn = new ComponentName(
-                // "com.android.vending",
-                // "com.google.android.finsky.activities.MainActivity");
-                // intent.setComponent(cn);
-                intent.setPackage("com.android.vending");
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                try {
+                } else if (position == 1) {
+                    /* Facebook */
+                    /* sdk mark */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                            "Facebook");
+                    Intent intentLikeUs = null;
+                    LockManager.getInstatnce().timeFilterSelf();
+                    if (AppUtil.appInstalled(getApplicationContext(),
+                            "com.facebook.katana")) {
+                        intentLikeUs = new Intent(Intent.ACTION_VIEW);
+                        Uri uri = Uri
+                                .parse("fb://page/1709302419294051");
+                        intentLikeUs.setData(uri);
+                        ComponentName cn = new ComponentName("com.facebook.katana",
+                                "com.facebook.katana.IntentUriHandler");
+                        intentLikeUs.setComponent(cn);
+                        intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        try {
+                            startActivity(intentLikeUs);
+                        } catch (Exception e) {
+                        }
+                    } else {
+                        intentLikeUs = new Intent(Intent.ACTION_VIEW);
+                        Uri uri = Uri
+                                .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
+                        intentLikeUs.setData(uri);
+                        intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intentLikeUs);
+                    }
+                } else if (position == 0) {
+                    /* google play */
+                    /* sdk mark */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                            "googleplay");
+                    LockManager.getInstatnce().timeFilterSelf();
+                    if (AppUtil.appInstalled(getApplicationContext(),
+                            "com.android.vending")) {
+                        intent = new Intent(Intent.ACTION_VIEW);
+                        Uri uri = Uri
+                                .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                        intent.setData(uri);
+                        // ComponentName cn = new ComponentName(
+                        // "com.android.vending",
+                        // "com.google.android.finsky.activities.MainActivity");
+                        // intent.setComponent(cn);
+                        intent.setPackage("com.android.vending");
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        try {
+                            startActivity(intent);
+                            // mHandler.postDelayed(new Runnable() {
+                            // @Override
+                            // public void run() {
+                            // String lastActivity =
+                            // LockManager.getInstatnce().getLastActivity();
+                            // if (lastActivity != null
+                            // && lastActivity
+                            // .equals("com.google.android.finsky.activities.MainActivity"))
+                            // {
+                            // // Intent intent2 = new Intent(
+                            // // HomeActivity.this,
+                            // // GooglePlayGuideActivity.class);
+                            // // startActivity(intent2);
+                            // }
+                            // }
+                            // }, 1000);
+                        } catch (Exception e) {
+                            goGpBrowser();
+                        }
+                    } else {
+                        goGpBrowser();
+                    }
+                } else if (position == 3) {
+                    /* sdk mark */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                            "feedback");
+                    intent = new Intent(HomeActivity.this,
+                            FeedbackActivity.class);
                     startActivity(intent);
-                    // mHandler.postDelayed(new Runnable() {
-                    // @Override
-                    // public void run() {
-                    // String lastActivity =
-                    // LockManager.getInstatnce().getLastActivity();
-                    // if (lastActivity != null
-                    // && lastActivity
-                    // .equals("com.google.android.finsky.activities.MainActivity"))
-                    // {
-                    // // Intent intent2 = new Intent(
-                    // // HomeActivity.this,
-                    // // GooglePlayGuideActivity.class);
-                    // // startActivity(intent2);
-                    // }
-                    // }
-                    // }, 1000);
-                } catch (Exception e) {
-                    goGpBrowser();
+                } else if (position == 6) {
+                    /* 游戏中心 */
+
+                    /* sdk mark */
+                    // SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                    // "gamecenter");
+                    // intent = new Intent(HomeActivity.this,
+                    // AppWallActivity.class);
+                    // intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG,
+                    // Constants.HOME_TO_APP_WALL_FLAG_VALUE);
+                    // startActivity(intent);
+                    unistallPG();
+                } else if (position == 4) {
+                    /* 检查更新 */
+
+                    /* sdk mark */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                            "update");
+                    SDKWrapper.checkUpdate();
+                } else if (position == 5) {
+                    /* 关于 */
+
+                    /* sdk mark */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
+                            "about");
+                    intent = new Intent(HomeActivity.this,
+                            AboutActivity.class);
+                    startActivity(intent);
                 }
-            } else {
-                goGpBrowser();
             }
-        } else if (position == 3) {
-            /* sdk mark */
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                    "feedback");
-            intent = new Intent(HomeActivity.this,
-                    FeedbackActivity.class);
-            startActivity(intent);
-        } else if (position == 6) {
-            /* 游戏中心 */
-
-            /* sdk mark */
-            // SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-            // "gamecenter");
-            // intent = new Intent(HomeActivity.this,
-            // AppWallActivity.class);
-            // intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG,
-            // Constants.HOME_TO_APP_WALL_FLAG_VALUE);
-            // startActivity(intent);
-            unistallPG();
-        } else if (position == 4) {
-            /* 检查更新 */
-
-            /* sdk mark */
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                    "update");
-            SDKWrapper.checkUpdate();
-        } else if (position == 5) {
-            /* 关于 */
-
-            /* sdk mark */
-            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                    "about");
-            intent = new Intent(HomeActivity.this,
-                    AboutActivity.class);
-            startActivity(intent);
-        }
+        }, 200);
     }
 
     private void goGpBrowser() {
