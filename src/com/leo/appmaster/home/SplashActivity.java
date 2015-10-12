@@ -1,3 +1,4 @@
+
 package com.leo.appmaster.home;
 
 import java.io.File;
@@ -92,7 +93,8 @@ public class SplashActivity extends BaseActivity {
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
     private static final boolean DBG = false;
-
+    /* 是否显示更多引导 */
+    private boolean mIsShowGuide;
     private long mOnCreateTs;
     private boolean mChenckTs;
 
@@ -304,7 +306,8 @@ public class SplashActivity extends BaseActivity {
 
         long currentTs = SystemClock.elapsedRealtime();
         if (AppMasterApplication.sCheckStartTs) {
-            LeoLog.i("TsCost", "app oncreate to splash onresume, cost: " + (currentTs - AppMasterApplication.sAppCreate));
+            LeoLog.i("TsCost", "app oncreate to splash onresume, cost: "
+                    + (currentTs - AppMasterApplication.sAppCreate));
             AppMasterApplication.sCheckStartTs = false;
         }
         if (mChenckTs) {
@@ -357,12 +360,15 @@ public class SplashActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LAUNCH_HOME_ACTIVITY:
-                    if (AppMasterPreference.getInstance(SplashActivity.this).getGuidePageFirstUse()) {
+                    if (AppMasterPreference.getInstance(SplashActivity.this)
+                            .getGuidePageFirstUse()) {
                         boolean guidNotShown = mNewGuideMain == null
                                 || mNewGuideMain.getVisibility() != View.VISIBLE;
                         if (guidNotShown) {
                             cancelSplashSkipbtAndUrlbt();
-                            showNewFuncGuide();
+                            if (!mIsShowGuide) {
+                                showNewFuncGuide();
+                            }
                         }
                     } else {
                         // AppMasterPreference pre = AppMasterPreference
@@ -443,6 +449,7 @@ public class SplashActivity extends BaseActivity {
 
     /* add for Guide Screen begin */
     private void showGuide() {
+        mIsShowGuide = true;
         mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
         mPageColors[1] = getResources().getColor(R.color.guide_page3_background_color);
         mPageColors[2] = getResources().getColor(R.color.guide_page4_background_color);
@@ -703,6 +710,9 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public void onBackPressed() {
+        if (mIsShowGuide) {
+            mIsShowGuide = false;
+        }
         if (mMain != null && mMain.getVisibility() == View.VISIBLE) {
             mMain.setVisibility(View.INVISIBLE);
             mNewGuideMain.setVisibility(View.VISIBLE);

@@ -391,7 +391,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             LeoEventBus.getDefaultBus().post(
                     new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "no_camouflage_lock"));
         }
-        LeoLog.i("caocao","广告形式："+adShowNumber);
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
 
