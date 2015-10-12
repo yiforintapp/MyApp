@@ -115,7 +115,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private boolean mAlphaExcuteAnim;
     private boolean mBannerAdExcuteAnim;
     private static String TAG = "PasswdLockFragment";
-    private boolean DBG = false;
+    private boolean DBG = true;
     /*-------------------end-------------------*/
     @Override
     public void onCreate(Bundle savedInstanceState) {

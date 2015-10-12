@@ -134,7 +134,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
 
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
