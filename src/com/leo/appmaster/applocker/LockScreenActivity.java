@@ -79,7 +79,7 @@ import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
-import com.leo.appmaster.eventbus.event.SubmaineFullScreenlEvent;
+import com.leo.appmaster.eventbus.event.SubmaineAnimEvent;
 import com.leo.appmaster.fragment.GestureLockFragment;
 import com.leo.appmaster.fragment.LockFragment;
 import com.leo.appmaster.fragment.PasswdLockFragment;
@@ -136,7 +136,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private static final boolean DBG = false;
     /* 用于测试时，指定显示的广告形式 */
-    private static final int TEST_AD_NUMBER = 6;
+    private static final int TEST_AD_NUMBER = 5;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -250,7 +250,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
         handler = new Handler();
-        if(getPretendFragment() == null){
+        if (getPretendFragment() == null) {
             ThreadManager.getUiThreadHandler().post(new Runnable() {
 
                 @Override
@@ -258,9 +258,15 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     mSubmarineTranYRandom = submarineTopMargin();
                     // float width = mSubmarineAdLt.getWidth();
                     // LeoLog.i("asdf", "width=" + width);
-                    submarineAnim(0);
+                    int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+                            .getADShowType();
+                    if (adShowNumber == 6) {
+                        submarineAnim(0);
+                    }
                 }
             });
+            LeoEventBus.getDefaultBus().post(
+                    new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "is_camouflage_lock"));
         }
     }
 
@@ -1537,10 +1543,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mSubmarineTranYRandom = submarineTopMargin();
                 // float width = mSubmarineAdLt.getWidth();
                 // LeoLog.i("asdf", "width=" + width);
-                submarineAnim(0);
+                int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+                        .getADShowType();
+                if (adShowNumber == 6) {
+                    submarineAnim(0);
+                }
             }
         });
-        
+
     }
 
     private float top, width, height;

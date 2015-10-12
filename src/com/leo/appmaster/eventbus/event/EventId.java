@@ -35,5 +35,5 @@ public interface EventId {
     /* Quick gesture floatWindow end */
 
     public static final int EVENT_CLICKQUICKITEM = 1014;
-    public static final int EVENT_SUBMARINE_FULL_SCREEN=1015;
+    public static final int EVENT_SUBMARINE_ANIM=1015;
 }

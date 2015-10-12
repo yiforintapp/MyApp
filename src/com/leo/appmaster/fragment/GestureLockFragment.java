@@ -18,7 +18,7 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.eventbus.event.SubmaineFullScreenlEvent;
+import com.leo.appmaster.eventbus.event.SubmaineAnimEvent;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.theme.LeoResources;
@@ -68,7 +68,7 @@ public class GestureLockFragment extends LockFragment implements
     private static String TAG = "GestureLockFragment";
     private boolean DBG = false;
     /*用于测试时，指定显示的广告形式*/
-    private static final int TEST_AD_NUMBER =6;
+    private static final int TEST_AD_NUMBER =5;
     // 普通Banner广告
     private RelativeLayout mNormalBannerAD, mSupermanBannerAD, mSupermanBanner;
     private AlertDialog mHalfScreenDialog;
@@ -150,10 +150,12 @@ public class GestureLockFragment extends LockFragment implements
         }
         loadMobvistaAd();
     }
-    public void onEventMainThread(SubmaineFullScreenlEvent event) {
+    public void onEventMainThread(SubmaineAnimEvent event) {
         String eventMessage=event.eventMsg;
-        if("submarine_full_screen_ad".equals(eventMessage)){
+        if("is_camouflage_lock".equals(eventMessage)){
             loadMobvistaAd();
+        }else if("".equals(eventMessage)){
+            
         }
     }
     private void InitADUI() {
@@ -219,7 +221,7 @@ public class GestureLockFragment extends LockFragment implements
         mAdEngine = MobvistaEngine.getInstance();
         if (DBG) {
             LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
-//            amp.setADShowType(TEST_AD_NUMBER);
+            amp.setADShowType(TEST_AD_NUMBER);
         }
         if (amp.getADShowType() == 1) {
             unitId = Constants.UNIT_ID_59;
@@ -399,12 +401,6 @@ public class GestureLockFragment extends LockFragment implements
                                     mSupermanBannerAD.setVisibility(View.GONE);
                                 }
                             });
-                            if (DBG) {
-                                LeoLog.i(TAG, "APP图标：" + campaign.getIconUrl());
-                                LeoLog.i(TAG, "APP名字：" + campaign.getAppName());
-                                LeoLog.i(TAG, "APP描述：" + campaign.getAppDesc());
-                                LeoLog.i(TAG, "APPCALL：" + campaign.getAdCall());
-                            }
                             mSupermanBanner.setVisibility(View.VISIBLE);
                             AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
                                     .getDrawable();

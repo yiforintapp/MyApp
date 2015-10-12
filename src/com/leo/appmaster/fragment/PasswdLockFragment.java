@@ -41,7 +41,7 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.SubmaineFullScreenlEvent;
+import com.leo.appmaster.eventbus.event.SubmaineAnimEvent;
 import com.leo.appmaster.lockertheme.ResourceName;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.theme.LeoResources;
