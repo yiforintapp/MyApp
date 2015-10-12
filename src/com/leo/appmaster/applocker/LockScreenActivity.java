@@ -250,6 +250,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
         handler = new Handler();
+        final int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+                .getADShowType();
         if (getPretendFragment() == null) {
             ThreadManager.getUiThreadHandler().post(new Runnable() {
 
@@ -258,15 +260,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     mSubmarineTranYRandom = submarineTopMargin();
                     // float width = mSubmarineAdLt.getWidth();
                     // LeoLog.i("asdf", "width=" + width);
-                    int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
-                            .getADShowType();
                     if (adShowNumber == 6) {
                         submarineAnim(0);
                     }
                 }
             });
-            LeoEventBus.getDefaultBus().post(
-                    new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "is_camouflage_lock"));
         }
     }
 
@@ -375,6 +373,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 PushUIHelper.getInstance(getApplicationContext()).setIsLockScreen(true);
             }
             AppMasterPreference.getInstance(this).setUnlocked(false);
+        }
+         int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+                .getADShowType();
+         /*解决超人在有伪装情况下，提前运行动画的问题*/
+        if (getPretendFragment() == null && adShowNumber == 5) {
+            LeoEventBus.getDefaultBus().post(
+                    new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "no_camouflage_lock"));
         }
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
@@ -920,6 +925,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private PretendFragment getPretendFragment() {
         if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
+            LeoLog.i("caocao", "不是Appmaster");
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
@@ -948,6 +954,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;
             }
+        } else {
+            LeoLog.i("caocao", "是Appmaster");
         }
         return null;
     }
@@ -1536,6 +1544,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public void removePretendFrame() {
         mPretendLayout.setVisibility(View.GONE);
         mLockLayout.setVisibility(View.VISIBLE);
+       final  int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+                .getADShowType();
         ThreadManager.getUiThreadHandler().post(new Runnable() {
 
             @Override
@@ -1543,14 +1553,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mSubmarineTranYRandom = submarineTopMargin();
                 // float width = mSubmarineAdLt.getWidth();
                 // LeoLog.i("asdf", "width=" + width);
-                int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
-                        .getADShowType();
                 if (adShowNumber == 6) {
                     submarineAnim(0);
                 }
             }
         });
-
+        /* 发送伪装解锁成功指令，解决在有伪装情况下动画运行时机问题 */
+        if(adShowNumber == 5){
+        LeoEventBus.getDefaultBus().post(
+                new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "camouflage_lock_success"));
+        }
     }
 
     private float top, width, height;

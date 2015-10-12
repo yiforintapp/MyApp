@@ -117,6 +117,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private boolean DBG = false;
     /*用于测试时，指定显示的广告形式*/
     private static final int TEST_AD_NUMBER =6;
+    private boolean mIsShowAnim/* 是否显示动画 */, mIsLoadAdSuccess/* 是否显示动画 */,
+    mIsCamouflageLockSuccess/* 伪装是否解锁成功 */;
     /*-------------------end-------------------*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -285,6 +287,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "ad_bannerpop");
                             break;
                         case 5:
+                            mIsLoadAdSuccess = true;
                             // app图标
                             ImageView icon4 = (ImageView) mSupermanBannerAD
                                     .findViewById(R.id.iv_superman_adicon);
@@ -316,27 +319,9 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                                     mSupermanBannerAD.setVisibility(View.GONE);
                                 }
                             });
-                            if (DBG) {
-                                LeoLog.i(TAG, "APP图标：" + campaign.getIconUrl());
-                                LeoLog.i(TAG, "APP名字：" + campaign.getAppName());
-                                LeoLog.i(TAG, "APP描述：" + campaign.getAppDesc());
-                                LeoLog.i(TAG, "APPCALL：" + campaign.getAdCall());
-                            }
-                            mSupermanBanner.setVisibility(View.VISIBLE);
-                            AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
-                                    .getDrawable();
-                            if(anim!=null){
-                            anim.stop();
-                            mBannerAnimImage.setImageDrawable(null);
-//                            mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
-                            mBannerAnimImage.setImageDrawable(anim);
-                            anim.start();
-                            Handler handler = ThreadManager.getUiThreadHandler();
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-                                    adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
-                                }
-                            }, 1280);
+                   
+                            if (mIsShowAnim || mIsCamouflageLockSuccess) {
+                                adLoadSucessShowAnim();
                             }
                             break;
                         default:
@@ -373,7 +358,24 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             }
         });
     }
-
+    /* 广告加载成功显示动画 */
+    private void adLoadSucessShowAnim() {
+    mSupermanBanner.setVisibility(View.VISIBLE);
+    AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
+            .getDrawable();
+    if(anim!=null){
+    anim.stop();
+    mBannerAnimImage.setImageDrawable(null);
+    mBannerAnimImage.setImageDrawable(anim);
+    anim.start();
+    Handler handler = ThreadManager.getUiThreadHandler();
+    handler.postDelayed(new Runnable() {
+        public void run() {
+            adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
+        }
+    }, 1280);
+    }
+    }
     private void loadADPic(String url, ImageSize size, final ImageView v)
     {
 
@@ -550,6 +552,19 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         }
         clearPasswd();
         loadMobvistaAd();
+        LeoEventBus.getDefaultBus().register(this);
+    }
+    public void onEventMainThread(SubmaineAnimEvent event) {
+        String eventMessage = event.eventMsg;
+        /* 没有使用了伪装 */
+        if ("no_camouflage_lock".equals(eventMessage)) {
+            mIsShowAnim = true;
+        } else if ("camouflage_lock_success".equals(eventMessage)) {
+            mIsCamouflageLockSuccess = true;
+            if (mIsLoadAdSuccess) {
+                adLoadSucessShowAnim();
+            }
+        }
     }
 
     @Override
@@ -832,6 +847,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     @Override
     public void onDestroy() {
+        LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
         if(mSupermanAnim!=null){
             mSupermanAnim=null;

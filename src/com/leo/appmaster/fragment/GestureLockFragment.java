@@ -67,8 +67,8 @@ public class GestureLockFragment extends LockFragment implements
     private MobvistaEngine mAdEngine;
     private static String TAG = "GestureLockFragment";
     private boolean DBG = false;
-    /*用于测试时，指定显示的广告形式*/
-    private static final int TEST_AD_NUMBER =5;
+    /* 用于测试时，指定显示的广告形式 */
+    private static final int TEST_AD_NUMBER = 5;
     // 普通Banner广告
     private RelativeLayout mNormalBannerAD, mSupermanBannerAD, mSupermanBanner;
     private AlertDialog mHalfScreenDialog;
@@ -95,6 +95,8 @@ public class GestureLockFragment extends LockFragment implements
     private Animation mShake;
     /* 超人banner广告动画 */
     private ObjectAnimator mSupermanAnim;
+    private boolean mIsShowAnim/* 是否显示动画 */, mIsLoadAdSuccess/* 是否显示动画 */,
+            mIsCamouflageLockSuccess/* 伪装是否解锁成功 */;
 
     @Override
     protected int layoutResourceId() {
@@ -146,18 +148,25 @@ public class GestureLockFragment extends LockFragment implements
                 mAppIconTop.setVisibility(View.VISIBLE);
                 mAppIconBottom.setVisibility(View.VISIBLE);
                 checkApplyTheme();
-      }
+            }
         }
         loadMobvistaAd();
+        LeoEventBus.getDefaultBus().register(this);
     }
+
     public void onEventMainThread(SubmaineAnimEvent event) {
-        String eventMessage=event.eventMsg;
-        if("is_camouflage_lock".equals(eventMessage)){
-            loadMobvistaAd();
-        }else if("".equals(eventMessage)){
-            
+        String eventMessage = event.eventMsg;
+        /* 没有使用了伪装 */
+        if ("no_camouflage_lock".equals(eventMessage)) {
+            mIsShowAnim = true;
+        } else if ("camouflage_lock_success".equals(eventMessage)) {
+            mIsCamouflageLockSuccess = true;
+            if (mIsLoadAdSuccess) {
+                adLoadSucessShowAnim();
+            }
         }
     }
+
     private void InitADUI() {
 
         mToShowHalfScreenBanner = (RelativeLayout) findViewById(R.id.rl_halfSreenBannerAD);
@@ -370,6 +379,7 @@ public class GestureLockFragment extends LockFragment implements
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "ad_bannerpop");
                             break;
                         case 5:
+                            mIsLoadAdSuccess = true;
                             // app图标
                             ImageView icon4 = (ImageView) mSupermanBannerAD
                                     .findViewById(R.id.iv_superman_adicon);
@@ -401,21 +411,8 @@ public class GestureLockFragment extends LockFragment implements
                                     mSupermanBannerAD.setVisibility(View.GONE);
                                 }
                             });
-                            mSupermanBanner.setVisibility(View.VISIBLE);
-                            AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
-                                    .getDrawable();
-                            if(anim!=null){
-                            anim.stop();
-                            mBannerAnimImage.setImageDrawable(null);
-//                            mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
-                            mBannerAnimImage.setImageDrawable(anim);
-                            anim.start();
-                            Handler handler = ThreadManager.getUiThreadHandler();
-                            handler.postDelayed(new Runnable() {
-                                public void run() {
-                                    adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
-                                }
-                            }, 1280);
+                            if (mIsShowAnim || mIsCamouflageLockSuccess) {
+                                adLoadSucessShowAnim();
                             }
                             break;
                         default:
@@ -451,8 +448,29 @@ public class GestureLockFragment extends LockFragment implements
         });
     }
 
+    /* 广告加载成功显示动画 */
+    private void adLoadSucessShowAnim() {
+        mSupermanBanner.setVisibility(View.VISIBLE);
+        AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
+                .getDrawable();
+        if (anim != null) {
+            anim.stop();
+            mBannerAnimImage.setImageDrawable(null);
+            // mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
+            mBannerAnimImage.setImageDrawable(anim);
+            anim.start();
+            Handler handler = ThreadManager.getUiThreadHandler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
+                }
+            }, 1280);
+        }
+    }
+
     @Override
     public void onDestroy() {
+        LeoEventBus.getDefaultBus().unregister(this);
         super.onDestroy();
         MobvistaEngine.getInstance().release(getActivity());
         if (mSupermanAnim != null) {
