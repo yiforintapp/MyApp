@@ -1913,7 +1913,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 计算潜艇出现的随机位置 */
     private int submarineTopMargin() {
-        int random = 1 + (int) (Math.random() * 200);
+        int y=this.getResources().getInteger(R.integer.submarine_init_random_y);
+        int random = 1 + (int) (Math.random() * y);
         return random;
     }
 

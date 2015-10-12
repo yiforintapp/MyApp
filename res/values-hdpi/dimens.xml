@@ -433,5 +433,5 @@
     <dimen name="theme_ad_button_m_right">6dp</dimen>
             <dimen name="theme_ad_button_test_size">11sp</dimen>
     <!-- 2.9 end -->
-
+<integer name="submarine_init_random_y">100</integer>
 </resources>

@@ -316,5 +316,6 @@
     <dimen name="advance_protect_button_top">20dp</dimen>
 
     <integer name="submarine_offset">654</integer>
+    <integer name="submarine_init_random_y">200</integer>
 
 </resources>
