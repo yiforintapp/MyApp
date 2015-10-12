@@ -187,7 +187,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private boolean mIsSubmarineAnim = true;
     private boolean mIsShowFullScreenAd = true;
     private boolean mIsNormalStop = true;
+    /*是否在显示重试界面*/
     private boolean mIsShowRollAgain;
+    /*是否在显示广告界面*/
+    private boolean mIsShowAdUi;
     private float mSubmarineCurrentAnimValue = 0;
     private float mCurrentAnimValue = 0;
     private int mSubmarineTranYRandom;
@@ -1349,12 +1352,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                // mCurrentAnimValue);
                // submarineAnim(mCurrentAnimValue);
                /* 6s后不再显示加载的广告 */
+               if(!mIsShowAdUi){
                mAdDialog.setVisibility(View.GONE);
                /* 潜水艇消失 */
                mSubmarineAdLt.setVisibility(View.INVISIBLE);
                /* 超时显示重试页面 */
                mRollAgain.setVisibility(View.VISIBLE);
                mIsShowRollAgain=true;
+           }
            }
        }, 6000);
     }
@@ -1908,12 +1913,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 计算潜艇出现的随机位置 */
     private int submarineTopMargin() {
-        int random = 1 + (int) (Math.random() * 300);
+        int random = 1 + (int) (Math.random() * 200);
         return random;
     }
 
     /* 全屏广告进入动画 */
     private void submarineFullScreenAnim() {
+        mIsShowAdUi=true;
         ObjectAnimator fullScreenAdAnim = ObjectAnimator.ofFloat(mAdDialog, "alpha", 0.0f,
                 1.0f);
         fullScreenAdAnim.setDuration(800);
