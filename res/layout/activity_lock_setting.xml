@@ -92,7 +92,7 @@
             android:layout_below="@id/layout_title_bar"
             android:layout_marginRight="-218dp"
             android:orientation="horizontal"
-            android:visibility="gone" >
+            android:visibility="invisible" >
 
             <FrameLayout
                 android:layout_width="wrap_content"
@@ -122,6 +122,102 @@
                 android:layout_height="wrap_content"
                 android:src="@anim/submarine_bubble_anim" />
         </LinearLayout>
+        <!-- 广告展示 -->
+
+        <RelativeLayout
+            android:id="@+id/rl_ADdialog"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#bb000000"
+            android:visibility="invisible" >
+
+            <RelativeLayout
+                android:layout_width="302dp"
+                android:layout_height="285dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:background="@color/white"
+                android:clickable="true" >
+
+                <!-- android:layout_marginTop="160dp" -->
+
+                <ImageView
+                    android:id="@+id/iv_appbg_ufo"
+                    android:layout_width="match_parent"
+                    android:layout_height="158dp"
+                    android:background="@color/grey" />
+
+                <ImageView
+                    android:id="@+id/iv_close_ufo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginRight="6dp"
+                    android:layout_marginTop="6dp"
+                    android:src="@drawable/ad_banner_close" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="16dp"
+                    android:background="@drawable/ad_bg_mask"
+                    android:gravity="center_vertical"
+                    android:text="Sponsored  "
+                    android:textColor="#ffffff"
+                    android:textSize="9sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="127dp"
+                    android:layout_alignParentBottom="true" >
+
+                    <ImageView
+                        android:id="@+id/iv_ufo_ad_icon"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginTop="11dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginLeft="68dp"
+                        android:layout_marginRight="16dp"
+                        android:layout_marginTop="11dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/tv_appname_ufo"
+                            android:layout_width="match_parent"
+                            android:layout_height="17dp"
+                            android:gravity="top"
+                            android:maxLines="1"
+                            android:textColor="#333333"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:id="@+id/tv_appdesc_ufo"
+                            android:layout_width="match_parent"
+                            android:layout_height="33dp"
+                            android:gravity="top"
+                            android:maxLines="2"
+                            android:textColor="#333333"
+                            android:textSize="10sp" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_ufo_dialog_install"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginBottom="17dp"
+                        android:layout_marginLeft="16dp"
+                        android:layout_marginRight="16dp"
+                        android:background="@drawable/select_bt_halfscreen_install"
+                        android:textColor="@color/white" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
     </RelativeLayout>
 
     <RelativeLayout
