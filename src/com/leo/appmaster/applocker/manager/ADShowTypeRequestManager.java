@@ -148,11 +148,15 @@ public class ADShowTypeRequestManager {
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
                         }
                     }
-                 
+                    /* 2.12版本特别处理，当升级用户拉取为广告形式3时，改为广告形式5 */
+                    if (adtype == 3) {
+                        adtype = 5;
+                    }
                     List<int[]> adShowType = Arrays.asList(LOCAL_AD_SHOW_TYPE);
-                    /*2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3*/
+                    /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
                     if (!adShowType.contains(adtype)) {
-                        AppMasterPreference.getInstance(AppMasterApplication.getInstance()).setADShowType(3);
+                        AppMasterPreference.getInstance(AppMasterApplication.getInstance())
+                                .setADShowType(3);
                     }
                     sp.setADShowType(adtype);
                     sp.setUFOAnimType((response.getInt(UFO_ANIM_TYPE)));
@@ -192,7 +196,8 @@ public class ADShowTypeRequestManager {
                     // 主页ad
                     sp.setIsADAtAppLockFragmentOpen((response.getInt(AD_AT_APPLOCK_FRAGMENT)));
                     HomeActivity.mHomeAdSwitchOpen = response.getInt(AD_AT_APPLOCK_FRAGMENT);
-                    LeoLog.d("poha", "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
+                    LeoLog.d("poha",
+                            "请求成功，应用锁界面出现广告的开关：" + response.getInt(AD_AT_APPLOCK_FRAGMENT));
                     // 主题
                     int lastThemeType = sp.getIsADAtLockThemeOpen();
                     int nowThemeType = response.getInt(AD_AT_THEME);
@@ -206,7 +211,8 @@ public class ADShowTypeRequestManager {
                             SDKWrapper
                                     .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_on");
                             SDKWrapper
-                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_online");
+                                    .addEvent(mContext, SDKWrapper.P1, "ad_pull",
+                                            "ad_theme_online");
                         } else {
                             SDKWrapper
                                     .addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_theme_off");
@@ -230,7 +236,7 @@ public class ADShowTypeRequestManager {
                     LeoLog.d("poha", "请求成功，应用统计的开关：" + response.getInt(APP_STATISTICS));
                     sp.setIsWifiStatistics((response.getInt(WIFI_STATISTICAL)));
                     LeoLog.d("poha", "请求成功，wifi统计的开关：" + response.getInt(WIFI_STATISTICAL));
-                    
+
                     sp.setIsLockAppWallOpen((response.getInt(AD_LOCK_WALL)));
                     LeoLog.d("poha", "请求成功，解锁应用墙的开关：" + response.getInt(AD_LOCK_WALL));
                     //
@@ -310,9 +316,7 @@ public class ADShowTypeRequestManager {
 
                     e.printStackTrace();
                 }
-            }
-            else
-            {
+            } else {
                 LeoLog.d("poha", "请求成功，JSON是null");
             }
 
@@ -334,21 +338,15 @@ public class ADShowTypeRequestManager {
 
             sp.setADRequestShowTypeLastTime(currentTime);
 
-            if (currentDate.equals(LastRequestDate))
-            {
+            if (currentDate.equals(LastRequestDate)) {
                 sp.setADRequestShowtypeFailTimesCurrentDay(sp
                         .getADRequestShowtypeFailTimesCurrentDay() + 1);
-                if (sp.getADRequestShowtypeFailTimesCurrentDay() == 3)
-                {
+                if (sp.getADRequestShowtypeFailTimesCurrentDay() == 3) {
                     sp.setADRequestShowTypeNextTimeSpacing(1000 * 60 * 60 * 12);
-                }
-                else
-                {
+                } else {
                     sp.setADRequestShowTypeNextTimeSpacing(1000 * 60 * 60 * 2);
                 }
-            }
-            else
-            {
+            } else {
                 sp.setADRequestShowtypeFailTimesCurrentDay(1);
                 sp.setADRequestShowTypeNextTimeSpacing(1000 * 60 * 60 * 2);
             }
