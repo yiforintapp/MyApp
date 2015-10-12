@@ -1774,7 +1774,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     if (currentTime >= 2000 && !mSubmarine && !mIsClickSubmarine) {
                         mSubmarineCurrentAnimValue = mCurrentAnimValue;
                         LeoLog.i("caocao", "暂停的位置：" + mSubmarineCurrentAnimValue);
+                        if(mSubmarineAnim!=null){
                         mSubmarineAnim.cancel();
+                        }
                         mSubmarine = true;
                         // 切换为闭眼睁眼动画
                         submarinOpenCloseEyesAnim();
