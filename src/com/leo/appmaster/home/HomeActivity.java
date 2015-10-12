@@ -629,9 +629,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             .getIsADAtAppLockFragmentOpen();
                 }
                 LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
-                if (isTimetoShow()
-                        // && !isEnterPrivacySuggest
-                        && mHomeAdSwitchOpen == 1) {
+                if ( mHomeAdSwitchOpen == 1) {
                     SDKWrapper
                             .addEvent(HomeActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
                       setAdIconVisible();
@@ -847,8 +845,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 startActivity(msgCenter);
                 break;
             case R.id.iv_ad_icon:
-                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
-                        System.currentTimeMillis());
+//                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
+//                        System.currentTimeMillis());
 //                LockManager.getInstatnce().timeFilterSelf();
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_cli", "adv_cnts_homeAppWall");
                 Intent mWallIntent = mWallAd.getWallIntent();
