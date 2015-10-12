@@ -250,16 +250,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
         handler = new Handler();
-        ThreadManager.getUiThreadHandler().post(new Runnable() {
-
-            @Override
-            public void run() {
-                mSubmarineTranYRandom = submarineTopMargin();
-                // float width = mSubmarineAdLt.getWidth();
-                // LeoLog.i("asdf", "width=" + width);
-                submarineAnim(0);
-            }
-        });
     }
 
     private void mobvistaCheck() {
@@ -1528,6 +1518,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public void removePretendFrame() {
         mPretendLayout.setVisibility(View.GONE);
         mLockLayout.setVisibility(View.VISIBLE);
+        ThreadManager.getUiThreadHandler().post(new Runnable() {
+
+            @Override
+            public void run() {
+                mSubmarineTranYRandom = submarineTopMargin();
+                // float width = mSubmarineAdLt.getWidth();
+                // LeoLog.i("asdf", "width=" + width);
+                submarineAnim(0);
+            }
+        });
+        
     }
 
     private float top, width, height;
