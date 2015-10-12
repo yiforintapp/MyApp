@@ -153,7 +153,6 @@ public class GestureLockFragment extends LockFragment implements
     public void onEventMainThread(SubmaineFullScreenlEvent event) {
         String eventMessage=event.eventMsg;
         if("submarine_full_screen_ad".equals(eventMessage)){
-            LeoLog.i("caocao", "准备拉去广告");
             loadMobvistaAd();
         }
     }
@@ -220,7 +219,7 @@ public class GestureLockFragment extends LockFragment implements
         mAdEngine = MobvistaEngine.getInstance();
         if (DBG) {
             LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
-            amp.setADShowType(TEST_AD_NUMBER);
+//            amp.setADShowType(TEST_AD_NUMBER);
         }
         if (amp.getADShowType() == 1) {
             unitId = Constants.UNIT_ID_59;

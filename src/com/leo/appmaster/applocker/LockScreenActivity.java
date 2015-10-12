@@ -250,6 +250,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
         handler = new Handler();
+        if(getPretendFragment() == null){
+            ThreadManager.getUiThreadHandler().post(new Runnable() {
+
+                @Override
+                public void run() {
+                    mSubmarineTranYRandom = submarineTopMargin();
+                    // float width = mSubmarineAdLt.getWidth();
+                    // LeoLog.i("asdf", "width=" + width);
+                    submarineAnim(0);
+                }
+            });
+        }
     }
 
     private void mobvistaCheck() {
