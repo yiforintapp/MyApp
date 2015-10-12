@@ -187,10 +187,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private boolean mIsSubmarineAnim = true;
     private boolean mIsShowFullScreenAd = true;
     private boolean mIsNormalStop = true;
-    /*是否在显示重试界面*/
+    /* 是否在显示重试界面 */
     private volatile boolean mIsShowRollAgain;
-    /*是否在显示广告界面*/
+    /* 是否在显示广告界面 */
     private boolean mIsShowAdUi;
+    /* 广告是否加载成功 */
+    private volatile boolean mIsLoadAdSuccess;
     private float mSubmarineCurrentAnimValue = 0;
     private float mCurrentAnimValue = 0;
     private int mSubmarineTranYRandom;
@@ -1314,7 +1316,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mSubmarineAdLt.setOnClickListener(null);
                 break;
             case R.id.btn_rollagain:
-                mIsShowRollAgain=false;
+                mIsShowRollAgain = false;
                 mRollAgain.setVisibility(View.INVISIBLE);
                 mSubmarineAdLt.setVisibility(View.VISIBLE);
                 rollAgainShowHandler();
@@ -1331,39 +1333,55 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 break;
         }
     }
+
     /* 加载广告界面处理 */
-    private void rollAgainShowHandler(){
-        loadSubmarineAD();
-       mIsClickSubmarine = true;
-       if (mSubmarineAdLt != null) {
-           mSubmarineAdLt.clearAnimation();
-       }
-       if (mSubmarineAnim != null) {
-           mSubmarineAnim.cancel();
-       }
+    private void rollAgainShowHandler() {
+        if (!mIsLoadAdSuccess) {
+            loadSubmarineAD();
+            mIsClickSubmarine = true;
+            if (mSubmarineAdLt != null) {
+                mSubmarineAdLt.clearAnimation();
+            }
+            if (mSubmarineAnim != null) {
+                mSubmarineAnim.cancel();
+            }
+            /* 切换为潜水艇闪灯动画 */
+            submarinLightingAnim();
+            Handler handler = ThreadManager.getUiThreadHandler();
+            handler.postDelayed(new Runnable() {
 
-       /* 切换为潜水艇闪灯动画 */
-       submarinLightingAnim();
-       Handler handler = ThreadManager.getUiThreadHandler();
-       handler.postDelayed(new Runnable() {
-
-           public void run() {
-               // mSubmarineAdLt
-               // .setTranslationX(mSubmarineCurrentAnimValue +
-               // mCurrentAnimValue);
-               // submarineAnim(mCurrentAnimValue);
-               /* 6s后不再显示加载的广告 */
-               if(!mIsShowAdUi){
-               mAdDialog.setVisibility(View.GONE);
-               /* 潜水艇消失 */
-               mSubmarineAdLt.setVisibility(View.INVISIBLE);
-               /* 超时显示重试页面 */
-               mRollAgain.setVisibility(View.VISIBLE);
-               mIsShowRollAgain=true;
-           }
-           }
-       }, 6000);
+                public void run() {
+                    // mSubmarineAdLt
+                    // .setTranslationX(mSubmarineCurrentAnimValue +
+                    // mCurrentAnimValue);
+                    // submarineAnim(mCurrentAnimValue);
+                    /* 6s后不再显示加载的广告 */
+                    if (!mIsShowAdUi) {
+                        mAdDialog.setVisibility(View.GONE);
+                        /* 潜水艇消失 */
+                        mSubmarineAdLt.setVisibility(View.INVISIBLE);
+                        /* 超时显示重试页面 */
+                        mRollAgain.setVisibility(View.VISIBLE);
+                        mIsShowRollAgain = true;
+                    }
+                }
+            }, 6000);
+        } else {
+            if (mSubmarineAnim != null) {
+                mSubmarineAnim.cancel();
+            }
+            if (mSubmarineAdLt != null) {
+                mSubmarineAdLt.clearAnimation();
+            }
+            submarineAnim(mCurrentAnimValue);
+            if (mAdDialog != null && mIsShowFullScreenAd) {
+                mAdDialog.setVisibility(View.VISIBLE);
+            }
+            mIsSubmarineAnim = false;
+            submarineFullScreenAnim();
+        }
     }
+
     /**
      * setting the menu item,if has password protect then add find password item
      * 
@@ -1914,14 +1932,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 计算潜艇出现的随机位置 */
     private int submarineTopMargin() {
-        int y=this.getResources().getInteger(R.integer.submarine_init_random_y);
+        int y = this.getResources().getInteger(R.integer.submarine_init_random_y);
         int random = 1 + (int) (Math.random() * y);
         return random;
     }
 
     /* 全屏广告进入动画 */
     private void submarineFullScreenAnim() {
-        mIsShowAdUi=true;
+        mIsShowAdUi = true;
         ObjectAnimator fullScreenAdAnim = ObjectAnimator.ofFloat(mAdDialog, "alpha", 0.0f,
                 1.0f);
         fullScreenAdAnim.setDuration(800);
@@ -1940,7 +1958,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void loadSubmarineAD() {
-        mAdEngine=null;
+        mAdEngine = null;
         mAdEngine = MobvistaEngine.getInstance();
         String uintId = null;
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
@@ -1960,6 +1978,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
                     LeoLog.i(TAG, "广告加载成功");
+                    mIsLoadAdSuccess = true;
                     loadADPic(campaign.getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(LockScreenActivity.this, 48),
                                     DipPixelUtil
@@ -1978,19 +1997,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     Button call = (Button) mAdDialog.findViewById(R.id.btn_ufo_dialog_install);
                     call.setText(campaign.getAdCall());
                     mAdEngine.registerView(LockScreenActivity.this, call);
-                    if(!mIsShowRollAgain){
-                    if (mSubmarineAnim != null) {
-                        mSubmarineAnim.cancel();
-                    }
-                    if (mSubmarineAdLt != null) {
-                        mSubmarineAdLt.clearAnimation();
-                    }
-                    submarineAnim(mCurrentAnimValue);
-                    if (mAdDialog != null && mIsShowFullScreenAd) {
-                        mAdDialog.setVisibility(View.VISIBLE);
-                    }
-                    mIsSubmarineAnim = false;
-                    submarineFullScreenAnim();
+                    if (!mIsShowRollAgain) {
+                        if (mSubmarineAnim != null) {
+                            mSubmarineAnim.cancel();
+                        }
+                        if (mSubmarineAdLt != null) {
+                            mSubmarineAdLt.clearAnimation();
+                        }
+                        submarineAnim(mCurrentAnimValue);
+                        if (mAdDialog != null && mIsShowFullScreenAd) {
+                            mAdDialog.setVisibility(View.VISIBLE);
+                        }
+                        mIsSubmarineAnim = false;
+                        submarineFullScreenAnim();
                     }
                     mSubmarineAdCloseIv.setOnClickListener(new OnClickListener() {
 
