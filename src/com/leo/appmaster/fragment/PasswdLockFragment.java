@@ -88,7 +88,6 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
 
     private static final int BUTTON_STATE_NORMAL = 0;
     private static final int BUTTON_STATE_PRESS = 1;
-
     private int mButtonState = BUTTON_STATE_NORMAL;
 
     private String mThemepkgName = AppMasterApplication.getSelectedTheme();
@@ -116,6 +115,8 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private boolean mBannerAdExcuteAnim;
     private static String TAG = "PasswdLockFragment";
     private boolean DBG = true;
+    /*用于测试时，指定显示的广告形式*/
+    private static final int TEST_AD_NUMBER =6;
     /*-------------------end-------------------*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -140,7 +141,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
         mAdEngine = MobvistaEngine.getInstance();
         if (DBG) {
             LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
-            amp.setADShowType(6);
+            amp.setADShowType(TEST_AD_NUMBER);
         }
         if(amp.getADShowType()==1){
             unitId=Constants.UNIT_ID_59;

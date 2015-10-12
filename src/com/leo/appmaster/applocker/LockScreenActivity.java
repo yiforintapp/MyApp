@@ -134,7 +134,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
 
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
+    /* 用于测试时，指定显示的广告形式 */
+    private static final int TEST_AD_NUMBER = 6;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -1872,7 +1874,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (DBG) {
             LeoLog.i(TAG, "该处存在测试值，注意查看修改;当前广告形式：" + amp.getADShowType());
             /* 为了便于测试广告形式6,如果当前广告形式不为6,主动设置为形式6 */
-            amp.setADShowType(6);
+            amp.setADShowType(TEST_AD_NUMBER);
         }
         if (amp.getADShowType() == 6) {
             uintId = Constants.UNIT_ID_87;

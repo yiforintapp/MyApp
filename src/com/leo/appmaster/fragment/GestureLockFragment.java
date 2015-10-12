@@ -67,6 +67,8 @@ public class GestureLockFragment extends LockFragment implements
     private MobvistaEngine mAdEngine;
     private static String TAG = "GestureLockFragment";
     private boolean DBG = true;
+    /*用于测试时，指定显示的广告形式*/
+    private static final int TEST_AD_NUMBER =6;
     // 普通Banner广告
     private RelativeLayout mNormalBannerAD, mSupermanBannerAD, mSupermanBanner;
     private AlertDialog mHalfScreenDialog;
@@ -218,7 +220,7 @@ public class GestureLockFragment extends LockFragment implements
         mAdEngine = MobvistaEngine.getInstance();
         if (DBG) {
             LeoLog.i(TAG, "当前广告形式：" + amp.getADShowType());
-            amp.setADShowType(6);
+            amp.setADShowType(TEST_AD_NUMBER);
         }
         if (amp.getADShowType() == 1) {
             unitId = Constants.UNIT_ID_59;
