@@ -53,6 +53,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -136,7 +137,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private static final boolean DBG = false;
     /* 用于测试时，指定显示的广告形式 */
-    private static final int TEST_AD_NUMBER = 5;
+    private static final int TEST_AD_NUMBER = 6;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -180,15 +181,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private MobvistaEngine mAdEngine;
     private LinearLayout mSubmarineAdLt;
     private ImageView mBubbleIv, mSubmarineEndIv, mSubmarineContentIv, mSubmarineAdCloseIv;
-    private RelativeLayout mFullScreenAdRt, mAdDialog;
+    private RelativeLayout mAdDialog;
     private ObjectAnimator mSubmarineAnim;
     private boolean mSubmarine, mIsClickSubmarine;
     private boolean mIsSubmarineAnim = true;
     private boolean mIsShowFullScreenAd = true;
     private boolean mIsNormalStop = true;
+    private boolean mIsShowRollAgain;
     private float mSubmarineCurrentAnimValue = 0;
     private float mCurrentAnimValue = 0;
     private int mSubmarineTranYRandom;
+    private FrameLayout mRollAgain;
+    private Button mRollAgainBtn;
+    private ImageView mRollAgainClose;
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
@@ -374,9 +379,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
             AppMasterPreference.getInstance(this).setUnlocked(false);
         }
-         int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+        int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
                 .getADShowType();
-         /*解决超人在有伪装情况下，提前运行动画的问题*/
+        /* 解决超人在有伪装情况下，提前运行动画的问题 */
         if (getPretendFragment() == null && adShowNumber == 5) {
             LeoEventBus.getDefaultBus().post(
                     new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "no_camouflage_lock"));
@@ -896,9 +901,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mBubbleIv = (ImageView) findViewById(R.id.submarine_end_bubble_iv);
         mSubmarineEndIv = (ImageView) findViewById(R.id.submarine_end_iv);
         mSubmarineContentIv = (ImageView) findViewById(R.id.submarine_content_iv);
-        mFullScreenAdRt = (RelativeLayout) findViewById(R.id.submarine_full_screen_ad_RT);
         mSubmarineAdCloseIv = (ImageView) findViewById(R.id.iv_close_ufo);
         mAdDialog = (RelativeLayout) findViewById(R.id.rl_ADdialog);
+        mRollAgain = (FrameLayout) findViewById(R.id.rl_ADdialog_nodata);
+        mRollAgainBtn = (Button) findViewById(R.id.btn_rollagain);
+        mRollAgainBtn.setOnClickListener(this);
+        mRollAgainClose = (ImageView) findViewById(R.id.iv_close);
+        mRollAgainClose.setOnClickListener(this);
     }
 
     // handle pretend lock
@@ -925,7 +934,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private PretendFragment getPretendFragment() {
         if (!mPrivateLockPck.equals(mLockedPackage) && !mQuickLockMode) {
-            LeoLog.i("caocao", "不是Appmaster");
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
@@ -954,8 +962,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;
             }
-        } else {
-            LeoLog.i("caocao", "是Appmaster");
         }
         return null;
     }
@@ -1300,36 +1306,58 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
                 break;
             case R.id.submarine_ad_LT:
-                /* 加载广告 */
-                loadSubmarineAD();
-                mIsClickSubmarine = true;
-                if (mSubmarineAdLt != null) {
-                    mSubmarineAdLt.clearAnimation();
-                }
-                if (mSubmarineAnim != null) {
-                    mSubmarineAnim.cancel();
-                }
-
-                /* 切换为潜水艇闪灯动画 */
-                submarinLightingAnim();
-                Handler handler = ThreadManager.getUiThreadHandler();
-                handler.postDelayed(new Runnable() {
-
-                    public void run() {
-                        mSubmarineAdLt
-                                .setTranslationX(mSubmarineCurrentAnimValue + mCurrentAnimValue);
-                        submarineAnim(mCurrentAnimValue);
-                    }
-
-                }, 6000);
+                rollAgainShowHandler();
                 /* 点击后注销潜水艇点击事件 */
                 mSubmarineAdLt.setOnClickListener(null);
+                break;
+            case R.id.btn_rollagain:
+                mRollAgain.setVisibility(View.INVISIBLE);
+                mSubmarineAdLt.setVisibility(View.VISIBLE);
+                rollAgainShowHandler();
+                break;
+            case R.id.iv_close:
+                mRollAgain.setVisibility(View.INVISIBLE);
+                mSubmarineAdLt.setVisibility(View.VISIBLE);
+                mSubmarineAdLt
+                        .setTranslationX(mSubmarineCurrentAnimValue +
+                                mCurrentAnimValue);
+                submarineAnim(mCurrentAnimValue);
                 break;
             default:
                 break;
         }
     }
+    /* 加载广告界面处理 */
+    private void rollAgainShowHandler(){
+        loadSubmarineAD();
+       mIsClickSubmarine = true;
+       if (mSubmarineAdLt != null) {
+           mSubmarineAdLt.clearAnimation();
+       }
+       if (mSubmarineAnim != null) {
+           mSubmarineAnim.cancel();
+       }
 
+       /* 切换为潜水艇闪灯动画 */
+       submarinLightingAnim();
+       Handler handler = ThreadManager.getUiThreadHandler();
+       handler.postDelayed(new Runnable() {
+
+           public void run() {
+               // mSubmarineAdLt
+               // .setTranslationX(mSubmarineCurrentAnimValue +
+               // mCurrentAnimValue);
+               // submarineAnim(mCurrentAnimValue);
+               /* 6s后不再显示加载的广告 */
+               mAdDialog.setVisibility(View.GONE);
+               /* 潜水艇消失 */
+               mSubmarineAdLt.setVisibility(View.INVISIBLE);
+               /* 超时显示重试页面 */
+               mRollAgain.setVisibility(View.VISIBLE);
+               mIsShowRollAgain=true;
+           }
+       }, 6000);
+    }
     /**
      * setting the menu item,if has password protect then add find password item
      * 
@@ -1544,7 +1572,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public void removePretendFrame() {
         mPretendLayout.setVisibility(View.GONE);
         mLockLayout.setVisibility(View.VISIBLE);
-       final  int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
+        final int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
                 .getADShowType();
         ThreadManager.getUiThreadHandler().post(new Runnable() {
 
@@ -1559,9 +1587,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         });
         /* 发送伪装解锁成功指令，解决在有伪装情况下动画运行时机问题 */
-        if(adShowNumber == 5){
-        LeoEventBus.getDefaultBus().post(
-                new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "camouflage_lock_success"));
+        if (adShowNumber == 5) {
+            LeoEventBus.getDefaultBus().post(
+                    new SubmaineAnimEvent(EventId.EVENT_SUBMARINE_ANIM, "camouflage_lock_success"));
         }
     }
 
@@ -1766,7 +1794,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
             mSubmarineAdLt.setTranslationY(mSubmarineTranYRandom);
             LeoLog.i(TAG, "潜艇距离顶部的随机数：" + mSubmarineTranYRandom);
-            int x = this.getResources().getInteger(R.integer.submarine_offset);
+            final int x = this.getResources().getInteger(R.integer.submarine_offset);
             mSubmarineAnim = ObjectAnimator.ofFloat(mSubmarineAdLt, "translationX", offset,
                     -getWindowWidth() - x);
             mSubmarineAnim.setDuration(4000);
@@ -1776,7 +1804,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                 @Override
                 public void onAnimationStart(Animator arg0) {
-                    mFullScreenAdRt.setVisibility(View.GONE);
+                    mAdDialog.setVisibility(View.GONE);
                     mIsShowFullScreenAd = false;
                 }
 
@@ -1812,7 +1840,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 public void onAnimationUpdate(ValueAnimator arg0) {
                     mCurrentAnimValue = (Float) arg0.getAnimatedValue();
                     long currentTime = arg0.getCurrentPlayTime();
-                    if (currentTime >= 2000 && !mSubmarine && !mIsClickSubmarine) {
+                    if (Math.abs(mCurrentAnimValue) >= ((getWindowWidth() + (x / 2)) / 2)
+                            && !mSubmarine && !mIsClickSubmarine) {
                         mSubmarineCurrentAnimValue = mCurrentAnimValue;
                         if (mSubmarineAnim != null) {
                             mSubmarineAnim.cancel();
@@ -1939,6 +1968,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     Button call = (Button) mAdDialog.findViewById(R.id.btn_ufo_dialog_install);
                     call.setText(campaign.getAdCall());
                     mAdEngine.registerView(LockScreenActivity.this, call);
+                    if(!mIsShowRollAgain){
                     if (mSubmarineAnim != null) {
                         mSubmarineAnim.cancel();
                     }
@@ -1946,11 +1976,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         mSubmarineAdLt.clearAnimation();
                     }
                     submarineAnim(mCurrentAnimValue);
-                    if (mFullScreenAdRt != null && mIsShowFullScreenAd) {
+                    if (mAdDialog != null && mIsShowFullScreenAd) {
                         mAdDialog.setVisibility(View.VISIBLE);
                     }
                     mIsSubmarineAnim = false;
                     submarineFullScreenAnim();
+                    }
                     mSubmarineAdCloseIv.setOnClickListener(new OnClickListener() {
 
                         @Override
