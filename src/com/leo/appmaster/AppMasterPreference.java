@@ -2593,7 +2593,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public int getADShowType() {
         if (mADShowType < 0) {
-            mADShowType = mPref.getInt(PREF_AD_SHOW_TYPE, 6);
+            mADShowType = mPref.getInt(PREF_AD_SHOW_TYPE, 5);
         }
         return mADShowType;
     }

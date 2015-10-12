@@ -114,7 +114,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
     private boolean mAlphaExcuteAnim;
     private boolean mBannerAdExcuteAnim;
     private static String TAG = "PasswdLockFragment";
-    private boolean DBG = true;
+    private boolean DBG = false;
     /*用于测试时，指定显示的广告形式*/
     private static final int TEST_AD_NUMBER =6;
     /*-------------------end-------------------*/

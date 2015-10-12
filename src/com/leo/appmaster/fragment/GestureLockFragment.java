@@ -66,7 +66,7 @@ public class GestureLockFragment extends LockFragment implements
     private int mCurrentRegisterView = 0;// 1.普通banner的install 2半屏广告的install
     private MobvistaEngine mAdEngine;
     private static String TAG = "GestureLockFragment";
-    private boolean DBG = true;
+    private boolean DBG = false;
     /*用于测试时，指定显示的广告形式*/
     private static final int TEST_AD_NUMBER =6;
     // 普通Banner广告
