@@ -47,7 +47,7 @@ public class ADShowTypeRequestManager {
     private static final String AD_LOCK_WALL = "m";
     private static final String PACKAGEDIR = "/system/";
     /* 广告展示的形式 */
-    private static final int[] LOCAL_AD_SHOW_TYPE = {
+    private static final int[] LOCAL_AD_SHOW_TYPE = new int[]{
             1, 2, 3, 5, 6
     };
     private static ADShowTypeRequestManager mInstance;
@@ -152,11 +152,11 @@ public class ADShowTypeRequestManager {
                     if (adtype == 3) {
                         adtype = 5;
                     }
+                    
                     List<int[]> adShowType = Arrays.asList(LOCAL_AD_SHOW_TYPE);
                     /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
                     if (!adShowType.contains(adtype)) {
-                        AppMasterPreference.getInstance(AppMasterApplication.getInstance())
-                                .setADShowType(3);
+                        adtype = 3;
                     }
                     sp.setADShowType(adtype);
                     sp.setUFOAnimType((response.getInt(UFO_ANIM_TYPE)));
