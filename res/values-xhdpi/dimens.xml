@@ -292,5 +292,5 @@
     <dimen name="theme_ad_button_m_right">7dp</dimen>
         <dimen name="theme_ad_button_test_size">12sp</dimen>
     <!-- 2.9 end -->
-
+    <dimen name="superman_banner_height">82dp</dimen>
 </resources>

@@ -318,4 +318,6 @@
     <integer name="submarine_offset">654</integer>
     <integer name="submarine_init_random_y">200</integer>
 
+    <dimen name="superman_banner_height">82dp</dimen>
+
 </resources>

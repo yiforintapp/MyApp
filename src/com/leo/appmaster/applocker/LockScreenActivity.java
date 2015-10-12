@@ -188,7 +188,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private boolean mIsShowFullScreenAd = true;
     private boolean mIsNormalStop = true;
     /*是否在显示重试界面*/
-    private boolean mIsShowRollAgain;
+    private volatile boolean mIsShowRollAgain;
     /*是否在显示广告界面*/
     private boolean mIsShowAdUi;
     private float mSubmarineCurrentAnimValue = 0;
@@ -1314,6 +1314,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mSubmarineAdLt.setOnClickListener(null);
                 break;
             case R.id.btn_rollagain:
+                mIsShowRollAgain=false;
                 mRollAgain.setVisibility(View.INVISIBLE);
                 mSubmarineAdLt.setVisibility(View.VISIBLE);
                 rollAgainShowHandler();
@@ -1939,6 +1940,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void loadSubmarineAD() {
+        mAdEngine=null;
         mAdEngine = MobvistaEngine.getInstance();
         String uintId = null;
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
@@ -1952,6 +1954,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } else {
             return;
         }
+        LeoLog.i(TAG, "开始加载广告");
         mAdEngine.loadMobvista(this, uintId, new MobvistaListener() {
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
