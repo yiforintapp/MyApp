@@ -88,8 +88,7 @@ public class EditPrivacyContactActivity extends BaseActivity {
                         .addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd", "answer");
             }
         });
-        mRadioHangup.setOnCheckedChangeListener(new OnCheckedChangeListener()
-        {
+        mRadioHangup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
             @Override
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
@@ -165,7 +164,15 @@ public class EditPrivacyContactActivity extends BaseActivity {
                 mCloseImage.setVisibility(View.GONE);
             }
         });
+        mNameEt.setOnClickListener(new OnClickListener() {
 
+            @Override
+            public void onClick(View arg0) {
+                if (mCloseImage.getVisibility() == View.VISIBLE) {
+                    mCloseImage.setVisibility(View.GONE);
+                }
+            }
+        });
     }
 
     private void checkEditTextAdd() {
@@ -193,8 +200,8 @@ public class EditPrivacyContactActivity extends BaseActivity {
         List<String> messageNumbers = new ArrayList<String>();
         Cursor cusor = this.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
                 "contact_phone_number LIKE ? ", new String[] {
-                    "%" + formateNumber
-                }, null);
+                        "%" + formateNumber
+        }, null);
         if (cusor != null && cusor.getCount() > 0) {
             while (cusor.moveToNext()) {
                 String number = cusor.getString(cusor
@@ -207,8 +214,8 @@ public class EditPrivacyContactActivity extends BaseActivity {
                 this.getContentResolver().update(Constants.PRIVACY_MESSAGE_URI,
                         values, selection,
                         new String[] {
-                            string
-                        });
+                                string
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -220,8 +227,8 @@ public class EditPrivacyContactActivity extends BaseActivity {
         List<String> callLogNumbers = new ArrayList<String>();
         Cursor cursor = this.getContentResolver().query(Constants.PRIVACY_CALL_LOG_URI, null,
                 "call_log_phone_number LIKE ? ", new String[] {
-                    "%" + number
-                }, null);
+                        "%" + number
+        }, null);
         if (cursor != null && cursor.getCount() > 0) {
             while (cursor.moveToNext()) {
                 String calllog = cursor.getString(cursor
@@ -233,8 +240,8 @@ public class EditPrivacyContactActivity extends BaseActivity {
             try {
                 this.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI, values, selection,
                         new String[] {
-                            string
-                        });
+                                string
+                });
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -307,24 +314,23 @@ public class EditPrivacyContactActivity extends BaseActivity {
             values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mPhoneState);
             int result = updateMessageMyselfIsRead(values, "contact_phone_number = ? ",
                     new String[] {
-                        mCurrentNumber
-                    });
+                            mCurrentNumber
+            });
             // 判断是否更新隐私短信和隐私通话列表
-            String number=PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
+            String number = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
             if (mCurrentNumber.contains(number) && !mCurrentName.equals(mPhoneName)) {
                 ContentValues updateMessageNameValues = new ContentValues();
                 updateMessageNameValues.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, mPhoneName);
                 ContentValues updateCallLogNameValues = new ContentValues();
                 updateCallLogNameValues.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, mPhoneName);
-                String formateNumber =
-                        PrivacyContactUtils.formatePhoneNumber(mCurrentNumber);
+                String formateNumber = PrivacyContactUtils.formatePhoneNumber(mCurrentNumber);
                 // 更新隐私短信名称
                 updateMessageMyselfName(updateMessageNameValues,
                         "contact_phone_number = ?", formateNumber);
                 // 更新隐私通话名称
                 updateCallLogMyselfName(updateCallLogNameValues,
                         "call_log_phone_number = ? ", formateNumber);
-                //通知更新列表
+                // 通知更新列表
                 LeoEventBus
                         .getDefaultBus()
                         .post(

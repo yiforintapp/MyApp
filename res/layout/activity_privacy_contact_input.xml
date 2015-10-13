@@ -65,8 +65,10 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="16dp"
+                    android:clickable="true"
                     android:src="@drawable/ic_close_circle"
-                    android:visibility="gone" />
+                       android:visibility="gone" 
+                 />
             </RelativeLayout>
 
             <TextView
