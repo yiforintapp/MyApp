@@ -63,6 +63,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         // PrivacyContactManager.getInstance(mContext).mIsOpenPrivacyContact =
         // true;
         iswipToPrivacyContactHandler();
+        toPrivacyContactHandler();
     }
 
     private void iswipToPrivacyContactHandler() {
@@ -190,8 +191,8 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         if (!mIsEditModel && pagerPosition == 2) {
             updateTitle();
         }
-        getIntent().removeExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
-        getIntent().removeExtra("message_call_notifi");
+//        getIntent().removeExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
+//        getIntent().removeExtra("message_call_notifi");
     }
 
     /**
@@ -491,7 +492,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
     @Override
     protected void onResume() {
-        toPrivacyContactHandler();
         super.onResume();
         PrivacyContactManager.getInstance(PrivacyContactActivity.this).mIsOpenPrivacyContact = true;
     }
