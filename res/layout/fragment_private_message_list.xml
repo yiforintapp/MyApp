@@ -46,6 +46,8 @@
                         android:singleLine="true"
                         android:text="联系人"
                         android:textColor="#414141"
+                        android:layout_toLeftOf="@+id/message_list_dateTV"
+                        android:layout_alignParentLeft="true"
                         android:textSize="16dp" />
 
                     <TextView
