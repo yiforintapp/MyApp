@@ -824,11 +824,20 @@
     <string name="splash_guide_page_msg_title">ศูนย์ข้อความ</string>
     <string name="splash_guide_page_msg_content">ทุกกิจกรรมและเคล็ดลับที่เป็นประโยชน์ที่นี่</string>
     <string name="advance_protect_open_success_tip_content">การปกป้องขั้นสูงเปิดใช้งาน Privacy Guard ไม่สามารถถอนติดตั้ง ปิดใช้ในตั้งค่า</string>
-    <string name="auto_start_tip_xiaomi4_and_letv">เรียกใช้ Privacy Guard เมื่อเริ่มต้น คลิก "จัดการเริ่มต้นอัตโนมัติ" และเพิ่ม Privacy Guard ที่การเริ่มต้นอัตโนมัติ</string>
-    <string name="auto_start_tip_redmi">เรียกใช้ Privacy Guard เมื่อเริ่มต้น ที่ "จัดการเริ่มอัตโนมัติ" ไป "เพิ่มแอพ" เพิ่ม Privacy Guard ที่เริ่มอัตโนมัติ</string>
-    <string name="auto_start_tip_huawei">เรียกใช้ Privacy Guard เมื่อเริ่มต้น เข้า "แอพป้องกัน" และเพิ่ม Privacy Guard ไปยังรายการการปกป้อง</string>
-    <!-- <string name="auto_start_tip_lenovo">เรียกใช้ Privacy Guard เมื่อเริ่มต้น ที่ "หลังฉาก" ไป "เริ่มต้นอัตโนมัติ" เพิ่ม Privacy Guard ที่เริ่มต้นอัตโนมัติ</string>
-     -->
+    <string name="auto_start_tip_xiaomi4_and_letv">คลิก"เริ่มอัตโนมัติ" เพิ่ม LEO Privacy Guard</string>
+    <string name="auto_start_tip_redmi">ไปที่"การอนุญาตสิทธิ์" และเพิ่ม Privacy Guard</string>
+    <string name="auto_start_tip_huawei">ไป "แอพที่ป้องกัน" และเพิ่ม PG ไปรายการป้องกัน</string>
+    <string name="auto_start_tip_lenovo">แอพ", "เริ่มอัตโนมัติ" เพิ่ม LEO Privacy Guard</string>
+    
      <!-- 2.10 end -->
+    <!-- 2.12 start -->
+    <string name="applock_guide_tip_title">ใช้สิทธิ์เพื่อใช้งานปกติ</string>
+    <string name="applock_guide_tip_subtitle">ข้อจำกัดของระบบ ต้องเปิดใช้สิทธิ์อนุญาต</string>
+    <string name="applock_guide_tip_security_text">ให้สิทธิ์อนุญาตของ Privacy Guard เพื่อใช้แอพ</string>
+    <string  name="auto_start_tip_text_huawei_plus">เปิดใช้สิทธิ์เริ่มอัตโนมัติ ปกป้องหลังรีสตาร์ท</string>
+      <string name="background_tip_default_text">ตั้ง Privacy Guard เพื่อปกป้องความเป็นส่วนตัว</string>
+    <string name="applock_guide_set_text">การตั้งค่า</string>
+     <string name="applock_guide_set_finish">ดำเนินการ</string>
+    <!-- 2.12 end -->
 
 </resources>

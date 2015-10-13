@@ -835,14 +835,22 @@
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">Succeed!</string>
     <string name="advance_protect_open_success_tip_content">Succeed! You can deactivate Advanced Protection in Applock settings. Unable to uninstall our app from outside under this Advanced Protection</string>
-    <string name="auto_start_tip_xiaomi4_and_letv">Please click "Autostart", choose LEO Privacy Guard to add to Autostart List</string>
-    <string name="auto_start_tip_redmi">Please go to"Permissions", add Privacy Guard to Autostart Applications</string>
-    <string name="auto_start_tip_huawei">Please go to"Protected Apps", add PG to protected list</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">For better privacy protection, please click "Autostart", choose LEO Privacy Guard to add to Autostart List</string>
+    <string name="auto_start_tip_redmi">For better privacy protection, please go to"Permissions", add Privacy Guard to Autostart Applications</string>
+    <string name="auto_start_tip_huawei">For better privacy protection, please go to"Protected Apps", add PG to protected list</string>
     <string name="auto_start_tip_lenovo">Please go to \"Apps\", choose \"Background App\" and \"Auto-start\", add LEO Privacy Guard to  List</string>
     <string name="splash_guide_page_msg_title">Message Center</string>
     <string name="splash_guide_page_msg_content">Come and check out interesting activities  useful tips here</string>
     <!-- 2.10 end -->
 
     <string name="title_activity_auto_background_guide">AutoBackgroundGuideActivity</string>
-
+    <!-- 2.12 start -->
+    <string name="applock_guide_tip_title">Authorization required for normal use</string>
+    <string name="applock_guide_tip_subtitle">Due to system limit, Privacy Guard needs following authorizations to better protect your privacy.</string>
+    <string name="applock_guide_tip_security_text">Authorize Privacy Guard permission</string>
+    <string  name="auto_start_tip_text_huawei_plus">Please authorize Privacy Guard "Autostart" permission to keep protect your app after cellphone reboot</string>
+      <string name="background_tip_default_text">Please set Privacy Guard running in Barkground to keep protecting your secrets.</string>
+    <string name="applock_guide_set_text">Settings</string>
+     <string name="applock_guide_set_finish">Finish</string>
+    <!-- 2.12 end -->
 </resources>

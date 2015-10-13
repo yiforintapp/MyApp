@@ -836,13 +836,22 @@
     <string name="desk_ad_name">Mutlu Uygulama</string>
     <string name="advance_protect_open_success_tip_title">başarıya ulaşmak</string>
     <string name="advance_protect_open_success_tip_content">Gelişmiş Koruma etkin. Gizlilik koruması şimdi kaldırılamaz. Onu Ayarlardan devre dışı bırakabilirsiniz. </string>
-    <string name="auto_start_tip_xiaomi4_and_letv">Başlangıçta Gizlilik Korumayı Çalıştır.“Otomatik başlatma yönetimi”ni tıklayın ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin. </string>
-    <string name="auto_start_tip_redmi">Başlangıçta Gizlilik Korumayı Çalıştır."Otomatik başlatma yönetimi" girin, “Uygulama Ekle”yi seçin ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin.</string>
-    <string name="auto_start_tip_huawei">Başlangıçta Gizlilik Korumayı Çalıştır.“Korunan Uygulama”yı girin ve Gizlilik Korumayı koruma listesine ekleyin.  </string>
-   <!--  <string name="auto_start_tip_lenovo">Başlangıçta Gizlilik Korumayı Çalıştır."Backstage" girin, “Otomatik başlatmayı seçin ve Gizlilik Korumayı Otomatik başlatma listesine ekleyin.</string>
-     -->
+    <string name="auto_start_tip_xiaomi4_and_letv">Lütfen "Otomatik başlat"a tıklayın ve LEO PG başlatma Listesine ekleyin</string>
+    <string name="auto_start_tip_redmi">Lütfen "İzinler"e gidin ve PG başlatma Uygulamalarına ekleyin</string>
+    <string name="auto_start_tip_huawei">Lütfen "Korumalı Uygulamalar"a gidin, PG\'yi korumalı listeye ekleyin</string>
+    <string name="auto_start_tip_lenovo">Lütfen "Uygulamalar"a gidin, "Otomatik başlat"ı seçin, LEO PG Başlatma Listesine ekleyin</string>
+    
      <string name="splash_guide_page_msg_title">İleti Merkezi</string>
     <string name="splash_guide_page_msg_content">Faaliyetler ve ipuçları</string>
     <!-- 2.10 end -->
+    <!-- 2.12 start -->
+    <string name="applock_guide_tip_title">Normal çalışma için izin gereklidir</string>
+    <string name="applock_guide_tip_subtitle">Sistem sınırına bağlı olarak, daha iyi gizlilik koruması için aşağıdaki istisnalara izin verilmelidir</string>
+    <string name="applock_guide_tip_security_text">İzleme uygulamasını kullanmak için Gizlilik Korumasına izin verin</string>
+    <string  name="auto_start_tip_text_huawei_plus">Otomatik başlatma iznini etkinleştirin,bilgisayar yeniden başladıktan sonra koruma devam edecektir</string>
+      <string name="background_tip_default_text">Sürekli gizlilik koruması için arka tarafa Gizlilik Korumasını ayarlayın </string>
+    <string name="applock_guide_set_text">Ayarlara</string>
+     <string name="applock_guide_set_finish">Tam</string>
+    <!-- 2.12 end -->
 
 </resources>
