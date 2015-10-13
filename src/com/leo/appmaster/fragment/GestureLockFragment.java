@@ -68,7 +68,7 @@ public class GestureLockFragment extends LockFragment implements
     private static String TAG = "GestureLockFragment";
     private boolean DBG = false;
     /* 用于测试时，指定显示的广告形式 */
-    private static final int TEST_AD_NUMBER = 5;
+    private static final int TEST_AD_NUMBER = 6;
     // 普通Banner广告
     private RelativeLayout mNormalBannerAD, mSupermanBannerAD, mSupermanBanner;
     private AlertDialog mHalfScreenDialog;

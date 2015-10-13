@@ -138,7 +138,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private static final boolean DBG = false;
     /* 用于测试时，指定显示的广告形式 */
-    private static final int TEST_AD_NUMBER = 5;
+    private static final int TEST_AD_NUMBER = 6;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -159,7 +159,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private RelativeLayout mPretendLayout;
     private PretendFragment mPretendFragment;
 
-    private Animation mAnim;
     private String mCleanRate;
     private TextView mText;
     private View mLockClean;
@@ -273,7 +272,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 @Override
                 public void run() {
                     mSubmarineTranYRandom = submarineTopMargin();
-                    if (adShowNumber == ADShowTypeRequestManager.SUBMARIN_AD_TYPE) {
+                    if (adShowNumber == ADShowTypeRequestManager.SUBMARIN_AD_TYPE
+                            && NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
                         submarineAnim(0);
                     }
                 }
@@ -830,7 +830,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         });
 
-        mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
+//        mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
         // mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         switch_bottom_content = findViewById(R.id.switch_bottom_content);
         switch_bottom_content.setVisibility(View.INVISIBLE);
