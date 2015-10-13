@@ -45,11 +45,15 @@ public class ADShowTypeRequestManager {
     private static final String APP_STATISTICS = "j";
     private static final String WIFI_STATISTICAL = "l";
     private static final String AD_LOCK_WALL = "m";
+    /* 2.12以后版本后台广告形式 */
+    private static final String AD_NEW_SHOW_TYPE = "n";
     private static final String PACKAGEDIR = "/system/";
     /* 广告展示的形式 */
-    private static final int[] LOCAL_AD_SHOW_TYPE = new int[]{
-            1, 2, 3, 5, 6
+    private static final String[] LOCAL_AD_SHOW_TYPE = {
+            "1", "2", "3", "5", "6"
     };
+    /* 如果后台配置本地没有的广告形式时，默认广告类型 */
+    private static final int DEFAULT_AD_SHOW_TYPE = 3;
     private static ADShowTypeRequestManager mInstance;
     private Context mContext;
     private SimpleDateFormat mDateFormate;
@@ -132,7 +136,7 @@ public class ADShowTypeRequestManager {
                 AppMasterPreference sp = AppMasterPreference.getInstance(mContext);
 
                 try {
-                    int adtype = response.getInt(AD_SHOW_TYPE);
+                    int adtype = response.getInt(AD_NEW_SHOW_TYPE);
                     LeoLog.d("poha", "请求成功，广告展示形式是：" + adtype);
                     if (adtype != sp.getADShowType()) {
                         if (adtype == 1) {
@@ -148,17 +152,17 @@ public class ADShowTypeRequestManager {
                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "ad_pull", "ad_none");
                         }
                     }
-                    /* 2.12版本特别处理，当升级用户拉取为广告形式3时，改为广告形式5 */
-                    if (adtype == 3) {
-                        adtype = 5;
-                    }
-                    
-                    List<int[]> adShowType = Arrays.asList(LOCAL_AD_SHOW_TYPE);
                     /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
-                    if (!adShowType.contains(adtype)) {
-                        adtype = 3;
+                    List<String> list = Arrays.asList(LOCAL_AD_SHOW_TYPE);
+                    String adTypeString = String.valueOf(adtype);
+                    if (!(list.contains(adTypeString))) {
+                        adtype = DEFAULT_AD_SHOW_TYPE;
                     }
+
                     sp.setADShowType(adtype);
+
+                    List<String> adNewShowType = Arrays.asList(LOCAL_AD_SHOW_TYPE);
+                    /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
                     sp.setUFOAnimType((response.getInt(UFO_ANIM_TYPE)));
                     LeoLog.d("poha", "请求成功，UFO动画形式是：" + response.getInt(UFO_ANIM_TYPE));
                     sp.setThemeChanceAfterUFO((response.getInt(THEME_CHANCE_AFTER_UFO)));

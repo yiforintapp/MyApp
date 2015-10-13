@@ -277,6 +277,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY = "ad_request_showtype_fail_times_current_day";
     public static final String PREF_AD_REQUEST_SHOWTYPE_NEXT_TIME_SPACING = "ad_request_showtype_next_time_spacing";
     public static final String PREF_AD_SHOW_TYPE = "ad_show_type";
+    public static final String PREF_AD_NEW_SHOW_TYPE="ad_new_show_type";
     public static final String PREF_AD_APPWAL_UPDATE = "ad_appwall_update";
     public static final String PREF_AD_LAST_LOAD_TIME = "ad_last_load_time";
     public static final String PREF_ISWIPE_UPDATE_TIP = "pref_iswipe_update_tip";
@@ -364,6 +365,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private boolean mShowWhiteDot;
 
     private int mADShowType = -1;
+    private int mADNewShowType = -1;
     private int mADRequestFailTimes = -1;
     private long mADRequestInternal = -1;
     private long mADLastRequestTime = -1;
@@ -2597,7 +2599,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         }
         return mADShowType;
     }
-
     // UFO动画的展示形式 //暂时没有使用
     public void setUFOAnimType(int type) {
         commitAsync(mPref.edit().putInt(PREF_UFO_ANIM_TYPE, type));

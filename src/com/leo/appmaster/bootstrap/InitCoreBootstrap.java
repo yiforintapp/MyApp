@@ -251,6 +251,10 @@ public class InitCoreBootstrap extends Bootstrap {
             }
             pref.setIsUpdateQuickGestureUser(false);
             setUpdateTipData();
+            /*新用户保存引导号*/
+            int currentGuideVersion = mApp.getResources().getInteger(
+                    R.integer.guide_page_version);
+            pref.setLastGuideVersion(currentGuideVersion);
         } else {
             int lastCode = Integer.parseInt(lastVercode);
             if (lastCode < versionCode) {
@@ -306,8 +310,7 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void tryRemoveUnlockAllShortcut(Context ctx) {
-        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag())
-        {
+        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
             // remove unlock all shortcut
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -330,10 +333,10 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void installBoostShortcut() {
-        /*系统是否安装有Iswipe*/
+        /* 系统是否安装有Iswipe */
         boolean isInstalllIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(mApp);
-        LeoLog.i(TAG, "System install :"+isInstalllIswipe);
-        if(!isInstalllIswipe) {
+        LeoLog.i(TAG, "System install :" + isInstalllIswipe);
+        if (!isInstalllIswipe) {
             Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
             ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
                     R.drawable.booster_icon);
@@ -345,7 +348,7 @@ public class InitCoreBootstrap extends Bootstrap {
             shortcut.putExtra("from_shortcut", true);
             mApp.sendBroadcast(shortcut);
         }
-        }
+    }
 
     private void judgeLockAlert() {
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
