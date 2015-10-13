@@ -2649,7 +2649,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAtLockThemeOpen() {
-        return mPref.getInt(PREF_AD_AT_THEME, 0);
+        /*主题列表广告开光控制：0-全部关闭，1-本地打开，2-在线打开*/
+        return mPref.getInt(PREF_AD_AT_THEME, 2);
     }
 
     // push时是否需要更新礼物盒状态，只在push时有效

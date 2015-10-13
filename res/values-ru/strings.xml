@@ -801,22 +801,22 @@
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">Улучш. защита вкл.</string>
     <string name="advance_protect_open_success_tip_content">Улучш. защита вкл. PrivGuard теперь нельзя удалить. Вы можете откл. его в настр.</string>
-    <string name="auto_start_tip_xiaomi4_and_letv">Запуск Privacy Guard при старте.Нажмите кнопку "Управление автозапуском" и добавьте PrivGuard в список автозапуска</string>
-    <string name="auto_start_tip_redmi">Запуск Privacy Guard при старте.В "Управл. автозапуском" выберите "Доб. прил." и доб. PrivGuard в список автозапуска</string>
-    <string name="auto_start_tip_huawei">Запуск Privacy Guard при старте.В "Защищенных приложениях" добавьте Privacy Guard в список защиты</string>
-    <!-- <string name="auto_start_tip_lenovo">Запуск Privacy Guard при старте.В "Тайнах" выберите "Автозапуск" и добавьте Privacy Guard в список автозапуска</string>
-     -->
+    <string name="auto_start_tip_xiaomi4_and_letv">Для защ. конфид. нажмите "Автостарт" и добавьте LEO PG</string>
+    <string name="auto_start_tip_redmi">Для защ. конфид. в "Пр. доступа" добавьте PG в автозагр.</string>
+    <string name="auto_start_tip_huawei">Для защ. конфид. в "Защ. Прилож." добавьте PG в список</string>
+    <string name="auto_start_tip_lenovo">Для защ. конфид. в "Приложения"-"Автозапуск" доб. LEO PG</string>
+    
      <string name="splash_guide_page_msg_title">Центр сообщений</string>
     <string name="splash_guide_page_msg_content">все мероприятия и полезные советы здесь</string>
     <!-- 2.10 end -->
     <!-- 2.12 start -->
-    <string name="applock_guide_tip_title">打开权限保证应用锁完美使用</string>
-    <string name="applock_guide_tip_subtitle">检测到您的系统有部分限制，隐私卫士需要开启以下权限以更好的保护您的应用</string>
-    <string name="applock_guide_tip_security_text">进入查看应用使用权限设置，将隐私卫士的权限打开</string>
-    <string  name="auto_start_tip_text_huawei_plus">在开机自启权限中，选择打开隐私卫士自启动权限</string>
-      <string name="background_tip_default_text">在后台保护应用中，选择并打开隐私卫士</string>
-    <string name="applock_guide_set_text">去设置</string>
-     <string name="applock_guide_set_finish">完成</string>
+    <string name="applock_guide_tip_title">Автор. треб. для норм. раб.</string>
+    <string name="applock_guide_tip_subtitle">По прав. сис., эти прив. должны вкл. для защ. конфид.</string>
+    <string name="applock_guide_tip_security_text">Дайте PG привилегию использовать приложение мониторинга</string>
+    <string  name="auto_start_tip_text_huawei_plus">Вкл. привилегию Автозапуск, защ. сохр. после перезагрузки</string>
+      <string name="background_tip_default_text">Установите фон PG для постоянной защиты конфиденц.</string>
+    <string name="applock_guide_set_text">Настройкам</string>
+     <string name="applock_guide_set_finish">Завершено</string>
     <!-- 2.12 end -->
 
 </resources>
