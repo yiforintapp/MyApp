@@ -11,6 +11,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import android.content.Context;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.util.Log;
@@ -387,7 +388,14 @@ public class HttpRequestAgent {
     public void loadADShowType(Listener<JSONObject> listener, ErrorListener errorListener) {
         String object = "";
         // String iswipeUrl = "/appmaster/config?ai=0000a.html";
-        String adtypeurl = "/appmaster/adconfig.html";
+        String versionCodeString=null;
+        try {
+            int versionCode=mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+            versionCodeString=String.valueOf(versionCode);
+        } catch (NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String adtypeurl = "/appmaster/adconfig.html?app_version_code="+versionCodeString;
         String url = Utilities.getURL(adtypeurl);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
