@@ -969,10 +969,18 @@
     <string name="splash_guide_page_msg_content">جميع الأنشطة والنصائح المفيدة هنا </string>
     <string name="advance_protect_open_success_tip_title">تنجح!</string>
     <string name="advance_protect_open_success_tip_content">تم تمكين الحماية المتقدمة. لن يمكن إلغاء تثبيت حارس الخصوصية الآن. يمكنك تعطيل ذلك في الإعدادات.</string>
-    <string name="auto_start_tip_xiaomi4_and_letv">انقر "إدارة البدء التلقائي" وأضف حارس الخصوصية لقائمة البدء التلقائيتشغيل حارس الخصوصية عند البدء</string>
-    <string name="auto_start_tip_redmi">ادخل "إدارة البدء التلقائي"، اختر "أضف تطبيق" وأضف حارس تشغيل حارس الخصوصية عند البدءالخصوصية لقائمة البدء التلقائي</string>
-    <string name="auto_start_tip_huawei">ادخل "التطبيقات المحمية" وأضف حارس الخصوصية لقائمة الحمايةتشغيل حارس الخصوصية عند البدء</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">يرجى الضغط على "التشغيل التلقائي" وإضافة حارس الخصوصية LEO لقائمة التشغيل التلقائي.</string>
+    <string name="auto_start_tip_redmi">يرجى الذهاب إلى "الأذونات" وإضافة حارس الخصوصية لتطبيقات التشغيل التلقائي</string>
+    <string name="auto_start_tip_huawei">يرجى الذهاب إلى "التطبيقات المحمية" وإضافة حارس الخصوصية للقائمة المحمية</string>
     <!-- <string name="auto_start_tip_lenovo">ادخل "الكواليس"، واختر "البدء التلقائي" وأضف حارس الخصوصية تشغيل حارس الخصوصية عند البدءلقائمة البدء التلقائي</string> -->
     <!-- 2.10 end -->
-
+    <!-- 2.12 start -->
+    <string name="applock_guide_tip_title">المصادقة إلزامية للتشغيل العادي</string>
+    <string name="applock_guide_tip_subtitle">بسبب قيود النظام، يجب تمكين التفضيلات التالية لحماية أفضل للخصوصية</string>
+    <string name="applock_guide_tip_security_text">قم بمنح حارس الخصوصية الأفضلية لاستخدام تطبيق المتابعة</string>
+    <string  name="auto_start_tip_text_huawei_plus">قم بتمكين أفضلية التشغيل التلقائي، سيتم تفعيل الحماية بعد إعادة التشغيل</string>
+      <string name="background_tip_default_text">قم بتعيين حارس الخصوصية للعمل بالخلفية لحماية مستمرة للخصوصية</string>
+    <string name="applock_guide_set_text">إلى الإعدادات</string>
+     <string name="applock_guide_set_finish">مكتمل</string>
+    <!-- 2.12 end -->
 </resources>

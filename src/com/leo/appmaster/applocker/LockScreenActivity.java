@@ -137,7 +137,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private static final boolean DBG = false;
     /* 用于测试时，指定显示的广告形式 */
-    private static final int TEST_AD_NUMBER = 6;
+    private static final int TEST_AD_NUMBER = 5;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;

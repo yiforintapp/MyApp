@@ -843,10 +843,18 @@
     <string name="splash_guide_page_msg_title">消息中心</string>
     <string name="splash_guide_page_msg_content">眾多精彩活動，實用小技巧，一網打盡</string>
     <string name="advance_protect_open_success_tip_content">高級保護成功啟動！您可以在應用鎖設置中停用高級保護。開啟高級保護時無法在應用鎖外部卸載隱私衛士</string>
-    <string name="auto_start_tip_xiaomi4_and_letv">開機啟動隱私衛士，安全無憂。請點擊“自啟動管理”，選擇隱私衛士加入到自啟動列表</string>
-    <string name="auto_start_tip_redmi">開機啟動隱私衛士，安全無憂。請進入“自啟動應用管理”，選擇“添加自啟動應用”，將隱私衛士加入到自啟動列表</string>
-    <string name="auto_start_tip_huawei">開機啟動隱私衛士，安全無憂。請進入“受保護應用”，將PG加入受保護名單中</string>
+    <string name="auto_start_tip_xiaomi4_and_letv">為了保證持續保護，請點擊“自啟動管理”，將隱私衛士加入到自啟動列表</string>
+    <string name="auto_start_tip_redmi">為了保證持續保護，請進入“自啟動應用管理”，選擇“添加自啟動應用”，將隱私衛士加入到自啟動列表</string>
+    <string name="auto_start_tip_huawei">為了保證持續保護，請進入“受保護應用”，將PG加入受保護名單中</string>
     <string name="auto_start_tip_lenovo">開機啟動隱私衛士，安全無憂。請進入“後臺管理”，選擇“後臺運行”和“後臺自啓”，將隱私衛士加入到列表</string>
     <!-- 2.10  end -->
-
+    <!-- 2.12 start -->
+    <string name="applock_guide_tip_title">需要授權以確保正常使用</string>
+    <string name="applock_guide_tip_subtitle">由於系統的限制，隱私衛士需要開啟以下許可權以更好的保護您的隱私</string>
+    <string name="applock_guide_tip_security_text">授權隱私衛士監控應用使用權限</string>
+    <string  name="auto_start_tip_text_huawei_plus">為了重啟後依然保持對應用的保護，請打開隱私衛士自啟動許可權</string>
+      <string name="background_tip_default_text">請將隱私衛士設置在背景持續運行，時刻保護您的隱私</string>
+    <string name="applock_guide_set_text">去設置</string>
+     <string name="applock_guide_set_finish">完成</string>
+    <!-- 2.12 end -->
 </resources>
