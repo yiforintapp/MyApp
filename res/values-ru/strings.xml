@@ -672,7 +672,7 @@
     <string name="permission_open_tip_notification_content">установить быстрый жест</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">Установите iSwipe и сделайте ваш телефон таким, как Apple Watch</string>
     <string name="grade_tip_feedback">Проблемы</string>
-    <string name="quick_first_tip_dialog_right_bt">установ.</string>
+    <string name="quick_first_tip_dialog_right_bt">включить</string>
     <string name="quick_first_tip_dialog_left_bt">позже</string>
     <!-- quick gesture -->
     <!-- version 2.4 end -->

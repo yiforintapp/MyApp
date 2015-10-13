@@ -840,7 +840,7 @@
     <string name="permission_open_tip_notification_content">شغل إشارة بنقرة!</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">تنزيل iSwipe لجعل هاتفك أكثر روعة مصل ساعة آبل</string>
     <string name="grade_tip_feedback">كلامي</string>
-    <string name="quick_first_tip_dialog_right_bt">تثبيت</string>
+    <string name="quick_first_tip_dialog_right_bt">تمكين</string>
     <string name="quick_first_tip_dialog_left_bt">لاحقا</string>
 
     <!-- quick gesture -->

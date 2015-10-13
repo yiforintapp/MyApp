@@ -696,7 +696,7 @@
     <string name="permission_open_tip_notification_content">คลิกเปิดทางลัด</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">ติดตั้ง iSwipe เพื่อให้โทรศัพท์ของคุณเจ๋งแบบ Apple Watch</string>
     <string name="grade_tip_feedback">เสนอแนะ</string>
-    <string name="quick_first_tip_dialog_right_bt">ติดตั้ง</string>
+    <string name="quick_first_tip_dialog_right_bt">เปิดทท.</string>
     <string name="quick_first_tip_dialog_left_bt">ภายหลัง</string>
     <!-- quick gesture -->
     <!-- version 2.4 end -->

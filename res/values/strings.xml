@@ -695,7 +695,7 @@
     <string name="pass_gesture_change">Switch password pattern</string>
     <string name="permission_open_tip_notification_title">Set shortcuts</string>
     <string name="permission_open_tip_notification_content">Click to start shortcuts</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">Swipe to reach quick switch and applications just with one-hand, immediately install and experience this amazing App.</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Swipe to reach quick switch and applications just with one-hand, immediately install and experience this amazing App. </string>
     <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
     <string name="grade_tip_feedback">Feedback</string>
     <string name="quick_first_tip_dialog_right_bt">Enable</string>
