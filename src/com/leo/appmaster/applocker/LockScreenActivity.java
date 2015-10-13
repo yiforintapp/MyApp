@@ -68,6 +68,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ColorEvaluator;
+import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
@@ -186,7 +187,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private boolean mSubmarine, mIsClickSubmarine;
     private boolean mIsSubmarineAnim = true;
     private boolean mIsShowFullScreenAd = true;
-    private boolean mIsNormalStop = true;
     /* 是否在显示重试界面 */
     private volatile boolean mIsShowRollAgain;
     /* 是否在显示广告界面 */
@@ -260,6 +260,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
         handler = new Handler();
+        adShowTypeHandler();
+    }
+    /*广告相关处理*/
+    private void adShowTypeHandler(){
+        /*潜艇广告*/
         final int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
                 .getADShowType();
         if (getPretendFragment() == null) {
@@ -268,9 +273,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 @Override
                 public void run() {
                     mSubmarineTranYRandom = submarineTopMargin();
-                    // float width = mSubmarineAdLt.getWidth();
-                    // LeoLog.i("asdf", "width=" + width);
-                    if (adShowNumber == 6) {
+                    if (adShowNumber == ADShowTypeRequestManager.SUBMARIN_AD_TYPE) {
                         submarineAnim(0);
                     }
                 }
@@ -1863,7 +1866,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 @Override
                 public void onAnimationUpdate(ValueAnimator arg0) {
                     mCurrentAnimValue = (Float) arg0.getAnimatedValue();
-                    long currentTime = arg0.getCurrentPlayTime();
                     if (Math.abs(mCurrentAnimValue) >= ((getWindowWidth() + (x / 2)) / 2)
                             && !mSubmarine && !mIsClickSubmarine) {
                         mSubmarineCurrentAnimValue = mCurrentAnimValue;
@@ -1881,10 +1883,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 潜水艇停留时动画 */
     private void submarineStopAnim() {
-        LeoLog.i(TAG, "递归执行动画！");
         if (!mIsClickSubmarine) {
             submarineAnim(mSubmarineCurrentAnimValue);
-            mIsNormalStop = false;
         }
     }
 
@@ -1909,7 +1909,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 潜水艇闭眼睁眼动画 */
     private void submarinOpenCloseEyesAnim() {
-        // mSubmarineContentIv.setImageDrawable(null);
         mSubmarineContentIv.setImageResource(R.anim.submarine1_anim);
         AnimationDrawable anim = (AnimationDrawable) mSubmarineContentIv.getDrawable();
         anim.stop();
@@ -1920,7 +1919,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 潜水艇闪灯动画 */
     private void submarinLightingAnim() {
-        // mSubmarineContentIv.setImageDrawable(null);
         mSubmarineContentIv.setImageResource(R.anim.submarine2_anim);
         AnimationDrawable anim = (AnimationDrawable) mSubmarineContentIv.getDrawable();
         anim.stop();

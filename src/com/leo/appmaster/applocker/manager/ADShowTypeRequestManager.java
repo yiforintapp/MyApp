@@ -53,9 +53,11 @@ public class ADShowTypeRequestManager {
             "1", "2", "3", "5", "6"
     };
     /* 如果后台配置本地没有的广告形式时，默认广告类型 */
-    private static final int DEFAULT_AD_SHOW_TYPE = 3;
+    public static final int DEFAULT_AD_SHOW_TYPE = 3;
     /*关闭Lock页所有广告指令*/
-    private static final int CLOSE_LOCK_AD_SHOW=4;
+    public static final int CLOSE_LOCK_AD_SHOW=4;
+    /*潜水艇广告指令号码*/
+    public static final int SUBMARIN_AD_TYPE=6;
     private static ADShowTypeRequestManager mInstance;
     private Context mContext;
     private SimpleDateFormat mDateFormate;
