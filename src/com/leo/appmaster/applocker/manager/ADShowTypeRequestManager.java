@@ -54,6 +54,8 @@ public class ADShowTypeRequestManager {
     };
     /* 如果后台配置本地没有的广告形式时，默认广告类型 */
     private static final int DEFAULT_AD_SHOW_TYPE = 3;
+    /*关闭Lock页所有广告指令*/
+    private static final int CLOSE_LOCK_AD_SHOW=4;
     private static ADShowTypeRequestManager mInstance;
     private Context mContext;
     private SimpleDateFormat mDateFormate;
@@ -155,7 +157,8 @@ public class ADShowTypeRequestManager {
                     /* 2.12版本加入，如果后台拉取到的广告形式本地没有，默认使用方式3 */
                     List<String> list = Arrays.asList(LOCAL_AD_SHOW_TYPE);
                     String adTypeString = String.valueOf(adtype);
-                    if (!(list.contains(adTypeString))) {
+                    if (!(list.contains(adTypeString)) && adtype!=CLOSE_LOCK_AD_SHOW) {
+                        /*满足两个条件：1,不再本地广告形式内，2，不为关闭广告指令*/
                         adtype = DEFAULT_AD_SHOW_TYPE;
                     }
 
