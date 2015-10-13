@@ -20,8 +20,10 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -30,10 +32,12 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -138,7 +142,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
 
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-
+                
             }
 
             @Override
@@ -155,6 +159,20 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
             }
         };
         mEditText.addTextChangedListener(watcher);
+        mEditText.setOnTouchListener(new OnTouchListener() {
+            
+            @Override
+            public boolean onTouch(View arg0, MotionEvent arg1) {
+                        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                            
+                            @Override
+                            public void run() {
+                                mContactCallLog.setSelection(mMessages.size() - 1);
+                            }
+                        }, 200);
+                return false;
+            }
+        });
         LeoEventBus.getDefaultBus().register(this);
         // 标识Activity创建运行不通知
         AppMasterPreference.getInstance(this).setMessageItemRuning(false);
