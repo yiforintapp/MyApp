@@ -25,7 +25,6 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.leo.analytics.update.IUIHelper;
-import com.leo.analytics.update.UpdateHelper;
 import com.leo.analytics.update.UpdateManager;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -195,23 +194,23 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         nm.cancel(DOWNLOAD_NOTIFICATION_ID);
     }
 
-    private void recordRemind() {
-        SharedPreferences sp = PreferenceManager
-                .getDefaultSharedPreferences(mContext);
-        Editor editor = sp.edit();
-        editor.putLong(KEY_LAST_SHOW_REMIND_TIME, System.currentTimeMillis());
-        int remindCount = sp.getInt(KEY_CURRENT_REMIND_TIMES, 0);
-
-        LeoLog.d(TAG, "recordRemind: remindCount = " + remindCount);
-        editor.putInt(KEY_CURRENT_REMIND_TIMES, remindCount + 1);
-        editor.apply();
-    }
+//    private void recordRemind() {
+//        SharedPreferences sp = PreferenceManager
+//                .getDefaultSharedPreferences(mContext);
+//        Editor editor = sp.edit();
+//        editor.putLong(KEY_LAST_SHOW_REMIND_TIME, System.currentTimeMillis());
+//        int remindCount = sp.getInt(KEY_CURRENT_REMIND_TIMES, 0);
+//
+//        LeoLog.d(TAG, "recordRemind: remindCount = " + remindCount);
+//        editor.putInt(KEY_CURRENT_REMIND_TIMES, remindCount + 1);
+//        editor.apply();
+//    }
 
     @SuppressWarnings("deprecation")
     private void sendUpdateNotification() {
         if (!mManager.isFromUser()) {
             LeoLog.d(TAG, "sendUpdateNotification");
-            recordRemind();
+            mManager.recordRemind();
         }
 
         String appName = mContext.getString(R.string.app_name);
@@ -316,20 +315,10 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         }
     }
 
-    public boolean shouldshow() {
-        SharedPreferences config = mContext.getSharedPreferences(UpdateHelper.PREFS_NAME,
-                Context.MODE_PRIVATE);
-        int lastcheckday = config.getInt(_LAST_SHOW_DAY, 0);
-        int nowday = F.getDay();
-
-        if (nowday > lastcheckday) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     private void checkShowRemindNotification() {
+        sendUpdateNotification();
+        
+        /*
         LeoLog.d(TAG, "checkShowRemindNotification");
         if (mManager.isFromUser() || UpdateManager.isOneDayGetTwoNew) {
             LeoLog.d(TAG, "isFromUser, send right nows");
@@ -411,18 +400,14 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
         setLastShowDay();
 
-    }
-
-    private void setLastShowDay() {
-        SharedPreferences config = mContext.getSharedPreferences(UpdateHelper.PREFS_NAME,
-                Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = config.edit();
-        editor.putInt(_LAST_SHOW_DAY, F.getDay());
-        editor.commit();
+        */
     }
 
     private void checkShowRemindActivity() {
         LeoLog.d(TAG, "checkShowRemindNotification");
+        relaunchActivity(mUIType, mUIParam, true, false, null);
+        
+        /*
         if (mManager.isFromUser() || UpdateManager.isOneDayGetTwoNew) {
             LeoLog.d(TAG, "isFromUser, send right nows");
             relaunchActivity(mUIType, mUIParam, false, false, null);
@@ -494,6 +479,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             }
         }
         setLastShowDay();
+        
+        */
     }
 
     @SuppressLint("NewApi")
@@ -675,7 +662,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
             boolean filterLockFlag/* 是否需要过滤锁 */, String lockPackage) {
         if (!mManager.isFromUser() && needRecord) {
             LeoLog.d(TAG, "relaunchActivity");
-            recordRemind();
+            mManager.recordRemind();
         }
         Intent i = new Intent();
         i.setClass(mContext, UpdateActivity.class);

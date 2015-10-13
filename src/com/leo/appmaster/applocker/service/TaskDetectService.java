@@ -28,7 +28,6 @@ import android.support.v4.app.NotificationCompat.Builder;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.baidu.mobstat.p;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
