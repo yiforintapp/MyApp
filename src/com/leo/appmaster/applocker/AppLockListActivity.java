@@ -247,6 +247,9 @@ public class AppLockListActivity extends BaseActivity implements
         /* 锁提示蒙层消失，引导蒙层显示 */
         boolean  isShowLockAutoTip=AppMasterPreference.getInstance(this).getLockAndAutoStartGuide();
         if(!isShowLockAutoTip){
+            if(needGuide()){
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_display_cnts");
+            }
             setGuideTipShow();
         }
         
@@ -556,6 +559,7 @@ public class AppLockListActivity extends BaseActivity implements
                     }
                 }
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_use");
                 break;
             case R.id.auto_guide_button:
                 /* 华为P7类rom */
@@ -567,13 +571,16 @@ public class AppLockListActivity extends BaseActivity implements
                     autoIntent.setComponent(autoCn);
                     LockManager.getInstatnce().timeFilterSelf();
                     startActivity(autoIntent);
+                    
                 } else {
                     new AutoStartGuideList().executeGuide();
                 }
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_fn");
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
             case R.id.background_guide_button:
                 new AutoStartGuideList().executeGuide();
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_back");
                 break;
             case R.id.finish:
                 if (mGuideTip.getVisibility() == View.VISIBLE) {
@@ -585,6 +592,7 @@ public class AppLockListActivity extends BaseActivity implements
                     mGuideHelpTipBt.startAnimation(animation);
                 }
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_wcnts_finish");
                 break;
             case R.id.tip_help:
                 if (mGuideTip.getVisibility() == View.GONE) {
@@ -593,6 +601,7 @@ public class AppLockListActivity extends BaseActivity implements
                             R.anim.lock_mode_guide_in);
                     mGuideTip.startAnimation(animation);
                     setGuideTipShow();
+                    SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_display_cnts");
                 } else if (mGuideTip.getVisibility() == View.VISIBLE) {
                     mGuideTip.setVisibility(View.GONE);
                     mGuideTip.startAnimation(AnimationUtils
@@ -612,6 +621,7 @@ public class AppLockListActivity extends BaseActivity implements
         if (TaskDetectService.sDetectSpecial && !lenovo) {
             mGuideTip.setVisibility(View.VISIBLE);
             mSecurityRL.setVisibility(View.VISIBLE);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_display_use");
         } else {
             mSecurityRL.setVisibility(View.GONE);
             mGuideTip.setVisibility(View.GONE);
@@ -626,12 +636,13 @@ public class AppLockListActivity extends BaseActivity implements
             mAutoText.setText(content);
             mAutoRL.setVisibility(View.VISIBLE);
             mBackgroundRL.setVisibility(View.GONE);
-
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_display_fn");
             /* 查询是否为双提示打开系统权限的机型 */
             if (AutoStartGuideList.isDoubleTipOPenPhone(mWhiteMode)) {
                 mBackgroundRL.setVisibility(View.VISIBLE);
                 mAutoText.setText(R.string.auto_start_tip_text_huawei_plus);
                 mBackGroudText.setText(content);
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "gd_wcnts", "gd_display_back");
             }
         } else {
             mAutoRL.setVisibility(View.GONE);

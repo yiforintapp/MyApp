@@ -287,6 +287,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "ad_bannerpop");
                             break;
                         case 5:
+                            mCurrentRegisterView = 5;
                             mIsLoadAdSuccess = true;
                             // app图标
                             ImageView icon4 = (ImageView) mSupermanBannerAD
@@ -317,6 +318,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                                 @Override
                                 public void onClick(View v) {
                                     mSupermanBannerAD.setVisibility(View.GONE);
+                                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "ad_superman_off");
                                 }
                             });
                    
@@ -354,6 +356,11 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     AppMasterPreference.getInstance(mActivity).setHalfScreenBannerClickTime(
                             System.currentTimeMillis());
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "pop_gp");
+                }
+                if(mCurrentRegisterView == 5){
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_superman");
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                            "app_act", "adunlocksuperman_$"+campaign.getPackageName());
                 }
             }
         });
@@ -1332,6 +1339,7 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             }
         });
         bannerAnim.start();
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "adv_shws_superman");
     }
 
 }

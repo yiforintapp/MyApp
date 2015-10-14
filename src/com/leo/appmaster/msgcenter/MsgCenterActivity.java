@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -14,7 +15,9 @@ import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * 消息中心列表
@@ -56,6 +59,16 @@ public class MsgCenterActivity extends BaseActivity implements
                 MsgCenterFetchJob.checkCacheAndRequest(null);
             }
         });
+        handlerIntent();
+    }
+
+    private void handlerIntent() {
+        Intent intent=this.getIntent();
+        boolean isFormPush=intent.getBooleanExtra(PushInvoke.PUSH_GOTO_MSGCENTER, false);
+        if(isFormPush){
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "push_refresh", "InfoCtr_push");
+            intent.removeExtra(PushInvoke.PUSH_GOTO_MSGCENTER);
+        }
     }
 
     @Override

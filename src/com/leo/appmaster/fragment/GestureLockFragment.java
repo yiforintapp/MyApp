@@ -379,6 +379,7 @@ public class GestureLockFragment extends LockFragment implements
                             SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "ad_bannerpop");
                             break;
                         case 5:
+                            mCurrentRegisterView = 5;
                             mIsLoadAdSuccess = true;
                             // app图标
                             ImageView icon4 = (ImageView) mSupermanBannerAD
@@ -409,6 +410,7 @@ public class GestureLockFragment extends LockFragment implements
                                 @Override
                                 public void onClick(View v) {
                                     mSupermanBannerAD.setVisibility(View.GONE);
+                                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "ad_superman_off");
                                 }
                             });
                             if (mIsShowAnim || mIsCamouflageLockSuccess) {
@@ -443,6 +445,11 @@ public class GestureLockFragment extends LockFragment implements
                     AppMasterPreference.getInstance(mActivity).setHalfScreenBannerClickTime(
                             System.currentTimeMillis());
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "pop_gp");
+                }
+                if(mCurrentRegisterView == 5){
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_superman");
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
+                            "app_act", "adunlocksuperman_$"+campaign.getPackageName());
                 }
             }
         });
@@ -693,6 +700,7 @@ public class GestureLockFragment extends LockFragment implements
             }
         });
         bannerAnim.start();
+        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "adv_shws_superman");
     }
 
     @Override

@@ -91,8 +91,10 @@ import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
@@ -1273,6 +1275,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
                         true);
                 mTtileBar.setOptionImage(R.drawable.menu_item_btn);
+                
                 break;
             case R.id.layout_title_back:
                 onBackPressed();
@@ -1317,12 +1320,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 rollAgainShowHandler();
                 /* 点击后注销潜水艇点击事件 */
                 mSubmarineAdLt.setOnClickListener(null);
+                
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                        "ad_cli", "adv_cnts_submarineCG");
                 break;
             case R.id.btn_rollagain:
                 mIsShowRollAgain = false;
                 mRollAgain.setVisibility(View.INVISIBLE);
                 mSubmarineAdLt.setVisibility(View.VISIBLE);
                 rollAgainShowHandler();
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                        "ad_cli", "adv_cnts_submarineNA");
                 break;
             case R.id.iv_close:
                 mRollAgain.setVisibility(View.INVISIBLE);
@@ -1935,7 +1943,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         return random;
     }
 
-    /* 全屏广告进入动画 */
+    /* 潜艇拉去到广告进入动画 */
     private void submarineFullScreenAnim() {
         mIsShowAdUi = true;
         ObjectAnimator fullScreenAdAnim = ObjectAnimator.ofFloat(mAdDialog, "alpha", 0.0f,
@@ -1943,6 +1951,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         fullScreenAdAnim.setDuration(800);
         fullScreenAdAnim.setRepeatCount(0);
         fullScreenAdAnim.start();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_act", "adv_shws_ufo");
     }
 
     private int getWindowWidth() {
@@ -2022,6 +2031,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             @Override
             public void onMobvistaClick(Campaign campaign) {
                 mAdDialog.setVisibility(View.GONE);
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                        "ad_cli", "adv_cnts_submarine");
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                        "app_act", "adunlocksubmarine_$"+campaign.getPackageName());
             }
         });
     }
