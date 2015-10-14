@@ -1884,23 +1884,31 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         // 切换为闭眼睁眼动画
                         submarinOpenCloseEyesAnim();
                     }
-//                    if (Math.abs(mCurrentAnimValue) >= (getWindowWidth() + x)) {
-//                        LeoLog.i("caocao", "mCurrentAnimValue=" + mCurrentAnimValue
-//                                + ",getWindowWidth()+x=" + getWindowWidth() + x);
-//                        mCurrentAnimValue = 0;
-//                        mSubmarineCurrentAnimValue = 0;
-//                        mSubmarine = false;
-//                        mIsClickSubmarine = false;
-//                        mIsSubmarineAnim = true;
-//                        mIsShowFullScreenAd = true;
-//                        /* 是否在显示重试界面 */
-//                        mIsShowRollAgain = false;
-//                        /* 是否在显示广告界面 */
-//                        mIsShowAdUi = false;
-//                        /* 广告是否加载成功 */
-//                        mIsLoadAdSuccess = false;
-//                        adShowTypeHandler();
-//                    }
+                    if(!mIsShowAdUi){
+                    if (Math.abs(mCurrentAnimValue) >= (getWindowWidth() + x)) {
+                        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                            
+                            @Override
+                            public void run() {
+                                LeoLog.i("caocao", "mCurrentAnimValue=" + mCurrentAnimValue
+                                        + ",getWindowWidth()+x=" + getWindowWidth() + x);
+                                mCurrentAnimValue = 0;
+                                mSubmarineCurrentAnimValue = 0;
+                                mSubmarine = false;
+                                mIsClickSubmarine = false;
+                                mIsSubmarineAnim = true;
+                                mIsShowFullScreenAd = true;
+                                /* 是否在显示重试界面 */
+                                mIsShowRollAgain = false;
+                                /* 是否在显示广告界面 */
+                                mIsShowAdUi = false;
+                                /* 广告是否加载成功 */
+                                mIsLoadAdSuccess = false;
+                                adShowTypeHandler();
+                            }
+                        }, 1000);
+                    }
+                    }
                 }
             });
         }
