@@ -416,15 +416,11 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     // Entry<String, ContactCallLog> entry = iterator.next();
                     // String contactCallLog = entry.getKey();
                     if (!callLogLists.contains(formateNumber)) {
-                        LeoLog.i("caocao",
-                                callLog.getCallLogName() + "2-----" + callLog.getClallLogDate());
                         callLog.setCallLogCount(noReadCallLogCount(number));
                         callLogList.put(number, callLog);
-                        // }
                     }
+                    // }
                 } else {
-                    LeoLog.i("caocao",
-                            callLog.getCallLogName() + "1-----" + callLog.getClallLogDate());
                     int temp=noReadCallLogCount(number);
                     callLog.setCallLogCount(temp);
                     callLogList.put(number, callLog);
@@ -523,7 +519,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
             AppMasterPreference pre = AppMasterPreference.getInstance(mContext);
             int temp = pre.getCallLogNoReadCount();
             for (ContactCallLog calllog : mDeleteCallLog) {
-                // check no read messag
                 int noReadCount = noReadCallLogCount(calllog.getCallLogNumber());
                 if (temp > 0) {
                     if (noReadCount > 0) {

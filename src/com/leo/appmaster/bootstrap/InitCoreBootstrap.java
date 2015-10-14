@@ -251,7 +251,7 @@ public class InitCoreBootstrap extends Bootstrap {
             }
             pref.setIsUpdateQuickGestureUser(false);
             setUpdateTipData();
-            /*新用户保存引导号*/
+            /* 新用户保存引导号 */
             int currentGuideVersion = mApp.getResources().getInteger(
                     R.integer.guide_page_version);
             pref.setLastGuideVersion(currentGuideVersion);
@@ -268,9 +268,14 @@ public class InitCoreBootstrap extends Bootstrap {
                 int currentGuideVersion = mApp.getResources().getInteger(
                         R.integer.guide_page_version);
                 int lastGuideVersion = pref.getLastGuideVersion();
-//                || (41<lastCode && lastCode!=47)
                 /* 升级是否需要显示引导页，需要手动配置：true-显示，false-不显示 */
-                updateShowGuidePage(lastCode < 41 || currentGuideVersion > lastGuideVersion );
+                // TODO 2.12版本对引导页做特别处理，上个版本不是2.11或者2.10到2.12版本时就显示引导页否则不显示
+                updateShowGuidePage(
+                        lastCode < 41 || (lastCode>=41 && lastCode != 47 && lastCode != 46));
+                // TODO 下个版本需要改回该方式
+                // updateShowGuidePage(lastCode < 41 || currentGuideVersion >
+                // lastGuideVersion );
+
                 pref.setLastGuideVersion(currentGuideVersion);
                 pref.setIsUpdateQuickGestureUser(true);
                 // 每次升级都重新刷新googleplay提示规则
