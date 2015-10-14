@@ -261,25 +261,25 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
         handler = new Handler();
-        adShowTypeHandler();
+        ThreadManager.getUiThreadHandler().post(new Runnable() {
+            @Override
+            public void run() {
+                adShowTypeHandler();
+            }
+        });
     }
-    /*广告相关处理*/
-    private void adShowTypeHandler(){
-        /*潜艇广告*/
+
+    /* 广告相关处理 */
+    private void adShowTypeHandler() {
+        /* 潜艇广告 */
         final int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
                 .getADShowType();
         if (getPretendFragment() == null) {
-            ThreadManager.getUiThreadHandler().post(new Runnable() {
-
-                @Override
-                public void run() {
-                    mSubmarineTranYRandom = submarineTopMargin();
-                    if (adShowNumber == ADShowTypeRequestManager.SUBMARIN_AD_TYPE
-                            && NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
-                        submarineAnim(0);
-                    }
-                }
-            });
+            mSubmarineTranYRandom = submarineTopMargin();
+            if (adShowNumber == ADShowTypeRequestManager.SUBMARIN_AD_TYPE
+                    && NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
+                submarineAnim(0);
+            }
         }
     }
 
@@ -832,7 +832,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         });
 
-//        mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
+        // mAnim = AnimationUtils.loadAnimation(this, R.anim.locker_guide);
         // mThemeView = (ImageView) findViewById(R.id.img_layout_right);
         switch_bottom_content = findViewById(R.id.switch_bottom_content);
         switch_bottom_content.setVisibility(View.INVISIBLE);
@@ -1275,7 +1275,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
                         true);
                 mTtileBar.setOptionImage(R.drawable.menu_item_btn);
-                
+
                 break;
             case R.id.layout_title_back:
                 onBackPressed();
@@ -1320,7 +1320,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 rollAgainShowHandler();
                 /* 点击后注销潜水艇点击事件 */
                 mSubmarineAdLt.setOnClickListener(null);
-                
+
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                         "ad_cli", "adv_cnts_submarineCG");
                 break;
@@ -1823,9 +1823,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             /* 尾部动画 */
             bubbleAndEndAnim();
 
-            if (mSubmarineAnim != null) {
-                mSubmarineAnim.cancel();
-            }
+//            if (mSubmarineAnim != null) {
+////                mSubmarineAnim.cancel();
+//            }
 
             mSubmarineAdLt.setTranslationY(mSubmarineTranYRandom);
             LeoLog.i(TAG, "潜艇距离顶部的随机数：" + mSubmarineTranYRandom);
@@ -1884,6 +1884,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         // 切换为闭眼睁眼动画
                         submarinOpenCloseEyesAnim();
                     }
+//                    if (Math.abs(mCurrentAnimValue) >= (getWindowWidth() + x)) {
+//                        LeoLog.i("caocao", "mCurrentAnimValue=" + mCurrentAnimValue
+//                                + ",getWindowWidth()+x=" + getWindowWidth() + x);
+//                        mCurrentAnimValue = 0;
+//                        mSubmarineCurrentAnimValue = 0;
+//                        mSubmarine = false;
+//                        mIsClickSubmarine = false;
+//                        mIsSubmarineAnim = true;
+//                        mIsShowFullScreenAd = true;
+//                        /* 是否在显示重试界面 */
+//                        mIsShowRollAgain = false;
+//                        /* 是否在显示广告界面 */
+//                        mIsShowAdUi = false;
+//                        /* 广告是否加载成功 */
+//                        mIsLoadAdSuccess = false;
+//                        adShowTypeHandler();
+//                    }
                 }
             });
         }
@@ -2034,7 +2051,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                         "ad_cli", "adv_cnts_submarine");
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-                        "app_act", "adunlocksubmarine_$"+campaign.getPackageName());
+                        "app_act", "adunlocksubmarine_$" + campaign.getPackageName());
             }
         });
     }

@@ -384,7 +384,6 @@
             android:excludeFromRecents="true"
             android:exported="true"
             android:screenOrientation="portrait"
-            android:noHistory="true"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
