@@ -53,6 +53,7 @@ import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 
@@ -113,8 +114,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
                         updateCallLogMyselfIsRead(1,
                                 "call_log_phone_number LIKE ? and call_log_is_read = 0",
                                 new String[] {
-                                    "%" + readNumberFlag
-                                }, mContext);
+                                        "%" + readNumberFlag
+                        }, mContext);
                         mAdapter.notifyDataSetChanged();
                     } catch (Exception e) {
                     }
@@ -152,9 +153,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 return true;
             }
         });
-
-        PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
-        task.execute("");
     }
 
     // 更新TitleBar
@@ -222,6 +220,8 @@ public class PrivacyCalllogFragment extends BaseFragment {
 
     @Override
     public void onResume() {
+        PrivacyContactCallLogTask task = new PrivacyContactCallLogTask();
+        task.execute("");
         super.onResume();
     }
 
@@ -403,21 +403,30 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             R.drawable.default_user_avatar)).getBitmap());
                 }
                 if (callLogList != null && callLogList.size() > 0) {
-                    Iterator<Entry<String, ContactCallLog>> iterator =
-                            callLogList.entrySet()
-                                    .iterator();
-                    String formateNumber =
-                            PrivacyContactUtils.formatePhoneNumber(number);
-                    while (iterator.hasNext()) {
-                        Entry<String, ContactCallLog> entry = iterator.next();
-                        String contactCallLog = entry.getKey();
-                        if (!contactCallLog.contains(formateNumber)) {
-                            callLog.setCallLogCount(noReadCallLogCount(number));
-                            callLogList.put(number, callLog);
-                        }
+                    List<String> mapKeyList = new ArrayList<String>(callLogList.keySet());
+                    // Iterator<Entry<String, ContactCallLog>> iterator =
+                    // callLogList.entrySet()
+                    // .iterator();
+                    List<String> callLogLists = new ArrayList<String>();
+                    for (String string : mapKeyList) {
+                        callLogLists.add(PrivacyContactUtils.formatePhoneNumber(string));
+                    }
+                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                    // while (iterator.hasNext()) {
+                    // Entry<String, ContactCallLog> entry = iterator.next();
+                    // String contactCallLog = entry.getKey();
+                    if (!callLogLists.contains(formateNumber)) {
+                        LeoLog.i("caocao",
+                                callLog.getCallLogName() + "2-----" + callLog.getClallLogDate());
+                        callLog.setCallLogCount(noReadCallLogCount(number));
+                        callLogList.put(number, callLog);
+                        // }
                     }
                 } else {
-                    callLog.setCallLogCount(noReadCallLogCount(number));
+                    LeoLog.i("caocao",
+                            callLog.getCallLogName() + "1-----" + callLog.getClallLogDate());
+                    int temp=noReadCallLogCount(number);
+                    callLog.setCallLogCount(temp);
                     callLogList.put(number, callLog);
                 }
             }
@@ -501,8 +510,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
     }
 
     // 删除隐私通话记录
-    private class PrivacyCallLogTask extends AsyncTask<String, Boolean, List<ContactCallLog>>
-    {
+    private class PrivacyCallLogTask extends AsyncTask<String, Boolean, List<ContactCallLog>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -604,12 +612,12 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     pre.setCallLogNoReadCount(temp - 1);
                     if (temp - 1 <= 0) {
                         /* ISwipe处理：通知没有未读 */
-                        PrivacyContactManager.getInstance(context).cancelPrivacyTipFromPrivacyCall();
+                        PrivacyContactManager.getInstance(context)
+                                .cancelPrivacyTipFromPrivacyCall();
                         // 没有未读去除隐私通知
                         if (pre.getMessageNoReadCount() <= 0) {
-                            NotificationManager notificationManager = (NotificationManager)
-                                    context
-                                            .getSystemService(Context.NOTIFICATION_SERVICE);
+                            NotificationManager notificationManager = (NotificationManager) context
+                                    .getSystemService(Context.NOTIFICATION_SERVICE);
                             notificationManager.cancel(20140902);
                         }
                         // 隐私通话没有未读
@@ -622,16 +630,22 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
                             AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
                                     false);
-                            if ((QuickGestureManager.getInstance(context).getQuickNoReadCall() == null || QuickGestureManager
-                                    .getInstance(context).getQuickNoReadCall().size() <= 0)/* 未读通话 */
+                            if ((QuickGestureManager
+                                    .getInstance(context).getQuickNoReadCall() == null
+                                    || QuickGestureManager
+                                            .getInstance(context).getQuickNoReadCall()
+                                            .size() <= 0)/* 未读通话 */
                                     && (QuickGestureManager.getInstance(context)
-                                            .getQuiQuickNoReadMessage() == null || QuickGestureManager
-                                            .getInstance(context).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
+                                            .getQuiQuickNoReadMessage() == null
+                                            || QuickGestureManager
+                                                    .getInstance(context).getQuiQuickNoReadMessage()
+                                                    .size() <= 0)/* 未读短信 */
                                     && AppMasterPreference.getInstance(context)
                                             .getMessageNoReadCount() <= 0/* 隐私短信 */
                                     && AppMasterPreference.getInstance(context)
                                             .getLastBusinessRedTipShow()/* 运营 */) {
-                                QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
+                                QuickGestureManager
+                                        .getInstance(context).isShowSysNoReadMessage = false;
                             }
                         }
                         FloatWindowHelper.removeShowReadTipWindow(context);

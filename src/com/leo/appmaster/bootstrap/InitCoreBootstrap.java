@@ -268,8 +268,9 @@ public class InitCoreBootstrap extends Bootstrap {
                 int currentGuideVersion = mApp.getResources().getInteger(
                         R.integer.guide_page_version);
                 int lastGuideVersion = pref.getLastGuideVersion();
+//                || (41<lastCode && lastCode!=47)
                 /* 升级是否需要显示引导页，需要手动配置：true-显示，false-不显示 */
-                updateShowGuidePage(lastCode < 41 || currentGuideVersion > lastGuideVersion);
+                updateShowGuidePage(lastCode < 41 || currentGuideVersion > lastGuideVersion );
                 pref.setLastGuideVersion(currentGuideVersion);
                 pref.setIsUpdateQuickGestureUser(true);
                 // 每次升级都重新刷新googleplay提示规则
