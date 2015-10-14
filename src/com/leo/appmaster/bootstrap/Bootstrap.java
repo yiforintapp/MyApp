@@ -88,7 +88,11 @@ public abstract class Bootstrap {
     
     protected final void strap() {
         long start = SystemClock.elapsedRealtime();
-        doStrap();
+        try {
+            doStrap();
+        } catch (Exception e) {
+            
+        }
         long cost = SystemClock.elapsedRealtime() - start;
         if (!(this instanceof BootstrapGroup)) {
             LeoLog.i(TAG, "-->" + getClassTag() + " cost: " + cost);
