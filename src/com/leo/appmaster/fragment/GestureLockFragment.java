@@ -449,7 +449,7 @@ public class GestureLockFragment extends LockFragment implements
                 if(mCurrentRegisterView == 5){
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_cli", "adv_cnts_superman");
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1,
-                            "app_act", "adunlocksuperman_$"+campaign.getPackageName());
+                            "app_act", "adunlocksuperman_$"+campaign.getAppName());
                 }
             }
         });
