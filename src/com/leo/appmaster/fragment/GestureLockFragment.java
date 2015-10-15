@@ -381,7 +381,6 @@ public class GestureLockFragment extends LockFragment implements
                             break;
                         case 5:
                             mCurrentRegisterView = 5;
-                            LeoLog.i("caocao", "加载超人Banner5----"+mCurrentRegisterView);
                             mIsLoadAdSuccess = true;
                             // app图标
                             ImageView icon4 = (ImageView) mSupermanBannerAD

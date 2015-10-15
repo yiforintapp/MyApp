@@ -274,7 +274,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             }
         });
         mSubmarineHandler= new  SubmarineHandler(this); 
-        LeoLog.i("asdfasdfasdfasdfasdfdasfas", "分辨率："+getWindowWidth()+","+getWindowHeight());
     }
 
     /* 广告相关处理 */
