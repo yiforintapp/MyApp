@@ -12,6 +12,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.push.IPushStatHelper;
 import com.leo.push.PushManager;
 import com.tendcloud.tenddata.TCAgent;
 
@@ -65,7 +66,7 @@ public class SDKWrapper {
         LeoAgent.checkForceUpdate();
     }
 
-    private static void iniPushSDK(Context ctx) {
+    private static void iniPushSDK(final Context ctx) {
         /* TODO: change this from Log.DEBUG to Log.ERROR when release */
         PushManager.getInstance(ctx).setUiHelper(PushInvoke.getInstance(ctx));
         PushManager.getInstance(ctx).setDebugLevel(AppMasterConfig.SDK_LOG_LEVEL);
@@ -81,6 +82,14 @@ public class SDKWrapper {
         } catch (NotFoundException e) {
             PushManager.getInstance(ctx).startPush("0000a", R.layout.custom_big_notification, R.id.img_big, R.id.tv_msg);
         }
+        
+        PushManager.getInstance(ctx).registerStatHelper(new IPushStatHelper(){
+            @Override
+            public void onPushSDKEvent(String eventID, String description) {
+                SDKWrapper.addEvent(ctx, 0, eventID, description);
+            }
+            
+        } );
    }
 
     /**
