@@ -1882,9 +1882,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                 @Override
                 public void onAnimationCancel(Animator arg0) {
-                    LeoLog.i("caocao", "动画Cancel回调：" + !mIsClickSubmarine);
+                    LeoLog.i(TAG, "动画Cancel回调：" + !mIsClickSubmarine);
                     if (!mIsClickSubmarine) {
-                        LeoLog.i("caocao", "进入动画Cancel回调");
+                        LeoLog.i(TAG, "进入动画Cancel回调");
                         mSubmarineCurrentAnimValue = mCurrentAnimValue;
                         mSubmarine = true;
                         // 切换为闭眼睁眼动画
@@ -1985,7 +1985,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
     public void cancelSubmarineAnim(){
         if (mSubmarineAnim != null) {
-            LeoLog.i("caocao", "动画Cancel");
+            LeoLog.i(TAG, "动画Cancel");
             mSubmarineAnim.cancel();
             mSubmarineAnim.removeAllListeners();
         }
@@ -2116,7 +2116,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             LockScreenActivity lockScreen=weakR.get();
             switch (msg.what) {
                 case ID_SUBMARINE_ANIM:
-                   LeoLog.i("caocao", "mCurrentAnimValue=" + lockScreen.mCurrentAnimValue
+                   LeoLog.i(TAG, "mCurrentAnimValue=" + lockScreen.mCurrentAnimValue
                            + ",getWindowWidth()+x=" + lockScreen.getWindowWidth());
                    mCurrentAnimValue = 0;
                    mSubmarineCurrentAnimValue = 0;
@@ -2129,14 +2129,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                    lockScreen.submarineAnim(0,true);
                     break;
                 case ID_SUBMARINE_CONTINUE_ANIM:
-//                    lockScreen.submarineStopAnim();
-                    LeoLog.i("caocao", "1秒后重新执行动画");
-//                    lockScreen.submarineAnim(0,true);
+                    LeoLog.i(TAG, "1秒后重新执行动画");
                     lockScreen.submarineStopAnim();
                     this.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
                     break;
                 case ID_SUBMARINE_CANCEL_ANIM:
-                    LeoLog.i("caocao", "2秒后Cancel动画");
+                    LeoLog.i(TAG, "2秒后Cancel动画");
                     this.removeMessages(ID_SUBMARINE_CONTINUE_ANIM);
                     lockScreen.cancelSubmarineAnim();
                     break;

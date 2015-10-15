@@ -88,6 +88,9 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         getIntentFrom();
         initUI();
         loadData();
+        if (mLockList.isEmpty()) {
+            lockTV.setEnabled(false);
+        }
     }
 
     private void initUI() {
@@ -156,7 +159,8 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             // to set view unlocked
             ((LockImageView) arg1.findViewById(R.id.iv_app_icon))
                     .setDefaultRecommendApp(false);
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "unlock_"+curMode.modeName+"_"+selectApp.packageName);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app",
+                    "unlock_" + curMode.modeName + "_" + selectApp.packageName);
         } else {
             for (AppInfo unLockAppInfo : mUnLockList) {
                 selectApp.isLocked = true;
@@ -171,7 +175,8 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
             // to set view lock
             ((LockImageView) arg1.findViewById(R.id.iv_app_icon))
                     .setDefaultRecommendApp(true);
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "lock_"+curMode.modeName+"_"+selectApp.packageName);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "app",
+                    "lock_" + curMode.modeName + "_" + selectApp.packageName);
         }
 
         if (mLockList.size() <= 0) {
@@ -318,7 +323,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
                     intent.putExtra("target", getIntent().getIntExtra("target", 2));
                 } else {
                     intent.putExtra("target", getIntent().getIntExtra("target", 0));
-//                    intent.putExtra("isFromHomeToLockMode", true);
                 }
                 startActivity(intent);
                 this.finish();
