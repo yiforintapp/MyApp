@@ -37,6 +37,7 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
@@ -653,6 +654,18 @@ public class AppLoadEngine extends BroadcastReceiver {
         if (mNowTime - mGiftBoxFromHome < CLICKINTERVAl) {
             SDKWrapper.addEvent(mContext, SDKWrapper.P1,
                     "app_act", "home" + packageName);
+        }
+        //潜艇广告
+        long submarineAdTime=AppMasterPreference.getInstance(mContext).getAdSubmarineClickTime();
+        if(mNowTime-submarineAdTime<CLICKINTERVAl){
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "app_act", "adunlocksubmarine_$" + packageName);
+        }
+        //超人广告
+        long supermanAdTime=AppMasterPreference.getInstance(mContext).getAdSupermanBannerClickTime();
+        if(mNowTime-supermanAdTime<CLICKINTERVAl){
+            SDKWrapper.addEvent(mContext, SDKWrapper.P1,
+                    "app_act", "adunlocksuperman_$"+packageName);
         }
     }
 

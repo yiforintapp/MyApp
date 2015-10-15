@@ -277,7 +277,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY = "ad_request_showtype_fail_times_current_day";
     public static final String PREF_AD_REQUEST_SHOWTYPE_NEXT_TIME_SPACING = "ad_request_showtype_next_time_spacing";
     public static final String PREF_AD_SHOW_TYPE = "ad_show_type";
-    public static final String PREF_AD_NEW_SHOW_TYPE="ad_new_show_type";
+    public static final String PREF_AD_NEW_SHOW_TYPE = "ad_new_show_type";
     public static final String PREF_AD_APPWAL_UPDATE = "ad_appwall_update";
     public static final String PREF_AD_LAST_LOAD_TIME = "ad_last_load_time";
     public static final String PREF_ISWIPE_UPDATE_TIP = "pref_iswipe_update_tip";
@@ -299,6 +299,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_ADVANCE_PROTECT_DIALOG_TIP = "advance_protect_dialog_tip";
     public static final String PREF_ADVANCE_PROTECT_OPEN_SUCCESSDIALOG_TIP = "advance_protect_open_success_dialog_tip";
     public static final String PREF_LOCK_AND_AUTO_START_GUIDE = "lock_and_auto_start_guide";
+    public static final String PREF_SUPERMAN_AD_BANNER_BOTTOM = "superman_bottom_banner";
+    public static final String PREF_SUBMARIN_AD_CLICK_TIME = "submarine_ad_click_time";
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
     private List<String> mLockedAppList;
@@ -2599,6 +2601,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         }
         return mADShowType;
     }
+
     // UFO动画的展示形式 //暂时没有使用
     public void setUFOAnimType(int type) {
         commitAsync(mPref.edit().putInt(PREF_UFO_ANIM_TYPE, type));
@@ -2650,7 +2653,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAtLockThemeOpen() {
-        /*主题列表广告开光控制：0-全部关闭，1-本地打开，2-在线打开*/
+        /* 主题列表广告开光控制：0-全部关闭，1-本地打开，2-在线打开 */
         return mPref.getInt(PREF_AD_AT_THEME, 2);
     }
 
@@ -2909,6 +2912,23 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public boolean getLockAndAutoStartGuide() {
         return mPref.getBoolean(PREF_LOCK_AND_AUTO_START_GUIDE, false);
+    }
+    /* 超人广告Banner点击安装时间 */
+
+    public void setAdSupermanBannerClickTime(long time) {
+        commitAsync(mPref.edit().putLong(PREF_SUPERMAN_AD_BANNER_BOTTOM, time));
+    }
+
+    public long getAdSupermanBannerClickTime() {
+        return mPref.getLong(PREF_SUPERMAN_AD_BANNER_BOTTOM, 0);
+    }
+    /*潜水艇广告点击安装时间*/
+    public void setAdSubmarineClickTime(long time) {
+        commitAsync(mPref.edit().putLong(PREF_SUBMARIN_AD_CLICK_TIME, time));
+    }
+
+    public long getAdSubmarineClickTime() {
+        return mPref.getLong(PREF_SUBMARIN_AD_CLICK_TIME, 0);
     }
 
 }

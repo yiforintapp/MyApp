@@ -2067,8 +2067,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mAdDialog.setVisibility(View.GONE);
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                         "ad_cli", "adv_cnts_submarine");
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-                        "app_act", "adunlocksubmarine_$" + campaign.getPackageName());
+                long currentTime=System.currentTimeMillis();
+                AppMasterPreference.getInstance(LockScreenActivity.this).setAdSubmarineClickTime(currentTime);
             }
         });
     }
