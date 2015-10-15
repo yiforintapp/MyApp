@@ -63,7 +63,7 @@ import android.widget.TextView;
 public class GestureLockFragment extends LockFragment implements
         OnPatternListener, OnClickListener {
     private LockPatternView mLockPatternView;
-    private int mCurrentRegisterView = 0;// 1.普通banner的install 2半屏广告的install
+    private  int mCurrentRegisterView = 0;// 1.普通banner的install 2半屏广告的install
     private MobvistaEngine mAdEngine;
     private static String TAG = "GestureLockFragment";
     private boolean DBG = false;
@@ -252,6 +252,7 @@ public class GestureLockFragment extends LockFragment implements
                     // int showType = 5;
                     switch (showType) {
                         case 1:
+                            LeoLog.i("caocao", "加载超人Banner1----");
                             // app图标
                             ImageView icon1 = (ImageView) mNormalBannerAD
                                     .findViewById(R.id.iv_adicon);
@@ -380,6 +381,7 @@ public class GestureLockFragment extends LockFragment implements
                             break;
                         case 5:
                             mCurrentRegisterView = 5;
+                            LeoLog.i("caocao", "加载超人Banner5----"+mCurrentRegisterView);
                             mIsLoadAdSuccess = true;
                             // app图标
                             ImageView icon4 = (ImageView) mSupermanBannerAD
@@ -402,7 +404,6 @@ public class GestureLockFragment extends LockFragment implements
                                     .findViewById(R.id.iv_superman_ad_app_download);
                             call4.setText(campaign.getAdCall());
                             mAdEngine.registerView(getActivity(), mSupermanBannerAD);
-                            mCurrentRegisterView = 1;
                             RelativeLayout close4 = (RelativeLayout) mSupermanBannerAD
                                     .findViewById(R.id.iv_gesture_superman_adclose_RL);
                             close4.setOnClickListener(new OnClickListener() {
