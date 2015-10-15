@@ -30,14 +30,19 @@ public class SDKWrapper {
      * @param ctx should be application context
      */
     public static void iniSDK(Context ctx) {
-        iniLeoSdk(ctx.getApplicationContext());
-        /* try initiate BaiduMTJ in AndroidManifest.xml */
-        // iniBaidu(ctx);
-        iniPushSDK(ctx);
-        
-        // TalkingData
-        TCAgent.LOG_ON = AppMasterConfig.LOGGABLE;
-        TCAgent.init(ctx);
+        try {
+            iniLeoSdk(ctx.getApplicationContext());
+            /* try initiate BaiduMTJ in AndroidManifest.xml */
+            // iniBaidu(ctx);
+            iniPushSDK(ctx);
+            
+            // TalkingData
+            TCAgent.LOG_ON = AppMasterConfig.LOGGABLE;
+            TCAgent.init(ctx);
+        } catch (Exception e) {
+            
+        }
+
     }
     
     public static String getBestServerDomain(){

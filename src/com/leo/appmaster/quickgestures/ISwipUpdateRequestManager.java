@@ -562,7 +562,7 @@ public class ISwipUpdateRequestManager {
         intent.setPackage(AppLoadEngine.ISWIPE_PACKAGENAME);
         List<ResolveInfo> resolveInfo = context.getPackageManager().queryIntentActivities(
                 intent, 0);
-        if (resolveInfo.size() > 0) {
+        if (resolveInfo != null && resolveInfo.size() > 0) {
             return true;
         }
         return false;
