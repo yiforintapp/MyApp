@@ -1901,6 +1901,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 @Override
                 public void onAnimationUpdate(ValueAnimator arg0) {
                     mCurrentAnimValue = (Float) arg0.getAnimatedValue();
+                    if(Math.abs(mCurrentAnimValue) >=getWindowWidth()+x){
+                        mSubmarineAdLt.setVisibility(View.INVISIBLE);
+                    }
                 }
             });
         }
@@ -2129,8 +2132,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                    lockScreen.submarineStopAnim();
                     LeoLog.i("caocao", "1秒后重新执行动画");
 //                    lockScreen.submarineAnim(0,true);
-                    this.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
                     lockScreen.submarineStopAnim();
+                    this.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
                     break;
                 case ID_SUBMARINE_CANCEL_ANIM:
                     LeoLog.i("caocao", "2秒后Cancel动画");
