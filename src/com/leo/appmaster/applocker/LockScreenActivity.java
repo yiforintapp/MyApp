@@ -1813,7 +1813,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     /* 潜水艇移动动画 */
-    private void submarineAnim(float offset) {
+    private  void submarineAnim(float offset) {
+        mSubmarineAnim=null;
         if (mIsSubmarineAnim) {
             mSubmarineContentIv.setImageResource(R.drawable.submarine_open);
             if (mSubmarineAdLt != null) {
@@ -1826,7 +1827,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //            if (mSubmarineAnim != null) {
 ////                mSubmarineAnim.cancel();
 //            }
-
             mSubmarineAdLt.setTranslationY(mSubmarineTranYRandom);
             LeoLog.i(TAG, "潜艇距离顶部的随机数：" + mSubmarineTranYRandom);
             final int x = this.getResources().getInteger(R.integer.submarine_offset);
@@ -1850,15 +1850,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
                 @Override
                 public void onAnimationEnd(Animator arg0) {
+                    
 
                 }
 
                 @Override
                 public void onAnimationCancel(Animator arg0) {
+                    LeoLog.i("caocao", "动画是否为正常停止："+!mIsClickSubmarine);
                     if (!mIsClickSubmarine) {
                         /* 停留1s，继续上次位置执行潜艇前进动画 */
-                        Handler handler = ThreadManager.getUiThreadHandler();
-                        handler.postDelayed(new Runnable() {
+                        mSubmarineAdLt.postDelayed(new Runnable() {
 
                             @Override
                             public void run() {
@@ -1877,7 +1878,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     if (Math.abs(mCurrentAnimValue) >= ((getWindowWidth() + (x / 2)) / 2)
                             && !mSubmarine && !mIsClickSubmarine) {
                         mSubmarineCurrentAnimValue = mCurrentAnimValue;
+//                        LeoLog.i("caocao", (mSubmarineAnim != null)+"到正常停止动画的时候了"+mCurrentAnimValue);
                         if (mSubmarineAnim != null) {
+                            LeoLog.i("caocao", "动画应该正常停止了！！");
                             mSubmarineAnim.cancel();
                         }
                         mSubmarine = true;
@@ -1886,7 +1889,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     }
                     if(!mIsShowAdUi){
                     if (Math.abs(mCurrentAnimValue) >= (getWindowWidth() + x)) {
-                        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+//                        ThreadManager.getUiThreadHandler().postDelayed(
+                        mSubmarineContentIv.postDelayed(new Runnable() {
                             
                             @Override
                             public void run() {
@@ -1898,11 +1902,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 mIsClickSubmarine = false;
                                 mIsSubmarineAnim = true;
                                 mIsShowFullScreenAd = true;
-                                /* 是否在显示重试界面 */
                                 mIsShowRollAgain = false;
-                                /* 是否在显示广告界面 */
                                 mIsShowAdUi = false;
-                                /* 广告是否加载成功 */
                                 mIsLoadAdSuccess = false;
                                 adShowTypeHandler();
                             }

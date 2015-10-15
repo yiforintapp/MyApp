@@ -599,13 +599,16 @@ public class PrivacyCalllogFragment extends BaseFragment {
         int count = context.getContentResolver().update(Constants.PRIVACY_CALL_LOG_URI,
                 values, selection,
                 selectionArgs);
+        LeoLog.i("MessagePrivacyReceiver", "消除未读的标记：" + count);
         if (count > 0) {
             AppMasterPreference pre = AppMasterPreference.getInstance(context);
+            int temp = pre.getCallLogNoReadCount();
             for (int i = 0; i < count; i++) {
-                int temp = pre.getCallLogNoReadCount();
                 if (temp > 0) {
-                    pre.setCallLogNoReadCount(temp - 1);
-                    if (temp - 1 <= 0) {
+                    temp=temp-1;
+                    pre.setCallLogNoReadCount(temp);
+                    LeoLog.i("MessagePrivacyReceiver", "temp=" + temp);
+                    if (temp <= 0) {
                         /* ISwipe处理：通知没有未读 */
                         PrivacyContactManager.getInstance(context)
                                 .cancelPrivacyTipFromPrivacyCall();
@@ -649,6 +652,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                 .post(
                                         new PrivacyEditFloatEvent(
                                                 PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
+                        LeoLog.i("MessagePrivacyReceiver", "通知红点结束！");
                     }
                 }
             }
