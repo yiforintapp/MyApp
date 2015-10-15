@@ -57,6 +57,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockOptionActivity;
@@ -948,23 +949,26 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         .getDefaultSharedPreferences(HomeActivity.this);
                 boolean installed = prefernece.getBoolean("shortcut", false);
                 if (!installed) {
-                    Intent shortcutIntent = new Intent(HomeActivity.this, SplashActivity.class);
-                    shortcutIntent.setAction(Intent.ACTION_MAIN);
-                    shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+                    String channel = getString(R.string.channel_code);
+                    if(PhoneInfo.getAndroidVersion() < 21|| !"0001a".equals(channel)) {
+                        Intent shortcutIntent = new Intent(HomeActivity.this, SplashActivity.class);
+                        shortcutIntent.setAction(Intent.ACTION_MAIN);
+                        shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+                        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                                | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 
-                    Intent shortcut = new Intent(
-                            "com.android.launcher.action.INSTALL_SHORTCUT");
-                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                            getString(R.string.app_name));
-                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-                    ShortcutIconResource iconRes = Intent.ShortcutIconResource
-                            .fromContext(HomeActivity.this, R.drawable.ic_launcher);
-                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-                    shortcut.putExtra("duplicate", false);
-                    shortcut.putExtra("from_shortcut", true);
-                    sendBroadcast(shortcut);
+                        Intent shortcut = new Intent(
+                                "com.android.launcher.action.INSTALL_SHORTCUT");
+                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
+                                getString(R.string.app_name));
+                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+                        ShortcutIconResource iconRes = Intent.ShortcutIconResource
+                                .fromContext(HomeActivity.this, R.drawable.ic_launcher);
+                        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+                        shortcut.putExtra("duplicate", false);
+                        shortcut.putExtra("from_shortcut", true);
+                        sendBroadcast(shortcut);
+                    }
                     prefernece.edit().putBoolean("shortcut", true).apply();
                 }
 
