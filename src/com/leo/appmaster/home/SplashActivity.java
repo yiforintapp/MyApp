@@ -448,78 +448,78 @@ public class SplashActivity extends BaseActivity {
     }
 
     /* add for Guide Screen begin */
-    private void showGuide() {
-        mIsShowGuide = true;
-        mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
-        mPageColors[1] = getResources().getColor(R.color.guide_page3_background_color);
-        mPageColors[2] = getResources().getColor(R.color.guide_page4_background_color);
-        Log.i("tag", mPageColors[0] + "  " + mPageColors[3]);
-        /* 显示跳过按钮 */
-        setSkipClickListener();
-        LayoutInflater inflater = getLayoutInflater();
-        mPageViews = new ArrayList<View>();
-        mPageBackgroundView = (GuideItemView) findViewById(R.id.guide_bg_view);
-        mPageBackgroundView.initBackgroundColor(mPageColors[0]);
-        ImageView bigImage = null;
-        TextView tvTitle = null;
-        TextView tvContent = null;
-        /* page1 */
-        ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page1.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_1));
-        tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page1_title));
-        tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page1_content));
-        // setSkipClickListener(page1);
-        mPageViews.add(page1);
-
-        /* page2 */
-        ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page2.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_3));
-        tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page3_title));
-        tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page3_content));
-        mPageViews.add(page2);
-        // setSkipClickListener(page3);
-        /* page3 */
-        ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page3.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_4));
-        tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.guide_page4_title));
-        tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.guide_page4_content));
-        mPageViews.add(page3);
-        // mPageViews.add(page3);
-        mMain = (ViewGroup) findViewById(R.id.layout_guide);
-        mViewPager = (ViewPager) mMain.findViewById(R.id.guide_viewpager);
-        initViewPagerEdges(mViewPager);
-
-        mMain.setVisibility(View.VISIBLE);
-        /*
-         * AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
-         * aa.setDuration(500); mMain.startAnimation(aa);
-         */
-
-        mViewPager.setAdapter(new GuidePageAdapter(mPageViews));
-        mIndicator = (CirclePageIndicator) findViewById(R.id.splash_indicator);
-        mIndicator.setViewPager(mViewPager);
-        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mPageViews));
-
-        Button button = (Button) mPageViews.get(mPageViews.size() - 1).findViewById(
-                R.id.button_guide);
-        button.setVisibility(View.VISIBLE);
-        button.setBackgroundResource(R.drawable.letgo_bg);
-        button.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enterHome();
-            }
-        });
-    }
+//    private void showGuide() {
+//        mIsShowGuide = true;
+//        mPageColors[0] = getResources().getColor(R.color.guide_page1_background_color);
+//        mPageColors[1] = getResources().getColor(R.color.guide_page3_background_color);
+//        mPageColors[2] = getResources().getColor(R.color.guide_page4_background_color);
+//        Log.i("tag", mPageColors[0] + "  " + mPageColors[3]);
+//        /* 显示跳过按钮 */
+//        setSkipClickListener();
+//        LayoutInflater inflater = getLayoutInflater();
+//        mPageViews = new ArrayList<View>();
+//        mPageBackgroundView = (GuideItemView) findViewById(R.id.guide_bg_view);
+//        mPageBackgroundView.initBackgroundColor(mPageColors[0]);
+//        ImageView bigImage = null;
+//        TextView tvTitle = null;
+//        TextView tvContent = null;
+//        /* page1 */
+//        ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page1.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_1));
+//        tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.guide_page1_title));
+//        tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.guide_page1_content));
+//        // setSkipClickListener(page1);
+//        mPageViews.add(page1);
+//
+//        /* page2 */
+//        ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page2.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_3));
+//        tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.guide_page3_title));
+//        tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.guide_page3_content));
+//        mPageViews.add(page2);
+//        // setSkipClickListener(page3);
+//        /* page3 */
+//        ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page3.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.page_4));
+//        tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.guide_page4_title));
+//        tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.guide_page4_content));
+//        mPageViews.add(page3);
+//        // mPageViews.add(page3);
+//        mMain = (ViewGroup) findViewById(R.id.layout_guide);
+//        mViewPager = (ViewPager) mMain.findViewById(R.id.guide_viewpager);
+//        initViewPagerEdges(mViewPager);
+//
+//        mMain.setVisibility(View.VISIBLE);
+//        /*
+//         * AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
+//         * aa.setDuration(500); mMain.startAnimation(aa);
+//         */
+//
+//        mViewPager.setAdapter(new GuidePageAdapter(mPageViews));
+//        mIndicator = (CirclePageIndicator) findViewById(R.id.splash_indicator);
+//        mIndicator.setViewPager(mViewPager);
+//        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mPageViews));
+//
+//        Button button = (Button) mPageViews.get(mPageViews.size() - 1).findViewById(
+//                R.id.button_guide);
+//        button.setVisibility(View.VISIBLE);
+//        button.setBackgroundResource(R.drawable.letgo_bg);
+//        button.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                enterHome();
+//            }
+//        });
+//    }
 
     class GuidePageAdapter extends PagerAdapter {
         List<View> pageViews;
@@ -684,16 +684,16 @@ public class SplashActivity extends BaseActivity {
         mIndicator.setViewPager(mNewFuncViewPager);
         mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 3));
 
-        tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
-        tvMoreFunc.setVisibility(View.VISIBLE);
-        tvMoreFunc.setTextColor(getResources().getColor(R.color.new_guide_page4_background_color));
-        tvMoreFunc.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mNewGuideMain.setVisibility(View.INVISIBLE);
-                showGuide();
-            }
-        });
+//        tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
+//        tvMoreFunc.setVisibility(View.VISIBLE);
+//        tvMoreFunc.setTextColor(getResources().getColor(R.color.new_guide_page4_background_color));
+//        tvMoreFunc.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mNewGuideMain.setVisibility(View.INVISIBLE);
+//                showGuide();
+//            }
+//        });
 
         enterAppButton = (Button) page3.findViewById(R.id.button_guide);
         enterAppButton.setVisibility(View.VISIBLE);
@@ -873,23 +873,6 @@ public class SplashActivity extends BaseActivity {
                 }
             }
         }
-    }
-
-    /* 检查要跳转的客户端是否存在 */
-    private boolean checkExistClient(String packageName) {
-        if (!Utilities.isEmpty(packageName)) {
-            List<AppItemInfo> pkgInfos = AppLoadEngine.getInstance(this).getAllPkgInfo();
-            List<String> packageNames = new ArrayList<String>();
-            for (AppItemInfo info : pkgInfos) {
-                packageNames.add(info.packageName);
-            }
-            for (String string : packageNames) {
-                if (packageName.equals(string)) {
-                    return true;
-                }
-            }
-        }
-        return false;
     }
 
     private void startIntentForWebViewActivity(String url) {
