@@ -526,7 +526,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             if (temp > 0) {
                                 temp = temp - 1;
                                 pre.setCallLogNoReadCount(temp);
-                            }
                             if (temp <= 0) {
                                 /* ISwipe处理：通知没有未读 */
                                 PrivacyContactManager.getInstance(mContext)
@@ -551,6 +550,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                                 new PrivacyEditFloatEvent(
                                                         PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
                             }
+                        }
                         }
                     }
                 }
@@ -609,6 +609,12 @@ public class PrivacyCalllogFragment extends BaseFragment {
                     pre.setCallLogNoReadCount(temp);
                     LeoLog.i("MessagePrivacyReceiver", "temp=" + temp);
                     if (temp <= 0) {
+                        LeoEventBus
+                        .getDefaultBus()
+                        .post(
+                                new PrivacyEditFloatEvent(
+                                        PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
+                LeoLog.i("MessagePrivacyReceiver", "通知红点结束！");
                         /* ISwipe处理：通知没有未读 */
                         PrivacyContactManager.getInstance(context)
                                 .cancelPrivacyTipFromPrivacyCall();
@@ -647,12 +653,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
                             }
                         }
                         FloatWindowHelper.removeShowReadTipWindow(context);
-                        LeoEventBus
-                                .getDefaultBus()
-                                .post(
-                                        new PrivacyEditFloatEvent(
-                                                PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT));
-                        LeoLog.i("MessagePrivacyReceiver", "通知红点结束！");
                     }
                 }
             }

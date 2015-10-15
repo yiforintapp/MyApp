@@ -139,6 +139,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                         .equals(event.editModel)
                 || PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP
                         .equals(event.editModel)) {
+            LeoLog.i("HomePrivacy", "触发");
             // 通话未查看
             isShowRedTip(mCallLogTv, 1);
         }
@@ -198,20 +199,35 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
         super.onDestroyView();
     }
 
-    private void isShowRedTip(TipTextView view, int flag) {
-        int cunt = 0;
+    private void isShowRedTip(final TipTextView view, int flag) {
+       
         if (flag == 0) {
+            int cunt = 0;
             // 短信未读数
             cunt = mPreference.getMessageNoReadCount();
+            if (cunt > 0) {
+                view.showTip(true);
+            } else {
+                view.showTip(false);
+            }
         } else if (flag == 1) {
             // 通话未读数
-            cunt = mPreference.getCallLogNoReadCount();
+            mPrivacyCallIcon.postDelayed(new Runnable() {
+                
+                @Override
+                public void run() {
+                    int cunt=mPreference.getCallLogNoReadCount();
+                    if (cunt > 0) {
+                        view.showTip(true);
+                    } else {
+                        view.showTip(false);
+                    }
+                }
+            }, 1000);
+                
+
         }
-        if (cunt > 0) {
-            view.showTip(true);
-        } else {
-            view.showTip(false);
-        }
+      
     }
 
     @Override

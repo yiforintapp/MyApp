@@ -76,6 +76,7 @@ public class PrivacyContactManager {
     public boolean mIsOpenPrivacyContact;
     /* 用来做测试 */
     public boolean testValue;
+    public static volatile int mNoReadCalls;
 
     private PrivacyContactManager(Context context) {
         this.mContext = context.getApplicationContext();
