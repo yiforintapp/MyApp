@@ -407,17 +407,14 @@ public class SplashActivity extends BaseActivity {
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
                 finish();
-                LeoLog.i("shangpingceshi", "闪屏路径2----");
             } else {
                 LeoLog.d("Track Lock Screen", "apply lockscreen form SplashActivity");
                 amp.setLastFilterSelfTime(0);
                 LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
                         getPackageName(), true, null);
                 amp.setDoubleCheck(null);
-                LeoLog.i("shangpingceshi", "闪屏路径3----");
             }
         } else {
-            LeoLog.i("shangpingceshi", "闪屏路径1----");
             if (AppMasterConfig.LOGGABLE) {
                 LeoLog.f(TAG, "startHome", Constants.LOCK_LOG);
             }
