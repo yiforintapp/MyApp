@@ -6,11 +6,25 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
+import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.quickgestures.FloatWindowHelper;
+import com.leo.appmaster.quickgestures.QuickGestureManager;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
@@ -26,7 +40,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,23 +52,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
-import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.ui.dialog.LEOProgressDialog;
-import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 
 public class PrivacyCalllogFragment extends BaseFragment {
 

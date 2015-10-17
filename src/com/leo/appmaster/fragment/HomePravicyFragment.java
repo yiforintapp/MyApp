@@ -139,7 +139,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                         .equals(event.editModel)
                 || PrivacyContactUtils.PRIVACY_ALL_CALL_NOTIFICATION_HANG_UP
                         .equals(event.editModel)) {
-            LeoLog.i("HomePrivacy", "触发");
+            LeoLog.i("HomePrivacy", event.editModel+"触发");
             // 通话未查看
             isShowRedTip(mCallLogTv, 1);
         }
@@ -217,6 +217,7 @@ public class HomePravicyFragment extends BaseFragment implements OnClickListener
                 @Override
                 public void run() {
                     int cunt=mPreference.getCallLogNoReadCount();
+                    LeoLog.i("HomePrivacy", "-----------通话未读数："+cunt);
                     if (cunt > 0) {
                         view.showTip(true);
                     } else {

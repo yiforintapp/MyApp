@@ -14,6 +14,29 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.AppLockListActivity;
+import com.leo.appmaster.applocker.RecommentAppLockListActivity;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
+import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.applocker.model.ProcessDetector;
+import com.leo.appmaster.appmanage.BusinessAppInstallTracker;
+import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.model.BaseInfo;
+import com.leo.appmaster.model.extra.CacheInfo;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
+import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
+import com.leo.appmater.globalbroadcast.PackageChangedListener;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -29,33 +52,7 @@ import android.net.TrafficStats;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.RemoteException;
-import android.util.Log;
 import android.view.WindowManager;
-
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.AppLockListActivity;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.RecommentAppLockListActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
-import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.applocker.model.ProcessDetector;
-import com.leo.appmaster.appmanage.BusinessAppInstallTracker;
-import com.leo.appmaster.backup.AppBackupRestoreManager;
-import com.leo.appmaster.model.AppItemInfo;
-import com.leo.appmaster.model.BaseInfo;
-import com.leo.appmaster.model.extra.CacheInfo;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
-import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog.OnDiaogClickListener;
-import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
-import com.leo.appmater.globalbroadcast.PackageChangedListener;
 
 public class AppLoadEngine extends BroadcastReceiver {
     public interface ThemeChanageListener {
