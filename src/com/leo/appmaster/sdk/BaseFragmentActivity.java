@@ -16,7 +16,11 @@ public class BaseFragmentActivity extends FragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppMasterApplication.getInstance().addActivity(this);
-        super.onCreate(savedInstanceState);
+        try {
+            super.onCreate(savedInstanceState);
+        } catch (Exception e) {
+            
+        }
     }
 
     @Override

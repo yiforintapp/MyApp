@@ -284,7 +284,9 @@ public class PrivacyContactUtils {
             }
         } catch (Exception e) {
 
-        } finally {
+        } catch (Error error) {
+            
+        }finally {
             if (phoneCursor != null) {
                 phoneCursor.close();
             }
