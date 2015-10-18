@@ -15,13 +15,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
@@ -58,12 +56,9 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.quickgestures.ui.IswipUpdateTipDialog;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
+import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.TextFormater;
@@ -470,16 +465,8 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     private void startQuickGestureHandler() {
-        boolean installISwipe = ISwipUpdateRequestManager.getInstance(getActivity())
-                .isInstallIsiwpe(mActivity);
-        // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
-        if (!ISwipUpdateRequestManager.getInstance(getActivity()).isUseIswipUser()) {
-            /* 新用户 */
-            startISwipHandlerForInstallIS(installISwipe);
-        } else {
-            /* 老用户 */
-            startISwipHandlerForUninstallIS(installISwipe);
-        }
+        boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
+        startISwipHandlerForInstallIS(installISwipe);
     }
 
     private void startISwipHandlerForInstallIS(boolean flag) {
@@ -491,27 +478,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
         } else {
             /* 启动ISwipe主页 */
             startISwipIntent();
-        }
-    }
-
-    private void startISwipHandlerForUninstallIS(boolean flag) {
-        if (flag) {
-            /* 关闭pg内快捷手势插件 */
-            closePgForIswipe();
-            /* 启动ISwipe主页 */
-            startISwipIntent();
-        } else {
-            /* 启动pg内快捷手势 */
-            startQuickGestureActivity();
-        }
-    }
-
-    private void closePgForIswipe() {
-        boolean useUserFlag = ISwipUpdateRequestManager.getInstance(getActivity())
-                .isUseIswipUser();
-        AppMasterPreference sp = AppMasterPreference.getInstance(getActivity());
-        if (useUserFlag && sp.getSwitchOpenQuickGesture()) {
-            sp.setSwitchOpenQuickGesture(false);
         }
     }
 
@@ -782,88 +748,6 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     @Override
     public void onScrolling() {
 
-    }
-
-    private void startQuickGestureActivity() {
-        if (sp_homeAppManager.getQuickGestureRedTip()) {
-            sp_homeAppManager.setQuickGestureRedTip(false);
-            mQuickGestureRedTip.setVisibility(View.GONE);
-        }
-
-        boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(getActivity());
-        boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(getActivity());
-        boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isYiJia();
-        boolean isOpenWindow =
-                BuildProperties.isFloatWindowOpAllowed(getActivity());
-        if (!checkFloatWindow) {
-            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "model_"
-                    + BuildProperties.getPoneModel());
-        }
-        if (checkMiui && !isOpenWindow) {
-            // MIUI
-            Intent intentv6 = new
-                    Intent("miui.intent.action.APP_PERM_EDITOR");
-            intentv6.setClassName("com.miui.securitycenter",
-                    "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-            intentv6.putExtra("extra_pkgname", getActivity().getPackageName());
-            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            try {
-                LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(2000);
-                startActivity(intentv6);
-            } catch (Exception e) {
-                LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(1000);
-                Intent intentv5 = new Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri
-                        .fromParts("package", getActivity().getPackageName(), null);
-                intentv5.setData(uri);
-                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                try {
-                    startActivity(intentv5);
-                } catch (Exception e1) {
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "reason_"
-                            + BuildProperties.getPoneModel());
-                }
-            }
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            LockManager.getInstatnce().filterAllOneTime(1000);
-            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(quickIntent);
-        } else if (checkHuaWei && !checkFloatWindow) {
-            BuildProperties.isToHuaWeiSystemManager(getActivity());
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            quickIntent.putExtra("sys_name", "huawei");
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (isOppoOs && !isOpenWindow) {
-            boolean backFlag = BuildProperties.startOppoManageIntent(mActivity);
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            quickIntent.putExtra("sys_name", "huawei");
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
-            mActivity.startActivity(quickIntent);
-        }
     }
 
     public void playQuickGestureEnterAnim() {

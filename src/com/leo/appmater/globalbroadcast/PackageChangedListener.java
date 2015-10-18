@@ -1,14 +1,9 @@
 
 package com.leo.appmater.globalbroadcast;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.utils.LeoLog;
 
 public class PackageChangedListener extends BroadcastListener {

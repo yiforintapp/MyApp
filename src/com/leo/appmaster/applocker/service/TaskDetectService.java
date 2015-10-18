@@ -21,14 +21,11 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo.State;
 import android.os.Binder;
 import android.os.Build;
-import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
-import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
@@ -37,8 +34,6 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -73,7 +68,6 @@ public class TaskDetectService extends Service {
     };
 
     private ScheduledFuture<?> mflowDatectFuture;
-    private ScheduledFuture<?> mFloatWindowFuture;
     private TimerTask flowDetecTask;
 
     private ScheduledExecutorService mScheduledExecutor;
@@ -85,8 +79,6 @@ public class TaskDetectService extends Service {
     private TaskChangeHandler mLockHandler;
     // private TaskDetectBinder mBinder = new TaskDetectBinder();
     private AppMasterPreference sp_traffic;
-    private FloatWindowTask mFloatWindowTask;
-    private Handler mHandler;
     private ProcessCleaner mCleaner;
 
     private static TaskDetectService sService;
@@ -120,11 +112,9 @@ public class TaskDetectService extends Service {
         // TimeUnit.MILLISECONDS);
         mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 60000,
                 TimeUnit.MILLISECONDS);
-        mHandler = new Handler();
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
         startPhantomService();
-        checkFloatWindow();
         mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
                 TimeUnit.MILLISECONDS);
         // sendQuickPermissionOpenNotification(getApplicationContext());
@@ -234,60 +224,10 @@ public class TaskDetectService extends Service {
         return false;
     }
 
-    public void checkFloatWindow() {
-
-        if (AppMasterPreference.getInstance(this).getSwitchOpenQuickGesture()) {
-            startFloatWindowTask();
-            initFloatWindowData();
-        } else {
-            LeoLog.d("FloatWindowTask", "没有启动PG内快捷手势停止使用");
-            stopFloatWindowTask();
-        }
-    }
-
-    private void initFloatWindowData() {
-        // catch perference value
-        AppMasterPreference pre = AppMasterPreference.getInstance(getApplicationContext());
-        // just home
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isJustHome = pre
-                .getSlideTimeJustHome();
-        // home and apps
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isAppsAndHome = pre
-                .getSlideTimeAllAppAndHome();
-        FloatWindowHelper.initSlidingArea(pre);
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).resetSlidAreaSize();
-        // 初始化未读短信是否已经红点提示过
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isMessageReadRedTip = pre
-                .getMessageIsRedTip();
-        // 初始化未读通话记录是否已经红点提示过
-        QuickGestureManager.getInstance(AppMasterApplication.getInstance()).isCallLogRead = pre
-                .getCallLogIsRedTip();
-    }
-
-    private void startFloatWindowTask() {
-        stopFloatWindowTask();
-        mFloatWindowTask = new FloatWindowTask();
-        mFloatWindowFuture = mScheduledExecutor.scheduleWithFixedDelay(mFloatWindowTask, 0, 1500,
-                TimeUnit.MILLISECONDS);
-    }
-
-    private void stopFloatWindowTask() {
-        if (mFloatWindowFuture != null) {
-            mFloatWindowFuture.cancel(false);
-            mFloatWindowFuture = null;
-            mFloatWindowTask = null;
-        }
-    }
-
-    public void stopFloatWindow() {
-        stopFloatWindowTask();
-    }
-
     @Override
     public void onDestroy() {
         stopDetect();
         stopFlowTask();
-        stopFloatWindow();
         sendBroadcast(new Intent("com.leo.appmaster.restart"));
         sService = null;
         super.onDestroy();
@@ -599,195 +539,6 @@ public class TaskDetectService extends Service {
 
         }
 
-    }
-
-    /*
-     * FloatWindowTask
-     */
-    private class FloatWindowTask implements Runnable {
-        ActivityManager mActivityManager;
-        private Runnable mRunnable;
-
-        public FloatWindowTask() {
-            mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
-            mRunnable = new Runnable() {
-                @Override
-                public void run() {
-                    if (DBG) {
-                        LeoLog.i(TAG, "快捷手势在运行");
-                    }
-                    int screenStatus = Utilities.isScreenType(getApplicationContext());
-                    if (screenStatus != -1) {
-                        // int value =
-                        // AppMasterPreference.getInstance(getApplicationContext())
-                        // .getQuickGestureDialogSeekBarValue();
-                        int value = QuickGestureManager.getInstance(getApplicationContext()).mSlidAreaSize;
-                        if (!FloatWindowHelper.mGestureShowing
-                                && AppMasterPreference.getInstance(getApplicationContext())
-                                        .getFristSlidingTip()) {
-                            boolean isHomeFlag = false;
-                            AppMasterPreference amp = AppMasterPreference
-                                    .getInstance(getApplicationContext());
-                            if (amp.getNeedShowWhiteDotSlideTip()) {
-                                isHomeFlag = Utilities.isHome(getApplicationContext());
-                                if (isHomeFlag) {
-                                    FloatWindowHelper
-                                            .checkShowWhiteDotLuminescence(TaskDetectService.this
-                                                    .getApplicationContext());
-                                }
-                            }
-                            // set background color
-                            if (FloatWindowHelper.mEditQuickAreaFlag) {
-                                FloatWindowHelper
-                                        .updateFloatWindowBackgroudColor(getApplicationContext(),
-                                                FloatWindowHelper.mEditQuickAreaFlag);
-                            }
-                            boolean isJustHome = QuickGestureManager
-                                    .getInstance(AppMasterApplication.getInstance()).isJustHome;
-                            boolean isAppsAndHome = QuickGestureManager
-                                    .getInstance(AppMasterApplication.getInstance()).isAppsAndHome;
-                            // when the dialog is showing ,the window view not
-                            // create
-                            boolean isDialogingShowing = QuickGestureManager
-                                    .getInstance(AppMasterApplication.getInstance()).isDialogShowing;
-
-                            // phtc
-
-                            if (isAppsAndHome) {
-                                boolean isFilterApp = checkForegroundRuningFilterApp(mActivityManager);
-
-                                if ((!isFilterApp
-                                        || FloatWindowHelper.mEditQuickAreaFlag)
-                                        && !isDialogingShowing
-                                        && sp_traffic.getIsOpenFloatWindows()) {
-                                    FloatWindowHelper.createFloatWindow(getApplicationContext(),
-                                            value);
-
-                                    // TODO
-                                    Log.e("iscreated", "appsandhome");
-
-                                } else {
-                                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                                }
-
-                                /** about white float view **/
-                                if (sp_traffic.getSwitchOpenStrengthenMode()) {
-                                    if (!isFilterApp && !FloatWindowHelper.mEditQuickAreaFlag
-                                            && !isDialogingShowing) {
-                                        FloatWindowHelper
-                                                .showWhiteFloatView(TaskDetectService.this);
-                                    } else {
-                                        FloatWindowHelper
-                                                .hideWhiteFloatView(TaskDetectService.this);
-                                    }
-                                }
-                            } else if (isJustHome) {
-                                if (!isHomeFlag)
-                                    isHomeFlag = Utilities.isHome(getApplicationContext());
-                                if ((isHomeFlag || FloatWindowHelper.mEditQuickAreaFlag)
-                                        && !isDialogingShowing
-                                        && sp_traffic.getIsOpenFloatWindows()) {
-                                    FloatWindowHelper.createFloatWindow(getApplicationContext(),
-                                            value);
-                                    Log.e("iscreated", "appsandhome");
-                                } else {
-                                    FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                                }
-                                /** about white float view **/
-                                if (sp_traffic.getSwitchOpenStrengthenMode()) {
-                                    if (isHomeFlag && !FloatWindowHelper.mEditQuickAreaFlag
-                                            && !isDialogingShowing) {
-                                        FloatWindowHelper
-                                                .showWhiteFloatView(TaskDetectService.this);
-                                    } else {
-                                        FloatWindowHelper
-                                                .hideWhiteFloatView(TaskDetectService.this);
-                                    }
-                                }
-                            }
-                        } else {
-                            FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                            FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
-                        }
-                    } else {
-                        FloatWindowHelper.removeAllFloatWindow(getApplicationContext());
-                        FloatWindowHelper.hideWhiteFloatView(TaskDetectService.this);
-                    }
-                }
-            };
-        }
-
-        @Override
-        public void run() {
-            mHandler.post(mRunnable);
-        }
-    }
-
-    // checkout current runing filter app
-    private boolean checkForegroundRuningFilterApp(ActivityManager activityManager) {
-        List<String> filterAppList = QuickGestureManager.getInstance(getApplicationContext())
-                .getFreeDisturbAppName();
-        if (filterAppList != null && filterAppList.size() > 0) {
-            String pkgName = null;
-            if (Build.VERSION.SDK_INT > 19) {
-                List<RunningAppProcessInfo> list = activityManager.getRunningAppProcesses();
-                for (RunningAppProcessInfo pi : list) {
-                    if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
-                            && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
-                            && (0x4 & pi.flags) > 0
-                            && pi.processState == ActivityManager.PROCESS_STATE_TOP) {
-                        String pkgList[] = pi.pkgList;
-                        if (pkgList != null && pkgList.length > 0) {
-                            pkgName = pkgList[0];
-                            if (SYSTEMUI_PKG.equals(pkgName)) {
-                                continue;
-                            }
-                            break;
-                        }
-                    }
-                }
-            } else {
-                List<RunningTaskInfo> tasks = activityManager.getRunningTasks(1);
-                if (tasks != null && tasks.size() > 0) {
-                    RunningTaskInfo topTaskInfo = tasks.get(0);
-                    if (topTaskInfo.topActivity == null) {
-                        return false;
-                    }
-                    pkgName = topTaskInfo.topActivity.getPackageName();
-                    if (Utilities.isEmpty(pkgName)) {
-                        List<RunningAppProcessInfo> list = activityManager
-                                .getRunningAppProcesses();
-                        for (RunningAppProcessInfo pi : list) {
-                            if ((pi.importance == RunningAppProcessInfo.IMPORTANCE_FOREGROUND || pi.importance == RunningAppProcessInfo.IMPORTANCE_VISIBLE)
-                                    && pi.importanceReasonCode == RunningAppProcessInfo.REASON_UNKNOWN
-                                    && (0x4 & pi.flags) > 0) {
-                                String pkgList[] = pi.pkgList;
-                                if (pkgList != null && pkgList.length > 0) {
-                                    pkgName = pkgList[0];
-                                    if (SYSTEMUI_PKG.equals(pkgName)) {
-                                        continue;
-                                    }
-                                    break;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            if (pkgName != null) {
-                if (QuickGestureManager.getInstance(getApplicationContext())
-                        .getFreeDisturbAppName()
-                        .contains(pkgName)) {
-                    // Log.d("get current running app", "pkgName:" + pkgName);
-                    return true;
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        return false;
     }
 
     public static TaskDetectService getService() {

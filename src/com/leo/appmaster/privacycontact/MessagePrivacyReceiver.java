@@ -24,16 +24,12 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.android.internal.telephony.ITelephony;
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
@@ -74,13 +70,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
             PrivacyContactManager.getInstance(mContext).testValue = true;
-            /*
-             * 有新短信来时恢复该短信是否经过红点提示标记的默认值false
-             */
-            if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
-                QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
-                AppMasterPreference.getInstance(mContext).setMessageIsRedTip(false);
-            }
             if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
                 return;
             }
@@ -139,14 +128,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             // 获取来电号码
             final String phoneNumber =
                     intent.getStringExtra(TelephonyManager.EXTRA_INCOMING_NUMBER);
-            // 通话判断来电号码是否存在来判断是，拨出还是呼入，进行isCallLogRead值的初始化
-            if (!Utilities.isEmpty(phoneNumber)) {
-                if (QuickGestureManager.getInstance(mContext).isCallLogRead) {
-                    QuickGestureManager.getInstance(mContext).isCallLogRead = false;
-                    AppMasterPreference.getInstance(mContext)
-                            .setCallLogIsRedTip(false);
-                }
-            }
             // 没有隐私联系人时直接结束
             if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
                 return;
@@ -298,10 +279,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     PrivacyContactManager.PRIVACY_CALL,0,number);
             LeoLog.e(TAG, "本次联系人："+number);
         }
-        /*
-         * 记录最后隐私短信和隐私通话哪个最后记录(解决：在快捷手势中有隐私联系人时，点击跳入最后记录的Tab页面)
-         */
-        QuickGestureManager.getInstance(mContext).privacyLastRecord = QuickGestureManager.RECORD_CALL;
     }
 
     private void saveCallLog(ContactBean contact) {
@@ -354,14 +331,9 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
     }
 
     private void noReadPrivacyMsmTipForQuickGesture(AppMasterPreference pref) {
-        Log.e(Constants.RUN_TAG,
-                "pref.getSwitchOpenPrivacyContactMessageTip()="
-                        + pref.getSwitchOpenPrivacyContactMessageTip()
-                        + ";pref.getQuickGestureMsmTip()=" + pref.getQuickGestureMsmTip());
-        if (pref.getSwitchOpenPrivacyContactMessageTip() && pref.getQuickGestureMsmTip()) {
-            QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = true;
-            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-            FloatWindowHelper.removeShowReadTipWindow(mContext);
-        }
+//        Log.e(Constants.RUN_TAG,
+//                "pref.getSwitchOpenPrivacyContactMessageTip()="
+//                        + pref.getSwitchOpenPrivacyContactMessageTip()
+//                        + ";pref.getQuickGestureMsmTip()=" + pref.getQuickGestureMsmTip());
     }
 }

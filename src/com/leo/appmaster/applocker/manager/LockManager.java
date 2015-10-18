@@ -59,10 +59,6 @@ import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.quickgestures.QuickGestureManager.AppLauncherRecorder;
-import com.leo.appmaster.quickgestures.tools.ColorMatcher;
-import com.leo.appmaster.quickgestures.ui.QuickGesturePopupActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -167,9 +163,7 @@ public class LockManager {
      */
     private ExecutorService mTaskExecutor = Executors.newSingleThreadExecutor();
     private Future<Boolean> mLoadDefaultDataFuture;
-    public ArrayList<AppLauncherRecorder> mAppLaunchRecorders;
     private HashMap<Drawable, Integer> mDrawableColors;
-    public ColorMatcher mMatcher;
     private TimerTask mFillterAllTask;
 
 
@@ -177,8 +171,6 @@ public class LockManager {
     private LockManager() {
         mContext = AppMasterApplication.getInstance();
         mDrawableColors = new HashMap<Drawable, Integer>();
-        loadAppLaunchReorder();
-        mMatcher = new ColorMatcher();
         mLockPolicy = new TimeoutRelockPolicy(mContext);
         mFilterPgks = new HashMap<String, Boolean>();
         mFilterActivitys = new HashMap<String, Boolean>();
@@ -1124,46 +1116,6 @@ public class LockManager {
 
     }
 
-    private void installHomeModeShortcut(Context ctx, LockMode lockMode) {
-        Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
-        shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        shortcutIntent.putExtra("quick_lock_mode", true);
-        shortcutIntent.putExtra("lock_mode_id", lockMode.modeId);
-        shortcutIntent.putExtra("lock_mode_name", lockMode.modeName);
-
-        Intent shortcut = new Intent(
-                "com.android.launcher.action.INSTALL_SHORTCUT");
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, lockMode.modeName);
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        /*
-         * 0: unlock all; 1: visitor mode; 2: office mode; 3: family mode; -1:
-         * other
-         */
-        ShortcutIconResource iconRes = null;
-        if (lockMode.defaultFlag == 0) {
-            iconRes = Intent.ShortcutIconResource
-                    .fromContext(ctx, R.drawable.lock_mode_unlock);
-        } else if (lockMode.defaultFlag == 1) {
-            iconRes = Intent.ShortcutIconResource
-                    .fromContext(ctx, R.drawable.lock_mode_visitor);
-        } else if (lockMode.defaultFlag == 2) {
-            iconRes = Intent.ShortcutIconResource
-                    .fromContext(ctx, R.drawable.lock_mode_office);
-        } else if (lockMode.defaultFlag == 3) {
-            iconRes = Intent.ShortcutIconResource
-                    .fromContext(ctx, R.drawable.lock_mode_family);
-        } else {
-            iconRes = Intent.ShortcutIconResource
-                    .fromContext(ctx, R.drawable.lock_mode_default);
-        }
-        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-        shortcut.putExtra("duplicate", false);
-        shortcut.putExtra("from_shortcut", true);
-        ctx.sendBroadcast(shortcut);
-
-        SDKWrapper.addEvent(ctx, SDKWrapper.P1, "shortcuts", lockMode.modeName);
-    }
-
     /* add default lock mode when we first load lock mode */
     private boolean addDefaultMode() {
         if (mLoadDefaultDataFuture != null && !mLoadDefaultDataFuture.isDone()) {
@@ -1281,117 +1233,7 @@ public class LockManager {
             // checkLockTip();
         }
     }
-
-    private void checkLockTip() {
-        int switchCount = AppMasterPreference.getInstance(mContext).getSwitchModeCount();
-        switchCount++;
-        AppMasterPreference.getInstance(mContext).setSwitchModeCount(switchCount);
-        if (switchCount == 6) {
-            // TODO show tip
-            int timeLockCount = mTimeLockList.size();
-            int locationLockCount = mLocationLockList.size();
-
-            if (timeLockCount == 0 && locationLockCount == 0) {
-                // show three btn dialog
-                LEOThreeButtonDialog dialog = new LEOThreeButtonDialog(
-                        mContext);
-                dialog.setTitle(R.string.time_location_lock_tip_title);
-                String tip = mContext.getString(R.string.time_location_lock_tip_content);
-                dialog.setContent(tip);
-                dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
-                dialog.setMiddleBtnStr(mContext.getString(R.string.lock_mode_time));
-                dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_location));
-                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
-                dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
-                    @Override
-                    public void onClick(int which) {
-                        Intent intent = null;
-                        if (which == 0) {
-                            // cancel
-                        } else if (which == 1) {
-                            // new time lock
-                            intent = new Intent(mContext, TimeLockEditActivity.class);
-                            intent.putExtra("new_time_lock", true);
-                            intent.putExtra("from_dialog", true);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(intent);
-                        } else if (which == 2) {
-                            // new location lock
-                            intent = new Intent(mContext, LocationLockEditActivity.class);
-                            intent.putExtra("new_location_lock", true);
-                            intent.putExtra("from_dialog", true);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(intent);
-                        }
-                    }
-                });
-                dialog.getWindow().setType(
-                        WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                dialog.show();
-            } else {
-                if (timeLockCount == 0 && locationLockCount != 0) {
-                    // show time lock btn dialog
-                    LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
-                    dialog.setTitle(R.string.time_location_lock_tip_title);
-                    String tip = mContext.getString(R.string.time_location_lock_tip_content);
-                    dialog.setContent(tip);
-                    dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_time));
-                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
-                    dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
-                    dialog.setOnClickListener(new OnDiaogClickListener() {
-                        @Override
-                        public void onClick(int which) {
-                            Intent intent = null;
-                            if (which == 0) {
-                                // cancel
-                            } else if (which == 1) {
-                                // new time lock
-                                intent = new Intent(mContext, TimeLockEditActivity.class);
-                                intent.putExtra("new_time_lock", true);
-                                intent.putExtra("from_dialog", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(intent);
-                            }
-
-                        }
-                    });
-                    dialog.getWindow().setType(
-                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                    dialog.show();
-
-                } else if (timeLockCount != 0 && locationLockCount == 0) {
-                    // show lcaotion btn dialog
-                    LEOAlarmDialog dialog = new LEOAlarmDialog(mContext);
-                    dialog.setTitle(R.string.time_location_lock_tip_title);
-                    String tip = mContext.getString(R.string.time_location_lock_tip_content);
-                    dialog.setContent(tip);
-                    dialog.setRightBtnStr(mContext.getString(R.string.lock_mode_location));
-                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
-                    dialog.setLeftBtnStr(mContext.getString(R.string.cancel));
-                    dialog.setOnClickListener(new OnDiaogClickListener() {
-                        @Override
-                        public void onClick(int which) {
-                            if (which == 0) {
-                                // cancel
-                            } else if (which == 1) {
-                                // new time lock
-                                Intent intent = new Intent(mContext, LocationLockEditActivity.class);
-                                intent.putExtra("new_location_lock", true);
-                                intent.putExtra("from_dialog", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                mContext.startActivity(intent);
-                            }
-
-                        }
-                    });
-                    dialog.getWindow().setType(
-                            WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
-                    dialog.show();
-                }
-            }
-        }
-    }
-
+    
     public List<LockMode> getLockMode() {
         if (!mLockModeLoaded) {
             loadLockMode();
@@ -1505,20 +1347,6 @@ public class LockManager {
         mTLMap.clear();
     }
 
-    public void stopFloatWindowService() {
-        TaskDetectService service = TaskDetectService.getService();
-        if (service != null) {
-            service.stopFloatWindow();
-        }
-    }
-
-    public void startFloatWindowService() {
-        TaskDetectService service = TaskDetectService.getService();
-        if (service != null) {
-            service.checkFloatWindow();
-        }
-    }
-
     public void startLockService() {
         LeoLog.d(TAG, "startLockService");
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
@@ -1571,7 +1399,6 @@ public class LockManager {
             final String lastRunningActivity = getLastActivity();
 
             if (isPackageLocked(lastRunningPkg)
-                    && !QuickGesturePopupActivity.class.getName().contains(lastRunningActivity)
                     && !LockScreenActivity.class.getName().contains(lastRunningActivity)
                     && !WaitActivity.class.getName().contains(lastRunningActivity)
                     && !ProxyActivity.class.getName().contains(lastRunningActivity)) {
@@ -1713,7 +1540,6 @@ public class LockManager {
         final String lastRunningPkg = service.getLastRunningPackage();
         final String lastRunningActivity = service.getLastRunningActivity();
         if (list.contains(lastRunningPkg)
-                && !QuickGesturePopupActivity.class.getName().contains(lastRunningActivity)
                 && !LockScreenActivity.class.getName().contains(lastRunningActivity)
                 && !WaitActivity.class.getName().contains(lastRunningActivity)
                 && !ProxyActivity.class.getName().contains(lastRunningActivity)) {
@@ -1877,83 +1703,6 @@ public class LockManager {
                 });
 
             }
-        }
-    }
-
-    public void loadAppLaunchReorder() {
-        mAppLaunchRecorders = new ArrayList<QuickGestureManager.AppLauncherRecorder>();
-        String recoders = AppMasterPreference.getInstance(mContext).getAppLaunchRecoder();
-        QuickGestureManager qgm = QuickGestureManager.getInstance(mContext);
-        AppLauncherRecorder temp = null;
-        int sIndex = -1;
-        if (!TextUtils.isEmpty(recoders)) {
-            recoders = recoders.substring(0, recoders.length() - 1);
-            String[] recoderList = recoders.split(";");
-            for (String recoder : recoderList) {
-                // com.mobisystems.office:browser:3;这种情况貌似会crash
-                sIndex = recoder.indexOf(':');
-                if (sIndex != -1) {
-                    temp = qgm.new AppLauncherRecorder();
-                    temp.pkg = recoder.substring(0, sIndex);
-                    try {
-                        temp.launchCount = Integer.parseInt(recoder.substring(sIndex + 1));
-                    } catch (Exception e) {
-                        LeoLog.e(TAG, "parse recoder ex, recoder: " + recoder, e);
-                        continue;
-                    }
-                    mAppLaunchRecorders.add(temp);
-                }
-            }
-        }
-    }
-
-    public void recordAppLaunch(String pkg) {
-        if (TextUtils.isEmpty(pkg)) {
-            return;
-        }
-        boolean hit = false;
-        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
-            if (recorder.pkg.equals(pkg)) {
-                recorder.launchCount++;
-                hit = true;
-                break;
-            }
-        }
-        if (!hit) {
-            AppLauncherRecorder recoder = QuickGestureManager.getInstance(mContext).new AppLauncherRecorder();
-            recoder.pkg = pkg;
-            recoder.launchCount = 1;
-            mAppLaunchRecorders.add(recoder);
-        }
-        saveAppLaunchRecoder();
-    }
-
-    public void saveAppLaunchRecoder() {
-        StringBuilder resault = new StringBuilder();
-        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
-            resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
-        }
-        AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
-    }
-
-    public void removeAppLaunchRecoder(String pkg) {
-        if (TextUtils.isEmpty(pkg)) {
-            return;
-        }
-        AppLauncherRecorder hitRecoder = null;
-        for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
-            if (recorder.pkg.equals(pkg)) {
-                hitRecoder = recorder;
-                break;
-            }
-        }
-        if (hitRecoder != null) {
-            mAppLaunchRecorders.remove(hitRecoder);
-            StringBuilder resault = new StringBuilder();
-            for (AppLauncherRecorder recorder : mAppLaunchRecorders) {
-                resault.append(recorder.pkg).append(':').append(recorder.launchCount).append(';');
-            }
-            AppMasterPreference.getInstance(mContext).setAppLaunchRecoder(resault.toString());
         }
     }
 

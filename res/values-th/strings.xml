@@ -2,70 +2,39 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">&#160;Privacy Guard&#160;</string>
-    <string name="app_count">ติดตั้งแอพแล้ว</string>
-    <string name="used_memory">หน่วยความจำใช้ไป</string>
-    <string name="used_flow">ข้อมูลใช้ไป</string>
-    <string name="app_detail">รายละเอียด</string>
     <string name="app_lock">ล็อคแอพ</string>
     <string name="app_add_lock">ล็อคแอพ</string>
     <string name="lock_tab">"ล็อค"</string>
-    <string name="app_backup">สำรองข้อมูลแอพ</string>
-    <string name="app_restore">กู้คืนแอพ</string>
     <string name="button_backup">สำรอง</string>
     <string name="button_install">ติดตั้ง</string>
     <string name="button_delete">ลบ</string>
-    <string name="app_use_info">การใช้</string>
-    <string name="app_permission_info">การตรวจสอบสิทธิ์</string>
-    <string name="uninstall">ถอนติดตั้ง</string>
     <string name="set_gesture_suc">บันทึกรูปแบบแล้ว!</string>
     <string name="set_passwd_suc">ตั้งรหัสผ่านเรียบร้อย!</string>
     <string name="reset_passwd_successful">รีเซ็ตแล้ว</string>
-    <string name="stop">หยุด</string>
     <string name="reinput_anwser">คำตอบไม่ถูกต้อง กรุณาลองใหม่อีกครั้ง</string>
-    <string name="please_input_pswd">กรุณาใส่รหัสผ่าน</string>
-    <string name="please_input_pswd_again">ยืนยันรหัสผ่าน</string>
     <string name="makesure">ตกลง</string>
     <string name="cancel">ยกเลิก</string>
     <string name="delete">ลบ</string>
-    <string name="passwd_set_passwd_tip">กรุณาใส่รหัสผ่าน</string>
     <string name="passwd_set_gesture_tip">เชื่อมต่ออย่างน้อย 4 จุด</string>
     <string name="passwd_hint">กรุณาใส่รหัสผ่าน</string>
     <string name="tip_no_the_same_pswd">รหัสผิด กรุณาลองอีกครั้ง</string>
     <string name="input_error_tip">ผิดXครั้ง<xliff:g>%1$s</xliff:g> อยังมีYครั้ง<xliff:g>%2$s</xliff:g></string>
-    <string name="use_gesture">รูปแบบการล็อค</string>
-    <string name="use_passwd">รหัสปลดล็อค</string>
     <string name="reset_passwd">รีเซ็ตรหัสผ่าน</string>
-    <string name="app_locked">ล็อคแล้ว</string>
-    <string name="app_unlock">ปลดล็อคแล้ว</string>
     <string name="find_passwd">ลืมรหัสผ่าน</string>
     <string name="please_wait">กรุณาลองอีกครั้ง</string>
     <string name="passwd_question">คำถาม:</string>
     <string name="passwd_anwser">คำตอบ:</string>
     <string name="accelerate">เร่ง</string>
-    <string name="used_mem">หน่วยความจำใช้ไป</string>
     <string name="passwd_tip">กรุณาใส่รหัสผ่าน</string>
-    <string name="save">บันทึก</string>
-    <string name="passwd_protect_setting">ตั้งคำถามเพื่อความปลอดภัย</string>
     <string name="input_qusetion">กรุณาใส่คำถามเพื่อความปลอดภัย</string>
     <string name="qusetion_cant_null">กรุณาใส่คำถาม</string>
     <string name="aneser_cant_null">กรุณาใส่คำตอบ</string>
     <string name="pleas_input_anwser">ตอบคำถามเพื่อความปลอดภัยของคุณ</string>
     <string name="not_set">ไม่ได้ตั้งค่า</string>
-    <string name="anwser">คำตอบ:</string>
-    <string name="not_unistall">ป้องกันการถอนการติดตั้ง</string>
-    <string name="lock_screen_auto_lock">ล็อคอัตโนมัติหลังจากหน้าจอดับ</string>
     <string name="tips">เคล็ดลับ</string>
-    <string name="compeletely">สำเร็จ</string>
 
     <!-- acceralate -->
-    <string name="clean_memory">เร่ง</string>
-    <string name="clean_result">ทำความสะอาดหน่วยความจำ</string>
-    <string name="best_mem">ได้เป็นดีที่สุดไม่ต้องเร่งความเร็วอีกครั้ง</string>
-    <string name="lock_count">ล็อคแล้ว</string>
-    <string name="unlock_count">ปลดล็อคแล้ว</string>
-    <string name="lockscreen_access_pattern_detected">บันทึกสำเร็จ</string>
     <string name="please_input_gesture">วาดเพื่อปลดล็อค</string>
-    <string name="input_passwd_tip">กรุณาเขียนการแจ้งเตือน</string>
     <string name="switch_gesture">รูปแบบ</string>
     <string name="switch_passwd">รหัสผ่าน</string>
     <string name="setting">ตั้งค่า</string>
@@ -74,15 +43,11 @@
     <string name="set_protect_message">สร้างคำถามรักษาความปลอดภัยในกรณีที่คุณลืมรหัสผ่านของคุณ ดำเนินการต่อ?</string>
     <string name="find_gesture">ลืมรหัสผ่าน</string>
     <string name="pp_success">คำถามรักษาความปลอดภัยสร้างเสร็จเรียบร้อยแล้ว!</string>
-    <string name="passwd_setting">ตั้งค่ารหัสผ่าน</string>
     <string name="set_success">การติดตั้งสำเร็จ!</string>
-    <string name="passwd_hint_cant_null">กรุฌาเขียนเลขรหัส</string>
     <string name="set_gesture">ตั้งค่ารูปแบบ</string>
     <string name="set_passwd">ตั้งค่ารหัสผ่าน</string>
-    <string name="please_input_gesture_again">ยืนยันรูปแบบ</string>
     <string name="reset_gesture_passwd">รีเซ็ตรูปแบบ</string>
     <string name="reset_digital_passwd">รีเซ็ตรหัส</string>
-    <string name="gesture_hint">เชื่อมต่ออย่างน้อย 4 จุด</string>
     <string name="first_set_passwd_hint">กรุณาใส่รหัสผ่าน</string>
     <string name="make_passwd">ใส่รหัสอีกครั้ง</string>
     <string name="input_again">กรุณาใส่อีกครั้ง</string>
@@ -102,9 +67,7 @@
     <string name="delete_fail">ลบไม่สำเร็จ!</string>
     <string name="deleting_app">กำลังลบ: %1$s</string>
     <string name="installed_app_size">แอพที่ติดตั้งแล้ว: %1$d</string>
-    <string name="apk_size">ขนาด: %1$s</string>
     <string name="storage_size">พื้นที่ว่าง: %1$s</string>
-    <string name="use_storage_size">ได้ใช้พื้นที่: %1$s</string>
     <string name="unavailable">ไม่สามารถใช้ได้</string>
     <string name="bakup_fail_cancel">ยกเลิกการสำรองข้อมูล!</string>
     <string name="bakup_fail_full">พื้นที่จัดเก็บเหลือน้อย</string>
@@ -128,12 +91,6 @@
         <item>300</item>
     </string-array>
 
-    <string name="app_details">ข้อมูลแอพ</string>
-    <string name="app_memory">"หน่วยความจำใช้ไป&#058;<xliff:g>%1$s</xliff:g>"</string>
-    <string name="app_cache_size">"ใช้แคช&#058;<xliff:g>%1$s</xliff:g>"</string>
-    <string name="app_permission1">อันตรายสิทธิ์</string>
-    <string name="app_permission2">อำนาจทั่วไป</string>
-    <string name="app_permission3">สิทธิ์ที่สำคัญ</string>
     <string name="app_setting_update">ตรวจสอบการอัพเดท</string>
     <string name="feedback">ให้เราตอบรับ</string>
     <string name="grade">เรท 5ดาว</string>
@@ -142,30 +99,18 @@
     <string name="forbid_uninstall">ป้องกันถอนการติดตั้ง</string>
     <string name="auto_lock">ล็อคเมื่อจอดับ</string>
     <string name="change_lock_time">ตั้งเวลาล็อคอัตโนมัติ</string>
-    <string name="recom_lock_tip">แจ้งเตือนแอพยอดนิยม</string>
     <string name="new_app_lock_tip">แจ้งเตือนแอพใหม่</string>
     <string name="passwd_protect">คำถามความปลอดภัย</string>
     <string name="change_passwd">เปลี่ยนรหัสผ่าน</string>
     <string name="passwd_notify">การแจ้งเตือน</string>
-    <string name="no_lock_item_tip">ไม่มีแอพที่ถูกล็อค</string>
-    <string name="lock_remind">แจ้งเตือน: ตั้งค่าการล็อคแอพ</string>
     <string name="new_install_lock_remind">คุณได้ติดตั้ง %1$s ตั้งค่าการล็อค?</string>
-    <string name="no_unlocked_item_tip">ปลดล็อคแอพแล้ว</string>
-    <string name="app_setting_has_update">ตรวจสอบการอัพเดท <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">จำกัด 40 ตัวอักษร</string>
     <string name="anwser_charsize_tip">จำกัด 40 ตัวอักษร</string>
     <string name="query_delete">ลบไฟล์สำรองข้อมูลของ%1$s? ไม่สามารถเรียกคืนหลังจากลบ</string>
     <string name="backuped_count">%1$d สำรองข้อมูลแอพแล้ว พื้นที่จัดเก็บ:%2$s</string>
-    <string name="feedback_commit">ส่ง</string>
-    <string name="feedback_content_tip">มีอะไรให้เราช่วยมั้ย?</string>
-    <string name="feedback_email_tip">อีเมล์ของคุณ</string>
     <string name="feedback_category_tip">เลือกคำถาม</string>
     <string name="category_lock">ล็อคแอพ</string>
-    <string name="category_backup_uninstall">ถอนการติดตั้งและการสำรองข้อมูล</string>
-    <string name="category_hide_image">ซ่อนรูป</string>
-    <string name="category_hide_video">ซ่อนวิดีโอ</string>
     <string name="category_other">อื่นๆ</string>
-    <string name="category_suggest">ให้คำแนะนำเรา</string>
     <string name="feedback_success_title">ส่งแล้ว</string>
     <string name="feedback_success_content">ขอบคุณสำหรับความคิดเห็นของคุณ!</string>
     <string name="app_image_hide">ซ่อนภาพ</string>
@@ -176,14 +121,11 @@
     <string name="app_select_none">ไม่เลือกทั้งหมด</string>
     <string name="app_hide_image">ซ่อน</string>
     <string name="app_cancel_hide_image">ยกเลิกการซ่อน</string>
-    <string name="app_hide_image_edit">แก้ไข</string>
     <string name="app_add_hide_image">เพิ่ม</string>
-    <string name="app_share_hide_image">แบ่งปัน</string>
     <string name="app_unhide_dialog_content">ยกเลิกการซ่อนภาพนี้?</string>
     <string name="app_delete_dialog_content">ลบภาพนี้?</string>
     <string name="app_unhide_pictures_dialog_content">ยกเลิกการซ่อนภาพที่เลือก?</string>
     <string name="app_hide_pictures_dialog_content">ซ่อนภาพที่เลือก?</string>
-    <string name="app_hide_image_fail">ล้มเหลวที่จะซ่อนภาพนี้!</string>
     <string name="lock_guide">แตะที่แอพเพื่อล็อค</string>
     <string name="start_guide">แอพที่ใช้บ่อย</string>
 
@@ -197,32 +139,21 @@
     <!-- 版权 -->
     <string name="about_copy">Copyright © 2015 LEO Network Technology. All Rights Reserved</string>
     <!-- 应用墙 -->
-    <string name="app_wall">แอพยอดนิยม</string>
     <string name="app_wall_network">กรุณาลองใหม่อีกครั้ง!</string>
     <string name="app_wall_click">รีเฟรช</string>
     <!-- 隐私策略 -->
     <string name="protocolBar">นโยบายความเป็นส่วนตัว</string>
     <string name="lock_more">เพิ่ม..</string>
     <string name="lock">ล็อค</string>
-    <string name="det_change_lock_time">คุณต้องการเปลี่ยนเวลาการล็อคอัตโนมัติหรือไม่?</string>
 
-    <string-array name="det_lock_time_items">
-        <item>30</item>
-        <item>60</item>
-    </string-array>
-    <!-- LockerTheme -->
     <string name="localtheme">ส่วนใน</string>
     <string name="onlinetheme">ออนไลน์</string>
     <string name="lockerThemePoit">ธีม<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">ธีม</string>
     <string name="defaultTheme">ค่ามาตรฐาน</string>
-    <string name="moonightTheme">คืน</string>
-    <string name="orangeTheme">ตัดผลไม้</string>
     <string name="ParadoxTheme">พื้นที่ความขัดแย้ง</string>
     <string name="locker_apply">ใช้งาน</string>
     <string name="locker_uninstall">ถอนการติดตั้ง</string>
-    <string name="locker_cancel">ยกเลิก</string>
-    <string name="christmas_theme">คริสต์มาส</string>
     <string name="pull_to_refresh_pull_label">ดึงขึ้นเพื่อรีเฟรช</string>
     <string name="pull_to_refresh_release_label">ปล่อยเพื่อรีเฟรช</string>
     <string name="pull_to_refresh_refreshing_label">กำลังโหลด</string>
@@ -238,7 +169,6 @@
     <string name="theme_tag_hot">ยอดนิยม</string>
     <string name="about_group">เข้าร่วมกลุ่ม</string>
     <string name="about_praise">ยอดนิยมบน Facebook</string>
-    <string name="locker_guide">คลิกเพื่อเปลี่ยนธีม</string>
     <string name="locker_theme_guide">ธีมจะถูกตั้งเป็นภาพล็อคหน้าจอ</string>
     <string name="locker_clean">เพิ่มประสิทธิภาพสำเร็จ&#160;%1$s</string>
     <string name="setting_locker_clean">ปลดล็อคเพื่อเร่งความเร็ว</string>
@@ -250,53 +180,19 @@
     <string name="app_delete_dialog_content_video">ลบวิดีโอนี้?</string>
     <string name="app_unhide_video_dialog_content">ยกเลิกการซ่อนวิดีโอที่เลือกไว้?</string>
     <string name="app_hide_video_dialog_content">ซ่อนวิดีโอที่เลือกไว้?</string>
-    <string name="hide_video_dialog_title">เล่น</string>
-    <string name="hide_video_dialog_content">เพื่อปกป้องความเป็นส่วนตัวของคุณเล่นวิดีโอต้องใช้ซ่อน Video&#160;Plus，คุณต้องการที่จะติดตั้ง?</string>
     <string name="app_hide_video_fail">ล้มเหลวที่จะซ่อนวิดีโอนี้!</string>
-    <string name="hide_pic_text">ซ่อนรูปภาพ</string>
-    <string name="hide_pic_empty_text">&#160;&#160;ไม่มีรูปภาพที่ซ่อนไว้</string>
-    <string name="hide_video_text">ได้ซ่อนวิดีโอ</string>
-    <string name="hide_video_empty_text">&#160;&#160;ไม่มีวิดีโอที่ซ่อนไว้</string>
-    <string name="app_backup_uninstall">ถอนการติดตั้งและการสำรองข้อมูล</string>
     <string name="circle_lock_tip_text">ล็อคแอพแล้ว</string>
     <string name="circle_lock_empty_tip_text">ไม่มีแอพที่ถูกล็อค</string>
     <string name="feedback_error">อีเมล์ผิด กรุณากรอกอีกครั้ง</string>
     <string name="googlePlayGuide">ลากลงเพื่อให้คะแนนเรา</string>
-    <string name="folder_backup_restore">กู้คืนแอพ</string>
-    <string name="folder_sort_flow">แอพที่ใช้ข้อมูลเยอะสุด</string>
-    <string name="folder_sort_capacity">แอพที่ใช้พื้นที่เยอะสุด</string>
-    <string name="folder_recommend">มาใหม่</string>
-    <string name="backup">สำรอง</string>
-    <string name="restore">กู้คืน</string>
-    <string name="backuped">สำรองแล้ว</string>
-    <string name="delete_successfully">ลบสำเร็จ!</string>
     <string name="no_more_business_app">สิ้นสุดรายการแอพ </string>
-    <string name="space_consumption">พื้นที่ใช้ไป: </string>
-    <string name="cache_size">ขนาดแคช:</string>
-    <string name="power_consumption">แคช:</string>
-    <string name="flow_consumption">แบตเตอรี่: </string>
-    <string name="memory_consumption">ความจำใช้ไป:</string>
-    <string name="backup_path">ที่อยู่ที่สำรอง: </string>
-    <string name="backup_time">วันที่สำรอง: </string>
-    <string name="app_size">ขนาดแอพ:</string>
-    <string name="version">เวอร์ชั่น: </string>
-    <string name="install_time">%1$s วันก่อน</string>
     <string name="folder_new">ใหม่</string>
     <string name="new_app_tip_content">ค้นหาแอพยอดนิยมที่นี่!</string>
     <string name="new_app_tip_title">แอพใหม่!</string>
-    <string name="no_backup_app_tip">ไม่มีแอพที่ถูกสำรอง</string>
-    <string name="other_people_use_tip">คนอื่นจะใช้</string>
     <string name="recomment_list_title">เปิดใช้งานโหมดบุคคลทั่วไป! แอพเหล่านี้อาจต้องการล็อค</string>
     <string name="lock_success">ล็อคสำเร็จ!</string>
     <string name="lcok_success_tip">เลือกแอพที่ล็อคแล้ว</string>
     <string name="success_finish">สำเร็จ</string>
-    <string name="app_lock_theme">ธีมสำหรับล็อคแอพ</string>
-    <string name="business_rating">คะแนน:</string>
-    <string name="app_desc">ข้อมูล:</string>
-    <string name="app_download_count">ดาวน์โหลด:</string>
-    <string name="business_size">ขนาด:</string>
-    <string name="app_download">ดาวน์โหลดความเร็วสูง</string>
-    <string name="app_google_download">ฟรี</string>
     <!-- AM-667 -->
     <string name="help_setting_tip_title">เคล็ดลับ</string>
     <string name="lock_help_password_setting_content_gesture">เลือกตั้งค่าแล้วใส่รหัสเพื่อยืนยัน, เลือก "เปลี่ยนรหัสผ่าน" เพื่อรีเซ็ต</string>
@@ -312,9 +208,7 @@
 
     <string name="lock_help_password_setting_button">ตั้งค่า</string>
     <string name="lock_help_lock_setting_button">การตั้งค่าล็อค</string>
-    <string name="lock_setting_button">การตั้งค่าล็อค</string>
     <string name="lock_help_lock_theme_setting_button">เปลี่ยนธีม</string>
-    <string name="help_setting_guide">เคล็ดลับ</string>
 
     <!-- V2.0 -->
     <string name="pravicy_protect">การป้องกัน</string>
@@ -331,8 +225,6 @@
     <string name="privacy_contact_popumenus_from_call_log">เพิ่มจากบันทึกการโทร</string>
     <string name="privacy_contact_popumenus_from_contact">รายชื่อ</string>
     <string name="privacy_contact_popumenus_input_phone_number">เบอร์ใหม่</string>
-    <string name="privacy_message_dialog_title">นำเข้าข้อมูล?</string>
-    <string name="privacy_message_dialog_content">นำเข้าข้อความและบันทึกการโทรจากเบอร์เหล่านี้? ข้อมูลจะถูกลบออกจากตำแหน่งก่อนหน้า</string>
     <string name="privacy_message_progress_dialog_title">นำเข้าข้อมูล</string>
     <string name="privacy_message_progress_dialog_content">กำลังนำเข้า... กรุณารอสักครู่</string>
     <string name="privacy_contact_activity_input_edit_name">เบอร์โทรศัพท์</string>
@@ -349,7 +241,6 @@
     <string name="privacy_contact_progress_dialog_content">กำลังนำเข้า...กรุณารอสักครู่</string>
     <string name="privacy_contact_callog_out">โทรออก</string>
     <string name="privacy_contact_callog_in">สายเข้า</string>
-    <string name="privacy_contact_callog_no">ไม่รับโทรศัพท์</string>
     <string name="input_toast_no_number_tip">กรุณาระบุหมายเลขโทรศัพท์</string>
     <string name="privacy_contact_checkbox_dlg_title">ลบรายชื่อ?</string>
     <string name="privacy_contact_checkbox_dlg_content">คุณแน่ใจที่จะลบสมาชิกผู้นี้จากรายชื่อส่วนตัว?</string>
@@ -390,16 +281,13 @@
     <string name="lock_mode">โหมด</string>
     <string name="vistor_mode">โหมดบุคคลทั่วไป</string>
     <string name="unlock_all_mode">ปลดล็อคทั้งหมด</string>
-    <string name="office_mode">โหมดออฟฟิศ</string>
     <string name="family_mode">โหมดบ้าน</string>
     <string name="unlock_all_mode_tip">ไม่สามารถล็อคแอพในโหมด"ปลดล็อคทั้งหมด"</string>
     <string name="add_new_mode">เพิ่มโหมดใหม่</string>
     <string name="lock_mode_all">ทุกโหมด</string>
     <string name="new_mode">โหมดใหม่ของฉัน</string>
     <string name="lock_mode_location">ล็อคสถานที่</string>
-    <string name="hot_on_facebook">Facebook</string>
     <string name="lock_mode_time">ล็อคเวลา</string>
-    <string name="add">เพิ่ม</string>
     <string name="please_input_mode_name">ตั้งชื่อให้โหมดใหม่ของคุณ</string>
     <string name="mode_name">แก้ไขชื่อ</string>
     <string name="cont_edit_visitor_name">ไม่สามารถเปลี่ยนชื่อผู้เข้าชมรูปแบบ</string>
@@ -478,19 +366,13 @@
     <string name="first_backup">สำรอง</string>
     <string name="first_usage">ข้อมูลการใช้</string>
     <string name="first_battery">แบตฯ</string>
-    <string name="first_hotapp">ยอดนิยม</string>
-    <string name="first_installed_app">ติดตั้งแล้ว: </string>
-    <string name="first_appdata_app">RAM ใช้ไป: </string>
     <string name="first_backups_app">สำรองข้อมูล: </string>
-    <string name="first_dataflow_app">การใช้เดือนนี้: </string>
     <string name="first_user_app">ดาวน์โหลดของฉัน: </string>
     <string name="first_used_space">พื้นที่ใช้ไป:" </string>
-    <string name="first_list_uninstall">ถอนการติดตั้ง</string>
 
     <!-- Data Usage / Battery -->
     <string name="home_appmanager_donghua_tv">หน่วยความจำ</string>
     <string name="traffic_progress_bar">เดือนนี้ใช้ไป</string>
-    <string name="traff_first_page_small_set_month_used">ใช้งานอินเทอร์เน็ตไป (MB)</string>
     <string name="traff_first_page_small_set_low">ระบุแผนการใช้งานอินเทอร์เน็ต</string>
     <string name="traff_first_page_small_set">ตั้งแผนการใช้งานอินเทอร์เน็ต</string>
     <string name="no_used_traffic">ไม่มีแอพที่ใช้งานอยู่</string>
@@ -501,17 +383,13 @@
     <string name="traffic_used_lot">แจ้งเตือนการใช้งานอินเทอร์เน็ต</string>
     <string name="flow_settting_fist">เตือนการใช้ส่วนเกิน</string>
     <string name="flow_settting_name">การตั้งค่าแผน</string>
-    <string name="flow_settting_second">เตือนการใช้ส่วนเกิน</string>
     <string name="flow_settting_sure_bg">ตกลง</string>
     <string name="flow_settting_dialog">ข้อมูลฟรีน้อยกว่า</string>
     <string name="flow_settting_dialog_remain">เตือนเมื่อการใช้งานอินเทอร์เน็ตถึงขีดจำกัด</string>
     <string name="flow_settting_thrid">วงจรการใช้งาน</string>
-    <string name="flow_settting_thrid_first_tv">วงจรการใช้งาน</string>
     <string name="flow_settting_thrid_second_tv">แผนการใช้งานอินเทอร์เน็ต (MB)</string>
     <string name="flow_settting_thrid_month_used_data">ใช้ไป (MB)</string>
     <string name="app_elec_aca">แบตฯ</string>
-    <string name="app_elec_stop">หยุด</string>
-    <string name="app_elec_zhuyi">หมายเหตุ!</string>
     <string name="app_flow_elec">ข้อมูลการใช้</string>
     <string name="app_flow">ข้อมูลการใช้</string>
     <string name="app_elec">รายการแอพ</string>
@@ -519,7 +397,6 @@
     <string name="month_remainder_triffic">เดือนนี้ไม่ใช้</string>
     <string name="month_triffic">เดือนนี้</string>
     <string name="flow_charts_this_month">การใช้งานในชีวิตประจำวัน</string>
-    <string name="set_flow_packages">ที่เกี่ยวข้องกับการตั้งค่า</string>
 
     <!-- What's Hot -->
     <string name="hot_app_free">ฟรี</string>
@@ -558,20 +435,10 @@
     <string name="the_best_status_toast">เป็นสถานะที่เหมาะสมโปรดลองใหม่อีกครั้ง</string>
     <string name="battery_cannot_do">ฟังก์ชันนี้ไม่สามารถปิด</string>
     <!-- guide page begin -->
-    <string name="guide_page1_title">การเลือกโหมด</string>
-    <string name="guide_page1_content">ล็อคโดยอัตโนมัติ / ปลดล็อคโดยเวลาที่ต้องการและสถานที่ตั้ง</string>
-    <string name="guide_page2_title">ระดับความเป็นส่วนตัว</string>
-    <string name="guide_page2_content">ความเป็นส่วนตัวยามแรกในโลก</string>
-    <string name="guide_page3_title">รายชื่อผู้ติดต่อส่วนตัว</string>
-    <string name="guide_page3_content">ซ่อน SMS ส่วนตัวและข้อมูลการโทร</string>
-    <string name="guide_page4_title">ตรวจสอบการใช้งาน</string>
-    <string name="guide_page4_content">การรักษาแผนข้อมูลของคุณและการใช้งานแบตเตอรี่ภายใต้การควบคุม</string>
-    <string name="guide_button_text">ใช้ทันที</string>
     <!-- guide page end -->
 
     <string name="lock_mode_name_cant_empty">โหมดฉากชื่อจะว่างเปล่า</string>
     <string name="lock_mode_delete_tip_title">ลบเตือน</string>
-    <string name="lock_mode_delete_tip">คุณเลือกโหมดใช้ในเวลาล็อคหรือล็อคในตำแหน่งลบฉากนี้จะสอดคล้องกับการตั้งค่าโหมดลบล็อค</string>
     <string name="lock_mode_delete_tip_both">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าเวลาและสถานที่การตั้งค่า</string>
     <string name="lock_mode_delete_tip_time">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าเวลา</string>
     <string name="lock_mode_delete_tip_location">การลบโหมดนี้จะมีผลต่อตัวเลือกโหมดในการตั้งค่าที่ตั้ง</string>
@@ -633,67 +500,12 @@
     <string name="feedback_email_guide">อีเมล์ของคุณ</string>
     <string name="feedback_category_guide">เลือกคำถาม</string>
     <string name="privacy_proposal_tip">ระดับลับ %1$s ทำดังนี้</string>
-    <string name="lock_mode_name_maxlength">30</string>
     <!-- version 2.2 end -->
 
 
     <!-- version 2.4 start -->
     <!-- quick gesture -->
     <string name="pg_appmanager_quick_gesture_name">ทางลัด</string>
-    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">เปิดทางลัด</string>
-    <string name="pg_appmanager_quick_gesture_option_switch_setting">เปลี่ยนตั้งค่า</string>
-    <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">รูปแบบธีม</string>
-    <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">ปัจจุบัน %1$s</string>
-    <string name="pg_appmanager_quick_gesture_option_sliding_area_location_title">แบ่งที่ภูมิภาค</string>
-    <string name="pg_appmanager_quick_gesture_option_no_read_message_tip">ข้อความใหม่</string>
-    <string name="pg_appmanager_quick_gesture_option_recently_contact">ผู้ติดต่อล่าสุด</string>
-    <string name="pg_appmanager_quick_gesture_option_privacy_contact_message_tip">ผู้ติดต่อส่วนตัว</string>
-    <string name="pg_appmanager_quick_gesture_option_able_sliding_time">แบ่งโอกาศได้</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">ซ้ายใต้</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">ขวาใต้</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">ซ้ายกลาง</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">ขวากลาง</string>
-    <string name="pg_appmanager_quick_gesture_slide_time_just_home_text">เดสก์ท็อป</string>
-    <string name="pg_appmanager_quick_gesture_slide_time_home_and_all_app_text">เดสก์ท็อปและใช้</string>
-    <string name="pg_appmanager_quick_gesture_slide_time_no_disturb_text">การใช้ไม่รบกวน</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">ขอเลือกภูมิภาคหนึ่งอย่างน้อย</string>
-    <string name="pg_appmanager_quick_gesture_select_free_disturb_app_text">ขอเลือกการรบกวน</string>
-    <string name="pg_appmanager_quick_gesture_no_free_add_free_disturb_app_text">เพิ่มการไม่รบกวน</string>
-    <string name="pg_appmanager_quick_gesture_miui_open_float_window_tip_text">เปิดใช้งานหน้าต่างป็อปอัพ และสร้างทางลัด</string>
-    <string name="pg_appmanager_quick_gesture_first_tip_text">ขีดออกจากข้างใดเขตแสดง</string>
-    <string name="pg_appmanager_quick_switch_dialog_title">ขอเลือกสวิตช์ฉับ</string>
-    <string name="quick_gesture_change_common_app_dialog_title">เลือกแอพ</string>
-    <string name="quick_gesture_change_common_app_dialog_checkbox_text">เพิ่ม/เปลี่ยนแอพ อัตโนมัติ</string>
-    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">ข้อมูลระบบ</string>
-    <string name="quick_gesture_dialog_tip_contniue_title">ดำเนินการตั้งค่า</string>
-    <string name="quick_gesture_dialog_tip_contniue_cotent">คุณได้เปิดใช้งานหน้าต่างป็อปอัพ ดำเนินการต่อเพื่อสร้างทางลัด</string>
-    <string name="quick_gesture_dialog_tip_contniue_left_bt">ต่อไป</string>
-    <string name="quick_gesture_dialog_tip_contniue_right_bt">ภายหลัง</string>
-    <string name="quick_gesture_miui_tip_button_text">ตกลง</string>
-    <string name="quick_gesture_dynamic">แอพล่าสุด</string>
-    <string name="quick_gesture_switcher">ง่าย</string>
-    <string name="quick_gesture_most_used">โปรดปราน</string>
-    <string name="quick_gesture_first_open_sliding_toast">เปิดการฉับ</string>
-    <string name="quick_guesture_bluetooth">บลูทูธ</string>
-    <string name="quick_guesture_flashlight">ไฟฉาย</string>
-    <string name="quick_guesture_wlan">WLAN</string>
-    <string name="quick_guesture_carme">กล้อง</string>
-    <string name="quick_guesture_sound">เสียง</string>
-    <string name="quick_guesture_light">ความสว่าง</string>
-    <string name="quick_guesture_speedup">เร่ง</string>
-    <string name="quick_guesture_changemode">เปลี่ยนโหมด</string>
-    <string name="quick_guesture_switchset">ทางลัด</string>
-    <string name="quick_guesture_setting">ตั้งค่า</string>
-    <string name="quick_guesture_gps">GPS</string>
-    <string name="quick_guesture_flymode">โหมดเครื่องบิน</string>
-    <string name="quick_guesture_rotation">หมุนอัตโนมัติ</string>
-    <string name="quick_guesture_mobliedata">ข้อมูลการใช้งาน</string>
-    <string name="quick_guesture_home">เดสก์ท็อป</string>
-    <string name="quick_guesture_lockscreen">ล็อคจอ</string>
-    <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
-    <string name="pass_gesture_change">เปลี่ยนรูปแบบรหัสผ่าน</string>
-    <string name="permission_open_tip_notification_title">ตั้งทางลัด</string>
-    <string name="permission_open_tip_notification_content">คลิกเปิดทางลัด</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">ติดตั้ง iSwipe เพื่อให้โทรศัพท์ของคุณเจ๋งแบบ Apple Watch</string>
     <string name="grade_tip_feedback">เสนอแนะ</string>
     <string name="quick_first_tip_dialog_right_bt">เปิดทท.</string>
@@ -711,34 +523,6 @@
     <string name="summary_autolock_after_lockscreen">การใช้ทั้งหมดถูกลอคใหม่หลังจอถูกลอค</string>
     <string name="summary_setting_locker">เลือกการกำหนดลอคการใช้</string>
     <string name="summary_hide_lockline">ซ่อนเส้นปลดลอค คุ้มครองความลับส่วนตัว</string>
-    <string name="quick_gesture_strengthen_mode_title">จุดขาวเล็ก</string>
-    <string name="quick_gesture_strengthen_mode_content">คลิคจุดขาวเล็กเปิดท่ามือ</string>
-    <string name="quick_gesture_success_title">เปิดท่ามือเสร็จ</string>
-    <string name="quick_gesture_success_content">คลิคข้างล่างเพื่อเปิด/ปิดบลูทูธ wifi</string>
-    <string name="go_set">ไปกำหนด</string>
-    <string name="white_dot_click_tip">เปิดท่ามือเสร็จ ปิดได้ในการกำหนดท่ามือ</string>
-    <string name="quick_gesture_open_text">เปิดแล้ว</string>
-    <string name="quick_gesture_close_text">ปิดแล้ว</string>
-    <string name="quick_gesture_introduction_title">ท่าทางด่วนคืออะไร</string>
-    <string name="quick_gesture_introduction_content">ท่าทางด่วนเป็นตัวแยกที่มีประสิทธิภาพที่ออกมาจากผู้คุ้มกันที่มองไม่เห็น คุณสามารถจัดการระบบของมือถือแล้วเปิดซอฟต์แวร์ให้เร็วขึ้น</string>
-    <string name="quick_gesture_slide_guide_title">เปิดท่าทางวาดอย่างไร</string>
-    <string name="quick_gesture_slide_guide_content">คุณเค่วาดที่มุมโทรศัพท์ก็สามารถเปิดท่าทางด่วนได้</string>
-    <string name="quick_gesture_slide_setting_content">ถ้ามือถือคุณวาดไม่ได้ สามารถกดที่นี่ติดตังบริเวณวาด</string>
-    <string name="quick_gesture_edit_guide_title">บรรณาธิการเปิดหรือใช้ของการแสดงท่าทางด่วนยังไง</string>
-    <string name="quick_gesture_edit_guide_content">กดซอฟต์แวร์หรือสวิตซ์ที่อยู่ในtapอันใดอันหนึ่งของท่าทางด่วน ก็สามารถเข้าสู่อินเตอร์เฟซการแก้ไข คุณสามารถลบหรือเพิ่มซอฟต์แวร์หรือสวิตซ์อันนี้ </string>
-    <string name="quick_gesture_edit_extra_content">บันทึก ซอฟต์แวร์ที่เพิ่งใช้เกิดมาจากระบบ ไม่สามารถเพิ่มได้</string>
-    <string name="can_not_add_more">เพิ่มไม่ได้</string>
-    <string name="new_guide_page1_title">มือถือเร่งสะดวก</string>
-    <string name="new_guide_page1_content">ใช้ฟังก์ชันเร่งเดสก์ท็อป</string>
-    <string name="new_guide_page2_title">การใช้อำพรางสนุก</string>
-    <string name="new_guide_page2_content">วิธีการปลอมตัวใหม่</string>
-    <string name="new_guide_page3_title">เปลี่ยนโปรไฟล์</string>
-    <string name="new_guide_page3_content">ท่าทางลัด สลับได้สะดวก</string>
-    <string name="quick_open_tip">การแสดงท่าทางด่วนยังไม่เปิด</string>
-    <string name="quick_setting_title">การตั้งค่าท่าทางด่วน</string>
-    <string name="quick_no_msm_annotation">ท่าทางด่วนจะเตือนSMSที่ยังไม่อ่าน</string>
-    <string name="quick_no_call_log_annotation">ท่าทางด่วนจะเตือนสายที่ไม่ได้รับ</string>
-    <string name="quick_no_pricay_contact_annotation">ข้อมูลจะเตือนแบบระบบข้อมูล</string>
     <!-- 2.5 end -->
 
 
@@ -748,20 +532,16 @@
     <string name="change_lock_mode">คำแนะนำการใช้งาน</string>
     <string name="beauty_guide_title">คำแนะนำการใช้งาน</string>
     <string name="beauty_guide_content">ซิปบนหน้าจอโทรศัพท์เป็นภาพลวงตาโอ้ หดตัวด้วยสองนิ้วบนหน้าจอลองดูซิ</string>
-    <string name="flash_light_open_toast">กรุณาอย่าใช้งานแฟลชบ่อยๆ อาจทำให้ฮาร์ดแวร์เสียหาย</string>
     <string name="privacy_auto_add_text">แมนวล</string>
-    <string name="choose_lock_mode">เลือกโปรไฟล์</string>
     <string name="button_disguise_guide_select">ลองทันที</string>
     <string name="button_disguise_guide_cancel">ต่อมา</string>
     <string name="button_disguise_guide_content">หลังจากล็อกแล้ว ลองใช้ฟังก์ชันปลอมตัว ให้ความเป็นส่วนตัวปลอดภัยมากขึ้น</string>
     <string name="traffic_over_text">เกินจำนวน</string>
     <string name="lock_line_hide">รอยปลดล็อคแอบซ่อนแล้ว</string>
     <string name="lock_line_visiable">รอยปลดล็อคแสดงออก</string>
-    <string name="guide_more_text">ฟังก์ชันมากขึ้น ></string>
     <string name="guide_skip_text">ข้ามไป ></string>
     <string name="video_hide_need_cb">เหตุผลระบบ ยกเลิกการซ่อน วิดีโอนี้ต้องการCool Browserล่าสุด โปรดติดตั้งก่อนใช้</string>
     <string name="video_hide_need_new_cb">เหตุผลระบบ ลบการซ่อม วิดีโอนี้ต้องการ Cool Browser ล่าสุด  ติดตั้งก่อนลบการซ่อน</string>
-    <string name="video_delete_need_new_cb">เหตุผลระบบ ลบการซ่อม วิดีโอนี้ต้องการ Cool Browser ล่าสุด  โปรดติดตั้งก่อนการลบ</string>
     <string name="video_cencel_hide_fail">ยกเลิกการซ่อนไม่ได้</string>
     <string name="video_delete_fail">ไม่สามารถลบไฟล์ได้</string>
     <string name="zipper_too_fast">โอ้ ดึงช้าๆหน่อย </string>
@@ -776,14 +556,8 @@
     <string name="clean_mem_notify_small">ให้เร็ว</string>
     <string name="clean_mem_notify_boost">เร็ว ทท.</string>
     <string name="pg_appmanager_quick_gesture_option_trigger_type">วิธีสัมผัส</string>
-    <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">จุดขาว ขีดข้าง</string>
     <string name="pg_appmanager_quick_gesture_trigger_alide">ขีดจากข้าง</string>
     <string name="pg_appmanager_quick_gesture_trigger_wihtedot">จุดขาว</string>
-    <string name="pg_appmanager_quick_gesture_trigger_tips">ขอเลือกรายการหนึ่งอย่างน้อย</string>
-    <string name="pg_appmanager_quick_gesture_conflict_content">ท่ามือส่งผลประทบต่อการปฏิบัติธรรมดาของท่านหรือไม่ คุณเลือกแบบจุดขาวได้ กดกำหนด</string>
-    <string name="pg_appmanager_quick_gesture_conflict_later">รอเดี๋ยว</string>
-    <string name="pg_appmanager_quick_gesture_conflict_open">เปิด ทท.</string>
-    <string name="anti_conflict_mode_open">หัน</string>
     <!-- 2.7 end -->
 
 
@@ -795,14 +569,10 @@
     <string name="iswip_update_tip_right_button_text">ดาวนโหลด</string>
     <string name="iswip_update_notifi_title">ปุ่มลัด</string>
     <string name="iswip_update_notifi_content">ชื่อใหม่ iSwipe </string>
-    <string name="iswip_update_notifi_button">อัพเดท</string>
     <string name="ad_timeout">ว้าว น่าอัศจรรย์</string>
     <!-- 2.8 end -->
     <!-- 2.10 start -->
-    <string name="auto_start_guide_tip_title">สิทธิเริ่มออโต</string>
     <string name="auto_start_guide_tip_content">เรียกใช้ Privacy Guard เมื่อเริ่มต้น</string>
-    <string name="auto_start_guide_tip_left_button">ภายหลัง</string>
-    <string name="auto_start_guide_tip_right_button">ตอนนี้</string>
     <string name="msg_center_title">ศูนย์ข้อความ</string>
     <string name="msg_center_empty">ไม่มีข้อความใหม่</string>
     <string name="msg_center_empty_say">บอกเราสิ่งที่คุณต้องการ</string>
@@ -821,8 +591,6 @@
     <string name="advace_protect_dialog_content_text">ล็อคแล้ว ใช้ปกป้องขั้นสูงเลี่ยงถอนติดตั้ง ถอนติดตั้ง Privacy Guard ที่แถบข้าง </string>
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">ใช้ปกป้องขั้นสูง</string>
-    <string name="splash_guide_page_msg_title">ศูนย์ข้อความ</string>
-    <string name="splash_guide_page_msg_content">ทุกกิจกรรมและเคล็ดลับที่เป็นประโยชน์ที่นี่</string>
     <string name="advance_protect_open_success_tip_content">การปกป้องขั้นสูงเปิดใช้งาน Privacy Guard ไม่สามารถถอนติดตั้ง ปิดใช้ในตั้งค่า</string>
     <string name="auto_start_tip_xiaomi4_and_letv">คลิก"เริ่มอัตโนมัติ" เพิ่ม LEO Privacy Guard</string>
     <string name="auto_start_tip_redmi">ไปที่"การอนุญาตสิทธิ์" และเพิ่ม Privacy Guard</string>
@@ -835,7 +603,6 @@
     <string name="applock_guide_tip_subtitle">ข้อจำกัดของระบบ ต้องเปิดใช้สิทธิ์อนุญาต</string>
     <string name="applock_guide_tip_security_text">ให้สิทธิ์อนุญาตของ Privacy Guard เพื่อใช้แอพ</string>
     <string  name="auto_start_tip_text_huawei_plus">เปิดใช้สิทธิ์เริ่มอัตโนมัติ ปกป้องหลังรีสตาร์ท</string>
-      <string name="background_tip_default_text">ตั้ง Privacy Guard เพื่อปกป้องความเป็นส่วนตัว</string>
     <string name="applock_guide_set_text">การตั้งค่า</string>
      <string name="applock_guide_set_finish">ดำเนินการ</string>
     <!-- 2.12 end -->

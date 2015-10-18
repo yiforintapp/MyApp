@@ -17,13 +17,12 @@ import android.os.AsyncTask;
 import android.os.Handler;
 import android.provider.CallLog;
 import android.provider.CallLog.Calls;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
@@ -82,8 +81,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     });
                 } catch (Exception e) {
                 }
-                /* 快捷手势隐私短信未读提醒 */
-                noReadPrivacyMsmTipForQuickGesture(pref);
             }
             /* 快捷手势未读短信提醒 */
             noReadMsmTipForQuickGesture(cr);
@@ -155,14 +152,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
         });
     }
 
-    private void noReadPrivacyMsmTipForQuickGesture(AppMasterPreference pref) {
-        if (pref.getSwitchOpenPrivacyContactMessageTip() && pref.getQuickGestureMsmTip()) {
-            QuickGestureManager.getInstance(mContext).isShowPrivacyMsm = true;
-            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-            FloatWindowHelper.removeShowReadTipWindow(mContext);
-        }
-    }
-
     private void noReadCallForQuickGesture(final ContactBean call) {
         ThreadManager.executeOnAsyncThread(new Runnable() {
 
@@ -207,42 +196,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                      */
                     if ((callLogs == null || callLogs.size() <= 0)
                             && !PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {
-                        /* 判断隐私联系人，短信，运营是否还有显示红点的需求，没有了将红点标志设为false */
-                        if ((QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() == null || QuickGestureManager
-                                .getInstance(mContext).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
-                                && AppMasterPreference.getInstance(mContext)
-                                        .getCallLogNoReadCount() <= 0/* 隐私通话 */
-                                && AppMasterPreference.getInstance(mContext)
-                                        .getMessageNoReadCount() <= 0/* 隐私短信 */
-                                && AppMasterPreference.getInstance(mContext)
-                                        .getLastBusinessRedTipShow()/* 运营 */) {
-                            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
-                        }
-                        if (QuickGestureManager.getInstance(mContext).getQuickNoReadCall() != null) {
-                            QuickGestureManager.getInstance(mContext).clearQuickNoReadCall();
-                        }
-                        FloatWindowHelper.removeShowReadTipWindow(mContext);
                         /* 对于不能接受来电广播的机型在这里取清空记录的未读短信数量 */
                         if (PrivacyContactManager.getInstance(mContext).clearCallForNoReceiver()) {
                             PrivacyContactManager.getInstance(mContext).mUnCalls = 0;
-                        }
-                    }
-                    /* 有未读通话时操作 */
-                    if (callLogs != null && callLogs.size() > 0) {
-                        if (AppMasterPreference.getInstance(mContext)
-                                .getSwitchOpenRecentlyContact()) {
-                            if (!QuickGestureManager.getInstance(mContext).mToCallFlag
-                                    && !QuickGestureManager.getInstance(mContext).isCallLogRead) {
-                                QuickGestureManager.getInstance(mContext).addQuickNoReadCall(
-                                        callLogs);
-                                QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-                                FloatWindowHelper.removeShowReadTipWindow(mContext);
-                                if (PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {
-                                    PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag = false;
-                                }
-                            } else {
-                                QuickGestureManager.getInstance(mContext).mToCallFlag = false;
-                            }
                         }
                     }
                 }
@@ -287,44 +243,9 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                     if (messages == null
                             || messages.size() <= 0
                             && !PrivacyContactManager.getInstance(mContext).deleteMsmDatebaseFlag) {
-                        /* 判断隐私联系人，短信，运营是否还有显示红点的需求，没有了将红点标志设为false */
-                        if ((QuickGestureManager.getInstance(mContext).getQuickNoReadCall() == null || QuickGestureManager
-                                .getInstance(mContext).getQuickNoReadCall().size() <= 0)/* 未读通话 */
-                                && AppMasterPreference.getInstance(mContext)
-                                        .getCallLogNoReadCount() <= 0/* 隐私通话 */
-                                && AppMasterPreference.getInstance(mContext)
-                                        .getMessageNoReadCount() <= 0/* 隐私短信 */
-                                && AppMasterPreference.getInstance(mContext)
-                                        .getLastBusinessRedTipShow()/* 运营 */) {
-                            QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = false;
-                        }
-                        if (QuickGestureManager.getInstance(mContext).getQuiQuickNoReadMessage() != null) {
-                            QuickGestureManager.getInstance(mContext).clearQuickNoReadMessage();
-                        }
-                        FloatWindowHelper.removeShowReadTipWindow(mContext);
                         /* 对于不能接受短信广播的机型在这里取清空记录的未读短信数量 */
                         if (PrivacyContactManager.getInstance(mContext).clearMsmForNoReceiver()) {
                             PrivacyContactManager.getInstance(mContext).messageSize = 0;
-                        }
-                    }
-                    /* 有未读短信时操作 */
-                    if (messages != null && messages.size() > 0) {
-                        if (AppMasterPreference.getInstance(mContext)
-                                .getSwitchOpenNoReadMessageTip()) {
-                            /**
-                             * QuickGestureManager.getInstance(mContext).
-                             * isMessageRead =false时，说明该短信没有经过红点提示，
-                             * 如果为true说明该短信经过红点提示并且提示已经打开
-                             */
-                            if (!QuickGestureManager.getInstance(mContext).mToMsmFlag
-                                    && !QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
-                                QuickGestureManager.getInstance(mContext).addQuickNoReadMessage(
-                                        messages);
-                                QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-                                FloatWindowHelper.removeShowReadTipWindow(mContext);
-                            } else {
-                                QuickGestureManager.getInstance(mContext).mToMsmFlag = false;
-                            }
                         }
                     }
                 }
@@ -337,16 +258,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             .getSysMessage(mContext, cr,
                                     "read=0 AND type=1", null, true);
                     if (messageList != null) {
-                        int count = PrivacyContactManager
-                                .getInstance(mContext).messageSize;
                         int currentCount = messageList.size();
-                        if (currentCount > count) {
-                            if (QuickGestureManager.getInstance(mContext).isMessageReadRedTip) {
-                                QuickGestureManager.getInstance(mContext).isMessageReadRedTip = false;
-                                AppMasterPreference.getInstance(mContext)
-                                        .setMessageIsRedTip(false);
-                            }
-                        }
                         PrivacyContactManager.getInstance(mContext).messageSize = currentCount;
                     }
                 }
@@ -365,16 +277,7 @@ public class PrivacyMessageContentObserver extends ContentObserver {
                             mContext.getContentResolver(), selection,
                             selectionArgs);
             if (callLogs != null) {
-                int count = PrivacyContactManager
-                        .getInstance(mContext).mUnCalls;
                 int currentCount = callLogs.size();
-                if (currentCount > count) {
-                    if (QuickGestureManager.getInstance(mContext).isCallLogRead) {
-                        QuickGestureManager.getInstance(mContext).isCallLogRead = false;
-                        AppMasterPreference.getInstance(mContext)
-                                .setCallLogIsRedTip(false);
-                    }
-                }
                 PrivacyContactManager.getInstance(mContext).mUnCalls = currentCount;
             }
         }
@@ -539,9 +442,6 @@ public class PrivacyMessageContentObserver extends ContentObserver {
             // AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
             if (mPreference.getSwitchOpenPrivacyContactMessageTip()
                     && mPreference.getQuickGestureCallLogTip()) {
-                QuickGestureManager.getInstance(mContext).isShowPrivacyCallLog = true;
-                QuickGestureManager.getInstance(mContext).isShowSysNoReadMessage = true;
-                FloatWindowHelper.removeShowReadTipWindow(mContext);
                 if (PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {
                     PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag = false;
                 }

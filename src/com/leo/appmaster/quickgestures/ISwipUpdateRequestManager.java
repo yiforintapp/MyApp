@@ -8,22 +8,15 @@ import java.util.List;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
-import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationCompat.Builder;
-import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.RemoteViews;
 
@@ -37,24 +30,14 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.home.ProtocolActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
-import com.leo.appmaster.privacycontact.PrivacyContactActivity;
-import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.quickgestures.receiver.IswipeNetworkStateListener;
-import com.leo.appmaster.quickgestures.receiver.IswipePackageChangedListener;
-import com.leo.appmaster.quickgestures.ui.IswipUpdateTipDialog;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
-import com.leo.appmater.globalbroadcast.PackageChangedListener;
 
 public class ISwipUpdateRequestManager {
     /* 是否升级 */
@@ -712,13 +695,6 @@ public class ISwipUpdateRequestManager {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-        }
-        QuickGestureManager.getInstance(mContext)
-                .stopFloatWindow();
-        FloatWindowHelper.removeAllFloatWindow(mContext);
-        if (AppMasterPreference.getInstance(mContext).getSwitchOpenStrengthenMode()) {
-            FloatWindowHelper.removeWhiteFloatView(mContext);
-            AppMasterPreference.getInstance(mContext).setWhiteFloatViewCoordinate(0, 0);
         }
         AppMasterPreference.getInstance(mContext).setSwitchOpenQuickGesture(false);
     }

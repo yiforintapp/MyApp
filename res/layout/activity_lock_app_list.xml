@@ -79,7 +79,7 @@
         android:paddingLeft="2dp"
         android:paddingRight="2dp" />
 
-    <RelativeLayout
+   <RelativeLayout
         android:id="@+id/mask_layer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -87,11 +87,7 @@
         android:layout_alignParentTop="true"
         android:visibility="gone" >
 
-        <ImageView
-            android:id="@+id/iv_mask_back"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/lock_guide" />
+
 
         <TextView
             android:id="@+id/textView2"

@@ -9,10 +9,8 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -74,13 +72,8 @@ public class StatusBarEventService extends IntentService {
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (eventType == EVENT_BUSINESS_QUICK_GUESTURE) {
-            boolean installIswipe = ISwipUpdateRequestManager.getInstance(this).isInstallIsiwpe(this);
-            if (!installIswipe) {
-                LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
-                targetIntent = new Intent(this, QuickGestureActivity.class);
-                targetIntent.putExtra(QuickGestureActivity.FROME_STATUSBAR, true);
-                targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            } else {
+            boolean installIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(this);
+            if (installIswipe) {
                 if (DBG) {
                     LeoLog.i(TAG, "存在Iswipe请点击Iswipe图标");
                 }
@@ -92,13 +85,9 @@ public class StatusBarEventService extends IntentService {
                                 "com.leo.iswipe.activity.SplashActivity");
                 targetIntent.setComponent(cn);
                 targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            }
+            } 
         } else if (eventType == EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION) {
-            LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
-            targetIntent = new Intent(this, QuickGestureActivity.class);
-            targetIntent.putExtra(QuickGestureActivity.FROME_STATUSBAR, true);
-            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         } else if (eventType == EVENT_ISWIPE_UPDATE_NOTIFICATION) {
             LeoLog.i(TAG, "来自iswipe升级通知，启动主页！");
             targetIntent = new Intent(this, HomeActivity.class);

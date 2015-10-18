@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.animation.FloatEvaluator;
 import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentUris;
@@ -30,15 +29,12 @@ import android.provider.ContactsContract.CommonDataKinds.Phone;
 import android.provider.ContactsContract.Contacts;
 import android.provider.ContactsContract.PhoneLookup;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 
 public class PrivacyContactUtils {
     public static final Uri SMS_INBOXS = Uri.parse("content://sms/");
@@ -1078,28 +1074,6 @@ public class PrivacyContactUtils {
                                             .getSystemService(Context.NOTIFICATION_SERVICE);
                             notificationManager.cancel(20140901);
                         }
-                        /**
-                         * 对快捷手势隐私联系人未读，红点操作
-                         */
-                        if (QuickGestureManager.getInstance(context).isShowPrivacyMsm) {
-                            // QuickGestureManager.getInstance(context).isShowSysNoReadMessage
-                            // = false;
-                            QuickGestureManager.getInstance(context).isShowPrivacyMsm = false;
-                            AppMasterPreference.getInstance(context).setQuickGestureMsmTip(false);
-                            if ((QuickGestureManager.getInstance(context)
-                                    .getQuiQuickNoReadMessage() == null || QuickGestureManager
-                                    .getInstance(context).getQuiQuickNoReadMessage().size() <= 0)/* 未读短信 */
-                                    && (QuickGestureManager.getInstance(context)
-                                            .getQuickNoReadCall() == null || QuickGestureManager
-                                            .getInstance(context).getQuickNoReadCall().size() <= 0)/* 未读通话 */
-                                    && AppMasterPreference.getInstance(context)
-                                            .getCallLogNoReadCount() <= 0/* 隐私通话 */
-                                    && AppMasterPreference.getInstance(context)
-                                            .getLastBusinessRedTipShow()/* 运营 */) {
-                                QuickGestureManager.getInstance(context).isShowSysNoReadMessage = false;
-                            }
-                        }
-                        FloatWindowHelper.removeShowReadTipWindow(context);
                         LeoEventBus
                                 .getDefaultBus()
                                 .post(

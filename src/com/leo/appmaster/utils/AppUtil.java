@@ -1,18 +1,7 @@
 
 package com.leo.appmaster.utils;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.quickgestures.model.QuickSwitcherInfo;
-
-import android.app.Activity;
 import android.app.KeyguardManager;
-import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
@@ -25,7 +14,11 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 import android.net.Uri;
-import android.os.Vibrator;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.engine.AppLoadEngine;
 
 public class AppUtil {
     public static boolean isSystemApp(ApplicationInfo info) {

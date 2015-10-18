@@ -1,13 +1,11 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <!-- auto check update -->
-    <string name="update_title">เคล็ดลับการอัพเดท</string>
     <string name="do_update">อัพเดทเดี๋ยวนี้</string>
     <string name="ignore_update">ภายหลัง</string>
     <string name="cancel_download">ยกเลิก</string>
     <string name="hide_download_window">ปิด</string>
     <string name="downloading"><xliff:g id="app_name">%1$s</xliff:g>กำลังดาวน์โหลด</string>
-    <string name="downloading_notification"><xliff:g id="app_name">%1$s</xliff:g>กำลังดาวน์โหลด&#160;&#160;&#160;&#160;<xliff:g id="percentage">%2$d</xliff:g></string>
     <string name="downloaded_size"><xliff:g id="done">%1$1.2f</xliff:g>MB/<xliff:g id="total">%2$1.2f</xliff:g>MB</string>
     <string name="update_datail_msg"><![CDATA[<b><font color="#333333">%1$sรุ่นใหม่ที่ใช้ได้</font></b><br/>รุ่นใหม่:&nbsp;%2$s&nbsp;&nbsp;ขนาด:&nbsp;%3$2.2fMB<br/><b><font color="#333333">คุณสมบัติ:</font></b><br/>%4$s]]></string>
     <!-- user check update -->
@@ -16,19 +14,12 @@
     <string name="network_error_msg">เชื่อมต่อล้มเหลว กรุณาตรวจสอบการตั้งค่าเครือข่ายของคุณ</string>
     <string name="check_update">กำลังตรวจสอบ</string>
     <string name="checking_update_msg">กำลังตรวจสอบการอัพเดท  &#8230;</string>
-    <string name="check_failed">ไม่สามารถเช็คได้</string>
     <string name="network_busy_msg">เครือข่ายไม่ว่าง กรุณาลองใหม่ภายหลัง</string>
     <string name="retry">โหลดใหม่</string>
-    <string name="commit">ยกเลิก</string>
     <string name="update_no_need">คุณได้ติดตั้งเป็นเวอร์ชั่นล่าสุดแล้ว</string>
-    <string name="find_update">มีเวอร์ชั่นใหม่</string>
-    <string name="new_version">เวอร์ชั่นใหม่</string>
-    <string name="features">คุณสมบัติ</string>
-    <string name="size">ขนาด</string>
     <!-- notification -->
     <string name="update_available"><xliff:g id="app_name">%1$s</xliff:g>มีเวอร์ชั่นใหม่</string>
     <string name="version_found">รุ่นใหม่ที่ใช้ได้<xliff:g id="new_version">%1$s</xliff:g>อัพเดททันที</string>
-    <string name="click_to_update">คลิกเพื่ออัพเดท</string>
     <!-- push -->
     <string name="phone_number">หมายเลขโทรศัพท์</string>
     <string name="india_only">อินเดียเท่านั้น</string>

@@ -2,32 +2,19 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">PrivacyGuard</string>
-    <string name="app_count">عدد التطبيقات</string>
-    <string name="used_memory">ذاكرة مستعملة</string>
-    <string name="used_flow">كمية تدفق مستعملة</string>
-    <string name="app_detail">تفاصيل</string>
     <string name="app_lock">"قفل"</string>
     <string name="app_add_lock">"تجهيز قفل"</string>
     <string name="lock_tab">"قفل   "</string>
-    <string name="app_backup">حفظ القفل</string>
-    <string name="app_restore">إستعادة القفل</string>
     <string name="button_backup">حفظ</string>
     <string name="button_install">تثبيت</string>
     <string name="button_delete">حذف</string>
-    <string name="app_use_info">وضع الاستعمال</string>
-    <string name="app_permission_info">مراقبة الصلاحية</string>
-    <string name="uninstall">إلغاء</string>
     <string name="set_gesture_suc">تم إعداد الإشارة</string>
     <string name="set_passwd_suc">تم إعداد كلمة المرور</string>
     <string name="reset_passwd_successful">تم إعادة الإعداد!</string>
-    <string name="stop">توقف</string>
     <string name="reinput_anwser">"كلمة المرور خطأة، أعد الإدخال"</string>
-    <string name="please_input_pswd">أدحل كلمة المرور</string>
-    <string name="please_input_pswd_again">أعد إدخال</string>
     <string name="makesure">موافق</string>
     <string name="cancel">إلغاء</string>
     <string name="delete">حذف</string>
-    <string name="passwd_set_passwd_tip">أعد كلمة المرور</string>
     <string name="passwd_set_gesture_tip">وصل أربع نقاط على الأقل</string>
     <string name="passwd_hint">أدخل أربعة أحرف</string>
     <string name="tip_no_the_same_pswd">لا تتوافق، أعد الإدخال</string>
@@ -38,39 +25,21 @@
 
     <!--  -->
 
-    <string name="use_gesture">إشارة الاستعمال</string>
-    <string name="use_passwd">كلمة مرور الاستعمال</string>
     <string name="reset_passwd">تعديل كلمة مرور</string>
-    <string name="app_locked">تم إغلاق</string>
-    <string name="app_unlock">لم يغلق</string>
     <string name="find_passwd">استرجاع كلمة مرور</string>
     <string name="please_wait">انتظر للمحاولة</string>
     <string name="passwd_question">سؤال:</string>
     <string name="passwd_anwser">إجابة:</string>
     <string name="accelerate">إسراع</string>
-    <string name="used_mem">ذاكرة الاستعمال</string>
     <string name="passwd_tip">أدخل ملاحظة كلمة المرور</string>
-    <string name="save">حفظ</string>
-    <string name="passwd_protect_setting">إعداد سؤال حماية</string>
     <string name="input_qusetion">أدخل سؤال حماية</string>
     <string name="qusetion_cant_null">ممنوع خاليا</string>
     <string name="aneser_cant_null">ممنوع خاليا</string>
     <string name="pleas_input_anwser">أدخل إجابة سؤال حماية</string>
     <string name="not_set">لم يعد</string>
-    <string name="anwser">إجابة:</string>
-    <string name="not_unistall">يمنع إلغاء تثبيت</string>
-    <string name="lock_screen_auto_lock">يقفل بعد الإغلاق</string>
     <string name="tips">ملاحظة</string>
-    <string name="compeletely">تم</string>
     <!-- acceralate -->
-    <string name="clean_memory">إسراع بزر واحد</string>
-    <string name="clean_result">تنظيف الذاكرة</string>
-    <string name="best_mem">يكون أحسن وضع، دون حاجة إلى إعادة الإسراع</string>
-    <string name="lock_count">"تم القفل"</string>
-    <string name="unlock_count">"لم يقفل"</string>
-    <string name="lockscreen_access_pattern_detected">"تم تجهيز الرسم"</string>
     <string name="please_input_gesture">جهز رسم القفل</string>
-    <string name="input_passwd_tip">أدخل ملاحظة كلمة المرور</string>
     <string name="switch_gesture">استعمل الإسارة</string>
     <string name="switch_passwd">استعمل كلمة رقمية</string>
     <string name="setting">إعداد</string>
@@ -83,15 +52,11 @@
     <!--  -->
 
     <string name="pp_success">تم إعداد حماية كلمة المرور</string>
-    <string name="passwd_setting">إعداد كلمة المرور</string>
     <string name="set_success">تم الإعداد</string>
-    <string name="passwd_hint_cant_null">"لا ملاحظة كلمة المرور خالية"</string>
     <string name="set_gesture">إعداد الإشارة</string>
     <string name="set_passwd">إعداد كلمة رقمية</string>
-    <string name="please_input_gesture_again">إعادة تجهيز رسم</string>
     <string name="reset_gesture_passwd">إعادة تجهيز رسم</string>
     <string name="reset_digital_passwd">إعادة كلمة رقمية</string>
-    <string name="gesture_hint">وصل أربع نقاط على الأقل</string>
     <string name="first_set_passwd_hint">أعد كلمة مرور لحفظ سرية</string>
     <string name="make_passwd">موافق كلمة مرور</string>
     <string name="input_again">أعد الإدخال</string>
@@ -128,9 +93,7 @@
     -->
     <string name="deleting_app"> جاري حذف:<xliff:g>%1$s</xliff:g></string>
     <string name="installed_app_size"> تطبيق مثبت:<xliff:g>%1$d</xliff:g></string>
-    <string name="apk_size">حجم:<xliff:g>%1$s</xliff:g></string>
     <string name="storage_size"> حيز التخزبن الباقي: <xliff:g>%1$s</xliff:g></string>
-    <string name="use_storage_size">حبز محتل:<xliff:g>%1$s</xliff:g></string>
     <!--  -->
 
     <string name="unavailable">غير قابل لاستعمال</string>
@@ -156,20 +119,14 @@
         <item>300</item>
     </string-array>
 
-    <string name="app_details">تفاصيل التطبيق</string>
 
     <!-- TODO -->
     <!--
     <string name="app_memory">"系统占用&#058;<xliff:g>%1$s</xliff:g>"</string>
     <string name="app_cache_size">"占用缓存&#058;<xliff:g>%1$s</xliff:g>"</string>
     -->
-    <string name="app_memory">"احتلال النظام:&#058; <xliff:g>%1$s</xliff:g>"</string>
-    <string name="app_cache_size">"ذاكرة محتلة :&#058; <xliff:g>%1$s</xliff:g>"</string>
     <!--  -->
 
-    <string name="app_permission1">صلاحية خطر</string>
-    <string name="app_permission2">صلاحية عامة</string>
-    <string name="app_permission3">صلاحية هامة</string>
     <string name="app_setting_update">فحص الترقية</string>
     <string name="feedback">رد المستخدم</string>
     <string name="grade">خمس نجوم</string>
@@ -182,13 +139,10 @@
 
     <string name="auto_lock">يقفل بعد الإغلاق</string>
     <string name="change_lock_time">تعديل وقت إغلاق</string>
-    <string name="recom_lock_tip">ملاحظة قفل مرشح</string>
     <string name="new_app_lock_tip">ملاحظة قفل جديد</string>
     <string name="passwd_protect">سؤال حماية</string>
     <string name="change_passwd">تعديل كلمة مرور</string>
     <string name="passwd_notify">ملاحظة كلمة مرور</string>
-    <string name="no_lock_item_tip">لا يوجد تطبيق قفل</string>
-    <string name="lock_remind">جهز قفل</string>
 
     <!-- TODO -->
     <!-- <string name="new_install_lock_remind">检测到您安装了%1$s，建议加锁</string> -->
@@ -196,8 +150,6 @@
 
     <!--  -->
 
-    <string name="no_unlocked_item_tip">لا يوجد تطبيق غير مقفل</string>
-    <string name="app_setting_has_update">فحص تحديث <Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">لا تجاوز 40 حرف، أعد</string>
     <string name="anwser_charsize_tip">لا تجاوز 40 حرف، أعد</string>
 
@@ -211,16 +163,9 @@
 
     <!--  -->
 
-    <string name="feedback_commit">تقديم</string>
-    <string name="feedback_content_tip">هل لديك أي سؤال؟</string>
-    <string name="feedback_email_tip">ايميل خاص لكم</string>
     <string name="feedback_category_tip">اختر صنف السؤال</string>
     <string name="category_lock">قفل</string>
-    <string name="category_backup_uninstall">إلغاء التثبيت والحفظ</string>
-    <string name="category_hide_image">كمن الشكل</string>
-    <string name="category_hide_video">كمن الفيديو</string>
     <string name="category_other">سؤال آخر</string>
-    <string name="category_suggest">قدم لنا مقترح</string>
     <string name="feedback_success_title">تم التقديم</string>
     <string name="feedback_success_content">شكرا على إجابتكم، نعالج السؤال فورا</string>
     <string name="app_image_hide">كمن الشكل</string>
@@ -231,14 +176,11 @@
     <string name="app_select_none">إلغاء</string>
     <string name="app_hide_image">كمن</string>
     <string name="app_cancel_hide_image">إلغاء</string>
-    <string name="app_hide_image_edit">تحرير</string>
     <string name="app_add_hide_image">إضافة</string>
-    <string name="app_share_hide_image">مشاركة</string>
     <string name="app_unhide_dialog_content">هل تلغي كمن هذا الشكل؟</string>
     <string name="app_delete_dialog_content">هل تحذف هذا الشكل؟</string>
     <string name="app_unhide_pictures_dialog_content">هل تلغي كمن الشكل المختار؟</string>
     <string name="app_hide_pictures_dialog_content">هل تكمن الشكل المختار؟</string>
-    <string name="app_hide_image_fail">لم يدخل هذا الشكل إلى الصلاحية، فشل الكمن!</string>
     <string name="lock_guide">انقر تطبيق للقفل</string>
     <string name="start_guide">تطبيق مرشح قفل</string>
 
@@ -252,32 +194,22 @@
     <!-- 版权 -->
     <string name="about_copy">Copyright©2015LEONetworkTechnology.AllRightsReserved</string>
     <!-- 应用墙 -->
-    <string name="app_wall">تطبيق مرشح</string>
     <string name="app_wall_network">حالة شاذة، أعد محاولة!</string>
     <string name="app_wall_click">محاولة</string>
     <!-- 隐私策略 -->
     <string name="protocolBar">اتفاقية حماية سرية</string>
     <string name="lock_more">مزيد</string>
     <string name="lock">قفل</string>
-    <string name="det_change_lock_time">تم قفل التطبيق متكررا، هل تعدل وقت التعديل؟</string>
 
-    <string-array name="det_lock_time_items">
-        <item>30</item>
-        <item>60</item>
-    </string-array>
     <!-- LockerTheme -->
     <string name="localtheme">محلي</string>
     <string name="onlinetheme">أولاين</string>
     <string name="lockerThemePoit">موضوع قفل تطبيق<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">موضوع قفل تطبيق</string>
     <string name="defaultTheme">افتراضي</string>
-    <string name="moonightTheme">ليل</string>
-    <string name="orangeTheme">قطع الفواكه</string>
     <string name="ParadoxTheme">تناقض المساحة</string>
     <string name="locker_apply">تطبيق</string>
     <string name="locker_uninstall">حذف</string>
-    <string name="locker_cancel">إلغاء</string>
-    <string name="christmas_theme">عيد الميلاد المسيحي</string>
     <string name="pull_to_refresh_pull_label">تحديث بجر أعلى</string>
     <string name="pull_to_refresh_release_label">تحديث بتخفيف</string>
     <string name="pull_to_refresh_refreshing_label">جاري التحميل</string>
@@ -293,7 +225,6 @@
     <string name="theme_tag_hot">أسخن</string>
     <string name="about_group">إلى فريق الهواة</string>
     <string name="about_praise">فيسبوك</string>
-    <string name="locker_guide">انقر تبديل موضوع فتح قفل</string>
     <string name="locker_theme_guide">مبروك! يستعمل الموضوع في واجهة فتح قفل تطبيق</string>
 
     <!-- TODO -->
@@ -310,22 +241,11 @@
     <string name="app_delete_dialog_content_video">هل تحذف هذا الفيديو؟</string>
     <string name="app_unhide_video_dialog_content">هل تلغي كمن الفيديو المختار؟</string>
     <string name="app_hide_video_dialog_content">هل تكم الفيديو المختار؟</string>
-    <string name="hide_video_dialog_title">لعب الفيديو</string>
-    <string name="hide_video_dialog_content">من أجل حماية خصوصيتكم، يحتاج إلى استعمال Video&#160;Plus لكمن الفيديو، هل تثبت؟</string>
     <string name="app_hide_video_fail">لم تكتب صلاحية الفيديو، فشل الكمن!</string>
-    <string name="hide_pic_text">تم كمن الشكل</string>
-    <string name="hide_pic_empty_text">&#160;&#160;: لا توجد أشكال مكمونة</string>
-    <string name="hide_video_text">يوجد فيديو مكمون</string>
-    <string name="hide_video_empty_text">&#160;&#160;: لا توجد فيديو مكمون</string>
-    <string name="app_backup_uninstall">إلغاء التثبيت والحفظ</string>
     <string name="circle_lock_tip_text">تطبيق مقفل</string>
     <string name="circle_lock_empty_tip_text">تطبيق غير مقفل</string>
     <string name="feedback_error">الايميل خطأ، أعد إدخال</string>
     <string name="googlePlayGuide">جر أسفل لتقديم درجة لنا</string>
-    <string name="folder_backup_restore">استعادة التطبيق</string>
-    <string name="folder_sort_flow">أكثر خسارة كمية تدفق</string>
-    <string name="folder_sort_capacity">أكثر مساحة محتلة</string>
-    <string name="folder_recommend">عرض منتجات جديدة</string>
     <!--
     <string name="toast_download_fail_network">"لا توجد شبكة، يفشل تحميل الموضوع، أعد المحاولة."</string>
     <string name="toast_download_fail_storage">"فشل تحميل، نقصان حيز SD!"</string>
@@ -340,43 +260,20 @@
     <string name="download_failure_notify_title"><xliff:g id="filename">%1$s</xliff:g>فشل تحميل موضوع </string>
     <string name="downloaded_failure">فشل التحميل</string>
     -->
-    <string name="backup">حفظ</string>
-    <string name="restore">استعادة</string>
-    <string name="backuped">تم الحفظ</string>
-    <string name="delete_successfully">تم الحذف!</string>
     <string name="no_more_business_app">لا يوجد تطبيق جديد، زرنا لاحقا</string>
     <string name="no_business_app">لا يوجد تطبيق جديد، زرنا لاحقا </string>
-    <string name="space_consumption">مساحة محتلة: </string>
-    <string name="cache_size">ذاكرة: </string>
-    <string name="power_consumption">استهلاك طاقة: </string>
-    <string name="flow_consumption">استهلاك تدفق: </string>
-    <string name="memory_consumption">ذاكرة محتلة:</string>
-    <string name="backup_path">مسار حفظ: </string>
-    <string name="backup_time">تاريخ حفظ:</string>
-    <string name="app_size">حجم آب: </string>
-    <string name="version">رقم نسخة: </string>
 
     <!-- TODO -->
     <!-- <string name="install_time">%1$s天前</string> -->
-    <string name="install_time">قبل أيام<xliff:g>%1$s</xliff:g></string>
     <!--  -->
 
     <string name="folder_new">جديد</string>
     <string name="new_app_tip_content">يوجد تطبيق ممتع جديد، انظر</string>
     <string name="new_app_tip_title">يوجد تطبيق جديد</string>
-    <string name="no_backup_app_tip">لم تحفظ التطبيق</string>
-    <string name="other_people_use_tip">يستعمل من قبل الآخرين</string>
     <string name="recomment_list_title">مرحبا بكم لاستعمال وضع الزيارة لأول مرة، اختر التطبيق المراد قفله</string>
     <string name="lock_success">تم القفل!</string>
     <string name="lcok_success_tip">قفل تطبيق مختار</string>
     <string name="success_finish">تم</string>
-    <string name="app_lock_theme">موضوع قفل تطبيق</string>
-    <string name="business_rating">درجة:</string>
-    <string name="app_desc">مقدمة:</string>
-    <string name="app_download_count">كمية تحميل:</string>
-    <string name="business_size">حجم:</string>
-    <string name="app_download">تحميل سريع</string>
-    <string name="app_google_download">تحميل مجان</string>
     <string name="help_setting_tip_title">ملاحظة المساعدة</string>
     <string name="lock_help_password_setting_content_gesture">انقر الإعداد، بعد التدقيق، أعد إعداد كلمة المرور. (استعمل الإشارة في واجهة إعداد)</string>
     <string name="lock_help_password_setting_content_password">انقر الإعداد، بعد التدقيق، أعد إعداد كلمة المرور. (استعمل الإشارة في واجهة إعداد)</string>
@@ -391,9 +288,7 @@
 
     <string name="lock_help_password_setting_button">إعداد</string>
     <string name="lock_help_lock_setting_button">إعداد القفل</string>
-    <string name="lock_setting_button">إعداد القفل</string>
     <string name="lock_help_lock_theme_setting_button">تبديل الموضوع</string>
-    <string name="help_setting_guide">ملاحظة المساعدة</string>
 
     <!-- V2.0 -->
     <string name="pravicy_protect">"السرية"</string>
@@ -410,8 +305,6 @@
     <string name="privacy_contact_popumenus_from_call_log">إضافة من اتصال</string>
     <string name="privacy_contact_popumenus_from_contact">إضافة من أشخاص</string>
     <string name="privacy_contact_popumenus_input_phone_number">إدخال يدوي</string>
-    <string name="privacy_message_dialog_title">هل تدخل السجل؟</string>
-    <string name="privacy_message_dialog_content">هل تدخل سجل الرسائل والمكالمات لهذه الأرقم، بعد الإدخال يحذف السجل في النظام</string>
     <string name="privacy_message_progress_dialog_title">جاري إدخال سجل</string>
     <string name="privacy_message_progress_dialog_content">جاري إدخال السجل</string>
     <string name="privacy_contact_activity_input_edit_name">الاسم</string>
@@ -428,7 +321,6 @@
     <string name="privacy_contact_progress_dialog_content">جاري إدخال السجل</string>
     <string name="privacy_contact_callog_out">مكالمة إلى</string>
     <string name="privacy_contact_callog_in">مكالمة من</string>
-    <string name="privacy_contact_callog_no">لم تلتق</string>
     <string name="input_toast_no_number_tip">أدخل رقم الهاتف</string>
     <string name="privacy_contact_checkbox_dlg_title">يخرج من الاتصال؟</string>
     <string name="privacy_contact_checkbox_dlg_content">هل تخرج شخص الاتصال من مساحة سرية؟</string>
@@ -469,16 +361,13 @@
     <string name="lock_mode">وضع ظروف</string>
     <string name="vistor_mode">وضع زيارة</string>
     <string name="unlock_all_mode">وضع دون قفل</string>
-    <string name="office_mode">وضع المكتب</string>
     <string name="family_mode">وضع أسرة</string>
     <string name="unlock_all_mode_tip">يفتح جميع التطبيقات غير القابلة للقفل في الوضع، اختر الوضع الآخر</string>
     <string name="add_new_mode">إضافة وضع جديد</string>
     <string name="lock_mode_all">كل وضع</string>
     <string name="new_mode">وضع جديد</string>
     <string name="lock_mode_location">قفل مكان</string>
-    <string name="hot_on_facebook">فيسبوك (فاعلية)</string>
     <string name="lock_mode_time">قفل زمان</string>
-    <string name="add">إضافة</string>
     <string name="please_input_mode_name">أدخل اسم وضع الظروف</string>
     <string name="mode_name">اسم وضع الظروف</string>
     <string name="cont_edit_visitor_name">لا يمكن تعديل اسم وضع زيارة</string>
@@ -588,19 +477,13 @@
     <string name="first_backup">حفظ</string>
     <string name="first_usage">تدفق</string>
     <string name="first_battery">طاقة</string>
-    <string name="first_hotapp">روائع</string>
-    <string name="first_installed_app">تم تثبيت</string>
-    <string name="first_appdata_app">احتلال مضمون:</string>
     <string name="first_backups_app">تطبيق محفوظ:</string>
-    <string name="first_dataflow_app">استهلاك تدفق:</string>
     <string name="first_user_app">تطبيق مستخدم:</string>
     <string name="first_used_space">مساحة محتلة:</string>
-    <string name="first_list_uninstall">إلغاء</string>
 
     <!-- Data Usage / Battery -->
     <string name="home_appmanager_donghua_tv">ذاكرة</string>
     <string name="traffic_progress_bar">استهلاك شهري</string>
-    <string name="traff_first_page_small_set_month_used">شهري (مب)</string>
     <string name="traff_first_page_small_set_low">يمكنك إدخال تدفق الحزمة وتدفق مستعمل في الشهر الجاري</string>
     <string name="traff_first_page_small_set">إعداد حزمة</string>
     <string name="no_used_traffic">لا توجد بيانات ترتيب</string>
@@ -615,17 +498,13 @@
     <string name="traffic_used_lot">تحذير تدفق</string>
     <string name="flow_settting_fist">ملاحظة الفرط</string>
     <string name="flow_settting_name">إعداد كمية التدفق</string>
-    <string name="flow_settting_second">تحذير تدفق شهري</string>
     <string name="flow_settting_sure_bg">تم إعداد</string>
     <string name="flow_settting_dialog">تدفق مستعمل</string>
     <string name="flow_settting_dialog_remain">بلغ تدفق مستعمل شهري إلى قيمة محددة، اشغل الملاحظة</string>
     <string name="flow_settting_thrid">يوم تسوية شهري</string>
-    <string name="flow_settting_thrid_first_tv">يوم تشوية شهري</string>
     <string name="flow_settting_thrid_second_tv">حزمة شهرية(مب)</string>
     <string name="flow_settting_thrid_month_used_data">شهري (مب)</string>
     <string name="app_elec_aca">كهرباء</string>
-    <string name="app_elec_stop">توقف</string>
-    <string name="app_elec_zhuyi">تنبيه!</string>
     <string name="app_flow_elec">استهلاك تدفق</string>
     <string name="app_flow">تدفق</string>
     <string name="app_elec">ترتيب</string>
@@ -679,18 +558,6 @@
     <string name="choose_ssid">خيار نقطة واي فاي</string>
     <string name="choose_enter_mode">يشغل عند الدخول</string>
     <string name="choose_quit_mode">يشغل عند المغادرة</string>
-
-    <!-- guide page begin -->
-    <string name="guide_page1_title">وضع ظروف</string>
-    <string name="guide_page1_content">يحول خطة قفل حسب مناسبة</string>
-    <string name="guide_page2_title">درجة حماية سرية</string>
-    <string name="guide_page2_content">درجة خصوصية أولى في العالم، يعرف وضع خصوصية جوال</string>
-    <string name="guide_page3_title">جهة اتصال سرية</string>
-    <string name="guide_page3_content">حماية خصوصية الاتصال</string>
-    <string name="guide_page4_title">مراقبة استهلاك</string>
-    <string name="guide_page4_content">فحص استهلاك تدفق/كهرباء</string>
-    <string name="guide_button_text">تجربة فورية</string>
-    <!-- guide page end -->
 
     <string name="lock_mode_name_cant_empty">لا اسم وضع ظروف خاليا</string>
     <string name="lock_mode_delete_tip_title">حذف وضع الظروف</string>
@@ -772,72 +639,17 @@
     <string name="privacy_proposal_tip">سرية <xliff:g>%1$s</xliff:g>، اشغل كما يلي</string>
     <!--  -->
 
-    <string name="lock_mode_name_maxlength">18</string>
     <!-- version 2.2 end -->
 
 
     <!-- version 2.4 begin -->
     <!-- quick gesture -->
     <string name="pg_appmanager_quick_gesture_name">إشارة</string>
-    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">شغل إشارة</string>
-    <string name="pg_appmanager_quick_gesture_option_switch_setting">إعداد المفتاح</string>
-    <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">موضوع الإشارة</string>
 
     <!-- TODO -->
     <!-- <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">当前：%1$s</string> -->
-    <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">حالي:<xliff:g>%1$s</xliff:g></string>
     <!--  -->
 
-    <string name="pg_appmanager_quick_gesture_option_sliding_area_location_title">رسم منطقة</string>
-    <string name="pg_appmanager_quick_gesture_option_no_read_message_tip">رسم منطقة</string>
-    <string name="pg_appmanager_quick_gesture_option_recently_contact">اتصال مؤخر</string>
-    <string name="pg_appmanager_quick_gesture_option_privacy_contact_message_tip">ملاحظة سرية</string>
-    <string name="pg_appmanager_quick_gesture_option_able_sliding_time">وقت الحركة</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">قاع أيسر</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">قاع أيمن</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">وسط أيسر</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">وسط أيمن</string>
-    <string name="pg_appmanager_quick_gesture_slide_time_just_home_text">سطح المكتب فقط</string>
-    <string name="pg_appmanager_quick_gesture_slide_time_home_and_all_app_text">سطح المكتب</string>
-    <string name="pg_appmanager_quick_gesture_slide_time_no_disturb_text">تطبيق خال مضايقة</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">اختر منطقة على الأقل</string>
-    <string name="pg_appmanager_quick_gesture_select_free_disturb_app_text">اختر تطبيق</string>
-    <string name="pg_appmanager_quick_gesture_no_free_add_free_disturb_app_text">إضافة تطبيق </string>
-    <string name="pg_appmanager_quick_gesture_miui_open_float_window_tip_text">ابحث خيار نافذة معلقة واشغلها، ثم اشغل إشارة</string>
-    <string name="pg_appmanager_quick_gesture_first_tip_text">مرحبا لاستعمال الإشارة السريعة للرسم بأي طرف في منطقة نموذجية لبدأ سريع</string>
-    <string name="pg_appmanager_quick_switch_dialog_title">اختر مفتاح سريع</string>
-    <string name="quick_gesture_change_common_app_dialog_title">اختر تطبيق</string>
-    <string name="quick_gesture_change_common_app_dialog_checkbox_text">حسب عادة، يحشو/يبدل</string>
-    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">بيانات</string>
-    <string name="quick_gesture_dialog_tip_contniue_title">إعداد إشارة</string>
-    <string name="quick_gesture_dialog_tip_contniue_cotent">تم فحص أنكم شغلت إعداد نافذة معلقة، هل توافق إعداد إشارة سريعة؟</string>
-    <string name="quick_gesture_dialog_tip_contniue_left_bt">مواصلة</string>
-    <string name="quick_gesture_dialog_tip_contniue_right_bt">أعد لاحق</string>
-    <string name="quick_gesture_miui_tip_button_text">عرفت</string>
-    <string name="quick_gesture_dynamic">أحدث</string>
-    <string name="quick_gesture_switcher">مفتاح سريع</string>
-    <string name="quick_gesture_most_used">تكرار</string>
-    <string name="quick_gesture_first_open_sliding_toast">تشغيل سريع</string>
-    <string name="quick_guesture_bluetooth">بلوتوث</string>
-    <string name="quick_guesture_flashlight">مصباح يدوي</string>
-    <string name="quick_guesture_wlan">WLAN</string>
-    <string name="quick_guesture_carme">كاميرا</string>
-    <string name="quick_guesture_sound">صوت</string>
-    <string name="quick_guesture_light">سطوع شاشة</string>
-    <string name="quick_guesture_speedup">إسراع</string>
-    <string name="quick_guesture_changemode">تحويل وضع</string>
-    <string name="quick_guesture_switchset">إشارة</string>
-    <string name="quick_guesture_setting">إعداد نظام</string>
-    <string name="quick_guesture_gps">جي بي أس</string>
-    <string name="quick_guesture_flymode">وضع طيران</string>
-    <string name="quick_guesture_rotation">دوران شاشة</string>
-    <string name="quick_guesture_mobliedata">بيان متحرك</string>
-    <string name="quick_guesture_home">سطح مكتب</string>
-    <string name="quick_guesture_lockscreen">قفل شاشة</string>
-    <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
-    <string name="pass_gesture_change">إلى كلمة مرور</string>
-    <string name="permission_open_tip_notification_title">إعداد</string>
-    <string name="permission_open_tip_notification_content">شغل إشارة بنقرة!</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">تنزيل iSwipe لجعل هاتفك أكثر روعة مصل ساعة آبل</string>
     <string name="grade_tip_feedback">كلامي</string>
     <string name="quick_first_tip_dialog_right_bt">تمكين</string>
@@ -858,34 +670,6 @@
     <string name="summary_autolock_after_lockscreen">بعد قفل شاشة أعد قفل</string>
     <string name="summary_setting_locker">اختر إعداد قفل تطبيق</string>
     <string name="summary_hide_lockline">يكمن مسار فتح قفل التطبيق لحماية خصوصيتكم</string>
-    <string name="quick_gesture_strengthen_mode_title">نقطة بيضاء</string>
-    <string name="quick_gesture_strengthen_mode_content">انقره لتشغيل إشارة</string>
-    <string name="quick_gesture_success_title">تم تشغيل إشارة!</string>
-    <string name="quick_gesture_success_content">يمكنك نقر تشغيل/إغلاق بلوتوث وواي فاي وغيرها من مفاتيح وتطبيقات عادية!</string>
-    <string name="go_set">إعداد</string>
-    <string name="white_dot_click_tip">مبروك لك في تشغيل إشارة سريعة عبر نقطة بيضاء! يمكن إغلاقها في الإعدادات.</string>
-    <string name="quick_gesture_open_text">تم تشغيل</string>
-    <string name="quick_gesture_close_text">تم إغلاق</string>
-    <string name="quick_gesture_introduction_title">ما هى إشارة سريع</string>
-    <string name="quick_gesture_introduction_content">تعتبر إشارة سريعة مدخل فعال PrivacyGuard، يمكنك إدارة مفتاح نظام في الجوال وتشغيل تطبيق بسرعة</string>
-    <string name="quick_gesture_slide_guide_title">كيف يجهز إشارة؟</string>
-    <string name="quick_gesture_slide_guide_content">تحتاج إلى مجرد رسم على زاوية جوال لتشغيل إشارة سريعة</string>
-    <string name="quick_gesture_slide_setting_content">إذا كان صعب في الرسم، فيمكن نقر هنا لإعداد المنطقة</string>
-    <string name="quick_gesture_edit_guide_title">كيف يحرر لإشارة سريعة؟</string>
-    <string name="quick_gesture_edit_guide_content">اضغط تطبيق/مفتاح في صنف tap لإشارة سريعة لدخول واجهة تحرير ويمكن حذفه، كما يضيفه في تطبيق ومفتاح</string>
-    <string name="quick_gesture_edit_extra_content">ملاحظة: ينشأ التطبيق المستعمل مؤخرا بالنظام، لا يمكن الإضافة</string>
-    <string name="can_not_add_more">لا يمكن إضافة المزيد</string>
-    <string name="new_guide_page1_title">تسريع الهاتف أسهلا</string>
-    <string name="new_guide_page1_content">يمكن أيضا استخدام وظيفة التسريع علي سطح المكتب</string>
-    <string name="new_guide_page2_title">  التمويه أكثر متعة</string>
-    <string name="new_guide_page2_content">طربقة التمويه الجديدة تتجاوز المتوقع الخاص بكم</string>
-    <string name="new_guide_page3_title">تغيير الوضع أسهلا !</string>
-    <string name="new_guide_page3_content">اللفتة السريعة للفتح، و يقوم بالتحول بسهولة!</string>
-    <string name="quick_open_tip">لم تشغل إشارة سريعة</string>
-    <string name="quick_setting_title">إعدادات اللفتة السريعة</string>
-    <string name="quick_no_msm_annotation">تذكر الرسائل غير المقروءة في اللفتة السريعة </string>
-    <string name="quick_no_call_log_annotation">تذكر مكالمات لم يرد عليها في اللفتة السريعة </string>
-    <string name="quick_no_pricay_contact_annotation">تذكر الرسائل بشكل معلومات النظام </string>
     <!-- version 2.5 huangqili part -->
     <!-- 2.6 start -->
     <!-- <item>美女伪装</item>       这个是数组item，已经在数组中添加，这里是提醒翻译 -->
@@ -893,20 +677,16 @@
     <string name="change_lock_mode">تغيير الوضع</string>
     <string name="beauty_guide_title">تعليمات الاستخدام</string>
     <string name="beauty_guide_content">السستة على شاشة الهاتف المحمول هي الوهم، و يقوم بتقليص الإصبعين على الشاشة للمحاولة</string>
-    <string name="flash_light_open_toast">يرجي عدم تشغيل فلاش بشكل متكرر، الا قد يؤدي الي تلف الأجهزة</string>
     <string name="privacy_auto_add_text">أضاف يدويا</string>
-    <string name="choose_lock_mode">اختر الوضع</string>
     <string name="button_disguise_guide_select">حاول الان</string>
     <string name="button_disguise_guide_cancel">لاحقا</string>
     <string name="button_disguise_guide_content">حاول وظيفة التمويه بعد تطبيق القفل لجعل التطبيق الخاص بكم أكثر أمنا</string>
     <string name="traffic_over_text">قد تجاوز الحد</string>
     <string name="lock_line_hide">تم اخفاء مسار الفتح</string>
     <string name="lock_line_visiable">تم اخفاء مسار الفتح</string>
-    <string name="guide_more_text"> المزيد من الوظائف ></string>
     <string name="guide_skip_text">القفز فوق ></string>
     <string name="video_hide_need_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب Cool Browser. و يرجي الاستخدام بعد التركيب.</string>
     <string name="video_hide_need_new_cb"> بسبب أسباب النظام، الغاء اخفاء هذا الفيديو يتطلب أحدث Cool Browser. و يرجي الغاء الاخفاء بعد التركيب.</string>
-    <string name="video_delete_need_new_cb">بسبب أسباب النظام، حذف هذا الفيديو يتطلب أحدث Cool Browser. و يرجي الحذف بعد التركيب.</string>
     <string name="video_cencel_hide_fail">فشل في الغاء الاخفاء</string>
     <string name="video_delete_fail">فشل في حذف الملف</string>
     <string name="zipper_too_fast">اسحب ببطء </string>
@@ -921,14 +701,8 @@
     <string name="clean_mem_notify_small">انقر على الزر للتسريع</string>
     <string name="clean_mem_notify_boost">قم بالتسريع الآن</string>
     <string name="pg_appmanager_quick_gesture_option_trigger_type">وضع الزناد</string>
-    <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">النقطة البيضاء الصغيرة تنزلق من الجانب / الزاوية السفلي</string>
     <string name="pg_appmanager_quick_gesture_trigger_alide">تنزلق من الجانب / الزاوية السفلي</string>
     <string name="pg_appmanager_quick_gesture_trigger_wihtedot">النقطة البيضاء الصغيرة</string>
-    <string name="pg_appmanager_quick_gesture_trigger_tips">يرجي اختيار واحد على الأقل</string>
-    <string name="pg_appmanager_quick_gesture_conflict_content">هل اللفتات السريعة تؤثر على العمليات العادية الخاصة بكم؟ يمكنك اختيار تشغيل وضع النقطة البيضاء الصغيرة، و انقر على الإعدادات</string>
-    <string name="pg_appmanager_quick_gesture_conflict_later">يقوم بالاجراء في وقت لاحق</string>
-    <string name="pg_appmanager_quick_gesture_conflict_open">قم بالتشغيل الان</string>
-    <string name="anti_conflict_mode_open">تم تشغيل</string>
     <!-- 2.7 end -->
 
 
@@ -940,14 +714,10 @@
     <string name="iswip_update_tip_right_button_text">التنزيل</string>
     <string name="iswip_update_notifi_title">تم تحديث الاختصار السهل!</string>
     <string name="iswip_update_notifi_content">تم إعادة تسمية الاختصار السهل إلى iSwipe</string>
-    <string name="iswip_update_notifi_button">التحديث الآن</string>
     <string name="ad_timeout">رائع! المزيد من المفاجآت بانتظارك!</string>
     <!-- 2.8 end -->
     <!-- 2.10start -->
-    <string name="auto_start_guide_tip_title">يتطلب إذنا</string>
     <string name="auto_start_guide_tip_content">تشغيل حارس الخصوصية عند البدء</string>
-    <string name="auto_start_guide_tip_left_button">لاحقا</string>
-    <string name="auto_start_guide_tip_right_button">الآن</string>
     <string name="msg_center_title">مركز الرسائل</string>
     <string name="msg_center_empty">لا توجد رسائل جديدة</string>
     <string name="msg_center_empty_say">أخبرنا بما تريد قوله</string>
@@ -965,8 +735,6 @@
     <string name="advace_protect_dialog_title_text">حماية متقدمة</string>
     <string name="advace_protect_dialog_content_text">تم إضافة القفل بنجاح. تم اقتراح الحماية المتقدمة لتجنب إلغاء تثبيت الآخرين. يمكنك إلغاء تثبيت حارس الخصوصية في الشريط الجانبي. يمكنك إلغاء تثبيت حارس الخصوصية في الشريط الجانبي.</string>
     <string name="desk_ad_name">App Joy</string>
-    <string name="splash_guide_page_msg_title">مركز الرسائل</string>
-    <string name="splash_guide_page_msg_content">جميع الأنشطة والنصائح المفيدة هنا </string>
     <string name="advance_protect_open_success_tip_title">تنجح!</string>
     <string name="advance_protect_open_success_tip_content">تم تمكين الحماية المتقدمة. لن يمكن إلغاء تثبيت حارس الخصوصية الآن. يمكنك تعطيل ذلك في الإعدادات.</string>
     <string name="auto_start_tip_xiaomi4_and_letv">يرجى الضغط على "التشغيل التلقائي" وإضافة حارس الخصوصية LEO لقائمة التشغيل التلقائي.</string>
@@ -979,7 +747,6 @@
     <string name="applock_guide_tip_subtitle">بسبب قيود النظام، يجب تمكين التفضيلات التالية لحماية أفضل للخصوصية</string>
     <string name="applock_guide_tip_security_text">قم بمنح حارس الخصوصية الأفضلية لاستخدام تطبيق المتابعة</string>
     <string  name="auto_start_tip_text_huawei_plus">قم بتمكين أفضلية التشغيل التلقائي، سيتم تفعيل الحماية بعد إعادة التشغيل</string>
-      <string name="background_tip_default_text">قم بتعيين حارس الخصوصية للعمل بالخلفية لحماية مستمرة للخصوصية</string>
     <string name="applock_guide_set_text">إلى الإعدادات</string>
      <string name="applock_guide_set_finish">مكتمل</string>
     <!-- 2.12 end -->

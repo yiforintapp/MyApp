@@ -10,22 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.EventId;
-import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
-import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
-import com.leo.appmaster.utils.LeoLog;
-
 import android.annotation.SuppressLint;
 import android.app.NotificationManager;
 import android.content.ContentValues;
@@ -52,6 +36,20 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
+import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class PrivacyCalllogFragment extends BaseFragment {
 
@@ -620,35 +618,6 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                     .getSystemService(Context.NOTIFICATION_SERVICE);
                             notificationManager.cancel(20140902);
                         }
-                        // 隐私通话没有未读
-                        /**
-                         * 对快捷手势隐私联系人，红点去除操作
-                         */
-                        // 隐私通话
-
-                        if (QuickGestureManager.getInstance(context).isShowPrivacyCallLog) {
-                            QuickGestureManager.getInstance(context).isShowPrivacyCallLog = false;
-                            AppMasterPreference.getInstance(context).setQuickGestureCallLogTip(
-                                    false);
-                            if ((QuickGestureManager
-                                    .getInstance(context).getQuickNoReadCall() == null
-                                    || QuickGestureManager
-                                            .getInstance(context).getQuickNoReadCall()
-                                            .size() <= 0)/* 未读通话 */
-                                    && (QuickGestureManager.getInstance(context)
-                                            .getQuiQuickNoReadMessage() == null
-                                            || QuickGestureManager
-                                                    .getInstance(context).getQuiQuickNoReadMessage()
-                                                    .size() <= 0)/* 未读短信 */
-                                    && AppMasterPreference.getInstance(context)
-                                            .getMessageNoReadCount() <= 0/* 隐私短信 */
-                                    && AppMasterPreference.getInstance(context)
-                                            .getLastBusinessRedTipShow()/* 运营 */) {
-                                QuickGestureManager
-                                        .getInstance(context).isShowSysNoReadMessage = false;
-                            }
-                        }
-                        FloatWindowHelper.removeShowReadTipWindow(context);
                     }
                 }
             }

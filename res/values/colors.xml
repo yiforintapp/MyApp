@@ -15,24 +15,17 @@
     <color name="dialog_title_area_bg">#2893fe</color>
     <color name="dialog_content_area_bg">#ffffff</color>
     <color name="dialog_btn_area_bg">#f7f7f7</color>
-    <color name="tab_select_text">#2a94fe</color>
     <color name="item_backup_grey">#f7f7f7</color>
-    <color name="backup_tips_background_color">#d4eaff</color>
-    <color name="backup_tips_text_color">#2893fe</color>
     <color name="option_text_color">#505050</color>
     <color name="picture_click_color">#66FFFFFF</color>
     <color name="gray">#c0c0c0</color>
-    <color name="common_bar">#A7A7A7</color>
-    <color name="setting_item">#DCDCDC</color>
     <color name="backup_item">#E4E5E5</color>
-    <color name="pressed_view_color">#2b7cef</color>
     <color name="help_setting_tip">#f8f8f8</color>
     <color name="help_setting_title">#007fff</color>
     <color name="help_setting_content">#888888</color>
     <color name="vpi__background_holo_dark">#ff000000</color>
     <color name="vpi__background_holo_light">#fff3f3f3</color>
     <color name="vpi__bright_foreground_holo_dark">@color/vpi__background_holo_light</color>
-    <color name="vpi__bright_foreground_holo_light">@color/vpi__background_holo_dark</color>
     <color name="vpi__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
     <color name="privacy_level_1">#f44242</color>
     <color name="all_backgroud">#f3f3f3</color>
@@ -43,7 +36,6 @@
     <color name="app_backup_text">#fa9e1f</color>
     <color name="app_usage_text">#01bafd</color>
     <color name="app_battery_text">#78d70b</color>
-    <color name="app_hot_text">#f21c7b</color>
     <color name="first_bottom_text">#4285f4</color>
     <color name="commonbar_background">#4285f4</color>
     <color name="progress_bar_show">#dedede</color>
@@ -52,24 +44,12 @@
     <color name="manager_small_backup_selector">#fff1de</color>
     <color name="manager_small_usage_selector">#d5f3fe</color>
     <color name="manager_small_battery_selector">#effedd</color>
-    <color name="manager_small_hotapp_selector">#fdddeb</color>
     <color name="manager_hot_app_game_text">#55e300</color>
     <color name="selector_done_text">#0084ff</color>
-    <color name="selector_cancel_text">#b2b2b2</color>
     <color name="selector_traffic_text">#4fd300</color>
     <color name="selector_back_list_bg">#e3edfd</color>
-    <color name="selector_day_traffic_set_line">#e3e3e3</color>
     <color name="nothing_show_text">#d3d3d4</color>
     <!-- guide page begin -->
-    <color name="guide_page1_background_color">#1eb1d9</color>
-    <color name="guide_page2_background_color">#ffc000</color>
-    <color name="guide_page3_background_color">#8758cf</color>
-    <color name="guide_page4_background_color">#ffc000</color>
-    <color name="guide_indicator_fill_color">#87a9dc</color>
-    <color name="new_guide_page1_background_color">#279afc</color>
-    <color name="new_guide_page2_background_color">#8e61ff</color>
-    <color name="new_guide_page3_background_color">#06c4a7</color>
-    <color name="new_guide_page4_background_color">#06c4a7</color>
     <!-- guide page begin -->
 
     <color name="weisuo_text">#636363</color>
@@ -84,35 +64,14 @@
     <color name="home_btn_theme_pressed">#e8f7d9</color>
     <color name="home_btn_mode_pressed">#fff4d0</color>
     <color name="home_btn_setting_pressed">#e7dcff</color>
-    <color name="quick_gesture_switch_setting_show_color">#4DFFFFFF</color>
-    <color name="quick_gesture_switch_setting_hidden_color">#00000000</color>
     <!-- <color name="quick_gesture_switch_setting_hidden_color">#DD31EFE8</color> -->
-    <color name="quick_gesture_miui_tip_color">#CC000000</color>
     <color name="manage_quick_gesture_text_color">#f0e6ff</color>
-    <color name="mode_familg_bg">#ffa71c</color>
-    <color name="mode_visitor_bg">#5653b4</color>
-    <color name="mode_default_bg">#44c4f5</color>
-    <color name="accent_dark">#000000</color>
-    <color name="quick_success_title_color">#0095FF</color>
-    <color name="quick_open_text_color">#4a63e5</color>
     <color name="quick_close_text_color">#666666</color>
-    <color name="quick_intro_color">#9b9b9b</color>
-    <color name="guide_more_color">#06c4a7</color>
-    <color name="guide_more_select_color">#00967f</color>
     <color name="webview_pro_bg">#e4e4e4</color>
     <color name="webview_pro">#28b1ff</color>
     <color name="sort_select_color">#4584f5</color>
-    <color name="home_mode_text_color">#ffa71c</color>
-    <color name="custom_mode_text_color">#44c4f5</color>
-    <color name="vistor_mode_text_color">#5653b4</color>
-    <color name="cool_black">#333333</color>
-    <color name="cool_grey">#999999</color>
-    <color name="cool_green">#00d592</color>
     <color name="cool_red">#ff2a00</color>
     <color name="translucent_background">#b2000000</color>
-    <color name="auto_start_dialog_content_color">#ddfffa</color>
-    <color name="auto_start_dialog_right_button_text_color">#01c7a9</color>
-    <color name="auto_start_dialog_left_button_text_color">#cdf0e9</color>
 
     <!-- msg center -->
     <color name="mc_title">#414141</color>

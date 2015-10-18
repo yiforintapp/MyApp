@@ -521,41 +521,6 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name=".quickgestures.ui.QuickGestureActivity"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".quickgestures.ui.QuickGestureSettingActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
-        <activity
-            android:name=".quickgestures.ui.QuickGesturePopupActivity"
-            android:excludeFromRecents="true"
-            android:finishOnTaskLaunch="true"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:screenOrientation="portrait"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-        <activity
-            android:name=".quickgestures.ui.QuickGestureMiuiTip"
-            android:excludeFromRecents="true"
-            android:launchMode="singleInstance"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" >
-        </activity>
-        <activity
             android:name=".sdk.push.ui.WebViewActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
@@ -565,15 +530,6 @@
             android:noHistory="false"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
-        </activity>
-        <activity
-            android:name=".quickgestures.QuickGestureProxyActivity"
-            android:excludeFromRecents="true"
-            android:exported="true"
-            android:launchMode="singleInstance"
-            android:noHistory="true"
-            android:taskAffinity="com.leo.appmaster.proxy"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
         <activity
             android:name=".home.DeskProxyActivity"
@@ -696,18 +652,6 @@
                 <action android:name="android.provider.Telephony.GSM_SMS_RECEIVED" />
                 <action android:name="android.provider.Telephony.SMS_RECEIVED_2" />
                 <action android:name="android.intent.action.PHONE_STATE" />
-            </intent-filter>
-        </receiver>
-        <receiver
-            android:name=".quickgestures.receiver.QuickSwitchReceiver"
-            android:exported="true" >
-            <intent-filter android:priority="10000" >
-                <action android:name="android.net.wifi.WIFI_STATE_CHANGED" />
-                <action android:name="android.bluetooth.adapter.action.STATE_CHANGED" />
-                <action android:name="android.bluetooth.a2dp.profile.action.CONNECTION_STATE_CHANGED" />
-                <action android:name="android.intent.action.AIRPLANE_MODE" />
-                <action android:name="android.intent.action.ANY_DATA_STATE" />
-                <action android:name="android.media.RINGER_MODE_CHANGED" />
             </intent-filter>
         </receiver>
 

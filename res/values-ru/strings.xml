@@ -2,68 +2,37 @@
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
 
     <string name="app_name">Privacy Guard</string>
-    <string name="app_count">применение  количество  применение  количество </string>
-    <string name="used_memory"> Использование памяти </string>
-    <string name="used_flow"> использование  потока </string>
-    <string name="app_detail"> применение детали </string>
     <string name="app_lock">замок app</string>
     <string name="app_add_lock">блокировать</string>
     <string name="lock_tab">замок app</string>
-    <string name="app_backup"> применение  резервного копирования </string>
-    <string name="app_restore"> применение  восстановления </string>
     <string name="button_backup">бэкап</string>
     <string name="button_install">установка</string>
     <string name="button_delete">удалить</string>
-    <string name="app_use_info"> использования </string>
-    <string name="app_permission_info"> контроль доступа </string>
-    <string name="uninstall">удаление</string>
     <string name="set_gesture_suc">настройка жесткой пароли успешно</string>
     <string name="set_passwd_suc">настройка цифровых пароли успешно</string>
     <string name="reset_passwd_successful">настройка цифровых пароли успешно</string>
-    <string name="stop">стоп</string>
     <string name="reinput_anwser">не правильный ответ</string>
-    <string name="please_input_pswd">введите пароль</string>
-    <string name="please_input_pswd_again">введите пароль повторно</string>
     <string name="makesure">утверждать</string>
     <string name="cancel">отменить</string>
     <string name="delete">удалить</string>
-    <string name="passwd_set_passwd_tip">Введите пароль</string>
     <string name="passwd_set_gesture_tip">Связайтесь по минимум 4 точки</string>
     <string name="passwd_hint">введите пароль на 4 цифры</string>
     <string name="tip_no_the_same_pswd">пароль не совпал</string>
     <string name="input_error_tip">ошиблись <xliff:g>%1$s</xliff:g>，ещё<xliff:g>%2$s</xliff:g>раза</string>
-    <string name="use_gesture">жестовой пароль</string>
-    <string name="use_passwd">цифровой пароль </string>
     <string name="reset_passwd">изменить пароль</string>
-    <string name="app_locked"> уже  плюс  замок </string>
-    <string name="app_unlock"> без  замка </string>
     <string name="find_passwd">забыть пароль</string>
     <string name="please_wait">попробуйте дальше</string>
     <string name="passwd_question">вопрос</string>
     <string name="passwd_anwser">ответ</string>
     <string name="accelerate"> ускорение </string>
-    <string name="used_mem"> Использование памяти </string>
     <string name="passwd_tip">введите чаевые пароли</string>
-    <string name="save">сохранить</string>
-    <string name="passwd_protect_setting">ворпос для защиты</string>
     <string name="input_qusetion">Введите вопрос</string>
     <string name="qusetion_cant_null">вопрос нельзя быть пустой</string>
     <string name="aneser_cant_null">ответ нельзя быть пустой</string>
     <string name="pleas_input_anwser">введите ответ вопросов о защите пароли</string>
     <string name="not_set"> не установлен </string>
-    <string name="anwser">ответ</string>
-    <string name="not_unistall">предотвращать удаление</string>
-    <string name="lock_screen_auto_lock">автоблокировка при блокировании экрана</string>
     <string name="tips">обзор</string>
-    <string name="compeletely">готово</string> <!-- acceralate -->
-    <string name="clean_memory"> кнопка  ускорения </string>
-    <string name="clean_result"> Очистить память </string>
-    <string name="best_mem"> уже  -  лучший,  нет необходимости  вновь  ускорение </string>
-    <string name="lock_count"> уже  плюс  замок </string>
-    <string name="unlock_count"> без  замка </string>
-    <string name="lockscreen_access_pattern_detected">Готово рисунки</string>
     <string name="please_input_gesture">Чертите рисунок</string>
-    <string name="input_passwd_tip">введите чаевые пароли</string>
     <string name="switch_gesture">жестовой пароль</string>
     <string name="switch_passwd">цифровой пароль </string>
     <string name="setting">настройки</string>
@@ -72,15 +41,11 @@
     <string name="set_protect_message">рекомендуем настроить вопрос для защиты пароли</string>
     <string name="find_gesture">забыть пароль</string>
     <string name="pp_success">настройка защиты пароли успешно</string>
-    <string name="passwd_setting"> пароль </string>
     <string name="set_success">успешно настроить</string>
-    <string name="passwd_hint_cant_null">настроить пароли жеста</string>
     <string name="set_gesture">жестовой пароль</string>
     <string name="set_passwd">цифровой пароль </string>
-    <string name="please_input_gesture_again">повторно чертите </string>
     <string name="reset_gesture_passwd">жестовой пароль</string>
     <string name="reset_digital_passwd">цифровой пароль </string>
-    <string name="gesture_hint">Связайтесь по минимум 4 точки</string>
     <string name="first_set_passwd_hint">устоновите пароль</string>
     <string name="make_passwd">утвержать пароль</string>
     <string name="input_again">введите повторно</string>
@@ -100,9 +65,7 @@
     <string name="delete_fail"> Исключить неудачи  ! </string>
     <string name="deleting_app">Сейчас удалить: %1$s</string>
     <string name="installed_app_size">монтаж приложений: %1$d</string>
-    <string name="apk_size">обьем: %1$s</string>
     <string name="storage_size">остаточное место памяти:%1$s</string>
-    <string name="use_storage_size"> уже  с    пространства  : %1$s</string>
     <string name="unavailable"> не имеется </string>
     <string name="bakup_fail_cancel">бэкап уже отменил</string>
     <string name="bakup_fail_full">место памяти не хватает</string>
@@ -126,12 +89,6 @@
         <item>300</item>
     </string-array>
 
-    <string name="app_details"> применение детали </string>
-    <string name="app_memory"> системы занимает &#058;<xliff:g>%1$s</xliff:g>"</string>
-    <string name="app_cache_size"> занимают  кэш &#058;<xliff:g>%1$s</xliff:g>"</string>
-    <string name="app_permission1"> опасность  разрешения </string>
-    <string name="app_permission2"> обычные  разрешения </string>
-    <string name="app_permission3"> Важным  разрешения </string>
     <string name="app_setting_update">проверить обновление</string>
     <string name="feedback">мнения абонента</string>
     <string name="grade">оценить маркета Google</string>
@@ -140,30 +97,18 @@
     <string name="forbid_uninstall">предотвращать удаление</string>
     <string name="auto_lock">автоблокировка при блокировании экрана</string>
     <string name="change_lock_time">блокирование времени</string>
-    <string name="recom_lock_tip">тревоги блокирования</string>
     <string name="new_app_lock_tip">тревога блокирования</string>
     <string name="passwd_protect">вопрос о защите пароли</string>
     <string name="change_passwd">изменить пароль</string>
     <string name="passwd_notify">чаевые пароли</string>
-    <string name="no_lock_item_tip"> Нет  блокировки  применения </string>
-    <string name="lock_remind">напоминаем блокировать приложение</string>
     <string name="new_install_lock_remind">обнаружено монтаж %1$s,рекомендуем блокировать</string>
-    <string name="no_unlocked_item_tip"> Нет  блокировки  применения </string>
-    <string name="app_setting_has_update">проверить обновление<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="question_charsize_tip">вопрос не больше 40 символов</string>
     <string name="anwser_charsize_tip">Ответ не больше 40 символов</string>
     <string name="query_delete">Удалить документ бэкапа %1$s,после удаления не может восстановить</string>
     <string name="backuped_count">успешно бэкап %1$d документы.Место вложения:%2$s</string>
-    <string name="feedback_commit">подать</string>
-    <string name="feedback_content_tip">Какие проблемы вы встретились？</string>
-    <string name="feedback_email_tip">ваша обычно используемая почта</string>
     <string name="feedback_category_tip">выбрайте тип вопросов</string>
     <string name="category_lock">замок app</string>
-    <string name="category_backup_uninstall"> Удалить  и резервного копирования </string>
-    <string name="category_hide_image">скрытая картина</string>
-    <string name="category_hide_video">скрытое видео</string>
     <string name="category_other">другие проблемы</string>
-    <string name="category_suggest">внести нам предложение</string>
     <string name="feedback_success_title">передать успешно</string>
     <string name="feedback_success_content">Спасибо ваши мнения，мы будем скорее вести ваши проблемы.</string>
     <string name="app_image_hide">скрытая картина</string>
@@ -174,14 +119,11 @@
     <string name="app_select_none">Отменить</string>
     <string name="app_hide_image">скрыть</string>
     <string name="app_cancel_hide_image">отменить скыть</string>
-    <string name="app_hide_image_edit">редактировать</string>
     <string name="app_add_hide_image">добавить</string>
-    <string name="app_share_hide_image">поделить</string>
     <string name="app_unhide_dialog_content">Отменить скрыть это фото？</string>
     <string name="app_delete_dialog_content">Удаление это фото?</string>
     <string name="app_unhide_pictures_dialog_content">Отменить скрыть твои избранные фото？</string>
     <string name="app_hide_pictures_dialog_content">Скрыть ваши избранные фото？</string>
-    <string name="app_hide_image_fail"> доступ для записи  этой  фотографии  нет  ,  скрыть  провал! </string>
     <string name="lock_guide">нажмите блокирование</string>
     <string name="start_guide">рекомендируем блокировать</string> <!-- App lock -->
     <string-array name="sort_type">
@@ -190,30 +132,20 @@
         <item>по времени установок</item>
     </string-array> <!-- 版权 -->
     <string name="about_copy">Copyright © 2015 LEO Network Technology. All Rights Reserved</string> <!-- 应用墙 -->
-    <string name="app_wall"> рекомендуется применение </string>
     <string name="app_wall_network">Не доступной сети,попробуйте повторно</string>
     <string name="app_wall_click">повторите</string> <!-- 隐私策略 -->
     <string name="protocolBar">соглашение о тайной защите</string>
     <string name="lock_more">больше</string>
     <string name="lock">замок</string>
-    <string name="det_change_lock_time"> Вы  нашли  применение  часто  блокировки  ,  изменить  время блокировки  ли  ? </string>
 
-    <string-array name="det_lock_time_items">
-        <item>30</item>
-        <item>60</item>
-    </string-array> <!-- LockerTheme -->
     <string name="localtheme">местный</string>
     <string name="onlinetheme">онлайн</string>
     <string name="lockerThemePoit">тема замок приложения<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
     <string name="lockerTheme">тема замок приложения</string>
     <string name="defaultTheme">умолчание</string>
-    <string name="moonightTheme"> ночь </string>
-    <string name="orangeTheme"> резать фрукты </string>
     <string name="ParadoxTheme"> пространство  противоречия </string>
     <string name="locker_apply">приложение</string>
     <string name="locker_uninstall">удаление</string>
-    <string name="locker_cancel">отменить</string>
-    <string name="christmas_theme"> рождество </string>
     <string name="pull_to_refresh_pull_label">тянуть сверх для обновления</string>
     <string name="pull_to_refresh_release_label">отпускать обновление</string>
     <string name="pull_to_refresh_refreshing_label">Загрузить...</string> <!-- Just use standard Pull Down String when pulling up. These can be set for languages which require it -->
@@ -228,7 +160,6 @@
     <string name="theme_tag_hot">NEW</string>
     <string name="about_group">группа фанатов</string>
     <string name="about_praise">фисбук</string>
-    <string name="locker_guide">нажмите и заменять тему разблокировки</string>
     <string name="locker_theme_guide">поздравляю！Твоя тема будет применить в интерфейсе блокирования приложений</string>
     <string name="locker_clean"> оптимизация  скорости  %1$s  успех  ,  уже  &#160; </string>
     <string name="setting_locker_clean">ускорение</string>
@@ -240,22 +171,11 @@
     <string name="app_delete_dialog_content_video">Удалить это видео？</string>
     <string name="app_unhide_video_dialog_content">Отменить скрыть ваши избранные видео？</string>
     <string name="app_hide_video_dialog_content">Скрыть избранное видео?</string>
-    <string name="hide_video_dialog_title"> играть в видео </string>
-    <string name="hide_video_dialog_content"> для  защиты вашей конфиденциальности  воспроизведения  видео  необходимо использовать  скрытые  Video&#160;  плюс  ,  установлены  ли  ? </string>
     <string name="app_hide_video_fail">Это видео не может скрыть без право редактирования</string>
-    <string name="hide_pic_text"> уже  скрывать  фотографии </string>
-    <string name="hide_pic_empty_text">не скрыть фото</string>
-    <string name="hide_video_text"> уже  скрытые  видео </string>
-    <string name="hide_video_empty_text">Вы ещё не скрыли видео</string>
-    <string name="app_backup_uninstall"> Удалить  и резервного копирования </string>
     <string name="circle_lock_tip_text">блокировано</string>
     <string name="circle_lock_empty_tip_text"> Нет  блокировки  применения </string>
     <string name="feedback_error">почта ошибка,введите повторно</string>
     <string name="googlePlayGuide">скроллите внизу и дайте нам оценку</string>
-    <string name="folder_backup_restore"> применение  восстановления </string>
-    <string name="folder_sort_flow"> наиболее  потребление  потока </string>
-    <string name="folder_sort_capacity"> наиболее  занимают пространство </string>
-    <string name="folder_recommend"> новый  экспресс </string>
     <!--
     >
     <string name="toast_download_fail_network">Не доступной сети,не удалось скачать тему,попробуйте повторно</string>
@@ -271,38 +191,15 @@
     <string name="download_failure_notify_title">тема замок приложения<xliff:g id="filename">%1$s</xliff:g>Не удалось скачать </string>
     <string name="downloaded_failure">"Не удалось скачать"</string>
     -->
-    <string name="backup">бэкап</string>
-    <string name="restore">восстановить</string>
-    <string name="backuped">уже бэкап</string>
-    <string name="delete_successfully">успешно удалить</string>
     <string name="no_more_business_app">не новых приложений，посмотрите попозже</string>
     <string name="no_business_app">не новых приложений，посмотрите попозже</string>
-    <string name="space_consumption"> пространство  занимают  : </string>
-    <string name="cache_size"> Размер кэша  : </string>
-    <string name="power_consumption"> потребление энергии  : </string>
-    <string name="flow_consumption"> расход  потока  : </string>
-    <string name="memory_consumption"> объем памяти  : </string>
-    <string name="backup_path"> запасной путь  : </string>
-    <string name="backup_time"> резервное время  : </string>
-    <string name="app_size"> ПФА  , размер: </string>
-    <string name="version"> номер версии  : </string>
-    <string name="install_time"> %1$s  дней назад </string>
     <string name="folder_new"> новый </string>
     <string name="new_app_tip_content"> есть  весело  новых приложений,  быстро  посмотрим </string>
     <string name="new_app_tip_title"> нашли  новое применение </string>
-    <string name="no_backup_app_tip">вы ещё не бэкап приложений</string>
-    <string name="other_people_use_tip"> другие  люди используют </string>
     <string name="recomment_list_title">рекомендуем блокировать</string>
     <string name="lock_success">Добавить замок успешно</string>
     <string name="lcok_success_tip">блокировано</string>
     <string name="success_finish">готово</string>
-    <string name="app_lock_theme">тема замок приложения</string>
-    <string name="business_rating"> Счёт: </string>
-    <string name="app_desc"> введение: </string>
-    <string name="app_download_count"> загрузок  : </string>
-    <string name="business_size"> размер: </string>
-    <string name="app_download"> высокая скорость  загрузки </string>
-    <string name="app_google_download">загружать бесплатно</string>
     <string name="help_setting_tip_title">чаевые помощи</string>
     <string name="lock_help_password_setting_content_gesture">нажмите настройки пароли [UI], введите пароль, после проверки ID, повторно настроить пароль</string>
     <string name="lock_help_password_setting_content_password">нажмите настройки пароли [UI], введите пароль, после проверки ID, повторно настроить пароль</string>
@@ -317,9 +214,7 @@
 
     <string name="lock_help_password_setting_button">настройки</string>
     <string name="lock_help_lock_setting_button">настройка блокировки</string>
-    <string name="lock_setting_button">настройка блокировки</string>
     <string name="lock_help_lock_theme_setting_button">изменить тему</string>
-    <string name="help_setting_guide">чаевые помощи</string> <!-- V2.0 -->
     <string name="pravicy_protect">защита</string>
     <string name="privacy_level">тайный класс</string>
     <string name="privacy_contacts">личные контакты</string>
@@ -333,8 +228,6 @@
     <string name="privacy_contact_popumenus_from_call_log">добавить из разговора</string>
     <string name="privacy_contact_popumenus_from_contact">добавить в имеющийся</string>
     <string name="privacy_contact_popumenus_input_phone_number">введите пароль ручной</string>
-    <string name="privacy_message_dialog_title">Вводить записи?</string>
-    <string name="privacy_message_dialog_content">Вводить сообщении и разговорные записи этих номеров?</string>
     <string name="privacy_message_progress_dialog_title">нагрузка</string>
     <string name="privacy_message_progress_dialog_content">сейчас вводить записи</string>
     <string name="privacy_contact_activity_input_edit_name">имя</string>
@@ -351,7 +244,6 @@
     <string name="privacy_contact_progress_dialog_content">сейчас вводить записи</string>
     <string name="privacy_contact_callog_out">исходящий вызов</string>
     <string name="privacy_contact_callog_in">входящий</string>
-    <string name="privacy_contact_callog_no"> пропущенный </string>
     <string name="input_toast_no_number_tip">введите номер телефона</string>
     <string name="privacy_contact_checkbox_dlg_title">Вынести контакт?</string>
     <string name="privacy_contact_checkbox_dlg_content">Вынести контакт из личного зона?</string>
@@ -389,16 +281,13 @@
     <string name="lock_mode">формат сценки</string>
     <string name="vistor_mode">режим визита</string>
     <string name="unlock_all_mode">разблокиравание</string>
-    <string name="office_mode"> режим управления </string>
     <string name="family_mode">семейный режим</string>
     <string name="unlock_all_mode_tip">Не можно блокировать предложении в режиме разблокирования всех，выбрайте другие режимы.</string>
     <string name="add_new_mode">добавить</string>
     <string name="lock_mode_all">все режимы</string>
     <string name="new_mode">новый формат</string>
     <string name="lock_mode_location">положение</string>
-    <string name="hot_on_facebook">Facebook</string>
     <string name="lock_mode_time">время</string>
-    <string name="add">добавить</string>
     <string name="please_input_mode_name">введите имя формата сценки</string>
     <string name="mode_name">имя формат сценки</string>
     <string name="cont_edit_visitor_name">нельзя изменить название гостевого рижима</string>
@@ -472,17 +361,11 @@
     <string name="first_backup">бэкап</string>
     <string name="first_usage">трафик</string>
     <string name="first_battery">батарей</string>
-    <string name="first_hotapp">люкс</string>
-    <string name="first_installed_app">установлено</string>
-    <string name="first_appdata_app">приложение и данные：</string>
     <string name="first_backups_app">уже бэкап：</string>
-    <string name="first_dataflow_app">месячный трафик：</string>
     <string name="first_user_app">приложение потребителя</string>
     <string name="first_used_space">занять место</string>
-    <string name="first_list_uninstall">удаление</string> <!-- Data Usage / Battery -->
     <string name="home_appmanager_donghua_tv">внутреняя память</string>
     <string name="traffic_progress_bar">месячный трафик</string>
-    <string name="traff_first_page_small_set_month_used">этот месяц</string>
     <string name="traff_first_page_small_set_low">Вы можете ввести ваш пакет услуг трафика и уже пользоваемый трафик в этой месяц</string>
     <string name="traff_first_page_small_set">настроить пакет</string>
     <string name="no_used_traffic">пока не данных рейтинга для трафика,проверите дальше</string>
@@ -493,17 +376,13 @@
     <string name="traffic_used_lot">тревога трафика</string>
     <string name="flow_settting_fist">тревога перерасхода</string>
     <string name="flow_settting_name">настройка трафика</string>
-    <string name="flow_settting_second">тревога трафика</string>
     <string name="flow_settting_sure_bg">совершено заполнение устройства</string>
     <string name="flow_settting_dialog">месячный трафик</string>
     <string name="flow_settting_dialog_remain">когда расход трафика в каждый месяц достигнёт уровнь настройки,включать тревогу</string>
     <string name="flow_settting_thrid">отчетный день</string>
-    <string name="flow_settting_thrid_first_tv">месячный день</string>
     <string name="flow_settting_thrid_second_tv">пакет XX MB</string>
     <string name="flow_settting_thrid_month_used_data">этот месяц</string>
     <string name="app_elec_aca">батарей</string>
-    <string name="app_elec_stop">стоп</string>
-    <string name="app_elec_zhuyi">Внимание! </string>
     <string name="app_flow_elec">расход  потока </string>
     <string name="app_flow">трафик</string>
     <string name="app_elec">рейтинг</string>
@@ -545,15 +424,6 @@
     <string name="choose_ssid">выберите точку доступа Wi-Fi</string>
     <string name="choose_enter_mode">операция，когда войти</string>
     <string name="choose_quit_mode">операция，когда уйти</string> <!-- guide page begin -->
-    <string name="guide_page1_title">формат сценки</string>
-    <string name="guide_page1_content">интеллектуально блокировать</string>
-    <string name="guide_page2_title">класс личной защиты</string>
-    <string name="guide_page2_content">впервые создали личный класс</string>
-    <string name="guide_page3_title">личные контакты</string>
-    <string name="guide_page3_content">защищать мои и их личные связи</string>
-    <string name="guide_page4_title">контроль расхода приложнений</string>
-    <string name="guide_page4_content">легко проверить расходы</string>
-    <string name="guide_button_text">сразу  испытать</string> <!-- guide page end -->
     <string name="lock_mode_name_cant_empty">название режима сцены не может быть пустым</string>
     <string name="lock_mode_delete_tip_title">Удалить формат сценки</string>
     <string name="lock_mode_delete_tip_both">это проводит к удалению соответствующих блокирований времени и положения</string>
@@ -610,66 +480,11 @@
     <string name="feedback_email_guide">Эл.почта</string>
     <string name="feedback_category_guide">Тип проблемы</string>
     <string name="privacy_proposal_tip">Ваш интим. класс %1$s. Просим выполнять такое управл., чтобы повыс. интим. Класс</string>
-    <string name="lock_mode_name_maxlength">30</string>
     <!-- version 2.2 end -->
 
 
     <!-- version 2.4 start -->
     <string name="pg_appmanager_quick_gesture_name">быстрый жест</string>
-    <string name="pg_appmanager_quick_gesture_option_open_quick_gesture">откройте быстрый  жест</string>
-    <string name="pg_appmanager_quick_gesture_option_switch_setting">Установка выключателя</string>
-    <string name="pg_appmanager_quick_gesture_option_gesture_theme_title">Жестовая тема</string>
-    <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">настоящее</string>
-    <string name="pg_appmanager_quick_gesture_option_sliding_area_location_title">разделите район</string>
-    <string name="pg_appmanager_quick_gesture_option_no_read_message_tip">подсказка сообщения</string>
-    <string name="pg_appmanager_quick_gesture_option_recently_contact">ближайщий разговор</string>
-    <string name="pg_appmanager_quick_gesture_option_privacy_contact_message_tip">тайный человек связи</string>
-    <string name="pg_appmanager_quick_gesture_option_able_sliding_time">разделенный момент</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_bottom_text">внизу налево</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_bottom_text">внизу право</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_left_center_text">середина налево</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_right_center_text">середина право</string>
-    <string name="pg_appmanager_quick_gesture_slide_time_just_home_text">только поверхность стола</string>
-    <string name="pg_appmanager_quick_gesture_slide_time_home_and_all_app_text">все ситуации </string>
-    <string name="pg_appmanager_quick_gesture_slide_time_no_disturb_text"> Бесмешающее app</string>
-    <string name="pg_appmanager_quick_gesture_option_dialog_radio_toast_text">выберите по крайней мере один район</string>
-    <string name="pg_appmanager_quick_gesture_select_free_disturb_app_text">выберите применение</string>
-    <string name="pg_appmanager_quick_gesture_no_free_add_free_disturb_app_text">добавьте</string>
-    <string name="pg_appmanager_quick_gesture_miui_open_float_window_tip_text">Откройте вариант "взвешенное окно" </string>
-    <string name="pg_appmanager_quick_gesture_first_tip_text">Скользните откуда-нибудь по любому схематическому району, и откройте  быстрое путешествие.</string>
-    <string name="pg_appmanager_quick_switch_dialog_title">выберите выключатель</string>
-    <string name="quick_gesture_change_common_app_dialog_title">выберите применение</string>
-    <string name="quick_gesture_change_common_app_dialog_checkbox_text">автоматически обменять применение</string>
-    <string name="pg_appmanager_quick_gesture_privacy_contact_tip_lable">система</string>
-    <string name="quick_gesture_dialog_tip_contniue_title">продолжите открыть</string>
-    <string name="quick_gesture_dialog_tip_contniue_cotent">продолжите ли установить быстрый и удобный жест?</string>
-    <string name="quick_gesture_dialog_tip_contniue_left_bt">продолжите</string>
-    <string name="quick_gesture_dialog_tip_contniue_right_bt">позже</string>
-    <string name="quick_gesture_miui_tip_button_text">знаю</string>
-    <string name="quick_gesture_dynamic">Ближайшее</string>
-    <string name="quick_gesture_switcher">выключатель</string>
-    <string name="quick_gesture_most_used">употребительное</string>
-    <string name="quick_gesture_first_open_sliding_toast">откройте  быстрое путешествие</string>
-    <string name="quick_guesture_bluetooth">синий зуб</string>
-    <string name="quick_guesture_flashlight">электрофонарь</string>
-    <string name="quick_guesture_wlan">WLAN</string>
-    <string name="quick_guesture_carme">фотоаппарат</string>
-    <string name="quick_guesture_sound">голос</string>
-    <string name="quick_guesture_light">яркость</string>
-    <string name="quick_guesture_speedup">ускорение</string>
-    <string name="quick_guesture_changemode">модель</string>
-    <string name="quick_guesture_switchset">установка жеста</string>
-    <string name="quick_guesture_setting">установка</string>
-    <string name="quick_guesture_gps">GPS</string>
-    <string name="quick_guesture_flymode">модель полета</string>
-    <string name="quick_guesture_rotation">поворот</string>
-    <string name="quick_guesture_mobliedata">Мобильные данные</string>
-    <string name="quick_guesture_home">поверхность </string>
-    <string name="quick_guesture_lockscreen">экран на замок</string>
-    <string name="quick_guesture_app_select_count">(%1$s/%2$s) </string>
-    <string name="pass_gesture_change">способ переключения кода</string>
-    <string name="permission_open_tip_notification_title">быстрый жест</string>
-    <string name="permission_open_tip_notification_content">установить быстрый жест</string>
     <string name="first_open_quick_gesture_dialog_tip_cotent">Установите iSwipe и сделайте ваш телефон таким, как Apple Watch</string>
     <string name="grade_tip_feedback">Проблемы</string>
     <string name="quick_first_tip_dialog_right_bt">включить</string>
@@ -690,34 +505,6 @@
     <string name="summary_autolock_after_lockscreen">после замка экрана все применения заново заперты</string>
     <string name="summary_setting_locker">выберите заарретированную установку</string>
     <string name="summary_hide_lockline">скройте след отмыкания</string>
-    <string name="quick_gesture_strengthen_mode_title">белое пятнышко</string>
-    <string name="quick_gesture_strengthen_mode_content">кликните белое пятнышко и можете открыть быстрый и удобный жест </string>
-    <string name="quick_gesture_success_title">успешно открыт быстрый и удобный жест!</string>
-    <string name="quick_gesture_success_content">вы можете кликнуть внизу и  использовать быстрый и удобный жест, давайте попробуйте!</string>
-    <string name="go_set">установите</string>
-    <string name="white_dot_click_tip">поздравляю вас с успешным открытием быстрого и удобного жеста через белое пятнышко. Если вам мешает, его закройте в установке.</string>
-    <string name="quick_gesture_open_text">открыто</string>
-    <string name="quick_gesture_close_text">закрыто</string>
-    <string name="quick_gesture_introduction_title">Что это за Быстрый и удобный жест?</string>
-    <string name="quick_gesture_introduction_content">Быстрым и удобным жестом является высокоэффективный вставной блок из Караула, через его вам можно удобно управлять включателей системы, и быстро включать программы.</string>
-    <string name="quick_gesture_slide_guide_title">Как быстро открыть скольжение жеста?</string>
-    <string name="quick_gesture_slide_guide_content">Только полегоньку  скользните на угол мобильника и можете открыть быстрый и удобный жест </string>
-    <string name="quick_gesture_slide_setting_content">Если трудно скользните жест, тогда можно кликнить здесь и настройть зону скольжения.</string>
-    <string name="quick_gesture_edit_guide_title">Как составлять включатель и приложения быстрого и удобного жеста?</string>
-    <string name="quick_gesture_edit_guide_content">В любом классе tap быстрого и удобного жеста долгим нажатием Приложения/включатели можно доступить к интерфейсу редактора, вы можете исключить приложения/включатель, так и можете добавить приложение/включатель в часто употребляемые приложения и удобные и быстрые включатели</string>
-    <string name="quick_gesture_edit_extra_content">Примечание:  Недавно используемые приложения формируется системой,  поэтому активно добавить невозможно.</string>
-    <string name="can_not_add_more">нельзя добавить больше</string>
-    <string name="new_guide_page1_title">удобнее ускорить телефон</string>
-    <string name="new_guide_page1_content">на экране также можно ускорить</string>
-    <string name="new_guide_page2_title">камуфляж интереснее</string>
-    <string name="new_guide_page2_content">новый метод камуфляжа,неожиданно</string>
-    <string name="new_guide_page3_title">удобнее изменить модель</string>
-    <string name="new_guide_page3_content">легко изменить модель пальцами</string>
-    <string name="quick_open_tip">Быстрый и удобный жест еще закрытый</string>
-    <string name="quick_setting_title">Установка жеста</string>
-    <string name="quick_no_msm_annotation">Непрочитанное сообщение в жесте</string>
-    <string name="quick_no_call_log_annotation">неотвеченный звонок в жесте</string>
-    <string name="quick_no_pricay_contact_annotation">сообщение в виде инфо. системы</string>
     <!-- version 2.5 huangqili part -->
 
 
@@ -727,20 +514,16 @@
     <string name="change_lock_mode">изменение модели</string>
     <string name="beauty_guide_title">рекомендация использования</string>
     <string name="beauty_guide_content">молния на экранеложное представление,попробовать стягивать пальцами на экране</string>
-    <string name="flash_light_open_toast">нельзя многократко использовать  вспышку для защиты  материального обеспечения</string>
     <string name="privacy_auto_add_text">добавить </string>
-    <string name="choose_lock_mode">выбор модели</string>
     <string name="button_disguise_guide_select">пробовать</string>
     <string name="button_disguise_guide_cancel">минуту</string>
     <string name="button_disguise_guide_content">попробовать камуфляж после блока для защиты ващих предложений</string>
     <string name="traffic_over_text">сверх нормы</string>
     <string name="lock_line_hide">орбита деблокирови скрыта</string>
     <string name="lock_line_visiable">орбита деблокирови показана</string>
-    <string name="guide_more_text">больше функции ></string>
     <string name="guide_skip_text">перепрыгнуть ></string>
     <string name="video_hide_need_cb">из-за системы,для отмены сокрытия этих видео нужно Cool Browser.использовать после  установки</string>
     <string name="video_hide_need_new_cb">из-за системы,для отмены сокрытия этих видео нужно Cool Browser.отменить сокрытие после  установки</string>
-    <string name="video_delete_need_new_cb">из-за системы,для исключения этих видео нужно Cool Browser.использовать после  установки</string>
     <string name="video_cencel_hide_fail">отменить скрытие неудолось</string>
     <string name="video_delete_fail">исключать документы неудолось</string>
     <string name="zipper_too_fast">давайте помедленнее</string>
@@ -755,14 +538,8 @@
     <string name="clean_mem_notify_small">пуск</string>
     <string name="clean_mem_notify_boost">ускорить</string>
     <string name="pg_appmanager_quick_gesture_option_trigger_type">метод запуска</string>
-    <string name="pg_appmanager_quick_gesture_option_trigger_type_summary">белая точка боку / снизу</string>
     <string name="pg_appmanager_quick_gesture_trigger_alide">боку/ снизу</string>
     <string name="pg_appmanager_quick_gesture_trigger_wihtedot">белая точка</string>
-    <string name="pg_appmanager_quick_gesture_trigger_tips">выбирай один,по минимуму</string>
-    <string name="pg_appmanager_quick_gesture_conflict_content">жест вам мешает? Вы сможете открыть только бклую точкую для настройки</string>
-    <string name="pg_appmanager_quick_gesture_conflict_later">потом</string>
-    <string name="pg_appmanager_quick_gesture_conflict_open">включить</string>
-    <string name="anti_conflict_mode_open">Оказалось</string>
     <!-- 2.7 end -->
 
 
@@ -774,14 +551,10 @@
     <string name="iswip_update_tip_right_button_text">скачать</string>
     <string name="iswip_update_notifi_title">Easy Shortcuts обновлен!</string>
     <string name="iswip_update_notifi_content">Easy Shortcuts поменялись на iSwipe</string>
-    <string name="iswip_update_notifi_button">Обновить сейчас</string>
     <string name="ad_timeout">Вас ждут сюрпризы!</string>
     <!-- 2.8 end -->
     <!-- 2.10 start -->
-    <string name="auto_start_guide_tip_title">Нужна прив. автозап.</string>
     <string name="auto_start_guide_tip_content">Запуск Privacy Guard при старте</string>
-    <string name="auto_start_guide_tip_left_button">Позже</string>
-    <string name="auto_start_guide_tip_right_button">Сейчас</string>
     <string name="msg_center_title">Центр сообщений</string>
     <string name="msg_center_empty">Нет новых сообщений</string>
     <string name="msg_center_empty_say">Расскажите, что вы хотите</string>
@@ -806,15 +579,12 @@
     <string name="auto_start_tip_huawei">Для защ. конфид. в "Защ. Прилож." добавьте PG в список</string>
     <string name="auto_start_tip_lenovo">Для защ. конфид. в "Приложения"-"Автозапуск" доб. LEO PG</string>
     
-     <string name="splash_guide_page_msg_title">Центр сообщений</string>
-    <string name="splash_guide_page_msg_content">все мероприятия и полезные советы здесь</string>
     <!-- 2.10 end -->
     <!-- 2.12 start -->
     <string name="applock_guide_tip_title">Автор. треб. для норм. раб.</string>
     <string name="applock_guide_tip_subtitle">По прав. сис., эти прив. должны вкл. для защ. конфид.</string>
     <string name="applock_guide_tip_security_text">Дайте PG привилегию использовать приложение мониторинга</string>
     <string  name="auto_start_tip_text_huawei_plus">Вкл. привилегию Автозапуск, защ. сохр. после перезагрузки</string>
-      <string name="background_tip_default_text">Установите фон PG для постоянной защиты конфиденц.</string>
     <string name="applock_guide_set_text">Настройкам</string>
      <string name="applock_guide_set_finish">Завершено</string>
     <!-- 2.12 end -->

@@ -3,10 +3,8 @@ package com.leo.appmaster.home;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
@@ -27,13 +25,9 @@ import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
-import com.mobvista.sdk.m.core.MobvistaAd;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class DeskProxyActivity extends Activity {
@@ -81,7 +75,7 @@ public class DeskProxyActivity extends Activity {
                     gotoBackUp(type);
                 } else if (type == mQuickGues) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
-                    gotoQuickGues(type);
+//                    gotoQuickGues(type);
                 } else if (type == mLockThem) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
                     gotoLockThem(type);
@@ -144,7 +138,7 @@ public class DeskProxyActivity extends Activity {
                     case mQuickGues:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "quickGesture");
-                        gotoQuickGues(type);
+//                        gotoQuickGues(type);
                         break;
                     case mLockThem:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
@@ -195,80 +189,6 @@ public class DeskProxyActivity extends Activity {
         Intent intent = new Intent(this, LockerTheme.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
-    }
-
-    private void gotoQuickGues(int type) {
-        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
-        boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(this);
-        boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(this);
-        boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isYiJia();
-        boolean isOpenWindow =
-                BuildProperties.isFloatWindowOpAllowed(this);
-
-        if (checkMiui && !isOpenWindow) {
-            // MIUI
-            Intent intentv6 = new
-                    Intent("miui.intent.action.APP_PERM_EDITOR");
-            intentv6.setClassName("com.miui.securitycenter",
-                    "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-            intentv6.putExtra("extra_pkgname", this.getPackageName());
-            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            try {
-                LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(2000);
-                startActivity(intentv6);
-            } catch (Exception e) {
-                LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(1000);
-                Intent intentv5 = new Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri
-                        .fromParts("package", this.getPackageName(), null);
-                intentv5.setData(uri);
-                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                try {
-                    startActivity(intentv5);
-                } catch (Exception e1) {
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "qs_open_error", "reason_"
-                            + BuildProperties.getPoneModel());
-                }
-            }
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            LockManager.getInstatnce().filterAllOneTime(1000);
-            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(quickIntent);
-        } else if (checkHuaWei && !checkFloatWindow) {
-            BuildProperties.isToHuaWeiSystemManager(this);
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            quickIntent.putExtra("sys_name", "huawei");
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (isOppoOs && !isOpenWindow) {
-            boolean backFlag = BuildProperties.startOppoManageIntent(this);
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            Intent quickIntent = new Intent(this, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            quickIntent.putExtra("sys_name", "huawei");
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Intent quickIntent = new Intent(this, QuickGestureActivity.class);
-            quickIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            this.startActivity(quickIntent);
-        }
     }
 
     private void gotoBackUp(int type) {

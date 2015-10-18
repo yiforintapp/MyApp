@@ -7,7 +7,6 @@ import java.util.Date;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -41,7 +40,6 @@ import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -119,11 +117,9 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i(TAG, "cost, computePrivacyLevel: " + (end - start));
 
         start = SystemClock.elapsedRealtime();
-        QuickGestureManager.getInstance(mApp);
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, QuickGestureManager.getInstance: " + (end - start));
 
-        registerLanguageChangeReceiver();
         checkUpdateFinish();
         initIswipeUpdateTip();
         initSplashDelayTime();
@@ -213,25 +209,6 @@ public class InitCoreBootstrap extends Bootstrap {
                     (Object[]) null);
         } catch (Exception e) {
         }
-    }
-
-    /* 本地语言改变监听 */
-    private void registerLanguageChangeReceiver() {
-        BroadcastReceiver receiv = new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)) {
-                    // 初始化快捷手势数据
-                    if (AppMasterPreference.getInstance(mApp).getSwitchOpenQuickGesture()) {
-                        QuickGestureManager.getInstance(mApp).unInit();
-                        QuickGestureManager.getInstance(mApp).init();
-                    }
-                }
-            }
-        };
-        IntentFilter filter = new IntentFilter();
-        filter.addAction(Intent.ACTION_LOCALE_CHANGED);
-        mApp.registerReceiver(receiv, filter);
     }
 
     private void checkUpdateFinish() {

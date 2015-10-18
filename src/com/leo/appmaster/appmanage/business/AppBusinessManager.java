@@ -21,16 +21,12 @@ import android.graphics.Bitmap;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.model.BaseInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
-import com.leo.appmaster.quickgestures.QuickGestureManager;
 import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -311,84 +307,6 @@ public class AppBusinessManager {
         }
     }
 
-    private void syncOtherRecommend(final int type) {
-        HttpRequestAgent.getInstance(mContext).loadRecomApp(type,
-                new Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response, boolean noModify) {
-                        if (response != null) {
-                            try {
-                                if (response != null) {
-                                    List<BusinessItemInfo> list = BusinessJsonParser
-                                            .parserJsonObject(mContext,
-                                                    response, type);
-                                    if (!noModify) {
-                                        LeoLog.d("syncOtherRecommend",
-                                                list.toString());
-                                    } else {
-                                        LeoLog.d("syncOtherRecommend",
-                                                "noModify");
-                                    }
-                                    syncOtherRecommendData(type, list, noModify);
-                                }
-                            } catch (Exception e) {
-                                // e.printStackTrace();
-                                // LeoLog.e("syncServerData", e.getMessage());
-                                // TimerTask recheckTask = new TimerTask() {
-                                // @Override
-                                // public void run() {
-                                // syncOtherRecommend(type);
-                                // }
-                                // };
-                                // Timer timer = new Timer();
-                                // timer.schedule(recheckTask, DELAY_2_HOUR);
-                            } finally {
-                                TimerTask recheckTask = new TimerTask() {
-                                    @Override
-                                    public void run() {
-                                        syncOtherRecommend(type);
-                                    }
-                                };
-                                Timer timer = ThreadManager.getTimer();
-                                timer.schedule(recheckTask, DELAY_12_HOUR);
-                            }
-                        }
-                    }
-
-                }, new ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        LeoLog.e("syncServerData", error.getMessage());
-                        TimerTask recheckTask = new TimerTask() {
-                            @Override
-                            public void run() {
-                                syncOtherRecommend(type);
-                            }
-                        };
-                        Timer timer = ThreadManager.getTimer();
-                        timer.schedule(recheckTask, DELAY_2_HOUR);
-
-                        // if (type == BusinessItemInfo.CONTAIN_FLOW_SORT) {
-                        // LoadFailUtils.sendLoadFail(mContext, "flow_apps");
-                        // } else {
-                        // LoadFailUtils.sendLoadFail(mContext, "space_apps");
-                        // }
-                    }
-                });
-    }
-
-    private void syncOtherRecommendData(int type, List<BusinessItemInfo> list,
-            boolean noModify) {
-        List<BusinessItemInfo> removeList = new ArrayList<BusinessItemInfo>();
-        for (BusinessItemInfo businessItemInfo : mBusinessList) {
-            if (businessItemInfo.containType == type) {
-                removeList.add(businessItemInfo);
-            }
-        }
-        mBusinessList.removeAll(removeList);
-        mBusinessList.addAll(list);
-    }
-
     protected void syncGestureData(final int containerType,
             final List<BusinessItemInfo> list) {
         ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -434,9 +352,6 @@ public class AppBusinessManager {
             for (BusinessListener listner : mBusinessListeners) {
                 listner.onBusinessDataChange(mBusinessList);
             }
-        }
-        if (QuickGestureManager.getInstance(mContext).checkBusinessRedTip()) {
-            FloatWindowHelper.removeShowReadTipWindow(mContext);
         }
     }
 

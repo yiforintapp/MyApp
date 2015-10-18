@@ -29,12 +29,9 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.animation.AlphaAnimation;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -54,7 +51,6 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
-import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -360,35 +356,38 @@ public class SplashActivity extends BaseActivity {
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case MSG_LAUNCH_HOME_ACTIVITY:
-                    if (AppMasterPreference.getInstance(SplashActivity.this)
-                            .getGuidePageFirstUse()) {
-                        boolean guidNotShown = mNewGuideMain == null
-                                || mNewGuideMain.getVisibility() != View.VISIBLE;
-                        if (guidNotShown) {
-                            cancelSplashSkipbtAndUrlbt();
-                            if (!mIsShowGuide) {
-                                showNewFuncGuide();
-                            }
-                        }
-                    } else {
-                        // AppMasterPreference pre = AppMasterPreference
-                        // .getInstance(SplashActivity.this);
-                        // // 存储的版本号
-                        // String versionName = pre.getAppVersionName();
-                        // // 获取当前的版本号
-                        // String currentVersion =
-                        // getString(R.string.version_name);
-                        // if (!versionName.equals(currentVersion)) {
-                        // boolean guidNotShown = mMain == null
-                        // || mMain.getVisibility() != View.VISIBLE;
-                        // if (guidNotShown) {
-                        // showGuide();
-                        // }
-                        // } else {
-                        // startHome();
-                        // }
-                        startHome();
-                    }
+//                    if (AppMasterPreference.getInstance(SplashActivity.this)
+//                            .getGuidePageFirstUse()) {
+//                        boolean guidNotShown = mNewGuideMain == null
+//                                || mNewGuideMain.getVisibility() != View.VISIBLE;
+//                        if (guidNotShown) {
+//                            cancelSplashSkipbtAndUrlbt();
+//                            if (!mIsShowGuide) {
+//                                showNewFuncGuide();
+//                            }
+//                        }
+//                    } else {
+//                        // AppMasterPreference pre = AppMasterPreference
+//                        // .getInstance(SplashActivity.this);
+//                        // // 存储的版本号
+//                        // String versionName = pre.getAppVersionName();
+//                        // // 获取当前的版本号
+//                        // String currentVersion =
+//                        // getString(R.string.version_name);
+//                        // if (!versionName.equals(currentVersion)) {
+//                        // boolean guidNotShown = mMain == null
+//                        // || mMain.getVisibility() != View.VISIBLE;
+//                        // if (guidNotShown) {
+//                        // showGuide();
+//                        // }
+//                        // } else {
+//                        // startHome();
+//                        // }
+//                        startHome();
+//                    }
+                    
+                    startHome();
+                    
                     SDKWrapper.addEvent(SplashActivity.this, SDKWrapper.P1,
                             "screen_cli", "none");
                     break;
@@ -629,84 +628,84 @@ public class SplashActivity extends BaseActivity {
                 currentVersionName);
     }
 
-    private void showNewFuncGuide() {
-        mNewFuncPageViews = new ArrayList<View>();
-        LayoutInflater inflater = getLayoutInflater();
-        TextView tvTitle, tvContent, tvMoreFunc;
-        Button enterAppButton;
-        ImageView bigImage = null;
-        mPageColors[3] = getResources().getColor(R.color.new_guide_page1_background_color);
-        mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
-        mPageColors[5] = getResources().getColor(R.color.new_guide_page4_background_color);
-        mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
-        mNewPageBackgroundView.initBackgroundColor(mPageColors[3]);
-        /* 显示跳过按钮 */
-        setSkipClickListener();
-        /* page1 */
-        ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page1.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_1));
-        tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.new_guide_page1_title));
-        tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.new_guide_page1_content));
-        mNewFuncPageViews.add(page1);
-
-        /* page2 */
-        ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page2.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
-        tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.new_guide_page2_title));
-        tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.new_guide_page2_content));
-        mNewFuncPageViews.add(page2);
-        /* page3 */
-        ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
-        bigImage = (ImageView) page3.findViewById(R.id.guide_image);
-        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_4));
-        tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
-        tvTitle.setText(getResources().getString(R.string.splash_guide_page_msg_title));
-        tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
-        tvContent.setText(getResources().getString(R.string.splash_guide_page_msg_content));
-        mNewFuncPageViews.add(page3);
-        mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
-        mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
-        initViewPagerEdges(mNewFuncViewPager);
-
-        mNewGuideMain.setVisibility(View.VISIBLE);
-        AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
-        aa.setDuration(1000);
-        mNewGuideMain.startAnimation(aa);
-
-        mNewFuncViewPager.setAdapter(new GuidePageAdapter(mNewFuncPageViews));
-        mIndicator = (CirclePageIndicator) mNewGuideMain.findViewById(R.id.new_splash_indicator);
-        mIndicator.setViewPager(mNewFuncViewPager);
-        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 3));
-
-//        tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
-//        tvMoreFunc.setVisibility(View.VISIBLE);
-//        tvMoreFunc.setTextColor(getResources().getColor(R.color.new_guide_page4_background_color));
-//        tvMoreFunc.setOnClickListener(new OnClickListener() {
+//    private void showNewFuncGuide() {
+//        mNewFuncPageViews = new ArrayList<View>();
+//        LayoutInflater inflater = getLayoutInflater();
+//        TextView tvTitle, tvContent, tvMoreFunc;
+//        Button enterAppButton;
+//        ImageView bigImage = null;
+//        mPageColors[3] = getResources().getColor(R.color.new_guide_page1_background_color);
+//        mPageColors[4] = getResources().getColor(R.color.new_guide_page2_background_color);
+//        mPageColors[5] = getResources().getColor(R.color.new_guide_page4_background_color);
+//        mNewPageBackgroundView = (GuideItemView) findViewById(R.id.new_func_guide_bg_view);
+//        mNewPageBackgroundView.initBackgroundColor(mPageColors[3]);
+//        /* 显示跳过按钮 */
+//        setSkipClickListener();
+//        /* page1 */
+//        ViewGroup page1 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page1.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_1));
+//        tvTitle = (TextView) page1.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.new_guide_page1_title));
+//        tvContent = (TextView) page1.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.new_guide_page1_content));
+//        mNewFuncPageViews.add(page1);
+//
+//        /* page2 */
+//        ViewGroup page2 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page2.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_2));
+//        tvTitle = (TextView) page2.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.new_guide_page2_title));
+//        tvContent = (TextView) page2.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.new_guide_page2_content));
+//        mNewFuncPageViews.add(page2);
+//        /* page3 */
+//        ViewGroup page3 = (ViewGroup) inflater.inflate(R.layout.guide_page_layout, null);
+//        bigImage = (ImageView) page3.findViewById(R.id.guide_image);
+//        bigImage.setImageDrawable(getResources().getDrawable(R.drawable.new_page_4));
+//        tvTitle = (TextView) page3.findViewById(R.id.guide_tv_title);
+//        tvTitle.setText(getResources().getString(R.string.splash_guide_page_msg_title));
+//        tvContent = (TextView) page3.findViewById(R.id.guide_tv_content);
+//        tvContent.setText(getResources().getString(R.string.splash_guide_page_msg_content));
+//        mNewFuncPageViews.add(page3);
+//        mNewGuideMain = (ViewGroup) findViewById(R.id.layout_new_func_guide);
+//        mNewFuncViewPager = (ViewPager) mNewGuideMain.findViewById(R.id.new_func_guide_viewpager);
+//        initViewPagerEdges(mNewFuncViewPager);
+//
+//        mNewGuideMain.setVisibility(View.VISIBLE);
+//        AlphaAnimation aa = new AlphaAnimation(0.0f, 1.0f);
+//        aa.setDuration(1000);
+//        mNewGuideMain.startAnimation(aa);
+//
+//        mNewFuncViewPager.setAdapter(new GuidePageAdapter(mNewFuncPageViews));
+//        mIndicator = (CirclePageIndicator) mNewGuideMain.findViewById(R.id.new_splash_indicator);
+//        mIndicator.setViewPager(mNewFuncViewPager);
+//        mIndicator.setOnPageChangeListener(new GuidePageChangeListener(mNewFuncPageViews, 3));
+//
+////        tvMoreFunc = (TextView) page3.findViewById(R.id.more_func);
+////        tvMoreFunc.setVisibility(View.VISIBLE);
+////        tvMoreFunc.setTextColor(getResources().getColor(R.color.new_guide_page4_background_color));
+////        tvMoreFunc.setOnClickListener(new OnClickListener() {
+////            @Override
+////            public void onClick(View v) {
+////                mNewGuideMain.setVisibility(View.INVISIBLE);
+////                showGuide();
+////            }
+////        });
+//
+//        enterAppButton = (Button) page3.findViewById(R.id.button_guide);
+//        enterAppButton.setVisibility(View.VISIBLE);
+//        enterAppButton.setTextColor(getResources().getColor(
+//                R.color.new_guide_page4_background_color));
+//        enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
+//        enterAppButton.setOnClickListener(new OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                mNewGuideMain.setVisibility(View.INVISIBLE);
-//                showGuide();
+//                enterHome();
 //            }
 //        });
-
-        enterAppButton = (Button) page3.findViewById(R.id.button_guide);
-        enterAppButton.setVisibility(View.VISIBLE);
-        enterAppButton.setTextColor(getResources().getColor(
-                R.color.new_guide_page4_background_color));
-        enterAppButton.setBackgroundResource(R.drawable.new_letgo_bg_selecter);
-        enterAppButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enterHome();
-            }
-        });
-    }
+//    }
 
     @Override
     public void onBackPressed() {

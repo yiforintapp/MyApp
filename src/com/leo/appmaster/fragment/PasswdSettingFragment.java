@@ -30,13 +30,10 @@ import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.quickgestures.ui.QuickGestureActivity;
-import com.leo.appmaster.quickgestures.ui.QuickGestureMiuiTip;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -404,7 +401,7 @@ public class PasswdSettingFragment extends BaseFragment implements
                 } else if (type == ((LockSettingActivity) mActivity).mBackup) {
                     gotoBackUp(type);
                 } else if (type == ((LockSettingActivity) mActivity).mQuickGues) {
-                    gotoQuickGues(type);
+//                    gotoQuickGues(type);
                 } else if (type == ((LockSettingActivity) mActivity).mLockThem) {
                     gotoLockThem(type);
                 } else if (type == ((LockSettingActivity) mActivity).mPrivacyContact) {
@@ -478,80 +475,6 @@ public class PasswdSettingFragment extends BaseFragment implements
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                 Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-    }
-
-    private void gotoQuickGues(int type) {
-        boolean checkHuaWei = BuildProperties.isHuaWeiTipPhone(mActivity);
-        boolean checkFloatWindow = BuildProperties.isFloatWindowOpAllowed(mActivity);
-        boolean checkMiui = BuildProperties.isMIUI();
-        boolean isOppoOs = BuildProperties.isYiJia();
-        boolean isOpenWindow =
-                BuildProperties.isFloatWindowOpAllowed(mActivity);
-
-        if (checkMiui && !isOpenWindow) {
-            // MIUI
-            Intent intentv6 = new
-                    Intent("miui.intent.action.APP_PERM_EDITOR");
-            intentv6.setClassName("com.miui.securitycenter",
-                    "com.miui.permcenter.permissions.AppPermissionsEditorActivity");
-            intentv6.putExtra("extra_pkgname", mActivity.getPackageName());
-            intentv6.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            try {
-                LockManager.getInstatnce().addFilterLockPackage("com.miui.securitycenter",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(2000);
-                startActivity(intentv6);
-            } catch (Exception e) {
-                LockManager.getInstatnce().addFilterLockPackage("com.android.settings",
-                        false);
-                LockManager.getInstatnce().filterAllOneTime(1000);
-                Intent intentv5 = new Intent(
-                        Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                Uri uri = Uri
-                        .fromParts("package", mActivity.getPackageName(), null);
-                intentv5.setData(uri);
-                intentv5.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                try {
-                    startActivity(intentv5);
-                } catch (Exception e1) {
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_open_error", "reason_"
-                            + BuildProperties.getPoneModel());
-                }
-            }
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            LockManager.getInstatnce().filterAllOneTime(1000);
-            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            startActivity(quickIntent);
-        } else if (checkHuaWei && !checkFloatWindow) {
-            BuildProperties.isToHuaWeiSystemManager(mActivity);
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            quickIntent.putExtra("sys_name", "huawei");
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else if (isOppoOs && !isOpenWindow) {
-            boolean backFlag = BuildProperties.startOppoManageIntent(mActivity);
-            LockManager.getInstatnce().addFilterLockPackage("com.leo.appmaster", false);
-            Intent quickIntent = new Intent(mActivity, QuickGestureMiuiTip.class);
-            quickIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                    | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-            quickIntent.putExtra("sys_name", "huawei");
-            try {
-                startActivity(quickIntent);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            Intent quickIntent = new Intent(mActivity, QuickGestureActivity.class);
-            this.startActivity(quickIntent);
-        }
     }
 
     private void gotoBackUp(int type) {

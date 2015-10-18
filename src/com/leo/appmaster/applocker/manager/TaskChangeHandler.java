@@ -12,7 +12,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.quickgestures.FloatWindowHelper;
 import com.leo.appmaster.utils.LeoLog;
 
 public class TaskChangeHandler {
@@ -112,14 +111,6 @@ public class TaskChangeHandler {
             return;
         }
 
-        // for gesture check
-        if (activity.contains(GESTURE)) {
-            /* 去除下面代码为了解决：关闭GESTURE这个Acitivty后启动创建热区任务时闪动创建问题 */
-            // FloatWindowHelper.mGestureShowing = true;
-        } else {
-            FloatWindowHelper.mGestureShowing = false;
-        }
-
         AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
         boolean unlocked = amp.getUnlocked();
         String checkPkg = amp.getDoubleCheck();
@@ -197,8 +188,6 @@ public class TaskChangeHandler {
             mLastRunningPkg = pkg;
             mLastRuningActivity = activity;
 
-            // remocde app launch recoder
-            LockManager.getInstatnce().recordAppLaunch(mLastRunningPkg);
             AppLoadEngine.getInstance(mContext).recordAppLaunchTime(mLastRunningPkg,
                     System.currentTimeMillis());
 
