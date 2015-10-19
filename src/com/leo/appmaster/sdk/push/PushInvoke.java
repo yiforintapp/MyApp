@@ -13,7 +13,6 @@ import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.CheckNewBootstrap;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
@@ -158,8 +157,6 @@ public class PushInvoke implements PushInvokeHelper {
 //    }
 
     private void invokeISwipe() {
-        ISwipUpdateRequestManager.getInstance(mContext).setPushLoad(true);
-        ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
 
     }
 

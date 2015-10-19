@@ -17,10 +17,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -30,10 +27,9 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.F;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NetWorkUtil;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
@@ -956,9 +952,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     /* 弹出升级对话框 */
     public void updateTipDialog(String lockPackage) {
-        ISwipUpdateRequestManager im = ISwipUpdateRequestManager.getInstance(mContext);
         /* 判断网络状态 */
-        boolean netWorkStatus = im.getNetworkStatus();
+        boolean netWorkStatus = NetWorkUtil.isNetworkAvailable(mContext);
         LeoLog.i(TAG, "当前是否有网络：" + netWorkStatus);
         /* 解锁成功弹出升级提示 */
         boolean isUnLockUpdateTip = AppMasterPreference.getInstance(mContext)

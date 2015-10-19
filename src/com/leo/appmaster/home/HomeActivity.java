@@ -79,8 +79,8 @@ import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
+import com.leo.appmaster.quickgestures.IswipeManager;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -129,7 +129,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private int type;
     private MobvistaAdWall mWallAd;
     private IswipUpdateTipDialog mIswipDialog;
-    private boolean mShowIswipeFromNotfi;
     private static final String TAG = "HomeActivity";
     private ImageView mLeftMenuRedTip;
     private AnimationDrawable adAnimation;
@@ -168,18 +167,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 //        autoStartDialogHandler();
         // 进入首页拉取一次消息中心列表
         MsgCenterFetchJob.startImmediately();
-    }
-
-    private void checkIswipeNotificationTo() {
-        String fromPrivacyFlag = getIntent()
-                .getStringExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
-        LeoLog.i(TAG, "来自iswipe："+fromPrivacyFlag);
-        if (ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME
-                .equals(fromPrivacyFlag)) {
-            ISwipUpdateRequestManager.getInstance(getApplicationContext());
-            mShowIswipeFromNotfi = true;
-            mPagerTab.setCurrentItem(2);
-        }
     }
 
 //    /**
@@ -522,8 +509,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     protected void onResume() {
-        /* 获取是否从iswipe通知进入 */
-        checkIswipeNotificationTo();
         /* 分析是否需要升级红点显示 */
         boolean menuRedTipVisibility = (mLeftMenuRedTip.getVisibility() == View.GONE);
         if (mLeftMenuRedTip != null && menuRedTipVisibility) {
@@ -664,16 +649,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     private void showIswipDialog() {
-        /* ISwipe升级对话框提示 */
-        if (mShowIswipeFromNotfi) {
-            mShowIswipeFromNotfi = false;
-            boolean installIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(this);
-            if (!installIswipe) {
-                showDownLoadISwipDialog(this, null);
-            }
-        } else {
-            showIswipeUpdateTip(this, "homeactivity");
-        }
+        showIswipeUpdateTip(this, "homeactivity");
     }
 
     @Override
@@ -684,9 +660,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
     @Override
     public void onBackPressed() {
-        if(mShowIswipeFromNotfi){
-        getIntent().removeExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
-        }
         if (mDrawerLayout.isDrawerOpen(mMenuList)) {
             mDrawerLayout.closeDrawer(mMenuList);
             return;
@@ -1047,7 +1020,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                             .setFristDialogTip(true);
                                 } else {
                                     /* 系统是否安装iswipe */
-                                    boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(
+                                    boolean isIswipInstall = IswipeManager.isInstallIsiwpe(
                                             getApplicationContext());
                                     if (isIswipInstall) {
                                         AppMasterPreference.getInstance(HomeActivity.this)
@@ -1060,7 +1033,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             // update user
                             if (!firstDilaogTip) {
                                 LeoLog.i(TAG, "升级用户提示！");
-                                boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(
+                                boolean isIswipInstall = IswipeManager.isInstallIsiwpe(
                                         getApplicationContext());
                                 if (isIswipInstall) {
                                     AppMasterPreference.getInstance(HomeActivity.this)
@@ -1455,15 +1428,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
             @Override
             public void onClick(View v) {
-                if (mShowIswipeFromNotfi) {
-                    mShowIswipeFromNotfi = false;
-                    /* 对来自通知栏的统计 */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe",
-                            "old_statusbar_n");
-                } else {
-                    /* 非通知栏 */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_n");
-                }
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_n");
                 /* 稍后再说 */
                 if (mIswipDialog != null) {
                     mIswipDialog.dismiss();
@@ -1474,33 +1439,25 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
             @Override
             public void onClick(View v) {
-                if (mShowIswipeFromNotfi) {
-                    mShowIswipeFromNotfi = false;
-                    /* 对来自通知栏的统计 */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe",
-                            "old_statusbar_y");
-                } else {
-                    /* 非通知栏 */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_y");
-                }
+                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_y");
                 /* 立即下载 */
-
                 if (mIswipDialog != null) {
                     mIswipDialog.dismiss();
                 }
-                ISwipUpdateRequestManager.getInstance(HomeActivity.this).iSwipDownLoadHandler();
+                IswipeManager.iSwipDownLoadHandler();
             }
         });
-        getIntent().removeExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
         mIswipDialog.setFlag(flag);
         mIswipDialog.show();
     }
 
-    /* 不是通知进入主页，显示iswipe更新对话框 */
+
     private void showIswipeUpdateTip(Context context, String flag) {
-        boolean tipFlag = ISwipUpdateRequestManager.getInstance(this).getIswipeUpdateTip();
-        if (tipFlag) {
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        boolean quickGestureFristTip = amp.getFristSlidingTip();
+        if (quickGestureFristTip) {
             showDownLoadISwipDialog(this, flag);
+            amp.setFristSlidingTip(false);
         }
     }
 

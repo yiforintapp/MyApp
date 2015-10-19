@@ -1,14 +1,8 @@
 
 package com.leo.appmater.globalbroadcast;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
-import com.leo.appmaster.utils.AppUtil;
 
 public class ScreenOnOffListener extends BroadcastListener {
 
@@ -38,7 +32,6 @@ public class ScreenOnOffListener extends BroadcastListener {
      */
     public void onScreenChanged(Intent intent) {
         /* 解锁手机加载iSwipe更新数据 */
-        loadISwipeUpdateForOnScreen(intent);
 
 //        loadWifiData(intent);
 
@@ -134,33 +127,4 @@ public class ScreenOnOffListener extends BroadcastListener {
 //        }
 //    }
 
-    private void loadISwipeUpdateForOnScreen(Intent intent) {
-        Context mContext = AppMasterApplication.getInstance();
-        boolean isLoadData = ISwipUpdateRequestManager.getInstance(mContext).isLoadIswipeData();
-        if (!AppUtil.isScreenLocked(mContext)
-                && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-            // Log.d(Constants.RUN_TAG, "开屏");
-            if (isLoadData) {
-                if (ISwipUpdateRequestManager.getInstance(mContext).isUseIswipUser()) {
-                    ISwipUpdateRequestManager.getInstance(mContext)
-                            .showIswipeAlarmNotificationHandler();
-                }
-                ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
-            }
-        } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-            // Log.d(Constants.RUN_TAG, "解锁");
-            if (isLoadData) {
-                boolean isUseIswip = ISwipUpdateRequestManager.getInstance(mContext)
-                        .isUseIswipUser();
-                int iSwipeUpdateFlag = AppMasterPreference.getInstance(mContext)
-                        .getIswipUpdateFlag();
-                boolean isIswipUpdate = (iSwipeUpdateFlag == 1);
-                if (isUseIswip && isIswipUpdate) {
-                    ISwipUpdateRequestManager.getInstance(mContext)
-                            .showIswipeAlarmNotificationHandler();
-                }
-                ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
-            }
-        }
-    }
 }

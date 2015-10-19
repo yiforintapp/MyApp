@@ -134,8 +134,6 @@ public class IswipUpdateTipDialog extends LEOBaseDialog {
         boolean noEmpty = !Utilities.isEmpty(mDialgFlag);
         boolean flagEquals = HOMEACTIVITY.equals(mDialgFlag);
         if (noEmpty && flagEquals) {
-            /* 主页弹出的对话框初始化弹出标志值 */
-            ISwipUpdateRequestManager.getInstance(mContext).cancelShowIswipUpdate();
             mDialgFlag = null;
         } 
         super.dismiss();

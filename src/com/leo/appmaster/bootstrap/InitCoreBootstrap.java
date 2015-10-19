@@ -39,7 +39,7 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.quickgestures.IswipeManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -121,17 +121,11 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i(TAG, "cost, QuickGestureManager.getInstance: " + (end - start));
 
         checkUpdateFinish();
-        initIswipeUpdateTip();
         initSplashDelayTime();
         UIHelper.getInstance(mApp).mRandomCount = preference.getUnlockSucessRandom();
         return true;
     }
 
-    /* 初始化ISwipe升级提示标志 */
-    private void initIswipeUpdateTip() {
-        boolean flag = AppMasterPreference.getInstance(mApp).getIswipeDialogTip();
-        ISwipUpdateRequestManager.getInstance(mApp).setIswipeUpdateTip(flag);
-    }
 
     @Override
     public String getClassTag() {
@@ -317,7 +311,7 @@ public class InitCoreBootstrap extends Bootstrap {
 
     private void installBoostShortcut() {
         /* 系统是否安装有Iswipe */
-        boolean isInstalllIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(mApp);
+        boolean isInstalllIswipe = IswipeManager.isInstallIsiwpe(mApp);
         LeoLog.i(TAG, "System install :" + isInstalllIswipe);
         if (!isInstalllIswipe) {
             Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
