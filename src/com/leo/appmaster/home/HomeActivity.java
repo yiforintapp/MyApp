@@ -81,7 +81,6 @@ import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
-import com.leo.appmaster.quickgestures.QuickGestureTipDialog;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -122,7 +121,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private HomeShadeView mShadeView;
     private LeoHomePopMenu mLeoPopMenu;
     private LEOSelfIconAlarmDialog mSelfIconDialog;
-    private QuickGestureTipDialog mQuickGestureTip;
     private float mDrawerOffset;
     private Handler mHandler = new Handler();
     private DrawerArrowDrawable mDrawerArrowDrawable;
@@ -160,7 +158,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
 
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
-        recordEnterHomeTimes();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         LeoEventBus.getDefaultBus().register(this);
         // AM-2128 偶现图片显示异常，先暂时注释掉
@@ -321,10 +318,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         if (mAdvanceProtectDialog != null) {
             mAdvanceProtectDialog.dismiss();
             mAdvanceProtectDialog = null;
-        }
-        if (mQuickGestureTip != null) {
-            mQuickGestureTip.dismiss();
-            mQuickGestureTip = null;
         }
         if (mIswipDialog != null) {
             mIswipDialog.dismiss();
@@ -1056,11 +1049,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                     /* 系统是否安装iswipe */
                                     boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(
                                             getApplicationContext());
-                                    if (!isIswipInstall) {
-                                        showFirstOpenQuickGestureTipDialog();
-                                    } else {
+                                    if (isIswipInstall) {
                                         AppMasterPreference.getInstance(HomeActivity.this)
-                                                .setFristDialogTip(true);
+                                        .setFristDialogTip(true);
                                     }
                                     LeoLog.i(TAG, "新用户提示！");
                                 }
@@ -1071,11 +1062,9 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 LeoLog.i(TAG, "升级用户提示！");
                                 boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(
                                         getApplicationContext());
-                                if (!isIswipInstall) {
-                                    showFirstOpenQuickGestureTipDialog();
-                                } else {
+                                if (isIswipInstall) {
                                     AppMasterPreference.getInstance(HomeActivity.this)
-                                            .setFristDialogTip(true);
+                                    .setFristDialogTip(true);
                                 }
                             }
                         }
@@ -1419,71 +1408,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             mFragmentHolders[1].fragment.onBackgroundChanged(color);
         }
 
-    }
-    
-    private void showFirstOpenQuickGestureTipDialog() {
-        if (mQuickGestureTip == null) {
-            mQuickGestureTip = new QuickGestureTipDialog(this);
-        }
-        mQuickGestureTip.setOnDismissListener(new OnDismissListener() {
-
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (mQuickGestureTip != null) {
-                    mQuickGestureTip = null;
-                }
-            }
-        });
-        mQuickGestureTip.setLeftOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
-                        "firsd_n");
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "new_guide_n");
-                AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
-                dismissDialog(mQuickGestureTip);
-            }
-        });
-        mQuickGestureTip.setRightOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View arg0) {
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_guide ",
-                        "firstd_y");
-                /* 系统是否安装iswipe */
-                boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(getApplicationContext());
-                AppMasterPreference.getInstance(HomeActivity.this).setQuickGestureRedTip(false);
-                AppMasterPreference.getInstance(HomeActivity.this).setNewUserUnlockCount(0);
-                if (isIswipInstall) {
-                    startQuickGestureEnterTip();
-                } else {
-                    ISwipUpdateRequestManager.getInstance(HomeActivity.this).iSwipDownLoadHandler();
-                }
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "new_guide_y");
-                dismissDialog(mQuickGestureTip);
-            }
-        });
-        mQuickGestureTip.setCanceledOnTouchOutside(false);
-        AppMasterPreference.getInstance(HomeActivity.this).setFristDialogTip(true);
-        mQuickGestureTip.show();
-    }
-    
-    public void recordEnterHomeTimes() {
-        AppMasterPreference pref = AppMasterPreference.getInstance(this);
-        int times = pref.getEnterHomeTimes();
-        if (times < 2) {
-            pref.setEnterHomeTimes(++times);
-        }
-    }
-
-    /**
-     * show the animation when click try in the dialog
-     */
-    private void startQuickGestureEnterTip() {
-        HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
-        fragment.isGestureAnimating = true;
-        LeoLog.d("shodonghua", "set true");
-        mPagerTab.setCurrentItem(2);
-        fragment.playQuickGestureEnterAnim();
     }
 
     /**

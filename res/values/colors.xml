@@ -23,7 +23,6 @@
     <color name="help_setting_tip">#f8f8f8</color>
     <color name="help_setting_title">#007fff</color>
     <color name="help_setting_content">#888888</color>
-    <color name="vpi__background_holo_dark">#ff000000</color>
     <color name="vpi__background_holo_light">#fff3f3f3</color>
     <color name="vpi__bright_foreground_holo_dark">@color/vpi__background_holo_light</color>
     <color name="vpi__bright_foreground_disabled_holo_dark">#ff4c4c4c</color>
