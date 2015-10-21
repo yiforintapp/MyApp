@@ -6,15 +6,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.Utilities;
 
 public class ScreenOnOffListener extends BroadcastListener {
 
-    public static final String TAG = "SCREEN ON OFF";
-    public static final long mTwoDay = 48 * 60 * 60 * 1000;
+//    public static final String TAG = "SCREEN ON OFF";
+//    public static final long mTwoDay = 48 * 60 * 60 * 1000;
 
     public final void onEvent(String action) {
         if (Intent.ACTION_SCREEN_OFF.equals(action)
@@ -49,10 +47,7 @@ public class ScreenOnOffListener extends BroadcastListener {
         if ((!AppUtil.isScreenLocked(mContext)
                 && Intent.ACTION_SCREEN_ON.equals(intent.getAction()))
                 || Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-
-            AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
-            String url = amp.getIswipUpdateBrowserUrl();
-            if (Utilities.isEmpty(url) && !ISwipUpdateRequestManager.isInstallIsiwpe(mContext)) {
+            if (!ISwipUpdateRequestManager.isInstallIsiwpe(mContext)) {
                 ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
             }
         }
