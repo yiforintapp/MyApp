@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.Intent.ShortcutIconResource;
 import android.content.IntentFilter;
 import android.database.ContentObserver;
 import android.graphics.drawable.Drawable;
@@ -30,7 +29,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.SystemClock;
 import android.text.TextUtils;
-import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -38,9 +36,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.LocationLockEditActivity;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.TimeLockEditActivity;
 import com.leo.appmaster.applocker.WaitActivity;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -60,9 +56,6 @@ import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
@@ -1211,7 +1204,9 @@ public class LockManager {
     public void setCurrentLockMode(final LockMode mode, boolean fromUser) {
         if (mCurrentMode == mode || mode == null)
             return;
-        mCurrentMode.isCurrentUsed = false;
+        if(mCurrentMode != null) {
+            mCurrentMode.isCurrentUsed = false;
+        }
         final LockMode lastMode = mCurrentMode;
         mode.isCurrentUsed = true;
         mCurrentMode = mode;

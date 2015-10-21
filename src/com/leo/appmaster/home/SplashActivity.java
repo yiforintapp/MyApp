@@ -55,7 +55,6 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
-import com.leo.appmaster.ui.CirclePageIndicator;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
@@ -70,10 +69,8 @@ public class SplashActivity extends BaseActivity {
     /* Guide page stuff begin */
     private ViewPager mViewPager, mNewFuncViewPager;
     /* pages */
-    private ArrayList<View> mPageViews, mNewFuncPageViews;
+    private ArrayList<View>  mNewFuncPageViews;
     private GuideItemView mPageBackgroundView, mNewPageBackgroundView;
-    /* footer indicators */
-    private CirclePageIndicator mIndicator;
     private ViewGroup mMain, mNewGuideMain;
     /* color for each page */
     private int[] mPageColors = new int[7];
@@ -91,22 +88,17 @@ public class SplashActivity extends BaseActivity {
     private static final boolean DBG = false;
     /* 是否显示更多引导 */
     private boolean mIsShowGuide;
-    private long mOnCreateTs;
-    private boolean mChenckTs;
 
     /* Guide page stuff end */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mChenckTs = true;
-        mOnCreateTs = SystemClock.elapsedRealtime();
         LeoLog.d("SplashActivity", "onCreate");
         setContentView(R.layout.activity_splash_guide);
         initSplash();
         mEventHandler = new EventHandler();
         startInitTask();
         LeoEventBus.getDefaultBus().register(this, 2);
-        splashDelayShow();
     }
 
     @SuppressLint("NewApi")
@@ -266,13 +258,6 @@ public class SplashActivity extends BaseActivity {
         }
     }
 
-    /* 反初始化闪屏跳过按钮和Url跳转 */
-    private void cancelSplashSkipbtAndUrlbt() {
-        mSkipToPgButton.setVisibility(View.INVISIBLE);
-        mSkipToPgButton.setOnClickListener(null);
-        mSplashRL.setOnClickListener(null);
-    }
-
     public void finishForSkip(boolean finish) {
         if (finish) {
             finish();
@@ -305,10 +290,6 @@ public class SplashActivity extends BaseActivity {
             LeoLog.i("TsCost", "app oncreate to splash onresume, cost: "
                     + (currentTs - AppMasterApplication.sAppCreate));
             AppMasterApplication.sCheckStartTs = false;
-        }
-        if (mChenckTs) {
-            LeoLog.i("TsCost", "splash onCreate to onResume, cost: " + (currentTs - mOnCreateTs));
-            mChenckTs = false;
         }
     }
 

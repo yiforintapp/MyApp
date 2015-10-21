@@ -382,8 +382,6 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
                     adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
                 }
             }, 1280);
-        } else {
-            mBannerAnimImage.setImageDrawable(null);
         }
     }
     private void loadADPic(String url, ImageSize size, final ImageView v)

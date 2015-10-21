@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -328,7 +329,7 @@ public class LockModeEditActivity extends BaseActivity implements
                 break;
             case R.id.iv_edit_mode_name:
 
-                if (mEditMode.defaultFlag == 1) {
+                if (mEditMode != null && mEditMode.defaultFlag == 1) {
                     Toast.makeText(this, R.string.cont_edit_visitor_name, Toast.LENGTH_SHORT)
                             .show();
                     return;
@@ -347,7 +348,10 @@ public class LockModeEditActivity extends BaseActivity implements
                             String modeName = "";
                             EditText text = mModeNameDiglog.getEditText();
                             if(text != null) {
-                                modeName = text.getText().toString();
+                                Editable ed = text.getText();
+                                if(ed != null) {
+                                    modeName = ed.toString();
+                                }
                             }
                             mEdited = true;
                             if (TextUtils.isEmpty(modeName)) {
@@ -399,7 +403,13 @@ public class LockModeEditActivity extends BaseActivity implements
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (which == 1) {
-                        mModeName = mModeNameDiglog.getEditText().getText().toString();
+                        EditText et = mModeNameDiglog.getEditText();
+                        if(et != null) {
+                            Editable ed = et.getText();
+                            if(ed != null) {
+                                mModeName = ed.toString();
+                            }
+                        }
                         if (TextUtils.isEmpty(mModeName)) {
                             shakeView(mModeNameDiglog.getEditText());
                             Toast.makeText(LockModeEditActivity.this,

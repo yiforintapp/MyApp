@@ -470,8 +470,6 @@ public class GestureLockFragment extends LockFragment implements
                     adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
                 }
             }, 1280);
-        } else {
-            mBannerAnimImage.setImageDrawable(null);
         }
 
     }
