@@ -108,6 +108,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                     intent.putExtra("pos", position);
 
                     startActivityForResult(intent, 0);
+                    SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1,
+                            "hide_pic_operation",
+                            "pic_viw_cnts" );
                 } else {
                     ImageView cView = (ImageView) conView
                             .findViewById(R.id.photo_select);
@@ -674,7 +677,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             @Override
             public void onClick(int which) {
                 if (which == 1) {
-                    if (mClickList.size() > 0) {
+                    int size = mClickList.size();
+                    if (size > 0) {
                         if (mActicityMode == SELECT_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_hide_image) + "...",
@@ -684,6 +688,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             task.execute(true);
                             SDKWrapper.addEvent(ImageGridActivity.this,
                                     SDKWrapper.P1, "hide_pic", "used");
+                            SDKWrapper.addEvent(ImageGridActivity.this,
+                                    SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + size);
                         } else if (mActicityMode == CANCEL_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_cancel_hide_image)
@@ -691,6 +697,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             BackgoundTask task = new BackgoundTask(
                                     ImageGridActivity.this);
                             task.execute(false);
+                            SDKWrapper.addEvent(ImageGridActivity.this,
+                                    SDKWrapper.P1, "hide_pic_operation", "pic_ccl_pics_" + size);
                         }
                     }
                 }

@@ -31,6 +31,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.imagehide.ImageGridActivity;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -437,6 +438,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
 
                         // startActivityForResult(intent, 1001);
                         startActivity(intent);
+                        SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1,
+                                "hide_vid_operation",
+                                "vid_viw_cnts" );
                     } catch (Exception e) {
 
                     }
@@ -470,6 +474,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     if (flag == DIALOG_CANCLE_VIDEO) {
                         BackgoundTask backgoundTask = new BackgoundTask(VideoViewPager.this);
                         backgoundTask.execute(true);
+                        SDKWrapper.addEvent(VideoViewPager.this, SDKWrapper.P1,
+                                "hide_vid_operation",
+                                "vid_ccl_pics_1" );
                     } else if (flag == DIALOG_DELECTE_VIDEO) {
                          DeleteTask task = new DeleteTask(VideoViewPager.this);
                           task.execute(true);

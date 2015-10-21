@@ -28,6 +28,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
@@ -289,6 +290,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     private void unhidePicture() {
         BackgoundTask task = new BackgoundTask(this);
         task.execute();
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_pic_operation", "pic_ccl_pics_1");
     }
 
     private class BackgoundTask extends AsyncTask<Boolean, Integer, Integer> {
@@ -390,7 +392,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mPagerAdapter.notifyDataSetChanged();
             mPager.setCurrentItem(mListPos);
         }
-
         PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
     }
 

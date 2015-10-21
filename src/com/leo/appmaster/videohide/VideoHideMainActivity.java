@@ -12,8 +12,6 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -33,7 +31,6 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -76,7 +73,6 @@ public class VideoHideMainActivity extends BaseActivity implements
 
     // private boolean isHaveCbFloder = false;
     // public static boolean isLetPgFail = false;
-    private int i = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -454,8 +450,6 @@ public class VideoHideMainActivity extends BaseActivity implements
             startActivityForResult(intent, REQUEST_CODE_OPTION);
         } catch (Exception e) {
         }
-        // }
-
     }
 
     // private void requestUrl() {

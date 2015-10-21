@@ -502,7 +502,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             @Override
             public void onClick(int which) {
                 if (which == 1) {
-                    if (mClickList.size() > 0) {
+                    int size = mClickList.size() ;
+                    if (size > 0) {
                         VideoItemBean item = mClickList.get(0);
                         String mPath = item.getPath();
                         String mLastName = FileOperationUtil.getDirNameFromFilepath(mPath);
@@ -527,7 +528,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
                                     "hide_Video",
                                     "used");
-
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                    "hide_vid_operation",
+                                    "vid_add_pics_" + size);
                         } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_cancel_hide_image) + "...",
@@ -535,6 +538,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                     true);
                             BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
                             task.execute(false);
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                    "hide_vid_operation",
+                                    "vid_ccl_pics_" + size);
                             mHideVideoAdapter.notifyDataSetChanged();
                         }
                     }
