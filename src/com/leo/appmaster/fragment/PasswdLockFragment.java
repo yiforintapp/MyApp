@@ -364,23 +364,27 @@ public class PasswdLockFragment extends LockFragment implements OnClickListener,
             }
         });
     }
+
     /* 广告加载成功显示动画 */
     private void adLoadSucessShowAnim() {
-    mSupermanBanner.setVisibility(View.VISIBLE);
-    AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
-            .getDrawable();
-    if(anim!=null){
-    anim.stop();
-    mBannerAnimImage.setImageDrawable(null);
-    mBannerAnimImage.setImageDrawable(anim);
-    anim.start();
-    Handler handler = ThreadManager.getUiThreadHandler();
-    handler.postDelayed(new Runnable() {
-        public void run() {
-            adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
+        mSupermanBanner.setVisibility(View.VISIBLE);
+        Drawable d = mBannerAnimImage.getDrawable();
+        if(d instanceof AnimationDrawable) {
+            AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
+                    .getDrawable();
+            anim.stop();
+            mBannerAnimImage.setImageDrawable(null);
+            mBannerAnimImage.setImageDrawable(anim);
+            anim.start();
+            Handler handler = ThreadManager.getUiThreadHandler();
+            handler.postDelayed(new Runnable() {
+                public void run() {
+                    adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
+                }
+            }, 1280);
+        } else {
+            mBannerAnimImage.setImageDrawable(null);
         }
-    }, 1280);
-    }
     }
     private void loadADPic(String url, ImageSize size, final ImageView v)
     {

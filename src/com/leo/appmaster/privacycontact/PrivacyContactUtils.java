@@ -243,13 +243,17 @@ public class PrivacyContactUtils {
                     Long photoid =
                             phoneCursor.getLong(phoneCursor.getColumnIndex("photo_id"));
                     Bitmap contactPhoto = null;
-                    if (photoid > 0) {
-                        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
-                                contactid);
-                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
-                                cr,
-                                uri);
-                        contactPhoto = BitmapFactory.decodeStream(input);
+                    try {
+                        if (photoid > 0) {
+                            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+                                    contactid);
+                            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
+                                    cr,
+                                    uri);
+                            contactPhoto = BitmapFactory.decodeStream(input);
+                        }
+                    } catch (Error e) {
+                        
                     }
                     ContactBean cb = new ContactBean();
                     cb.setContactName(contactName);
@@ -320,13 +324,17 @@ public class PrivacyContactUtils {
                     Long photoid =
                             cursorContact.getLong(cursorContact.getColumnIndex("photo_id"));
                     Bitmap contactPhoto = null;
-                    if (photoid > 0) {
-                        Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
-                                contactid);
-                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
-                                cr,
-                                uri);
-                        contactPhoto = BitmapFactory.decodeStream(input);
+                    try {
+                        if (photoid > 0) {
+                            Uri uri = ContentUris.withAppendedId(ContactsContract.Contacts.CONTENT_URI,
+                                    contactid);
+                            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
+                                    cr,
+                                    uri);
+                            contactPhoto = BitmapFactory.decodeStream(input);
+                        }
+                    } catch (Error e) {
+                        
                     }
                     ContactBean cb = new ContactBean();
                     cb.setContactName(contactName);
@@ -1127,7 +1135,6 @@ public class PrivacyContactUtils {
                         .getColumnIndex(Constants.COLUMN_CONTACT_NAME));
                 int answerType = cur.getInt(cur
                         .getColumnIndex(Constants.COLUMN_PHONE_ANSWER_TYPE));
-                byte[] icon = cur.getBlob(cur.getColumnIndex(Constants.COLUMN_ICON));
                 switch (answerType) {
                     case 0:
                         mb.setAnswerStatus(mContext
@@ -1142,15 +1149,21 @@ public class PrivacyContactUtils {
                 }
                 mb.setContactName(name);
                 mb.setContactNumber(number);
-                if (icon != null) {
-                    Bitmap contactIcon = PrivacyContactUtils.getBmp(icon);
-                    mb.setContactIcon(contactIcon);
-                } else {
+                try {
+                    byte[] icon = cur.getBlob(cur.getColumnIndex(Constants.COLUMN_ICON));
+                    if (icon != null) {
+                        Bitmap contactIcon = PrivacyContactUtils.getBmp(icon);
+                        mb.setContactIcon(contactIcon);
+                    }
+                } catch (Error e) {                   
+                }
+                if(mb.getContactIcon() == null) {
                     BitmapDrawable drawable = (BitmapDrawable) mContext.getResources()
                             .getDrawable(
                                     R.drawable.default_user_avatar);
                     mb.setContactIcon(drawable.getBitmap());
                 }
+
                 mb.setAnswerType(answerType);
                 mContacts.add(mb);
             }
@@ -1217,14 +1230,18 @@ public class PrivacyContactUtils {
                     Long photoid =
                             phoneCursor.getLong(phoneCursor.getColumnIndex("photo_id"));
                     Bitmap contactPhoto = null;
-                    if (photoid > 0) {
-                        Uri uriContact = ContentUris.withAppendedId(
-                                ContactsContract.Contacts.CONTENT_URI,
-                                contactid);
-                        InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
-                                context.getContentResolver(),
-                                uriContact);
-                        contactPhoto = BitmapFactory.decodeStream(input);
+                    try {
+                        if (photoid > 0) {
+                            Uri uriContact = ContentUris.withAppendedId(
+                                    ContactsContract.Contacts.CONTENT_URI,
+                                    contactid);
+                            InputStream input = ContactsContract.Contacts.openContactPhotoInputStream(
+                                    context.getContentResolver(),
+                                    uriContact);
+                            contactPhoto = BitmapFactory.decodeStream(input);
+                        }
+                    } catch (Error e) {
+                        
                     }
                     ContactBean cb = new ContactBean();
                     cb.setContactName(contactName);

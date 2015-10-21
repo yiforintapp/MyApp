@@ -388,21 +388,24 @@ public class DiskBasedCache implements Cache {
          */
         public static CacheHeader readHeader(InputStream is) throws IOException {
             CacheHeader entry = new CacheHeader();
-            int magic = readInt(is);
-            if (magic != CACHE_MAGIC) {
-                // don't bother deleting, it'll get pruned eventually
-                throw new IOException();
+            try {
+                int magic = readInt(is);
+                if (magic != CACHE_MAGIC) {
+                    // don't bother deleting, it'll get pruned eventually
+                    throw new IOException();
+                }
+                entry.key = readString(is);
+                entry.etag = readString(is);
+                if (entry.etag.equals("")) {
+                    entry.etag = null;
+                }
+                entry.serverDate = readLong(is);
+                entry.ttl = readLong(is);
+                entry.softTtl = readLong(is);
+                entry.lastModify = readLong(is);
+                entry.responseHeaders = readStringStringMap(is);
+            } catch (Error e) {             
             }
-            entry.key = readString(is);
-            entry.etag = readString(is);
-            if (entry.etag.equals("")) {
-                entry.etag = null;
-            }
-            entry.serverDate = readLong(is);
-            entry.ttl = readLong(is);
-            entry.softTtl = readLong(is);
-            entry.lastModify = readLong(is);
-            entry.responseHeaders = readStringStringMap(is);
             return entry;
         }
 
@@ -439,6 +442,9 @@ public class DiskBasedCache implements Cache {
                 return true;
             } catch (IOException e) {
                 VolleyLog.d("%s", e.toString());
+                return false;
+            }catch (Error error) {
+                VolleyLog.d("%s", error.toString());
                 return false;
             }
         }

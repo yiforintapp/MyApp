@@ -3,37 +3,6 @@ package com.leo.appmaster.fragment;
 
 import java.util.List;
 
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.gesture.LockPatternView;
-import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
-import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.manager.MobvistaEngine;
-import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
-import com.leo.appmaster.applocker.model.LockMode;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.eventbus.event.SubmaineAnimEvent;
-import com.leo.appmaster.lockertheme.ResourceName;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.theme.LeoResources;
-import com.leo.appmaster.theme.ThemeUtils;
-import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.LockPatternUtils;
-import com.leo.appmaster.utils.NetWorkUtil;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FailReason;
-import com.leo.imageloader.core.ImageLoadingListener;
-import com.leo.imageloader.core.ImageSize;
-import com.mobvista.sdk.m.core.entity.Campaign;
-
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
@@ -41,7 +10,6 @@ import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
@@ -59,6 +27,36 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.gesture.LockPatternView;
+import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
+import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
+import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.SubmaineAnimEvent;
+import com.leo.appmaster.lockertheme.ResourceName;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.theme.LeoResources;
+import com.leo.appmaster.theme.ThemeUtils;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.LockPatternUtils;
+import com.leo.appmaster.utils.NetWorkUtil;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageSize;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class GestureLockFragment extends LockFragment implements
         OnPatternListener, OnClickListener {
@@ -458,9 +456,9 @@ public class GestureLockFragment extends LockFragment implements
     /* 广告加载成功显示动画 */
     private void adLoadSucessShowAnim() {
         mSupermanBanner.setVisibility(View.VISIBLE);
-        AnimationDrawable anim = (AnimationDrawable) mBannerAnimImage
-                .getDrawable();
-        if (anim != null) {
+        Drawable d = mBannerAnimImage.getDrawable();
+        if(d instanceof AnimationDrawable) {
+            AnimationDrawable anim = (AnimationDrawable) d;
             anim.stop();
             mBannerAnimImage.setImageDrawable(null);
             // mBannerAnimImage.setImageResource(R.drawable.lock_banner_ad_anim);
@@ -472,7 +470,10 @@ public class GestureLockFragment extends LockFragment implements
                     adSuccessSupermanAnim(mBannerAnimImage, mSupermanBannerAD);
                 }
             }, 1280);
+        } else {
+            mBannerAnimImage.setImageDrawable(null);
         }
+
     }
 
     @Override

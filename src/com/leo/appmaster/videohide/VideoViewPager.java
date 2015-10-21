@@ -27,7 +27,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.browser.aidl.mInterface;
@@ -858,9 +857,9 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 protected Boolean doInBackground(Boolean... params) {
                     boolean isSuccess = true;
                     boolean flag = params[0];
-                    mDeletePath = mAllPath.get(mPosition);
         
                     if (flag && mPosition < mAllPath.size()) {
+                        mDeletePath = mAllPath.get(mPosition);
                         if (isServiceDo) {
                             LeoLog.d("testBindService", "is ServiceDo");
                             int mProcessType = -1;
