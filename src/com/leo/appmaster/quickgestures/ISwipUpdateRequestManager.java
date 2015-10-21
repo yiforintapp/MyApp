@@ -47,7 +47,6 @@ public class ISwipUpdateRequestManager {
     /* 是否为push吊起加载 */
     private volatile boolean mIsPushLoadIswipe;
     private static final String TAG = "ISwipUpdateRequestManager";
-    private static boolean DBG = true;
 
     public static enum IswipeNotificationType {
         NOTIFICATION, DIALOG
@@ -159,7 +158,9 @@ public class ISwipUpdateRequestManager {
         public void onResponse(JSONObject response, boolean noMidify) {
             /* noMidify， true：缓存，false：后台数据更改重新拉取 */
             if (response != null && !noMidify) {
-                Log.d(TAG, "Success: " + response.toString());
+                if (AppMasterConfig.LOGGABLE) {
+                    Log.d(TAG, "Success: " + response.toString());
+                }
                 /* 后台数据修改，恢复之前保存定时提示记录为默认值 */
                 if (!noMidify) {
                     /* 恢复定时器已经通知的次数默认值 */
@@ -219,7 +220,9 @@ public class ISwipUpdateRequestManager {
         @Override
         public void onErrorResponse(VolleyError error) {
             /* 拉取失败 */
-            Log.d(TAG, "Fail!!");
+            if (AppMasterConfig.LOGGABLE) {
+                Log.d(TAG, "Fail!!");
+            }
             AppMasterPreference.getInstance(context).setIswipUpdateLoadingStrategy(
                     AppMasterConfig.TIME_2_HOUR);
             AppMasterPreference.getInstance(context).setIswipeLoadFailDate(
@@ -252,8 +255,11 @@ public class ISwipUpdateRequestManager {
             /* 默认Iswipe到浏览器下载链接 */
             browserDownLoadUrl = Constants.ISWIPE_TO_GP_BROWSER_RUL;
         }
-        Log.d(TAG, "GP: " + gpDownLoadUrl);
-        Log.d(TAG, "Browser: " + browserDownLoadUrl);
+        
+        if (AppMasterConfig.LOGGABLE) {
+            Log.d(TAG, "GP: " + gpDownLoadUrl);
+            Log.d(TAG, "Browser: " + browserDownLoadUrl);
+        }
         downLoadISwipToGP(gpDownLoadUrl, browserDownLoadUrl);
         
     }
@@ -287,8 +293,8 @@ public class ISwipUpdateRequestManager {
                 e.printStackTrace();
             }
         } else {
-            if (DBG) {
-                LeoLog.d(TAG, "下载ISwip的浏览器链接为空");
+            if (AppMasterConfig.LOGGABLE) {
+                Log.d(TAG, "下载ISwip的浏览器链接为空");
             }
         }
     }

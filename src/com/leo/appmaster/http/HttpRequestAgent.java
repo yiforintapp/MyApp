@@ -379,8 +379,10 @@ public class HttpRequestAgent {
         String url = Utilities.getURL(iswipeUrl);
         Time time = new Time();
         time.setToNow();
-        Log.d("ISwipUpdateRequestManager", "iSwipe check time：" + time.toString());
-        Log.d("ISwipUpdateRequestManager", "iSwipe link：" + url);
+        if(AppMasterConfig.LOGGABLE) {
+            Log.d("ISwipUpdateRequestManager", "iSwipe check time：" + time.toString());
+            Log.d("ISwipUpdateRequestManager", "iSwipe link：" + url);
+        }
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);
