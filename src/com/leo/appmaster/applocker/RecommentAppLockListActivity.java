@@ -46,7 +46,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     private PagedGridView mAppPager;
     private TextView lockTV;
     private ArrayList<AppInfo> resault;
-    private String mPackageName;
     private String mInstallPackageName;
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "recomment_activity";
     private final static String[] DEFAULT_LOCK_LIST = new String[] {
@@ -88,9 +87,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
         getIntentFrom();
         initUI();
         loadData();
-        if (mLockList.isEmpty()) {
-            lockTV.setEnabled(false);
-        }
     }
 
     private void initUI() {
@@ -177,18 +173,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
                     .setDefaultRecommendApp(true);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "app",
                     "lock_" + curMode.modeName + "_" + selectApp.packageName);
-        }
-
-        if (mLockList.size() <= 0) {
-            lockTV.setEnabled(false);
-            // int image = R.drawable.unclick_button;
-            // lockTV.setBackgroundDrawable(getResources().getDrawable(image));
-            // lockTV.setTextColor(getResources().getColor(R.color.default_lock));
-        } else {
-            lockTV.setEnabled(true);
-            // int image = R.color.default_lock_down;
-            // lockTV.setBackgroundDrawable(getResources().getDrawable(image));
-            // lockTV.setTextColor(getResources().getColor(R.color.white));
         }
     }
 
@@ -315,20 +299,25 @@ public class RecommentAppLockListActivity extends BaseActivity implements OnClic
     public void onClick(View arg0) {
         switch (arg0.getId()) {
             case R.id.recomment_lock:
-                saveLockList();
-                Intent intent = new Intent(this, SuccessAppLockListActivity.class);
-                if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK)) {
-                    intent.putExtra("target", getIntent().getIntExtra("target", 1));
-                } else if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK_MORE)) {
-                    intent.putExtra("target", getIntent().getIntExtra("target", 2));
+                if (mLockList == null || mLockList.isEmpty()) {
+                    Intent intent = new Intent(this, AppLockListActivity.class);
+                    startActivity(intent);
+                    finish();
                 } else {
-                    intent.putExtra("target", getIntent().getIntExtra("target", 0));
+                    saveLockList();
+                    Intent intent = new Intent(this, SuccessAppLockListActivity.class);
+                    if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK)) {
+                        intent.putExtra("target", getIntent().getIntExtra("target", 1));
+                    } else if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK_MORE)) {
+                        intent.putExtra("target", getIntent().getIntExtra("target", 2));
+                    } else {
+                        intent.putExtra("target", getIntent().getIntExtra("target", 0));
+                    }
+                    startActivity(intent);
+                    finish();
+                    break;
                 }
-                startActivity(intent);
-                this.finish();
-                break;
         }
-
     }
 
     @Override
