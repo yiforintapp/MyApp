@@ -9,9 +9,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.ActivityManager;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
 import android.content.Context;
@@ -20,16 +17,14 @@ import android.os.Build;
 import android.os.PowerManager;
 import android.text.format.Time;
 
-import com.android.volley.VolleyError;
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
+import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.R.drawable;
-import com.leo.appmaster.R.string;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.applocker.service.TaskDetectService;
@@ -38,9 +33,9 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.ProxyActivity;
 import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.push.PushNotification;
 import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
 
 /**
@@ -74,7 +69,8 @@ public class CheckNewBootstrap extends Bootstrap {
         }
 
         checkNewTheme();
-        checkNewAppBusiness();
+//        checkNewAppBusiness();
+        ISwipUpdateRequestManager.getInstance(mApp).loadIswipCheckNew();
         return true;
     }
 

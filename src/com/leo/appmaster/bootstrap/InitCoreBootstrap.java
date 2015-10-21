@@ -39,7 +39,7 @@ import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
-import com.leo.appmaster.quickgestures.IswipeManager;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -311,7 +311,7 @@ public class InitCoreBootstrap extends Bootstrap {
 
     private void installBoostShortcut() {
         /* 系统是否安装有Iswipe */
-        boolean isInstalllIswipe = IswipeManager.isInstallIsiwpe(mApp);
+        boolean isInstalllIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(mApp);
         LeoLog.i(TAG, "System install :" + isInstalllIswipe);
         if (!isInstalllIswipe) {
             Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);

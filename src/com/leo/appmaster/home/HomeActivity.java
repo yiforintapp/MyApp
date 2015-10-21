@@ -79,8 +79,8 @@ import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
 import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
-import com.leo.appmaster.quickgestures.IswipeManager;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -1020,7 +1020,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                             .setFristDialogTip(true);
                                 } else {
                                     /* 系统是否安装iswipe */
-                                    boolean isIswipInstall = IswipeManager.isInstallIsiwpe(
+                                    boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(
                                             getApplicationContext());
                                     if (isIswipInstall) {
                                         AppMasterPreference.getInstance(HomeActivity.this)
@@ -1033,7 +1033,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                             // update user
                             if (!firstDilaogTip) {
                                 LeoLog.i(TAG, "升级用户提示！");
-                                boolean isIswipInstall = IswipeManager.isInstallIsiwpe(
+                                boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(
                                         getApplicationContext());
                                 if (isIswipInstall) {
                                     AppMasterPreference.getInstance(HomeActivity.this)
@@ -1444,7 +1444,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 if (mIswipDialog != null) {
                     mIswipDialog.dismiss();
                 }
-                IswipeManager.iSwipDownLoadHandler();
+                ISwipUpdateRequestManager.getInstance(getApplicationContext()).iSwipDownLoadHandler();
             }
         });
         mIswipDialog.setFlag(flag);
@@ -1455,10 +1455,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private void showIswipeUpdateTip(Context context, String flag) {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         boolean quickGestureFristTip = amp.getFristSlidingTip();
-        if (quickGestureFristTip) {
+        if (quickGestureFristTip && !ISwipUpdateRequestManager.isInstallIsiwpe(this)) {
             showDownLoadISwipDialog(this, flag);
-            amp.setFristSlidingTip(false);
         }
+        amp.setFristSlidingTip(false);
     }
 
     /* 卸载 PG */

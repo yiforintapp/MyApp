@@ -9,7 +9,7 @@ import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.quickgestures.IswipeManager;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -71,7 +71,7 @@ public class StatusBarEventService extends IntentService {
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (eventType == EVENT_BUSINESS_QUICK_GUESTURE) {
-            boolean installIswipe = IswipeManager.isInstallIsiwpe(this);
+            boolean installIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(this);
             if (installIswipe) {
                 if (DBG) {
                     LeoLog.i(TAG, "存在Iswipe请点击Iswipe图标");

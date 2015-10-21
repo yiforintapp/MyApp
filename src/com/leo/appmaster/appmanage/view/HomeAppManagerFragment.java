@@ -55,8 +55,8 @@ import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.fragment.Selectable;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
-import com.leo.appmaster.quickgestures.IswipeManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
 import com.leo.appmaster.utils.LanguageUtils;
@@ -465,7 +465,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
     }
 
     private void startQuickGestureHandler() {
-        boolean installISwipe = IswipeManager.isInstallIsiwpe(mActivity);
+        boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(mActivity);
         startISwipHandlerForInstallIS(installISwipe);
     }
 
@@ -831,7 +831,7 @@ public class HomeAppManagerFragment extends BaseFragment implements OnClickListe
             public void onClick(View v) {
                 /* 立即下载 */
                 SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "qs_iSwipe", "new_dia_y");
-                IswipeManager.iSwipDownLoadHandler();
+                ISwipUpdateRequestManager.getInstance(mActivity).iSwipDownLoadHandler();
                 if (mAppManagerIswipDialog != null) {
                     mAppManagerIswipDialog.dismiss();
                 }

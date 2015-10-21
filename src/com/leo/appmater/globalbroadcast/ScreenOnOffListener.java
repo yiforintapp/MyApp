@@ -1,8 +1,15 @@
 
 package com.leo.appmater.globalbroadcast;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
+import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.Utilities;
 
 public class ScreenOnOffListener extends BroadcastListener {
 
@@ -32,8 +39,23 @@ public class ScreenOnOffListener extends BroadcastListener {
      */
     public void onScreenChanged(Intent intent) {
         /* 解锁手机加载iSwipe更新数据 */
-
+        loadISwipeUpdateForOnScreen(intent);
 //        loadWifiData(intent);
+
+    }
+    
+    private void loadISwipeUpdateForOnScreen(Intent intent) {
+        Context mContext = AppMasterApplication.getInstance();
+        if ((!AppUtil.isScreenLocked(mContext)
+                && Intent.ACTION_SCREEN_ON.equals(intent.getAction()))
+                || Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+
+            AppMasterPreference amp = AppMasterPreference.getInstance(mContext);
+            String url = amp.getIswipUpdateBrowserUrl();
+            if (Utilities.isEmpty(url) && !ISwipUpdateRequestManager.isInstallIsiwpe(mContext)) {
+                ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
+            }
+        }
 
     }
 

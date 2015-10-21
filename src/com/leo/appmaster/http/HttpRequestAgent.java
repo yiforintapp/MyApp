@@ -14,6 +14,7 @@ import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.text.format.Time;
 import android.util.Log;
 
 import com.android.volley.AuthFailureError;
@@ -33,7 +34,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.feedback.FeedbackHelper;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -377,7 +377,10 @@ public class HttpRequestAgent {
         String object = "";
         String iswipeUrl = "/appmaster/iswipeswitch.html";
         String url = Utilities.getURL(iswipeUrl);
-        Log.d(Constants.RUN_TAG, "iSwipe访问连接：" + url);
+        Time time = new Time();
+        time.setToNow();
+        Log.d("ISwipUpdateRequestManager", "iSwipe check time：" + time.toString());
+        Log.d("ISwipUpdateRequestManager", "iSwipe link：" + url);
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);
