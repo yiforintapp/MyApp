@@ -506,9 +506,9 @@
     <!-- version 2.4 start -->
     <!-- quick gesture -->
     <string name="pg_appmanager_quick_gesture_name">ทางลัด</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">ติดตั้ง iSwipe เพื่อให้โทรศัพท์ของคุณเจ๋งแบบ Apple Watch</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">การปัดหน้าจออย่างง่ายเพื่อจัดการโทรศัพท์ของคุณ ทุกอย่างอยู่ในมือคุณ ลองเลย!</string>
     <string name="grade_tip_feedback">เสนอแนะ</string>
-    <string name="quick_first_tip_dialog_right_bt">เปิดทท.</string>
+    <string name="quick_first_tip_dialog_right_bt">เปิดใช้งาน.</string>
     <string name="quick_first_tip_dialog_left_bt">ภายหลัง</string>
     <!-- quick gesture -->
     <!-- version 2.4 end -->

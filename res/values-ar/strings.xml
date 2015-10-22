@@ -650,7 +650,7 @@
     <!-- <string name="pg_appmanager_quick_gesture_option_gesture_theme_content">当前：%1$s</string> -->
     <!--  -->
 
-    <string name="first_open_quick_gesture_dialog_tip_cotent">تنزيل iSwipe لجعل هاتفك أكثر روعة مصل ساعة آبل</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">تمرير سهل لإدارة الهاتف، كلها بين يديك في متناول إبهامك. قم بتجربتها الآن!</string>
     <string name="grade_tip_feedback">كلامي</string>
     <string name="quick_first_tip_dialog_right_bt">تمكين</string>
     <string name="quick_first_tip_dialog_left_bt">لاحقا</string>

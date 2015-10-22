@@ -517,10 +517,10 @@
     <!-- version 2.4 begin -->
     <!-- quick gesture -->
     <string name="pg_appmanager_quick_gesture_name">Kısayollar</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">iSwipe yükleyerek telefonunu Apple Watch gibi havalı yap</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Telefonunuzu yönetmek için kolay bir yürütme, hepsi de elinizde, başparmağınızın ulaşabileceği noktada. Onu şimdi deneyin!</string>
     <string name="grade_tip_feedback">Geri bildirim</string>
-    <string name="quick_first_tip_dialog_right_bt">Hemen açın</string>
-    <string name="quick_first_tip_dialog_left_bt">Daha sonra</string>
+    <string name="quick_first_tip_dialog_right_bt">Etkinleştirin</string>
+    <string name="quick_first_tip_dialog_left_bt">Bekleyin</string>
 
     <!-- quick gesture -->
     <!-- version 2.4 end -->

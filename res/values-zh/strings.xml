@@ -519,7 +519,7 @@
     <!-- version 2.4 begin -->
     <!-- quick gesture -->
     <string name="pg_appmanager_quick_gesture_name">快捷手勢</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">安裝iSwipe，體驗和apple watch一樣的快捷開關管理吧，讓你成為朋友中最cool的人！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">滑一滑，一手掌控快捷開關及應用，立即安裝iSwipe體驗單手操作神器</string>
     <string name="grade_tip_feedback">我要吐槽</string>
     <string name="quick_first_tip_dialog_right_bt">開启</string>
     <string name="quick_first_tip_dialog_left_bt">稍後</string>
