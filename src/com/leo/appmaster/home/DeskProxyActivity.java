@@ -84,10 +84,6 @@ public class DeskProxyActivity extends Activity {
                 } else if (type == mAd) {
                     gotoAd(type);
                 } else {
-                    if (AppMasterConfig.LOGGABLE) {
-                        LeoLog.f(DeskProxyActivity.class.getSimpleName(), "oncreate",
-                                Constants.LOCK_LOG);
-                    }
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                             Intent.FLAG_ACTIVITY_NEW_TASK);

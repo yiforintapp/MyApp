@@ -16,13 +16,10 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.text.Html;
 import android.text.Spanned;
 
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
-import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -30,8 +27,6 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
-
-import java.io.FileInputStream;
 
 public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
@@ -349,9 +344,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             } catch (Exception e) {
             }
         } else if ("change_passwd".equals(key)) {
-            if (AppMasterConfig.LOGGABLE) {
-                LeoLog.f(TAG, "change_passwd", Constants.LOCK_LOG);
-            }
             Intent intent = new Intent(this, LockSettingActivity.class);
             intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
             startActivityForResult(intent, 0);

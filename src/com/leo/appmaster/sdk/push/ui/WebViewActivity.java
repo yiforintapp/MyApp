@@ -1,26 +1,12 @@
 
 package com.leo.appmaster.sdk.push.ui;
 
-import com.leo.appmaster.AppMasterConfig;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.service.TaskDetectService;
-import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.Utilities;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -33,6 +19,16 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.LockSettingActivity;
+import com.leo.appmaster.applocker.service.TaskDetectService;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.Utilities;
 
 public class WebViewActivity extends BaseActivity implements OnClickListener {
 
@@ -65,10 +61,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             }
         }
         if (TextUtils.isEmpty(mURL)) {
-            Log.i(TAG, "URL为空");
+            LeoLog.i(TAG, "URL为空");
             finish();
         }
-        Log.i(TAG, "URL = " + mURL);
+        LeoLog.i(TAG, "URL = " + mURL);
 
         initUI();
         intWebView();
@@ -86,7 +82,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             mURL = newUrl;
             mWebView.loadUrl(mURL);
         }
-        Log.i(TAG, "URL = " + mURL);
+        LeoLog.i(TAG, "URL = " + mURL);
     }
 
     private void initUI() {
@@ -171,14 +167,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private void disableNextBtn() {
         mNextView.setImageResource(R.drawable.next_icon_disable);
         mNextView.setOnClickListener(null);
-        Log.i(TAG, "disableNextBtn");
+        LeoLog.i(TAG, "disableNextBtn");
     }
 
     @Override
     public void onBackPressed() {
-        Log.i(TAG, "mPlayView  = " + mPlayView);
+        LeoLog.i(TAG, "mPlayView  = " + mPlayView);
         if (mPlayView != null) {
-            Log.i(TAG, "onBackPressed  onHideCustomView");
+            LeoLog.i(TAG, "onBackPressed  onHideCustomView");
             hideCustomView();
         } else {
             if (mWebView.canGoBack()) {
@@ -196,14 +192,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         mWebView.onResume();
         mWebView.resumeTimers();
 
-        Log.i(TAG, "onResume  ");
+        LeoLog.i(TAG, "onResume  ");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        Log.i(TAG, "onPause  ");
+        LeoLog.i(TAG, "onPause  ");
         mWebView.onPause();
         mWebView.pauseTimers();
     }
@@ -211,7 +207,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i(TAG, "onDestroy  ");
+        LeoLog.i(TAG, "onDestroy  ");
         try {
             // FIX: 2015/9/15 WebViewActivity has leaked window android.widget.ZoomButtonsController$Container
             ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
@@ -263,17 +259,17 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         public void onPageFinished(WebView view, String url) {
             if (view.canGoBack()) {
                 enableBackBtn();
-                Log.i(TAG, "back show");
+                LeoLog.i(TAG, "back show");
             } else {
                 disableBackBtn();
-                Log.i(TAG, "back hide");
+                LeoLog.i(TAG, "back hide");
             }
             if (view.canGoForward()) {
                 enableNextBtn();
-                Log.i(TAG, "forward show");
+                LeoLog.i(TAG, "forward show");
             } else {
                 disableNextBtn();
-                Log.i(TAG, "forward hide");
+                LeoLog.i(TAG, "forward hide");
             }
             super.onPageFinished(view, url);
         }
@@ -310,7 +306,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
-            Log.i(TAG, "onShowCustomView");
+            LeoLog.i(TAG, "onShowCustomView");
             // 设置为横屏
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mPlayView = view;
@@ -325,7 +321,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
         @Override
         public void onHideCustomView() {
-            Log.i(TAG, "onHideCustomView");
+            LeoLog.i(TAG, "onHideCustomView");
             // 用户当前的首选方向
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
             if (customViewCallback != null) {
@@ -345,7 +341,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         public void onDownloadStart(String url, String userAgent, String contentDisposition,
                 String mimetype, long contentLength) {
             Uri uri = Uri.parse(url);
-            Log.i(TAG, "downlaod url: " + uri);
+            LeoLog.i(TAG, "downlaod url: " + uri);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
             startActivity(intent);
         }
@@ -353,7 +349,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
     /* 进入主页 */
     private void startHome() {
-        Log.i(TAG, "是否来自闪屏：" + mIsFromSplash);
+        LeoLog.i(TAG, "是否来自闪屏：" + mIsFromSplash);
         if (mIsFromSplash) {
             AppMasterPreference amp = AppMasterPreference.getInstance(this);
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
@@ -366,9 +362,6 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
                     tds.callPretendAppLaunch();
                 }
             } else {
-                if (AppMasterConfig.LOGGABLE) {
-                    LeoLog.f(TAG, "startHome", Constants.LOCK_LOG);
-                }
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);

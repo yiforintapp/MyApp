@@ -114,7 +114,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     private void loadTheme() {
-        LeoLog.e("poha","loading themeeeeeeeeeeeeeee...");
+        LeoLog.d("poha","loading themeeeeeeeeeeeeeee...");
         mHideThemeList = AppMasterPreference.getInstance(this).getHideThemeList();
         HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemeList, new ThemeListener(this));
     }
@@ -137,24 +137,24 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //            Toast.makeText(ufoActivity, "firstly listBackup.size="+listBackup.size(), 0).show();
             
             for(int i=0;i<list.size();i++){
-                LeoLog.e("poha", list.get(i).packageName+"          "+list.get(i).themeName);
+                LeoLog.d("poha", list.get(i).packageName+"          "+list.get(i).themeName);
             }
 //            LeoLog.e("poha", list.size()+"起始list size");  
             if (list != null) {
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(ufoActivity).getHideThemeList();
                 for(int i =0;i<mHideThemes.size();i++){
-                    LeoLog.e("poha", mHideThemes.get(i)+"                   hide");  
+                    LeoLog.d("poha", mHideThemes.get(i)+"                   hide");  
                     for(int j=0;j<list.size();j++){
                         if(list.get(j).packageName.equals(mHideThemes.get(i))){
-                            LeoLog.e("poha", "removed");  
+                            LeoLog.d("poha", "removed");  
                             list.remove(j);
                         }
                     }
                 }
                 
                 for(int i=0;i<list.size();i++){
-                    LeoLog.e("poha", list.get(i).packageName+"     已经筛选掉在线主题列表中本地已有     "+list.get(i).themeName);
+                    LeoLog.d("poha", list.get(i).packageName+"     已经筛选掉在线主题列表中本地已有     "+list.get(i).themeName);
                 }
                 
 //                LeoLog.e("poha", list.size()+"最终list size");  
@@ -195,7 +195,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                    LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
 //                    UFOActivity.this.finish();
 //                }
-                LeoLog.e("poha", list.get(ran).themeName+"     最终选择的主题     "+list.get(ran).themeName);
+                LeoLog.d("poha", list.get(ran).themeName+"     最终选择的主题     "+list.get(ran).themeName);
 //                ran = 1;
 //                list.clear();
 //                list.addAll(listBackup);
@@ -205,16 +205,16 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 160),
                         ufoActivity.mThemDialogBg);
-                LeoLog.e("poha", "to load Pic");
+                LeoLog.d("poha", "to load Pic");
                 
                 ThreadManager.executeOnUiThread(new Runnable() {
                     
                     @Override
                     public void run() {
                         ufoActivity.mTvThemeName.setText(ufoActivity.mThemeName);
-                        LeoLog.e("poha", "set text");
+                        LeoLog.d("poha", "set text");
                         ufoActivity.initButton();
-                        LeoLog.e("poha", "init button");
+                        LeoLog.d("poha", "init button");
                     }
                 });
                 
@@ -243,7 +243,6 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             public void onClick(View v) {
                 SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli",
                         "adv_cnts_alTP");
-                LeoLog.e("xxx", "clicked");
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
                 if(mHideThemes.contains(mChosenTheme.packageName)){
@@ -273,14 +272,14 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     private void loadAD() {
-        LeoLog.e("poha","loading ad...");
+        LeoLog.d("poha","loading ad...");
         mAdEngine = MobvistaEngine.getInstance();
         mAdEngine.loadMobvista(this,Constants.UNIT_ID_58, new MobvistaListener() {
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK&&campaign!=null) {
                     mIsADLoaded = true;
-                    LeoLog.e("poha","ad loaded!");
+                    LeoLog.d("poha","ad loaded!");
                     loadADPic(campaign.getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
                                     .dip2px(UFOActivity.this, 48)),
@@ -329,7 +328,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                             v.setImageBitmap(loadedImage);
                             if (mIsShowTheme&&mChosenTheme!=null) {
                                 mIsThemeLoaded = true;
-                                LeoLog.e("poha", "主题图片已经下载好了！");
+                                LeoLog.d("poha", "主题图片已经下载好了！");
                             }
                         }
                     }
@@ -493,7 +492,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 if (((mIsADLoaded&&!mIsShowTheme)||(mIsThemeLoaded&&mIsShowTheme)) && !mHasGetLoadResult) {
                     if (mCdt != null) {
                         mCdt.onFinish();
-                        LeoLog.e("poha", "mIsADLoaded="+mIsADLoaded+"...mIsShowTheme="+mIsThemeLoaded+"...mIsThemeLoaded="+mIsThemeLoaded);
+                        LeoLog.d("poha", "mIsADLoaded="+mIsADLoaded+"...mIsShowTheme="+mIsThemeLoaded+"...mIsThemeLoaded="+mIsThemeLoaded);
                         mCdt.cancel();
                     }
                     mHasGetLoadResult = true;

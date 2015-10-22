@@ -24,7 +24,6 @@ import android.os.Message;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -43,7 +42,6 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -571,7 +569,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                         R.string.localtheme);
                 int themeLogo = themeContext.getResources().getIdentifier("ic_launcher",
                         "drawable", themeContext.getPackageName());
-                Log.i("######", "themeLogo = " + themeLogo);
+                LeoLog.i("######", "themeLogo = " + themeLogo);
                 if (themeLogo > 0) {
                     bean.themeLogo = themeContext.getResources().getDrawable(themeLogo);
                 } else {
@@ -842,9 +840,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                 } else {
-                    if (AppMasterConfig.LOGGABLE) {
-                        LeoLog.f(TAG, "onBackPressed 1", Constants.LOCK_LOG);
-                    }
                     intent = new Intent(this, LockSettingActivity.class);
                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
@@ -874,9 +869,6 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
                                 }
                             });
                 } else {
-                    if (AppMasterConfig.LOGGABLE) {
-                        LeoLog.f(TAG, "onBackPressed 2", Constants.LOCK_LOG);
-                    }
                     Intent intent = new Intent(this, LockSettingActivity.class);
                     startActivity(intent);
                     super.onBackPressed();

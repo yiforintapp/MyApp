@@ -19,7 +19,6 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -43,6 +42,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -427,7 +427,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             if (newPath != null) {
                                 if ("-2".equals(newPath)) {
                                     isSuccess = -2;
-                                    Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+                                    LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity",
                                             "Hide rename image fail!");
                                 } else if ("0".equals(newPath)) {
                                     isSuccess = 0;
@@ -436,7 +436,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                     deleteList.add(item);
                                 } else if ("-1".equals(newPath)) {
                                     isSuccess = -1;
-                                    Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+                                    LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity",
                                             "Copy image fail!");
                                 } else if ("4".equals(newPath)) {
                                     isSuccess = 4;
@@ -477,7 +477,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                 isSuccess = 2;
                             } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
                                 isSuccess = 2;
-                                Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+                                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity",
                                         "Copy Hide  image fail!");
                             } else if ("0".equals(newPaht)) {
                                 isSuccess = 3;
@@ -526,9 +526,9 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 float height = getResources().getDimension(R.dimen.memery_dialog_button_height);
                 showMemeryAlarmDialog(title, content, null, rightBtn, false, true, width, height);
             } else if (isSuccess == -1 || isSuccess == -2) {
-                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
+                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
             } else if (isSuccess == 2) {
-                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
+                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
             } else if (isSuccess == 4) {
                 if (mActicityMode == SELECT_HIDE_MODE) {
                     String title = getString(R.string.image_hide_memery_insuficient_dialog_title);

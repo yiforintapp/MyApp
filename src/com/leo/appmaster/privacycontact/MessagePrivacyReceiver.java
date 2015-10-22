@@ -162,7 +162,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                 mITelephony.endCall();
                                 // 判断是否为5.0系统，特别处理
                                 saveCallLog(cb);
-                                Log.d("MessagePrivacyReceiver",
+                                LeoLog.d("MessagePrivacyReceiver",
                                         "Call intercept successful!");
                             } catch (Exception e) {
 
@@ -199,9 +199,9 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
-            Log.e(Constants.RUN_TAG, "接收到新短信广播");
+            LeoLog.d(Constants.RUN_TAG, "接收到新短信广播");
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
-            Log.e(Constants.RUN_TAG, "接收到来电广播");
+            LeoLog.d(Constants.RUN_TAG, "接收到来电广播");
         }
     }
 

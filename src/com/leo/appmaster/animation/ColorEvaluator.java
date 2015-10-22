@@ -3,6 +3,7 @@ package com.leo.appmaster.animation;
 import android.animation.TypeEvaluator;
 import android.util.Log;
 
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.home.HomeColorUtil.ColorHolder;
 
 public class ColorEvaluator  implements TypeEvaluator{
@@ -31,13 +32,17 @@ public class ColorEvaluator  implements TypeEvaluator{
         targetHolder.green = (int) (startHolder.green+(endHolder.green - startHolder.green)*fraction);
         targetHolder.blue = (int) (startHolder.blue+ (endHolder.blue-startHolder.blue)*fraction);
         
-        Log.i("ColorEvaluator",startValue.toString()+"  ---- "+endValue.toString()+" -----------"+fraction);
-        Log.i("ColorEvaluator","startRed="+startRed+",startGreen="+startGreen+",startBlue="+startBlue);
-        Log.i("ColorEvaluator","endRed="+endRed+",endGreen="+endGreen+",endBlue="+endBlue);
-        Log.i("ColorEvaluator","targetRed="+targetHolder.red+",targetGreen="+targetHolder.green+",targetBlue="+targetHolder.blue);
+        if(AppMasterConfig.LOGGABLE) {
+            Log.i("ColorEvaluator",startValue.toString()+"  ---- "+endValue.toString()+" -----------"+fraction);
+            Log.i("ColorEvaluator","startRed="+startRed+",startGreen="+startGreen+",startBlue="+startBlue);
+            Log.i("ColorEvaluator","endRed="+endRed+",endGreen="+endGreen+",endBlue="+endBlue);
+            Log.i("ColorEvaluator","targetRed="+targetHolder.red+",targetGreen="+targetHolder.green+",targetBlue="+targetHolder.blue);
+        }
         
         mColor = targetHolder.toIntColor();
-        Log.i("ColorEvaluator", "return Color ="+mColor);
+        if(AppMasterConfig.LOGGABLE) {
+            Log.i("ColorEvaluator", "return Color ="+mColor);
+        }
         return mColor;  
     }
 

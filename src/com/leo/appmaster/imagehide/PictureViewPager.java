@@ -35,6 +35,7 @@ import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -311,7 +312,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 isSuccess = 2;
             } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
                 isSuccess = 2;
-                Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity",
                         "Copy Hide  image fail!");
             } else if ("0".equals(newPaht)) {
                 isSuccess = 3;
@@ -345,9 +346,9 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
                         width, height);
             } else if (success == -1 || success == -2) {
-                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
+                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
             } else if (success == 2) {
-                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
+                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
             }
             if (mPicturesList.size() == 0) {
                 Intent intent = new Intent(PictureViewPager.this,

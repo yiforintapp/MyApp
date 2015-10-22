@@ -1,21 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import com.leo.appmaster.AppMasterConfig;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.fragment.GestureSettingFragment;
-import com.leo.appmaster.fragment.PasswdSettingFragment;
-import com.leo.appmaster.home.HomeActivity;
-import com.leo.appmaster.privacycontact.PrivacyContactUtils;
-import com.leo.appmaster.sdk.BaseFragmentActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
-
-import android.R.integer;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -26,6 +11,17 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.fragment.GestureSettingFragment;
+import com.leo.appmaster.fragment.PasswdSettingFragment;
+import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.privacycontact.PrivacyContactUtils;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.ui.CommonTitleBar;
 
 public class LockSettingActivity extends BaseFragmentActivity implements
         OnClickListener {
@@ -74,9 +70,6 @@ public class LockSettingActivity extends BaseFragmentActivity implements
 
         boolean fromSplash = getIntent().getBooleanExtra("from_splash", false);
         if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE && fromSplash) {
-            if (AppMasterConfig.LOGGABLE) {
-                LeoLog.f(TAG, "onCreate, locktype is not none", Constants.LOCK_LOG);
-            }
             // FIXME: 2015/9/22 AM-2421 修复已经设置过锁，再次打开设置锁的问题，加上二次保护确认
             if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
                 Intent intent = new Intent(this, HomeActivity.class);

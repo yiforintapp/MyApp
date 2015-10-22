@@ -24,7 +24,7 @@ public class BusinessJsonParser {
                 int code = jsonObject.getInt("code");
                 if (code == 0) {
                     if (jsonObject.isNull("data")) {
-                        LeoLog.e("parserJsonObject", "data is null");
+                        LeoLog.d("parserJsonObject", "data is null");
                         return list;
                     }
 
@@ -53,7 +53,7 @@ public class BusinessJsonParser {
                             bean.rating = Float.parseFloat(temp.getString("review_score"));
                             list.add(bean);
                         } catch (JSONException e) {
-                            LeoLog.e("parserJsonObject", e.getMessage());
+                            LeoLog.d("parserJsonObject", e.getMessage());
                         }
                     }
                     LeoLog.d("BusinessJsonParser", "list = " + list);
@@ -61,7 +61,7 @@ public class BusinessJsonParser {
                     list = null;
                 }
             } catch (Exception e) {
-                LeoLog.e("parserJsonObject", e.getMessage());
+                LeoLog.d("parserJsonObject", e.getMessage());
                 e.printStackTrace();
             }
         }
@@ -77,7 +77,7 @@ public class BusinessJsonParser {
                 int code = jsonObject.getInt("code");
                 if (code == 0) {
                     if (jsonObject.isNull("data")) {
-                        LeoLog.e("parserJsonObject", "data is null");
+                        LeoLog.d("parserJsonObject", "data is null");
                         return list;
                     }
 
@@ -106,7 +106,7 @@ public class BusinessJsonParser {
                             bean.iconLoaded = false;
                             list.add(bean);
                         } catch (JSONException e) {
-                            LeoLog.e("parserJsonObject", e.getMessage());
+                            LeoLog.d("parserJsonObject", e.getMessage());
                         }
                     }
                     LeoLog.d("BusinessJsonParser", "list = " + list);
@@ -114,7 +114,7 @@ public class BusinessJsonParser {
                     list = null;
                 }
             } catch (Exception e) {
-                LeoLog.e("parserJsonObject", e.getMessage());
+                LeoLog.d("parserJsonObject", e.getMessage());
                 e.printStackTrace();
             }
         }

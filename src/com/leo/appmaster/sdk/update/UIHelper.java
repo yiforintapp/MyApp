@@ -794,10 +794,10 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        Log.d("testReceive", "action : " + action);
+        LeoLog.d("testReceive", "action : " + action);
         if (ACTION_SHOW_REMIND_TIP.equals(action)) {
             int type = intent.getIntExtra("remind_type", -1);
-            Log.d(TAG, "onReceive: type = " + type);
+            LeoLog.d(TAG, "onReceive: type = " + type);
             if (type == 0) {
                 sendUpdateNotification();
             } else if (type == 1) {

@@ -644,13 +644,13 @@ public class LeoPictureViewPager extends ViewGroup {
                     mSetChildrenDrawingOrderEnabled = ViewGroup.class.getDeclaredMethod(
                             "setChildrenDrawingOrderEnabled", new Class[] { Boolean.TYPE });
                 } catch (NoSuchMethodException e) {
-                    Log.e(TAG, "Can't find setChildrenDrawingOrderEnabled", e);
+                    LeoLog.e(TAG, "Can't find setChildrenDrawingOrderEnabled", e);
                 }
             }
             try {
                 mSetChildrenDrawingOrderEnabled.invoke(this, enable);
             } catch (Exception e) {
-                Log.e(TAG, "Error changing children drawing order", e);
+                LeoLog.e(TAG, "Error changing children drawing order", e);
             }
         }
     }
@@ -704,7 +704,7 @@ public class LeoPictureViewPager extends ViewGroup {
      */
     public void setOffscreenPageLimit(int limit) {
         if (limit < DEFAULT_OFFSCREEN_PAGES) {
-            Log.w(TAG, "Requested offscreen page limit " + limit + " too small; defaulting to " +
+            LeoLog.w(TAG, "Requested offscreen page limit " + limit + " too small; defaulting to " +
                     DEFAULT_OFFSCREEN_PAGES);
             limit = DEFAULT_OFFSCREEN_PAGES;
         }
@@ -952,7 +952,7 @@ public class LeoPictureViewPager extends ViewGroup {
             // fling to a new position until we have finished the scroll to
             // that position, avoiding glitches from happening at that point.
             if (mPopulatePending) {
-                if (DEBUG) Log.i(TAG, "populate is pending, skipping for now...");
+                if (DEBUG) LeoLog.i(TAG, "populate is pending, skipping for now...");
                 sortChildDrawingOrder();
                 return;
             }
@@ -1020,7 +1020,7 @@ public class LeoPictureViewPager extends ViewGroup {
                             mItems.remove(itemIndex);
                             mAdapter.destroyItem(this, pos, ii.object);
                             if (DEBUG) {
-                                Log.i(TAG, "populate() - destroyItem() with pos: " + pos +
+                                LeoLog.i(TAG, "populate() - destroyItem() with pos: " + pos +
                                         " view: " + ((View) ii.object));
                             }
                             itemIndex--;
@@ -1054,7 +1054,7 @@ public class LeoPictureViewPager extends ViewGroup {
                                 mItems.remove(itemIndex);
                                 mAdapter.destroyItem(this, pos, ii.object);
                                 if (DEBUG) {
-                                    Log.i(TAG, "populate() - destroyItem() with pos: " + pos +
+                                    LeoLog.i(TAG, "populate() - destroyItem() with pos: " + pos +
                                             " view: " + ((View) ii.object));
                                 }
                                 ii = itemIndex < mItems.size() ? mItems.get(itemIndex) : null;
@@ -1076,9 +1076,9 @@ public class LeoPictureViewPager extends ViewGroup {
             }
             
             if (DEBUG) {
-                Log.i(TAG, "Current page list:");
+                LeoLog.i(TAG, "Current page list:");
                 for (int i=0; i<mItems.size(); i++) {
-                    Log.i(TAG, "#" + i + ": page " + mItems.get(i).position);
+                    LeoLog.i(TAG, "#" + i + ": page " + mItems.get(i).position);
                 }
             }
             
@@ -2560,7 +2560,7 @@ public class LeoPictureViewPager extends ViewGroup {
                         parent = parent.getParent()) {
                     sb.append(" => ").append(parent.getClass().getSimpleName());
                 }
-                Log.e(TAG, "arrowScroll tried to find focus based on non-child " +
+                LeoLog.e(TAG, "arrowScroll tried to find focus based on non-child " +
                         "current focused view " + sb.toString());
                 currentFocused = null;
             }

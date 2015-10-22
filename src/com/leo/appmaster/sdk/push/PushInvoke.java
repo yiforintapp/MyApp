@@ -63,7 +63,7 @@ public class PushInvoke implements PushInvokeHelper {
 
     @Override
     public void onInvoke(String type) {
-        Log.d("PushInvoke", "type is : " + type);
+        LeoLog.d("PushInvoke", "type is : " + type);
         if (type.equals(THEME)) {
             invokeNewTheme();
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "push_refresh", "theme");

@@ -4,7 +4,6 @@ package com.leo.appmaster.home;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -208,9 +207,9 @@ public class AutoStartGuideList extends WhiteList {
             try {
                 LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
-                Log.e(TAG, "跳转Letv成功！");
+                LeoLog.d(TAG, "跳转Letv成功！");
             } catch (Exception e) {
-                Log.e(TAG, "跳转Letv失败！");
+                LeoLog.e(TAG, "跳转Letv失败！");
                 e.printStackTrace();
             }
             return false;

@@ -15,8 +15,6 @@
  */
 package com.leo.appmaster.eventbus;
 
-import android.util.Log;
-
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -25,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import com.leo.appmaster.utils.LeoLog;
 
 class SubscriberMethodFinder {
     private static final String ON_EVENT_METHOD_NAME = "onEvent";
@@ -108,7 +108,7 @@ class SubscriberMethodFinder {
                             }
                         }
                     } else if (!skipMethodVerificationForClasses.containsKey(clazz)) {
-                        Log.d(LeoEventBus.TAG, "Skipping method (not public, static or abstract): " + clazz + "."
+                        LeoLog.d(LeoEventBus.TAG, "Skipping method (not public, static or abstract): " + clazz + "."
                                 + methodName);
                     }
                 }

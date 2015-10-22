@@ -18,7 +18,6 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -32,7 +31,6 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -43,6 +41,7 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyMessageItemActivity extends BaseActivity implements OnClickListener {
@@ -257,7 +256,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                     mContactCallLog.setSelection(mMessages.size() - 1);
                     Uri line = getContentResolver().insert(Constants.PRIVACY_MESSAGE_URI, values);
                     if (line == null) {
-                        Log.w("LockMessageItemActivity", "Send message insert fail!");
+                        LeoLog.w("LockMessageItemActivity", "Send message insert fail!");
                     }
                 }
 

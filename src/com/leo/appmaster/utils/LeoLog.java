@@ -252,42 +252,6 @@ public class LeoLog {
 		}
 	}
 
-	public static void f(String tag, String msg, String filename) {
-		msg = tag + "::" + msg;
-		writeToFile(msg, filename, true);
-	}
-
-	public static void writeToFile(String msg, String filename, boolean append) {
-		BufferedWriter bos = null;
-		try {
-			File dir = new File(Environment.getExternalStorageDirectory()
-					.getAbsolutePath() + File.separator + LOG_DIR);
-			if (!dir.exists()) {
-				dir.mkdirs();
-			}
-
-			File logFile = new File(dir, filename);
-			if (!logFile.exists()) {
-				logFile.createNewFile();
-			}
-			bos = new BufferedWriter(new FileWriter(logFile, append));
-			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String time = format.format(new Date(System.currentTimeMillis()));
-			bos.write(time + " " + msg + "\r\n");
-			bos.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
-		} finally {
-			if (bos != null) {
-				try {
-					bos.close();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 //	private static void collectLogEntry(LogEntry entry) {
 //		try {
 //			sLogEntryQueue.put(entry);

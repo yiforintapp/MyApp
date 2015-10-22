@@ -19,10 +19,10 @@ import java.lang.reflect.Constructor;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import com.leo.appmaster.eventbus.LeoEventBus;
-
 import android.app.Activity;
-import android.util.Log;
+
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * Executes an {@link RunnableEx} using a thread pool. Thrown exceptions are propagated by posting failure events of any
@@ -119,7 +119,7 @@ public class AsyncExecutor {
                     try {
                         event = failureEventConstructor.newInstance(e);
                     } catch (Exception e1) {
-                        Log.e(LeoEventBus.TAG, "Original exception:", e);
+                        LeoLog.e(LeoEventBus.TAG, "Original exception:", e);
                         throw new RuntimeException("Could not create failure event", e1);
                     }
                     if (event instanceof HasExecutionScope) {

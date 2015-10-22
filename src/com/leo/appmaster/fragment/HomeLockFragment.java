@@ -160,14 +160,14 @@ public class HomeLockFragment extends BaseFragment implements OnClickListener, S
                         !curMode.haveEverOpened) {
                     startRcommendLock(0);
                     AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
-                    LeoLog.e("lockmore",
+                    LeoLog.d("lockmore",
                             "enter lock lis tand set home to list true");
                     curMode.haveEverOpened = true;
                     lm.updateMode(curMode);
                 } else {
                     enterLockList();
                     AppMasterPreference.getInstance(mActivity).setIsHomeToLockList(true);
-                    LeoLog.e("lockmore",
+                    LeoLog.d("lockmore",
                             "enter lock lis tand set home to list true");
                 }
                 // QuickGestureManager.getInstance(getActivity()).privacyContactSendReceiverToSwipe(

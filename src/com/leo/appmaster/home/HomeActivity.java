@@ -33,7 +33,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +49,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
@@ -207,12 +205,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
     private void showWeiZhuangTip() {
 
         // Log.e("isshow", "isfromlist"+mIsFromAppLockList);
-        Log.e("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
+        LeoLog.d("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 + "");
-        Log.e("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
-        Log.e("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
+        LeoLog.d("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
+        LeoLog.d("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
                 + "");
-        Log.e("isshow", "getisfromAppList"
+        LeoLog.d("isshow", "getisfromAppList"
                 + AppMasterPreference.getInstance(this).getIsFromLockList() + "");
         if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
                 && LockManager.getInstatnce().getLockedAppCount() > 0
@@ -714,9 +712,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         if (position == 0) {
                             SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
                                     "changepwd");
-                            if (AppMasterConfig.LOGGABLE) {
-                                LeoLog.f(TAG, "onclick positon = 0.", Constants.LOCK_LOG);
-                            }
                             Intent intent = new Intent(HomeActivity.this,
                                     LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);
@@ -728,9 +723,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                              */
                             // Intent intent = new Intent(HomeActivity.this,
                             // LockChangeModeActivity.class);
-                            if (AppMasterConfig.LOGGABLE) {
-                                LeoLog.f(TAG, "onclick positon = 1.", Constants.LOCK_LOG);
-                            }
                             Intent intent = new Intent(HomeActivity.this,
                                     LockSettingActivity.class);
                             intent.putExtra("reset_passwd", true);

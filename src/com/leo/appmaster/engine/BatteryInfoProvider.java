@@ -18,7 +18,6 @@ import android.os.Parcel;
 import android.os.ServiceManager;
 import android.os.SystemClock;
 import android.telephony.SignalStrength;
-import android.util.Log;
 
 import com.android.internal.app.IBatteryStats;
 import com.android.internal.os.BatteryStatsImpl;
@@ -243,10 +242,8 @@ public class BatteryInfoProvider {
 		long uSecTime = SystemClock.elapsedRealtime() * 1000;
 		final long uSecNow = mStats.computeBatteryRealtime(uSecTime, which);
 		final long timeSinceUnplugged = uSecNow;
-		if (DEBUG) {
-			Log.i(TAG, "Uptime since last unplugged = "
-					+ (timeSinceUnplugged / 1000));
-		}
+        LeoLog.i(TAG, "Uptime since last unplugged = "
+                + (timeSinceUnplugged / 1000));
 
 		addPhoneUsage(uSecNow);
 		addScreenUsage(uSecNow);

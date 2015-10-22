@@ -14,9 +14,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppInfo;
@@ -25,7 +23,6 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.PagedGridView;
-import com.leo.appmaster.utils.LeoLog;
 
 public class SuccessAppLockListActivity extends BaseActivity implements OnClickListener {
     private List<AppInfo> mLockList;
@@ -151,9 +148,6 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
 //                    intent.putExtra("enter_from_lockmode", true);
                     this.startActivity(intent);
                 } else if (target == 1) {
-                    if (AppMasterConfig.LOGGABLE) {
-                        LeoLog.f(SuccessAppLockListActivity.class.getSimpleName(), "onclick t = 1", Constants.LOCK_LOG);
-                    }
                     intent = new Intent(this,
                             LockSettingActivity.class);
                     intent.putExtra("just_finish", true);
@@ -165,9 +159,6 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
                         intent.putExtra("from_lock_more", true);
                         this.startActivity(intent);
                     } else {
-                        if (AppMasterConfig.LOGGABLE) {
-                            LeoLog.f(SuccessAppLockListActivity.class.getSimpleName(), "onclick t = 2", Constants.LOCK_LOG);
-                        }
                         intent = new Intent(this,
                                 LockSettingActivity.class);
                         intent.putExtra("to_lock_list", true);

@@ -163,24 +163,24 @@ public class FileOperationUtil {
      */
     public static boolean renameFile(String filePath, String newName) {
         if (filePath == null || newName == null) {
-            LeoLog.e("RenameFile", "Rename: null parameter");
+            LeoLog.d("RenameFile", "Rename: null parameter");
             return false;
         }
 
         File file = new File(filePath);
         String newPath = FileOperationUtil.makePath(
                 FileOperationUtil.getDirPathFromFilepath(filePath), newName);
-        LeoLog.e("RenameFile", "newPath=" + newPath);
+        LeoLog.d("RenameFile", "newPath=" + newPath);
         try {
             if (file.isFile()) {
                 boolean ret = file.renameTo(new File(newPath));
-                LeoLog.e("RenameFile", ret + " to rename file");
+                LeoLog.d("RenameFile", ret + " to rename file");
                 return ret;
             } else {
                 return false;
             }
         } catch (SecurityException e) {
-            LeoLog.e("RenameFile", "Fail to rename file," + e.toString());
+            LeoLog.d("RenameFile", "Fail to rename file," + e.toString());
         }
         return false;
     }
@@ -222,7 +222,7 @@ public class FileOperationUtil {
         String fileName = FileOperationUtil.getNameFromFilepath(filePath);
 
         if (filePath == null || newName == null) {
-            LeoLog.e("RenameFile", "Rename: null parameter");
+            LeoLog.d("RenameFile", "Rename: null parameter");
             return null;
         }
 
@@ -261,7 +261,7 @@ public class FileOperationUtil {
                     LeoLog.d("RenameFile", temp + "  not   exists");
                     boolean mkRet = temp.mkdirs();
                     if (mkRet) {
-                        LeoLog.e("RenameFile", "make dir " + temp
+                        LeoLog.d("RenameFile", "make dir " + temp
                                 + "  successfully");
                     } else {
                         LeoLog.d("RenameFile", "make dir " + temp
@@ -289,7 +289,7 @@ public class FileOperationUtil {
                 return null;
             }
         } catch (SecurityException e) {
-            LeoLog.e("RenameFile", "Fail to rename file," + e.toString());
+            LeoLog.d("RenameFile", "Fail to rename file," + e.toString());
         }
         return null;
     }
@@ -297,7 +297,7 @@ public class FileOperationUtil {
     public static synchronized String unhideImageFile(Context ctx,
             String filePath, long fileSize) {
         if (filePath == null || (!filePath.endsWith(".leotmi") && !filePath.endsWith(".leotmp"))) {
-            LeoLog.e("RenameFile", "Rename: null parameter");
+            LeoLog.d("RenameFile", "Rename: null parameter");
             return null;
         }
         String[] paths = getSdCardPaths(ctx);
@@ -365,7 +365,7 @@ public class FileOperationUtil {
                 }
             }
             boolean ret = file.renameTo(new File(newPath));
-            LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
+            LeoLog.d("unhideImageFile", ret + " : rename file " + filePath
                     + " to " + newPath);
             if (!ret) {
                 boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0], 10);
@@ -414,7 +414,7 @@ public class FileOperationUtil {
      */
     public static boolean deleteFile(String filePath) {
         if (filePath == null) {
-            LeoLog.e("DeleteFile", "Rename: null parameter");
+            LeoLog.d("DeleteFile", "Rename: null parameter");
             return false;
         }
 
@@ -422,13 +422,13 @@ public class FileOperationUtil {
         try {
             if (file.isFile()) {
                 boolean ret = file.delete();
-                LeoLog.e("DeleteFile", ret + " to rename file");
+                LeoLog.d("DeleteFile", ret + " to rename file");
                 return ret;
             } else {
                 return false;
             }
         } catch (SecurityException e) {
-            LeoLog.e("DeleteFile", "Fail to rename file," + e.toString());
+            LeoLog.d("DeleteFile", "Fail to rename file," + e.toString());
         }
         return false;
     }
@@ -514,7 +514,7 @@ public class FileOperationUtil {
                     String dir_id = cursor.getString(3);
                     String dir = cursor.getString(4);
                     if (dir.contains("videoCache")) {
-                        Log.d(Constants.RUN_TAG, "Image Path：" + path);
+                        LeoLog.d(Constants.RUN_TAG, "Image Path：" + path);
                     }
                     boolean isFilterVideoType = false;
                     for (String videoType : filterVideoTypes) {
@@ -700,7 +700,7 @@ public class FileOperationUtil {
                 LeoLog.d("RenameFile", temp + "  not   exists");
                 boolean mkRet = temp.mkdirs();
                 if (mkRet) {
-                    LeoLog.e("RenameFile", "make dir " + temp
+                    LeoLog.d("RenameFile", "make dir " + temp
                             + "  successfully");
                 } else {
                     LeoLog.d("RenameFile", "make dir " + temp
@@ -798,7 +798,7 @@ public class FileOperationUtil {
                 LeoLog.d("RenameFile", temp + "  not   exists");
                 boolean mkRet = temp.mkdirs();
                 if (mkRet) {
-                    LeoLog.e("RenameFile", "make dir " + temp
+                    LeoLog.d("RenameFile", "make dir " + temp
                             + "  successfully");
                 } else {
                     LeoLog.d("RenameFile", "make dir " + temp

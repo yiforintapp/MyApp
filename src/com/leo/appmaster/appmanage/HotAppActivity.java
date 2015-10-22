@@ -17,9 +17,7 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.manager.LockManager;
@@ -146,9 +144,6 @@ public class HotAppActivity extends BaseFragmentActivity implements OnPageChange
                             }
                         });
             } else {
-                if (AppMasterConfig.LOGGABLE) {
-                    LeoLog.f(HotAppActivity.class.getSimpleName(), "onback pressed", Constants.LOCK_LOG);
-                }
                 intent = new Intent(this, LockSettingActivity.class);
                 startActivity(intent);
                 finish();

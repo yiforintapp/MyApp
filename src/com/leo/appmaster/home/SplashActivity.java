@@ -38,7 +38,6 @@ import android.widget.TextView;
 
 import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -114,10 +113,10 @@ public class SplashActivity extends BaseActivity {
         long currentTime = System.currentTimeMillis();
         if (DBG) {
             SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Log.d(TAG, "当前系统时间：" + dateFormate.format(new Date(currentTime)));
-            Log.d(TAG, "闪屏开始时间：" + dateFormate.format(new Date(startShowSplashTime)));
-            Log.d(TAG, "闪屏结束时间：" + dateFormate.format(new Date(endShowSplashTime)));
-            Log.d(TAG, " 闪屏跳转模式：" + AppMasterPreference.getInstance(getApplicationContext())
+            LeoLog.d(TAG, "当前系统时间：" + dateFormate.format(new Date(currentTime)));
+            LeoLog.d(TAG, "闪屏开始时间：" + dateFormate.format(new Date(startShowSplashTime)));
+            LeoLog.d(TAG, "闪屏结束时间：" + dateFormate.format(new Date(endShowSplashTime)));
+            LeoLog.d(TAG, " 闪屏跳转模式：" + AppMasterPreference.getInstance(getApplicationContext())
                     .getSplashSkipMode());
         }
         /**
@@ -395,9 +394,6 @@ public class SplashActivity extends BaseActivity {
                 amp.setDoubleCheck(null);
             }
         } else {
-            if (AppMasterConfig.LOGGABLE) {
-                LeoLog.f(TAG, "startHome", Constants.LOCK_LOG);
-            }
             Intent intent = new Intent(this, LockSettingActivity.class);
             intent.putExtra("from_splash", true);
             startActivity(intent);
@@ -823,7 +819,7 @@ public class SplashActivity extends BaseActivity {
             if (!Utilities.isEmpty(skipMode)) {
                 if (Constants.SPLASH_SKIP_PG_WEBVIEW.equals(skipMode)) {
                     /* 跳转到pg内webview */
-                    Log.i(TAG, "进入WebView");
+                    LeoLog.i(TAG, "进入WebView");
                     startIntentForWebViewActivity(url);
                     finishForSkip(true);
                 } else if (Constants.SPLASH_SKIP_PG_CLIENT.equals(skipMode)) {
@@ -836,17 +832,17 @@ public class SplashActivity extends BaseActivity {
                             Intent intent = Intent.parseUri(clientIntent, 0);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
-                            Log.i(TAG, "存在客户端并进入");
+                            LeoLog.i(TAG, "存在客户端并进入");
                         } catch (Exception e) {
                             /* 不存在指定客户端 */
-                            Log.i(TAG, "不存在客户端进入进入到WebView");
+                            LeoLog.i(TAG, "不存在客户端进入进入到WebView");
                             startIntentForWebViewActivity(url);
                         } finally {
                             finishForSkip(true);
                         }
                     } else {
                         /* 不存在指定客户端 */
-                        Log.i(TAG, "去客户端但是链接为空进入到WebView");
+                        LeoLog.i(TAG, "去客户端但是链接为空进入到WebView");
                         startIntentForWebViewActivity(url);
                         finishForSkip(true);
                     }
@@ -861,6 +857,6 @@ public class SplashActivity extends BaseActivity {
         intent.putExtra(SPLASH_TO_WEBVIEW, SPLASH_TO_WEBVIEW);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
-        Log.i(TAG, "跳转到PG的WebView中，URL=" + url);
+        LeoLog.i(TAG, "跳转到PG的WebView中，URL=" + url);
     }
 }

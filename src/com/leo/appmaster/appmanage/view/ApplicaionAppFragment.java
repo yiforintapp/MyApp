@@ -541,7 +541,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
             
             int msgWhat = 0;
             if (loadType == LOAD_INIT) {
-                LeoLog.e("loadBusinessRecomApp", "onErrorResponse = " + error.getMessage());
+                LeoLog.d("loadBusinessRecomApp", "onErrorResponse = " + error.getMessage());
                 outer.mInitLoading = false;
                 
                 msgWhat = MSG_LOAD_INIT_FAILED;

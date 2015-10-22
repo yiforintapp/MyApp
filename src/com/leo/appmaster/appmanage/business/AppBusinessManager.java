@@ -73,7 +73,7 @@ public class AppBusinessManager {
     }
 
     public void init() {
-        LeoLog.e(TAG, "business init");
+        LeoLog.d(TAG, "business init");
         loadInitData();
         syncServerGestureData(true);
         // syncOtherRecommend(BusinessItemInfo.CONTAIN_FLOW_SORT);
@@ -250,9 +250,9 @@ public class AppBusinessManager {
                                         }
                                     }
                                 } catch (Exception e) {
-                                    LeoLog.e(TAG, e.getMessage());
+                                    LeoLog.d(TAG, e.getMessage());
                                 } finally {
-                                    LeoLog.e(TAG, "recheck task");
+                                    LeoLog.d(TAG, "recheck task");
                                     TimerTask recheckTask = new TimerTask() {
                                         @Override
                                         public void run() {
@@ -268,7 +268,7 @@ public class AppBusinessManager {
                     }, new ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            LeoLog.e(TAG, error.getMessage());
+                            LeoLog.d(TAG, error.getMessage());
                             if (mErrorTryCount < 3) {
                                 TimerTask recheckTask = new TimerTask() {
                                     @Override
@@ -378,7 +378,7 @@ public class AppBusinessManager {
                     }, new ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
-                            LeoLog.e("loadAppIcon", "false");
+                            LeoLog.d("loadAppIcon", "false");
                         }
                     });
         }

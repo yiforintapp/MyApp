@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TimerTask;
 
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
@@ -29,7 +28,6 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Matrix;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -39,7 +37,6 @@ import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +46,6 @@ import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -59,12 +55,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.RelativeLayout.LayoutParams;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -73,8 +67,8 @@ import com.leo.appmaster.animation.ColorEvaluator;
 import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
-import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
+import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
@@ -93,10 +87,8 @@ import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.lockertheme.LockerTheme;
-import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
@@ -223,7 +215,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_setting);
-        LeoLog.e("LockScreenActivity", "onCreate");
+        LeoLog.d("LockScreenActivity", "onCreate");
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
         LockManager lm = LockManager.getInstatnce();
@@ -242,10 +234,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 if (AppMasterPreference.getInstance(this)
                         .getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     if (mode.defaultFlag != -1) {
-                        if (AppMasterConfig.LOGGABLE) {
-                            LeoLog.f(LockScreenActivity.class.getSimpleName(), "oncreate",
-                                    Constants.LOCK_LOG);
-                        }
                         Intent intent = new Intent(this, LockSettingActivity.class);
                         intent.putExtra("from_quick_mode", true);
                         intent.putExtra("just_finish", true);
@@ -337,11 +325,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     mAdIcon.setBackgroundResource(R.drawable.adanimation);
                     adAnimation = (AnimationDrawable) mAdIcon.getBackground();
                     adAnimation.start();
-                    LeoLog.e("testLockScreen", "jump going!");
+                    LeoLog.d("testLockScreen", "jump going!");
                 } else {
                     mAdIcon.setBackgroundDrawable((this.getResources()
                             .getDrawable(R.drawable.jump_1)));
-                    LeoLog.e("testLockScreen", "stay going!");
+                    LeoLog.d("testLockScreen", "stay going!");
                 }
             }
         }
@@ -368,7 +356,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     protected void onResume() {
         whichTypeShow();
 
-        LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
+        LeoLog.d("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
 
         if (AppMasterPreference.getInstance(this).getADShowType() == 3
@@ -998,7 +986,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             for (LockMode lockMode : modeList) {
                 if (mQuiclModeId == lockMode.modeId) {
                     willLaunch = lockMode;
-                    Log.i("tag", "falg ==" + lockMode.defaultFlag);
+                    LeoLog.i("tag", "falg ==" + lockMode.defaultFlag);
                     break;
                 }
             }
@@ -1533,10 +1521,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 AppMasterPreference ampp = AppMasterPreference.getInstance(this);
                 ampp.setUnlocked(true);
                 ampp.setDoubleCheck(null);
-                // goto reset passwd
-                if (AppMasterConfig.LOGGABLE) {
-                    LeoLog.f(TAG, "onclick", Constants.LOCK_LOG);
-                }
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
                 this.startActivity(intent);

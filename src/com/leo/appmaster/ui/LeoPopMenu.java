@@ -98,7 +98,7 @@ public class LeoPopMenu {
         // mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext,
         // 68)));
         // mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        Log.e("hehe", finalWidth + "final///" + mLeoPopMenu.getWidth() + " true w");
+        LeoLog.e("hehe", finalWidth + "final///" + mLeoPopMenu.getWidth() + " true w");
 
         // mLeoPopMenu.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         // mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -241,7 +241,7 @@ public class LeoPopMenu {
 
         // newLongWidth=Math.min( W/2, mMaxLength);
 
-        Log.e("hehe", "最长字符占的宽度px=" + mMaxLength);
+        LeoLog.e("hehe", "最长字符占的宽度px=" + mMaxLength);
 
         
         newSmallWidth = W / 4;

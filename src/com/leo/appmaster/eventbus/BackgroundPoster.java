@@ -15,7 +15,7 @@
  */
 package com.leo.appmaster.eventbus;
 
-import android.util.Log;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * Posts events in background.
@@ -64,7 +64,7 @@ final class BackgroundPoster implements Runnable {
                     eventBus.invokeSubscriber(pendingPost);
                 }
             } catch (InterruptedException e) {
-                Log.w("Event", Thread.currentThread().getName() + " was interruppted", e);
+                LeoLog.w("Event", Thread.currentThread().getName() + " was interruppted", e);
             }
         } finally {
             executorRunning = false;

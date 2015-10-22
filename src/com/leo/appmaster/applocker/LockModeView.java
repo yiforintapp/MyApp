@@ -17,7 +17,6 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -28,6 +27,7 @@ import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class LockModeView extends View {
@@ -292,7 +292,7 @@ public class LockModeView extends View {
             text = text.substring(0, region);
             text = text.concat(omission);
             textWidth = (int) paint.measureText(text);
-            Log.i("tag",text);
+            LeoLog.i("tag",text);
         }
        /* int textSize = maxTextSize,textLength,omissionWidth,textWidth,maxLength;
         String omission = "...";

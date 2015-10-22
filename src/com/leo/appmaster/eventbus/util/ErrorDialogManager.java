@@ -1,7 +1,5 @@
 package com.leo.appmaster.eventbus.util;
 
-import com.leo.appmaster.eventbus.LeoEventBus;
-
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Application;
@@ -11,7 +9,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
+
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.utils.LeoLog;
 
 /**
  * Central class for app that want to use event based error dialogs.<br/>
@@ -228,7 +228,7 @@ public class ErrorDialogManager {
             if (tag == null) {
                 tag = LeoEventBus.TAG;
             }
-            Log.i(tag, "Error dialog manager received exception", event.throwable);
+            LeoLog.i(tag, "Error dialog manager received exception", event.throwable);
         }
     }
 

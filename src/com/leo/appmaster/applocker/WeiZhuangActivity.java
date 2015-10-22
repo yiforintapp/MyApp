@@ -129,14 +129,14 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                         R.string.channel_code))
                 ))
         {
-            LeoLog.e("730", "firstly--need hexie");
+            LeoLog.d("730", "firstly--need hexie");
             AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
             AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(true);
         }
         else
         {
             AppMasterPreference.getInstance(this).setIsDeterminCloseBeautyFirstly(true);
-            LeoLog.e("730", "firstly--no  need hexie");
+            LeoLog.d("730", "firstly--no  need hexie");
         }
 
         if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty()
@@ -144,13 +144,13 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                 mNeedCloseBeautyChannelCode.contains(getResources()
                         .getString(R.string.channel_code)) == false)
         {
-            LeoLog.e("730", "secondly--no need hexie");
+            LeoLog.d("730", "secondly--no need hexie");
             AppMasterPreference.getInstance(this).setIsNeedCloseBeauty(false);
         }
 
         if (AppMasterPreference.getInstance(this).getIsNeedCloseBeauty())
         {
-            LeoLog.e("730", "finally--need hexie");
+            LeoLog.d("730", "finally--need hexie");
             mList.remove(1);
             mIsRemoveBeauty = true;
         }

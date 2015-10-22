@@ -71,9 +71,6 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         if (amp.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
             finish();
             String flag = getIntent().getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
-            if (AppMasterConfig.LOGGABLE) {
-                LeoLog.f(TAG, "iswipToPrivacyContactHandler", Constants.LOCK_LOG);
-            }
             Intent intent = new Intent(this, LockSettingActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
                     Intent.FLAG_ACTIVITY_NEW_TASK);

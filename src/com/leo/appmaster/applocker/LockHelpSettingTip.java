@@ -19,9 +19,7 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
@@ -315,9 +313,6 @@ public class LockHelpSettingTip extends BaseActivity {
                 LockSettingActivity.class.getName(), false, new OnUnlockedListener() {
                     @Override
                     public void onUnlocked() {
-                        if (AppMasterConfig.LOGGABLE) {
-                            LeoLog.f(TAG, "changePasswd", Constants.LOCK_LOG);
-                        }
                         Intent intent = null;
                         AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(null);
                         intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);

@@ -1728,9 +1728,9 @@ public class LockManager {
                 intent.putParcelableArrayListExtra("lock_mode_list", arrayList);
             }
             mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
-            LeoLog.e(TAG, "send first use lock mode .");
+            LeoLog.d(TAG, "send first use lock mode .");
         } catch (Exception e) {
-            LeoLog.e(TAG, "send first use lock mode failed.", e);
+            LeoLog.d(TAG, "send first use lock mode failed.", e);
         }
     }
 
@@ -1746,9 +1746,9 @@ public class LockManager {
         }
         try {
             mContext.sendBroadcast(intent, SEND_RECEIVER_TO_SWIPE_PERMISSION);
-            LeoLog.e(TAG, "send lock mode changed .");
+            LeoLog.d(TAG, "send lock mode changed .");
         } catch (Exception e) {
-            LeoLog.e(TAG, "send lock mode changed failed.", e);
+            LeoLog.d(TAG, "send lock mode changed failed.", e);
         }
     }
 

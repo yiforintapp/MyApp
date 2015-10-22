@@ -148,10 +148,10 @@ public class AppLockListActivity extends BaseActivity implements
 //            } else {
 
                 boolean fromLockMore = getIntent().getBooleanExtra("from_lock_more", false);
-                LeoLog.e("lockmore", "fromLockMore==" + fromLockMore);
+                LeoLog.d("lockmore", "fromLockMore==" + fromLockMore);
                 boolean isStartFromLockmode = getIntent().getBooleanExtra("enter_from_lockmode",
                         false);
-                LeoLog.e("lockmore", "isStartFromLockmode==" + isStartFromLockmode);
+                LeoLog.d("lockmore", "isStartFromLockmode==" + isStartFromLockmode);
                 // if(isStartFromLockmode)
                 // {
                 //
@@ -165,17 +165,17 @@ public class AppLockListActivity extends BaseActivity implements
                     Intent intent = new Intent(this, HomeActivity.class);
                     if (AppMasterPreference.getInstance(this).getIsHomeToLockList()
                             || AppMasterPreference.getInstance(this).getIsClockToLockList()) {
-                        LeoLog.e("lockmore", "inif is home");
+                        LeoLog.d("lockmore", "inif is home");
                         AppMasterPreference.getInstance(this).setIsFromLockList(true);
                     }
-                    Log.e("lockmore", "settrue");
+                    LeoLog.d("lockmore", "settrue");
                     startActivity(intent);
 
                 } else {
                     if (AppMasterPreference.getInstance(this).getIsHomeToLockList()
                             || AppMasterPreference.getInstance(this).getIsClockToLockList()) {
-                        LeoLog.e("lockmore", "inif is home");
-                        LeoLog.e("lockmore", "settrue");
+                        LeoLog.d("lockmore", "inif is home");
+                        LeoLog.d("lockmore", "settrue");
                         AppMasterPreference.getInstance(this).setIsFromLockList(true);
                     }
                 }
