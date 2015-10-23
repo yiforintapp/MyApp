@@ -586,7 +586,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getIsHomeToLockList() {
-        if(mIsHomeToLockList = null) {
+        if(mIsHomeToLockList == null) {
             mIsHomeToLockList = mPref.getBoolean(PREF_HOME_TO_LOCKLIST, false);
         }
          return mIsHomeToLockList;
