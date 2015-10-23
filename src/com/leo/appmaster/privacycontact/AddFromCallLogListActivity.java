@@ -266,211 +266,220 @@ public class AddFromCallLogListActivity extends BaseActivity {
 
         @Override
         protected Boolean doInBackground(String... arg0) {
-            String flag = arg0[0];
-            int count = 0;
             boolean isOtherLogs = false;
-            ContentResolver cr = getContentResolver();
-            if (PrivacyContactUtils.ADD_CONTACT_MODEL.equals(flag)) {
-                boolean added = false;
-                PrivacyContactManager pcm = PrivacyContactManager
-                        .getInstance(getApplicationContext());
-                for (ContactCallLog message : mAddPrivacyCallLog) {
-                    String name = message.getCallLogName();
-                    String contactNumber = message.getCallLogNumber();
-                    // 隐私联系人去重
-                    String tempNumber =
-                            PrivacyContactUtils.formatePhoneNumber(contactNumber);
-                    boolean flagContact = false;
-                    ArrayList<ContactBean> contacts = pcm.getPrivateContacts();
-                    if (contacts != null && contacts.size() != 0
-                            && contactNumber != null && !"".equals(contactNumber)) {
-                        for (ContactBean contactBean : contacts) {
-                            if (contactBean.getContactNumber() != null && tempNumber != null) {
-                                flagContact =
-                                        contactBean.getContactNumber().contains(tempNumber);
-                            }
-                            if (flagContact) {
-                                break;
+            try {
+                String flag = arg0[0];
+                int count = 0;
+                ContentResolver cr = getContentResolver();
+                if (PrivacyContactUtils.ADD_CONTACT_MODEL.equals(flag)) {
+                    boolean added = false;
+                    PrivacyContactManager pcm = PrivacyContactManager
+                            .getInstance(getApplicationContext());
+                    for (ContactCallLog message : mAddPrivacyCallLog) {
+                        String name = message.getCallLogName();
+                        String contactNumber = message.getCallLogNumber();
+                        // 隐私联系人去重
+                        String tempNumber =
+                                PrivacyContactUtils.formatePhoneNumber(contactNumber);
+                        boolean flagContact = false;
+                        ArrayList<ContactBean> contacts = pcm.getPrivateContacts();
+                        if (contacts != null && contacts.size() != 0
+                                && contactNumber != null && !"".equals(contactNumber)) {
+                            for (ContactBean contactBean : contacts) {
+                                if (contactBean.getContactNumber() != null && tempNumber != null) {
+                                    flagContact =
+                                            contactBean.getContactNumber().contains(tempNumber);
+                                }
+                                if (flagContact) {
+                                    break;
+                                }
                             }
                         }
-                    }
 
-                    if (!flagContact) {
-                        ContentValues values = new ContentValues();
-                        values.put(Constants.COLUMN_PHONE_NUMBER, contactNumber);
-                        values.put(Constants.COLUMN_CONTACT_NAME, name);
-                        values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mAnswerType);
-                        cr.insert(Constants.PRIVACY_CONTACT_URI, values);
-                        pcm.addContact(new ContactBean(0, name, contactNumber, null, null, null,
-                                false, mAnswerType, null));
-                        added = true;
-                    }
-                    if (mAddMessages == null) {
-                        mAddMessages = PrivacyContactUtils.getSysMessage(
-                                AddFromCallLogListActivity.this, cr,
-                                "address LIKE ? ", new String[] {
-                                    "%" + tempNumber
-                                }, true);
-                    } else {
-                        List<MessageBean> addMessages = PrivacyContactUtils.getSysMessage(
-                                AddFromCallLogListActivity.this, cr,
-                                "address LIKE ?", new String[] {
-                                    "%" + tempNumber
-                                }, true);
-                        mAddMessages.addAll(addMessages);
-                    }
-                    if (mAddCallLogs == null) {
-                        mAddCallLogs = PrivacyContactUtils.getSysCallLog(
-                                AddFromCallLogListActivity.this, cr,
-                                "number LIKE ?", new String[] {
-                                    "%" + tempNumber
-                                });
-                    } else {
-                        List<ContactCallLog> addCalllog = PrivacyContactUtils.getSysCallLog(
-                                AddFromCallLogListActivity.this, cr,
-                                "number LIKE ?", new String[] {
-                                    "%" + tempNumber
-                                });
-                        mAddCallLogs.addAll(addCalllog);
-                    }
-                    if (!isOtherLogs) {
-                        if ((mAddMessages != null && mAddMessages.size() != 0)
-                                || (mAddCallLogs != null && mAddCallLogs.size() != 0)) {
-                            isOtherLogs = true;
-                            mLogFlag = isOtherLogs;
+                        if (!flagContact) {
+                            ContentValues values = new ContentValues();
+                            values.put(Constants.COLUMN_PHONE_NUMBER, contactNumber);
+                            values.put(Constants.COLUMN_CONTACT_NAME, name);
+                            values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mAnswerType);
+                            cr.insert(Constants.PRIVACY_CONTACT_URI, values);
+                            pcm.addContact(new ContactBean(0, name, contactNumber, null, null, null,
+                                    false, mAnswerType, null));
+                            added = true;
                         }
-                    }
-                    if (flagContact) {
-                        if (mAddPrivacyCallLog.size() == 1 && mAddPrivacyCallLog != null) {
+                        if (mAddMessages == null) {
+                            mAddMessages = PrivacyContactUtils.getSysMessage(
+                                    AddFromCallLogListActivity.this, cr,
+                                    "address LIKE ? ", new String[] {
+                                        "%" + tempNumber
+                                    }, true);
+                        } else {
+                            List<MessageBean> addMessages = PrivacyContactUtils.getSysMessage(
+                                    AddFromCallLogListActivity.this, cr,
+                                    "address LIKE ?", new String[] {
+                                        "%" + tempNumber
+                                    }, true);
+                            mAddMessages.addAll(addMessages);
+                        }
+                        if (mAddCallLogs == null) {
+                            mAddCallLogs = PrivacyContactUtils.getSysCallLog(
+                                    AddFromCallLogListActivity.this, cr,
+                                    "number LIKE ?", new String[] {
+                                        "%" + tempNumber
+                                    });
+                        } else {
+                            List<ContactCallLog> addCalllog = PrivacyContactUtils.getSysCallLog(
+                                    AddFromCallLogListActivity.this, cr,
+                                    "number LIKE ?", new String[] {
+                                        "%" + tempNumber
+                                    });
+                            mAddCallLogs.addAll(addCalllog);
+                        }
+                        if (!isOtherLogs) {
+                            if ((mAddMessages != null && mAddMessages.size() != 0)
+                                    || (mAddCallLogs != null && mAddCallLogs.size() != 0)) {
+                                isOtherLogs = true;
+                                mLogFlag = isOtherLogs;
+                            }
+                        }
+                        if (flagContact) {
+                            if (mAddPrivacyCallLog.size() == 1 && mAddPrivacyCallLog != null) {
+                                LeoEventBus
+                                        .getDefaultBus()
+                                        .post(
+                                                new
+                                                PrivacyMessageEvent(
+                                                        EventId.EVENT_PRIVACY_EDIT_MODEL,
+                                                        PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT));
+                                isOtherLogs = false;
+                            }
+                        }
+                        mLogFlag = true;// 子线程之前赋值
+                        if(mHandler!=null){
+                        Message messge =Message.obtain();
+                        count = count + 1;
+                        messge.what = count;
+                        mHandler.sendMessage(messge);
+                        //TODO TEST
+//                        Log.e(Constants.RUN_TAG, "电话号码："+message.getCallLogNumber());
+//                        pcm.removeCallLog(message);
+                        }
+                        flagContact = false;
+                        if (added) {
+                            // 通知更新隐私联系人列表
                             LeoEventBus
                                     .getDefaultBus()
-                                    .post(
-                                            new
-                                            PrivacyMessageEvent(
-                                                    EventId.EVENT_PRIVACY_EDIT_MODEL,
-                                                    PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT));
-                            isOtherLogs = false;
+                                    .post(new PrivacyEditFloatEvent(
+                                            PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
+                            PrivacyHelper.getInstance(getApplicationContext()).computePrivacyLevel(
+                                    PrivacyHelper.VARABLE_PRIVACY_CONTACT);
+                            SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd",
+                                    "callsadd");
                         }
                     }
-                    mLogFlag = true;// 子线程之前赋值
-                    if(mHandler!=null){
-                    Message messge =Message.obtain();
-                    count = count + 1;
-                    messge.what = count;
-                    mHandler.sendMessage(messge);
-                    //TODO TEST
-//                    Log.e(Constants.RUN_TAG, "电话号码："+message.getCallLogNumber());
-//                    pcm.removeCallLog(message);
+                } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
+                    // 导入通话记录
+                    if (mAddCallLogs != null) {
+                        for (ContactCallLog calllog : mAddCallLogs) {
+                            String number = calllog.getCallLogNumber();
+                            String name = calllog.getCallLogName();
+                            String date = calllog.getClallLogDate();
+                            int type = calllog.getClallLogType();
+                            ContentValues values = new ContentValues();
+                            values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER, number);
+                            values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, name);
+                            values.put(Constants.COLUMN_CALL_LOG_DATE, date);
+                            values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
+                            values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                            Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
+                            PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
+                                    AddFromCallLogListActivity.this);
+                            if (callLogFlag != null && mHandler!=null) {
+                                Message messge = Message.obtain();
+                                count = count + 1;
+                                messge.what = count;
+                                mHandler.sendMessage(messge);
+                            }
+                        }
+
                     }
-                    flagContact = false;
-                    if (added) {
-                        // 通知更新隐私联系人列表
-                        LeoEventBus
-                                .getDefaultBus()
-                                .post(new PrivacyEditFloatEvent(
-                                        PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
-                        PrivacyHelper.getInstance(getApplicationContext()).computePrivacyLevel(
-                                PrivacyHelper.VARABLE_PRIVACY_CONTACT);
-                        SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd",
-                                "callsadd");
-                    }
-                }
-            } else if (PrivacyContactUtils.ADD_CALL_LOG_AND_MESSAGE_MODEL.equals(flag)) {
-                // 导入通话记录
-                if (mAddCallLogs != null) {
-                    for (ContactCallLog calllog : mAddCallLogs) {
-                        String number = calllog.getCallLogNumber();
-                        String name = calllog.getCallLogName();
-                        String date = calllog.getClallLogDate();
-                        int type = calllog.getClallLogType();
-                        ContentValues values = new ContentValues();
-                        values.put(Constants.COLUMN_CALL_LOG_PHONE_NUMBER, number);
-                        values.put(Constants.COLUMN_CALL_LOG_CONTACT_NAME, name);
-                        values.put(Constants.COLUMN_CALL_LOG_DATE, date);
-                        values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
-                        values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
-                        Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
-                        PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
-                                AddFromCallLogListActivity.this);
-                        if (callLogFlag != null && mHandler!=null) {
-                            Message messge = Message.obtain();
-                            count = count + 1;
-                            messge.what = count;
-                            mHandler.sendMessage(messge);
+                    // 导入短信和通话记录
+                    if (mAddMessages != null) {
+                        for (MessageBean message : mAddMessages) {
+                            String number = message.getPhoneNumber();
+                            String name = message.getMessageName();
+                            String body = message.getMessageBody();
+                            String time = message.getMessageTime();
+                            String threadId = message.getMessageThreadId();
+                            int isRead = 1;// 0未读，1已读
+                            int type = message.getMessageType();// 短信类型1是接收到的，2是已发出
+                            ContentValues values = new ContentValues();
+                            values.put(Constants.COLUMN_MESSAGE_PHONE_NUMBER, number);
+                            values.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, name);
+                            String bodyTrim = body.trim();
+                            values.put(Constants.COLUMN_MESSAGE_BODY, bodyTrim);
+                            values.put(Constants.COLUMN_MESSAGE_DATE, time);
+
+                            int thread = PrivacyContactUtils.queryContactId(
+                                    AddFromCallLogListActivity.this, message.getPhoneNumber());
+                            values.put(Constants.COLUMN_MESSAGE_THREAD_ID, thread);
+                            values.put(Constants.COLUMN_MESSAGE_IS_READ, isRead);
+                            values.put(Constants.COLUMN_MESSAGE_TYPE, type);
+                            Uri messageFlag = cr.insert(Constants.PRIVACY_MESSAGE_URI, values);
+                            PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
+                                    new String[] {
+                                        number
+                                    }, AddFromCallLogListActivity.this);
+                            if (messageFlag != null && mHandler!=null) {
+                                Message messge = Message.obtain();
+                                count = count + 1;
+                                messge.what = count;
+                                mHandler.sendMessage(messge);
+                            }
                         }
                     }
-
-                }
-                // 导入短信和通话记录
-                if (mAddMessages != null) {
-                    for (MessageBean message : mAddMessages) {
-                        String number = message.getPhoneNumber();
-                        String name = message.getMessageName();
-                        String body = message.getMessageBody();
-                        String time = message.getMessageTime();
-                        String threadId = message.getMessageThreadId();
-                        int isRead = 1;// 0未读，1已读
-                        int type = message.getMessageType();// 短信类型1是接收到的，2是已发出
-                        ContentValues values = new ContentValues();
-                        values.put(Constants.COLUMN_MESSAGE_PHONE_NUMBER, number);
-                        values.put(Constants.COLUMN_MESSAGE_CONTACT_NAME, name);
-                        String bodyTrim = body.trim();
-                        values.put(Constants.COLUMN_MESSAGE_BODY, bodyTrim);
-                        values.put(Constants.COLUMN_MESSAGE_DATE, time);
-
-                        int thread = PrivacyContactUtils.queryContactId(
-                                AddFromCallLogListActivity.this, message.getPhoneNumber());
-                        values.put(Constants.COLUMN_MESSAGE_THREAD_ID, thread);
-                        values.put(Constants.COLUMN_MESSAGE_IS_READ, isRead);
-                        values.put(Constants.COLUMN_MESSAGE_TYPE, type);
-                        Uri messageFlag = cr.insert(Constants.PRIVACY_MESSAGE_URI, values);
-                        PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
-                                new String[] {
-                                    number
-                                }, AddFromCallLogListActivity.this);
-                        if (messageFlag != null && mHandler!=null) {
-                            Message messge = Message.obtain();
-                            count = count + 1;
-                            messge.what = count;
-                            mHandler.sendMessage(messge);
-                        }
+                    if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
+                        LeoEventBus.getDefaultBus().post(
+                                new PrivacyEditFloatEvent(
+                                        PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
                     }
-                }
-                if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
-                    LeoEventBus.getDefaultBus().post(
-                            new PrivacyEditFloatEvent(
-                                    PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
-                }
-                if (mAddMessages != null && mAddMessages.size() != 0) {
+                    if (mAddMessages != null && mAddMessages.size() != 0) {
 
-                    LeoEventBus.getDefaultBus().post(
-                            new PrivacyEditFloatEvent(
-                                    PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
+                        LeoEventBus.getDefaultBus().post(
+                                new PrivacyEditFloatEvent(
+                                        PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
+                    }
+                    isOtherLogs = false;
                 }
-                isOtherLogs = false;
+            } catch (Exception e) {
+                
             }
+           
             return isOtherLogs;
         }
 
         @Override
         protected void onPostExecute(Boolean result) {
-            if (result) {
-                if (mProgressDialog != null) {
-                    mProgressDialog.cancel();
+            try {
+                if (result) {
+                    if (mProgressDialog != null) {
+                        mProgressDialog.cancel();
+                    }
+                    String title = getResources().getString(
+                            R.string.privacy_contact_add_log_dialog_title);
+                    String content = getResources().getString(
+                            R.string.privacy_contact_add_log_dialog_dialog_content);
+                    showAddCallLogDialog(title, content);
+                    mHandler = null;
+                } else {
+                    if (mProgressDialog != null) {
+                        mProgressDialog.cancel();
+                    }
+                    AddFromContactListActivity.notificationUpdatePrivacyContactList();
                 }
-                String title = getResources().getString(
-                        R.string.privacy_contact_add_log_dialog_title);
-                String content = getResources().getString(
-                        R.string.privacy_contact_add_log_dialog_dialog_content);
-                showAddCallLogDialog(title, content);
-                mHandler = null;
-            } else {
-                if (mProgressDialog != null) {
-                    mProgressDialog.cancel();
-                }
-                AddFromContactListActivity.notificationUpdatePrivacyContactList();
+                super.onPostExecute(result);
+            } catch (Exception e) {
+                
             }
-            super.onPostExecute(result);
 
         }
     }
@@ -551,10 +560,14 @@ public class AddFromCallLogListActivity extends BaseActivity {
         @Override
         protected Boolean doInBackground(String... arg0) {
 //             mCallLogList =PrivacyContactManager.getInstance(AddFromCallLogListActivity.this).getSysCalls();
-            mCallLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this,
-                    getContentResolver(), null, null);
-            if (mCallLogList != null && mCallLogList.size() > 0) {
-                Collections.sort(mCallLogList, PrivacyContactUtils.mCallLogCamparator);
+            try {
+                mCallLogList = PrivacyContactUtils.getSysCallLog(AddFromCallLogListActivity.this,
+                        getContentResolver(), null, null);
+                if (mCallLogList != null && mCallLogList.size() > 0) {
+                    Collections.sort(mCallLogList, PrivacyContactUtils.mCallLogCamparator);
+                }
+            } catch (Exception e) {
+                
             }
             return null;
         }
