@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.CallLog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -488,7 +487,10 @@ public class AddFromCallLogListActivity extends BaseActivity {
         mProgressDialog.setProgress(currentValue);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+        try {
+            mProgressDialog.show();
+        } catch (Exception e) {            
+        }
     }
 
     private void showAddCallLogDialog(String title, String content) {
@@ -533,7 +535,10 @@ public class AddFromCallLogListActivity extends BaseActivity {
         mAddCallLogDialog.setCanceledOnTouchOutside(false);
         mAddCallLogDialog.setTitle(title);
         mAddCallLogDialog.setContent(content);
-        mAddCallLogDialog.show();
+        try {
+            mAddCallLogDialog.show();
+        } catch (Exception e) {            
+        }
     }
 
     private class PrivacyContactCallLogTask extends AsyncTask<String, Boolean, Boolean> {

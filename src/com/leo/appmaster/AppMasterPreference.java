@@ -560,14 +560,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         commitAsync(mPref.edit().putLong(PREF_LAST_UBC, time));
     }
 
-    public boolean getMessageRedTip() {
-        return mPref.getBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, false);
-    }
-
-    public void setMessageRedTip(boolean flag) {
-        commitAsync(mPref.edit().putBoolean(PREF_APP_PRIVACY_MESSAGE_RED_TIP, flag));
-    }
-
     public boolean getIsFromLockList() {
         return mPref.getBoolean(PREF_FROM_LOCKLIST, false);
     }

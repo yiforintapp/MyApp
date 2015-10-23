@@ -6,7 +6,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -19,8 +18,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.CallLog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -48,7 +45,6 @@ import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
-import com.leo.appmaster.utils.BuildProperties;
 
 public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
     private ListView mListMessage;
@@ -310,7 +306,11 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         mAddMessageDialog.setCanceledOnTouchOutside(false);
         mAddMessageDialog.setTitle(title);
         mAddMessageDialog.setContent(content);
-        mAddMessageDialog.show();
+        try {          
+            mAddMessageDialog.show();
+        } catch (Exception e) {        
+        }
+        
     }
 
     private class PrivacyMessageTask extends AsyncTask<String, Boolean, Boolean> {
@@ -552,7 +552,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         mProgressDialog.setProgress(currentValue);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+        try {          
+            mProgressDialog.show();
+        } catch (Exception e) {        
+        }
     }
 
     private class AddMessageAsyncTask extends AsyncTask<Boolean, Integer, Integer> {

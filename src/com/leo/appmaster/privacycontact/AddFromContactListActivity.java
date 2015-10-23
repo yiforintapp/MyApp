@@ -14,7 +14,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -548,7 +547,10 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
-        mProgressDialog.show();
+        try {          
+            mProgressDialog.show();
+        } catch (Exception e) {          
+        }
     }
 
     private void showAddContactDialog(String title, String content) {
@@ -598,7 +600,10 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         mAddContactDialog.setCanceledOnTouchOutside(false);
         mAddContactDialog.setTitle(title);
         mAddContactDialog.setContent(content);
-        mAddContactDialog.show();
+        try {          
+            mAddContactDialog.show();
+        } catch (Exception e) {          
+        }
     }
 
     private class AddContactAsyncTask extends AsyncTask<Boolean, Integer, Integer> {
