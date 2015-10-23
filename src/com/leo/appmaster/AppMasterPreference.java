@@ -378,6 +378,18 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private int mForgroundScore = -1;
     private String mSplashSkipMode = null;
     private String mSplashSkipUrl = null;
+    
+    private Boolean mIsFromLockList = null;
+    private Boolean mIsHomeToLockList = null;
+    private Boolean mIsHideLine = null;
+    private String mLastDir = null;
+    private String mSecondDir = null;
+    private long mSplashStartShowTime = -1;
+    private long mSplashEndShowTime = -1;
+    private int mMessageNoReadCount = -1;
+    private int mCallLogNoReadCount = -1;
+    private int mForegroundScore = -1;
+    private int mForegroundMinScore = -1;
 
     private Executor mSerialExecutor;
     private HashMap<String, Object> mValues;
@@ -561,18 +573,27 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public boolean getIsFromLockList() {
-        return mPref.getBoolean(PREF_FROM_LOCKLIST, false);
+        if(mIsFromLockList == null) {
+            mIsFromLockList = mPref.getBoolean(PREF_FROM_LOCKLIST, false);
+        }
+        
+        return mIsFromLockList;
     }
 
     public void setIsFromLockList(boolean flag) {
+        mIsFromLockList = flag;
         commitAsync(mPref.edit().putBoolean(PREF_FROM_LOCKLIST, flag));
     }
 
     public boolean getIsHomeToLockList() {
-        return mPref.getBoolean(PREF_HOME_TO_LOCKLIST, false);
+        if(mIsHomeToLockList = null) {
+            mIsHomeToLockList = mPref.getBoolean(PREF_HOME_TO_LOCKLIST, false);
+        }
+         return mIsHomeToLockList;
     }
 
     public void setIsHomeToLockList(boolean flag) {
+        mIsHomeToLockList = flag;
         commitAsync(mPref.edit().putBoolean(PREF_HOME_TO_LOCKLIST, flag));
     }
 
@@ -584,14 +605,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         commitAsync(mPref.edit().putBoolean(PREF_NEED_DISGUISE_TIP, flag));
     }
 
-    // phtd
-    public boolean getIsWhiteDotResponsing() {
-        return mPref.getBoolean(PREF_WHITE_DOT_RESPONSING, false);
-    }
-
-    public void setIsWhiteDotResponsing(boolean flag) {
-        commitAsync(mPref.edit().putBoolean(PREF_WHITE_DOT_RESPONSING, flag));
-    }
 
     public boolean getIsClockToLockList() {
         return mPref.getBoolean(PREF_CLOCK_TO_LOCKLIST, false);
@@ -599,14 +612,6 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
 
     public void setIsClockToLockList(boolean flag) {
         commitAsync(mPref.edit().putBoolean(PREF_CLOCK_TO_LOCKLIST, flag));
-    }
-
-    public boolean getCallLogRedTip() {
-        return mPref.getBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, false);
-    }
-
-    public void setCallLogRedTip(boolean flag) {
-        commitAsync(mPref.edit().putBoolean(PREF_APP_PRIVACY_CALL_LOG_RED_TIP, flag));
     }
 
     public boolean getIsNeedCloseBeauty() {
@@ -890,11 +895,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setHideLine(boolean isHide) {
+        mIsHideLine = isHide;
         commitAsync(mPref.edit().putBoolean(PREF_HIDE_LOCK_LINE, isHide));
     }
 
     public boolean getIsHideLine() {
-        return mPref.getBoolean(PREF_HIDE_LOCK_LINE, false);
+        if(mIsHideLine == null) {
+            mIsHideLine = mPref.getBoolean(PREF_HIDE_LOCK_LINE, false);
+        }
+        return mIsHideLine;
     }
 
     public void setSortType(int type) {
@@ -1432,20 +1441,26 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public String getLastDir() {
-        return mPref.getString(PREF_HIDE_VIDEO_LAST_DIR,
-                "");
+        if(mLastDir == null) {
+            mLastDir = mPref.getString(PREF_HIDE_VIDEO_LAST_DIR, "");
+        }
+        return mLastDir;
     }
 
     public void setLastDir(String path) {
+        mLastDir = path;
         commitAsync(mPref.edit().putString(PREF_HIDE_VIDEO_LAST_DIR, path));
     }
 
     public String getSecondDir() {
-        return mPref.getString(PREF_HIDE_VIDEO_SECOND_DIR,
-                "");
+        if(mSecondDir == null) {
+            mSecondDir = mPref.getString(PREF_HIDE_VIDEO_SECOND_DIR,  "");
+        }
+        return mSecondDir;
     }
 
     public void setSecondDi(String path) {
+        mSecondDir = path;
         commitAsync(mPref.edit().putString(PREF_HIDE_VIDEO_SECOND_DIR, path));
     }
 
@@ -1581,19 +1596,27 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setSplashStartShowTime(long time) {
+        mSplashStartShowTime = time;
         commitAsync(mPref.edit().putLong(PREF_SPLASH_START_SHOW_TIME, time));
     }
 
     public long getSplashStartShowTime() {
-        return mPref.getLong(PREF_SPLASH_START_SHOW_TIME, -1);
+        if(mSplashStartShowTime < 0) {
+            mSplashStartShowTime = mPref.getLong(PREF_SPLASH_START_SHOW_TIME, -1);
+        }
+        return mSplashStartShowTime;
     }
 
     public void setSplashEndShowTime(long time) {
+        mSplashEndShowTime = time;
         commitAsync(mPref.edit().putLong(PREF_SPLASH_END_SHOW_TIME, time));
     }
 
     public long getSplashEndShowTime() {
-        return mPref.getLong(PREF_SPLASH_END_SHOW_TIME, -1);
+        if(mSplashEndShowTime < 0) {
+            mSplashEndShowTime = mPref.getLong(PREF_SPLASH_END_SHOW_TIME, -1);
+        }
+        return mSplashEndShowTime;
     }
 
     public void setLoadSplashStrategy(long currentStrategy, long successStrategy,
@@ -1667,11 +1690,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setMessageNoReadCount(int count) {
+        mMessageNoReadCount = count;
         commitAsync(mPref.edit().putInt(PREF_MESSAGE_NO_READ_COUNT, count));
     }
 
     public int getMessageNoReadCount() {
-        return mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);
+        if(mMessageNoReadCount < 0) {
+            mMessageNoReadCount = mPref.getInt(PREF_MESSAGE_NO_READ_COUNT, 0);;
+        }
+        return mMessageNoReadCount;
     }
 
     /* 加载闪屏首次失败的当天日期 */
@@ -1717,12 +1744,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setCallLogNoReadCount(int count) {
-        LeoLog.i("HomePrivacy", "保存未读数：" + count);
+        mCallLogNoReadCount = count;
         commitAsync(mPref.edit().putInt(PREF_CALL_LOG_NO_READ_COUNT, count));
     }
 
     public int getCallLogNoReadCount() {
-        return mPref.getInt(PREF_CALL_LOG_NO_READ_COUNT, 0);
+        if(mCallLogNoReadCount < 0) {
+            mCallLogNoReadCount = mPref.getInt(PREF_CALL_LOG_NO_READ_COUNT, 0);
+        }
+        return mCallLogNoReadCount;
     }
 
     public void setTimeLockModeSetOver(boolean setted) {
@@ -2370,18 +2400,26 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getForegroundScore() {
-        return mPref.getInt(PREF_FOREGROUND_SCORE, 0);
+        if(mForegroundScore < 0) {
+            mForegroundScore = mPref.getInt(PREF_FOREGROUND_SCORE, 0);
+        }
+        return mForegroundScore;
     }
 
     public void setForegroundScore(int score) {
+        mForegroundScore = score;
         commitAsync(mPref.edit().putInt(PREF_FOREGROUND_SCORE, score));
     }
 
     public int getForegroundMinScore() {
-        return mPref.getInt(PREF_FOREGROUND_MIN_SCORE, 0);
+        if(mForegroundMinScore < 0) {
+            mForegroundMinScore = mPref.getInt(PREF_FOREGROUND_MIN_SCORE, 0);
+        }
+        return mForegroundMinScore;
     }
 
     public void setForegroundMinScore(int score) {
+        mForegroundMinScore = score;
         commitAsync(mPref.edit().putInt(PREF_FOREGROUND_MIN_SCORE, score));
     }
 
