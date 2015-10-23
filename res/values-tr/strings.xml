@@ -135,9 +135,6 @@
         <item>zamanla sıralama</item>
     </string-array>
 
-    <!-- 版权 -->
-    <string name="about_copy">Copyright©2015LEONetworkTechnology.AllRightsReserved</string>
-    <!-- 应用墙 -->
     <string name="app_wall_network">Ağ Hatası. Lütfen daha sonra tekrar deneyiniz.</string>
     <string name="app_wall_click">Yenile</string>
     <!-- 隐私策略 -->

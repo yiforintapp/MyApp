@@ -136,9 +136,6 @@
         <item>เรียงตามเวลา</item>
     </string-array>
 
-    <!-- 版权 -->
-    <string name="about_copy">Copyright © 2015 LEO Network Technology. All Rights Reserved</string>
-    <!-- 应用墙 -->
     <string name="app_wall_network">กรุณาลองใหม่อีกครั้ง!</string>
     <string name="app_wall_click">รีเฟรช</string>
     <!-- 隐私策略 -->

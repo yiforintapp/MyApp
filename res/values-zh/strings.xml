@@ -137,9 +137,6 @@
         <item>安裝時間排序</item>
     </string-array>
 
-    <!-- 版权 -->
-    <string name="about_copy">Copyright©2015LEONetworkTechnology.AllRightsReserved</string>
-    <!-- 应用墙 -->
     <string name="app_wall_network">網絡或服務器异常請重新嘗試！</string>
     <string name="app_wall_click">點擊重試</string>
     <!-- 隐私策略 -->

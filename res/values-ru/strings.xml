@@ -130,8 +130,7 @@
         <item>очередь по умолчанию</item>
         <item>названия прилождений</item>
         <item>по времени установок</item>
-    </string-array> <!-- 版权 -->
-    <string name="about_copy">Copyright © 2015 LEO Network Technology. All Rights Reserved</string> <!-- 应用墙 -->
+    </string-array> 
     <string name="app_wall_network">Не доступной сети,попробуйте повторно</string>
     <string name="app_wall_click">повторите</string> <!-- 隐私策略 -->
     <string name="protocolBar">соглашение о тайной защите</string>

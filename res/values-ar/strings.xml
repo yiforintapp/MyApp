@@ -191,8 +191,6 @@
         <item>ترتيب تاريخ</item>
     </string-array>
 
-    <!-- 版权 -->
-    <string name="about_copy">Copyright©2015LEONetworkTechnology.AllRightsReserved</string>
     <!-- 应用墙 -->
     <string name="app_wall_network">حالة شاذة، أعد محاولة!</string>
     <string name="app_wall_click">محاولة</string>
