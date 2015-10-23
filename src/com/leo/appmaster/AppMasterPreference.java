@@ -373,6 +373,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private long mADLastRequestTime = -1;
     private long mADLastLoadTime = -1;
     private long mISwipeLoadTime = -1;
+    private long mFilterTime = -1;
     private int mISwipeAlarm = -1;
     private int mForgroundScore = -1;
     private String mSplashSkipMode = null;
@@ -405,11 +406,15 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public void setLastFilterSelfTime(long time) {
+        mFilterTime = time;
         commitAsync(mPref.edit().putLong(PREF_LAST_FILTER_SELF_TIME, time));
     }
 
     public long getLastFilterSelfTime() {
-        return mPref.getLong(PREF_LAST_FILTER_SELF_TIME, 0);
+        if(mFilterTime < 0) {
+            mFilterTime =  mPref.getLong(PREF_LAST_FILTER_SELF_TIME, 0);
+        }
+        return mFilterTime;
     }
 
     public long getBusinessSuccessStrategy() {

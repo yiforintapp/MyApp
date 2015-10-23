@@ -197,8 +197,7 @@ public class TaskDetectService extends Service {
         stopDetectTask();
         if (Build.VERSION.SDK_INT < 21 || isGetRunningProcessAvailable()) {// Android
                                                                             // 5.1.1及以下
-            // for android 5.0, set period to 200, AM-1255
-            int period = Build.VERSION.SDK_INT > 19 ? 200 : 100;
+            int period = 200;
             mDetectTask = new DetectTask();
             mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period,
                     TimeUnit.MILLISECONDS);
