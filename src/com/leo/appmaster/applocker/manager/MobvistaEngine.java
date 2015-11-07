@@ -80,9 +80,12 @@ public class MobvistaEngine {
     
     static {
         Context context = AppMasterApplication.getInstance();
-        MobvistaAd.init(context, Constants.MOBVISTA_APPID,
-                Constants.MOBVISTA_APPKEY);
-        MobvistaEngine.getInstance(context).preloadMobvistaAds();
+        try {
+            MobvistaAd.init(context, Constants.MOBVISTA_APPID, Constants.MOBVISTA_APPKEY);
+            MobvistaEngine.getInstance(context).preloadMobvistaAds();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         LeoLog.i(TAG, "static block run done");
     }
     
