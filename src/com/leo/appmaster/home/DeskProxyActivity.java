@@ -6,14 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.WeiZhuangActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -23,11 +22,14 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
+import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class DeskProxyActivity extends Activity {
@@ -45,16 +47,22 @@ public class DeskProxyActivity extends Activity {
     public static final int mHotApp = 11;
     public static final int mAd = 12;
 
+    public static final int mWifi = 13;
+    public static final int mQuickHelper = 14;
+
     private MobvistaAdWall wallAd;
 
     private boolean mDelayFinish = false;
     private Handler mHandler;
     private String mCbPath;
 
+    private LockManager mLockManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         Intent intent = getIntent();
         int type = intent.getIntExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                 StatusBarEventService.EVENT_EMPTY);
@@ -73,9 +81,10 @@ public class DeskProxyActivity extends Activity {
                 } else if (type == mBackup) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "backUp");
                     gotoBackUp(type);
+                } else if (type == mWifi) {
+                    gotoWifi(type);
                 } else if (type == mQuickGues) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "quickGesture");
-//                    gotoQuickGues(type);
                 } else if (type == mLockThem) {
                     SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "lockThem");
                     gotoLockThem(type);
@@ -83,6 +92,8 @@ public class DeskProxyActivity extends Activity {
                     gotoHotApp(type);
                 } else if (type == mAd) {
                     gotoAd(type);
+                } else if (type == mQuickHelper) {
+                    gotoQuickHelper(type);
                 } else {
                     Intent mIntent = new Intent(this, LockSettingActivity.class);
                     mIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
@@ -100,6 +111,9 @@ public class DeskProxyActivity extends Activity {
                     case mAppWeiZhuang:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ", "appDisguise");
                         goToAppWeiZhuang(type);
+                        break;
+                    case mWifi:
+                        gotoWifi(type);
                         break;
                     case mPicHide:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
@@ -134,7 +148,6 @@ public class DeskProxyActivity extends Activity {
                     case mQuickGues:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
                                 "quickGesture");
-//                        gotoQuickGues(type);
                         break;
                     case mLockThem:
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "launcher_in ",
@@ -147,10 +160,20 @@ public class DeskProxyActivity extends Activity {
                     case mAd:
                         gotoAd(type);
                         break;
+                    case mQuickHelper:
+                        gotoQuickHelper(type);
+                        break;
                 }
             }
             finish();
         }
+    }
+
+    private void gotoQuickHelper(int type) {
+        mLockManager.filterPackage(this.getPackageName(), 1000);
+        Intent qhintent = new Intent(this, QuickHelperActivity.class);
+        qhintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(qhintent);
     }
 
     @Override
@@ -163,10 +186,14 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoAd(int type) {
-        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        if(getIntent().getBooleanExtra("from_quickhelper", false)){
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "assistant", "appjoy_cnts");
+        }
+        mLockManager.filterPackage(this.getPackageName(), 1000);
         // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
-        wallAd = MobvistaEngine.getInstance().createAdWallController(this, Constants.UNIT_ID_61);
-
+        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_61);
+        
         if (wallAd != null) {
             wallAd.preloadWall();
             wallAd.clickWall();
@@ -174,28 +201,48 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void gotoHotApp(int type) {
-        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, HotAppActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
     private void gotoLockThem(int type) {
-        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, LockerTheme.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
     private void gotoBackUp(int type) {
-        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        if (getIntent().getBooleanExtra("from_quickhelper", false)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "assistant", "backup_cnts");
+        }
+        mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent intent = new Intent(this, BackUpActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
     }
 
+    private void gotoWifi(int type) {
+        if (getIntent().getBooleanExtra("from_quickhelper", false)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "assistant", "wifi_cnts");
+        }
+        mLockManager.filterPackage(this.getPackageName(), 1000);
+        Intent intent = new Intent(this, WifiSecurityActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
+        startActivity(intent);
+    }
+
     private void gotoEle(int type) {
-        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        if (getIntent().getBooleanExtra("from_quickhelper", false)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "assistant", "power_cnts");
+        }
+        mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent dlIntent = new Intent(this, EleActivity.class);
         dlIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         dlIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
@@ -203,7 +250,11 @@ public class DeskProxyActivity extends Activity {
     }
 
     private void goToFlow(int type) {
-        LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+        if (getIntent().getBooleanExtra("from_quickhelper", false)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1,
+                    "assistant", "dataflow_cnts");
+        }
+        mLockManager.filterPackage(this.getPackageName(), 1000);
         Intent mIntent = new Intent(this, FlowActivity.class);
         mIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         mIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
@@ -218,8 +269,7 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         LeoLog.d("Track Lock Screen", "apply lockscreen form goToPrivateSms");
-        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                this.getPackageName(), false, null);
+        mLockManager.applyLock(LockManager.LOCK_MODE_FULL, this.getPackageName(), false, null);
     }
 
     private void goToHideVio(int type) {
@@ -230,8 +280,7 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         LeoLog.d("Track Lock Screen", "apply lockscreen form goToHideVio");
-        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                this.getPackageName(), false, null);
+        mLockManager.applyLock(LockManager.LOCK_MODE_FULL, this.getPackageName(), false, null);
     }
 
     private void goToHidePic(int type) {
@@ -239,8 +288,7 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         LeoLog.d("Track Lock Screen", "apply lockscreen form goToHidePic");
-        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                this.getPackageName(), false, null);
+        mLockManager.applyLock(LockManager.LOCK_MODE_FULL, this.getPackageName(), false, null);
     }
 
     private void goToAppWeiZhuang(int type) {
@@ -248,13 +296,11 @@ public class DeskProxyActivity extends Activity {
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         LeoLog.d("Track Lock Screen", "apply lockscreen form goToAppWeiZhuang");
-        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                this.getPackageName(), false, null);
+        mLockManager.applyLock(LockManager.LOCK_MODE_FULL, this.getPackageName(), false, null);
     }
 
     private void goToAppLock(int type) {
-        LockManager lm = LockManager.getInstatnce();
-        LockMode curMode = lm.getCurLockMode();
+        LockMode curMode = mLockManager.getCurLockMode();
         Intent intent;
         if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
             intent = new Intent(this, RecommentAppLockListActivity.class);
@@ -263,7 +309,7 @@ public class DeskProxyActivity extends Activity {
             intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, type);
             startActivity(intent);
             curMode.haveEverOpened = true;
-            lm.updateMode(curMode);
+            mLockManager.updateMode(curMode);
         } else {
             intent = new Intent(this, AppLockListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -271,8 +317,7 @@ public class DeskProxyActivity extends Activity {
             startActivity(intent);
         }
         LeoLog.d("Track Lock Screen", "apply lockscreen form goToAppLock");
-        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                this.getPackageName(), false, null);
+        mLockManager.applyLock(LockManager.LOCK_MODE_FULL, this.getPackageName(), false, null);
     }
 
     @Override

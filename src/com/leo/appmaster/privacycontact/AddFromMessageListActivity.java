@@ -6,6 +6,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -18,6 +19,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.provider.CallLog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -38,23 +41,24 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.BuildProperties;
 
 public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
     private ListView mListMessage;
     private MyMessageAdapter mAdapter;
     private List<MessageBean> mMessageList;
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar  mTtileBar;
     private List<MessageBean> mAddPrivacyMessage;
     private LEOAlarmDialog mAddMessageDialog;
     private Handler mHandler;
-    private LEOProgressDialog mProgressDialog;
+    private LEORoundProgressDialog mProgressDialog;
     private ProgressBar mProgressBar;
     private List<MessageBean> mAddMessages;
     private List<ContactCallLog> mAddCallLogs;
@@ -81,12 +85,11 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                 startActivity(intent);
             }
         });
-        mTtileBar = (CommonTitleBar) findViewById(R.id.add_privacy_contact_title_bar);
-        mTtileBar.openBackView();
-        mTtileBar.setOptionImage(R.drawable.mode_done);
-        mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
-                R.drawable.privacy_title_bt_selecter);
-        mTtileBar.setOptionListener(new OnClickListener() {
+        mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
+        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setOptionImageResource(R.drawable.mode_done);
+        mTtileBar.setOptionMenuVisible(true);
+        mTtileBar.setOptionClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -125,8 +128,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                 }
             }
         });
-        mTtileBar.setTitle(getResources()
-                .getString(R.string.privacy_contact_popumenus_from_message));
+        mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_from_message);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
         mMessageList = new ArrayList<MessageBean>();
         mAddPrivacyMessage = new ArrayList<MessageBean>();
@@ -306,11 +308,16 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         mAddMessageDialog.setCanceledOnTouchOutside(false);
         mAddMessageDialog.setTitle(title);
         mAddMessageDialog.setContent(content);
-        try {          
+
+        if (isFinishing()) return;
+
+        try {
             mAddMessageDialog.show();
-        } catch (Exception e) {        
+        } catch (Exception e) {
+
+        } catch (Error e) {
+
         }
-        
     }
 
     private class PrivacyMessageTask extends AsyncTask<String, Boolean, Boolean> {
@@ -320,7 +327,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         }
 
         @Override
-        protected Boolean doInBackground(String... arg0) {               
+        protected Boolean doInBackground(String... arg0) {
             boolean isOtherLogs = false;
             try {
                 String flag = arg0[0];
@@ -350,43 +357,38 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 }
                             }
                         }
-                        if (!flagContact)
-                        {
+                        if (!flagContact) {
                             ContentValues values = new ContentValues();
                             values.put(Constants.COLUMN_PHONE_NUMBER, numberFromMessage);
                             values.put(Constants.COLUMN_CONTACT_NAME, name);
                             values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mAnswerType);
                             cr.insert(Constants.PRIVACY_CONTACT_URI, values);
                             pcm.addContact(new ContactBean(0, name, numberFromMessage, null, null,
-                                    null, false, mAnswerType, null));
+                                    null, false, mAnswerType, null, 0, 0, 0));
                             added = true;
                         }
                         if (mAddMessages == null) {
                             mAddMessages = PrivacyContactUtils.getSysMessage(
-                                    AddFromMessageListActivity.this, cr,
-                                    "address LIKE ? ", new String[] {
-                                        "%" + tempNumber
-                                    }, true);
+                                    AddFromMessageListActivity.this, "address LIKE ? ", new String[]{
+                                            "%" + tempNumber
+                                    }, true, false);
                         } else {
                             List<MessageBean> addMessages = PrivacyContactUtils.getSysMessage(
-                                    AddFromMessageListActivity.this, cr,
-                                    "address LIKE ?", new String[] {
-                                        "%" + tempNumber
-                                    }, true);
+                                    AddFromMessageListActivity.this, "address LIKE ?", new String[]{
+                                            "%" + tempNumber
+                                    }, true, false);
                             mAddMessages.addAll(addMessages);
                         }
                         if (mAddCallLogs == null) {
                             mAddCallLogs = PrivacyContactUtils.getSysCallLog(
-                                    AddFromMessageListActivity.this, cr,
-                                    "number LIKE ?", new String[] {
-                                        "%" + tempNumber
-                                    });
+                                    AddFromMessageListActivity.this, "number LIKE ?", new String[]{
+                                            "%" + tempNumber
+                                    }, true, false);
                         } else {
                             List<ContactCallLog> addCalllog = PrivacyContactUtils.getSysCallLog(
-                                    AddFromMessageListActivity.this, cr,
-                                    "number LIKE ?", new String[] {
-                                        "%" + tempNumber
-                                    });
+                                    AddFromMessageListActivity.this, "number LIKE ?", new String[]{
+                                            "%" + tempNumber
+                                    }, true, false);
                             mAddCallLogs.addAll(addCalllog);
                         }
                         if (!isOtherLogs) {
@@ -420,8 +422,8 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                     .getDefaultBus()
                                     .post(new PrivacyEditFloatEvent(
                                             PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
-                            PrivacyHelper.getInstance(getApplicationContext()).computePrivacyLevel(
-                                    PrivacyHelper.VARABLE_PRIVACY_CONTACT);
+//                            PrivacyHelper.getInstance(getApplicationContext()).computePrivacyLevel(
+//                                    PrivacyHelper.VARABLE_PRIVACY_CONTACT);
                             SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd",
                                     "smsadd");
                         }
@@ -456,8 +458,8 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                                 e.printStackTrace();
                             }
                             PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
-                                    new String[] {
-                                        number
+                                    new String[]{
+                                            number
                                     }, AddFromMessageListActivity.this);
                             if (messageFlag != null && mHandler != null) {
                                 Message messge = new Message();
@@ -484,6 +486,7 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                             values.put(Constants.COLUMN_CALL_LOG_DATE, date);
                             values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
                             values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                            values.put(Constants.COLUMN_CALL_LOG_DURATION, calllog.getCallLogDuraction());
                             Uri callLogFlag = null;
                             try {
                                 callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
@@ -520,9 +523,9 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     isOtherLogs = false;
                 }
             } catch (Exception e) {
-                
+
             }
-          
+
             return isOtherLogs;
         }
 
@@ -538,20 +541,20 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                 } else {
                     AddFromContactListActivity.notificationUpdatePrivacyContactList();
                 }
-                if (mProgressDialog != null) {
-                    mProgressDialog.cancel();
-                }
-                mHandler = null;
-                super.onPostExecute(result);
             } catch (Exception e) {
-                
+
             }
+            if (mProgressDialog != null) {
+                mProgressDialog.cancel();
+            }
+            mHandler = null;
+            super.onPostExecute(result);
         }
     }
 
     private void showProgressDialog(int maxValue, int currentValue) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEOProgressDialog(this);
+            mProgressDialog = new LEORoundProgressDialog(this);
         }
         String title = getResources().getString(R.string.privacy_message_progress_dialog_title);
         String content = getResources().getString(R.string.privacy_message_progress_dialog_content);
@@ -561,9 +564,10 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
         mProgressDialog.setProgress(currentValue);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
-        try {          
+        try {
             mProgressDialog.show();
-        } catch (Exception e) {        
+        } catch (Exception e) {
+
         }
     }
 
@@ -593,17 +597,14 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                     // PrivacyContactManager.getInstance(AddFromMessageListActivity.this)
                     // .getSysMessage();
                     mMessageList =
-                            PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this,
-                                    AddFromMessageListActivity.this.getContentResolver(), null,
-                                    null,
-                                    false);
+                            PrivacyContactUtils.getSysMessage(AddFromMessageListActivity.this, null, null, false, false);
                     if (mMessageList != null && mMessageList.size() > 0) {
                         Collections.sort(mMessageList,
                                 PrivacyContactUtils.mMessageCamparator);
                     }
                 }
             } catch (Exception e) {
-                
+
             }
             return null;
         }
@@ -622,8 +623,12 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                 mListMessage.setAdapter(mAdapter);
                 mAdapter.notifyDataSetChanged();
             } catch (Exception e) {
-                
+
             }
+            mProgressBar.setVisibility(View.GONE);
+            mAdapter = new MyMessageAdapter(mMessageList);
+            mListMessage.setAdapter(mAdapter);
+            mAdapter.notifyDataSetChanged();
         }
 
     }

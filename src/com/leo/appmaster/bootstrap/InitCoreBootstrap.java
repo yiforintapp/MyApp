@@ -7,6 +7,8 @@ import java.util.Date;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.app.admin.DevicePolicyManager;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -28,18 +30,20 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
+import com.leo.appmaster.db.AppMasterDBHelper;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.home.SplashActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.MessagePrivacyReceiver;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.privacycontact.PrivacyMessageContentObserver;
-import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.utils.LeoLog;
@@ -70,6 +74,7 @@ public class InitCoreBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        AppMasterDBHelper.getInstance(mApp).getReadableDatabase();
         long start = SystemClock.elapsedRealtime();
         AppLoadEngine.getInstance(mApp);
         long end = SystemClock.elapsedRealtime();
@@ -96,7 +101,8 @@ public class InitCoreBootstrap extends Bootstrap {
 
         // init lock manager
         start = SystemClock.elapsedRealtime();
-        LockManager.getInstatnce().init();
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        lockManager.init();
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, LockManager.getInstance.init: " + (end - start));
 
@@ -110,19 +116,11 @@ public class InitCoreBootstrap extends Bootstrap {
             SplashActivity.deleteImage();
             preference.setIsFirstInstallApp(false);
         }
-
-        start = SystemClock.elapsedRealtime();
-        PrivacyHelper.getInstance(mApp).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, computePrivacyLevel: " + (end - start));
-
-        start = SystemClock.elapsedRealtime();
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, QuickGestureManager.getInstance: " + (end - start));
-
         checkUpdateFinish();
         initSplashDelayTime();
         UIHelper.getInstance(mApp).mRandomCount = preference.getUnlockSucessRandom();
+
+        PrivacyHelper.getInstance(mApp).caculateSecurityScore();
         return true;
     }
 
@@ -205,6 +203,14 @@ public class InitCoreBootstrap extends Bootstrap {
         }
     }
 
+    private void removeDeviceAdmin(){
+        AppMasterApplication mApp = AppMasterApplication.getInstance();
+        ComponentName component = new ComponentName(mApp,DeviceReceiver.class);
+        DevicePolicyManager dpm = (DevicePolicyManager)mApp.getSystemService(Context.DEVICE_POLICY_SERVICE);
+        dpm.removeActiveAdmin(component);
+        LeoLog.i("stone_admin", "removeDeviceAdmin for first install");
+    }
+
     private void checkUpdateFinish() {
         judgeLockAlert();
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
@@ -214,6 +220,8 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i("value", "versionCode=" + versionCode);
         if (TextUtils.isEmpty(lastVercode)) {
             // first install
+            // AM-2911: remove device administration at first install
+            removeDeviceAdmin();
             if (versionCode == 34) {
                 // remove unlock-all shortcut v2.1
                 tryRemoveUnlockAllShortcut(mApp);
@@ -240,13 +248,7 @@ public class InitCoreBootstrap extends Bootstrap {
                         R.integer.guide_page_version);
                 int lastGuideVersion = pref.getLastGuideVersion();
                 /* 升级是否需要显示引导页，需要手动配置：true-显示，false-不显示 */
-                // TODO 2.12版本对引导页做特别处理，上个版本不是2.11或者2.10到2.12版本时就显示引导页否则不显示
-                updateShowGuidePage(
-                        lastCode < 41 || (lastCode>=41 && lastCode != 47 && lastCode != 46));
-                // TODO 下个版本需要改回该方式
-                // updateShowGuidePage(lastCode < 41 || currentGuideVersion >
-                // lastGuideVersion );
-
+                updateShowGuidePage(lastCode < 46 || (currentGuideVersion > lastGuideVersion && currentGuideVersion > 1));
                 pref.setLastGuideVersion(currentGuideVersion);
                 pref.setIsUpdateQuickGestureUser(true);
                 // 每次升级都重新刷新googleplay提示规则
@@ -287,7 +289,8 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void tryRemoveUnlockAllShortcut(Context ctx) {
-        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag()) {
+        if (!AppMasterPreference.getInstance(ctx).getRemoveUnlockAllShortcutFlag())
+        {
             // remove unlock all shortcut
             Intent shortcutIntent = new Intent(ctx, LockScreenActivity.class);
             shortcutIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -310,21 +313,16 @@ public class InitCoreBootstrap extends Bootstrap {
     }
 
     private void installBoostShortcut() {
-        /* 系统是否安装有Iswipe */
-        boolean isInstalllIswipe = ISwipUpdateRequestManager.isInstallIsiwpe(mApp);
-        LeoLog.i(TAG, "System install :" + isInstalllIswipe);
-        if (!isInstalllIswipe) {
-            Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
-            ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
-                    R.drawable.booster_icon);
-            Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-            shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-            shortcut.putExtra("duplicate", false);
-            shortcut.putExtra("from_shortcut", true);
-            mApp.sendBroadcast(shortcut);
-        }
+        Intent shortcutIntent = new Intent(mApp, HomeBoostActivity.class);
+        ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(mApp,
+                R.drawable.qh_speedup_icon);
+        Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, mApp.getString(R.string.accelerate));
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
+        shortcut.putExtra("duplicate", false);
+        shortcut.putExtra("from_shortcut", true);
+        mApp.sendBroadcast(shortcut);
     }
 
     private void judgeLockAlert() {

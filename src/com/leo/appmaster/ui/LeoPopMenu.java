@@ -98,7 +98,7 @@ public class LeoPopMenu {
         // mLeoPopMenu.setWidth((int) (finalWidth+DipPixelUtil.dip2px(mContext,
         // 68)));
         // mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
-        LeoLog.e("hehe", finalWidth + "final///" + mLeoPopMenu.getWidth() + " true w");
+        Log.e("hehe", finalWidth + "final///" + mLeoPopMenu.getWidth() + " true w");
 
         // mLeoPopMenu.setHeight(ViewGroup.LayoutParams.WRAP_CONTENT);
         // mLeoPopMenu.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -114,10 +114,13 @@ public class LeoPopMenu {
 
         mLeoPopMenu.setAnimationStyle(mStyles.animation);
         // mLeoPopMenu.showAsDropDown(anchorView, 0, 0);
-        if (mStyles != null && mStyles.direction == DIRECTION_DOWN) {
-            mLeoPopMenu.showAtLocation(anchorView, Gravity.NO_GRAVITY, 0, 0);
-        } else {
-            mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
+        try {
+            if (mStyles != null && mStyles.direction == DIRECTION_DOWN) {
+                mLeoPopMenu.showAtLocation(anchorView, Gravity.NO_GRAVITY, 0, 0);
+            } else {
+                mLeoPopMenu.showAsDropDown(anchorView, 50, 0);
+            }
+        } catch (Exception e) {
         }
 
     }
@@ -176,7 +179,10 @@ public class LeoPopMenu {
 
     public void dismissSnapshotList() {
         if (mLeoPopMenu != null) {
-            mLeoPopMenu.dismiss();
+            try {
+                mLeoPopMenu.dismiss();
+            } catch (Exception e) {
+            }
             mLeoPopMenu = null;
         }
     }
@@ -241,7 +247,7 @@ public class LeoPopMenu {
 
         // newLongWidth=Math.min( W/2, mMaxLength);
 
-        LeoLog.e("hehe", "最长字符占的宽度px=" + mMaxLength);
+        Log.e("hehe", "最长字符占的宽度px=" + mMaxLength);
 
         
         newSmallWidth = W / 4;

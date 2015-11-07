@@ -4,15 +4,19 @@ package com.leo.appmaster.applocker.receiver;
 import java.lang.reflect.Method;
 
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.NetworkInfo.State;
+import android.provider.Settings;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.showTrafficTip;
 import com.leo.appmaster.ui.showTrafficTip.OnDiaogClickListener;
@@ -30,7 +34,9 @@ public class showTrafficAlof extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         this.mContext = context.getApplicationContext();
         sp_broadcast = AppMasterPreference.getInstance(mContext);
-        isSwtich = sp_broadcast.getFlowSetting();
+        isSwtich = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getOverDataSwitch();
+//        isSwtich = sp_broadcast.getFlowSetting();
         firstIn = sp_broadcast.getFirstTime();
         secondIn = System.currentTimeMillis();
         String action = intent.getAction();
@@ -103,15 +109,16 @@ public class showTrafficAlof extends BroadcastReceiver {
     }
 
     private void showAlarmDialog(String action) {
-        showTrafficTip dialog = new showTrafficTip(
-                mContext);
+        final showTrafficTip dialog = new showTrafficTip(mContext);
         String tip = "";
-
+        SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "data_notify");
         if (action.equals("com.leo.appmaster.traffic.alot")) {
             // LeoLog.d("ServiceTraffic", "流量超额通知！！");
             sp_broadcast.setAlotNotice(true);
             tip = mContext.getString(
-                    R.string.traffic_used_lot_text, sp_broadcast.getFlowSettingBar());
+                    R.string.traffic_used_lot_text,
+                    ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                            getOverDataInvokePercent());
 
         } else if (action.equals("com.leo.appmaster.traffic.finish")) {
             // LeoLog.d("ServiceTraffic", "流量用完通知！！");
@@ -126,9 +133,11 @@ public class showTrafficAlof extends BroadcastReceiver {
             @Override
             public void onClick(int which) {
                 if (which == 0) {
+                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "data_cnts_notify");
                     // 关闭网络
                     setMobileNetUnable();
                 }
+                dialog.cancel();
             }
         });
         dialog.getWindow().setType(
@@ -139,17 +148,20 @@ public class showTrafficAlof extends BroadcastReceiver {
 
     public final void setMobileNetUnable() {
         // LeoLog.d("ServiceTraffic", "关闭网络咯！！");
-        mConnectivityManager = (ConnectivityManager) mContext
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        Object[] arg = null;
-        try {
-            boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled",
-                    arg);
-            if (isMobileDataEnable) {
-                invokeBooleanArgMethod("setMobileDataEnabled", false);
+        if (android.os.Build.VERSION.SDK_INT > 19) {
+            Intent intent =  new Intent(Settings.ACTION_DATA_ROAMING_SETTINGS);  
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            mContext.startActivity(intent);
+        } else {
+            Object[] arg = null;
+            try {
+                boolean isMobileDataEnable = invokeMethod("getMobileDataEnabled", arg);
+                if (isMobileDataEnable) {
+                    invokeBooleanArgMethod("setMobileDataEnabled", false);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

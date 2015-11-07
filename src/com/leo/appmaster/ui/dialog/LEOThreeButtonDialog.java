@@ -1,6 +1,5 @@
 package com.leo.appmaster.ui.dialog;
 
-import android.R.integer;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
@@ -11,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 
 public class LEOThreeButtonDialog extends LEOBaseDialog {
 	public static final String TAG = "XLAlarmDialog";
@@ -20,6 +21,7 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 	private TextView mTitle,mContent, mLeftBtn,mRightBtn,mMidBtn;
 	private ImageView mHeadIcon;
 	private Object mUserData;
+	private RippleView mRvWhite , mRvBlue , mRvRed;
 
 	private OnDiaogClickListener mListener;
 
@@ -115,47 +117,55 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 
     public void setRightBtnVisiable(int visiable) {
         mRightBtn.setVisibility(visiable);
-        if(visiable != View.VISIBLE){
-            setSecondBtnBackground(R.drawable.manager_right_contact_button_selecter);
-        }
+//        if(visiable != View.VISIBLE){
+//            setSecondBtnBackground(R.drawable.manager_right_contact_button_selecter);
+//        }
     }
 
 
 	public void setLeftBtnListener(DialogInterface.OnClickListener lListener) {
-		mLeftBtn.setTag(lListener);
-		mLeftBtn.setOnClickListener(new View.OnClickListener() {
-
+	    mRvWhite.setTag(lListener);
+	    mRvWhite.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 			@Override
-			public void onClick(View arg0) {
-				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mLeftBtn
+			public void onRippleComplete(RippleView arg0) {
+				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvWhite
 						.getTag();
-				lListener.onClick(LEOThreeButtonDialog.this, 0);
+                try {
+                    lListener.onClick(LEOThreeButtonDialog.this, 0);
+                } catch (Exception e) {
+                }
 			}
 		});
 	}
 
 	public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-		mRightBtn.setTag(rListener);
-		mRightBtn.setOnClickListener(new View.OnClickListener() {
+		mRvRed.setTag(rListener);
+		mRvRed.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
 			@Override
-			public void onClick(View arg0) {
-				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRightBtn
+			public void onRippleComplete(RippleView arg0) {
+				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvRed
 						.getTag();
-				lListener.onClick(LEOThreeButtonDialog.this, 2);
+                try {
+                    lListener.onClick(LEOThreeButtonDialog.this, 2);
+                } catch (Exception e) {
+                }
 			}
 		});
 	}
 
 	public void setMidBtnListener(DialogInterface.OnClickListener rListener) {
-		mMidBtn.setTag(rListener);
-		mMidBtn.setOnClickListener(new View.OnClickListener() {
+		mRvBlue.setTag(rListener);
+		mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
 			@Override
-			public void onClick(View arg0) {
-				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mMidBtn
+			public void onRippleComplete(RippleView arg0) {
+				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
 						.getTag();
-				lListener.onClick(LEOThreeButtonDialog.this, 1);
+                try {
+                    lListener.onClick(LEOThreeButtonDialog.this, 1);
+                } catch (Exception e) {
+                }
 			}
 		});
 	}
@@ -164,6 +174,10 @@ public class LEOThreeButtonDialog extends LEOBaseDialog {
 		View dlgView = LayoutInflater.from(mContext).inflate(
 				R.layout.dialog_alarm_three_button, null);
 
+		mRvWhite = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
+		mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
+		mRvRed = (RippleView) dlgView.findViewById(R.id.rv_dialog_Red_button);
+		
 		mHeadIcon = (ImageView)dlgView.findViewById(R.id.dlg_icon);
 		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
 		mContent = (TextView) dlgView.findViewById(R.id.dlg_content);

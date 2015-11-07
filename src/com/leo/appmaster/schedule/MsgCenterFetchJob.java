@@ -16,7 +16,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
-import com.leo.appmaster.http.HttpRequestAgent;
+import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.msgcenter.Message;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.BuildProperties;
@@ -53,7 +53,7 @@ public class MsgCenterFetchJob extends FetchScheduleJob {
 
     public static void startImmediately() {
         LeoLog.i(TAG, "startImmediately.....");
-        if (BuildProperties.isZTEAndApiLevel14()) return;
+        if (BuildProperties.isApiLevel14()) return;
         MsgCenterFetchJob job = new MsgCenterFetchJob();
         FetchScheduleListener listener = job.newJsonArrayListener();
         Context ctx = AppMasterApplication.getInstance();

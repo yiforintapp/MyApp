@@ -6,11 +6,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledExecutorService;
@@ -20,11 +16,9 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import com.leo.appmaster.appsetting.AboutActivity;
 import com.leo.appmaster.utils.LeoLog;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
@@ -57,9 +51,9 @@ public class ThreadManager {
     /**
      * 异步线程池核心线程个数
      */
-    private static final int ASYNCTASK_CORE_SIZE = 2;
+    private static final int ASYNCTASK_CORE_SIZE = 4;
 
-    private static final int MAX_ASYNC_SIZE = 6;
+    private static final int MAX_ASYNC_SIZE = 20;
     private static final int MAX_NETWORK_SIZE = 4;
 
     /**

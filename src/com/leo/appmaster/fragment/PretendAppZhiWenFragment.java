@@ -46,15 +46,18 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
                     finger_unlock.setVisibility(View.VISIBLE);
                     break;
                 case FINISHFRAGMENT:
+                    SDKWrapper
+                            .addEvent(mActivity, SDKWrapper.P1, "appcover", "done_FingerPrint");
                     onUnlockPretendSuccessfully();
+                    finger_lock.setVisibility(View.GONE);
+                    finger_unlock.setVisibility(View.GONE);
                     break;
             }
-        };
-    };
-    
-    
+        }
 
-    
+        ;
+    };
+
 
     @Override
     protected int layoutResourceId() {
@@ -64,15 +67,11 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     @Override
     public void onResume() {
         // TODO Auto-generated method stub
-        
-//        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
-//                "appcover ", "fingerprint");
-        
-        
+
         super.onResume();
     }
-    
-    
+
+
     @Override
     protected void onInitUI() {
         zhiwen_content = findViewById(R.id.zhiwen_content);
@@ -96,7 +95,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
     }
 
     @SuppressLint("NewApi")
-	private void getZhiWen() {
+    private void getZhiWen() {
         ViewTreeObserver guaduan = iv_zhiwen_click.getViewTreeObserver();
         guaduan.addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             public void onGlobalLayout() {
@@ -114,14 +113,15 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
             }
         });
     }
+
     @Override
     public boolean onBackPressed() {
         // TODO Auto-generated method stub
         SDKWrapper
-        .addEvent(mActivity, SDKWrapper.P1, "appcover", "fail_FingerPrint");
+                .addEvent(mActivity, SDKWrapper.P1, "appcover", "fail_FingerPrint");
         return super.onBackPressed();
     }
-    
+
 
     private void showDongHuaAlpha(final float i, final float j) {
         // zhiwen
@@ -192,7 +192,7 @@ public class PretendAppZhiWenFragment extends PretendFragment implements OnClick
 
                     showFeedBack();
 
-                    
+
                 }
                 break;
             default:

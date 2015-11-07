@@ -3,13 +3,10 @@
 
     <string name="app_name">Privacy Guard</string>
     <string name="app_lock">"Kilit"</string>
-    <string name="app_add_lock">"Uygulama Kilidi"</string>
-    <string name="lock_tab">"Kilit"</string>
     <string name="button_backup">Yedekle</string>
     <string name="button_install">Yükle</string>
     <string name="button_delete">Sil</string>
     <string name="set_gesture_suc">Model Kaydedildi!</string>
-    <string name="set_passwd_suc">Parola başarıyla oluşturuldu.</string>
     <string name="reset_passwd_successful">Başarıyla sıfırlandı</string>
     <string name="reinput_anwser">"Lütfen tekrar deneyiniz."</string>
     <string name="makesure">Tamam</string>
@@ -18,7 +15,6 @@
     <string name="passwd_set_gesture_tip">En az 4 nokta birleştiriniz</string>
     <string name="passwd_hint">Şifreyi Giriniz</string>
     <string name="tip_no_the_same_pswd">lütfen tekrar deneyiniz.</string>
-    <string name="input_error_tip">yanlış<xliff:g>%1$s</xliff:g>giriş，kalan<xliff:g>%2$s</xliff:g>sgiriş</string>
     <string name="reset_passwd">Parola sıfırla</string>
     <string name="find_passwd">Parolayı Unuttum</string>
     <string name="please_wait">Lütfen daha sonra tekrar deneyiniz</string>
@@ -48,7 +44,7 @@
     <string name="reset_gesture_passwd">şefrenizi tekrar kurunuz</string>
     <string name="reset_digital_passwd">şefrenizi tekrar kurunuz</string>
     <string name="first_set_passwd_hint">şefrenizi tekrar kurunuz</string>
-    <string name="make_passwd">Onaylamak için tekrar giriniz</string>
+    <string name="make_passwd">Tekrar giriniz</string>
     <string name="input_again">Tekrar giriniz</string>
     <string name="gestur_passwd_function_hint">En az dört nokta birleştiriniz</string>
     <string name="digital_passwd_function_hint">4-haneli bir şifre giriniz</string>
@@ -125,16 +121,8 @@
     <string name="app_delete_dialog_content">Bu görüntü silinsin mi?</string>
     <string name="app_unhide_pictures_dialog_content">Seçilen görüntüler gösterilsin mi?</string>
     <string name="app_hide_pictures_dialog_content">Seçilen görüntüler gizlensin mi?</string>
-    <string name="lock_guide">Uygulamaları kilitleyiniz</string>
-    <string name="start_guide">kilitlenmeyi tavsiye edilir</string>
 
-    <!-- App lock -->
-    <string-array name="sort_type">
-        <item>varsayılan sıralama</item>
-        <item>A-Z</item>
-        <item>zamanla sıralama</item>
-    </string-array>
-
+    <!-- 应用墙 -->
     <string name="app_wall_network">Ağ Hatası. Lütfen daha sonra tekrar deneyiniz.</string>
     <string name="app_wall_click">Yenile</string>
     <!-- 隐私策略 -->
@@ -142,6 +130,7 @@
     <string name="lock_more">Daha çok</string>
     <string name="lock">Kilit</string>
 
+    <!-- LockerTheme -->
     <string name="localtheme">Yerel</string>
     <string name="onlinetheme">Online</string>
     <string name="lockerThemePoit">Tema<Data><![CDATA[<b><font color="#ff0000">●</font></b>]]></Data></string>
@@ -181,20 +170,7 @@
     <string name="circle_lock_empty_tip_text">Kilitli Uygulama bulunmuyor</string>
     <string name="feedback_error">Yanlış, tekrar giriniz.</string>
     <string name="googlePlayGuide">Değerlendirmek için aşağıya çekiniz</string>
-    <!--
-    <string name="toast_download_fail_network">"Yükleme başarısız. İnternetinizi kontrol ediniz."</string>
-    <string name="toast_download_fail_storage">" SD kartı alanı çok az!"</string>
-    <string name="toast_exit_when_storagemode">"bir kısım fonksiyonlar büyük yedekleme modunda altında kullanılamıyor"</string>
-    <string name="toast_download_failstart">"ağ bağlantısı yok"</string>
-    <string name="toast_download_fail_sdcard_unmount">"büyük yedekleme modu indirilemiyor"</string>
-    <string name="download_sdcard_status_error">indirme başarısız oldu!</string>
-    <string name="download_failed_toast">"Yükleme başarısız!"</string>
-    <string name="download_network_invalid_toast">"Bağlantı başarısız.Lütfen ağ ayarlarınızı kontrol ediniz."</string>
-    <string name="download_success_notify_title">tema<xliff:g id="filename">%1$s</xliff:g>indirme başarılı</string>
-    <string name="downloaded_success">indirme başarılı</string>
-    <string name="download_failure_notify_title">tema<xliff:g id="filename">%1$s</xliff:g>yükleme başarısız</string>
-    <string name="downloaded_failure">Yükleme başarısız!</string>
-    -->
+
     <string name="no_more_business_app">yeni uygulama kalmadı</string>
     <string name="no_business_app">yeni uygulama kalmadı</string>
     <string name="folder_new">YENİ</string>
@@ -222,7 +198,6 @@
 
     <!-- V2.0 -->
     <string name="pravicy_protect">"Koruma"</string>
-    <string name="privacy_level">Seviye</string>
     <string name="privacy_contacts">Özel Kontakt</string>
     <string name="privacy_sms">Özel SMS</string>
     <string name="privacy_call">Özel Aramalar</string>
@@ -293,7 +268,6 @@
     <string name="unlock_all_mode">Tümünün kilidini aç</string>
     <string name="family_mode">Ev Modu</string>
     <string name="unlock_all_mode_tip">kilitlenemiyor, başka modları seçiniz</string>
-    <string name="add_new_mode">ekleyiniz</string>
     <string name="lock_mode_all">Tüm modlar</string>
     <string name="new_mode">Yeni modum</string>
     <string name="lock_mode_location">Pozisyon kilidi</string>
@@ -301,7 +275,6 @@
     <string name="please_input_mode_name">Yeni modunu adlandır</string>
     <string name="mode_name">İsmi düzenle</string>
     <string name="cont_edit_visitor_name">Misafir Modu ismi düzenlenemez</string>
-    <string name="aready_lock">Zaten Kilitli</string>
     <string name="choose_mode">Mod seç</string>
     <string name="create_mode_shortcut_title">Kısayollar yarat</string>
     <string name="create_mode_shortcut_tip">ekrana %1$s ekleyin</string>
@@ -310,33 +283,6 @@
     <string name="lock_change">Etkinleştirilmiş<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
     <string name="position_lock_no_wifi">WiFi listesi bulunmuyor</string>
     <!-- Privacy Protection -->
-    <string name="privacy_level_1">Tehlikeli</string>
-    <string name="privacy_level_2">Ciddi</string>
-    <string name="privacy_level_3">Orta</string>
-    <string name="privacy_level_4">Yüksek</string>
-    <string name="privacy_level_5">Mükemmel</string>
-    <string name="privacy_title_applcok">Uygulama Kilidi</string>
-    <string name="privacy_title_hide_pic">Görüntüyü Gizle</string>
-    <string name="privacy_title_hide_video">Videoyu Gizle</string>
-    <string name="privacy_title_privacy_contact">Özel Kontaktlar</string>
-    <string name="privacy_suggest_title">Gizlilik Teklifleri</string>
-    <string name="privacy_no_app_lock">Kilitli uygulama yok</string>
-    <string name="privacy_no_pic_hide">Gizli fotograf yok</string>
-    <string name="privacy_no_video_hide">Gizli video yok</string>
-    <string name="privacy_no_privacy_contact">Kontakt eklenmemiş.</string>
-    <string name="privacy_no_app_lock_des">bu uygulamalar kilitlenmeyi tavsiye edilir</string>
-    <string name="privacy_no_pic_hide_des">bu görüntüler gizlenmeyi tavsiye edilir</string>
-    <string name="privacy_no_video_hide_des">bu videoler gizlenmeyi tavsiye edilir</string>
-    <string name="privacy_no_privacy_contact_des">gizlilik kontaktları eklenmeyi tavsiye edilir</string>
-    <string name="privacy_more_app_lock">Daha çok kilitlenmeyi tavsiye edilir</string>
-    <string name="privacy_more_pic_hide">Daha çok kişisel fotograf? </string>
-    <string name="privacy_more_video_hide">Birkaç videonuz daha mı kaldı? </string>
-    <string name="privacy_more_privacy_contact">Bazı önemli kontaktları mı unuttunuz? </string>
-    <string name="privacy_more_app_lock_des">dahah çok uygulamalar kilitlenmeyi tavsiye edilir</string>
-    <string name="privacy_more_pic_hide_des">gizli görüntüler gizlenmeyi tavsiye edilir</string>
-    <string name="privacy_more_video_hide_des">gizli videoler gizlenmeyi tavsiye edilir</string>
-    <string name="privacy_more_privacy_contact_des">gizlilik kontaktları eklenmeyi tavsiye edilir</string>
-    <string name="privacy_suggest_perfect_toast">En yüksek Güvenlik Seviyesindesiniz!</string>
 
     <!-- elec manager -->
     <string name="battery_history_days"><xliff:g id="DAYS">%1$d</xliff:g> GÜN <xliff:g id="HOURS">%2$d</xliff:g> SAAT <xliff:g id="MINUTES">%3$d</xliff:g> DAKİKA <xliff:g id="SECONDS">%4$d</xliff:g> En az</string>
@@ -350,7 +296,6 @@
     <string name="battery_info_status_full">Yeterli güç</string>
     <string name="battery_info_status_unknown">Bilinmeyen</string>
     <string name="battery_info_status_charging">Şarj oluyor</string>
-    <string name="power_usage_level_and_status"><xliff:g id="LEVEL">%1$s</xliff:g> - <xliff:g id="STATUS">%2$s</xliff:g></string>
     <string name="power_screen">Ekran</string>
     <string name="power_wifi">Wi-Fi</string>
     <string name="power_bluetooth">Bluetooth</string>
@@ -365,7 +310,6 @@
     <string name="app_backup_back">Yedekle&#038;Geri Yükle</string>
     <string name="app_backup_v2">Yedekle</string>
     <string name="app_restore_v2">Geri</string>
-    <string name="app_delete_v2">Sil</string>
     <string name="app_game">Oyunlar</string>
     <string name="app_application">Uygulamalar</string>
     <string name="app_hot_app">Popüler neler var?</string>
@@ -373,17 +317,8 @@
     <string name="the_best_status_toast">durum en optimum</string>
 
     <!-- My Apps -->
-    <string name="myapp_details">UYGULAMA DETAYLARI</string>
-    <string name="app_manager">Yönetimi</string>
-    <string name="first_backup">Yedekleme</string>
-    <string name="first_usage">Veri Kullanımı</string>
-    <string name="first_battery">Batarya</string>
-    <string name="first_backups_app">Yedeklemeler: </string>
-    <string name="first_user_app">İndirilenlerim: </string>
-    <string name="first_used_space">Kullanılan Alan:</string>
 
     <!-- Data Usage / Battery -->
-    <string name="home_appmanager_donghua_tv">Bellek</string>
     <string name="traffic_progress_bar">bu ay kullanılan</string>
     <string name="traff_first_page_small_set_low">Veri planı ve kullanılan veriyi (ay) giriniz</string>
     <string name="traff_first_page_small_set">ayarlama takımı</string>
@@ -446,6 +381,9 @@
     <string name="choose_enter_mode">Bu WiFi yakınında olduğumda etkinleştir</string>
     <string name="choose_quit_mode">Bu WiFi uzağında olduğumda etkinleştir</string>
 
+    <!-- guide page begin -->
+    <string name="guide_button_text">ŞİMDİ DENE</string>
+    <!-- guide page end -->
 
     <string name="lock_mode_name_cant_empty">Mod kimliği adı gereklidir</string>
     <string name="lock_mode_delete_tip_title">sil</string>
@@ -463,7 +401,7 @@
 
     <!-- version 2.1 begin -->
     <!-- weizhuang -->
-    <string name="title_bar_weizhuang">Uygulama Kapağı</string>
+    <string name="title_bar_weizhuang">Kapağı</string>
     <string name="weizhuang_first_in_text">kamuflaj naıl açılacağını sadece siz bilirsiniz. </string>
     <string name="first_in_sure_button">Tamam</string>
     <string name="unknow_call_first_title">Bilinmeyen Numara</string>
@@ -507,17 +445,15 @@
     <string name="feedback_content_guide">Merhaba,yardımcı olabilir miyim?</string>
     <string name="feedback_email_guide">E-posta adresiniz</string>
     <string name="feedback_category_guide">Bir soru seçiniz</string>
-    <string name="privacy_proposal_tip">aşağıdaki talimatları takip ederek gizlilik seviyesini yükseltiniz(şimdi %1$s) </string>
     <!-- version 2.2 end -->
 
 
     <!-- version 2.4 begin -->
     <!-- quick gesture -->
-    <string name="pg_appmanager_quick_gesture_name">Kısayollar</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">Telefonunuzu yönetmek için kolay bir yürütme, hepsi de elinizde, başparmağınızın ulaşabileceği noktada. Onu şimdi deneyin!</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty yükleyerek telefonunu Apple Watch gibi havalı yap</string>
     <string name="grade_tip_feedback">Geri bildirim</string>
-    <string name="quick_first_tip_dialog_right_bt">Etkinleştirin</string>
-    <string name="quick_first_tip_dialog_left_bt">Bekleyin</string>
+    <string name="quick_first_tip_dialog_right_bt">Hemen açın</string>
+    <string name="quick_first_tip_dialog_left_bt">Daha sonra</string>
 
     <!-- quick gesture -->
     <!-- version 2.4 end -->
@@ -534,6 +470,10 @@
     <string name="summary_autolock_after_lockscreen">kilitlenme kaldırılınca bellek temizlenir</string>
     <string name="summary_setting_locker">kilitlenme ayarı</string>
     <string name="summary_hide_lockline">Daha iyi koruma için görünmeyen model</string>
+    <string name="new_guide_page1_title">Kolay Kısayollar</string>
+    <string name="new_guide_page1_content">Sadece sürükleme ile hepsi elinizde</string>
+    <string name="new_guide_page2_title">App Kapak</string>
+    <string name="new_guide_page2_content">Uygulamaları maskeler, telefonu korur</string>
     <!-- version 2.5 huangqili part -->
 
 
@@ -543,12 +483,10 @@
     <string name="beauty_guide_title">Kamuflaj nasıl etkinleştirilir?</string>
     <string name="beauty_guide_content">iki parmak daralarak kilitlenme sahte görüntüsü kaldırılır</string>
     <string name="privacy_auto_add_text">Elle Ekle</string>
-    <string name="button_disguise_guide_select">Daha Sonra</string>
-    <string name="button_disguise_guide_cancel">Mod Seç</string>
-    <string name="button_disguise_guide_content">uygulamayı kilitleyin, kamuflaj fonksiyonunu deneyin</string>
     <string name="traffic_over_text">Aşırı Uyarısı</string>
     <string name="lock_line_hide">izler gizlendi</string>
     <string name="lock_line_visiable">izler gösterildi</string>
+    <string name="guide_more_text">Daha</string>
     <string name="guide_skip_text">atlamak</string>
     <string name="video_hide_need_cb">Cool Browser yüklenince gizlenme kaldırılabilir</string>
     <string name="video_hide_need_new_cb">Cool Browser yüklenince gizlenme kaldırılabilir</string>
@@ -574,11 +512,9 @@
     <!-- 2.8 start -->
     <string name="device_admin_extra">Başkaları tarafından kaldırılmayı önle</string>
     <string name="iswip_update_tip_title_text">Easy Shortcuts\'ı Güncelle!</string>
-    <string name="iswip_update_tip_context_text">Easy Shortcuts\'ın adı iSwipe olarak değiştirildi. Yükleyip deneyin!</string>
+    <string name="iswip_update_tip_context_text">Easy Shortcuts\'ın adı Swifty olarak değiştirildi. Yükleyip deneyin!</string>
     <string name="iswip_update_tip_left_button_text">Daha Sonra</string>
     <string name="iswip_update_tip_right_button_text">İndir</string>
-    <string name="iswip_update_notifi_title">Kısayollar güncellendi!</string>
-    <string name="iswip_update_notifi_content">Easy Shortcuts\'ın adı iSwipe olarak değiştirildi</string>
     <string name="ad_timeout">Harika! Daha fazla sürpriz seni bekliyor!</string>
     <!-- 2.8 end -->
     <!-- 2.10 srart -->
@@ -606,15 +542,301 @@
     <string name="auto_start_tip_redmi">Lütfen "İzinler"e gidin ve PG başlatma Uygulamalarına ekleyin</string>
     <string name="auto_start_tip_huawei">Lütfen "Korumalı Uygulamalar"a gidin, PG\'yi korumalı listeye ekleyin</string>
     <string name="auto_start_tip_lenovo">Lütfen "Uygulamalar"a gidin, "Otomatik başlat"ı seçin, LEO PG Başlatma Listesine ekleyin</string>
-    
+
+    <string name="splash_guide_page_msg_title">İleti Merkezi</string>
+    <string name="splash_guide_page_msg_content">Faaliyetler ve ipuçları</string>
     <!-- 2.10 end -->
     <!-- 2.12 start -->
     <string name="applock_guide_tip_title">Normal çalışma için izin gereklidir</string>
     <string name="applock_guide_tip_subtitle">Sistem sınırına bağlı olarak, daha iyi gizlilik koruması için aşağıdaki istisnalara izin verilmelidir</string>
     <string name="applock_guide_tip_security_text">İzleme uygulamasını kullanmak için Gizlilik Korumasına izin verin</string>
-    <string  name="auto_start_tip_text_huawei_plus">Otomatik başlatma iznini etkinleştirin,bilgisayar yeniden başladıktan sonra koruma devam edecektir</string>
+    <string name="auto_start_tip_text_huawei_plus">Otomatik başlatma iznini etkinleştirin,bilgisayar yeniden başladıktan sonra koruma devam edecektir</string>
     <string name="applock_guide_set_text">Ayarlara</string>
-     <string name="applock_guide_set_finish">Tam</string>
+    <string name="applock_guide_set_finish">Tam</string>
     <!-- 2.12 end -->
 
+    <!-- 3.0 start -->
+    <string name="home_tab_app_lock">Uygulama Kilidi</string>
+    <string name="home_tab_wifi">WiFi Güvenliği</string>
+    <string name="home_tab_lost">Hırsızlığa karşı</string>
+    <string name="home_tab_instruder">hırsız alarmı</string>
+    <string name="home_menu_privacy">Gizlilik Monitörü</string>
+    <string name="home_privacy_status">Gizlilik Durumu </string>
+    <string name="hp_media_label">Güvenli Klasör</string>
+    <string name="hp_hide_img">Fotoğrafı Gizle</string>
+    <string name="hp_hide_video">Videoyu Gizle</string>
+    <string name="hp_contact_lable">Gizlilik Koruması </string>
+    <string name="hp_contact_call">Özel Çağrı </string>
+    <string name="hp_contact_sms">Özel SMS </string>
+    <string name="hp_app_manage_label">Uygulama Yönetimi </string>
+    <string name="hp_app_manage_del">Uygulamayı Kaldır</string>
+    <string name="hp_app_manage_back">Uygulama Yedekleme</string>
+    <string name="hp_device_label">Cihaz Monitörü</string>
+    <string name="hp_device_gprs">Data Monitörü</string>
+    <string name="hp_device_power">Pil Kullanımı </string>
+    <string name="hp_helper_label">Asistan</string>
+    <string name="hp_helper_shot">Kısayollar Asistanı</string>
+    <string name="hp_helper_iswipe">Swifty </string>
+    <string name="pri_pro_title">Derin Tarama</string>
+    <string name="pri_pro_ignore">Atla</string>
+
+    <string name="pri_pro_new_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Yeni videolar</string>
+    <string name="pri_pro_new_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Yeni resim</string>
+    <string name="pri_pro_new_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Yeni uygulama</string>
+    <string name="pri_pro_scan_vid"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Video algılandı</string>
+    <string name="pri_pro_scan_pic"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Resim algılandı</string>
+    <string name="pri_pro_scan_app"><Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data> Uygulama algılandı</string>
+
+    <string name="pri_pro_hide_vid">Videoyu Gizle</string>
+    <string name="pri_pro_hide_pic">Fotoğrafı Gizle</string>
+    <string name="pri_pro_lock_app">Uygulamaları kilitle</string>
+    <string name="pri_monitor_app_summ">Yeni uygulamaları koruyun</string>
+    <string name="pri_monitor_pic_summ">Yeni resimleri koruyun</string>
+    <string name="pri_monitor_vid_summ">Yeni videoları koruyun</string>
+    <string name="pri_pro_folder_summary">(%1$d)</string>
+    <string name="pri_pro_lost_summary">Hırsızlığa Karşı Korumayı etkinleştirin </string>
+    <string name="pri_pro_lost_fixed_title">Koruma altında </string>
+    <string name="pri_pro_lost_fixed_pattern">%1$s gün, %2$s saat</string>
+    <string name="pri_intruder_fixed_title">Koruma altında </string>
+    <string name="pri_intruder_fixed_pattern">%1$s kere</string>
+    <string name="pri_pro_intruder_summary">Davetsiz misafirleri bulmak için İzinsiz Girme Uyarısını etkinleştir </string>
+    <string name="pri_pro_wifi_safe">Bağlanılan WiFi güvenli</string>
+    <string name="pri_pro_summary_not_confirm">Gizliliğinizi şu seviyeye kadar artırın:</string>
+    <string name="pri_pro_summary_confirm">İyi, tam güvenli, devam!</string>
+    <string name="pri_pro_btn">Etkinleştir (%1$s dk)</string>
+    <string name="pri_pro_opened">Etkin </string>
+    <string name="pri_mobile_privacy">%1$d kat gizlilik korumalı</string>
+    <string name="pri_lost_privacy">%1$d gün %2$d saat süreyle gizlilik korumalı</string>
+    <string name="pri_pro_contact_summary">Sık Kullanılan Kişiler</string>
+    <string name="pri_pro_contact">Kişiler</string>
+    <string name="pri_pro_wifi_btn">İlerlemek için</string>
+    <string name="pri_pro_contact_btn">Özel Kişilere Ekle </string>
+    <string name="pri_pro_complete">Bitir</string>
+    <string name="pri_pro_scanning">Tarama gizlilik durumu </string>
+    <string name="pri_pro_scanning_finish">Tarama tamamlandı </string>
+    <string name="pri_contact_empty">Kişi seçin</string>
+    <string name="pri_contact_succ">Kişi başarıyla eklendi</string>
+    <string name="pri_contact_added">Eklenen </string>
+    <string name="pri_contact_over">İşlenen</string>
+    <string name="scanning_pattern">%1$s tarama öğesi tamamlandı</string>
+    <string name="pri_pro_cancel">İptal </string>
+    <string name="pri_pro_process">Şimdi Çöz </string>
+    <string name="pri_pro_locking">Uygulamalar kilitleniyor</string>
+    <string name="pri_pro_hiding_img">Fotoğraflar gizleniyor</string>
+    <string name="pri_pro_hiding_vid">Videolar gizleniyor</string>
+    <string name="pri_pro_wifi_warn">Bağlanılan WiFi riskli</string>
+    <string name="pri_pro_wifi_connect">WiFi bağlı: %1$s </string>
+    <string name="pri_pro_ignore_app">Uygulamaları kilitleme?</string>
+    <string name="pri_pro_ignore_pic">Resimleri gizleme?</string>
+    <string name="pri_pro_ignore_vid">Videoları gizleme?</string>
+    <string name="scan_title">Gizlilik Seviyesi</string>
+    <string name="scan_new_app">Yeni uygulamalar </string>
+    <string name="scan_new_media">Yeni Medya </string>
+    <string name="scan_new_mobile">Telefon Güvenliği </string>
+    <string name="scan_new_privacy">Gizlilik Koruması </string>
+
+
+    <string name="scan_notify">Gizlilik Seviyesi düşürüldü</string>
+    <string name="scan_notify_app">%1$d yeni uygulama bulundu, şimdi gizlemek</string>
+    <string name="scan_notify_pic">%1$d yeni resim bulundu, şimdi gizlemek</string>
+    <string name="scan_notify_vid">%1$d yeni video bulundu, şimdi gizlemek</string>
+    <string name="scan_notify_label">Privacy guard durum değişikliğinden sizi haberdar etmek için gizlilik durumunuzu arkaplanda izliyor</string>
+    <string name="loading_locking">Uygulamaları kilitliyor ...</string>
+    <string name="loading_hiding_pic">Fotoğrafları gizliyor...</string>
+    <string name="loading_hiding_vid">Videoları gizliyor...</string>
+
+    <string name="lock_app_item_desc">%1$s kişi kilitlendi</string>
+    <string name="lock_app_action">%1$s kilitlendi</string>
+    <string name="unlock_app_action">%1$s kilidi kaldırıldı</string>
+
+    <string name="wifi_titlebar_name">WiFi Güvenliği</string>
+    <string name="wifi_title_name">WiFi taranıyor</string>
+    <string name="wifi_connect_name">WiFi bağlı: %1$s </string>
+    <string name="wifi_result_one">Başarıyla bağlan</string>
+    <string name="wifi_result_two">İkincil erişim gerekli değil</string>
+    <string name="wifi_result_three">SSL şifrelemesi </string>
+    <string name="wifi_result_four">Yönlendirici güvenliği </string>
+    <string name="select_other_wifi">Başka bir WiFi seçin</string>
+    <string name="no_wifi_now">WiFi bağlı değil </string>
+    <string name="can_not_connect_wifi">Bağlanılan WiFi internete erişemiyor</string>
+    <string name="wifi_is_close">WiFi\'ınız devre dışı</string>
+    <string name="wifi_open_it">WiFi\'ı etkinleştir</string>
+    <string name="advised_add_lock">Kilitleyi öner</string>
+    <string name="have_added_lock">Kilitli </string>
+    <string name="wifi_scan_result_safe">WiFi Güvenliği</string>
+    <string name="wifi_scan_result_no_safe">WiFi Riskli</string>
+    <string name="wifi_scan_result_no_safe_advice">Başka bir WiFi\'a bağlanmayı öner</string>
+    <string name="wifi_scan_result_traffic_text">Aşma durumunda, veri kullanımını izle</string>
+    <string name="wifi_scan_result_use_now">Şimdi Etkinleştir</string>
+    <string name="wifi_scan_result_scan">WiFi Otomatik Tarama </string>
+    <string name="wifi_scan_result_scan_desc">Bağlıyken WiFi güvenliğini tara</string>
+    <string name="wifi_scan_toast_scaning">WiFi Taranıyor: %1$s </string>
+    <string name="ten_new_app_toast">Yedeklenecek yeni uygulamalarınız var</string>
+    <string name="ten_new_app_toast_content">Yedekleme için tıklayın</string>
+    <string name="over_traffic_toast">Bugün kullanım %1$s MB aşıldı</string>
+    <string name="over_traffic_toast_content">Ayrıntılar için tıklayın </string>
+    <string name="over_traffic_toast_unsafe">WiFi: %1$s <Data><![CDATA[<font color="#ff1200">riskli </font>]]></Data></string>
+    <string name="over_traffic_toast_safe">WiFi: %1$s <Data><![CDATA[<font color="#00a8ff">güvenli </font>]]></Data></string>
+
+    <string name="phone_security_no_add_number_text">Çalıntı telefonu kontrol etmek için SMS göndermek için Aile No ekle</string>
+    <string name="phone_security_no_add_number_bt_text">Aile Numarası Ekle </string>
+    <string name="security_guide_tip_text">Hırsızlık fonksiyonunu etkinleştir</string>
+    <string name="security_guide_tip_content">Bir alarm göndermek, verileri temizlemek, konumu bulmak ve Uygulamalar kilitlemek için başka bir telefonla telefonunuzu uzaktan kontrol edebilirsiniz</string>
+    <string name="phone_security_tips">Doğru telefonunuzu bulun</string>
+    <string name="security_guide_button_text">Şimdi Etkinleştir</string>
+    <string name="phone_security_open">Hırsızlık karşıtı korumayı etkinleştir</string>
+    <string name="phone_security_add_number_title">Aile No.: </string>
+    <string name="phone_security_add_number_button">Değiştir</string>
+    <string name="phone_security_number_sim_tip">Not: SIM kart değiştirildiğinde Aile numarasına SMS gönderilecektir </string>
+    <string name="phone_security_number_backup_text">Hırsızlık karşıtı koruma talimatını Aile numarasına gönder </string>
+    <string name="phone_security_instruct_onkey">Kilidi etkinleştir; izliyor; Alarm; sil: #onekey  </string>
+    <string name="phone_security_instruct_onkey_description">Kilidi etkinleştir; izliyor; Alarm; sil</string>
+    <string name="phone_security_instruct_track">Bul: # locateposition</string>
+    <string name="phone_security_instruct_track_description">Telefonu bul</string>
+    <string name="phone_security_instruct_alert"> Alarm:  #alert  </string>
+    <string name="phone_security_instruct_alert_description">Telefonun alarmı çalacaktır</string>
+    <string name="phone_security_instruct_formatedata">Verileri biçimlendir: #formatdata  </string>
+    <string name="phone_security_instruct_formatedata_description">Tüm verileri temizle</string>
+    <string name="phone_security_instruct_lock">Uygulamaları kilitle:#lockmobile  </string>
+    <string name="phone_security_instruct_lock_description">Tüm uygulamaları kilitle</string>
+    <string name="secur_bottom_bt_text">Sonraki </string>
+    <string name="open_instr_locatepositon">Parça konumu </string>
+    <string name="open_instr_alert">Alarm </string>
+    <string name="no_open_instr_fromatedata">Telefondaki tüm verileri sil </string>
+    <string name="no_open_instr_lock">Telefonu kilitle</string>
+    <string name="open_secur_text">Hırsızlık karşıtı koruma fonksiyonu etkin</string>
+    <string name="no_secur_text">Şu fonksiyonları kullanabilirsiniz:</string>
+    <string name="open_secur_checkbox_text">İleri korumayı etkinleştirip, aygıt yöneticisine privacy guard ekleyin</string>
+
+    <string name="quick_helper_pic_hide">Fotoğrafı gizle</string>
+    <string name="quick_helper_video_hide">Videoyu gizle</string>
+    <string name="quick_helper_intruder">İzinsiz Girme Uyarısı</string>
+    <string name="quick_helper_privacy_call">Özel Çağrı </string>
+    <string name="quick_helper_privacy_msg">Özel SMS </string>
+    <string name="quick_helper_wifi_safety">WiFi Güvenliği</string>
+    <string name="quick_helper_app_uninstall">Uygulama Kaldırma</string>
+    <string name="quick_helper_app_backup">Uygulama Yedekleme</string>
+    <string name="quick_helper_flow_manage">Veri İzleme</string>
+    <string name="quick_helper_elec_manage">Pil Kullanımı </string>
+    <string name="quick_helper_boost">Yükselt</string>
+    <string name="quick_helper_app_joy">App Joy</string>
+
+    <string name="class_privacy_protection">Gizlilik Koruma</string>
+    <string name="class_system_manage">Sistem yönetimi </string>
+    <string name="class_happy_app">App Joy</string>
+
+    <string name="quick_helper_desc_pic_hide">Özel fotoğrafları gizle </string>
+    <string name="quick_helper_desc_video_hide">Özel videoları gizle </string>
+    <string name="quick_helper_desc_intruder">Şifre yanlışsa fotoğraf çek</string>
+    <string name="quick_helper_desc_call">Çağrı geçmişini koru</string>
+    <string name="quick_helper_desc_msg">SMS\'i koru</string>
+    <string name="quick_helper_desc_wifi">Bağlanılan WiFi\'ın güvenliğini algıla</string>
+    <string name="quick_helper_desc_uninstall">Uygulamaları kaldır</string>
+    <string name="quick_helper_desc_backup">Yüklü paketi yedekle</string>
+    <string name="quick_helper_desc_flow">Veri kullanımını izle</string>
+    <string name="quick_helper_desc_elec">Güç tüketen uygulamaları kapat</string>
+    <string name="quick_helper_desc_boost">Telefon hafızasını temizle</string>
+    <string name="quick_helper_desc_appjoy">Daha fazla eğlence içeride</string>
+
+    <string name="quick_helper_add">Ekle</string>
+    <string name="quick_help_add_toast">Başarılı </string>
+    <string name="quick_help_add_toast_fail">Başarısız </string>
+
+    <string name="intruder_to_catch_fail_times_tip">Şifre %1$s kez yanlış girilirse telefonu al</string>
+    <string name="intruder_times_of_catch"><Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data> kez izinsiz girme girişiminde bulunuldu</string>
+    <string name="change_times_to_catch">Değiştir</string>
+    <string name="newest_catch_tip">Bu kişi sizin %1$s \'inizi görmek istedi</string>
+    <string name="intruder_more">Bazı kişiler telefonunuza gizlice baktı </string>
+    <string name="intruder_nobody_tips">Davetsiz misafir bulunamadı</string>
+    <string name="intruder_pic_more">Daha fazla</string>
+
+    <string name="times_choose">%1$s kere</string>
+
+    <string name="intruderprotection_desc">Yanlış şifre girilirse fotoğraf çek</string>
+    <string name="intruder_open">İzinsiz Girme Uyarısı etkin</string>
+    <string name="intruder_close">İzinsiz Girme Uyarısı etkin değil</string>
+    <string name="beg_five_star">Bizi beş yıldızla oylayın!</string>
+    <string name="ask_like_app">Hoşunuza gitti mi?</string>
+    <string name="sure_clean">Tüm davetsiz misafirlerin fotoğrafları nı temizleyin?</string>
+    <string name="ask_for_times_for_catch">Yanlış şifre girme sayısı</string>
+    <string name="intruder_gallery_title">Davetsiz misafirler albümü</string>
+    <string name="intruderprotection_desc_title">İzinsiz Girme Uyarısı</string>
+    <string name="sure_delete_one">Davetsiz misafirin fotoğrafı silinsin mi?</string>
+
+    <string name="title_activity_security_finish"></string>
+    <string name="secur_finish_complate_text">Tüm hırsızlık karşıtı koruma fonksiyonları etkin</string>
+    <string name="secur_finish_no_complate_text">Gelişmiş koruma etkin değil </string>
+    <string name="secur_finish_bt_text">Bitir</string>
+    <string name="secur_open_suc">Hırsızlığa karşı koruma etkin</string>
+    <string name="secur_suc_top_image_title">Etkin </string>
+    <string name="secur_suc_top_image_content">Korumalı </string>
+    <string name="secur_suc_day">Gün </string>
+    <string name="secur_suc_hour">Saat </string>
+    <string name="secur_suc_number_tip">Kaybolan telefonu aile telefonundan kontrol et</string>
+    <string name="secur_suc_instr_tip">Çalınan telefona talimat gönder</string>
+    <string name="call_duration">Çağrı süresi: %1$s dakika %2$s saniye</string>
+    <string name="sim_change_msm_tip"> [LEOMASTER] Uyarı, türü <xliff:g id="sim_chanage">%1$s</xliff:g> olan telefonunuzun SIM kartı değiştirildi. Kendiniz çalıştırıyorsanız, bu bildirimi göz ardı edebilirsiniz. </string>
+    <string name="no_sim_tip">Takılı SIM kart yok, SMS gönderemez</string>
+    <string name="secur_input_number">Numarayı elle gir</string>
+    <string name="input_fren_number">Aile numarası gir</string>
+    <string name="secur_input_add_bt">Ekle</string>
+    <string name="secur_add_number_title">Önayarlı Numara ekle</string>
+
+    <string name="quick_helper_desc">Aşağıdaki fonksiyonları masaüstüne ekle</string>
+    <string name="sucri_add_contact">Kişilerden ekle </string>
+    <string name="no_add_secur_number_toast_tip">Ön Ayar Numarası </string>
+    <string name="secur_advan_title">İleri fonksiyon</string>
+    <string name="secur_guide_tip">Korumalı </string>
+    <string name="secur_guide_pep">cep telefonları </string>
+    <string name="secur_protect_time_tip">İleri korumayı etkinleştir</string>
+    <string name="onkey_name">Hırsızlığa karşı koruma için tıkla</string>
+    <string name="locat_name">Telefonu bul</string>
+    <string name="alert_name">Alarm </string>
+    <string name="lock_name">Telefonu kilitle</string>
+    <string name="formate_name">Verileri temizle</string>
+    <string name="secur_open_bt">Uzaktan kumanda talimatlarını yedekle</string>
+    <string name="secur_instr_open_bt">Etkinleştir</string>
+    <string name="backup_instr_dialog_content">Talimatlar SMS yoluyla Aile numarasına gönderilecektir, şimdi gönder? </string>
+    <string name="backup_instr_dialog_cancel">İptal </string>
+    <string name="backup_instr_dialog_sure">Tamam</string>
+    <string name="send_msm_suce">Başarıyla gönderildi! </string>
+    <string name="secur_finish_no_complate_tip">Şimdi temel fonksiyonu kullanabilirsiniz, ileri seviye fonksiyon için, aygıt yöneticisine gidin</string>
+    <string name="secur_help_tip_txt">Bu fonksiyon, gizliliğinizi korumanıza ve kayıp telefonunuzu bulmanıza yardımcı olacaktır. Bunu kullanmak için, bir cep telefonu numarasını önceden ayarlamalı ve telefonunuz kaybolduğunda, önceden ayarlı numara üzerinden SMS göndermelisiniz.</string>
+    <string name="secur_help_bt">Tamam</string>
+    <string name="advan_secur_text">Şu fonksiyonları kullanabilirsiniz:</string>
+    <string name="secur_backup_msm"> [LEOMASTER] Kontrol talimatlarını SMS yoluyla yedeklemeyi seçtiniz: 1. telefonu kilitle: #lockmobile 2. telefonun konumunu bul: #locateposition 3. alarm gönder: #alert 4. Alarm kapalı: #alertoff 5. verileri sil: verileri: #formatdata 6. kilidi etkinleştir; izleme; alarm; sil: #onekey. Telefon kaybolursa, uygun talimatları verin. Eğer talimatları unutursanız, bu SMSi tekrar göndermek için "Yedekleme uzaktan kumanda talimatları"na tıklayınız. http://www.leomaster.com</string>
+    <string name="secur_location_msm"> [LEOMASTER] Kayıp telefonun konumu belirlendi, görüntülemek için tıklayın: <xliff:g id="locate_posi">%1$s</xliff:g>. http://www.leomaster.com</string>
+    <string name="new_ignore">Görmezden gel</string>
+    <string name="new_increase_pravicy">Gizlilik düzeyini yükseltmek ileri seviye fonksiyonlarla geliştirin</string>
+    <string name="new_pravicy_todo">Diğer ileri seviye fonksiyonlar yapılabilir</string>
+    <string name="new_pravicy_healthy">İyi, tam güvenli, devam edin!</string>
+    <string name="new_real_ignore">Emin misiniz? </string>
+    <string name="pri_pro_ignore_dialog">Sonucu görmezden gelmeye emin misiniz? Bunu yaparak, puanı kazanamazsınız </string>
+    <string name="new_ok">Tamam</string>
+    <string name="new_cancel">İptal </string>
+
+    <string name="new_cancel_alarm">Uyarıyı iptal et</string>
+    <string name="scanint_result_app">Yeni uygulamalar </string>
+    <string name="scanint_result_pic">Yeni fotoğraflar </string>
+    <string name="scanint_result_vid">Yeni videolar </string>
+    <string name="scanint_result_deep">İleri seviye gizlilik</string>
+    <string name="scaning_immediate">Taramak için tıklayın </string>
+    <string name="secur_add_self_number_tip">Bu telefonun numarasını girdiniz, lütfen tekrar girin</string>
+    <string name="new_arrival">Yeni serüven</string>
+    <string name="new_funciton">Yeni arayüz, yeni bir fonksiyon, yeni bir başlangıç</string>
+    <string name="privacy_scan">Gizlilik taraması</string>
+    <string name="one_key_confirm_privacy">Gizlilik korumayı bitirmek için tıklayın</string>
+    <string name="secur_feedbk_type">Hırsızlığa karşı koruma</string>
+    <string name="monitor_new_app">Yeni uygulamalar </string>
+    <string name="monitor_new_pic">Yeni fotoğraflar </string>
+    <string name="monitor_new_vid">Yeni videolar </string>
+    <string name="secur_kno_model_msm_tip">Hırsız karşıtı koruma fonksiyonları SMS KÖK DİZİN ayrıcalıkları gerektirir</string>
+    <string name="secur_kno_model_msm_click">İzinleri şimdi verin>>></string>
+    <string name="secur_no_kno_model_msm_tip">Hırsızlığa karşı koruma fonksiyonları SMS ayrıcalıkları gerektirir. Lütfen izinleri verin </string>
+    <string name="secur_feedbk_content">Hırsızlığa karşı koruma fonksiyonları etkin değil</string>
+    <string name="secur_help_feedback_tip_button">bize ulaşın</string>
+    <string name="phone_security_instruct_alert_off">Alarm kapalı: #alertoff</string>
+    <string name="phone_security_instruct_alert_off_description">Yakın sirenler</string>
+    <string name="alert_off_name">kapalı uyar</string>
+    <string name="secur_send_msm_no_location"> [LEOMASTER] Alınamıyor http://www.leomaster.com</string>
 </resources>

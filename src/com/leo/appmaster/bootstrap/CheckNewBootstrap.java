@@ -24,6 +24,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -32,7 +33,6 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NewThemeEvent;
 import com.leo.appmaster.home.ProxyActivity;
-import com.leo.appmaster.http.HttpRequestAgent;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.push.PushNotification;
 import com.leo.appmaster.utils.LeoLog;
@@ -40,7 +40,7 @@ import com.leo.appmaster.utils.Utilities;
 
 /**
  * 检查更新延时程序 1、checkNewTheme 2、checkNewAppBusiness
- * 
+ *
  * @author Jasper
  */
 public class CheckNewBootstrap extends Bootstrap {
@@ -65,7 +65,7 @@ public class CheckNewBootstrap extends Bootstrap {
     protected boolean doStrap() {
         PowerManager pm = (PowerManager) mApp.getSystemService(Context.POWER_SERVICE);
         if (pm.isScreenOn()) {
-            checkUBC();
+            checkProxy();
         }
 
         checkNewTheme();
@@ -140,7 +140,7 @@ public class CheckNewBootstrap extends Bootstrap {
             };
             Timer timer = ThreadManager.getTimer();
             if (lastCheckTime == 0) { // First time, check business after 24
-                                      // hours
+                // hours
                 lastCheckTime = curTime;
                 pref.setLastCheckBusinessTime(curTime);
                 pref.setBusinessStrategy(AppMasterConfig.TIME_24_HOUR,
@@ -175,7 +175,8 @@ public class CheckNewBootstrap extends Bootstrap {
             intent = new Intent(app, StatusBarEventService.class);
             intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                     StatusBarEventService.EVENT_NEW_THEME);
-            mThemeNoti.showNewThemeNoti(intent, title, content);
+//            mThemeNoti.showNewThemeNoti(intent, title, content);
+            mThemeNoti.showNotification(intent, title, content, 0, PushNotification.NOTI_THEME);
 
             isFromPush = false;
             // show new theme status tip
@@ -221,7 +222,8 @@ public class CheckNewBootstrap extends Bootstrap {
             intent = new Intent(app, StatusBarEventService.class);
             intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
                     StatusBarEventService.EVENT_BUSINESS_APP);
-            mHotAppNoti.showNewAppNoti(intent, title, content);
+//            mHotAppNoti.showNewAppNoti(intent, title, content);
+            mHotAppNoti.showNotification(intent, title, content, 0, PushNotification.NOTI_HOTAPP);
 
             isFromPush = false;
             // show business status tip
@@ -276,7 +278,7 @@ public class CheckNewBootstrap extends Bootstrap {
         return true;
     }
 
-    public static void checkUBC() {
+    public static void checkProxy() {
         final AppMasterApplication application = AppMasterApplication.getInstance();
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
@@ -404,6 +406,7 @@ public class CheckNewBootstrap extends Bootstrap {
                         pref.setOnlineThemeSerialNumber(serialNumber);
 
                         if (hasNewTheme) {
+//                            PreferenceTable.getInstance().putBoolean(Constants.IS_CLICK_LOCK_TAB, false);
                             LeoLog.d(TAG, "checkNewTheme  hasNewTheme!");
                             String title = null;
                             String content = null;

@@ -6,7 +6,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.utils.LeoLog;
+
+import android.util.Log;
 
 
 /**
@@ -35,7 +36,7 @@ public class ExceptionToResourceMapping {
                 throwableToCheck = throwableToCheck.getCause();
                 depthToGo--;
                 if (depthToGo <= 0 || throwableToCheck == throwable || throwableToCheck == null) {
-                    LeoLog.d(LeoEventBus.TAG, "No specific message ressource ID found for " + throwable);
+                    Log.d(LeoEventBus.TAG, "No specific message ressource ID found for " + throwable);
                     // return config.defaultErrorMsgId;
                     return null;
                 }

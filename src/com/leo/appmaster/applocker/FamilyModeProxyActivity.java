@@ -3,10 +3,6 @@ package com.leo.appmaster.applocker;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-
-import com.leo.appmaster.applocker.service.StatusBarEventService;
-import com.leo.appmaster.sdk.SDKWrapper;
 
 public class FamilyModeProxyActivity extends Activity {
     @Override

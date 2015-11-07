@@ -16,12 +16,13 @@ import android.os.Process;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.ProcessAdj;
 import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
@@ -89,7 +90,8 @@ public class DetectThreadCompat extends Thread {
             
             if (lastProcessAdj != null && lastProcessAdj.pid > 0
                     && !detector.isOOMScoreMode()
-                    && !detector.isHomePackage(lastProcessAdj)) {
+                    && !detector.isHomePackage(lastProcessAdj)
+                    && !lastProcessAdj.user.equals("system")) {
                 int scoreAdj = detector.getOomScoreAdj(lastProcessAdj.pid);
                 if (scoreAdj == lastProcessAdj.oomAdj && scoreAdj == 0) {
                     if (!parseAdjAndDeliver(lastProcessAdj)) continue;
@@ -167,6 +169,14 @@ public class DetectThreadCompat extends Thread {
                 if (++notFoundAppCount >= MAX_NOT_FOUND_COUNT) {
                     // 在加锁app，回到google页面，找不到监控的app，所以没有把之前加锁app的状态清理掉
                     mLockHandler.handleAppLaunch(Constants.PKG_WHAT_EVER, "", "");
+                    synchronized (this) {
+                        try {
+                            wait(1000);
+                        } catch (InterruptedException e) {
+                            // 收到一个interrupt
+                            break;
+                        }
+                    }
                 }
             }
             
@@ -174,8 +184,8 @@ public class DetectThreadCompat extends Thread {
     }
     
     private ProcessAdj checkSelfForeground(ProcessAdj needToListenAdj) {
-        if (!mDetector.isOOMScoreMode()) return needToListenAdj;
-        
+        if (!mDetector.isOOMScoreMode() || needToListenAdj != null) return needToListenAdj;
+
         AppMasterApplication context = AppMasterApplication.getInstance();
         if (needToListenAdj == null && context.isForeground()) {
             needToListenAdj = new ProcessAdj();
@@ -246,8 +256,8 @@ public class DetectThreadCompat extends Thread {
     private ProcessAdj findNeedToLockAndListenApp(ProcessDetector detector) {
         mFoundLockApp = false;
         List<ProcessAdj> filteredLockList = new ArrayList<ProcessAdj>();
-        
-        List<String> lockList = LockManager.getInstatnce().getCurLockList();
+        LockManager lm = (LockManager)MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        List<String> lockList = lm.getCurLockList();
         // oom_adj为0的列表
         ProcessAdj needToListenAdj = detector.getForegroundProcess();
 

@@ -7,6 +7,7 @@ import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -27,7 +28,6 @@ import com.leo.appmaster.applocker.service.TaskDetectService;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class WebViewActivity extends BaseActivity implements OnClickListener {
@@ -61,10 +61,10 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             }
         }
         if (TextUtils.isEmpty(mURL)) {
-            LeoLog.i(TAG, "URL为空");
+            Log.i(TAG, "URL为空");
             finish();
         }
-        LeoLog.i(TAG, "URL = " + mURL);
+        Log.i(TAG, "URL = " + mURL);
 
         initUI();
         intWebView();
@@ -82,7 +82,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
             mURL = newUrl;
             mWebView.loadUrl(mURL);
         }
-        LeoLog.i(TAG, "URL = " + mURL);
+        Log.i(TAG, "URL = " + mURL);
     }
 
     private void initUI() {
@@ -167,14 +167,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     private void disableNextBtn() {
         mNextView.setImageResource(R.drawable.next_icon_disable);
         mNextView.setOnClickListener(null);
-        LeoLog.i(TAG, "disableNextBtn");
+        Log.i(TAG, "disableNextBtn");
     }
 
     @Override
     public void onBackPressed() {
-        LeoLog.i(TAG, "mPlayView  = " + mPlayView);
+        Log.i(TAG, "mPlayView  = " + mPlayView);
         if (mPlayView != null) {
-            LeoLog.i(TAG, "onBackPressed  onHideCustomView");
+            Log.i(TAG, "onBackPressed  onHideCustomView");
             hideCustomView();
         } else {
             if (mWebView.canGoBack()) {
@@ -192,14 +192,14 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         mWebView.onResume();
         mWebView.resumeTimers();
 
-        LeoLog.i(TAG, "onResume  ");
+        Log.i(TAG, "onResume  ");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
 
-        LeoLog.i(TAG, "onPause  ");
+        Log.i(TAG, "onPause  ");
         mWebView.onPause();
         mWebView.pauseTimers();
     }
@@ -207,7 +207,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        LeoLog.i(TAG, "onDestroy  ");
+        Log.i(TAG, "onDestroy  ");
         try {
             // FIX: 2015/9/15 WebViewActivity has leaked window android.widget.ZoomButtonsController$Container
             ViewGroup viewGroup = (ViewGroup) getWindow().getDecorView();
@@ -259,17 +259,17 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         public void onPageFinished(WebView view, String url) {
             if (view.canGoBack()) {
                 enableBackBtn();
-                LeoLog.i(TAG, "back show");
+                Log.i(TAG, "back show");
             } else {
                 disableBackBtn();
-                LeoLog.i(TAG, "back hide");
+                Log.i(TAG, "back hide");
             }
             if (view.canGoForward()) {
                 enableNextBtn();
-                LeoLog.i(TAG, "forward show");
+                Log.i(TAG, "forward show");
             } else {
                 disableNextBtn();
-                LeoLog.i(TAG, "forward hide");
+                Log.i(TAG, "forward hide");
             }
             super.onPageFinished(view, url);
         }
@@ -306,7 +306,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
         @Override
         public void onShowCustomView(View view, CustomViewCallback callback) {
-            LeoLog.i(TAG, "onShowCustomView");
+            Log.i(TAG, "onShowCustomView");
             // 设置为横屏
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
             mPlayView = view;
@@ -321,7 +321,7 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
 
         @Override
         public void onHideCustomView() {
-            LeoLog.i(TAG, "onHideCustomView");
+            Log.i(TAG, "onHideCustomView");
             // 用户当前的首选方向
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER);
             if (customViewCallback != null) {
@@ -341,15 +341,18 @@ public class WebViewActivity extends BaseActivity implements OnClickListener {
         public void onDownloadStart(String url, String userAgent, String contentDisposition,
                 String mimetype, long contentLength) {
             Uri uri = Uri.parse(url);
-            LeoLog.i(TAG, "downlaod url: " + uri);
+            Log.i(TAG, "downlaod url: " + uri);
             Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-            startActivity(intent);
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+            }
         }
     }
 
     /* 进入主页 */
     private void startHome() {
-        LeoLog.i(TAG, "是否来自闪屏：" + mIsFromSplash);
+        Log.i(TAG, "是否来自闪屏：" + mIsFromSplash);
         if (mIsFromSplash) {
             AppMasterPreference amp = AppMasterPreference.getInstance(this);
             if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {

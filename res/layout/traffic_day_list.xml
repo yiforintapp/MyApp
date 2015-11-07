@@ -11,7 +11,7 @@
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:textColor="#a7a7a7"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
     <ImageView
         android:id="@+id/iv_showday"
@@ -21,6 +21,6 @@
         android:layout_centerVertical="true"
         android:paddingLeft="5dp"
         android:paddingRight="16dp"
-        android:src="@drawable/unradio_buttons" />
+        android:src="@drawable/dialog_check_off" />
 
 </RelativeLayout>

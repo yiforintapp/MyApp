@@ -2,23 +2,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f3f3f3"
-    android:padding="@dimen/new_app_manager_padding" >
+    android:background="@color/white">
 
     <ListView
         android:id="@+id/mode_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
         android:background="@color/white"
-        android:divider="#e3e3e3"
-        android:dividerHeight="1dp"
+        android:divider="#00000000"
         android:overScrollMode="never"
-        android:listSelector="@drawable/manager_backup_list_selecter"
-        android:paddingLeft="16dp"
-        android:scrollbars="none" >
-    </ListView>
+        android:scrollbars="none" />
 
     <RelativeLayout
         android:id="@+id/lock_mode_guide"
@@ -27,7 +20,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="#f3f3f3"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/lock_guide_icon"
@@ -45,19 +38,27 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/home_lock_mode_guide_text_margin_top"
             android:textColor="#808080"
-            android:textSize="@dimen/home_lock_mode_guide_text_size"/>
+            android:textSize="@dimen/home_lock_mode_guide_text_size" />
 
-        <Button
+        <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
             android:id="@+id/mode_user_know_button"
             android:layout_width="@dimen/home_lock_mode_guide_btn_width"
             android:layout_height="@dimen/home_lock_mode_guide_btn_height"
-            android:layout_centerHorizontal="true"
             android:layout_below="@+id/lock_guide_text"
+            android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/home_lock_mode_guide_btn_margin_top"
-            android:background="@drawable/manager_done_button_selecter" 
-            android:textColor="@color/white"
-             android:textSize="@dimen/home_lock_mode_guide_text_size"
-            android:text="@string/lock_mode_guide_button_text" />
+            android:background="@drawable/blue_radius_btn_shape"
+            android:clickable="true"
+            ripple:rv_color="@color/button_blue_ripple">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="@string/lock_mode_guide_button_text"
+                android:textColor="@color/white"
+                android:textSize="@dimen/home_lock_mode_guide_text_size" />
+        </com.leo.appmaster.ui.RippleView>
     </RelativeLayout>
 
 </RelativeLayout>

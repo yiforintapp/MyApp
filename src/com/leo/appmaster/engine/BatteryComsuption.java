@@ -115,13 +115,12 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 	private void getQuickNameIcon(String pkgName) {
 		PackageManager pm = mContext.getPackageManager();
 		try {
-			ApplicationInfo appInfo = pm.getApplicationInfo(pkgName, 0);
 			// 统一使用AppUtil.getDrawable获取app图标
 			// icon = appInfo.loadIcon(pm);// pm.getApplicationIcon(appInfo);
-			icon = AppUtil.getDrawable(pm, pkgName);
-			label = appInfo.loadLabel(pm).toString();// pm.getApplicationLabel(appInfo).toString();
+			icon = AppUtil.getAppIcon(pm, pkgName);
+			label = AppUtil.getAppLabel(pm, pkgName);
 			defaultPackageName = pkgName;
-		} catch (NameNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -181,7 +180,7 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 					defaultPackageName = packages[i];
 					// 统一使用AppUtil.getDrawable获取app图标
 					// icon = ai.loadIcon(pm);
-					icon = AppUtil.getDrawable(pm, defaultPackageName);
+					icon = AppUtil.getAppIcon(pm, defaultPackageName);
 					break;
 				}
 			} catch (NameNotFoundException e) {
@@ -206,7 +205,7 @@ public class BatteryComsuption implements Comparable<BatteryComsuption> {
 								defaultPackageName = pkgName;
 								// 统一使用AppUtil.getDrawable获取app图标
 								// icon = pi.applicationInfo.loadIcon(pm);
-								icon = AppUtil.getDrawable(pm, pkgName);
+								icon = AppUtil.getAppIcon(pm, pkgName);
 							}
 							break;
 						}

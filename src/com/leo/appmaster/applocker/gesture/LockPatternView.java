@@ -33,8 +33,8 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.lockertheme.ResourceName;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.theme.LeoResources;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.utils.LeoLog;
@@ -44,18 +44,18 @@ import com.leo.appmaster.utils.LockPatternUtils;
  * Displays and detects the user's unlock attempt, which is a drag of a finger
  * across 9 regions of the screen. Is also capable of displaying a static
  * pattern in "in progress", "wrong" or "correct" states.
- * 
+ *
  * @author way
  */
 public class LockPatternView extends ViewGroup {
     private static final String TAG = "LockPatternView";
     // Aspect to use when rendering this view
     private static final int ASPECT_SQUARE = 0; // View will be the minimum of
-                                                // width/height
+    // width/height
     private static final int ASPECT_LOCK_WIDTH = 1; // Fixed width; height will
-                                                    // be minimum of (w,h)
+    // be minimum of (w,h)
     private static final int ASPECT_LOCK_HEIGHT = 2; // Fixed height; width will
-                                                     // be minimum of (w,h)
+    // be minimum of (w,h)
 
     private static final boolean PROFILE_DRAWING = false;
     private boolean mDrawingProfilingStarted = false;
@@ -168,6 +168,7 @@ public class LockPatternView extends ViewGroup {
 
         // keep # objects limited to 9
         static Cell[][] sCells = new Cell[3][3];
+
         static {
             for (int i = 0; i < 3; i++) {
                 for (int j = 0; j < 3; j++) {
@@ -177,7 +178,7 @@ public class LockPatternView extends ViewGroup {
         }
 
         /**
-         * @param row The row of the cell.
+         * @param row    The row of the cell.
          * @param column The column of the cell.
          */
         private Cell(int row, int column) {
@@ -195,7 +196,7 @@ public class LockPatternView extends ViewGroup {
         }
 
         /**
-         * @param row The row of the cell.
+         * @param row    The row of the cell.
          * @param column The column of the cell.
          */
         public static synchronized Cell of(int row, int column) {
@@ -256,14 +257,14 @@ public class LockPatternView extends ViewGroup {
 
         /**
          * The user extended the pattern currently being drawn by one cell.
-         * 
+         *
          * @param pattern The pattern with newly added cell.
          */
         void onPatternCellAdded(List<Cell> pattern);
 
         /**
          * A pattern was detected from the user.
-         * 
+         *
          * @param pattern The pattern.
          */
         void onPatternDetected(List<Cell> pattern);
@@ -344,7 +345,7 @@ public class LockPatternView extends ViewGroup {
     /**
      * Set whether the view is in stealth mode. If true, there will be no
      * visible feedback as the user enters the pattern.
-     * 
+     *
      * @param inStealthMode Whether in stealth mode.
      */
     public void setInStealthMode(boolean inStealthMode) {
@@ -354,7 +355,7 @@ public class LockPatternView extends ViewGroup {
     /**
      * Set whether the view will use tactile feedback. If true, there will be
      * tactile feedback as the user enters the pattern.
-     * 
+     *
      * @param tactileFeedbackEnabled Whether tactile feedback is enabled
      */
     public void setTactileFeedbackEnabled(boolean tactileFeedbackEnabled) {
@@ -363,7 +364,7 @@ public class LockPatternView extends ViewGroup {
 
     /**
      * Set the call back for pattern detection.
-     * 
+     *
      * @param onPatternListener The call back.
      */
     public void setOnPatternListener(OnPatternListener onPatternListener) {
@@ -373,9 +374,9 @@ public class LockPatternView extends ViewGroup {
     /**
      * Set the pattern explicitely (rather than waiting for the user to input a
      * pattern).
-     * 
+     *
      * @param displayMode How to display the pattern.
-     * @param pattern The pattern.
+     * @param pattern     The pattern.
      */
     public void setPattern(DisplayMode displayMode, List<Cell> pattern) {
         mPattern.clear();
@@ -392,7 +393,7 @@ public class LockPatternView extends ViewGroup {
      * Set the display mode of the current pattern. This can be useful, for
      * instance, after detecting a pattern to tell this view whether change the
      * in progress result to correct or wrong.
-     * 
+     *
      * @param displayMode The display mode.
      */
     public void setDisplayMode(DisplayMode displayMode) {
@@ -472,8 +473,8 @@ public class LockPatternView extends ViewGroup {
     }
 
     /**
-	 * 
-	 */
+     *
+     */
     private void clearGifAnimation() {
         if (!needChangeTheme())
             return;
@@ -523,6 +524,8 @@ public class LockPatternView extends ViewGroup {
     private void initChildView() {
         int length = mButtonViews.length;
         int width = (int) mContext.getResources().getDimension(R.dimen.lock_pattern_button_width);
+//        dadian
+
         if (mContext instanceof LockScreenActivity) {
             mLockMode = ((LockScreenActivity) mContext).getFromType();
         }
@@ -675,7 +678,7 @@ public class LockPatternView extends ViewGroup {
      * Determines whether the point x, y will add a new point to the current
      * pattern (in addition to finding the cell, also makes heuristic choices
      * such as filling in gaps based on current pattern).
-     * 
+     *
      * @param x The x coordinate.
      * @param y The y coordinate.
      */
@@ -716,7 +719,7 @@ public class LockPatternView extends ViewGroup {
                             HapticFeedbackConstants.VIRTUAL_KEY,
                             HapticFeedbackConstants.FLAG_IGNORE_VIEW_SETTING);
                 } catch (Error e) {
-                    
+
                 }
             }
             return cell;
@@ -750,7 +753,7 @@ public class LockPatternView extends ViewGroup {
 
     /**
      * Helper method to find the row that y falls into.
-     * 
+     *
      * @param y The y coordinate
      * @return The row that y falls in, or -1 if it falls in no row.
      */
@@ -772,7 +775,7 @@ public class LockPatternView extends ViewGroup {
 
     /**
      * Helper method to find the column x fallis into.
-     * 
+     *
      * @param x The x coordinate.
      * @return The column that x falls in, or -1 if it falls in no column.
      */
@@ -1081,7 +1084,9 @@ public class LockPatternView extends ViewGroup {
         final float squareWidth = mSquareWidth;
         final float squareHeight = mSquareHeight;
 
-        float radius = (squareWidth * mDiameterFactor) * 1.3f;
+        //dadian
+//        float radius = (squareWidth * mDiameterFactor) * 1.3f;
+        float radius = (squareWidth * mDiameterFactor) * 1f;
         mPathPaint.setStrokeWidth(radius);
 
         final Path currentPath = mCurrentPath;
@@ -1100,7 +1105,7 @@ public class LockPatternView extends ViewGroup {
         // we are in stealth mode)
         boolean oldFlag = (mPaint.getFlags() & Paint.FILTER_BITMAP_FLAG) != 0;
         mPaint.setFilterBitmap(true); // draw with higher quality since we
-                                      // render with transforms
+        // render with transforms
 
         // draw the lines && hideline
         if (isFromLockScreenActivity) {
@@ -1154,7 +1159,7 @@ public class LockPatternView extends ViewGroup {
     }
 
     private void drawPath(Canvas canvas, final ArrayList<Cell> pattern, final int count,
-            final boolean[][] drawLookup, final Path currentPath, final boolean drawPath) {
+                          final boolean[][] drawLookup, final Path currentPath, final boolean drawPath) {
         if (drawPath) {
             boolean anyCircles = false;
             for (int i = 0; i < count; i++) {
@@ -1302,7 +1307,7 @@ public class LockPatternView extends ViewGroup {
      * @param partOfPattern Whether this circle is part of the pattern.
      */
     private void drawCircle(Canvas canvas, int leftX, int topY,
-            boolean partOfPattern) {
+                            boolean partOfPattern) {
         Bitmap outerCircle;
         Bitmap innerCircle = null;
 
@@ -1397,8 +1402,8 @@ public class LockPatternView extends ViewGroup {
          * Constructor called from {@link LockPatternView#onSaveInstanceState()}
          */
         private SavedState(Parcelable superState, String serializedPattern,
-                int displayMode, boolean inputEnabled, boolean inStealthMode,
-                boolean tactileFeedbackEnabled) {
+                           int displayMode, boolean inputEnabled, boolean inStealthMode,
+                           boolean tactileFeedbackEnabled) {
             super(superState);
             mSerializedPattern = serializedPattern;
             mDisplayMode = displayMode;
@@ -1461,8 +1466,7 @@ public class LockPatternView extends ViewGroup {
     }
 
     @Override
-    public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs)
-    {
+    public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
         return new MarginLayoutParams(getContext(), attrs);
     }
 

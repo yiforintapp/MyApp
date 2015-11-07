@@ -12,10 +12,10 @@ public class Constants {
     public static final String AUTHORITY = "com.leo.appmaster.provider";
     public static final String ID = "_id";
 
-    public static final String MOBVISTA_APPID="19242";
-    public static final String MOBVISTA_APPKEY="8c8f18965dfd4377892a458f3b854401";        
-    public static final String MOBVISTA_UNITID="25";
-    public static final String MOBVISTA_FACEBOOK_ID="1060111710674878_1060603623959020";
+    public static final String MOBVISTA_APPID = "19242";
+    public static final String MOBVISTA_APPKEY = "8c8f18965dfd4377892a458f3b854401";
+    public static final String MOBVISTA_UNITID = "25";
+    public static final String MOBVISTA_FACEBOOK_ID = "1060111710674878_1060603623959020";
 
     // mobvista 对应的广告位id
     public static final String UNIT_ID_58 = "58";
@@ -24,12 +24,7 @@ public class Constants {
     public static final String UNIT_ID_61 = "61";
     public static final String UNIT_ID_62 = "62";
     public static final String UNIT_ID_63 = "63";
-    public static final String UNIT_ID_64 = "64";
-    public static final String UNIT_ID_65 = "65";
-    public static final String UNIT_ID_66 = "66";
     public static final String UNIT_ID_67 = "67";
-    public static final String UNIT_ID_86="86";
-    public static final String UNIT_ID_87="87";
 
     public static final String PLACEMENT_ID_58 = "1474823452846141_1475968499398303";
     public static final String PLACEMENT_ID_59 = "1474823452846141_1475969219398231";
@@ -37,14 +32,10 @@ public class Constants {
     public static final String PLACEMENT_ID_61 = "1474823452846141_1475955509399602";
     public static final String PLACEMENT_ID_62 = "1474823452846141_1475966676065152";
     public static final String PLACEMENT_ID_63 = "1474823452846141_1475968946064925";
-    public static final String PLACEMENT_ID_64 = "1474823452846141_1475969332731553";
-    public static final String PLACEMENT_ID_65 = "1474823452846141_1475969502731536";
-    public static final String PLACEMENT_ID_66 = "1474823452846141_1475970336064786";
     public static final String PLACEMENT_ID_67 = "1474823452846141_1475970436064776";
-    public static final String PLACEMENT_ID_86 ="1474823452846141_1486340058361147";
-            public static final String PLACEMENT_ID_87 ="1474823452846141_1486339348361218";
 
-    
+    public static final String INTRUDER_PHOTO_TIMESTAMP_FORMAT = "yyyy/MM/dd-HH:mm:ss";
+
     public static final String TABLE_DOWNLOAD = "download";
     public static final String TABLE_FEEDBACK = "feedback";
     public static final String TABLE_APPLIST_BUSINESS = "applist_business";
@@ -138,12 +129,13 @@ public class Constants {
     /*
      * Server URL
      */
-    public static final String APP_LOCK_LIST_URL = "/appmaster/applockerrecommend";
+//    public static final String APP_LOCK_LIST_URL = "/appmaster/applockerrecommend";
+    public static final String APP_LOCK_LIST_URL = "/appmaster/applockerrecommend/d.html";
 
     // public static final String APP_LOCK_LIST_DEBUG2 =
     // "http://192.168.1.142:8080/appmaster/appmaster/applockerrecommend";
     public static final String GP_PACKAGE = "com.android.vending";// GP package
-                                                                  // name
+    // name
     public static final int LOCK_TIP_INTERVAL_OF_DATE = 3;
     public static final int LOCK_TIP_INTERVAL_OF_MS = 3 * 24 * 60 * 60 * 1000;
     // public static final int LOCK_TIP_INTERVAL_OF_MS = 1 * 60 * 1000;
@@ -157,7 +149,7 @@ public class Constants {
      */
     public static final String ACTION_NEW_THEME = "com.leo.appmaster.newtheme";
     public static final String DEFAULT_THEME = "com.leo.theme.default";// default
-                                                                       // theme
+    // theme
     /**
      * theme type
      */
@@ -348,7 +340,7 @@ public class Constants {
     public static final String SPLASH_SKIP_PG_CLIENT = "1";
     public static final String SPLASH_BUTTON_TEXT = "h";
     // ============== default home mode list =================
-    public static String[] sDefaultHomeModeList = new String[] {
+    public static String[] sDefaultHomeModeList = new String[]{
             "com.whatsapp",
             "com.facebook.orca",
             "com.android.mms",
@@ -370,4 +362,18 @@ public class Constants {
     public static final String PKG_WHAT_EVER = "what ever.";
     public static final String PKG_LENOVO_SCREEN = "com.lenovo.coverapp.simpletime2";
 
+    // 一些重用时间
+    public final static long TIME_ONE_DAY = 24 * 60 * 60 * 1000; // 一天
+
+    public static final String PRIVACY_ENTER_SCAN = "enter_scan";
+    public static final String PRIVACY_ENTER_SCAN_TYPE = "enter_scan_type";
+
+
+    /* 数组中为不显示开启高级保护的渠道 */
+    public static final String[] FILTER_CHANNEL = {
+            "0001a"
+    };
+
+    public static final String NEW_APP_NUM = "new_app_num";
+//    public static final String IS_CLICK_LOCK_TAB = "is_click_lock_tab";
 }

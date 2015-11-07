@@ -1,23 +1,19 @@
 
 package com.leo.appmaster.fragment;
 
-import android.R.integer;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.view.View.OnTouchListener;
+import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.Window;
 import android.view.WindowManager.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -25,12 +21,10 @@ import android.widget.RelativeLayout;
 
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.GestureRelative;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CirCleDongHua;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
 
 public class PretendAppUnknowCallFragment5 extends PretendFragment implements OnTouchListener {
     private ImageView iv_dianhua_hold, iv_guaduan, iv_duanxin, iv_jieting, iv_guaduan_big,
@@ -113,7 +107,12 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     finish_lock.setVisibility(View.VISIBLE);
                     break;
                 case 4:
+                    SDKWrapper
+                            .addEvent(mActivity, SDKWrapper.P1, "appcover", "done_UnknowCall");
                     onUnlockPretendSuccessfully();
+                    isStartDong = false;
+                    text_content.setVisibility(View.VISIBLE);
+                    finish_lock.setVisibility(View.INVISIBLE);
                     break;
                 default:
                     break;
@@ -331,7 +330,7 @@ public class PretendAppUnknowCallFragment5 extends PretendFragment implements On
                     // vib.cancel();
                     if (!isControlDuan || !isControlGua || !isControlJie) {
                         SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
-                                "appcover", "fail_unknowcall");
+                                "appcover", "fail_UnknowCall");
                         onUnlockPretendFailed();
                         vib.cancel();
                     } else {

@@ -2,20 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/com.leo.appmaster">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/app_background" >
+        android:background="@color/toolbar_background_color" >
 
-        <com.leo.appmaster.ui.CommonTitleBar
+        <com.leo.appmaster.ui.CommonToolbar
             android:id="@+id/about_title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:background="@color/app_background" />
+            android:background="@color/toolbar_background_color" />
 
         <ImageView
             android:id="@+id/app_logo"
@@ -67,14 +67,27 @@
         android:paddingBottom="10dp"
         android:paddingTop="10dp" >
 
-        <Button
-            android:id="@+id/check_update_button"
+        <com.leo.appmaster.ui.RippleView 
+             xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/rv_check_update_button"
+             android:background="@drawable/blue_radius_btn_shape"
             android:layout_width="289dp"
             android:layout_height="46dp"
-            android:background="@drawable/mycheck_button_selecter"
+            app:rv_color="@color/button_blue_ripple"
+            app:rv_alpha="255"
+            >
+<!--             android:background="@drawable/mycheck_button_selecter" -->
+          <!--   android:textColor="@drawable/manager_backup_text_selecter" -->
+        <Button
+            android:id="@+id/check_update_button"
+            android:layout_width="match_parent"
+            android:background="@drawable/blue_radius_btn_shape"
+            android:layout_height="match_parent"
             android:text="@string/protocolBar"
-            android:textColor="@drawable/manager_backup_text_selecter"
+            android:textColor="#ffffff"
             android:textSize="18dp" />
+        </com.leo.appmaster.ui.RippleView>
+        
     </LinearLayout>
 
 </LinearLayout>

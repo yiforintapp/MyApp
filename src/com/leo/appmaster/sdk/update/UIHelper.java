@@ -255,7 +255,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         nm.cancel(UPDATE_NOTIFICATION_ID);
     }
 
-    private void sendDownloadFailedNotification() {
+    protected void sendDownloadFailedNotification() {
         String appName = mContext.getString(R.string.app_name);
         String failedTip = mContext.getString(R.string.download_error);
         Intent intent = new Intent(ACTION_DOWNLOAD_FAILED);
@@ -281,6 +281,8 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     }
 
     public void cancelDownloadFailedNotification() {
+        LeoLog.e(TAG, "cancelDownloadFailedNotification called ...........");
+        nm.cancel(DOWNLOAD_NOTIFICATION_ID);
         nm.cancel(DOWNLOAD_FAILED_NOTIFICATION_ID);
     }
 
@@ -677,6 +679,9 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
         }
         i.putExtra(LAYOUT_TYPE, type);
         i.putExtra(LAYOUT_PARAM, param);
+        if(type == IUIHelper.TYPE_DOWNLOAD_FAILED){
+            cancelDownloadFailedNotification();
+        }
         mContext.startActivity(i);
     }
 
@@ -794,10 +799,10 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        LeoLog.d("testReceive", "action : " + action);
+        Log.d("testReceive", "action : " + action);
         if (ACTION_SHOW_REMIND_TIP.equals(action)) {
             int type = intent.getIntExtra("remind_type", -1);
-            LeoLog.d(TAG, "onReceive: type = " + type);
+            Log.d(TAG, "onReceive: type = " + type);
             if (type == 0) {
                 sendUpdateNotification();
             } else if (type == 1) {
@@ -971,12 +976,15 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
                     String version = manager.getVersion();
                     String feature = manager.getFeatureString();
                     int size = manager.getSize();
+                    int updateType = manager.getReleaseType();
+
                     if (!Utilities.isEmpty(version)
-                            && size > 0 && SDKWrapper.isUpdateAvailable()/* 是否需要更新 */) {
+                            && size > 0 && SDKWrapper.isUpdateAvailable()
+                            && updateType != UpdateManager.NO_UPDATE/* 是否需要更新 */) {
                         mUIType = IUIHelper.TYPE_CHECK_NEED_UPDATE;
-                        mUIParam = UpdateManager.NORMAL_UPDATE;
+                        mUIParam = updateType;
                         relaunchActivity(IUIHelper.TYPE_CHECK_NEED_UPDATE,
-                                UpdateManager.NORMAL_UPDATE,
+                                mUIParam,
                                 false, true, lockPackage);
                         if (UIHelper.mUpdateTipIsFilterLock) {
                             LeoLog.e(UIHelper.TEST_TAG, "应用名称：" + appName);

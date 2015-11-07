@@ -12,6 +12,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.model.BaseInfo;
 
 public class MessageBean extends BaseInfo implements Serializable {
+    private long msmId;
     private String messageName;
     private String phoneNumber;
     private String messageTime;
@@ -29,11 +30,20 @@ public class MessageBean extends BaseInfo implements Serializable {
     private int contactId;
     public String flag;
     public boolean isShowReadTip;
+    public int messageCount;
+
+    public long getMsmId() {
+        return msmId;
+    }
+
+    public void setMsmId(long msmId) {
+        this.msmId = msmId;
+    }
 
     public MessageBean(String messageName, String phoneNumber, String messageTime,
             String messageProtocol, int messageIsRead, int messageStatus, int messageType,
             String messageBody, String messageThreadId, String messageServiceCenter,
-            boolean isCheck, int count, String showDate, Bitmap contactIcon, int contactId) {
+            boolean isCheck, int count, String showDate, Bitmap contactIcon, int contactId,int messageCount) {
         super();
         this.messageName = messageName;
         this.phoneNumber = phoneNumber;
@@ -47,8 +57,10 @@ public class MessageBean extends BaseInfo implements Serializable {
         this.messageServiceCenter = messageServiceCenter;
         this.count = count;
         this.showDate = showDate;
+
         this.contactIcon = contactIcon;
         this.contactId = contactId;
+        this.messageCount=messageCount;
     }
 
 
@@ -78,6 +90,14 @@ public class MessageBean extends BaseInfo implements Serializable {
 
     public boolean isCheck() {
         return isCheck;
+    }
+
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
     }
 
     public void setCheck(boolean isCheck) {

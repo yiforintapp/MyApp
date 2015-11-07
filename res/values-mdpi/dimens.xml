@@ -3,11 +3,11 @@
 
     <dimen name="gridview_vertical_spacing">15dip</dimen>
 
-    <integer name="gridview_row_count">5</integer>
 
     <dimen name="splash_width">206dp</dimen>
     <dimen name="lock_pattern_button_width">70dp</dimen>
     <dimen name="gesture_setting_margintop">0dp</dimen>
+    <dimen name="ges_Pattern_m_top">38dp</dimen>
     <dimen name="hide_album_frame_width">167dp</dimen>
     <dimen name="hide_album_image_frame_width">128dp</dimen>
     <dimen name="hide_album_image_frame_left">18dp</dimen>
@@ -16,12 +16,15 @@
     <dimen name="hide_pictrue_image_frame_top">7dp</dimen>
     <dimen name="hide_picture_checkbox_left">107dp</dimen>
     <dimen name="hide_picture_checkbox_top">107dp</dimen>
+            <dimen name="hide_video_checkbox_right">24dp</dimen>
+    <dimen name="hide_video_checkbox_bottom">28dp</dimen>
     <dimen name="digital_item_width">45dp</dimen>
     <dimen name="digital_item_height">45dp</dimen>
-    <dimen name="digital_item_marginTop">8dp</dimen>
-    <dimen name="digital_item_marginBottom">8dp</dimen>
+    <dimen name="digital_item_marginTop">5dp</dimen>
+    <dimen name="digital_item_marginBottom">5dp</dimen>
     <dimen name="lockPatternView_height">330dp</dimen>
-    <dimen name="layout_passwd_marginTop">20dp</dimen>
+    <dimen name="layout_passwd_marginTop">69dp</dimen>
+    <dimen name="layout_four_passwd_marginTop">21dp</dimen>
     <dimen name="circle_count_text_size">46dp</dimen>
     <dimen name="circle_tip_text_size">14dp</dimen>
     <dimen name="circle_vertical_padding">8dp</dimen>
@@ -35,9 +38,6 @@
     <dimen name="about_bottom_height">180dp</dimen>
     <dimen name="about_logo_width">100dp</dimen>
     <dimen name="about_logo_height">100dp</dimen>
-    <dimen name="default_lock_recomment_bottom">64dp</dimen>
-    <dimen name="default_lock_recomment_bottom_text_width">206dp</dimen>
-    <dimen name="default_lock_recomment_bottom_text_height">42dp</dimen>
     <dimen name="default_lock_recomment_pagedgrideview_top">15dp</dimen>
     <dimen name="app_item_iv_app_icon_width">52dp</dimen>
     <dimen name="app_item_iv_app_icon_height">52dp</dimen>
@@ -46,10 +46,6 @@
     <dimen name="app_item_iv_app_icon_padding">4dp</dimen>
     <dimen name="app_item_linearlayout_padding">5dp</dimen>
 
-    <integer name="recomment_gridview_row_count">4</integer>
-    <integer name="recomment_gridview_col_count">4</integer>
-    <integer name="success_recomment_gridview_row_count">4</integer>
-    <integer name="success_recomment_gridview_col_count">3</integer>
 
     <dimen name="grid_page_item_layout_marginLeft">8dp</dimen>
     <dimen name="grid_page_item_layout_marginRight">8dp</dimen>
@@ -60,18 +56,21 @@
     <dimen name="fragment_lock_password_appicon_height">48dp</dimen>
     <dimen name="fragment_lock_password_layout_passwd_height">20dp</dimen>
     <dimen name="fragment_lock_password_tv_passwd_width">20dp</dimen>
+    <dimen name="fragment_lock_password_tv_small_dot">13dp</dimen>
+    <dimen name="fragment_lock_password_tv_small_dot_m_r">22dp</dimen>
     <dimen name="fragment_lock_password_tv_passwd_marginleft">40dp</dimen>
     <dimen name="fragment_lock_password_tv_passwd_marginright">40dp</dimen>
+    <dimen name="fragment_lock_password_tv_passwd_m_l">35dp</dimen>
+    <dimen name="fragment_lock_password_tv_passwd_m_r">35dp</dimen>
     <dimen name="fragment_lock_password_setting_layout_passwd_height">40dp</dimen>
-    <dimen name="fragment_lock_password_setting_passwd_input_tip_textsize">24sp</dimen>
-    <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">14sp</dimen>
+    <dimen name="fragment_lock_password_setting_passwd_input_tip_textsize">24dp</dimen>
+    <dimen name="fragment_lock_password_setting_tv_passwd_function_tip_textsize">14dp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_width">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_gesture_lockview_height">330dp</dimen>
     <dimen name="fragment_lock_gesture_setting_tv_bottom_marginbottom">10dp</dimen>
-    <dimen name="fragment_lock_gesture_gesture_lockview_marginbottom">40dp</dimen>
     <dimen name="activity_wait_textView1_marginbottom">165dp</dimen>
-    <dimen name="list_item_locktheme_tick_sel_width">64px</dimen>
-    <dimen name="list_item_locktheme_tick_sel_height">64px</dimen>
+    <dimen name="list_item_locktheme_tick_sel_width">25dp</dimen>
+    <dimen name="list_item_locktheme_tick_sel_height">25dp</dimen>
     <dimen name="fragment_lock_password_setting_tv_bottom">50dp</dimen>
     <dimen name="fragment_lock_password_setting_layout_passwd">10dp</dimen>
     <dimen name="lock_help_item_pager_card_width">308dp</dimen>
@@ -83,7 +82,6 @@
     <dimen name="lock_help_item_pager_lock_help_title_margintop">18dp</dimen>
     <dimen name="lock_help_item_pager_lock_help_content_margintop">20dp</dimen>
 
-
     <dimen name="help_icon_width_parent">50dp</dimen>
     <dimen name="locker_theme_guide_width">257dp</dimen>
     <dimen name="locker_theme_guide_guideImageIV_marginTop">20dp</dimen>
@@ -91,24 +89,20 @@
     <dimen name="locker_theme_guide_guideTitleTV_textsize">16dp</dimen>
     <dimen name="memery_dialog_button_width">100dp</dimen>
     <dimen name="memery_dialog_button_height">35dp</dimen>
-    <dimen name="privacy_level_seprator_padding">10dp</dimen>
-    <dimen name="privacy_level_padding">16dp</dimen>
-    <dimen name="privacy_suggest_padding">10dp</dimen>
-    <dimen name="privacy_suggest_icon_text_margin">12dp</dimen>
-    <dimen name="privacy_suggest_text_margin">0dp</dimen>
-    <dimen name="privacy_suggest_arrow_padding_top">26dp</dimen>
-    <dimen name="home_bottom_button_height">64dp</dimen>
-    <dimen name="home_bottom_button_text_size">14dp</dimen>
-    <dimen name="home_bottom_button_text_margin">10dp</dimen>
     <dimen name="dlg_horizental_margin">232dp</dimen>
-    <dimen name="home_lock_tip_size">8dp</dimen>
-    <dimen name="home_lock_count_text_size">46dp</dimen>
-    <dimen name="home_lock_mode_name_size">10dp</dimen>
-    <dimen name="home_lock_text_padding">6dp</dimen>
-    <dimen name="pager_margin_top">29dp</dimen>
 
     <!-- guide pages begin -->
+    <dimen name="guide_page_image_margin_top">0dp</dimen>
+    <dimen name="guide_page_image_height">268dp</dimen>
+    <dimen name="guide_page_title_font_size">22dp</dimen>
+    <dimen name="guide_page_content_font_size">12dp</dimen>
     <dimen name="guide_page_indicator_margin_buttom">30dp</dimen>
+    <dimen name="guide_title_margin_buttom">8dp</dimen>
+    <dimen name="guide_content_margin_buttom">60dp</dimen>
+    <dimen name="guide_go_button_height">38dp</dimen>
+    <dimen name="guide_go_button_width">138dp</dimen>
+    <dimen name="guide_go_button_text_size">16dp</dimen>
+    <dimen name="guide_go_button_bottom">14dp</dimen>
     <!-- guide pages end -->
 
 
@@ -127,19 +121,6 @@
     <dimen name="home_lock_mode_active_tip_text_margin_bottom">6dp</dimen>
     <!-- lock mode end -->
 
-    <dimen name="privacy_proposal_padding">10dp</dimen>
-    <dimen name="privacy_proposal_seprator_padding">6dp</dimen>
-    <dimen name="privacy_proposal_small_text_size">10dp</dimen>
-    <dimen name="privacy_proposal_big_text_size">32dp</dimen>
-    <dimen name="privacy_scanning_offset">14dp</dimen>
-    <dimen name="privacy_proposal_top_height">196dp</dimen>
-    <dimen name="privacy_proposal_tip_padding">46dp</dimen>
-    <dimen name="privacy_proposal_tip_text_size">10dp</dimen>
-    <dimen name="privacy_proposal_status_width">170dp</dimen>
-    <dimen name="privacy_proposal_status_height">10dp</dimen>
-    <dimen name="privacy_proposal_status_padding_bottom">10dp</dimen>
-    <dimen name="privacy_suggest_height">90dp</dimen>
-
     <!-- weizhuang -->
     <dimen name="weizhaung_guide_image_margin_top">36dp</dimen>
     <dimen name="weizhuang_zhiwen_text_m_top">40dp</dimen>
@@ -149,7 +130,7 @@
     <dimen name="dialog_list_width">260dp</dimen>
     <dimen name="dialog_list_btn_height">42dp</dimen>
     <dimen name="dialog_list_item_height">50dp</dimen>
-    <dimen name="dialog_contact_item_height">45dp</dimen>
+    <dimen name="dialog_contact_item_height">56dp</dimen>
     <!-- quick gesutre end -->
     <dimen name="dialog_btn_height">48dp</dimen>
     <!-- 2.5 ql part -->
@@ -177,9 +158,9 @@
     <dimen name="noti_spe_icon_height">46dp</dimen>
     <dimen name="noti_spe_icon_m_left">8dp</dimen>
     <dimen name="noti_spe_content_m_left">11dp</dimen>
-    <dimen name="noti_spe_content_big_text_size">12sp</dimen>
+    <dimen name="noti_spe_content_big_text_size">12dp</dimen>
     <dimen name="noti_spe_content_des_m_top">3dp</dimen>
-    <dimen name="noti_spe_content_small_text_size">10sp</dimen>
+    <dimen name="noti_spe_content_small_text_size">10dp</dimen>
     <dimen name="noti_spe_butt_width">60dp</dimen>
     <dimen name="noti_spe_butt_height">25dp</dimen>
     <dimen name="noti_spe_ar_butt_width">90dp</dimen>
@@ -190,26 +171,26 @@
     <dimen name="noti_spe_tr_butt_width">104dp</dimen>
     <!-- 2.7 end -->
 
+    <dimen name="wifi_acti_big_icon_width">165dp</dimen>
+    <dimen name="wifi_acti_big_icon_height">172dp</dimen>
 
-    <!-- 2.9 start -->
-    <dimen name="privacy_ad_icon_m_left">15dp</dimen>
-    <dimen name="privacy_ad_dec_m_top">4dp</dimen>
-    <dimen name="privacy_ad_download_width">262dp</dimen>
-    <dimen name="privacy_ad_download_height">28dp</dimen>
-    <dimen name="privacy_ad_right_content_p_r">18dp</dimen>
-    <dimen name="home_ad_icon_width">22dp</dimen>
-    <dimen name="home_ad_icon_height">38dp</dimen>
-    <dimen name="home_ad_icon_m_top">170dp</dimen>
-    <dimen name="theme_ad_icon_height">33dp</dimen>
-    <dimen name="theme_ad_icon_m_left">5dp</dimen>
-    <dimen name="theme_ad_test_width">120dp</dimen>
-    <dimen name="theme_ad_test_m_left">6dp</dimen>
-    <dimen name="theme_ad_test_size">10sp</dimen>
-    <dimen name="theme_ad_desc_size">7sp</dimen>
-    <dimen name="theme_ad_button_width">60dp</dimen>
-    <dimen name="theme_ad_button_height">25dp</dimen>
-    <dimen name="theme_ad_button_m_right">5dp</dimen>
-    <dimen name="theme_ad_button_test_size">10sp</dimen>
-    <!-- 2.9 end -->
+    <dimen name="wifi_acti_line_height">20dp</dimen>
+    <dimen name="wifi_acti_line_width">160dp</dimen>
+    <dimen name="wifi_acti_big_icon_text_m_top">10dp</dimen>
+    <dimen name="wifi_acti_big_icon_desc_m_top">9dp</dimen>
+    <dimen name="wifi_acti_big_icon_text_size">16dp</dimen>
+    <dimen name="wifi_scaning_fragment_height">205dp</dimen>
+    <dimen name="wifi_scaning_loading_size">24dp</dimen>
+    <dimen name="wifi_result_trans_content">170dp</dimen>
 
+    <dimen name="wifi_set_title_text_size">15sp</dimen>
+    <dimen name="wifi_set_title_text_des_size">13sp</dimen>
+
+    <dimen name="wifi_fragment_padding">29dp</dimen>
+    
+        <!--3.0-->
+    <dimen name="fragment_lock_margin_top">40dp</dimen>
+
+    <dimen name="applock_text_title_size">15dp</dimen>
+    <dimen name="applock_text_desc_size">11dp</dimen>
 </resources>

@@ -1,43 +1,37 @@
-
 package com.leo.appmaster.feedback;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -47,6 +41,7 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private static final String EMAIL_EXPRESSION = "^([a-z0-9A-Z]+[-|\\.]?)+[a-z0-9A-Z]@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\.)+[a-zA-Z]{2,}$";
     public static final String TAG = "FeedbackActivity";
     private static final boolean DBG = true;
+    private boolean mCanCommit;
     private View mBtnCommit;
     private EditText mEditContent;
     private EditText mEditEmail;
@@ -55,15 +50,15 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
     private TextView mCategory;
     private ImageView mCategoryImg;
     private View mCategoryLayout;
-    private CommonTitleBar mTitleBar;
+    private CommonToolbar mTitleBar;
 
-    private Dialog mCategoryDialog;
+    private LEOChoiceDialog mCategoryDialog;
     private ListView mCategoryListView;
     private LEOMessageDialog mMessageDialog;
 
     private final static int[] sCategoryIds = {
-            R.string.category_lock, R.string.pravicy_protect,
-            R.string.app_manager, R.string.category_other
+            R.string.home_tab_wifi, R.string.home_tab_lost,
+            R.string.home_tab_instruder,R.string.privacy_scan, R.string.category_other
     };
 
     private final ArrayList<String> mCategories = new ArrayList<String>();
@@ -77,29 +72,63 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         setContentView(R.layout.activity_feedback);
         initEmails();
         initUi();
-
         // check if any data not submitted
         checkPendingData();
     }
 
     private void initEmails() {
-        AccountManager am = AccountManager.get(getApplicationContext());
-        Account[] accounts = am.getAccounts();
-        for (Account a : accounts) {
-            if (a.name != null && a.name.matches(EMAIL_EXPRESSION) && !mEmails.contains(a.name)) {
-                mEmails.add(a.name);
+        final AccountManager am = AccountManager.get(getApplicationContext());
+        final Account[] accounts = am.getAccounts();
+        List<String> as = new ArrayList<String>();
+        
+        for(int i = 0 ; i< accounts.length;i++){
+            if (accounts[i].name !=null && !accounts[i].name.startsWith("com.contapps")) {
+                as.add(accounts[i].name);
+            }
+        }
+        
+        for (int i = 0;i<as.size(); i++) {
+            LeoLog.i("fb", "a = "+as.get(i).toString());
+            if (as.get(i) != null && ( as.get(i)).matches(EMAIL_EXPRESSION) && !mEmails.contains(as.get(i))) {
+                mEmails.add( as.get(i));
             }
         }
     }
 
     private void initUi() {
-        mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTitleBar.setTitle(R.string.feedback);
-        mTitleBar.openBackView();
-        mTitleBar.setOptionImage(R.drawable.mode_done);
-        mTitleBar.setOptionListener(this);
+        mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTitleBar.setToolbarTitle(R.string.feedback);
+        mTitleBar.setOptionImageResource(R.drawable.mode_done);
+        mTitleBar.setOptionMenuVisible(true);
+        mTitleBar.setOptionClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View arg0) {
+                if (!mCanCommit) return;
+                if (mEditEmail.getText().toString().trim().matches(EMAIL_EXPRESSION)) {
+                    FeedbackHelper.getInstance().tryCommit(mCategory.getText().toString(),
+                            mEditEmail.getText().toString().trim(),
+                            mEditContent.getText().toString().trim());
+                    showMessageDialog(getString(R.string.feedback_success_title),
+                            getString(R.string.feedback_success_content));
+                    mEditEmail.setText(mEditEmail.getText().toString());
+                    mEditContent.setText(mEditContent.getText().toString());
+                    mCategory.setText(mCategory.getText().toString());
+                    mCategory.setTag(1);
+                    if (DBG) {
+                        LeoLog.i(TAG, "反馈提交的数据：");
+                        LeoLog.i(TAG, "----------------邮箱--" + mEditEmail.getText().toString());
+                        LeoLog.i(TAG, "----------------问题类型--" + mCategory.getText().toString());
+                        LeoLog.i(TAG, "----------------其他--" + mEditContent.getText().toString());
+                    }
+                } else {
+                    Toast.makeText(FeedbackActivity.this,
+                            FeedbackActivity.this.getResources().getText(R.string.feedback_error), Toast.LENGTH_SHORT)
+                            .show();
+                }
+                SDKWrapper.addEvent(FeedbackActivity.this, SDKWrapper.P1, "setting", "fb_submit");
+            }
+        });
         mBtnCommit = mTitleBar.getOptionImageView();
-
         mEditContent = (EditText) findViewById(R.id.feedback_content);
         mEmailLayout = findViewById(R.id.feedback_email_layout);
         mEditEmail = (EditText) findViewById(R.id.feedback_email);
@@ -145,11 +174,23 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         }
         String currentEmail = perference.getString(FeedbackHelper.KEY_EMAIL, email);
         mEditEmail.setText(currentEmail.isEmpty() ? email : currentEmail);
-        try {
-            mCategoryPos = perference.getInt(FeedbackHelper.KEY_CATEGORY, -1);
-        } catch (Exception e) {
-
+        
+        Intent intent = getIntent();
+        boolean isFromSecurHelp = false;
+        if(intent != null) {
+           isFromSecurHelp = intent.getBooleanExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK, false);
+            if (isFromSecurHelp) {
+                mCategoryPos = 1;
+                intent.removeExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK);
+            }
         }
+        if(!isFromSecurHelp) {
+            try {
+                mCategoryPos = perference.getInt(FeedbackHelper.KEY_CATEGORY, -1);
+            } catch (Exception e) {
+            }
+        }
+
         if (mCategoryPos >= 0 && mCategoryPos < mCategories.size()) {
             mCategory.setText(mCategories.get(mCategoryPos));
             mCategory.setTag(1);
@@ -171,9 +212,9 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
                 }
             }
         }
+        mCanCommit = commitable;
         mBtnCommit.setEnabled(commitable);
-        mTitleBar.setOptionImage(commitable ? R.drawable.mode_done
-                : R.drawable.undone);
+        mTitleBar.setOptionImageResource(R.drawable.mode_done);
     }
 
     @Override
@@ -195,7 +236,9 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
                     .putString(FeedbackHelper.KEY_CONTENT, mEditContent.getText().toString())
                     .putInt(FeedbackHelper.KEY_CATEGORY, mCategoryPos).apply();
         }
-    };
+    }
+
+    ;
 
     @Override
     protected void onResume() {
@@ -204,34 +247,36 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
         SDKWrapper.addEvent(this, SDKWrapper.P1, "setting", "fb_enter");
     }
 
+    /*跳转到用户反馈处理*/
+    private void initIntentHandler() {
+        Intent intent = this.getIntent();
+
+        fromSecurHelpHandler(intent);
+    }
+
+    /*来自防盗帮助页面的处理*/
+    private void fromSecurHelpHandler(Intent intent) {
+        boolean isFromSecurHelp = intent.getBooleanExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK, false);
+        if (isFromSecurHelp) {
+            /*用户反馈自动填充的内容*/
+            String feedbkContent = getResources().getString(R.string.secur_feedbk_content);
+            mEditContent.setText(feedbkContent);
+            /*防盗问题*/
+            String feedbkQue=getResources().getString(R.string.secur_feedbk_type);
+            mCategory.setText(feedbkQue);
+            mCategory.setTag(feedbkQue);
+            mCategoryPos = 3;
+            intent.removeExtra(PhoneSecurityConstants.SECUR_HELP_TO_FEEDBACK);
+        }
+    }
+
     @Override
     public void onClick(View v) {
         hideIME();
         if (v == mCategoryLayout) {
             showQuesCategoryDialog();
         } else if (v == mBtnCommit) {
-            if (mEditEmail.getText().toString().trim().matches(EMAIL_EXPRESSION)) {
-                FeedbackHelper.getInstance().tryCommit(mCategory.getText().toString(),
-                        mEditEmail.getText().toString().trim(),
-                        mEditContent.getText().toString().trim());
-                showMessageDialog(getString(R.string.feedback_success_title),
-                        getString(R.string.feedback_success_content));
-                mEditEmail.setText(mEditEmail.getText().toString());
-                mEditContent.setText(mEditContent.getText().toString());
-                mCategory.setText(mCategory.getText().toString());
-                mCategory.setTag(1);
-                if (DBG) {
-                    LeoLog.i(TAG, "反馈提交的数据：");
-                    LeoLog.i(TAG, "----------------邮箱--" + mEditEmail.getText().toString());
-                    LeoLog.i(TAG, "----------------问题类型--" + mCategory.getText().toString());
-                    LeoLog.i(TAG, "----------------其他--" + mEditContent.getText().toString());
-                }
-            } else {
-                Toast.makeText(FeedbackActivity.this,
-                        this.getResources().getText(R.string.feedback_error), Toast.LENGTH_SHORT)
-                        .show();
-            }
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "setting", "fb_submit");
+
         } else if (v == mEmailImg) {
             showEmailListDialog();
         }
@@ -274,19 +319,13 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
      */
     private void showQuesCategoryDialog() {
         if (mCategoryDialog == null) {
-            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this, R.style.bt_dialog);
-            mCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            mCategoryDialog.setContentView(R.layout.dialog_common_list_select);
-            mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
+            mCategoryDialog = new LEOChoiceDialog(this);
         }
-        TextView mTitle = (TextView) mCategoryDialog.findViewById(R.id.dlg_title);
-        mTitle.setText(getResources().getString(R.string.feedback_category_tip));
-
-        mCategoryListView = (ListView) mCategoryDialog.findViewById(R.id.item_list);
-        mCategoryListView.setOnItemClickListener(new OnItemClickListener() {
+        mCategoryDialog.setTitle(getResources().getString(R.string.feedback_category_tip));
+        mCategoryDialog.setItemsWithDefaultStyle(mCategories, mCategoryPos);
+        mCategoryDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                    long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 mCategory.setText(mCategories.get(position));
                 mCategoryPos = position;
                 mCategory.setTag(1);
@@ -294,150 +333,188 @@ public class FeedbackActivity extends BaseActivity implements OnClickListener,
                 checkCommitable();
             }
         });
-        ListAdapter adapter = new CategoryListAdapter(FeedbackActivity.this);
-        mCategoryListView.setAdapter(adapter);
-
-        View cancel = mCategoryDialog.findViewById(R.id.dlg_bottom_btn);
-        cancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCategoryDialog.dismiss();
-            }
-        });
         mCategoryDialog.show();
     }
 
-    class CategoryListAdapter extends BaseAdapter {
-
-        private LayoutInflater inflater;
-
-        public CategoryListAdapter(Context ctx) {
-            inflater = LayoutInflater.from(ctx);
-        }
-
-        @Override
-        public int getCount() {
-            return mCategories.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mCategories.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Holder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
-                holder = new Holder();
-                holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
-                holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
-                convertView.setTag(holder);
-            } else {
-                holder = (Holder) convertView.getTag();
-            }
-            holder.name.setText(mCategories.get(position));
-
-            if (mCategoryPos >= 0 && position == mCategoryPos) {
-                holder.selecte.setVisibility(View.VISIBLE);
-            } else {
-                holder.selecte.setVisibility(View.GONE);
-            }
-            return convertView;
-        }
-    }
+//    class CategoryListAdapter extends BaseAdapter {
+//
+//        private LayoutInflater inflater;
+//
+//        public CategoryListAdapter(Context ctx) {
+//            inflater = LayoutInflater.from(ctx);
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return mCategories.size();
+//        }
+//
+//        @Override
+//        public Object getItem(int position) {
+//            return mCategories.get(position);
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return position;
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            Holder holder;
+//            if (convertView == null) {
+//                convertView = inflater.inflate(R.layout.item_ask_times_to_catch, parent, false);
+//                holder = new Holder();
+//                holder.name = (TextView) convertView.findViewById(R.id.tv_item);
+//                holder.selecte = (Button) convertView.findViewById(R.id.cb_selected);
+//                convertView.setTag(holder);
+//            } else {
+//                holder = (Holder) convertView.getTag();
+//            }
+//            holder.name.setText(mCategories.get(position));
+//
+//            if (mCategoryPos >= 0 && position == mCategoryPos) {
+//                holder.selecte.setVisibility(View.VISIBLE);
+//            } else {
+//                holder.selecte.setVisibility(View.GONE);
+//            }
+//            return convertView;
+//        }
+//    }
 
     /**
      * show email selection dialog
+     * private void showQuesCategoryDialog() {
+     * if (mCategoryDialog == null) {
+     * mCategoryDialog = new LEOChoiceDialog(this);
+     * }
+     * //        TextView mTitle = (TextView) mCategoryDialog.findViewById(R.id.dlg_title);
+     * //        mTitle.setText(getResources().getString(R.string.feedback_category_tip));
+     * mCategoryDialog.setItemsWithDefaultStyle(mCategories,mCategoryPos);
+     * mCategoryDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
+     *
+     * @Override public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+     * mCategory.setText(mCategories.get(position));
+     * mCategoryPos = position;
+     * mCategory.setTag(1);
+     * mCategoryDialog.dismiss();
+     * checkCommitable();
+     * }
+     * });
+     * mCategoryDialog.show();
+     * }
      */
+//    private void showQuesCategoryDialog() {
+//        if (mCategoryDialog == null) {
+//            mCategoryDialog = new LEOChoiceDialog(this);
+//        }
+//        mCategoryDialog.setTitle(getResources().getString(R.string.feedback_category_tip));
+//        mCategoryDialog.setItemsWithDefaultStyle(mCategories,mCategoryPos);
+//        mCategoryDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                mCategory.setText(mCategories.get(position));
+//                mCategoryPos = position;
+//                mCategory.setTag(1);
+//                mCategoryDialog.dismiss();
+//                checkCommitable();
+//            }
+//        });
+//        mCategoryDialog.show();
+//    }
     private void showEmailListDialog() {
-        if (mCategoryDialog == null) {
-            mCategoryDialog = new LEOBaseDialog(FeedbackActivity.this, R.style.bt_dialog);
-            mCategoryDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            mCategoryDialog.setContentView(R.layout.dialog_common_list_select);
-            mCategoryDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
+        int size = mEmails.size();
+        if (size > 0) {
+            if (mCategoryDialog == null) {
+                mCategoryDialog = new LEOChoiceDialog(FeedbackActivity.this);
+            } else {
+                if (mCategoryDialog.isShowing()) {
+                    return;
+                }
+            }
+            mCategoryDialog.setTitle(getResources().getString(R.string.feedback_email_guide));
+            int pos = 0;
+            Editable current = mEditEmail.getText();
+            if (current != null) {
+                String email = current.toString();
+                pos = mEmails.indexOf(email);
+            }
+            if (pos < 0 || pos > mEmails.size() - 1) {
+                pos = 0;
+            }
+            mCategoryDialog.setItemsWithDefaultStyle(mEmails, pos);
+            mCategoryDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position,
+                                        long id) {
+                    mEditEmail.setText(mEmails.get(position));
+                    mCategoryDialog.dismiss();
+                    checkCommitable();
+                }
+            });
+            // ListAdapter adapter = new
+            // EmailListAdapter(FeedbackActivity.this);
+            // mCategoryListView.setAdapter(adapter);
+            // View cancel = mCategoryDialog.findViewById(R.id.dlg_bottom_btn);
+            // cancel.setOnClickListener(new OnClickListener() {
+            // @Override
+            // public void onClick(View v) {
+            // mCategoryDialog.dismiss();
+            // }
+            // });
+            mCategoryDialog.show();
         }
-        TextView mTitle = (TextView) mCategoryDialog.findViewById(R.id.dlg_title);
-        mTitle.setText(getResources().getString(R.string.feedback_email_guide));
-
-        mCategoryListView = (ListView) mCategoryDialog.findViewById(R.id.item_list);
-        mCategoryListView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                    long id) {
-                mEditEmail.setText(mEmails.get(position));
-                mCategoryDialog.dismiss();
-                checkCommitable();
-            }
-        });
-        ListAdapter adapter = new EmailListAdapter(FeedbackActivity.this);
-        mCategoryListView.setAdapter(adapter);
-
-        View cancel = mCategoryDialog.findViewById(R.id.dlg_bottom_btn);
-        cancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCategoryDialog.dismiss();
-            }
-        });
-        mCategoryDialog.show();
     }
 
-    class EmailListAdapter extends BaseAdapter {
-
-        private LayoutInflater inflater;
-
-        public EmailListAdapter(Context ctx) {
-            inflater = LayoutInflater.from(ctx);
-        }
-
-        @Override
-        public int getCount() {
-            return mEmails.size();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            return mEmails.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            Holder holder;
-            if (convertView == null) {
-                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
-                holder = new Holder();
-                holder.name = (TextView) convertView.findViewById(R.id.tv_item_content);
-                holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
-                convertView.setTag(holder);
-            } else {
-                holder = (Holder) convertView.getTag();
-            }
-            holder.name.setText(mEmails.get(position));
-
-            if (!mEditEmail.getText().toString().isEmpty()
-                    && mEditEmail.getText().toString().equals(mEmails.get(position))) {
-                holder.selecte.setVisibility(View.VISIBLE);
-            } else {
-                holder.selecte.setVisibility(View.GONE);
-            }
-            return convertView;
-        }
-    }
+//    class EmailListAdapter extends BaseAdapter {
+//
+//        private LayoutInflater inflater;
+//
+//        public EmailListAdapter(Context ctx) {
+//            inflater = LayoutInflater.from(ctx);
+//        }
+//
+//        @Override
+//        public int getCount() {
+//            return mEmails.size();
+//        }
+//
+//        @Override
+//        public Object getItem(int position) {
+//            return mEmails.get(position);
+//        }
+//
+//        @Override
+//        public long getItemId(int position) {
+//            return position;
+//        }
+//
+//        @Override
+//        public View getView(int position, View convertView, ViewGroup parent) {
+//            Holder holder;
+//            if (convertView == null) {
+//                convertView = inflater.inflate(R.layout.item_common_select, parent, false);
+//                holder = new Holder();
+//                holder.name = (TextView) convertView.findViewById(R.id.tv_item);
+//                holder.selecte = (Button) convertView.findViewById(R.id.bt_selected);
+//                convertView.setTag(holder);
+//            } else {
+//                holder = (Holder) convertView.getTag();
+//            }
+//            holder.name.setText(mEmails.get(position));
+//
+//            if (!mEditEmail.getText().toString().isEmpty()
+//                    && mEditEmail.getText().toString().equals(mEmails.get(position))) {
+//                holder.selecte.setPressed(true);
+//            } else {
+//                holder.selecte.setPressed(false);
+//            }
+//            return convertView;
+//        }
+//    }
 
     public static class Holder {
         TextView name;
-        ImageView selecte;
+        Button selecte;
     }
 }

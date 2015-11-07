@@ -2,9 +2,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f3f3f3" >
+    android:background="@color/white" >
 
-    <com.leo.appmaster.ui.CommonTitleBar
+    <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/privacy_call_log_item_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,8 +16,6 @@
         android:layout_below="@id/privacy_call_log_item_title_bar"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/white_bg"
         android:orientation="vertical"
         android:paddingTop="@dimen/activity_privacy_contact_item_paddingTop" >
 
@@ -106,8 +104,8 @@
         <ImageView
             android:id="@+id/call_log_item_top_bottom_line"
             android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@drawable/test_list_divider" />
+            android:layout_height="1px"
+            android:background="@color/divider_2" />
 
         <ListView
             android:id="@+id/contactLV"
@@ -117,7 +115,8 @@
             android:layout_marginRight="16dp"
 	        android:overScrollMode="never"
             android:divider="@null"
-            android:scrollbars="none" >
+            android:listSelector="@android:color/transparent"
+            android:scrollbars="none">
         </ListView>
     </LinearLayout>
 

@@ -26,15 +26,19 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.RippleView;
 
 public class LocationLockFragment extends BaseFragment implements OnClickListener,
-        OnItemClickListener, OnItemLongClickListener, Editable {
+        OnItemClickListener, OnItemLongClickListener, Editable, RippleView.OnRippleCompleteListener {
 
     private ListView mLockListView;
     private View mListHeader;
@@ -46,16 +50,21 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     private View mLockGuideView;
     private ImageView mLockGuideIcon;
     private TextView mLockGuideText;
-    private Button mUserKnowBtn;
+    private RippleView mUserKnowBtn;
     private Animation mGuidAnimation;
     private boolean mGuideOpen = false;
     private int mSelectCount = 0;
+
+    private LockManager mLockManager;
+    private View mHeadContentView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // judge whether setted location lock mode
-        mLocationLockList = LockManager.getInstatnce().getLocationLock();
+
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mLocationLockList = mLockManager.getLocationLock();
         if (mLocationLockList.size() > 0) {
             AppMasterPreference.getInstance(mActivity).setLocationLockModeSetOver(true);
         }
@@ -71,7 +80,9 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLockGuideView = findViewById(R.id.lock_mode_guide);
         mLockGuideIcon = (ImageView) mLockGuideView.findViewById(R.id.lock_guide_icon);
         mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
-        mUserKnowBtn = (Button) mLockGuideView.findViewById(R.id.mode_user_know_button);
+
+        mUserKnowBtn = (RippleView) mLockGuideView.findViewById(R.id.mode_user_know_button);
+
         mTitleBar = ((LockModeActivity) mActivity).getActivityCommonTitleBar();
 
         mLockListView = (ListView) findViewById(R.id.mode_list);
@@ -87,6 +98,13 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
 
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
                 mLockListView, false);
+        mHeadContentView = mListHeader.findViewById(R.id.head_content);
+        mHeadContentView.setOnClickListener(this);
+        MaterialRippleLayout.on(mHeadContentView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleHover(true)
+                .create();
         TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
         tv.setText(R.string.add_new_location_lock);
         mLockListView.addHeaderView(mListHeader);
@@ -105,7 +123,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     }
 
     private void loadModes() {
-        mLocationLockList = LockManager.getInstatnce().getLocationLock();
+        mLocationLockList = mLockManager.getLocationLock();
         Collections.sort(mLocationLockList, new LocationLockComparator());
         mLocationLockAdapter = new LocationLockAdapter(mActivity);
         mLockListView.setAdapter(mLocationLockAdapter);
@@ -119,7 +137,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     }
 
     public void onEventMainThread(LocationLockEvent event) {
-        mLocationLockList = LockManager.getInstatnce().getLocationLock();
+        mLocationLockList = mLockManager.getLocationLock();
         mLocationLockAdapter.notifyDataSetChanged();
         // cancle guide page
         if (mLocationLockList.size() == 1) {
@@ -150,10 +168,12 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
                     locationLock.using = !locationLock.using;
                     if (locationLock.using) {
                         iv.setImageResource(R.drawable.switch_on);
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "local", "open");
                     } else {
                         iv.setImageResource(R.drawable.switch_off);
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "local", "close");
                     }
-                    LockManager.getInstatnce().openLocationLock(locationLock, locationLock.using);
+                    mLockManager.openLocationLock(locationLock, locationLock.using);
                 }
                 break;
             case R.id.mode_user_know_button:
@@ -171,6 +191,9 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
                     }
                 });
                 break;
+            case R.id.head_content:
+                addLocationTime();
+                break;
             default:
                 break;
         }
@@ -180,7 +203,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == 0) {
-            addLocationTime();
+//            addLocationTime();
         } else {
             LocationLock locationLock = mLocationLockList.get(position - 1);
             editLocationLock(locationLock, false);
@@ -201,6 +224,25 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
             intent.putExtra("location_lock_id", lockMode.id);
         }
         startActivity(intent);
+    }
+
+    @Override
+    public void onRippleComplete(RippleView rippleView) {
+        if (mUserKnowBtn == rippleView) {
+            AppMasterPreference.getInstance(mActivity).setLocationLockModeGuideClicked(true);
+            removeGuidePage();
+            /** set the help tip action **/
+            mTitleBar.setOptionImage(R.drawable.tips_icon);
+            mTitleBar.setOptionImageVisibility(View.VISIBLE);
+            Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+            mTitleBar.setOptionAnimation(animation);
+            mTitleBar.setOptionListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    lockGuide();
+                }
+            });
+        }
     }
 
     class LocationLockAdapter extends BaseAdapter {
@@ -316,16 +358,17 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
                 deleteList.add(lock);
             }
         }
-        LockManager lm = LockManager.getInstatnce();
         for (LocationLock lock : deleteList) {
-            lm.removeLocationLock(lock);
+            mLockManager.removeLocationLock(lock);
         }
         mSelectCount = 0;
-        ((LockModeActivity)mActivity).disableOptionImage();
+        ((LockModeActivity) mActivity).disableOptionImage();
         mLocationLockAdapter.notifyDataSetChanged();
     }
 
-    /** about lock mode guide **/
+    /**
+     * about lock mode guide
+     **/
     public void lockGuide() {
         if (mGuideOpen) {
             removeGuidePage();
@@ -339,7 +382,8 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLockListView.setVisibility(View.INVISIBLE);
         mLockGuideIcon.setImageResource(R.drawable.modes_tips_position);
         mLockGuideText.setText(R.string.location_lock_mode_guide_content);
-        mUserKnowBtn.setOnClickListener(this);
+//        mUserKnowBtn.setOnClickListener(this);
+        mUserKnowBtn.setOnRippleCompleteListener(this);
         // if ever pack up guide page then next time guide page should
         // appearance as animation
         if (AppMasterPreference.getInstance(mActivity).getLocationLockModeGuideClicked()) {

@@ -13,9 +13,10 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 
 public class PasswdTipActivity extends BaseActivity implements OnClickListener {
-	CommonTitleBar mTitleBar;
+    CommonToolbar mTitleBar;
 	EditText mEtTip;
 	View  mTvMakesure;
 
@@ -28,12 +29,31 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 
 	private void initUI() {
 		mEtTip = (EditText) findViewById(R.id.et_passwd_tip);
-		mTitleBar = (CommonTitleBar) findViewById(R.id.commonTitleBar1);
-		mTitleBar.setTitle(R.string.passwd_notify);
-		mTitleBar.openBackView();
-		mTitleBar.setOptionImage(R.drawable.mode_done);
-		mTvMakesure =  mTitleBar.getOptionImageView();
-		mTitleBar.setOptionListener(this);
+		mTitleBar = (CommonToolbar) findViewById(R.id.commonTitleBar1);
+		mTitleBar.setToolbarTitle(R.string.passwd_notify);
+//		mTitleBar.openBackView();
+		mTitleBar.setOptionImageResource(R.drawable.mode_done);
+		mTitleBar.setOptionClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+
+                String tip = mEtTip.getText().toString().trim();
+                AppMasterPreference ap = AppMasterPreference.getInstance(PasswdTipActivity.this);
+                String q = ap.getPpQuestion();
+                String a = ap.getPpAnwser();
+                AppMasterPreference.getInstance(PasswdTipActivity.this).savePasswdProtect(q, a, tip);
+                Toast.makeText(PasswdTipActivity.this, R.string.set_success, 0).show();
+                hideIME();
+                mEtTip.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();                    
+                    }
+                }, 300);
+            }
+        });
+		mTitleBar.setOptionMenuVisible(true);
 		String tip = AppMasterPreference.getInstance(this).getPasswdTip();
 		if (tip != null) {
 			mEtTip.setText(tip);
@@ -57,23 +77,6 @@ public class PasswdTipActivity extends BaseActivity implements OnClickListener {
 	
 	@Override
 	public void onClick(View v) {
-		if (v == mTvMakesure) {
-			String tip = mEtTip.getText().toString().trim();
-			AppMasterPreference ap = AppMasterPreference.getInstance(this);
-			String q = ap.getPpQuestion();
-			String a = ap.getPpAnwser();
-			AppMasterPreference.getInstance(this).savePasswdProtect(q, a, tip);
-			Toast.makeText(this, R.string.set_success, 0).show();
-			
-			hideIME();
-			mEtTip.postDelayed(new Runnable() {
-                
-                @Override
-                public void run() {
-                    finish();                    
-                }
-            }, 300);
-		}
 	}
 
 }

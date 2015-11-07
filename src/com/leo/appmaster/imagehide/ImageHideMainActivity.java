@@ -20,19 +20,29 @@ import android.provider.MediaStore.MediaColumns;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.activity.QuickHelperActivity;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -44,14 +54,16 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private GridView mGridView;
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
-    private CommonTitleBar mTtileBar;
-    private Button mAddButton;
+    private CommonToolbar mTtileBar;
+    private TextView mAddButton;
     private RelativeLayout mNoHidePictureHint;
     private LoaderHideImageFolderTask mLoadTask;
+    private RippleView mRvAdd;
+    private ProgressBar loadingBar;
 
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
 
-    String[] STORE_HIDEIMAGES = new String[] {
+    String[] STORE_HIDEIMAGES = new String[]{
             MediaStore.Files.FileColumns.DISPLAY_NAME,
             MediaStore.Files.FileColumns.DATA,
             MediaStore.Files.FileColumns._ID, //
@@ -66,19 +78,33 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
         super.onCreate(savedInstanceState);
         initImageLoder();
         setContentView(R.layout.activity_image_hide);
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setTitle(R.string.app_image_hide);
-        mTtileBar.openBackView();
-        // mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
-        // mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        // mTtileBar.setOptionText(getString(R.string.setting));
-        // mTtileBar.setOptionTextVisibility(View.VISIBLE);
-        // mTtileBar.setOptionListener(this);
+        
+        if(getIntent().getBooleanExtra("from_quickhelper", false)){
+            SDKWrapper.addEvent(ImageHideMainActivity.this, SDKWrapper.P1,
+                    "assistant", "hidepic_cnts");
+        }
+        
+        mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTtileBar.setToolbarTitle(R.string.app_image_hide);
+        mTtileBar.setOptionMenuVisible(false);
         mGridView = (GridView) findViewById(R.id.Image_hide_folder);
         mGridView.setAdapter(mHideAlbumAdapt);
-        mAddButton = (Button) findViewById(R.id.add_hide_image);
-        mAddButton.setOnClickListener(this);
+        mRvAdd = (RippleView) findViewById(R.id.rv_add);
+        mAddButton = (TextView) findViewById(R.id.add_hide_image);
+        ViewParent parent = mAddButton.getParent();
+        mRvAdd.setOnClickListener(this);
+        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+
+            @Override
+            public void onRippleComplete(RippleView rippleView) {
+                Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
+                startActivityForResult(intent, REQUEST_CODE_OPTION);
+            }
+        });
+        
+        
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading_pic);
     }
 
     private void initImageLoder() {
@@ -142,11 +168,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
     @Override
     public void onClick(View view) {
-        Intent intent;
+//        Intent intent;
         switch (view.getId()) {
-            case R.id.add_hide_image:
-                intent = new Intent(this, ImageGalleryActivity.class);
-                startActivityForResult(intent, REQUEST_CODE_OPTION);
+            case R.id.rv_add:
+//                intent = new Intent(this, ImageGalleryActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
             // case R.id.tv_option_image:
             // intent = new Intent(this, LockOptionActivity.class);
@@ -163,49 +189,49 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     /*
      * get image folder list
      */
-    private List<PhotoAibum> getHidePhotoAlbum(Context context) {
-        List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
-        Uri uri = Files.getContentUri("external");
-        String selection = MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaColumns.DATA
-                + " LIKE '%.leotmi'";
-
-        Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
-                MediaColumns.DATE_ADDED + " desc");
-        if (cursor != null) {
-            try {
-                Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
-                PhotoAibum pa = null;
-                while (cursor.moveToNext()) {
-                    String path = cursor.getString(1);
-                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-                    if (!countMap.containsKey(dirPath)) {
-                        pa = new PhotoAibum();
-                        pa.setName(dirName);
-                        pa.setCount("1");
-                        pa.setDirPath(dirPath);
-                        pa.getBitList().add(new PhotoItem(path));
-                        countMap.put(dirPath, pa);
-                    } else {
-                        pa = countMap.get(dirPath);
-                        pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-                        pa.getBitList().add(new PhotoItem(path));
-                    }
-                }
-                Iterable<String> it = countMap.keySet();
-                for (String key : it) {
-                    aibumList.add(countMap.get(key));
-                }
-                Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
-            } catch (Exception e) {
-
-            } finally {
-                cursor.close();
-            }
-        }
-
-        return aibumList;
-    }
+//    private List<PhotoAibum> getHidePhotoAlbum(Context context) {
+//        List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
+//        Uri uri = Files.getContentUri("external");
+//        String selection = MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaColumns.DATA
+//                + " LIKE '%.leotmi'";
+//
+//        Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
+//                MediaColumns.DATE_ADDED + " desc");
+//        if (cursor != null) {
+//            try {
+//                Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
+//                PhotoAibum pa = null;
+//                while (cursor.moveToNext()) {
+//                    String path = cursor.getString(1);
+//                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
+//                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
+//                    if (!countMap.containsKey(dirPath)) {
+//                        pa = new PhotoAibum();
+//                        pa.setName(dirName);
+//                        pa.setCount("1");
+//                        pa.setDirPath(dirPath);
+//                        pa.getBitList().add(new PhotoItem(path));
+//                        countMap.put(dirPath, pa);
+//                    } else {
+//                        pa = countMap.get(dirPath);
+//                        pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
+//                        pa.getBitList().add(new PhotoItem(path));
+//                    }
+//                }
+//                Iterable<String> it = countMap.keySet();
+//                for (String key : it) {
+//                    aibumList.add(countMap.get(key));
+//                }
+//                Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
+//            } catch (Exception e) {
+//
+//            } finally {
+//                cursor.close();
+//            }
+//        }
+//
+//        return aibumList;
+//    }
 
     class HideAlbumAdapt extends BaseAdapter {
         Context context;
@@ -282,7 +308,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
         @Override
         protected Integer doInBackground(Void... params) {
-            mAlbumList = getHidePhotoAlbum(context);
+            mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
+                    getHidePicAlbum("");
+//            mAlbumList = getHidePhotoAlbum(context);
             return 0;
         }
 
@@ -291,9 +319,11 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
             if (mAlbumList != null) {
                 if (mAlbumList.size() > 0) {
                     mNoHidePictureHint.setVisibility(View.GONE);
+                    loadingBar.setVisibility(View.GONE);
                     mGridView.setVisibility(View.VISIBLE);
                 } else {
                     mNoHidePictureHint.setVisibility(View.VISIBLE);
+                    loadingBar.setVisibility(View.GONE);
                     mGridView.setVisibility(View.GONE);
                 }
                 mHideAlbumAdapt.setDataList(mAlbumList);
@@ -303,7 +333,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
                     @Override
                     public void onItemClick(AdapterView<?> arg0, View arg1,
-                            int position, long arg3) {
+                                            int position, long arg3) {
                         Intent intent = new Intent(ImageHideMainActivity.this,
                                 ImageGridActivity.class);
                         Bundle bundle = new Bundle();

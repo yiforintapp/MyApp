@@ -3,14 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
+
     <RelativeLayout
         android:id="@+id/iv_app_icon_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="@dimen/ges_icon_m_bottom"
         android:layout_marginTop="@dimen/ges_icon_m_top" >
 
+        <!-- android:layout_marginBottom="@dimen/ges_icon_m_bottom" -->
         <!-- android:layout_above="@+id/tv_gesture_tip" -->
 
         <ImageView
@@ -51,21 +52,20 @@
         android:gravity="center"
         android:text="@string/please_input_gesture"
         android:textColor="#aaffffff"
-        android:textSize="18sp" />
+        android:textSize="16dp"
+        android:visibility="gone" />
 
     <!-- android:layout_alignParentBottom="true" -->
 
     <com.leo.appmaster.applocker.gesture.LockPatternView
         android:id="@+id/gesture_lockview"
-        android:layout_width="match_parent"
+        android:layout_width="@dimen/lockPatternView_height"
         android:layout_height="@dimen/lockPatternView_height"
         android:layout_below="@id/tv_gesture_tip"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="@dimen/fragment_lock_gesture_gesture_lockview_marginbottom"
-        android:layout_marginTop="@dimen/ges_Pattern_m_top"
-        android:padding="@dimen/ges_icon_padding"
-        android:paddingLeft="15dp"
-        android:paddingRight="15dp" />
+        android:layout_marginTop="@dimen/ges_Pattern_m_top" />
+    <!-- android:layout_marginBottom="@dimen/fragment_lock_gesture_gesture_lockview_marginbottom" -->
+
 
     <!-- 点击会展开半屏广告的banner -->
 
@@ -93,7 +93,7 @@
             android:layout_marginTop="6dp"
             android:gravity="center_vertical"
             android:textColor="#333333"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tv_appdesc2"
@@ -107,7 +107,7 @@
             android:gravity="center_vertical"
             android:maxLines="2"
             android:textColor="#333333"
-            android:textSize="10sp" />
+            android:textSize="10dp" />
 
         <ImageView
             android:id="@+id/iv_adopen"
@@ -118,196 +118,15 @@
             android:layout_marginRight="10dp"
             android:src="@drawable/bt_ad_halfscreen_open" />
     </RelativeLayout>
+    
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="1px"
+        android:layout_height="1px" />
 
-    <!-- 普通banner广告 -->
-
-    <RelativeLayout
-        android:id="@+id/rl_nomalBannerAD"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/white"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/iv_adicon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="58dp"
-            android:layout_marginRight="120dp"
-            android:layout_marginTop="3dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/iv_adsign"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginLeft="2dp"
-                android:src="@drawable/ad_sign" />
-
-            <TextView
-                android:id="@+id/tv_appname"
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_appdesc"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="58dp"
-            android:layout_marginRight="120dp"
-            android:ellipsize="marquee"
-            android:gravity="top"
-            android:maxLines="2"
-            android:textColor="#333333"
-            android:textSize="10sp" />
-
-        <Button
-            android:id="@+id/iv_ad_app_download"
-            android:layout_width="90dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="23dp"
-            android:background="@drawable/select_bt_halfscreen_install"
-            android:clickable="false"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
-
-        <ImageView
-            android:id="@+id/iv_adclose"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="4dp"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/ad_close_small" />
-    </RelativeLayout>
-    <!-- AM-2524 	锁屏界面下方Banner出现动画方案 -->
-
-    <RelativeLayout
-        android:id="@+id/rl_superman_bannerAD"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/superman_banner_height"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-10dp"
-        android:background="@drawable/ad_banner_bg"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/iv_superman_adicon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="58dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="11dp"
-            android:layout_toLeftOf="@+id/iv_superman_ad_app_download"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/iv_superman_adsign"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginLeft="2dp"
-                android:src="@drawable/ad_sign" />
-
-            <TextView
-                android:id="@+id/tv_superman_appname"
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_superman_ppdesc"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="58dp"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/iv_superman_ad_app_download"
-            android:ellipsize="marquee"
-            android:gravity="top"
-            android:maxLines="2"
-            android:textColor="#333333"
-            android:textSize="10sp" />
-
-        <Button
-            android:id="@+id/iv_superman_ad_app_download"
-            android:layout_width="90dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/iv_gesture_superman_adclose_RL"
-            android:background="@drawable/select_bt_halfscreen_install"
-            android:clickable="false"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
-
-        <RelativeLayout
-            android:id="@+id/iv_gesture_superman_adclose_RL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingBottom="12dp"
-            android:paddingLeft="7dp"
-            android:paddingRight="18dp"
-            android:paddingTop="12dp" >
-
-            <ImageView
-                android:id="@+id/iv_superman_adclose"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/ad_close_small" />
-        </RelativeLayout>
-    </RelativeLayout>
-    <!-- 超人动画布局 -->
-
-    <RelativeLayout
-        android:id="@+id/superman_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/banner_ad_anim_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="36dp"
-            android:src="@drawable/lock_banner_ad_anim" />
-    </RelativeLayout>
-
+    <SurfaceView 
+        android:layout_width="1px"
+         android:layout_height="1px" 
+        />
+    
 </RelativeLayout>

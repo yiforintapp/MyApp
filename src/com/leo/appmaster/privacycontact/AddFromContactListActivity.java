@@ -36,11 +36,10 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactSideBar.OnTouchingLetterChangedListener;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
@@ -51,7 +50,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
     private List<ContactBean> mPhoneContact;
     private ContactSideBar mContactSideBar;
     // private PinyinComparator mPinyinComparator;
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
     private List<ContactBean> mAddPrivacyContact;
     private Handler mHandler;
     private LEORoundProgressDialog mProgressDialog;
@@ -70,7 +69,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_contact);
         mDefaultText = (LinearLayout) findViewById(R.id.add_contact_default_tv);
-        mAutoDddBtn = (Button)mDefaultText.findViewById(R.id.moto_add_btn);
+        mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
         mAutoDddBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -83,14 +82,11 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 startActivity(intent);
             }
         });
-        mTtileBar = (CommonTitleBar) findViewById(R.id.add_privacy_contact_title_bar);
-        mTtileBar.openBackView();
-        mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        mTtileBar.setOptionImage(R.drawable.mode_done);
-        mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
-                R.drawable.privacy_title_bt_selecter);
-        mTtileBar.setTitle(getResources()
-                .getString(R.string.privacy_contact_popumenus_from_contact));
+        mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
+        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setOptionMenuVisible(true);
+        mTtileBar.setOptionImageResource(R.drawable.mode_done);
+        mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_from_contact);
         mPhoneContact = new ArrayList<ContactBean>();
         mAddPrivacyContact = new ArrayList<ContactBean>();
         mListContact = (ListView) findViewById(R.id.add_contactLV);
@@ -126,7 +122,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 super.handleMessage(msg);
             }
         };
-        mTtileBar.setOptionListener(new OnClickListener() {
+        mTtileBar.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 if (mPhoneContact != null && mPhoneContact.size() > 0) {
@@ -324,12 +320,13 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             .getInstance(getApplicationContext());
                     for (ContactBean contact : mAddPrivacyContact) {
                         String name = contact.getContactName();
-                        String number = PrivacyContactUtils.deleteOtherNumber(contact
-                                .getContactNumber());
+                        String number = contact.getContactNumber();
                         Bitmap contactIcon = contact.getContactIcon();
                         // 隐私联系人去重
                         String tempNumber =
                                 PrivacyContactUtils.formatePhoneNumber(number);
+//                        String tempNumber =
+//                                PrivacyContactUtils.formatePhNumberFor4(number);
                         boolean flagContact = false;
                         ArrayList<ContactBean> contacts = pcm.getPrivateContacts();
                         if (contacts != null && contacts.size() != 0
@@ -351,36 +348,35 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             contactValues.put(Constants.COLUMN_ICON, icon);
                             cr.insert(Constants.PRIVACY_CONTACT_URI, contactValues);
                             pcm.addContact(new ContactBean(0, name, number, null, contactIcon, null,
-                                    false, mAnswerType, null));
+                                    false, mAnswerType, null, 0, 0, 0));
                             added = true;
                         }
                         if (mAddMessages == null) {
                             mAddMessages = PrivacyContactUtils.getSysMessage(
-                                    AddFromContactListActivity.this, cr,
-                                    "address LIKE ? ", new String[] {
-                                        "%" + tempNumber
-                                    }, true);
+                                    AddFromContactListActivity.this,
+                                    "address LIKE ? ", new String[]{
+                                            "%" + tempNumber
+                                    }, true, false);
                         } else {
                             List<MessageBean> addMessages = PrivacyContactUtils.getSysMessage(
-                                    AddFromContactListActivity.this, cr,
-                                    "address LIKE ?", new String[] {
-                                        "%" + tempNumber
-                                    }, true);
+                                    AddFromContactListActivity.this,
+                                    "address LIKE ?", new String[]{
+                                            "%" + tempNumber
+                                    }, true, false);
                             mAddMessages.addAll(addMessages);
                         }
                         if (mAddCallLogs == null) {
                             mAddCallLogs = PrivacyContactUtils.getSysCallLog(
-                                    AddFromContactListActivity.this, cr,
-                                    "number LIKE ?", new String[] {
-                                        "%" + tempNumber
-                                    });
+                                    AddFromContactListActivity.this,
+                                    "number LIKE ?", new String[]{
+                                            "%" + tempNumber
+                                    }, true, false);
                         } else {
                             List<ContactCallLog> addCalllog = PrivacyContactUtils.getSysCallLog(
                                     AddFromContactListActivity.this,
-                                    cr,
-                                    "number LIKE ?", new String[] {
-                                        "%" + tempNumber
-                                    });
+                                    "number LIKE ?", new String[]{
+                                            "%" + tempNumber
+                                    }, true, false);
                             mAddCallLogs.addAll(addCalllog);
                         }
                         if (!isOtherLogs) {
@@ -405,7 +401,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                         Message messge = new Message();
                         count = count + 1;
                         messge.what = count;
-                        if (messge != null && mHandler!=null) {
+                        if (messge != null && mHandler != null) {
                             mHandler.sendMessage(messge);
                         }
                         flagContact = false;
@@ -415,8 +411,8 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                                     .getDefaultBus()
                                     .post(new PrivacyEditFloatEvent(
                                             PrivacyContactUtils.PRIVACY_ADD_CONTACT_UPDATE));
-                            PrivacyHelper.getInstance(getApplicationContext()).computePrivacyLevel(
-                                    PrivacyHelper.VARABLE_PRIVACY_CONTACT);
+//                            PrivacyHelper.getInstance(getApplicationContext()).computePrivacyLevel(
+//                                    PrivacyHelper.VARABLE_PRIVACY_CONTACT);
                             SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, "contactsadd",
                                     "contactsadd");
                         }
@@ -451,10 +447,10 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             values.put(Constants.COLUMN_MESSAGE_TYPE, type);
                             Uri messageFlag = cr.insert(Constants.PRIVACY_MESSAGE_URI, values);
                             PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
-                                    new String[] {
-                                        number
+                                    new String[]{
+                                            number
                                     }, AddFromContactListActivity.this);
-                            if (messageFlag != null && mHandler!=null) {
+                            if (messageFlag != null && mHandler != null) {
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;
@@ -486,10 +482,11 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                             values.put(Constants.COLUMN_CALL_LOG_DATE, date);
                             values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
                             values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                            values.put(Constants.COLUMN_CALL_LOG_DURATION, calllog.getCallLogDuraction());
                             Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
                             PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
                                     AddFromContactListActivity.this);
-                            if (callLogFlag != null && mHandler!=null) {
+                            if (callLogFlag != null && mHandler != null) {
                                 Message messge = new Message();
                                 count = count + 1;
                                 messge.what = count;
@@ -512,9 +509,9 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                     isOtherLogs = false;
                 }
             } catch (Exception e) {
-                
+
             }
-          
+
             return isOtherLogs;
         }
 
@@ -538,7 +535,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 }
                 super.onPostExecute(result);
             } catch (Exception e) {
-                
+
             }
         }
     }
@@ -556,9 +553,10 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         mProgressDialog.setCustomProgressTextVisiable(true);
         mProgressDialog.setButtonVisiable(false);
         mProgressDialog.setCanceledOnTouchOutside(false);
-        try {          
+        try {
             mProgressDialog.show();
-        } catch (Exception e) {          
+        } catch (Exception e) {
+
         }
     }
 
@@ -609,9 +607,10 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
         mAddContactDialog.setCanceledOnTouchOutside(false);
         mAddContactDialog.setTitle(title);
         mAddContactDialog.setContent(content);
-        try {          
+        try {
             mAddContactDialog.show();
-        } catch (Exception e) {          
+        } catch (Exception e) {
+
         }
     }
 
@@ -629,14 +628,13 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 boolean flag = arg0[0];
                 if (flag) {
                     mPhoneContact =
-                            PrivacyContactUtils.getSysContact(AddFromContactListActivity.this,
-                                    getContentResolver(), null, null);
+                            PrivacyContactUtils.getSysContact(AddFromContactListActivity.this, null, null,false);
                     // mPhoneContact =
                     // PrivacyContactManager.getInstance(AddFromContactListActivity.this)
                     // .getSysContacts();
                 }
             } catch (Exception e) {
-                
+
             }
             return null;
         }
@@ -655,17 +653,20 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
                 mContactAdapter.notifyDataSetChanged();
                 super.onPostExecute(result);
             } catch (Exception e) {
-                
+
             }
         }
     }
 
     public static void notificationUpdatePrivacyContactList() {
         // 通知更新隐私联系人列表
-        LeoEventBus
-                .getDefaultBus()
-                .post(new PrivacyEditFloatEvent(
-                        PrivacyContactUtils.CONTACT_EDIT_MODEL_DELETE_CONTACT_UPDATE));
+        try {
+            LeoEventBus
+                    .getDefaultBus()
+                    .post(new PrivacyEditFloatEvent(
+                            PrivacyContactUtils.CONTACT_EDIT_MODEL_DELETE_CONTACT_UPDATE));
+        } catch (Exception e) {
+        }
     }
 
 }

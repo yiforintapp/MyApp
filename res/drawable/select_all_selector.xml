@@ -3,7 +3,7 @@
 
     <item android:drawable="@drawable/unselect_icon_all" android:state_focused="true"></item>
     <item android:drawable="@drawable/select_icon_all" android:state_pressed="true"></item>
-    <item android:drawable="@drawable/select_icon_all" android:state_enabled="false"></item>
+    <item android:drawable="@drawable/unselect_icon_all_dis" android:state_enabled="false"></item>
     <item android:drawable="@drawable/unselect_icon_all" android:state_enabled="true"></item>
     <item android:drawable="@drawable/select_icon_all"></item>
 

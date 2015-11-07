@@ -5,10 +5,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
@@ -20,6 +16,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,10 +43,11 @@ import android.widget.Toast;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.browser.aidl.mInterface;
-import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
@@ -60,6 +58,10 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ObjectAnimator;
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
@@ -68,7 +70,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private static final int FROM_VIDEOHIDEGALLER_ACTIVITY = 2;
     private GridView mHideVideo;
     private List<VideoItemBean> mVideoItems;
-    private CommonTitleBar mCommonTtileBar;
+    private CommonToolbar mCommonTtileBar;
     private int mActivityMode;
     private boolean mIsEditmode = false;
     private LinearLayout mBottomBar;
@@ -104,19 +106,46 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mSelectAll = (Button) findViewById(R.id.select_all);
         mBottomBar = (LinearLayout) findViewById(R.id.bottom_bar);
         mHideButton = (Button) findViewById(R.id.hide_image);
-        mCommonTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
+        mCommonTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mCommonTtileBar.setOptionMenuVisible(false);
         mHideVideo = (GridView) findViewById(R.id.Image_hide_folder);
-        mCommonTtileBar.openBackView();
+//        mCommonTtileBar.openBackView();
         Intent intent = getIntent();
         mActivityMode = intent.getIntExtra("mode", Constants.SELECT_HIDE_MODE);
         mFromWhere = intent.getIntExtra("fromwhere", 0);
         VideoBean video = (VideoBean) intent.getExtras().getSerializable("data");
-        mVideoItems = video.getBitList();
+
+        mVideoItems = ((PrivacyDataManager) MgrContext.
+                getManager(MgrContext.MGR_PRIVACY_DATA)).getHideVidFile(video);
+//        mVideoItems = video.getBitList();
+
         getVideoPath();
         if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-            mCommonTtileBar.setOptionImageVisibility(View.VISIBLE);
-            mCommonTtileBar.setOptionListener(this);
-            mCommonTtileBar.setOptionImage(R.drawable.edit_mode_name);
+            mCommonTtileBar.setOptionMenuVisible(true);
+            mCommonTtileBar.setOptionClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
+                        mIsEditmode = !mIsEditmode;
+                        if (!mIsEditmode) {
+                            cancelEditMode();
+                        } else {
+                            mBottomBar.setVisibility(View.VISIBLE);
+                            mHideButton.setText(R.string.app_cancel_hide_image);
+                            Drawable topDrawable = getResources().getDrawable(
+                                    R.drawable.unhide_picture_selector);
+                            topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(),
+                                    topDrawable.getMinimumHeight());
+                            mHideButton.setCompoundDrawables(null, topDrawable, null, null);
+
+
+                            mCommonTtileBar.setOptionImageResource(R.drawable.mode_done);
+                        }
+                        mHideVideoAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+            mCommonTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
             mBottomBar.setVisibility(View.GONE);
         } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
 
@@ -125,7 +154,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             mHideVideoAdapter = new HideVideoAdapter(this, mVideoItems);
             mHideVideo.setAdapter(mHideVideoAdapter);
         }
-        mCommonTtileBar.setTitle(video.getName());
+        mCommonTtileBar.setToolbarTitle(video.getName());
     }
 
     private void initImageLoder() {
@@ -275,7 +304,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 convertView = getLayoutInflater().inflate(
                         R.layout.activity_item_video_gridview, parent, false);
                 viewHolder = new ViewHolder();
-                viewHolder.selectImage = (ImageView) convertView.findViewById(R.id.photo_select);
+                viewHolder.selectImage = (ImageView) convertView.findViewById(R.id.video_select);
                 mSelectImage = viewHolder.selectImage;
                 viewHolder.imageView = (ImageView) convertView.findViewById(R.id.image);
                 viewHolder.text = (TextView) convertView.findViewById(R.id.txt_item_picture);
@@ -291,9 +320,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 } else {
                     viewHolder.selectImage.setVisibility(View.VISIBLE);
                     if (mClickList.contains(mVideoItems.get(position))) {
-                        viewHolder.selectImage.setImageResource(R.drawable.pic_choose_active);
+                        viewHolder.selectImage.setImageResource(R.drawable.select2_icon);
                     } else {
-                        viewHolder.selectImage.setImageResource(R.drawable.pic_choose_normal);
+                        viewHolder.selectImage.setImageResource(R.drawable.ic_check_normal_n);
                     }
                 }
                 String name = FileOperationUtil.getNoExtNameFromHideFilepath(path);
@@ -372,13 +401,13 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             intent.putExtra("position", position);
             startActivityForResult(intent, REQUEST_CODE);
         } else {
-            ImageView cView = (ImageView) view.findViewById(R.id.photo_select);
+            ImageView cView = (ImageView) view.findViewById(R.id.video_select);
             if (!mClickList.contains(mVideoItems.get(position))) {
-                cView.setImageResource(R.drawable.pic_choose_active);
+                cView.setImageResource(R.drawable.select2_icon);
                 mClickList.add(mVideoItems.get(position));
                 mClickPosList.add((Integer) position);
             } else {
-                cView.setImageResource(R.drawable.pic_choose_normal);
+                cView.setImageResource(R.drawable.ic_check_normal_n);
                 mClickList.remove(mVideoItems.get(position));
                 mClickPosList.remove((Integer) position);
             }
@@ -445,20 +474,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                     showAlarmDialog();
                 }
                 break;
-            case R.id.tv_option_image:
-                if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-                    mIsEditmode = !mIsEditmode;
-                    if (!mIsEditmode) {
-                        cancelEditMode();
-                    } else {
-                        mBottomBar.setVisibility(View.VISIBLE);
-                        mHideButton.setText(getString(R.string.app_cancel_hide_image));
-                        mCommonTtileBar.setOptionImage(R.drawable.mode_done);
-                    }
-                    mHideVideoAdapter.notifyDataSetChanged();
-                }
 
-                break;
             default:
                 break;
         }
@@ -469,7 +485,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mClickList.clear();
         mHideVideoAdapter.notifyDataSetChanged();
         mBottomBar.setVisibility(View.GONE);
-        mCommonTtileBar.setOptionImage(R.drawable.edit_mode_name);
+        mCommonTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
         mSelectImage.setVisibility(View.GONE);
         updateRightButton();
     }
@@ -502,7 +518,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             @Override
             public void onClick(int which) {
                 if (which == 1) {
-                    int size = mClickList.size() ;
+                    int size = mClickList.size();
                     if (size > 0) {
                         VideoItemBean item = mClickList.get(0);
                         String mPath = item.getPath();
@@ -531,6 +547,9 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
                                     "hide_vid_operation",
                                     "vid_add_pics_" + size);
+                            SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                                    "hide_vid_operation",
+                                    "vid_add_cnts");
                         } else if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
                                     getString(R.string.app_cancel_hide_image) + "...",
@@ -538,10 +557,10 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                     true);
                             BackgoundTask task = new BackgoundTask(VideoGriActivity.this);
                             task.execute(false);
+                            mHideVideoAdapter.notifyDataSetChanged();
                             SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
                                     "hide_vid_operation",
                                     "vid_ccl_pics_" + size);
-                            mHideVideoAdapter.notifyDataSetChanged();
                         }
                     }
                 }
@@ -612,7 +631,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
 
     /**
      * hideVideo and unVideo
-     * 
+     *
      * @author run
      */
     private class BackgoundTask extends AsyncTask<Boolean, Integer, Boolean> {
@@ -640,7 +659,8 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 mTwoName = FileOperationUtil.getDirNameFromFilepath(mPath);
                 mOneName = FileOperationUtil
                         .getSecondDirNameFromFilepath(mPath);
-
+                ((PrivacyDataManager) MgrContext.getManager
+                        (MgrContext.MGR_PRIVACY_DATA)).unregisterMediaListener();
                 if (isHide) {
                     for (VideoItemBean item : list) {
                         if (!mIsBackgoundRunning)
@@ -666,8 +686,12 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                 newFileName =
                                         FileOperationUtil.getNameFromFilepath(item.getPath());
                                 newFileName = newFileName + ".leotmv";
-                                if (FileOperationUtil.renameFile(item.getPath(),
-                                        newFileName)) {
+
+                                boolean isHideSuccees = ((PrivacyDataManager) MgrContext.
+                                        getManager(MgrContext.MGR_PRIVACY_DATA)).
+                                        onHideVid(item.getPath(), "");
+
+                                if (isHideSuccees) {
                                     FileOperationUtil.saveFileMediaEntry(FileOperationUtil
                                             .makePath(
                                                     FileOperationUtil.getDirPathFromFilepath(item
@@ -680,6 +704,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                     SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
                                             "hidevd_cb",
                                             "hide_done");
+
                                 } else {
                                     mUnhidePath.remove(item.getPath());
                                     isSuccess = false;
@@ -690,19 +715,34 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             newFileName =
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
                             try {
-
-                                // if (VideoHideMainActivity.isLetPgFail) {
-                                // isSuccess = false;
-                                // } else {
                                 newFileName = newFileName + ".leotmv";
-                                if (FileOperationUtil.renameFile(item.getPath(),
-                                        newFileName)) {
+
+                                boolean isHideSuccees = ((PrivacyDataManager) MgrContext.
+                                        getManager(MgrContext.MGR_PRIVACY_DATA)).
+                                        onHideVid(item.getPath(), "");
+
+                                if (isHideSuccees) {
+                                    LeoLog.d("testVedio", "newFileName: " + newFileName);
+                                    LeoLog.d("testVedio", "old path: " + item.getPath());
+                                    LeoLog.d("testVedio", "new path2: " + FileOperationUtil
+                                            .makePath(
+                                                    FileOperationUtil
+                                                            .getDirPathFromFilepath(item
+                                                                    .getPath()),
+                                                    newFileName));
                                     FileOperationUtil.saveFileMediaEntry(FileOperationUtil
                                             .makePath(
                                                     FileOperationUtil
                                                             .getDirPathFromFilepath(item
                                                                     .getPath()),
                                                     newFileName), context);
+//                                    FileOperationUtil.saveVideoMediaEntry(FileOperationUtil
+//                                            .makePath(
+//                                                    FileOperationUtil
+//                                                            .getDirPathFromFilepath(item
+//                                                                    .getPath()), newFileName), context);
+
+//                                    FileOperationUtil.updateVedioMediaEntry(item.getPath(), true, "text/plain", context);
                                     FileOperationUtil.deleteVideoMediaEntry(item.getPath(),
                                             context);
 
@@ -710,6 +750,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                     SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
                                             "hidevd_cb",
                                             "hide_done");
+
                                 } else {
                                     mUnhidePath.remove(item.getPath());
                                     isSuccess = false;
@@ -748,14 +789,23 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                             FileOperationUtil.getNameFromFilepath(item.getPath());
                                     newFileName = newFileName.substring(1,
                                             newFileName.indexOf(".leotmv"));
-                                    if (FileOperationUtil.renameFile(item.getPath(),
-                                            newFileName)) {
-                                        FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+
+                                    boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
+                                            getManager(MgrContext.MGR_PRIVACY_DATA)).
+                                            cancelHideVid(item.getPath());
+
+                                    if (isUnHideSuccees) {
+                                        FileOperationUtil.saveVideoMediaEntry(FileOperationUtil
                                                 .makePath(
                                                         FileOperationUtil
                                                                 .getDirPathFromFilepath(item
-                                                                        .getPath()),
-                                                        newFileName), context);
+                                                                        .getPath()), newFileName), context);
+//                                        FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+//                                                .makePath(
+//                                                        FileOperationUtil
+//                                                                .getDirPathFromFilepath(item
+//                                                                        .getPath()),
+//                                                        newFileName), context);
                                         FileOperationUtil.deleteFileMediaEntry(item.getPath(),
                                                 context);
                                         mVideoItems.remove(item);
@@ -772,16 +822,35 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                 // if (VideoHideMainActivity.isLetPgFail) {
                                 // isSuccess = false;
                                 // } else {
-                                newFileName = newFileName.substring(1,
+                                LeoLog.d("testVedio", "before newFileName: " + newFileName);
+//                                newFileName = newFileName.substring(1,
+//                                        newFileName.indexOf(".leotmv"));
+                                newFileName = newFileName.substring(0,
                                         newFileName.indexOf(".leotmv"));
-                                if (FileOperationUtil.renameFile(item.getPath(),
-                                        newFileName)) {
-                                    FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+                                LeoLog.d("testVedio", "after newFileName: " + newFileName);
+                                boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
+                                        getManager(MgrContext.MGR_PRIVACY_DATA)).
+                                        cancelHideVid(item.getPath());
+
+                                if (isUnHideSuccees) {
+
+//                                    FileOperationUtil.saveImageMediaEntry(FileOperationUtil
+//                                            .makePath(
+//                                                    FileOperationUtil
+//                                                            .getDirPathFromFilepath(item
+//                                                                    .getPath()),
+//                                                    newFileName), context);
+                                    FileOperationUtil.saveVideoMediaEntry(FileOperationUtil
                                             .makePath(
                                                     FileOperationUtil
                                                             .getDirPathFromFilepath(item
-                                                                    .getPath()),
-                                                    newFileName), context);
+                                                                    .getPath()), newFileName), context);
+//                                    FileOperationUtil.updateVedioMediaEntry(FileOperationUtil
+//                                            .makePath(
+//                                                    FileOperationUtil
+//                                                            .getDirPathFromFilepath(item
+//                                                                    .getPath()),
+//                                                    newFileName), false, "video/mp4", context);
                                     FileOperationUtil.deleteFileMediaEntry(item.getPath(),
                                             context);
                                     mVideoItems.remove(item);
@@ -795,9 +864,17 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                         }
                     }
                 }
+                //refresh by itself
+                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                pdm.notifySecurityChange();
+                ((PrivacyDataManager) MgrContext.getManager
+                        (MgrContext.MGR_PRIVACY_DATA)).registerMediaListener();
+                ((PrivacyDataManager) MgrContext.getManager
+                        (MgrContext.MGR_PRIVACY_DATA)).notifySecurityChange();
             }
             return isSuccess;
         }
+
 
         @Override
         protected void onPostExecute(final Boolean isSuccess) {
@@ -863,13 +940,13 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
             }
             isServiceDo = false;
             // video change, recompute privacy level
-            PrivacyHelper.getInstance(VideoGriActivity.this).computePrivacyLevel(
-                    PrivacyHelper.VARABLE_HIDE_VIDEO);
+//            PrivacyHelper.getInstance(VideoGriActivity.this).computePrivacyLevel(
+//                    PrivacyHelper.VARABLE_HIDE_VIDEO);
         }
     }
 
     private void showProgressDialog(String title, String message, boolean indeterminate,
-            boolean cancelable) {
+                                    boolean cancelable) {
         if (mProgressDialog == null) {
             mProgressDialog = new LEOCircleProgressDialog(this);
             mProgressDialog.setOnCancelListener(new OnCancelListener() {
@@ -877,6 +954,12 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 public void onCancel(DialogInterface dialog) {
                     mIsBackgoundRunning = false;
                     mSelectAll.setText(R.string.app_select_all);
+                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
+                    SDKWrapper.addEvent(VideoGriActivity.this, SDKWrapper.P1,
+                            "hide_vid_operation",
+                            "vid_ccl_cnts");
                 }
             });
         }

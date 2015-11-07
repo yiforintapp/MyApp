@@ -22,8 +22,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -34,14 +32,12 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.appmanage.business.BusinessJsonParser;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.http.HttpRequestAgent;
-import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
-import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.HttpRequestAgent;
+import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BusinessItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -267,7 +263,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
                     BusinessItemInfo bif = mRecommendDatas.get(index);
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "hot_cli", "app_"
                             + bif.packageName);
-                    LockManager.getInstatnce().timeFilterSelf();
+                    mLockManager.filterSelfOneMinites();
                     if (PhoneInfoStateManager.isGooglePlayPkg()) {
                         if (AppUtil.appInstalled(mActivity,
                                 Constants.GP_PACKAGE)) {
@@ -541,7 +537,7 @@ public class ApplicaionAppFragment extends BaseFragment implements OnClickListen
             
             int msgWhat = 0;
             if (loadType == LOAD_INIT) {
-                LeoLog.d("loadBusinessRecomApp", "onErrorResponse = " + error.getMessage());
+                LeoLog.e("loadBusinessRecomApp", "onErrorResponse = " + error.getMessage());
                 outer.mInitLoading = false;
                 
                 msgWhat = MSG_LOAD_INIT_FAILED;

@@ -19,6 +19,7 @@ import android.support.v4.view.ViewPager;
 import android.text.TextPaint;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +29,6 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
 
 public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator {
     private static final CharSequence EMPTY_TITLE = "";
@@ -376,8 +376,8 @@ public class LeoPagerTab extends HorizontalScrollView implements PagerIndicator 
                 Bitmap redTip = BitmapFactory.decodeResource(getResources(), R.drawable.red_dot);
                 float scaleX = (float) tabTextwdth / redTip.getWidth();
                 float scaleY = (float) tabTexteight / redTip.getHeight();
-                LeoLog.i("LeoPagerTab", redTip.getWidth()+" "+scaleX);
-                LeoLog.i("LeoPagerTab",redTip.getHeight()+ " "+scaleY);
+                Log.i("LeoPagerTab", redTip.getWidth()+" "+scaleX);
+                Log.i("LeoPagerTab",redTip.getHeight()+ " "+scaleY);
                 Paint paint = new Paint();
                 paint.setAntiAlias(true);
                 paint.setStyle(Paint.Style.FILL);

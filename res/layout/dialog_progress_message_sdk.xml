@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="320dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/bg"
+    android:background="@drawable/common_dialog_bg"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -23,7 +24,7 @@
             android:paddingBottom="22dp"
             android:paddingLeft="12dp"
             android:paddingRight="12dp" >
-            
+
             <TextView
                 android:id="@+id/dlg_title"
                 style="@style/dlg_title_txt"
@@ -35,10 +36,10 @@
 
             <LinearLayout
                 android:id="@+id/icon_and_title"
-                android:layout_below="@id/dlg_title"
-                android:paddingTop="22dp"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content"
+                android:layout_below="@id/dlg_title"
+                android:paddingTop="22dp" >
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -96,19 +97,36 @@
         </RelativeLayout>
     </LinearLayout>
 
-      <LinearLayout
+    <LinearLayout
         android:id="@+id/dlg_bottom_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:layout_marginBottom="12dp"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="horizontal" >
 
-        <TextView
-            android:id="@+id/dlg_bottom_btn"
-            android:layout_width="match_parent"
-            style="@style/dlg_single_button_txt_cancel"
-            android:gravity="center"
-            android:text="@string/cancel" />
+        <com.leo.appmaster.ui.RippleView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_marginLeft="6dp"
+            android:id="@+id/rv_blue"
+            android:layout_marginRight="6dp"
+            app:rv_rippleDuration="@integer/ripple_btn_duration" 
+            android:layout_weight="1"
+            app:rv_alpha="255"
+            app:rv_color="@color/button_blue_ripple" >
+
+            <TextView
+                android:id="@+id/dlg_bottom_btn"
+                style="@style/dlg_right_button_txt"
+                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:text="@string/cancel" />
+        </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 
 </LinearLayout>

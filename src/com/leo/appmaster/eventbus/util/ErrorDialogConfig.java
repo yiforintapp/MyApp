@@ -1,9 +1,9 @@
 package com.leo.appmaster.eventbus.util;
 
-import android.content.res.Resources;
-
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.utils.LeoLog;
+
+import android.content.res.Resources;
+import android.util.Log;
 
 public class ErrorDialogConfig {
     final Resources resources;
@@ -34,7 +34,7 @@ public class ErrorDialogConfig {
         if (resId != null) {
             return resId;
         } else {
-            LeoLog.d(LeoEventBus.TAG, "No specific message ressource ID found for " + throwable);
+            Log.d(LeoEventBus.TAG, "No specific message ressource ID found for " + throwable);
             return defaultErrorMsgId;
         }
     }

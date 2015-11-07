@@ -177,7 +177,10 @@ public class NormalPushActivity extends BaseActivity implements View.OnClickList
             intent.setAction("android.intent.action.VIEW");
             Uri content_url = Uri.parse(GP_WEB_URL);
             intent.setData(content_url);
-            startActivity(intent);
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+            }
         }
         SDKWrapper.addEvent(this, SDKWrapper.P1, "act", "cligp");
         PushUIHelper.getInstance(this).sendACK(mAdID, true, mFromStatusBar, phone);

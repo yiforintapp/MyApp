@@ -16,6 +16,9 @@
 
 package com.leo.appmaster.eventbus;
 
+import android.os.Looper;
+import android.util.Log;
+
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,12 +28,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 
-import android.os.Looper;
-import android.util.Log;
-
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.NoSubscriberEvent;
-import com.leo.appmaster.utils.LeoLog;
 
 /**
  * EventBus is a central publish/subscribe event system for Android. Events are
@@ -266,7 +265,7 @@ public class LeoEventBus {
             }
             typesBySubscriber.remove(subscriber);
         } else {
-            LeoLog.w(TAG,
+            Log.w(TAG,
                     "Subscriber to unregister was not registered before: " + subscriber.getClass());
         }
     }
@@ -414,7 +413,7 @@ public class LeoEventBus {
         }
         if (!subscriptionFound) {
             if (logNoSubscriberMessages) {
-                LeoLog.d(TAG, "No subscribers registered for event " + eventClass);
+                Log.d(TAG, "No subscribers registered for event " + eventClass);
             }
             if (sendNoSubscriberEvent && eventClass != NoSubscriberEvent.class &&
                     eventClass != SubscriberExceptionEvent.class) {
@@ -543,11 +542,11 @@ public class LeoEventBus {
             if (logSubscriberExceptions) {
                 // Don't send another SubscriberExceptionEvent to avoid infinite
                 // event recursion, just log
-                LeoLog.e(TAG,
+                Log.e(TAG,
                         "SubscriberExceptionEvent subscriber " + subscription.subscriber.getClass()
                                 + " threw an exception", cause);
                 SubscriberExceptionEvent exEvent = (SubscriberExceptionEvent) event;
-                LeoLog.e(TAG, "Initial event " + exEvent.causingEvent + " caused exception in "
+                Log.e(TAG, "Initial event " + exEvent.causingEvent + " caused exception in "
                         + exEvent.causingSubscriber, exEvent.throwable);
             }
         } else {
@@ -555,7 +554,7 @@ public class LeoEventBus {
                 throw new EventBusException("Invoking subscriber failed", cause);
             }
             if (logSubscriberExceptions) {
-                LeoLog.e(TAG, "Could not dispatch event: " + event.getClass()
+                Log.e(TAG, "Could not dispatch event: " + event.getClass()
                         + " to subscribing class "
                         + subscription.subscriber.getClass(), cause);
             }

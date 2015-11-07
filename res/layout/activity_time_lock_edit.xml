@@ -1,66 +1,73 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f3f3f3"
-    android:gravity="center" >
+    android:background="@color/white"
+    android:gravity="center">
 
-    <RelativeLayout
+    <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/app_background" >
+        android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/title_bar_option_selector"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingRight="5dp" >
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/layout_title_bar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="56dp"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:background="@color/toolbar_background_color">-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                android:src="@drawable/back_btn_menu" />
+    <!--<LinearLayout-->
+    <!--android:id="@+id/iv_back"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:background="@drawable/title_bar_option_selector"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:paddingRight="5dp">-->
 
-            <TextView
-                android:id="@+id/mode_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lock_mode_location"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
-        </LinearLayout>
+    <!--<ImageView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:padding="16dp"-->
+    <!--android:src="@drawable/ic_toolbar_back" />-->
+    <!--</LinearLayout>-->
 
-        <ImageView
-            android:id="@+id/iv_edit_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/title_bar_option_selector"
-            android:padding="16dp"
-            android:src="@drawable/mode_done" />
-    </RelativeLayout>
+    <!--<TextView-->
+    <!--android:id="@+id/mode_name_tv"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_toRightOf="@id/iv_back"-->
+    <!--android:text="@string/lock_mode_location"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="18dp" />-->
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_edit_finish"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:background="@drawable/title_bar_option_selector"-->
+    <!--android:padding="16dp"-->
+    <!--android:src="@drawable/mode_done" />-->
+    <!--</RelativeLayout>-->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_bar"
         android:layout_margin="16dp"
-        android:paddingBottom="10dp"
         android:background="#ffffff"
-        android:scrollbars="none" >
+        android:paddingBottom="10dp"
+        android:scrollbars="none">
 
         <RelativeLayout
             android:id="@+id/pager_unlock"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/et_name"
@@ -80,7 +87,7 @@
                 android:singleLine="true"
                 android:textColor="#9b9b9b"
                 android:textCursorDrawable="@null"
-                android:textSize="14dp" >
+                android:textSize="14dp">
 
                 <requestFocus />
             </EditText>
@@ -97,7 +104,7 @@
                 android:id="@+id/time_widget"
                 android:layout_width="match_parent"
                 android:layout_height="210dp"
-                android:layout_below="@+id/time_line_top" >
+                android:layout_below="@+id/time_line_top">
 
                 <View
                     android:layout_width="match_parent"
@@ -110,14 +117,14 @@
                     android:layout_height="200dp"
                     android:background="@null"
                     android:gravity="center"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <com.leo.appmaster.applocker.NumberPicker
                         android:id="@+id/np_hour"
                         style="@style/NPWidget.Holo.Light.NumberPicker"
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
-                        android:layout_marginRight="15dp" />
+                        android:layout_marginRight="15dp" /> 
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -126,12 +133,12 @@
                         android:textColor="#4285f4"
                         android:textSize="25dp" />
 
-                    <com.leo.appmaster.applocker.NumberPicker
+                  <com.leo.appmaster.applocker.NumberPicker
                         android:id="@+id/np_minitue"
                         style="@style/NPWidget.Holo.Light.NumberPicker"
                         android:layout_width="80dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="15dp" />
+                        android:layout_marginLeft="15dp" /> 
                 </LinearLayout>
             </RelativeLayout>
 
@@ -145,9 +152,10 @@
             <RelativeLayout
                 android:id="@+id/switch_repeat_layout"
                 android:layout_width="match_parent"
+                android:paddingTop="4dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/time_line_bottom"
-                android:layout_marginTop="20dp" >
+                android:layout_marginTop="20dp">
 
                 <TextView
                     android:id="@+id/textView1"
@@ -163,8 +171,8 @@
                     android:id="@+id/switch_repeat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@+id/textView1"
                     android:layout_alignBottom="@+id/textView1"
+                    
                     android:layout_marginLeft="16dp"
                     android:layout_toRightOf="@+id/textView1"
                     android:background="@drawable/selector_repeat_select" />
@@ -179,8 +187,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_marginTop="20dp"
                     android:orientation="horizontal"
-                    android:visibility="gone" >
-                </com.leo.appmaster.applocker.DayOfWeekSelectedView>
+                    android:visibility="gone"></com.leo.appmaster.applocker.DayOfWeekSelectedView> 
             </RelativeLayout>
 
             <View
@@ -192,6 +199,7 @@
                 android:background="#e3e3e3" />
 
             <TextView
+                android:paddingTop="2dp"
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -213,7 +221,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/textbox_bg_selector"
                 android:gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_mode_name"

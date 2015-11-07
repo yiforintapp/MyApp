@@ -2,28 +2,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/all_backgroud"
-    android:padding="@dimen/new_app_manager_padding" >
+    android:background="@color/white">
 
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/white" >
+        android:background="@color/white">
 
         <ListView
             android:id="@+id/list_restore"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-	        android:overScrollMode="never"
             android:background="@color/white"
-            android:divider="@drawable/app_data_usage_list_line" />
+            android:divider="#00000000"
+            android:listSelector="#00000000"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
 
         <RelativeLayout
             android:id="@+id/list_empty"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:visibility="gone" >
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/just_nothing_show_iv"

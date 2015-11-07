@@ -1,15 +1,12 @@
 
 package com.leo.appmaster.utils;
 
-import java.util.List;
-
 import android.app.KeyguardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -22,6 +19,7 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.model.AppItemInfo;
 
 public class AppUtil {
     public static boolean isSystemApp(ApplicationInfo info) {
@@ -52,20 +50,30 @@ public class AppUtil {
     public static void uninstallApp(Context ctx, String pkg) {
         Uri uri = Uri.fromParts("package", pkg, null);
         Intent intent = new Intent(Intent.ACTION_DELETE, uri);
-        ctx.startActivity(intent);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        try {
+            ctx.startActivity(intent);
+        } catch (Exception e) {
+        }
     }
 
     public static void downloadFromBrowser(Context context, String url) {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        context.startActivity(intent);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+        }
     }
 
     public static void downloadFromGp(Context context, String packageGp) {
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("market://details?id=" + packageGp));
         intent.setPackage(Constants.GP_PACKAGE);
-        context.startActivity(intent);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {
+        }
     }
 
     public static ApplicationInfo getApplicationInfo(String pkg, Context ctx) {
@@ -110,17 +118,33 @@ public class AppUtil {
         return totalTraffic - getMobileTraffic();
     }
 
-    public static Drawable getDrawable(PackageManager pm, String pkg) {
+    public static Drawable getAppIcon(PackageManager pm, String pkg) {
         Drawable d = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppIcon(pkg);
         if (d == null) {
             d = loadAppIconDensity(pkg);
         }
         return d;
     }
+    
+    public static String getAppLabel(PackageManager pm, String pkg) {
+        String label = null;
+        AppItemInfo app = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppInfo(pkg);
+        if (app != null) {
+            label = app.label;
+        }
+        if(Utilities.isEmpty(label)) {
+            try {
+                label = pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString();
+            } catch (Exception e) {             
+                label = "";
+            }
+        }
+        return label;
+    }
 
     /**
      * 获取app图标并缩放至app指定大小
-     * 
+     *
      * @param pkg
      * @return
      */
@@ -134,9 +158,9 @@ public class AppUtil {
         } catch (NameNotFoundException e) {
             e.printStackTrace();
         } catch (Error error) {
-            
+
         }
-        
+
         if (appicon == null) {
             return appicon;
         }
@@ -146,13 +170,13 @@ public class AppUtil {
 
     /**
      * 缩放appicon到指定大小
-     * 
+     *
      * @param src
      * @return
      */
     public static Drawable getScaledAppIcon(Drawable src) {
         if (src == null) return null;
-        
+
         Context ctx = AppMasterApplication.getInstance();
 
         Bitmap bitmap = null;
@@ -177,14 +201,19 @@ public class AppUtil {
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             src.setBounds(0, 0, width, height);
             Canvas c = new Canvas(bitmap);
-            src.draw(c); 
+            src.setFilterBitmap(true);
+            src.draw(c);
         }
 
         int size = ctx.getResources().getDimensionPixelSize(R.dimen.app_size);
-        if (bitmap.getWidth() > size || bitmap.getHeight() > size) {
-            bitmap = Bitmap.createScaledBitmap(bitmap, size, size, false);
-        } else {
-            return src;
+//        LeoLog.d("testBug","size is : " + size);
+
+        if (bitmap != null) {
+            if (bitmap.getWidth() > size || bitmap.getHeight() > size) {
+                bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);
+            } else {
+                return src;
+            }
         }
 
         return new BitmapDrawable(ctx.getResources(), bitmap);

@@ -1,69 +1,75 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f3f3f3"
-    android:gravity="center" >
+    android:background="@color/white"
+    android:gravity="center">
 
-    <RelativeLayout
+
+    <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentTop="true"
-        android:background="@color/app_background" >
+        android:layout_height="wrap_content" />
 
-        <LinearLayout
-            android:id="@+id/iv_back"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/title_bar_option_selector"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingRight="5dp" >
+    <!--<RelativeLayout-->
+    <!--android:id="@+id/layout_title_bar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="56dp"-->
+    <!--android:layout_alignParentTop="true"-->
+    <!--android:background="@color/toolbar_background_color" >-->
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:padding="16dp"
-                android:src="@drawable/back_btn_menu" />
+    <!--<LinearLayout-->
+    <!--android:id="@+id/iv_back"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentLeft="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:background="@drawable/title_bar_option_selector"-->
+    <!--android:gravity="center_vertical"-->
+    <!--android:orientation="horizontal"-->
+    <!--android:paddingRight="5dp">-->
+    <!--<ImageView-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:padding="16dp"-->
+    <!--android:src="@drawable/ic_toolbar_back" />-->
+    <!--</LinearLayout>-->
 
-            <TextView
-                android:id="@+id/mode_name_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/lock_mode_location"
-                android:textColor="@color/white"
-                android:textSize="18dp" />
-        </LinearLayout>
+    <!--<TextView-->
+    <!--android:id="@+id/mode_name_tv"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:layout_toRightOf="@id/iv_back"-->
+    <!--android:text="@string/lock_mode_location"-->
+    <!--android:textColor="@color/white"-->
+    <!--android:textSize="18dp" />-->
 
-        <ImageView
-            android:id="@+id/iv_edit_finish"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/title_bar_option_selector"
-            android:padding="16dp"
-            android:src="@drawable/mode_done" />
-    </RelativeLayout>
+
+    <!--<ImageView-->
+    <!--android:id="@+id/iv_edit_finish"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_alignParentRight="true"-->
+    <!--android:layout_centerVertical="true"-->
+    <!--android:background="@drawable/title_bar_option_selector"-->
+    <!--android:padding="16dp"-->
+    <!--android:src="@drawable/mode_done" />-->
+    <!--</RelativeLayout>-->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/layout_title_bar"
-         android:scrollbars="none" 
-         android:layout_margin="16dp"
-     	android:paddingBottom="10dp"
-          android:background="#ffffff" 
-       >
+        android:layout_margin="16dp"
+        android:background="#ffffff"
+        android:paddingBottom="10dp"
+        android:scrollbars="none">
 
         <RelativeLayout
             android:id="@+id/pager_unlock"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-             android:gravity="center" 
-           >
+            android:gravity="center">
 
             <EditText
                 android:id="@+id/et_name"
@@ -83,7 +89,7 @@
                 android:singleLine="true"
                 android:textColor="#9b9b9b"
                 android:textCursorDrawable="@null"
-                android:textSize="16dp" >
+                android:textSize="16dp">
 
                 <requestFocus />
             </EditText>
@@ -118,7 +124,7 @@
                 android:layout_marginTop="20dp"
                 android:background="@drawable/textbox_bg_selector"
                 android:gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_ssid_name"
@@ -140,7 +146,7 @@
                     android:clickable="false"
                     android:padding="10dp"
                     android:src="@drawable/pswd_protected_down" />
-                    />
+                />
             </LinearLayout>
 
             <TextView
@@ -165,7 +171,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/textbox_bg_selector"
                 android:gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_enter_name"
@@ -211,7 +217,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/textbox_bg_selector"
                 android:gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/tv_quit_name"

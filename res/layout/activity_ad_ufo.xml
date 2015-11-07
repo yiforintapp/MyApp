@@ -85,7 +85,7 @@
             android:textSize="20dp" />
 
         <Button
-            android:textSize ="15sp"
+            android:textSize ="15dp"
             android:id="@+id/btn_rollagain"
             android:layout_width="155dp"
             android:layout_height="40dp"
@@ -173,7 +173,7 @@
                     android:layout_weight="2"
                     android:text="@string/ufo_theme_title"
                     android:textColor="#333333"
-                    android:textSize="11sp" />
+                    android:textSize="11dp" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -182,7 +182,7 @@
                     android:maxLines="2"
                     android:text="@string/ufo_theme_content"
                     android:textColor="#999999"
-                    android:textSize="9sp" />
+                    android:textSize="9dp" />
             </LinearLayout>
 
             <Button
@@ -197,7 +197,7 @@
                 android:gravity="center"
                 android:text="@string/ufo_theme_down"
                 android:textColor="@color/white"
-                android:textSize="12sp" />
+                android:textSize="12dp" />
 
             <ImageView
                 android:layout_width="wrap_content"
@@ -252,7 +252,7 @@
             android:background="@drawable/ad_bg_mask"
             android:text="Sponsored  "
             android:textColor="#ffffff"
-            android:textSize="9sp" />
+            android:textSize="9dp" />
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -281,7 +281,7 @@
                     android:layout_height="17dp"
                     android:gravity="top"
                     android:textColor="#333333"
-                    android:textSize="12sp" />
+                    android:textSize="12dp" />
 
                 <TextView
                     android:maxLines="2"
@@ -290,7 +290,7 @@
                     android:layout_height="33dp"
                     android:gravity="top"
                     android:textColor="#333333"
-                    android:textSize="10sp" />
+                    android:textSize="10dp" />
             </LinearLayout>
 
             <Button

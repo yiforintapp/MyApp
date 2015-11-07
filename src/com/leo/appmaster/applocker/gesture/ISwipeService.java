@@ -10,9 +10,10 @@ import android.os.IBinder;
 import android.os.RemoteException;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.ISwipeInterface;
 import com.leo.appmaster.applocker.model.LockMode;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.utils.LeoLog;
@@ -23,12 +24,16 @@ import com.leo.appmaster.utils.LeoLog;
 public class ISwipeService extends Service {
     private static final String TAG = "ISwipeService";
 
+    private LockManager mLockManager;
+
     public ISwipeService() {
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         LeoLog.i(TAG, "onCreate.");
     }
 
@@ -43,7 +48,7 @@ public class ISwipeService extends Service {
         @Override
         public void onISwipeDismiss() throws RemoteException {
             // 1秒以内不出现锁屏
-            LockManager.getInstatnce().filterAllOneTime(1000);
+            mLockManager.filterAll(1000);
             LeoLog.i(TAG, "onISwipeDismiss");
         }
 
@@ -55,7 +60,7 @@ public class ISwipeService extends Service {
                 LeoLog.i(TAG, "getLockModeList lock type is none.");
                 return null;
             }
-            return LockManager.getInstatnce().getLockMode();
+            return mLockManager.getLockMode();
         }
 
         @Override

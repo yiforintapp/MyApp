@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background" >
+    android:background="@color/toolbar_background_color" >
 
     <TextView
         android:id="@+id/tv_gesture_tip"
@@ -42,7 +42,7 @@
     <RelativeLayout
         android:id="@+id/reset_button_content"
         android:layout_width="wrap_content"
-        android:layout_height="23dp"
+        android:layout_height="25dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
@@ -68,7 +68,7 @@
             android:layout_toRightOf="@id/iv_reset_icon"
             android:text="@string/reset_gesture_passwd"
             android:textColor="@color/common_button_selecter"
-            android:textSize="13sp" />
+            android:textSize="12dp" />
     </RelativeLayout>
 
 </RelativeLayout>

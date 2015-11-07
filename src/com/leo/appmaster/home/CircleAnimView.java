@@ -3,9 +3,6 @@ package com.leo.appmaster.home;
 
 import java.util.List;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Canvas;
@@ -22,10 +19,12 @@ import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 
-import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.ValueAnimator;
 
 public class CircleAnimView extends View {
 
@@ -103,7 +102,8 @@ public class CircleAnimView extends View {
         mPaint.setTextSize(mCountTextSize);
         mPaint.setColor(Color.WHITE);
 
-        List<String> list = LockManager.getInstatnce().getCurLockList();
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        List<String> list = lockManager.getCurLockList();
         mCount = list == null ? 0 : list.size();
         mRippleAlpha = 0;
         mLockTextAlpha = 255;

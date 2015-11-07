@@ -1,6 +1,7 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.appmaster.ui.LinearRippleView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="60dp"
+    android:background="@drawable/home_tab_selector"
     android:gravity="center_vertical"
     android:orientation="horizontal" >
 
@@ -21,4 +22,4 @@
         android:src="@drawable/red_dot"
         android:visibility="gone" />
 
-</LinearLayout>
+</com.leo.appmaster.ui.LinearRippleView>

@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <item name="gridview" type="id"/>
-    <item name="webview" type="id"/>
-    <item name="scrollview" type="id"/>
+    <item name="gridview" type="id" />
+    <item name="webview" type="id" />
+    <item name="scrollview" type="id" />
 
     <!-- Just adding these so I wont have to remove a lot of code from NumberPicker.java. -->
-    <item name="np__increment" type="id"/>
-    <item name="np__decrement" type="id"/>
+    <item name="np__increment" type="id" />
+    <item name="np__decrement" type="id" />
 
+    <item name="lock_app_tag_first" type="id"></item>
+    <item name="lock_app_tag_second" type="id"></item>
+
+    <item name="tag_changed_visibility" type="id"/>
 </resources>

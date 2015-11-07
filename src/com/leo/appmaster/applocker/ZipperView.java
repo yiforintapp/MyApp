@@ -142,9 +142,6 @@ public class ZipperView extends View {
     }
 
     private void initScaleBitmap() {
-        if(mWidth <=0 || mHeight <= 0) {
-            return;
-        }      
         Options options = new Options();
         options.inPreferredConfig = Config.RGB_565;
         // 大背景图没有必要使用8888，替换为565
@@ -153,17 +150,17 @@ public class ZipperView extends View {
         mScaleW = (float) mWidth / (float) cowBoy.getWidth();
 
         if (mFLeft == null) {
-            LeoLog.d("zipper", "mfleft=null,to create now");
+            LeoLog.e("zipper", "mfleft=null,to create now");
             mFLeft = createScaledBitmap(R.drawable.beauty_zipper_left, 0);
         }
 
         if (mFRight == null) {
-            LeoLog.d("zipper", "mfleft=null,to create now");
+            LeoLog.e("zipper", "mfleft=null,to create now");
             mFRight = createScaledBitmap(R.drawable.beauty_zipper_right, 0);
         }
 
         if (mFZipper == null) {
-            LeoLog.d("zipper", "mfleft=null,to create now");
+            LeoLog.e("zipper", "mfleft=null,to create now");
             mFZipper = createScaledBitmap(R.drawable.beauty_zipper, 0.8f);
         }
 
@@ -202,7 +199,7 @@ public class ZipperView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        LeoLog.d(TAG, "onDraw");
+        Log.d(TAG, "onDraw");
 
         mCanvas.drawBitmap(mFCowBoy, 0, 0, mPaint);
         mCanvas.drawBitmap(mFMask, 0, mYp - mFMask.getHeight(), mSpecialPaint);
@@ -231,7 +228,7 @@ public class ZipperView extends View {
                 case MotionEvent.ACTION_MOVE: {
                     if (mIsZipperTouched) {
                         mYp = Math.min(y, mFMask.getHeight());// 解决虚拟键盘时mask露出的bug
-                        LeoLog.i("zipper", "mFMask.height==" + mFMask.getHeight() + "and now mYp=="
+                        Log.i("zipper", "mFMask.height==" + mFMask.getHeight() + "and now mYp=="
                                 + mYp);
                         invalidate();
                     }
@@ -240,7 +237,7 @@ public class ZipperView extends View {
                 case MotionEvent.ACTION_UP: {
                     if (mIsZipperTouched) {
                         long durationTime = System.currentTimeMillis() - downtime;
-                        LeoLog.d("poha", durationTime + "");
+                        LeoLog.e("poha", durationTime + "");
                         if (event.getY() > 0) {
                             if (event.getY() / durationTime * 1000 < mHeight * 1.5) {
                                 if (mTooSlow != null) {
@@ -279,19 +276,19 @@ public class ZipperView extends View {
             return true;
         }
         else if (pointerCount == 2){
-            LeoLog.d("poha", "两个触摸点");
+            LeoLog.e("poha", "两个触摸点");
             switch (event.getAction()) {
                 case MotionEvent.ACTION_POINTER_2_DOWN:
-                    LeoLog.d("poha", "两个点的进入down");
+                    LeoLog.e("poha", "两个点的进入down");
                     px01 = event.getX(0);
                     py01 = event.getY(0);
                     px02 = event.getX(1);
                     py02 = event.getY(1);
 
-                    LeoLog.d("poha", "px01:" + px01);
-                    LeoLog.d("poha", "py01:" + py01);
-                    LeoLog.d("poha", "px02:" + px02);
-                    LeoLog.d("poha", "py02:" + py02);
+                    LeoLog.e("poha", "px01:" + px01);
+                    LeoLog.e("poha", "py01:" + py01);
+                    LeoLog.e("poha", "px02:" + px02);
+                    LeoLog.e("poha", "py02:" + py02);
                     break;
                 case MotionEvent.ACTION_POINTER_1_UP:
                     float ax01 = event.getX(0);
@@ -299,10 +296,10 @@ public class ZipperView extends View {
                     float ax02 = event.getX(1);
                     float ay02 = event.getY(1);
 
-                    LeoLog.d("poha", "ax01:" + ax01);
-                    LeoLog.d("poha", "ay01:" + ay01);
-                    LeoLog.d("poha", "ax02:" + ax02);
-                    LeoLog.d("poha", "ay02:" + ay02);
+                    LeoLog.e("poha", "ax01:" + ax01);
+                    LeoLog.e("poha", "ay01:" + ay01);
+                    LeoLog.e("poha", "ax02:" + ax02);
+                    LeoLog.e("poha", "ay02:" + ay02);
 
                     if ((px01 <= px02 && ax01 > px01 + 50 && ax02 < px02 - 50) // 01点在左，则需要抬起时01点往右移了30，02点往左移了30
                             || (px01 > px02 && ax01 < px01 - 50 && ax02 > px02 + 50) // 或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30
@@ -320,10 +317,10 @@ public class ZipperView extends View {
                     float aax02 = event.getX(1);
                     float aay02 = event.getY(1);
 
-                    LeoLog.d("poha", "ax01:" + aax01);
-                    LeoLog.d("poha", "ay01:" + aay01);
-                    LeoLog.d("poha", "ax02:" + aax02);
-                    LeoLog.d("poha", "ay02:" + aay02);
+                    LeoLog.e("poha", "ax01:" + aax01);
+                    LeoLog.e("poha", "ay01:" + aay01);
+                    LeoLog.e("poha", "ax02:" + aax02);
+                    LeoLog.e("poha", "ay02:" + aay02);
 
                     if ((px01 <= px02 && aax01 > px01 + 50 && aax02 < px02 - 50) // 01点在左，则需要抬起时01点往右移了30，02点往左移了30
                             || (px01 > px02 && aax01 < px01 - 50 && aax02 > px02 + 50) // 或者 01点在右，则需要抬起时01点往左移了30，02点往右移了30

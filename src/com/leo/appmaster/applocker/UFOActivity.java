@@ -6,10 +6,6 @@ import java.util.List;
 
 import org.json.JSONObject;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.CountDownTimer;
@@ -26,14 +22,14 @@ import com.android.volley.VolleyError;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.HttpRequestAgent;
+import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.LockThemeChangeEvent;
-import com.leo.appmaster.http.HttpRequestAgent;
-import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.lockertheme.ThemeJsonObjectParser;
 import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -46,6 +42,10 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.imageloader.core.ImageSize;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.Animator.AnimatorListener;
+import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.PropertyValuesHolder;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class UFOActivity extends BaseActivity implements ImageLoadingListener {
@@ -114,7 +114,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     private void loadTheme() {
-        LeoLog.d("poha","loading themeeeeeeeeeeeeeee...");
+        LeoLog.e("poha","loading themeeeeeeeeeeeeeee...");
         mHideThemeList = AppMasterPreference.getInstance(this).getHideThemeList();
         HttpRequestAgent.getInstance(this).loadOnlineTheme(mHideThemeList, new ThemeListener(this));
     }
@@ -137,24 +137,24 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //            Toast.makeText(ufoActivity, "firstly listBackup.size="+listBackup.size(), 0).show();
             
             for(int i=0;i<list.size();i++){
-                LeoLog.d("poha", list.get(i).packageName+"          "+list.get(i).themeName);
+                LeoLog.e("poha", list.get(i).packageName+"          "+list.get(i).themeName);
             }
 //            LeoLog.e("poha", list.size()+"起始list size");  
             if (list != null) {
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(ufoActivity).getHideThemeList();
                 for(int i =0;i<mHideThemes.size();i++){
-                    LeoLog.d("poha", mHideThemes.get(i)+"                   hide");  
+                    LeoLog.e("poha", mHideThemes.get(i)+"                   hide");  
                     for(int j=0;j<list.size();j++){
                         if(list.get(j).packageName.equals(mHideThemes.get(i))){
-                            LeoLog.d("poha", "removed");  
+                            LeoLog.e("poha", "removed");  
                             list.remove(j);
                         }
                     }
                 }
                 
                 for(int i=0;i<list.size();i++){
-                    LeoLog.d("poha", list.get(i).packageName+"     已经筛选掉在线主题列表中本地已有     "+list.get(i).themeName);
+                    LeoLog.e("poha", list.get(i).packageName+"     已经筛选掉在线主题列表中本地已有     "+list.get(i).themeName);
                 }
                 
 //                LeoLog.e("poha", list.size()+"最终list size");  
@@ -195,7 +195,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                    LeoEventBus.getDefaultBus().post(new LockThemeChangeEvent());
 //                    UFOActivity.this.finish();
 //                }
-                LeoLog.d("poha", list.get(ran).themeName+"     最终选择的主题     "+list.get(ran).themeName);
+                LeoLog.e("poha", list.get(ran).themeName+"     最终选择的主题     "+list.get(ran).themeName);
 //                ran = 1;
 //                list.clear();
 //                list.addAll(listBackup);
@@ -205,23 +205,21 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
 //                Toast.makeText(ufoActivity, "finally size="+list.size()+"。."+listBackup.size()+"。。chosenTheme=="+ufoActivity.mThemeName, 0).show();
                 ufoActivity.loadADPic(list.get(ran).previewUrl, new ImageSize(290, 160),
                         ufoActivity.mThemDialogBg);
-                LeoLog.d("poha", "to load Pic");
+                LeoLog.e("poha", "to load Pic");
                 
                 ThreadManager.executeOnUiThread(new Runnable() {
                     
                     @Override
                     public void run() {
                         ufoActivity.mTvThemeName.setText(ufoActivity.mThemeName);
-                        LeoLog.d("poha", "set text");
+                        LeoLog.e("poha", "set text");
                         ufoActivity.initButton();
-                        LeoLog.d("poha", "init button");
+                        LeoLog.e("poha", "init button");
                     }
                 });
                 
             }
         }
-
-        
         @Override
         public void onErrorResponse(VolleyError error) {
         }
@@ -243,6 +241,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
             public void onClick(View v) {
                 SDKWrapper.addEvent(UFOActivity.this, SDKWrapper.P1, "ad_cli",
                         "adv_cnts_alTP");
+                LeoLog.e("xxx", "clicked");
                 List<String> mHideThemes;
                 mHideThemes = AppMasterPreference.getInstance(UFOActivity.this).getHideThemeList();
                 if(mHideThemes.contains(mChosenTheme.packageName)){
@@ -272,14 +271,14 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     }
 
     private void loadAD() {
-        LeoLog.d("poha","loading ad...");
-        mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(this,Constants.UNIT_ID_58, new MobvistaListener() {
+        LeoLog.e("poha","loading ad...");
+        mAdEngine = MobvistaEngine.getInstance(this);
+        mAdEngine.loadMobvista(Constants.UNIT_ID_58, new MobvistaListener() {
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK&&campaign!=null) {
                     mIsADLoaded = true;
-                    LeoLog.d("poha","ad loaded!");
+                    LeoLog.e("poha","ad loaded!");
                     loadADPic(campaign.getIconUrl(),
                             new ImageSize(DipPixelUtil.dip2px(UFOActivity.this, 48), DipPixelUtil
                                     .dip2px(UFOActivity.this, 48)),
@@ -295,7 +294,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                     appdesc.setText(campaign.getAppDesc());
                     Button call = (Button) mDialog.findViewById(R.id.btn_ufo_dialog_install);
                     call.setText(campaign.getAdCall());
-                    mAdEngine.registerView(UFOActivity.this, call);
+                    mAdEngine.registerView(Constants.UNIT_ID_58, call);
                 }
             }
 
@@ -328,7 +327,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                             v.setImageBitmap(loadedImage);
                             if (mIsShowTheme&&mChosenTheme!=null) {
                                 mIsThemeLoaded = true;
-                                LeoLog.d("poha", "主题图片已经下载好了！");
+                                LeoLog.e("poha", "主题图片已经下载好了！");
                             }
                         }
                     }
@@ -492,7 +491,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                 if (((mIsADLoaded&&!mIsShowTheme)||(mIsThemeLoaded&&mIsShowTheme)) && !mHasGetLoadResult) {
                     if (mCdt != null) {
                         mCdt.onFinish();
-                        LeoLog.d("poha", "mIsADLoaded="+mIsADLoaded+"...mIsShowTheme="+mIsThemeLoaded+"...mIsThemeLoaded="+mIsThemeLoaded);
+                        LeoLog.e("poha", "mIsADLoaded="+mIsADLoaded+"...mIsShowTheme="+mIsThemeLoaded+"...mIsThemeLoaded="+mIsThemeLoaded);
                         mCdt.cancel();
                     }
                     mHasGetLoadResult = true;
@@ -511,10 +510,8 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         mCircleLight.setVisibility(View.INVISIBLE);
 //                        mAlien.setVisibility(View.INVISIBLE);
                         onNothingToShow();
-                        
                     }
                     else {
-                        
                         showResult();
                     }// else2 end
                 }// if1 end
@@ -561,7 +558,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
                         mHasPlayed = false;// 是否播放过动画，开始播放后置为true，以后每次WindowFocusChanged后就不播放动画了，
                         mHasGetLoadResult = false;
                         UFOActivity.this.onWindowFocusChanged(true);
-                        mAdEngine.release(UFOActivity.this);
+                        mAdEngine.release(Constants.UNIT_ID_58);
                         toLoad();
                         
                     }
@@ -707,7 +704,7 @@ public class UFOActivity extends BaseActivity implements ImageLoadingListener {
     protected void onDestroy() {
         super.onDestroy();
         if(mAdEngine!=null){
-        mAdEngine.release(this);
+        mAdEngine.release(Constants.UNIT_ID_58);
         }
 //        LockScreenActivity.interupAinimation = false;
         overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);

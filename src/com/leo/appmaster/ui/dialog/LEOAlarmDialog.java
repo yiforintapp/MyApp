@@ -5,14 +5,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 
 public class LEOAlarmDialog extends LEOBaseDialog {
     public static final String TAG = "XLAlarmDialog";
@@ -25,6 +27,8 @@ public class LEOAlarmDialog extends LEOBaseDialog {
     private TextView mRightBtn;
     private Object mUserData;
     private ImageView mDialogIcon;
+    private RippleView mRvRight;
+    private RippleView mRvLeft;
 
     private OnDiaogClickListener mListener;
 
@@ -57,6 +61,14 @@ public class LEOAlarmDialog extends LEOBaseDialog {
     public void setContent(String titleStr) {
         if (titleStr != null) {
             mContent.setText(titleStr);
+        }
+    }
+    
+    public void setContentVisiable(boolean visiable){
+        if(visiable){
+            mContent.setVisibility(View.VISIBLE);
+        }else{
+            mContent.setVisibility(View.GONE);
         }
     }
 
@@ -103,27 +115,34 @@ public class LEOAlarmDialog extends LEOBaseDialog {
     }
 
     public void setLeftBtnListener(DialogInterface.OnClickListener lListener) {
-        mLeftBtn.setTag(lListener);
-        mLeftBtn.setOnClickListener(new View.OnClickListener() {
+        mRvLeft.setTag(lListener);
+        mRvLeft.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
             @Override
-            public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mLeftBtn
+            public void onRippleComplete(RippleView arg0) {
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvLeft
                         .getTag();
-                lListener.onClick(LEOAlarmDialog.this, 0);
+                try {
+                    lListener.onClick(LEOAlarmDialog.this, 0);
+                } catch (Exception e) {
+                }
             }
         });
     }
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-        mRightBtn.setTag(rListener);
-        mRightBtn.setOnClickListener(new View.OnClickListener() {
+        mRvRight.setTag(rListener);
+        
+        mRvRight.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
             @Override
-            public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRightBtn
+            public void onRippleComplete(RippleView arg0) {
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvRight
                         .getTag();
-                lListener.onClick(LEOAlarmDialog.this, 1);
+                try {
+                    lListener.onClick(LEOAlarmDialog.this, 1);
+                } catch (Exception e) {
+                }
             }
         });
     }
@@ -134,7 +153,8 @@ public class LEOAlarmDialog extends LEOBaseDialog {
 
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
-
+        mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_whitle_button);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
         mDialogIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
@@ -159,10 +179,18 @@ public class LEOAlarmDialog extends LEOBaseDialog {
         mDialogIcon.setImageResource(id);
     }
     
+    public void setDialogIconDrawable(Drawable drawable)
+    {
+        mDialogIcon.setImageDrawable(drawable);
+    }
+    
+    
     public void setContentGravity(int gravity) {
         mContent.setGravity(gravity);
     }
 
+    
+    
     public void setSureButtonText(String mText) {
         if (mText != null) {
             mRightBtn.setText(mText);
@@ -180,11 +208,21 @@ public class LEOAlarmDialog extends LEOBaseDialog {
     }
 
     public void setRightBtnParam(float width, float height) {
-        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRightBtn
+        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRvRight
                 .getLayoutParams();
+        
         linearParams.height = (int) height;
         linearParams.width = (int) width;
-        mRightBtn.setLayoutParams(linearParams);
+        mRvRight.setLayoutParams(linearParams);
+    }
+    
+    public void setRightBtnParam(float width, float height, boolean isLeftGone) {
+        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRvRight
+                .getLayoutParams();
+        linearParams.gravity = Gravity.CENTER_HORIZONTAL;
+        linearParams.height = (int) height;
+        linearParams.width = (int) width;
+        mRvRight.setLayoutParams(linearParams);
     }
 
     public void setDialogIconVisibility(boolean flag) {

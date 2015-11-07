@@ -22,27 +22,30 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.ui.LineView;
 import com.leo.appmaster.ui.LineView.BackUpCallBack;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
-public class ManagerFlowFragment extends BaseFragment implements OnClickListener{
+public class ManagerFlowFragment extends BaseFragment implements OnClickListener, RippleView.OnRippleCompleteListener {
     private static final int CHANGE_TEXT = 0;
     private ProgressBar pb_loading;
     private int progress = 0;
     private int bili = 0;
     private MulticolorRoundProgressBar roundProgressBar;
     private HorizontalScrollView horizontalScroll;
-    private TextView tv_total_ll, tv_normal_ll, tv_remainder_ll, tv_from_donghua,mFlowUseTipText;
+    private TextView tv_total_ll, tv_normal_ll, tv_remainder_ll, tv_from_donghua, mFlowUseTipText;
     private ImageView mProgressBg;
     private LineView lineView;
     private View flow_all_content;
-    private TextView flow_setting;
+    private RippleView flow_setting;
     private MonthDaySetting mTrafficSettingDialog;
     private String month = "";
     private int days = 0;
@@ -56,13 +59,13 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
     private Handler handler = new Handler() {
         public void handleMessage(android.os.Message msg) {
-            if(msg.what == CHANGE_TEXT) {
+            if (msg.what == CHANGE_TEXT) {
                 int mProgress = (Integer) msg.obj;
                 tv_from_donghua.setText(mProgress + "%");
                 roundProgressBar.setProgress(mProgress);
                 updateProgress();
             }
-        };
+        }
     };
 
     @Override
@@ -70,7 +73,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         Display display = mActivity.getWindowManager().getDefaultDisplay(); //Activity#getWindowManager() 
         int width = display.getWidth();
         int height = display.getHeight();
-        Log.i("ManagerFlowFragment", width +" "+ height); 
+        Log.i("ManagerFlowFragment", width + " " + height);
         return R.layout.fragment_manager_flow;
     }
 
@@ -80,8 +83,10 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         tv_from_donghua = (TextView) findViewById(R.id.tv_from_donghua);
         roundProgressBar = (MulticolorRoundProgressBar) findViewById(R.id.roundProgressBar);
         flow_all_content = findViewById(R.id.flow_all_content);
-        flow_setting = (TextView) findViewById(R.id.flow_setting);
-        flow_setting.setOnClickListener(this);
+
+        flow_setting = (RippleView) findViewById(R.id.flow_setting);
+        flow_setting.setOnRippleCompleteListener(this);
+
         pb_loading = (ProgressBar) findViewById(R.id.pb_loading);
         lineView = (LineView) findViewById(R.id.line_view);
         horizontalScroll = (HorizontalScrollView) findViewById(R.id.horizontalScrollView);
@@ -89,12 +94,11 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         tv_normal_ll = (TextView) findViewById(R.id.tv_normal_ll);
         tv_remainder_ll = (TextView) findViewById(R.id.tv_remainder_ll);
         pb_loading.setVisibility(View.VISIBLE);
-        
-        mProgressBg = (ImageView)findViewById(R.id.iv_donghua_flow);
-        mFlowUseTipText = (TextView)findViewById(R.id.flow_use_tip_tv);
-        
-        preferences = AppMasterPreference.getInstance(mActivity);
 
+        mProgressBg = (ImageView) findViewById(R.id.iv_donghua_flow);
+        mFlowUseTipText = (TextView) findViewById(R.id.flow_use_tip_tv);
+
+        preferences = AppMasterPreference.getInstance(mActivity);
         test = new ArrayList<String>();
         dataList = new ArrayList<Integer>();
         dataLists = new ArrayList<ArrayList<Integer>>();
@@ -105,14 +109,21 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
     @Override
     public void onDestroy() {
-        if(flowAsyncTask != null) {
+        if (flowAsyncTask != null) {
             flowAsyncTask.cancel(false);
         }
-        if(handler != null) {
+        if (handler != null) {
             handler.removeMessages(CHANGE_TEXT);
             handler = null;
         }
         super.onDestroy();
+    }
+
+    @Override
+    public void onRippleComplete(RippleView rippleView) {
+        if (flow_setting == rippleView) {
+            showTrafficSetting();
+        }
     }
 
     class FlowAsyncTask extends AsyncTask {
@@ -147,20 +158,21 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     public void show_donghua() {
         progress = 0;
 
-        long TaoCanTraffic = preferences.getTotalTraffic();
-        long TaoCanTrafficKb = preferences.getTotalTraffic() * 1024;
+        long TaoCanTraffic = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getMonthTotalTraffic();
+        long TaoCanTrafficKb = TaoCanTraffic * 1024;
         long MonthUsedItSelf = preferences.getItselfMonthTraffic();
         long MonthUsedRecord = preferences.getMonthGprsAll() / 1024;
 //        LeoLog.d("testfuckflow", "TaoCanTraffic : " + TaoCanTraffic);
 //        LeoLog.d("testfuckflow", "MonthUsedItSelf : " + MonthUsedItSelf);
-        
+
         if (TaoCanTraffic < 1) {
             bili = 0;
         } else {
-            if(MonthUsedItSelf > 0){
+            if (MonthUsedItSelf > 0) {
                 bili = (int) (MonthUsedItSelf * 100 / TaoCanTrafficKb);
                 LeoLog.d("testfuckflow", "MonthUsedItSelf > 0 : " + bili);
-            }else {
+            } else {
                 bili = (int) (MonthUsedRecord * 100 / TaoCanTrafficKb);
                 LeoLog.d("testfuckflow", "else : " + bili);
             }
@@ -168,17 +180,17 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         checkOverFlowSetting();
         updateProgress();
     }
-    
+
     /**
-     * if over flow,show over percent 
+     * if over flow,show over percent
      */
     private void updateProgress() {
-        if(bili > 100){
-            if(tv_from_donghua != null) {
-                tv_from_donghua.setText(bili-100 + "%");
+        if (bili > 100) {
+            if (tv_from_donghua != null) {
+                tv_from_donghua.setText(bili - 100 + "%");
             }
-        }else{
-            if(progress >= bili && bili!=0) {
+        } else {
+            if (progress >= bili && bili != 0) {
                 return;
             }
             progress++;
@@ -191,16 +203,16 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
             handler.sendMessageDelayed(msg, 10);
         }
     }
-    
+
     /**
      * check if over flow,if over then change bg and text , and hide the roudProgressBar
      */
-    private void checkOverFlowSetting(){
-        if(bili>100){
+    private void checkOverFlowSetting() {
+        if (bili > 100) {
             mProgressBg.setImageResource(R.drawable.flow_over_bg);
             mFlowUseTipText.setText(getResources().getString(R.string.traffic_over_text));
             roundProgressBar.setProgress(0);
-        }else{
+        } else {
             mProgressBg.setImageResource(R.drawable.app_run_bg);
             mFlowUseTipText.setText(getResources().getString(R.string.traffic_progress_bar));
         }
@@ -240,31 +252,33 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
             }
         }
-        
-        // 每天的流量点
-        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
-        Cursor cursor1 = mActivity.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
-                "year=? and month=?", new String[] {
-                        String.valueOf(ManagerFlowUtils.getNowYear()),
-                        String.valueOf(ManagerFlowUtils.getNowMonth())
-                }, null);
-        if (cursor1 != null) {
-            while (cursor1.moveToNext()) {
-                int day = cursor1.getInt(6);
-                int gprs = (int) ManagerFlowUtils.BToKb(cursor1.getFloat(2));
-                map.put(day, gprs);
-            }
-            cursor1.close();
-        }
 
-        for (int i = 0; i < days; i++) {
-            Integer value = map.get(i + 1);
-            if (value == null) {
-                dataList.add(0);
-            } else {
-                dataList.add(value);
-            }
-        }
+        // 每天的流量点
+        dataList = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getEveryDayTraffic();
+//        Map<Integer, Integer> map = new HashMap<Integer, Integer>();
+//        Cursor cursor1 = mActivity.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
+//                "year=? and month=?", new String[]{
+//                        String.valueOf(ManagerFlowUtils.getNowYear()),
+//                        String.valueOf(ManagerFlowUtils.getNowMonth())
+//                }, null);
+//        if (cursor1 != null) {
+//            while (cursor1.moveToNext()) {
+//                int day = cursor1.getInt(6);
+//                int gprs = (int) ManagerFlowUtils.BToKb(cursor1.getFloat(2));
+//                map.put(day, gprs);
+//            }
+//            cursor1.close();
+//        }
+//
+//        for (int i = 0; i < days; i++) {
+//            Integer value = map.get(i + 1);
+//            if (value == null) {
+//                dataList.add(0);
+//            } else {
+//                dataList.add(value);
+//            }
+//        }
         dataLists.add(dataList);
     }
 
@@ -283,46 +297,58 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 
     private void getListViewData() {
 
-        float today_flow = 0;
-        today_ymd = ManagerFlowUtils.getNowTime();
-        Cursor mCursor = mActivity.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
-                "daytime=?",
-                new String[] {
-                    today_ymd
-                }, null);
-        if (mCursor != null) {
-            if (mCursor.moveToNext()) {
-                today_flow = mCursor.getFloat(2);
-            }
-            mCursor.close();
-        }
-        
+        float today_flow = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getTodayUsed();
+
+//        float today_flow = 0;
+//        today_ymd = ManagerFlowUtils.getNowTime();
+//        Cursor mCursor = mContext.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
+//                "daytime=?",
+//                new String[]{
+//                        today_ymd
+//                }, null);
+//        if (mCursor != null) {
+//            if (mCursor.moveToNext()) {
+//                today_flow = mCursor.getFloat(2);
+//            }
+//            mCursor.close();
+//        }
+
         //今日流量
         String today_flow_String = ManagerFlowUtils.refreshTraffic_home_app(today_flow);
         tv_normal_ll.setText(today_flow_String);
-        
+
         //本月流量
-        long mThisMonthTraffic = preferences.getMonthGprsAll();
-        long mThisMonthItselfTraffi = preferences.getItselfMonthTraffic() ;
-        if(mThisMonthItselfTraffi > 0){
-            tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mThisMonthItselfTraffi));
-        }else {
-            tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mThisMonthTraffic));
-        }
-        
+        long monthTraffic = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getMonthUsed();
+        tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(monthTraffic));
+
+
+//        long mThisMonthTraffic = preferences.getMonthGprsAll();
+//        long mThisMonthItselfTraffi = preferences.getItselfMonthTraffic();
+//        if (mThisMonthItselfTraffi > 0) {
+//            tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mThisMonthItselfTraffi));
+//        } else {
+//            tv_total_ll.setText(ManagerFlowUtils.refreshTraffic_home_app(mThisMonthTraffic));
+//        }
+
         //剩余流量
-        long mTaoCanMB = preferences.getTotalTraffic();
+        long mTaoCanMB = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getMonthTotalTraffic();
+//        long mTaoCanMB = preferences.getTotalTraffic();
         long mTaoCanKB = mTaoCanMB * 1024;
         if (mTaoCanMB < 1) {
             tv_remainder_ll.setText("---");
         } else {
-            if(mThisMonthItselfTraffi > 0){
-                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mTaoCanKB
-                        -  mThisMonthItselfTraffi));
-            }else {
-                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mTaoCanKB
-                        - (mThisMonthTraffic / 1024)));
-            }
+            tv_remainder_ll.setText(ManagerFlowUtils.
+                    refreshTraffic_home_app_KB(mTaoCanKB - (monthTraffic / 1024)));
+//            if (mThisMonthItselfTraffi > 0) {
+//                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mTaoCanKB
+//                        - mThisMonthItselfTraffi));
+//            } else {
+//                tv_remainder_ll.setText(ManagerFlowUtils.refreshTraffic_home_app_KB(mTaoCanKB
+//                        - (mThisMonthTraffic / 1024)));
+//            }
         }
     }
 

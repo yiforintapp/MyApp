@@ -54,7 +54,7 @@ public class MsgCenterTable extends BaseTable {
 
     @Override
     public void createTable(SQLiteDatabase db) {
-        if (BuildProperties.isZTEAndApiLevel14()) return;
+        if (BuildProperties.isApiLevel14()) return;
 
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_NAME +
                 "( _id INTEGER PRIMARY KEY," +
@@ -75,9 +75,6 @@ public class MsgCenterTable extends BaseTable {
 
     @Override
     public void upgradeTable(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (BuildProperties.isZTEAndApiLevel14()) return;
-
-        db.execSQL("DROP TABLE IF EXISTS " + TABLE_NAME);
         createTable(db);
     }
 

@@ -12,6 +12,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 
 public class PrivacyContactAlarmDialog extends LEOBaseDialog {
@@ -23,6 +25,8 @@ public class PrivacyContactAlarmDialog extends LEOBaseDialog {
     private View mRightBtn;
     private Object mUserData;
     private CircleImageView mContactIcon;
+    private RippleView mRvBlue;
+    private RippleView mRvWhite;
 
     private OnDiaogClickListener mListener;
 
@@ -88,12 +92,13 @@ public class PrivacyContactAlarmDialog extends LEOBaseDialog {
         mLeftBtn.setBackgroundResource(resid);
     }
 
-    public void setLeftBtnListener(View.OnClickListener listener) {
-        mLeftBtn.setOnClickListener(listener);
+    public void setLeftBtnListener(OnRippleCompleteListener listener) {
+        mRvWhite.setOnRippleCompleteListener(listener);
+        
     }
 
-    public void setRightBtnListener(View.OnClickListener listener) {
-        mRightBtn.setOnClickListener(listener);
+    public void setRightBtnListener(OnRippleCompleteListener listener) {
+        mRvBlue.setOnRippleCompleteListener(listener);
     }
 
     public void setTitleEditIconListener(View.OnClickListener listener) {
@@ -119,6 +124,8 @@ public class PrivacyContactAlarmDialog extends LEOBaseDialog {
         mLeftBtn = dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = dlgView.findViewById(R.id.dlg_right_btn);
         mContactIcon = (CircleImageView) dlgView.findViewById(R.id.contactIV);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
+        mRvWhite = (RippleView) dlgView.findViewById(R.id.rv_white);
 
         DialogInterface.OnClickListener listener = new DialogInterface.OnClickListener() {
 
@@ -145,10 +152,10 @@ public class PrivacyContactAlarmDialog extends LEOBaseDialog {
     }
 
     public void setRightBtnParam(float width, float height) {
-        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRightBtn
+        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRvBlue
                 .getLayoutParams();
         linearParams.height = (int) height;
         linearParams.width = (int) width;
-        mRightBtn.setLayoutParams(linearParams);
+        mRvBlue.setLayoutParams(linearParams);
     }
 }

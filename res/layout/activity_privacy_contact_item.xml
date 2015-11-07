@@ -1,10 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/messageRT"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:paddingLeft="@dimen/activity_privacy_contact_item_paddingLeft">
+    android:layout_height="68dp"
+    android:background="@drawable/home_tab_selector"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/sort_letter"
@@ -30,7 +30,7 @@
             android:id="@+id/message_itemLT"
             android:layout_width="match_parent"
             android:layout_height="@dimen/privacy_call_log_item_calllog_list_message_itemLT_layout_height"
-            android:layout_marginLeft="16dp"
+            android:layout_marginLeft="15dp"
             android:layout_toRightOf="@id/contactIV" >
 
             <LinearLayout
@@ -48,19 +48,20 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:singleLine="true"
+                    android:textSize="17dp"
                     android:text="理奥网络"
-                    android:textColor="@color/black"
-                    android:textSize="16dp" />
+                    android:textColor="#333333" />
 
                 <TextView
                     android:id="@+id/message_item_numberTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
+                    android:layout_marginTop="7dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="理奥网络"
-                    android:textColor="#DFDDDD" />
+                    android:textSize="13dp"
+                    android:textColor="#9b9b9b" />
             </LinearLayout>
 
             <ImageView
@@ -69,17 +70,14 @@
                 android:layout_height="18dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="16dp"
+                android:layout_marginRight="12dp"
                 android:src="@drawable/answer_icon" />
-
-            <ImageView
-                android:id="@+id/bottom_line"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/test_list_divider" />
         </RelativeLayout>
     </RelativeLayout>
-
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/message_content"
+        android:background="@color/divider_2" />
+</com.leo.appmaster.ui.RippleView>

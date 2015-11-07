@@ -3,15 +3,21 @@ package com.leo.appmaster.home;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnTouchListener;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.handmark.pulltorefresh.library.internal.Utils;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class AdvanceProtectTipDialog extends LEOBaseDialog {
@@ -136,10 +142,6 @@ public class AdvanceProtectTipDialog extends LEOBaseDialog {
 
     @Override
     public void dismiss() {
-        boolean noEmpty = !Utilities.isEmpty(mDialgFlag);
-        if (noEmpty && ADVANCE_PROTECT_TIP_DIALOG.equals(mDialgFlag)) {
-            AppMasterPreference.getInstance(mContext).setAdvanceProtectDialogTip(false);
-        }
         super.dismiss();
     }
 }

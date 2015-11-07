@@ -13,7 +13,6 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -26,16 +25,16 @@ import android.widget.LinearLayout;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -53,7 +52,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
     private DisplayImageOptions mOptions;
     private int mListPos = 0;
-
+    private Boolean mIsFromIntruderMore = false;
     private Intent mIntent;
     private ArrayList<String> mPicturesList = new ArrayList<String>();
     private LeoPictureViewPager mPager;
@@ -87,9 +86,11 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
         mIntent = getIntent();
         if (null != mIntent) {
+            mIsFromIntruderMore = mIntent.getBooleanExtra("fromIntruderMore", false);
             mPicturesList = mIntent.getStringArrayListExtra("list");
             int maxSize = mPicturesList.size() - 1;
             mListPos = mIntent.getIntExtra("pos", 0);
+            
             // AM-533, add protect
             if (mListPos > maxSize) {
                 mListPos = maxSize;
@@ -116,7 +117,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
             @Override
             public void onPageScrolled(int position, float positionOffset,
-                    int positionOffsetPixels) {
+                                       int positionOffsetPixels) {
                 // TODO Auto-generated method stub
 
             }
@@ -188,7 +189,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
                         @Override
                         public void onLoadingComplete(String imageUri,
-                                View view, Bitmap loadedImage) {
+                                                      View view, Bitmap loadedImage) {
 
                             loadingImage.clearAnimation();
                             loadingImage.setVisibility(View.GONE);
@@ -196,14 +197,14 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
 
                         @Override
                         public void onLoadingCancelled(String imageUri,
-                                View view) {
+                                                       View view) {
                             loadingImage.clearAnimation();
                             loadingImage.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onLoadingFailed(String imageUri, View view,
-                                FailReason failReason) {
+                                                    FailReason failReason) {
                             // TODO Auto-generated method stub
                             loadingImage.clearAnimation();
                             loadingImage.setVisibility(View.GONE);
@@ -291,7 +292,6 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     private void unhidePicture() {
         BackgoundTask task = new BackgoundTask(this);
         task.execute();
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "hide_pic_operation", "pic_ccl_pics_1");
     }
 
     private class BackgoundTask extends AsyncTask<Boolean, Integer, Integer> {
@@ -304,23 +304,32 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
         @Override
         protected Integer doInBackground(Boolean... params) {
             String filepath = mPicturesList.get(mListPos);
+
             long totalSize = new File(filepath).length();
             int isSuccess = 3;
-            String newPaht = FileOperationUtil.unhideImageFile(
-                    PictureViewPager.this, filepath, totalSize);
+
+            String newPaht = ((PrivacyDataManager) MgrContext.getManager
+                    (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
+//            String newPaht = FileOperationUtil.unhideImageFile(
+//                    PictureViewPager.this, filepath, totalSize);
+
+
             if (newPaht == null) {
                 isSuccess = 2;
             } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
                 isSuccess = 2;
-                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity",
-                        "Copy Hide  image fail!");
+//                Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+//                        "Copy Hide  image fail!");
             } else if ("0".equals(newPaht)) {
                 isSuccess = 3;
                 ContentValues values = new ContentValues();
                 String dirPath = FileOperationUtil.getDirPathFromFilepath(filepath);
                 values.put("image_dir", dirPath);
                 values.put("image_path", filepath);
-                getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
+                try {
+                    getContentResolver().insert(Constants.IMAGE_HIDE_URI, values);
+                } catch (Exception e) {                   
+                }
                 mPicturesList.remove(mListPos);
             } else if ("4".equals(newPaht)) {
                 isSuccess = 4;
@@ -346,15 +355,24 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
                 showMemeryAlarmDialog(title, content, null, rightBtn, false, true,
                         width, height);
             } else if (success == -1 || success == -2) {
-                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
+//                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
             } else if (success == 2) {
-                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
+//                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
             }
             if (mPicturesList.size() == 0) {
-                Intent intent = new Intent(PictureViewPager.this,
-                        ImageHideMainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                if(mIsFromIntruderMore){
+                    Intent intent = new Intent(PictureViewPager.this,
+                            IntruderCatchedActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    intent.putExtra("isClear", true);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    Intent intent = new Intent(PictureViewPager.this,
+                            ImageHideMainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                    startActivity(intent);
+                }
             } else {
                 if (mListPos == mPicturesList.size()) {
                     mListPos = 0;
@@ -367,23 +385,40 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             }
 
             // image change, recompute privacy level
-            PrivacyHelper.getInstance(PictureViewPager.this).computePrivacyLevel(
-                    PrivacyHelper.VARABLE_HIDE_PIC);
+//            PrivacyHelper.getInstance(PictureViewPager.this).computePrivacyLevel(
+//                    PrivacyHelper.VARABLE_HIDE_PIC);
         }
     }
 
     private void deletePicture() {
         String filepath = mPicturesList.get(mListPos);
-        if (!FileOperationUtil.deleteFile(filepath))
+
+        boolean isSuccees = ((PrivacyDataManager) MgrContext.
+                getManager(MgrContext.MGR_PRIVACY_DATA)).deleteHidePic(filepath);
+
+//        if (!FileOperationUtil.deleteFile(filepath))
+        if (!isSuccees)
             return;
         mPicturesList.remove(mListPos);
         FileOperationUtil.deleteFileMediaEntry(filepath, this);
 
         if (mPicturesList.size() == 0) {
+            if(mIsFromIntruderMore){
+                Intent intent = new Intent(PictureViewPager.this,
+                        IntruderCatchedActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                intent.putExtra("isClear", true);
+                startActivity(intent);
+                finish();
+            } else {
+            
             Intent intent = new Intent(PictureViewPager.this,
                     ImageHideMainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+//            setResult(RESULT_OK, intent);
+//            finish();
+            }
         } else {
             if (mListPos == mPicturesList.size()) {
                 mListPos = 0;
@@ -393,11 +428,12 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
             mPagerAdapter.notifyDataSetChanged();
             mPager.setCurrentItem(mListPos);
         }
-        PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
+
+//        PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_HIDE_PIC);
     }
 
     private void showAlarmDialog(String title, String content,
-            final int dialogType) {
+                                 final int dialogType) {
         if (mDialog == null) {
             mDialog = new LEOAlarmDialog(this);
         }
@@ -421,7 +457,7 @@ public class PictureViewPager extends BaseActivity implements OnClickListener {
     }
 
     private void showMemeryAlarmDialog(String title, String content, String leftBtn,
-            String rightBtn, boolean isLeft, boolean isRight, float width, float height) {
+                                       String rightBtn, boolean isLeft, boolean isRight, float width, float height) {
         if (memeryDialog == null) {
             memeryDialog = new LEOAlarmDialog(this);
         }

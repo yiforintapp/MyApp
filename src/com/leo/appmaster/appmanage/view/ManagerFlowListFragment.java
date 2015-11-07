@@ -17,6 +17,8 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.TrafficsInfo;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.ManagerFlowUtils;
@@ -26,7 +28,6 @@ public class ManagerFlowListFragment extends BaseFragment {
     private ListView lv_flow_list;
     private View content_listview, content_show_nothing;
     private List<TrafficsInfo> appTrafficInfo;
-    private List<TrafficsInfo> readytosort;
     private FlowListAsyncTask flowAsyncTask;
     private ProgressBar pb_loading;
 
@@ -43,16 +44,8 @@ public class ManagerFlowListFragment extends BaseFragment {
     }
 
     private void fillData() {
-
-        readytosort = new TrafficInfoPackage(mActivity).getRunningProcess(true);
-        for (int i = 0; i < readytosort.size(); i++) {
-            if (readytosort.get(i).getApp_all_traffic().equals("0KB")
-                    || (readytosort.get(i).getRx().equals("0KB") && readytosort.get(i).getTx()
-                            .equals("0KB"))) {
-                readytosort.remove(i);
-            }
-        }
-        appTrafficInfo = ManagerFlowUtils.makeSort(readytosort);
+        appTrafficInfo = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getAppRange();
 
     }
 
@@ -63,7 +56,6 @@ public class ManagerFlowListFragment extends BaseFragment {
         pb_loading = (ProgressBar) findViewById(R.id.pb_loading);
 
         appTrafficInfo = new ArrayList<TrafficsInfo>();
-        readytosort = new ArrayList<TrafficsInfo>();
     }
 
     class FlowListAsyncTask extends AsyncTask {
@@ -120,7 +112,7 @@ public class ManagerFlowListFragment extends BaseFragment {
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             TrafficsInfo traInfo = mList.get(position);
-            ViewHolderTraffic holder = null;
+            ViewHolderTraffic holder;
             View view;
             if (convertView != null && convertView instanceof RelativeLayout) {
                 view = convertView;

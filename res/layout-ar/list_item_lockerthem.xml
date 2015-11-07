@@ -35,7 +35,7 @@
             android:paddingTop="3dp"
             android:text="@string/defaultTheme"
             android:textColor="@color/white"
-            android:textSize="10sp" />
+            android:textSize="10dp" />
 
         <TextView
             android:id="@+id/lockerThemName"
@@ -46,7 +46,7 @@
             android:layout_marginLeft="45dp"
             android:layout_marginTop="145dp"
             android:textColor="@color/white"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 
         <ImageView
             android:id="@+id/visibilityIV"

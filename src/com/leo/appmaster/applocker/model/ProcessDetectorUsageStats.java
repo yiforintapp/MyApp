@@ -44,13 +44,16 @@ public class ProcessDetectorUsageStats extends ProcessDetector {
 
     @Override
     public ProcessAdj getForegroundProcess() {
-        Calendar calendar = Calendar.getInstance();
-        long endTime = calendar.getTimeInMillis();
-        calendar.add(Calendar.YEAR, -1);
-        long startTime = calendar.getTimeInMillis();
-
+//        Calendar calendar = Calendar.getInstance();
+//        long endTime = calendar.getTimeInMillis();
+//        calendar.add(Calendar.YEAR, -2);
+//        long startTime = calendar.getTimeInMillis();
+//
+//        List<UsageStats> stats = mStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_YEARLY,
+//                startTime, endTime);
+        long currentTs = System.currentTimeMillis();
         List<UsageStats> stats = mStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY,
-                startTime, endTime);
+                currentTs - 10 * 1000, currentTs);
 
         ProcessAdj processAdj = null;
         if (stats != null) {

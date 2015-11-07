@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#f3f3f3"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.leo.appmaster.ui.CommonTitleBar
         android:id="@+id/title_bar"
@@ -18,13 +18,13 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:background="@drawable/white_bg" >
+        android:background="@drawable/white_bg">
 
         <RelativeLayout
             android:id="@+id/input_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" >
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:id="@+id/privacy_input_nameTV"
@@ -43,7 +43,7 @@
                 android:layout_below="@id/privacy_input_nameTV"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="10dp" >
+                android:layout_marginTop="10dp">
 
                 <EditText
                     android:id="@+id/privacy_input_nameET"
@@ -77,7 +77,7 @@
                 android:layout_below="@id/privacy_input_nameRT"
                 android:layout_marginLeft="16dp"
                 android:layout_marginRight="16dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="@dimen/privacy_contact_textview_margintop"
                 android:text="电话号码"
                 android:textColor="@color/black" />
 
@@ -110,65 +110,73 @@
 
             <LinearLayout
                 android:id="@+id/privacy_input_rg"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/call_log_item_top_bottom_line"
+                android:layout_marginRight="12dp"
                 android:layout_marginLeft="12dp"
                 android:layout_marginTop="20dp"
-                android:orientation="vertical" >
+                android:orientation="vertical">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/answer_icon" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:text="@string/privacy_contact_activity_input_checkbox_normal"
-                        android:textSize="14dp" />
+                    <!--                    <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginLeft="12dp"
+                                            android:text="@string/privacy_contact_activity_input_checkbox_normal"
+                                            android:textSize="14dp" />-->
 
                     <CheckBox
                         android:id="@+id/privacy_input_normalRB"
-                        android:layout_width="24dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="24dp"
-                        android:layout_marginLeft="16dp"
                         android:layout_marginRight="16dp"
-                        android:button="@drawable/privacy_contact_input_radio_selecter" />
+                        android:button="@drawable/privacy_contact_input_radio_selecter"
+                        android:paddingRight="@dimen/privacy_input_cb_pd_lf"
+                        android:text="@string/privacy_contact_activity_input_checkbox_normal"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:gravity="center_vertical"
-                    android:orientation="horizontal" >
+                    android:orientation="horizontal">
 
                     <ImageView
                         android:layout_width="18dp"
                         android:layout_height="18dp"
                         android:src="@drawable/decline_icon" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="12dp"
-                        android:text="@string/privacy_contact_activity_input_checkbox_hangup"
-                        android:textSize="14dp" />
-
+                    <!-- <TextView
+                         android:layout_width="wrap_content"
+                         android:layout_height="wrap_content"
+                         android:layout_marginLeft="12dp"
+                         android:text="@string/privacy_contact_activity_input_checkbox_hangup"
+                         android:textSize="14dp" />
+ -->
                     <CheckBox
                         android:id="@+id/privacy_input_hangupRB"
-                        android:layout_width="24dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="24dp"
-                        android:layout_marginLeft="16dp"
-                        android:button="@drawable/privacy_contact_input_radio_selecter" />
+                        android:layout_marginRight="16dp"
+                        android:button="@drawable/privacy_contact_input_radio_selecter"
+                        android:paddingRight="@dimen/privacy_input_cb_pd_lf"
+                        android:text="@string/privacy_contact_activity_input_checkbox_hangup"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
                 </LinearLayout>
             </LinearLayout>
         </RelativeLayout>

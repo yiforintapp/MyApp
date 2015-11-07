@@ -11,7 +11,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.dialog.LEOSelfIconAlarmDialog.OnDiaogClickListener;
 
 public class LEOSelfIconAlarmDialog extends LEOBaseDialog {
     public static final String TAG = "XLAlarmDialog";

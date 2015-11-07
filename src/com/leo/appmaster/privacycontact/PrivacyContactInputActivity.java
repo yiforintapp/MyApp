@@ -8,6 +8,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -19,6 +20,7 @@ import android.text.Spanned;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -31,16 +33,21 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 
 public class PrivacyContactInputActivity extends BaseActivity {
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
     private EditText mNameEt, mNumberEt;
     private int mPhoneState = 1;
     private CheckBox mRadioNormal, mRadioHangup;
@@ -48,11 +55,12 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private List<MessageBean> mAddMessages;
     private List<ContactCallLog> mAddCallLogs;
     private boolean mIsOtherLogs = false;
-    private LEOProgressDialog mProgressDialog;
+    private LEORoundProgressDialog mProgressDialog;
     private LEOAlarmDialog mAddCallLogDialog;
     private TextView mPhoneNumberShow;
     private Handler mHandler;
-    
+    private int mMsmCount, mCallCount;
+
     public static final String TO_CONTACT_LIST = "to_contact_list";
     private boolean mToContactList = false;
 
@@ -63,7 +71,6 @@ public class PrivacyContactInputActivity extends BaseActivity {
         initUI();
         Intent intent = getIntent();
         mToContactList = intent.getBooleanExtra(TO_CONTACT_LIST, false);
-        
         mRadioNormal.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
@@ -75,8 +82,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 mRadioHangup.setSelected(false);
             }
         });
-        mRadioHangup.setOnCheckedChangeListener(new OnCheckedChangeListener()
-        {
+        mRadioHangup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton arg0, boolean arg1) {
                 mPhoneState = 0;
@@ -84,7 +90,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
                 mRadioHangup.setSelected(true);
             }
         });
-        mTtileBar.setOptionListener(new OnClickListener() {
+        mTtileBar.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 if (!"".equals(mPhoneNumber) && mPhoneNumber != null) {
@@ -118,53 +124,26 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             values.put(Constants.COLUMN_CONTACT_NAME, mPhoneNumber);
                         }
                         values.put(Constants.COLUMN_PHONE_ANSWER_TYPE, mPhoneState);
-                        Uri result = getContentResolver().insert(Constants.PRIVACY_CONTACT_URI,
-                                values);
+                        Uri result = null;
+                        result = PrivacyContactInputActivity.this.getContentResolver().insert(Constants.PRIVACY_CONTACT_URI, values);
                         long id = ContentUris.parseId(result);
                         if (id != -1) {
                             if (contacts != null) {
                                 pcm.addContact(contact);
-                                PrivacyHelper.getInstance(getApplicationContext())
-                                        .computePrivacyLevel(
-                                                PrivacyHelper.VARABLE_PRIVACY_CONTACT);
                             }
-                            // 查询是否存在短信和通话记录
-                            if (mAddMessages == null) {
-                                mAddMessages = PrivacyContactUtils.getSysMessage(
-                                        PrivacyContactInputActivity.this,
-                                        PrivacyContactInputActivity.this.getContentResolver(),
-                                        "address LIKE ? ", new String[] {
-                                            "%" + tempNumber
-                                        }, true);
-                            } else {
-                                List<MessageBean> addMessages = PrivacyContactUtils.getSysMessage(
-                                        PrivacyContactInputActivity.this,
-                                        PrivacyContactInputActivity.this.getContentResolver(),
-                                        "address LIKE ?", new String[] {
-                                            "%" + tempNumber
-                                        }, true);
-                                mAddMessages.addAll(addMessages);
-                            }
-                            if (mAddCallLogs == null) {
-                                mAddCallLogs = PrivacyContactUtils.getSysCallLog(
-                                        PrivacyContactInputActivity.this,
-                                        PrivacyContactInputActivity.this.getContentResolver(),
-                                        "number LIKE ?", new String[] {
-                                            "%" + tempNumber
-                                        });
-                            } else {
-                                List<ContactCallLog> addCalllog = PrivacyContactUtils
-                                        .getSysCallLog(PrivacyContactInputActivity.this,
-                                                PrivacyContactInputActivity.this
-                                                        .getContentResolver(),
-                                                "number LIKE ?", new String[] {
-                                                    "%" + tempNumber
-                                                });
-                                mAddCallLogs.addAll(addCalllog);
-                            }
+
+                            ContentResolver cr = PrivacyContactInputActivity.this.getContentResolver();
+                            PrivacyContactManagerImpl pm = (PrivacyContactManagerImpl) MgrContext.getManager(MgrContext.MGR_PRIVACY_CONTACT);
+                            /*查看是否存在短信*/
+//                            Cursor msmCur = cr.query(PrivacyContactUtils.SMS_INBOXS, null, null, null, "_id asc LIMIT " + PhoneSecurityConstants.TYY_READ_MSM_COUNT);
+//                            int resultMsm = msmCur.getCount();
+                            mMsmCount = pm.getSystemMessages("address LIKE ? ", new String[]{"%" + tempNumber}).getCount();
+                            /*查询是否存在通话*/
+//                            Cursor callCur = cr.query(PrivacyContactUtils.CALL_LOG_URI, null, null, null, "_id asc LIMIT " + PhoneSecurityConstants.TYY_READ_MSM_COUNT);
+//                            int resultCall = callCur.getCount();
+                            mCallCount = pm.getSystemCalls("number LIKE ?", new String[]{"%" + tempNumber}).getCount();
                             if (!mIsOtherLogs) {
-                                if ((mAddMessages != null && mAddMessages.size() != 0)
-                                        || (mAddCallLogs != null && mAddCallLogs.size() != 0)) {
+                                if (mMsmCount > 0 || mCallCount > 0) {
                                     mIsOtherLogs = true;
                                 }
                             }
@@ -200,17 +179,47 @@ public class PrivacyContactInputActivity extends BaseActivity {
         });
     }
 
+    /*查询系统是否有制定号码短信和通话记录*/
+    private void queryCallsMsms(String tempNumber) {
+        // 查询是否存在短信和通话记录
+        if (mAddMessages == null) {
+            mAddMessages = PrivacyContactUtils.getSysMessage(
+                    PrivacyContactInputActivity.this, "address LIKE ? ", new String[]{
+                            "%" + tempNumber
+                    }, true, false);
+        } else {
+            List<MessageBean> addMessages = PrivacyContactUtils.getSysMessage(
+                    PrivacyContactInputActivity.this, "address LIKE ?", new String[]{
+                            "%" + tempNumber
+                    }, true, false);
+            mAddMessages.addAll(addMessages);
+        }
+        /*查询通话记录*/
+        if (mAddCallLogs == null) {
+            mAddCallLogs = PrivacyContactUtils.getSysCallLog(
+                    PrivacyContactInputActivity.this, "number LIKE ?", new String[]{
+                            "%" + tempNumber
+                    }, true, false);
+        } else {
+            List<ContactCallLog> addCalllog = PrivacyContactUtils
+                    .getSysCallLog(PrivacyContactInputActivity.this, "number LIKE ?", new String[]{
+                            "%" + tempNumber
+                    }, true, false);
+            mAddCallLogs.addAll(addCalllog);
+        }
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
     }
 
     private void initUI() {
-        mTtileBar = (CommonTitleBar) findViewById(R.id.title_bar);
-        mTtileBar.setTitle(getResources().getString(
-                R.string.privacy_contact_popumenus_add_new_privacy_contact));
-        mTtileBar.openBackView();
-        mTtileBar.setOptionImage(R.drawable.mode_done);
+        mTtileBar = (CommonToolbar) findViewById(R.id.title_bar);
+        mTtileBar.setOptionMenuVisible(true);
+        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_add_new_privacy_contact);
+        mTtileBar.setOptionImageResource(R.drawable.mode_done);
         mNameEt = (EditText) findViewById(R.id.privacy_input_nameET);
         mNumberEt = (EditText) findViewById(R.id.privacy_input_numberEV);
         mRadioNormal = (CheckBox) findViewById(R.id.privacy_input_normalRB);
@@ -243,9 +252,10 @@ public class PrivacyContactInputActivity extends BaseActivity {
         mNameEt.addTextChangedListener(watcher);
     }
 
+
     private void showProgressDialog(int maxValue, int currentValue) {
         if (mProgressDialog == null) {
-            mProgressDialog = new LEOProgressDialog(this);
+            mProgressDialog = new LEORoundProgressDialog(this);
         }
         String title = getResources().getString(R.string.privacy_contact_progress_dialog_title);
         String content = getResources().getString(R.string.privacy_contact_progress_dialog_content);
@@ -265,7 +275,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
             @Override
             public void onClick(int which) {
                 if (which == 1) {
-                    final int privacyTotal = mAddMessages.size() + mAddCallLogs.size();
+                    final int privacyTotal = mMsmCount + mCallCount;
                     if (mHandler == null) {
                         mHandler = new Handler() {
                             @Override
@@ -313,9 +323,8 @@ public class PrivacyContactInputActivity extends BaseActivity {
             int count = 0;
             ContentResolver cr = getContentResolver();
             if (flag) {
-//                ArrayList<MessageBean> messages = pm.getSysMessage();
                 String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
-
+                queryCallsMsms(formateNumber);
                 // 导入短信和通话记录
                 if (mAddMessages != null && mAddMessages.size() != 0) {
                     for (MessageBean message : mAddMessages) {
@@ -346,8 +355,8 @@ public class PrivacyContactInputActivity extends BaseActivity {
                         values.put(Constants.COLUMN_MESSAGE_TYPE, type);
                         Uri messageFlag = cr.insert(Constants.PRIVACY_MESSAGE_URI, values);
                         PrivacyContactUtils.deleteMessageFromSystemSMS("address = ?",
-                                new String[] {
-                                    number
+                                new String[]{
+                                        number
                                 }, PrivacyContactInputActivity.this);
                         if (messageFlag != null) {
                             Message messge = new Message();
@@ -356,14 +365,6 @@ public class PrivacyContactInputActivity extends BaseActivity {
                             mHandler.sendMessage(messge);
                         }
                     }
-                    //更新短信列表
-//                    for (MessageBean messageBean : messages) {
-//                        if (messageBean.getPhoneNumber().contains(formateNumber)) {
-//                            pm.removeSysMessage(messageBean);
-//                        }
-//
-//                    }
-
                 }
                 // 导入通话记录
                 if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
@@ -384,7 +385,9 @@ public class PrivacyContactInputActivity extends BaseActivity {
                         values.put(Constants.COLUMN_CALL_LOG_DATE, date);
                         values.put(Constants.COLUMN_CALL_LOG_TYPE, type);
                         values.put(Constants.COLUMN_CALL_LOG_IS_READ, 1);
+                        values.put(Constants.COLUMN_CALL_LOG_DURATION, calllog.getCallLogDuraction());
                         Uri callLogFlag = cr.insert(Constants.PRIVACY_CALL_LOG_URI, values);
+
                         PrivacyContactUtils.deleteCallLogFromSystem("number LIKE ?", number,
                                 PrivacyContactInputActivity.this);
                         if (callLogFlag != null) {
@@ -405,12 +408,12 @@ public class PrivacyContactInputActivity extends BaseActivity {
             if (mAddCallLogs != null && mAddCallLogs.size() != 0) {
                 LeoEventBus.getDefaultBus().post(
                         new
-                        PrivacyEditFloatEvent(PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
+                                PrivacyEditFloatEvent(PrivacyContactUtils.UPDATE_CALL_LOG_FRAGMENT));
             }
             if (mAddMessages != null && mAddMessages.size() != 0) {
                 LeoEventBus.getDefaultBus().post(
                         new
-                        PrivacyEditFloatEvent(PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
+                                PrivacyEditFloatEvent(PrivacyContactUtils.UPDATE_MESSAGE_FRAGMENT));
             }
         }
     }
@@ -419,18 +422,20 @@ public class PrivacyContactInputActivity extends BaseActivity {
         mPhoneName = mNameEt.getText().toString();
         mPhoneNumber = mNumberEt.getText().toString().trim();
     }
-    
+
     /**
      * 跳转联系人列表
      */
-    private void toContactList(){
-        if(mToContactList){
+    private void toContactList() {
+        if (mToContactList) {
             Intent intent = new Intent(this, PrivacyContactActivity.class);
             intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT, PrivacyContactUtils.TO_PRIVACY_CONTACT_FLAG);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
-        }else {
+        } else {
             PrivacyContactInputActivity.this.finish();
         }
+        mMsmCount = 0;
+        mCallCount = 0;
     }
 }

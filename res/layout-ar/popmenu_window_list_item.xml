@@ -23,6 +23,6 @@
         android:gravity="right"
         android:maxLines="2"
         android:textColor="#969696"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
 </LinearLayout>

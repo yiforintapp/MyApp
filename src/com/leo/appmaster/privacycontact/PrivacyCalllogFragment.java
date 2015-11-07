@@ -35,6 +35,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
@@ -46,6 +47,8 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
@@ -85,68 +88,69 @@ public class PrivacyCalllogFragment extends BaseFragment {
         LeoEventBus.getDefaultBus().register(this);
         mAdapter = new CallLogAdapter(mContactCallLogs);
         mContactCallLog.setAdapter(mAdapter);
-        mContactCallLog.setOnItemClickListener(new OnItemClickListener() {
+//        mContactCallLog.setOnItemClickListener(new OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
+//                LeoLog.i("caocao","触发");
+//                ContactCallLog calllog = mContactCallLogs.get(position);
+//                if (!mIsEditModel) {
+//                    String name = calllog.getCallLogName();
+//                    String number = calllog.getCallLogNumber();
+//                    String[] bundleData = new String[] {
+//                            name, number
+//                    };
+//                    Bundle bundle = new Bundle();
+//                    bundle.putStringArray(PrivacyContactUtils.CONTACT_CALL_LOG, bundleData);
+//                    Intent intent = new Intent(mContext, PrivacyCallLogListActivity.class);
+//                    intent.putExtras(bundle);
+//                    try {
+//                        startActivity(intent);
+//                        // 标记为已读
+//                        String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(calllog
+//                                .getCallLogNumber());
+//                        updateCallLogMyselfIsRead(1,
+//                                "call_log_phone_number LIKE ? and call_log_is_read = 0",
+//                                new String[] {
+//                                        "%" + readNumberFlag
+//                        }, mContext);
+//                        mAdapter.notifyDataSetChanged();
+//                    } catch (Exception e) {
+//                    }
+//                } else {
+//                    ImageView image = (ImageView) view.findViewById(R.id.call_log_itemCB);
+//                    if (!calllog.isCheck()) {
+//                        image.setImageDrawable(getResources().getDrawable(
+//                                R.drawable.select));
+//                        calllog.setCheck(true);
+//                        mDeleteCallLog.add(calllog);
+//                        mCallLogCount = mCallLogCount + 1;
+//                    } else {
+//                        image.setImageDrawable(getResources().getDrawable(
+//                                R.drawable.unselect));
+//                        calllog.setCheck(false);
+//                        mDeleteCallLog.remove(calllog);
+//                        if (mCallLogCount > 0) {
+//                            mCallLogCount = mCallLogCount - 1;
+//                        }
+//                    }
+//                    updateTitleBarSelectStatus();
+//                }
+//            }
+//        });
 
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View view, int position, long arg3) {
-                ContactCallLog calllog = mContactCallLogs.get(position);
-                if (!mIsEditModel) {
-                    String name = calllog.getCallLogName();
-                    String number = calllog.getCallLogNumber();
-                    String[] bundleData = new String[] {
-                            name, number
-                    };
-                    Bundle bundle = new Bundle();
-                    bundle.putStringArray(PrivacyContactUtils.CONTACT_CALL_LOG, bundleData);
-                    Intent intent = new Intent(mContext, PrivacyCallLogListActivity.class);
-                    intent.putExtras(bundle);
-                    try {
-                        startActivity(intent);
-                        // 标记为已读
-                        String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(calllog
-                                .getCallLogNumber());
-                        updateCallLogMyselfIsRead(1,
-                                "call_log_phone_number LIKE ? and call_log_is_read = 0",
-                                new String[] {
-                                        "%" + readNumberFlag
-                        }, mContext);
-                        mAdapter.notifyDataSetChanged();
-                    } catch (Exception e) {
-                    }
-                } else {
-                    ImageView image = (ImageView) view.findViewById(R.id.call_log_itemCB);
-                    if (!calllog.isCheck()) {
-                        image.setImageDrawable(getResources().getDrawable(
-                                R.drawable.select));
-                        calllog.setCheck(true);
-                        mDeleteCallLog.add(calllog);
-                        mCallLogCount = mCallLogCount + 1;
-                    } else {
-                        image.setImageDrawable(getResources().getDrawable(
-                                R.drawable.unselect));
-                        calllog.setCheck(false);
-                        mDeleteCallLog.remove(calllog);
-                        if (mCallLogCount > 0) {
-                            mCallLogCount = mCallLogCount - 1;
-                        }
-                    }
-                    updateTitleBarSelectStatus();
-                }
-            }
-        });
-
-        mContactCallLog.setOnItemLongClickListener(new OnItemLongClickListener() {
-
-            @Override
-            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                LeoEventBus.getDefaultBus().post(
-                        new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
-                                PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
-                mIsEditModel = true;
-                mAdapter.notifyDataSetChanged();
-                return true;
-            }
-        });
+//        mContactCallLog.setOnItemLongClickListener(new OnItemLongClickListener() {
+//
+//            @Override
+//            public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+//                LeoEventBus.getDefaultBus().post(
+//                        new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+//                                PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
+//                mIsEditModel = true;
+//                mAdapter.notifyDataSetChanged();
+//                return true;
+//            }
+//        });
     }
 
     // 更新TitleBar
@@ -258,9 +262,16 @@ public class PrivacyCalllogFragment extends BaseFragment {
         }
 
         class ViewHolder {
-            ImageView checkImage, typeImage, bottomLine;
+            ImageView checkImage, typeImage;
+            ImageView bottomLine;
             CircleImageView contactIcon;
             TextView name, number, content, count;
+            RelativeLayout ripView;
+        }
+
+        class RippleBean {
+            int position;
+            View view;
         }
 
         @SuppressLint("InflateParams")
@@ -278,6 +289,31 @@ public class PrivacyCalllogFragment extends BaseFragment {
                 vh.checkImage = (ImageView) convertView.findViewById(R.id.call_log_itemCB);
                 vh.contactIcon = (CircleImageView) convertView.findViewById(R.id.contactIV);
                 vh.bottomLine = (ImageView) convertView.findViewById(R.id.bottom_line);
+                vh.ripView = (RelativeLayout) convertView.findViewById(R.id.messageRT);
+                MaterialRippleLayout.on(vh.ripView)
+                        .rippleAlpha(0.1f)
+                        .rippleHover(true)
+                        .create();
+                vh.ripView.setOnClickListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        RippleBean ripp = (RippleBean) v.getTag();
+                        int position = ripp.position;
+                        View convertView = ripp.view;
+                        onItemClick(convertView, position);
+                    }
+                });
+                vh.ripView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        RippleBean ripp = (RippleBean) v.getTag();
+                        int position = ripp.position;
+                        View convertView = ripp.view;
+                        onItemLongClick(convertView,position);
+                        return true;
+                    }
+                });
+
                 vh.checkImage.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View arg0) {
@@ -350,82 +386,150 @@ public class PrivacyCalllogFragment extends BaseFragment {
             }
             Bitmap icon = mb.getContactIcon();
             vh.contactIcon.setImageBitmap(icon);
-            if (mContactCallLogs != null && mContactCallLogs.size() > 0) {
-                if (position == mContactCallLogs.size() - 1) {
-                    vh.bottomLine.setVisibility(View.GONE);
-                } else {
-                    vh.bottomLine.setVisibility(View.VISIBLE);
+//            if (mContactCallLogs != null && mContactCallLogs.size() > 0) {
+//                if (position == mContactCallLogs.size() - 1) {
+//                    vh.bottomLine.setVisibility(View.GONE);
+//                } else {
+//                    vh.bottomLine.setVisibility(View.VISIBLE);
+//                }
+//            }
+            vh.checkImage.setTag(mb);
+            RippleBean ripp = new RippleBean();
+            ripp.position = position;
+            ripp.view = convertView;
+            vh.ripView.setTag(ripp);
+            return convertView;
+        }
+    }
+    public boolean onItemLongClick(View arg1, int arg2) {
+        LeoEventBus.getDefaultBus().post(
+                new PrivacyMessageEvent(EventId.EVENT_PRIVACY_EDIT_MODEL,
+                        PrivacyContactUtils.FROM_CONTACT_NO_SELECT_EVENT));
+        mIsEditModel = true;
+        mAdapter.notifyDataSetChanged();
+        return true;
+    }
+
+    public void onItemClick(View view, int position) {
+
+
+        ContactCallLog calllog = mContactCallLogs.get(position);
+        if (!mIsEditModel) {
+            String name = calllog.getCallLogName();
+            String number = calllog.getCallLogNumber();
+            String[] bundleData = new String[]{
+                    name, number
+            };
+            Bundle bundle = new Bundle();
+            bundle.putStringArray(PrivacyContactUtils.CONTACT_CALL_LOG, bundleData);
+            Intent intent = new Intent(mContext, PrivacyCallLogListActivity.class);
+            intent.putExtras(bundle);
+            try {
+                startActivity(intent);
+                // 标记为已读
+                String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(calllog
+                        .getCallLogNumber());
+                updateCallLogMyselfIsRead(1,
+                        "call_log_phone_number LIKE ? and call_log_is_read = 0",
+                        new String[]{
+                                "%" + readNumberFlag
+                        }, mContext);
+                mAdapter.notifyDataSetChanged();
+            } catch (Exception e) {
+            }
+        } else {
+            ImageView image = (ImageView) view.findViewById(R.id.call_log_itemCB);
+            if (!calllog.isCheck()) {
+                image.setImageDrawable(getResources().getDrawable(
+                        R.drawable.select));
+                calllog.setCheck(true);
+                mDeleteCallLog.add(calllog);
+                mCallLogCount = mCallLogCount + 1;
+            } else {
+                image.setImageDrawable(getResources().getDrawable(
+                        R.drawable.unselect));
+                calllog.setCheck(false);
+                mDeleteCallLog.remove(calllog);
+                if (mCallLogCount > 0) {
+                    mCallLogCount = mCallLogCount - 1;
                 }
             }
-            vh.checkImage.setTag(mb);
-            return convertView;
+            updateTitleBarSelectStatus();
         }
     }
 
     /**
      * getCallLog
-     * 
-     * @param phoneNumber
+     *
+     *
      * @return
      */
     private ArrayList<ContactCallLog> getCallLog() {
         ArrayList<ContactCallLog> contactCalls = new ArrayList<ContactCallLog>();
         Map<String, ContactCallLog> callLogList = new ConcurrentHashMap<String, ContactCallLog>();
-        Cursor cursor = mContext.getContentResolver()
-                .query(Constants.PRIVACY_CALL_LOG_URI, null, null, null, "call_log_date desc");
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                ContactCallLog callLog = new ContactCallLog();
-                int count = cursor.getCount();
-                String number = cursor.getString(cursor
-                        .getColumnIndex(Constants.COLUMN_CALL_LOG_PHONE_NUMBER));
-                String name = cursor.getString(cursor
-                        .getColumnIndex(Constants.COLUMN_CALL_LOG_CONTACT_NAME));
-                String date = cursor
-                        .getString(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_DATE));
-                callLog.setClallLogDate(date);
-                int type = cursor.getInt(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_TYPE));
-                callLog.setCallLogCount(count);
-                callLog.setCallLogName(name);
-                callLog.setCallLogNumber(number);
-                callLog.setClallLogType(type);
-                Bitmap icon = PrivacyContactUtils.getContactIcon(mContext, number);
-                if (icon != null) {
-                    callLog.setContactIcon(icon);
-                } else {
-                    callLog.setContactIcon(((BitmapDrawable) mContext.getResources().getDrawable(
-                            R.drawable.default_user_avatar)).getBitmap());
-                }
-                if (callLogList != null && callLogList.size() > 0) {
-                    List<String> mapKeyList = new ArrayList<String>(callLogList.keySet());
-                    // Iterator<Entry<String, ContactCallLog>> iterator =
-                    // callLogList.entrySet()
-                    // .iterator();
-                    List<String> callLogLists = new ArrayList<String>();
-                    for (String string : mapKeyList) {
-                        callLogLists.add(PrivacyContactUtils.formatePhoneNumber(string));
+        Cursor cursor = null;
+        try {
+            cursor = mContext.getContentResolver()
+                    .query(Constants.PRIVACY_CALL_LOG_URI, null, null, null, "call_log_date desc");
+            if (cursor != null) {
+                while (cursor.moveToNext()) {
+                    ContactCallLog callLog = new ContactCallLog();
+                    int count = cursor.getCount();
+                    String number = cursor.getString(cursor
+                            .getColumnIndex(Constants.COLUMN_CALL_LOG_PHONE_NUMBER));
+                    String name = cursor.getString(cursor
+                            .getColumnIndex(Constants.COLUMN_CALL_LOG_CONTACT_NAME));
+                    String date = cursor
+                            .getString(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_DATE));
+                    callLog.setClallLogDate(date);
+                    int type = cursor.getInt(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_TYPE));
+                    callLog.setCallLogCount(count);
+                    callLog.setCallLogName(name);
+                    callLog.setCallLogNumber(number);
+                    callLog.setClallLogType(type);
+                    Bitmap icon = PrivacyContactUtils.getContactIcon(mContext, number);
+                    if (icon != null) {
+                        callLog.setContactIcon(icon);
+                    } else {
+                        callLog.setContactIcon(((BitmapDrawable) mContext.getResources().getDrawable(
+                                R.drawable.default_user_avatar)).getBitmap());
                     }
-                    String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                    // while (iterator.hasNext()) {
-                    // Entry<String, ContactCallLog> entry = iterator.next();
-                    // String contactCallLog = entry.getKey();
-                    if (!callLogLists.contains(formateNumber)) {
-                        callLog.setCallLogCount(noReadCallLogCount(number));
+                    if (callLogList != null && callLogList.size() > 0) {
+                        List<String> mapKeyList = new ArrayList<String>(callLogList.keySet());
+                        // Iterator<Entry<String, ContactCallLog>> iterator =
+                        // callLogList.entrySet()
+                        // .iterator();
+                        List<String> callLogLists = new ArrayList<String>();
+                        for (String string : mapKeyList) {
+                            callLogLists.add(PrivacyContactUtils.formatePhoneNumber(string));
+                        }
+                        String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                        // while (iterator.hasNext()) {
+                        // Entry<String, ContactCallLog> entry = iterator.next();
+                        // String contactCallLog = entry.getKey();
+                        if (!callLogLists.contains(formateNumber)) {
+                            callLog.setCallLogCount(noReadCallLogCount(number));
+                            callLogList.put(number, callLog);
+                        }
+                        // }
+                    } else {
+                        int temp = noReadCallLogCount(number);
+                        callLog.setCallLogCount(temp);
                         callLogList.put(number, callLog);
                     }
-                    // }
-                } else {
-                    int temp=noReadCallLogCount(number);
-                    callLog.setCallLogCount(temp);
-                    callLogList.put(number, callLog);
                 }
+                Iterable<ContactCallLog> iterable = callLogList.values();
+                for (ContactCallLog contactCallLog : iterable) {
+                    contactCalls.add(contactCallLog);
+                }
+                Collections.sort(contactCalls, PrivacyContactUtils.mCallLogCamparator);
             }
-            Iterable<ContactCallLog> iterable = callLogList.values();
-            for (ContactCallLog contactCallLog : iterable) {
-                contactCalls.add(contactCallLog);
+        } catch (Exception e) {
+
+        } finally {
+            if(cursor != null) {
+                cursor.close();
             }
-            Collections.sort(contactCalls, PrivacyContactUtils.mCallLogCamparator);
-            cursor.close();
         }
         return contactCalls;
     }
@@ -531,13 +635,7 @@ public class PrivacyCalllogFragment extends BaseFragment {
                                                     Context.NOTIFICATION_SERVICE);
                                     notificationManager.cancel(20140902);
                                 }
-                                // 隐私通话没有未读
-                                /**
-                                 * 对快捷手势隐私联系人,消费隐私通话时，红点去除操作
-                                 */
-                                PrivacyContactManager
-                                        .getInstance(mContext)
-                                        .deletePrivacyCallCancelRedTip(mContext);
+
                                 LeoEventBus
                                         .getDefaultBus()
                                         .post(

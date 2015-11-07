@@ -16,24 +16,24 @@ import android.view.View;
 import android.view.View.OnClickListener;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.view.ManagerFlowFragment;
 import com.leo.appmaster.appmanage.view.ManagerFlowListFragment;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+import com.leo.appmaster.wifiSecurity.WifiSettingActivity;
 
 public class FlowActivity extends BaseFragmentActivity implements OnClickListener,
         OnPageChangeListener {
     public static final String MESSAGE_MONTH_TRAFFI_SMALL_SETTING = "month_traffic_small_setting";
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
-    private CommonTitleBar mTtileBar;
-    private View trffic_setting_iv;
+    private CommonToolbar mTitleBar;
+    //    private View trffic_setting_iv;
     private ManagerFlowListFragment trifficListFragment;
     private ManagerFlowFragment trifficFragment;
 
@@ -49,16 +49,24 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     }
 
     private void initUI() {
-        mTtileBar = (CommonTitleBar) findViewById(R.id.traffic_title_bar);
-        mTtileBar.setTitle(R.string.app_flow_elec);
-        mTtileBar.openBackView();
+        mTitleBar = (CommonToolbar) findViewById(R.id.traffic_title_bar);
+        mTitleBar.setToolbarTitle(R.string.app_flow_elec);
+        mTitleBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitleBar.setOptionClickListener(this);
+        mTitleBar.setNavigationClickListener(this);
+        mTitleBar.setOptionImageResource(R.drawable.setup_icon);
+        mTitleBar.setOptionMenuVisible(true);
 
-        trffic_setting_iv = findViewById(R.id.trffic_setting_iv);
-        trffic_setting_iv.setVisibility(View.VISIBLE);
-        trffic_setting_iv.setOnClickListener(this);
+//        mTtileBar.setTitle(R.string.app_flow_elec);
+//        mTtileBar.openBackView();
+
+//        trffic_setting_iv = findViewById(R.id.trffic_setting_iv);
+//        trffic_setting_iv.setVisibility(View.VISIBLE);
+//        trffic_setting_iv.setOnClickListener(this);
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.traffic_app_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);
+        mPagerTab.setBackgroundResource(R.color.toolbar_background_color);
         mViewPager = (ViewPager) findViewById(R.id.traffic_app_viewpager);
         initFragment();
 
@@ -112,13 +120,6 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState, persistentState);
-        } catch (Exception e) {
-        }
-    }
 
     class ManagerFlowAdapter extends FragmentPagerAdapter {
         public ManagerFlowAdapter(FragmentManager fm) {
@@ -150,8 +151,15 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.trffic_setting_iv:
+//                Intent intent = new Intent(this, TrafficSetting.class);
+//                startActivity(intent);
+                break;
+            case R.id.ct_option_1_rl:
                 Intent intent = new Intent(this, TrafficSetting.class);
                 startActivity(intent);
+                break;
+            case R.id.ct_back_rl:
+                onBackPressed();
                 break;
         }
     }

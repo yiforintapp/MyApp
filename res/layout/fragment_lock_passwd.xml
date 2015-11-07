@@ -2,16 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/fragment_lock_passwd_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <!-- android:layout_above="@+id/tv_passwd_input_tip" -->
-
     <RelativeLayout
         android:id="@+id/iv_app_icon_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_passwd_input_tip"
-        android:layout_marginBottom="@dimen/fragment_password_vertical_space_big" >
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="@dimen/ges_icon_m_top">
+        <!--android:layout_above="@+id/layout_passwd"-->
+        <!--android:layout_marginBottom="@dimen/fragment_password_vertical_space_big"-->
 
         <ImageView
             android:id="@+id/iv_app_icon_bottom"
@@ -50,14 +51,16 @@
         android:id="@+id/tv_passwd_input_tip"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/tv_passwd_hint"
-        android:layout_marginBottom="5dp"
+        android:layout_below="@id/iv_app_icon_layout"
+        android:layout_marginTop="5dp"
         android:ellipsize="marquee"
         android:gravity="center"
         android:singleLine="true"
         android:text="@string/passwd_hint"
         android:textColor="#ffffff"
-        android:textSize="13sp" />
+        android:textSize="14dp"
+        android:visibility="gone" />
+
     <!-- android:textSize="@dimen/fragment_lock_password_passwd_input_tip_textsize" -->
     <!-- android:layout_above="@+id/layout_passwd" -->
 
@@ -65,66 +68,70 @@
         android:id="@+id/tv_passwd_hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/layout_passwd"
+        android:layout_below="@id/tv_passwd_input_tip"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:ellipsize="marquee"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
         android:singleLine="true"
         android:text="@string/passwd_hint_tip"
         android:textColor="#aaffffff"
-        android:textSize="14sp" />
+        android:textSize="14dp"
+        android:visibility="gone" />
 
+    <!--android:layout_above="@+id/key_board"-->
+    <!--android:layout_marginBottom="@dimen/fragment_password_vertical_space_small"-->
     <LinearLayout
         android:id="@+id/layout_passwd"
         android:layout_width="match_parent"
         android:layout_height="@dimen/fragment_lock_password_layout_passwd_height"
-        android:layout_above="@+id/key_board"
-        android:layout_marginBottom="@dimen/fragment_password_vertical_space_small"
+        android:layout_below="@id/iv_app_icon_layout"
         android:layout_marginTop="@dimen/layout_passwd_marginTop"
-        android:gravity="center" >
+        android:gravity="center"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/tv_passwd_1"
-            android:layout_width="@dimen/fragment_lock_password_tv_passwd_width"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_width="@dimen/fragment_lock_password_tv_small_dot"
+            android:layout_height="@dimen/fragment_lock_password_tv_small_dot"
+            android:layout_marginRight="@dimen/fragment_lock_password_tv_small_dot_m_r"
             android:background="@drawable/password_displayed_normal"
             android:gravity="center" />
 
         <ImageView
             android:id="@+id/tv_passwd_2"
-            android:layout_width="@dimen/fragment_lock_password_tv_passwd_width"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_width="@dimen/fragment_lock_password_tv_small_dot"
+            android:layout_height="@dimen/fragment_lock_password_tv_small_dot"
+            android:layout_marginRight="@dimen/fragment_lock_password_tv_small_dot_m_r"
             android:background="@drawable/password_displayed_normal"
             android:gravity="center" />
 
         <ImageView
             android:id="@+id/tv_passwd_3"
-            android:layout_width="@dimen/fragment_lock_password_tv_passwd_width"
-            android:layout_height="match_parent"
-            android:layout_marginRight="20dp"
+            android:layout_width="@dimen/fragment_lock_password_tv_small_dot"
+            android:layout_height="@dimen/fragment_lock_password_tv_small_dot"
+            android:layout_marginRight="@dimen/fragment_lock_password_tv_small_dot_m_r"
             android:background="@drawable/password_displayed_normal"
             android:gravity="center" />
 
         <ImageView
             android:id="@+id/tv_passwd_4"
-            android:layout_width="@dimen/fragment_lock_password_tv_passwd_width"
-            android:layout_height="match_parent"
+            android:layout_width="@dimen/fragment_lock_password_tv_small_dot"
+            android:layout_height="@dimen/fragment_lock_password_tv_small_dot"
             android:background="@drawable/password_displayed_normal"
             android:gravity="center" />
     </LinearLayout>
 
+
+    <!--android:layout_alignParentBottom="true"-->
+    <!--android:layout_marginBottom="@dimen/ad_apace"-->
     <LinearLayout
         android:id="@+id/key_board"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/ad_apace"
+        android:layout_below="@id/layout_passwd"
+        android:layout_marginTop="@dimen/layout_four_passwd_marginTop"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -132,11 +139,11 @@
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
             android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_weight="1"
-            android:gravity="center" >
+            android:gravity="center">
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/tv_1_bottom"
@@ -156,8 +163,8 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
-                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright" >
+                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_m_l"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_m_r">
 
                 <ImageView
                     android:id="@+id/tv_2_bottom"
@@ -176,7 +183,7 @@
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/tv_3_bottom"
@@ -200,11 +207,11 @@
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
             android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_weight="1"
-            android:gravity="center" >
+            android:gravity="center">
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/tv_4_bottom"
@@ -224,8 +231,8 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
-                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright" >
+                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_m_l"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_m_r">
 
                 <ImageView
                     android:id="@+id/tv_5_bottom"
@@ -244,7 +251,7 @@
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/tv_6_bottom"
@@ -268,11 +275,11 @@
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
             android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_weight="1"
-            android:gravity="center" >
+            android:gravity="center">
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/tv_7_bottom"
@@ -292,8 +299,8 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_marginleft"
-                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_marginright" >
+                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_m_l"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_m_r">
 
                 <ImageView
                     android:id="@+id/tv_8_bottom"
@@ -312,7 +319,7 @@
 
             <FrameLayout
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" >
+                android:layout_height="wrap_content">
 
                 <ImageView
                     android:id="@+id/tv_9_bottom"
@@ -330,13 +337,14 @@
             </FrameLayout>
         </LinearLayout>
 
+        <!--android:layout_marginBottom="@dimen/digital_item_marginBottom"-->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="@dimen/digital_item_marginBottom"
             android:layout_marginTop="@dimen/digital_item_marginTop"
             android:layout_weight="1"
-            android:gravity="center" >
+            android:gravity="center">
 
             <View
                 android:id="@+id/tv_ok"
@@ -350,8 +358,8 @@
             <FrameLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp" >
+                android:layout_marginLeft="@dimen/fragment_lock_password_tv_passwd_m_l"
+                android:layout_marginRight="@dimen/fragment_lock_password_tv_passwd_m_r">
 
                 <ImageView
                     android:id="@+id/tv_0_bottom"
@@ -370,7 +378,7 @@
 
             <FrameLayout
                 android:layout_width="@dimen/digital_item_width"
-                android:layout_height="@dimen/digital_item_height" >
+                android:layout_height="@dimen/digital_item_height">
 
                 <ImageView
                     android:id="@+id/tv_delete_bottom"
@@ -385,7 +393,7 @@
                     android:clickable="true"
                     android:gravity="center"
                     android:scaleType="centerInside"
-                    android:src="@drawable/delete_button_selecter" />
+                    android:src="@drawable/digital_del" />
             </FrameLayout>
         </LinearLayout>
     </LinearLayout>
@@ -420,7 +428,7 @@
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
         android:background="@color/white"
-        android:visibility="gone" >
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/iv_adicon2"
@@ -438,7 +446,7 @@
             android:layout_marginTop="6dp"
             android:gravity="center_vertical"
             android:textColor="#333333"
-            android:textSize="12sp" />
+            android:textSize="12dp" />
 
         <TextView
             android:id="@+id/tv_appdesc2"
@@ -452,7 +460,7 @@
             android:gravity="center_vertical"
             android:maxLines="2"
             android:textColor="#333333"
-            android:textSize="10sp" />
+            android:textSize="10dp" />
 
         <ImageView
             android:id="@+id/iv_adopen"
@@ -464,196 +472,14 @@
             android:src="@drawable/bt_ad_halfscreen_open" />
     </RelativeLayout>
 
-    <!-- 普通banner广告 -->
-
-    <RelativeLayout
-        android:id="@+id/rl_nomalBannerAD2"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentBottom="true"
-        android:layout_margin="7dp"
-        android:background="@color/white"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/iv_adicon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="6dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="58dp"
-            android:layout_marginRight="120dp"
-            android:layout_marginTop="3dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/iv_adsign"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginLeft="2dp"
-                android:src="@drawable/ad_sign" />
-
-            <TextView
-                android:id="@+id/tv_appname"
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_appdesc"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="58dp"
-            android:layout_marginRight="120dp"
-            android:ellipsize="marquee"
-            android:gravity="top"
-            android:maxLines="2"
-            android:textColor="#333333"
-            android:textSize="10sp" />
-
-        <Button
-            android:id="@+id/iv_ad_app_download"
-            android:layout_width="90dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="23dp"
-            android:background="@drawable/select_bt_halfscreen_install"
-            android:clickable="false"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
-
-        <ImageView
-            android:id="@+id/iv_adclose"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="4dp"
-            android:layout_marginTop="4dp"
-            android:src="@drawable/ad_close_small" />
-    </RelativeLayout>
-    <!-- AM-2524 	锁屏界面下方Banner出现动画方案 -->
-
-    <RelativeLayout
-        android:id="@+id/rl_superman_bannerAD"
-        android:layout_width="match_parent"
-        android:layout_height="82dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="-10dp"
-        android:background="@drawable/ad_banner_bg"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/iv_superman_adicon"
-            android:layout_width="44dp"
-            android:layout_height="44dp"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="6dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="20dp"
-            android:layout_marginLeft="58dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginTop="11dp"
-            android:layout_toLeftOf="@+id/iv_superman_ad_app_download"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
-
-            <ImageView
-                android:id="@+id/iv_superman_adsign"
-                android:layout_width="21dp"
-                android:layout_height="21dp"
-                android:layout_marginLeft="2dp"
-                android:src="@drawable/ad_sign" />
-
-            <TextView
-                android:id="@+id/tv_superman_appname"
-                android:layout_width="match_parent"
-                android:layout_height="18dp"
-                android:layout_marginLeft="5dp"
-                android:gravity="center_vertical"
-                android:maxLines="1"
-                android:textColor="#333333"
-                android:textSize="12sp" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/tv_superman_ppdesc"
-            android:layout_width="match_parent"
-            android:layout_height="28dp"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="58dp"
-            android:layout_marginRight="5dp"
-            android:layout_toLeftOf="@+id/iv_superman_ad_app_download"
-            android:ellipsize="marquee"
-            android:gravity="top"
-            android:maxLines="2"
-            android:textColor="#333333"
-            android:textSize="10sp" />
-
-        <Button
-            android:id="@+id/iv_superman_ad_app_download"
-            android:layout_width="90dp"
-            android:layout_height="30dp"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/iv_superman_adclose_RL"
-            android:background="@drawable/select_bt_halfscreen_install"
-            android:clickable="false"
-            android:textColor="@color/white"
-            android:textSize="10sp" />
-
-        <RelativeLayout
-            android:id="@+id/iv_superman_adclose_RL"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:paddingBottom="12dp"
-            android:paddingLeft="7dp"
-            android:paddingRight="18dp"
-            android:paddingTop="12dp" >
-
-            <ImageView
-                android:id="@+id/iv_superman_adclose"
-                android:layout_width="14dp"
-                android:layout_height="14dp"
-                android:src="@drawable/ad_close_small" />
-        </RelativeLayout>
-    </RelativeLayout>
-    <!-- 超人动画布局 -->
-
-    <RelativeLayout
-        android:id="@+id/superman_banner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:visibility="gone" >
-
-        <ImageView
-            android:id="@+id/banner_ad_anim_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginLeft="36dp"
-            android:src="@drawable/lock_banner_ad_anim" />
-    </RelativeLayout>
+    <FrameLayout
+        android:id="@+id/camera_preview"
+        android:layout_width="1px"
+        android:layout_height="1px" />
+    
+        <SurfaceView 
+        android:layout_width="1px"
+         android:layout_height="1px" 
+        />
 
 </RelativeLayout>

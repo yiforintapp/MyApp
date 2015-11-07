@@ -6,8 +6,10 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningTaskInfo;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -25,11 +27,15 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.text.TextUtils;
 import android.view.Display;
 import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.BaseInfo;
@@ -40,9 +46,10 @@ public final class Utilities {
 
     private static final int MAX_ICON = 4;
     public static int mCurrentCreenChangeStatus = 1;
+    public final static String PKG_SYSTEM_UI = "com.android.systemui";
 
     public static Drawable getFolderScalePicture(Context context,
-            List<AppItemInfo> folderList, int type) {
+                                                 List<AppItemInfo> folderList, int type) {
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         Resources res = context.getResources();
@@ -321,4 +328,125 @@ public final class Utilities {
         }
         return false;
     }
+
+    @SuppressLint("NewApi")
+    public static boolean isActivityOnTop(Context context, String ActivityName) {
+        if (!isAppOnTop(context)) {
+            return false;
+        }
+        /* now our Application on top, check activity */
+        if (Build.VERSION.SDK_INT > 19) {
+            ActivityManager am = (ActivityManager) context
+                    .getSystemService(Context.ACTIVITY_SERVICE);
+            try {
+                List<ActivityManager.AppTask> tasks = am.getAppTasks();
+                if (tasks != null && tasks.size() > 0) {
+                    ActivityManager.RecentTaskInfo rti = tasks.get(0).getTaskInfo();
+                    if (rti != null) {
+                        Intent intent = rti.baseIntent;
+                        ComponentName cn = intent.getComponent();
+                        if (cn != null && cn.getClassName().equals(context.getClass().getName())) {
+                            return true;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return false;
+        } else {
+            ActivityManager am = (ActivityManager) context
+                    .getSystemService(Context.ACTIVITY_SERVICE);
+            ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+            if (cn.getClassName().equals(ActivityName)) {
+                return true;
+            }
+            return false;
+        }
+    }
+
+    public static boolean isAppOnTop(Context context) {
+        if (Build.VERSION.SDK_INT > 19) {
+            return isAppOnTopAfterLolipop(context);
+        } else {
+            return isAppOnTopBeforeLolipop(context);
+        }
+    }
+
+    private static boolean isAppOnTopAfterLolipop(Context context) {
+        // Android L and above
+        String pkgName = null;
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> list = am.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo pi : list) {
+            if (pi.importance <= ActivityManager.RunningAppProcessInfo.IMPORTANCE_VISIBLE // Foreground
+                    // or
+                    // Visible
+                    && pi.importanceReasonCode == ActivityManager.RunningAppProcessInfo.REASON_UNKNOWN // Filter
+                    // provider
+                    // and
+                    // service
+                    && (0x4 & pi.flags) > 0) { // Must have activities
+                String pkgList[] = pi.pkgList;
+                if (pkgList != null && pkgList.length > 0) {
+                    if (pkgList[0].equals(PKG_SYSTEM_UI)) {
+                        continue;
+                    }
+                    pkgName = pkgList[0];
+                }
+            }
+        }
+
+        if (pkgName == null || !pkgName.equals(context.getPackageName())) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private static boolean isAppOnTopBeforeLolipop(Context context) {
+        ActivityManager am = (ActivityManager) context
+                .getSystemService(Context.ACTIVITY_SERVICE);
+        ComponentName cn = am.getRunningTasks(1).get(0).topActivity;
+        String currentPackageName = cn.getPackageName();
+        if (!TextUtils.isEmpty(currentPackageName)
+                && currentPackageName.equals(context.getPackageName())) {
+            return true;
+        }
+        return false;
+    }
+    
+    public static void goFiveStar(Context context) {
+        Intent intent = null;
+        if (AppUtil.appInstalled(context,
+                "com.android.vending")) {
+            intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri
+                    .parse(Constants.RATING_ADDRESS_MARKET);
+            intent.setData(uri);
+            intent.setPackage("com.android.vending");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                context.startActivity(intent);
+            } catch (Exception e) {
+                goGpBrowser(context);
+            }
+        } else {
+            goGpBrowser(context);
+        }
+    }
+    
+    private static void goGpBrowser(Context context) {
+        Intent intent;
+        intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri
+                .parse(Constants.RATING_ADDRESS_BROWSER);
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {           
+        }
+    }
+    
 }

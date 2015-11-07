@@ -1,0 +1,155 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical"
+    tools:context="com.leo.appmaster.home.HomeTabFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/home_app_lock_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/home_tab_selector"
+            leo:rv_color="@color/white_list_item_ripple"
+            leo:rv_rippleDuration="@integer/ripple_btn_duration">
+
+            <RelativeLayout
+                android:id="@+id/content_app_lock"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:gravity="center">
+
+                <RelativeLayout
+                    android:id="@+id/content_app_lock_red"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/home_ic_applcok_img"
+                        android:layout_width="@dimen/home_tab_ic_size"
+                        android:layout_height="@dimen/home_tab_ic_size"
+                        android:layout_centerHorizontal="true"
+                        android:src="@drawable/ic_home_tab_applock" />
+
+                    <TextView
+                        style="@style/LockListTabText"
+                        android:layout_below="@id/home_ic_applcok_img"
+                        android:text="@string/home_tab_app_lock" />
+                </RelativeLayout>
+
+                <ImageView
+                    android:id="@+id/have_theme_red_dot"
+                    android:layout_width="15dp"
+                    android:layout_height="15dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_toRightOf="@id/content_app_lock_red"
+                    android:src="@drawable/red_dot" />
+            </RelativeLayout>
+
+        </com.leo.appmaster.ui.RippleView>
+
+        <TextView
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@color/home_tab_divider" />
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/home_wifi_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/home_tab_selector"
+            android:gravity="center"
+            leo:rv_color="@color/white_list_item_ripple"
+            leo:rv_rippleDuration="@integer/ripple_btn_duration">
+
+            <ImageView
+                android:id="@+id/home_ic_wifi_img"
+                android:layout_width="@dimen/home_tab_ic_size"
+                android:layout_height="@dimen/home_tab_ic_size"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_home_tab_wifi" />
+
+            <TextView
+                style="@style/HomeTabText"
+                android:layout_below="@id/home_ic_wifi_img"
+                android:text="@string/home_tab_wifi" />
+        </com.leo.appmaster.ui.RippleView>
+
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="2px"
+        android:background="@color/home_tab_divider" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/home_lost_tab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/home_tab_selector"
+            android:gravity="center"
+            leo:rv_color="@color/white_list_item_ripple"
+            leo:rv_rippleDuration="@integer/ripple_btn_duration">
+
+            <ImageView
+                android:id="@+id/home_ic_lost_img"
+                android:layout_width="@dimen/home_tab_ic_size"
+                android:layout_height="@dimen/home_tab_ic_size"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_home_tab_lost" />
+
+            <TextView
+                style="@style/HomeTabText"
+                android:layout_below="@id/home_ic_lost_img"
+                android:text="@string/home_tab_lost" />
+        </com.leo.appmaster.ui.RippleView>
+
+        <TextView
+            android:layout_width="2px"
+            android:layout_height="match_parent"
+            android:background="@drawable/home_area_divider" />
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/home_intruder_tv"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/home_tab_selector"
+            android:gravity="center"
+            leo:rv_color="@color/white_list_item_ripple"
+            leo:rv_rippleDuration="@integer/ripple_btn_duration">
+
+            <ImageView
+                android:id="@+id/home_ic_intruder_img"
+                android:layout_width="@dimen/home_tab_ic_size"
+                android:layout_height="@dimen/home_tab_ic_size"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_home_tab_intuder" />
+
+            <TextView
+                style="@style/HomeTabText"
+                android:layout_below="@id/home_ic_intruder_img"
+                android:text="@string/home_tab_instruder" />
+        </com.leo.appmaster.ui.RippleView>
+
+    </LinearLayout>
+
+</LinearLayout>

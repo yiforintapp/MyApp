@@ -2,22 +2,18 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="6dp"
-    android:paddingRight="6dp"
-	android:background="@drawable/popup_menu_bg" 
-    android:orientation="vertical" >
-<!-- 	android:background="@color/app_hot_text" -->
+    android:paddingRight="8dp"
+    android:orientation="vertical">
 
-<!--         android:background="@color/app_usage_text" -->
-    <ListView
-                android:id="@+id/menu_list"
+    <ListView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/menu_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-    	android:overScrollMode="never"
-        android:divider="@drawable/list_divider"
-        android:listSelector="@drawable/manager_backup_list_selecter"
-        />
-
+        android:background="@drawable/home_pop_bg"
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:listSelector="@null"
+        android:overScrollMode="never" />
 
 
 </LinearLayout>

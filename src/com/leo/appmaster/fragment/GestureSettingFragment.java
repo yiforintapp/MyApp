@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +26,6 @@ import com.leo.appmaster.applocker.gesture.LockPatternView;
 import com.leo.appmaster.applocker.gesture.LockPatternView.Cell;
 import com.leo.appmaster.applocker.gesture.LockPatternView.DisplayMode;
 import com.leo.appmaster.applocker.gesture.LockPatternView.OnPatternListener;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.BackUpActivity;
@@ -50,15 +48,13 @@ public class GestureSettingFragment extends BaseFragment implements
         OnClickListener, OnPatternListener, OnDismissListener,
         OnDiaogClickListener {
 
-    private TextView mTvGestureTip, mTvPasswdFuncTip, mTvBottom;
-    private ImageView iv_reset_icon;
+    private TextView mTvGestureTip, mTvPasswdFuncTip;
     private View reset_button_content, reset_buton_content_activity;
     private LockPatternView mLockPatternView;
     private int mInputCount = 1;
     private String mTempGesture1, mTempGesture2;
     private boolean mGotoPasswdProtect;
     private Animation mShake;
-    private static final String TO_ACTIVITY_PACKAGE_NAME = "to_activity_package_name";
 
     @Override
     protected int layoutResourceId() {
@@ -67,14 +63,12 @@ public class GestureSettingFragment extends BaseFragment implements
 
     @Override
     protected void onInitUI() {
-        iv_reset_icon = (ImageView) findViewById(R.id.iv_reset_icon);
         mLockPatternView = (LockPatternView) findViewById(R.id.gesture_lockview);
         reset_button_content = findViewById(R.id.reset_button_content);
         reset_buton_content_activity = mActivity.findViewById(R.id.switch_bottom_content);
         mLockPatternView.setOnPatternListener(this);
         mTvGestureTip = (TextView) findViewById(R.id.tv_gesture_tip);
         mTvPasswdFuncTip = (TextView) findViewById(R.id.tv_passwd_function_tip);
-        mTvBottom = (TextView) findViewById(R.id.tv_bottom);
         reset_button_content.setOnClickListener(this);
 
         if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
@@ -160,7 +154,6 @@ public class GestureSettingFragment extends BaseFragment implements
             mTempGesture2 = LockPatternUtils.patternToString(pattern);
             if (mTempGesture2.equals(mTempGesture1)) {
                 AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
-                Intent intent = null;
                 if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     SDKWrapper.addEvent(GestureSettingFragment.this.mActivity, SDKWrapper.P1,
                             "first",
@@ -179,7 +172,7 @@ public class GestureSettingFragment extends BaseFragment implements
                     return;
                 }
 
-                LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
+                mLockManager.filterPackage(mActivity.getPackageName(), 500);
 
                 Toast.makeText(mActivity, R.string.set_gesture_suc, 1).show();
                 if (!pref.hasPswdProtect()) {
@@ -302,7 +295,6 @@ public class GestureSettingFragment extends BaseFragment implements
                 } else if (type == ((LockSettingActivity) mActivity).mBackup) {
                     gotoBackUp(type);
                 } else if (type == ((LockSettingActivity) mActivity).mQuickGues) {
-//                    gotoQuickGues(type);
                 } else if (type == ((LockSettingActivity) mActivity).mLockThem) {
                     gotoLockThem(type);
                 } else if (type == ((LockSettingActivity) mActivity).mPrivacyContact) {
@@ -311,7 +303,7 @@ public class GestureSettingFragment extends BaseFragment implements
                     gotoHome();
                 }
             } else {
-                LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
+                mLockManager.filterPackage(mActivity.getPackageName(), 500);
                 intent = new Intent(mActivity, HomeActivity.class);
                 mActivity.startActivity(intent);
             }
@@ -319,7 +311,7 @@ public class GestureSettingFragment extends BaseFragment implements
         mTvGestureTip.postDelayed(new Runnable() {
             @Override
             public void run() {
-                LockManager.getInstatnce().startLockService();
+                mLockManager.startLockService();
             }
         }, 2000);
         mActivity.finish();
@@ -432,8 +424,7 @@ public class GestureSettingFragment extends BaseFragment implements
     }
 
     private void goToAppLock() {
-        LockManager lm = LockManager.getInstatnce();
-        LockMode curMode = lm.getCurLockMode();
+        LockMode curMode = mLockManager.getCurLockMode();
         Intent intent;
         if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
             intent = new Intent(mActivity, RecommentAppLockListActivity.class);
@@ -442,7 +433,7 @@ public class GestureSettingFragment extends BaseFragment implements
             intent.putExtra("target", 0);
             startActivity(intent);
             curMode.haveEverOpened = true;
-            lm.updateMode(curMode);
+            mLockManager.updateMode(curMode);
         } else {
             intent = new Intent(mActivity, AppLockListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |

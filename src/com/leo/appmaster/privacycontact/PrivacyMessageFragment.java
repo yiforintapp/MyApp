@@ -50,14 +50,13 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class PrivacyMessageFragment extends BaseFragment implements OnItemClickListener,
         OnItemLongClickListener {
 
     private static final String QUERY_SQL_TABLE_MESSAGE_LIST_MODEL = "query_list_model";
     private static final String QUERY_SQL_TABLE_MESSAGE_ITEM_MODEL = "query_item_model";
-
-//    private TextView mTextView;
     private LinearLayout mDefaultText;
     private ListView mListMessage;
     private MyMessageAdapter mAdapter;
@@ -86,7 +85,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
     protected void onInitUI() {
         mContext = getActivity();
         mSimpleDateFormate = new SimpleDateFormat("yy/MM/dd");
-//        mTextView = (TextView) findViewById(R.id.content);
         mDefaultText = (LinearLayout) findViewById(R.id.message_default_tv);
         mButtomTip = (RelativeLayout) findViewById(R.id.buttom_tip);
         mMessageList = new ArrayList<MessageBean>();
@@ -245,52 +243,60 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
         List<MessageBean> mMessages = new ArrayList<MessageBean>();
         Map<String, MessageBean> messageList = new HashMap<String, MessageBean>();
         int noReadCount = 0;
-        Cursor cur = mContext.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
-                selection, selectionArgs, Constants.COLUMN_MESSAGE_DATE + " desc");
-        if (cur != null) {
-            while (cur.moveToNext()) {
-                MessageBean mb = new MessageBean();
-                String number = cur.getString(cur
-                        .getColumnIndex(Constants.COLUMN_MESSAGE_PHONE_NUMBER));
-                String threadId = cur.getString(cur
-                        .getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
-                String name = cur.getString(cur
-                        .getColumnIndex(Constants.COLUMN_MESSAGE_CONTACT_NAME));
-                String body = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_BODY));
-                int type = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_TYPE));
-                int isRead = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_IS_READ));
-                String time = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_DATE));
-                Bitmap icon = PrivacyContactUtils.getContactIcon(mContext, number);
-                if (icon != null) {
-                    mb.setContactIcon(icon);
-                } else {
-                    mb.setContactIcon(((BitmapDrawable) mContext.getResources().getDrawable(
-                            R.drawable.default_user_avatar)).getBitmap());
-                }
-                mb.setMessageBody(body);
-                if (number != null) {
-                    if (name != null && !"".equals(name)) {
-                        mb.setMessageName(name);
+        Cursor cur = null;
+        try {
+            cur = mContext.getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
+                    selection, selectionArgs, Constants.COLUMN_MESSAGE_DATE + " desc");
+            if (cur != null) {
+                while (cur.moveToNext()) {
+                    MessageBean mb = new MessageBean();
+                    String number = cur.getString(cur
+                            .getColumnIndex(Constants.COLUMN_MESSAGE_PHONE_NUMBER));
+                    String threadId = cur.getString(cur
+                            .getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
+                    String name = cur.getString(cur
+                            .getColumnIndex(Constants.COLUMN_MESSAGE_CONTACT_NAME));
+                    String body = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_BODY));
+                    int type = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_TYPE));
+                    int isRead = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_IS_READ));
+                    String time = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_DATE));
+                    Bitmap icon = PrivacyContactUtils.getContactIcon(mContext, number);
+                    if (icon != null) {
+                        mb.setContactIcon(icon);
                     } else {
-                        mb.setMessageName(number);
+                        mb.setContactIcon(((BitmapDrawable) mContext.getResources().getDrawable(
+                                R.drawable.default_user_avatar)).getBitmap());
                     }
-                }
-                mb.setPhoneNumber(number);
-                mb.setMessageType(type);
-                mb.setMessageIsRead(isRead);
-                mb.setMessageThreadId(threadId);
-                mb.setMessageTime(time);
-                if (threadId != null) {
-                    if (!messageList.containsKey(threadId)) {
-                        int temp = noReadMessage(number);
-                        mb.setCount(temp);
-                        messageList.put(threadId, mb);
+                    mb.setMessageBody(body);
+                    if (number != null) {
+                        if (name != null && !"".equals(name)) {
+                            mb.setMessageName(name);
+                        } else {
+                            mb.setMessageName(number);
+                        }
                     }
+                    mb.setPhoneNumber(number);
+                    mb.setMessageType(type);
+                    mb.setMessageIsRead(isRead);
+                    mb.setMessageThreadId(threadId);
+                    mb.setMessageTime(time);
+                    if (threadId != null) {
+                        if (!messageList.containsKey(threadId)) {
+                            int temp = noReadMessage(number);
+                            mb.setCount(temp);
+                            messageList.put(threadId, mb);
+                        }
+                    }
+                    mMessages.add(mb);
                 }
-                mMessages.add(mb);
             }
-            cur.close();
+        } catch (Exception e) {
+        } finally {
+            if(cur != null) {
+                cur.close();
+            }
         }
+
         if (QUERY_SQL_TABLE_MESSAGE_LIST_MODEL.equals(model)) {
             Iterable<MessageBean> it = messageList.values();
             for (MessageBean mb : it) {
@@ -392,13 +398,13 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
             }
             Bitmap icon = mb.getContactIcon();
             vh.contactIcon.setImageBitmap(icon);
-            if (mMessageList != null && mMessageList.size() > 0) {
-                if (position == mMessageList.size() - 1) {
-                    vh.bottomLine.setVisibility(View.GONE);
-                } else {
-                    vh.bottomLine.setVisibility(View.VISIBLE);
-                }
-            }
+//            if (mMessageList != null && mMessageList.size() > 0) {
+//                if (position == mMessageList.size() - 1) {
+//                    vh.bottomLine.setVisibility(View.GONE);
+//                } else {
+//                    vh.bottomLine.setVisibility(View.VISIBLE);
+//                }
+//            }
             return convertView;
         }
     }
@@ -533,11 +539,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                                         Context.NOTIFICATION_SERVICE);
                                         notificationManager.cancel(20140901);
                                     }
-                                    /**
-                                     * 对快捷手势隐私联系人未读，红点操作
-                                     */
-                                    PrivacyContactManager.getInstance(mContext)
-                                            .deletePrivacyMsmCancelRedTip(mContext);
 
                                     LeoEventBus
                                             .getDefaultBus()
@@ -562,7 +563,7 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                         try {
                             PrivacyContactUtils.insertMessageToSystemSMS(values, mContext);
                         } catch (Exception e) {
-                            Log.e("PrivacyMessageFragment Operation",
+                            LeoLog.i("PrivacyMessageFragment Operation",
                                     "PrivacyContactFragment restore message fail!");
                         }
                         try {
@@ -615,11 +616,6 @@ public class PrivacyMessageFragment extends BaseFragment implements OnItemClickL
                                                         Context.NOTIFICATION_SERVICE);
                                         notificationManager.cancel(20140901);
                                     }
-                                    /**
-                                     * 对快捷手势隐私联系人未读，红点操作
-                                     */
-                                    PrivacyContactManager.getInstance(mContext)
-                                            .deletePrivacyMsmCancelRedTip(mContext);
 
                                     LeoEventBus
                                             .getDefaultBus()

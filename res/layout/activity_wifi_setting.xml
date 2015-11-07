@@ -1,0 +1,58 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/wifi_setting_title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+
+    <com.leo.appmaster.ui.RippleView
+        android:id="@+id/content_item_all"
+        android:layout_width="match_parent"
+        android:layout_height="68dp"
+        android:layout_below="@id/wifi_setting_title_bar"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/home_tab_selector"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="20dp"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/lock_app_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text="@string/wifi_scan_result_scan"
+                android:textColor="@color/cool_black"
+                android:textSize="@dimen/wifi_set_title_text_size" />
+
+            <TextView
+                android:id="@+id/lock_app_desc"
+                android:layout_width="225dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/lock_app_title"
+                android:layout_marginTop="5dp"
+                android:text="@string/wifi_scan_result_scan_desc"
+                android:textColor="@color/cool_grey"
+                android:textSize="@dimen/wifi_set_title_text_des_size" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/lock_app_check"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="26dp" />
+
+        <View style="@style/priAppItem" />
+    </com.leo.appmaster.ui.RippleView>
+</RelativeLayout>

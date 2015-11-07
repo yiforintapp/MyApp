@@ -1,10 +1,8 @@
 package com.leo.appmaster.sdk;
 
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.NetworkUtils;
 import android.net.Uri;
 import android.net.http.SslError;
 import android.os.Build;

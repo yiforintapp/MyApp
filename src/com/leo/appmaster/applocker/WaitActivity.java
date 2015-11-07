@@ -1,8 +1,6 @@
 
 package com.leo.appmaster.applocker;
 
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.animation.LinearInterpolator;
@@ -14,11 +12,13 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.TimeView;
 import com.leo.appmaster.utils.BuildProperties;
+import com.leo.tools.animator.ValueAnimator;
+import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 
 public class WaitActivity extends BaseActivity {
 
     private TextView mTvTime;
-    private int mWaitTime = 10;
+    private int mWaitTime = 10;//10
     private int mInitTime = 0;
     private UpdateTask mTask;
     private TimeView mTimeView;
@@ -139,8 +139,10 @@ public class WaitActivity extends BaseActivity {
 //        super.onBackPressed();
         Intent intent = new Intent(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
-        this.startActivity(intent);
-        
+        try {
+            startActivity(intent);
+        } catch (Exception e) {          
+        }        
     }
 
     private class UpdateTask implements Runnable {

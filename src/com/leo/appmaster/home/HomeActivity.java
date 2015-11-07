@@ -1,52 +1,39 @@
-
 package com.leo.appmaster.home;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.ActivityManager.RunningTaskInfo;
-import android.app.Dialog;
+import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.content.Intent.ShortcutIconResource;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.drawable.AnimationDrawable;
+import android.graphics.Color;
 import android.net.Uri;
-import android.os.Build;
-import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
-import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewStub;
-import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -54,278 +41,169 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.LockOptionActivity;
-import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.PasswdProtectActivity;
-import com.leo.appmaster.applocker.PasswdTipActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.activity.AboutActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
-import com.leo.appmaster.appmanage.view.HomeAppManagerFragment;
-import com.leo.appmaster.appsetting.AboutActivity;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.MsgCenterTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
-import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.fragment.HomeLockFragment;
-import com.leo.appmaster.fragment.HomePravicyFragment;
-import com.leo.appmaster.fragment.Selectable;
-import com.leo.appmaster.home.HomeShadeView.OnShaderColorChangedLisetner;
-import com.leo.appmaster.msgcenter.MsgCenterActivity;
+import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
+import com.leo.appmaster.schedule.PhoneSecurityFetchJob;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
-import com.leo.appmaster.ui.IconPagerAdapter;
-import com.leo.appmaster.ui.LeoHomePopMenu;
-import com.leo.appmaster.ui.LeoPagerTab;
-import com.leo.appmaster.ui.dialog.LEOSelfIconAlarmDialog;
+import com.leo.appmaster.ui.LinearRippleView;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LanguageUtils;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.RootChecker;
+import com.leo.appmaster.utils.Utilities;
+import com.leo.appmaster.videohide.VideoItemBean;
+import com.leo.imageloader.ImageLoader;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 
-@SuppressLint("ResourceAsColor")
-public class HomeActivity extends BaseFragmentActivity implements OnClickListener,
-        OnItemClickListener,
-        OnPageChangeListener, OnShaderColorChangedLisetner {
-
-    private final static String KEY_ROOT_CHECK = "root_check";
-    public final static long INTERVEL_CLICK_AD = 24 * 60 * 60 * 1000;
-    public static final String ROTATE_FRAGMENT = "rotate_fragment";
-    /* 数组中为不显示开启高级保护的渠道 */
-    public static final String[] FILTER_CHANNEL = {
-            "0001a"
-    };
-
-    private ViewStub mViewStub;
-    private MultiModeView mMultiModeView;
-    private DrawerLayout mDrawerLayout;
-    private ImageView mLeftMenu;
-    private ListView mMenuList;
-    private HomeTitleBar mTtileBar;
-    private LeoPagerTab mPagerTab;
-    private ViewPager mViewPager;
-    private View mBgStatusbar, mFgStatusbar;
-    private HomeShadeView mShadeView;
-    private LeoHomePopMenu mLeoPopMenu;
-    private LEOSelfIconAlarmDialog mSelfIconDialog;
-    private float mDrawerOffset;
-    private Handler mHandler = new Handler();
-    private DrawerArrowDrawable mDrawerArrowDrawable;
-    private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
-    // private ImageView app_hot_tip_icon;
-    private int type;
-    private MobvistaAdWall mWallAd;
-    private IswipUpdateTipDialog mIswipDialog;
+public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
+        AdapterView.OnItemClickListener, IPrivacyNewActivity {
     private static final String TAG = "HomeActivity";
-    private ImageView mLeftMenuRedTip;
-    private AnimationDrawable adAnimation;
-    private ImageView mAdIcon;
-    // private boolean isEnterPrivacySuggest = false;
-    private MenuAdapter mMenuAdapter;
-    private TextView mUnreadCountTv;
+
+    private DrawerLayout mDrawerLayout;
+    private ListView mMenuList;
+    private HomeToolbar mToolbar;
+    private DrawerArrowDrawable mDrawerArrowDrawable;
+    private float mDrawerOffset;
     private List<MenuItem> mMenuItems;
-    private AdvanceProtectTipDialog mAdvanceProtectDialog;
+    private MenuAdapter mMenuAdapter;
+
+//    private ImageView mAdIcon;
+
+//    private MobvistaAdWall mWallAd;
+    private Handler mHandler = new Handler();
+
     public static int mHomeAdSwitchOpen = -1;
-    private boolean isCanShow = false;
+
+    private IswipUpdateTipDialog mIswipDialog;
+
+    private boolean mShowIswipeFromNotfi;
+
+    private HomeMoreFragment mMoreFragment;
+    private HomePrivacyFragment mPrivacyFragment;
+    private HomeTabFragment mTabFragment;
+    private HomeScanningFragment mScanningFragment;
+    private PrivacyHelper mPrivacyHelper;
+    private boolean mProcessAlreadyTimeout;
+    private int mProcessedScore;
+    private String mProcessedMgr;
+
+    private int mHeaderHeight;
+    private int mToolbarHeight;
+    private CommonToolbar mCommonToolbar;
+    private Animation mComingInAnim;
+    private Animation mComingOutAnim;
+
+    private List<AppItemInfo> mAppList;
+    private List<PhotoItem> mPhotoList;
+    private List<VideoItemBean> mVideoList;
+    private List<ContactBean> mContactList;
+
+    private boolean mShownIgnoreDlg;
+    private boolean mShowContact;
+
+    private int mScoreBeforeProcess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        // lockType , num or guesture
+        setContentView(R.layout.activity_home_main);
+        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
+        mPrivacyHelper = PrivacyHelper.getInstance(this);
         initUI();
-        tryTransStatusbar();
-        // installShortcut();
-
-        // TODO
-        mobvistaCheck();
-        // Ad from Home
-        shouldShowAd();
-
+//        initMobvista();
         FeedbackHelper.getInstance().tryCommit();
         shortcutAndRoot();
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
-        LeoEventBus.getDefaultBus().register(this);
-        // AM-2128 偶现图片显示异常，先暂时注释掉
-        // releaseSysResources();
-        // /* 获取是否从iswipe通知进入 */
-        // checkIswipeNotificationTo();
-        /* 白名单引导 */
+        recordEnterHomeTimes();
+
 //        autoStartDialogHandler();
         // 进入首页拉取一次消息中心列表
         MsgCenterFetchJob.startImmediately();
+        LeoEventBus.getDefaultBus().register(this);
+
+        checkEnterScanIntent(getIntent());
+
+        /*手机防盗开启人数，在用户没有打开手机防盗时没此进入主页拉取一次*/
+        PhoneSecurityFetchJob.startImmediately();
     }
 
-//    /**
-//     * 释放系统预加载资源，完全无用，占用内存约10M
-//     */
-//    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
-//    private void releaseSysResources() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//            sPreloadedDrawables[0] = new LongSparseArray<Drawable.ConstantState>();
-//            sPreloadedDrawables[1] = new LongSparseArray<Drawable.ConstantState>();
-//
-//            Resources res = getResources();
-//
-//            try {
-//                Field field = res.getClass().getDeclaredField("sPreloadedDrawables");
-//                field.setAccessible(true);
-//                field.set(res, sPreloadedDrawables);
-//            } catch (NoSuchFieldException e) {
-//                e.printStackTrace();
-//            } catch (IllegalArgumentException e) {
-//                e.printStackTrace();
-//            } catch (IllegalAccessException e) {
-//                e.printStackTrace();
-//            }
-//        }
-//    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        checkEnterScanIntent(intent);
+    }
 
-    // private void tryIsFromLockMore() {
-    // // TODO Auto-generated method stub
-    // Intent intent = getIntent();
-    //
-    // mIsFromAppLockList= intent.getBooleanExtra("isFromAppLockList", false);
-    // Log.e("lockmore",
-    // "isfromlist"+intent.getBooleanExtra("isFromAppLockList", false));
-    // }
+    private void checkEnterScanIntent(Intent intent) {
+        if (intent == null) return;
 
-    // 伪装的引导，当第一次将应用加了所后返回home，弹出提示。
-    private void showWeiZhuangTip() {
-
-        // Log.e("isshow", "isfromlist"+mIsFromAppLockList);
-        LeoLog.d("isshow", "isneed" + AppMasterPreference.getInstance(this).getIsNeedPretendTips()
-                + "");
-        LeoLog.d("isshow", "lockedcount" + LockManager.getInstatnce().getLockedAppCount() + "");
-        LeoLog.d("isshow", "getpretendtype" + AppMasterPreference.getInstance(this).getPretendLock()
-                + "");
-        LeoLog.d("isshow", "getisfromAppList"
-                + AppMasterPreference.getInstance(this).getIsFromLockList() + "");
-        if (AppMasterPreference.getInstance(this).getIsNeedPretendTips()
-                && LockManager.getInstatnce().getLockedAppCount() > 0
-                && AppMasterPreference.getInstance(this).getPretendLock() == 0 &&
-                AppMasterPreference.getInstance(this).getIsFromLockList() == true) {
-            if (showAdvanceProtectDialog()) {
-                if (mSelfIconDialog == null) {
-                    mSelfIconDialog = new LEOSelfIconAlarmDialog(this);
-                    mSelfIconDialog.setIcon(R.drawable.pretend_guide);
-                    mSelfIconDialog
-                            .setOnClickListener(new LEOSelfIconAlarmDialog.OnDiaogClickListener() {
-
-                                @Override
-                                public void onClick(int which) {
-                                    if (which == 1) {
-                                        SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
-                                                "coverguide", "cli_y");
-
-                                        mSelfIconDialog.dismiss();
-                                        if (mFragmentHolders[0].fragment != null) {
-
-                                            HomeLockFragment fragment = (HomeLockFragment) mFragmentHolders[0].fragment;
-
-                                            mPagerTab.setCurrentItem(0);
-                                            fragment.playPretendEnterAnim();
-                                        }
-                                    } else if (which == 0) {
-                                        SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1,
-                                                "coverguide", "cli_n");
-                                    }
-                                    dismissDialog(mSelfIconDialog);
-                                }
-                            });
-                    //
-                }
-                mSelfIconDialog.setSureButtonText(getString(R.string.button_disguise_guide_select));
-                mSelfIconDialog.setLeftBtnStr(getString(R.string.button_disguise_guide_cancel));
-                mSelfIconDialog.setContent(getString(R.string.button_disguise_guide_content));// poha
-                                                                                              // to
-                                                                                              // du
-                mSelfIconDialog.setCanceledOnTouchOutside(false);
-                mSelfIconDialog.show();
-                AppMasterPreference.getInstance(this).setIsNeedPretendTips(false);
+        boolean enterScan = intent.getBooleanExtra(Constants.PRIVACY_ENTER_SCAN, false);
+        int type = intent.getIntExtra(Constants.PRIVACY_ENTER_SCAN_TYPE, PrivacyHelper.PRIVACY_NONE);
+        LeoLog.i(TAG, "checkEnterScanIntent, enterScan: " + enterScan + " | type: " + type);
+        if (enterScan) {
+            String description = null;
+            if (type == PrivacyHelper.PRIVACY_APP_LOCK) {
+                description = "prilevel_cnts_app";
+            } else if (type == PrivacyHelper.PRIVACY_HIDE_PIC) {
+                description = "prilevel_cnts_pic";
+            } else if (type == PrivacyHelper.PRIVACY_HIDE_VID) {
+                description = "prilevel_cnts_vid";
             }
-        } else {
-            AppMasterPreference.getInstance(this).setIsHomeToLockList(false);
-            AppMasterPreference.getInstance(this).setIsFromLockList(false);
-            AppMasterPreference.getInstance(this).setIsClockToLockList(false);
+            if (description != null) {
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "prilevel", description);
+            }
+            onShieldClick();
         }
     }
-
-    // @Override
-    // protected void onActivityResult(int requestCode, int resultCode, Intent
-    // data) {
-    // // TODO Auto-generated method stub
-    // Log.e("poha","resultCode"+resultCode);
-    // Log.e("poha","reqCode"+requestCode);
-    // if(resultCode==RESULT_OK)
-    // {
-    // Log.e("poha","in if");
-    // // switch (requestCode) {
-    // //
-    // // case 0:
-    // mIsFromAppLockList = data.getBooleanExtra("isFromAppLockList", false);
-    //
-    //
-    //
-    //
-    //
-    //
-    // Log.e("poha","data.getBooleanExtra(isFromAppLockList, false);======"
-    // +data.getBooleanExtra("isFromAppLockList", false));
-    // // break;
-    // //
-    // // default:
-    // // break;
-    // // }
-    // }
-
-    // }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         LeoEventBus.getDefaultBus().unregister(this);
-        if (mWallAd != null) {
-            mWallAd.release();
-            mWallAd = null;
-        }
-        if (mAdvanceProtectDialog != null) {
-            mAdvanceProtectDialog.dismiss();
-            mAdvanceProtectDialog = null;
-        }
+//        if (mWallAd != null) {
+//            mWallAd.release();
+//            mWallAd = null;
+//        }
         if (mIswipDialog != null) {
             mIswipDialog.dismiss();
             mIswipDialog = null;
         }
-    }
 
-    @Override
-    protected void onPause() {
-        removeAppFragmentGestureBg();
-        super.onPause();
+        // 重置隐私等级减少的分数
+        PrivacyHelper.getInstance(this).resetDecScore();
+        ImageLoader.getInstance().clearMemoryCache();
     }
 
     public void onEventMainThread(BackupEvent event) {
-        String msg = event.eventMsg;
-        if (HomeAppManagerFragment.FINISH_HOME_ACTIVITY_FALG.equals(msg)) {
-            this.finish();
-        } else if (HomeAppManagerFragment.ISWIPE_CANCEL_RED_TIP.equals(msg)) {
-            if (mPagerTab != null) {
-                mFragmentHolders[2].isRedTip = false;
-                mPagerTab.notifyDataSetChanged();
-            }
-        }
+        // TODO: 2015/9/30 检查是否必要
+//        String msg = event.eventMsg;
+//        if (HomeAppManagerFragment.FINISH_HOME_ACTIVITY_FALG.equals(msg)) {
+//            this.finish();
+//        } else if (HomeAppManagerFragment.ISWIPE_CANCEL_RED_TIP.equals(msg)) {
+//            if (mPagerTab != null) {
+//                mFragmentHolders[2].isRedTip = false;
+//                mPagerTab.notifyDataSetChanged();
+//            }
+//        }
     }
 
     public void onEvent(final MsgCenterEvent event) {
@@ -337,32 +215,171 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             @Override
             public void run() {
                 int count = event.count;
-                String unreadCountStr = count + "";
-                if (count > 99) {
-                    unreadCountStr = "99+";
-                }
 
                 if (count <= 0) {
-                    mUnreadCountTv.setVisibility(View.GONE);
+                    mToolbar.showMsgcenterUnreadCount(false, 0);
                 } else {
-                    mUnreadCountTv.setVisibility(View.VISIBLE);
-                    mUnreadCountTv.setText(unreadCountStr);
+                    mToolbar.showMsgcenterUnreadCount(true, count);
                 }
             }
         });
         LeoLog.i(TAG, "onEvent, event: " + event);
     }
 
+    public void onShieldClick() {
+        int securityScore = mPrivacyHelper.getSecurityScore();
+        if (securityScore == 100) {
+            mShowContact = false;
+//            mMoreFragment.setEnable(false);
+//            startProcess();
+//            Toast.makeText(this, R.string.pri_pro_summary_confirm, Toast.LENGTH_SHORT).show();
+//            return;
+        } else {
+            mShowContact = true;
+        }
+        if (!mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
+            mTabFragment.dismissTab();
+            mPrivacyFragment.setShowColorProgress(false);
+            mMoreFragment.setEnable(false);
+
+            Animation comingIn = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_in);
+            Animation comingOut = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_out);
+
+            mToolbar.startAnimation(comingIn);
+            mCommonToolbar.startAnimation(comingOut);
+            mToolbar.setVisibility(View.INVISIBLE);
+            mCommonToolbar.setVisibility(View.VISIBLE);
+            mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_privacyScan");
+        }
+    }
+
+    public void onTabAnimationFinish() {
+        if (!mTabFragment.isTabDismiss()) {
+            mPrivacyFragment.setShowColorProgress(true);
+        } else {
+            int securityScore = mPrivacyHelper.getSecurityScore();
+            if (securityScore == 100) {
+                startProcess();
+            } else {
+                mScanningFragment = new HomeScanningFragment();
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.addToBackStack(null);
+                ft.replace(R.id.pri_pro_content, mScanningFragment);
+                ft.commit();
+            }
+        }
+    }
+
+    public void onScanningStart(int duration) {
+        mPrivacyFragment.showScanningPercent(duration);
+    }
+
+    public void onScanningFinish(List<AppItemInfo> appList, List<PhotoItem> photoItems, List<VideoItemBean> videoItemBeans) {
+        mAppList = appList;
+        mPhotoList = photoItems;
+        mVideoList = videoItemBeans;
+    }
+
+    public void onExitScanning() {
+        if (mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
+            getFragmentManager().popBackStack();
+            mTabFragment.showTab();
+            mMoreFragment.setEnable(true);
+            mPrivacyFragment.reset();
+
+            mToolbar.setVisibility(View.VISIBLE);
+            mCommonToolbar.setVisibility(View.INVISIBLE);
+
+            mToolbar.startAnimation(mComingOutAnim);
+            mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+            mCommonToolbar.startAnimation(mComingInAnim);
+
+            mDrawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+        }
+    }
+
+    public void setContactList(List<ContactBean> contactList) {
+        mContactList = contactList;
+    }
+
+    // 是否已显示过跳过弹窗
+    public boolean shownIgnoreDlg() {
+        return mShownIgnoreDlg;
+    }
+
+    // 设置已显示过跳过弹窗
+    public void setShownIngoreDlg() {
+        mShownIgnoreDlg = true;
+    }
+
+    public void startProcess() {
+        mShownIgnoreDlg = false;
+        int count = 1;
+        if (mAppList != null && mAppList.size() > 0) {
+            count++;
+        }
+
+        if (mPhotoList != null && mPhotoList.size() > 0) {
+            count++;
+        }
+
+        if (mVideoList != null && mVideoList.size() > 0) {
+            count++;
+        }
+        mPrivacyFragment.startProcessing(count);
+        jumpToNextFragment();
+        mScanningFragment = null;
+    }
+
+    public int getToolbarColor() {
+        return mPrivacyFragment.getToolbarColor();
+    }
+
+    public void jumpToNextFragment() {
+        mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_NONE);
+
+        getFragmentManager().popBackStack();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.setCustomAnimations(R.anim.fragment_down_to_up, 0, 0, R.anim.fragment_up_to_down);
+        if (mAppList != null && mAppList.size() > 0) {
+            PrivacyNewFragment fragment = PrivacyNewAppFragment.newInstance();
+            ft.replace(R.id.pri_pro_content, fragment);
+            fragment.setData(mAppList);
+            mAppList = null;
+        } else if (mPhotoList != null && mPhotoList.size() > 0) {
+            Fragment fragment = PrivacyNewPicFragment.getFragment(mPhotoList);
+            ft.replace(R.id.pri_pro_content, fragment);
+            mPhotoList = null;
+        } else if (mVideoList != null && mVideoList.size() > 0) {
+            Fragment fragment = PrivacyNewVideoFragment.getFragment(mVideoList);
+            ft.replace(R.id.pri_pro_content, fragment);
+            mVideoList = null;
+        } else {
+            mPrivacyFragment.startFinalAnim();
+            PrivacyConfirmFragment fragment = PrivacyConfirmFragment.newInstance(mShowContact);
+            fragment.setDataList(mContactList);
+            ft.replace(R.id.pri_pro_content, fragment);
+        }
+        ft.addToBackStack(null).commit();
+    }
+
     private void initUI() {
-        mViewStub = (ViewStub) findViewById(R.id.viewstub);
-        mPagerTab = (LeoPagerTab) findViewById(R.id.tab_indicator);
-        mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        initFragment();
-        mViewPager.setAdapter(new HomePagerAdapter(getSupportFragmentManager()));
-        mViewPager.setOffscreenPageLimit(2);
-        mPagerTab.setViewPager(mViewPager);
-        mPagerTab.setOnPageChangeListener(this);
-        mPagerTab.setCurrentItem(0);
+        mMoreFragment = (HomeMoreFragment) getFragmentManager().findFragmentById(R.id.home_more_ft);
+        mPrivacyFragment = (HomePrivacyFragment) getFragmentManager().findFragmentById(R.id.home_anim_ft);
+        mTabFragment = (HomeTabFragment) getFragmentManager().findFragmentById(R.id.home_tab_ft);
+
+        mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
+        mToolbarHeight = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
+        mCommonToolbar = (CommonToolbar) findViewById(R.id.home_common_toobar);
+        mCommonToolbar.setToolbarTitle(R.string.home_privacy_status);
+        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mCommonToolbar.setNavigationClickListener(this);
+
+        mComingInAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_in);
+        mComingOutAnim = AnimationUtils.loadAnimation(this, R.anim.alpha_coming_out);
 
         mDrawerArrowDrawable = new DrawerArrowDrawable(getResources());
         mDrawerArrowDrawable.setStrokeColor(getResources()
@@ -373,6 +390,23 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             public void onDrawerSlide(View drawerView, float slideOffset) {
                 mDrawerOffset = slideOffset;
                 mDrawerArrowDrawable.setParameter(mDrawerOffset);
+                if (slideOffset > 0) {
+                    int color = mPrivacyFragment.getToolbarColor();
+                    int a = Color.alpha(color);
+                    int r = Color.red(color);
+                    int g = Color.green(color);
+                    int b = Color.blue(color);
+                    a *= slideOffset;
+
+                    color = Color.argb(a, r, g, b);
+                    mToolbar.setBackgroundColor(color);
+                    mMoreFragment.setEnable(false);
+                    mToolbar.setNavigationLogoResource(R.drawable.ic_toolbar_back);
+                } else {
+                    mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+                    mMoreFragment.setEnable(true);
+                    mToolbar.setNavigationLogoResource(R.drawable.ic_toolbar_menu);
+                }
             }
         });
         mMenuList = (ListView) findViewById(R.id.menu_list);
@@ -381,193 +415,127 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mMenuList.setAdapter(mMenuAdapter);
         mMenuList.setOnItemClickListener(this);
 
-        mTtileBar = (HomeTitleBar) findViewById(R.id.layout_title_bar);
-        mLeftMenu = (ImageView) findViewById(R.id.iv_menu);
-        mLeftMenuRedTip = (ImageView) findViewById(R.id.iv_menu_red_tip);
-        mLeftMenu.setOnClickListener(this);
-        mLeftMenu.setImageDrawable(mDrawerArrowDrawable);
-        mTtileBar.setOptionClickListener(this);
-        mTtileBar.setHotAppClickListener(this);
-        mBgStatusbar = findViewById(R.id.bg_statusbar);
-        mFgStatusbar = findViewById(R.id.fg_statusbar);
-        mShadeView = (HomeShadeView) findViewById(R.id.shadeview);
-        mShadeView.setPosition(0);
-        mShadeView.setColorChangedListener(this);
+        mToolbar = (HomeToolbar) findViewById(R.id.home_tool_bar);
+        mToolbar.setDrawerLayout(mDrawerLayout);
 
-        mAdIcon = (ImageView) findViewById(R.id.iv_ad_icon);
-        mAdIcon.setOnClickListener(this);
-        // app_hot_tip_icon = (ImageView)
-        // mTtileBar.findViewById(R.id.app_hot_tip_icon_);
-        // if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
-        // app_hot_tip_icon.setVisibility(View.VISIBLE);
-        // } else {
-        // app_hot_tip_icon.setVisibility(View.GONE);
-        // }
-
-        mUnreadCountTv = (TextView) findViewById(R.id.home_mc_unread_tv);
-    }
-
-    // public void setEnterPrivacySuggest(boolean value) {
-    // isEnterPrivacySuggest = value;
-    // }
-
-    public void setAdIconVisible() {
-        if (mAdIcon != null) {
-            mAdIcon.setVisibility(View.VISIBLE);
-            if(Build.VERSION.SDK_INT > 15) {
-                mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
-                adAnimation = (AnimationDrawable) mAdIcon.getBackground();
-                adAnimation.start();
-            }
-        }
-    }
-
-    public void setAdIconInVisible() {
-        if (mAdIcon != null) {
-            mAdIcon.setVisibility(View.INVISIBLE);
-        }
-    }
-
-    public void showModePages(boolean show/* , int[] center */) {
-        if (mMultiModeView == null) {
-            mMultiModeView = (MultiModeView) mViewStub.inflate();
-        }
-
-        if (show) {
-            mMultiModeView.show();
-        } else {
-            mMultiModeView.hide();
-        }
+//        mAdIcon = (ImageView) findViewById(R.id.iv_ad_icon);
+//        mAdIcon.setOnClickListener(this);
     }
 
     @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        try {
-            int oldTab = savedInstanceState.getInt("current_tap");
-            mViewPager.setCurrentItem(oldTab);
-            super.onRestoreInstanceState(savedInstanceState);
-        } catch (Exception e) {
-            // TODO: handle exception
+    public void onBackPressed() {
+        if (mMoreFragment.isPanelOpen()) {
+            mMoreFragment.closePanel();
+            return;
         }
-    }
-
-    public int getShaderColor() {
-        return mShadeView.getCurColor();
-    }
-
-    private void initFragment() {
-        HomeFragmentHoler holder = new HomeFragmentHoler();
-        holder.title = this.getString(R.string.lock_tab);
-        HomeLockFragment lockFragment = new HomeLockFragment();
-        holder.fragment = lockFragment;
-        holder.iconId = R.drawable.lock_active_icon;
-        mFragmentHolders[0] = holder;
-
-        holder = new HomeFragmentHoler();
-        holder.title = this.getString(R.string.pravicy_protect);
-        HomePravicyFragment pravicyFragment = new HomePravicyFragment();
-        holder.fragment = pravicyFragment;
-        holder.iconId = R.drawable.protction_active_icon;
-        mFragmentHolders[1] = holder;
-
-        holder = new HomeFragmentHoler();
-        holder.title = this.getString(R.string.app_manager);
-        HomeAppManagerFragment appManagerFragment = new HomeAppManagerFragment();
-        holder.fragment = appManagerFragment;
-        holder.iconId = R.drawable.my_apps_active_icon;
-        if (AppMasterPreference.getInstance(this).getQuickGestureRedTip()) {
-            holder.isRedTip = true;
+        if (mShowIswipeFromNotfi) {
+            getIntent().removeExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
         }
-        mFragmentHolders[2] = holder;
-
-        // remove cached fragments
-        FragmentManager fm = getSupportFragmentManager();
-        try {
-            FragmentTransaction ft = fm.beginTransaction();
-            List<Fragment> list = fm.getFragments();
-            if (list != null) {
-                for (Fragment f : fm.getFragments()) {
-                    ft.remove(f);
-                }
-            }
-            ft.commit();
-        } catch (Exception e) {
-
+        if (mDrawerLayout.isDrawerOpen(mMenuList)) {
+            mDrawerLayout.closeDrawer(mMenuList);
+            return;
         }
 
-    }
-
-    public int getCurrentPage() {
-        if (mViewPager != null) {
-            return mViewPager.getCurrentItem();
+        if (getFragmentManager().getBackStackEntryCount() > 0
+                || mTabFragment.isTabDismiss()) {
+            onExitScanning();
         } else {
-            return 0;
+            finish();
+
+            // ===== AMAM-1336 ========
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_MAIN);
+            intent.addCategory(Intent.CATEGORY_HOME);
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+            }
+        }
+
+    }
+
+    private void initMobvista() {
+        // app wall at home is abandon
+//        mWallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_64);
+//        if (mWallAd != null) {
+//            mWallAd.preloadWall();
+//        }
+
+//        mHandler.postDelayed((new Runnable() {
+//            @Override
+//            public void run() {
+//                // 默认是开，记得改回默认是关
+//                if (mHomeAdSwitchOpen == -1) {
+//                    LeoLog.d(TAG, "获取主页广告开关");
+//                    mHomeAdSwitchOpen = AppMasterPreference.getInstance(HomeActivity.this).getIsADAtAppLockFragmentOpen();
+//                }
+//                LeoLog.d(TAG, "开关值是：" + mHomeAdSwitchOpen);
+//                if (isTimetoShow()
+//                        // && !isEnterPrivacySuggest
+//                        && mHomeAdSwitchOpen == 1) {
+//                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
+//                    setAdIconVisible();
+//                } else {
+//                    setAdIconInVisible();
+//                }
+//            }
+//        }), 1000);
+    }
+
+//    public boolean isTimetoShow() {
+//        long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
+//        long nowTime = System.currentTimeMillis();
+//        if (nowTime - clickTime > Constants.TIME_ONE_DAY) {
+//            LeoLog.d("testHomeAd", "isTimetoShow true");
+//            return true;
+//        } else {
+//            LeoLog.d("testHomeAd", "isTimetoShow false");
+//            return false;
+//        }
+//    }
+
+    public void recordEnterHomeTimes() {
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        int times = pref.getEnterHomeTimes();
+        if (times < 2) {
+            pref.setEnterHomeTimes(++times);
         }
     }
 
     @Override
     protected void onResume() {
+        super.onResume();
+
+        /* 获取是否从iswipe通知进入 */
+        checkIswipeNotificationTo();
         /* 分析是否需要升级红点显示 */
-        boolean menuRedTipVisibility = (mLeftMenuRedTip.getVisibility() == View.GONE);
-        if (mLeftMenuRedTip != null && menuRedTipVisibility) {
-            if (SDKWrapper.isUpdateAvailable()) {
-                mLeftMenuRedTip.setVisibility(View.VISIBLE);
-            }
+        if (SDKWrapper.isUpdateAvailable()) {
+            mToolbar.showMenuRedTip(true);
         }
-        /* check if there is force update when showing HomeActivity */
+        /* check if there is force update when showing HomeActivityOld */
         SDKWrapper.checkForceUpdate();
-        type = AppMasterPreference.getInstance(this).getLockType();
 
         judgeShowGradeTip();
 
         // tryIsFromLockMore();
-        showWeiZhuangTip();
-        // compute privacy level here to avoid unknown change, such as file
-        // deleted outside of your phone.
-        AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        if (amp.getFromOther()) {
-            PrivacyHelper.getInstance(this).computePrivacyLevel(PrivacyHelper.VARABLE_ALL);
-            amp.setFromOther(false);
-        }
-
-        if (mViewPager != null) {
-            int current = mViewPager.getCurrentItem();
-            if (current < mFragmentHolders.length) {
-                HomeFragmentHoler hfh = mFragmentHolders[current];
-                if (hfh != null && hfh.fragment instanceof Selectable) {
-                    ((Selectable) (hfh.fragment)).onSelected(current);
-                }
-            }
-        }
-        if (mFragmentHolders != null) {
-            if (!AppMasterPreference.getInstance(this).getQuickGestureRedTip()) {
-                mFragmentHolders[2].isRedTip = false;
-                mPagerTab.notifyDataSetChanged();
-
-            }
-        }
-
-        // if (AppMasterPreference.getInstance(this).getHomeFragmentRedTip()) {
-        // app_hot_tip_icon.setVisibility(View.VISIBLE);
-        // } else {
-        // app_hot_tip_icon.setVisibility(View.GONE);
-        // }
-        /* ISwipe升级对话框提示 */
+        
         showIswipDialog();
-        super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
 
         ProcessDetectorCompat22.setForegroundScore();
-        if (!BuildProperties.isZTEAndApiLevel14()) {
+        if (!BuildProperties.isApiLevel14()) {
             // 设置消息中心未读计数
             setMsgCenterUnread();
         }
         /* 判断是否打开高级保护，显示“卸载”项 */
         addUninstallPgTOMenueItem();
+        if (!LeoEventBus.getDefaultBus().isRegistered(this)) {
+            LeoEventBus.getDefaultBus().register(this);
+        }
     }
 
     private void addUninstallPgTOMenueItem() {
-        LeoLog.i("pg_delete_menue", "是否开启了高级保护：" + isAdminActive());
+        LeoLog.i(TAG, "是否开启了高级保护：" + isAdminActive());
         mMenuAdapter = null;
         mMenuItems = null;
         mMenuItems = getMenuItems();
@@ -578,45 +546,70 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         mDrawerLayout.postInvalidate();
     }
 
-    public void shouldShowAd() {
-        mHandler.postDelayed((new Runnable() {         
+    private void showIswipDialog() {
+        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        boolean quickGestureFristTip = amp.getFristSlidingTip();
+        if (quickGestureFristTip && !ISwipUpdateRequestManager.isInstallIsiwpe(this)) {
+            showDownLoadISwipDialog(this, "homeactivity");
+        }
+        amp.setFristSlidingTip(false);
+    }
+
+    private void showDownLoadISwipDialog(Context context, String flag) {
+        if (mIswipDialog == null) {
+            mIswipDialog = new IswipUpdateTipDialog(context);
+        }
+        mIswipDialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
+
             @Override
-            public void run() {
-                // 默认是开，记得改回默认是关
-                if (mHomeAdSwitchOpen == -1) {
-                    LeoLog.d("testHomeAd", "获取主页广告开关");
-                    mHomeAdSwitchOpen = AppMasterPreference.getInstance(HomeActivity.this)
-                            .getIsADAtAppLockFragmentOpen();
-                }
-                LeoLog.d("testHomeAd", "开关值是：" + mHomeAdSwitchOpen);
-                if ( mHomeAdSwitchOpen == 1) {
-                    SDKWrapper
-                            .addEvent(HomeActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_homeAppWall");
-                      setAdIconVisible();
-                    isCanShow = true;
-                } else {
-                    setAdIconInVisible();
-                    isCanShow = false;
+            public void onDismiss(DialogInterface dialog) {
+                if (mIswipDialog != null) {
+                    mIswipDialog = null;
                 }
             }
-        }), 1000);
+        });
 
-    }
+        mIswipDialog.setLeftListener(new View.OnClickListener() {
 
-    public boolean isCanShow() {
-        return isCanShow;
-    }
+            @Override
+            public void onClick(View v) {
+                if (mShowIswipeFromNotfi) {
+                    mShowIswipeFromNotfi = false;
+                    /* 对来自通知栏的统计 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_statusbar_n");
+                } else {
+                    /* 非通知栏 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_n");
+                }
+                /* 稍后再说 */
+                if (mIswipDialog != null) {
+                    mIswipDialog.dismiss();
+                }
+            }
+        });
+        mIswipDialog.setRightListener(new View.OnClickListener() {
 
-    public boolean isTimetoShow() {
-        long clickTime = AppMasterPreference.getInstance(this).getAdClickTimeFromHome();
-        long nowTime = System.currentTimeMillis();
-        if (nowTime - clickTime > INTERVEL_CLICK_AD) {
-            LeoLog.d("testHomeAd", "isTimetoShow true");
-            return true;
-        } else {
-            LeoLog.d("testHomeAd", "isTimetoShow false");
-            return false;
-        }
+            @Override
+            public void onClick(View v) {
+                if (mShowIswipeFromNotfi) {
+                    mShowIswipeFromNotfi = false;
+                    /* 对来自通知栏的统计 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_statusbar_y");
+                } else {
+                    /* 非通知栏 */
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_y");
+                }
+                /* 立即下载 */
+
+                if (mIswipDialog != null) {
+                    mIswipDialog.dismiss();
+                }
+                ISwipUpdateRequestManager.getInstance(HomeActivity.this).iSwipDownLoadHandler();
+            }
+        });
+        getIntent().removeExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+        mIswipDialog.setFlag(flag);
+        mIswipDialog.show();
     }
 
     private void setMsgCenterUnread() {
@@ -625,20 +618,14 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
             public void run() {
                 MsgCenterTable table = new MsgCenterTable();
                 final int unreadCount = table.getUnreadCount();
-                String unreadCountStr = unreadCount + "";
-                if (unreadCount > 99) {
-                    unreadCountStr = "99+";
-                }
 
-                final String finalUnreadCountStr = unreadCountStr;
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
                         if (unreadCount <= 0) {
-                            mUnreadCountTv.setVisibility(View.GONE);
+                            mToolbar.showMsgcenterUnreadCount(false, 0);
                         } else {
-                            mUnreadCountTv.setVisibility(View.VISIBLE);
-                            mUnreadCountTv.setText(finalUnreadCountStr);
+                            mToolbar.showMsgcenterUnreadCount(true, unreadCount);
                         }
                     }
                 });
@@ -646,165 +633,51 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         });
     }
 
-    private void showIswipDialog() {
-        showIswipeUpdateTip(this, "homeactivity");
-    }
-
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        outState.putInt("current_tap", mViewPager.getCurrentItem());
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (mDrawerLayout.isDrawerOpen(mMenuList)) {
-            mDrawerLayout.closeDrawer(mMenuList);
-            return;
-        }
-
-        if (mMultiModeView != null && mMultiModeView.getVisibility() == View.VISIBLE) {
-            showModePages(false/* , new int[]{1,1} */);
-            return;
-        }
-
-        // Whether the child consumed the event
-        HomeFragmentHoler holder = mFragmentHolders[mViewPager.getCurrentItem()];
-        if (holder != null && holder.fragment != null && holder.fragment.onBackPressed()) {
-            return;
-        }
-
-        finish();
-
-        // ===== AMAM-1336 ========
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_MAIN);
-        intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.iv_menu:
-                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-                    mDrawerLayout.closeDrawer(Gravity.START);
-                } else {
-                    mDrawerLayout.openDrawer(Gravity.START);
-                    SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "menu");
-                }
-                break;
-            case R.id.iv_option_image:
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "password");
-                if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-                    mDrawerLayout.closeDrawer(Gravity.START);
-                }
-
-                if (mLeoPopMenu == null) {
-                    mLeoPopMenu = new LeoHomePopMenu();
-                }
-
-                mLeoPopMenu.setAnimation(R.style.RightEnterAnim);
-                mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view,
-                            int position, long id) {
-                        if (position == 0) {
-                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                    "changepwd");
-                            Intent intent = new Intent(HomeActivity.this,
-                                    LockSettingActivity.class);
-                            intent.putExtra("reset_passwd", true);
-                            startActivity(intent);
-                        } else if (position == 1) {
-                            /*
-                             * SDKWrapper.addEvent(HomeActivity.this,
-                             * SDKWrapper.P1, "home", "changepwd");
-                             */
-                            // Intent intent = new Intent(HomeActivity.this,
-                            // LockChangeModeActivity.class);
-                            Intent intent = new Intent(HomeActivity.this,
-                                    LockSettingActivity.class);
-                            intent.putExtra("reset_passwd", true);
-                            intent.putExtra(ROTATE_FRAGMENT, true);
-                            startActivity(intent);
-                        } else if (position == 2) {
-                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home", "mibao");
-                            Intent intent = new Intent(HomeActivity.this,
-                                    PasswdProtectActivity.class);
-                            startActivity(intent);
-                        } else if (position == 3) {
-                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                    "passwdtip");
-                            Intent intent = new Intent(HomeActivity.this, PasswdTipActivity.class);
-                            startActivity(intent);
-                        } else if (position == 4) {
-                            SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "home",
-                                    "locksetting");
-                            Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
-                            intent.putExtra(LockOptionActivity.TAG_COME_FROM,
-                                    LockOptionActivity.FROM_HOME);
-                            HomeActivity.this.startActivity(intent);
-                        }
-                        mLeoPopMenu.dismissSnapshotList();
-                    }
-                });
-                mLeoPopMenu.setPopMenuItems(this, getRightMenuItems(), getRightMenuIcons());
-                mLeoPopMenu.showPopMenu(this, mTtileBar.findViewById(R.id.iv_option_image), null,
-                        null);
-                mLeoPopMenu.setListViewDivider(null);
-                break;
-            case R.id.bg_show_hotapp:
-                // 点击启动消息中心的次数
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoCtr", "InfoCtr_cnts");
-                Intent msgCenter = new Intent();
-                msgCenter.setClass(this, MsgCenterActivity.class);
-                startActivity(msgCenter);
-                break;
-            case R.id.iv_ad_icon:
-//                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
-//                        System.currentTimeMillis());
-//                LockManager.getInstatnce().timeFilterSelf();
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_cli", "adv_cnts_homeAppWall");
-                Intent mWallIntent = mWallAd.getWallIntent();
-                startActivity(mWallIntent);
-                break;
-            default:
-                break;
-        }
-        int current = mViewPager.getCurrentItem();
-        if (current < mFragmentHolders.length) {
-            BaseFragment fragment = mFragmentHolders[current].fragment;
-            if (fragment instanceof Selectable) {
-                ((Selectable) fragment).onScrolling();
+    @SuppressWarnings("deprecation")
+    private void judgeShowGradeTip() {
+        AppMasterPreference pref = AppMasterPreference.getInstance(this);
+        ActivityManager mActivityManager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(1).get(0);
+        String pkg = getPackageName();
+        if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
+            long count = pref.getUnlockCount();
+            boolean haveTip = pref.getGoogleTipShowed();
+            if (count >= 25 && !haveTip) {
+                        /* google play 评分提示 */
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank");
+                Intent intent = new Intent(this, GradeTipActivity.class);
+                startActivity(intent);
             }
         }
-
     }
 
-    private List<String> getRightMenuItems() {
-        List<String> listItems = new ArrayList<String>();
-        listItems.add(getString(R.string.reset_passwd));
-        if (type == AppMasterPreference.LOCK_TYPE_PASSWD) {
-            listItems.add(getString(R.string.change_to_gesture));
-        } else {
-            listItems.add(getString(R.string.change_to_password));
+    private void checkIswipeNotificationTo() {
+        String fromPrivacyFlag = getIntent()
+                .getStringExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+        LeoLog.i(TAG, "来自iswipe：" + fromPrivacyFlag);
+        if (ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME
+                .equals(fromPrivacyFlag)) {
+            ISwipUpdateRequestManager.getInstance(getApplicationContext());
+            mShowIswipeFromNotfi = true;
         }
-        listItems.add(getString(R.string.set_protect_or_not));
-        listItems.add(getString(R.string.passwd_notify));
-        listItems.add(getString(R.string.lock_setting));
-        return listItems;
     }
 
-    private List<Integer> getRightMenuIcons() {
-        List<Integer> icons = new ArrayList<Integer>();
-        icons.add(R.drawable.reset_pasword_icon);
-        icons.add(R.drawable.switch_pasword_icon);
-        icons.add(R.drawable.question_icon);
-        icons.add(R.drawable.pasword_icon);
-        icons.add(R.drawable.settings);
-        return icons;
-    }
+//    public void setAdIconVisible() {
+//        if (mAdIcon != null) {
+//            mAdIcon.setVisibility(View.VISIBLE);
+//            if (Build.VERSION.SDK_INT > 15) {
+//                mAdIcon.setBackgroundResource(R.drawable.adanimationfromhome);
+//                AnimationDrawable adAnimation = (AnimationDrawable) mAdIcon.getBackground();
+//                adAnimation.start();
+//            }
+//        }
+//    }
+//
+//    public void setAdIconInVisible() {
+//        if (mAdIcon != null) {
+//            mAdIcon.setVisibility(View.INVISIBLE);
+//        }
+//    }
 
     private List<MenuItem> getMenuItems() {
         List<MenuItem> listItems = new ArrayList<MenuItem>();
@@ -813,9 +686,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         listItems.add(new MenuItem(resources.getString(R.string.grade),
                 R.drawable.menu_star_icon_menu, false));
         /* 点个赞 */
-        listItems
-                .add(new MenuItem(resources.getString(R.string.about_praise),
-                        R.drawable.menu_hot_icon, false));
+        listItems.add(new MenuItem(resources.getString(R.string.about_praise),
+                R.drawable.menu_hot_icon, false));
         /* 加入粉丝团 */
         listItems.add(new MenuItem(resources.getString(R.string.about_group),
                 R.drawable.menu_join_icon, false));
@@ -864,9 +736,10 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                 SharedPreferences prefernece = PreferenceManager
                         .getDefaultSharedPreferences(HomeActivity.this);
                 boolean installed = prefernece.getBoolean("shortcut", false);
+                SharedPreferences.Editor editor = prefernece.edit();
                 if (!installed) {
                     String channel = getString(R.string.channel_code);
-                    if(PhoneInfo.getAndroidVersion() < 21|| !"0001a".equals(channel)) {
+                    if (PhoneInfo.getAndroidVersion() < 21 || !"0001a".equals(channel)) {
                         Intent shortcutIntent = new Intent(HomeActivity.this, SplashActivity.class);
                         shortcutIntent.setAction(Intent.ACTION_MAIN);
                         shortcutIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -878,179 +751,78 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
                                 getString(R.string.app_name));
                         shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-                        ShortcutIconResource iconRes = Intent.ShortcutIconResource
+                        Intent.ShortcutIconResource iconRes = Intent.ShortcutIconResource
                                 .fromContext(HomeActivity.this, R.drawable.ic_launcher);
                         shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
                         shortcut.putExtra("duplicate", false);
                         shortcut.putExtra("from_shortcut", true);
                         sendBroadcast(shortcut);
                     }
-                    prefernece.edit().putBoolean("shortcut", true).apply();
+                    editor.putBoolean("shortcut", true);
                 }
 
-                boolean isInstall = AppMasterPreference.getInstance(HomeActivity.this)
-                        .getAdDeskIcon();
+                boolean isInstall = AppMasterPreference.getInstance(HomeActivity.this).getAdDeskIcon();
                 if (!isInstall) {
-                    // Intent newIntent = mWallAd.getWallIntent();
-                    Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(),
-                            DeskAdActivity.class);
-                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-                            | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(),DeskProxyActivity.class);
+                    appWallShortIntent.putExtra("from_quickhelper", true);
+                    appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mAd);
+                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Intent appWallShortcut = new Intent(
                             "com.android.launcher.action.INSTALL_SHORTCUT");
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
                             getString(R.string.desk_ad_name));
-                    ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
-                            HomeActivity.this,
-                            R.drawable.ad_desktop_icon);
-                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                            appwallIconRes);
+                    Intent.ShortcutIconResource appwallIconRes = Intent.ShortcutIconResource.fromContext(
+                            HomeActivity.this, R.drawable.ad_desktop_icon);
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
                     appWallShortcut.putExtra("duplicate", false);
                     appWallShortcut.putExtra("from_shortcut", true);
-                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
-                            appWallShortIntent);
+                    appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
                     sendBroadcast(appWallShortcut);
                     AppMasterPreference.getInstance(HomeActivity.this).setAdDeskIcon(true);
                 }
-                // boolean appwallFlag =
-                // prefernece.getBoolean("shortcut_appwall", false);
-                // if (appwallFlag) {
-                // Intent appWallShortIntent = new Intent(HomeActivity.this,
-                // AppWallActivity.class);
-                // appWallShortIntent.putExtra("from_appwall_shortcut",
-                // true);
-                // appWallShortIntent.setAction(Intent.ACTION_MAIN);
-                // appWallShortIntent.addCategory(Intent.CATEGORY_DEFAULT);
-                // appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                // Intent appWallShortcut = new Intent(
-                // "com.android.launcher.action.UNINSTALL_SHORTCUT");
-                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                // getString(R.string.appwall_name));
-                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
-                // appWallShortIntent);
-                // appWallShortcut.putExtra("duplicate", true);
-                // sendBroadcast(appWallShortcut);
-                // prefernece.edit().putBoolean("shortcut_appwall", false);
-                // } else {
-                // Intent appWallShortIntent = new Intent(HomeActivity.this,
-                // ProxyActivity.class);
-                // appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
-                // StatusBarEventService.EVENT_BUSINESS_GAME);
-                // Intent appWallShortcut = new Intent(
-                // "com.android.launcher.action.INSTALL_SHORTCUT");
-                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-                // getString(R.string.appwall_name));
-                // ShortcutIconResource appwallIconRes =
-                // Intent.ShortcutIconResource.fromContext(
-                // HomeActivity.this,
-                // R.drawable.game);
-                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                // appwallIconRes);
-                // appWallShortcut.putExtra("duplicate", false);
-                // appWallShortcut.putExtra("from_shortcut", true);
-                // appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT,
-                // appWallShortIntent);
-                // sendBroadcast(appWallShortcut);
-                // prefernece.edit().putBoolean("shortcut_appwall",
-                // true).commit();
-                // }
 
-                if (prefernece.getBoolean(KEY_ROOT_CHECK, true)) {
+                if (prefernece.getBoolean(PrefConst.KEY_ROOT_CHECK, true)) {
                     boolean root = RootChecker.isRoot();
                     if (root) {
-                        SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1,
-                                KEY_ROOT_CHECK, "root");
+                        SDKWrapper.addEvent(getApplicationContext(), SDKWrapper.P1, PrefConst.KEY_ROOT_CHECK, "root");
                     }
-                    prefernece.edit().putBoolean(KEY_ROOT_CHECK, false).apply();
+                    editor.putBoolean(PrefConst.KEY_ROOT_CHECK, false);
                 }
+                editor.commit();
             }
 
         });
-    }
-
-    private void judgeShowGradeTip() {
-        mHandler.post(new Runnable() {
-            @Override
-            public void run() {
-                ActivityManager mActivityManager = (ActivityManager) HomeActivity.this
-                        .getSystemService(Context.ACTIVITY_SERVICE);
-
-                @SuppressWarnings("deprecation")
-                RunningTaskInfo topTaskInfo = mActivityManager.getRunningTasks(
-                        1).get(0);
-                String pkg = HomeActivity.this.getPackageName();
-                if (pkg.equals(topTaskInfo.baseActivity.getPackageName())) {
-                    long count = AppMasterPreference.getInstance(
-                            HomeActivity.this).getUnlockCount();
-                    boolean haveTip = AppMasterPreference.getInstance(
-                            HomeActivity.this).getGoogleTipShowed();
-                    if (count >= 25 && !haveTip) {
-                        /* google play 评分提示 */
-                        googlePlayScoreTip();
-                    }
-                    /**
-                     * show quick guesture dialog tip
-                     */
-                    boolean switchQuickGesture = AppMasterPreference.getInstance(HomeActivity.this)
-                            .getSwitchOpenQuickGesture();
-                    if (!switchQuickGesture) {
-                        boolean firstDilaogTip = AppMasterPreference.getInstance(HomeActivity.this)
-                                .getFristDialogTip();
-                        boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
-                                .getIsUpdateQuickGestureUser();
-                        LeoLog.i(TAG, "是否为升级用户：" + updateUser);
-                        if (!updateUser) {
-                            boolean isMiui = BuildProperties.isMIUI();
-                            boolean isOpenWindow = BuildProperties
-                                    .isFloatWindowOpAllowed(HomeActivity.this);
-                            // new user,enter home >=2 times
-                            if (!firstDilaogTip
-                                    && AppMasterPreference.getInstance(HomeActivity.this)
-                                            .getEnterHomeTimes() == 2) {
-                                if (isMiui && isOpenWindow) {
-                                    AppMasterPreference.getInstance(HomeActivity.this)
-                                            .setFristDialogTip(true);
-                                } else {
-                                    /* 系统是否安装iswipe */
-                                    boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(
-                                            getApplicationContext());
-                                    if (isIswipInstall) {
-                                        AppMasterPreference.getInstance(HomeActivity.this)
-                                        .setFristDialogTip(true);
-                                    }
-                                    LeoLog.i(TAG, "新用户提示！");
-                                }
-                            }
-                        } else {
-                            // update user
-                            if (!firstDilaogTip) {
-                                LeoLog.i(TAG, "升级用户提示！");
-                                boolean isIswipInstall = ISwipUpdateRequestManager.isInstallIsiwpe(
-                                        getApplicationContext());
-                                if (isIswipInstall) {
-                                    AppMasterPreference.getInstance(HomeActivity.this)
-                                    .setFristDialogTip(true);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        });
-    }
-
-    private void googlePlayScoreTip() {
-        Intent intent = new Intent(HomeActivity.this,
-                GradeTipActivity.class);
-        HomeActivity.this.startActivity(intent);
     }
 
     @Override
-    public void onItemClick(final AdapterView<?> arg0, final View arg1, final int position, final long arg3) {    
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_ad_icon:
+//                AppMasterPreference.getInstance(this).setAdClickTimeFromHome(
+//                        System.currentTimeMillis());
+//                LockManager.getInstatnce().timeFilterSelf();
+                // app wall at home is abandon
+//                SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_cli", "adv_cnts_homeAppWall");
+//                Intent mWallIntent = mWallAd.getWallIntent();
+//                try {
+//                    startActivity(mWallIntent);
+//                } catch (Exception e) {
+//                }
+                break;
+            case R.id.ct_back_rl:
+                onExitScanning();
+                break;
+            default:
+                break;
+        }
+    }
+
+    @Override
+    public void onItemClick(final AdapterView<?> arg0, final View arg1, final int position, final long arg3) {
         if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
             mDrawerLayout.closeDrawer(Gravity.START);
         }
-        mHandler.postDelayed(new Runnable() {         
+        mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
                 Intent intent = null;
@@ -1061,12 +833,12 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
                             "google+");
                     Intent intentBeta = null;
-                    LockManager.getInstatnce().timeFilterSelf();
+                    mLockManager.filterSelfOneMinites();
                     if (AppUtil.appInstalled(getApplicationContext(),
                             "com.google.android.apps.plus")) {
                         intentBeta = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri
-                                .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                                .parse("https://plus.google.com/u/2/b/105232083159143297575/105232083159143297575/admin/");
                         intentBeta.setData(uri);
                         ComponentName cn = new ComponentName(
                                 "com.google.android.apps.plus",
@@ -1086,14 +858,20 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 startActivity(intentBeta);
                             } catch (Exception e1) {
                                 intentBeta = new Intent(Intent.ACTION_VIEW, uri);
-                                startActivity(intentBeta);
+                                try {
+                                    startActivity(intentBeta);
+                                } catch (Exception e2) {
+                                }
                             }
                         }
                     } else {
                         Uri uri = Uri
-                                .parse("https://plus.google.com/u/0/communities/112552044334117834440");
+                                .parse("https://plus.google.com/u/2/b/105232083159143297575/105232083159143297575/admin/");
                         intentBeta = new Intent(Intent.ACTION_VIEW, uri);
-                        startActivity(intentBeta);
+                        try {
+                            startActivity(intentBeta);
+                        } catch (Exception e) {
+                        }
                     }
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "about", "like");
 
@@ -1103,7 +881,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
                             "Facebook");
                     Intent intentLikeUs = null;
-                    LockManager.getInstatnce().timeFilterSelf();
+                    mLockManager.filterSelfOneMinites();
                     if (AppUtil.appInstalled(getApplicationContext(),
                             "com.facebook.katana")) {
                         intentLikeUs = new Intent(Intent.ACTION_VIEW);
@@ -1124,50 +902,18 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                                 .parse("https://www.facebook.com/pages/App-Master/1709302419294051");
                         intentLikeUs.setData(uri);
                         intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivity(intentLikeUs);
+                        try {
+                            startActivity(intentLikeUs);
+                        } catch (Exception e) {
+                        }
                     }
                 } else if (position == 0) {
                     /* google play */
                     /* sdk mark */
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
                             "googleplay");
-                    LockManager.getInstatnce().timeFilterSelf();
-                    if (AppUtil.appInstalled(getApplicationContext(),
-                            "com.android.vending")) {
-                        intent = new Intent(Intent.ACTION_VIEW);
-                        Uri uri = Uri
-                                .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-                        intent.setData(uri);
-                        // ComponentName cn = new ComponentName(
-                        // "com.android.vending",
-                        // "com.google.android.finsky.activities.MainActivity");
-                        // intent.setComponent(cn);
-                        intent.setPackage("com.android.vending");
-                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        try {
-                            startActivity(intent);
-                            // mHandler.postDelayed(new Runnable() {
-                            // @Override
-                            // public void run() {
-                            // String lastActivity =
-                            // LockManager.getInstatnce().getLastActivity();
-                            // if (lastActivity != null
-                            // && lastActivity
-                            // .equals("com.google.android.finsky.activities.MainActivity"))
-                            // {
-                            // // Intent intent2 = new Intent(
-                            // // HomeActivity.this,
-                            // // GooglePlayGuideActivity.class);
-                            // // startActivity(intent2);
-                            // }
-                            // }
-                            // }, 1000);
-                        } catch (Exception e) {
-                            goGpBrowser();
-                        }
-                    } else {
-                        goGpBrowser();
-                    }
+                    mLockManager.filterSelfOneMinites();
+                    Utilities.goFiveStar(HomeActivity.this);
                 } else if (position == 3) {
                     /* sdk mark */
                     SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
@@ -1177,15 +923,6 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     startActivity(intent);
                 } else if (position == 6) {
                     /* 游戏中心 */
-
-                    /* sdk mark */
-                    // SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                    // "gamecenter");
-                    // intent = new Intent(HomeActivity.this,
-                    // AppWallActivity.class);
-                    // intent.putExtra(Constants.HOME_TO_APP_WALL_FLAG,
-                    // Constants.HOME_TO_APP_WALL_FLAG_VALUE);
-                    // startActivity(intent);
                     unistallPG();
                 } else if (position == 4) {
                     /* 检查更新 */
@@ -1196,10 +933,8 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                     SDKWrapper.checkUpdate();
                 } else if (position == 5) {
                     /* 关于 */
-
                     /* sdk mark */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                            "about");
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "about");
                     intent = new Intent(HomeActivity.this,
                             AboutActivity.class);
                     startActivity(intent);
@@ -1208,64 +943,112 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }, 200);
     }
 
-    private void goGpBrowser() {
-        Intent intent;
-        intent = new Intent(Intent.ACTION_VIEW);
-        Uri uri = Uri
-                .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
-        intent.setData(uri);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
+    /* 卸载 PG */
+    private boolean unistallPG() {
+        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
+            mDrawerLayout.closeDrawer(Gravity.START);
+        }
+        try {
+            Uri uri = Uri.fromParts("package", this.getPackageName(), null);
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_DELETE);
+            intent.setData(uri);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            // 从卸载入口过去，10秒内不对设置加锁
+            mLockManager.filterPackage("com.android.settings", 10 * 1000);
+            mLockManager.filterSelfOneMinites();
+            startActivity(intent);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
-    private void tryTransStatusbar() {
-        if (VERSION.SDK_INT >= 19) {
-            // change status bar
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            // change nav bar
-            // getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+    @Override
+    public void onListScroll(int scrollHeight) {
+        int stickyMaxScrollHeight = mHeaderHeight - mToolbarHeight;
+        if (scrollHeight > stickyMaxScrollHeight) {
+            mToolbar.setBackgroundColor(mPrivacyFragment.getToolbarColor());
+            mCommonToolbar.setBackgroundColor(mPrivacyFragment.getToolbarColor());
         } else {
-            mBgStatusbar.setVisibility(View.GONE);
-            mFgStatusbar.setVisibility(View.GONE);
+            mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+            mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
         }
     }
 
-    class HomeFragmentHoler {
-        String title;
-        int iconId;
-        boolean isRedTip;
-        BaseFragment fragment;
+    @Override
+    public void onProcessClick(Fragment fragment) {
+        mScoreBeforeProcess = mPrivacyHelper.getSecurityScore();
+        // 分数上涨，标题栏背景异常，非变现，加保护
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mProcessedMgr = null;
+        mProcessAlreadyTimeout = false;
+        getFragmentManager().beginTransaction().remove(fragment).commit();
+        if (fragment instanceof PrivacyNewAppFragment) {
+            mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
+        } else if ((fragment instanceof PrivacyNewPicFragment)
+                || (fragment instanceof PrivacyPicFolderFragment)) {
+            mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_PIC);
+        } else if ((fragment instanceof PrivacyNewVideoFragment)
+                || (fragment instanceof PrivacyNewVidFolderFragment)) {
+            mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_VID);
+        }
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mProcessAlreadyTimeout = true;
+                if (mScanningFragment != null) return;
+
+                if (mProcessedMgr != null) {
+                    startProcessFinishAnim(mProcessedScore);
+                }
+            }
+        }, 2000);
     }
 
-    class HomePagerAdapter extends FragmentPagerAdapter implements IconPagerAdapter {
-        public HomePagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+    public void onProcessFinish(int increaseScore, String mgr) {
+        if (mScanningFragment != null) return;
 
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentHolders[position].fragment;
+        int scoreAfterProcess = mPrivacyHelper.getSecurityScore();
+        if (scoreAfterProcess - mScoreBeforeProcess == increaseScore) {
+            // 处理前后分数不一样了，说明处理过程中触发了1分钟的逻辑，所以不再加分
+            increaseScore = 0;
+        } else {
+            mPrivacyHelper.increaseScore(mgr, increaseScore);
         }
+        mProcessedMgr = mgr;
+        mProcessedScore = increaseScore;
+        if (mProcessAlreadyTimeout) {
+            startProcessFinishAnim(increaseScore);
+        }
+        mProcessAlreadyTimeout = true;
+    }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentHolders[position].title;
+    /**
+     * 开始处理完之后的动画
+     * @param increaseScore
+     */
+    private void startProcessFinishAnim(int increaseScore) {
+        if ((getFragmentManager().getBackStackEntryCount() > 0 || mTabFragment.isTabDismiss())
+                && !mMoreFragment.isEnable()) {
+            mPrivacyFragment.startLoadingRiseAnim(increaseScore);
+        } else {
+            mPrivacyFragment.startIncreaseSocreAnim(increaseScore);
         }
+    }
 
-        @Override
-        public int getCount() {
-            return mFragmentHolders.length;
-        }
+    public void onIgnoreClick(int increaseScore, String mgr) {
+//        mPrivacyFragment.startShieldBeatAnim(increaseScore);
+//        mPrivacyHelper.increaseScore(mgr, increaseScore);
+        jumpToNextFragment();
+        mPrivacyFragment.increaseStepAnim();
+    }
 
-        @Override
-        public int getIconResId(int index) {
-            return mFragmentHolders[index].iconId;
-        }
-
-        @Override
-        public boolean getRedTip(int index) {
-            return mFragmentHolders[index].isRedTip;
-        }
+    public void resetToolbarColor() {
+        mToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
+        mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
     }
 
     class MenuAdapter extends BaseAdapter {
@@ -1300,8 +1083,7 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         @SuppressLint("ViewHolder")
         @Override
         public View getView(int arg0, View arg1, ViewGroup arg2) {
-            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2,
-                    false);
+            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
             TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
             ImageView redTip = (ImageView) layout.findViewById(R.id.update_red_tip);
             /* some item not HTML styled text, such as "check update" item */
@@ -1320,8 +1102,15 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
                         .getDrawable(items.get(arg0).iconId), null);
             } else {
                 tv.setCompoundDrawablesWithIntrinsicBounds(
-                        getResources().getDrawable(items.get(arg0).iconId), null, null,
-                        null);
+                        getResources().getDrawable(items.get(arg0).iconId), null, null, null);
+            }
+            if (layout instanceof LinearRippleView) {
+                ((LinearRippleView) layout).setOnRippleCompleteListener(new LinearRippleView.OnRippleCompleteListener() {
+                    @Override
+                    public void onRippleComplete(LinearRippleView rippleView) {
+
+                    }
+                });
             }
             return layout;
         }
@@ -1341,201 +1130,4 @@ public class HomeActivity extends BaseFragmentActivity implements OnClickListene
         }
     }
 
-    @Override
-    public void onPageScrollStateChanged(int arg0) {
-        if (arg0 == 1 && mFragmentHolders[arg0].fragment instanceof Selectable) {
-            ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onScrolling();
-        } else {
-            ((Selectable) mFragmentHolders[mViewPager.getCurrentItem()].fragment).onSelected(arg0);
-        }
-    }
-
-    @Override
-    public void onPageScrolled(int arg0, float arg1, int arg2) {
-        mShadeView.setPosition(arg0 + arg1);
-    }
-
-    @Override
-    public void onPageSelected(int arg0) {
-        if (mFragmentHolders[arg0].fragment instanceof Selectable) {
-            ((Selectable) mFragmentHolders[arg0].fragment).onSelected(arg0);
-        } else {
-
-        }
-    }
-
-    @Override
-    public void onShaderColorChanged(int color) {
-        if (mBgStatusbar.getVisibility() == View.VISIBLE) {
-            mBgStatusbar.setBackgroundColor(color);
-        }
-        if (mFragmentHolders[1] != null && mFragmentHolders[1].fragment != null) {
-            mFragmentHolders[1].fragment.onBackgroundChanged(color);
-        }
-
-    }
-
-    /**
-     * when leave the home page,remove the gesture tab background of app manager
-     * fragment
-     */
-    private void removeAppFragmentGestureBg() {
-        HomeAppManagerFragment fragment = (HomeAppManagerFragment) mFragmentHolders[2].fragment;
-        fragment.setGestureTabBgVisibility(View.GONE);
-    }
-
-    private void dismissDialog(Dialog dlg) {
-        if (dlg != null) {
-            // 消失后释放相关图片资源
-            dlg.dismiss();
-            dlg = null;
-        }
-    }
-
-    private void mobvistaCheck() {
-
-        // mWallAd = MobvistaEngine.getInstance().createAdWallController(this);
-        mWallAd = MobvistaEngine.getInstance().createAdWallController(this, Constants.UNIT_ID_64);
-        if (mWallAd != null) {
-            mWallAd.preloadWall();
-        }
-
-    }
-
-    private void showDownLoadISwipDialog(Context context, String flag) {
-        if (mIswipDialog == null) {
-            mIswipDialog = new IswipUpdateTipDialog(context);
-        }
-        mIswipDialog.setOnDismissListener(new OnDismissListener() {
-
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (mIswipDialog != null) {
-                    mIswipDialog = null;
-                }
-            }
-        });
-
-        mIswipDialog.setLeftListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_n");
-                /* 稍后再说 */
-                if (mIswipDialog != null) {
-                    mIswipDialog.dismiss();
-                }
-            }
-        });
-        mIswipDialog.setRightListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "qs_iSwipe", "old_dia_y");
-                /* 立即下载 */
-                if (mIswipDialog != null) {
-                    mIswipDialog.dismiss();
-                }
-                ISwipUpdateRequestManager.getInstance(getApplicationContext()).iSwipDownLoadHandler();
-            }
-        });
-        mIswipDialog.setFlag(flag);
-        mIswipDialog.show();
-    }
-
-
-    private void showIswipeUpdateTip(Context context, String flag) {
-        AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        boolean quickGestureFristTip = amp.getFristSlidingTip();
-        if (quickGestureFristTip && !ISwipUpdateRequestManager.isInstallIsiwpe(this)) {
-            showDownLoadISwipDialog(this, flag);
-        }
-        amp.setFristSlidingTip(false);
-    }
-
-    /* 卸载 PG */
-    private boolean unistallPG() {
-        if (mDrawerLayout.isDrawerVisible(Gravity.START)) {
-            mDrawerLayout.closeDrawer(Gravity.START);
-        }
-        try {
-            Uri uri = Uri.fromParts("package", this.getPackageName(), null);
-            Intent intent = new Intent();
-            intent.setAction(Intent.ACTION_DELETE);
-            intent.setData(uri);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            // 从卸载入口过去，10秒内不对设置加锁
-            LockManager.getInstatnce().timeFilter("com.android.settings", 10 * 1000);
-            LockManager.getInstatnce().timeFilterSelf();
-            startActivity(intent);
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    /* 开启高级保护引导对话框 */
-    private void advanceProtectDialogTip() {
-        if (mAdvanceProtectDialog == null) {
-            mAdvanceProtectDialog = new AdvanceProtectTipDialog(this);
-        }
-        mAdvanceProtectDialog.setOnDismissListener(new OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialog) {
-                if (mAdvanceProtectDialog != null) {
-                    mAdvanceProtectDialog = null;
-                }
-            }
-        });
-        mAdvanceProtectDialog.setLeftListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "gd_dcnts", "gd_dcnts_ltr");
-                mAdvanceProtectDialog.dismiss();
-            }
-        });
-        mAdvanceProtectDialog.setRightListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "gd_dcnts", "gd_dcnts_fn");
-                mAdvanceProtectDialog.dismiss();
-                Intent intent = new Intent(HomeActivity.this, LockOptionActivity.class);
-                intent.putExtra(LockOptionActivity.TAG_COME_FROM, LockOptionActivity.FROM_HOME);
-                startActivity(intent);
-            }
-        });
-        mAdvanceProtectDialog.setFlag(AdvanceProtectTipDialog.ADVANCE_PROTECT_TIP_DIALOG);
-        mAdvanceProtectDialog.setCanceledOnTouchOutside(false);
-        mAdvanceProtectDialog.show();
-    }
-
-    /* 是否显示高级保护对话框的处理 */
-    private boolean showAdvanceProtectDialog() {
-        String channel = getString(R.string.channel_code);
-        boolean isFilterChannel = false;
-        List<String> channels = Arrays.asList(FILTER_CHANNEL);
-        if (channels != null && channels.size() > 0) {
-            for (String string : channels) {
-                if (string.equals(channel)) {
-                    isFilterChannel = true;
-                    break;
-                }
-            }
-        }
-        boolean isAdvanceProtectTip = AppMasterPreference.getInstance(this)
-                .getAdvanceProtectDialogTip();
-        /* 是否为新用户 */
-        boolean updateUser = AppMasterPreference.getInstance(HomeActivity.this)
-                .getIsUpdateQuickGestureUser();
-        if (!isFilterChannel/* 是否为不是需要过滤不显示的渠道 */
-                && isAdvanceProtectTip /* 是否需要提示 */
-                && !updateUser /* 是否为新用户 */
-                && !isAdminActive() /* 是否为开启高级保护 */) {
-            advanceProtectDialogTip();
-        }
-        return isFilterChannel;
-    }
 }

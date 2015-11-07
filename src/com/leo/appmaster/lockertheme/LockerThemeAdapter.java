@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.model.ThemeItemInfo;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -18,20 +17,17 @@ import com.leo.imageloader.core.ImageScaleType;
 import com.leo.imageloader.core.ImageSize;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory.Options;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 public class LockerThemeAdapter extends BaseAdapter {
     private List<ThemeItemInfo> themes;
@@ -44,8 +40,6 @@ public class LockerThemeAdapter extends BaseAdapter {
     private final static int NORMALTYEP = 0;
     private final static int ADTYPE = 1;
     private boolean isGetAd = false;
-    private int mLocalOrOnline = 1;
-    private Campaign mCampaign;
     private Context mContext;
 
     private Options options;
@@ -78,17 +72,9 @@ public class LockerThemeAdapter extends BaseAdapter {
     @Override
     public int getItemViewType(int position) {
         if (themes.get(position).themeType == Constants.THEME_TYPE_ONLINE) {
-            if (themes.get(position).packageName.equals(LockerTheme.ONLINE_AD_NAME) && isGetAd) {
-                return ADTYPE;
-            } else {
-                return NORMALTYEP;
-            }
+            return NORMALTYEP;
         } else if (themes.get(position).themeType == Constants.THEME_TYPE_LOCAL) {
-            if (themes.get(position).packageName.equals(LockerTheme.LOCAL_AD_NAME) && isGetAd) {
-                return ADTYPE;
-            } else {
-                return NORMALTYEP;
-            }
+            return NORMALTYEP;
         }
         return super.getItemViewType(position);
     }
@@ -129,78 +115,7 @@ public class LockerThemeAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup arg2) {
         View viewItem1 = null;
-        View viewItem2 = null;
-        int type = getItemViewType(position);
-
-        if (mCampaign == null) {
-            convertView = showNormalTypeItem(position, convertView, viewItem1);
-        } else {
-            switch (type) {
-                case NORMALTYEP:
-                    convertView = showNormalTypeItem(position, convertView, viewItem1);
-                    break;
-                case ADTYPE:
-                    convertView = showAdType(position, convertView, viewItem2);
-                    break;
-            }
-        }
-
-        return convertView;
-    }
-
-    private View showAdType(int position, View convertView, View viewItem2) {
-        AdHolder adHolder;
-
-        if (convertView != null && convertView.getTag() instanceof AdHolder) {
-            LeoLog.d("testGetView", "convertView != null");
-            adHolder = (AdHolder) convertView.getTag();
-        } else {
-            LeoLog.d("testGetView", "convertView == null");
-            adHolder = new AdHolder();
-            viewItem2 = layoutInflater.inflate(R.layout.ad_list_item_lockerthem, null);
-
-            adHolder.ad_icon = (ImageView) viewItem2
-                    .findViewById(R.id.ad_theme_icon);
-            adHolder.ad_background = (ImageView) viewItem2
-                    .findViewById(R.id.theme_preview);
-            adHolder.ad_title = (TextView) viewItem2
-                    .findViewById(R.id.ad_title_theme);
-            adHolder.ad_desc = (TextView) viewItem2
-                    .findViewById(R.id.ad_desc_theme);
-            adHolder.ad_download = (Button) viewItem2
-                    .findViewById(R.id.ad_download_theme);
-
-            viewItem2.setTag(adHolder);
-            convertView = viewItem2;
-        }
-
-        // icon
-        loadADPic(
-                mCampaign.getIconUrl(),
-                new ImageSize(DipPixelUtil.dip2px(mContext, 44),
-                        DipPixelUtil.dip2px(mContext, 44)), adHolder.ad_icon);
-        // bg
-        loadADPic(mCampaign.getImageUrl(),
-                new ImageSize(300,
-                        DipPixelUtil.dip2px(mContext, 170)), adHolder.ad_background);
-        // title
-        adHolder.ad_title.setText(mCampaign.getAppName());
-        // desc
-        adHolder.ad_desc.setText(mCampaign.getAppDesc());
-        // download
-        adHolder.ad_download.setText(mCampaign.getAdCall());
-
-        // adHolder.ad_background.setOnClickListener(new OnClickListener() {
-        // @Override
-        // public void onClick(View v) {
-        // LeoLog.d("testclickview", "点击广告，timeFilterSelf !!");
-        // LockManager.getInstatnce().timeFilterSelf();
-        // }
-        // });
-
-        LockerTheme activity = (LockerTheme) mContext;
-        activity.regisClickView(adHolder.ad_download);
-//        activity.regisClickView(adHolder.ad_background);
+        convertView = showNormalTypeItem(position, convertView, viewItem1);
 
         return convertView;
     }
@@ -286,38 +201,4 @@ public class LockerThemeAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private void loadADPic(String url, ImageSize size, final ImageView v) {
-        ImageLoader.getInstance().loadImage(
-                url, size, new ImageLoadingListener() {
-
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        if (loadedImage != null)
-                        {
-                            v.setImageBitmap(loadedImage);
-                        }
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String imageUri, View view) {
-
-                    }
-                });
-    }
-
-    public void setCampaign(Campaign campaign, boolean isGetAd) {
-        if (campaign != null) {
-            LeoLog.d("testAdapter", "setCampaign");
-            this.isGetAd = isGetAd;
-            mCampaign = campaign;
-        }
-    }
 }

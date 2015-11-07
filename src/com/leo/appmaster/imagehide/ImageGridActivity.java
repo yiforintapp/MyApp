@@ -6,10 +6,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -30,27 +26,32 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.privacy.PrivacyHelper;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOCircleProgressDialog;
+import com.leo.appmaster.ui.dialog.OneButtonDialog;
 import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ObjectAnimator;
 
 public class ImageGridActivity extends BaseActivity implements OnClickListener {
     // private final String TAG = "ImageGridActivity";
 
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
     private PhotoAibum mPhotoAibum;
     private int mPhotoAibumPos;
     private GridView mGridView;
@@ -72,10 +73,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 
     private boolean mIsEditmode = false;
     private LEOCircleProgressDialog mProgressDialog;
-    private LEOAlarmDialog mDialog, memeryDialog;
+    private LEOAlarmDialog mDialog;
+    private OneButtonDialog memeryDialog;
     private boolean mIsBackgoundRunning = false;
-
-    private long mTotalSize;
+    private ProgressBar mLoadingBar;
+    private Boolean mIsFromIntruderMore = false;
+//    private long mTotalSize;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,9 +91,11 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         mSelectAll = (Button) findViewById(R.id.select_all);
         mSelectAll.setEnabled(false);
         mHidePicture = (Button) findViewById(R.id.hide_image);
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setTitle("");
-        mTtileBar.openBackView();
+        mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTtileBar.setToolbarTitle("");
+
+        mLoadingBar = (ProgressBar) findViewById(R.id.pb_loading_pic);
+//        mTtileBar.openBackView();
         onInit();
         initImageLoder();
         loadImageList();
@@ -98,28 +103,31 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 
             @Override
             public void onItemClick(AdapterView<?> arg0, View conView,
-                    int position, long arg3) {
+                                    int position, long arg3) {
                 // TODO Auto-generated method stub
                 if (mActicityMode == CANCEL_HIDE_MODE && !mIsEditmode
                         && mAllListPath.size() > 0) {
                     Intent intent = new Intent(ImageGridActivity.this,
                             PictureViewPager.class);
+                    if(mIsFromIntruderMore){
+                        intent.putExtra("fromIntruderMore", true);
+                    }
                     intent.putStringArrayListExtra("list", mAllListPath);
                     intent.putExtra("pos", position);
 
                     startActivityForResult(intent, 0);
                     SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1,
                             "hide_pic_operation",
-                            "pic_viw_cnts" );
+                            "pic_viw_cnts");
                 } else {
                     ImageView cView = (ImageView) conView
                             .findViewById(R.id.photo_select);
                     if (!mClickList.contains(mPicturesList.get(position))) {
-                        cView.setImageResource(R.drawable.pic_choose_active);
+                        cView.setImageResource(R.drawable.ic_check_checked);
                         mClickList.add(mPicturesList.get(position));
                         mClickPosList.add((Integer) position);
                     } else {
-                        cView.setImageResource(R.drawable.pic_choose_normal);
+                        cView.setImageResource(R.drawable.ic_check_normal_n);//pic_choose_normal
                         mClickList.remove(mPicturesList.get(position));
                         mClickPosList.remove((Integer) position);
                     }
@@ -185,7 +193,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             mAllListPath = data.getStringArrayListExtra("list");
 
             for (Iterator iterator = mPicturesList.iterator(); iterator
-                    .hasNext();) {
+                    .hasNext(); ) {
                 PhotoItem item = (PhotoItem) iterator.next();
 
                 if (!mAllListPath.contains(item.getPath())) {
@@ -216,14 +224,18 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     private void onInit() {
         Intent intent = getIntent();
         mActicityMode = intent.getIntExtra("mode", SELECT_HIDE_MODE);
+        mIsFromIntruderMore = intent.getBooleanExtra("fromIntruderMore", false);
         mPhotoAibum = (PhotoAibum) intent.getExtras().get("data");
         if (mPhotoAibum == null) {
             mPhotoAibumPos = (int) intent.getIntExtra("pos", 0);
         }
 
         if (mPhotoAibum != null) {
-            mPicturesList = mPhotoAibum.getBitList();
-            mTtileBar.setTitle(mPhotoAibum.getName());
+            mPicturesList = ((PrivacyDataManager) MgrContext.
+                    getManager(MgrContext.MGR_PRIVACY_DATA)).getHidePicFile(mPhotoAibum);
+//            mPicturesList = mPhotoAibum.getBitList();
+            mTtileBar.setToolbarTitle(mPhotoAibum.getName());
+            mTtileBar.setOptionMenuVisible(false);
             for (PhotoItem item : mPicturesList) {
                 mAllListPath.add(item.getPath());
             }
@@ -238,9 +250,32 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(),
                     topDrawable.getMinimumHeight());
             mHidePicture.setCompoundDrawables(null, topDrawable, null, null);
-            mTtileBar.setOptionImageVisibility(View.VISIBLE);
-            mTtileBar.setOptionImage(R.drawable.edit_mode_name);
-            mTtileBar.setOptionListener(this);
+            mTtileBar.setOptionMenuVisible(true);
+            mTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
+            mTtileBar.setOptionClickListener(new OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+                    if (mActicityMode == CANCEL_HIDE_MODE) {
+                        mIsEditmode = !mIsEditmode;
+                        if (!mIsEditmode) {
+                            cancelEditMode();
+                        } else {
+                            mBottomBar.setVisibility(View.VISIBLE);
+                            mTtileBar.setOptionImageResource(R.drawable.mode_done);
+                        }
+                        mSelectAll.setText(R.string.app_select_all);
+                        mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                                getResources().getDrawable(R.drawable.select_all_selector), null,
+                                null);
+                        mImageAdapter.notifyDataSetChanged();
+                    }
+
+                }
+            });
+//            mTtileBar.setOptionImageVisibility(View.VISIBLE);
+//            mTtileBar.setOptionImage(R.drawable.edit_mode_name);
+//            mTtileBar.setOptionListener(this);
             mBottomBar.setVisibility(View.GONE);
         }
     }
@@ -299,8 +334,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 holder.imageView = (ImageView) view.findViewById(R.id.image);
                 holder.clickView = (ImageView) view
                         .findViewById(R.id.photo_select);
-                holder.pictureName = (TextView) view
-                        .findViewById(R.id.txt_item_picture);
+//                holder.pictureName = (TextView) view
+//                        .findViewById(R.id.txt_item_picture);
                 view.setTag(holder);
             } else {
                 holder = (ViewHolder) view.getTag();
@@ -315,14 +350,14 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                     holder.clickView.setVisibility(View.VISIBLE);
                     if (mClickList.contains(item)) {
                         holder.clickView
-                                .setImageResource(R.drawable.pic_choose_active);
+                                .setImageResource(R.drawable.ic_check_checked);
                     } else {
                         holder.clickView
-                                .setImageResource(R.drawable.pic_choose_normal);
+                                .setImageResource(R.drawable.ic_check_normal_n);
                     }
                 }
-                holder.pictureName.setText(FileOperationUtil
-                        .getNoExtNameFromHideFilepath(path));
+//                holder.pictureName.setText(FileOperationUtil
+//                        .getNoExtNameFromHideFilepath(path));
                 mImageLoader.displayImage("file://" + path, holder.imageView,
                         mOptions);
             }
@@ -332,7 +367,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         class ViewHolder {
             ImageView imageView;
             ImageView clickView;
-            TextView pictureName;
+//            TextView pictureName;
         }
     }
 
@@ -360,22 +395,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             case R.id.hide_image:
                 showAlarmDialog();
                 break;
-            case R.id.tv_option_image:
-                if (mActicityMode == CANCEL_HIDE_MODE) {
-                    mIsEditmode = !mIsEditmode;
-                    if (!mIsEditmode) {
-                        cancelEditMode();
-                    } else {
-                        mBottomBar.setVisibility(View.VISIBLE);
-                        mTtileBar.setOptionImage(R.drawable.mode_done);
-                    }
-                    mSelectAll.setText(R.string.app_select_all);
-                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
-                            getResources().getDrawable(R.drawable.select_all_selector), null,
-                            null);
-                    mImageAdapter.notifyDataSetChanged();
-                }
-                break;
+
             default:
                 break;
         }
@@ -386,7 +406,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         mClickList.clear();
         mImageAdapter.notifyDataSetChanged();
         mBottomBar.setVisibility(View.GONE);
-        mTtileBar.setOptionImage(R.drawable.edit_mode_name);
+        mTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
         updateRightButton();
     }
 
@@ -413,22 +433,30 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                     Iterator<PhotoItem> iterator = list.iterator();
                     PhotoItem item;
                     ArrayList<PhotoItem> deleteList = new ArrayList<PhotoItem>();
+                    ((PrivacyDataManager) MgrContext.getManager
+                            (MgrContext.MGR_PRIVACY_DATA)).unregisterMediaListener();
                     if (isHide) {
                         while (iterator.hasNext()) {
                             item = iterator.next();
                             if (!mIsBackgoundRunning)
                                 break;
-                            newFileName = FileOperationUtil
-                                    .getNameFromFilepath(item.getPath());
-                            newFileName = newFileName + ".leotmi";
-                            String path = item.getPath();
-                            String newPath = FileOperationUtil.hideImageFile(context,
-                                    path, newFileName, mTotalSize);
+
+                            String newPath = ((PrivacyDataManager) MgrContext.
+                                    getManager(MgrContext.MGR_PRIVACY_DATA)).
+                                    onHidePic(item.getPath(), "");
+
+//                            newFileName = FileOperationUtil
+//                                    .getNameFromFilepath(item.getPath());
+//                            newFileName = newFileName + ".leotmi";
+//                            String path = item.getPath();
+//                            String newPath = FileOperationUtil.hideImageFile(context,
+//                                    path, newFileName, mTotalSize);
+
                             if (newPath != null) {
                                 if ("-2".equals(newPath)) {
                                     isSuccess = -2;
-                                    LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity",
-                                            "Hide rename image fail!");
+//                                    Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+//                                            "Hide rename image fail!");
                                 } else if ("0".equals(newPath)) {
                                     isSuccess = 0;
                                     // mPicturesList.remove(item);
@@ -436,8 +464,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                     deleteList.add(item);
                                 } else if ("-1".equals(newPath)) {
                                     isSuccess = -1;
-                                    LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity",
-                                            "Copy image fail!");
+//                                    Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+//                                            "Copy image fail!");
                                 } else if ("4".equals(newPath)) {
                                     isSuccess = 4;
                                     break;
@@ -449,20 +477,18 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                             item.getPath(), context);
                                     // mPicturesList.remove(item);
                                     // mAllListPath.remove(item.getPath());
-
                                     deleteList.add(item);
+
                                 }
                             } else {
                                 isSuccess = 2;
                             }
-
                         }
                         if (deleteList.size() > 0) {
                             mPicturesList.removeAll(deleteList);
                             for (PhotoItem photoItem : deleteList) {
                                 mAllListPath.remove(photoItem.getPath());
                             }
-
                         }
                     } else {
                         while (iterator.hasNext()) {
@@ -471,15 +497,19 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                 break;
 
                             String filepath = item.getPath();
-                            String newPaht = FileOperationUtil.unhideImageFile(
-                                    ImageGridActivity.this, filepath, mTotalSize);
+//                            String newPaht = FileOperationUtil.unhideImageFile(
+//                                    ImageGridActivity.this, filepath, mTotalSize);
+                            String newPaht = ((PrivacyDataManager) MgrContext.getManager
+                                    (MgrContext.MGR_PRIVACY_DATA)).cancelHidePic(filepath);
+
                             if (newPaht == null) {
                                 isSuccess = 2;
                             } else if ("-1".equals(newPaht) || "-2".equals(newPaht)) {
                                 isSuccess = 2;
-                                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity",
-                                        "Copy Hide  image fail!");
+//                                Log.d("com.leo.appmaster.imagehide.ImageGridActivity",
+//                                        "Copy Hide  image fail!");
                             } else if ("0".equals(newPaht)) {
+
                                 isSuccess = 3;
                                 ContentValues values = new ContentValues();
                                 values.put("image_path", filepath);
@@ -498,7 +528,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                 // mAllListPath.remove(item.getPath());
                                 deleteList.add(item);
                             }
-
                         }
                         if (deleteList.size() > 0) {
                             mPicturesList.removeAll(deleteList);
@@ -508,6 +537,11 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 
                         }
                     }
+                    ((PrivacyDataManager) MgrContext.getManager
+                            (MgrContext.MGR_PRIVACY_DATA)).registerMediaListener();
+                    //refresh by itself
+                    PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                    pdm.notifySecurityChange();
                 }
             } catch (Exception e) {
                 // TODO: handle exception
@@ -518,17 +552,17 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         @Override
         protected void onPostExecute(final Integer isSuccess) {
             mClickList.clear();
-            if (isSuccess == 0) {
+            if ( isSuccess == 0) {
                 String title = getString(R.string.no_image_hide_dialog_title);
                 String content = getString(R.string.no_image_hide_dialog_content);
                 String rightBtn = getString(R.string.no_image_hide_dialog_button);
                 float width = getResources().getDimension(R.dimen.memery_dialog_button_width);
                 float height = getResources().getDimension(R.dimen.memery_dialog_button_height);
-                showMemeryAlarmDialog(title, content, null, rightBtn, false, true, width, height);
+                showMemeryAlarmDialog(title, content, null, rightBtn, false, true,width, height);
             } else if (isSuccess == -1 || isSuccess == -2) {
-                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
+//                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Copy Hide  image fail!");
             } else if (isSuccess == 2) {
-                LeoLog.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
+//                Log.d("com.leo.appmaster.imagehide.ImageGridActivity", "Hide  image fail!");
             } else if (isSuccess == 4) {
                 if (mActicityMode == SELECT_HIDE_MODE) {
                     String title = getString(R.string.image_hide_memery_insuficient_dialog_title);
@@ -568,10 +602,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                     finish();
                 }
             }
-
-            // image change, recompute privacy level
-            PrivacyHelper.getInstance(ImageGridActivity.this).computePrivacyLevel(
-                    PrivacyHelper.VARABLE_HIDE_PIC);
         }
     }
 
@@ -625,7 +655,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     }
 
     private AnimatorSet createTranslationAnimations(View view, float startX,
-            float endX, float startY, float endY) {
+                                                    float endX, float startY, float endY) {
         ObjectAnimator animX = ObjectAnimator.ofFloat(view, "translationX",
                 startX, endX);
         ObjectAnimator animY = ObjectAnimator.ofFloat(view, "translationY",
@@ -636,7 +666,7 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     }
 
     private void showProgressDialog(String title, String message,
-            boolean indeterminate, boolean cancelable) {
+                                    boolean indeterminate, boolean cancelable) {
         if (mProgressDialog == null) {
             mProgressDialog = new LEOCircleProgressDialog(this);
             mProgressDialog.setOnCancelListener(new OnCancelListener() {
@@ -644,6 +674,11 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                 public void onCancel(DialogInterface dialog) {
                     mIsBackgoundRunning = false;
                     mSelectAll.setText(R.string.app_select_all);
+                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
+                    SDKWrapper.addEvent(ImageGridActivity.this,
+                            SDKWrapper.P1, "hide_pic_operation", "pic_ccl_cnts");
                 }
             });
         }
@@ -689,6 +724,8 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                             SDKWrapper.addEvent(ImageGridActivity.this,
                                     SDKWrapper.P1, "hide_pic", "used");
                             SDKWrapper.addEvent(ImageGridActivity.this,
+                                    SDKWrapper.P1, "hide_pic_operation", "pic_add_cnts");
+                            SDKWrapper.addEvent(ImageGridActivity.this,
                                     SDKWrapper.P1, "hide_pic_operation", "pic_add_pics_" + size);
                         } else if (mActicityMode == CANCEL_HIDE_MODE) {
                             showProgressDialog(getString(R.string.tips),
@@ -721,9 +758,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
             LoaderImageListTask task = new LoaderImageListTask(this);
             task.execute();
         } else {
+            mLoadingBar.setVisibility(View.GONE);
+            mGridView.setVisibility(View.VISIBLE);
             mImageAdapter = new ImageAdapter();
             mGridView.setAdapter(mImageAdapter);
             mSelectAll.setEnabled(true);
+
         }
     }
 
@@ -736,21 +776,31 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 
         @Override
         protected void onPreExecute() {
-
+            mLoadingBar.setVisibility(View.VISIBLE);
+            mGridView.setVisibility(View.GONE);
         }
 
         @Override
         protected Integer doInBackground(Void... params) {
-            mPhotoAibum = FileOperationUtil.getPhotoAlbum(context).get(
+
+//            mPhotoAibum = FileOperationUtil.getPhotoAlbum(context).get(
+//                    mPhotoAibumPos);
+            mPhotoAibum = ((PrivacyDataManager) MgrContext.
+                    getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile().get(
                     mPhotoAibumPos);
+
             return 0;
         }
 
         @Override
         protected void onPostExecute(Integer integer) {
+            mLoadingBar.setVisibility(View.GONE);
+            mGridView.setVisibility(View.VISIBLE);
             if (mPhotoAibum != null) {
-                mPicturesList = mPhotoAibum.getBitList();
-                mTtileBar.setTitle(mPhotoAibum.getName());
+                mPicturesList = ((PrivacyDataManager) MgrContext.
+                        getManager(MgrContext.MGR_PRIVACY_DATA)).getHidePicFile(mPhotoAibum);
+//                mPicturesList = mPhotoAibum.getBitList();
+                mTtileBar.setToolbarTitle(mPhotoAibum.getName());
                 for (PhotoItem item : mPicturesList) {
                     mAllListPath.add(item.getPath());
                 }
@@ -763,29 +813,39 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     }
 
     private void showMemeryAlarmDialog(String title, String content, String leftBtn,
-            String rightBtn, boolean isLeft, boolean isRight, float width, float height) {
+                                       String rightBtn, boolean isLeft, boolean isRight, float width, float height) {
         if (memeryDialog == null) {
-            memeryDialog = new LEOAlarmDialog(this);
+            memeryDialog = new OneButtonDialog(this);
         }
-        memeryDialog.setOnClickListener(new OnDiaogClickListener() {
+        memeryDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+            
             @Override
-            public void onClick(int which) {
+            public void onClick(DialogInterface dialog, int which) {
                 if (which == 1) {
                     mSelectAll.setText(R.string.app_select_all);
                     if (mPicturesList.size() <= 0) {
                         finish();
                     }
                 }
-
+                memeryDialog.dismiss();
             }
         });
+        
+//        memeryDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(int which) {
+//                if (which == 1) {
+//                    mSelectAll.setText(R.string.app_select_all);
+//                    if (mPicturesList.size() <= 0) {
+//                        finish();
+//                    }
+//                }
+//            }
+//        });
         memeryDialog.setCanceledOnTouchOutside(false);
         memeryDialog.setTitle(title);
-        memeryDialog.setContent(content);
-        memeryDialog.setLeftBtnVisibility(false);
-        memeryDialog.setRightBtnStr(rightBtn);
-        memeryDialog.setRightBtnParam(width, height);
-
+        memeryDialog.setText(content);
+        memeryDialog.setBtnText(rightBtn);
         memeryDialog.show();
     }
 

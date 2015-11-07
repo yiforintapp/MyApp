@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <fragment
+                android:id="@+id/home_anim_ft"
+                android:name="com.leo.appmaster.home.HomePrivacyFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <fragment
+                android:id="@+id/home_tab_ft"
+                android:name="com.leo.appmaster.home.HomeTabFragment"
+                android:layout_alignParentBottom="true"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/home_tab_height" />
+
+        </RelativeLayout>
+
+        <ListView
+            android:layout_marginTop="@dimen/toolbar_height"
+            android:id="@+id/menu_list"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:background="@color/white"
+            android:divider="@drawable/home_menu_list_divider"
+            android:dividerHeight="1px"
+            android:listSelector="@null"
+            android:overScrollMode="never"
+            android:scrollbars="none" />
+    </android.support.v4.widget.DrawerLayout>
+
+    <FrameLayout
+        android:id="@+id/pri_pro_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.leo.appmaster.home.HomeToolbar
+        android:id="@+id/home_tool_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/home_common_toobar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <fragment
+        android:id="@+id/home_more_ft"
+        android:name="com.leo.appmaster.home.HomeMoreFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</merge>

@@ -28,6 +28,7 @@ import com.leo.appmaster.sdk.BaseBrowserActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.LeoLog;
 
 public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
@@ -42,7 +43,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     private static final String PATH_WEBVIEW = "/webview";
     private static final String PARAMS_URL = "url";
 
-    private CommonTitleBar mTitleBar;
+    private CommonToolbar mTitleBar;
 
     private String mTitle;
     private String mUrl;
@@ -81,12 +82,16 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         mIsUpdate = getIntent().getBooleanExtra(KEY_UPDATE, false);
 
         mTitle = getIntent().getStringExtra(KEY_TITLE);
-        mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTitleBar.setTitle(mTitle);
-        mTitleBar.setBackArrowVisibility(View.VISIBLE);
-        mTitleBar.setOptionImage(R.drawable.ic_msg_center_refresh);
-        mTitleBar.setBackViewListener(this);
-        mTitleBar.setOptionListener(this);
+        mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTitleBar.setToolbarTitle(mTitle);
+        mTitleBar.setOptionMenuVisible(true);
+        mTitleBar.setOptionImageResource(R.drawable.ic_msg_center_refresh);
+        mTitleBar.setOptionClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mWebView.reload();
+            }
+        });
 
         if (mIsUpdate) {
             // 更新日志从本地获取
@@ -96,14 +101,14 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             if (file.exists()) {
                 mLocalUrl = "file:///" + path;
                 getWebView().loadUrl(mLocalUrl);
-                mTitleBar.setOptionImageVisibility(View.INVISIBLE);
+                mTitleBar.setOptionMenuVisible(false);
             } else {
                 getWebView().loadUrl(mUrl);
-                mTitleBar.setOptionImageVisibility(View.VISIBLE);
+                mTitleBar.setOptionMenuVisible(true);
             }
         } else {
             getWebView().loadUrl(mUrl);
-            mTitleBar.setOptionImageVisibility(View.VISIBLE);
+            mTitleBar.setOptionMenuVisible(true);
         }
         LeoLog.i(TAG, "url : " + mUrl);
     }

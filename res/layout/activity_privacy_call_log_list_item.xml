@@ -2,24 +2,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/messageRT"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:gravity="center_vertical" >
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="24dp"
+    android:gravity="center_vertical">
 
     <ImageView
         android:id="@+id/call_log_item_top_bottom_line"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/divider_2"
         android:layout_marginTop="24dp"
-        android:background="@drawable/test_list_divider"
         android:visibility="gone" />
 
     <RelativeLayout
         android:id="@+id/message_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/call_log_item_top_bottom_line"
-        android:layout_marginTop="24dp" >
+        android:layout_below="@id/call_log_item_top_bottom_line">
 
         <TextView
             android:id="@+id/message_item_nameTV"
@@ -27,55 +26,73 @@
             android:layout_height="wrap_content"
             android:text="2014/09/01"
             android:textColor="#9b9b9b"
+            android:layout_marginTop="24dp"
             android:textSize="12dp"
             android:visibility="gone" />
 
         <LinearLayout
             android:id="@+id/message_itemLT"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/message_item_nameTV"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="24dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@+id/message_item_date"
+            android:orientation="horizontal">
 
             <ImageView
                 android:id="@+id/message_item_typeIM"
                 android:layout_width="9dp"
                 android:layout_height="9dp"
+                android:layout_marginTop="4dp"
                 android:src="@drawable/into_icon" />
 
-            <TextView
-                android:id="@+id/message_item_typeTV"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="22dp"
-                android:layout_toRightOf="@+id/message_itemLT"
-                android:text="呼入"
-                android:textColor="#414141"
-                android:textSize="14dp" />
-        </LinearLayout>
+                android:orientation="vertical"
+                android:id="@+id/call_log_LT">
 
+                <TextView
+                    android:id="@+id/message_item_typeTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="呼入"
+                    android:textColor="#414141"
+                    android:textSize="14dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:textSize="12dp"
+                    android:textColor="#999999"
+                    android:singleLine="true"
+                    android:text="通话时长：12分10秒"
+                    android:id="@+id/call_duration_TV" />
+            </LinearLayout>
+        </LinearLayout>
         <TextView
             android:id="@+id/message_item_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@id/message_itemLT"
             android:layout_alignParentRight="true"
             android:layout_marginRight="16dp"
             android:text="12:00"
             android:textColor="#414141"
+            android:layout_marginTop="24dp"
+            android:layout_below="@id/message_item_nameTV"
             android:textSize="14dp" />
     </RelativeLayout>
 
     <ImageView
         android:id="@+id/call_log_item_bottom_line"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="1px"
         android:layout_below="@id/message_content"
         android:layout_marginTop="24dp"
-        android:background="@drawable/test_list_divider"
+        android:background="@color/divider_2"
         android:visibility="gone" />
 
 </RelativeLayout>

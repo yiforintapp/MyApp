@@ -1,12 +1,16 @@
 
 package com.leo.appmaster.applocker;
 
+import java.util.Arrays;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -35,11 +39,11 @@ import android.widget.AdapterView.OnItemClickListener;
 
 public class LockTimeSetting extends BasePreferenceActivity implements OnPreferenceChangeListener,
         OnPreferenceClickListener {
-    private CommonTitleBar mTitle;
+    private CommonToolbar mTitle;
     private Preference mChangeLockTime;
     private CheckBoxPreference mAutoLock;
     private int mHelpSettingCurrent;
-    private Dialog mTimeSettingDialog;
+    private LEOChoiceDialog mTimeSettingDialog;
     private ListView mTimeListView;
     private String[] mTimeValue;
 
@@ -56,9 +60,12 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
     }
 
     private void initUI() {
-        mTitle = (CommonTitleBar) findViewById(R.id.layout_lock_time_title_bar);
-        mTitle.setTitle(R.string.lock_help_lock_setting_button);
-        mTitle.openBackView();
+        mTitle = (CommonToolbar) findViewById(R.id.layout_lock_time_title_bar);
+        mTitle.setToolbarTitle(R.string.lock_help_lock_setting_button);
+        mTitle.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitle.setOptionMenuVisible(false);
+//        mTitle.setTitle(R.string.lock_help_lock_setting_button);
+//        mTitle.openBackView();
 
         mTimeValue = getResources().getStringArray(
                 R.array.lock_time_items);
@@ -118,14 +125,19 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
             mChangeLockTime.setSummary(R.string.lock_right_now);
         } else if (j == 1) {
             mChangeLockTime.setSummary(R.string.lock_15_sec);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "locktime_15");
         } else if (j == 2) {
             mChangeLockTime.setSummary(R.string.lock_30_sec);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "locktime_30");
         } else if (j == 3) {
             mChangeLockTime.setSummary(R.string.lock_1_min);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "locktime_60");
         } else if (j == 4) {
             mChangeLockTime.setSummary(R.string.lock_3_min);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "locktime_180");
         } else {
             mChangeLockTime.setSummary(R.string.lock_5_min);
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "lock_setting", "locktime_300");
         }
     }
 
@@ -133,6 +145,19 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    private int getDialogCurrentIndex() {
+        String[] mTimeStringValue = getResources().getStringArray(R.array.lock_time_entrys);
+        String preTimeValue = AppMasterPreference.getInstance(LockTimeSetting.this)
+                .getRelockStringTime();
+        int index = -1;
+        for (int i = 0; i < mTimeStringValue.length; i++) {
+            if (preTimeValue.equals(mTimeValue[i])) {
+                index = i;
+            }
+        }
+        return index;
     }
 
     private void onCreateChoiceDialog(int id) {
@@ -147,22 +172,15 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
         }
 
         if (null == mTimeSettingDialog) {
-            mTimeSettingDialog = new LEOBaseDialog(this, R.style.bt_dialog);
-            mTimeSettingDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            mTimeSettingDialog.setContentView(R.layout.dialog_common_list_select);
-            mTimeSettingDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
+            mTimeSettingDialog = new LEOChoiceDialog(this);
         }
-        mTimeListView = (ListView) mTimeSettingDialog.findViewById(R.id.item_list);
-        View parentView = (View) mTimeListView.getParent();
-        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) parentView
-                .getLayoutParams(); // 取控件textView当前的布局参数
-        linearParams.height = (int) (getResources().getDimension(R.dimen.dialog_list_item_height) * 6);
-        Log.i("hasFocus", "  " + linearParams.height);
-        parentView.setLayoutParams(linearParams);
-        mTimeListView.setOnItemClickListener(new OnItemClickListener() {
+        mTimeSettingDialog.setTitle(getResources().getString(R.string.change_lock_time));
+        mTimeSettingDialog.setItemsWithDefaultStyle(Arrays.asList(getResources().getStringArray(
+                R.array.lock_time_entrys)), getDialogCurrentIndex());
+        mTimeSettingDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
+
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position,
-                    long id) {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AppMasterPreference.getInstance(LockTimeSetting.this).setRelockTimeout(
                         mTimeValue[position]);
                 setName(position);
@@ -171,19 +189,41 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
                 mTimeSettingDialog.dismiss();
             }
         });
-        View cancel = mTimeSettingDialog.findViewById(R.id.dlg_bottom_btn);
-        cancel.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mTimeSettingDialog.dismiss();
-            }
-        });
-
-        TextView mTitle = (TextView) mTimeSettingDialog.findViewById(R.id.dlg_title);
-        mTitle.setText(getResources().getString(R.string.change_lock_time));
-        ListAdapter adapter = new TimeListAdapter(this);
-        mTimeListView.setAdapter(adapter);
         mTimeSettingDialog.show();
+
+//        mTimeListView = (ListView) mTimeSettingDialog.findViewById(R.id.item_list);
+//        View parentView = (View) mTimeListView.getParent();
+//        RelativeLayout.LayoutParams linearParams = (RelativeLayout.LayoutParams) parentView
+//                .getLayoutParams(); // 取控件textView当前的布局参数
+//        linearParams.height = (int) (getResources().getDimension(R.dimen.dialog_list_item_height) * 6);
+//        Log.i("hasFocus", "  " + linearParams.height);
+//        parentView.setLayoutParams(linearParams);
+//        mTimeListView.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position,
+//                    long id) {
+//                AppMasterPreference.getInstance(LockTimeSetting.this).setRelockTimeout(
+//                        mTimeValue[position]);
+//                setName(position);
+//                SDKWrapper.addEvent(LockTimeSetting.this, SDKWrapper.P1, "lock_setting",
+//                        mTimeValue[position]);
+//                mTimeSettingDialog.dismiss();
+//            }
+//        });
+//        View cancel = mTimeSettingDialog.findViewById(R.id.dlg_bottom_btn);
+//        cancel.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mTimeSettingDialog.dismiss();
+//            }
+//        });
+//
+//        TextView mTitle = (TextView) mTimeSettingDialog.findViewById(R.id.dlg_title);
+//        mTitle.setText(getResources().getString(R.string.change_lock_time));
+//        ListAdapter adapter = new TimeListAdapter(this);
+//        mTimeListView.setAdapter(adapter);
+//        mTimeSettingDialog.show();
+//        LeoLog.i("poha_locktime", "getDialogCurrentIndex :"+getDialogCurrentIndex());
     }
 
     @Override
@@ -222,6 +262,7 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
             mHelpSettingCurrent = current;
         }
     }
+
 
     class TimeListAdapter extends BaseAdapter {
 

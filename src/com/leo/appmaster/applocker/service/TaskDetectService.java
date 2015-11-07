@@ -26,6 +26,7 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.widget.RemoteViews;
 
+import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
@@ -34,6 +35,8 @@ import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
 import com.leo.appmaster.cleanmemory.ProcessCleaner;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.ui.Traffic;
 import com.leo.appmaster.ui.TrafficInfoPackage;
 import com.leo.appmaster.utils.AppwallHttpUtil;
@@ -59,9 +62,7 @@ public class TaskDetectService extends Service {
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
     public static final int SHOW_NOTI_PRE_DAY = 24 * 60 * 60 * 1000;
-    // public static final int SHOW_NOTI_PRE_DAY = 20000;
     public static final int MAX_MEMORY = 65;
-    // public static final int MAX_MEMORY = 20;
     private boolean mServiceStarted;
     public float[] tra = {
             0, 0, 0
@@ -84,7 +85,7 @@ public class TaskDetectService extends Service {
     private static TaskDetectService sService;
     private static Notification sNotification;
     private String language = "zh";
-    
+
     public static boolean sDetectSpecial = false;
 
     public class TaskDetectBinder extends Binder {
@@ -107,16 +108,11 @@ public class TaskDetectService extends Service {
         sp_traffic = AppMasterPreference.getInstance(TaskDetectService.this);
         mScheduledExecutor = ThreadManager.getAsyncExecutor();
         flowDetecTask = new FlowTask();
-        // mflowDatectFuture =
-        // mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
-        // TimeUnit.MILLISECONDS);
-        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 60000,
+        mflowDatectFuture = mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, AppMasterConfig.TRAFFIC_INTERNAL,
                 TimeUnit.MILLISECONDS);
         sService = this;
         startForeground(1, getNotification(getApplicationContext()));
         startPhantomService();
-        mScheduledExecutor.scheduleWithFixedDelay(flowDetecTask, 0, 120000,
-                TimeUnit.MILLISECONDS);
         // sendQuickPermissionOpenNotification(getApplicationContext());
         language = AppwallHttpUtil.getLanguage();
         super.onCreate();
@@ -196,7 +192,8 @@ public class TaskDetectService extends Service {
     private void startDetectTask() {
         stopDetectTask();
         if (Build.VERSION.SDK_INT < 21 || isGetRunningProcessAvailable()) {// Android
-                                                                            // 5.1.1及以下
+            // 5.1.1及以下
+            // for android 5.0, set period to 200, AM-1255
             int period = 200;
             mDetectTask = new DetectTask();
             mDetectFuture = mScheduledExecutor.scheduleWithFixedDelay(mDetectTask, 0, period,
@@ -210,7 +207,7 @@ public class TaskDetectService extends Service {
 
     /**
      * getRunningAppProcesses是否可用
-     * 
+     *
      * @return
      */
     private boolean isGetRunningProcessAvailable() {
@@ -245,11 +242,15 @@ public class TaskDetectService extends Service {
             if (!network_state.equals(STATE_NO_NETWORK)) {
                 Traffic traffic = Traffic.getInstance(getApplicationContext());
                 tra[0] = traffic.getAllgprs(mVersion, network_state)[2];
+                //today traffic is over avg
+                traffic.checkTraffic();
                 new TrafficInfoPackage(getApplicationContext()).getRunningProcess(false);
             }
 
             if (network_state.equals(STATE_NORMAL)) {
-                long TotalTraffic = sp_traffic.getTotalTraffic() * 1024;
+                long TotalTraffic = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                        getMonthTotalTraffic() * 1024;
+//                long TotalTraffic = sp_traffic.getTotalTraffic() * 1024;
                 // 设置了流量套餐才去检测
                 if (TotalTraffic > 0) {
                     TrafficNote(TotalTraffic);
@@ -258,8 +259,11 @@ public class TaskDetectService extends Service {
         }
     }
 
+
     public void TrafficNote(long totalTraffic) {
-        boolean isSwtich = sp_traffic.getFlowSetting();
+        boolean isSwtich = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getOverDataSwitch();
+//        boolean isSwtich = sp_traffic.getFlowSetting();
         boolean haveNotice = sp_traffic.getAlotNotice();
         long MonthUsed = sp_traffic.getMonthGprsAll() / 1024;
         long MonthItSelfTraffic = sp_traffic.getItselfMonthTraffic();
@@ -272,7 +276,8 @@ public class TaskDetectService extends Service {
             bili = (int) (MonthUsed * 100 / totalTraffic);
         }
 
-        int TrafficSeekBar = sp_traffic.getFlowSettingBar();
+        int TrafficSeekBar = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getOverDataInvokePercent();
 
         if (isSwtich && !haveNotice) {
             if (bili > TrafficSeekBar) {
@@ -460,7 +465,7 @@ public class TaskDetectService extends Service {
                                         String topPkg = topTaskInfo.topActivity.getPackageName();
                                         // 上面获取前台进程有误，获取到非前台App，但获取到的栈是正常的，就会出现，包名和activity名字不属于同一个包得尴尬情况 
                                         if (topPkg != null && !topPkg.equals(pkgName)) return;
-                                        
+
                                         if (topTaskInfo.baseActivity != null) {
                                             baseActivity = topTaskInfo.baseActivity.getShortClassName();
                                         }

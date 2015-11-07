@@ -8,9 +8,6 @@
 
 package com.leo.appmaster.home;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.graphics.Camera;
 import android.graphics.Canvas;
@@ -28,6 +25,10 @@ import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.Scroller;
+
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.Animator.AnimatorListener;
+import com.leo.tools.animator.ObjectAnimator;
 
 public class SnapshotGallery extends ViewGroup {
     /** touch状态集 */

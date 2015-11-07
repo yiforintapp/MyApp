@@ -22,7 +22,7 @@
         <TextView
             android:id="@+id/mc_time_tv"
             android:text="08-14"
-            android:textSize="12sp"
+            android:textSize="12dp"
             android:textColor="@color/mc_time"
             android:layout_alignParentRight="true"
             android:layout_width="wrap_content"
@@ -31,7 +31,7 @@
         <TextView
             android:id="@+id/mc_title_tv"
             android:textColor="@color/mc_title"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:layout_alignParentLeft="true"
             android:includeFontPadding="false"
             android:layout_toRightOf="@id/mc_unread_iv"
@@ -53,7 +53,7 @@
         android:id="@+id/mc_description_tv"
         android:paddingTop="9dp"
         android:paddingBottom="9dp"
-        android:textSize="12sp"
+        android:textSize="12dp"
         android:maxLines="2"
         android:ellipsize="end"
         android:textColor="@color/mc_description"

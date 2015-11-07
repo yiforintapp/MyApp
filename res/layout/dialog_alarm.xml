@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/dlag_rt"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/bg"
-    android:orientation="vertical"
-     >
+    android:background="@drawable/common_dialog_bg"
+    android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
         android:layout_width="@dimen/dlg_horizental_margin"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical" 
         android:layout_marginLeft="24dp"
-    android:layout_marginRight="24dp">
+        android:layout_marginRight="24dp"
+        android:orientation="vertical" >
 
         <ImageView
             android:id="@+id/dlg_icon"
-            android:layout_width="44dp" 
+            android:layout_width="44dp"
             android:layout_height="44dp"
+            android:layout_gravity="center"
             android:layout_marginTop="24dp"
-            android:layout_gravity="center" 
-            android:src="@drawable/icon"
-            />
-        
+            android:src="@drawable/dialog_icon" />
+
         <TextView
             android:id="@+id/dlg_title"
             style="@style/dlg_title_txt"
@@ -33,6 +32,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:text="@string/tips"
+            android:maxLines="2"
             android:visibility="visible" />
 
         <TextView
@@ -42,35 +42,58 @@
             android:layout_height="wrap_content"
             android:fadeScrollbars="false"
             android:gravity="center"
-         
             android:maxLines="4"
             android:scrollbars="vertical"
             android:text="content" />
     </LinearLayout>
 
     <LinearLayout
-            android:id="@+id/dlg_2btn_layout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="horizontal"
-          >
+        android:id="@+id/dlg_2btn_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:padding="12dp" >
+
+        <com.leo.appmaster.ui.RippleView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/rv_dialog_whitle_button"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            app:rv_rippleDuration="@integer/ripple_btn_duration" 
+            android:layout_marginRight="6dp"
+            android:layout_weight="1"
+            app:rv_alpha="255"
+            app:rv_color="@color/button_gray_ripple" >
 
             <TextView
                 android:id="@+id/dlg_left_btn"
                 style="@style/dlg_left_button_txt"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/cancel" />
+        </com.leo.appmaster.ui.RippleView>
+
+        <com.leo.appmaster.ui.RippleView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/rv_dialog_blue_button"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            app:rv_rippleDuration="@integer/ripple_btn_duration" 
+            app:rv_alpha="255"
+            android:layout_marginLeft="6dp"
+            app:rv_color="@color/button_blue_ripple" >
 
             <TextView
                 android:id="@+id/dlg_right_btn"
                 style="@style/dlg_right_button_txt"
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/makesure" />
-        </LinearLayout>
+        </com.leo.appmaster.ui.RippleView>
+    </LinearLayout>
+
 </LinearLayout>

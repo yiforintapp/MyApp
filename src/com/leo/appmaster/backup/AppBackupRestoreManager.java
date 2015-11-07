@@ -12,6 +12,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -31,11 +32,13 @@ import android.os.StatFs;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.browser.aidl.mInterface;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.engine.AppLoadEngine.AppChangeListener;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
@@ -44,7 +47,7 @@ import com.leo.appmaster.utils.LeoLog;
 public class AppBackupRestoreManager implements AppChangeListener {
     public static final String MESSAGE_DELETE_APP = "message_delete_app";
     public static final String MESSAGE_ADD_APP = "message_add_app";
-    
+
     public static final int FAIL_TYPE_NONE = -1;
     public static final int FAIL_TYPE_FULL = 0;
     public static final int FAIL_TYPE_SDCARD_UNAVAILABLE = 1;
@@ -56,6 +59,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
     private static final String INSTALL_PACKAGE = "com.android.packageinstaller";
     private static final String PATH_ASSETMANAGER = "android.content.res.AssetManager";
     private static final String METHOD_ADD_ASSET = "addAssetPath";
+    private static final String FILE_SCHEME = "file://";
     private static final String DATA_TYPE = "application/vnd.android.package-archive";
 
     private static final long sKB = 1024;
@@ -70,16 +74,17 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
     private static final DecimalFormat sFormat = new DecimalFormat("#.0");
 
+
     public interface AppBackupDataListener {
         public void onDataReady();
 
         public void onDataUpdate();
 
         public void onBackupProcessChanged(int doneNum, int totalNum,
-                String currentApp);
+                                           String currentApp);
 
         public void onBackupFinish(boolean success, int successNum,
-                int totalNum, String message);
+                                   int totalNum, String message);
 
         public void onApkDeleted(boolean success);
     }
@@ -111,14 +116,14 @@ public class AppBackupRestoreManager implements AppChangeListener {
     private boolean mBackupCanceled = false;
 
     private PackageManager mPackageManager;
-    
+
     private static AppBackupRestoreManager mInstance;
-    
+
     public static synchronized AppBackupRestoreManager getInstance(Context context) {
         if (mInstance == null) {
             mInstance = new AppBackupRestoreManager(context.getApplicationContext());
         }
-        
+
         return mInstance;
     }
 
@@ -131,7 +136,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
         mDeleteList = new ArrayList<AppItemInfo>();
         AppLoadEngine.getInstance(context).registerAppChangeListener(this);
 
-        
+
         mSDReceiver = new SDCardReceiver();
         IntentFilter intentFilter = new IntentFilter(
                 Intent.ACTION_MEDIA_MOUNTED);
@@ -158,7 +163,10 @@ public class AppBackupRestoreManager implements AppChangeListener {
         ThreadManager.executeOnAsyncThread(new Runnable() {
             @Override
             public void run() {
-                getBackupList();
+//                getBackupList(saveFileName);
+                ((ThirdAppManager) MgrContext.
+                        getManager(MgrContext.MGR_THIRD_APP)).
+                        getBackupList(AppBackupRestoreManager.BACKUP_PATH);
                 for (AppBackupDataListener listener : mBackupListeners) {
                     listener.onDataReady();
                 }
@@ -189,37 +197,37 @@ public class AppBackupRestoreManager implements AppChangeListener {
         });
     }
 
-    public void backupApp(final AppItemInfo app) {
-        mBackupCanceled = false;
-        String backupPath = getBackupPath();
-        final int totalNum = 1;
-        if (backupPath == null) {
-            for (AppBackupDataListener listener : mBackupListeners) {
-                listener.onBackupFinish(false, 0, totalNum,
-                        getFailMessage(FAIL_TYPE_SDCARD_UNAVAILABLE));
-            }
-        } else {
-            ThreadManager.executeOnAsyncThread(new Runnable() {
-                @Override
-                public void run() {
-                    int failType = FAIL_TYPE_NONE;
-                    boolean success = false;
-                    failType = tryBackupApp(app, true);
-                    if (failType == FAIL_TYPE_NONE) {
-                        success = true;
-                    }
-                    for (AppBackupDataListener listener : mBackupListeners) {
-                        listener.onBackupFinish(success, 1, 1,
-                                getFailMessage(failType));
-                    }
-                }
-            });
-        }
-    }
+//    public void backupApp(final AppItemInfo app) {
+//        mBackupCanceled = false;
+//        String backupPath = getBackupPath(BACKUP_PATH);
+//        final int totalNum = 1;
+//        if (backupPath == null) {
+//            for (AppBackupDataListener listener : mBackupListeners) {
+//                listener.onBackupFinish(false, 0, totalNum,
+//                        getFailMessage(FAIL_TYPE_SDCARD_UNAVAILABLE));
+//            }
+//        } else {
+//            ThreadManager.executeOnAsyncThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    int failType = FAIL_TYPE_NONE;
+//                    boolean success = false;
+//                    failType = tryBackupApp(app, true);
+//                    if (failType == FAIL_TYPE_NONE) {
+//                        success = true;
+//                    }
+//                    for (AppBackupDataListener listener : mBackupListeners) {
+//                        listener.onBackupFinish(success, 1, 1,
+//                                getFailMessage(failType));
+//                    }
+//                }
+//            });
+//        }
+//    }
 
     public void backupApps(final ArrayList<AppItemInfo> apps) {
         mBackupCanceled = false;
-        String backupPath = getBackupPath();
+        final String backupPath = getBackupPath(BACKUP_PATH);
         final int totalNum = apps.size();
         if (backupPath == null) {
             for (AppBackupDataListener listener : mBackupListeners) {
@@ -245,7 +253,10 @@ public class AppBackupRestoreManager implements AppChangeListener {
                                     app.label);
                         }
                         doneNum++;
-                        failType = tryBackupApp(app, false);
+                        failType = ((ThirdAppManager) MgrContext.getManager(MgrContext.MGR_THIRD_APP)).
+                                backupApp(app, BACKUP_PATH);
+
+//                        failType = tryBackupApp(app, false);
                         if (failType == FAIL_TYPE_NONE) {
                             successNum++;
 //                            LeoLog.d("testfuckbackup", app.packageName);
@@ -305,18 +316,28 @@ public class AppBackupRestoreManager implements AppChangeListener {
             }
         });
     }
+    
+    private void installApk(Context context, String filepath){
+        try {
+            LeoLog.d("stone_install", "download done, installing ....");
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setAction(android.content.Intent.ACTION_VIEW);
+            intent.setDataAndType(Uri.parse(FILE_SCHEME + filepath),
+                    DATA_TYPE);
+            context.startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     public void restoreApp(Context context, AppItemInfo app) {
-        Intent intent = new Intent();
-        intent.setDataAndType(Uri.fromFile(new File(app.sourceDir)), DATA_TYPE);
-        try {
-            // check android package installer
-            mPackageManager.getPackageInfo(INSTALL_PACKAGE, 0);
-            intent.setPackage(INSTALL_PACKAGE);
-        } catch (NameNotFoundException e) {
-        }
-        context.startActivity(intent);
-//        LeoLog.d("testfuckrestore", app.packageName);
+        LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        manager.filterSelfOneMinites();
+        
+        // AM-2950: fix install fail issue
+        installApk(context, app.sourceDir);
+        
         SDKWrapper.addEvent(context, SDKWrapper.P1, "backup", "recover_" + app.packageName);
     }
 
@@ -411,12 +432,12 @@ public class AppBackupRestoreManager implements AppChangeListener {
         return sSize;
     }
 
-    private int tryBackupApp(AppItemInfo app, boolean single) {
+    public int tryBackupApp(AppItemInfo app, boolean single, String saveFileName) {
         File apkFile = new File(app.sourceDir);
         if (apkFile.exists() == false) {
             return FAIL_TYPE_SOURCE_NOT_FOUND;
         }
-        String dest = getBackupPath();
+        String dest = getBackupPath(saveFileName);
         if (dest == null) {
             return FAIL_TYPE_SDCARD_UNAVAILABLE;
         }
@@ -517,16 +538,29 @@ public class AppBackupRestoreManager implements AppChangeListener {
 
     public synchronized ArrayList<AppItemInfo> getDeleteList() {
         mDeleteList.clear();
-        mDeleteList =   AppLoadEngine.getInstance(mContext).getDeleteableApps();
+        List<String> mDropList = getDropList();
+        mDeleteList = ((ThirdAppManager) MgrContext.getManager(MgrContext.MGR_THIRD_APP)).
+                getDeleteList(mDropList);
+//        mDeleteList = AppLoadEngine.getInstance(mContext).getDeleteableApps();
         mDataReady = true;
         return mDeleteList;
     }
 
-    
-    public synchronized ArrayList<AppItemInfo> getBackupList() {
+    public List<String> getDropList() {
+        List<String> droplist = new ArrayList<String>();
+        String startwith = "s:com.leo.theme";
+        droplist.add(startwith);
+        String contain = "a:" + AppMasterApplication.getInstance().getPackageName();
+        droplist.add(contain);
+        return droplist;
+    }
+
+    public synchronized ArrayList<AppItemInfo> getBackupList(String saveFileName) {
 //        mBackupList.clear();
         if (mBackupList.isEmpty()) {
-            getRestoreList();
+            ((ThirdAppManager) MgrContext.getManager(MgrContext.MGR_THIRD_APP)).
+                    getRestoreList(saveFileName);
+//            getRestoreList(saveFileName);
             ArrayList<AppItemInfo> allApps = AppLoadEngine.getInstance(null)
                     .getAllPkgInfo();
             for (AppItemInfo app : allApps) {
@@ -537,7 +571,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                 String pName = app.packageName;
                 int versionCode = app.versionCode;
                 for (AppItemInfo a : mSavedList) { // check if already
-                                                   // backuped
+                    // backuped
                     if (pName.equals(a.packageName)
                             && versionCode == a.versionCode) {
                         app.isBackuped = true;
@@ -569,13 +603,13 @@ public class AppBackupRestoreManager implements AppChangeListener {
         return mBackupList;
     }
 
-    public synchronized ArrayList<AppItemInfo> getRestoreList() {
+    public synchronized ArrayList<AppItemInfo> getRestoreList(String saveFileName) {
 
         try {
             if (!mSavedList.isEmpty()) {
                 return mSavedList;
             }
-            String path = getBackupPath();
+            String path = getBackupPath(saveFileName);
             if (path != null) {
                 File backupDir = new File(path);
                 File[] fs = backupDir.listFiles();
@@ -596,7 +630,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                                     label = res.getString(appInfo.labelRes);
                                     Drawable d = res.getDrawable(appInfo.icon);
                                     if (d != null) {
-                                    	icon = AppUtil.getScaledAppIcon((BitmapDrawable) d);
+                                        icon = AppUtil.getScaledAppIcon((BitmapDrawable) d);
                                     }
                                 } catch (Exception e) {
 
@@ -609,7 +643,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
                             if (icon == null) {
 //                                icon = mPackageManager
 //                                        .getApplicationIcon(appInfo);
-                            	icon = AppUtil.loadAppIconDensity(appInfo.packageName);
+                                icon = AppUtil.loadAppIconDensity(appInfo.packageName);
                             }
                             app.label = label;
                             app.icon = icon;
@@ -664,14 +698,15 @@ public class AppBackupRestoreManager implements AppChangeListener {
                 .getExternalStorageState());
     }
 
-    public String getBackupPath() {
+    public String getBackupPath(String saveFileName) {
         if (isSDReady()) {
             String path = Environment.getExternalStorageDirectory()
                     .getAbsolutePath();
             if (!path.endsWith(File.separator)) {
                 path += File.separator;
             }
-            path += BACKUP_PATH;
+            path += saveFileName;
+//            path += BACKUP_PATH;
             File backupDir = new File(path);
             if (!backupDir.exists()) {
                 boolean success = backupDir.mkdirs();
@@ -683,6 +718,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
         }
         return null;
     }
+
     public String getDisplayPath() {
         return getFailMessage(FAIL_TYPE_NONE);
     }
@@ -715,7 +751,10 @@ public class AppBackupRestoreManager implements AppChangeListener {
         mSavedList.clear();
         mBackupList.clear();
         mDataReady = false;
-        getBackupList();
+        ((ThirdAppManager) MgrContext.
+                getManager(MgrContext.MGR_THIRD_APP)).
+                getBackupList(AppBackupRestoreManager.BACKUP_PATH);
+//        getBackupList(saveFileName);
     }
 
     @Override
@@ -752,7 +791,7 @@ public class AppBackupRestoreManager implements AppChangeListener {
     }
 
     private void onSDCardChange(boolean mounted) {
-        String backupPath = getBackupPath();
+        String backupPath = getBackupPath(BACKUP_PATH);
         if (backupPath == null) {
             mSavedList.clear();
             for (AppItemInfo app : mBackupList) {
@@ -768,7 +807,10 @@ public class AppBackupRestoreManager implements AppChangeListener {
                     mBackupList.clear();
                     mSavedList.clear();
                     mDataReady = false;
-                    getBackupList();
+                    ((ThirdAppManager) MgrContext.
+                            getManager(MgrContext.MGR_THIRD_APP)).
+                            getBackupList(AppBackupRestoreManager.BACKUP_PATH);
+//                    getBackupList();
                     for (AppBackupDataListener listener : mBackupListeners) {
                         listener.onDataUpdate();
                     }

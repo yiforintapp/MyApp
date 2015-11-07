@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.leo.appmaster"
-    android:versionCode="50"
+    android:versionCode="58"
     android:versionName="@string/version_name" >
 
     <uses-sdk
@@ -57,7 +57,6 @@
     <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> -->
     <!-- LEO push: end -->
 
-
     <!-- quickSwitch -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
@@ -80,7 +79,6 @@
     <!-- wifi -->
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <!-- 有隐私联系人未读时给iswipe发送广播权限 -->
-
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
         tools:ignore="ProtectedPermissions" />
@@ -92,7 +90,12 @@
         android:name="com.leo.appmaster.RECEIVER_TO_ISWIPE"
         android:label="pg_to_iswipe_receiver_permission"
         android:protectionLevel="signature" />
+    <permission
+        android:name="com.leo.appmaster.permission.IPC_REQUEST"
+        android:protectionLevel="normal" />
 
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
     <application
         android:name=".AppMasterApplication"
         android:excludeFromRecents="true"
@@ -120,14 +123,6 @@
             android:noHistory="true"
             android:taskAffinity="com.leo.appmaster.proxy"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
-        </activity>
-        <activity
-            android:name=".home.HomeActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:taskAffinity="com.leo.appmaster.home"
-            android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
             android:name=".home.GooglePlayGuideActivity"
@@ -173,7 +168,48 @@
             android:windowSoftInputMode="stateHidden|adjustResize" >
         </activity>
         <activity
+            android:name=".intruderprotection.IntruderprotectionActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name=".intruderprotection.IntruderCatchedActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name=".intruderprotection.IntruderGalleryActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
             android:name=".applocker.AppLockListActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name=".wifiSecurity.WifiSecurityActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name=".wifiSecurity.WifiSettingActivity"
+            android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name=".wifiSecurity.WifiResultActivity"
             android:excludeFromRecents="true"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
@@ -197,6 +233,7 @@
         <activity
             android:name=".applocker.LockModeActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
@@ -243,7 +280,7 @@
             android:theme="@style/activity_theme" >
         </activity>
         <activity
-            android:name=".appsetting.AboutActivity"
+            android:name=".activity.AboutActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
@@ -276,7 +313,7 @@
 
         <!-- appWall -->
         <activity
-            android:name=".appwall.AppWallActivity"
+            android:name=".activity.AppWallActivity"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" />
@@ -294,13 +331,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.UpdateDialog.NoFrame" >
         </activity>
-        <activity
-            android:name=".sdk.push.PushActivity"
-            android:excludeFromRecents="true"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.UpdateDialog.NoFrame" />
-        <!-- add for the app update of leosdk -->
 
         <activity
             android:name=".feedback.FeedbackActivity"
@@ -358,6 +388,7 @@
         <activity
             android:name=".applocker.RecommentAppLockListActivity"
             android:excludeFromRecents="true"
+            android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
@@ -432,6 +463,13 @@
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
         <activity
+            android:name=".appmanage.UninstallActivity"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.PageIndicatorDefaults" >
+        </activity>
+        <activity
             android:name=".appmanage.FlowActivity"
             android:excludeFromRecents="true"
             android:exported="true"
@@ -440,6 +478,13 @@
         </activity>
         <activity
             android:name=".applocker.WeiZhuangFirstIn"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+        <activity
+            android:name=".activity.QuickHelperActivity"
+            android:exported="true"
             android:excludeFromRecents="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme" >
@@ -484,6 +529,7 @@
         <activity
             android:name=".appmanage.EleActivity"
             android:excludeFromRecents="true"
+            android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.PageIndicatorDefaults" >
         </activity>
@@ -515,12 +561,6 @@
             android:windowSoftInputMode="stateHidden|adjustPan" >
         </activity>
         <activity
-            android:name=".privacy.PrivacySuggestActivity"
-            android:excludeFromRecents="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/activity_theme" >
-        </activity>
-        <activity
             android:name=".sdk.push.ui.WebViewActivity"
             android:configChanges="orientation|screenSize"
             android:excludeFromRecents="true"
@@ -531,6 +571,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/activity_theme" >
         </activity>
+        
         <activity
             android:name=".home.DeskProxyActivity"
             android:excludeFromRecents="true"
@@ -588,6 +629,13 @@
             android:noHistory="true"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" >
         </activity>
+        <activity
+            android:name=".phoneSecurity.PhoneSecurityGuideActivity"
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
+            android:exported="true"
+            android:theme="@style/activity_theme"  >
+        </activity>
 
         <service
             android:name=".applocker.service.TaskDetectService"
@@ -633,6 +681,7 @@
 
             <intent-filter>
                 <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
             </intent-filter>
         </receiver>
         <receiver
@@ -653,7 +702,11 @@
         </provider>
 
         <!-- for Baidu MTJ begin -->
-        <meta-data android:name="BaiduMobAd_STAT_ID" android:value="1004e462a2" />
+        <!-- 您从百度网站获取的APP KEY -->
+        <meta-data
+            android:name="BaiduMobAd_STAT_ID"
+            android:value="88ce739ea6" /> <!-- debug key -->
+        <!-- <meta-data android:name="BaiduMobAd_STAT_ID" android:value="1004e462a2" /> -->
         <!-- release key -->
         <!-- 渠道商编号 -->
         <meta-data
@@ -719,6 +772,49 @@
                 <action android:name="com.leo.appmaster.action.SCHEDULE" />
             </intent-filter>
         </receiver>
+
+        <service
+            android:name=".mgr.service.IpcRequestService"
+            android:enabled="true"
+            android:exported="true"
+            android:permission="com.leo.appmaster.permission.IPC_REQUEST" >
+            <intent-filter>
+                <action android:name="com.leo.appmaster.IPC_REQUEST" />
+            </intent-filter>
+        </service>
+
+        <activity
+            android:name=".home.HomeActivity"
+            android:excludeFromRecents="true"
+            android:launchMode="singleTask"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:taskAffinity="com.leo.appmaster.home"
+            android:theme="@style/activity_theme" >
+        </activity>
+        <activity
+            android:name=".activity.PrivacyOptionActivity"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme" >
+        </activity>
+
+        <uses-library
+            android:name="com.google.android.wearable"
+            android:required="false" />
+
+        <activity
+            android:name=".phoneSecurity.PhoneSecurityActivity"
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
+            android:theme="@style/activity_theme"  >
+        </activity>
+        <activity
+            android:name=".phoneSecurity.AddSecurityNumberActivity"
+            android:screenOrientation="portrait"
+            android:excludeFromRecents="true"
+            android:theme="@style/activity_theme"  >
+        </activity>
     </application>
 
 </manifest>

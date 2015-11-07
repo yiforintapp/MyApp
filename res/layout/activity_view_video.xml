@@ -33,11 +33,13 @@
         android:paddingTop="10dp" >
 
         <Button
+             android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             android:id="@+id/unhide_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-             android:gravity="center_horizontal"
+             android:gravity="center_horizontal|bottom"
             android:background="@android:color/transparent"
             android:drawableTop="@drawable/unhide_picture_selector"
             android:text="@string/app_cancel_hide_image"
@@ -48,11 +50,13 @@
             android:layout_height="match_parent" />
 
         <Button
+             android:paddingBottom="8dp"
+            android:paddingTop="8dp"
             android:id="@+id/delete_video"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-             android:gravity="center_horizontal"
+             android:gravity="center_horizontal|bottom"
             android:background="@android:color/transparent"
             android:drawableTop="@drawable/delete_picture_selector"
             android:text="@string/button_delete"

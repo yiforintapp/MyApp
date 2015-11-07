@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/pri_pro_sticky_rl"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:clickable="true">
+
+    <CheckBox
+        android:id="@+id/pri_pro_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/pri_pro_new"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginRight="16dp"
+        android:paddingRight="10dp"
+        android:button="@drawable/check_box_selector" />
+
+    <TextView
+        android:id="@+id/pri_pro_new_label_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/pri_pro_new"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@id/pri_pro_cb"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:includeFontPadding="false"
+        android:singleLine="true"
+        android:text="@string/pri_pro_new_app"
+        android:textColor="@color/pri_pro_new_lable"
+        android:textSize="@dimen/pri_pro_new_label" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/divider_1" />
+
+</RelativeLayout>

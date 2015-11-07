@@ -3,13 +3,10 @@
 
     <string name="app_name">PrivacyGuard</string>
     <string name="app_lock">"應用鎖"</string>
-    <string name="app_add_lock">"應用加鎖"</string>
-    <string name="lock_tab">"應用鎖   "</string>
     <string name="button_backup">備份</string>
     <string name="button_install">安裝</string>
     <string name="button_delete">删除</string>
     <string name="set_gesture_suc">手勢設定成功</string>
-    <string name="set_passwd_suc">密碼設定成功</string>
     <string name="reset_passwd_successful">重設成功！</string>
     <string name="reinput_anwser">"答案不正確，請重新輸入"</string>
     <string name="makesure">確認</string>
@@ -18,7 +15,6 @@
     <string name="passwd_set_gesture_tip">請至少連接4個點</string>
     <string name="passwd_hint">請輸入四位數密碼</string>
     <string name="tip_no_the_same_pswd">輸入密碼不一致，請重新輸入</string>
-    <string name="input_error_tip">您已輸錯<xliff:g>%1$s</xliff:g>次，還剩<xliff:g>%2$s</xliff:g>次機會</string>
     <string name="reset_passwd">更改密碼</string>
     <string name="find_passwd">密碼找回</string>
     <string name="please_wait">請稍候再試</string>
@@ -127,16 +123,9 @@
     <string name="app_delete_dialog_content">是否删除此圖片？</string>
     <string name="app_unhide_pictures_dialog_content">是否取消隱藏你所選的圖片？</string>
     <string name="app_hide_pictures_dialog_content">是否隱藏你所選的圖片？</string>
-    <string name="lock_guide">點擊應用，輕鬆加鎖</string>
-    <string name="start_guide">常用應用，推薦加鎖</string>
 
-    <!-- App lock -->
-    <string-array name="sort_type">
-        <item>默認排序</item>
-        <item>應用名稱排序</item>
-        <item>安裝時間排序</item>
-    </string-array>
 
+    <!-- 应用墙 -->
     <string name="app_wall_network">網絡或服務器异常請重新嘗試！</string>
     <string name="app_wall_click">點擊重試</string>
     <!-- 隐私策略 -->
@@ -183,26 +172,13 @@
     <string name="circle_lock_empty_tip_text">沒有加鎖應用</string>
     <string name="feedback_error">郵箱錯誤，請重新輸入</string>
     <string name="googlePlayGuide">請向下拉動給我們評分</string>
-    <!--
-    <string name="toast_download_fail_network">"没有可用网络，主题下载失败，请重试。"</string>
-    <string name="toast_download_fail_storage">"下载失败，SD卡空间不足!"</string>
-    <string name="toast_exit_when_storagemode">"当前正在使用大存储模式，主题部分功能可能无法使用。"</string>
-    <string name="toast_download_failstart">"没有可用网络，请稍后再试。"</string>
-    <string name="toast_download_fail_sdcard_unmount">"当前正在使用大存储模式,下载功能暂时不可使用。"</string>
-    <string name="download_sdcard_status_error">下载失败,SD卡无法访问。</string>
-    <string name="download_failed_toast">"下载失败"</string>
-    <string name="download_network_invalid_toast">"没有可用网络，请稍候重试。"</string>
-    <string name="download_success_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载成功</string>
-    <string name="downloaded_success">下载成功，点击应用</string>
-    <string name="download_failure_notify_title">主题<xliff:g id="filename">%1$s</xliff:g>下载失败</string>
-    <string name="downloaded_failure">下载失败</string>
-    -->
+
     <string name="no_more_business_app">沒有新應用了，過段時間再來看看吧 </string>
     <string name="no_business_app">沒有新應用了，過段時間再來看看吧 </string>
     <string name="folder_new">新</string>
     <string name="new_app_tip_content">有好玩的新應用，快看看吧</string>
     <string name="new_app_tip_title">發現新應用</string>
-    <string name="recomment_list_title">歡迎首次使用訪客模式，請選擇您想加鎖的應用</string>
+    <string name="recomment_list_title">歡迎首次使用應用鎖，請選擇您想加鎖的應用</string>
     <string name="lock_success">加鎖成功！</string>
     <string name="lcok_success_tip">您選擇的應用已加鎖</string>
     <string name="success_finish">完成</string>
@@ -224,7 +200,6 @@
 
     <!-- V2.0 -->
     <string name="pravicy_protect">"隱私防護"</string>
-    <string name="privacy_level">隱私等級</string>
     <string name="privacy_contacts">隱私連絡人</string>
     <string name="privacy_sms">隱私簡訊</string>
     <string name="privacy_call">隱私通話</string>
@@ -295,7 +270,6 @@
     <string name="unlock_all_mode">無鎖模式</string>
     <string name="family_mode">家庭模式</string>
     <string name="unlock_all_mode_tip">解鎖全部模式下不能加鎖應用，請選擇其他模式</string>
-    <string name="add_new_mode">添加新情景模式</string>
     <string name="lock_mode_all">所有模式</string>
     <string name="new_mode">新模式</string>
     <string name="lock_mode_location">位置鎖</string>
@@ -303,7 +277,6 @@
     <string name="please_input_mode_name">請輸入情景模式名稱</string>
     <string name="mode_name">情景模式名稱</string>
     <string name="cont_edit_visitor_name">無法更改訪客模式名稱</string>
-    <string name="aready_lock">已加鎖</string>
     <string name="choose_mode">選擇情景模式</string>
     <string name="create_mode_shortcut_title">創建快捷方式</string>
     <string name="create_mode_shortcut_tip">添加%1$s到案頭快捷方式</string>
@@ -312,33 +285,6 @@
     <string name="lock_change">已啟用<xliff:g id="mode">%1$s</xliff:g><xliff:g id="mode">%2$s</xliff:g></string>
     <string name="position_lock_no_wifi">沒有wifi清單</string>
     <!-- Privacy Protection -->
-    <string name="privacy_level_1">危險</string>
-    <string name="privacy_level_2">警惕</string>
-    <string name="privacy_level_3">普通</string>
-    <string name="privacy_level_4">良好</string>
-    <string name="privacy_level_5">完美</string>
-    <string name="privacy_title_applcok">應用加鎖</string>
-    <string name="privacy_title_hide_pic">隱藏圖片</string>
-    <string name="privacy_title_hide_video">隱藏視頻</string>
-    <string name="privacy_title_privacy_contact">隱私連絡人</string>
-    <string name="privacy_suggest_title">隱私防護建議</string>
-    <string name="privacy_no_app_lock">您還沒有加鎖應用</string>
-    <string name="privacy_no_pic_hide">您還沒有隱藏圖片</string>
-    <string name="privacy_no_video_hide">您還沒有隱藏視頻</string>
-    <string name="privacy_no_privacy_contact">您還沒有添加隱私連絡人</string>
-    <string name="privacy_no_app_lock_des">您可能有很多應用不希望被別人打開，隱私衛士建議您加鎖這些應用，保護您的隱私</string>
-    <string name="privacy_no_pic_hide_des">如果您有一些私密照片不希望被其他人發現，我們建議您使用隱藏圖片功能</string>
-    <string name="privacy_no_video_hide_des">有些視頻是不適合被分享或對他人播放的，為了避免一些尷尬，建議您隱藏它們</string>
-    <string name="privacy_no_privacy_contact_des">添加隱私連絡人可以保護您和TA的通話記錄，簡訊通訊記錄不被他人發現，隱私衛士強烈建議您使用該功能</string>
-    <string name="privacy_more_app_lock">建議您加鎖更多應用</string>
-    <string name="privacy_more_pic_hide">建議您隱藏更多圖片</string>
-    <string name="privacy_more_video_hide">建議您隱藏更多視頻</string>
-    <string name="privacy_more_privacy_contact">建議您添加更多隱私連絡人</string>
-    <string name="privacy_more_app_lock_des">恭喜您開始使用應用鎖，但有更多的應用需要被加鎖，建議您加鎖更多的應用</string>
-    <string name="privacy_more_pic_hide_des">您可以用隱藏圖片來隱藏一些私密照片，例如您的信用卡照片，ID照片</string>
-    <string name="privacy_more_video_hide_des">有些視頻是不適合被分享或對他人播放的，為了避免一些尷尬，建議您隱藏它們</string>
-    <string name="privacy_more_privacy_contact_des">添加隱私連絡人可以保護您和TA的通話記錄，簡訊通訊記錄不被他人發現，隱私衛士強烈建議您添加他們</string>
-    <string name="privacy_suggest_perfect_toast">隱私防護已達到最佳狀態！</string>
 
     <!-- elec manager -->
     <string name="battery_history_days"><xliff:g id="DAYS">%1$d</xliff:g> 天 <xliff:g id="HOURS">%2$d</xliff:g> 小時 <xliff:g id="MINUTES">%3$d</xliff:g> 分 <xliff:g id="SECONDS">%4$d</xliff:g> 秒</string>
@@ -352,7 +298,6 @@
     <string name="battery_info_status_full">電量充足</string>
     <string name="battery_info_status_unknown">未知</string>
     <string name="battery_info_status_charging">正在充電</string>
-    <string name="power_usage_level_and_status"><xliff:g id="LEVEL">%1$s</xliff:g> - <xliff:g id="STATUS">%2$s</xliff:g></string>
     <string name="power_screen">顯示幕</string>
     <string name="power_wifi">Wi-Fi</string>
     <string name="power_bluetooth">藍牙</string>
@@ -367,7 +312,6 @@
     <string name="app_backup_back">備份與恢復</string>
     <string name="app_backup_v2">備份</string>
     <string name="app_restore_v2">恢復</string>
-    <string name="app_delete_v2">删除</string>
     <string name="app_game">遊戲</string>
     <string name="app_application">應用</string>
     <string name="app_hot_app">精品</string>
@@ -375,17 +319,9 @@
     <string name="the_best_status_toast">已是最佳狀態，請稍後再試</string>
 
     <!-- My Apps -->
-    <string name="myapp_details">應用資訊</string>
     <string name="app_manager">"應用管理"</string>
-    <string name="first_backup">備份</string>
-    <string name="first_usage">流量</string>
-    <string name="first_battery">電量</string>
-    <string name="first_backups_app">已備份應用：</string>
-    <string name="first_user_app">用戶應用：</string>
-    <string name="first_used_space">佔用空間：</string>
 
     <!-- Data Usage / Battery -->
-    <string name="home_appmanager_donghua_tv">記憶體</string>
     <string name="traffic_progress_bar">本月已用</string>
     <string name="traff_first_page_small_set_low">您可以輸入您的套餐流量和本月已使用的流量</string>
     <string name="traff_first_page_small_set">設定流量套餐</string>
@@ -448,6 +384,10 @@
     <string name="choose_enter_mode">進入時操作</string>
     <string name="choose_quit_mode">離開時操作</string>
 
+    <!-- guide page begin -->
+    <string name="guide_button_text">立即體驗</string>
+    <!-- guide page end -->
+
     <string name="lock_mode_name_cant_empty">情景模式名稱不能為空</string>
     <string name="lock_mode_delete_tip_title">删除情景模式</string>
     <string name="lock_mode_delete_tip_both">您所選擇的模式被應用在時間鎖/位置鎖中，删除該情景模式將會删除對應的鎖定設定</string>
@@ -509,14 +449,12 @@
     <string name="feedback_content_guide">您遇到的問題</string>
     <string name="feedback_email_guide">郵箱</string>
     <string name="feedback_category_guide">問題類型</string>
-    <string name="privacy_proposal_tip">您的隱私等級為%1$s，建議您進行以下操作，以提高您的隱私等級</string>
     <!-- version 2.2 end -->
 
 
     <!-- version 2.4 begin -->
     <!-- quick gesture -->
-    <string name="pg_appmanager_quick_gesture_name">快捷手勢</string>
-    <string name="first_open_quick_gesture_dialog_tip_cotent">滑一滑，一手掌控快捷開關及應用，立即安裝iSwipe體驗單手操作神器</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">安裝Swifty，體驗和apple watch一樣的快捷開關管理吧，讓你成為朋友中最cool的人！</string>
     <string name="grade_tip_feedback">我要吐槽</string>
     <string name="quick_first_tip_dialog_right_bt">開启</string>
     <string name="quick_first_tip_dialog_left_bt">稍後</string>
@@ -536,7 +474,10 @@
     <string name="summary_autolock_after_lockscreen">鎖屏後所有應用重新鎖定</string>
     <string name="summary_setting_locker">選擇應用鎖定設定</string>
     <string name="summary_hide_lockline">將應用解鎖軌跡隱藏，更安全地保護您的隱私</string>
-
+    <string name="new_guide_page1_title">手機加速更方便</string>
+    <string name="new_guide_page1_content">在案頭也可以使用加速功能啦</string>
+    <string name="new_guide_page2_title">應用偽裝更好玩</string>
+    <string name="new_guide_page2_content">新的偽裝管道，出乎你意料</string>
 
 
     <!-- 2.6 start -->
@@ -546,12 +487,10 @@
     <string name="beauty_guide_title">使用介紹</string>
     <string name="beauty_guide_content">手機荧幕上的拉鍊是假像哦，在荧幕上雙指收縮試試吧</string>
     <string name="privacy_auto_add_text">手動添加</string>
-    <string name="button_disguise_guide_select">立刻試試</string>
-    <string name="button_disguise_guide_cancel">稍後</string>
-    <string name="button_disguise_guide_content">加鎖應用後試試應用偽裝功能吧，讓你的應用隱私更加安全</string>
     <string name="traffic_over_text">已超額</string>
     <string name="lock_line_hide">解鎖軌跡已隱藏</string>
     <string name="lock_line_visiable">解鎖軌跡已顯示</string>
+    <string name="guide_more_text">更多 ></string>
     <string name="guide_skip_text">跳過 ></string>
     <string name="video_hide_need_cb">由於系統原因，取消隱藏這些視頻需要Cool Browser。請安裝後才可使用</string>
     <string name="video_hide_need_new_cb"> 由於系統原因，取消隱藏這些視頻需要最新版的Cool Browser。請安裝後才可取消隱藏</string>
@@ -577,11 +516,9 @@
     <!-- 2.8 start -->
     <string name="device_admin_extra">防止被協力廠商軟件或他人卸載</string>
     <string name="iswip_update_tip_title_text">快捷手勢更新了</string>
-    <string name="iswip_update_tip_context_text">快捷手勢正式更名為ISwipe，更多功能等著你，馬上下載體驗吧！</string>
+    <string name="iswip_update_tip_context_text">快捷手勢正式更名為Swifty，更多功能等著你，馬上下載體驗吧！</string>
     <string name="iswip_update_tip_left_button_text">稍後再說</string>
     <string name="iswip_update_tip_right_button_text">立即下載</string>
-    <string name="iswip_update_notifi_title">快捷手勢更新啦！！！</string>
-    <string name="iswip_update_notifi_content">正式更新為Iswipe</string>
     <string name="ad_timeout">Wow！我猜下次你會收到一些更精彩的東西！</string>
     <!-- 2.8 end -->
     <!-- 2.10 start -->
@@ -604,6 +541,8 @@
     <string name="advace_protect_dialog_content_text">恭喜您加鎖成功，為了防止隱私衛士被他人無意卸載後無法繼續加鎖應用，建議您進行高級保護。隨後您可以在側邊欄中卸載隱私衛士。</string>
     <string name="desk_ad_name">App Joy</string>
     <string name="advance_protect_open_success_tip_title">高級保護設置成功</string>
+    <string name="splash_guide_page_msg_title">消息中心</string>
+    <string name="splash_guide_page_msg_content">眾多精彩活動，實用小技巧，一網打盡</string>
     <string name="advance_protect_open_success_tip_content">高級保護成功啟動！您可以在應用鎖設置中停用高級保護。開啟高級保護時無法在應用鎖外部卸載隱私衛士</string>
     <string name="auto_start_tip_xiaomi4_and_letv">為了保證持續保護，請點擊“自啟動管理”，將隱私衛士加入到自啟動列表</string>
     <string name="auto_start_tip_redmi">為了保證持續保護，請進入“自啟動應用管理”，選擇“添加自啟動應用”，將隱私衛士加入到自啟動列表</string>
@@ -614,8 +553,293 @@
     <string name="applock_guide_tip_title">需要授權以確保正常使用</string>
     <string name="applock_guide_tip_subtitle">由於系統的限制，隱私衛士需要開啟以下許可權以更好的保護您的隱私</string>
     <string name="applock_guide_tip_security_text">授權隱私衛士監控應用使用權限</string>
-    <string  name="auto_start_tip_text_huawei_plus">為了重啟後依然保持對應用的保護，請打開隱私衛士自啟動許可權</string>
+    <string name="auto_start_tip_text_huawei_plus">為了重啟後依然保持對應用的保護，請打開隱私衛士自啟動許可權</string>
     <string name="applock_guide_set_text">去設置</string>
-     <string name="applock_guide_set_finish">完成</string>
+    <string name="applock_guide_set_finish">完成</string>
     <!-- 2.12 end -->
+
+    <!-- 3.0 start -->
+    <string name="home_tab_app_lock">應用鎖</string>
+    <string name="home_tab_wifi">WiFi安全</string>
+    <string name="home_tab_lost">手機防盜</string>
+    <string name="home_tab_instruder">入侵者防護</string>
+    <string name="home_menu_privacy">智能隱私監控</string>
+    <string name="home_privacy_status">隱私狀態</string>
+    <string name="hp_media_label">保險箱</string>
+    <string name="hp_hide_img">圖片隱藏</string>
+    <string name="hp_hide_video">視頻隱藏</string>
+    <string name="hp_contact_lable">隱私防護</string>
+    <string name="hp_contact_call">隱私通話</string>
+    <string name="hp_contact_sms">隱私短信</string>
+    <string name="hp_app_manage_label">應用管理</string>
+    <string name="hp_app_manage_del">應用卸載</string>
+    <string name="hp_app_manage_back">應用備份</string>
+    <string name="hp_device_label">設備監控</string>
+    <string name="hp_device_gprs">流量管理</string>
+    <string name="hp_device_power">電量管理</string>
+    <string name="hp_helper_label">小助手</string>
+    <string name="hp_helper_shot">快捷小助手</string>
+    <string name="hp_helper_iswipe">Swifty</string>
+    <string name="pri_pro_title">深度掃描</string>
+    <string name="pri_pro_ignore">跳過</string>
+
+    <string name="pri_pro_new_vid">新增視頻<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
+    <string name="pri_pro_new_pic">新增圖片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
+    <string name="pri_pro_new_app">新增應用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
+    <string name="pri_pro_scan_vid">掃描到視頻<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
+    <string name="pri_pro_scan_pic">掃描到圖片<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
+    <string name="pri_pro_scan_app">掃描到應用<Data><![CDATA[<font color="#00a8ff">%1$d</font>]]></Data>個</string>
+
+    <string name="pri_pro_hide_vid">隱藏視頻</string>
+    <string name="pri_pro_hide_pic">隱藏圖片</string>
+    <string name="pri_pro_lock_app">加鎖應用</string>
+    <string name="pri_monitor_app_summ">監控應用新增情況</string>
+    <string name="pri_monitor_pic_summ">監控圖片新增情況</string>
+    <string name="pri_monitor_vid_summ">監控視頻新增情況</string>
+    <string name="pri_pro_folder_summary">(%1$d)</string>
+    <string name="pri_pro_lost_summary">開啟手機防盜，保障手機安全</string>
+    <string name="pri_pro_lost_fixed_title">已經保護手機</string>
+    <string name="pri_pro_lost_fixed_pattern">%1$d天%2$d小時</string>
+    <string name="pri_intruder_fixed_title">已經保護手機</string>
+    <string name="pri_intruder_fixed_pattern">%1$d次</string>
+    <string name="pri_pro_intruder_summary">開啟入侵者防護功能，看看有哪些人在偷看你的手機</string>
+    <string name="pri_pro_wifi_safe">當前連接的WiFi是安全的</string>
+    <string name="pri_pro_summary_not_confirm">您還可以完成以下操作來提升隱私等級</string>
+    <string name="pri_pro_summary_confirm">您的隱私狀況良好，請繼續保持~</string>
+    <string name="pri_pro_btn">去開啟 (+%1$d分)</string>
+    <string name="pri_pro_opened">已開啟</string>
+    <string name="pri_mobile_privacy">已保護手機隱私%1$d次</string>
+    <string name="pri_lost_privacy">已經保護您的手機%1$d天%2$d小時</string>
+    <string name="pri_pro_contact_summary">頻繁聯繫人</string>
+    <string name="pri_pro_contact">聯繫人</string>
+    <string name="pri_pro_wifi_btn">去處理</string>
+    <string name="pri_pro_contact_btn">添加到隱私聯繫人</string>
+    <string name="pri_pro_complete">完成</string>
+    <string name="pri_pro_scanning">正在進行隱私掃描</string>
+    <string name="pri_pro_scanning_finish">隱私掃描完成</string>
+    <string name="pri_contact_empty">請選擇聯繫人</string>
+    <string name="pri_contact_succ">成功添加到隱私聯繫人</string>
+    <string name="pri_contact_added">已添加</string>
+    <string name="pri_contact_over">已處理</string>
+    <string name="scanning_pattern">已完成%1$d項掃描</string>
+    <string name="pri_pro_cancel">取消</string>
+    <string name="pri_pro_process">立即處理</string>
+    <string name="pri_pro_locking">正在加鎖應用</string>
+    <string name="pri_pro_hiding_img">正在隱藏圖片</string>
+    <string name="pri_pro_hiding_vid">正在隱藏視頻</string>
+    <string name="pri_pro_wifi_warn">當前連接WiFi存在安全風險</string>
+    <string name="pri_pro_wifi_connect">已連接WiFi:%1$s</string>
+    <string name="pri_pro_ignore_app">確定不對以上應用進行加鎖嗎？</string>
+    <string name="pri_pro_ignore_pic">確定不對以上圖片進行隱藏嗎？</string>
+    <string name="pri_pro_ignore_vid">確定不對以上視頻進行隱藏嗎？</string>
+    <string name="scan_title">隱私等級</string>
+    <string name="scan_new_app">新增應用</string>
+    <string name="scan_new_media">新增媒體</string>
+    <string name="scan_new_mobile">手機安全</string>
+    <string name="scan_new_privacy">隱私防護</string>
+
+
+    <string name="scan_notify">您的安全隱私下降了</string>
+    <string name="scan_notify_app">發現您新增應用%1$d個，點擊立即處理</string>
+    <string name="scan_notify_pic">發現您新增圖片%1$d個，點擊立即處理</string>
+    <string name="scan_notify_vid">發現您新增視頻%1$d個，點擊立即處理</string>
+    <string name="scan_notify_label">隱私衛士將會在後台實時監控您的隱私，提醒您隱私狀態的變化</string>
+    <string name="loading_locking">正在加鎖應用...</string>
+    <string name="loading_hiding_pic">正在隱藏圖片...</string>
+    <string name="loading_hiding_vid">正在隱藏視頻...</string>
+
+    <string name="lock_app_item_desc">已有%1$s人加鎖</string>
+    <string name="lock_app_action">已經為%1$s加鎖</string>
+    <string name="unlock_app_action">已經為%1$s解鎖</string>
+
+    <string name="wifi_titlebar_name">WiFi安全</string>
+    <string name="wifi_title_name">WiFi安全掃描</string>
+    <string name="wifi_connect_name">當前連接WiFi:%1$s</string>
+    <string name="wifi_result_one">連接成功</string>
+    <string name="wifi_result_two">無需二次訪問</string>
+    <string name="wifi_result_three">SSL加密</string>
+    <string name="wifi_result_four">路由安全</string>
+    <string name="select_other_wifi">選擇其它WiFi</string>
+    <string name="no_wifi_now">您沒有連接上WiFi</string>
+    <string name="can_not_connect_wifi">當前WiFi無法連接網絡</string>
+    <string name="wifi_is_close">您的WiFi處於關閉狀態</string>
+    <string name="wifi_open_it">打開WiFi</string>
+    <string name="advised_add_lock">建議加鎖</string>
+    <string name="have_added_lock">已加鎖</string>
+    <string name="wifi_scan_result_safe">WiFi安全</string>
+    <string name="wifi_scan_result_no_safe">WiFi存在隱患</string>
+    <string name="wifi_scan_result_no_safe_advice">建議連接其它WiFi</string>
+    <string name="wifi_scan_result_traffic_text">管理流量，防止流量超出</string>
+    <string name="wifi_scan_result_use_now">立即使用</string>
+    <string name="wifi_scan_result_scan">WiFi自動掃描</string>
+    <string name="wifi_scan_result_scan_desc">連接上WiFi時自動掃描安全性</string>
+    <string name="wifi_scan_toast_scaning">正在掃描WiFi:%1$s</string>
+    <string name="ten_new_app_toast">您有很多新增應用可以備份</string>
+    <string name="ten_new_app_toast_content">點擊前往備份</string>
+    <string name="over_traffic_toast">您今日流量消耗已經超過%1$sMB</string>
+    <string name="over_traffic_toast_content">點擊查看詳細情況</string>
+    <string name="over_traffic_toast_unsafe">WiFi: %1$s <Data><![CDATA[<font color="#ff1200">存在風險</font>]]></Data></string>
+    <string name="over_traffic_toast_safe">WiFi: %1$s <Data><![CDATA[<font color="#00a8ff">安全</font>]]></Data></string>
+
+    <string name="phone_security_no_add_number_text">添加親友號碼，可發送短信控制被盜手機</string>
+    <string name="phone_security_no_add_number_bt_text">添加親友號碼</string>
+    <string name="security_guide_tip_text">開啟防盜保護，精確定位被盜手機</string>
+    <string name="security_guide_tip_content">您可以通過親友手機遠程遙控丟失手機進行響起警報，清空資料，定位手機位置，鎖定所有應用等操作。</string>
+    <string name="phone_security_tips">遠程定位，精確追踪手機位置</string>
+    <string name="security_guide_button_text">立即開啟</string>
+    <string name="phone_security_open">開啟防盜</string>
+    <string name="phone_security_add_number_title">親友手機號碼：</string>
+    <string name="phone_security_add_number_button">更改</string>
+    <string name="phone_security_number_sim_tip">提示：SIM卡更換時將自動向您的親友號碼發送短信通知，由此產生的費用由運營商收取。</string>
+    <string name="phone_security_number_backup_text">把防盜指令通過短信備份給親友號碼</string>
+    <string name="phone_security_instruct_onkey">開啟鎖定&amp;追踪&amp;警報&amp;擦除：#onekey</string>
+    <string name="phone_security_instruct_onkey_description">開啟鎖定&amp;追踪&amp;警報&amp;擦除功能</string>
+    <string name="phone_security_instruct_track">追踪手機位置：#locateposition</string>
+    <string name="phone_security_instruct_track_description">獲取手機的位置信息</string>
+    <string name="phone_security_instruct_alert">防盜警報：#alert</string>
+    <string name="phone_security_instruct_alert_description">手機會響起警報</string>
+    <string name="phone_security_instruct_formatedata">擦除數據：#formatdata</string>
+    <string name="phone_security_instruct_formatedata_description">清除手機中的所有數據</string>
+    <string name="phone_security_instruct_lock">鎖定所有應用：#lockmobile</string>
+    <string name="phone_security_instruct_lock_description">鎖定手機中所有應用</string>
+    <string name="secur_bottom_bt_text">下一步</string>
+    <string name="open_instr_locatepositon">追踪位置</string>
+    <string name="open_instr_alert">響警報</string>
+    <string name="no_open_instr_fromatedata">刪除手機中的所有數據</string>
+    <string name="no_open_instr_lock">鎖定所有應用</string>
+    <string name="open_secur_text">恭喜！防盜基本功能開啟成功</string>
+    <string name="no_secur_text">您現在可以使用如下基本功能：</string>
+    <string name="open_secur_checkbox_text">開啟高級保護，將隱私衛士添加至設備管理器</string>
+
+    <string name="quick_helper_pic_hide">圖片隱藏</string>
+    <string name="quick_helper_video_hide">視頻隱藏</string>
+    <string name="quick_helper_intruder">入侵者防護</string>
+    <string name="quick_helper_privacy_call">隱私通話</string>
+    <string name="quick_helper_privacy_msg">隱私短信</string>
+    <string name="quick_helper_wifi_safety">WiFi安全</string>
+    <string name="quick_helper_app_uninstall">應用卸載</string>
+    <string name="quick_helper_app_backup">應用備份</string>
+    <string name="quick_helper_flow_manage">流量管理</string>
+    <string name="quick_helper_elec_manage">電量管理</string>
+    <string name="quick_helper_boost">桌面加速</string>
+    <string name="quick_helper_app_joy">App Joy</string>
+
+    <string name="class_privacy_protection">隱私防護</string>
+    <string name="class_system_manage">系統管理</string>
+    <string name="class_happy_app">App Joy</string>
+
+    <string name="quick_helper_desc_pic_hide">將您的私密圖片隱藏起來</string>
+    <string name="quick_helper_desc_video_hide">將您的私密視頻隱藏起來</string>
+    <string name="quick_helper_desc_intruder">輸入密碼錯誤就拍照</string>
+    <string name="quick_helper_desc_call">保護通話記錄不洩露</string>
+    <string name="quick_helper_desc_msg">保護短信內容不洩露</string>
+    <string name="quick_helper_desc_wifi">檢測連接的WiFi的安全性</string>
+    <string name="quick_helper_desc_uninstall">卸載已安裝的應用</string>
+    <string name="quick_helper_desc_backup">備份已安裝的應用的安裝包</string>
+    <string name="quick_helper_desc_flow">監控數據流量的使用情況</string>
+    <string name="quick_helper_desc_elec">關閉手機中正在耗電的應用</string>
+    <string name="quick_helper_desc_boost">清理手機內存，提升手機速度</string>
+    <string name="quick_helper_desc_appjoy">更多精彩，盡在其中</string>
+
+    <string name="quick_helper_add">添加</string>
+    <string name="quick_help_add_toast">添加成功</string>
+    <string name="quick_help_add_toast_fail">添加失敗</string>
+
+    <string name="intruder_to_catch_fail_times_tip">輸錯%1$d次密碼就會拍下入侵者照片</string>
+    <string name="intruder_times_of_catch">第<Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data>次抓到偷看您手機的人</string>
+    <string name="change_times_to_catch">更改</string>
+    <string name="newest_catch_tip">這個人想偷看您的%1$s</string>
+    <string name="intruder_more">還有其他人偷看你的手機</string>
+    <string name="intruder_nobody_tips">目前沒有發現入侵者哦</string>
+    <string name="intruder_pic_more">更多</string>
+
+    <string name="times_choose">%1$d次</string>
+
+    <string name="intruderprotection_desc">在解鎖應用時，輸錯密碼將會自動拍照</string>
+    <string name="intruder_open">入侵者防護已開啟</string>
+    <string name="intruder_close">入侵者防護已關閉</string>
+    <string name="beg_five_star">給我們五星好評吧！</string>
+    <string name="ask_like_app">喜歡這個功能嗎？</string>
+    <string name="sure_clean">確定要清除所有入侵者照片嗎？</string>
+    <string name="ask_for_times_for_catch">輸錯多少次拍照</string>
+    <string name="intruder_gallery_title">入侵者相冊</string>
+    <string name="intruderprotection_desc_title">什麼是入侵者防護</string>
+    <string name="sure_delete_one">確定要刪除這張入侵者照片嗎？</string>
+
+    <string name="title_activity_security_finish">SecurityFinishActivity</string>
+    <string name="secur_finish_complate_text">您已經開啟了手機防盜的所有功能</string>
+    <string name="secur_finish_no_complate_text">還未開啟高級保護功能，無法使用以下功能</string>
+    <string name="secur_finish_bt_text">完成</string>
+    <string name="secur_open_suc">防盜開啟成功</string>
+    <string name="secur_suc_top_image_title">防盜功能已開啟</string>
+    <string name="secur_suc_top_image_content">已保護您的手機</string>
+    <string name="secur_suc_day">天</string>
+    <string name="secur_suc_hour">小時</string>
+    <string name="secur_suc_number_tip">您可以通過親友手機控制丟失的手機</string>
+    <string name="secur_suc_instr_tip">可向被盜手機發送以下指令</string>
+    <string name="call_duration">通話時長：<xliff:g id="call_dur_m">%1$s</xliff:g>分<xliff:g id="call_dur_s">%2$s</xliff:g>秒</string>
+    <string name="sim_change_msm_tip"> 【LEOMASTER】警告！您當前型號為<xliff:g id="sim_chanage">%1$s</xliff:g>的手機，SIM卡已經被更換。換卡後的手機號碼為本短信的發送號碼。如為本人操作，請忽略本警告。</string>
+    <string name="no_sim_tip">手機沒有插入SIM卡，無法發送短信</string>
+    <string name="secur_input_number">手動輸入號碼</string>
+    <string name="input_fren_number">輸入親友號碼</string>
+    <string name="secur_input_add_bt">添加</string>
+    <string name="secur_add_number_title">添加預留號碼</string>
+
+    <string name="quick_helper_desc">您可以將以下功能添加至桌面</string>
+    <string name="sucri_add_contact">從聯繫人添加</string>
+    <string name="no_add_secur_number_toast_tip">請預留手機號</string>
+    <string name="secur_advan_title">高級功能</string>
+    <string name="secur_guide_tip">已受到保護</string>
+    <string name="secur_guide_pep">台手機</string>
+    <string name="secur_protect_time_tip">開啟高級保護功能更好的保護您的手機</string>
+    <string name="onkey_name">一鍵防盜</string>
+    <string name="locat_name">手機定位</string>
+    <string name="alert_name">響警報音</string>
+    <string name="lock_name">鎖定所有應用</string>
+    <string name="formate_name">擦除數據</string>
+    <string name="secur_open_bt">備份遠程控制指令</string>
+    <string name="secur_instr_open_bt">開啟</string>
+    <string name="backup_instr_dialog_content">備份遠程控制指令，將會把指令以短信的形式發送到親友手機，確認發送嗎？</string>
+    <string name="backup_instr_dialog_cancel">取消</string>
+    <string name="backup_instr_dialog_sure">確認</string>
+    <string name="send_msm_suce">短信發送成功！</string>
+    <string name="secur_finish_no_complate_tip">手機防盜基本功能已經可以使用,高級功能需要在設備管理器授權</string>
+    <string name="secur_help_tip_txt">手機防盜是確保手機丟失後依然可以保護您手機隱私，幫助您找回手機的功能。要使用手機防盜功能，您必須預留一個手機號碼。手機丟失時，通過預留的號碼向丟失的手機發送短信，丟失的手機便會執行相應命令。</string>
+    <string name="secur_help_bt">知道了</string>
+    <string name="advan_secur_text">開啟高級保護可以使用以下高級功能：</string>
+    <string name="secur_backup_msm"> 【LEOMASTER】您已經選擇通過短信備份隱私衛士手機防盜功能的控制命令，各命令如下：1.鎖定所有應用：#lockmobile 2.追踪手機位置：#locateposition 3.防盜警報：#alert 4. 關閉警報：#alertoff 5.擦除數據：#formatdata 6 .開啟鎖定&amp;追踪&amp;警報&amp;擦除：#onekey 。如遇手機丟失​​，請向丟失手機發送命令以進行控制。如遺忘或丟失本短信，請在隱私衛士防盜功能中點擊“備份遠程控制指令”以重新發送。http://www.leomaster.com</string>
+    <string name="secur_location_msm"> 【LEOMASTER】隱私衛士已經為您獲取到已丟失手機的地理位置，點擊查看：<xliff:g id="locate_posi">%1$s</xliff:g> 。http://www.leomaster.com</string>
+    <string name="new_ignore">不處理</string>
+    <string name="new_increase_pravicy">您可以處理以下深度隱私來提升隱私安全</string>
+    <string name="new_pravicy_todo">您還有以下深度隱私可以處理</string>
+    <string name="new_pravicy_healthy">您的隱私安全狀況良好，請繼續保持~</string>
+    <string name="new_real_ignore">真的不處理？</string>
+    <string name="pri_pro_ignore_dialog">確認不對掃描出的結果進行任何處理麼？跳過處理將不會增加您的得分</string>
+    <string name="new_ok">確認</string>
+    <string name="new_cancel">取消</string>
+
+    <string name="new_cancel_alarm">取消警報</string>
+    <string name="scanint_result_app">新應用</string>
+    <string name="scanint_result_pic">新圖片</string>
+    <string name="scanint_result_vid">新視頻</string>
+    <string name="scanint_result_deep">深度隱私</string>
+    <string name="scaning_immediate">點擊立即掃描</string>
+    <string name="secur_add_self_number_tip">您輸入的號碼是本機號碼，請重新輸入</string>
+    <string name="new_arrival">全新旅途</string>
+    <string name="new_funciton">新界面，新功能，新起點</string>
+    <string name="privacy_scan">隱私掃描</string>
+    <string name="one_key_confirm_privacy">一鍵完成隱私保護</string>
+    <string name="secur_feedbk_type">手機防盜</string>
+    <string name="monitor_new_app">新增應用</string>
+    <string name="monitor_new_pic">新增圖片</string>
+    <string name="monitor_new_vid">新增視頻</string>
+    <string name="secur_kno_model_msm_tip">防盜功能需要您授權隱私衛士短信讀/寫權限</string>
+    <string name="secur_kno_model_msm_click">立即授權>>></string>
+    <string name="secur_no_kno_model_msm_tip">防盜功能可能需要短信權限才能正常使用，請授予隱私衛士相應權限</string>
+    <string name="secur_feedbk_content">無法使用防盜功能</string>
+    <string name="secur_help_feedback_tip_button">告訴我們</string>
+    <string name="phone_security_instruct_alert_off">關閉警報：#alertoff</string>
+    <string name="phone_security_instruct_alert_off_description">關閉警報聲</string>
+    <string name="alert_off_name">關閉警報</string>
+    <string name="secur_send_msm_no_location"> 【LEOMASTER】無法獲取。 http://www.leomaster.com</string>
 </resources>

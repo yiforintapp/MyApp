@@ -12,6 +12,8 @@ import java.util.Map;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -29,15 +31,24 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
@@ -50,9 +61,9 @@ import com.leo.imageloader.core.ImageScaleType;
 public class VideoHideMainActivity extends BaseActivity implements
         OnClickListener, OnItemClickListener {
     private GridView mGridView;
-    private CommonTitleBar mTtileBar;
-    private Button mAddButton;
-    // private Button mSwitchButton, let_pg_fail;
+    private CommonToolbar mTtileBar;
+    private TextView mAddButton;
+    private RippleView mRvAdd;
     private RelativeLayout mNoHidePictureHint;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
@@ -60,24 +71,25 @@ public class VideoHideMainActivity extends BaseActivity implements
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     public static String CB_PACKAGENAME = "com.cool.coolbrowser";
-    // public static String CB_PACKAGENAME = "com.example.appmaster_service";
     public static String URL_CB = "http://m.coobrowser.com/";
     public static String SECOND_CATALOG;
     public static String LAST_CATALOG;
     public static final String DEFAULT_PATH =
             "xxx/xxx/Coolbrowser/Download/";
-    // public static final String DEFAULT_PATH = "xxx/xxx/DCIM/Camera/";
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
     private AppMasterPreference mSpSaveDir;
-
-    // private boolean isHaveCbFloder = false;
-    // public static boolean isLetPgFail = false;
+    private ProgressBar loadingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_video_hide_main);
+        if(getIntent().getBooleanExtra("from_quickhelper", false)){
+            SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1,
+                    "assistant", "hidevid_cnts");
+        }
+        
         initUI();
         initImageLoder();
         getDirFromSp();
@@ -95,7 +107,10 @@ public class VideoHideMainActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         super.onResume();
-        hideVideos = getVideoInfo();
+
+        hideVideos = ((PrivacyDataManager) MgrContext.
+                getManager(MgrContext.MGR_PRIVACY_DATA)).getHideVidAlbum("");
+
         // checkCbAndVersion();
         makeCbFloderFirst();
         adapter = new HideVideoAdapter(this, hideVideos);
@@ -103,9 +118,11 @@ public class VideoHideMainActivity extends BaseActivity implements
         if (hideVideos != null) {
             if (hideVideos.size() > 0) {
                 mNoHidePictureHint.setVisibility(View.GONE);
+                loadingBar.setVisibility(View.GONE);
                 mGridView.setVisibility(View.VISIBLE);
             } else {
                 mNoHidePictureHint.setVisibility(View.VISIBLE);
+                loadingBar.setVisibility(View.GONE);
                 mGridView.setVisibility(View.GONE);
                 mNohideVideo.setText(getString(R.string.app_no_video_hide));
             }
@@ -119,13 +136,11 @@ public class VideoHideMainActivity extends BaseActivity implements
             SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1, "hidevd_cb",
                     "hide");
         }
+
         LeoLog.d("testIntent", "mPath : " + mPath);
         if (LAST_CATALOG.isEmpty() || SECOND_CATALOG.isEmpty()) {
             if (mPath == null) {
                 mPath = DEFAULT_PATH;
-                // LAST_CATALOG = FileOperationUtil.getLastDirNameFromCb(mPath);
-                // SECOND_CATALOG =
-                // FileOperationUtil.getDirNameFromFilepath(mPath);
                 LAST_CATALOG = FileOperationUtil.getDirNameFromFilepath(mPath);
                 SECOND_CATALOG = FileOperationUtil.getSecondDirNameFromFilepath(mPath);
             } else {
@@ -158,8 +173,7 @@ public class VideoHideMainActivity extends BaseActivity implements
             String mName = info.getName();
             String mPath = info.getPath();
             String mSecondName = FileOperationUtil.getSecondDirNameFromFilepath(mPath);
-            if (mName.equals(LAST_CATALOG) && mSecondName.equals(SECOND_CATALOG)) {
-                // isHaveCbFloder = true;
+            if (mName != null && mName.equals(LAST_CATALOG) && mSecondName.equals(SECOND_CATALOG)) {
                 if (i != 0) {
                     hideVideos.remove(i);
                     hideVideos.add(0, info);
@@ -186,22 +200,28 @@ public class VideoHideMainActivity extends BaseActivity implements
     }
 
     private void initUI() {
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setTitle(R.string.app_video_hide);
-        mTtileBar.openBackView();
-        // mTtileBar.setOptionImage(R.drawable.selector_applock_setting);
-        // mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        // mTtileBar.setOptionListener(this);
-        mAddButton = (Button) findViewById(R.id.add_hide_image);
+        mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTtileBar.setToolbarTitle(R.string.app_video_hide);
+        mTtileBar.setOptionMenuVisible(false);
+        mAddButton = (TextView) findViewById(R.id.add_hide_image);
+        mRvAdd = (RippleView) findViewById(R.id.rv_add);
+        
+        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+            @Override
+            public void onRippleComplete(RippleView rippleView) {
+                Intent intent = new Intent(VideoHideMainActivity.this,
+                        VideoHideGalleryActivity.class);
+                VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
+            }
+        });
+        
+        
         mAddButton.setOnClickListener(this);
-        // let_pg_fail = (Button) findViewById(R.id.let_pg_fail);
-        // let_pg_fail.setOnClickListener(this);
-        // mSwitchButton = (Button) findViewById(R.id.switch_no_cb);
-        // mSwitchButton.setOnClickListener(this);
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
         mNohideVideo = (TextView) findViewById(R.id.nohideTV);
         mGridView = (GridView) findViewById(R.id.Video_hide_folder);
         mGridView.setOnItemClickListener(this);
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading_vid);
     }
 
     @Override
@@ -217,36 +237,10 @@ public class VideoHideMainActivity extends BaseActivity implements
     public void onClick(View arg0) {
         switch (arg0.getId()) {
             case R.id.add_hide_image:
-                Intent intent = new Intent(VideoHideMainActivity.this,
-                        VideoHideGalleryActivity.class);
-                VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
+//                Intent intent = new Intent(VideoHideMainActivity.this,
+//                        VideoHideGalleryActivity.class);
+//                VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
                 break;
-            // case R.id.switch_no_cb:
-            // if (CB_PACKAGENAME.equals("com.example.appmaster_service")) {
-            // CB_PACKAGENAME = "com.cool.coolbrowser";
-            // mSwitchButton.setText("目标包为CB");
-            // } else {
-            // CB_PACKAGENAME = "com.example.appmaster_service";
-            // mSwitchButton.setText("目标包为非CB");
-            // }
-            // break;
-            // case R.id.let_pg_fail:
-            // if (i == 0) {
-            // let_pg_fail.setText("PG正常状态");
-            // isLetPgFail = false;
-            // i = 1;
-            // } else {
-            // let_pg_fail.setText("让PG失常");
-            // isLetPgFail = true;
-            // i = 0;
-            // }
-            // break;
-            // case R.id.tv_option_image:
-            // intent = new Intent(this, LockOptionActivity.class);
-            // intent.putExtra(LockOptionActivity.TAG_COME_FROM,
-            // LockOptionActivity.FROM_IMAGEHIDE);
-            // startActivityForResult(intent, REQUEST_CODE_OPTION);
-            // break;
             default:
                 break;
         }
@@ -321,22 +315,6 @@ public class VideoHideMainActivity extends BaseActivity implements
             } else {
                 viewHolder.mImageCbIcon.setVisibility(View.GONE);
             }
-
-            // Drawable drawableCache = asyncLoadImage.loadImage(imageView,
-            // path,
-            // new ImageCallback() {
-            //
-            // @Override
-            // public void imageLoader(Drawable drawable) {
-            // if (imageView != null
-            // && imageView.getTag().equals(path) && drawable != null) {
-            // imageView.setBackgroundDrawable(drawable);
-            // }
-            // }
-            // });
-            // if (drawableCache != null) {
-            // viewHolder.imageView.setBackgroundDrawable(drawableCache);
-            // }
             String filePath = "voidefile://" + path;
             mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
             return convertView;
@@ -344,102 +322,14 @@ public class VideoHideMainActivity extends BaseActivity implements
 
     }
 
-    /**
-     * getVideoInfo
-     */
-    public List<VideoBean> getVideoInfo() {
-
-        List<VideoBean> videoBeans = new ArrayList<VideoBean>();
-        Uri uri = Files.getContentUri("external");
-        String selection = MediaColumns.DATA + " LIKE '%.leotmv'";
-        Cursor cursor = null;
-        try {
-            cursor = getContentResolver().query(uri, null, selection, null,
-                    MediaColumns.DATE_ADDED + " desc");
-            if (cursor != null) {
-                Map<String, VideoBean> countMap = new HashMap<String, VideoBean>();
-                while (cursor.moveToNext()) {
-                    VideoBean video = new VideoBean();
-                    String path = cursor
-                            .getString(cursor
-                                    .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-                    video.setDirPath(dirPath);
-                    video.setName(dirName);
-                    File videoFile = new File(path);
-                    boolean videoExists = videoFile.exists();
-                    if (videoExists) {
-                        VideoBean vb = null;
-                        if (!countMap.containsKey(dirPath)) {
-                            vb = new VideoBean();
-                            vb.setName(dirName);
-                            vb.setDirPath(dirPath);
-                            vb.getBitList().add(new VideoItemBean(path));
-                            vb.setPath(path);
-                            countMap.put(dirPath, vb);
-                        } else {
-                            vb = countMap.get(dirPath);
-                            vb.getBitList().add(new VideoItemBean(path));
-                        }
-                    }
-                }
-
-                Iterable<String> it = countMap.keySet();
-                for (String key : it) {
-                    videoBeans.add(countMap.get(key));
-                }
-                Collections.sort(videoBeans, mFolderCamparator);
-            }
-        } catch (Exception e) {
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-
-        return videoBeans;
-    }
-
-    /**
-     * Comparator date
-     */
-    public Comparator<VideoBean> mFolderCamparator = new Comparator<VideoBean>() {
-
-        public final int compare(VideoBean a, VideoBean b) {
-            if (a.getmLastModifyDate().before(b.getmLastModifyDate()))
-                return 1;
-            if (a.getmLastModifyDate().after(b.getmLastModifyDate()))
-                return -1;
-            return 0;
-        }
-    };
+//    };
 
     /**
      * GrideView onItemClick
      */
     public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
+                            long id) {
         VideoBean video = hideVideos.get(position);
-        // if (isHaveCbFloder && position == 0 && !isCbHere) {
-        // // showDialog to download CB
-        // if (mDialog == null) {
-        // mDialog = new LEOAlarmDialog(this);
-        // }
-        // mDialog.setOnClickListener(new OnDiaogClickListener() {
-        // @Override
-        // public void onClick(int which) {
-        // if (which == 1) {
-        // // getURL and go browser
-        // requestUrl();
-        // }
-        // }
-        // });
-        // mDialog.setCanceledOnTouchOutside(false);
-        // mDialog.setContent(getString(R.string.video_hide_need_cb));
-        // mDialog.setSureButtonText(getString(R.string.button_install));
-        // mDialog.show();
-        // } else {
         Intent intent = new Intent(this, VideoGriActivity.class);
         Bundle bundle = new Bundle();
         bundle.putSerializable("data", video);
@@ -451,24 +341,4 @@ public class VideoHideMainActivity extends BaseActivity implements
         } catch (Exception e) {
         }
     }
-
-    // private void requestUrl() {
-    // Uri uri = Uri.parse(URL_CB);
-    // Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-    // this.startActivity(intent);
-    // }
-
-    // private void checkCbAndVersion() {
-    // PackageManager packageManager = getPackageManager();
-    // List<PackageInfo> list = packageManager
-    // .getInstalledPackages(PackageManager.GET_PERMISSIONS);
-    //
-    // for (PackageInfo packageInfo : list) {
-    // String packNameString = packageInfo.packageName;
-    // if (packNameString.equals(VideoHideMainActivity.CB_PACKAGENAME)) {
-    // isCbHere = true;
-    // }
-    // }
-    // }
-
 }

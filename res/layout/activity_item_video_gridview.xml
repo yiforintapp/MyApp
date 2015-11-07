@@ -29,13 +29,19 @@
             android:background="@drawable/selector_over_frame"
             android:scaleType="center" />
 
-          <ImageView
-              android:layout_width="29dp"
-              android:layout_height="29dp"
-              android:layout_marginLeft="70dp"
-              android:layout_marginTop="60dp"
-              android:src="@drawable/play_icon" />
+        <ImageView
+            android:layout_width="@dimen/hide_album_frame_width"
+            android:layout_height="@dimen/hide_album_frame_width"
+            android:src="@drawable/play_icon" />
 
+        <ImageView
+            android:id="@+id/video_select"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_marginBottom="@dimen/hide_video_checkbox_bottom"
+            android:paddingRight="@dimen/hide_video_checkbox_right"
+            android:src="@drawable/pic_choose_normal" />
     </FrameLayout>
 
     <TextView
@@ -47,13 +53,5 @@
         android:gravity="center"
         android:singleLine="true"
         android:textColor="@color/grey" />
-
-    <ImageView
-        android:id="@+id/photo_select"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/hide_picture_checkbox_left"
-        android:layout_marginTop="@dimen/hide_picture_checkbox_top"
-        android:src="@drawable/pic_choose_normal" />
 
 </RelativeLayout>

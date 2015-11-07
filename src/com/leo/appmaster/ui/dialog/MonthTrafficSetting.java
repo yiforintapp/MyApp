@@ -16,8 +16,12 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoSeekBar;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LanguageUtils;
 
@@ -29,7 +33,9 @@ public class MonthTrafficSetting extends LEOBaseDialog {
     private int progressInt;
     private int progressTextWidth, progressTextHeight;
     private OnDiaogClickListener mListener;
-
+    private RippleView mRvBlue;
+    
+    
     public interface OnDiaogClickListener {
         public void onClick(int progress);
     }
@@ -47,9 +53,10 @@ public class MonthTrafficSetting extends LEOBaseDialog {
         Resources resources = AppMasterApplication.getInstance().getResources();
         seekbar_text = (TextView) dlgView.findViewById(R.id.seekbar_text);
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
-
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
         seekbar_text_progress = (TextView) dlgView.findViewById(R.id.seekbar_text_progress);
-        progressInt = sp_notice_flow.getFlowSettingBar();
+        progressInt = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getOverDataInvokePercent();
         seekbar_text_progress.setText(progressInt + "%");
 
         // 得到seekbar_text_progress 大小，初始化位置
@@ -146,14 +153,17 @@ public class MonthTrafficSetting extends LEOBaseDialog {
     }
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-        sure_button.setTag(rListener);
-        sure_button.setOnClickListener(new View.OnClickListener() {
+        mRvBlue.setTag(rListener);
+        mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
             @Override
-            public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) sure_button
+            public void onRippleComplete(RippleView arg0) {
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
                         .getTag();
-                lListener.onClick(MonthTrafficSetting.this, 1);
+                try {
+                    lListener.onClick(MonthTrafficSetting.this, 1);
+                } catch (Exception e) {
+                }
             }
         });
     }

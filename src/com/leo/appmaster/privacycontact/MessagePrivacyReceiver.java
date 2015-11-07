@@ -30,7 +30,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
-import com.leo.appmaster.utils.BuildProperties;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NotificationUtil;
 import com.leo.appmaster.utils.Utilities;
@@ -45,6 +45,16 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
     private long mSendDate;
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
+    private OnMessageReceiverListener mMessageListener;
+
+    public void setOnPrivacyMessageListener(OnMessageReceiverListener messageListener) {
+        mMessageListener = messageListener;
+    }
+
+    /*隐私短信回调接口*/
+    public interface OnMessageReceiverListener {
+        public boolean onMessageReceiverListener(SmsMessage message);
+    }
 
     public MessagePrivacyReceiver() {
     }
@@ -73,6 +83,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             if (PrivacyContactManager.getInstance(context).getPrivacyContactsCount() == 0) {
                 return;
             }
+
             // Crash from feedback
             try {
                 Bundle bundle = intent.getExtras();
@@ -83,6 +94,8 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     mPhoneNumber = message.getOriginatingAddress();// 电话号
                     mMessgeBody = message.getMessageBody();// 短信内容
                     mSendDate = message.getTimestampMillis();
+                    /*手机防盗功能处理:防止手机防盗号码为隐私联系人时拦截掉放在最前面*/
+//                    PhoneSecurityManager.getInstance(mContext).securityPhoneReceiverHandler(message);
                     if (!Utilities.isEmpty(mPhoneNumber)) {
                         String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
                         // 查询来的号码是否为隐私联系人，如果返回值为空则说明不是
@@ -108,15 +121,11 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                     PrivacyContactManager.getInstance(mContext).synMessage(
                                             mSimpleDateFormate, messageBean, mContext,
                                             mSendDate);
-                                    if (Build.VERSION.SDK_INT < 19 && !BuildProperties.isMIUI()) {
-                                        // 对于4.4以下的系统由于可以直接拦截，拦截后不会触发数据库变化，所以再此处通知快捷手势有新消息
-                                        noReadPrivacyMsmTipForQuickGesture(AppMasterPreference
-                                                .getInstance(mContext));
-                                    }
                                 }
                             });
                         }
                     }
+
                 }
             } catch (Exception e) {
 
@@ -162,7 +171,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                                 mITelephony.endCall();
                                 // 判断是否为5.0系统，特别处理
                                 saveCallLog(cb);
-                                LeoLog.d("MessagePrivacyReceiver",
+                                Log.d("MessagePrivacyReceiver",
                                         "Call intercept successful!");
                             } catch (Exception e) {
 
@@ -176,18 +185,27 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         } else if (PrivacyContactUtils.SENT_SMS_ACTION.equals(action)) {
             switch (getResultCode()) {
                 case Activity.RESULT_OK:
-                    // 短信发送成功
+                    /*短信发送成功*/
+//                    Toast.makeText(
+//                            mContext,
+//                            mContext.getResources().getString(
+//                                    R.string.send_msm_suce),
+//                            Toast.LENGTH_SHORT).show();
                     break;
-                // 短信发送失败
+                /*短信发送失败*/
                 case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
                 case SmsManager.RESULT_ERROR_RADIO_OFF:
                 case SmsManager.RESULT_ERROR_NULL_PDU:
                 default:
-                    Toast.makeText(
-                            mContext,
-                            mContext.getResources().getString(
-                                    R.string.privacy_message_item_send_message_fail),
-                            Toast.LENGTH_SHORT).show();
+                    /*该标志用于限制同一次失败提示值提示一次*/
+                    if (!PrivacyContactManager.getInstance(mContext).mSendMsmFail) {
+                        PrivacyContactManager.getInstance(mContext).mSendMsmFail = true;
+                        Toast.makeText(
+                                mContext,
+                                mContext.getResources().getString(
+                                        R.string.privacy_message_item_send_message_fail),
+                                Toast.LENGTH_SHORT).show();
+                    }
                     break;
             }
         }
@@ -199,9 +217,9 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         if (action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION2)
                 || action.equals(PrivacyContactUtils.MESSAGE_RECEIVER_ACTION3)) {
-            LeoLog.d(Constants.RUN_TAG, "接收到新短信广播");
+            Log.e(Constants.RUN_TAG, "接收到新短信广播");
         } else if (PrivacyContactUtils.CALL_RECEIVER_ACTION.equals(action)) {
-            LeoLog.d(Constants.RUN_TAG, "接收到来电广播");
+            Log.e(Constants.RUN_TAG, "接收到来电广播");
         }
     }
 
@@ -238,7 +256,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
         return flagContact;
     }
 
-    public void callLogNotification(Context context,String number) {
+    public void callLogNotification(Context context, String number) {
         boolean callLogRuningStatus = AppMasterPreference.getInstance(
                 context)
                 .getCallLogItemRuning();
@@ -276,8 +294,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             notificationManager.notify(20140902, notification);
             /* 隐私联系人有未读 通话时发送广播 */
             PrivacyContactManager.getInstance(mContext).privacyContactSendReceiverToSwipe(
-                    PrivacyContactManager.PRIVACY_CALL,0,number);
-            LeoLog.e(TAG, "本次联系人："+number);
+                    PrivacyContactManager.PRIVACY_CALL, 0, number);
         }
     }
 
@@ -306,7 +323,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
             AppMasterPreference pre = AppMasterPreference
                     .getInstance(mContext);
             int count = pre.getCallLogNoReadCount();
-            if (count >0) {
+            if (count > 0) {
                 pre.setCallLogNoReadCount(count + 1);
             } else {
                 pre.setCallLogNoReadCount(1);
@@ -326,14 +343,7 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                             new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION));
             // 发送通知
-            callLogNotification(mContext,contact.getContactNumber());
+            callLogNotification(mContext, contact.getContactNumber());
         }
-    }
-
-    private void noReadPrivacyMsmTipForQuickGesture(AppMasterPreference pref) {
-//        Log.e(Constants.RUN_TAG,
-//                "pref.getSwitchOpenPrivacyContactMessageTip()="
-//                        + pref.getSwitchOpenPrivacyContactMessageTip()
-//                        + ";pref.getQuickGestureMsmTip()=" + pref.getQuickGestureMsmTip());
     }
 }

@@ -4,13 +4,22 @@ package com.leo.appmaster.bootstrap;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.ThirdAppManager;
+import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.privacycontact.PrivacyContactManager;
 import com.leo.appmaster.privacycontact.PrivacyTrickUtil;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.schedule.FetchScheduleJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
+import com.leo.appmaster.utils.Utilities;
 
 /**
  * 异步初始化，旧版本的startInitTask
@@ -26,11 +35,16 @@ public class InitAsyncBootstrap extends Bootstrap {
 
     @Override
     protected boolean doStrap() {
+        // 加载所有的首选项
+        PreferenceTable.getInstance().loadPreference();
+
         PrivacyTrickUtil.clearOtherApps(mApp);
         AppLoadEngine.getInstance(mApp).preloadAllBaseInfo();
-        /* checkUpdateFinish(); */
         quickGestureTipInit();
-        AppBackupRestoreManager.getInstance(mApp).getBackupList();
+        ((ThirdAppManager) MgrContext.
+                getManager(MgrContext.MGR_THIRD_APP)).
+                getBackupList(AppBackupRestoreManager.BACKUP_PATH);
+//        AppBackupRestoreManager.getInstance(mApp).getBackupList(saveFileName);
         PrivacyContactManager.getInstance(mApp).getPrivateContacts();
         // GP check
         boolean isAppInstalled;
@@ -46,8 +60,11 @@ public class InitAsyncBootstrap extends Bootstrap {
         }
 
         FetchScheduleJob.startFetchJobs();
+        saveSimIMEI();
+        PrivacyContactManager.getInstance(mApp).getPrivateContacts();
         return true;
     }
+
 
     @Override
     public String getClassTag() {
@@ -58,6 +75,15 @@ public class InitAsyncBootstrap extends Bootstrap {
         AppMasterPreference pref = AppMasterPreference.getInstance(mApp);
         if (!pref.getLastVersion().equals(PhoneInfo.getVersionCode(mApp))) {
             pref.setNewUserUnlockCount(0);
+        }
+    }
+
+    /*保存sim标识*/
+    private void saveSimIMEI() {
+        String simNu=PreferenceTable.getInstance().getString(PrefConst.KEY_SIM_IMEI);
+        if (Utilities.isEmpty(simNu)) {
+            LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            manager.setSimIMEI();
         }
     }
 }

@@ -1,11 +1,10 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/messageRT"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:minHeight="60dp"
-    android:paddingLeft="@dimen/activity_privacy_contact_item_paddingLeft" >
+    android:background="@drawable/home_tab_selector"
+    android:layout_height="68dp"
+    android:gravity="center_vertical">
 
     <TextView
         android:id="@+id/add_from_contact_sort_letter"
@@ -21,6 +20,7 @@
         android:layout_width="@dimen/privacy_contact_icon_size"
         android:layout_height="@dimen/privacy_contact_icon_size"
         android:layout_centerVertical="true"
+        android:layout_marginLeft="6dp"
         android:src="@drawable/default_user_avatar" />
 
     <RelativeLayout
@@ -29,7 +29,7 @@
         android:layout_height="@dimen/privacy_call_log_item_calllog_list_message_itemLT_layout_height"
         android:layout_below="@id/add_from_contact_sort_letter"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="16dp"
+        android:layout_marginLeft="15dp"
         android:layout_toRightOf="@id/contactIV" >
 
         <LinearLayout
@@ -44,9 +44,11 @@
                 android:id="@+id/contact_item_nameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="联系人"
-                android:textColor="@color/black"
-                android:textSize="16dp" />
+                android:textSize="17dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                android:text="理奥网络"
+                android:textColor="#333333" />
 
             <TextView
                 android:id="@+id/contact_item_numberTV"
@@ -55,7 +57,8 @@
                 android:layout_marginTop="@dimen/privacy_contact_list_item_layout_marginTop"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="电话号码"
+                android:text="2014/09/01"
+                android:textSize="13dp"
                 android:textColor="#9b9b9b" />
         </LinearLayout>
 
@@ -66,16 +69,13 @@
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginLeft="29dp"
-            android:layout_marginRight="16dp"
+            android:layout_marginRight="12dp"
             android:src="@drawable/unselect" >
         </ImageView>
-
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/test_list_divider" />
     </RelativeLayout>
-
-</RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/cantact_content"
+        android:background="@color/divider_2" />
+</com.leo.appmaster.ui.RippleView>

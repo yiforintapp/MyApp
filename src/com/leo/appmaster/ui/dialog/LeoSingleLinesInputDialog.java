@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 
 public class LeoSingleLinesInputDialog extends LEOBaseDialog {
     public static final String TAG = "XLAlarmDialog";
@@ -21,6 +23,7 @@ public class LeoSingleLinesInputDialog extends LEOBaseDialog {
     private TextView mRightBtn;
     private TextView mFirstHead;
     private Object mUserData;
+    private RippleView mRvBlue , mRvWhite;
 
     private EditText mNameEdit;
 
@@ -79,30 +82,36 @@ public class LeoSingleLinesInputDialog extends LEOBaseDialog {
     }
 
     public void setLeftBtnListener(DialogInterface.OnClickListener lListener) {
-        mLeftBtn.setTag(lListener);
-        mLeftBtn.setOnClickListener(new View.OnClickListener() {
+        mRvWhite.setTag(lListener);
+        mRvWhite.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
             @Override
-            public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mLeftBtn
+            public void onRippleComplete(RippleView arg0) {
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvWhite
                         .getTag();
-                if (lListener != null) {
-                    lListener.onClick(LeoSingleLinesInputDialog.this, 0);
+                try {
+                    if (lListener != null) {
+                        lListener.onClick(LeoSingleLinesInputDialog.this, 0);
+                    }
+                } catch (Exception e) {
                 }
             }
         });
     }
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-        mRightBtn.setTag(rListener);
-        mRightBtn.setOnClickListener(new View.OnClickListener() {
+        mRvBlue.setTag(rListener);
+        mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
             @Override
-            public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRightBtn
+            public void onRippleComplete(RippleView arg0) {
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
                         .getTag();
-                if (lListener != null) {
-                    lListener.onClick(LeoSingleLinesInputDialog.this, 1);
+                try {
+                    if (lListener != null) {
+                        lListener.onClick(LeoSingleLinesInputDialog.this, 1);
+                    }
+                } catch (Exception e) {
                 }
             }
         });
@@ -113,7 +122,8 @@ public class LeoSingleLinesInputDialog extends LEOBaseDialog {
                 R.layout.dialog_single_lines_input, null);
 
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
-
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
+        mRvWhite = (RippleView) dlgView.findViewById(R.id.rv_white);
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
         mNameEdit = (EditText) dlgView.findViewById(R.id.et_second);

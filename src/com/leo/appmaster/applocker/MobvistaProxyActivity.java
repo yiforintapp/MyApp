@@ -20,7 +20,7 @@ public class MobvistaProxyActivity extends Activity implements MobvistaListener 
         super.onCreate(arg0);
         
         LeoLog.i("MobvistaProxyActivity", "proxy oncrete.");
-        MobvistaEngine.getInstance().loadMobvista(this, this);
+        MobvistaEngine.getInstance(this).loadMobvista("", this);
         
         finish();
     }

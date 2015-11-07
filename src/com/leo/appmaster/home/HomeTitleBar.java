@@ -10,6 +10,7 @@ import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toolbar;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.utils.BuildProperties;
@@ -41,7 +42,7 @@ public class HomeTitleBar extends FrameLayout implements OnClickListener {
         mTvOptionImage = (ImageView) findViewById(R.id.iv_option_image);
         mIvLogo = (ImageView) findViewById(R.id.iv_logo);
         mIvHotApp = (RelativeLayout) findViewById(R.id.bg_show_hotapp);
-        if (BuildProperties.isZTEAndApiLevel14()) {
+        if (BuildProperties.isApiLevel14()) {
             mIvHotApp.setVisibility(View.GONE);
         }
         super.onFinishInflate();
@@ -65,7 +66,6 @@ public class HomeTitleBar extends FrameLayout implements OnClickListener {
 
     @Override
     public void onClick(View v) {
-
     }
 
     @Override

@@ -27,6 +27,10 @@ public class AppInfo extends BaseInfo {
      */
     public boolean isLocked;
     /*
+     * is locked
+     */
+    public boolean isRecomment = false;
+    /*
      * app install time
      */
     public long installTime = -1l;

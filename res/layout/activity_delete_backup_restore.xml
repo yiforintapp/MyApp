@@ -10,22 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
-        <com.leo.appmaster.ui.CommonTitleBar
+        <com.leo.appmaster.ui.CommonToolbar
             android:id="@+id/backup_title_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/commonbar_background" />
-        
-        <ImageView 
-            android:id="@+id/trffic_setting_iv"
-            android:layout_width="@dimen/app_manager_lv_item_delete_button_w_h"
-            android:layout_height="@dimen/app_manager_lv_item_delete_button_w_h"
-             android:layout_marginRight="@dimen/app_manager_lv_item_delete_button_margin_right"
-             android:layout_marginTop="@dimen/app_manager_flowactivity_small_setting_margin_top"
-             android:visibility="gone"
-            android:background="@drawable/app_data_usage_settings_icon"
-            android:layout_alignParentRight="true"
-            />
+            android:layout_height="wrap_content"/>
+
     </RelativeLayout>
 
     <LinearLayout
@@ -39,6 +28,7 @@
             android:id="@+id/backup_app_tab_indicator"
             android:overScrollMode="never"
             android:layout_width="match_parent"
+            android:background="@color/toolbar_background_color"
             android:layout_height="@dimen/app_manager_backup_head_back" />
 
         <android.support.v4.view.ViewPager

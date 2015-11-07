@@ -124,7 +124,10 @@ public class AppwallHttpUtil {
 	public static void requestUrl(Context context, String url) {
 		Uri uri = Uri.parse(url);
 		Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-		context.startActivity(intent);
+		try {
+	        context.startActivity(intent);
+		} catch (Exception e) {
+		}
 	}
 
 	// 访问GooglPlay
@@ -132,7 +135,10 @@ public class AppwallHttpUtil {
 		Intent intent = new Intent(Intent.ACTION_VIEW,
 				Uri.parse("market://details?id=" + packageGp));
 		intent.setPackage(Constants.GP_PACKAGE);
-		context.startActivity(intent);
+	      try {
+	          context.startActivity(intent);
+	        } catch (Exception e) {
+	        }
 	}
 
 	// 判断字符串

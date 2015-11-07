@@ -7,13 +7,12 @@ import android.graphics.drawable.Drawable;
 import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
 
 public class LEODoubleChoicesDialog extends LEOBaseDialog {
     public static final String TAG = "Dialogggg";
@@ -28,7 +27,8 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
     private CheckBox mCBFromCorner;
     private CheckBox mCBWhiteDot;
 
-
+    private RippleView mRvRight;
+    private RippleView mRvLeft;
 
     public LEODoubleChoicesDialog(Context context) {
         super(context, R.style.bt_dialog);
@@ -95,12 +95,12 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
     }
 
     public void setLeftBtnListener(DialogInterface.OnClickListener lListener) {
-        mLeftBtn.setTag(lListener);
-        mLeftBtn.setOnClickListener(new View.OnClickListener() {
+        mRvLeft.setTag(lListener);
+        mRvLeft.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mLeftBtn
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvLeft
                         .getTag();
                 lListener.onClick(LEODoubleChoicesDialog.this, 0);
             }
@@ -108,12 +108,12 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
     }
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-        mRightBtn.setTag(rListener);
-        mRightBtn.setOnClickListener(new View.OnClickListener() {
+        mRvRight.setTag(rListener);
+        mRvRight.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRightBtn
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvRight
                         .getTag();
                 lListener.onClick(LEODoubleChoicesDialog.this, 1);
             }
@@ -128,7 +128,8 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
 
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
         
-      
+        mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_white_button);
         
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
         mCBFromCorner=(CheckBox) dlgView.findViewById(R.id.cb_dialog_area);
@@ -148,13 +149,6 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
     public void setLeftBtnVisibility(boolean flag) {
         if (!flag) {
             mLeftBtn.setVisibility(View.GONE);
@@ -162,13 +156,10 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
     }
 
     public void setRightBtnParam(float width, float height) {
-        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRightBtn
+        LinearLayout.LayoutParams linearParams = (LinearLayout.LayoutParams) mRvRight
                 .getLayoutParams();
         linearParams.height = (int) height;
         linearParams.width = (int) width;
-        mRightBtn.setLayoutParams(linearParams);
+        mRvRight.setLayoutParams(linearParams);
     }
-
-   
-    
 }

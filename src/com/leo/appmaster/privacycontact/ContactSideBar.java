@@ -13,6 +13,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.TextView;
 
+import com.leo.appmaster.R;
+
 /**
  * 右侧的字母索引View
  * 
@@ -72,7 +74,8 @@ public class ContactSideBar extends View {
             // paint.setTypeface(Typeface.DEFAULT_BOLD);
             paint.setTypeface(Typeface.DEFAULT);
             paint.setAntiAlias(true);
-            paint.setTextSize(30);
+            float size=this.getResources().getDimension(R.dimen.scur_contact_char);
+            paint.setTextSize(size);
             // 选中的状态
             if (i == choose) {
                 paint.setColor(Color.parseColor("#3399ff"));

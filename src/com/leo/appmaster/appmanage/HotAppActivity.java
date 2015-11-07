@@ -20,12 +20,12 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
 import com.leo.appmaster.appmanage.view.ApplicaionAppFragment;
 import com.leo.appmaster.appmanage.view.GameAppFragment2;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -109,25 +109,17 @@ public class HotAppActivity extends BaseFragmentActivity implements OnPageChange
     }
 
     @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState, persistentState);
-        } catch (Exception e) {
-
-        }
-    }
-
-    @Override
     public void onBackPressed() {
         Intent intent = null;
         if (mFromStatusbar) {
             if (AppMasterPreference.getInstance(this).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
                 LeoLog.d("Track Lock Screen", "apply lockscreen form HotAppActivity onBackPressed");
-                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                        getPackageName(), true, new OnUnlockedListener() {
+                final LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                manager.applyLock(LockManager.LOCK_MODE_FULL,
+                        getPackageName(), true, new LockManager.OnUnlockedListener() {
                             @Override
                             public void onUnlocked() {
-                                LockManager.getInstatnce().timeFilter(getPackageName(), 500);
+                                manager.filterPackage(getPackageName(), 500);
                                 Intent intent = new Intent(HotAppActivity.this, HomeActivity.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 AppMasterApplication.getInstance().startActivity(intent);

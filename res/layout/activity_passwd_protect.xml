@@ -5,11 +5,11 @@
     android:background="#ffffff"
     android:orientation="vertical" >
 
-    <com.leo.appmaster.ui.CommonTitleBar
+    <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background" />
+        android:background="@color/toolbar_background_color" />
 
     <ScrollView
         android:id="@+id/scroll"
@@ -31,7 +31,7 @@
                 android:layout_marginTop="20dp"
                 android:text="@string/input_qusetion"
                 android:textColor="@color/black"
-                android:textSize="14sp"  />
+                android:textSize="14dp"  />
 
             <LinearLayout
                 android:id="@+id/layout_questions"
@@ -54,7 +54,7 @@
                     android:maxLength="40"
                     android:singleLine="true"
                     android:paddingLeft="12dp"
-                    android:textSize="14sp" >
+                    android:textSize="14dp" >
                 </EditText>
 
                 <ImageView
@@ -76,7 +76,7 @@
                 android:layout_marginTop="40dp"
                 android:text="@string/passwd_anwser"
                 android:textColor="@color/black"
-                android:textSize="14sp"  />
+                android:textSize="14dp"  />
 
             <EditText
                 android:id="@+id/et_anwser"
@@ -90,7 +90,7 @@
                 android:ems="10"
                 android:maxLength="40"
                 android:singleLine="true"
-                android:textSize="14sp" >
+                android:textSize="14dp" >
                 </EditText>
         </RelativeLayout>
     </ScrollView>

@@ -4,8 +4,6 @@ package com.leo.appmaster.fragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
-import android.net.Uri;
-import android.provider.Settings;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.animation.Animation;
@@ -23,7 +21,6 @@ import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.applocker.PasswdProtectActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.WeiZhuangActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.BackUpActivity;
@@ -38,7 +35,6 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
@@ -49,7 +45,7 @@ public class PasswdSettingFragment extends BaseFragment implements
 
     private ImageView iv_delete;
     private TextView mTvPasswd1, mTvPasswd2, mTvPasswd3, mTvPasswd4;
-    private TextView mInputTip, mTvPasswdFuncTip, mTvBottom;
+    private TextView mInputTip, mTvPasswdFuncTip;
     private View reset_button_content, reset_buton_content_activity;
     private int mInputCount = 1;
     private String mTempFirstPasswd = "";
@@ -99,7 +95,6 @@ public class PasswdSettingFragment extends BaseFragment implements
         mInputTip = (TextView) findViewById(R.id.tv_passwd_input_tip);
         mTvPasswdFuncTip = (TextView) findViewById(R.id.tv_passwd_function_tip);
 
-        mTvBottom = (TextView) findViewById(R.id.tv_bottom);
         reset_button_content.setOnClickListener(this);
 
         if (AppMasterPreference.getInstance(mActivity).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
@@ -217,8 +212,6 @@ public class PasswdSettingFragment extends BaseFragment implements
                 } else if (mInputCount == 2) {
                     AppMasterPreference pref = AppMasterPreference.getInstance(mActivity);
                     if (mTempFirstPasswd.equals(mTempSecondPasswd)) {
-                        Toast.makeText(mActivity, R.string.set_passwd_suc, 1)
-                                .show();
                         if (pref.getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                             SDKWrapper.addEvent(PasswdSettingFragment.this.mActivity,
                                     SDKWrapper.P1,
@@ -237,7 +230,7 @@ public class PasswdSettingFragment extends BaseFragment implements
                             return;
                         }
 
-                        LockManager.getInstatnce().timeFilter(mActivity.getPackageName(), 500);
+                        mLockManager.filterPackage(mActivity.getPackageName(), 500);
 
                         if (!pref.hasPswdProtect()) {
                             setPasswdProtect();
@@ -401,7 +394,6 @@ public class PasswdSettingFragment extends BaseFragment implements
                 } else if (type == ((LockSettingActivity) mActivity).mBackup) {
                     gotoBackUp(type);
                 } else if (type == ((LockSettingActivity) mActivity).mQuickGues) {
-//                    gotoQuickGues(type);
                 } else if (type == ((LockSettingActivity) mActivity).mLockThem) {
                     gotoLockThem(type);
                 } else if (type == ((LockSettingActivity) mActivity).mPrivacyContact) {
@@ -418,7 +410,7 @@ public class PasswdSettingFragment extends BaseFragment implements
         iv_delete.postDelayed(new Runnable() {
             @Override
             public void run() {
-                LockManager.getInstatnce().startLockService();
+                mLockManager.startLockService();
             }
         }, 2000);
 
@@ -532,8 +524,7 @@ public class PasswdSettingFragment extends BaseFragment implements
     }
 
     private void goToAppLock() {
-        LockManager lm = LockManager.getInstatnce();
-        LockMode curMode = lm.getCurLockMode();
+        LockMode curMode = mLockManager.getCurLockMode();
         Intent intent;
         if (curMode != null && curMode.defaultFlag == 1 && !curMode.haveEverOpened) {
             intent = new Intent(mActivity, RecommentAppLockListActivity.class);
@@ -542,7 +533,7 @@ public class PasswdSettingFragment extends BaseFragment implements
             intent.putExtra("target", 0);
             startActivity(intent);
             curMode.haveEverOpened = true;
-            lm.updateMode(curMode);
+            mLockManager.updateMode(curMode);
         } else {
             intent = new Intent(mActivity, AppLockListActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |

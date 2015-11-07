@@ -1,19 +1,18 @@
 <com.leo.appmaster.backup.AppDeletetemView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content" >
+    android:layout_height="wrap_content">
 
     <RelativeLayout
         android:id="@+id/content_all_item"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_manager_lv_item_total_height" >
+        android:layout_height="68dp">
 
         <ImageView
             android:id="@+id/iv_icon"
             android:layout_width="@dimen/app_manager_lv_item_icon_width_height"
             android:layout_height="@dimen/app_manager_lv_item_icon_width_height"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/app_manager_lv_item_icon_margin_left"
+            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:scaleType="centerInside" />
 
@@ -22,45 +21,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/app_manager_lv_item_twotv_margin_left"
+            android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/iv_icon"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tv_title"
                 android:layout_width="@dimen/app_manager_lv_item_text_width"
                 android:layout_height="wrap_content"
                 android:singleLine="true"
-                android:textColor="@color/flow_item_total"
-                android:textSize="14dp" />
+                android:textColor="#333333"
+                android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/tv_size"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginTop="@dimen/app_manager_lv_item_text_margin_top"
+                android:layout_marginTop="5dp"
                 android:singleLine="true"
-                android:textColor="@color/flow_item_small"
-                android:textSize="10dp" />
+                android:textColor="@color/divider_1"
+                android:textSize="13dp" />
         </LinearLayout>
 
         <ImageView
             android:id="@+id/bg_delete"
-            android:layout_width="@dimen/app_manager_lv_item_delete_button_w_h"
-            android:layout_height="@dimen/app_manager_lv_item_delete_button_w_h"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:layout_marginRight="@dimen/app_manager_lv_item_delete_button_margin_right"
-            android:background="@drawable/manager_delete_list_selecter"
-            android:clickable="true"
-            android:focusable="true" />
+            android:layout_marginRight="26dp"
+            android:background="@drawable/restore_delete_button_selecter" />
 
-      <ImageView 
-        android:src="@drawable/ins"
-        android:layout_alignParentBottom="true"
-        android:layout_height="1dp"
-        android:layout_width="match_parent"
-        />
+        <View style="@style/priAppItem" />
     </RelativeLayout>
 
 </com.leo.appmaster.backup.AppDeletetemView>

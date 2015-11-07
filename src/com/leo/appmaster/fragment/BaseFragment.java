@@ -9,6 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+
 /**
  * @author zwy if we extends this class,we must: first provider layout id in
  *         method layoutResourceId() secend we init our UI in onInitUI.
@@ -18,11 +21,14 @@ public abstract class BaseFragment extends Fragment {
 	protected FragmentActivity mActivity;
 	protected View mRootView;
 
+	protected LockManager mLockManager;
+
 	final String TAG = getClass().getSimpleName();
 
 	@Override
 	public void onAttach(Activity activity) {
 		mActivity = (FragmentActivity) activity;
+		mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
 		getArguments();
 		super.onAttach(activity);
 	}

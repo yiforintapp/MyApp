@@ -9,12 +9,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 
 public class LeoDoubleLinesInputDialog extends LEOBaseDialog {
 	public static final String TAG = "XLAlarmDialog";
 
 	private Context mContext;
 
+	private RippleView mRvWhite,mRvBlue;
 	private TextView mTitle;
 	private TextView mLeftBtn;
 	private TextView mRightBtn;
@@ -78,27 +81,32 @@ public class LeoDoubleLinesInputDialog extends LEOBaseDialog {
 	}
 
 	public void setLeftBtnListener(DialogInterface.OnClickListener lListener) {
-		mLeftBtn.setTag(lListener);
-		mLeftBtn.setOnClickListener(new View.OnClickListener() {
+		mRvWhite.setTag(lListener);
+		mRvWhite.setOnRippleCompleteListener(new OnRippleCompleteListener(){
 
 			@Override
-			public void onClick(View arg0) {
-				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mLeftBtn
+			public void onRippleComplete(RippleView arg0) {
+				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvWhite
 						.getTag();
-				lListener.onClick(LeoDoubleLinesInputDialog.this, 0);
+                try {
+                    lListener.onClick(LeoDoubleLinesInputDialog.this, 0);
+                } catch (Exception e) {
+                }
 			}
 		});
 	}
 
 	public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-		mRightBtn.setTag(rListener);
-		mRightBtn.setOnClickListener(new View.OnClickListener() {
-
+	    mRvBlue.setTag(rListener);
+	    mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 			@Override
-			public void onClick(View arg0) {
-				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRightBtn
+			public void onRippleComplete(RippleView arg0) {
+				DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
 						.getTag();
-				lListener.onClick(LeoDoubleLinesInputDialog.this, 1);
+                try {
+                    lListener.onClick(LeoDoubleLinesInputDialog.this, 1);
+                } catch (Exception e) {
+                }
 			}
 		});
 	}
@@ -108,7 +116,8 @@ public class LeoDoubleLinesInputDialog extends LEOBaseDialog {
 				R.layout.dialog_double_lines_input, null);
 
 		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
-
+		mRvWhite = (RippleView) dlgView.findViewById(R.id.rv_white);
+		mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
 		mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
 		mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
 

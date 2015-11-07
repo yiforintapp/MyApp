@@ -47,14 +47,23 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         mPagerTab.setViewPager(mViewPager);
         mPagerTab.setOnPageChangeListener(new ModePageChangeListiner());
 
-        mTtileBar.setTitle(R.string.lock_mode);
-        mTtileBar.setBackViewListener(new OnClickListener() {
+
+        mTtileBar.setNewStyleText(R.string.lock_mode);
+        mTtileBar.setNewStyleBackViewListrener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 onBackPressed();
             }
         });
+//        mTtileBar.setTitle(R.string.lock_mode);
+//        mTtileBar.setBackViewListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                onBackPressed();
+//            }
+//        });
 
+        mTtileBar.setNewStyle();
         // mTtileBar.setOptionImageVisibility(View.VISIBLE);
         // mTtileBar.setOptionImage(R.drawable.mode_add_button);
         // mTtileBar.setOptionListener(this);
@@ -94,19 +103,19 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         mFragmentHolders = new ModeFragmentHoler[3];
 
         ModeFragmentHoler holder = new ModeFragmentHoler();
-        holder.title = this.getString(R.string.lock_mode_all);
+        holder.title = getString(R.string.lock_mode_all);
         LockModeFragment lockFragment = new LockModeFragment();
         holder.fragment = lockFragment;
         mFragmentHolders[0] = holder;
 
         holder = new ModeFragmentHoler();
-        holder.title = this.getString(R.string.lock_mode_time);
+        holder.title = getString(R.string.lock_mode_time);
         TimeLockFragment timeLockFragment = new TimeLockFragment();
         holder.fragment = timeLockFragment;
         mFragmentHolders[1] = holder;
 
         holder = new ModeFragmentHoler();
-        holder.title = this.getString(R.string.lock_mode_location);
+        holder.title = getString(R.string.lock_mode_location);
         LocationLockFragment locationFragment = new LocationLockFragment();
         holder.fragment = locationFragment;
         mFragmentHolders[2] = holder;
@@ -155,7 +164,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.tv_option_image) {
+        if (v.getId() == R.id.tv_option_image_content) {
             if (mEditMode) {
                 Fragment f = mFragmentHolders[mEditIndex].fragment;
                 if (f instanceof Editable) {
@@ -247,7 +256,7 @@ public class LockModeActivity extends BaseFragmentActivity implements OnClickLis
         }
 
         mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        mTtileBar.setOptionImage(R.drawable.tips_icon);
+        mTtileBar.setOptionImage(R.drawable.help_icon_n);
         if (null != listener) {
             mTtileBar.setOptionListener(listener);
         }

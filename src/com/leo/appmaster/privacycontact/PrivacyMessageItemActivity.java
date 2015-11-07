@@ -18,6 +18,7 @@ import android.os.Bundle;
 import android.telephony.SmsManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -41,13 +42,13 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyMessageItemActivity extends BaseActivity implements OnClickListener {
     private ListView mContactCallLog;
     private CallLogAdapter mAdapter;
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
     private List<MessageBean> mMessages;
     private List<String> mShowDates;
     private LinearLayout mRelativeLayout;
@@ -63,7 +64,8 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_message_item_list);
-        mTtileBar = (CommonTitleBar) findViewById(R.id.message_item_layout_title_bar);
+        mTtileBar = (CommonToolbar) findViewById(R.id.message_item_layout_title_bar);
+        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
         mMessages = new ArrayList<MessageBean>();
         mShowDates = new ArrayList<String>();
         mContactCallLog = (ListView) findViewById(R.id.contactLV);
@@ -79,13 +81,13 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
             mName = messageData[0];
             if (mPhoneNumber != null) {
                 if (mName != null && !"".equals(mName)) {
-                    mTtileBar.setTitle(mName);
+                    mTtileBar.setToolbarTitle(mName);
                 } else {
-                    mTtileBar.setTitle(mPhoneNumber);
+                    mTtileBar.setToolbarTitle(mPhoneNumber);
                 }
             }
         }
-        mTtileBar.setBackViewListener(new OnClickListener() {
+        mTtileBar.setNavigationClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -96,9 +98,9 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
             }
         });
         // 打电话
-        mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        mTtileBar.setOptionImage(R.drawable.mesage_call_icon);
-        mTtileBar.setOptionListener(new OnClickListener() {
+        mTtileBar.setOptionMenuVisible(true);
+        mTtileBar.setOptionImageResource(R.drawable.mesage_call_icon);
+        mTtileBar.setOptionClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 // 查询该号码是否为隐私联系人
@@ -141,7 +143,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
 
             @Override
             public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-                
+
             }
 
             @Override
@@ -159,16 +161,16 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
         };
         mEditText.addTextChangedListener(watcher);
         mEditText.setOnTouchListener(new OnTouchListener() {
-            
+
             @Override
             public boolean onTouch(View arg0, MotionEvent arg1) {
-                        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
-                            
-                            @Override
-                            public void run() {
-                                mContactCallLog.setSelection(mMessages.size() - 1);
-                            }
-                        }, 200);
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        mContactCallLog.setSelection(mMessages.size() - 1);
+                    }
+                }, 200);
                 return false;
             }
         });
@@ -216,6 +218,8 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
          */
         int id = v.getId();
         if (id == R.id.message_send_button) {
+              /*有发送短信，恢复短信发送失败Toast标志值*/
+           PrivacyContactManager.getInstance(this).mSendMsmFail = true;
             SmsManager sms = SmsManager.getDefault();
             String messageContent = mEditText.getText().toString();
             ArrayList<String> divideMessageContents = sms.divideMessage(messageContent);
@@ -256,7 +260,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
                     mContactCallLog.setSelection(mMessages.size() - 1);
                     Uri line = getContentResolver().insert(Constants.PRIVACY_MESSAGE_URI, values);
                     if (line == null) {
-                        LeoLog.w("LockMessageItemActivity", "Send message insert fail!");
+                        Log.w("LockMessageItemActivity", "Send message insert fail!");
                     }
                 }
 
@@ -408,60 +412,68 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
     @SuppressLint("SimpleDateFormat")
     private void getMessages(String id) {
         List<String> showDate = new ArrayList<String>();
-        Cursor cur = getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
-                Constants.COLUMN_MESSAGE_PHONE_NUMBER
-                        + " LIKE ?", new String[] {
-                    "%" + id
-                }, Constants.COLUMN_MESSAGE_DATE);
-        if (cur != null) {
-            while (cur.moveToNext()) {
-                MessageBean mb = new MessageBean();
-                String number = cur.getString(cur
-                        .getColumnIndex(Constants.COLUMN_MESSAGE_PHONE_NUMBER));
-                String threadId = cur.getString(cur
-                        .getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
-                String name = cur.getString(cur
-                        .getColumnIndex(Constants.COLUMN_MESSAGE_CONTACT_NAME));
-                String body = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_BODY));
-                int type = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_TYPE));
-                int isRead = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_IS_READ));
-                if (isRead == 0) {
-                    String fromateNumber = PrivacyContactUtils.formatePhoneNumber(number);
-                    PrivacyContactUtils.updateMessageMyselfIsRead(1,
-                            "contact_phone_number LIKE ? ",
-                            new String[] {
-                                "%" + fromateNumber
-                            }, this);
-                }
-                String time = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_DATE));
-                try {
-                    Date date = new Date(time);
-                    String showDateTemp = mDateFormatDay.format(date);
-                    if (showDate == null || showDate.size() == 0) {
-                        showDate.add(showDateTemp);
-                        mb.setShowDate(showDateTemp);
-                        mShowDates.add(showDateTemp);
-                    } else {
-                        if (!showDate.contains(showDateTemp)) {
+        Cursor cur = null;
+        try {
+            cur = getContentResolver().query(Constants.PRIVACY_MESSAGE_URI, null,
+                    Constants.COLUMN_MESSAGE_PHONE_NUMBER
+                            + " LIKE ?", new String[]{
+                            "%" + id
+                    }, Constants.COLUMN_MESSAGE_DATE);
+            if (cur != null) {
+                while (cur.moveToNext()) {
+                    MessageBean mb = new MessageBean();
+                    String number = cur.getString(cur
+                            .getColumnIndex(Constants.COLUMN_MESSAGE_PHONE_NUMBER));
+                    String threadId = cur.getString(cur
+                            .getColumnIndex(Constants.COLUMN_MESSAGE_THREAD_ID));
+                    String name = cur.getString(cur
+                            .getColumnIndex(Constants.COLUMN_MESSAGE_CONTACT_NAME));
+                    String body = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_BODY));
+                    int type = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_TYPE));
+                    int isRead = cur.getInt(cur.getColumnIndex(Constants.COLUMN_MESSAGE_IS_READ));
+                    if (isRead == 0) {
+                        String fromateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+                        PrivacyContactUtils.updateMessageMyselfIsRead(1,
+                                "contact_phone_number LIKE ? ",
+                                new String[]{
+                                        "%" + fromateNumber
+                                }, this);
+                    }
+                    String time = cur.getString(cur.getColumnIndex(Constants.COLUMN_MESSAGE_DATE));
+                    try {
+                        Date date = new Date(time);
+                        String showDateTemp = mDateFormatDay.format(date);
+                        if (showDate == null || showDate.size() == 0) {
                             showDate.add(showDateTemp);
                             mb.setShowDate(showDateTemp);
                             mShowDates.add(showDateTemp);
+                        } else {
+                            if (!showDate.contains(showDateTemp)) {
+                                showDate.add(showDateTemp);
+                                mb.setShowDate(showDateTemp);
+                                mShowDates.add(showDateTemp);
+                            }
                         }
+                    } catch (Exception e) {
+
                     }
-                } catch (Exception e) {
-                    
+                    mb.setMessageBody(body);
+                    mb.setMessageName(name);
+                    mb.setPhoneNumber(number);
+                    mb.setMessageType(type);
+                    mb.setMessageIsRead(isRead);
+                    mb.setMessageThreadId(threadId);
+                    mb.setMessageTime(time);
+                    mMessages.add(mb);
                 }
-                mb.setMessageBody(body);
-                mb.setMessageName(name);
-                mb.setPhoneNumber(number);
-                mb.setMessageType(type);
-                mb.setMessageIsRead(isRead);
-                mb.setMessageThreadId(threadId);
-                mb.setMessageTime(time);
-                mMessages.add(mb);
             }
-            cur.close();
+        } catch (Exception e) {
+        } finally {
+            if (cur != null) {
+                cur.close();
+            }
         }
+
         Collections.sort(mMessages, PrivacyContactUtils.mMessageAscCamparator);
     }
 }

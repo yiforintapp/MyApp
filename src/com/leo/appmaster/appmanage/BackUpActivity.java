@@ -3,6 +3,7 @@ package com.leo.appmaster.appmanage;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
@@ -15,21 +16,26 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.appmanage.view.BackUpFragment;
 import com.leo.appmaster.appmanage.view.RestoreFragment;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPagerTab;
+import com.leo.appmaster.utils.LeoLog;
 
 public class BackUpActivity extends BaseFragmentActivity implements OnClickListener,
         OnItemClickListener {
     private LeoPagerTab mPagerTab;
     private ViewPager mViewPager;
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
     private AppManagerFragmentHoler[] mFragmentHolders = new AppManagerFragmentHoler[2];
     private RestoreFragment restoreFragment;
     private BackUpFragment backupFragment;
@@ -38,13 +44,25 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_backup_restore);
+        handleIntent();
         initUI();
     }
 
+    private void handleIntent() {
+        Intent intent = getIntent();
+        String isFromNotification = (String) intent.getExtra("from");
+        LeoLog.d("testBackupNoti", "isFromNotification  : " + isFromNotification);
+        if (isFromNotification != null && isFromNotification.equals("notification")) {
+            PreferenceTable.getInstance().putString(Constants.NEW_APP_NUM, "");
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "backup", "backup_cnts_notify");
+        }
+    }
+
     private void initUI() {
-        mTtileBar = (CommonTitleBar) findViewById(R.id.backup_title_bar);
-        mTtileBar.setTitle(R.string.app_backup_back);
-        mTtileBar.openBackView();
+        mTtileBar = (CommonToolbar) findViewById(R.id.backup_title_bar);
+        mTtileBar.setToolbarTitle(R.string.app_backup_back);
+        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setOptionMenuVisible(false);
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.backup_app_tab_indicator);
         mViewPager = (ViewPager) findViewById(R.id.backup_app_viewpager);
@@ -53,30 +71,19 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
         mViewPager.setAdapter(new AppManagerPagerAdapter(getSupportFragmentManager()));
         mViewPager.setOffscreenPageLimit(2);
         mPagerTab.setViewPager(mViewPager);
-
     }
-    
+
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         try {
             super.onRestoreInstanceState(savedInstanceState);
         } catch (Exception e) {
-            
+
         }
 
     }
-    
-    @Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState, persistentState);
-        } catch (Exception e) {
-            
-        }
-    }
 
-    
-    
+
     private void initFragment() {
 
         AppManagerFragmentHoler holder = new AppManagerFragmentHoler();
@@ -108,7 +115,7 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
         } catch (Exception e) {
 
         }
-        
+
     }
 
     class AppManagerPagerAdapter extends FragmentPagerAdapter {
@@ -174,6 +181,6 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
     protected void onDestroy() {
         super.onDestroy();
     }
-    
+
 
 }

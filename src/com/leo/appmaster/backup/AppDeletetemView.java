@@ -6,14 +6,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
-import android.widget.Button;
 import android.view.View.OnClickListener;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.AppUtil;
@@ -72,11 +73,14 @@ public class AppDeletetemView extends FrameLayout implements OnClickListener {
             AppItemInfo app = (AppItemInfo) tag;
             if (v == mButton_delete) {
                 SDKWrapper.addEvent(getContext(), SDKWrapper.P1, "home", "newuninstall");
-                LockManager.getInstatnce().timeFilterSelf();
-                AppUtil.uninstallApp(getContext(), app.packageName);
+
+                ((ThirdAppManager) MgrContext.getManager(MgrContext.MGR_THIRD_APP)).
+                        uninstallApp(app.packageName);
+
             }
         }
     }
+
 
     @Override
     public void onRestoreInstanceState(Parcelable state) {

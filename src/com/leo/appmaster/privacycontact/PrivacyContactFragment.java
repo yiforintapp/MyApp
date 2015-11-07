@@ -39,9 +39,11 @@ import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 public class PrivacyContactFragment extends BaseFragment {
 
@@ -278,11 +280,11 @@ public class PrivacyContactFragment extends BaseFragment {
                     }
 
                 }
-                if (position == mContacts.size() - 1) {
-                    vh.bottomLine.setVisibility(View.GONE);
-                } else {
-                    vh.bottomLine.setVisibility(View.VISIBLE);
-                }
+//                if (position == mContacts.size() - 1) {
+//                    vh.bottomLine.setVisibility(View.GONE);
+//                } else {
+//                    vh.bottomLine.setVisibility(View.VISIBLE);
+//                }
             }
            
             return convertView;
@@ -364,10 +366,10 @@ public class PrivacyContactFragment extends BaseFragment {
             }
         });
         // 发短信按钮
-        mPCDialog.setLeftBtnListener(new OnClickListener() {
+        mPCDialog.setLeftBtnListener(new OnRippleCompleteListener() {
 
             @Override
-            public void onClick(View arg0) {
+            public void onRippleComplete(RippleView arg0) {
                 mPCDialog.cancel();
                 String[] bundleData = new String[] {
                         contact.getContactName(), contact.getContactNumber()
@@ -385,10 +387,10 @@ public class PrivacyContactFragment extends BaseFragment {
             }
         });
         // 打电话按钮
-        mPCDialog.setRightBtnListener(new OnClickListener() {
+        mPCDialog.setRightBtnListener(new OnRippleCompleteListener() {
 
             @Override
-            public void onClick(View arg0) {
+            public void onRippleComplete(RippleView arg0) {
                 /* SDK */
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "call", "contact");
                 mPCDialog.cancel();
@@ -483,11 +485,6 @@ public class PrivacyContactFragment extends BaseFragment {
                                                                         Context.NOTIFICATION_SERVICE);
                                                         notificationManager.cancel(20140901);
                                                     }
-                                                    /**
-                                                     * 对快捷手势隐私联系人未读，红点操作
-                                                     */
-                                                    PrivacyContactManager.getInstance(mContext)
-                                                            .deletePrivacyMsmCancelRedTip(mContext);
                                                     LeoEventBus
                                                             .getDefaultBus()
                                                             .post(
@@ -562,13 +559,6 @@ public class PrivacyContactFragment extends BaseFragment {
                                                                         Context.NOTIFICATION_SERVICE);
                                                         notificationManager.cancel(20140902);
                                                     }
-                                                    // 隐私通话没有未读
-                                                    /**
-                                                     * 对快捷手势隐私联系人,消费隐私通话时，红点去除操作
-                                                     */
-                                                    PrivacyContactManager
-                                                            .getInstance(mContext)
-                                                            .deletePrivacyCallCancelRedTip(mContext);
                                                     LeoEventBus
                                                             .getDefaultBus()
                                                             .post(
@@ -608,9 +598,9 @@ public class PrivacyContactFragment extends BaseFragment {
                     mHandler.sendMessage(messge);
                 }
             }
-            PrivacyHelper.getInstance(mContext)
-                    .computePrivacyLevel(
-                            PrivacyHelper.VARABLE_PRIVACY_CONTACT);
+//            PrivacyHelper.getInstance(mContext)
+//                    .computePrivacyLevel(
+//                            PrivacyHelper.VARABLE_PRIVACY_CONTACT);
             return isOtherLogs;
         }
 
@@ -825,8 +815,8 @@ public class PrivacyContactFragment extends BaseFragment {
             if (flagNumber > 0) {
                 mContacts.remove(contact);
                 PrivacyContactManager.getInstance(mActivity).removeContact(contact);
-                PrivacyHelper.getInstance(mActivity).computePrivacyLevel(
-                        PrivacyHelper.VARABLE_PRIVACY_CONTACT);
+//                PrivacyHelper.getInstance(mActivity).computePrivacyLevel(
+//                        PrivacyHelper.VARABLE_PRIVACY_CONTACT);
                 // 查询该号码是否有隐私短信，通话记录
                 String number = PrivacyContactUtils.formatePhoneNumber(contact
                         .getContactNumber());
@@ -857,7 +847,7 @@ public class PrivacyContactFragment extends BaseFragment {
                                             values,
                                             mContext);
                                 } catch (Exception e) {
-                                    Log.e("PrivacyContactFragment Operation",
+                                    LeoLog.i("PrivacyContactFragment Operation",
                                             "PrivacyContactFragment restore message fail!");
                                 }
                             }

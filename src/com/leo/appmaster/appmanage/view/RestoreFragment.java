@@ -18,11 +18,14 @@ import com.leo.appmaster.backup.AppRestoreAdapter;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
+import com.leo.appmaster.utils.DipPixelUtil;
 
 public class RestoreFragment extends BaseFragment implements AppBackupDataListener {
     public static final String MESSAGE_BACKUP_SUCCESS = "message_backup_success";
@@ -92,6 +95,7 @@ public class RestoreFragment extends BaseFragment implements AppBackupDataListen
                 }
             });
         }
+//        mProgressDialog.getWindow().setLayout(DipPixelUtil.dip2px(mActivity, 280), DipPixelUtil.dip2px(mActivity, 250));
         mProgressDialog.setCancelable(cancelable);
         mProgressDialog.setButtonVisiable(cancelable);
         mProgressDialog.setCanceledOnTouchOutside(false);
@@ -112,8 +116,9 @@ public class RestoreFragment extends BaseFragment implements AppBackupDataListen
                     if (which == 1 && mPendingDelApp != null) {
                         showProgressDialog(getString(R.string.delete), String
                                 .format(getString(R.string.deleting_app),
-                                        mPendingDelApp.label), 0, true, false);
-                        mBackupManager_restore.deleteApp(mPendingDelApp);
+                                        mPendingDelApp.label), 0, false, true);
+                        ((ThirdAppManager) MgrContext.getManager(MgrContext.MGR_THIRD_APP)).deleteRestoreApp(mPendingDelApp);
+//                        mBackupManager_restore.deleteApp(mPendingDelApp);
                     }
                     mPendingDelApp = null;
                 }

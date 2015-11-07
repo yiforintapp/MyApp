@@ -26,15 +26,6 @@ public class PretendAppBeautyFragment extends PretendFragment {
         return R.layout.fragment_pretend_beauty;
     }
 
-  
-    
-    
-    
-    
-    
-    
-    
-    
     @Override
     protected void onInitUI() {
         // TODO Auto-generated method stub

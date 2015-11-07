@@ -22,8 +22,12 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.DayTrafficSetEvent;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.DayTrafficInfo;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
@@ -35,6 +39,7 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
     private TextView cancel_button;
     private List<DayTrafficInfo> mList;
     // record the current checked radio number
+    private RippleView mRvBlue;
     private int checkedIndex = -1;
     private String[] itemsEn = {
             "1st", "2nd", "3rd", "4th", "5th", "6th", "7th", "8th", "9th", "10th", "11th", "12th",
@@ -72,7 +77,7 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
 
     private void initUI() {
         SDKWrapper.addEvent(mContext, SDKWrapper.P1, "datapage", "cycle");
-        
+
         language = AppwallHttpUtil.getLanguage();
         View dlgView = LayoutInflater.from(mContext).inflate(
                 R.layout.dialog_day_setting, null);
@@ -81,6 +86,7 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
         mInflater = getLayoutInflater();
         resources = AppMasterApplication.getInstance().getResources();
         cancel_button = (TextView) dlgView.findViewById(R.id.cancel_button);
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
         daytraffic_lv = (ListView) dlgView.findViewById(R.id.daytraffic_lv);
         mAdapter = new MyAdapter(mList);
         daytraffic_lv.setAdapter(mAdapter);
@@ -105,7 +111,8 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
     private List<DayTrafficInfo> fillList() {
         List<DayTrafficInfo> list = new ArrayList<DayTrafficInfo>();
         DayTrafficInfo info;
-        renewday = sp_notice_flow.getRenewDay();
+        renewday = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getDataCutDay();
         for (int i = 0; i < itemsEn.length; i++) {
             info = new DayTrafficInfo();
             if (i + 1 == renewday) {
@@ -150,7 +157,7 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
             TrafficHolder mHolder;
             if (convertView == null) {
                 mHolder = new TrafficHolder();
-                convertView = mInflater.inflate(R.layout.traffic_day_list, parent,false);
+                convertView = mInflater.inflate(R.layout.traffic_day_list, parent, false);
                 mHolder.tv_showday = (TextView) convertView.findViewById(R.id.tv_showday);
                 mHolder.iv_showday = (ImageView) convertView.findViewById(R.id.iv_showday);
                 convertView.setTag(mHolder);
@@ -190,9 +197,9 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
 
             DayTrafficInfo mInfo = list.get(position);
             if (mInfo.isCheck()) {
-                mHolder.iv_showday.setImageResource(R.drawable.radio_buttons);
+                mHolder.iv_showday.setImageResource(R.drawable.dialog_check_on);
             } else {
-                mHolder.iv_showday.setImageResource(R.drawable.unradio_buttons);
+                mHolder.iv_showday.setImageResource(R.drawable.dialog_check_off);
             }
             mHolder.tv_showday.setText(mInfo.getDay());
 
@@ -210,12 +217,11 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
     }
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
-        cancel_button.setTag(rListener);
-        cancel_button.setOnClickListener(new View.OnClickListener() {
-
+        mRvBlue.setTag(rListener);
+        mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
             @Override
-            public void onClick(View arg0) {
-                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) cancel_button
+            public void onRippleComplete(RippleView arg0) {
+                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
                         .getTag();
                 lListener.onClick(DayTrafficSetting.this, 1);
             }
@@ -260,7 +266,8 @@ public class DayTrafficSetting extends LEOBaseDialog implements OnItemClickListe
         // mList.add(mInfo);
         // }
         int renewDaym = position + 1;
-        sp_notice_flow.setRenewDay(renewDaym);
+        ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).setDataCutDay(renewDaym);
+//        sp_notice_flow.setRenewDay(renewDaym);
 
         LeoLog.d("eventbustest", "send eventbus!");
         LeoEventBus.getDefaultBus().post(

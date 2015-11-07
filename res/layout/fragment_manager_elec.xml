@@ -4,9 +4,9 @@
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical"
-    tools:context=".MainActivity" >
+    tools:context=".MainActivity">
 
-    <com.leo.appmaster.ui.CommonTitleBar
+    <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ele_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -15,8 +15,9 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/all_backgroud"
-        android:padding="@dimen/new_app_manager_padding" >
+        android:background="@color/white">
+
+        <!-- android:padding="@dimen/new_app_manager_padding" -->
 
         <TextView
             android:id="@+id/batterySummary"
@@ -29,10 +30,16 @@
             android:id="@+id/listview_ele"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-	        android:overScrollMode="never"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:background="@color/white"
-            android:divider="@drawable/app_data_usage_list_line"
+            android:divider="#00000000"
+            android:overScrollMode="never"
+            android:scrollbars="none"
             android:visibility="gone" />
+        <!--             android:divider="#cbcbcb"
+                    android:dividerHeight="1dp" -->
+        <!-- android:divider="@drawable/app_data_usage_list_line" -->
 
         <ProgressBar
             android:id="@+id/pb_loading_ele"

@@ -1,44 +1,12 @@
 
 package com.leo.appmaster.cleanmemory;
 
-import java.util.Timer;
-
-import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
-import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.UFOActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.manager.MobvistaEngine;
-import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
-import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.TextFormater;
-import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FailReason;
-import com.leo.imageloader.core.ImageAware;
-import com.leo.imageloader.core.ImageLoadingListener;
-import com.leo.imageloader.core.ImageSize;
-import com.mobvista.sdk.m.core.entity.Campaign;
-
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
-import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.Build.VERSION;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.os.Build.VERSION;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -50,6 +18,30 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.activity.QuickHelperActivity;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
+import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.TextFormater;
+import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageSize;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ObjectAnimator;
+import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
@@ -70,6 +62,12 @@ public class HomeBoostActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.launcher_boost_activity);
+        
+        if(getIntent().getBooleanExtra("from_quickhelper", false)){
+            SDKWrapper.addEvent(AppMasterApplication.getInstance(), SDKWrapper.P1,
+                    "assistant", "accelerate_cnts");
+        }
+        
         initUI();
         handleIntent();
         overridePendingTransition(0, 0);
@@ -78,26 +76,26 @@ public class HomeBoostActivity extends Activity {
         AppMasterPreference amp = AppMasterPreference.getInstance(this);
         long currentTime = System.currentTimeMillis();
         long lastBoostWithADTime = amp.getLastBoostWithADTime();
-        LeoLog.d("poha", "currentTime - lastBoostWithADTime="+(currentTime - lastBoostWithADTime)+"=====24小时=8640000=====开关值="+amp.getADChanceAfterAccelerating());
+        LeoLog.e("poha", "currentTime - lastBoostWithADTime="+(currentTime - lastBoostWithADTime)+"=====24小时=8640000=====开关值="+amp.getADChanceAfterAccelerating());
         
         if ((currentTime - lastBoostWithADTime) > 1000 * 60 * 60 * 24
                 && amp.getADChanceAfterAccelerating()==1)
         {
-            LeoLog.d("poha", "to load");
+            LeoLog.e("poha", "to load");
             loadAD();
         }
     }
 
     private void loadAD() {
 
-        mAdEngine = MobvistaEngine.getInstance();
-        mAdEngine.loadMobvista(this, Constants.UNIT_ID_62,new MobvistaListener() {
+        mAdEngine = MobvistaEngine.getInstance(this);
+        mAdEngine.loadMobvista(Constants.UNIT_ID_62,new MobvistaListener() {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK) {
                     mIsADLoaded = true;
-                    LeoLog.d("poha", "loaded!");
+                    LeoLog.e("poha", "loaded!");
                     long currentTime = System.currentTimeMillis();
                     AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);
                     loadADPic(campaign.getIconUrl(),
@@ -118,7 +116,7 @@ public class HomeBoostActivity extends Activity {
 
                     Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ad_appcall);
                     call.setText(campaign.getAdCall());
-                    mAdEngine.registerView(HomeBoostActivity.this, call);
+                    mAdEngine.registerView(Constants.UNIT_ID_62, call);
                 }
             }
 
@@ -183,7 +181,8 @@ public class HomeBoostActivity extends Activity {
             mCdt.cancel();
         }
         overridePendingTransition(0, 0);
-        LockManager.getInstatnce().filterAllOneTime(500);
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        lockManager.filterAll(500);
         super.finish();
     }
 
@@ -364,7 +363,7 @@ public class HomeBoostActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         if(mAdEngine!=null){
-        mAdEngine.release(this);
+        mAdEngine.release(Constants.UNIT_ID_62);
         }
     }
 

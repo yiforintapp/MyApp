@@ -11,6 +11,7 @@ import android.widget.BaseAdapter;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.model.AppItemInfo;
+import com.leo.appmaster.ui.CommonToolbar;
 
 public class AppDeleteAdapter extends BaseAdapter{
 
@@ -66,10 +67,6 @@ public class AppDeleteAdapter extends BaseAdapter{
         itemView_delete.setIcon(app.icon);
         itemView_delete.setTitle(app.label);
         
-//        itemView_delete.setVersion(String.format(
-//                mContext.getResources().getString(R.string.app_version),
-//                app.versionName));
-//        itemView_delete.setSize(mDeleteManager.getApkSize(app));
         itemView_delete.setSize(mDeleteManager.convertToSizeString(app.cacheInfo.total));
         itemView_delete.setTag(app);
         

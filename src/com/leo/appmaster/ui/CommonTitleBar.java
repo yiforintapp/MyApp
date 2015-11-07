@@ -17,18 +17,26 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 
-public class CommonTitleBar extends FrameLayout implements OnClickListener {
+
+public class CommonTitleBar extends FrameLayout implements OnClickListener, RippleView.OnRippleCompleteListener {
 
     private ImageView mIvBackArrow;
     private TextView mTvTitle;
-//    private TextView mTvSpinner;
+    //    private TextView mTvSpinner;
 //    private ImageView mImgSpinner;
     private TextView mTvOptionText;
+    private View mTvOptionImageClick;
     private ImageView mTvOptionImage;
+
     private ImageView mTvLogo;
     private ImageView mHelpSetting;
     private RelativeLayout mHelpSettingParent;
     private View mLayoutBackView, mLayoutSpiner;
+    private View viewOldLeft, viewNewLeft;
+    private RippleView mNewClickArea;
+    private TextView mNewText;
+    private View newBackView;
+    private OnClickListener mListener;
 
     public CommonTitleBar(Context context) {
         this(context, null);
@@ -46,18 +54,50 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     protected void onFinishInflate() {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         inflater.inflate(R.layout.common_title_bar, this, true);
+
+
         mLayoutBackView = findViewById(R.id.layout_title_back);
         mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
+        newBackView = findViewById(R.id.layout_title_back_arraow);
+
+        if (newBackView instanceof RippleView) {
+            ((RippleView) newBackView).setOnRippleCompleteListener(this);
+        } else {
+            newBackView.setOnClickListener(this);
+        }
+
+
         mTvTitle = (TextView) findViewById(R.id.tv_title);
 //        mTvSpinner = (TextView) findViewById(R.id.tv_layout_right);
 //        mImgSpinner = (ImageView) findViewById(R.id.img_layout_right);
         mTvOptionText = (TextView) findViewById(R.id.tv_option_text);
+
         mTvOptionImage = (ImageView) findViewById(R.id.tv_option_image);
+        mTvOptionImageClick = findViewById(R.id.tv_option_image_content);
+
         mLayoutSpiner = findViewById(R.id.layout_right);
         mTvLogo = (ImageView) findViewById(R.id.iv_logo);
         mHelpSetting = (ImageView) findViewById(R.id.setting_help_iv);
         mHelpSettingParent = (RelativeLayout) findViewById(R.id.setting_help_tip);
+
+        viewOldLeft = findViewById(R.id.left_content);
+        viewNewLeft = findViewById(R.id.new_style_content);
+
+        mNewClickArea = (RippleView) findViewById(R.id.ct_back_rl);
+        if (mNewClickArea instanceof RippleView) {
+            ((RippleView) mNewClickArea).setOnRippleCompleteListener(this);
+        } else {
+            mNewClickArea.setOnClickListener(this);
+        }
+
+        mNewText = (TextView) findViewById(R.id.ct_title_tv);
+
         super.onFinishInflate();
+    }
+
+    public void setNewStyle() {
+        viewNewLeft.setVisibility(View.VISIBLE);
+        viewOldLeft.setVisibility(View.GONE);
     }
 
     public void setTitle(String title) {
@@ -67,20 +107,22 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     public void setTitle(int resid) {
         mTvTitle.setText(resid);
     }
-    
-    public void setTitlePaddingLeft(int paddingLeft){
+
+    public void setTitlePaddingLeft(int paddingLeft) {
         int paddingRight = mTvTitle.getPaddingRight();
         int paddingTop = mTvTitle.getPaddingTop();
         int paddingBottom = mTvTitle.getPaddingBottom();
         mTvTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
     }
-    
-    public void setOptionImagePadding(int padding){
-        mTvOptionImage.setPadding(padding, padding, padding, padding);
+
+    public void setOptionImagePadding(int padding) {
+//        mTvOptionImage.setPadding(padding, padding, padding, padding);
+        mTvOptionImageClick.setPadding(padding, padding, padding, padding);
     }
-    
-    public void setOptionImagePadding(int left,int top,int right,int bottom){
-        mTvOptionImage.setPadding(left, top, right, bottom);
+
+    public void setOptionImagePadding(int left, int top, int right, int bottom) {
+//        mTvOptionImage.setPadding(left, top, right, bottom);
+        mTvOptionImageClick.setPadding(left, top, right, bottom);
     }
 
 //    public void setSpinerText(String text) {
@@ -104,15 +146,16 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     }
 
     public void setBackArrowVisibility(int visibility) {
-        mIvBackArrow.setVisibility(visibility);
+//        mIvBackArrow.setVisibility(visibility);
+        newBackView.setVisibility(visibility);
     }
 
     public void setBackArrowImg(int imgID) {
         mIvBackArrow.setImageResource(imgID);
     }
-    
-    public void setBackArrawImgSize(int size){
-        LinearLayout.LayoutParams  params = (LinearLayout.LayoutParams) mIvBackArrow.getLayoutParams();
+
+    public void setBackArrawImgSize(int size) {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) mIvBackArrow.getLayoutParams();
         params.width = size;
         params.height = size;
         mIvBackArrow.setLayoutParams(params);
@@ -123,7 +166,8 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     }
 
     public void setOptionImageVisibility(int visibility) {
-        mTvOptionImage.setVisibility(visibility);
+//        mTvOptionImage.setVisibility(visibility);
+        mTvOptionImageClick.setVisibility(visibility);
     }
 
     public void setOptionBackground(int resId) {
@@ -140,7 +184,9 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
 
     public void setOptionListener(OnClickListener listener) {
         mTvOptionText.setOnClickListener(listener);
-        mTvOptionImage.setOnClickListener(listener);
+
+//        mTvOptionImage.setOnClickListener(listener);
+        mTvOptionImageClick.setOnClickListener(listener);
     }
 
     public void setOptionAnimation(Animation animation) {
@@ -148,11 +194,23 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     }
 
     public void openBackView() {
-        mLayoutBackView.setOnClickListener(this);
+//        mLayoutBackView.setOnClickListener(this);
+        newBackView.setOnClickListener(this);
+    }
+
+    public void setNewStyleBackViewListrener(OnClickListener listener) {
+        mListener = listener;
+//        mNewClickArea.setOnClickListener(listener);
+    }
+
+    public void setNewStyleText(int name) {
+        mNewText.setText(name);
     }
 
     public void setBackViewListener(OnClickListener listener) {
-        mLayoutBackView.setOnClickListener(listener);
+//        mLayoutBackView.setOnClickListener(listener);
+//        newBackView.setOnClickListener(this);
+        mNewClickArea.setOnClickListener(this);
     }
 
     public void setOptionImage(int resID) {
@@ -184,14 +242,32 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
     }
 
     public View getOptionImageView() {
-        return mTvOptionImage;
+//        return mTvOptionImage;
+        return mTvOptionImageClick;
     }
 
     @Override
     public void onClick(View v) {
-        if (mLayoutBackView == v) {
-            ((Activity) getContext()).finish();
+
+        switch (v.getId()) {
+            case R.id.ct_back_rl:
+                if (mListener != null) {
+                    mListener.onClick(v);
+                } else {
+                    Context context = getContext();
+                    if (context instanceof Activity) {
+                        ((Activity) context).finish();
+                    }
+                }
+                break;
+            case R.id.layout_title_back_arraow:
+                ((Activity) getContext()).finish();
+                break;
         }
+
+//        if (newBackView == v) {
+//            ((Activity) getContext()).finish();
+//        }
 
     }
 
@@ -204,4 +280,8 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener {
         }
     }
 
+    @Override
+    public void onRippleComplete(RippleView rippleView) {
+        onClick(rippleView);
+    }
 }

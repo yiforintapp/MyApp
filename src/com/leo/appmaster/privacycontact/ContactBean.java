@@ -17,10 +17,21 @@ public class ContactBean implements Serializable {
     private int answerType;
     private String answerStatus;
     private boolean isCheck = false;
+    private int count;
+    private int messageCount;
+    private int callCount;
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 
     public ContactBean(int contactId, String contactName, String contactNumber,
             ContactCallLog callLog, Bitmap contactIcon, String sortLetter, boolean isCheck,
-            int answerType, String answerStatus) {
+            int answerType, String answerStatus,int count,int messageCount,int callCount) {
         super();
         this.contactId = contactId;
         this.contactName = contactName;
@@ -31,6 +42,26 @@ public class ContactBean implements Serializable {
         this.isCheck = isCheck;
         this.answerType = answerType;
         this.answerStatus = answerStatus;
+        this.count=count;
+        this.messageCount=messageCount;
+        this.callCount=callCount;
+
+    }
+
+    public int getMessageCount() {
+        return messageCount;
+    }
+
+    public void setMessageCount(int messageCount) {
+        this.messageCount = messageCount;
+    }
+
+    public int getCallCount() {
+        return callCount;
+    }
+
+    public void setCallCount(int callCount) {
+        this.callCount = callCount;
     }
 
     public String getSortLetter() {

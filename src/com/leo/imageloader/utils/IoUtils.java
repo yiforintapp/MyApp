@@ -15,6 +15,8 @@
  *******************************************************************************/
 package com.leo.imageloader.utils;
 
+import android.database.Cursor;
+
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -118,6 +120,7 @@ public final class IoUtils {
 			}
 		}
 	}
+
 
 	/** Listener and controller for copy process */
 	public static interface CopyListener {

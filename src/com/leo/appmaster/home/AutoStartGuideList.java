@@ -4,9 +4,11 @@ package com.leo.appmaster.home;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -28,13 +30,17 @@ public class AutoStartGuideList extends WhiteList {
     public static int[] LIST = {
             XIAOMI4, XIAOMIREAD, HUAWEIP7_PLUS, LENOVO, LETV, HUAWEIP6, IUNI
     };
+
     public static int[] DOUBLE_OPEN_TIP_PHONE = {
             HUAWEIP7_PLUS
     };
 
+    private static LockManager sLockManager;
+
     public AutoStartGuideList() {
         super();
         mLists = LIST;
+        sLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
     }
 
     @Override
@@ -106,8 +112,8 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
+                sLockManager.filterSelfOneMinites();
                 LeoLog.i(TAG, "跳转小米4成功！");
             } catch (Exception e) {
                 LeoLog.i(TAG, "跳转小米4失败！");
@@ -133,8 +139,8 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
+                sLockManager.filterSelfOneMinites();
                 LeoLog.i(TAG, "跳转红米成功！");
             } catch (Exception e) {
                 LeoLog.i(TAG, "跳转红米失败！");
@@ -158,8 +164,8 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
+                sLockManager.filterSelfOneMinites();
                 LeoLog.e(TAG, "跳转huawei成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转huawei失败！");
@@ -184,8 +190,8 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
+                sLockManager.filterSelfOneMinites();
                 LeoLog.e(TAG, "跳转Lenovo成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转Lenovo失败！");
@@ -205,11 +211,11 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
-                LeoLog.d(TAG, "跳转Letv成功！");
+                sLockManager.filterSelfOneMinites();
+                Log.e(TAG, "跳转Letv成功！");
             } catch (Exception e) {
-                LeoLog.e(TAG, "跳转Letv失败！");
+                Log.e(TAG, "跳转Letv失败！");
                 e.printStackTrace();
             }
             return false;
@@ -227,8 +233,8 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
+                sLockManager.filterSelfOneMinites();
                 LeoLog.e(TAG, "跳转huaweiP6成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转huaweiP6失败！");
@@ -249,8 +255,8 @@ public class AutoStartGuideList extends WhiteList {
             intent.setComponent(cn);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
                 mContext.startActivity(intent);
+                sLockManager.filterSelfOneMinites();
                 LeoLog.e(TAG, "跳转inui成功！");
             } catch (Exception e) {
                 LeoLog.e(TAG, "跳转inui失败！");
@@ -318,7 +324,7 @@ public class AutoStartGuideList extends WhiteList {
         }
         return R.string.auto_start_guide_tip_content;
     }
-
+    
     /* 查询是否为双提示打开系统权限的机型 */
     public static boolean isDoubleTipOPenPhone(int phoneModel) {
         for (int i : DOUBLE_OPEN_TIP_PHONE) {

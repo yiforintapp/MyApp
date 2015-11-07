@@ -14,11 +14,11 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.fragment.GestureSettingFragment;
 import com.leo.appmaster.fragment.PasswdSettingFragment;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.ui.CommonTitleBar;
@@ -41,7 +41,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public final int mBackup = 8;
     public final int mQuickGues = 9;
     public final int mLockThem = 10;
-    public final int mPrivacyContact=11;
+    public final int mPrivacyContact = 11;
     // private int mLockType = LOCK_TYPE_PASSWD;
     private int mLockType = LOCK_TYPE_GESTURE;
     private CommonTitleBar mTitleBar;
@@ -63,6 +63,7 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public int mFromDeskId = -1;
     public String mCoolBrowserPath;
     public String mIswipeToPrivacyContact;
+
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
@@ -71,14 +72,13 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         boolean fromSplash = getIntent().getBooleanExtra("from_splash", false);
         if (amp.getLockType() != AppMasterPreference.LOCK_TYPE_NONE && fromSplash) {
             // FIXME: 2015/9/22 AM-2421 修复已经设置过锁，再次打开设置锁的问题，加上二次保护确认
-            if (LockManager.getInstatnce().inRelockTime(getPackageName())) {
+            if (mLockManager.inRelockTime(getPackageName())) {
                 Intent intent = new Intent(this, HomeActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             } else {
                 amp.setLastFilterSelfTime(0);
-                LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_FULL,
-                        getPackageName(), true, null);
+                mLockManager.applyLock(LockManager.LOCK_MODE_FULL, getPackageName(), true, null);
                 amp.setDoubleCheck(null);
             }
             finish();
@@ -120,12 +120,13 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         mJustFinish = intent.getBooleanExtra("just_finish", false);
         mFromQuickMode = intent.getBooleanExtra("from_quick_mode", false);
         mModeId = intent.getIntExtra("mode_id", -1);
-        mIswipeToPrivacyContact=intent.getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
+        mIswipeToPrivacyContact = intent.getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
     }
 
     private void initFragment() {
         mPasswd = new PasswdSettingFragment();
         mGesture = new GestureSettingFragment();
+
 
         if (mResetFlag) {
             mTitleBar.setTitle(R.string.reset_passwd);
@@ -184,16 +185,17 @@ public class LockSettingActivity extends BaseFragmentActivity implements
         res = getResources();
 
         mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        //
-
-        //
         if (mResetFlag) {
-            mTitleBar.openBackView();
-            mTitleBar.setTitle(R.string.reset_passwd);
+//            mTitleBar.openBackView();
+//            mTitleBar.setTitle(R.string.reset_passwd);
+
+            mTitleBar.setNewStyleText(R.string.reset_passwd);
+            mTitleBar.setNewStyle();
+
             // mTitleBar.setVisibility(View.INVISIBLE);
         } else {
             // mTitleBar.openBackView();
-            // mTitleBar.setTitle(R.string.passwd_setting);
+//             mTitleBar.setTitle(R.string.passwd_setting);
 
             // mTitleBar.setVisibility(View.INVISIBLE);
 
@@ -201,12 +203,9 @@ public class LockSettingActivity extends BaseFragmentActivity implements
             int W = mDisplay.getWidth();
             int H = mDisplay.getHeight();
             // 使得小尺寸机型在此时去除titlebar，而不是隐藏，否则下方位置不够
-            if (H > 900)
-            {
+            if (H > 900) {
                 mTitleBar.setVisibility(View.INVISIBLE);
-            }
-            else
-            {
+            } else {
                 mTitleBar.setVisibility(View.GONE);
             }
 
@@ -255,8 +254,8 @@ public class LockSettingActivity extends BaseFragmentActivity implements
     public int getFromDeskId() {
         return mFromDeskId;
     }
-    
-    public String getCoolBrowserPath(){
+
+    public String getCoolBrowserPath() {
         return mCoolBrowserPath;
     }
 }

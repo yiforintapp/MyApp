@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/app_background" >
+    android:background="@color/toolbar_background_color" >
 
     <TextView
         android:id="@+id/tv_passwd_input_tip"
@@ -46,7 +46,7 @@
             android:background="@drawable/pw_dline"
             android:gravity="bottom|center_horizontal"
             android:textColor="#ffffffff"
-            android:textSize="20sp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_passwd_2"
@@ -56,7 +56,7 @@
             android:background="@drawable/pw_dline"
             android:gravity="bottom|center_horizontal"
             android:textColor="#ffffffff"
-            android:textSize="20sp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_passwd_3"
@@ -66,7 +66,7 @@
             android:background="@drawable/pw_dline"
             android:gravity="bottom|center_horizontal"
             android:textColor="#ffffffff"
-            android:textSize="20sp" />
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tv_passwd_4"
@@ -75,7 +75,7 @@
             android:background="@drawable/pw_dline"
             android:gravity="bottom|center_horizontal"
             android:textColor="#ffffffff"
-            android:textSize="20sp" />
+            android:textSize="20dp" />
     </LinearLayout>
 
     <LinearLayout
@@ -103,7 +103,7 @@
                 android:gravity="center"
                 android:text="1"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
 
             <TextView
                 android:id="@+id/tv_2"
@@ -116,7 +116,7 @@
                 android:gravity="center"
                 android:text="2"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
 
             <TextView
                 android:id="@+id/tv_3"
@@ -127,7 +127,7 @@
                 android:gravity="center"
                 android:text="3"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -145,7 +145,7 @@
                 android:gravity="center"
                 android:text="4"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
 
             <TextView
                 android:id="@+id/tv_5"
@@ -158,7 +158,7 @@
                 android:gravity="center"
                 android:text="5"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
 
             <TextView
                 android:id="@+id/tv_6"
@@ -169,7 +169,7 @@
                 android:gravity="center"
                 android:text="6"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -187,7 +187,7 @@
                 android:gravity="center"
                 android:text="7"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
 
             <TextView
                 android:id="@+id/tv_8"
@@ -200,7 +200,7 @@
                 android:gravity="center"
                 android:text="8"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
 
             <TextView
                 android:id="@+id/tv_9"
@@ -211,7 +211,7 @@
                 android:gravity="center"
                 android:text="9"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
         </LinearLayout>
 
         <LinearLayout
@@ -240,7 +240,7 @@
                 android:gravity="center"
                 android:text="0"
                 android:textColor="#ffffff"
-                android:textSize="25sp" />
+                android:textSize="25dp" />
 
             <ImageView
                 android:id="@+id/tv_delete"
@@ -256,7 +256,7 @@
     <RelativeLayout
         android:id="@+id/reset_button_content"
         android:layout_width="wrap_content"
-        android:layout_height="23dp"
+        android:layout_height="25dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/fragment_lock_gesture_setting_tv_bottom_marginbottom"
@@ -286,7 +286,7 @@
             android:layout_toRightOf="@id/iv_reset_icon"
             android:text="@string/reset_digital_passwd"
             android:textColor="@color/common_button_selecter"
-            android:textSize="13sp" />
+            android:textSize="12dp" />
     </RelativeLayout>
 
 </RelativeLayout>

@@ -66,6 +66,6 @@
             android:layout_marginTop="@dimen/home_lock_mode_active_tip_text_margin_top"
             android:textColor="#565656"
             android:text="ddddddd"
-            android:textSize="14sp" />
+            android:textSize="14dp" />
 </LinearLayout>
 </LinearLayout>

@@ -13,7 +13,7 @@
         android:gravity="left"
         android:text="@string/vistor_mode"
         android:textColor="#a7a7a7"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
     <ImageView
         android:id="@+id/iv_selected"

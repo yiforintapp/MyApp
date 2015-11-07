@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="68dp" >
 
     <RelativeLayout
         android:id="@+id/content_all_item_be"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_manager_four_icon_total_height" >
+        android:layout_height="68dp">
 
         <ImageView
             android:id="@+id/appIcon"
-            android:layout_width="@dimen/app_manager_lv_item_icon_width_height"
-            android:layout_height="@dimen/app_manager_lv_item_icon_width_height"
+      android:layout_width="42dp"
+            android:layout_height="42dp"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/app_manager_lv_item_icon_margin_left"
+            android:layout_marginLeft="10dp"
             android:gravity="center"
             android:scaleType="centerInside"
             android:src="@drawable/ic_launcher" />
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/app_manager_lv_item_icon_margin_left"
+            android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/appIcon"
             android:orientation="vertical" >
 
@@ -37,8 +37,8 @@
                     android:layout_width="@dimen/app_manager_restore_one_text_height"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textColor="@color/flow_item_total"
-                    android:textSize="14dp" />
+                    android:textColor="#333333"
+                    android:textSize="17dp" />
 
                 <TextView
                     android:id="@+id/txtProgress"
@@ -47,7 +47,7 @@
                     android:layout_marginLeft="6dp"
                     android:layout_toRightOf="@id/appName"
                     android:textColor="@color/flow_item_total"
-                    android:textSize="14dp" />
+                    android:textSize="13dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -75,14 +75,14 @@
 
         <ImageView
             android:id="@+id/ele_stop_app"
-            android:layout_width="@dimen/app_manager_lv_item_delete_button_w_h"
-            android:layout_height="@dimen/app_manager_lv_item_delete_button_w_h"
+         android:layout_width="28dp"
+            android:layout_height="28dp"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:layout_marginRight="@dimen/app_manager_eleactivity_stop_button_margin_right"
             android:background="@drawable/manager_battery_stop_button_selecter"
             android:clickable="true"
             android:focusable="true" />
+          <View style="@style/priAppItem"/>
     </RelativeLayout>
-
 </RelativeLayout>

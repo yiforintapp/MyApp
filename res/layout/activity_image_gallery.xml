@@ -5,11 +5,20 @@
     android:background="@color/white"
     android:orientation="vertical" >
 
-    <com.leo.appmaster.ui.CommonTitleBar
+    <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background" />
+        android:background="@color/toolbar_background_color" />
+
+    <ProgressBar
+        android:id="@+id/pb_loading_hide_pic"
+        style="@style/ProgressBarCricle"
+        android:layout_width="wrap_content"
+        android:layout_height="1dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:indeterminate="false" />
 
     <RelativeLayout
         android:id="@+id/no_picture"
@@ -39,7 +48,7 @@
                 android:gravity="center"
                 android:text="@string/app_no_image"
                 android:textColor="#d3d3d4"
-                android:textSize="18sp" />
+                android:textSize="18dp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -51,6 +60,7 @@
         android:layout_weight="1"
         android:fadingEdge="none"
         android:gravity="center"
+        android:visibility="gone"
         android:listSelector="@android:color/transparent"
         android:numColumns="2"
         android:paddingLeft="5dp"

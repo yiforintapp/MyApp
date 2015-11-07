@@ -47,7 +47,7 @@
             android:layout_marginTop="@dimen/weizhuang_instruction_margin_top"
             android:text="@string/unknow_call_thrid_first_title"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="18dp"
             android:visibility="invisible" />
 
         <TextView
@@ -61,7 +61,7 @@
             android:layout_marginTop="@dimen/weizhuang_unknowcall_tips_text_content_m_top"
             android:text="@string/unknow_call_all_content"
             android:textColor="@color/white"
-            android:textSize="16sp"
+            android:textSize="16dp"
             android:visibility="invisible" />
     </RelativeLayout>
 

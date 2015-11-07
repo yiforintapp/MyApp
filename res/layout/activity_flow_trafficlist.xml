@@ -6,31 +6,10 @@
     android:orientation="vertical"
     tools:context="${relativePackage}.${activityClass}" >
 
-    <RelativeLayout
+    <com.leo.appmaster.ui.CommonToolbar
+        android:id="@+id/traffic_title_bar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <com.leo.appmaster.ui.CommonTitleBar
-            android:id="@+id/traffic_title_bar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/commonbar_background" />
-
-        <RelativeLayout
-            android:id="@+id/trffic_setting_iv"
-            android:layout_width="@dimen/app_manager_flowactivity_small_icon_width_height"
-            android:layout_height="50dp"
-            android:layout_alignParentRight="true"
-            android:background="@drawable/traffic_small_icon_selector"
-            android:visibility="gone" >
-
-            <ImageView
-                android:layout_width="@dimen/app_manager_lv_item_delete_button_w_h"
-                android:layout_height="@dimen/app_manager_lv_item_delete_button_w_h"
-                android:layout_centerInParent="true"
-                android:background="@drawable/data_usage_settings_icon" />
-        </RelativeLayout>
-    </RelativeLayout>
+        android:layout_height="wrap_content" />
 
     <LinearLayout
         android:id="@+id/home_content"

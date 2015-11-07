@@ -1,18 +1,12 @@
 
 package com.leo.appmaster.applocker;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.app.ActivityOptions.OnAnimationStartedListener;
+
 import android.app.Service;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,6 +20,11 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.DipPixelUtil;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.Animator.AnimatorListener;
+import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ObjectAnimator;
+import com.leo.tools.animator.PropertyValuesHolder;
 
 public class BeautyWeiZhuang extends BaseActivity
 {

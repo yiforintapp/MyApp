@@ -4,11 +4,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ResolveInfo;
 import android.os.Process;
+import android.text.TextUtils;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -20,16 +23,23 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
     private static final String TAG = "ProcessDetectorCompat22"; 
     private static final String OOM_SCORE = "oom_score";
 
+    private static final boolean DBG = false;
+
+    private static final int INDEX_USER = 0;
+    private static final int INDEX_PID = 1;
+    private static final int INDEX_PPID = 2;
+    private static final int INDEX_STATE = 5;
+    private static final int INDEX_PROCESS_NAME = 9;
+
     // oom_score收不到文件监控消息，需要按频率扫描
     private static final int WAIT_HOME_TIMEOUT = 0;
-    private static final int MAX_SCORE = 80;
-    private static final int MIN_SCORE = 30;
+    private static final int MAX_SCORE = 100;
+    private static final int MIN_SCORE = 10;
     // 最小diff上限
     private static final int MIN_DIFF_UP_LIMIT = MAX_SCORE - MIN_SCORE;
 
-    // zygote进程的最大值，父进程大于这个值便不是zygote孵化
-    private static final int MAX_ZYGOTE = 1000;
-
+    private static final String PS = "ps -P";
+    protected String mPsCmd = PS;
     private static int mForegroundScore = 0;
 
     /**
@@ -72,6 +82,7 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
         
         Context context = AppMasterApplication.getInstance();
         mForegroundScore = AppMasterPreference.getInstance(context).getForegroundScore();
+        mPsCmd = PS;
     }
 
     @Override
@@ -103,6 +114,82 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
     }
 
     @Override
+    protected ProcessAdj getProcessAdjByFormatedLine(String line, int zygoteId) {
+        if (TextUtils.isEmpty(line)) return null;
+
+        Pattern pattern = Pattern.compile(REGEX_SPACE);
+        Matcher matcher = pattern.matcher(line);
+
+        if (matcher.find()) {
+            line = matcher.replaceAll(",");
+        }
+
+        if (DBG) {
+            LeoLog.i(TAG, line);
+        }
+
+        String[] array = line.split(",");
+        if (array == null || array.length == 0) return null;
+
+        if (array.length <= INDEX_PROCESS_NAME) return null;
+
+        if (DBG) {
+            LeoLog.i(TAG, "array length: " + array.length);
+        }
+
+        ProcessAdj processAdj = new ProcessAdj();
+
+        String user = array[INDEX_USER];
+        processAdj.user = user;
+
+        String ppidStr = array[INDEX_PPID];
+        int ppid = Integer.parseInt(ppidStr);
+        if (zygoteId != 0 && ppid != zygoteId) return null;
+
+
+        String processName = array[INDEX_PROCESS_NAME];
+        processAdj.pkg = processName;
+        for (ProcessFilter filter : mFilters) {
+            if (filter.filterProcess(processAdj)) return null;
+        }
+
+        String processIdStr = array[INDEX_PID];
+        if (TextUtils.isEmpty(processName)) return null;
+
+        int processId = 0;
+        try {
+            processId = Integer.parseInt(processIdStr);
+        } catch (Exception e) {
+        }
+        if (processId == 0) return null;
+
+        String state = array[INDEX_STATE];
+        if (isOOMScoreMode() && !"fg".equals(state)) return null;
+
+        int oomAdj = getOomScoreAdj(processId);
+
+        // 解决一些前台进程的进程名是子进程的问题,com.mobisystems.office:browser
+        if (processName.contains(":")) {
+            processName = processName.substring(0, processName.indexOf(":"));
+        }
+        processAdj.oomAdj = oomAdj;
+        processAdj.pid = processId;
+        processAdj.pkg = processName;
+        processAdj.ppid = ppid;
+
+        if (DBG) {
+            LeoLog.i(TAG, processAdj.toString());
+        }
+
+        return processAdj;
+    }
+
+    @Override
+    protected String getPsCmd() {
+        return PS;
+    }
+
+    @Override
     protected ProcessAdj filterForegroundProcess(List<ProcessAdj> result) {
         if (result == null || result.isEmpty()) return null;
         
@@ -110,11 +197,12 @@ public class ProcessDetectorCompat22 extends ProcessDetector {
             result.clear();
             return null;
         }
+        filterSamePkgList(result);
         Context context = AppMasterApplication.getInstance();
         ProcessAdj minAdj = null;
         int minDiff = Integer.MAX_VALUE;
         for (ProcessAdj processAdj : result) {
-            if (processAdj.oomAdj > 0 && processAdj.ppid < MAX_ZYGOTE) {
+            if (processAdj.oomAdj > 0) {
                 if (minAdj != null && processAdj.oomAdj > minAdj.oomAdj) continue;
                 
                 int diff = Math.abs(processAdj.oomAdj - mForegroundScore);

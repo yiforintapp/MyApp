@@ -50,7 +50,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textColor="@color/gray"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -59,7 +59,7 @@
                     android:layout_height="wrap_content"
                     android:singleLine="true"
                     android:textColor="@color/gray"
-                    android:textSize="16sp"
+                    android:textSize="16dp"
                     android:visibility="gone" />
             </LinearLayout>
         </LinearLayout>

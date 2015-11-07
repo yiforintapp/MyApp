@@ -4,37 +4,39 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/bg"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
         android:layout_width="@dimen/dialog_list_width"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/dlag_title"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="70dp"
             android:gravity="center"
             android:text="@string/privacy_contact_popumenus_add_new_privacy_contact"
-            android:textColor="#676767"
-            android:textSize="20sp"
+            android:textColor="#333333"
+            android:textSize="17dp"
             android:textStyle="bold" />
 
         <ImageView
             android:id="@+id/call_log_item_top_bottom_line"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/contact_line" />
+            android:layout_height="1px"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@color/divider_2" />
 
         <LinearLayout
             android:id="@+id/dlg_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <LinearLayout
                 android:id="@+id/dlg_add_sms"
@@ -42,7 +44,14 @@
                 android:layout_height="@dimen/dialog_contact_item_height"
                 android:background="@drawable/manager_backup_list_selecter"
                 android:gravity="right|center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:paddingRight="32dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/sms_record_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -50,22 +59,17 @@
                     android:layout_marginLeft="10dp"
                     android:gravity="right|center_vertical"
                     android:text="@string/privacy_contact_popumenus_from_message"
-                    android:textColor="#a3a3a3"
-                    android:textSize="18sp" />
-
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="24dp"
-                    android:src="@drawable/sms_record_icon" />
+                    android:textColor="#666666"
+                    android:textSize="15dp" />
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/call_log_item_top_bottom_line1"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/contact_line" />
+                android:layout_height="1px"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/divider_2" />
 
             <LinearLayout
                 android:id="@+id/dlg_add_call"
@@ -73,7 +77,14 @@
                 android:layout_height="@dimen/dialog_contact_item_height"
                 android:background="@drawable/manager_backup_list_selecter"
                 android:gravity="right|center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:paddingRight="32dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/call_records_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -82,22 +93,18 @@
                     android:background="@drawable/manager_backup_list_selecter"
                     android:gravity="right|center_vertical"
                     android:text="@string/privacy_contact_popumenus_from_call_log"
-                    android:textColor="#a3a3a3"
-                    android:textSize="18dp" />
+                    android:textColor="#666666"
+                    android:textSize="15dp" />
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="24dp"
-                    android:src="@drawable/call_records_icon" />
             </LinearLayout>
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="1px"
                 android:layout_below="@id/dlag_title"
-                android:background="@drawable/contact_line" />
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/divider_2" />
 
             <LinearLayout
                 android:id="@+id/dlg_add_contact"
@@ -105,7 +112,14 @@
                 android:layout_height="@dimen/dialog_contact_item_height"
                 android:background="@drawable/manager_backup_list_selecter"
                 android:gravity="right|center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:paddingRight="32dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/contacts_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -114,22 +128,18 @@
                     android:background="@drawable/manager_backup_list_selecter"
                     android:gravity="right|center_vertical"
                     android:text="@string/privacy_contact_popumenus_from_contact"
-                    android:textColor="#a3a3a3"
-                    android:textSize="18sp" />
+                    android:textColor="#666666"
+                    android:textSize="15dp" />
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="24dp"
-                    android:src="@drawable/contacts_icon" />
             </LinearLayout>
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="1px"
                 android:layout_below="@id/dlag_title"
-                android:background="@drawable/contact_line" />
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:background="@color/divider_2" />
 
             <LinearLayout
                 android:id="@+id/dlg_add_input"
@@ -137,7 +147,14 @@
                 android:layout_height="@dimen/dialog_contact_item_height"
                 android:background="@drawable/manager_backup_list_selecter"
                 android:gravity="right|center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal"
+                android:paddingRight="32dp">
+
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/input_number_icon" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -146,15 +163,9 @@
                     android:background="@drawable/manager_backup_list_selecter"
                     android:gravity="right|center_vertical"
                     android:text="@string/privacy_contact_popumenus_input_phone_number"
-                    android:textColor="#a3a3a3"
-                    android:textSize="18sp" />
+                    android:textColor="#666666"
+                    android:textSize="15dp" />
 
-                <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_marginLeft="15dp"
-                    android:layout_marginRight="24dp"
-                    android:src="@drawable/input_number_icon" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

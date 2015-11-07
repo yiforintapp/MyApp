@@ -3,6 +3,7 @@ package com.leo.appmaster.applocker;
 
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -15,15 +16,20 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.text.Html;
 import android.text.Spanned;
+import android.view.View;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
+import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.DeviceAdminEvent;
+import com.leo.appmaster.eventbus.event.EventId;
+import com.leo.appmaster.eventbus.event.LocationLockEvent;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.sdk.BasePreferenceActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
@@ -32,7 +38,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         OnPreferenceChangeListener, OnPreferenceClickListener {
     private static final String TAG = "LockOptionActivity";
 
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
     private SharedPreferences mSp;
     private Preference mTheme, mLockSetting, mResetPasswd, mChangeProtectQuestion,
             mChangePasswdTip, mChangeLockTime;
@@ -60,6 +66,8 @@ public class LockOptionActivity extends BasePreferenceActivity implements
         initIntent();
         initUI();
         setupPreference();
+        
+        LeoEventBus.getDefaultBus().register(this);
     }
 
     private void initIntent() {
@@ -156,20 +164,19 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
     @Override
     protected void onResume() {
-        // 等待半秒去激活设备管理器
-        SystemClock.sleep(500);
-        if (isAdminActive()) {
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
 
-            mForbidUninstall.setChecked(true);
-            mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
-        } else {
-            mForbidUninstall.setChecked(false);
-            mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
-        }
-        // Log.e("poha", isAdminActive()+"");
-        // mChangeLockTime.setSummary(R.string.summary_setting_locker);
-        // mHideLockLine.setSummary(R.string.summary_hide_lockline);
-        // mLockerClean.setSummary(R.string.summary_aacelerate_after_unlock);
+            @Override
+            public void run() {
+                if (isAdminActive()) {
+                    mForbidUninstall.setChecked(true);
+                    mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
+                } else {
+                    mForbidUninstall.setChecked(false);
+                    mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
+                }
+            }
+        }, 500);
 
         if (haveProtect()) {
             mSetProtect.setTitle(R.string.passwd_protect);
@@ -189,13 +196,6 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mLockerTheme.setTitle(R.string.lockerTheme);
         }
 
-        // if (!mySharedPreferences.getBoolean("themeOption", false)) {
-        // Spanned buttonText =
-        // Html.fromHtml(getString(R.string.lockerThemePoit));
-        // mLockerTheme.setTitle(buttonText);
-        // } else {
-        // mLockerTheme.setTitle(R.string.lockerTheme);
-        // }
         /* 开启高级保护后提示 */
         openAdvanceProtectDialogHandler();
         super.onResume();
@@ -244,12 +244,35 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             mMessageDialog.dismiss();
             mMessageDialog = null;
         }
+        LeoEventBus.getDefaultBus().unregister(this);
+    }
+    
+    public void onEventMainThread(DeviceAdminEvent event) {
+        if(event.getEventId() == EventId.EVENT_DEVICE_ADMIN_DISABLE){
+            updateButtons(false);
+        }else if(event.getEventId() == EventId.EVENT_DEVICE_ADMIN_ENABLE){
+            updateButtons(true);
+        }
+    }
+    
+    private void updateButtons(boolean active){
+        if (active) {
+            mForbidUninstall.setChecked(true);
+            mForbidUninstall.setSummary(R.string.forbid_uninstall_on);
+        } else {
+            mForbidUninstall.setChecked(false);
+            mForbidUninstall.setSummary(R.string.forbid_uninstall_off);
+        }
     }
 
     private void initUI() {
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setTitle(R.string.lock_setting);
-        mTtileBar.openBackView();
+
+        mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTtileBar.setToolbarTitle(R.string.lock_setting);
+        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setOptionMenuVisible(false);
+//        mTtileBar.setTitle(R.string.lock_setting);
+//        mTtileBar.openBackView();
     }
 
     @Override
@@ -259,31 +282,11 @@ public class LockOptionActivity extends BasePreferenceActivity implements
             Intent intent = null;
             ComponentName component = new ComponentName(this,
                     DeviceReceiver.class);
-            LockManager.getInstatnce().timeFilterSelf();
+            mLockManager.filterSelfOneMinites();
+//            if(false){
             if (isAdminActive()) {
-                intent = new Intent();
-                if (BuildProperties.isMIUI()) {
-                    intent.setClassName("com.android.settings",
-                            "com.android.settings.MiuiDeviceAdminAdd");
-                } else {
-                    intent.setClassName("com.android.settings",
-                            "com.android.settings.DeviceAdminAdd");
-                }
-
-                intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,
-                        component);
-                intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION,
-                        getString(R.string.device_admin_extra));
-                try {
-                    startActivity(intent);
-                } catch (Exception e) {
-                    intent.setClassName("com.android.settings",
-                            "com.android.settings.DeviceAdminAdd");
-                    try {
-                        startActivity(intent);
-                    } catch (Exception e1) {
-                    }
-                }
+                DevicePolicyManager dpm = (DevicePolicyManager)getSystemService(Context.DEVICE_POLICY_SERVICE);
+                dpm.removeActiveAdmin(component);
             } else {
                 intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
                 intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN,

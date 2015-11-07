@@ -13,7 +13,7 @@
             android:layout_width="@dimen/app_manager_lv_item_icon_width_height"
             android:layout_height="@dimen/app_manager_lv_item_icon_width_height"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/app_manager_lv_item_icon_margin_left"
+            android:layout_marginLeft="20dp"
             android:gravity="center"
             android:scaleType="centerInside"
             android:src="@drawable/ic_launcher" />
@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/app_manager_lv_item_icon_margin_left"
+            android:layout_marginLeft="12dp"
             android:layout_toRightOf="@id/appIcon"
             android:orientation="vertical" >
 
@@ -37,17 +37,17 @@
                     android:layout_width="@dimen/app_manager_restore_one_text_height"
                     android:layout_height="wrap_content"
                     android:singleLine="true"
-                    android:textColor="@color/flow_item_total"
-                    android:textSize="14dp" />
+                    android:textColor="#333333"
+                    android:textSize="17dp" />
 
                 <TextView
                     android:id="@+id/txtProgress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
+                    android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/appName"
-                    android:textColor="@color/flow_item_total"
-                    android:textSize="14dp" />
+                    android:textColor="@color/divider_1"
+                    android:textSize="13dp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -76,6 +76,16 @@
             android:background="@drawable/manager_battery_stop_button_selecter"
             android:clickable="true"
             android:focusable="true" />
+        
+<!--         <RelativeLayout 
+            mar
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#cbcbcb"
+            
+            ></RelativeLayout> -->
+            <View style="@style/priAppItem"/>
     </RelativeLayout>
 
 </RelativeLayout>

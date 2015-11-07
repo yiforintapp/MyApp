@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -16,8 +15,9 @@ import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.PushInvoke;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.imageloader.ImageLoader;
 
 /**
  * 消息中心列表
@@ -25,30 +25,30 @@ import com.leo.appmaster.utils.LeoLog;
  */
 public class MsgCenterActivity extends BaseActivity implements
         View.OnClickListener,
-        AdapterView.OnItemClickListener {
-    private CommonTitleBar mTitleBar;
+        AdapterView.OnItemClickListener,
+        RippleView.OnRippleCompleteListener {
+    private CommonToolbar mToolbar;
 
     private ListView mMessageLv;
     private View mEmptyView;
-    private TextView mFeedbackTv;
+    private RippleView mFeedbackTv;
     private MsgCenterAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_msg_center);
 
-        mTitleBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTitleBar.setTitle(R.string.msg_center_title);
-        mTitleBar.setBackArrowVisibility(View.VISIBLE);
-        mTitleBar.setBackViewListener(this);
+        mToolbar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mToolbar.setToolbarTitle(R.string.msg_center_title);
+        mToolbar.setOptionMenuVisible(false);
 
         mMessageLv = (ListView) findViewById(R.id.msg_center_lv);
         mMessageLv.setOnItemClickListener(this);
 
         mEmptyView = findViewById(R.id.msg_center_empty_ll);
 
-        mFeedbackTv = (TextView) findViewById(R.id.msg_center_feedback_tv);
-        mFeedbackTv.setOnClickListener(this);
+        mFeedbackTv = (RippleView) findViewById(R.id.msg_center_feedback_tv);
+        mFeedbackTv.setOnRippleCompleteListener(this);
 
         mAdapter = new MsgCenterAdapter(mMessageLv, mEmptyView);
         mMessageLv.setAdapter(mAdapter);
@@ -61,6 +61,7 @@ public class MsgCenterActivity extends BaseActivity implements
         });
         handlerIntent();
     }
+    
 
     private void handlerIntent() {
         Intent intent=this.getIntent();
@@ -124,5 +125,16 @@ public class MsgCenterActivity extends BaseActivity implements
             e.printStackTrace();
         }
 
+    }
+    
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        ImageLoader.getInstance().clearMemoryCache();
+    }
+
+    @Override
+    public void onRippleComplete(RippleView rippleView) {
+        onClick(rippleView);
     }
 }

@@ -6,12 +6,10 @@ import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.GestureTextView;
-import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -30,21 +28,13 @@ public class PretendAppErrorFragment extends PretendFragment {
     protected int layoutResourceId() {
         return R.layout.fragment_pretend_app_error;
     }
-    
+
     @Override
     public void onResume() {
         // TODO Auto-generated method stub
         super.onResume();
-        
-//        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, 
-//                "appcover ", "error");
- 
     }
-    
-    
-    
-    
-    
+
 
     @Override
     protected void onInitUI() {
@@ -72,20 +62,25 @@ public class PretendAppErrorFragment extends PretendFragment {
         FrameLayout.LayoutParams lParams = new FrameLayout.LayoutParams(mSleWidth, mSleHeight);
         selector_done.setLayoutParams(lParams);
         selector_done.setVisibility(View.VISIBLE);
-        
+
         TranslateAnimation ta1 = new TranslateAnimation(-mSleWidth, 0, 0, 0);
         ta1.setAnimationListener(new AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                
+
             }
+
             @Override
             public void onAnimationRepeat(Animation animation) {
-                
+
             }
+
             @Override
             public void onAnimationEnd(Animation animation) {
+                SDKWrapper
+                        .addEvent(mActivity, SDKWrapper.P1, "appcover", "done_AppError");
                 onUnlockPretendSuccessfully();
+                selector_done.setVisibility(View.GONE);
             }
         });
         ta1.setDuration(800);

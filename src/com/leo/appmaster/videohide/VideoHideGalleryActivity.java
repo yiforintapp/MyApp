@@ -6,23 +6,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Files;
-import android.provider.MediaStore.MediaColumns;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -34,16 +25,17 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockOptionActivity;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
-import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.videohide.AsyncLoadImage.ImageCallback;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.ImageLoaderConfiguration;
@@ -54,16 +46,17 @@ import com.leo.imageloader.core.ImageScaleType;
 public class VideoHideGalleryActivity extends BaseActivity implements
         OnClickListener, OnItemClickListener {
     private GridView mGridView;
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
     private RelativeLayout mNoHidePictureHint;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
     private HideVideoAdapter adapter;
     public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
-    private VideoHideDialog dialog;
+//    private VideoHideDialog dialog;
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
+    private ProgressBar loadingBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +65,12 @@ public class VideoHideGalleryActivity extends BaseActivity implements
         initUI();
         initImageLoder();
         adapter = new HideVideoAdapter(VideoHideGalleryActivity.this);
-        dialog = new VideoHideDialog(this);
-        Window window = dialog.getWindow();
-        WindowManager.LayoutParams lp = window.getAttributes();
-        lp.alpha = 0.5f;
-        lp.dimAmount = 0.0f;
-        window.setAttributes(lp);
+//        dialog = new VideoHideDialog(this);
+//        Window window = dialog.getWindow();
+//        WindowManager.LayoutParams lp = window.getAttributes();
+//        lp.alpha = 0.5f;
+//        lp.dimAmount = 0.0f;
+//        window.setAttributes(lp);
         VideoHideGalleryTask videoTask = new VideoHideGalleryTask();
         videoTask.execute(true);
     }
@@ -114,16 +107,17 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     }
 
     private void initUI() {
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setTitle(R.string.app_video_gallery);
-        mTtileBar.openBackView();
+        mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTtileBar.setToolbarTitle(R.string.app_video_gallery);
+//        mTtileBar.openBackView();
+        mTtileBar.setOptionMenuVisible(false);
         RelativeLayout addButton = (RelativeLayout) findViewById(R.id.video_gallery_buttom);
         addButton.setVisibility(View.GONE);
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
         mNohideVideo = (TextView) findViewById(R.id.nohideTV);
         mGridView = (GridView) findViewById(R.id.Video_hide_folder);
         mGridView.setOnItemClickListener(this);
-
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading_vid_hide);
     }
 
     @Override
@@ -208,86 +202,14 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             }
             VideoBean video = hideVideos.get(position);
             String path = video.getBitList().get(0).getPath();
-            // final ImageView imageView = viewHolder.imageView;
-            // imageView.setTag(path);
             viewHolder.text.setText(video.getName() + "(" + video.getCount()
                     + ")");
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
                     .getDrawable(R.drawable.video_loading));
-            // Drawable drawableCache = asyncLoadImage.loadImage(imageView,
-            // path,
-            // new ImageCallback() {
-            // @Override
-            // public void imageLoader(Drawable drawable) {
-            // if (imageView != null
-            // && imageView.getTag().equals(path) && drawable != null) {
-            // imageView.setBackgroundDrawable(drawable);
-            // }
-            // }
-            // });
-            // if (drawableCache != null) {
-            // viewHolder.imageView.setBackgroundDrawable(drawableCache);
-            // }
             String filePath = "voidefile://" + path;
             mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
             return convertView;
         }
-
-    }
-
-    /**
-     * getVideoInfo
-     */
-    public List<VideoBean> getVideoInfo() {
-        List<VideoBean> videoBeans = new ArrayList<VideoBean>();
-        Uri uri = Files.getContentUri("external");
-        String selection = Constants.VIDEO_FORMAT;
-        Cursor cursor = null;
-        try {
-            cursor = getContentResolver().query(uri, null, selection, null,
-                    MediaColumns.DATE_MODIFIED + " desc");
-            if (cursor != null) {
-                Map<String, VideoBean> countMap = new HashMap<String, VideoBean>();
-                while (cursor.moveToNext()) {
-                    VideoBean video = new VideoBean();
-                    String path = cursor
-                            .getString(cursor
-                                    .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-                    video.setDirPath(dirPath);
-                    video.setName(dirName);
-                    File videoFile = new File(path);
-                    boolean videoExists = videoFile.exists();
-                    if (videoExists) {
-                        VideoBean vb = null;
-                        if (!countMap.containsKey(dirPath)) {
-                            vb = new VideoBean();
-                            vb.setName(dirName);
-                            vb.setDirPath(dirPath);
-                            vb.getBitList().add(new VideoItemBean(path));
-                            vb.setPath(path);
-                            countMap.put(dirPath, vb);
-                        } else {
-                            vb = countMap.get(dirPath);
-                            vb.getBitList().add(new VideoItemBean(path));
-                        }
-                    }
-                }
-                Iterable<String> it = countMap.keySet();
-                for (String key : it) {
-                    videoBeans.add(countMap.get(key));
-                }
-                Collections.sort(videoBeans, mFolderCamparator);
-            }
-        } catch (Exception e) {
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-
-        return videoBeans;
     }
 
     /**
@@ -308,7 +230,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
      * GrideView onItemClick
      */
     public void onItemClick(AdapterView<?> parent, View view, int position,
-            long id) {
+                            long id) {
         VideoBean video = hideVideos.get(position);
         Intent intent = new Intent(this, VideoGriActivity.class);
         Bundle bundle = new Bundle();
@@ -376,7 +298,7 @@ public class VideoHideGalleryActivity extends BaseActivity implements
     private class VideoHideGalleryTask extends AsyncTask<Boolean, Integer, List<VideoBean>> {
         @Override
         protected void onPreExecute() {
-            dialog.show();
+//            dialog.show();
         }
 
         @Override
@@ -384,7 +306,10 @@ public class VideoHideGalleryActivity extends BaseActivity implements
             boolean isHide = params[0];
             List<VideoBean> hideVideos = null;
             if (isHide) {
-                hideVideos = getVideoInfo();
+//                hideVideos = getVideoInfo();
+                hideVideos = ((PrivacyDataManager) MgrContext.
+                        getManager(MgrContext.MGR_PRIVACY_DATA)).
+                        getAllVidFile();
             }
             return hideVideos;
 
@@ -392,16 +317,18 @@ public class VideoHideGalleryActivity extends BaseActivity implements
 
         @Override
         protected void onPostExecute(List<VideoBean> videos) {
-            dialog.dismiss();
+//            dialog.dismiss();
             hideVideos = videos;
             mGridView.setAdapter(adapter);
             if (hideVideos != null) {
                 if (hideVideos.size() > 0) {
                     mNoHidePictureHint.setVisibility(View.GONE);
                     mGridView.setVisibility(View.VISIBLE);
+                    loadingBar.setVisibility(View.GONE);
                 } else {
                     mNoHidePictureHint.setVisibility(View.VISIBLE);
                     mGridView.setVisibility(View.GONE);
+                    loadingBar.setVisibility(View.GONE);
                     mNohideVideo.setText(getString(R.string.app_no_video_gallery_hide));
                 }
             }

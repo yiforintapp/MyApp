@@ -7,6 +7,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 
 
 public class LEOProgressDialog extends LEOBaseDialog {
@@ -17,6 +19,7 @@ public class LEOProgressDialog extends LEOBaseDialog {
 	private TextView mTitle;
 	private TextView mProHint;
 	private ProgressBar mProgressBar;
+	private RippleView mRvBlue;
 	private TextView mProgressText;
 	private View bottomLayout;
 
@@ -69,15 +72,20 @@ public class LEOProgressDialog extends LEOBaseDialog {
 		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
 		mProgressText = (TextView) dlgView.findViewById(R.id.dlg_pro_progress_text);
 		mProgressBar = (ProgressBar) dlgView.findViewById(R.id.dlg_pro);
+		
+		mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
+		
 		bottomLayout = dlgView.findViewById(R.id.progress_dlg_bottom_btn);
 		
-		bottomLayout.setOnClickListener(new View.OnClickListener() {           
+		
+		mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+            
             @Override
-            public void onClick(View v) {
-               cancel();
+            public void onRippleComplete(RippleView rippleView) {
+                cancel();
             }
         });
-
+		
 		setContentView(dlgView);
 	}
 

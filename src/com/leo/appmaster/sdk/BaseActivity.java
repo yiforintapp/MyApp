@@ -4,20 +4,30 @@ package com.leo.appmaster.sdk;
 /**
  * Author: stonelam@leoers.com
  * Brief: Base activity to be tracked by application so that we can finish them when completely exit is required
- * */
+ */
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.mgr.WifiSecurityManager;
+import com.leo.appmaster.utils.LeoLog;
 
 public class BaseActivity extends Activity {
+    protected LockManager mLockManager;
+    protected WifiSecurityManager mWifiManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppMasterApplication.getInstance().addActivity(this);
         super.onCreate(savedInstanceState);
+
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
     }
 
     @Override
@@ -27,17 +37,27 @@ public class BaseActivity extends Activity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        AppMasterApplication.getInstance().resumeActivity(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        AppMasterApplication.getInstance().pauseActivity(this);
+    }
+
+    @Override
     protected void onResume() {
         super.onResume();
         SDKWrapper.onResume(this);
-        AppMasterApplication.getInstance().resumeActivity(this);
     }
 
     @Override
     protected void onPause() {
         SDKWrapper.onPause(this);
         super.onPause();
-        AppMasterApplication.getInstance().pauseActivity(this);
     }
 
     @Override
@@ -58,14 +78,4 @@ public class BaseActivity extends Activity {
 
         }
     }
-
-    // @Override
-    // public void onRestoreInstanceState(Bundle savedInstanceState,
-    // PersistableBundle persistentState) {
-    // try {
-    // super.onRestoreInstanceState(savedInstanceState, persistentState);
-    // } catch (Exception e) {
-    //
-    // }
-    // }
 }

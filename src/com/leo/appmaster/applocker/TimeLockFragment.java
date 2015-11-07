@@ -24,19 +24,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
 import com.leo.appmaster.fragment.BaseFragment;
+import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.RippleView;
 
 public class TimeLockFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
-        OnItemLongClickListener, Editable {
+        OnItemLongClickListener, Editable, RippleView.OnRippleCompleteListener {
 
     private ListView mLockListView;
     private View mListHeader;
@@ -45,7 +47,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     private View mLockGuideView;
     private ImageView mLockGuideIcon;
     private TextView mLockGuideText;
-    private Button mUserKnowBtn;
+    private RippleView mUserKnowBtn;
     private Animation mGuidAnimation;
     private boolean mGuideOpen = false;
 
@@ -53,12 +55,13 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     private TimeLockAdapter mTimeLockAdapter;
     private boolean mEditing;
     private int mSelectCount;
+    private View mHeadContentView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // judge whether setted time lock mode
-        mTimeLockList = LockManager.getInstatnce().getTimeLock();
+        mTimeLockList = mLockManager.getTimeLock();
         if (mTimeLockList.size() > 0) {
             AppMasterPreference.getInstance(mActivity).setTimeLockModeSetOver(true);
         }
@@ -74,7 +77,10 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockGuideView = findViewById(R.id.lock_mode_guide);
         mLockGuideIcon = (ImageView) mLockGuideView.findViewById(R.id.lock_guide_icon);
         mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
-        mUserKnowBtn = (Button) mLockGuideView.findViewById(R.id.mode_user_know_button);
+
+        mUserKnowBtn = (RippleView) mLockGuideView.findViewById(R.id.mode_user_know_button);
+
+
         mTitleBar = ((LockModeActivity) mActivity).getActivityCommonTitleBar();
 
         mLockListView = (ListView) findViewById(R.id.mode_list);
@@ -89,6 +95,13 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
 
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
                 mLockListView, false);
+        mHeadContentView = mListHeader.findViewById(R.id.head_content);
+        mHeadContentView.setOnClickListener(this);
+        MaterialRippleLayout.on(mHeadContentView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleHover(true)
+                .create();
         TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
         tv.setText(R.string.add_new_time_lock);
         mLockListView.addHeaderView(mListHeader);
@@ -108,7 +121,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     }
 
     private void loadModes() {
-        mTimeLockList = LockManager.getInstatnce().getTimeLock();
+        mTimeLockList = mLockManager.getTimeLock();
         Collections.sort(mTimeLockList, new TimeLockComparator());
         mTimeLockAdapter = new TimeLockAdapter(mActivity);
         mLockListView.setAdapter(mTimeLockAdapter);
@@ -122,7 +135,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     }
 
     public void onEventMainThread(TimeLockEvent event) {
-        mTimeLockList = LockManager.getInstatnce().getTimeLock();
+        mTimeLockList = mLockManager.getTimeLock();
         mTimeLockAdapter.notifyDataSetChanged();
         // cancle guide page
         if (mTimeLockList.size() == 1) {
@@ -153,33 +166,38 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
                 } else {
                     if (timeLock.using) {
                         timeLock.using = false;
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "time", "close");
                     } else {
                         timeLock.using = true;
+                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "time", "open");
                     }
                     if (timeLock.using) {
                         iv.setImageResource(R.drawable.switch_on);
                     } else {
                         iv.setImageResource(R.drawable.switch_off);
                     }
-                    LockManager.getInstatnce().openTimeLock(timeLock, timeLock.using);
+                    mLockManager.openTimeLock(timeLock, timeLock.using);
                 }
 
                 mTimeLockAdapter.notifyDataSetChanged();
                 break;
             case R.id.mode_user_know_button:
-                AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
-                removeGuidePage();
-                /** set the help tip action **/
-                mTitleBar.setOptionImage(R.drawable.tips_icon);
-                mTitleBar.setOptionImageVisibility(View.VISIBLE);
-                Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
-                mTitleBar.setOptionAnimation(animation);
-                mTitleBar.setOptionListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        lockGuide();
-                    }
-                });
+//                AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
+//                removeGuidePage();
+//                /** set the help tip action **/
+//                mTitleBar.setOptionImage(R.drawable.tips_icon);
+//                mTitleBar.setOptionImageVisibility(View.VISIBLE);
+//                Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+//                mTitleBar.setOptionAnimation(animation);
+//                mTitleBar.setOptionListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        lockGuide();
+//                    }
+//                });
+                break;
+            case R.id.head_content:
+                addTimeLock();
                 break;
             default:
                 break;
@@ -190,7 +208,8 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         if (position == 0) {
-            addTimeLock();
+            //in onclicklistener now
+//            addTimeLock();
         } else {
             TimeLock timeLock = mTimeLockList.get(position - 1);
             editTimeLock(timeLock, false);
@@ -212,6 +231,25 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
             intent.putExtra("time_lock_id", lockMode.id);
         }
         startActivity(intent);
+    }
+
+    @Override
+    public void onRippleComplete(RippleView rippleView) {
+        if (mUserKnowBtn == rippleView) {
+            AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
+            removeGuidePage();
+            /** set the help tip action **/
+            mTitleBar.setOptionImage(R.drawable.tips_icon);
+            mTitleBar.setOptionImageVisibility(View.VISIBLE);
+            Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+            mTitleBar.setOptionAnimation(animation);
+            mTitleBar.setOptionListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    lockGuide();
+                }
+            });
+        }
     }
 
     class TimeLockAdapter extends BaseAdapter {
@@ -334,16 +372,17 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
                 deleteList.add(lock);
             }
         }
-        LockManager lm = LockManager.getInstatnce();
         for (TimeLock lock : deleteList) {
-            lm.removeTimeLock(lock);
+            mLockManager.removeTimeLock(lock);
         }
         mSelectCount = 0;
-        ((LockModeActivity)mActivity).disableOptionImage();
+        ((LockModeActivity) mActivity).disableOptionImage();
         mTimeLockAdapter.notifyDataSetChanged();
     }
 
-    /** about lock mode guide **/
+    /**
+     * about lock mode guide
+     **/
     public void lockGuide() {
         if (mGuideOpen) {
             removeGuidePage();
@@ -357,9 +396,12 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockGuideView.setVisibility(View.VISIBLE);
         mLockGuideIcon.setImageResource(R.drawable.modes_tips_time);
         mLockGuideText.setText(R.string.time_lock_mode_guide_content);
-        mUserKnowBtn.setOnClickListener(this);
+//        mUserKnowBtn.setOnClickListener(this);
+        mUserKnowBtn.setOnRippleCompleteListener(this);
+
         /**
-         *  if ever pack up guide page then next time guide page should appearance as animation
+         * if ever pack up guide page then next time guide page should
+         * appearance as animation
          */
         if (AppMasterPreference.getInstance(mActivity).getTimeLockModeGuideClicked()) {
             mGuidAnimation = AnimationUtils.loadAnimation(mActivity, R.anim.lock_mode_guide_in);

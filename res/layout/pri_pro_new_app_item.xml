@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/home_tab_selector"
+    android:clickable="true"
+    android:orientation="vertical"
+    leo:rv_color="@color/white_list_item_ripple">
+
+    <ImageView
+        android:id="@+id/new_item_img"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="20dp" />
+
+    <CheckBox
+        android:id="@+id/new_item_cb"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/pri_new_app_item"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="26dp"
+        android:button="@drawable/check_box_selector"
+        android:clickable="true" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="2dp"
+        android:layout_toLeftOf="@id/new_item_cb"
+        android:layout_toRightOf="@id/new_item_img"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/new_item_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:textColor="@color/pri_pro_item_title"
+            android:textSize="17dp" />
+
+        <TextView
+            android:id="@+id/new_item_summary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:singleLine="true"
+            android:textColor="@color/divider_1"
+            android:textSize="13dp"
+            android:visibility="gone" />
+    </LinearLayout>
+
+
+    <View style="@style/priAppItem" />
+
+</com.leo.appmaster.ui.RippleView>

@@ -73,12 +73,13 @@ public class PrivacyContactManager {
     /* 用来做测试 */
     public boolean testValue;
     public static volatile int mNoReadCalls;
+    /*发送短信失败提示标志*/
+    public volatile boolean mSendMsmFail = false;
 
     private PrivacyContactManager(Context context) {
         this.mContext = context.getApplicationContext();
         mContacts = new ArrayList<ContactBean>();
         mSysCalls = new ArrayList<ContactCallLog>();
-
     }
 
     public static synchronized PrivacyContactManager getInstance(Context context) {
@@ -89,8 +90,7 @@ public class PrivacyContactManager {
     }
 
     public int getAllContactsCount() {
-        List<ContactBean> contacts = PrivacyContactUtils.getSysContact(mContext,
-                mContext.getContentResolver(), null, null);
+        List<ContactBean> contacts = PrivacyContactUtils.getSysContact(mContext, null, null,false);
         int count = 0;
         if (contacts != null) {
             count = contacts.size();
@@ -126,51 +126,59 @@ public class PrivacyContactManager {
     private synchronized void loadPrivateContacts() {
         if (!mContactLoaded) {
             mContacts.clear();
-            Cursor cur = mContext.getContentResolver().query(Constants.PRIVACY_CONTACT_URI, null,
-                    null, null, "_id desc");
-            if (cur != null) {
-                while (cur.moveToNext()) {
-                    ContactBean mb = new ContactBean();
-                    String number = cur.getString(cur
-                            .getColumnIndex(Constants.COLUMN_PHONE_NUMBER));
-                    String name = cur.getString(cur
-                            .getColumnIndex(Constants.COLUMN_CONTACT_NAME));
-                    int answerType = cur.getInt(cur
-                            .getColumnIndex(Constants.COLUMN_PHONE_ANSWER_TYPE));
-                    switch (answerType) {
-                        case 0:
-                            mb.setAnswerStatus(mContext
-                                    .getString(R.string.privacy_contact_activity_input_checkbox_hangup));
-                            break;
-                        case 1:
-                            mb.setAnswerStatus(mContext
-                                    .getString(R.string.privacy_contact_activity_input_checkbox_normal));
-                            break;
-                        default:
-                            break;
-                    }
-                    mb.setContactName(name);
-                    mb.setContactNumber(number);
-                    try {
-                        byte[] icon = cur.getBlob(cur.getColumnIndex(Constants.COLUMN_ICON));
-                        if (icon != null) {
-                            Bitmap contactIcon = PrivacyContactUtils.getBmp(icon);
-                            mb.setContactIcon(contactIcon);
+            Cursor cur = null;
+            try {
+                cur = mContext.getContentResolver().query(Constants.PRIVACY_CONTACT_URI, null,
+                        null, null, "_id desc");
+                if (cur != null) {
+                    while (cur.moveToNext()) {
+                        ContactBean mb = new ContactBean();
+                        String number = cur.getString(cur
+                                .getColumnIndex(Constants.COLUMN_PHONE_NUMBER));
+                        String name = cur.getString(cur
+                                .getColumnIndex(Constants.COLUMN_CONTACT_NAME));
+                        int answerType = cur.getInt(cur
+                                .getColumnIndex(Constants.COLUMN_PHONE_ANSWER_TYPE));
+                        switch (answerType) {
+                            case 0:
+                                mb.setAnswerStatus(mContext
+                                        .getString(R.string.privacy_contact_activity_input_checkbox_hangup));
+                                break;
+                            case 1:
+                                mb.setAnswerStatus(mContext
+                                        .getString(R.string.privacy_contact_activity_input_checkbox_normal));
+                                break;
+                            default:
+                                break;
                         }
-                    } catch (Error e) {                     
+                        mb.setContactName(name);
+                        mb.setContactNumber(number);
+                        try {
+                            byte[] icon = cur.getBlob(cur.getColumnIndex(Constants.COLUMN_ICON));
+                            if (icon != null) {
+                                Bitmap contactIcon = PrivacyContactUtils.getBmp(icon);
+                                mb.setContactIcon(contactIcon);
+                            }
+                        } catch (Error e) {                     
+                        }
+                        if (mb.getContactIcon() == null) {
+                            BitmapDrawable drawable = (BitmapDrawable) mContext.getResources()
+                                    .getDrawable(
+                                            R.drawable.default_user_avatar);
+                            mb.setContactIcon(drawable.getBitmap());
+                        }
+                        mb.setAnswerType(answerType);
+                        mContacts.add(mb);
                     }
-                    if (mb.getContactIcon() == null) {
-                        BitmapDrawable drawable = (BitmapDrawable) mContext.getResources()
-                                .getDrawable(
-                                        R.drawable.default_user_avatar);
-                        mb.setContactIcon(drawable.getBitmap());
-                    }
-
-                    mb.setAnswerType(answerType);
-                    mContacts.add(mb);
                 }
-                cur.close();
+            } catch (Exception e) {
+                
+            } finally {
+                if(cur != null) {
+                    cur.close();
+                }
             }
+
             mContactLoaded = true;
         }
     }
@@ -328,19 +336,11 @@ public class PrivacyContactManager {
                 PRIVACY_MSM,0,mLastMessage.getPhoneNumber());
     }
 
-    /* 对快捷手势隐私联系人,消费(查看或者删除)隐私通话时，红点去除操作 */
-    public void deletePrivacyCallCancelRedTip(Context context) {
-    }
-
-    /* 对快捷手势隐私联系人,消费隐(查看或者删除)私短信时，红点去除操作 */
-    public void deletePrivacyMsmCancelRedTip(Context context) {
-    }
 
     /* 通话记录预加载 */
     private synchronized void loadCallLogs() {
         if (!mCallsLoaded) {
-            mSysCalls = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,
-                    mContext.getContentResolver(), null, null);
+            mSysCalls = (ArrayList<ContactCallLog>) PrivacyContactUtils.getSysCallLog(mContext,null, null,false,false);
             if (mSysCalls != null && mSysCalls.size() > 0) {
                 Collections.sort(mSysCalls, PrivacyContactUtils.mCallLogCamparator);
             }

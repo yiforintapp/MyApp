@@ -12,7 +12,7 @@
         android:layout_centerVertical="true"
         android:gravity="center_vertical"
         android:textColor="#a7a7a7"
-        android:textSize="14sp" />
+        android:textSize="14dp" />
 
     <ImageView
         android:id="@+id/iv_selected"

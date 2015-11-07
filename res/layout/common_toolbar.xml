@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/toolbar_height"
+    android:orientation="vertical">
+
+    <com.leo.appmaster.ui.RippleView
+        android:id="@+id/ct_back_rl"
+        style="@style/ToolbarIcon"
+        ripple:rv_alpha="@integer/menu_ripple_alpha"
+        ripple:rv_color="@color/menu_ripple"
+        ripple:rv_rippleDuration="100">
+
+        <ImageView
+            android:id="@+id/ct_back_arrow_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:adjustViewBounds="true"
+            android:clickable="true"
+            android:src="@drawable/ic_toolbar_back" />
+    </com.leo.appmaster.ui.RippleView>
+
+
+    <LinearLayout
+        android:id="@+id/ct_option_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:orientation="horizontal">
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/ct_option_2_rl"
+            style="@style/ToolbarIcon"
+            android:visibility="gone"
+            ripple:rv_alpha="@integer/menu_ripple_alpha"
+            ripple:rv_color="@color/menu_ripple"
+            ripple:rv_rippleDuration="100">
+
+            <ImageView
+                android:id="@+id/ct_option_iv2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_toolbar_more" />
+        </com.leo.appmaster.ui.RippleView>
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/ct_option_1_rl"
+            style="@style/ToolbarIcon"
+            android:visibility="gone"
+            ripple:rv_alpha="@integer/menu_ripple_alpha"
+            ripple:rv_color="@color/menu_ripple"
+            ripple:rv_rippleDuration="100">
+
+            <ImageView
+                android:id="@+id/ct_option_iv1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_toolbar_more" />
+        </com.leo.appmaster.ui.RippleView>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/ct_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/ct_option_layout"
+        android:layout_toRightOf="@id/ct_back_rl"
+        android:ellipsize="end"
+        android:includeFontPadding="false"
+        android:singleLine="true"
+        android:text="@string/app_name"
+        android:textColor="@color/white"
+        android:textSize="20dp" />
+
+</RelativeLayout>

@@ -3,7 +3,7 @@ package com.leo.appmaster.eventbus.event;
 
 /**
  * this class hold all event id
- * 
+ *
  * @author zhangwenyang
  */
 public interface EventId {
@@ -35,5 +35,10 @@ public interface EventId {
     /* Quick gesture floatWindow end */
 
     public static final int EVENT_CLICKQUICKITEM = 1014;
-    public static final int EVENT_SUBMARINE_ANIM=1015;
+    public static final int EVENT_SUBMARINE_ANIM = 1015;
+
+    public static final int EVENT_WIFISECURITY = 1091;
+
+    public static final int EVENT_DEVICE_ADMIN_ENABLE = 1092;
+    public static final int EVENT_DEVICE_ADMIN_DISABLE = 1093;
 }

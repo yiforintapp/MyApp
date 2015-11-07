@@ -1,5 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#66000000"
@@ -21,43 +22,64 @@
             android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
+            android:layout_marginLeft="6dp"
+            android:layout_marginRight="6dp"
             android:orientation="horizontal" >
 
-            <TextView
-                android:id="@+id/tv_feedback"
+            <com.leo.appmaster.ui.RippleView
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
                 android:layout_weight="1"
-                android:background="@drawable/manager_left_contact_button_selecter"
-                android:gravity="center"
-                android:text="@string/grade_tip_feedback"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                app:rv_alpha="255"
+                app:rv_zoomDuration="100"
+                android:clickable="true"
+                app:rv_color="@color/button_gray_ripple" >
 
-            <TextView
-                android:id="@+id/tv_make"
+                <TextView
+                    android:id="@+id/tv_feedback"
+                    style="@style/dlg_left_button_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="@string/grade_tip_feedback" />
+            </com.leo.appmaster.ui.RippleView>
+
+            <com.leo.appmaster.ui.RippleView
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
                 android:layout_weight="1"
-                android:background="@drawable/manager_right_contact_button_selecter"
-                android:gravity="center"
-                android:text="@string/grade"
-                android:textColor="@color/white"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                app:rv_alpha="255"
+                app:rv_zoomDuration="100"
+                app:rv_color="@color/button_blue_ripple" >
+
+                <TextView
+                    android:id="@+id/tv_make"
+                    style="@style/dlg_right_button_txt"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/button_blue"
+                    android:gravity="center"
+                    android:text="@string/grade" />
+            </com.leo.appmaster.ui.RippleView>
         </LinearLayout>
-        
+
         <TextView
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingLeft="34dp"
-            android:paddingRight="34dp"
-            android:paddingBottom="24dp"
             android:layout_above="@id/grade_bt"
             android:layout_centerHorizontal="true"
             android:gravity="center"
+            android:paddingBottom="12dp"
+            android:layout_marginBottom="12dp"
+            android:paddingLeft="34dp"
+            android:paddingRight="34dp"
             android:text="@string/grade_tip"
             android:textColor="#585858"
             android:textSize="16dp" />
@@ -70,7 +92,6 @@
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="12dp"
             android:src="@drawable/ic_launcher" />
-
     </RelativeLayout>
 
 </RelativeLayout>

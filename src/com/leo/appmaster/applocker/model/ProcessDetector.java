@@ -2,21 +2,19 @@ package com.leo.appmaster.applocker.model;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
-import java.io.Closeable;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import android.R.integer;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.text.TextUtils;
 
@@ -24,18 +22,16 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.utils.IoUtils;
-import com.tendcloud.tenddata.ad;
 
 public class ProcessDetector {
     private static final String TAG = "ProcessDetector";
-    private static final String REGEX_SPACE = "\\s+";
+    protected static final String REGEX_SPACE = "\\s+";
     private static final int INDEX_USER = 0;
     private static final int INDEX_PID = 1;
     private static final int INDEX_PPID = 2;
-    private static final int INDEX_STATE = 5;
-    private static final int INDEX_PROCESS_NAME = 9;
+    private static final int INDEX_PROCESS_NAME = 8;
     
-    private static final String PS = "ps -P";
+    private static final String PS = "ps";
     private static final String OOM_SCORE_ADJ = "oom_score_adj";
     
     public static final int PERMISSION_DENY = -9999;
@@ -44,10 +40,19 @@ public class ProcessDetector {
     private static final int TIME_OUT = 5 * 1000;
     
     private static final boolean DBG = false;
+    // zygote进程的最大值，父进程大于这个值便不是zygote孵化
+    protected static final int MAX_ZYGOTE = 1000;
 
-    private ProcessFilter[] mFilters;
+    protected ProcessFilter[] mFilters;
     private ProcessFilter mHomeFilter;
-    
+
+    private List<ProcessAdj> mZygoteList;
+
+    protected String mPsCmd = PS;
+
+    // 被孵化出的子进程，进程名跟主进程一样，oomadj为0，奇葩~~
+    private List<ProcessAdj> mSamePkgList;
+
     public ProcessDetector() {
         mFilters = new ProcessFilter[] {
                 new SystemProcessFilter(),
@@ -55,7 +60,9 @@ public class ProcessDetector {
         };
         
         mHomeFilter = new HomeProcessFilter(AppMasterApplication.getInstance());
-        
+        mZygoteList = new ArrayList<ProcessAdj>();
+        mSamePkgList = new ArrayList<ProcessAdj>();
+        mPsCmd = PS;
     }
     
     public int getTimeoutMs(ProcessAdj proAdj) {
@@ -131,7 +138,7 @@ public class ProcessDetector {
         InputStream is = null;
         BufferedReader br = null;
         try {
-            p = Runtime.getRuntime().exec(PS);
+            p = Runtime.getRuntime().exec(getPsCmd());
 //            ProcessBuilder builder = new ProcessBuilder(PS);
 //            builder.redirectErrorStream(false);
 //            p = builder.start();
@@ -150,6 +157,10 @@ public class ProcessDetector {
                 ProcessAdj pair = getProcessAdjByFormatedLine(line, zygoteId);
                 if (pair == null || pair.oomAdj == PERMISSION_DENY) continue;
 
+                if (pair.pkg != null && pair.pkg.startsWith("zygote")
+                        && !mZygoteList.contains(pair)) {
+                    mZygoteList.add(pair);
+                }
                 result.add(pair);
             }
             return filterForegroundProcess(result);
@@ -165,6 +176,10 @@ public class ProcessDetector {
         }
         
         return null;  
+    }
+
+    protected String getPsCmd() {
+        return PS;
     }
     
     public boolean isHomePackage(String pkgName) {
@@ -183,9 +198,12 @@ public class ProcessDetector {
         return mHomeFilter.filterProcess(processAdj);
     }
     
-    protected ProcessAdj filterForegroundProcess(List<ProcessAdj> result) {
-        if (result == null || result.isEmpty()) return null;
-        
+    protected ProcessAdj filterForegroundProcess(List<ProcessAdj> list) {
+        if (list == null || list.isEmpty()) return null;
+
+        List<ProcessAdj> result = new ArrayList<ProcessAdj>(list);
+        filterSamePkgList(result);
+
         Iterator<ProcessAdj> iterator = result.iterator();
         ProcessAdj adj = null;
         while (iterator.hasNext()) {
@@ -210,24 +228,92 @@ public class ProcessDetector {
                 intent.setPackage(processAdj.pkg);
                 intent.setAction(Intent.ACTION_MAIN);
                 intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                List<ResolveInfo> list = context.getPackageManager().queryIntentActivities(intent, 0);
-                if (list == null || list.isEmpty()) continue;
-                
+                List<ResolveInfo> apps = context.getPackageManager().queryIntentActivities(intent, 0);
+                if (apps == null || apps.isEmpty() || !isZygoteSon(processAdj)) continue;
+
+                if (processAdj.ppid > MAX_ZYGOTE || processAdj.ppid == 1) continue;
+
                 int score = detector.getOomScoreAdj(processAdj.pid);
-                if (score < minScore) {
+                if (score < minScore && !processAdj.user.equals("system")) {
                     minScore = score;
                     target = processAdj;
                 }
             }
         } else if (result.size() > 0) {
             target = result.get(0);
+
+            if (target != null &&
+                    (target.ppid > MAX_ZYGOTE || target.ppid == 1)) {
+                target = null;
+            }
         }
 
         return target;
 
     }
+
+    protected void filterSamePkgList(List<ProcessAdj> adjs) {
+        HashMap<String, Integer> map = new HashMap<String, Integer>();
+        List<String> has2SamePkgList = new ArrayList<String>();
+        Iterator<ProcessAdj> iterator = adjs.iterator();
+        while (iterator.hasNext()) {
+            ProcessAdj processAdj = iterator.next();
+            if (processAdj.ppid == 1) {
+                iterator.remove();
+                continue;
+            }
+            // 获取2个同名的进程
+            Integer integer = map.get(processAdj.pkg);
+            int i = 0;
+            if (integer != null) {
+                i = integer;
+            }
+            map.put(processAdj.pkg, ++i);
+            if (i > 1 && !has2SamePkgList.contains(processAdj.pkg)) {
+                has2SamePkgList.add(processAdj.pkg);
+            }
+        }
+        List<ProcessAdj> needToRemove = new ArrayList<ProcessAdj>();
+        for (String pkg : has2SamePkgList) {
+            ProcessAdj preAdj = null;
+            iterator = adjs.iterator();
+            while (iterator.hasNext()) {
+                ProcessAdj processAdj = iterator.next();
+                // 移除同名进程中进程id比较大的
+                if (processAdj.pkg.equals(pkg)) {
+                    if (preAdj == null) {
+                        preAdj = processAdj;
+                    } else {
+                        if (preAdj.pid < processAdj.pid) {
+                            needToRemove.add(processAdj);
+                        } else {
+                            needToRemove.add(preAdj);
+                            preAdj = processAdj;
+                        }
+                    }
+                }
+            }
+        }
+        adjs.removeAll(needToRemove);
+    }
+
+    /**
+     * 是否为zygote孵化出的进程
+     * @param processAdj
+     * @return
+     */
+    private boolean isZygoteSon(ProcessAdj processAdj) {
+        // 部分机型找不到zygote列表，所以需要返回true
+        if (mZygoteList.isEmpty()) return true;
+
+        for (ProcessAdj zygote : mZygoteList) {
+            if (processAdj.ppid == zygote.pid) return true;
+        }
+
+        return false;
+    }
     
-    private ProcessAdj getProcessAdjByFormatedLine(String line, int zygoteId) {
+    protected ProcessAdj getProcessAdjByFormatedLine(String line, int zygoteId) {
         if (TextUtils.isEmpty(line)) return null;
         
         Pattern pattern = Pattern.compile(REGEX_SPACE);
@@ -275,9 +361,6 @@ public class ProcessDetector {
         } catch (Exception e) {
         }
         if (processId == 0) return null;
-        
-        String state = array[INDEX_STATE];
-        if (!"fg".equals(state)) return null;
 
         int oomAdj = getOomScoreAdj(processId);
 
@@ -375,7 +458,7 @@ public class ProcessDetector {
         return usageStats.checkAvailable();
     }
     
-    private static interface ProcessFilter {
+    public static interface ProcessFilter {
         public boolean filterProcess(ProcessAdj processAdj);
     }
     

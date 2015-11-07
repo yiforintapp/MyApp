@@ -19,11 +19,11 @@ import org.json.JSONObject;
 
 /**
  * 拉取业务基类
- *  每12小时拉取一次，失败每3小时拉取一次，持续3次
- *  维护下面三个变量到pref
- *      1、状态 —— 成功、失败
- *      2、失败次数
- *      3、请求时间 —— 不区分成功和失败，使用变量1区分
+ * 每12小时拉取一次，失败每3小时拉取一次，持续3次
+ * 维护下面三个变量到pref
+ * 1、状态 —— 成功、失败
+ * 2、失败次数
+ * 3、请求时间 —— 不区分成功和失败，使用变量1区分
  * Created by Jasper on 2015/9/8.
  */
 public abstract class FetchScheduleJob extends ScheduleJob {
@@ -50,8 +50,9 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     private static final int STATE_FAIL = 0;
 
     private static final String[] FETCH_JOBS = {
-        "com.leo.appmaster.schedule.MsgCenterFetchJob",
-        "com.leo.appmaster.schedule.ADFetchJob"
+            "com.leo.appmaster.schedule.MsgCenterFetchJob",
+            "com.leo.appmaster.schedule.ADFetchJob",
+            "com.leo.appmaster.schedule.LockRecommentFetchJob"
     };
 
     public static void startFetchJobs() {
@@ -61,7 +62,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
                 Object object = clazz.newInstance();
 
                 if (object instanceof ScheduleJob) {
-                    if (object instanceof MsgCenterFetchJob && BuildProperties.isZTEAndApiLevel14()) {
+                    if (object instanceof MsgCenterFetchJob && BuildProperties.isApiLevel14()) {
                         continue;
                     }
                     final ScheduleJob job = (ScheduleJob) object;
@@ -176,6 +177,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
 
     /**
      * 获取拉取间隔
+     *
      * @return
      */
     protected int getPeriod() {
@@ -184,6 +186,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
 
     /**
      * 获取失败后的拉取间隔
+     *
      * @return
      */
     protected int getFailPeriod() {
@@ -192,6 +195,7 @@ public abstract class FetchScheduleJob extends ScheduleJob {
 
     /**
      * 获取失败后的重试次数
+     *
      * @return
      */
     protected int getRetryCount() {

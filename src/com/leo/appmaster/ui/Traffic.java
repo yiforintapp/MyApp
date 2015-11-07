@@ -3,15 +3,40 @@ package com.leo.appmaster.ui;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.TrafficStats;
 import android.text.format.Time;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.service.StatusBarEventService;
+import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.mgr.DeviceManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.WifiSecurityManager;
+import com.leo.appmaster.sdk.push.PushNotification;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class Traffic {
+    private static final String TRAFFICNOTIFICATION = "traffic_notification";
+    private static final int NON_SAVE = 0;
+    private static final int DAY_OF_THREE = 1;
+    private static final int FINISH_THREE_DAY_AVG = 2;
+    private static final int SHOWNOTI_IF_OVER_AVG = 3;
+    private static final String FIRSTDAY = "first_day";
+    private static final String FIRSTDAYTRAFFIC = "first_day_traffic";
+    private static final String SECONDDAY = "second_day";
+    private static final String SECONDDAYTRAFFIC = "second_day_traffic";
+    private static final String THREEDAY = "three_day";
+    private static final String THREEDAYTRAFFIC = "three_day_traffic";
+    private static final String TRAFFIC_AVG = "traffic_avg";
+//    private static final String LAST_SHOW_DAY = "last_show_day";
+//    private static final String IS_TODAY_SHOW = "is_today_show";
+
+
     private static final String STATE_WIFI = "wifi";
     private static final String STATE_NO_NETWORK = "nonet";
     private Context mContext;
@@ -20,9 +45,11 @@ public class Traffic {
     private float[] gprs = {
             0, 0, 0
     };
+    private DeviceManager mDeviceManager;
 
     private Traffic(Context context) {
         this.mContext = context.getApplicationContext();
+        mDeviceManager = (DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE);
     }
 
     public static synchronized Traffic getInstance(Context context) {
@@ -33,6 +60,109 @@ public class Traffic {
             mTraffic = new Traffic(context);
         }
         return mTraffic;
+    }
+
+    public void checkTraffic() {
+        int type = PreferenceTable.getInstance().getInt(TRAFFICNOTIFICATION, 0);
+        int nowMonth = getCurrentTime()[1];
+        int nowDay = getCurrentTime()[2];
+
+        if (type == NON_SAVE) {
+            PreferenceTable.getInstance().putInt(TRAFFICNOTIFICATION, DAY_OF_THREE);
+            LeoLog.d("testTrafficNoti", "第一次进入 准备计算前三天流量");
+        } else if (type == DAY_OF_THREE) {
+            //firstday
+            int saveFirstDay = PreferenceTable.getInstance().getInt(FIRSTDAY, 0);
+            if (saveFirstDay == 0) {
+                PreferenceTable.getInstance().putInt(FIRSTDAY, nowDay);
+                LeoLog.d("testTrafficNoti", "saveFirstDay==0 , today is:" + nowDay);
+                return;
+            } else {
+                if (nowDay == saveFirstDay) {
+                    float firstdayTraffic = mDeviceManager.getTodayUsed() / 1024;//KB
+                    PreferenceTable.getInstance().putFloat(FIRSTDAYTRAFFIC, firstdayTraffic);
+                    LeoLog.d("testTrafficNoti", "saveFirstDay!=0 , today tra is:" + firstdayTraffic);
+                    return;
+                }
+            }
+
+            //secondday
+            int saveSecondDay = PreferenceTable.getInstance().getInt(SECONDDAY, 0);
+            if (saveSecondDay == 0) {
+                PreferenceTable.getInstance().putInt(SECONDDAY, nowDay);
+                LeoLog.d("testTrafficNoti", "saveSecondDay==0 , today is:" + nowDay);
+                return;
+            } else {
+                if (nowDay == saveSecondDay) {
+                    float seconddayTraffic = mDeviceManager.getTodayUsed() / 1024;//KB
+                    PreferenceTable.getInstance().putFloat(SECONDDAYTRAFFIC, seconddayTraffic);
+                    LeoLog.d("testTrafficNoti", "saveSecondDay!=0 , today tra is:" + seconddayTraffic);
+                    return;
+                }
+            }
+
+            //thridday
+            int saveThridDay = PreferenceTable.getInstance().getInt(THREEDAY, 0);
+            if (saveThridDay == 0) {
+                PreferenceTable.getInstance().putInt(THREEDAY, nowDay);
+                LeoLog.d("testTrafficNoti", "saveThridDay==0 , today is:" + nowDay);
+                return;
+            } else {
+                if (nowDay == saveThridDay) {
+                    float thriddayTraffic = mDeviceManager.getTodayUsed() / 1024;//KB
+                    PreferenceTable.getInstance().putFloat(THREEDAYTRAFFIC, thriddayTraffic);
+                    LeoLog.d("testTrafficNoti", "saveThridDay!=0 , today tra is:" + thriddayTraffic);
+                    return;
+                }
+            }
+
+            //fourday
+            if (nowDay != saveFirstDay && nowDay != saveSecondDay && nowDay != saveThridDay) {
+                LeoLog.d("testTrafficNoti", "完成成就，准备计算平均值");
+                PreferenceTable.getInstance().putInt(TRAFFICNOTIFICATION, FINISH_THREE_DAY_AVG);
+            }
+
+        } else if (type == FINISH_THREE_DAY_AVG) {
+            float day1Traffic = PreferenceTable.getInstance().getFloat(FIRSTDAYTRAFFIC, 0);
+            LeoLog.d("testTrafficNoti", "day1Traffic:" + day1Traffic);
+            float day2Traffic = PreferenceTable.getInstance().getFloat(SECONDDAYTRAFFIC, 0);
+            LeoLog.d("testTrafficNoti", "day2Traffic:" + day2Traffic);
+            float day3Traffic = PreferenceTable.getInstance().getFloat(THREEDAYTRAFFIC, 0);
+            LeoLog.d("testTrafficNoti", "day3Traffic:" + day3Traffic);
+
+            float avg = (day1Traffic + day2Traffic + day3Traffic) / 3;
+            LeoLog.d("testTrafficNoti", "avg : " + avg);
+            PreferenceTable.getInstance().putFloat(TRAFFIC_AVG, avg);
+
+            //morenzhi
+            if (avg == 0) {
+                avg = 3500;
+            }
+            float dayTraffic = mDeviceManager.getTodayUsed() / 1024;//KB
+            LeoLog.d("testTrafficNoti", "dayTraffic : " + dayTraffic);
+            if (avg < dayTraffic) {
+                showNotification(dayTraffic);
+            }
+
+        } else {
+//            int mLastShowDay = PreferenceTable.getInstance().getInt(LAST_SHOW_DAY,0);
+//            boolean isShowToday = PreferenceTable.getInstance().getBoolean(IS_TODAY_SHOW, false);
+        }
+
+
+    }
+
+
+    private void showNotification(float dayTraffic) {
+        PushNotification pushNotification = new PushNotification(mContext);
+        Intent intent = new Intent(mContext, StatusBarEventService.class);
+        intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE,
+                StatusBarEventService.EVENT_TEN_OVER_DAY_TRAFFIC);
+        int KB2MB = (int) (dayTraffic / 1024);
+        String title = mContext.getString(R.string.over_traffic_toast, KB2MB);
+        String string = mContext.getString(R.string.over_traffic_toast_content);
+        pushNotification.showNotification(intent, title, string,
+                R.drawable.ic_launcher_notification, pushNotification.NOTI_TRAFFIC);
     }
 
     public float[] getAllgprs(int mVersion, String network_state) {
@@ -66,17 +196,25 @@ public class Traffic {
         int lastSaveDay = 0;
         String lastSaveDayTime = "";
 
-        Cursor Testcursor = mContext.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
-                null, null, null);
-        if (Testcursor != null) {
-            if (Testcursor.moveToLast()) {
-                lastSaveDayTime = Testcursor.getString(1);
-                lastSaveYear = Testcursor.getInt(4);
-                lastSaveMonth = Testcursor.getInt(5);
-                lastSaveDay = Testcursor.getInt(6);
+        Cursor Testcursor = null;
+        try {
+            Testcursor = mContext.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
+                    null, null, null);
+            if (Testcursor != null) {
+                if (Testcursor.moveToLast()) {
+                    lastSaveDayTime = Testcursor.getString(1);
+                    lastSaveYear = Testcursor.getInt(4);
+                    lastSaveMonth = Testcursor.getInt(5);
+                    lastSaveDay = Testcursor.getInt(6);
+                }
             }
-            Testcursor.close();
+        } catch (Exception e) {
+        } finally {
+            if(Testcursor != null) {
+                Testcursor.close();
+            }
         }
+
 
         // 同一天内如果没进行数据上传或下载，不进行IO操作
         if (mBaseSend == TrafficStats.getMobileTxBytes()
@@ -93,8 +231,7 @@ public class Traffic {
         }
 
         if (TrafficStats.getMobileTxBytes() >= mBaseSend
-                || TrafficStats.getMobileRxBytes() >= mBaseRev)
-        {
+                || TrafficStats.getMobileRxBytes() >= mBaseRev) {
             // Log.d(Tag, "--------正常状态接受-------！");
             // Log.d(Tag, "TrafficStats.getMobileTxBytes()  : " +
             // (TrafficStats.getMobileTxBytes())
@@ -104,8 +241,7 @@ public class Traffic {
             // Log.d(Tag, "---------------------------------！");
             s_preferences.setGprsSend(TrafficStats.getMobileTxBytes() - mBaseSend + mGprsSend);
             s_preferences.setGprsRev(TrafficStats.getMobileRxBytes() - mBaseRev + mGprsRev);
-        }
-        else {
+        } else {
             s_preferences.setGprsSend(TrafficStats.getMobileTxBytes() + mGprsSend);
             s_preferences.setGprsRev(TrafficStats.getMobileRxBytes() + mGprsRev);
         }
@@ -129,100 +265,109 @@ public class Traffic {
         // 每个月的天数
         int MonthOfDay = ManagerFlowUtils.getCurrentMonthDay();
         // 月结日
-        int renewDay = s_preferences.getRenewDay();
+        int renewDay = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
+                getDataCutDay();
 
-        // 比较日期
-        Cursor mCursor = mContext.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
-                "daytime=?", new String[] {
-                    nowDayTime
-                }, null);
-        if (mCursor != null) {
-            if (!mCursor.moveToNext()) {
-                // Log.d("testfuckflow", "新一天or月到来");
-                ContentValues values = new ContentValues();
-                values.put("daytime", nowDayTime);
-                values.put("daymemory", 0);
-                values.put("year", nowYear);
-                values.put("month", nowMonth);
-                values.put("day", nowDay);
-                mContext.getContentResolver().insert(Constants.MONTH_TRAFFIC_URI, values);
-
-                // Log.d("testfuckflow", "renewDay : " + renewDay);
-                // Log.d("testfuckflow", "MonthOfDay : " + MonthOfDay);
-                // Log.d("testfuckflow", "nowDay : " + nowDay);
-                // Log.d("testfuckflow", "lastSaveDay : " + lastSaveDay);
-
-                // 同年换月换日操作
-                if (nowYear == lastSaveYear) {
-                    // 分析，月结日坑，如果月结日在31号，但2月只有28天的情况。
-                    // 月结日大于这个月天数
-                    if (renewDay > MonthOfDay) {
-                        // Log.d("testfuckflow", "renewDay > MonthOfDay");
-                        if (nowMonth > lastSaveMonth) {
-                            if (lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay) {
-                                // LeoLog.d("testfuckflow", "1");
-                                ReSetMonthTraffic();
-                            } else {
-                                s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
-                                        .getMonthGprsBase()));
-                            }
-
-                        } else {
-                            if (nowDay == MonthOfDay) {
-                                ReSetMonthTraffic();
-                                // LeoLog.d("testfuckflow", "2");
-                            } else {
-                                s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
-                                        .getMonthGprsBase()));
-                            }
-                        }
-                    } else {
-                        // Log.d("testfuckflow", "renewDay <= MonthOfDay");
-                        // 月结日 重置月流量计算
-                        if (nowMonth > lastSaveMonth) {
-                            if (lastSaveDay < renewDay || nowDay >= renewDay
-                                    || nowDay == MonthOfDay) {
-                                ReSetMonthTraffic();
-                                // LeoLog.d("testfuckflow", "3");
-                            } else {
-                                s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
-                                        .getMonthGprsBase()));
-                            }
-                        } else {
-                            if (nowDay >= renewDay && lastSaveDay < renewDay) {
-                                ReSetMonthTraffic();
-                                // LeoLog.d("testfuckflow", "4");
-                            } else {
-                                s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
-                                        .getMonthGprsBase()));
-                            }
-                        }
-                    }
-                    s_preferences.setGprsSend(0);
-                    s_preferences.setGprsRev(0);
-                    gprs[2] = 0;
-                    // s_preferences.setItSelfTodayBase(0);
-                } else if (nowYear > lastSaveYear) {
-                    // LeoLog.d("testfuckflow", "5");
-                    // Log.d(Tag, "换年咯,重置everything ! ");
-                    s_preferences.setGprsSend(0);
-                    s_preferences.setGprsRev(0);
-                    ReSetMonthTraffic();
-                    gprs[2] = 0;
-                }
-            } else {
-                s_preferences
-                        .setMonthGprsAll((long) (s_preferences.getMonthGprsBase() + gprs[2]));
-                ContentValues values = new ContentValues();
-                values.put("daymemory", gprs[2]);
-                mContext.getContentResolver().update(Constants.MONTH_TRAFFIC_URI, values,
-                        "daytime=?",
-                        new String[] {
+        Cursor mCursor = null;
+        try {
+            // 比较日期
+            mCursor = mContext.getContentResolver().query(Constants.MONTH_TRAFFIC_URI, null,
+                    "daytime=?", new String[]{
                             nowDayTime
-                        });
+                    }, null);
+            if (mCursor != null) {
+                if (!mCursor.moveToNext()) {
+                    // Log.d("testfuckflow", "新一天or月到来");
+                    ContentValues values = new ContentValues();
+                    values.put("daytime", nowDayTime);
+                    values.put("daymemory", 0);
+                    values.put("year", nowYear);
+                    values.put("month", nowMonth);
+                    values.put("day", nowDay);
+                    mContext.getContentResolver().insert(Constants.MONTH_TRAFFIC_URI, values);
+
+                    // Log.d("testfuckflow", "renewDay : " + renewDay);
+                    // Log.d("testfuckflow", "MonthOfDay : " + MonthOfDay);
+                    // Log.d("testfuckflow", "nowDay : " + nowDay);
+                    // Log.d("testfuckflow", "lastSaveDay : " + lastSaveDay);
+
+                    // 同年换月换日操作
+                    if (nowYear == lastSaveYear) {
+                        // 分析，月结日坑，如果月结日在31号，但2月只有28天的情况。
+                        // 月结日大于这个月天数
+                        if (renewDay > MonthOfDay) {
+                            // Log.d("testfuckflow", "renewDay > MonthOfDay");
+                            if (nowMonth > lastSaveMonth) {
+                                if (lastSaveDay < renewDay || nowDay > renewDay || nowDay == MonthOfDay) {
+                                    // LeoLog.d("testfuckflow", "1");
+                                    ReSetMonthTraffic();
+                                } else {
+                                    s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
+                                            .getMonthGprsBase()));
+                                }
+
+                            } else {
+                                if (nowDay == MonthOfDay) {
+                                    ReSetMonthTraffic();
+                                    // LeoLog.d("testfuckflow", "2");
+                                } else {
+                                    s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
+                                            .getMonthGprsBase()));
+                                }
+                            }
+                        } else {
+                            // Log.d("testfuckflow", "renewDay <= MonthOfDay");
+                            // 月结日 重置月流量计算
+                            if (nowMonth > lastSaveMonth) {
+                                if (lastSaveDay < renewDay || nowDay >= renewDay
+                                        || nowDay == MonthOfDay) {
+                                    ReSetMonthTraffic();
+                                    // LeoLog.d("testfuckflow", "3");
+                                } else {
+                                    s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
+                                            .getMonthGprsBase()));
+                                }
+                            } else {
+                                if (nowDay >= renewDay && lastSaveDay < renewDay) {
+                                    ReSetMonthTraffic();
+                                    // LeoLog.d("testfuckflow", "4");
+                                } else {
+                                    s_preferences.setMonthGprsBase((long) (gprs[2] + s_preferences
+                                            .getMonthGprsBase()));
+                                }
+                            }
+                        }
+                        s_preferences.setGprsSend(0);
+                        s_preferences.setGprsRev(0);
+                        gprs[2] = 0;
+                        // s_preferences.setItSelfTodayBase(0);
+                    } else if (nowYear > lastSaveYear) {
+                        // LeoLog.d("testfuckflow", "5");
+                        // Log.d(Tag, "换年咯,重置everything ! ");
+                        s_preferences.setGprsSend(0);
+                        s_preferences.setGprsRev(0);
+                        ReSetMonthTraffic();
+                        gprs[2] = 0;
+                    }
+                } else {
+                    s_preferences
+                            .setMonthGprsAll((long) (s_preferences.getMonthGprsBase() + gprs[2]));
+                    ContentValues values = new ContentValues();
+                    values.put("daymemory", gprs[2]);
+                    mContext.getContentResolver().update(Constants.MONTH_TRAFFIC_URI, values,
+                            "daytime=?",
+                            new String[]{
+                                    nowDayTime
+                            });
+                }
             }
-            mCursor.close();
+        } catch (Exception e) {
+        } finally {
+            if(mCursor != null) {
+                mCursor.close();
+            }
         }
+
 
         long ItSelfBase = s_preferences.getItSelfTodayBase();
         // 如果设置了已用流量，那么会一直叠加，除非换月清零。

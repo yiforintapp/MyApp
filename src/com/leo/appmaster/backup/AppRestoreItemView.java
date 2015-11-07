@@ -3,6 +3,7 @@ package com.leo.appmaster.backup;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Parcelable;
 import android.util.AttributeSet;
 import android.view.View;
@@ -12,15 +13,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.appmanage.BackUpActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.ThirdAppManager;
 import com.leo.appmaster.model.AppItemInfo;
 
 public class AppRestoreItemView extends FrameLayout implements OnClickListener {
 
     private ImageView mIcon;
-    private View mInstall;
-    private View mDelete;
+    private ImageView mInstall;
+    private ImageView mDelete;
     private TextView mTitle;
     private TextView mVersion;
     private TextView mAppSize;
@@ -41,9 +44,9 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
     protected void onFinishInflate() {
         super.onFinishInflate();
         mIcon = (ImageView) findViewById(R.id.restore_icon);
-        mInstall = findViewById(R.id.button_install);
+        mInstall = (ImageView) findViewById(R.id.button_install);
         mInstall.setOnClickListener(this);
-        mDelete = findViewById(R.id.button_delete);
+        mDelete = (ImageView) findViewById(R.id.button_delete);
         mDelete.setOnClickListener(this);
         mTitle = (TextView) findViewById(R.id.restore_app_title);
         mVersion = (TextView) findViewById(R.id.restore_app_version);
@@ -59,8 +62,11 @@ public class AppRestoreItemView extends FrameLayout implements OnClickListener {
         if (tag instanceof AppItemInfo) {
             AppItemInfo app = (AppItemInfo) tag;
             if (v == mInstall) {
-                LockManager.getInstatnce().timeFilterSelf();
-                backupManager.restoreApp(context, app);
+                ((ThirdAppManager) MgrContext.getManager(MgrContext.MGR_THIRD_APP)).
+                        restoreApp(app);
+//                LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+//                manager.filterSelfOneMinites();
+//                backupManager.restoreApp(context, app);
 
             } else if (v == mDelete) {
                 activity.tryDeleteApp(app);

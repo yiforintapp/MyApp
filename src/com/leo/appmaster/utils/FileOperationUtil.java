@@ -35,16 +35,21 @@ import android.provider.MediaStore.MediaColumns;
 import android.util.Log;
 
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.imagehide.PhotoAibum;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
 
 public class FileOperationUtil {
 
+    private static final String SYSTEM_PREFIX = "/system";
+
     public static final String SDCARD_DIR_NAME = "PravicyLock";
     public static final String[] STORE_IMAGES = {
-            MediaStore.Images.Media.DISPLAY_NAME, MediaStore.Images.Media.DATA,
+            MediaStore.Images.Media.DISPLAY_NAME, 
+            MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID, //
-            MediaStore.Images.Media.BUCKET_ID, // dir id
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME
             // dir name
     };
@@ -80,14 +85,27 @@ public class FileOperationUtil {
                 filename = filepath.substring(pos + 1);
                 if (filename.startsWith(".")) {
                     filename = filename.substring(1);
-                    int index = filename.indexOf(".");
+//                    int index = filename.indexOf(".");
+                    //从最后往前数两个 点
+                    int index = filename.lastIndexOf(".");
                     if (index >= 0) {
                         filename = filename.substring(0, index);
+                        index = filename.lastIndexOf(".");
+                        if (index >= 0) {
+                            filename = filename.substring(0, index);
+                        }
                     }
+
                 } else {
-                    int index = filename.indexOf(".");
+//                    int index = filename.indexOf(".");
+                    //从最后往前数两个 点
+                    int index = filename.lastIndexOf(".");
                     if (index >= 0) {
                         filename = filename.substring(0, index);
+                        index = filename.lastIndexOf(".");
+                        if (index >= 0) {
+                            filename = filename.substring(0, index);
+                        }
                     }
                 }
                 return filename;
@@ -125,7 +143,7 @@ public class FileOperationUtil {
         }
         return "";
     }
-    
+
     public static String makePath(String path1, String path2) {
         if (path1 != null && path2 != null) {
             if (path1.endsWith(File.separator)) {
@@ -156,38 +174,38 @@ public class FileOperationUtil {
 
     /**
      * rename a file
-     * 
+     *
      * @param filePath
      * @param newName
      * @return
      */
     public static boolean renameFile(String filePath, String newName) {
         if (filePath == null || newName == null) {
-            LeoLog.d("RenameFile", "Rename: null parameter");
+            LeoLog.e("RenameFile", "Rename: null parameter");
             return false;
         }
 
         File file = new File(filePath);
         String newPath = FileOperationUtil.makePath(
                 FileOperationUtil.getDirPathFromFilepath(filePath), newName);
-        LeoLog.d("RenameFile", "newPath=" + newPath);
+        LeoLog.e("RenameFile", "newPath=" + newPath);
         try {
             if (file.isFile()) {
                 boolean ret = file.renameTo(new File(newPath));
-                LeoLog.d("RenameFile", ret + " to rename file");
+                LeoLog.e("RenameFile", ret + " to rename file");
                 return ret;
             } else {
                 return false;
             }
         } catch (SecurityException e) {
-            LeoLog.d("RenameFile", "Fail to rename file," + e.toString());
+            LeoLog.e("RenameFile", "Fail to rename file," + e.toString());
         }
         return false;
     }
 
     public static void deleteFileMediaEntry(String imagePath, Context context) {
         if (imagePath != null) {
-            String params[] = new String[] {
+            String params[] = new String[]{
                     imagePath
             };
             Uri uri = Files.getContentUri("external");
@@ -210,19 +228,19 @@ public class FileOperationUtil {
 
     /**
      * cut a file to our special dir in the same sdcard
-     * 
+     *
      * @param filePath
      * @param newName
      * @return
      */
     public static synchronized String hideImageFile(Context ctx,
-            String filePath, String newName, long fileSize) {
+                                                    String filePath, String newName, long fileSize) {
 
         String str = FileOperationUtil.getDirPathFromFilepath(filePath);
         String fileName = FileOperationUtil.getNameFromFilepath(filePath);
 
         if (filePath == null || newName == null) {
-            LeoLog.d("RenameFile", "Rename: null parameter");
+            LeoLog.e("RenameFile", "Rename: null parameter");
             return null;
         }
 
@@ -261,7 +279,7 @@ public class FileOperationUtil {
                     LeoLog.d("RenameFile", temp + "  not   exists");
                     boolean mkRet = temp.mkdirs();
                     if (mkRet) {
-                        LeoLog.d("RenameFile", "make dir " + temp
+                        LeoLog.e("RenameFile", "make dir " + temp
                                 + "  successfully");
                     } else {
                         LeoLog.d("RenameFile", "make dir " + temp
@@ -289,15 +307,15 @@ public class FileOperationUtil {
                 return null;
             }
         } catch (SecurityException e) {
-            LeoLog.d("RenameFile", "Fail to rename file," + e.toString());
+            LeoLog.e("RenameFile", "Fail to rename file," + e.toString());
         }
         return null;
     }
 
     public static synchronized String unhideImageFile(Context ctx,
-            String filePath, long fileSize) {
+                                                      String filePath, long fileSize) {
         if (filePath == null || (!filePath.endsWith(".leotmi") && !filePath.endsWith(".leotmp"))) {
-            LeoLog.d("RenameFile", "Rename: null parameter");
+            LeoLog.e("RenameFile", "Rename: null parameter");
             return null;
         }
         String[] paths = getSdCardPaths(ctx);
@@ -365,7 +383,7 @@ public class FileOperationUtil {
                 }
             }
             boolean ret = file.renameTo(new File(newPath));
-            LeoLog.d("unhideImageFile", ret + " : rename file " + filePath
+            LeoLog.e("unhideImageFile", ret + " : rename file " + filePath
                     + " to " + newPath);
             if (!ret) {
                 boolean memeryFlag = isMemeryEnough(fileSize, ctx, paths[0], 10);
@@ -389,7 +407,7 @@ public class FileOperationUtil {
      * @return
      */
     private static String makePath(String sdcarPath,
-            String dirPathFromFilepath, String newName) {
+                                   String dirPathFromFilepath, String newName) {
 
         if (!dirPathFromFilepath.startsWith(sdcarPath)) {
             return null;
@@ -414,7 +432,7 @@ public class FileOperationUtil {
      */
     public static boolean deleteFile(String filePath) {
         if (filePath == null) {
-            LeoLog.d("DeleteFile", "Rename: null parameter");
+            LeoLog.e("DeleteFile", "Rename: null parameter");
             return false;
         }
 
@@ -422,15 +440,80 @@ public class FileOperationUtil {
         try {
             if (file.isFile()) {
                 boolean ret = file.delete();
-                LeoLog.d("DeleteFile", ret + " to rename file");
+                LeoLog.e("DeleteFile", ret + " to rename file");
                 return ret;
             } else {
                 return false;
             }
         } catch (SecurityException e) {
-            LeoLog.d("DeleteFile", "Fail to rename file," + e.toString());
+            LeoLog.e("DeleteFile", "Fail to rename file," + e.toString());
         }
         return false;
+    }
+
+    public static Uri updateVedioMediaEntry(String vedioPath, boolean isHide, String MIME_TYPE, Context context) {
+        String[] string = {vedioPath};
+        ContentValues v = new ContentValues();
+        v.put(MediaStore.Video.Media.MIME_TYPE, MIME_TYPE);
+
+        ContentResolver c = context.getContentResolver();
+        Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
+        try {
+            Cursor cursor = c.query(uri, null, MediaColumns.DATA + " LIKE ?", new String[]{vedioPath}, null);
+            if (cursor.getCount() > 0) {
+                LeoLog.d("testVedio", "update");
+                if (isHide) {
+                    cursor.moveToFirst();
+                    int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
+                    LeoLog.d("testVedio", "id is:" + id);
+
+                    int saveId = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
+
+                    PrivacyDataManager manager = (PrivacyDataManager)
+                            MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                    int hideId = manager.getNextToTargetId(id);
+                    LeoLog.d("testVedio", "NextToTargetId is:" + hideId);
+                    if (hideId == 0) {
+                        if (id >= saveId) {
+                            PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, id);
+                        }
+                    } else {
+                        PreferenceTable.getInstance().putInt(PrefConst.KEY_NEW_ADD_VID, hideId);
+                    }
+                }
+                c.update(uri, v, MediaColumns.DATA + " LIKE ?", string);
+            } else {
+                LeoLog.d("testVedio", "insert");
+                saveFileMediaEntry(vedioPath, context);
+            }
+
+            LeoLog.d("testVedio", "update done!");
+        } catch (Exception e) {
+            LeoLog.d("testVedio", "catch the fuck !");
+        }
+
+        return null;
+    }
+
+    public static Uri updateFileMediaEntry(String oldPath, String newPath, String MIME_TYPE, Context context) {
+        String[] string = {oldPath};
+        ContentValues v = new ContentValues();
+        File f = new File(newPath);
+        v.put(MediaStore.Video.Media.TITLE, f.getName());
+        v.put(MediaStore.Video.Media.DISPLAY_NAME, f.getName());
+        v.put(MediaStore.Video.Media.SIZE, f.length());
+        v.put(MediaStore.Video.Media.DATA, newPath);
+//        v.put(MediaColumns.MIME_TYPE, MIME_TYPE);
+
+        ContentResolver c = context.getContentResolver();
+        Uri uri = Files.getContentUri("external");
+        try {
+            int result = c.update(uri, v, MediaStore.Video.Media.DATA, string);
+            LeoLog.d("testVedio", "result : " + result);
+        } catch (Exception e) {
+            LeoLog.d("testVedio", "catch the fuck !");
+        }
+        return null;
     }
 
     public static Uri saveFileMediaEntry(String imagePath, Context context) {
@@ -439,8 +522,6 @@ public class FileOperationUtil {
         v.put(MediaColumns.TITLE, f.getName());
         v.put(MediaColumns.DISPLAY_NAME, f.getName());
         v.put(MediaColumns.SIZE, f.length());
-        f = null;
-
         v.put(MediaColumns.DATA, imagePath);
         ContentResolver c = context.getContentResolver();
         Uri uri = Files.getContentUri("external");
@@ -454,7 +535,7 @@ public class FileOperationUtil {
     }
 
     public static void deleteImageMediaEntry(String imagePath, Context context) {
-        String params[] = new String[] {
+        String params[] = new String[]{
                 imagePath
         };
         Uri uri = Files.getContentUri("external");
@@ -467,12 +548,31 @@ public class FileOperationUtil {
     }
 
     public static void deleteVideoMediaEntry(String videoPath, Context context) {
-        String params[] = new String[] {
+        String params[] = new String[]{
                 videoPath
         };
         Uri uri = Files.getContentUri("external");
         context.getContentResolver().delete(uri,
                 MediaStore.Files.FileColumns.DATA + " LIKE ?", params);
+    }
+
+    public static Uri saveVideoMediaEntry(String videoPath, Context context) {
+        ContentValues v = new ContentValues();
+        v.put(MediaStore.Video.Media.MIME_TYPE, "video/mp4");
+        File f = new File(videoPath);
+        File parent = f.getParentFile();
+        String path = parent.toString().toLowerCase();
+        String name = parent.getName().toLowerCase();
+        v.put(MediaStore.Video.Media.TITLE, f.getName());
+        v.put(MediaStore.Video.Media.DISPLAY_NAME, f.getName());
+        v.put(MediaStore.Video.Media.BUCKET_ID, path.hashCode());
+        v.put(MediaStore.Video.Media.BUCKET_DISPLAY_NAME, name);
+        v.put(MediaStore.Video.Media.SIZE, f.length());
+
+        v.put(MediaStore.Video.Media.DATA, videoPath);
+        ContentResolver c = context.getContentResolver();
+
+        return c.insert(MediaStore.Video.Media.EXTERNAL_CONTENT_URI, v);
     }
 
     public static Uri saveImageMediaEntry(String imagePath, Context context) {
@@ -501,20 +601,28 @@ public class FileOperationUtil {
     public static List<PhotoAibum> getPhotoAlbum(Context context) {
         List<String> filterVideoTypes = getFilterVideoType();
         List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
-        Cursor cursor = MediaStore.Images.Media.query(
-                context.getContentResolver(),
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES,
-                null, MediaColumns.DATE_MODIFIED + " desc");
-        if (cursor != null) {
-            Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
-            PhotoAibum pa = null;
-            try {
+
+        Cursor cursor = null;
+
+
+        Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
+        PhotoAibum pa = null;
+        try {
+            cursor = MediaStore.Images.Media.query(
+                    context.getContentResolver(),
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES,
+                    null, MediaColumns.DATE_MODIFIED + " desc");
+            if (cursor != null) {
                 while (cursor.moveToNext()) {
                     String path = cursor.getString(1);
-                    String dir_id = cursor.getString(3);
-                    String dir = cursor.getString(4);
+                    LeoLog.d("checkPicId", "path is : " + path);
+                    String dir = cursor.getString(3);
+                    String dir_path = getDirPathFromFilepath(path);
                     if (dir.contains("videoCache")) {
-                        LeoLog.d(Constants.RUN_TAG, "Image Path：" + path);
+                        Log.d(Constants.RUN_TAG, "Image Path：" + path);
+                    }
+                    if (path.startsWith(SYSTEM_PREFIX)) {
+                        continue;
                     }
                     boolean isFilterVideoType = false;
                     for (String videoType : filterVideoTypes) {
@@ -526,35 +634,36 @@ public class FileOperationUtil {
                     // 过滤闪屏图
                     if (FileOperationUtil.getSplashPath() != null
                             && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
-                                    .equals(path)) {
+                            .equals(path)) {
                         continue;
                     }
-                    if (!countMap.containsKey(dir_id)) {
+                    if (!countMap.containsKey(dir_path)) {
                         pa = new PhotoAibum();
                         pa.setName(dir);
                         pa.setCount("1");
-                        pa.setDirPath(FileOperationUtil
-                                .getDirPathFromFilepath(path));
+                        pa.setDirPath(dir_path);
                         pa.getBitList().add(new PhotoItem(path));
-                        countMap.put(dir_id, pa);
+                        countMap.put(dir_path, pa);
                     } else {
-                        pa = countMap.get(dir_id);
-                        pa.setCount(String.valueOf(Integer.parseInt(pa
-                                .getCount()) + 1));
+                        pa = countMap.get(dir_path);
+                        pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
                         pa.getBitList().add(new PhotoItem(path));
                     }
                 }
-            } catch (Exception e) {
+            }
 
-            } finally {
+        } catch (Exception e) {
+
+        } finally {
+            if(cursor != null){
                 cursor.close();
             }
-            Iterable<String> it = countMap.keySet();
-            for (String key : it) {
-                aibumList.add(countMap.get(key));
-            }
-            Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
         }
+        Iterable<String> it = countMap.keySet();
+        for (String key : it) {
+            aibumList.add(countMap.get(key));
+        }
+        Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
 
         return aibumList;
     }
@@ -645,14 +754,12 @@ public class FileOperationUtil {
 
     /**
      * FileCopy HideImage
-     * 
+     *
      * @param fromFile
-     * @param toFile
      * @return
      */
     @SuppressWarnings("deprecation")
-    public static int hideImageFileCopy(Context ctx, String fromFile, String newName)
-    {
+    public static int hideImageFileCopy(Context ctx, String fromFile, String newName) {
         String str = FileOperationUtil.getDirPathFromFilepath(fromFile);
         try {
             if (str.length() >= str.lastIndexOf("/") + 1) {
@@ -700,7 +807,7 @@ public class FileOperationUtil {
                 LeoLog.d("RenameFile", temp + "  not   exists");
                 boolean mkRet = temp.mkdirs();
                 if (mkRet) {
-                    LeoLog.d("RenameFile", "make dir " + temp
+                    LeoLog.e("RenameFile", "make dir " + temp
                             + "  successfully");
                 } else {
                     LeoLog.d("RenameFile", "make dir " + temp
@@ -744,13 +851,11 @@ public class FileOperationUtil {
 
     /**
      * FileCopy unHideImageFileCopy
-     * 
+     *
      * @param fromFile
-     * @param toFile
      * @return
      */
-    public static int unHideImageFileCopy(Context ctx, String fromFile)
-    {
+    public static int unHideImageFileCopy(Context ctx, String fromFile) {
         String fileName = FileOperationUtil.getNameFromFilepath(fromFile);
 
         File file = new File(fromFile);
@@ -798,7 +903,7 @@ public class FileOperationUtil {
                 LeoLog.d("RenameFile", temp + "  not   exists");
                 boolean mkRet = temp.mkdirs();
                 if (mkRet) {
-                    LeoLog.d("RenameFile", "make dir " + temp
+                    LeoLog.e("RenameFile", "make dir " + temp
                             + "  successfully");
                 } else {
                     LeoLog.d("RenameFile", "make dir " + temp

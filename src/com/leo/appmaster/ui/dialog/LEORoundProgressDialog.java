@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.ui.RoundProgressBar;
 
 
@@ -20,6 +22,7 @@ public class LEORoundProgressDialog extends LEOBaseDialog {
 	private View bottomLayout;
 	private View mCustomProTextView;
 	private TextView mCustomProDownText;
+	private RippleView mRvBlue;
 	private TextView mCustomProTotalText;
 
 	public LEORoundProgressDialog(Context context) {
@@ -75,7 +78,7 @@ public class LEORoundProgressDialog extends LEOBaseDialog {
 
 	private void initUI() {
 		View dlgView = LayoutInflater.from(mContext).inflate(R.layout.dialog_progress_round, null);
-
+		mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
 		mMessage = (TextView) dlgView.findViewById(R.id.dlg_content);
 		mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
 		mProgressBar = (RoundProgressBar) dlgView.findViewById(R.id.dlg_pro);
@@ -83,11 +86,10 @@ public class LEORoundProgressDialog extends LEOBaseDialog {
 		mCustomProDownText = (TextView) mCustomProTextView.findViewById(R.id.dlg_pro_text_down);
 		mCustomProTotalText = (TextView) mCustomProTextView.findViewById(R.id.dlg_pro_text_total);
 		bottomLayout = dlgView.findViewById(R.id.dlg_bottom_btn);
-		
-		bottomLayout.setOnClickListener(new View.OnClickListener() {           
+		mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
             @Override
-            public void onClick(View v) {
-               cancel();
+            public void onRippleComplete(RippleView rippleView) {
+                cancel();
             }
         });
 

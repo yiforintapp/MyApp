@@ -1,12 +1,9 @@
 
 package com.leo.appmaster.appmanage.view;
 
-import java.io.InputStream;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -28,8 +25,6 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
 import com.android.volley.VolleyError;
 import com.handmark.pulltorefresh.library.PullToRefreshBase;
 import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
@@ -37,12 +32,10 @@ import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener;
 import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.fragment.BaseFragment;
-import com.leo.appmaster.http.HttpRequestAgent;
-import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
+import com.leo.appmaster.HttpRequestAgent;
+import com.leo.appmaster.HttpRequestAgent.RequestListener;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.model.extra.AppWallBean;
 import com.leo.appmaster.model.extra.AppWallUrlBean;
@@ -51,7 +44,6 @@ import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.LoadFailUtils;
 import com.leo.appmaster.utils.TextFormater;
-import com.leo.appmaster.utils.Utilities;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.RoundedBitmapDisplayer;
@@ -330,7 +322,7 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
                         tempStr[1] = appUrl.getUrl();
                         sort.add(tempStr);
                     }
-                    LockManager.getInstatnce().timeFilterSelf();
+                    mLockManager.filterSelfOneMinites();
                     int number = sort.size();
                     if (number >= 2) {
                         for (int i = 0; i < number; i++) {
@@ -384,14 +376,20 @@ public class GameAppFragment2 extends BaseFragment implements OnRefreshListener<
     public void requestUrl(String url) {
         Uri uri = Uri.parse(url);
         Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {          
+        }
     }
 
     public void requestGp(Context context, String packageGp) {
         Intent intent = new Intent(Intent.ACTION_VIEW,
                 Uri.parse("market://details?id=" + packageGp));
         intent.setPackage(GPPACKAGE);
-        context.startActivity(intent);
+        try {
+            context.startActivity(intent);
+        } catch (Exception e) {          
+        }
     }
 
     public String toUrlgetPackageName(String url) {

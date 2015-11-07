@@ -13,8 +13,9 @@ public class ContactCallLog extends BaseInfo implements Serializable {
     private int clallLogType;
     private String clallLogDate;
     private int classLogId;
+    /*每个号码通话记录的条数*/
     private int callLogCount;
-    private int callLogDuraction;
+    private long callLogDuraction;
     private boolean isCheck = false;
     private int isRead;
     private String showDate;
@@ -23,7 +24,7 @@ public class ContactCallLog extends BaseInfo implements Serializable {
     public boolean isShowReadTip;
 
     public ContactCallLog(String callLogName, String callLogNumber, int clallLogType,
-            String clallLogDate, int classLogId, int callLogCount, int callLogDuraction,
+            String clallLogDate, int classLogId, int callLogCount, long callLogDuraction,
             boolean isCheck, int isRead, String showDate, Bitmap contactIcon) {
         super();
         this.callLogName = callLogName;
@@ -78,11 +79,11 @@ public class ContactCallLog extends BaseInfo implements Serializable {
         return callLogCount;
     }
 
-    public int getCallLogDuraction() {
+    public long getCallLogDuraction() {
         return callLogDuraction;
     }
 
-    public void setCallLogDuraction(int callLogDuraction) {
+    public void setCallLogDuraction(long callLogDuraction) {
         this.callLogDuraction = callLogDuraction;
     }
 

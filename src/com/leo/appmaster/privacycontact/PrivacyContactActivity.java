@@ -11,7 +11,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -19,30 +18,28 @@ import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
-import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.home.HomeActivity;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.IconPagerAdapter;
 import com.leo.appmaster.ui.LeoPagerTab;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 public class PrivacyContactActivity extends BaseFragmentActivity implements OnClickListener {
     private static final String TAG = "PrivacyContactActivity";
 
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
     private LeoPagerTab mPrivacyContactPagerTab;
     private ViewPager mPrivacyContactViewPager;
     private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
@@ -58,6 +55,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_contact_main);
+        
         initUI();
         LeoEventBus.getDefaultBus().register(this);
         // PrivacyContactManager.getInstance(mContext).mIsOpenPrivacyContact =
@@ -86,6 +84,11 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         }
     }
 
+//    @Override
+//    public void onEnterAnimationComplete() {
+//        super.onEnterAnimationComplete();
+//    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -94,12 +97,14 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     }
 
     private void initUI() {
-        mTtileBar = (CommonTitleBar) findViewById(R.id.privacy_contact_title_bar);
-        mTtileBar.setBackViewListener(new OnClickListener() {
+        mTtileBar = (CommonToolbar) findViewById(R.id.privacy_contact_title_bar);
+        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setNavigationClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {
                 if (mBackFlag) {
-                    LockManager.getInstatnce().timeFilter(getPackageName(), 500);
+                    LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                    lm.filterPackage(getPackageName(), 500);
                     Intent intent = new Intent(PrivacyContactActivity.this, HomeActivity.class);
                     try {
                         startActivity(intent);
@@ -127,7 +132,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             public void onPageSelected(int position) {
                 pagerPosition = position;
                 if (position == 0) {
-                    mTtileBar.setOptionImageVisibility(View.INVISIBLE);
+                    mTtileBar.setOptionMenuVisible(false);
                     if (AppMasterPreference.getInstance(PrivacyContactActivity.this)
                             .getMessageNoReadCount() <= 0) {
                         mFragmentHolders[0].redTip = false;
@@ -135,7 +140,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                     }
                 }
                 if (position == 1) {
-                    mTtileBar.setOptionImageVisibility(View.INVISIBLE);
+                    mTtileBar.setOptionMenuVisible(false);
                     if (AppMasterPreference.getInstance(PrivacyContactActivity.this)
                             .getCallLogNoReadCount() <= 0) {
                         mCallLogTip = false;
@@ -163,24 +168,32 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
     private void toPrivacyContactHandler() {
         String fromPrivacyFlag = getIntent().getStringExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT);
-        if(Utilities.isEmpty(fromPrivacyFlag)){
-            fromPrivacyFlag=PrivacyContactUtils.TO_PRIVACY_CONTACT_TAB; 
+        if (Utilities.isEmpty(fromPrivacyFlag)) {
+            fromPrivacyFlag = PrivacyContactUtils.TO_PRIVACY_CONTACT_TAB;
         }
         mBackFlag = getIntent().getBooleanExtra("message_call_notifi", false);
         if (PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG.equals(fromPrivacyFlag)) {
-            mTtileBar.setTitle(R.string.privacy_sms);
+            if(getIntent().getBooleanExtra("from_quickhelper", false)){
+                SDKWrapper.addEvent(this, SDKWrapper.P1,
+                        "assistant", "sms_cnts");
+            }
+            mTtileBar.setToolbarTitle(R.string.privacy_sms);
             mPrivacyContactPagerTab.setCurrentItem(0);
             pagerPosition = 0;
             /* sdk market */
             SDKWrapper.addEvent(this, SDKWrapper.P1, "privacyview", "statusmesg");
         } else if (PrivacyContactUtils.TO_PRIVACY_CALL_FLAG.equals(fromPrivacyFlag)) {
-            mTtileBar.setTitle(R.string.privacy_call);
+            if(getIntent().getBooleanExtra("from_quickhelper", false)){
+                SDKWrapper.addEvent(this, SDKWrapper.P1,
+                        "assistant", "call_cnts");
+            }
+            mTtileBar.setToolbarTitle(R.string.privacy_call);
             mPrivacyContactPagerTab.setCurrentItem(1);
             pagerPosition = 1;
             /* sdk market */
             SDKWrapper.addEvent(this, SDKWrapper.P1, "privacyview", "statuscall");
         } else {
-            mTtileBar.setTitle(R.string.privacy_contacts);
+            mTtileBar.setToolbarTitle(R.string.privacy_contacts);
             pagerPosition = 2;
             mPrivacyContactPagerTab.setCurrentItem(2);
             updateTitle();
@@ -194,7 +207,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
     /**
      * dont change this method
-     * 
+     *
      * @param event
      */
     public void onEventMainThread(PrivacyMessageEvent event) {
@@ -209,12 +222,12 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 }
             });
             // 短信删除
-            mTtileBar.setOptionImageVisibility(View.VISIBLE);
-            mTtileBar.setOptionImage(R.drawable.sms_delete);
-            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
-                    R.drawable.privacy_title_bt_selecter);
+            mTtileBar.setOptionMenuVisible(true);
+            mTtileBar.setOptionImageResource(R.drawable.sms_delete);
+//            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
+//                    R.drawable.privacy_title_bt_selecter);
             // 删除
-            mTtileBar.setOptionListener(new OnClickListener() {
+            mTtileBar.setOptionClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
@@ -224,13 +237,16 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 }
             });
             // 短信恢复
-            mTtileBar.findViewById(R.id.message_restore).setVisibility(View.VISIBLE);
-            mTtileBar.findViewById(R.id.message_restore_icon).setBackgroundResource(
-                    R.drawable.recovery_icon);
-            mTtileBar.findViewById(R.id.message_restore).setBackgroundResource(
-                    R.drawable.privacy_title_bt_selecter);
+//            mTtileBar.findViewById(R.id.message_restore).setVisibility(View.VISIBLE);
+//            mTtileBar.findViewById(R.id.message_restore_icon).setBackgroundResource(
+//                    R.drawable.recovery_icon);
+//            mTtileBar.findViewById(R.id.message_restore).setBackgroundResource(
+//                    R.drawable.privacy_title_bt_selecter);
+            mTtileBar.setSecOptionMenuVisible(true);
+            mTtileBar.setSecOptionImageResource(R.drawable.recovery_icon);
+
             // 恢复
-            mTtileBar.findViewById(R.id.message_restore).setOnClickListener(new OnClickListener() {
+            mTtileBar.setSecOptionClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {
@@ -240,11 +256,11 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
                 }
             });
-            mTtileBar.setBackViewListener(new OnClickListener() {
+            mTtileBar.setNavigationClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {
-                    mTtileBar.setHelpSettingVisiblity(View.GONE);
+                    mTtileBar.setSecOptionMenuVisible(false);
                     chanageEditModel();
                     LeoEventBus.getDefaultBus().post(
                             new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
@@ -261,11 +277,9 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 }
             });
             // 通话记录编辑模式
-            mTtileBar.setOptionImageVisibility(View.VISIBLE);
-            mTtileBar.setOptionImage(R.drawable.sms_delete);
-            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
-                    R.drawable.privacy_title_bt_selecter);
-            mTtileBar.setOptionListener(new OnClickListener() {
+            mTtileBar.setOptionMenuVisible(true);
+            mTtileBar.setOptionImageResource(R.drawable.sms_delete);
+            mTtileBar.setOptionClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
                     LeoEventBus.getDefaultBus().post(
@@ -274,7 +288,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
                 }
             });
-            mTtileBar.setBackViewListener(new OnClickListener() {
+            mTtileBar.setNavigationClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {
@@ -294,19 +308,17 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 }
             });
             // 联系人编辑模式
-            mTtileBar.setOptionImage(R.drawable.sms_delete);
-            mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
-                    R.drawable.privacy_title_bt_selecter);
-            mTtileBar.setOptionListener(new OnClickListener() {
+            mTtileBar.setOptionImageResource(R.drawable.sms_delete);
+
+            mTtileBar.setOptionClickListener(new OnClickListener() {
                 @Override
-                public void onClick(View arg0) {
+                public void onClick(View v) {
                     LeoEventBus.getDefaultBus().post(
                             new PrivacyEditFloatEvent(
                                     PrivacyContactUtils.CONTACT_EDIT_MODEL_OPERATION_DELETE));
-
                 }
             });
-            mTtileBar.setBackViewListener(new OnClickListener() {
+            mTtileBar.setNavigationClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View arg0) {
                     chanageEditModel();
@@ -317,7 +329,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         } else if (PrivacyContactUtils.EDIT_MODEL_RESTOR_TO_SMS_CANCEL.equals(event.eventMsg)) {
             // 导入完成结束编辑状态
             if (pagerPosition == 0) {
-                mTtileBar.setHelpSettingVisiblity(View.GONE);
+                mTtileBar.setSecOptionMenuVisible(false);
             }
             chanageEditModel();
         } else if (PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT
@@ -329,16 +341,20 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             setNoSelectImage();
         } else if (PrivacyContactUtils.FROM_MESSAGE_NO_SELECT_EVENT.equals(event.eventMsg)) {
             setNoSelectImage();
-            mTtileBar.findViewById(R.id.message_restore).setVisibility(View.VISIBLE);
-            mTtileBar.findViewById(R.id.message_restore_icon).setBackgroundResource(
-                    R.drawable.un_recovery_icon);
-            mTtileBar.findViewById(R.id.message_restore).setOnClickListener(null);
-            mTtileBar.findViewById(R.id.message_restore).setBackgroundResource(0);
-            mTtileBar.setBackViewListener(new OnClickListener() {
+//            mTtileBar.findViewById(R.id.message_restore).setVisibility(View.VISIBLE);
+//            mTtileBar.findViewById(R.id.message_restore_icon).setBackgroundResource(
+//                    R.drawable.un_recovery_icon);
+//            mTtileBar.findViewById(R.id.message_restore).setOnClickListener(null);
+//            mTtileBar.findViewById(R.id.message_restore).setBackgroundResource(0);
+            mTtileBar.setSecOptionMenuVisible(true);
+            mTtileBar.setSecOptionImageResource(0);
+            mTtileBar.setSecOptionImageResource(R.drawable.un_recovery_icon);
+            mTtileBar.setSecOptionClickListener(null);
+            mTtileBar.setNavigationClickListener(new OnClickListener() {
 
                 @Override
                 public void onClick(View arg0) {
-                    mTtileBar.setHelpSettingVisiblity(View.GONE);
+                    mTtileBar.setSecOptionMenuVisible(false);
                     chanageEditModel();
                     LeoEventBus.getDefaultBus().post(
                             new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
@@ -359,11 +375,11 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 return true;
             }
         });
-        mTtileBar.setOptionImageVisibility(View.VISIBLE);
-        mTtileBar.setOptionImage(R.drawable.un_delete);
-        mTtileBar.setOptionListener(null);
-        mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(0);
-        mTtileBar.setBackViewListener(new OnClickListener() {
+        mTtileBar.setOptionMenuVisible(true);
+        mTtileBar.setOptionImageResource(R.drawable.un_delete);
+        mTtileBar.setOptionClickListener(null);
+//        mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(0);
+        mTtileBar.setNavigationClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -391,12 +407,18 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             }
         } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT
                 .equals(event.editModel)) {
-            mFragmentHolders[0].redTip = false;
-            mPrivacyContactPagerTab.notifyDataSetChanged();
+            int msmNoReadCount = AppMasterPreference.getInstance(PrivacyContactActivity.this).getMessageNoReadCount();
+            if (msmNoReadCount <= 0) {
+                mFragmentHolders[0].redTip = false;
+                mPrivacyContactPagerTab.notifyDataSetChanged();
+            }
         } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT
                 .equals(event.editModel)) {
-            mFragmentHolders[1].redTip = false;
-            mPrivacyContactPagerTab.notifyDataSetChanged();
+            int callNoReadCount = AppMasterPreference.getInstance(PrivacyContactActivity.this).getCallLogNoReadCount();
+            if (callNoReadCount <= 0) {
+                mFragmentHolders[1].redTip = false;
+                mPrivacyContactPagerTab.notifyDataSetChanged();
+            }
         }
     }
 
@@ -404,7 +426,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     private void chanageEditModel() {
         mPrivacyContactPagerTab.setVisibility(View.VISIBLE);
         if (pagerPosition != 2) {
-            mTtileBar.setOptionImageVisibility(View.INVISIBLE);
+            mTtileBar.setOptionMenuVisible(false);
         }
         mPrivacyContactViewPager.setOnTouchListener(new OnTouchListener() {
 
@@ -414,20 +436,18 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             }
         });
         mIsEditModel = false;
-        mTtileBar.openBackView();
+        mTtileBar.setNavigationClickListener(null);
         updateTitle();
     }
 
     // 显示添加按钮
     private void updateTitle() {
-        mTtileBar.findViewById(R.id.message_restore).setVisibility(View.GONE);
         if (pagerPosition == 2) {
-            mTtileBar.setOptionImageVisibility(View.VISIBLE);
+            mTtileBar.setOptionMenuVisible(true);
         }
-        mTtileBar.setOptionImage(R.drawable.add_contacts_btn);
-        mTtileBar.findViewById(R.id.tv_option_image).setBackgroundResource(
-                R.drawable.privacy_title_bt_selecter);
-        mTtileBar.setOptionListener(new OnClickListener() {
+        mTtileBar.setOptionImageResource(R.drawable.add_contacts_btn);
+
+        mTtileBar.setOptionClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -504,14 +524,15 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     public void onBackPressed() {
         if (mIsEditModel) {
             if (pagerPosition == 0) {
-                mTtileBar.setHelpSettingVisiblity(View.GONE);
+                mTtileBar.setSecOptionMenuVisible(false);
             }
             chanageEditModel();
             LeoEventBus.getDefaultBus().post(
                     new PrivacyEditFloatEvent(PrivacyContactUtils.CANCEL_EDIT_MODEL));
         } else {
             if (mBackFlag) {
-                LockManager.getInstatnce().timeFilter(getPackageName(), 500);
+                LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                lm.filterPackage(getPackageName(), 500);
                 Intent intent = new Intent(PrivacyContactActivity.this, HomeActivity.class);
                 try {
                     startActivity(intent);

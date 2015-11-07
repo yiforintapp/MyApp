@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.applocker;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -29,7 +30,6 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.DayView.DayOfWeek;
 import com.leo.appmaster.applocker.NumberPicker.Formatter;
 import com.leo.appmaster.applocker.NumberPicker.OnValueChangeListener;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.applocker.model.TimeLock.RepeatTime;
@@ -37,19 +37,25 @@ import com.leo.appmaster.applocker.model.TimeLock.TimePoint;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.TimeLockEvent;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+import com.leo.appmaster.wifiSecurity.WifiSettingActivity;
 
 public class TimeLockEditActivity extends BaseActivity implements
         OnClickListener, OnValueChangeListener, Formatter, OnItemClickListener {
 
     public LayoutInflater mInflater;
     private LEOAlarmDialog mMakeSureChange;
-    private LEOBaseDialog mModeListDialog;
-    private TextView mTvTitle;
+    private LEOChoiceDialog mModeListDialog;
+//    private TextView mTvTitle;
     private ListView mModeList;
     private EditText mEtTimeLockName;
     private NumberPicker mNpHour, mNpMinitue;
@@ -57,8 +63,8 @@ public class TimeLockEditActivity extends BaseActivity implements
     private DayOfWeekSelectedView mDayOfWeekView;
     private View mModeSelectLayout;
     private TextView mTvName;
-    private View mIvSave;
-    private View mIvBack;
+//    private View mIvSave;
+//    private View mIvBack;
     private TextView mNoWifiTv;
 
     private boolean mOpenRepeat = false;
@@ -70,6 +76,7 @@ public class TimeLockEditActivity extends BaseActivity implements
 
     private TimeLock mEditTimeLock;
     private String mLockName;
+    private CommonToolbar mTitleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,11 +88,22 @@ public class TimeLockEditActivity extends BaseActivity implements
     }
 
     private void initUI() {
+        mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTitleBar.setToolbarTitle(R.string.lock_mode_time);
+        mTitleBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitleBar.setOptionMenuVisible(true);
+        mTitleBar.setOptionClickListener(this);
+        mTitleBar.setOptionImageResource(R.drawable.mode_done);
+        mTitleBar.setNavigationClickListener(this);
+
         mInflater = LayoutInflater.from(this);
-        mIvBack = findViewById(R.id.iv_back);
-        mIvBack.setOnClickListener(this);
-        mTvTitle = (TextView) findViewById(R.id.mode_name_tv);
-        mTvTitle.setText(R.string.lock_mode_time);
+
+//        mIvBack = findViewById(R.id.iv_back);
+//        mIvBack.setOnClickListener(this);
+
+//        mTvTitle = (TextView) findViewById(R.id.mode_name_tv);
+//        mTvTitle.setText(R.string.lock_mode_time);
+
         mEtTimeLockName = (EditText) findViewById(R.id.et_name);
         mTvRepeat = (TextView) findViewById(R.id.switch_repeat);
         mTvRepeat.setOnClickListener(this);
@@ -93,8 +111,10 @@ public class TimeLockEditActivity extends BaseActivity implements
         mModeSelectLayout = findViewById(R.id.layout_mode_name);
         mModeSelectLayout.setOnClickListener(this);
         mTvName = (TextView) findViewById(R.id.tv_mode_name);
-        mIvSave = findViewById(R.id.iv_edit_finish);
-        mIvSave.setOnClickListener(this);
+
+//        mIvSave = findViewById(R.id.iv_edit_finish);
+//        mIvSave.setOnClickListener(this);
+
         mNpHour = (NumberPicker) findViewById(R.id.np_hour);
         mNpMinitue = (NumberPicker) findViewById(R.id.np_minitue);
 
@@ -133,7 +153,7 @@ public class TimeLockEditActivity extends BaseActivity implements
             mEditTimeLock.repeatMode = new RepeatTime((byte) 0);
             mEditTimeLock.using = false;
         } else {
-            List<TimeLock> timeList = LockManager.getInstatnce().getTimeLock();
+            List<TimeLock> timeList = mLockManager.getTimeLock();
             for (TimeLock timeLock : timeList) {
                 if (timeLock.id == mTimeLockId) {
                     mEditTimeLock.id = timeLock.id;
@@ -154,7 +174,7 @@ public class TimeLockEditActivity extends BaseActivity implements
 
     @Deprecated
     private LockMode getUnlockAllMode() {
-        List<LockMode> modeList = LockManager.getInstatnce().getLockMode();
+        List<LockMode> modeList = mLockManager.getLockMode();
         for (LockMode lockMode : modeList) {
             if (lockMode.defaultFlag == 0) {
                 return lockMode;
@@ -164,7 +184,7 @@ public class TimeLockEditActivity extends BaseActivity implements
     }
     
     private LockMode getHomeMode() {
-        List<LockMode> modeList = LockManager.getInstatnce().getLockMode();
+        List<LockMode> modeList = mLockManager.getLockMode();
         for (LockMode lockMode : modeList) {
             if (lockMode.defaultFlag == 3) {
                 return lockMode;
@@ -259,11 +279,18 @@ public class TimeLockEditActivity extends BaseActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+
             case R.id.iv_back:
-                onBackPressed();
+//                onBackPressed();
                 break;
             case R.id.iv_edit_finish:
+//                saveTimeLock();
+                break;
+            case R.id.ct_option_1_rl:
                 saveTimeLock();
+                break;
+            case R.id.ct_back_rl:
+                onBackPressed();
                 break;
             case R.id.switch_repeat:
                 mEdited = true;
@@ -279,25 +306,60 @@ public class TimeLockEditActivity extends BaseActivity implements
 
     private void showModeList(boolean show) {
         if (mModeListDialog == null) {
-            mModeListDialog = new LEOBaseDialog(this,R.style.bt_dialog);
-            mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
-            mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
-            mNoWifiTv = (TextView) mModeListDialog.findViewById(R.id.no_wifi);
-            mModeList.setOnItemClickListener(this);
-            View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
-            cancel.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mModeListDialog.dismiss();
-                }
-            });
+            mModeListDialog = new LEOChoiceDialog(this);
         }
-        mNoWifiTv.setVisibility(View.GONE);
-        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
-        mTitle.setText(getResources().getString(R.string.select_mode));
-        ListAdapter adapter = new ModeListAdapter(this);
-        mModeList.setAdapter(adapter);
+        mModeListDialog.setTitle(getResources().getString(R.string.select_mode));
+        LockManager  lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        List<String> names = new ArrayList<String>();
+        int index = -1;
+        for(int i = 0 ; i < lm.getLockMode().size() ; i++){
+            names.add(lm.getLockMode().get(i).modeName);
+            if(lm.getLockMode().get(i).modeId == mEditTimeLock.lockModeId){
+                index = i;
+            }
+        }
+        mModeListDialog.setItemsWithDefaultStyle(names, index);
+        mModeListDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                List<LockMode> modeList = mLockManager.getLockMode();
+                LockMode selectedMode = modeList.get(position);
+                mEditTimeLock.lockModeId = selectedMode.modeId;
+                mEditTimeLock.lockModeName = selectedMode.modeName;
+                mTvName.setText(mEditTimeLock.lockModeName);
+                mModeListDialog.dismiss();
+                mEdited = true;
+
+                if (selectedMode.defaultFlag == 1 && !selectedMode.haveEverOpened) {
+                    Intent intent = new Intent(TimeLockEditActivity.this,
+                            RecommentAppLockListActivity.class);
+                    intent.putExtra("target", -1);
+                    startActivity(intent);
+                    selectedMode.haveEverOpened = true;
+                    mLockManager.updateMode(selectedMode);
+                }
+            }
+        });
+//    
+//            mModeListDialog = new LEOBaseDialog(this,R.style.bt_dialog);
+//            mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
+//            mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
+//            mNoWifiTv = (TextView) mModeListDialog.findViewById(R.id.no_wifi);
+//            mModeList.setOnItemClickListener(this);
+//            View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
+//            cancel.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mModeListDialog.dismiss();
+//                }
+//            });
+//        }
+//        mNoWifiTv.setVisibility(View.GONE);
+//        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
+//        mTitle.setText(getResources().getString(R.string.select_mode));
+//        ListAdapter adapter = new ModeListAdapter(this);
+//        mModeList.setAdapter(adapter);
 
         mModeListDialog.show();
     }
@@ -314,15 +376,15 @@ public class TimeLockEditActivity extends BaseActivity implements
     }
 
     private void saveTimeLock() {
-        LockManager lm = LockManager.getInstatnce();
         // name
         String name = mEtTimeLockName.getText().toString();
         if (TextUtils.isEmpty(name)) {
             shakeName();
-            Toast.makeText(this, R.string.please_input_name, 0).show();
+            Toast.makeText(this, R.string.please_input_name, Toast.LENGTH_SHORT).show();
             return;
         } else {
             mEditTimeLock.name = name;
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "time", "time");
         }
 
         // time
@@ -342,7 +404,7 @@ public class TimeLockEditActivity extends BaseActivity implements
 
         // mode
         String modeName = mTvName.getText().toString();
-        List<LockMode> modeList = lm.getLockMode();
+        List<LockMode> modeList = mLockManager.getLockMode();
         for (LockMode lockMode : modeList) {
             if (TextUtils.equals(modeName, lockMode.modeName)) {
                 mEditTimeLock.lockModeId = lockMode.modeId;
@@ -352,7 +414,7 @@ public class TimeLockEditActivity extends BaseActivity implements
 
         if (mNewTimeLock) {
             mEditTimeLock.using = true;
-            lm.addTimeLock(mEditTimeLock);
+            mLockManager.addTimeLock(mEditTimeLock);
             Toast.makeText(
                     this,
                     this.getString(R.string.lock_change, this.getString(R.string.lock_mode_time),
@@ -375,7 +437,7 @@ public class TimeLockEditActivity extends BaseActivity implements
                     }
                 }
             }
-            lm.updateTimeLock(mEditTimeLock);
+            mLockManager.updateTimeLock(mEditTimeLock);
             Toast.makeText(TimeLockEditActivity.this, R.string.save_successful, Toast.LENGTH_SHORT)
                     .show();
         }
@@ -398,8 +460,7 @@ public class TimeLockEditActivity extends BaseActivity implements
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        LockManager lm = LockManager.getInstatnce();
-        List<LockMode> modeList = lm.getLockMode();
+        List<LockMode> modeList = mLockManager.getLockMode();
         LockMode selectedMode = modeList.get(position);
         mEditTimeLock.lockModeId = selectedMode.modeId;
         mEditTimeLock.lockModeName = selectedMode.modeName;
@@ -413,7 +474,7 @@ public class TimeLockEditActivity extends BaseActivity implements
             intent.putExtra("target", -1);
             startActivity(intent);
             selectedMode.haveEverOpened = true;
-            lm.updateMode(selectedMode);
+            mLockManager.updateMode(selectedMode);
         }
     }
 
@@ -428,7 +489,7 @@ public class TimeLockEditActivity extends BaseActivity implements
         private LayoutInflater inflater;
 
         public ModeListAdapter(Context ctx) {
-            lm = LockManager.getInstatnce();
+            lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             inflater = LayoutInflater.from(ctx);
         }
 

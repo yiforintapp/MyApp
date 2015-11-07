@@ -1,14 +1,9 @@
 
 package com.leo.appmaster.applocker;
 
-import java.util.Timer;
 import java.util.TimerTask;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.ObjectAnimator;
 import android.app.Service;
-import android.media.MediaTimeProvider;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -16,7 +11,6 @@ import android.os.Vibrator;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +24,7 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.tools.animator.ObjectAnimator;
 
 public class UnKnowCallActivity5 extends BaseActivity implements OnTouchListener {
     private final static int UnknowCallMode = 2;

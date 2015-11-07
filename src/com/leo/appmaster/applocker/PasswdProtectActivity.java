@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.applocker;
 
 import java.util.Arrays;
@@ -9,20 +8,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.text.Editable;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethod;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -37,18 +31,18 @@ import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 
 public class PasswdProtectActivity extends BaseActivity implements
         OnClickListener {
 
-    private CommonTitleBar mTtileBar;
+    private CommonToolbar mTtileBar;
 
     private View mSpinnerQuestions;
     private EditText mQuestion, mAnwser;
@@ -56,7 +50,7 @@ public class PasswdProtectActivity extends BaseActivity implements
     private ScrollView mScrollView;
     private Handler mHandler = new Handler();
     private View mLayoutQues;
-    private Dialog mQuesDialog;
+    private LEOChoiceDialog mQuesDialog;
     private ListView mQuesList;
 
     private List<String> mCategories;
@@ -80,12 +74,65 @@ public class PasswdProtectActivity extends BaseActivity implements
     }
 
     private void initUI() {
-        mTtileBar = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTtileBar.setTitle(R.string.passwd_protect);
+        mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTtileBar.setToolbarTitle(R.string.passwd_protect);
         mSave = mTtileBar.getOptionImageView();
-        mTtileBar.setOptionImage(R.drawable.mode_done);
-        mTtileBar.setOptionListener(this);
-        mTtileBar.setBackViewListener(new OnClickListener() {
+        mTtileBar.setOptionImageResource(R.drawable.mode_done);
+        mTtileBar.setOptionClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO Auto-generated method stub
+                String qusetion = mQuestion.getText().toString();
+                String answer = mAnwser.getText().toString();
+                String passwdHint = AppMasterPreference.getInstance(PasswdProtectActivity.this)
+                        .getPasswdTip();
+                hideIME();
+                boolean noQuestion = qusetion == null || qusetion.trim().equals("");
+                boolean noAnswer = answer == null || answer.equals("");
+                if (noQuestion && noAnswer) {
+                    qusetion = answer = "";
+                } else if (noQuestion && !noAnswer) {
+                    Toast.makeText(PasswdProtectActivity.this, R.string.qusetion_cant_null,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else if (!noQuestion && noAnswer) {
+                    Toast.makeText(PasswdProtectActivity.this, R.string.aneser_cant_null,
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    if (qusetion.length() > 40) {
+                        Toast.makeText(PasswdProtectActivity.this, R.string.question_charsize_tip,
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    if (answer.length() > 40) {
+                        Toast.makeText(PasswdProtectActivity.this, R.string.anwser_charsize_tip,
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+                if (qusetion == null || qusetion.trim().equals("")) {
+                    qusetion = answer = "";
+                }
+                AppMasterPreference.getInstance(PasswdProtectActivity.this).savePasswdProtect(qusetion,
+                        answer, passwdHint);
+                SDKWrapper.addEvent(PasswdProtectActivity.this, SDKWrapper.P1, "first", "setpwdp_submit");
+                Toast.makeText(PasswdProtectActivity.this, R.string.pp_success, Toast.LENGTH_SHORT)
+                        .show();
+                // Handler handler = new Handler();
+                // handler.postDelayed(new Runnable() {
+                //
+                // @Override
+                // public void run() {
+                onBackPressed();
+                // }
+                // }, 500);
+            
+            }
+        });
+        mTtileBar.setOptionMenuVisible(true);
+//        mTtileBar.setNavigationClickListener(listener)
+        mTtileBar.setNavigationClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager) getApplicationContext()
@@ -114,37 +161,94 @@ public class PasswdProtectActivity extends BaseActivity implements
             @Override
             public void onClick(View v) {
                 if (mQuesDialog == null) {
-                    mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this, R.style.bt_dialog);
-                    mQuesDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                    mQuesDialog.setContentView(R.layout.dialog_common_list_select);
-                    mQuesDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
+                    mQuesDialog = new LEOChoiceDialog(PasswdProtectActivity.this);
                 }
-                mQuesList = (ListView) mQuesDialog.findViewById(R.id.item_list);
-                mQuesList.setOnItemClickListener(new OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position,
-                            long id) {
-                        mQuestion.setText(mCategories.get(position));
-                        mQuestion.selectAll();
-                        mSelectQues = mCategories.get(position);
-                        mQuesDialog.dismiss();
+                mQuesDialog.setTitle(getResources().getString(R.string.input_qusetion));
+                int index = 0;
+                if(mSelectQues != null){
+                    for(int i = 0 ;i<mCategories.size() ;i++ ){
+                        if(mCategories.get(i).equals(mSelectQues)){
+                            index = i ;
+                        }
                     }
-                });
-                View cancel = mQuesDialog.findViewById(R.id.dlg_bottom_btn);
-                cancel.setOnClickListener(new OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mQuesDialog.dismiss();
+                }else{
+                    for(int i = 0 ;i<mCategories.size() ;i++ ){
+                        if(mCategories.get(i).equals(AppMasterPreference.getInstance(PasswdProtectActivity.this))){
+//                              .getPpQuestion())){
+                            index = i ;
+                        }
                     }
-                });
+                }
+                    mQuesDialog.setItemsWithDefaultStyle(mCategories, index);
+                    mQuesDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
 
-                TextView mTitle = (TextView) mQuesDialog.findViewById(R.id.dlg_title);
-                mTitle.setText(getResources().getString(R.string.input_qusetion));
-                ListAdapter adapter = new QuesListAdapter(PasswdProtectActivity.this);
-                mQuesList.setAdapter(adapter);
-
-                mQuesDialog.show();
-            }
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+                            mQuestion.setText(mCategories.get(position));
+                          mQuestion.selectAll();
+                          mSelectQues = mCategories.get(position);
+                          mQuesDialog.dismiss();
+                        }
+                    });
+                    mQuesDialog.show();
+                }
+//            holder.name.setText(mCategories.get(position));
+//
+//            if (mSelectQues != null) {
+//                if (mCategories.get(position).equals(mSelectQues)) {
+//                    holder.selecte.setVisibility(View.VISIBLE);
+//                } else {
+//                    holder.selecte.setVisibility(View.GONE);
+//                }
+//            } else {
+//                if (mCategories.get(position)
+//                        .equals(AppMasterPreference.getInstance(PasswdProtectActivity.this)
+//                                .getPpQuestion())) {
+//                    holder.selecte.setVisibility(View.VISIBLE);
+//                } else {
+//                    holder.selecte.setVisibility(View.GONE);
+//                }
+//            }
+            
+            
+            
+            
+                
+//                if (mQuesDialog == null) {
+//                    
+//                    mQuesDialog = new LEOBaseDialog(PasswdProtectActivity.this, R.style.bt_dialog);
+//                    
+//                    mQuesDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//                    mQuesDialog.setContentView(R.layout.dialog_common_list_select);
+//                    mQuesDialog.findViewById(R.id.no_list).setVisibility(View.GONE);
+//                }
+//                mQuesList = (ListView) mQuesDialog.findViewById(R.id.item_list);
+//                mQuesList.setOnItemClickListener(new OnItemClickListener() {
+//                    @Override
+//                    public void onItemClick(AdapterView<?> parent, View view, int position,
+//                                            long id) {
+//                        mQuestion.setText(mCategories.get(position));
+//                        mQuestion.selectAll();
+//                        mSelectQues = mCategories.get(position);
+//                        mQuesDialog.dismiss();
+//                    }
+//                });
+//                View cancel = mQuesDialog.findViewById(R.id.dlg_bottom_btn);
+//                cancel.setOnClickListener(new OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//                        mQuesDialog.dismiss();
+//                    }
+//                });
+//
+//                TextView mTitle = (TextView) mQuesDialog.findViewById(R.id.dlg_title);
+//                mTitle.setText(getResources().getString(R.string.input_qusetion));
+//                ListAdapter adapter = new QuesListAdapter(PasswdProtectActivity.this);
+//                mQuesList.setAdapter(adapter);
+//
+//                mQuesDialog.show();
+//            }
         });
 
         mLayoutQues = findViewById(R.id.layout_questions);
@@ -210,8 +314,7 @@ public class PasswdProtectActivity extends BaseActivity implements
         if (question != null) {
             mAnwser.setText(answer);
             CharSequence astext = mAnwser.getText();
-            if (astext instanceof Spannable)
-            {
+            if (astext instanceof Spannable) {
                 Spannable spanText = (Spannable) astext;
                 Selection.setSelection(spanText, astext.length());
             }
@@ -231,49 +334,7 @@ public class PasswdProtectActivity extends BaseActivity implements
         String answer = mAnwser.getText().toString();
         String passwdHint = AppMasterPreference.getInstance(this)
                 .getPasswdTip();
-        if (v == mSave) {
-            hideIME();
-            boolean noQuestion = qusetion == null || qusetion.trim().equals("");
-            boolean noAnswer = answer == null || answer.equals("");
-            if (noQuestion && noAnswer) {
-                qusetion = answer = "";
-            } else if (noQuestion && !noAnswer) {
-                Toast.makeText(this, R.string.qusetion_cant_null,
-                        Toast.LENGTH_SHORT).show();
-                return;
-            } else if (!noQuestion && noAnswer) {
-                Toast.makeText(this, R.string.aneser_cant_null,
-                        Toast.LENGTH_SHORT).show();
-                return;
-            } else {
-                if (qusetion.length() > 40) {
-                    Toast.makeText(this, R.string.question_charsize_tip,
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if (answer.length() > 40) {
-                    Toast.makeText(this, R.string.anwser_charsize_tip,
-                            Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
-            if (qusetion == null || qusetion.trim().equals("")) {
-                qusetion = answer = "";
-            }
-            AppMasterPreference.getInstance(this).savePasswdProtect(qusetion,
-                    answer, passwdHint);
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "first", "setpwdp_submit");
-            Toast.makeText(this, R.string.pp_success, Toast.LENGTH_SHORT)
-                    .show();
-            // Handler handler = new Handler();
-            // handler.postDelayed(new Runnable() {
-            //
-            // @Override
-            // public void run() {
-            onBackPressed();
-            // }
-            // }, 500);
-        } else if (v == mAnwser) {
+        if (v == mAnwser) {
             if (mAnwser.isFocused()) {
                 mHandler.postDelayed(new Runnable() {
 
@@ -294,7 +355,7 @@ public class PasswdProtectActivity extends BaseActivity implements
         boolean quickMode = getIntent().getBooleanExtra("quick_mode", false);
         int quickModeId = getIntent().getIntExtra("mode_id", -1);
         if (toHome) {
-            LockManager.getInstatnce().timeFilter(getPackageName(), 500);
+            mLockManager.filterPackage(getPackageName(), 500);
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
         } else if (toLockList) {

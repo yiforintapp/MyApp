@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="320dp"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:background="@drawable/dialog_bg"
+    android:background="@drawable/common_dialog_bg"
     android:orientation="vertical"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp" >
+    android:paddingLeft="12dp"
+    android:paddingRight="12dp" >
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
-        android:layout_width="@dimen/dlg_horizental_margin"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="vertical" >
@@ -66,13 +67,26 @@
             android:layout_marginBottom="24dp"
             android:progressDrawable="@drawable/progress_bar" />
 
-        <TextView
-            android:id="@+id/progress_dlg_bottom_btn"
-            style="@style/dlg_single_button_txt_cancel"
+        <com.leo.appmaster.ui.RippleView
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/rv_blue"
             android:layout_width="match_parent"
-            android:layout_marginBottom="24dp"
-            android:gravity="center"
-            android:text="@string/cancel" />
+            android:layout_height="42dp"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            app:rv_alpha="255"
+            app:rv_rippleDuration="@integer/ripple_btn_duration" 
+            app:rv_color="#0453d6" >
+
+            <TextView
+                android:id="@+id/progress_dlg_bottom_btn"
+                style="@style/dlg_right_button_txt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/cancel" />
+        </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 
 </LinearLayout>

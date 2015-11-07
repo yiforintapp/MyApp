@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="defult_transparent">#00FFFFFF</drawable>
+    <drawable name="default_pressed">#50ececec</drawable>
+
+    <!--<drawable name="blue_button_stay">#004169E1</drawable>-->
+    <!--<drawable name="blue_button_pressed">#0000008B</drawable>-->
+
+</resources>

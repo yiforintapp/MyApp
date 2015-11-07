@@ -1,13 +1,15 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/messageRT"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_privacy_contact_item_paddingLeft" >
+    android:background="@drawable/home_tab_selector"
+    android:layout_height="68dp"
+    android:gravity="center_vertical" >
 
     <RelativeLayout
         android:id="@+id/message_content"
         android:layout_width="match_parent"
+        android:layout_marginLeft="6dp"
         android:layout_height="72dp" >
 
         <com.leo.appmaster.privacycontact.CircleImageView
@@ -41,14 +43,14 @@
                         android:id="@+id/message_list_nameTV"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/message_list_dateTV"
                         android:layout_weight="1"
                         android:ellipsize="end"
                         android:singleLine="true"
                         android:text="联系人"
-                        android:textColor="#414141"
-                        android:layout_toLeftOf="@+id/message_list_dateTV"
-                        android:layout_alignParentLeft="true"
-                        android:textSize="16dp" />
+                        android:textSize="17dp"
+                        android:textColor="#333333" />
 
                     <TextView
                         android:id="@+id/message_list_countTV"
@@ -74,12 +76,12 @@
                     android:id="@+id/message_list_contentTV"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="7dp"
                     android:ellipsize="end"
                     android:singleLine="true"
                     android:text="短信内容"
-                    android:textColor="#9b9b9b"
-                    android:textSize="12dp" />
+                    android:textSize="13dp"
+                    android:textColor="#9b9b9b" />
             </LinearLayout>
 
             <ImageView
@@ -88,17 +90,14 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:layout_marginRight="20dp"
+                android:layout_marginRight="12dp"
                 android:visibility="invisible" />
-
-            <ImageView
-                android:id="@+id/bottom_line"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:background="@drawable/test_list_divider" />
         </RelativeLayout>
     </RelativeLayout>
-
-</RelativeLayout>
+    <ImageView
+        android:id="@+id/bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/message_content"
+        android:background="@color/divider_2" />
+</com.leo.appmaster.ui.RippleView>

@@ -3,20 +3,17 @@
     android:id="@+id/message_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f3f3f3" >
+    android:background="@color/white" >
 
     <ListView
         android:id="@+id/privacy_messageLV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="10dp"
-        android:background="@drawable/white_bg"
-        android:divider="@null"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         android:overScrollMode="never"
-        android:listSelector="@drawable/manager_backup_list_selecter"
-        android:scrollbars="none" >
+        android:divider="@null"
+        android:scrollbars="none">
     </ListView>
 
     <LinearLayout

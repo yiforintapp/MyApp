@@ -1,19 +1,16 @@
 
 package com.leo.appmaster.applocker;
 
-import java.lang.ref.WeakReference;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import android.animation.Animator;
-import android.animation.Animator.AnimatorListener;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
@@ -22,21 +19,29 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.Camera;
+import android.hardware.Camera.PictureCallback;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -44,16 +49,14 @@ import android.view.View.OnClickListener;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,14 +67,13 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.animation.ColorEvaluator;
-import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.applocker.manager.TaskChangeHandler;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.eventbus.event.EventId;
@@ -86,13 +88,23 @@ import com.leo.appmaster.fragment.PretendAppErrorFragment;
 import com.leo.appmaster.fragment.PretendAppUnknowCallFragment5;
 import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
+import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
+import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
+import com.leo.appmaster.intruderprotection.WaterMarkUtils;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
 import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.HorizontalDragLayout;
+import com.leo.appmaster.ui.HorizontalDragLayout.IDrageRelease;
 import com.leo.appmaster.ui.LeoCircleView;
 import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -102,20 +114,25 @@ import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListene
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
+import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NetWorkUtil;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
+import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.core.FailReason;
-import com.leo.imageloader.core.ImageLoadingListener;
-import com.leo.imageloader.core.ImageSize;
+import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ValueAnimator;
+import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 import com.mobvista.sdk.m.core.WallIconCallback;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
-@SuppressLint("NewApi")
 public class LockScreenActivity extends BaseFragmentActivity implements
-        OnClickListener, OnDiaogClickListener {
+        OnClickListener, OnDiaogClickListener, IDrageRelease{
 
     public static final String TAG = "LockScreenActivity";
 
@@ -127,16 +144,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public static final String SHOW_NOW = "mode changed_show_now";
     public static final long CLICK_OVER_DAY = 24 * 1000 * 60 * 60;
     public static final int SHOW_RED_MAN = 1;
-
+    public static final int LARGE_BANNER_HIDE = 2;
     public static final int AD_TYPE_SHAKE = 1;
     public static final int AD_TYPE_JUMP = 2;
     public static final int AD_TYPE_STAY = 3;
-    public static final int ID_SUBMARINE_ANIM=1001;
-    public static final int ID_SUBMARINE_CONTINUE_ANIM=1002;
-    public static final int ID_SUBMARINE_CANCEL_ANIM=1003;
-    private static final boolean DBG = false;
-    /* 用于测试时，指定显示的广告形式 */
-    private static final int TEST_AD_NUMBER = 6;
     public int SHOW_AD_TYPE = 0;
     private int mLockMode;
     private String mLockedPackage;
@@ -152,10 +163,25 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private ImageView mAdIcon, mAdIconRedTip;
     private View switch_bottom_content;
     private ImageView mADAnimalEntry;
+    private PreferenceTable mPt;
+    /**
+     * 大banner
+     */
+    private RelativeLayout mLargeAdBannerShowArea;
+    private HorizontalDragLayout mBannerContainer;
+    private ImageView mBannerImage;
+    private TextView mTilte, mDetail, mInstallButton;
+    private boolean mShowAlignRight = false; 
+    private int mLargeBannerCenterPos;
+    private int mLargeBannerRightPos;
+    private int mLargeBannerWidth;
+    private DisplayImageOptions mImageOptions;
 
     private boolean mNewTheme;
     private RelativeLayout mPretendLayout;
     private PretendFragment mPretendFragment;
+    private IntrudeSecurityManager mISManager;
+    private PrivacyDataManager mPDManager;
 
     private String mCleanRate;
     private TextView mText;
@@ -173,56 +199,58 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private MobvistaAdWall wallAd;
     public static boolean sLockFilterFlag = false;
     private static AnimationDrawable adAnimation;
-    private Handler handler;
     public static boolean interupAinimation = false;
     private boolean clickShakeIcon = false;
+
     private MobvistaEngine mAdEngine;
-    private LinearLayout mSubmarineAdLt;
-    private ImageView mBubbleIv, mSubmarineEndIv, mSubmarineContentIv, mSubmarineAdCloseIv;
-    private RelativeLayout mAdDialog;
-    private ObjectAnimator mSubmarineAnim;
-    public static volatile boolean mSubmarine, mIsClickSubmarine;
-    public static volatile boolean mIsSubmarineAnim = true;
-    public static volatile boolean mIsShowFullScreenAd = true;
-    /* 是否在显示重试界面 */
-    public static  volatile boolean mIsShowRollAgain;
-    /* 是否在显示广告界面 */
-    public static volatile  boolean mIsShowAdUi;
-    /* 广告是否加载成功 */
-    public static  volatile boolean mIsLoadAdSuccess;
-    public static  float mSubmarineCurrentAnimValue = 0;
-    public static  float mCurrentAnimValue = 0;
-    public static  int mSubmarineTranYRandom;
-    public static float mOnClickSubmarineValue;
-    private FrameLayout mRollAgain;
-    private Button mRollAgainBtn;
-    private ImageView mRollAgainClose;
-    private SubmarineHandler mSubmarineHandler;
+
+    private static final boolean DBG = false;
+    /* 用于测试时，指定显示的广告形式 */
+    private static final int TEST_AD_NUMBER = 6;
+
+    //能否拍照，每次进入界面才能够置为true，拍完置为false，保证每次进入界面只能拍一次，避免频繁拍照
+    private boolean mCanTakePhoto = true;
+    //照片是否已经保存完毕，保存完毕后置为true，true才能进入抓拍结果界面，每次拍照置为false //暂时不用
+    private static boolean mIsPicSaved = false;
+    //是否已经拍了照片，拍了照为true，解锁成功后将进入抓拍界面，然后置为false
+    public static boolean mHasTakePic = false;
+
     private Handler mHandler = new Handler() {
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case SHOW_RED_MAN:
                     mADAnimalEntry.setBackgroundResource(R.drawable.adanimation3);
-                    AnimationDrawable redmanAnimation = (AnimationDrawable) mADAnimalEntry
-                            .getBackground();
+                    AnimationDrawable redmanAnimation = (AnimationDrawable)
+                            mADAnimalEntry.getBackground();
                     redmanAnimation.start();
+                    break;
+                case LARGE_BANNER_HIDE:
+                    bannerHideAnim();
                     break;
             }
         }
     };
+    
+    public void setCanTakePhoto(boolean flag){
+        mCanTakePhoto = flag;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lock_setting);
-        LeoLog.d("LockScreenActivity", "onCreate");
+        setContentView(R.layout.activity_lock_layout);
+        LeoLog.e("LockScreenActivity", "onCreate");
+        mISManager = (IntrudeSecurityManager) MgrContext
+                .getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        mPt = PreferenceTable.getInstance();
+        mPDManager = (PrivacyDataManager) MgrContext
+                .getManager(MgrContext.MGR_PRIVACY_DATA);
         mLockLayout = (RelativeLayout) findViewById(R.id.activity_lock_layout);
         handleIntent();
-        LockManager lm = LockManager.getInstatnce();
-        lm.setPauseScreenonLock(true);
+        mLockManager.setPauseScreenonLock(true);
         // for fix lock mode shortcut bug
         if (mQuickLockMode) {
-            List<LockMode> modeList = lm.getLockMode();
+            List<LockMode> modeList = mLockManager.getLockMode();
             LockMode mode = null;
             for (LockMode lockMode : modeList) {
                 if (lockMode.modeId == mQuiclModeId) {
@@ -231,8 +259,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }
             if (mode != null) {
-                if (AppMasterPreference.getInstance(this)
-                        .getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
+                if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_NONE) {
                     if (mode.defaultFlag != -1) {
                         Intent intent = new Intent(this, LockSettingActivity.class);
                         intent.putExtra("from_quick_mode", true);
@@ -254,28 +281,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
-        handler = new Handler();
-        ThreadManager.getUiThreadHandler().post(new Runnable() {
-            @Override
-            public void run() {
-                adShowTypeHandler();
-            }
-        });
-        mSubmarineHandler= new  SubmarineHandler(this); 
-    }
-
-    /* 广告相关处理 */
-    private void adShowTypeHandler() {
-        /* 潜艇广告 */
-        final int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
-                .getADShowType();
-        if (getPretendFragment() == null) {
-            mSubmarineTranYRandom = submarineTopMargin();
-            if (adShowNumber == ADShowTypeRequestManager.SUBMARIN_AD_TYPE
-                    && NetWorkUtil.isNetworkAvailable(getApplicationContext())) {
-                submarineAnim(0,true);
-            }
-        }
     }
 
     private void mobvistaCheck() {
@@ -288,12 +293,116 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // init wall controller
         // newAdWallController(Context context,String unitid, String fbid)
         // wallAd = MobvistaEngine.getInstance().createAdWallController(this);
-        wallAd = MobvistaEngine.getInstance().createAdWallController(this, Constants.UNIT_ID_63);
+        wallAd = MobvistaEngine.getInstance(this).createAdWallController(this, Constants.UNIT_ID_63);
         if (wallAd != null) {
             // preload the wall data
             wallAd.preloadWall();
         }
+    }
 
+    public void takePicture(final CameraSurfacePreview view, final String packagename) {
+        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
+                "intruder", "intruder_package_"+packagename);
+        if (view != null && mCanTakePhoto) {
+            LeoLog.i("poha", "take Piture!!!");
+            view.takePicture(new PictureCallback() {
+                @Override
+                public void onPictureTaken(final byte[] data, Camera camera) {
+                    LeoLog.i("poha", "has taken!!!");
+                    mCanTakePhoto = false;
+                    LeoLog.i("poha", "pic taken!!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+mHasTakePic+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
+//                    mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
+//                    LeoLog.i("poha", "set delay false");
+                    mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
+                    ThreadManager.executeOnAsyncThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            AppMasterApplication ama = AppMasterApplication.getInstance();
+                            Bitmap bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length).copy( Config.RGB_565, true);
+                            Matrix m = new Matrix();
+                            m.setRotate(-90, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
+                            Bitmap bitmap = Bitmap.createBitmap(bitmapt, 0, 0,bitmapt.getWidth() , bitmapt.getHeight() , m, true);
+                            String timeStamp = new SimpleDateFormat( Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT) .format(new Date());
+                            Bitmap finalBitmap = WaterMarkUtils.createIntruderPhoto(bitmap, timeStamp,packagename, ama);
+//                            bitmapt.recycle();
+//                            bitmap.recycle();
+                            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+//                            finalBitmap.recycle();
+                            byte[] finalBytes = baos.toByteArray();
+                            File photoSavePath = getPhotoSavePath();
+                            if (photoSavePath == null) {
+                                LeoLog.i("poha", "path not exist!");
+                                return;
+                            }
+                            String finalPicPath = "";
+                            try {
+                                LeoLog.i("poha", photoSavePath + "::save Path");
+                                FileOutputStream fos = new FileOutputStream(photoSavePath);
+                                fos.write(finalBytes);
+                                fos.close();
+                                // 隐藏图片
+                                LeoLog.i("picpath", photoSavePath.toString());
+                                finalPicPath = mPDManager.onHidePic(photoSavePath.getPath() , null);
+                                LeoLog.i("picpath", finalPicPath);
+                                FileOperationUtil.saveFileMediaEntry(finalPicPath, ama);
+                                FileOperationUtil.deleteImageMediaEntry(photoSavePath.getPath(), ama);
+                                mIsPicSaved = true;
+                                //refresh by itself
+                                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
+                                pdm.notifySecurityChange();
+                                
+                            } catch (Exception e) {
+                                LeoLog.i("poha", "exception!!   ..." + e.toString());
+                                return;
+                            }
+                            IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath,packagename, timeStamp);
+                            mISManager.insertInfo(info);
+                            mIsPicSaved = true;
+                            LeoLog.i("poha", "after insert, before judge!!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+mHasTakePic+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
+                            if(mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false)){
+                                mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
+                                Intent intent = new Intent(getApplicationContext(), IntruderCatchedActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                                intent.putExtra("pkgname", mLockedPackage);
+                                mLockManager.filterPackage(getPackageName(), 1000);
+                                LeoLog.i("poha", "start Catch Activity");
+                                startActivity(intent);
+                                mHasTakePic = false;
+                                mIsPicSaved = false;
+                                LeoLog.i("poha", "delay!! has enter catch !!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
+                            }
+                          bitmap.recycle();
+                        }
+                    });
+                    if(mLockFragment != null) {
+                        mLockFragment.removeCamera();
+                    }
+                }
+            });
+        } else {
+            LeoLog.i("poha", "view == null or can't take");
+            if(mLockFragment != null) {
+                ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
+                    @Override
+                    public void run() {
+                        mLockFragment.removeCamera();
+                    }
+                }, 500);
+            }
+        }
+    }
+
+    // 获得抓拍照片保存的路径
+    private File getPhotoSavePath() {
+        File picDir = new File(Environment.getExternalStorageDirectory()
+                .getAbsolutePath());
+        String timeStamp = new SimpleDateFormat("yyyyMMddHHmmss").format(new Date());
+        File dir = new File(picDir.getPath() + File.separator + "IntruderP");
+        if (!dir.exists()) {
+            dir.mkdirs();
+        }
+        return new File(dir + File.separator + "IMAGE_" + timeStamp + ".jpg");
     }
 
     @SuppressWarnings("deprecation")
@@ -316,20 +425,22 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             if (SHOW_AD_TYPE == AD_TYPE_SHAKE) {
                 mAdIconRedTip.setVisibility(View.VISIBLE);
                 mAdIcon.setBackgroundResource(R.drawable.adanimation2);
-                adAnimation = (AnimationDrawable) mAdIcon.getBackground();
+                adAnimation = (AnimationDrawable)
+                        mAdIcon.getBackground();
                 adAnimation.start();
 
             } else { // jump
                 mAdIconRedTip.setVisibility(View.GONE);
                 if (SHOW_AD_TYPE == AD_TYPE_JUMP) {
                     mAdIcon.setBackgroundResource(R.drawable.adanimation);
-                    adAnimation = (AnimationDrawable) mAdIcon.getBackground();
+                    adAnimation = (AnimationDrawable)
+                            mAdIcon.getBackground();
                     adAnimation.start();
-                    LeoLog.d("testLockScreen", "jump going!");
+                    LeoLog.e("testLockScreen", "jump going!");
                 } else {
                     mAdIcon.setBackgroundDrawable((this.getResources()
                             .getDrawable(R.drawable.jump_1)));
-                    LeoLog.d("testLockScreen", "stay going!");
+                    LeoLog.e("testLockScreen", "stay going!");
                 }
             }
         }
@@ -354,19 +465,47 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onResume() {
+        mCanTakePhoto = true;
         whichTypeShow();
 
-        LeoLog.d("poha", AppMasterPreference.getInstance(this).getADShowType()
+        LeoLog.e("poha", AppMasterPreference.getInstance(this).getADShowType()
                 + ":current ad show type");
 
-        if (AppMasterPreference.getInstance(this).getADShowType() == 3
-                && NetWorkUtil.isNetworkAvailable(getApplicationContext())
-                && mADAnimalEntry != null) {
+        //防止重新进入时图标透明度为0
+        int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
+        if (type == LockFragment.LOCK_TYPE_PASSWD) {
+            PasswdLockFragment plf = (PasswdLockFragment)mLockFragment;
+            View icon = plf.getIconView();
+            if(icon != null) {
+                icon.setAlpha(1.0f);
+            }
+            View hint = plf.getPasswdHint();
+            if(hint != null) {
+                hint.setAlpha(1.0f);
+            }
+        } else {
+            GestureLockFragment glf = (GestureLockFragment)mLockFragment;
+            View icon = glf.getIconView();
+            if(icon != null) {
+                icon.setAlpha(1.0f);
+            }
+        }
+
+        LeoLog.e("poha", AppMasterPreference.getInstance(this).getLockBannerADShowProbability()
+                + ":large banner show probability");
+
+        if (AppMasterPreference.getInstance(this).getLockBannerADShowProbability() > 0
+                && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mBannerContainer != null
+                && mLockMode == LockManager.LOCK_MODE_FULL && getWindowWidth() > 240) {
+            loadAD();
+        } else if (AppMasterPreference.getInstance(this).getADShowType() == 3
+                && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mADAnimalEntry != null) {
             mADAnimalEntry.setVisibility(View.VISIBLE);
             if (SHOW_AD_TYPE != AD_TYPE_JUMP && SHOW_AD_TYPE != AD_TYPE_SHAKE) {
                 startShakeRotateAnimation(true);
             }
         }
+        
         setMobvistaIcon();
         // 每次返回界面时，隐藏下方虚拟键盘，解决华为部分手机上每次返回界面如果之前有虚拟键盘会上下振动的bug
         // getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
@@ -393,7 +532,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         super.onResume();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "app");
-
     }
 
     private void whichTypeShow() {
@@ -617,11 +755,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             // change background
             if (!ThemeUtils.checkThemeNeed(this)
                     && (mLockMode == LockManager.LOCK_MODE_FULL)) {
-                BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
+                BitmapDrawable bd = (BitmapDrawable) AppUtil.getAppIcon(
                         getPackageManager(),
                         mLockedPackage);
                 if (bd == null) {
-                    bd = (BitmapDrawable) AppUtil.getDrawable(
+                    bd = (BitmapDrawable) AppUtil.getAppIcon(
                             getPackageManager(),
                             getPackageName());
                 }
@@ -650,14 +788,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mPretendLayout.setVisibility(View.VISIBLE);
                 if (mPretendFragment instanceof PretendAppErrorFragment) {
                     String tip = "";
-                    PackageManager pm = this.getPackageManager();
+                    PackageManager pm = getPackageManager();
                     try {
-                        ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
-                                PackageManager.GET_UNINSTALLED_PACKAGES);
-                        String lab = info.loadLabel(pm).toString();
+                        String lab = AppUtil.getAppLabel(pm, mLockedPackage);
                         tip = getString(R.string.pretend_app_error, lab);
-
-                    } catch (NameNotFoundException e) {
+                    } catch (Exception e) {
                         tip = getString(R.string.weizhuang_error_notice);
                         e.printStackTrace();
                     }
@@ -673,14 +808,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void checkOutcount() {
-        LockManager lm = LockManager.getInstatnce();
-        int outcountTime = lm.getOutcountTime(mLockedPackage);
-        if (outcountTime > 0) {
-            LockManager.getInstatnce().timeFilter(getPackageName(), 200);
-            Intent intent = new Intent(this, WaitActivity.class);
-            intent.putExtra("outcount_time", 10 - outcountTime / 1000);
-            startActivity(intent);
-        }
+//        int outcountTime = mLockManager.getOutcountTime(mLockedPackage);
+//        if (outcountTime > 0) {
+//            mLockManager.filterPackage(getPackageName(), 200);
+//            Intent intent = new Intent(this, WaitActivity.class);
+//            intent.putExtra("outcount_time", 10 - outcountTime / 1000);
+//            startActivity(intent);
+//        }
     }
 
     private void handleIntent() {
@@ -713,12 +847,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         } else {
             mLockFragment = new GestureLockFragment();
         }
+
         if (!ThemeUtils.checkThemeNeed(this)
                 && (mLockMode == LockManager.LOCK_MODE_FULL)) {
-            BitmapDrawable bd = (BitmapDrawable) AppUtil.getDrawable(
+            BitmapDrawable bd = (BitmapDrawable) AppUtil.getAppIcon(
                     getPackageManager(), mLockedPackage);
             setAppInfoBackground(bd);
         }
+
         mLockTitle = intent.getStringExtra(EXTRA_LOCK_TITLE);
         mLockFragment.setLockMode(mLockMode);
         mLockFragment.setPackage(mLockedPackage);
@@ -755,7 +891,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     @Override
     protected void onDestroy() {
-        LockManager.getInstatnce().setPauseScreenonLock(false);
+        mLockManager.setPauseScreenonLock(false);
         super.onDestroy();
         if (mAppBaseInfoLayoutbg != null) {
             mAppBaseInfoLayoutbg.recycle();
@@ -772,20 +908,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
         LeoLog.d("LockScreenActivity", "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
-        if (mSubmarineAnim != null) {
-            mSubmarineAnim = null;
+        mLockFragment.setShowText(false);
+        
+        if(mAdEngine!=null) {
+            mAdEngine.release(Constants.UNIT_ID_59);
         }
-        if(mSubmarineHandler!=null){
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_ANIM);
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_CONTINUE_ANIM);
-            mSubmarineHandler=null;
-        }
+        mBannerContainer.setVisibility(View.GONE);
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        mBannerContainer.setVisibility(View.GONE);
+        if(mLockFragment != null) {
+            mLockFragment.onActivityStop();
+        }
     }
 
     @Override
@@ -826,7 +963,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // 0).show();
                 mADAnimalEntry.setVisibility(View.GONE);
                 Intent intent = new Intent(LockScreenActivity.this,
-                        UFOActivity.class);
+                        UFOActivity.class);// TODO
                 startActivity(intent);
                 SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "ad_draw");
                 overridePendingTransition(DEFAULT_KEYS_DISABLE, DEFAULT_KEYS_DISABLE);
@@ -842,8 +979,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mTtileBar.setBackArrowVisibility(View.GONE);
 
             if (mQuickLockMode) {
-                LockManager lm = LockManager.getInstatnce();
-                List<LockMode> modes = lm.getLockMode();
+                List<LockMode> modes = mLockManager.getLockMode();
                 LockMode targetMode = null;
                 for (LockMode lockMode : modes) {
                     if (lockMode.modeId == mQuiclModeId) {
@@ -863,6 +999,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mTtileBar.setBackViewListener(this);
             if (TextUtils.isEmpty(mLockTitle)) {
                 mTtileBar.setTitle(R.string.app_lock);
+                //解锁界面绘制介绍
+                mLockFragment.setShowText(true);
             } else {
                 mTtileBar.setTitle(mLockTitle);
             }
@@ -871,7 +1009,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         // if (AppMasterPreference.getInstance(this).getLockScreenMenuClicked())
         // {
-        mTtileBar.setOptionImage(R.drawable.menu_item_btn);
+        mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
         // } else {
         // mTtileBar.setOptionImage(R.drawable.menu_item_red_tip_btn);
         // }
@@ -882,7 +1020,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         mAdIconRedTip = (ImageView) findViewById(R.id.gift_red_tip);
         mAdIcon = (ImageView) findViewById(R.id.icon_ad_layout);
-
         if (AppMasterPreference.getInstance(this).getIsLockAppWallOpen() > 0) {
             ((View) mAdIcon.getParent()).setVisibility(View.VISIBLE);
             mAdIcon.setVisibility(View.VISIBLE);
@@ -906,21 +1043,112 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 初始化广告UI */
     private void initAD() {
-        /* 潜水艇广告 */
-        mSubmarineAdLt = (LinearLayout) findViewById(R.id.submarine_ad_LT);
-        mSubmarineAdLt.setOnClickListener(this);
-        mBubbleIv = (ImageView) findViewById(R.id.submarine_end_bubble_iv);
-        mSubmarineEndIv = (ImageView) findViewById(R.id.submarine_end_iv);
-        mSubmarineContentIv = (ImageView) findViewById(R.id.submarine_content_iv);
-        mSubmarineAdCloseIv = (ImageView) findViewById(R.id.iv_close_ufo);
-        mAdDialog = (RelativeLayout) findViewById(R.id.rl_ADdialog);
-        mRollAgain = (FrameLayout) findViewById(R.id.rl_ADdialog_nodata);
-        mRollAgainBtn = (Button) findViewById(R.id.btn_rollagain);
-        mRollAgainBtn.setOnClickListener(this);
-        mRollAgainClose = (ImageView) findViewById(R.id.iv_close);
-        mRollAgainClose.setOnClickListener(this);
+        mLargeBannerWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
+        mBannerContainer = (HorizontalDragLayout) findViewById(R.id.large_adbanner_container);
+        mBannerContainer.setListener(this);
+        mLargeAdBannerShowArea = (RelativeLayout) findViewById(R.id.adbanner_show_area);
+        mBannerImage = (ImageView) findViewById(R.id.ad_image);
+        mTilte = (TextView) findViewById(R.id.ad_title);
+        mTilte.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        mDetail = (TextView) findViewById(R.id.ad_details);
+        mInstallButton = (TextView) findViewById(R.id.ad_install_button);
+
+        mImageOptions = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ad_def_pic)
+                .showImageForEmptyUri(R.drawable.ad_def_pic)
+                .showImageOnFail(R.drawable.ad_def_pic)
+                .displayer(new FadeInBitmapDisplayer(200))
+                .cacheInMemory(true).cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565).build();
     }
 
+    private void loadAD() {
+        LeoLog.e("poha","loading ad...");
+        mAdEngine = MobvistaEngine.getInstance(this);
+        mAdEngine.loadMobvista(Constants.UNIT_ID_59, new MobvistaListener() {
+            @Override
+            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                if (code == MobvistaEngine.ERR_OK && campaign!=null) {
+                    int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
+                    int h = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
+                    if ((int) (Math.random() * (10+1-1)+1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
+                        mBannerContainer.setVisibility(View.VISIBLE);
+                        RelativeLayout.LayoutParams pl = new RelativeLayout.LayoutParams(w, h);
+                        pl.addRule(RelativeLayout.CENTER_IN_PARENT);
+                        mLargeAdBannerShowArea.setLayoutParams(pl);
+                        mShowAlignRight = false;
+                        largeBannerShowAnim();
+                        delayBannerHideAnim();
+                        
+                        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_picadA");
+                    } else {
+                        mBannerContainer.setVisibility(View.VISIBLE);
+                        RelativeLayout.LayoutParams pl = new RelativeLayout.LayoutParams(w, h);
+                        pl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                        pl.rightMargin = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right) - w;
+                        mLargeAdBannerShowArea.setLayoutParams(pl);
+                        mShowAlignRight = true;
+                        
+                        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_picadB");
+                    }
+
+                    ImageLoader.getInstance().displayImage(campaign.getImageUrl(),mBannerImage,mImageOptions);
+                    mTilte.setText(campaign.getAppName());
+                    mDetail.setText(campaign.getAppDesc());
+                    mInstallButton.setText(campaign.getAdCall());
+                    if (!mShowAlignRight) {
+                        mLargeAdBannerShowArea.setClickable(true);
+                        mAdEngine.registerView(Constants.UNIT_ID_59, mLargeAdBannerShowArea);
+                    } else {
+                        mLargeAdBannerShowArea.setClickable(false);
+                    }
+                    mLargeBannerCenterPos =  (getWindowWidth() - getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width)) / 2;
+                    mLargeBannerRightPos = getWindowWidth()  - getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right);
+                    
+                }
+            }
+
+            @Override
+            public void onMobvistaClick(Campaign campaign) {
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picadA");
+                AppMasterPreference.getInstance(LockScreenActivity.this).setAdEtClickTime(
+                        System.currentTimeMillis());
+            }
+        });
+    }
+    
+    private void largeBannerShowAnim() {
+        AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
+        anim.setDuration(200);
+        mBannerContainer.setAnimation(anim);
+        anim.startNow();
+        
+        //隐藏图标和密码提示
+        int type = AppMasterPreference.getInstance(this).getLockType();
+        if (type == LockFragment.LOCK_TYPE_PASSWD) {
+            ((PasswdLockFragment)mLockFragment).getIconView().setAlpha(0.0f);
+            ((PasswdLockFragment)mLockFragment).getPasswdHint().setAlpha(0.0f);
+        } else {
+            ((GestureLockFragment)mLockFragment).getIconView().setAlpha(0.0f);
+        }
+    }
+    
+    private void delayBannerHideAnim() {
+        Message msg = Message.obtain();
+        msg.what = LARGE_BANNER_HIDE;
+        mHandler.sendMessageDelayed(msg, 3000);
+    }
+    
+    private void bannerHideAnim() {
+        if (!mShowAlignRight) {
+            mShowAlignRight = true;
+            mLargeAdBannerShowArea.setClickable(false);
+            int destX = /*mBannerContainer.getWidth()*/getWindowWidth() - getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right);
+            mBannerContainer.smoothSlideTo(destX);
+        }     
+    }
+    
     // handle pretend lock
     private void handlePretendLock() {
         FragmentManager fm = getSupportFragmentManager();
@@ -936,6 +1164,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mPretendLayout.setVisibility(View.VISIBLE);
             tans = fm.beginTransaction();
             tans.add(R.id.pretend_layout, mPretendFragment);
+
             tans.commit();
         } else {
             mLockLayout.setVisibility(View.VISIBLE);
@@ -948,14 +1177,14 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             int pretendLock = AppMasterPreference.getInstance(this).getPretendLock();
             // pretendLock = 2;
             if (pretendLock == 1) { /* app error */
+                SDKWrapper
+                        .addEvent(this, SDKWrapper.P1, "appcover", "apperror");
                 PretendAppErrorFragment paf = new PretendAppErrorFragment();
 
                 String tip = "";
                 PackageManager pm = this.getPackageManager();
                 try {
-                    ApplicationInfo info = pm.getApplicationInfo(mLockedPackage,
-                            PackageManager.GET_UNINSTALLED_PACKAGES);
-                    String lab = info.loadLabel(pm).toString();
+                    String lab = AppUtil.getAppLabel(pm, mLockedPackage);
                     tip = getString(R.string.pretend_app_error, lab);
                 } catch (Exception e) {
                     tip = getString(R.string.weizhuang_error_notice);
@@ -964,12 +1193,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 paf.setErrorTip(tip);
                 return paf;
             } else if (pretendLock == 2) {/* unknow call */
+                SDKWrapper
+                        .addEvent(this, SDKWrapper.P1, "appcover", "unknowcall");
                 PretendAppUnknowCallFragment5 unknowcall = new PretendAppUnknowCallFragment5();
                 return unknowcall;
             } else if (pretendLock == 3) {/* fingerprint */
+                SDKWrapper
+                        .addEvent(this, SDKWrapper.P1, "appcover", "fingerprint");
                 PretendAppZhiWenFragment weizhuang = new PretendAppZhiWenFragment();
                 return weizhuang;
             } else if (pretendLock == 4) {
+                SDKWrapper
+                        .addEvent(this, SDKWrapper.P1, "appcover", "beauty");
                 PretendAppBeautyFragment weizhuang = new PretendAppBeautyFragment();
                 return weizhuang;
             }
@@ -980,13 +1215,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public void onUnlockSucceed() {
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         if (mQuickLockMode) {
-            LockManager lm = LockManager.getInstatnce();
-            List<LockMode> modeList = lm.getLockMode();
+            List<LockMode> modeList = mLockManager.getLockMode();
             LockMode willLaunch = null;
             for (LockMode lockMode : modeList) {
                 if (mQuiclModeId == lockMode.modeId) {
                     willLaunch = lockMode;
-                    LeoLog.i("tag", "falg ==" + lockMode.defaultFlag);
+                    Log.i("tag", "falg ==" + lockMode.defaultFlag);
                     break;
                 }
             }
@@ -1002,8 +1236,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 willLaunch = homeMode;
             }
             if (willLaunch != null) {
-                LockMode lockMode = LockManager.getInstatnce().getCurLockMode();
-                lm.setCurrentLockMode(willLaunch, true);
+                LockMode lockMode = mLockManager.getCurLockMode();
+                mLockManager.setCurrentLockMode(willLaunch, true);
                 checkLockTip();
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "modeschage", "launcher");
                 /** mode change tip **/
@@ -1026,8 +1260,28 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             /**
              * notify LockManager
              */
+            //解锁成功的时候 已经保存完照片了 ，直接进入抓拍界面
+            if (mIsPicSaved ) {
+                LeoEventBus.getDefaultBus().post(new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_CANCELED));
+                mLockManager.filterPackage(getPackageName(), 1000);
+                Intent intent = new Intent(LockScreenActivity.this, IntruderCatchedActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("pkgname", mLockedPackage);
+                startActivity(intent);
+                mIsPicSaved = false;
+                mHasTakePic = false;
+                finish();
+                return;
+            //解锁成功的时候 还没有保存完照片，将延迟标记置为true，让保存的操作执行完后自己去进入抓拍界面
+            }else{
+                if (mHasTakePic) {
+                    mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, true);
+                    LeoLog.i("poha", "set delay true");
+                }
+            }
             LeoEventBus.getDefaultBus().post(
-                    new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY));
+                    new AppUnlockEvent(mLockedPackage,
+                            AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY));
             if (mLockMode == LockManager.LOCK_MODE_FULL) {
                 if (AppMasterPreference.getInstance(LockScreenActivity.this)
                         .isLockerClean()) {
@@ -1056,7 +1310,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "done");
 
         }
-        LockManager.getInstatnce().timeFilter(mLockedPackage, 1000);
+        mLockManager.filterPackage(mLockedPackage, 1000);
         mTtileBar.postDelayed(new Runnable() {
 
             @Override
@@ -1088,15 +1342,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
             }, 200);
         }
+        /*手机防盗，锁定手机指令，如果用户解锁成功后初始化数据*/
+        PhoneSecurityManager.getInstance(this).removeAllModeLockList();
     }
 
     private void checkLockTip() {
         int switchCount = AppMasterPreference.getInstance(this).getSwitchModeCount();
         switchCount++;
         AppMasterPreference.getInstance(this).setSwitchModeCount(switchCount);
-        LockManager lm = LockManager.getInstatnce();
-        List<TimeLock> timeLockList = lm.getTimeLock();
-        List<LocationLock> locationLockList = lm.getLocationLock();
+        List<TimeLock> timeLockList = mLockManager.getTimeLock();
+        List<LocationLock> locationLockList = mLockManager.getLocationLock();
         if (switchCount == 6) {
 
             int timeLockCount = timeLockList.size();
@@ -1112,7 +1367,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 dialog.setLeftBtnStr(this.getString(R.string.cancel));
                 dialog.setMiddleBtnStr(this.getString(R.string.lock_mode_time));
                 dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
-                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
+//                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
                 dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
                     @Override
                     public void onClick(int which) {
@@ -1149,10 +1404,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     String tip = this.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(this.getString(R.string.lock_mode_time));
-                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
+//                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(this.getString(R.string.cancel));
                     dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
-
                         @Override
                         public void onClick(int which) {
                             Intent intent = null;
@@ -1181,7 +1435,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     String tip = this.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(this.getString(R.string.lock_mode_location));
-                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
+//                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(this.getString(R.string.cancel));
 
                     dialog.setOnClickListener(new LEOAlarmDialog.OnDiaogClickListener() {
@@ -1205,7 +1459,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             WindowManager.LayoutParams.TYPE_SYSTEM_ALERT);
                     dialog.show();
                 }
-
             }
         }
     }
@@ -1217,10 +1470,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         LeoEventBus.getDefaultBus().post(
                 new AppUnlockEvent(mLockedPackage, AppUnlockEvent.RESULT_UNLOCK_OUTCOUNT));
         AppMasterPreference.getInstance(this).setDoubleCheck(null);
-        LockManager.getInstatnce().recordOutcountTask(mLockedPackage);
-        Intent intent = new Intent(this, WaitActivity.class);
-        intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
-        startActivity(intent);
+        mLockManager.recordOutcountTask(mLockedPackage);
+
+//        Intent intent = new Intent(this, WaitActivity.class);
+//        intent.putExtra(TaskChangeHandler.EXTRA_LOCKED_APP_PKG, mLockedPackage);
+//        startActivity(intent);
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "unlock", "fail");
     }
 
@@ -1244,7 +1498,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // if (mLockMode == LockManager.LOCK_MODE_FULL) {
         intent.setAction(Intent.ACTION_MAIN);
         intent.addCategory(Intent.CATEGORY_HOME);
-        startActivity(intent);
+        try {
+            startActivity(intent);
+        } catch (Exception e) {            
+        }
         /**
          * notify LockManager
          */
@@ -1256,27 +1513,31 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.tv_option_image:
+            case R.id.tv_option_image_content:
                 if (mLeoPopMenu == null) {
                     mLeoPopMenu = new LeoHomePopMenu();
                     mLeoPopMenu.setPopItemClickListener(new OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view,
-                                int position, long id) {
+                                                int position, long id) {
                             setPopWindowItemClick(position);
-                            mLeoPopMenu.dismissSnapshotList();
+//                            mLeoPopMenu.dismissSnapshotList();
+                            ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    mLeoPopMenu.dismissSnapshotList();
+                                }
+                            }, 300);
                         }
                     });
                 }
-                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(),
-                        getMenuIcons());
+                mLeoPopMenu.setPopMenuItems(this, getPopMenuItems(), getMenuIcons());
                 mLeoPopMenu.showPopMenu(this,
                         mTtileBar.findViewById(R.id.tv_option_image), null, null);
                 mLeoPopMenu.setListViewDivider(null);
                 AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
                         true);
                 mTtileBar.setOptionImage(R.drawable.menu_item_btn);
-
                 break;
             case R.id.layout_title_back:
                 onBackPressed();
@@ -1303,7 +1564,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 // wallAd.clickWall();
                 mAmp.setIsADAppwallNeedUpdate(false);
                 Intent mWallIntent = wallAd.getWallIntent();
-                startActivity(mWallIntent);
+                try {
+                    startActivity(mWallIntent);
+                } catch (Exception e) {
+                }
                 if (!mHaveNewThings && !clickShakeIcon) {
                     AppMasterPreference.getInstance(LockScreenActivity.this).setJumpIcon(true);
                 } else {
@@ -1317,106 +1581,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             "ad_cli", "unlocktop");
                 }
                 break;
-            case R.id.submarine_ad_LT:
-                rollAgainShowHandler();
-                /* 点击后注销潜水艇点击事件 */
-                mSubmarineAdLt.setOnClickListener(null);
-
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-                        "ad_cli", "adv_cnts_submarineCG");
-                break;
-            case R.id.btn_rollagain:
-                mIsShowRollAgain = false;
-                mRollAgain.setVisibility(View.INVISIBLE);
-                mSubmarineAdLt.setVisibility(View.VISIBLE);
-                rollAgainShowHandler();
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-                        "ad_cli", "adv_cnts_submarineNA");
-                break;
-            case R.id.iv_close:
-                if(mSubmarineHandler!=null){
-                    mSubmarineHandler.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
-                    mSubmarineHandler.removeMessages(ID_SUBMARINE_ANIM);
-                    mSubmarineHandler.removeMessages(ID_SUBMARINE_CONTINUE_ANIM);
-                    mSubmarineHandler=null;
-                }
-                mRollAgain.setVisibility(View.INVISIBLE);
-                mSubmarineAdLt.setVisibility(View.VISIBLE);
-//                mSubmarineAdLt
-//                        .setTranslationX(mSubmarineCurrentAnimValue +
-//                                mCurrentAnimValue);
-//                submarineAnim(mCurrentAnimValue,true);
-                submarineAnim(mOnClickSubmarineValue,true);
-                break;
             default:
                 break;
         }
     }
 
-    /* 加载广告界面处理 */
-    private void rollAgainShowHandler() {
-        if(mSubmarineHandler!=null){
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_ANIM);
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_CONTINUE_ANIM);
-        }
-        mOnClickSubmarineValue=mCurrentAnimValue;
-        if (!mIsLoadAdSuccess) {
-            mIsClickSubmarine = true;
-            loadSubmarineAD();
-            if (mSubmarineAdLt != null) {
-                mSubmarineAdLt.clearAnimation();
-            }
-            if (mSubmarineAnim != null) {
-                mSubmarineAnim.cancel();
-            }
-            /* 切换为潜水艇闪灯动画 */
-            submarinLightingAnim();
-            Handler handler = ThreadManager.getUiThreadHandler();
-            handler.postDelayed(new Runnable() {
-
-                public void run() {
-                    /* 6s后不再显示加载的广告 */
-                    if (!mIsShowAdUi) {
-                        mAdDialog.setVisibility(View.GONE);
-                        /* 潜水艇消失 */
-                        mSubmarineAdLt.setVisibility(View.INVISIBLE);
-                        /* 超时显示重试页面 */
-                        mRollAgain.setVisibility(View.VISIBLE);
-                        mIsShowRollAgain = true;
-                    }
-                }
-            }, 6000);
-        } else {
-            if (mSubmarineAnim != null) {
-                mSubmarineAnim.cancel();
-            }
-            if (mSubmarineAdLt != null) {
-                mSubmarineAdLt.clearAnimation();
-            }
-            submarineAnim(mCurrentAnimValue,true);
-            if (mAdDialog != null && mIsShowFullScreenAd) {
-                mAdDialog.setVisibility(View.VISIBLE);
-            }
-            mIsSubmarineAnim = false;
-            submarineFullScreenAnim();
-        }
-    }
-
     /**
      * setting the menu item,if has password protect then add find password item
-     * 
+     *
      * @return
      */
     private List<String> getPopMenuItems() {
         List<String> listItems = new ArrayList<String>();
         Resources resources = AppMasterApplication.getInstance().getResources();
         if (AppMasterPreference.getInstance(this).hasPswdProtect()) {
-            if (AppMasterPreference.getInstance(this)
-                    .getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
+            if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_GESTURE) {
                 listItems.add(resources.getString(R.string.find_gesture));
-            } else if (AppMasterPreference.getInstance(this)
-                    .getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
+            } else if (AppMasterPreference.getInstance(this).getLockType() == AppMasterPreference.LOCK_TYPE_PASSWD) {
                 listItems.add(resources.getString(R.string.find_passwd));
             }
         }
@@ -1470,7 +1651,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 LockerTheme.class);
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                 "theme_enter", "unlock");
-        AppMasterPreference amp = AppMasterPreference.getInstance(this);
+        AppMasterPreference amp =
+                AppMasterPreference.getInstance(this);
         amp.setUnlocked(true);
         amp.setDoubleCheck(null);
         startActivityForResult(intent, 0);
@@ -1521,12 +1703,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 AppMasterPreference ampp = AppMasterPreference.getInstance(this);
                 ampp.setUnlocked(true);
                 ampp.setDoubleCheck(null);
+                // goto reset passwd
                 Intent intent = new Intent(this, LockSettingActivity.class);
                 intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
                 this.startActivity(intent);
                 finish();
             } else {
-                Toast.makeText(this, R.string.reinput_anwser, 0).show();
+                Toast.makeText(this, R.string.reinput_anwser, Toast.LENGTH_SHORT).show();
                 mEtAnwser.setText("");
             }
         } else if (which == 0) { // cancel
@@ -1540,7 +1723,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /**
      * themeGuide
-     * 
+     *
      * @param view
      * @param anim
      */
@@ -1603,7 +1786,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /**
      * dont change this method
-     * 
+     *
      * @param event
      */
     public void onEventMainThread(LockThemeChangeEvent event) {
@@ -1613,20 +1796,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     public void removePretendFrame() {
         mPretendLayout.setVisibility(View.GONE);
         mLockLayout.setVisibility(View.VISIBLE);
+
         final int adShowNumber = AppMasterPreference.getInstance(LockScreenActivity.this)
                 .getADShowType();
-        ThreadManager.getUiThreadHandler().post(new Runnable() {
 
-            @Override
-            public void run() {
-                mSubmarineTranYRandom = submarineTopMargin();
-                // float width = mSubmarineAdLt.getWidth();
-                // LeoLog.i("asdf", "width=" + width);
-                if (adShowNumber == 6) {
-                    submarineAnim(0,true);
-                }
-            }
-        });
         /* 发送伪装解锁成功指令，解决在有伪装情况下动画运行时机问题 */
         if (adShowNumber == 5) {
             LeoEventBus.getDefaultBus().post(
@@ -1818,314 +1991,87 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         toast.show();
     }
 
-    /* 潜水艇移动动画 */
-    public void submarineAnim(float offset,boolean fullTime) {
-        if(mSubmarineHandler!=null){
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_ANIM);
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_CONTINUE_ANIM);
-        }
-        mSubmarineAnim = null;
-        if (mIsSubmarineAnim) {
-            mSubmarineContentIv.setImageResource(R.drawable.submarine_open);
-            if (mSubmarineAdLt != null) {
-                mSubmarineAdLt.setVisibility(View.VISIBLE);
-                mSubmarineAdLt.clearAnimation();
-            }
-            /* 尾部动画 */
-            bubbleAndEndAnim();
-            mSubmarineAdLt.setTranslationY(mSubmarineTranYRandom);
-            final int x = this.getResources().getInteger(R.integer.submarine_offset);
-            mSubmarineAnim = ObjectAnimator.ofFloat(mSubmarineAdLt, "translationX", offset,
-                    -getWindowWidth() - x);
-            if(fullTime){
-            mSubmarineAnim.setDuration(4000);
-            }else{
-                mSubmarineAnim.setDuration(2000);
-            }
-            mSubmarineAnim.setRepeatCount(0);
-            mSubmarineAnim.start();
-            mSubmarineAnim.addListener(new AnimatorListener() {
-
-                @Override
-                public void onAnimationStart(Animator arg0) {
-                    mAdDialog.setVisibility(View.GONE);
-                    mIsShowFullScreenAd = false;
-                }
-
-                @Override
-                public void onAnimationRepeat(Animator arg0) {
-
-                }
-
-                @Override
-                public void onAnimationEnd(Animator arg0) {
-
-                }
-
-                @Override
-                public void onAnimationCancel(Animator arg0) {
-                    LeoLog.i(TAG, "动画Cancel回调：" + !mIsClickSubmarine);
-                    if (!mIsClickSubmarine) {
-                        LeoLog.i(TAG, "进入动画Cancel回调");
-                        mSubmarineCurrentAnimValue = mCurrentAnimValue;
-                        mSubmarine = true;
-                        // 切换为闭眼睁眼动画
-                        submarinOpenCloseEyesAnim();
-                        /* 停留1s，继续上次位置执行潜艇前进动画 */
-                        mSubmarineHandler.sendEmptyMessageDelayed(ID_SUBMARINE_CONTINUE_ANIM, 1000);
-                    }
-                    
-                }
-            });
-
-            mSubmarineAnim.addUpdateListener(new AnimatorUpdateListener() {
-
-                @Override
-                public void onAnimationUpdate(ValueAnimator arg0) {
-                    mCurrentAnimValue = (Float) arg0.getAnimatedValue();
-                    if(Math.abs(mCurrentAnimValue) >=getWindowWidth()+x){
-                        mSubmarineAdLt.setVisibility(View.INVISIBLE);
-                    }
-                }
-            });
-        }
-        if(mSubmarineHandler!=null){
-        mSubmarineHandler.sendEmptyMessageDelayed(ID_SUBMARINE_ANIM, 4000);
-        mSubmarineHandler.sendEmptyMessageDelayed(ID_SUBMARINE_CANCEL_ANIM, 2000);
-    }
-    }
-
-    /* 潜水艇停留时动画 */
-    public  void submarineStopAnim() {
-        if (!mIsClickSubmarine) {
-            submarineAnim(mSubmarineCurrentAnimValue,false);
-        }
-    }
-
-    private void bubbleAndEndAnim() {
-        /* 气泡动画 */
-        AnimationDrawable bubbleAnim = (AnimationDrawable) mBubbleIv.getDrawable();
-        if (bubbleAnim != null) {
-            bubbleAnim.stop();
-            mBubbleIv.setImageDrawable(null);
-            mBubbleIv.setImageDrawable(bubbleAnim);
-            bubbleAnim.start();
-        }
-        /* 螺旋浆动画 */
-        AnimationDrawable submarinEndAnim = (AnimationDrawable) mSubmarineEndIv.getDrawable();
-        if (submarinEndAnim != null) {
-            submarinEndAnim.stop();
-            mSubmarineEndIv.setImageDrawable(null);
-            mSubmarineEndIv.setImageDrawable(submarinEndAnim);
-            submarinEndAnim.start();
-        }
-    }
-
-    /* 潜水艇闭眼睁眼动画 */
-    private void submarinOpenCloseEyesAnim() {
-        mSubmarineContentIv.setImageResource(R.anim.submarine1_anim);
-        AnimationDrawable anim = (AnimationDrawable) mSubmarineContentIv.getDrawable();
-        anim.stop();
-        mSubmarineContentIv.setImageDrawable(null);
-        mSubmarineContentIv.setImageDrawable(anim);
-        anim.start();
-    }
-
-    /* 潜水艇闪灯动画 */
-    private void submarinLightingAnim() {
-        mSubmarineContentIv.setImageResource(R.anim.submarine2_anim);
-        AnimationDrawable anim = (AnimationDrawable) mSubmarineContentIv.getDrawable();
-        anim.stop();
-        mSubmarineContentIv.setImageDrawable(null);
-        mSubmarineContentIv.setImageDrawable(anim);
-        anim.start();
-
-    }
-
-    /* 计算潜艇出现的随机位置 */
-    private int submarineTopMargin() {
-        int y = this.getResources().getInteger(R.integer.submarine_init_random_y);
-        int random = 1 + (int) (Math.random() * y);
-        return random;
-    }
-
-    /* 潜艇拉去到广告进入动画 */
-    private void submarineFullScreenAnim() {
-        mIsShowAdUi = true;
-        ObjectAnimator fullScreenAdAnim = ObjectAnimator.ofFloat(mAdDialog, "alpha", 0.0f,
-                1.0f);
-        fullScreenAdAnim.setDuration(800);
-        fullScreenAdAnim.setRepeatCount(0);
-        fullScreenAdAnim.start();
-        if(mSubmarineHandler!=null){
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_ANIM);
-            mSubmarineHandler.removeMessages(ID_SUBMARINE_CONTINUE_ANIM);
-            mSubmarineHandler=null;
-        }
-        SDKWrapper.addEvent(this, SDKWrapper.P1, "ad_act", "adv_shws_submarine");
-    }
-    public void cancelSubmarineAnim(){
-        if (mSubmarineAnim != null) {
-            LeoLog.i(TAG, "动画Cancel");
-            mSubmarineAnim.cancel();
-            mSubmarineAnim.removeAllListeners();
-        }
-    }
     private int getWindowWidth() {
-        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        return windowManager.getDefaultDisplay().getWidth();
+//        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
+//        return windowManager.getDefaultDisplay().getWidth();
+        
+        DisplayMetrics display = getResources().getDisplayMetrics();
+        int mScreenWidth = display.widthPixels;// 获取屏幕分辨率宽度
+        return mScreenWidth;
     }
 
-    private int getWindowHeight() {
-        WindowManager windowManager = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        return windowManager.getDefaultDisplay().getHeight();
-    }
-
-    private void loadSubmarineAD() {
-        mAdEngine = null;
-        mAdEngine = MobvistaEngine.getInstance();
-        String uintId = null;
-        AppMasterPreference amp = AppMasterPreference.getInstance(this);
-        if (DBG) {
-            LeoLog.i(TAG, "该处存在测试值，注意查看修改;当前广告形式：" + amp.getADShowType());
-            /* 为了便于测试广告形式6,如果当前广告形式不为6,主动设置为形式6 */
-            amp.setADShowType(TEST_AD_NUMBER);
-        }
-        if (amp.getADShowType() == 6) {
-            uintId = Constants.UNIT_ID_87;
+    @Override
+    public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+        if (mShowAlignRight) {
+            if (left == mLargeBannerRightPos) {
+                int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
+                int h = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
+                RelativeLayout.LayoutParams pl = new RelativeLayout.LayoutParams(w, h);
+                pl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+                pl.rightMargin = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right) - w;
+                mLargeAdBannerShowArea.setLayoutParams(pl);
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picadA_draw");
+            }
         } else {
-            return;
+            if (left == mLargeBannerCenterPos) {
+                int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
+                int h = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
+                RelativeLayout.LayoutParams pl = new RelativeLayout.LayoutParams(w, h);
+                pl.addRule(RelativeLayout.CENTER_IN_PARENT);
+                mLargeAdBannerShowArea.setLayoutParams(pl);
+                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picadB_draw");
+            }
         }
-        LeoLog.i(TAG, "开始加载广告");
-        mAdEngine.loadMobvista(this, uintId, new MobvistaListener() {
-            @Override
-            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                if (code == MobvistaEngine.ERR_OK) {
-                    LeoLog.i(TAG, "广告加载成功");
-                    mIsLoadAdSuccess = true;
-                    loadADPic(campaign.getIconUrl(),
-                            new ImageSize(DipPixelUtil.dip2px(LockScreenActivity.this, 48),
-                                    DipPixelUtil
-                                            .dip2px(LockScreenActivity.this, 48)),
-                            (ImageView) mAdDialog.findViewById(R.id.iv_ufo_ad_icon));
-                    loadADPic(campaign.getImageUrl(),
-                            new ImageSize(DipPixelUtil.dip2px(LockScreenActivity.this, 302),
-                                    DipPixelUtil
-                                            .dip2px(LockScreenActivity.this, 158)),
-                            (ImageView) mAdDialog.findViewById(R.id.iv_appbg_ufo));
-
-                    TextView appname = (TextView) mAdDialog.findViewById(R.id.tv_appname_ufo);
-                    appname.setText(campaign.getAppName());
-                    TextView appdesc = (TextView) mAdDialog.findViewById(R.id.tv_appdesc_ufo);
-                    appdesc.setText(campaign.getAppDesc());
-                    Button call = (Button) mAdDialog.findViewById(R.id.btn_ufo_dialog_install);
-                    call.setText(campaign.getAdCall());
-                    mAdEngine.registerView(LockScreenActivity.this, call);
-                    if (!mIsShowRollAgain) {
-                        if (mSubmarineAdLt != null) {
-                            mSubmarineAdLt.clearAnimation();
-                        }
-                        LeoLog.i("asdfadsfafd", "mCurrentAnimValue="+mOnClickSubmarineValue);
-                        submarineAnim(mOnClickSubmarineValue,true);
-                        if (mAdDialog != null && mIsShowFullScreenAd) {
-                            mAdDialog.setVisibility(View.VISIBLE);
-                        }
-                        mIsSubmarineAnim = false;
-                        submarineFullScreenAnim();
-                    }
-                    mSubmarineAdCloseIv.setOnClickListener(new OnClickListener() {
-
-                        @Override
-                        public void onClick(View arg0) {
-                            mAdDialog.setVisibility(View.GONE);
-                        }
-                    });
+        int center = mBannerContainer.getWidth() / 2;
+        if (left < center) {
+            float alpha = 1 - (float)(center - left) * 2 / mLargeBannerWidth;
+            if (alpha > 0) {
+                int type = AppMasterPreference.getInstance(this).getLockType();
+                if (type == LockFragment.LOCK_TYPE_PASSWD) {
+                    ((PasswdLockFragment)mLockFragment).getIconView().setAlpha(alpha);
+                    ((PasswdLockFragment)mLockFragment).getPasswdHint().setAlpha(alpha);
+                } else {
+                    ((GestureLockFragment)mLockFragment).getIconView().setAlpha(alpha);
                 }
             }
-
-            @Override
-            public void onMobvistaClick(Campaign campaign) {
-                mAdDialog.setVisibility(View.GONE);
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
-                        "ad_cli", "adv_cnts_submarine");
-                long currentTime=System.currentTimeMillis();
-                AppMasterPreference.getInstance(LockScreenActivity.this).setAdSubmarineClickTime(currentTime);
-            }
-        });
-    }
-
-    private void loadADPic(String url, ImageSize size, final ImageView v) {
-        ImageLoader.getInstance().loadImage(
-                url, size, new ImageLoadingListener() {
-
-                    @Override
-                    public void onLoadingStarted(String imageUri, View view) {
-                    }
-
-                    @Override
-                    public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                    }
-
-                    @Override
-                    public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                        if (loadedImage != null) {
-                            // BitmapDrawable drawabl = new
-                            // BitmapDrawable(loadedImage);
-                            v.setImageBitmap(loadedImage);
-                        }
-                    }
-
-                    @Override
-                    public void onLoadingCancelled(String imageUri, View view) {
-                    }
-                });
-    }
-
-    /* 潜艇Handler */
-    private static class SubmarineHandler extends Handler {
-        WeakReference<LockScreenActivity> weakR = null;
-
-        public SubmarineHandler(LockScreenActivity lock) {
-            if (weakR == null) {
-                weakR = new WeakReference<LockScreenActivity>(lock);
+        } else {
+            int type = AppMasterPreference.getInstance(this).getLockType();
+            if (type == LockFragment.LOCK_TYPE_PASSWD) {
+                if (((PasswdLockFragment)mLockFragment).getIconView().getAlpha() < 1.0f) {
+                    ((PasswdLockFragment)mLockFragment).getIconView().setAlpha(1.0f);
+                    ((PasswdLockFragment)mLockFragment).getPasswdHint().setAlpha(1.0f);
+                }
+            } else {
+                if (((GestureLockFragment)mLockFragment).getIconView().getAlpha() < 1.0f) {
+                    ((GestureLockFragment)mLockFragment).getIconView().setAlpha(1.0f);
+                }
             }
         }
-
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            LockScreenActivity lockScreen=weakR.get();
-            switch (msg.what) {
-                case ID_SUBMARINE_ANIM:
-                   LeoLog.i(TAG, "mCurrentAnimValue=" + lockScreen.mCurrentAnimValue
-                           + ",getWindowWidth()+x=" + lockScreen.getWindowWidth());
-                   mCurrentAnimValue = 0;
-                   mSubmarineCurrentAnimValue = 0;
-                   mSubmarine = false;
-                   mIsClickSubmarine = false;
-                   mIsSubmarineAnim = true;
-                   mIsShowFullScreenAd = true;
-                   mIsLoadAdSuccess = false;
-                   mIsShowAdUi=false;
-                   lockScreen.submarineAnim(0,true);
-                    break;
-                case ID_SUBMARINE_CONTINUE_ANIM:
-                    LeoLog.i(TAG, "1秒后重新执行动画");
-                    lockScreen.submarineStopAnim();
-                    this.removeMessages(ID_SUBMARINE_CANCEL_ANIM);
-                    break;
-                case ID_SUBMARINE_CANCEL_ANIM:
-                    LeoLog.i(TAG, "2秒后Cancel动画");
-                    this.removeMessages(ID_SUBMARINE_CONTINUE_ANIM);
-                    lockScreen.cancelSubmarineAnim();
-                    break;
-                default:
-                    break;
-            }
-
-        }
-
     }
+    
+    @Override
+    public void onDrageRelease(View releasedChild, float xvel, float yvel, int leftDest) {
+        // TODO Auto-generated method stub
+        if (leftDest + releasedChild.getWidth() > mBannerContainer.getWidth()) {
+            mShowAlignRight = true;
+//            mAdEngine.registerView(Constants.UNIT_ID_59, mInstallButton);
+            mLargeAdBannerShowArea.setClickable(false);
+        } else {
+            mShowAlignRight = false;
+            mLargeAdBannerShowArea.setClickable(true);
+            mAdEngine.registerView(Constants.UNIT_ID_59, mLargeAdBannerShowArea);
+        }
+        mHandler.removeMessages(LARGE_BANNER_HIDE);
+    }
+
+    @Override
+    public void onTouchMoveLeft() {
+        if (mShowAlignRight) {
+            mShowAlignRight = false;
+            mLargeAdBannerShowArea.setClickable(true);
+            mAdEngine.registerView(Constants.UNIT_ID_59, mLargeAdBannerShowArea);
+        }
+    }
+
+
 }

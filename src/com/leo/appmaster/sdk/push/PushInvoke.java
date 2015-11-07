@@ -10,9 +10,11 @@ import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.manager.ADShowTypeRequestManager;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.CheckNewBootstrap;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.update.UIHelper;
@@ -63,7 +65,7 @@ public class PushInvoke implements PushInvokeHelper {
 
     @Override
     public void onInvoke(String type) {
-        LeoLog.d("PushInvoke", "type is : " + type);
+        Log.d("PushInvoke", "type is : " + type);
         if (type.equals(THEME)) {
             invokeNewTheme();
             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "push_refresh", "theme");
@@ -132,7 +134,8 @@ public class PushInvoke implements PushInvokeHelper {
                 || mType.equals(PUSH_GOTO_GAME)
                 || mType.equals(PUSH_GOTO_MSGCENTER))
         {
-            LockManager.getInstatnce().timeFilter(mContext.getPackageName(), 1000);
+            LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+            lm.filterPackage(mContext.getPackageName(), 1000);
         }
 
     }

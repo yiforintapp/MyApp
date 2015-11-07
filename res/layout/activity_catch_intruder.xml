@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/sv_intrudercatch_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ebebed"
+    android:scrollbars="none" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:background="#ebebed"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/rl_header"
+            android:layout_width="match_parent"
+            android:layout_height="168dp"
+            android:background="#2675f6" >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="23dp"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="17dp"
+                android:gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:layout_width="22dp"
+                    android:layout_height="23dp"
+                    android:src="@drawable/ic_launcher" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="17dp"
+                    android:layout_marginLeft="9dp"
+                    android:text="@string/app_name"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+            <com.leo.appmaster.ui.RippleView
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/rv_close"
+                android:layout_width="21dp"
+                android:layout_height="21dp"
+                android:layout_marginLeft="27dp"
+                android:layout_marginTop="18dp"
+                app:rv_alpha="255"
+                app:rv_color="@color/button_blue_ripple" >
+
+                <ImageView
+                    android:id="@+id/iv_close"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/close_in_catch" />
+            </com.leo.appmaster.ui.RippleView>
+
+            <TextView
+                android:id="@+id/tv_times_of_catch"
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="12dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="155dp"
+                android:text="@string/intruder_times_of_catch"
+                android:textColor="#c6dbff"
+                android:textSize="14dp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentLeft="true"
+                android:layout_marginBottom="46dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="158dp"
+                android:maxLines="2"
+                android:text="@string/home_tab_instruder"
+                android:textColor="#ffffff"
+                android:textSize="20dp" />
+
+            <ImageView
+                android:layout_width="151dp"
+                android:layout_height="94dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="7dp"
+                android:src="@drawable/man_in_catch" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:id="@+id/tv_times_to_catch"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="12dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/intruder_to_catch_fail_times_tip"
+                android:textColor="#333333"
+                android:textSize="15dp" />
+
+            <com.leo.appmaster.ui.RippleView
+                 android:minWidth="52dp"
+           	 android:maxWidth="90dp"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/rv_change_times"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="12dp"
+                app:rv_alpha="255"
+                app:rv_color="@color/button_blue_stroke_ripple" >
+
+                <Button
+                     android:minWidth="52dp"
+           	 android:maxWidth="90dp"
+                    android:id="@+id/bt_change_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@drawable/while_bg_blue_line"
+                    android:text="@string/change_times_to_catch"
+                    android:textColor="#2674f6" />
+            </com.leo.appmaster.ui.RippleView>
+        </LinearLayout>
+
+        <!-- 切换有图片和无图片 -->
+
+        <RelativeLayout
+            android:id="@+id/rl_newest_nopic"
+            android:layout_width="match_parent"
+            android:layout_height="280dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:background="#ffffff" >
+
+            <RelativeLayout
+                android:id="@+id/rl_newest"
+                android:layout_width="match_parent"
+                android:layout_height="290dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:background="#ffffff" >
+
+                <ImageView
+                    android:id="@+id/iv_app_intruded"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp" />
+
+                <TextView
+                    android:id="@+id/newest_catch_tip"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_toRightOf="@id/iv_app_intruded"
+                    android:gravity="center_vertical"
+                    android:text="@string/newest_catch_tip"
+                    android:textColor="#333333"
+                    android:textSize="16dp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginRight="12dp"
+                    android:layout_marginTop="40dp" >
+
+                    <com.leo.appmaster.intruderprotection.BottomCropImage
+                        android:id="@+id/iv_newest_photo"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                    <LinearLayout
+                        android:id="@+id/ll_main_mask"
+                        android:layout_width="match_parent"
+                        android:layout_height="26dp"
+                        android:background="#00000000"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:visibility="visible" >
+
+                        <ImageView
+                            android:id="@+id/iv_appicon"
+                            android:layout_width="18dp"
+                            android:layout_height="18dp"
+                            android:layout_marginLeft="8dp" />
+
+                        <TextView
+                            android:id="@+id/tv_timestamp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="7dp"
+                            android:gravity="center_vertical"
+                            android:textColor="#ffffff" />
+                    </LinearLayout>
+                </RelativeLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_nopic"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ffffff"
+                android:visibility="invisible" >
+
+                <ImageView
+                    android:id="@+id/iv_nopic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/intruder_nopic" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/iv_nopic"
+                    android:gravity="center"
+                    android:text="@string/intruder_nobody_tips"
+                    android:textColor="#cbcbcb"
+                    android:textSize="12dp" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_ad_or_fivestars"
+            android:layout_width="match_parent"
+            android:layout_height="242dp" >
+
+            <LinearLayout
+                android:id="@+id/ll_fivestars_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="10dp"
+                android:background="#ffffff"
+                android:orientation="vertical"
+                android:paddingBottom="10dp"
+                android:paddingLeft="12dp"
+                android:paddingRight="12dp"
+                android:visibility="visible" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/ask_like_app"
+                    android:textColor="#333333" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="110dp"
+                    android:layout_marginTop="5dp" >
+
+                    <ImageView
+                        android:id="@+id/iv_fivestars"
+                        android:layout_width="match_parent"
+                        android:layout_height="130dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/fivestars_in_catch" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginBottom="14dp"
+                        android:gravity="center_horizontal"
+                        android:text="@string/beg_five_star"
+                        android:textColor="#ffffff"
+                        android:textSize="14dp" />
+
+                    <!--
+                     <com.leo.appmaster.ui.RippleView
+                    android:id="@+id/pp_process_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/green_radius_shape_disable"
+                    android:clickable="true"
+                    ripple:rv_color="@color/green_button_ripple" >
+                    -->
+                    <!-- </com.leo.appmaster.ui.RippleView> -->
+                </RelativeLayout>
+
+                <com.leo.appmaster.ui.RippleView
+                    xmlns:tools="http://schemas.android.com/tools"
+                    android:id="@+id/rv_fivestars"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="10dp"
+                    app:rv_alpha="255"
+                    app:rv_color="@color/button_green_ripple" >
+
+                    <Button
+                        android:id="@+id/bt_beg_fivestars"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/green_radius_btn_shape"
+                        android:text="@string/grade"
+                        android:textColor="#ffffff"
+                        android:textSize="16dp" />
+                </com.leo.appmaster.ui.RippleView>
+            </LinearLayout>
+
+            <!-- AD -->
+
+            <RelativeLayout
+                android:id="@+id/rl_ad_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="10dp"
+                android:background="#ffffff"
+                android:padding="12dp"
+                android:visibility="gone" >
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="53dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@drawable/white_bg_gray_line" >
+
+                    <ImageView
+                        android:id="@+id/iv_ad_iconpic"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginBottom="4dp"
+                        android:layout_marginLeft="6dp"
+                        android:layout_marginTop="4dp"
+                        android:scaleType="fitXY" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="52dp"
+                        android:layout_marginRight="82dp"
+                        android:layout_marginTop="5dp"
+                        android:orientation="vertical" >
+
+                        <TextView
+                            android:id="@+id/tv_appname"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="3"
+                            android:maxLines="1"
+                            android:textColor="#333333"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:id="@+id/tv_appdesc"
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            android:layout_weight="4"
+                            android:maxLines="2"
+                            android:textColor="#999999"
+                            android:textSize="9dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_ad_call"
+                        android:layout_width="70dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="6dp"
+                        android:background="@drawable/select_bt_halfscreen_install"
+                        android:gravity="center"
+                        android:textColor="#ffffff"
+                        android:textSize="13dp" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="157dp" >
+
+                    <ImageView
+                        android:id="@+id/iv_ad_mainpic"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="fitXY" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentTop="true"
+                        android:src="@drawable/ad_signal" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="10dp"
+            android:background="#ffffff"
+            android:orientation="vertical"
+            android:paddingLeft="12dp"
+            android:paddingRight="12dp" >
+
+            <TextView
+                android:id="@+id/tv_others"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:gravity="center_vertical"
+                android:text="@string/intruder_more"
+                android:textColor="#333333" />
+
+            <ListView
+                android:id="@+id/lv_mainlist"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:divider="#ffffff"
+                android:dividerHeight="8dp"
+                android:scrollbars="none" >
+            </ListView>
+
+            <com.leo.appmaster.ui.RippleView
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/rv_more"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginBottom="12dp"
+                android:visibility="gone"
+                app:rv_alpha="255"
+                app:rv_color="@color/button_blue_ripple" >
+
+                <Button
+                    android:id="@+id/bt_more"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#2675f6"
+                    android:text="@string/intruder_pic_more"
+                    android:textColor="#ffffff" />
+            </com.leo.appmaster.ui.RippleView>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

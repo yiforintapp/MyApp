@@ -6,11 +6,13 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.utils.PrefConst;
 
 public class AppMasterDBHelper extends SQLiteOpenHelper {
 
     public static final String DB_NAME = "appmaster.db";
-    public static final int DB_VERSION = 7;
+    // 3.0 -> 8
+    public static final int DB_VERSION = 8;
 
     private static final String CREATE_DOWNLOAD_TABLE = "CREATE TABLE IF NOT EXISTS "
             + Constants.TABLE_DOWNLOAD
@@ -153,10 +155,15 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
             + ");";
 
     private static final String[] TABLES = {
-        "com.leo.appmaster.db.MsgCenterTable"
+            "com.leo.appmaster.db.MsgCenterTable",
+            "com.leo.appmaster.db.IntruderPhotoTable",
+            "com.leo.appmaster.db.PreferenceTable",
+            "com.leo.appmaster.db.InstalledAppTable",
+            "com.leo.appmaster.db.LockRecommentTable"
     };
 
     private static AppMasterDBHelper sInstance;
+
     public static synchronized AppMasterDBHelper getInstance(Context ctx) {
         if (sInstance == null) {
             sInstance = new AppMasterDBHelper(ctx);
@@ -199,12 +206,14 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_DOWNLOAD_TABLE);
         db.execSQL("CREATE TABLE IF NOT EXISTS " + Constants.TABLE_IMAGE_HIDE + " ("
                 + "_id INTEGER PRIMARY KEY," + "image_dir TEXT," + "image_path TEXT" + ");");
+
         /*
          * PrivacyContact
          */
         db.execSQL(CREATE_CONTACT_TABLE);
         db.execSQL(CREATE_CALL_LOG_TABLE);
         db.execSQL(CREATE_MESSAGE_TABLE);
+
         /*
          * Lock Mode
          */
@@ -229,6 +238,7 @@ public class AppMasterDBHelper extends SQLiteOpenHelper {
                 e.printStackTrace();
             }
         }
+
     }
 
     @Override

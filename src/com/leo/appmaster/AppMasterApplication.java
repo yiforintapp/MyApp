@@ -1,3 +1,4 @@
+
 package com.leo.appmaster;
 
 import java.lang.ref.WeakReference;
@@ -17,9 +18,9 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.os.UserManager;
 
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.bootstrap.Bootstrap;
 import com.leo.appmaster.bootstrap.BootstrapGroup;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.imageloader.ImageLoader;
 
@@ -28,6 +29,9 @@ public class AppMasterApplication extends Application {
     private static AppMasterApplication sInstance;
     private static List<WeakReference<Activity>> sActivityList;
     private static List<WeakReference<Activity>> sResumedList;
+    public static boolean sCheckTs = true;
+    public static long sAppOnCrate;
+    public static boolean sIsSplashActioned = false;
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -63,10 +67,16 @@ public class AppMasterApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        sAppCreate = SystemClock.elapsedRealtime();
+        sAppOnCrate = SystemClock.elapsedRealtime();
         if (sInstance != null)
             return;
-
+        
+        // Use old sort
+        try {
+            System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
+        } catch (Exception e){
+        }
+        
         AppMasterPreference pref = AppMasterPreference.getInstance(this);
         String lastVer = pref.getLastVersion();
         try {
@@ -127,7 +137,7 @@ public class AppMasterApplication extends Application {
         // mBackupManager.onDestory(this);
         // unregisterReceiver(mAppsEngine);
         // mAppsEngine.onDestroyed();
-        LockManager.getInstatnce().unInit();
+        // LockManager.getInstatnce().unInit();
         SDKWrapper.endSession(this);
         // unregisterReceiver(mPrivacyReceiver);
         // ContentResolver cr = getContentResolver();
@@ -200,10 +210,7 @@ public class AppMasterApplication extends Application {
         }
 
     }
-    private Thread mUiThread;
     
-    public static boolean sCheckStartTs = true;
-    public static long sAppCreate;
     /**
      * 添加resumed过的Activity
      * @param activity
@@ -248,6 +255,22 @@ public class AppMasterApplication extends Application {
         }
         
         return false;
+    }
+
+    /**
+     * 当前是否是Home
+     * @return
+     */
+    public boolean isCurrentHome() {
+        if (sResumedList.isEmpty()) return false;
+
+        WeakReference<Activity> weakReference = sResumedList.get(0);
+        if (weakReference == null || weakReference.get() == null) return false;
+
+        Activity activity = weakReference.get();
+
+        boolean result = (activity instanceof HomeActivity);
+        return result;
     }
 
     public static void setSharedPreferencesValue(String lockerTheme) {

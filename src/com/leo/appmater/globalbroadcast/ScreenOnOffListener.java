@@ -6,13 +6,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 
 import com.leo.appmaster.AppMasterApplication;
+import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.utils.AppUtil;
 
 public class ScreenOnOffListener extends BroadcastListener {
 
-//    public static final String TAG = "SCREEN ON OFF";
-//    public static final long mTwoDay = 48 * 60 * 60 * 1000;
+    public static final String TAG = "SCREEN ON OFF";
+    public static final long mTwoDay = 48 * 60 * 60 * 1000;
 
     public final void onEvent(String action) {
         if (Intent.ACTION_SCREEN_OFF.equals(action)
@@ -38,19 +41,9 @@ public class ScreenOnOffListener extends BroadcastListener {
     public void onScreenChanged(Intent intent) {
         /* 解锁手机加载iSwipe更新数据 */
         loadISwipeUpdateForOnScreen(intent);
+        /*检测SIM是否更换*/
+        simChanagae(intent);
 //        loadWifiData(intent);
-
-    }
-    
-    private void loadISwipeUpdateForOnScreen(Intent intent) {
-        Context mContext = AppMasterApplication.getInstance();
-        if ((!AppUtil.isScreenLocked(mContext)
-                && Intent.ACTION_SCREEN_ON.equals(intent.getAction()))
-                || Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
-            if (!ISwipUpdateRequestManager.isInstallIsiwpe(mContext)) {
-                ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
-            }
-        }
 
     }
 
@@ -144,4 +137,43 @@ public class ScreenOnOffListener extends BroadcastListener {
 //        }
 //    }
 
+    private void loadISwipeUpdateForOnScreen(Intent intent) {
+        Context mContext = AppMasterApplication.getInstance();
+        if ((!AppUtil.isScreenLocked(mContext)
+                && Intent.ACTION_SCREEN_ON.equals(intent.getAction()))
+                || Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+            if (!ISwipUpdateRequestManager.isInstallIsiwpe(mContext)) {
+                ISwipUpdateRequestManager.getInstance(mContext).loadIswipCheckNew();
+            }
+        }
+
+    }
+
+
+    /*检测SIM是否更换*/
+    public void simChanagae(Intent intent) {
+        Context mContext = AppMasterApplication.getInstance();
+        if (!AppUtil.isScreenLocked(mContext)
+                && Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
+            /*检测SIM是否更换*/
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                    mgr.getIsSimChange();
+                }
+            });
+
+        } else if (Intent.ACTION_USER_PRESENT.equals(intent.getAction())) {
+            /*检测SIM是否更换*/
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+                    mgr.getIsSimChange();
+                }
+            });
+
+        }
+    }
 }

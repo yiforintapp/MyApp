@@ -1,6 +1,6 @@
-
 package com.leo.appmaster.applocker;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -12,108 +12,163 @@ import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.TextView;
+import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.PagedGridView;
+import com.leo.appmaster.ui.RippleView;
 
-public class SuccessAppLockListActivity extends BaseActivity implements OnClickListener {
-    private List<AppInfo> mLockList;
-    private PagedGridView mAppPager;
-    private TextView lockTV;
-    private ArrayList<AppInfo> resault;
-    public static final int REQUEST_CODE_LOCK = 1000;
-    public static final int REQUEST_CODE_OPTION = 1001;
+/**
+ * Created by qili on 15-10-11.
+ */
+public class SuccessAppLockListActivity extends BaseActivity implements OnClickListener
+        , RippleView.OnRippleCompleteListener {
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "recomment_activity";
-
-    // private static final String CURRENT_ACTIVITY = "current_activity_name";
-    // private static final String CURRENT_ACTIVITY_NAME =
-    // "SuccessAppLockListActivity";
+    private List<AppInfo> mLockList;
+    private ArrayList<AppInfo> resault;
+    private ListView mLockListView;
+    private RippleView lockTV;
+    private List<LockMode> mModeList;
+    private ListSuccessAdapter mListAdapter;
+    public CommonTitleBar mTitleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_lock_app_success_list);
-        mLockList = new ArrayList<AppInfo>();
+        setContentView(R.layout.activity_list_lockapp_success);
         initUI();
         loadData();
-
     }
 
     private void initUI() {
-        CommonTitleBar mCommonTitleBar = (CommonTitleBar)
-                findViewById(R.id.layout_title_bar);
-        // mCommonTitleBar = (CommonTitleBar)
-        // findViewById(R.id.layout_title_bar);
-        // mCommonTitleBar.setTitle(R.string.app_lock);
-        mCommonTitleBar.setBackArrowVisibility(View.GONE);
-        mAppPager = (PagedGridView) findViewById(R.id.recomment_pager_unlock);
-        lockTV = (TextView) findViewById(R.id.success_recomment_lock);
-        lockTV.setOnClickListener(this);
-    }
+        mTitleBar = (CommonTitleBar)
+                findViewById(R.id.lock_success_title_bar);
+        mTitleBar.setBackArrowVisibility(View.GONE);
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-    }
+        lockTV = (RippleView) findViewById(R.id.success_recomment_lock);
+        lockTV.setOnRippleCompleteListener(this);
 
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-    }
+        mLockListView = (ListView) findViewById(R.id.recomment_lock_list);
+        mListAdapter = new ListSuccessAdapter(this);
+        mLockListView.setAdapter(mListAdapter);
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        mLockList.clear();
-    }
-    
-    
-    @SuppressLint("Override")
-    @Override
-    protected void onRestoreInstanceState(Bundle savedInstanceState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState);
-        } catch (Exception e) {
-
-        }
-    }
-
-
-	@SuppressLint("Override")
-	@Override
-    public void onRestoreInstanceState(Bundle savedInstanceState, PersistableBundle persistentState) {
-        try {
-            super.onRestoreInstanceState(savedInstanceState, persistentState);
-        } catch (Exception e) {
-
-        }
+        mLockList = new ArrayList<AppInfo>();
+        mModeList = new ArrayList<LockMode>();
     }
 
     private void loadData() {
+
+        mModeList = mLockManager.getLockMode();
         ArrayList<AppItemInfo> localAppList = AppLoadEngine.getInstance(this).getAllPkgInfo();
         List<String> lockList = AppMasterPreference.getInstance(this).getRecommentTipList();
         for (AppItemInfo app : localAppList) {
             if (lockList.contains(app.packageName)) {
-                app.isLocked = false;
+                app.isLocked = true;
                 mLockList.add(app);
                 /* SDK */
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "first_lock", app.packageName);
             }
         }
-        Collections.sort(mLockList, new LockedAppComparator(lockList));
+
+//        Collections.sort(mLockList, new LockedAppComparator(lockList));
+        Collections.sort(mLockList, new DefalutAppComparator());
         resault = new ArrayList<AppInfo>(mLockList);
-        int rowCount = getResources().getInteger(R.integer.success_recomment_gridview_row_count);
-        int colCount = getResources().getInteger(R.integer.success_recomment_gridview_col_count);
-        mAppPager.setDatas(resault, colCount, rowCount);
-        mAppPager.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
+        mListAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
+        mListAdapter.setData(resault);
+    }
+
+    @Override
+    public void onRippleComplete(RippleView rippleView) {
+        if (lockTV == rippleView) {
+            int target = getIntent().getIntExtra("target", 0);
+            Intent intent;
+            if (target == 0) {
+                intent = new Intent(SuccessAppLockListActivity.this,
+                        AppLockListActivity.class);
+                intent.putExtra("from_lock_more", true);
+//                    intent.putExtra("enter_from_lockmode", true);
+                this.startActivity(intent);
+            } else if (target == 1) {
+                intent = new Intent(this,
+                        LockSettingActivity.class);
+                intent.putExtra("just_finish", true);
+                this.startActivity(intent);
+            } else if (target == 2) {
+                if (AppMasterPreference.getInstance(getApplicationContext()).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+                    intent = new Intent(SuccessAppLockListActivity.this,
+                            AppLockListActivity.class);
+                    intent.putExtra("from_lock_more", true);
+                    this.startActivity(intent);
+                } else {
+                    intent = new Intent(this,
+                            LockSettingActivity.class);
+                    intent.putExtra("to_lock_list", true);
+                    this.startActivity(intent);
+                }
+            } else if (target == 9) {
+                LockMode visitMode = null;
+                if (mModeList != null) {
+                    for (LockMode mode : mModeList) {
+                        if (mode.defaultFlag == 1) {
+                            visitMode = mode;
+                            break;
+                        }
+                    }
+                    editLockMode(visitMode, false);
+                }
+
+            }
+            SuccessAppLockListActivity.this.finish();
+        }
+    }
+
+    public static class NameComparator implements Comparator<AppInfo> {
+
+        @Override
+        public int compare(AppInfo lhs, AppInfo rhs) {
+            return Collator.getInstance().compare(trimString(lhs.label),
+                    trimString(rhs.label));
+        }
+
+        private String trimString(String s) {
+            return s.replaceAll("\u00A0", "").trim();
+        }
+
+    }
+
+
+    public static class DefalutAppComparator implements Comparator<AppInfo> {
+        @Override
+        public int compare(AppInfo lhs, AppInfo rhs) {
+
+
+            if (lhs.topPos != -1 || rhs.topPos != -1) {
+                Integer a = lhs.topPos;
+                Integer b = rhs.topPos;
+                return b.compareTo(a);
+            }
+
+            if (lhs.systemApp && !rhs.systemApp) {
+                return -1;
+            } else if (!lhs.systemApp && rhs.systemApp) {
+                return 1;
+            }
+
+            return Collator.getInstance().compare(trimString(lhs.label),
+                    trimString(rhs.label));
+
+        }
+
+        private String trimString(String s) {
+            return s.replaceAll("\u00A0", "").trim();
+        }
     }
 
     private class LockedAppComparator implements Comparator<AppInfo> {
@@ -136,40 +191,97 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
     }
 
     @Override
-    public void onClick(View arg0) {
-        switch (arg0.getId()) {
+    public void onClick(View view) {
+        switch (view.getId()) {
             case R.id.success_recomment_lock:
-                int target = getIntent().getIntExtra("target", 0);
-                Intent intent;
-                if (target == 0) {
-                    intent = new Intent(SuccessAppLockListActivity.this,
-                            AppLockListActivity.class);
-                    intent.putExtra("from_lock_more", true);
-//                    intent.putExtra("enter_from_lockmode", true);
-                    this.startActivity(intent);
-                } else if (target == 1) {
-                    intent = new Intent(this,
-                            LockSettingActivity.class);
-                    intent.putExtra("just_finish", true);
-                    this.startActivity(intent);
-                } else if (target == 2) {
-                    if (AppMasterPreference.getInstance(getApplicationContext()).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
-                        intent = new Intent(SuccessAppLockListActivity.this,
-                                AppLockListActivity.class);
-                        intent.putExtra("from_lock_more", true);
-                        this.startActivity(intent);
-                    } else {
-                        intent = new Intent(this,
-                                LockSettingActivity.class);
-                        intent.putExtra("to_lock_list", true);
-                        this.startActivity(intent);
-                    }
-                }
-
-                SuccessAppLockListActivity.this.finish();
-                break;
+//                int target = getIntent().getIntExtra("target", 0);
+//                Intent intent;
+//                if (target == 0) {
+//                    intent = new Intent(SuccessAppLockListActivity.this,
+//                            AppLockListActivity.class);
+//                    intent.putExtra("from_lock_more", true);
+////                    intent.putExtra("enter_from_lockmode", true);
+//                    this.startActivity(intent);
+//                } else if (target == 1) {
+//                    if (AppMasterConfig.LOGGABLE) {
+//                        LeoLog.f(SuccessAppLockListActivity.class.getSimpleName(), "onclick t = 1", Constants.LOCK_LOG);
+//                    }
+//                    intent = new Intent(this,
+//                            LockSettingActivity.class);
+//                    intent.putExtra("just_finish", true);
+//                    this.startActivity(intent);
+//                } else if (target == 2) {
+//                    if (AppMasterPreference.getInstance(getApplicationContext()).getLockType() != AppMasterPreference.LOCK_TYPE_NONE) {
+//                        intent = new Intent(SuccessAppLockListActivity.this,
+//                                AppLockListActivity.class);
+//                        intent.putExtra("from_lock_more", true);
+//                        this.startActivity(intent);
+//                    } else {
+//                        if (AppMasterConfig.LOGGABLE) {
+//                            LeoLog.f(SuccessAppLockListActivity.class.getSimpleName(), "onclick t = 2", Constants.LOCK_LOG);
+//                        }
+//                        intent = new Intent(this,
+//                                LockSettingActivity.class);
+//                        intent.putExtra("to_lock_list", true);
+//                        this.startActivity(intent);
+//                    }
+//                } else if (target == 9) {
+//                    LockMode visitMode = null;
+//                    if (mModeList != null) {
+//                        for (LockMode mode : mModeList) {
+//                            if (mode.defaultFlag == 1) {
+//                                visitMode = mode;
+//                                break;
+//                            }
+//                        }
+//                        editLockMode(visitMode, false);
+//                    }
+//
+//                }
+//                SuccessAppLockListActivity.this.finish();
+//                break;
         }
+    }
 
+    private void editLockMode(LockMode lockMode, boolean addNewMode) {
+        if (lockMode != null) {
+            Intent intent = new Intent(this, LockModeEditActivity.class);
+            if (addNewMode) {
+                intent.putExtra("mode_name", this.getString(R.string.new_mode));
+                intent.putExtra("mode_id", -1);
+            } else {
+                intent.putExtra("mode_name", lockMode.modeName);
+                intent.putExtra("mode_id", lockMode.modeId);
+            }
+            intent.putExtra("new_mode", addNewMode);
+            startActivity(intent);
+        }
+    }
+
+    @SuppressLint("Override")
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mLockList.clear();
     }
 
     @Override
@@ -178,7 +290,6 @@ public class SuccessAppLockListActivity extends BaseActivity implements OnClickL
         Intent intent;
         if (target == 0) {
             intent = new Intent(this, AppLockListActivity.class);
-         
             try {
                 this.startActivity(intent);
             } catch (Exception e) {

@@ -31,6 +31,8 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.utils.LeoLog;
 
 public class PrivacyCallLogListActivity extends BaseActivity implements OnClickListener {
     private ListView mContactCallLog;
@@ -38,8 +40,14 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
     private static final String UPDATE_CALL_LOG_FRAGMENT = "update_call_log_fragment";
     private String mCallLogNumber;
     private CallLogAdapter mAdapter;
-    private CommonTitleBar mComTitle;
+    private CommonToolbar mComTitle;
     private ArrayList<ContactCallLog> mContactCallLogs;
+
+    @Override
+    public void onBackgroundVisibleBehindChanged(boolean visible) {
+        super.onBackgroundVisibleBehindChanged(visible);
+    }
+
     private ImageView mSendMessageView, mCallPhone;
     private CircleImageView mContactImage;
     private String mName;
@@ -53,8 +61,10 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_call_log_item);
         mContactCallLogs = new ArrayList<ContactCallLog>();
-        mComTitle = (CommonTitleBar) findViewById(R.id.privacy_call_log_item_title_bar);
-        mComTitle.setTitle(getResources().getString(R.string.privacy_contact_calllog));
+        mComTitle = (CommonToolbar) findViewById(R.id.privacy_call_log_item_title_bar);
+        mComTitle.setToolbarColorResource(R.color.toolbar_background_color);
+        mComTitle.setToolbarTitle(R.string.privacy_contact_calllog);
+        mComTitle.setOptionMenuVisible(false);
         mContactImage = (CircleImageView) findViewById(R.id.contactIV);
         mNameTV = (TextView) findViewById(R.id.add_from_call_log_item_nameTV);
         mNumberTV = (TextView) findViewById(R.id.add_from_call_log_item_dateTV);
@@ -84,7 +94,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
             mContactImage.setImageResource(R.drawable.default_user_avatar);
         }
         LeoEventBus.getDefaultBus().register(this);
-        mComTitle.setBackViewListener(new OnClickListener() {
+        mComTitle.setNavigationClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
@@ -209,7 +219,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
 
         class ViewHolder {
             ImageView typeImage, lineImage, bottomLineImage;
-            TextView date, showDate, type;
+            TextView date, showDate, type,call_duration;
         }
 
         @SuppressLint("InflateParams")
@@ -228,6 +238,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                         .findViewById(R.id.call_log_item_top_bottom_line);
                 vh.bottomLineImage = (ImageView) convertView
                         .findViewById(R.id.call_log_item_bottom_line);
+                vh.call_duration= (TextView) convertView.findViewById(R.id.call_duration_TV);
                 convertView.setTag(vh);
             } else {
                 vh = (ViewHolder) convertView.getTag();
@@ -271,6 +282,23 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
             } else {
                 vh.showDate.setVisibility(View.GONE);
             }
+                long duration=mb.getCallLogDuraction();
+
+            if(duration>0) {
+                int m = (int) (duration / 60);
+                int s = (int) (duration % 60);
+                if (m > 0) {
+                    if (s > 0) {
+                        vh.call_duration.setText(getResources().getString(R.string.call_duration, m, s));
+                    } else {
+                        vh.call_duration.setText(getResources().getString(R.string.call_duration, m, 0));
+                    }
+                } else {
+                    vh.call_duration.setText(getResources().getString(R.string.call_duration, 0, s));
+                }
+            }else{
+                vh.call_duration.setText(getResources().getString(R.string.call_duration, 0, 0));
+            }
             return convertView;
         }
     }
@@ -305,6 +333,8 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
                             .getColumnIndex(Constants.COLUMN_CALL_LOG_TYPE)));
                     int isRead = cursor
                             .getInt(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_IS_READ));
+                    callLog.setCallLogDuraction(cursor
+                            .getInt(cursor.getColumnIndex(Constants.COLUMN_CALL_LOG_DURATION)));
                     if (isRead == 0) {
                         String readNumberFlag = PrivacyContactUtils.formatePhoneNumber(numberCall);
                         PrivacyCalllogFragment.updateCallLogMyselfIsRead(1,

@@ -31,17 +31,20 @@ import android.widget.Toast;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.NumberPicker.Formatter;
 import com.leo.appmaster.applocker.NumberPicker.OnValueChangeListener;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LocationLockEvent;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
+import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.WifiAdmin;
 
 public class LocationLockEditActivity extends BaseActivity implements
@@ -50,11 +53,12 @@ public class LocationLockEditActivity extends BaseActivity implements
     public LayoutInflater mInflater;
     // private LeoSingleLinesInputDialog mModeNameDiglog;
     private LEOAlarmDialog mMakeSureChange;
-    private LEOBaseDialog mModeListDialog;
+    private LEOChoiceDialog mModeListDialog;
+    private LEOBaseDialog mWifiListDialog;
     private ListView mModeList;
     private EditText mEtTimeLockName;
     private TextView mTvSsid, mTvEnterMode, mTvQuitMode, mNoWifiTv;
-    private View mIvBack, mIvSave;
+    //    private View mIvBack, mIvSave;
     private View mLyaoutWifi, mLayoutEnterMode, mLayoutQuitMode;
 
     private boolean mNewLocationLock;
@@ -64,11 +68,14 @@ public class LocationLockEditActivity extends BaseActivity implements
     private boolean mFromDialog;
 
     private LocationLock mEditLocationLock;
+    private LockManager mLockManager;
+    private CommonToolbar mTitleBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_lock_edit);
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         handleIntent();
         initUI();
     }
@@ -89,7 +96,7 @@ public class LocationLockEditActivity extends BaseActivity implements
             mEditLocationLock.ssid = "";
             mEditLocationLock.using = false;
         } else {
-            List<LocationLock> locationList = LockManager.getInstatnce().getLocationLock();
+            List<LocationLock> locationList = mLockManager.getLocationLock();
             for (LocationLock locationLock : locationList) {
                 if (locationLock.id == mTimeLockId) {
                     mEditLocationLock.id = locationLock.id;
@@ -110,10 +117,19 @@ public class LocationLockEditActivity extends BaseActivity implements
 
     private void initUI() {
         mInflater = LayoutInflater.from(this);
-        mIvBack = findViewById(R.id.iv_back);
-        mIvBack.setOnClickListener(this);
-        mIvSave = findViewById(R.id.iv_edit_finish);
-        mIvSave.setOnClickListener(this);
+
+        mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTitleBar.setToolbarTitle(R.string.lock_mode_location);
+        mTitleBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitleBar.setOptionMenuVisible(true);
+        mTitleBar.setOptionClickListener(this);
+        mTitleBar.setOptionImageResource(R.drawable.mode_done);
+        mTitleBar.setNavigationClickListener(this);
+
+//        mIvBack = findViewById(R.id.iv_back);
+//        mIvBack.setOnClickListener(this);
+//        mIvSave = findViewById(R.id.iv_edit_finish);
+//        mIvSave.setOnClickListener(this);
 
         mLyaoutWifi = findViewById(R.id.layout_ssid_name);
         mLyaoutWifi.setOnClickListener(this);
@@ -145,10 +161,16 @@ public class LocationLockEditActivity extends BaseActivity implements
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_back:
-                onBackPressed();
+//                onBackPressed();
                 break;
             case R.id.iv_edit_finish:
+//                saveLocationLock();
+                break;
+            case R.id.ct_option_1_rl:
                 saveLocationLock();
+                break;
+            case R.id.ct_back_rl:
+                onBackPressed();
                 break;
             case R.id.layout_ssid_name:
                 showWifiList();
@@ -166,7 +188,7 @@ public class LocationLockEditActivity extends BaseActivity implements
 
     @Deprecated
     private LockMode getUnlockAllMode() {
-        List<LockMode> modeList = LockManager.getInstatnce().getLockMode();
+        List<LockMode> modeList = mLockManager.getLockMode();
         for (LockMode lockMode : modeList) {
             if (lockMode.defaultFlag == 0) {
                 return lockMode;
@@ -174,9 +196,9 @@ public class LocationLockEditActivity extends BaseActivity implements
         }
         return null;
     }
-    
+
     private LockMode getHomeMode() {
-        List<LockMode> modeList = LockManager.getInstatnce().getLockMode();
+        List<LockMode> modeList = mLockManager.getLockMode();
         for (LockMode lockMode : modeList) {
             if (lockMode.defaultFlag == 3) {
                 return lockMode;
@@ -245,82 +267,165 @@ public class LocationLockEditActivity extends BaseActivity implements
 
         }
     }
+    
+//    mCategoryDialog.setTitle(getResources().getString(R.string.feedback_category_tip));
+//    mCategoryDialog.setItemsWithDefaultStyle(mCategories,mCategoryPos);
+//    mCategoryDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
+//        @Override
+//        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//            mCategory.setText(mCategories.get(position));
+//            mCategoryPos = position;
+//            mCategory.setTag(1);
+//            mCategoryDialog.dismiss();
+//            checkCommitable();
+//        }
+//    });
+//    mCategoryDialog.show();
+    
+    
+//    if (convertView == null) {
+//        convertView = inflater.inflate(R.layout.item_time_lock_select, parent, false);
+//        holder = new Holder();
+//        holder.name = (TextView) convertView.findViewById(R.id.tv_time_lock_name);
+//        holder.selecte = (ImageView) convertView.findViewById(R.id.iv_selected);
+//        convertView.setTag(holder);
+//    } else {
+//        holder = (Holder) convertView.getTag();
+//    }
+//
+//    holder.name.setText(lm.getLockMode().get(position).modeName);
+//    LockMode mode = lm.getLockMode().get(position);
+//    if (which == 0) {
+//        if (mode.modeId == mEditLocationLock.entranceModeId) {
+//            holder.selecte.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.selecte.setVisibility(View.GONE);
+//        }
+//    } else {
+//        if (mode.modeId == mEditLocationLock.quitModeId) {
+//            holder.selecte.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.selecte.setVisibility(View.GONE);
+//        }
+//    }
 
     private void showModeList(final int which) {
         if (mModeListDialog == null) {
-            mModeListDialog = new LEOBaseDialog(this,R.style.bt_dialog);
-            mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
-            mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
-            mNoWifiTv = (TextView) mModeListDialog.findViewById(R.id.no_wifi);
-            View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
-            cancel.setOnClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mModeListDialog.dismiss();
-                }
-            });
+            mModeListDialog = new LEOChoiceDialog(this);
         }
-        mNoWifiTv.setVisibility(View.GONE);
-        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
-        mTitle.setText(getResources().getString(R.string.select_mode));
-        mModeList.setOnItemClickListener(new OnItemClickListener() {
+        mModeListDialog.setTitle(getResources().getString(R.string.select_mode));
+        LockManager  lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+        List<String> names = new ArrayList<String>();
+        int index = -1;
+        for(int i = 0 ; i < lm.getLockMode().size() ; i++){
+            names.add(lm.getLockMode().get(i).modeName);
+            if(lm.getLockMode().get(i).modeId == mEditLocationLock.quitModeId){
+                index = i;
+            }
+        }
+        mModeListDialog.setItemsWithDefaultStyle(names,index);
+        mModeListDialog.getItemsListView().setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                LockManager lm = LockManager.getInstatnce();
-                List<LockMode> modeList = lm.getLockMode();
-                LockMode selectedMode = modeList.get(position);
-                if (which == 0) {
-                    mEditLocationLock.entranceModeId = selectedMode.modeId;
-                    mEditLocationLock.entranceModeName = selectedMode.modeName;
-                    mTvEnterMode.setText(mEditLocationLock.entranceModeName);
+                List<LockMode> modeList = mLockManager.getLockMode();
+              LockMode selectedMode = modeList.get(position);
+              if (which == 0) {
+                  mEditLocationLock.entranceModeId = selectedMode.modeId;
+                  mEditLocationLock.entranceModeName = selectedMode.modeName;
+                  mTvEnterMode.setText(mEditLocationLock.entranceModeName);
 
-                } else {
-                    mEditLocationLock.quitModeId = selectedMode.modeId;
-                    mEditLocationLock.quitModeName = selectedMode.modeName;
-                    mTvQuitMode.setText(mEditLocationLock.quitModeName);
-                }
-                mModeListDialog.dismiss();
-                mEdited = true;
+              } else {
+                  mEditLocationLock.quitModeId = selectedMode.modeId;
+                  mEditLocationLock.quitModeName = selectedMode.modeName;
+                  mTvQuitMode.setText(mEditLocationLock.quitModeName);
+              }
+              mModeListDialog.dismiss();
+              mEdited = true;
 
-                if (selectedMode.defaultFlag == 1 && !selectedMode.haveEverOpened) {
-                    Intent intent = new Intent(LocationLockEditActivity.this,
-                            RecommentAppLockListActivity.class);
-                    intent.putExtra("target", -1);
-                    startActivity(intent);
-                    selectedMode.haveEverOpened = true;
-                    lm.updateMode(selectedMode);
-                }
-            }
+              if (selectedMode.defaultFlag == 1 && !selectedMode.haveEverOpened) {
+                  Intent intent = new Intent(LocationLockEditActivity.this,
+                          RecommentAppLockListActivity.class);
+                  intent.putExtra("target", -1);
+                  startActivity(intent);
+                  selectedMode.haveEverOpened = true;
+                  mLockManager.updateMode(selectedMode);
+              }
+          }
         });
-
-        if (mNoWifiTv != null) {
-            mNoWifiTv.setVisibility(View.GONE);
-        }
-
-        ListAdapter adapter = new ModeListAdapter(this, which);
-        mModeList.setAdapter(adapter);
-
         mModeListDialog.show();
     }
+//            mModeListDialog = new LEOBaseDialog(this, R.style.bt_dialog);
+//            mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//            mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
+//            mModeList = (ListView) mModeListDialog.findViewById(R.id.mode_list);
+//            mNoWifiTv = (TextView) mModeListDialog.findViewById(R.id.no_wifi);
+//            View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
+//            cancel.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mModeListDialog.dismiss();
+//                }
+//            });
+//        }
+//        mNoWifiTv.setVisibility(View.GONE);
+//        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
+//        mTitle.setText(getResources().getString(R.string.select_mode));
+//        mModeList.setOnItemClickListener(new OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                List<LockMode> modeList = mLockManager.getLockMode();
+//                LockMode selectedMode = modeList.get(position);
+//                if (which == 0) {
+//                    mEditLocationLock.entranceModeId = selectedMode.modeId;
+//                    mEditLocationLock.entranceModeName = selectedMode.modeName;
+//                    mTvEnterMode.setText(mEditLocationLock.entranceModeName);
+//
+//                } else {
+//                    mEditLocationLock.quitModeId = selectedMode.modeId;
+//                    mEditLocationLock.quitModeName = selectedMode.modeName;
+//                    mTvQuitMode.setText(mEditLocationLock.quitModeName);
+//                }
+//                mModeListDialog.dismiss();
+//                mEdited = true;
+//
+//                if (selectedMode.defaultFlag == 1 && !selectedMode.haveEverOpened) {
+//                    Intent intent = new Intent(LocationLockEditActivity.this,
+//                            RecommentAppLockListActivity.class);
+//                    intent.putExtra("target", -1);
+//                    startActivity(intent);
+//                    selectedMode.haveEverOpened = true;
+//                    mLockManager.updateMode(selectedMode);
+//                }
+//            }
+//        });
+//
+//        if (mNoWifiTv != null) {
+//            mNoWifiTv.setVisibility(View.GONE);
+//        }
+//
+//        ListAdapter adapter = new ModeListAdapter(this, which);
+//        mModeList.setAdapter(adapter);
+//
+//        mModeListDialog.show();
+//    }
 
     private void showWifiList() {
-        if (mModeListDialog == null) {
-            mModeListDialog = new LEOBaseDialog(this,R.style.bt_dialog);
-            mModeListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            mModeListDialog.setContentView(R.layout.dialog_mode_list_select);
-            View container = mModeListDialog.findViewById(R.id.mode_list_container);
+        if (mWifiListDialog == null) {
+            mWifiListDialog = new LEOBaseDialog(this, R.style.bt_dialog);
+            mWifiListDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            mWifiListDialog.setContentView(R.layout.dialog_mode_list_select);
+            View container = mWifiListDialog.findViewById(R.id.mode_list_container);
             mModeList = (ListView) container.findViewById(R.id.mode_list);
             mNoWifiTv = (TextView) container.findViewById(R.id.no_wifi);
-            View cancel = mModeListDialog.findViewById(R.id.dlg_bottom_btn);
+            View cancel = mWifiListDialog.findViewById(R.id.dlg_bottom_btn);
             cancel.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    mModeListDialog.dismiss();
+                    mWifiListDialog.dismiss();
                 }
             });
         }
-        TextView mTitle = (TextView) mModeListDialog.findViewById(R.id.dlg_title);
+        TextView mTitle = (TextView) mWifiListDialog.findViewById(R.id.dlg_title);
         mTitle.setText(getResources().getString(R.string.select_wifi_mode));
         mModeList.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -329,13 +434,15 @@ public class LocationLockEditActivity extends BaseActivity implements
                 String ssid = adapter.getWifiList().get(position);
                 mEditLocationLock.ssid = ssid;
                 mTvSsid.setText(ssid);
-                mModeListDialog.dismiss();
+                mWifiListDialog.dismiss();
                 mEdited = true;
             }
         });
 
         List<String> wifiList = new ArrayList<String>();
-        WifiAdmin wa = new WifiAdmin(this);
+//        WifiAdmin wa = new WifiAdmin(this);
+        WifiAdmin wa = WifiAdmin.getInstance(this);
+        wa.startScan();
         List<ScanResult> list = wa.getWifiList();
         if (list != null && !list.isEmpty()) {
             for (ScanResult scanResult : list) {
@@ -357,43 +464,46 @@ public class LocationLockEditActivity extends BaseActivity implements
             ListAdapter adapter = new WifiListAdapter(this, wifiList);
             mModeList.setAdapter(adapter);
         }
-        mModeListDialog.show();
+        mWifiListDialog.show();
     }
 
+    
+    
     private void saveLocationLock() {
-        LockManager lm = LockManager.getInstatnce();
-
         // name
         String name = mEtTimeLockName.getText().toString();
         if (TextUtils.isEmpty(name)) {
             shakeView(mEtTimeLockName);
-            Toast.makeText(LocationLockEditActivity.this, R.string.please_input_name, 0).show();
+            Toast.makeText(LocationLockEditActivity.this,
+                    R.string.please_input_name, Toast.LENGTH_SHORT).show();
             return;
         } else {
             mEditLocationLock.name = name;
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "local", "local");
         }
 
         // ssid
         if (TextUtils.isEmpty(mEditLocationLock.ssid)) {
             shakeView(mTvSsid);
-            Toast.makeText(LocationLockEditActivity.this, R.string.please_selset_wifi, 0).show();
+            Toast.makeText(LocationLockEditActivity.this,
+                    R.string.please_selset_wifi, Toast.LENGTH_SHORT).show();
             return;
         }
 
         if (mNewLocationLock) {
             mEditLocationLock.using = true;
-            lm.addLocationLock(mEditLocationLock);
+            mLockManager.addLocationLock(mEditLocationLock);
             Toast.makeText(
                     this,
                     this.getString(R.string.lock_change,
                             this.getString(R.string.lock_mode_location),
                             mEditLocationLock.name),
                     Toast.LENGTH_SHORT).show();
-            if(mFromDialog){
+            if (mFromDialog) {
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "local", "dialog");
             }
         } else {
-            lm.updateLocationLock(mEditLocationLock);
+            mLockManager.updateLocationLock(mEditLocationLock);
             Toast.makeText(this, R.string.save_successful, Toast.LENGTH_SHORT).show();
         }
         LeoEventBus.getDefaultBus().post(
@@ -417,7 +527,7 @@ public class LocationLockEditActivity extends BaseActivity implements
     public String format(int value) {
         return value + "";
     }
-
+//TODO
     class ModeListAdapter extends BaseAdapter {
 
         private LockManager lm;
@@ -425,7 +535,7 @@ public class LocationLockEditActivity extends BaseActivity implements
         private int which;
 
         public ModeListAdapter(Context ctx, int which) {
-            lm = LockManager.getInstatnce();
+            lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
             inflater = LayoutInflater.from(ctx);
             this.which = which;
         }
@@ -485,7 +595,6 @@ public class LocationLockEditActivity extends BaseActivity implements
         private List<String> wifiList;
 
         public WifiListAdapter(Context ctx, List<String> list) {
-            lm = LockManager.getInstatnce();
             inflater = LayoutInflater.from(ctx);
             wifiList = list;
         }

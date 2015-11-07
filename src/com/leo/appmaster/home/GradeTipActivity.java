@@ -2,13 +2,14 @@
 package com.leo.appmaster.home;
 
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.sdk.BaseActivity;
+import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.AppUtil;
 
-import android.content.ComponentName;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -29,8 +30,13 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         setContentView(R.layout.layout_show_googleplay_tip);
         mTvMakeSure = (TextView) findViewById(R.id.tv_make);
         mFeedbackSure = (TextView) findViewById(R.id.tv_feedback);
-        mTvMakeSure.setOnClickListener(this);
         mFeedbackSure.setOnClickListener(this);
+        MaterialRippleLayout.on(mFeedbackSure)
+                .rippleColor(getResources().getColor(R.color.button_gray_ripple))
+                .rippleAlpha(0.1f)
+                .rippleHover(true)
+                .create();
+        mTvMakeSure.setOnClickListener(this);
     }
 
     @Override
@@ -43,10 +49,10 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         boolean showGP = false;
         if (AppUtil.appInstalled(getApplicationContext(), "com.android.vending")) {
             try {
-                LockManager.getInstatnce().filterAllOneTime(1000);
+                mLockManager.filterAll(1000);
                 Intent intent = new Intent(Intent.ACTION_VIEW);
                 Uri uri = Uri
-                        .parse("market://details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                        .parse(Constants.RATING_ADDRESS_MARKET);
                 intent.setData(uri);
                 // ComponentName cn = new ComponentName("com.android.vending",
                 // "com.google.android.finsky.activities.MainActivity");
@@ -54,7 +60,7 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
                 intent.setPackage("com.android.vending");
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                LockManager.getInstatnce().timeFilterSelf();
+                mLockManager.filterSelfOneMinites();
 //                Intent intent2 = new Intent(this, GooglePlayGuideActivity.class);
 //                intent2.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                startActivity(intent2);
@@ -64,19 +70,23 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
             }
         }
         if (!showGP) {
-            LockManager.getInstatnce().timeFilterSelf();
+            mLockManager.filterSelfOneMinites();
             Intent intent = new Intent(Intent.ACTION_VIEW);
             Uri uri = Uri
-                    .parse("https://play.google.com/store/apps/details?id=com.leo.appmaster&referrer=utm_source=AppMaster");
+                    .parse(Constants.RATING_ADDRESS_BROWSER);
             intent.setData(uri);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            try {
+                startActivity(intent);
+            } catch (Exception e) {                
+            }
         }
     }
 
     @Override
     public void onClick(View v) {
         if (v == mTvMakeSure) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "home_dlg_rank_comfirm");
             openShowGoogleGuide();
             finish();
         } else if (v == mFeedbackSure) {

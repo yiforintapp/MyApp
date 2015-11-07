@@ -5,17 +5,23 @@ import android.app.IntentService;
 import android.content.ComponentName;
 import android.content.Intent;
 
-import com.leo.appmaster.applocker.manager.LockManager;
+import com.leo.appmaster.Constants;
+import com.leo.appmaster.appmanage.BackUpActivity;
+import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.HotAppActivity;
 import com.leo.appmaster.engine.AppLoadEngine;
+import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
+import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.utils.LeoLog;
 
 /**
  * this service only use for statusbar notify event
- * 
+ *
  * @author zhangwenyang
  */
 public class StatusBarEventService extends IntentService {
@@ -30,6 +36,10 @@ public class StatusBarEventService extends IntentService {
     public static final int EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION = 4;
     /* iswipe更新通知事件标志 */
     public static final int EVENT_ISWIPE_UPDATE_NOTIFICATION = 5;
+    // 隐私状态监控
+    public static final int EVENT_PRIVACY_STATUS = 6;
+    public static final int EVENT_TEN_NEW_APP_BACKUP = 7;
+    public static final int EVENT_TEN_OVER_DAY_TRAFFIC = 8;
 
     public StatusBarEventService() {
         super("");
@@ -45,17 +55,19 @@ public class StatusBarEventService extends IntentService {
         if (intent == null) {
             return;
         }
+        LockManager manager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         Intent targetIntent = null;
         int eventType = intent.getIntExtra(EXTRA_EVENT_TYPE, -1);
+//        LeoLog.d("testBackupNoti", "eventType is : " + eventType);
         if (eventType == EVENT_NEW_THEME) {
-            LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+            manager.filterPackage(this.getPackageName(), 1000);
             targetIntent = new Intent(this, LockerTheme.class);
             targetIntent.putExtra("from", "new_theme_tip");
             targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
                     | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else if (eventType == EVENT_BUSINESS_APP) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "hots", "statusbar_app");
-            LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+            manager.filterPackage(this.getPackageName(), 1000);
             targetIntent = new Intent(this, HotAppActivity.class);
             targetIntent.putExtra(HotAppActivity.FROME_STATUSBAR, true);
             targetIntent.putExtra(HotAppActivity.SHOW_PAGE, HotAppActivity.PAGE_APP);
@@ -64,7 +76,7 @@ public class StatusBarEventService extends IntentService {
 
         } else if (eventType == EVENT_BUSINESS_GAME) {
             SDKWrapper.addEvent(this, SDKWrapper.P1, "hots", "statusbar_game");
-            LockManager.getInstatnce().timeFilter(this.getPackageName(), 1000);
+            manager.filterPackage(this.getPackageName(), 1000);
             targetIntent = new Intent(this, HotAppActivity.class);
             targetIntent.putExtra(HotAppActivity.FROME_STATUSBAR, true);
             targetIntent.putExtra(HotAppActivity.SHOW_PAGE, HotAppActivity.PAGE_GAME);
@@ -81,14 +93,38 @@ public class StatusBarEventService extends IntentService {
                 targetIntent.setAction(Intent.ACTION_MAIN);
                 ComponentName cn = new
                         ComponentName(AppLoadEngine.ISWIPE_PACKAGENAME,
-                                "com.leo.iswipe.activity.SplashActivity");
+                        "com.leo.iswipe.activity.SplashActivity");
                 targetIntent.setComponent(cn);
                 targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            } 
+            }
         } else if (eventType == EVENT_QUICK_GESTURE_PERMISSION_NOTIFICATION) {
 
         } else if (eventType == EVENT_ISWIPE_UPDATE_NOTIFICATION) {
-            
+            LeoLog.i(TAG, "来自iswipe升级通知，启动主页！");
+            targetIntent = new Intent(this, HomeActivity.class);
+            targetIntent.putExtra(ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME,
+                    ISwipUpdateRequestManager.ISWIP_NOTIFICATION_TO_PG_HOME);
+            targetIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        } else if (eventType == EVENT_PRIVACY_STATUS) {
+            targetIntent = new Intent(this, HomeActivity.class);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            targetIntent.putExtra(Constants.PRIVACY_ENTER_SCAN, true);
+            int type = intent.getIntExtra(Constants.PRIVACY_ENTER_SCAN_TYPE, PrivacyHelper.PRIVACY_NONE);
+            targetIntent.putExtra(Constants.PRIVACY_ENTER_SCAN_TYPE, type);
+        } else if (eventType == EVENT_TEN_NEW_APP_BACKUP) {
+            manager.filterPackage(this.getPackageName(), 1000);
+            targetIntent = new Intent(this, BackUpActivity.class);
+            targetIntent.putExtra("from", "notification");
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        } else if (eventType == EVENT_TEN_OVER_DAY_TRAFFIC) {
+            manager.filterPackage(this.getPackageName(), 1000);
+            targetIntent = new Intent(this, FlowActivity.class);
+            targetIntent.putExtra("from", "notification");
+            targetIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                    | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         } else {
             return;
         }

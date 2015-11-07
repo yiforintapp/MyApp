@@ -23,14 +23,15 @@ import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.model.LocationLock;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.TimeLock;
 import com.leo.appmaster.eventbus.LeoEventBus;
+import com.leo.appmaster.eventbus.event.EventId;
 import com.leo.appmaster.eventbus.event.LockModeEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
@@ -42,6 +43,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
     private View mListHeader;
     private List<LockMode> mModeList;
     private ModeAdapter mModeAdapter;
+    private View mHeadContentView;
 
     private boolean mEditing;
 
@@ -60,6 +62,14 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         mModeListView.setOnItemLongClickListener(this);
         mListHeader = LayoutInflater.from(mActivity).inflate(R.layout.lock_mode_item_header,
                 mModeListView, false);
+        mHeadContentView = mListHeader.findViewById(R.id.head_content);
+        mHeadContentView.setOnClickListener(this);
+        MaterialRippleLayout.on(mHeadContentView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleHover(true)
+                .create();
+
         TextView tv = (TextView) mListHeader.findViewById(R.id.tv_add_more);
         tv.setText(R.string.add_mode);
         mModeListView.addHeaderView(mListHeader);
@@ -74,7 +84,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
     }
 
     private void loadModes() {
-        mModeList = LockManager.getInstatnce().getLockMode();
+        mModeList = mLockManager.getLockMode();
         mModeAdapter = new ModeAdapter(mActivity);
         mModeListView.setAdapter(mModeAdapter);
 
@@ -133,9 +143,8 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                 if (which == 0) {
 
                 } else if (which == 1) {
-                    LockManager lm = LockManager.getInstatnce();
                     for (LockMode lockMode : deleteList) {
-                        lm.removeLockMode(lockMode);
+                        mLockManager.removeLockMode(lockMode);
                     }
                     mSelectCount = 0;
                     ((LockModeActivity) mActivity).disableOptionImage();
@@ -156,7 +165,6 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         mMakeSureChange.setOnClickListener(new OnDiaogClickListener() {
             @Override
             public void onClick(int which) {
-                LockManager lm = LockManager.getInstatnce();
                 if (which == 0) {
                     deleteList.remove(mode);
                     mode.selected = !mode.selected;
@@ -164,7 +172,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
 
                 }
                 for (LockMode lockMode : deleteList) {
-                    lm.removeLockMode(lockMode);
+                    mLockManager.removeLockMode(lockMode);
                 }
                 mSelectCount = 0;
                 ((LockModeActivity) mActivity).disableOptionImage();
@@ -188,6 +196,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     Toast.makeText(mActivity,
                             mActivity.getString(R.string.create_mode_shortcut_tip, mode.modeName),
                             Toast.LENGTH_SHORT).show();
+                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "shortcuts", "creat");
                     installLockModeShortcut(mode);
                 }
             }
@@ -229,29 +238,34 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     }
 
                 } else {
-                    LockManager.getInstatnce().setCurrentLockMode(mode, true);
+                    mLockManager.setCurrentLockMode(mode, true);
                     SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "modeschage", "modes");
                     Toast.makeText(mActivity,
                             mActivity.getString(R.string.mode_change, mode.modeName),
                             Toast.LENGTH_SHORT).show();
                     checkLockTip();
                     mModeAdapter.notifyDataSetChanged();
+
+                    LeoEventBus.getDefaultBus().post(
+                            new LockModeEvent(EventId.EVENT_MODE_CHANGE, "select_other_mode"));
                 }
                 break;
-
+            case R.id.head_content:
+                addLockMode();
+                SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "modesadd", "modes");
+                break;
             default:
                 break;
         }
 
     }
-    
+
     private void checkLockTip() {
         int switchCount = AppMasterPreference.getInstance(mActivity).getSwitchModeCount();
         switchCount++;
         AppMasterPreference.getInstance(mActivity).setSwitchModeCount(switchCount);
-        LockManager lm = LockManager.getInstatnce();
-        List<TimeLock> timeLockList = lm.getTimeLock();
-        List<LocationLock> locationLockList = lm.getLocationLock();
+        List<TimeLock> timeLockList = mLockManager.getTimeLock();
+        List<LocationLock> locationLockList = mLockManager.getLocationLock();
         if (switchCount == 6) {
             // TODO show tip
             int timeLockCount = timeLockList.size();
@@ -267,7 +281,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                 dialog.setLeftBtnStr(mActivity.getString(R.string.cancel));
                 dialog.setMiddleBtnStr(mActivity.getString(R.string.lock_mode_time));
                 dialog.setRightBtnStr(mActivity.getString(R.string.lock_mode_location));
-                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
+//                dialog.setRightBtnBackground(R.drawable.manager_mode_lock_third_button_selecter);
                 dialog.setOnClickListener(new LEOThreeButtonDialog.OnDiaogClickListener() {
                     @Override
                     public void onClick(int which) {
@@ -302,7 +316,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     String tip = mActivity.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(mActivity.getString(R.string.lock_mode_time));
-                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
+//                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(mActivity.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
@@ -332,7 +346,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                     String tip = mActivity.getString(R.string.time_location_lock_tip_content);
                     dialog.setContent(tip);
                     dialog.setRightBtnStr(mActivity.getString(R.string.lock_mode_location));
-                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
+//                    dialog.setRightBtnBackground(R.drawable.manager_right_contact_button_selecter);
                     dialog.setLeftBtnStr(mActivity.getString(R.string.cancel));
                     dialog.setOnClickListener(new OnDiaogClickListener() {
                         @Override
@@ -357,14 +371,12 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
             }
         }
     }
-    
-    
+
 
     private int checkModeUsing(LockMode lockMode) {
         int resault = -1;
-        LockManager lm = LockManager.getInstatnce();
-        List<TimeLock> timeList = lm.getTimeLock();
-        List<LocationLock> locationList = lm.getLocationLock();
+        List<TimeLock> timeList = mLockManager.getTimeLock();
+        List<LocationLock> locationList = mLockManager.getLocationLock();
         for (TimeLock timeLock : timeList) {
             if (timeLock.lockModeId == lockMode.modeId) {
                 resault = 0;
@@ -390,17 +402,22 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
         if (position == 0) {
-            addLockMode();
-            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "modesadd", "modes");
+            //in onclicklistener now
+//            addLockMode();
+//            SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "modesadd", "modes");
         } else {
             LockMode lockMode = mModeList.get(position - 1);
             if (lockMode.defaultFlag == 1) {
                 if (!lockMode.haveEverOpened) {
                     Intent intent = new Intent(mActivity, RecommentAppLockListActivity.class);
-                    intent.putExtra("target", 0);
+//                    intent.putExtra("target", 0);
+                    //new case
+                    intent.putExtra("from",
+                            RecommentAppLockListActivity.RECOMMEND_FROM_VISITED_MODE);
+                    intent.putExtra("target", 9);
                     startActivity(intent);
                     lockMode.haveEverOpened = true;
-                    LockManager.getInstatnce().updateMode(lockMode);
+                    mLockManager.updateMode(lockMode);
                     return;
                 }
             }
@@ -505,6 +522,7 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             ModeHolder holder;
+
             if (convertView == null) {
                 holder = new ModeHolder();
                 convertView = mInflater.inflate(R.layout.item_lock_mode, parent, false);
@@ -515,6 +533,8 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
             } else {
                 holder = (ModeHolder) convertView.getTag();
             }
+
+
             holder.lockMode = mModeList.get(position);
             holder.modeName.setText(holder.lockMode.modeName);
 
@@ -534,9 +554,9 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
                 holder.modeLink.setVisibility(View.VISIBLE);
                 holder.modeSelect.setVisibility(View.VISIBLE);
                 if (holder.lockMode.isCurrentUsed) {
-                    holder.modeSelect.setImageResource(R.drawable.radio_buttons);
+                    holder.modeSelect.setImageResource(R.drawable.model_select);
                 } else {
-                    holder.modeSelect.setImageResource(R.drawable.unradio_buttons);
+                    holder.modeSelect.setImageResource(R.drawable.model_unselect);
                 }
             }
 
@@ -553,7 +573,6 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         TextView modeName;
         ImageView modeLink;
         ImageView modeSelect;
-
         LockMode lockMode;
     }
 
@@ -590,9 +609,8 @@ public class LockModeFragment extends BaseFragment implements OnClickListener, O
         }
 
         if (deleteList.size() > 0) {
-            LockManager lm = LockManager.getInstatnce();
-            if (deleteList.contains(lm.getCurLockMode())) {
-                showCurModeDeleteDialog(lm.getCurLockMode(), deleteList);
+            if (deleteList.contains(mLockManager.getCurLockMode())) {
+                showCurModeDeleteDialog(mLockManager.getCurLockMode(), deleteList);
             } else {
                 showDeleteDialog(deleteList);
             }

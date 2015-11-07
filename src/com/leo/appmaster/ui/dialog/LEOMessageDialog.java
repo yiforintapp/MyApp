@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.view.ViewGroup.LayoutParams;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 
 public class LEOMessageDialog extends LEOBaseDialog {
     public static final String TAG = "XLOneButtonDialog";
@@ -21,6 +23,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
     private TextView mBottomBtn;
     private ImageView mIcon;
     private DialogInterface.OnClickListener mBottomBtnListener = null;
+    private RippleView mRvBlue;
 
     public LEOMessageDialog(Context context) {
         super(context, R.style.bt_dialog);
@@ -62,14 +65,17 @@ public class LEOMessageDialog extends LEOBaseDialog {
     public void setBottomBtnListener(DialogInterface.OnClickListener bListener) {
         if (bListener != null) {
             mBottomBtnListener = bListener;
-            mBottomBtn.setTag(bListener);
-            mBottomBtn.setOnClickListener(new View.OnClickListener() {
+            mRvBlue.setTag(bListener);
+            mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
                 @Override
-                public void onClick(View arg0) {
+                public void onRippleComplete(RippleView arg0) {
                     DialogInterface.OnClickListener listener = (DialogInterface.OnClickListener) arg0
                             .getTag();
-                    listener.onClick(LEOMessageDialog.this, 0);
+                    try {
+                        listener.onClick(LEOMessageDialog.this, 0);
+                    } catch (Exception e) {
+                    }
                 }
             });
         }
@@ -94,14 +100,13 @@ public class LEOMessageDialog extends LEOBaseDialog {
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
         mIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
-        
+        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
         mBottomBtn = (TextView) dlgView.findViewById(R.id.dlg_bottom_btn);
         mBottomBtn.setVisibility(View.VISIBLE);
         if (mBottomBtnListener == null) {
             setBottomBtnListener(new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dlg, int arg1) {
-                    
                     dlg.dismiss();
                 }
             });

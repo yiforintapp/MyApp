@@ -16,11 +16,6 @@
 
 package com.leo.appmaster.ui;
 
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -63,7 +58,10 @@ import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.Interpolator;
 import android.widget.Scroller;
 
-import com.leo.appmaster.utils.LeoLog;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 /**
  * Layout manager that allows the user to flip left and right
@@ -640,13 +638,13 @@ public class MultiModeViewPager extends ViewGroup {
                     mSetChildrenDrawingOrderEnabled = ViewGroup.class.getDeclaredMethod(
                             "setChildrenDrawingOrderEnabled", new Class[] { Boolean.TYPE });
                 } catch (NoSuchMethodException e) {
-                    LeoLog.e(TAG, "Can't find setChildrenDrawingOrderEnabled", e);
+                    Log.e(TAG, "Can't find setChildrenDrawingOrderEnabled", e);
                 }
             }
             try {
                 mSetChildrenDrawingOrderEnabled.invoke(this, enable);
             } catch (Exception e) {
-                LeoLog.e(TAG, "Error changing children drawing order", e);
+                Log.e(TAG, "Error changing children drawing order", e);
             }
         }
     }
@@ -700,7 +698,7 @@ public class MultiModeViewPager extends ViewGroup {
      */
     public void setOffscreenPageLimit(int limit) {
         if (limit < DEFAULT_OFFSCREEN_PAGES) {
-            LeoLog.w(TAG, "Requested offscreen page limit " + limit + " too small; defaulting to " +
+            Log.w(TAG, "Requested offscreen page limit " + limit + " too small; defaulting to " +
                     DEFAULT_OFFSCREEN_PAGES);
             limit = DEFAULT_OFFSCREEN_PAGES;
         }
@@ -2558,7 +2556,7 @@ public class MultiModeViewPager extends ViewGroup {
                         parent = parent.getParent()) {
                     sb.append(" => ").append(parent.getClass().getSimpleName());
                 }
-                LeoLog.e(TAG, "arrowScroll tried to find focus based on non-child " +
+                Log.e(TAG, "arrowScroll tried to find focus based on non-child " +
                         "current focused view " + sb.toString());
                 currentFocused = null;
             }

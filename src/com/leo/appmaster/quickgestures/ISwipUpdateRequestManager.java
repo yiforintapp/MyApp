@@ -20,11 +20,11 @@ import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.engine.AppLoadEngine;
-import com.leo.appmaster.http.HttpRequestAgent;
-import com.leo.appmaster.http.HttpRequestAgent.RequestListener;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.HttpRequestAgent;
+import com.leo.appmaster.HttpRequestAgent.RequestListener;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.utils.Utilities;
 
 public class ISwipUpdateRequestManager {
@@ -268,7 +268,8 @@ public class ISwipUpdateRequestManager {
         if (gpDownLoadUrl != null) {
             Intent intent = startPG(gpDownLoadUrl);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
+                LockManager lm = (LockManager)MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                lm.filterSelfOneMinites();
                 mContext.startActivity(intent);
             } catch (Exception e) {
                 /* 本地没有GP则跳浏览器 */
@@ -287,7 +288,8 @@ public class ISwipUpdateRequestManager {
         if (browserUrl != null) {
             Intent intent = startBrowser(browserUrl);
             try {
-                LockManager.getInstatnce().timeFilterSelf();
+                LockManager lm = (LockManager)MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                lm.filterSelfOneMinites();
                 mContext.startActivity(intent);
             } catch (Exception e) {
                 e.printStackTrace();

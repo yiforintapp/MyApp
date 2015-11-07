@@ -10,30 +10,34 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.widget.EdgeEffectCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.applocker.manager.LockManager;
-import com.leo.appmaster.applocker.manager.LockManager.OnUnlockedListener;
+import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.utils.LeoLog;
 
 public class LockHelpSettingTip extends BaseActivity {
     private static final String TAG = "LockHelpSettingTip";
-    private CommonTitleBar mTitle;
+    private CommonToolbar mTitle;
     private LeoPictureViewPager mViewPager;
     private List<LockHelpItemPager> mHelpPager;
     private LockHelpPagerAdapter mAdapter;
@@ -44,11 +48,17 @@ public class LockHelpSettingTip extends BaseActivity {
     private RelativeLayout mViewPagerContainer;
     public static final int CURRENT_FLAG_CODE = 10000;
 
+    private LockManager mLockManager;
+    
+    private Handler mHandler = new Handler();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_lock_help_setting_tip);
         mHelpPager = new ArrayList<LockHelpItemPager>();
+
+        mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         initUI();
         mAdapter = new LockHelpPagerAdapter(this);
         mViewPager.setAdapter(mAdapter);
@@ -128,9 +138,8 @@ public class LockHelpSettingTip extends BaseActivity {
     }
 
     private void initUI() {
-        mTitle = (CommonTitleBar) findViewById(R.id.layout_title_bar);
-        mTitle.setTitle(R.string.help_setting_tip_title);
-        mTitle.openBackView();
+        mTitle = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mTitle.setToolbarTitle(R.string.help_setting_tip_title);
         mViewPager = (LeoPictureViewPager) findViewById(R.id.help_setting);
         mViewPagerContainer = (RelativeLayout) findViewById(R.id.activity_lock_layout);
     }
@@ -243,14 +252,15 @@ public class LockHelpSettingTip extends BaseActivity {
             TextView titleTV = (TextView) view.findViewById(R.id.lock_help_title);
             TextView contentTV = (TextView) view.findViewById(R.id.lock_help_content);
             TextView buttonTV = (TextView) view.findViewById(R.id.lock_help_bt);
+            RippleView rv = (RippleView) view.findViewById(R.id.rv_lock_help_bt);
             titleTV.setText(title);
             contentTV.setText(content);
             buttonTV.setText(button);
             container.addView(view);
-            buttonTV.setOnClickListener(new OnClickListener() {
+            rv.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
                 @Override
-                public void onClick(View arg0) {
+                public void onRippleComplete(RippleView rippleView) {
                     String buttonText = lockHelpPager.getButton();
                     if (buttonText.equals(getString(R.string.lock_help_password_setting_button))) {
                         /* SDK Event Mark */
@@ -309,15 +319,26 @@ public class LockHelpSettingTip extends BaseActivity {
 
     private void changePasswd() {
         LeoLog.d("Track Lock Screen", "apply lockscreen form LockHelpSetting: enterLockPage");
-        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_PURE,
-                LockSettingActivity.class.getName(), false, new OnUnlockedListener() {
+        mLockManager.applyLock(LockManager.LOCK_MODE_PURE,
+                LockSettingActivity.class.getName(), false, new LockManager.OnUnlockedListener() {
                     @Override
                     public void onUnlocked() {
-                        Intent intent = null;
                         AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(null);
-                        intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
-                        intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
-                        startActivity(intent);
+                        if(AppMasterApplication.sIsSplashActioned) {
+                            mHandler.postDelayed(new Runnable() {                  
+                                @Override
+                                public void run() {
+                                    Intent  intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
+                                    intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
+                                    startActivity(intent);
+                                }
+                            }, 200);
+                            AppMasterApplication.sIsSplashActioned = false;
+                        } else {
+                            Intent  intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
+                            intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
+                            startActivity(intent);
+                        }
                     }
 
                     @Override
@@ -333,15 +354,27 @@ public class LockHelpSettingTip extends BaseActivity {
 
     private void enterLockSettingPage() {
         LeoLog.d("Track Lock Screen", "apply lockscreen form LockHelpSetting: enterLockSettingPage");
-        LockManager.getInstatnce().applyLock(LockManager.LOCK_MODE_PURE,
-                null, false, new OnUnlockedListener() {
+        mLockManager.applyLock(LockManager.LOCK_MODE_PURE,
+                null, false, new LockManager.OnUnlockedListener() {
 
                     @Override
                     public void onUnlocked() {
                         AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(null);
-                        Intent intent = new Intent(LockHelpSettingTip.this, LockTimeSetting.class);
-                        intent.putExtra("help_setting_current", 1);
-                        startActivity(intent);
+                        if(AppMasterApplication.sIsSplashActioned) {
+                            mHandler.postDelayed(new Runnable() {                  
+                                @Override
+                                public void run() {
+                                    Intent intent = new Intent(LockHelpSettingTip.this, LockTimeSetting.class);
+                                    intent.putExtra("help_setting_current", 1);
+                                    startActivity(intent);
+                                }
+                            }, 200);
+                            AppMasterApplication.sIsSplashActioned = false;
+                        } else {
+                            Intent intent = new Intent(LockHelpSettingTip.this, LockTimeSetting.class);
+                            intent.putExtra("help_setting_current", 1);
+                            startActivity(intent);
+                        }
                     }
 
                     @Override

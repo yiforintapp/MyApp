@@ -11,8 +11,9 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.applocker.manager.LockManager;
 import com.leo.appmaster.applocker.service.TaskDetectService;
+import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.mgr.MgrContext;
 
 public class LockReceiver extends BroadcastReceiver {
 
@@ -63,8 +64,8 @@ public class LockReceiver extends BroadcastReceiver {
                 // serviceIntent.putExtra(TaskDetectService.EXTRA_STARTUP_FROM,
                 // action);
                 // context.startService(serviceIntent);
-
-                LockManager.getInstatnce().startLockService();
+                LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+                lockManager.startLockService();
             }
         }
     }
