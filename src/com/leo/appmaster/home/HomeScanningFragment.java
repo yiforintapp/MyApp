@@ -58,13 +58,13 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
     private TextView mProgressTv;
 
     private ScanningImageView mNewAppIv;
-    private ScanningImageView mNewMediaIv;
-    private ScanningImageView mNewSecurityIv;
+    private ScanningImageView mNewPhotoIv;
+    private ScanningImageView mNewVideoIv;
     private ScanningImageView mNewPrivacyIv;
 
     private ScanningTextView mNewAppText;
-    private ScanningTextView mNewMediaText;
-    private ScanningTextView mNewSecurityText;
+    private ScanningTextView mNewPhotoText;
+    private ScanningTextView mNewVideoText;
     private ScanningTextView mNewPrivacyText;
 
     // 扫描icon右下角图标
@@ -77,8 +77,8 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
     private ImageView mVidCountIv;
 
     private Animator mAppAnimator;
-    private Animator mMediaAnimator;
-    private Animator mSecurityAnimator;
+    private Animator mPhotoAnimator;
+    private Animator mVideoAnimator;
     private Animator mPrivacyAnimator;
 
     private HomeActivity mActivity;
@@ -86,6 +86,9 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
     private List<AppItemInfo> mAppList;
     private List<PhotoItem> mPhotoList;
     private List<VideoItemBean> mVideoList;
+
+    private boolean mPhotoScanFinish;
+    private boolean mVideoScanFinish;
 
     private boolean mScanning;
     private int mScanningDuration;
@@ -116,13 +119,13 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
         mCancelBtn.setOnRippleCompleteListener(this);
 
         mNewAppIv = (ScanningImageView) view.findViewById(R.id.scan_new_app_iv);
-        mNewMediaIv = (ScanningImageView) view.findViewById(R.id.scan_media_iv);
-        mNewSecurityIv = (ScanningImageView) view.findViewById(R.id.scan_mobile_iv);
+        mNewPhotoIv = (ScanningImageView) view.findViewById(R.id.scan_media_iv);
+        mNewVideoIv = (ScanningImageView) view.findViewById(R.id.scan_mobile_iv);
         mNewPrivacyIv = (ScanningImageView) view.findViewById(R.id.scan_privacy_iv);
 
         mNewAppText = (ScanningTextView) view.findViewById(R.id.scan_new_app_tv);
-        mNewMediaText = (ScanningTextView) view.findViewById(R.id.scan_media_tv);
-        mNewSecurityText = (ScanningTextView) view.findViewById(R.id.scan_mobile_tv);
+        mNewPhotoText = (ScanningTextView) view.findViewById(R.id.scan_media_tv);
+        mNewVideoText = (ScanningTextView) view.findViewById(R.id.scan_mobile_tv);
         mNewPrivacyText = (ScanningTextView) view.findViewById(R.id.scan_privacy_tv);
 
         mAppCountTv = (TextView) view.findViewById(R.id.scan_app_count_tv);
@@ -163,7 +166,7 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
                 @Override
                 public void run() {
                     PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                    if (mMediaAnimator != null && !mMediaAnimator.isRunning()) {
+                    if (mPhotoAnimator != null && !mPhotoAnimator.isRunning()) {
                         mPhotoList = pdm.getAddPic();
                         ThreadManager.getUiThreadHandler().post(new Runnable() {
                             @Override
@@ -173,7 +176,7 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
                         });
                     }
 
-                    if (mSecurityAnimator != null && !mSecurityAnimator.isRunning()) {
+                    if (mVideoAnimator != null && !mVideoAnimator.isRunning()) {
                         mVideoList = pdm.getAddVid();
                         ThreadManager.getUiThreadHandler().post(new Runnable() {
                             @Override
@@ -249,13 +252,31 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
                 long start = SystemClock.elapsedRealtime();
                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
                 mPhotoList = pdm.getAddPic();
+                mPhotoScanFinish = true;
                 int picScore = pdm.getPicScore(mPhotoList == null ? 0 : mPhotoList.size());
                 LeoLog.i(TAG, "photoItems, cost: " + (SystemClock.elapsedRealtime() - start));
+                if (!mAppAnimator.isRunning() && !mPhotoAnimator.isRunning()) {
+                    ThreadManager.getUiThreadHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            updatePhotoList();
+                        }
+                    });
+                }
 
                 start = SystemClock.elapsedRealtime();
                 mVideoList = pdm.getAddVid();
+                mVideoScanFinish = true;
                 int vidScore = pdm.getVidScore(mVideoList == null ? 0 : mVideoList.size());
                 LeoLog.i(TAG, "videoItemBeans, cost: " + (SystemClock.elapsedRealtime() - start));
+                if (!mAppAnimator.isRunning() && !mPhotoAnimator.isRunning() && !mVideoAnimator.isRunning()) {
+                    ThreadManager.getUiThreadHandler().post(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateVideoList();
+                        }
+                    });
+                }
 
                 int dataScore = picScore + vidScore;
                 mPrivacyHelper.onSecurityChange(MgrContext.MGR_PRIVACY_DATA, dataScore);
@@ -277,12 +298,12 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
 
     private void startScanAnim() {
         mAppAnimator = getAnimtion(mNewAppIv, mNewAppText, 3);
-        mMediaAnimator = getAnimtion(mNewMediaIv, mNewMediaText, 3);
-        mSecurityAnimator = getAnimtion(mNewSecurityIv, mNewSecurityText, 1);
+        mPhotoAnimator = getAnimtion(mNewPhotoIv, mNewPhotoText, 3);
+        mVideoAnimator = getAnimtion(mNewVideoIv, mNewVideoText, 1);
         mPrivacyAnimator = getAnimtion(mNewPrivacyIv, mNewPrivacyText, 1);
 
         AnimatorSet allAnim = new AnimatorSet();
-        allAnim.playSequentially(mAppAnimator, mMediaAnimator, mSecurityAnimator, mPrivacyAnimator);
+        allAnim.playSequentially(mAppAnimator, mPhotoAnimator, mVideoAnimator, mPrivacyAnimator);
         mScanningDuration = (int) allAnim.getDuration();
 
         allAnim.start();
@@ -368,12 +389,12 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
             int count = mAppList == null ? 0 : mAppList.size();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 1));
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "app_cnts_" + count);
-        } else if (animation == mMediaAnimator) {
+        } else if (animation == mPhotoAnimator) {
             updatePhotoList();
             int count = mPhotoList == null ? 0 : mPhotoList.size();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 2));
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "scan", "pic_cnts_" + count);
-        } else if (animation == mSecurityAnimator) {
+        } else if (animation == mVideoAnimator) {
             updateVideoList();
             int count = mVideoList == null ? 0 : mVideoList.size();
             mProgressTv.setText(context.getString(R.string.scanning_pattern, 3));
@@ -409,6 +430,7 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
         if (count == 0) {
             mPicCountIv.setVisibility(View.VISIBLE);
             mPicCountTv.setVisibility(View.GONE);
+            mPicCountIv.setImageResource(mPhotoScanFinish ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
         } else {
             mPicCountIv.setVisibility(View.GONE);
             mPicCountTv.setVisibility(View.VISIBLE);
@@ -421,6 +443,7 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
         if (count == 0) {
             mVidCountIv.setVisibility(View.VISIBLE);
             mVidCountTv.setVisibility(View.GONE);
+            mVidCountIv.setImageResource(mVideoScanFinish ? R.drawable.ic_scan_safe : R.drawable.ic_scan_error);
         } else {
             mVidCountIv.setVisibility(View.GONE);
             mVidCountTv.setVisibility(View.VISIBLE);
