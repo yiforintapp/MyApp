@@ -70,7 +70,8 @@ public class AppMasterApplication extends Application {
         sAppOnCrate = SystemClock.elapsedRealtime();
         if (sInstance != null)
             return;
-        
+
+        sInstance = this;
         // Use old sort
         try {
             System.setProperty("java.util.Arrays.useLegacyMergeSort", "true");
@@ -84,7 +85,6 @@ public class AppMasterApplication extends Application {
         } catch (NumberFormatException e) {
             e.printStackTrace();
         }
-        sInstance = this;
         sActivityList = new ArrayList<WeakReference<Activity>>();
         sResumedList = new ArrayList<WeakReference<Activity>>();
         mHandler = new Handler();
