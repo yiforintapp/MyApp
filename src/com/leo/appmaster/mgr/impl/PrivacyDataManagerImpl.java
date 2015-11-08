@@ -22,6 +22,7 @@ import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
@@ -165,7 +166,9 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         } catch (Exception e) {
 
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
 
         return aibumList;
@@ -312,8 +315,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             }
         } catch (Exception e) {
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
             }
         }
 
@@ -408,8 +411,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             }
         } catch (Exception e) {
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
             }
         }
 
@@ -547,7 +550,9 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         } catch (Exception e) {
 
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
 
         LeoLog.d("checkPicId", "final size is : " + aibumList.size());
@@ -631,7 +636,9 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         } catch (Exception e) {
 
         } finally {
-            IoUtils.closeSilently(cursor);
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
+            }
         }
 
 
@@ -725,8 +732,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         } catch (Exception e) {
             LeoLog.d("checkVidId", "catch");
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
             }
         }
         LeoLog.d("checkVidId", "final size is : " + videoBeans.size());
@@ -793,8 +800,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
         } catch (Exception e) {
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
             }
         }
         return vidNum;
@@ -825,8 +832,8 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             }
         } catch (Exception e) {
         } finally {
-            if (cursor != null) {
-                cursor.close();
+            if (!BuildProperties.isApiLevel14()) {
+                IoUtils.closeSilently(cursor);
             }
         }
         return vidNum;

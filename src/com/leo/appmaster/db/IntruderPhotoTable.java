@@ -219,7 +219,7 @@ public class IntruderPhotoTable extends BaseTable {
                     }
                 } catch (Throwable e) {
                 } finally {
-                    IoUtils.closeSilently(cursor);
+                    // IoUtils.closeSilently(cursor);
                 }
             }
         } else {
