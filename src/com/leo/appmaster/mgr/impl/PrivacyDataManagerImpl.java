@@ -47,6 +47,12 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME
             // dir name
     };
+
+    public static final String[] NEW_ADD_IMAGES = {
+            MediaStore.Images.Media.DATA,
+            MediaStore.Images.Media._ID
+    };
+
     private static final String SYSTEM_PREFIX = "/system";
 
     String[] STORE_HIDEIMAGES = new String[]{
@@ -472,20 +478,21 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String store = externalStorageDirectory.getPath();
 
         try {
-            cursor = MediaStore.Images.Media.query(
-                    mContext.getContentResolver(),
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES,
-                    null, MediaStore.MediaColumns._ID + " desc");
+            cursor = MediaStore.Images.Media.query(mContext.getContentResolver(),
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, NEW_ADD_IMAGES,
+                    MediaStore.MediaColumns._ID + ">?",
+                    new String[]{String.valueOf(lastPic)},
+                    MediaStore.MediaColumns._ID + " desc");
+            LeoLog.d("checkPicId", "new cursor:" + cursor.getCount());
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
                     //record the last pic id
                     mRecordNum = id;
                     LeoLog.d("checkPicId", "id is : " + id);
-                    String path = cursor.getString(1);
+                    String path = cursor.getString
+                            (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
                     LeoLog.d("checkPicId", "path is : " + path);
-                    String dir_id = cursor.getString(3);
-                    String dir = cursor.getString(4);
 
                     if (picNum == 0) {
                         picNum = id;
@@ -505,9 +512,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                         }
                     }
 
-                    if (dir.contains("videoCache")) {
-                        Log.d(Constants.RUN_TAG, "Image Path：" + path);
-                    }
                     boolean isFilterVideoType = false;
                     for (String videoType : filterVideoTypes) {
                         isFilterVideoType = isFilterVideoType(path, videoType);
@@ -567,26 +571,27 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String store = externalStorageDirectory.getPath();
 
         try {
-            cursor = MediaStore.Images.Media.query(
-                    mContext.getContentResolver(),
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, STORE_IMAGES,
-                    null, MediaStore.MediaColumns._ID + " desc");
+            cursor = MediaStore.Images.Media.query(mContext.getContentResolver(),
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI, NEW_ADD_IMAGES,
+                    MediaStore.MediaColumns._ID + ">?",
+                    new String[]{String.valueOf(lastPic)},
+                    MediaStore.MediaColumns._ID + " desc");
+            LeoLog.d("checkPicId", "new cursor:" + cursor.getCount());
+
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     if (picNum > getMaxPicNum()) {
                         break;
                     }
-                    int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
-                    //record the last pic id
-                    LeoLog.d("checkPicId", "id is : " + id);
+                    int id = cursor.getInt
+                            (cursor.getColumnIndex(MediaStore.MediaColumns._ID));
 
                     if (record == 0) {
                         record = id;
                     }
-                    if (id <= lastPic) {
-                        break;
-                    }
-                    String path = cursor.getString(1);
+
+                    String path = cursor.getString
+                            (cursor.getColumnIndex(MediaStore.Images.Media.DATA));
                     if (path.startsWith(SYSTEM_PREFIX)) {
                         continue;
                     }
@@ -608,12 +613,14 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
                     if (isFilterVideoType) {
                         continue;
                     }
+
                     // 过滤闪屏图
                     if (FileOperationUtil.getSplashPath() != null
                             && (FileOperationUtil.getSplashPath() + Constants.SPLASH_NAME)
                             .equals(path)) {
                         continue;
                     }
+
                     picNum++;
                 }
             }
@@ -630,6 +637,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
         return picNum;
     }
+
 
     @Override
     public int haveCheckedPic() {
@@ -662,8 +670,17 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String store = externalStorageDirectory.getPath();
 
         try {
-            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+
+            cursor = mContext.getContentResolver().query(uri,
+                    null,
+                    selection + " and " + MediaStore.MediaColumns._ID + ">?",
+                    new String[]{String.valueOf(lastVid)},
                     MediaStore.MediaColumns._ID + " desc");
+            LeoLog.d("testCursor", "new cursor:" + cursor.getCount());
+
+//            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+//                    MediaStore.MediaColumns._ID + " desc");
+//            LeoLog.d("testCursor", "old cursor:" + cursor.getCount());
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
@@ -726,7 +743,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         int record = 0;
         int lastVid = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
         LeoLog.d("checkVidId", "lastVid is : " + lastVid);
-//        Uri uri = MediaStore.Files.getContentUri("external");
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = Constants.VIDEO_FORMAT;
         Cursor cursor = null;
@@ -734,8 +750,17 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
         String store = externalStorageDirectory.getPath();
         try {
-            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+
+            cursor = mContext.getContentResolver().query(uri,
+                    null,
+                    selection + " and " + MediaStore.MediaColumns._ID + ">?",
+                    new String[]{String.valueOf(lastVid)},
                     MediaStore.MediaColumns._ID + " desc");
+            LeoLog.d("testCursor", "new cursor:" + cursor.getCount());
+
+//            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+//                    MediaStore.MediaColumns._ID + " desc");
+//            LeoLog.d("testCursor", "old cursor:" + cursor.getCount());
             if (cursor != null) {
                 while (cursor.moveToNext()) {
 
@@ -774,6 +799,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             }
 
         } catch (Exception e) {
+            LeoLog.d("checkVidId", "catch the getAddVidNum");
         } finally {
             if (cursor != null) {
                 cursor.close();
