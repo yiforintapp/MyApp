@@ -80,7 +80,7 @@ public class SplashActivity extends BaseActivity {
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
     private static final boolean DBG = false;
-    
+
     /* 是否显示更多引导 */
     private boolean mIsShowGuide;
 
