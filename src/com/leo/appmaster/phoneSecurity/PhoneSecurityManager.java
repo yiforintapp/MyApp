@@ -52,7 +52,7 @@ public class PhoneSecurityManager {
 
     public static synchronized PhoneSecurityManager getInstance(Context context) {
         if (mInstance == null) {
-            mInstance = new PhoneSecurityManager(context);
+            mInstance = new PhoneSecurityManager(context.getApplicationContext());
         }
         return mInstance;
     }
