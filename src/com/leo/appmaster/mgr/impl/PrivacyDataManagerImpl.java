@@ -670,17 +670,13 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         String store = externalStorageDirectory.getPath();
 
         try {
-
-            cursor = mContext.getContentResolver().query(uri,
-                    null,
-                    selection + " and " + MediaStore.MediaColumns._ID + ">?",
-                    new String[]{String.valueOf(lastVid)},
-                    MediaStore.MediaColumns._ID + " desc");
-            LeoLog.d("testCursor", "new cursor:" + cursor.getCount());
-
-//            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+//            cursor = mContext.getContentResolver().query(uri,
+//                    null,
+//                    selection + " and " + MediaStore.MediaColumns._ID + ">?",
+//                    new String[]{String.valueOf(lastVid)},
 //                    MediaStore.MediaColumns._ID + " desc");
-//            LeoLog.d("testCursor", "old cursor:" + cursor.getCount());
+            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+                    MediaStore.MediaColumns._ID + " desc");
             if (cursor != null) {
                 while (cursor.moveToNext()) {
                     int id = cursor.getInt(cursor.getColumnIndex(MediaStore.MediaColumns._ID));
@@ -743,6 +739,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         int record = 0;
         int lastVid = PreferenceTable.getInstance().getInt(PrefConst.KEY_NEW_ADD_VID, 0);
         LeoLog.d("checkVidId", "lastVid is : " + lastVid);
+//        Uri uri = MediaStore.Files.getContentUri("external");
         Uri uri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI;
         String selection = Constants.VIDEO_FORMAT;
         Cursor cursor = null;
@@ -750,17 +747,13 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
         File externalStorageDirectory = Environment.getExternalStorageDirectory();
         String store = externalStorageDirectory.getPath();
         try {
-
-            cursor = mContext.getContentResolver().query(uri,
-                    null,
-                    selection + " and " + MediaStore.MediaColumns._ID + ">?",
-                    new String[]{String.valueOf(lastVid)},
-                    MediaStore.MediaColumns._ID + " desc");
-            LeoLog.d("testCursor", "new cursor:" + cursor.getCount());
-
-//            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+//            cursor = mContext.getContentResolver().query(uri,
+//                    null,
+//                    selection + " and " + MediaStore.MediaColumns._ID + ">?",
+//                    new String[]{String.valueOf(lastVid)},
 //                    MediaStore.MediaColumns._ID + " desc");
-//            LeoLog.d("testCursor", "old cursor:" + cursor.getCount());
+            cursor = mContext.getContentResolver().query(uri, null, selection, null,
+                    MediaStore.MediaColumns._ID + " desc");
             if (cursor != null) {
                 while (cursor.moveToNext()) {
 
@@ -799,7 +792,6 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
             }
 
         } catch (Exception e) {
-            LeoLog.d("checkVidId", "catch the getAddVidNum");
         } finally {
             if (cursor != null) {
                 cursor.close();
