@@ -35,18 +35,15 @@
 
         <TextView
             android:id="@+id/guide_tv_content"
-            android:layout_width="match_parent"
+            android:layout_width="180dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:paddingLeft="50dp"
-            android:paddingRight="50dp"
             android:layout_marginBottom="@dimen/guide_content_margin_buttom"
             android:ellipsize="end"
             android:gravity="center"
-            android:maxLines="3"
+            android:maxLines="2"
             android:textColor="#acacac"
-            android:text="Kamu boleh mengawal telefon dari telefon lain untuk memberi amaran ,bersihkan data,mengesan kedudukan dan mengunci semua aplikasi"
             android:textSize="@dimen/guide_page_content_font_size" />
 
         <TextView
