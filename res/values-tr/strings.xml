@@ -603,7 +603,7 @@
     <string name="pri_pro_wifi_safe">Bağlanılan WiFi güvenli</string>
     <string name="pri_pro_summary_not_confirm">Gizliliğinizi şu seviyeye kadar artırın:</string>
     <string name="pri_pro_summary_confirm">İyi, tam güvenli, devam!</string>
-    <string name="pri_pro_btn">Etkinleştir (%1$s dk)</string>
+    <string name="pri_pro_btn">Etkinleştir (+%1$s)</string>
     <string name="pri_pro_opened">Etkin </string>
     <string name="pri_mobile_privacy">%1$d kat gizlilik korumalı</string>
     <string name="pri_lost_privacy">%1$d gün %2$d saat süreyle gizlilik korumalı</string>

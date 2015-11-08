@@ -585,7 +585,7 @@
     <string name="pri_pro_wifi_safe">Текущее соединение Wi-Fi безопасное</string>
     <string name="pri_pro_summary_not_confirm">Выполните следующие действия для повышения уровня секрета</string>
     <string name="pri_pro_summary_confirm">Хорошо, все безопасно, так держать!, </string>
-    <string name="pri_pro_btn">Открыть (+%1$d мин.)</string>
+    <string name="pri_pro_btn">Открыть (+%1$d)</string>
     <string name="pri_pro_opened">Открыть</string>
     <string name="pri_mobile_privacy">Секрет с.т. %1$d раз под защ.</string>
     <string name="pri_lost_privacy">Секрет %1$d д. %2$d ч.</string>

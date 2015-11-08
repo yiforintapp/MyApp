@@ -704,7 +704,7 @@
     <string name="pri_pro_wifi_safe">شبكة واي فاي المتصلة آمنة</string>
     <string name="pri_pro_summary_not_confirm">تحسين مستوى الخصوصية بواسطة</string>
     <string name="pri_pro_summary_confirm">جيد، الكل آمن، واصل ذلك!</string>
-    <string name="pri_pro_btn">تمكين(<xliff:g>%1$s</xliff:g>  دقيقة)</string>
+    <string name="pri_pro_btn">تمكين(+<xliff:g>%1$s</xliff:g>)</string>
     <string name="pri_pro_opened">تمكين</string>
     <string name="pri_mobile_privacy">الخصوصية محمية لـ<xliff:g>%1$s</xliff:g> مرة</string>
     <string name="pri_lost_privacy">الخصوصية محمية لـ <xliff:g>%1$d</xliff:g> يوم <xliff:g>%2$d</xliff:g> ساعة</string>
