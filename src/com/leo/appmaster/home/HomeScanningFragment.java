@@ -274,6 +274,9 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
                         @Override
                         public void run() {
                             updateVideoList();
+                            if (!mPrivacyAnimator.isRunning()) {
+                                onScannigFinish(mAppList, mPhotoList, mVideoList);
+                            }
                         }
                     });
                 }
