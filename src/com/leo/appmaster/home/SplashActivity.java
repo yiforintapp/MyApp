@@ -322,10 +322,12 @@ public class SplashActivity extends BaseActivity {
 
     public void onEvent(AppUnlockEvent event) {
         if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY) {
-            Intent intent = new Intent(this, HomeActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            AppMasterApplication.getInstance().startActivity(intent);
-            AppMasterApplication.sIsSplashActioned = true;
+            if (getPackageName() != null && getPackageName().equals(event.mUnlockedPkg)) {
+                Intent intent = new Intent(this, HomeActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                AppMasterApplication.getInstance().startActivity(intent);
+                AppMasterApplication.sIsSplashActioned = true;
+            }
             this.finish();
         } else if (event.mUnlockResult == AppUnlockEvent.RESULT_UNLOCK_CANCELED) {
             this.finish();
