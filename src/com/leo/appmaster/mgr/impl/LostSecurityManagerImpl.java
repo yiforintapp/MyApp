@@ -200,6 +200,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         /*对电量的要求*/
         criteria.setPowerRequirement(Criteria.POWER_LOW);
         String provider = mLocationManager.getBestProvider(criteria, true);
+        if(provider==null){
+            provider =LocationManager.NETWORK_PROVIDER;
+        }
         LeoLog.i(TAG, "provider=" + provider);
         if (mLocationManager
                 .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
