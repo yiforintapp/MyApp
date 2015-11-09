@@ -17,7 +17,6 @@ import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
 import android.widget.Toast;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.applocker.LockSettingActivity;

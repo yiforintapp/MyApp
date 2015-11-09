@@ -33,7 +33,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
@@ -42,7 +41,6 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.AboutActivity;
-import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
@@ -74,7 +72,6 @@ import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
-import com.mobvista.sdk.m.core.MobvistaAdWall;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener, IPrivacyNewActivity {

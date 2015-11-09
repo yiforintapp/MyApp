@@ -90,7 +90,6 @@ import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
-import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.intruderprotection.WaterMarkUtils;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;

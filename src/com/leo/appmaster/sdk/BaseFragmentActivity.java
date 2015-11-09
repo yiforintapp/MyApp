@@ -21,8 +21,8 @@ public class BaseFragmentActivity extends FragmentActivity {
         AppMasterApplication.getInstance().addActivity(this);
         try {
             super.onCreate(savedInstanceState);
-        } catch (Exception e) {
-            
+        } catch (Exception e) {          
+        } catch (Error error) {            
         }
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
     }

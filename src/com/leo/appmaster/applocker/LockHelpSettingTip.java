@@ -22,7 +22,6 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
