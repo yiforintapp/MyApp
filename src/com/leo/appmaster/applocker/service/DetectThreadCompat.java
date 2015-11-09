@@ -184,7 +184,7 @@ public class DetectThreadCompat extends Thread {
     }
     
     private ProcessAdj checkSelfForeground(ProcessAdj needToListenAdj) {
-        if (!mDetector.isOOMScoreMode() || needToListenAdj != null) return needToListenAdj;
+        if (!mDetector.isOOMScoreMode()/* || needToListenAdj != null*/) return needToListenAdj;
 
         AppMasterApplication context = AppMasterApplication.getInstance();
         if (needToListenAdj == null && context.isForeground()) {
