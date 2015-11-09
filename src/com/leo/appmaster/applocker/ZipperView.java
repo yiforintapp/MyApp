@@ -142,6 +142,9 @@ public class ZipperView extends View {
     }
 
     private void initScaleBitmap() {
+        if(mWidth <=0 || mHeight <= 0) {
+            return;
+        }      
         Options options = new Options();
         options.inPreferredConfig = Config.RGB_565;
         // 大背景图没有必要使用8888，替换为565
