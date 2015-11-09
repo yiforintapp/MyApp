@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.AppTask;
 import android.app.ActivityManager.RecentTaskInfo;
@@ -84,9 +85,9 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
     public int mRandomCount;
     public static volatile boolean mUpdateTipIsFilterLock;
 
-    public UIHelper(Context ctx) {
+    private UIHelper(Context ctx) {
 
-        mContext = ctx.getApplicationContext();
+        mContext = ctx;
         /* new version found */
         IntentFilter filter = new IntentFilter();
         filter.addAction(ACTION_NEED_UPDATE);
@@ -131,6 +132,12 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     public void setOnProgressListener(OnStateChangeListener l) {
         listener = l;
+    }
+
+    public void unregisterOnProgressListener(Activity activity){
+        if(activity.equals(listener)){
+            listener = null;
+        }
     }
 
     @SuppressWarnings("deprecation")

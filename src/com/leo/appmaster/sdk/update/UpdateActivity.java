@@ -93,6 +93,12 @@ public class UpdateActivity extends BaseActivity implements OnStateChangeListene
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mUIHelper.unregisterOnProgressListener(this);
+    }
+
+    @Override
     protected void onResume() {
         mUserCancel = false;
         mUIType = mUIHelper.getLayoutType();
