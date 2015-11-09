@@ -90,6 +90,7 @@ import com.leo.appmaster.fragment.PretendAppZhiWenFragment;
 import com.leo.appmaster.fragment.PretendFragment;
 import com.leo.appmaster.intruderprotection.CameraSurfacePreview;
 import com.leo.appmaster.intruderprotection.IntruderCatchedActivity;
+import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.intruderprotection.WaterMarkUtils;
 import com.leo.appmaster.lockertheme.LockerTheme;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -112,6 +113,7 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -301,6 +303,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     public void takePicture(final CameraSurfacePreview view, final String packagename) {
+        if(BuildProperties.isApiLevel14()){
+            return;
+        }
         SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_package_"+packagename);
         if (view != null && mCanTakePhoto) {

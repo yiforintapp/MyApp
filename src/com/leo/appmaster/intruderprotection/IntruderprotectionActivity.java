@@ -48,6 +48,7 @@ import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
@@ -625,6 +626,10 @@ public class IntruderprotectionActivity extends Activity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(BuildProperties.isApiLevel14()){
+                    Toast.makeText(IntruderprotectionActivity.this, getResources().getString(R.string.unavailable), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if (mImanager.getIntruderMode()) {
                     mImanager.switchIntruderMode(false);
                     Toast.makeText(IntruderprotectionActivity.this, getString(R.string.intruder_close), Toast.LENGTH_SHORT).show();
