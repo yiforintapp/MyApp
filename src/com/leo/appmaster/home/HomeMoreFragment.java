@@ -380,4 +380,10 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
         }
 
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mUpArrow.release();
+    }
 }

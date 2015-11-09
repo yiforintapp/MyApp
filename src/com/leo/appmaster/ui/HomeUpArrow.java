@@ -164,6 +164,18 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
         mUpAnim.start();
     }
 
+    public void release() {
+        if (mUpAnim != null) {
+            try {
+                mUpAnim.end();
+                mUpAnim.cancel();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            mUpAnim = null;
+        }
+    }
+
     public void cancelUpAnimation() {
         if (mUpAnim != null) {
             mUpAnim.cancel();
