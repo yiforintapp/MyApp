@@ -115,7 +115,7 @@ public class UIHelper extends BroadcastReceiver implements com.leo.analytics.upd
 
     public static synchronized UIHelper getInstance(Context ctx) {
         if (sUIHelper == null) {
-            sUIHelper = new UIHelper(ctx);
+            sUIHelper = new UIHelper(ctx.getApplicationContext());
         }
         return sUIHelper;
     }
