@@ -83,7 +83,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
     @Override
     public void registerSecurityListener(SecurityChangeListener listener) {
-//        super.registerSecurityListener(listener);
+        super.registerSecurityListener(listener);
 //        mMediaStoreChangeObserver = new MediaStoreChangeObserver(mHandler);
 //        mMediaStoreChangeObserver.startObserver();
 //        LeoLog.d("monitorMedia", "registerContentObserver!");
@@ -120,7 +120,7 @@ public class PrivacyDataManagerImpl extends PrivacyDataManager {
 
     @Override
     public void unregisterSecurityListener(SecurityChangeListener listener) {
-//        super.unregisterSecurityListener(listener);
+        super.unregisterSecurityListener(listener);
 //        mMediaStoreChangeObserver.stopObserver();
     }
 
