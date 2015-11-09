@@ -358,7 +358,7 @@
     <dimen name="security_guide_content_size">13dp</dimen>
     <dimen name="ph_sec_nu_bkup_cb">14dp</dimen>
     <dimen name="ph_sec_nu_bkup_cb_top">12dp</dimen>
-    <dimen name="ph_sec_nu_bkup_cb_pd_left">6dp</dimen>
+    <dimen name="ph_sec_nu_bkup_cb_pd_left">24dp</dimen>
     <dimen name="open_adv_cb">14dp</dimen>
     <dimen name="secur_bom_bt_hi">40dp</dimen>
     <dimen name="secur_bom_bt_wt">210dp</dimen>

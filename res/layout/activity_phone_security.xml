@@ -724,9 +724,8 @@
 
             <com.leo.appmaster.ui.RippleView
                 android:id="@+id/secur_bt_rv"
-                android:layout_width="@dimen/secur_bom_bt_wt"
-                android:layout_height="@dimen/secur_bom_bt_hi"
-                android:layout_marginTop="@dimen/secur_bt_rv_tp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:clickable="true"
                 leo:rv_color="@color/green_button_ripple"
                 leo:rv_rippleDuration="100">
