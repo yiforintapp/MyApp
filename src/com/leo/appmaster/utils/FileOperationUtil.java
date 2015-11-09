@@ -47,7 +47,7 @@ public class FileOperationUtil {
 
     public static final String SDCARD_DIR_NAME = "PravicyLock";
     public static final String[] STORE_IMAGES = {
-            MediaStore.Images.Media.DISPLAY_NAME, 
+            MediaStore.Images.Media.DISPLAY_NAME,
             MediaStore.Images.Media.DATA,
             MediaStore.Images.Media._ID, //
             MediaStore.Images.Media.BUCKET_DISPLAY_NAME
@@ -226,6 +226,23 @@ public class FileOperationUtil {
         return temp > availableblock ? false : true;
     }
 
+    private static boolean jugdePath(String filePath, String pathSDcardPath) {
+        if (filePath != null && pathSDcardPath != null) {
+            String[] strings = pathSDcardPath.split("/");
+            String[] pathStrings = filePath.split("/");
+            if (strings == null || pathStrings == null) {
+                return false;
+            }
+            for (int i = 0; i < strings.length; i++) {
+                if (!strings[i].equals(pathStrings[i])) {
+                    return false;
+                }
+            }
+            return true;
+        }
+        return false;
+    }
+
     /**
      * cut a file to our special dir in the same sdcard
      *
@@ -234,7 +251,7 @@ public class FileOperationUtil {
      * @return
      */
     public static synchronized String hideImageFile(Context ctx,
-                                                    String filePath, String newName, long fileSize) {
+                                             String filePath, String newName, long fileSize) {
 
         String str = FileOperationUtil.getDirPathFromFilepath(filePath);
         String fileName = FileOperationUtil.getNameFromFilepath(filePath);
@@ -245,13 +262,16 @@ public class FileOperationUtil {
         }
 
         String[] paths = getSdCardPaths(ctx);
-        int position = 0;
-        if (filePath.startsWith(paths[0])) {
-            position = 0;
-        } else if (filePath.startsWith(paths[1])) {
-            position = 1;
-        } else {
-            position = -1;
+        int position = -1;
+        if (paths == null) {
+            return null;
+        }
+
+        for (int i = 0;i<paths.length;i++) {
+            if (filePath.startsWith(paths[0]) && jugdePath(filePath, paths[i])) {
+                position = i;
+                break;
+            }
         }
 
         String newPath;
@@ -655,7 +675,7 @@ public class FileOperationUtil {
         } catch (Exception e) {
 
         } finally {
-            if(cursor != null){
+            if (cursor != null) {
                 cursor.close();
             }
         }
