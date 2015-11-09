@@ -30,6 +30,7 @@ import com.leo.tools.animator.ValueAnimator;
  */
 public class WifiTabFragment extends Fragment {
     private static final String TAG = "WifiTabFragment";
+    private static final int PING_LOST = 30 * 1000;
     public final static int CONNECT_STATUS = 1;
     public final static int SECOND_CONNECT = 2;
     public final static int PASSWORD_TYPE = 3;
@@ -91,7 +92,7 @@ public class WifiTabFragment extends Fragment {
                         mActivity.loadFinish();
                         break;
                     case CHECK_PING_STATE:
-                        if (pingNumDone == 0) {
+                        if (pingNumDone == 0 && !pingResult) {
                             mWifiManger.destoryPing();
                             stopScan();
                         }
@@ -210,7 +211,7 @@ public class WifiTabFragment extends Fragment {
         //超过7500ms断开ping
         Message msg = new Message();
         msg.what = CHECK_PING_STATE;
-        mHandler.sendMessageDelayed(msg, 7500);
+        mHandler.sendMessageDelayed(msg, PING_LOST);
 
         for (int i = 0; i < PING_DEFAULT_HOST.length; i++) {
             String host = PING_DEFAULT_HOST[i];
