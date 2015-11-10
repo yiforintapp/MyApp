@@ -226,9 +226,9 @@ public class FileOperationUtil {
         return temp > availableblock ? false : true;
     }
 
-    private static boolean jugdePath(String filePath, String pathSDcardPath) {
-        if (filePath != null && pathSDcardPath != null) {
-            String[] strings = pathSDcardPath.split("/");
+    private static boolean jugdePath(String filePath, String sdcardPath) {
+        if (filePath != null && sdcardPath != null) {
+            String[] strings = sdcardPath.split("/");
             String[] pathStrings = filePath.split("/");
             if (strings == null || pathStrings == null) {
                 return false;
@@ -268,7 +268,7 @@ public class FileOperationUtil {
         }
 
         for (int i = 0;i<paths.length;i++) {
-            if (filePath.startsWith(paths[0]) && jugdePath(filePath, paths[i])) {
+            if (filePath.startsWith(paths[i]) && jugdePath(filePath, paths[i])) {
                 position = i;
                 break;
             }
