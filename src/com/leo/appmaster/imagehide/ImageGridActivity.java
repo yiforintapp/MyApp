@@ -1,6 +1,7 @@
 
 package com.leo.appmaster.imagehide;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -472,8 +473,10 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                                     isSuccess = 3;
                                     FileOperationUtil.saveFileMediaEntry(newPath,
                                             context);
-                                    FileOperationUtil.deleteImageMediaEntry(
-                                            item.getPath(), context);
+                                    File file = new File(item.getPath());
+                                    if (!file.exists()) {
+                                        FileOperationUtil.deleteImageMediaEntry(item.getPath(), context);
+                                    }
                                     // mPicturesList.remove(item);
                                     // mAllListPath.remove(item.getPath());
                                     deleteList.add(item);
