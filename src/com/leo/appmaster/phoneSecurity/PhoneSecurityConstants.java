@@ -22,8 +22,8 @@ public class PhoneSecurityConstants {
     public static final long MESSAGE_INSTRUCT_TIME_OUT = 2 * 60 * 1000;
     /*手机防盗访问服务器URL*/
     public static final String PHONE_SECUR_URL = "/appmaster/datasecurity/d.html";
-    /*使用时机防盗本地的默认人数*/
-    public static final int USE_SECUR_NUMBER = 2125863;
+    /*使用手机防盗本地的默认人数*/
+    public static final int USE_SECUR_NUMBER = 82117;
     /*执行防盗指令时，上报手机数据的ID*/
     public static final String UPLOAD_PHONE_DATA_ID = "lost_upload";
     /*一键防盗指令执行清除数据时延迟执行时间*/
