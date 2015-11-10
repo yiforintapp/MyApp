@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.utils;
 
 import java.io.File;
@@ -339,8 +338,11 @@ public class FileOperationUtil {
             return null;
         }
         String[] paths = getSdCardPaths(ctx);
+        String replacedPath = filePath;
         if (filePath.endsWith(".leotmp")) {
-            filePath.replace(".leotmp", ".leotmi");
+            StringBuilder stringBuilder = new StringBuilder(filePath);
+            replacedPath = stringBuilder.substring(0, stringBuilder.indexOf(".leotmp")) + ".leotmi";
+//            filePath.replace(".leotmp", ".leotmi");
         }
         // if (Build.VERSION.SDK_INT < 19
         // || FileOperationUtil.getDirPathFromFilepath(filePath).startsWith(
@@ -349,12 +351,12 @@ public class FileOperationUtil {
         boolean newHided = false;
         if (filePath.contains(SDCARD_DIR_NAME)) {
             newHided = true;
-            newPath = filePath.replace(".leotmi", "").replace(
+            newPath = replacedPath.replace(".leotmi", "").replace(
                     SDCARD_DIR_NAME + File.separator, "");
 
         } else {
             newHided = false;
-            newPath = filePath.replace(".leotmi", "");
+            newPath = replacedPath.replace(".leotmi", "");
         }
         String fileName = getNameFromFilepath(newPath);
         String fileDir = newPath.replace(fileName, "");
