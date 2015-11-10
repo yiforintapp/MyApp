@@ -230,7 +230,11 @@ public class SplashActivity extends BaseActivity {
                 option.inTargetDensity = option.inTargetDensity - 40;
             }
             option.inScaled = true;
-            splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
+            try {
+                splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
+            } catch (Throwable e) {
+                e.printStackTrace();
+            }
         }
         // mShowSplashFlag = true;
         // mSkipToPgButton.setVisibility(View.VISIBLE);
