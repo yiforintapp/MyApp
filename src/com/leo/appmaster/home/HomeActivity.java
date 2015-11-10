@@ -898,7 +898,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                             "com.google.android.apps.plus")) {
                         intentBeta = new Intent(Intent.ACTION_VIEW);
                         Uri uri = Uri
-                                .parse("https://plus.google.com/u/2/b/105232083159143297575/105232083159143297575/admin/");
+                                .parse("https://plus.google.com/u/0/communities/112552044334117834440");
                         intentBeta.setData(uri);
                         ComponentName cn = new ComponentName(
                                 "com.google.android.apps.plus",
@@ -926,7 +926,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                         }
                     } else {
                         Uri uri = Uri
-                                .parse("https://plus.google.com/u/2/b/105232083159143297575/105232083159143297575/admin/");
+                                .parse("https://plus.google.com/u/0/communities/112552044334117834440");
                         intentBeta = new Intent(Intent.ACTION_VIEW, uri);
                         try {
                             startActivity(intentBeta);
