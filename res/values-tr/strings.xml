@@ -742,7 +742,7 @@
     <string name="quick_help_add_toast">Başarılı </string>
     <string name="quick_help_add_toast_fail">Başarısız </string>
 
-    <string name="intruder_to_catch_fail_times_tip">Şifre %1$s kez yanlış girilirse telefonu al</string>
+    <string name="intruder_to_catch_fail_times_tip">Şifre %1$s kez yanlış girilirse fotoğraf almak</string>
     <string name="intruder_times_of_catch"><Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data> kez izinsiz girme girişiminde bulunuldu</string>
     <string name="change_times_to_catch">Değiştir</string>
     <string name="newest_catch_tip">Bu kişi sizin %1$s \'inizi görmek istedi</string>

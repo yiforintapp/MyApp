@@ -751,7 +751,7 @@
     <string name="quick_help_add_toast">Succeeded</string>
     <string name="quick_help_add_toast_fail">Failed</string>
 
-    <string name="intruder_to_catch_fail_times_tip">Take phone if wrong password is input for %1$s times</string>
+    <string name="intruder_to_catch_fail_times_tip">Take photo if wrong password is input for %1$s times</string>
     <string name="intruder_times_of_catch">The <Data><![CDATA[<b><font color="#ffde00">%1$d</font></b>]]></Data> times found people want to break-in</string>
     <string name="change_times_to_catch">Change</string>
     <string name="newest_catch_tip">This person wanted to see your %1$s</string>
