@@ -330,6 +330,7 @@ public class LocationLockEditActivity extends BaseActivity implements
                 List<LockMode> modeList = mLockManager.getLockMode();
               LockMode selectedMode = modeList.get(position);
               if (which == 0) {
+                  mEditLocationLock.quitModeId = selectedMode.modeId;
                   mEditLocationLock.entranceModeId = selectedMode.modeId;
                   mEditLocationLock.entranceModeName = selectedMode.modeName;
                   mTvEnterMode.setText(mEditLocationLock.entranceModeName);
