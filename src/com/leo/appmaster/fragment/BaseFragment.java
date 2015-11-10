@@ -68,14 +68,23 @@ public abstract class BaseFragment extends Fragment {
 	protected abstract void onInitUI();
 
 	protected View findViewById(int id) {
-		if (mRootView == null) {
-			try {
-				// throw new Exception(getString(R.string.exception_not_root));
-			} catch (Exception e) {
-				// LTLog.e(TAG, e.getMessage());
-			}
+		View result = null;
+		if (mRootView != null) {
+			result = mRootView.findViewById(id);
 		}
-		return mRootView.findViewById(id);
+		if (result == null && mActivity != null) {
+			result = mActivity.findViewById(id);
+		}
+
+		return result;
+//		if (mRootView == null) {
+//			try {
+//				// throw new Exception(getString(R.string.exception_not_root));
+//			} catch (Exception e) {
+//				// LTLog.e(TAG, e.getMessage());
+//			}
+//		}
+//		return mRootView.findViewById(id);
 	}
 
 	@Override
