@@ -1,11 +1,15 @@
 package com.leo.appmaster.home;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.admin.DevicePolicyManager;
 import android.content.ComponentName;
@@ -18,9 +22,11 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
+import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -124,6 +130,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        removeFragments();
+
         setContentView(R.layout.activity_home_main);
         SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "enter");
         mPrivacyHelper = PrivacyHelper.getInstance(this);
@@ -254,6 +262,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     public void onTabAnimationFinish() {
+        if (isFinishing()) return;
+
         if (!mTabFragment.isTabDismiss()) {
             mPrivacyFragment.setShowColorProgress(true);
         } else {
@@ -265,7 +275,11 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.addToBackStack(null);
                 ft.replace(R.id.pri_pro_content, mScanningFragment);
-                ft.commit();
+                try {
+                    ft.commit();
+                } catch (Exception e) {
+                    ft.commitAllowingStateLoss();
+                }
             }
         }
     }
@@ -449,6 +463,55 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             }
         }
 
+    }
+
+    @Override
+    public View onCreateView(String name, Context context, AttributeSet attrs) {
+        try {
+            return super.onCreateView(name, context, attrs);
+        } catch (Exception e) {
+            removeFragments();
+        }
+        return super.onCreateView(name, context, attrs);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        try {
+            super.onSaveInstanceState(outState);
+        } catch (Exception e) {
+        }
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        try {
+            super.onRestoreInstanceState(savedInstanceState);
+        } catch (Exception e) {
+        }
+    }
+
+    private void removeFragments() {
+        long start = SystemClock.elapsedRealtime();
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        try {
+            Field field = fm.getClass().getDeclaredField("mActive");
+            field.setAccessible(true);
+            Object object = field.get(fm);
+            ArrayList<Fragment> list = (ArrayList<Fragment>) object;
+            if (list != null) {
+                for (Fragment f : list) {
+                    ft.remove(f);
+                }
+            }
+            ft.commit();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LeoLog.i(TAG, "removeFragments, cost: " + (SystemClock.elapsedRealtime() - start));
     }
 
     private void initMobvista() {
