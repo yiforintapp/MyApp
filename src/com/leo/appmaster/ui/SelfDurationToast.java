@@ -3,6 +3,7 @@ package com.leo.appmaster.ui;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.animation.AnimationListenerAdapter;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -13,6 +14,10 @@ import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorListenerAdapter;
+import com.leo.tools.animator.AnimatorSet;
+import com.leo.tools.animator.ObjectAnimator;
 
 import android.content.Context;
 import android.content.Intent;
@@ -44,7 +49,7 @@ public class SelfDurationToast {
     public static String wifiName;
     private static Context mContext;
     private static View contentView, loadingView;
-    private static ImageView mArrow;
+    private static ImageView mArrow, iconView;
 
     private static android.os.Handler handler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -56,9 +61,7 @@ public class SelfDurationToast {
                     //connect wifi?
                     boolean isSelectWifi = wsm.getIsWifi();
                     if (isWifiOpen && isSelectWifi) {
-                        realLoading.clearAnimation();
-                        loadingView.setVisibility(View.GONE);
-                        contentView.setVisibility(View.VISIBLE);
+                        showAnimation();
                         int wifiSate = (Integer) msg.obj;
                         if (wifiSate == 2) {
                             String a1 = mContext.getString(R.string.over_traffic_toast_unsafe, wifiName);
@@ -77,6 +80,79 @@ public class SelfDurationToast {
         }
     };
 
+    private static void showAnimation() {
+        contentView.setVisibility(View.VISIBLE);
+        Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.anim_left_to_right);
+        animation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                circleMissingAnimation();
+                showResult();
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        contentView.startAnimation(animation);
+    }
+
+    private static void circleMissingAnimation() {
+        realLoading.clearAnimation();
+
+        ObjectAnimator animAlpha = ObjectAnimator.ofFloat(loadingView,
+                "alpha", 1f, 0f);
+        animAlpha.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                loadingView.setVisibility(View.GONE);
+            }
+        });
+        animAlpha.setDuration(600);
+        animAlpha.start();
+    }
+
+    private static void showResult() {
+        ObjectAnimator animAlpha = ObjectAnimator.ofFloat(iconView,
+                "alpha", 0f, 1f);
+        ObjectAnimator animAlpha1 = ObjectAnimator.ofFloat(mArrow,
+                "alpha", 0f, 1f);
+        ObjectAnimator animAlpha2 = ObjectAnimator.ofFloat(tv_clean_rocket,
+                "alpha", 0f, 1f);
+        AnimatorSet set = new AnimatorSet();
+        set.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+            }
+
+            @Override
+            public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
+                iconView.setVisibility(View.VISIBLE);
+                mArrow.setVisibility(View.VISIBLE);
+                tv_clean_rocket.setVisibility(View.VISIBLE);
+            }
+        });
+        set.setDuration(800);
+        set.play(animAlpha).with(animAlpha1);
+        set.play(animAlpha1).with(animAlpha2);
+        set.start();
+    }
+
     public static SelfDurationToast makeText(final Context context, String text, int duration, final int wifiState) {
         SelfDurationToast result = new SelfDurationToast(context);
 
@@ -89,6 +165,7 @@ public class SelfDurationToast {
         View view = inflater.inflate(R.layout.wifi_change_toast, null);
         view.setBackgroundResource(R.color.transparent);
         mArrow = (ImageView) view.findViewById(R.id.iv_arrow);
+        iconView = (ImageView) view.findViewById(R.id.iv_icon);
         realLoading = (ImageView) view.findViewById(R.id.loding_iv);
         realLoading.setImageResource(R.drawable.real_loading);
         Animation loadingAnimation = AnimationUtils.
@@ -114,6 +191,7 @@ public class SelfDurationToast {
                 }
             }
         });
+
         loadingView = view.findViewById(R.id.loading_content);
         tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
         result.mNextView = view;
