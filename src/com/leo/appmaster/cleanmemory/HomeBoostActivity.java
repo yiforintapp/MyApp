@@ -92,7 +92,7 @@ public class HomeBoostActivity extends Activity {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                if (code == MobvistaEngine.ERR_OK && mRlResultWithAD != null) {
+                if (code == MobvistaEngine.ERR_OK && mRlResultWithAD != null && campaign != null) {
                     mIsADLoaded = true;
                     LeoLog.e("poha", "loaded!");
                     long currentTime = System.currentTimeMillis();
