@@ -96,7 +96,11 @@ public class IntruderprotectionActivity extends Activity {
         
     }
 
+    /**
+     * 根据intent附带的信息做的处理
+     */
     private void handlerIntent() {
+        //如果intent包括from，表示从push调起这个activity，打点
         try {
             Intent i = getIntent();
             String from = i.getStringExtra("from");
@@ -111,13 +115,9 @@ public class IntruderprotectionActivity extends Activity {
     }
 
     /**
-     * create时的初始化(不需要变化的UI)
+     * create时的初始化(不需要变化的UI，引用)
      */
     private void init() {
-//        BitmapFactory.Options option = new BitmapFactory.Options();
-//        option.inPreferredConfig = Config.RGB_565;
-//        option.inSampleSize = 4;
-        
         mNoPic = (RelativeLayout) findViewById(R.id.rl_nopic);
         // 标题栏
         mctb = (CommonToolbar) findViewById(R.id.ctb_at_intruder);
@@ -135,13 +135,9 @@ public class IntruderprotectionActivity extends Activity {
             mHasAddHeader = true;
             mLvPhotos.addHeaderView(mHeader);
         }
+        //初始化imageloader
         mImageLoader = ImageLoader.getInstance();
         mImageOptions = new DisplayImageOptions.Builder()
-//        .bitmapConfig(Bitmap.Config.RGB_565)
-//        .delayBeforeLoading(100)
-//        .cacheInMemory(true)
-//        .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
-//        .showImageOnLoading(R.drawable.photo_bg_loding)
         .showImageOnLoading(R.drawable.online_theme_loading)
         .showImageOnFail(R.drawable.online_theme_loading_failed)
         .displayer(new FadeInBitmapDisplayer(500))
@@ -165,6 +161,9 @@ public class IntruderprotectionActivity extends Activity {
         }
     }
 
+    /**
+     * 更新数据，从数据库查询，
+     */
     private void updateData() {
         LeoLog.i("poha", "initData!!!");
         ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -175,14 +174,11 @@ public class IntruderprotectionActivity extends Activity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            // LeoLog.i("poha",
-                            // "after query header count ="+mLvPhotos.getHeaderViewsCount());
+                            //做与数据库查询结果有关的操作
                             onQueryFinished();
                             // 保证头布局的显示 保证数据的清空，
                             ListAdapter adapter = mLvPhotos.getAdapter();
                             if (adapter == null) {
-                                // LeoLog.i("poha",
-                                // "after query adapter is null  !!! ");
                                 mLvPhotos.setAdapter(null);
                                 mctb.setOptionClickListener(new OnClickListener() {
                                     @Override
@@ -200,26 +196,32 @@ public class IntruderprotectionActivity extends Activity {
         });
     }
 
+    /**
+     *      更新抓拍到入侵者XX次的显示
+     */
     private void updateTimesToCatch() {
-        try {
-            LeoLog.i("poha", "update Times To Catch!");
             mTvTimes = (TextView) mHeader.findViewById(R.id.tv_fail_times_to_catch);
             String failtimesTipsS = getResources().getString(
                     R.string.intruder_to_catch_fail_times_tip);
             String failtimesTipsD = String.format(failtimesTipsS, mImanager.getTimesForTakePhoto());
             mTvTimes.setText(Html.fromHtml(failtimesTipsD));
-            throw(new Exception());
-        } catch (Exception e) {
-        }
     }
 
+    /**
+     * @author chenfs
+     *  带时间戳的listView子项布局的holder类
+     */
     static  class ViewWithTimeStampHolder {
         BottomCropImage ivIntruderPic;
         RelativeLayout rlMask;
         TextView tvTimeStamp;
     }
 
- static  class ViewWithoutTimeStampHolder {
+    /**
+     * @author chenfs
+     *  不带时间戳的listView子项布局的holder类
+     */
+    static  class ViewWithoutTimeStampHolder {
         BottomCropImage ivIntruderPic;
         RelativeLayout rlMask;
     }
@@ -232,14 +234,14 @@ public class IntruderprotectionActivity extends Activity {
         sortInfos();//排序，按照时间先后
         getIndexOfFirstPhotoOneDay();//获得各天第一张该显示的照片（即当天最晚一张）的角标
         // ListView的adapter，保证只使用mInfosSorted，不要重新查询
-//        mInfosSorted.get(0).setFilePath("dfasdfad");
         mAdapter = new BaseAdapter() {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 View viewWithoutTimeStamp = null;
                 View viewWithTimeStamp = null;
                 int itemViewType = getItemViewType(position);
-                if(itemViewType == VIEW_TYPE_NEED_TIMESTAMP){
+              //带时间戳的item布局
+                if(itemViewType == VIEW_TYPE_NEED_TIMESTAMP){   
                     ViewWithTimeStampHolder holder1 = null;
                     if(convertView == null){
                         holder1 = new ViewWithTimeStampHolder();
@@ -255,23 +257,8 @@ public class IntruderprotectionActivity extends Activity {
                     }
                     //时间戳
                     String timeStamp = mInfosSorted.get(position).getTimeStamp();
-                    SimpleDateFormat sdf = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
-                    int day = 0;
-                    int month = 0;
-                    int year = 0;
-                    try {
-                        Calendar ci = Calendar.getInstance();
-                        Date date = sdf.parse(timeStamp);
-                        ci.setTime(date);
-                        day = ci.get(Calendar.DAY_OF_MONTH);
-                        LeoLog.i("poha", "position::" + position + "---------" + "timeStamp::"+ mInfosSorted.get(position).getTimeStamp());
-                        month = ci.get(Calendar.MONTH) + 1;
-                        year = ci.get(Calendar.YEAR);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    String s = year + "/" + month + "/" + day;
-                    holder1.tvTimeStamp.setText(s);
+                    String ymdFomatString = toYMDFomatString(timeStamp);
+                    holder1.tvTimeStamp.setText(ymdFomatString);
                     //加载照片
                     String filePath = mInfosSorted.get(position).getFilePath();
                     final ImageView pic1 = holder1.ivIntruderPic;
@@ -279,6 +266,7 @@ public class IntruderprotectionActivity extends Activity {
                     pic1.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            //照片在点击后将进入大图浏览
                             Intent intent = new Intent(IntruderprotectionActivity.this,
                                     IntruderGalleryActivity.class);
                             intent.putExtra("current_position", position);
@@ -287,7 +275,7 @@ public class IntruderprotectionActivity extends Activity {
                             startActivity(intent);
                         }
                     });
-                    //图标和应用名
+                    //图片加入显示图标和应用名的UI
                     PackageManager pm = getPackageManager();
                     try {
                         Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted.get(position).getFromAppPackage());
@@ -299,9 +287,10 @@ public class IntruderprotectionActivity extends Activity {
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
-                    //不带时间戳的view
+                    //------------------------不带时间戳的item布局------------------------------
                 }else if (itemViewType == VIEW_TYPE_WITHOUT_TIMESTAMP) {
                     ViewWithoutTimeStampHolder holder2 = null;
+                    //获取view
                     if(convertView == null){
                         holder2 = new ViewWithoutTimeStampHolder();
                         viewWithoutTimeStamp = LayoutInflater.from(IntruderprotectionActivity.this).inflate(
@@ -313,12 +302,14 @@ public class IntruderprotectionActivity extends Activity {
                     }else{
                         holder2 = (ViewWithoutTimeStampHolder)convertView.getTag();
                     }
+                    //显示照片
                     String filePath = mInfosSorted.get(position).getFilePath();
                     final ImageView pic2 = holder2.ivIntruderPic;
                     mImageLoader.displayImage("file:///" + filePath, pic2, mImageOptions);
                     pic2.setOnClickListener(new OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            //照片在点击后将进入大图浏览
                             Intent intent = new Intent(IntruderprotectionActivity.this,
                                     IntruderGalleryActivity.class);
                             intent.putExtra("current_position", position);
@@ -376,10 +367,37 @@ public class IntruderprotectionActivity extends Activity {
             mLvPhotos.setOnScrollListener(new PauseOnScrollListener(mImageLoader, true, false));
             //显示木有图片时的UI
             showUiWhenNoPic();
-            //清除所有照片
+            //清除所有照片的按钮的初始化
             initCleanButton();
     }
     
+    /**
+     * 将数据库记录的timestamp字段内容转为“年/月/日”这样的形式的字符串
+     * @param timestamp
+     * @return
+     */
+    private String toYMDFomatString(String timestamp) {
+        SimpleDateFormat sdf = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
+        int day = 0;
+        int month = 0;
+        int year = 0;
+        try {
+            Calendar ci = Calendar.getInstance();
+            Date date = sdf.parse(timestamp);
+            ci.setTime(date);
+            day = ci.get(Calendar.DAY_OF_MONTH);
+            month = ci.get(Calendar.MONTH) + 1;
+            year = ci.get(Calendar.YEAR);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        String s = year + "/" + month + "/" + day;
+        return s;
+    }
+
+    /**
+     * 为清理按钮添加功能
+     */
     private void initCleanButton() {
         mctb.setOptionClickListener(new OnClickListener() {
             @Override
@@ -394,7 +412,9 @@ public class IntruderprotectionActivity extends Activity {
                 dialog.setRightBtnListener(new DialogInterface.OnClickListener()  {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //点击后首先清除入侵者防护的数据库记录
                         mImanager.clearAllPhotos();
+                        //然后清除实际的图片文件，并且更新媒体数据库
                         final ArrayList<IntruderPhotoInfo> temp = new ArrayList<IntruderPhotoInfo>();
                         temp.addAll(mInfosSorted);
                         ThreadManager.executeOnFileThread(new Runnable() {
@@ -411,8 +431,11 @@ public class IntruderprotectionActivity extends Activity {
                                 }
                             }
                         });
+                        //清空当前activity所使用的查询后的数据库记录结果
                         mInfosSorted.clear();
+                        //通知更新
                         mAdapter.notifyDataSetChanged();
+                        //图片已经清空，展示没有图片时的默认UI
                         showUiWhenNoPic();
                         dialog.dismiss();
                     }
@@ -422,13 +445,18 @@ public class IntruderprotectionActivity extends Activity {
         });
     }
 
+    /**
+     * 没有照片时UI展示
+     */
     private void showUiWhenNoPic() {
+        //为头布局增加OnGlobalLayoutListener，使得能够确保获得view的寬高信息，用于UI布局
         mHeader.getViewTreeObserver().addOnGlobalLayoutListener(new OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
                 if(mInfosSorted.size()==0||mInfosSorted == null){
                     int height = mLvPhotos.getHeight();
                     int height2 = mHeader.getHeight();
+                    //TODO 注意以后布局更改后，mNoPic 的父容器如果不是relativelayout，需要重新修改LayoutParams为正确的LayoutParams
                     RelativeLayout.LayoutParams rr = new  RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, height-height2);
                     mNoPic.setLayoutParams(rr);
                     rr.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
@@ -442,11 +470,13 @@ public class IntruderprotectionActivity extends Activity {
                 }else{
                     mNoPic.setVisibility(View.INVISIBLE);
                 }
+                //获取信息后注销的监听
                 mHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
     }
 
+    //根据timestamp获得每一天第一次出现先的记录角标，用于做出时间轴效果
     private void getIndexOfFirstPhotoOneDay() {
         mCurrentDayFirstPhotoIndex = new ArrayList<Integer>();
         if (mInfosSorted == null)
@@ -500,6 +530,7 @@ public class IntruderprotectionActivity extends Activity {
         });
     }
     
+    //显示改变失败XX次拍照的对话框
     private void showChangeTimesDialog() {
         if(mDialog == null){
             mDialog = new LEOChoiceDialog(IntruderprotectionActivity.this);
@@ -568,6 +599,11 @@ public class IntruderprotectionActivity extends Activity {
         mDialog.show();
     }
     
+    /**
+     * 将时间轴转化为XX：XXAM/PM的形式
+     * @param timeStamp
+     * @return  
+     */
     private String timeStampToAMPM(String timeStamp){
         SimpleDateFormat sdf = new SimpleDateFormat(
                 Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
@@ -608,6 +644,7 @@ public class IntruderprotectionActivity extends Activity {
         return fts;
     }
 
+    //更新入侵者防护的开关
     private void updateSwtch() {
         LeoLog.i("poha_catch", "updateSwitch!!");
         final ImageView needle = (ImageView) mHeader.findViewById(R.id.iv_switch_needle);

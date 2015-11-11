@@ -46,6 +46,9 @@ public class IntruderGalleryActivity extends BaseActivity {
         init();
     }
 
+    /**
+     * 初始化，这里在onCreate时做一次初始化，以后不再重新查询数据库
+     */
     private void init() {
         mCtb = (CommonToolbar) findViewById(R.id.ctb_intruder_gallery);
         mCtb.setOptionImageResource(R.drawable.toolbar_delete);
@@ -70,12 +73,14 @@ public class IntruderGalleryActivity extends BaseActivity {
         });
     }
 
+    /**
+     * 对记录做排序，按照时间顺序
+     */
     private void sortInfos() {
         mInfosSorted = mISManager.sortInfosByTimeStamp(mSrcInfos);
     }
 
     class MyPagerAdapter extends PagerAdapter {
-
         @Override
         public int getCount() {
             if (mInfosSorted != null)

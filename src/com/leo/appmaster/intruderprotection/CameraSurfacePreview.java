@@ -36,16 +36,15 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
     @SuppressWarnings("deprecation")
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
+        //创建时初始化，camera的初始化容易异常，使用try catch
         try {
             init();
         } catch (Exception e) {
-            
         }
     }
 
     @SuppressWarnings("deprecation")
     public void init() {
-        LeoLog.i("poha", "init!!!");
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
             return;
         }
@@ -60,18 +59,15 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
             return;
         }
         try {
-            mCamera.setDisplayOrientation(90);
+            //设置照相机的参数
+            mCamera.setDisplayOrientation(90);          //预览时的角度
             Parameters parameters = mCamera.getParameters();
             List<Size> Sizes = parameters.getSupportedPictureSizes();
-            // 使用中等档次的照相品质
             int normalQualityLevel = Sizes.size() /2;
-            parameters.setPictureSize(Sizes.get(normalQualityLevel).width,
-                    Sizes.get(normalQualityLevel).height);
+            parameters.setPictureSize(Sizes.get(normalQualityLevel).width,Sizes.get(normalQualityLevel).height);  // 使用中等档次的照相品质
             mCamera.setParameters(parameters);
-            // Parameters parameters = mCamera.getParameters();
             Size pictureSize = parameters.getPictureSize();
-            LeoLog.i("poha", "照相机实际的分辨率： " + "height :" + pictureSize.height + "  width : "
-                    + pictureSize.width);
+            LeoLog.i("poha", "照相机实际的分辨率： " + "height :" + pictureSize.height + "  width : "+ pictureSize.width);
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
             mIsinited = true;

@@ -228,10 +228,8 @@ public class QuickHelperActivity extends BaseActivity {
                         switch (id) {
                         // 桌面加速 (免密码)
                             case R.drawable.qh_speedup_icon:
-                                
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                       "assistant", "assistant_accelerate");
-                                
                                 boolean isInstalllIswipe = ISwipUpdateRequestManager
                                         .isInstallIsiwpe(AppMasterApplication.getInstance());
                                 if (!isInstalllIswipe) {
@@ -239,16 +237,6 @@ public class QuickHelperActivity extends BaseActivity {
                                     intent.putExtra("from_quickhelper", true);
                                     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_BOOST]), mHelperResourceIDs[POSITION_BOOST], intent, QuickHelperActivity.this);
-//                                    Intent shortcutIntent = new Intent(AppMasterApplication.getInstance(), HomeBoostActivity.class);
-//                                    ShortcutIconResource iconRes = Intent.ShortcutIconResource.fromContext(QuickHelperActivity.this,
-//                                            R.drawable.booster_icon);
-//                                    Intent shortcut = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
-//                                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME, getString(R.string.accelerate));
-//                                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-//                                    shortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, iconRes);
-//                                    shortcut.putExtra("duplicate", false);
-//                                    shortcut.putExtra("from_shortcut", true);
-//                                    sendBroadcast(shortcut);
                                 }
                                 break;
                             // 图片隐藏
@@ -356,27 +344,6 @@ public class QuickHelperActivity extends BaseActivity {
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mAd);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APPJOY]), mHelperResourceIDs[POSITION_APPJOY], intent, QuickHelperActivity.this);
-                                
-//                                intent = new Intent(AppMasterApplication.getInstance(),DeskProxyActivity.class);
-//                                intent.putExtra("from_quickhelper", true);
-//                                intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mWifi);
-//                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                
-//                                Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(),
-//                                        DeskAdActivity.class);
-//                                appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
-//                                        | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                                Intent appWallShortcut = new Intent(
-//                                        "com.android.launcher.action.INSTALL_SHORTCUT");
-//                                appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
-//                                        getString(R.string.desk_ad_name));
-//                                appwallIconRes = Intent.ShortcutIconResource.fromContext(
-//                                        QuickHelperActivity.this, R.drawable.ad_desktop_icon);
-//                                appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE, appwallIconRes);
-//                                appWallShortcut.putExtra("duplicate", false);
-//                                appWallShortcut.putExtra("from_shortcut", true);
-//                                appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_INTENT, appWallShortIntent);
-//                                sendBroadcast(appWallShortcut);
                                 break;
                             default:
                                 break;
@@ -402,14 +369,5 @@ public class QuickHelperActivity extends BaseActivity {
                 return mHelperResourceIDs.length;
             }
         });
-    }
-
-    public static class ViewHolder {
-        public TextView tvClass;
-        public ImageView iv;
-        public TextView tvName;
-        public TextView tvDesc;
-        public Button btAdd;
-        public LinearLayout llClass;
     }
 }

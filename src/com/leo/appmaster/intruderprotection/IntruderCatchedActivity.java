@@ -113,15 +113,7 @@ public class IntruderCatchedActivity extends BaseActivity {
         mPkgName = intent.getStringExtra("pkgname");
         mLockManager.filterPackage(mPkgName, 5000);
         init();
-//        toLoad();
     }
-    
-//    private void toLoad() {
-//        int showADorEvaluate = mISManager.getShowADorEvaluate();
-//        if (showADorEvaluate == 1) {
-//            loadAD();
-//        }
-//    }
     
     @Override
     protected void onResume() {
@@ -129,9 +121,6 @@ public class IntruderCatchedActivity extends BaseActivity {
         SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_capture");
         mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
-//        if(getIntent().getBooleanExtra("isClear", false)){
-//            this.finish();
-//        }
         updateData();// 重新查询数据库，做与数据相关的UI更新
         updateAll();// 更新与数据库无关的UI
     }
@@ -149,19 +138,26 @@ public class IntruderCatchedActivity extends BaseActivity {
     }
 
     /**
-     * 每次进入界面需要重新刷新的操作(与数据库无关)
+     * 每次onResume进入界面需要重新刷新的操作(与数据库无关)
      */
     private void updateAll() {
         //更新总的抓拍次数
-        String times1 = getString(R.string.intruder_times_of_catch);
-        String times2 = String.format(times1, mISManager.getCatchTimes());
-        mTvTotalTimes.setText(Html.fromHtml(times2));
+        updateCatchTimes();
         //更新抓拍所需的解锁失败次数
         updateTimesToCatch();
     }
+    
+    /**
+     * 更新总的抓拍次数
+     */
+    private void updateCatchTimes(){
+        String times1 = getString(R.string.intruder_times_of_catch);
+        String times2 = String.format(times1, mISManager.getCatchTimes());
+        mTvTotalTimes.setText(Html.fromHtml(times2));
+    }
 
     /**
-     * 每次进入界面后需要查询数据库然后更新的操作
+     * 每次onResume进入界面后需要查询数据库然后更新的操作，
      */
     private void updateData() {
         ThreadManager.executeOnAsyncThread(new Runnable() {
@@ -375,10 +371,15 @@ public class IntruderCatchedActivity extends BaseActivity {
         mInfosSorted = mISManager.sortInfosByTimeStamp(mSrcInfos);
     }
 
+    /**
+     * 查询完数据库后执行的操作
+     */
     private void onQueryFinished() {
+        //排序数据库的结果，按照时间排序
         sortInfos();
         final PackageManager pm = getPackageManager();
         if (mInfosSorted!=null && mInfosSorted.size() != 0 ) {
+            //如果记录有效，显示第一张大图
             mRlNewest.setVisibility(View.VISIBLE);
             mRlNopic.setVisibility(View.INVISIBLE);
             ThreadManager.getUiThreadHandler().post(new Runnable() {
@@ -388,21 +389,19 @@ public class IntruderCatchedActivity extends BaseActivity {
                             new ImageLoadingListener() {
                                 @Override
                                 public void onLoadingStarted(String imageUri, View view) {
-                                    LeoLog.i("poha", "starting... 000");
                                 }
                                 @Override
                                 public void onLoadingFailed(String imageUri, View view,
                                         FailReason failReason) {
-                                    LeoLog.i("poha", "failed... 000");
                                 }
                                 @Override
                                 public void onLoadingComplete(String imageUri, View view,
                                         Bitmap loadedImage) {
-                                    LeoLog.i("poha", "complete... 000");
                                     mIvNewestPhoto.setImageBitmap(loadedImage);
                                     mIvNewestPhoto.setOnClickListener(new OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
+                                            //点击后进入大图浏览
                                             Intent intent = new Intent(IntruderCatchedActivity.this,
                                                     IntruderGalleryActivity.class);
                                             intent.putExtra("current_position", 0);
@@ -411,6 +410,7 @@ public class IntruderCatchedActivity extends BaseActivity {
                                             startActivity(intent);
                                         }
                                     });
+                                    //大图上面的遮盖蒙层，图标和时间
                                     mLlMainMask.setVisibility(view.VISIBLE);
                                     ImageView mainIcon = (ImageView) mLlMainMask.findViewById(R.id.iv_appicon);
                                     Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted.get(0).getFromAppPackage());
@@ -420,108 +420,29 @@ public class IntruderCatchedActivity extends BaseActivity {
                                     TextView mainTimestamp = (TextView) mLlMainMask.findViewById(R.id.tv_timestamp);
                                     String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(0).getTimeStamp());
                                     mainTimestamp.setText(timeStampToAMPM);
-                                    
                                 }
                                 @Override
                                 public void onLoadingCancelled(String imageUri, View view) {
-                                    LeoLog.i("poha", "cancelled... 000");
                                 }
                             });
                 }
             });
-            
          // XX想偷看XXX的文案
-            try {
-                String packageName = mInfosSorted.get(0).getFromAppPackage();
-                Drawable applicationIcon = AppUtil.getAppIcon(pm, packageName);
-                mIvAppIntruded.setImageDrawable(applicationIcon);
-                CharSequence label = AppUtil.getAppLabel(pm, packageName);
-                String newestCatchTipsS = getResources().getString(R.string.newest_catch_tip);
-                String newestCatchTipsD = String.format(newestCatchTipsS, label);
-                mTvNewestCatchTip.setText(newestCatchTipsD);
-            } catch (Exception e) {
-            }
+            updateFirstPhotoTips();
         }else{
+            //如果没有记录，下方就现实没有图片的默认图
             mRlNewest.setVisibility(View.INVISIBLE);
             mRlNopic.setVisibility(View.VISIBLE);
         }
+        //如果记录不止一条，将显示下方的其他照片部分
         if (mInfosSorted.size() >= 2) {
-            mTvOthers.setVisibility(View.VISIBLE);
-            mLvMain.setVisibility(View.VISIBLE);
-            mLvMain.setAdapter(new BaseAdapter() {
-                @Override
-                public View getView(final int position, View convertView, ViewGroup parent) {
-                    View view = convertView;
-                    if(convertView == null) {
-                        view = View.inflate(IntruderCatchedActivity.this,
-                                R.layout.item_photo_in_catch, null);
-                    }
-                    final LinearLayout llMask = (LinearLayout) view.findViewById(R.id.ll_mask);
-                    final BottomCropImage ivv = (BottomCropImage) view.findViewById(R.id.iv_intruder_more);
-                    final String filePath = mInfosSorted.get(position+1).getFilePath();
-                    ThreadManager.executeOnAsyncThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            BitmapFactory.Options options = new BitmapFactory.Options();
-                            options.inPreferredConfig = Bitmap.Config.RGB_565;
-                            final Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    ivv.setImageBitmap(bitmap);
-                                    ivv.setOnClickListener(new OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
-                                            Intent intent = new Intent(IntruderCatchedActivity.this,
-                                                    IntruderGalleryActivity.class);
-                                            intent.putExtra("current_position", position+1);
-                                            SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
-                                                    "intruder", "intruder_view_capture");
-                                            startActivity(intent);
-                                        }
-                                    });
-//                                    mRvHeader.setFocusable(true);
-//                                    mRvHeader.setFocusableInTouchMode(true);
-//                                    mRvHeader.requestFocus();
-                                }
-                            });
-                        }
-                    });
-                    
-                    PackageManager pm = getPackageManager();
-                    try {
-                        Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted.get(position+1).getFromAppPackage());
-                        ImageView iv2 = (ImageView) (llMask.findViewById(R.id.iv_appicon));
-                        iv2.setImageDrawable(applicationIcon);
-//                        TextView tv2 = (TextView) (llMask.findViewById(R.id.tv_timestamp));
-//                        tv2.setText(mInfosSorted.get(position+1).getTimeStamp());
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    return view;
-                }
-
-                @Override
-                public long getItemId(int position) {
-                    return 0;
-                }
-
-                @Override
-                public Object getItem(int position) {
-                    return null;
-                }
-
-                @Override
-                public int getCount() {
-                    if (mInfosSorted == null)
-                        return 0;
-                    return Math.min(NEWEST_PHOTO_NUMBER, mInfosSorted.size() - 1);
-                }
-            });
+            showOtherPhotos();
         }else{
+        //记录只有一条，下方没有照片显示，布局的visibility改为gone
             mLvMain.setVisibility(View.GONE);
             mTvOthers.setVisibility(View.GONE);
         }
+        //设置listView的高度
         ListAdapter listAdapter = mLvMain.getAdapter();
         if (listAdapter == null) {
             return;
@@ -532,12 +453,14 @@ public class IntruderCatchedActivity extends BaseActivity {
         params.height = totalHeight + (mLvMain.getDividerHeight() * count); 
         mLvMain.setLayoutParams(params);
 
+        //如果记录的数量大于4,显示“更多”的按钮
         if (mInfosSorted.size() > 4) {
             LeoLog.i("poha", "gone or visiable ? mInfosSorted.size = " + mInfosSorted.size());
             mRvMore.setVisibility(View.VISIBLE);
             mRvMore.setOnRippleCompleteListener(new OnRippleCompleteListener() {
                 @Override
                 public void onRippleComplete(RippleView v) {
+                    //“更多”按钮点击后，将进入图片隐藏功能中的的对应相册
                     SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                             "intruder", "intruder_capture_more");
                     long cc1 = System.currentTimeMillis();
@@ -574,18 +497,109 @@ public class IntruderCatchedActivity extends BaseActivity {
                 }
             });
         }else{
+            //如果没有超过4条记录，不显示“更多”按钮
             mRvMore.setVisibility(View.GONE);
         }
+        //这里让头布局获得焦点，使得每次进入界面时显示界面的上部分，解决一进入界面就聚焦在下方listview部分的问题
         mRvHeader.setFocusable(true);
         mRvHeader.setFocusableInTouchMode(true);
         mRvHeader.requestFocus();
     }
 
+    /**
+     * 显示下方更多照片部分的操作
+     */
+    private void showOtherPhotos() {
+        mTvOthers.setVisibility(View.VISIBLE);
+        mLvMain.setVisibility(View.VISIBLE);
+        mLvMain.setAdapter(new BaseAdapter() {
+            @Override
+            public View getView(final int position, View convertView, ViewGroup parent) {
+                View view = convertView;
+                if(convertView == null) {
+                    view = View.inflate(IntruderCatchedActivity.this,
+                            R.layout.item_photo_in_catch, null);
+                }
+                final LinearLayout llMask = (LinearLayout) view.findViewById(R.id.ll_mask);
+                final BottomCropImage ivv = (BottomCropImage) view.findViewById(R.id.iv_intruder_more);
+                final String filePath = mInfosSorted.get(position+1).getFilePath();
+                ThreadManager.executeOnAsyncThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        BitmapFactory.Options options = new BitmapFactory.Options();
+                        options.inPreferredConfig = Bitmap.Config.RGB_565;
+                        final Bitmap bitmap = BitmapFactory.decodeFile(filePath, options);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ivv.setImageBitmap(bitmap);
+                                ivv.setOnClickListener(new OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        Intent intent = new Intent(IntruderCatchedActivity.this,
+                                                IntruderGalleryActivity.class);
+                                        intent.putExtra("current_position", position+1);
+                                        SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                                                "intruder", "intruder_view_capture");
+                                        startActivity(intent);
+                                    }
+                                });
+                            }
+                        });
+                    }
+                });
+                
+                PackageManager pm = getPackageManager();
+                try {
+                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted.get(position+1).getFromAppPackage());
+                    ImageView iv2 = (ImageView) (llMask.findViewById(R.id.iv_appicon));
+                    iv2.setImageDrawable(applicationIcon);
+//                    TextView tv2 = (TextView) (llMask.findViewById(R.id.tv_timestamp));
+//                    tv2.setText(mInfosSorted.get(position+1).getTimeStamp());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                return view;
+            }
+
+            @Override
+            public long getItemId(int position) {
+                return 0;
+            }
+
+            @Override
+            public Object getItem(int position) {
+                return null;
+            }
+
+            @Override
+            public int getCount() {
+                if (mInfosSorted == null)
+                    return 0;
+                return Math.min(NEWEST_PHOTO_NUMBER, mInfosSorted.size() - 1);
+            }
+        });
+    }
+
+    /**
+     * XXX想要偷看XXX应用的提示
+     */
+    private void updateFirstPhotoTips() {
+        try {
+            PackageManager pm = getPackageManager();
+            String packageName = mInfosSorted.get(0).getFromAppPackage();
+            Drawable applicationIcon = AppUtil.getAppIcon(pm, packageName);
+            mIvAppIntruded.setImageDrawable(applicationIcon);
+            CharSequence label = AppUtil.getAppLabel(pm, packageName);
+            String newestCatchTipsS = getResources().getString(R.string.newest_catch_tip);
+            String newestCatchTipsD = String.format(newestCatchTipsS, label);
+            mTvNewestCatchTip.setText(newestCatchTipsD);
+        } catch (Exception e) {
+        }
+    }
 
     @Override
     protected void onDestroy() {
-//        LeoEventBus.getDefaultBus().post(
-//                new AppUnlockEvent(mPkgName, AppUnlockEvent.RESULT_UNLOCK_SUCCESSFULLY));
         super.onDestroy();
         if(mImageLoader != null) {
             mImageLoader.clearMemoryCache();
