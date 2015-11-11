@@ -97,7 +97,10 @@ public class HomeTabFragment extends Fragment implements RippleView.OnRippleComp
     }
 
     public void dismissTab() {
-        if (mRootView.getVisibility() == View.GONE) return;
+        if (isRemoving() || isDetached() || getActivity() == null
+                || mRootView.getVisibility() == View.GONE) {
+            return;
+        }
 
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_up_to_down);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -126,7 +129,10 @@ public class HomeTabFragment extends Fragment implements RippleView.OnRippleComp
     }
 
     public void showTab() {
-        if (mRootView.getVisibility() == View.VISIBLE) return;
+        if (isRemoving() || isDetached() || getActivity() == null
+                || mRootView.getVisibility() == View.VISIBLE) {
+            return;
+        }
 
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_down_to_up);
         animation.setAnimationListener(new Animation.AnimationListener() {
