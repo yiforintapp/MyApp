@@ -30,7 +30,6 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;

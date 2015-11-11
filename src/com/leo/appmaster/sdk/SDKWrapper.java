@@ -7,6 +7,7 @@ import android.content.res.Resources.NotFoundException;
 
 import com.baidu.mobstat.StatService;
 import com.leo.analytics.LeoAgent;
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.R;
 import com.leo.appmaster.sdk.push.PushInvoke;
@@ -106,7 +107,7 @@ public class SDKWrapper {
         // leo
 //        LeoAgent.addEvent(id, description);
         // baidu
-        Context ctx = context.getApplicationContext();
+        Context ctx = AppMasterApplication.getInstance();
         StatService.onEvent(ctx, id, description);
         // TalkingData
         TCAgent.onEvent(ctx, id, description);
