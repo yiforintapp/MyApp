@@ -331,6 +331,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                            bitmapt.recycle();
 //                            bitmap.recycle();
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            int rotation = getWindowManager().getDefaultDisplay().getRotation();
+                            LeoLog.i("poha", "Window Rotation = "+rotation);
                             finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 //                            finalBitmap.recycle();
                             byte[] finalBytes = baos.toByteArray();

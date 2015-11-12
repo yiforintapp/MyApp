@@ -100,7 +100,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         initImageLoder();
         loadImageList();
         mGridView.setOnItemClickListener(new OnItemClickListener() {
-
             @Override
             public void onItemClick(AdapterView<?> arg0, View conView,
                                     int position, long arg3) {

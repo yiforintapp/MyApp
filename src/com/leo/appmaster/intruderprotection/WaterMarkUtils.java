@@ -25,15 +25,23 @@ import com.leo.appmaster.utils.AppUtil;
 
 public class WaterMarkUtils {
 
+    /**
+     * 将源bitmap打上透明的水印，包含时间 入侵的应用的图标 pg的logo
+     * @param photoBitmap
+     * @param timeStamp
+     * @param packageName
+     * @param context
+     * @return
+     */
     public static Bitmap createIntruderPhoto(Bitmap photoBitmap, String timeStamp,
             String packageName, Context context) {
-
         PackageManager pm = context.getPackageManager();
         Drawable appIcon = null;
         Bitmap iconBitmap = null;
         Canvas canvas = null;
         Drawable pgIcon = null;
         Bitmap pgiconBitmap = null;
+        //将timestamp的字符串转成所需要的格式
         SimpleDateFormat sdf = new SimpleDateFormat(
                 Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
         Calendar ci = Calendar.getInstance();
@@ -70,13 +78,11 @@ public class WaterMarkUtils {
         }else{
             fts = strHour+":"+strMinute;
         }
-        
+        //获得并画出入侵的应用的水印
         float fitRate = photoBitmap.getWidth() / 240f;
         try {
-//            appIcon = AppUtil.getAppIcon(pm, packageName);
             List<PackageInfo> installedPackages = pm.getInstalledPackages(0);
             appIcon = pm.getApplicationIcon(packageName);
-//            pgIcon = pm.getApplicationIcon("com.leo.appmaster");
         } catch (Exception e) {
             return photoBitmap;
         }
@@ -102,8 +108,7 @@ public class WaterMarkUtils {
         canvas2.drawBitmap(iconBitmap, 0, 0, p);
         canvas2.save(Canvas.ALL_SAVE_FLAG);
         canvas2.restore();
-
-        // Paint p2 = new Paint();
+        //画出时间和pg的名称
         Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DEV_KERN_TEXT_FLAG);
         textPaint.setTextSize((int) (14f * fitRate));
 
@@ -113,6 +118,7 @@ public class WaterMarkUtils {
         canvas2.drawText(fts, (int) (35f * fitRate), (int) (18f * fitRate), textPaint);
         canvas2.drawText("LEO Privacy Guard", photoBitmap.getWidth() - (int) (124f * fitRate),
                 photoBitmap.getHeight() - (int) (6f * fitRate), textPaint);
+        //画出pg的logo
         pgIcon = context.getResources().getDrawable(R.drawable.watermarker_logo);
         if (pgIcon != null) {
             Canvas c3;
@@ -133,7 +139,6 @@ public class WaterMarkUtils {
             pgiconBitmap.recycle();
             iconBitmap.recycle();
         }
-
         return photoBitmap;
     }
 }

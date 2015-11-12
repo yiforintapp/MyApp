@@ -187,7 +187,7 @@ public class IntruderprotectionActivity extends Activity {
                                         mInfosSorted.clear();
                                     }
                                 }
-                                        );
+                                );
                             }
                         }
                     });
@@ -470,7 +470,7 @@ public class IntruderprotectionActivity extends Activity {
                 }else{
                     mNoPic.setVisibility(View.INVISIBLE);
                 }
-                //获取信息后注销的监听
+                //获取信息后注销监听
                 mHeader.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
         });
