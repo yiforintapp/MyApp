@@ -301,10 +301,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.addToBackStack(null);
                 ft.replace(R.id.pri_pro_content, mScanningFragment);
+                boolean commited = false;
                 try {
                     ft.commit();
+                    commited = true;
                 } catch (Exception e) {
-                    ft.commitAllowingStateLoss();
+                }
+                if (!commited) {
+                    try {
+                        ft.commitAllowingStateLoss();
+                    } catch (Exception e) {
+                    }
                 }
             }
         }

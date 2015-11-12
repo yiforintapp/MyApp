@@ -382,10 +382,14 @@ public class AppBackupRestoreManager implements AppChangeListener {
     public String getApkSize(AppItemInfo app) {
         // String s = AppMasterApplication.getInstance().getString(
         // R.string.apk_size);
-        File file = new File(app.sourceDir);
-        if (file.isFile() && file.exists()) {
-            long size = file.length();
-            return convertToSizeString(size);
+        try {
+            File file = new File(app.sourceDir);
+            if (file.isFile() && file.exists()) {
+                long size = file.length();
+                return convertToSizeString(size);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return "0";
     }
