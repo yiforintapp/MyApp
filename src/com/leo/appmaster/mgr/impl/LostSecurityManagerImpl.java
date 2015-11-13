@@ -41,6 +41,9 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.SimDetecter;
 import com.leo.appmaster.utils.Utilities;
 
+import org.apache.http.client.utils.URLEncodedUtils;
+
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -305,17 +308,19 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public boolean executeLockLocateposition(String number, boolean isExecuNoMsm) {
-        PhoneSecurityManager.getInstance(mContext).mIsExecuteLocate = false;
+        PhoneSecurityManager.getInstance(mContext).setIsExecuteLocate(false);
         if (!mIsLocation) {
             LeoLog.i(TAG, "执行位置追踪指令");
             mIsLocation = true;
             String sendNumber = null;
             if (Utilities.isEmpty(number)) {
             /*如果不指定手机号，默认给防盗号码发送位置信息*/
-                String name_number = getPhoneSecurityNumber();
-                if (!Utilities.isEmpty(name_number)) {
-                    String[] numbers = name_number.split(":");
-                    sendNumber = numbers[1];
+                String nameAndnumber = getPhoneSecurityNumber();
+                if (!Utilities.isEmpty(nameAndnumber)) {
+                    String[] numbers = nameAndnumber.split(":");
+                    if (numbers.length >= 2) {
+                        sendNumber = numbers[1];
+                    }
                 }
             } else {
                 sendNumber = number;
@@ -458,10 +463,10 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                 Uri sysSingUri = RingtoneManager.getActualDefaultRingtoneUri(mContext,
                         RingtoneManager.TYPE_RINGTONE);
                 PhoneSecurityManager pm = PhoneSecurityManager.getInstance(mContext);
-                if (pm.getmMediaPlayer() == null) {
-                    pm.setmMediaPlayer(MediaPlayer.create(mContext, sysSingUri));
+                if (pm.getMediaPlayer() == null) {
+                    pm.setMediaPlayer(MediaPlayer.create(mContext, sysSingUri));
                 }
-                MediaPlayer media = pm.getmMediaPlayer();
+                MediaPlayer media = pm.getMediaPlayer();
                 media.setLooping(true);
                 try {
                     media.start();
@@ -473,9 +478,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                     mIsAlert = false;
                 }
                  /*停止警报*/
-                if (PhoneSecurityManager.getInstance(mContext).mStopAlert) {
+                if (PhoneSecurityManager.getInstance(mContext).isStopAlert()) {
                     alertMode = false;
-                    PhoneSecurityManager.getInstance(mContext).mStopAlert = false;
+                    PhoneSecurityManager.getInstance(mContext).setStopAlert(false);
                 }
             }
             /*一直响铃*/
@@ -491,10 +496,10 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                 Uri sysSingUri = RingtoneManager.getActualDefaultRingtoneUri(mContext,
                         RingtoneManager.TYPE_RINGTONE);
                 PhoneSecurityManager pm = PhoneSecurityManager.getInstance(mContext);
-                if (pm.getmMediaPlayer() == null) {
-                    pm.setmMediaPlayer(MediaPlayer.create(mContext, sysSingUri));
+                if (pm.getMediaPlayer() == null) {
+                    pm.setMediaPlayer(MediaPlayer.create(mContext, sysSingUri));
                 }
-                MediaPlayer media = pm.getmMediaPlayer();
+                MediaPlayer media = pm.getMediaPlayer();
                 media.setLooping(true);
                 try {
                     media.start();
@@ -505,9 +510,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                     mIsAlert = false;
                 }
                 /*停止警报*/
-                if (PhoneSecurityManager.getInstance(mContext).mStopAlert) {
+                if (PhoneSecurityManager.getInstance(mContext).isStopAlert()) {
                     alertMode = false;
-                    PhoneSecurityManager.getInstance(mContext).mStopAlert = false;
+                    PhoneSecurityManager.getInstance(mContext).setStopAlert(false);
                     executeStopAlert(true);
                     break;
                 }
@@ -519,10 +524,11 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public boolean executeStopAlert(boolean isStopAlert) {
-        MediaPlayer media = PhoneSecurityManager.getInstance(mContext).getmMediaPlayer();
+        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(mContext);
+        MediaPlayer media = psm.getMediaPlayer();
         if (isStopAlert && media != null) {
             media.stop();
-            PhoneSecurityManager.getInstance(mContext).setmMediaPlayer(null);
+            psm.setMediaPlayer(null);
         }
         return false;
     }
@@ -682,13 +688,15 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             double lat = location.getLatitude();
             double lng = location.getLongitude();
             LeoLog.i(TAG, "经度：" + lng + "纬度：" + lat);
-            if (locateManager != null) {
-                if (mLocationListener != null) {
-                    locateManager.removeUpdates(mLocationListener);
-                    LeoLog.i(TAG, "updateToNewLocation移除位置监听");
-                    mLocationListener = null;
-                    mLocationManager = null;
-                }
+            if (locateManager != null
+                    && mLocationListener != null) {
+                locateManager.removeUpdates(mLocationListener);
+                LeoLog.i(TAG, "updateToNewLocation移除位置监听");
+                mLocationListener = null;
+                mLocationManager = null;
+            } else {
+                mLocationListener = null;
+                mLocationManager = null;
             }
             PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, false);
         }

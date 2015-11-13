@@ -35,16 +35,16 @@ public class PhoneSecurityManager {
     private Context mContext;
     private static PhoneSecurityManager mInstance;
     /*短信的Observer去除一条短信两次触发的重复标志*/
-    public volatile boolean mDbChangeTimeBefor;
+    private volatile boolean mDbChangeTimeBefor;
     /*短信的Receiver去除一条短信两次触发的重复标志*/
-    public volatile boolean mDbReceiverTimeBefor;
+    private volatile boolean mDbReceiverTimeBefor;
     /*是否执行了手机防盗*/
-    public volatile boolean mIsExecuteSecur;
+    private volatile boolean mIsExecuteSecur;
     /*停止警报*/
-    public volatile boolean mStopAlert = false;
+    private volatile boolean mStopAlert = false;
     private MediaPlayer mMediaPlayer;
     /*执行位置监听时，是否执行位置指令的标志*/
-    public volatile boolean mIsExecuteLocate = false;
+    private volatile boolean mIsExecuteLocate = false;
 
     private PhoneSecurityManager(Context context) {
         mContext = context;
@@ -57,23 +57,63 @@ public class PhoneSecurityManager {
         return mInstance;
     }
 
-    public synchronized MediaPlayer getmMediaPlayer() {
+    public synchronized MediaPlayer getMediaPlayer() {
         return mMediaPlayer;
     }
 
-    public synchronized void setmMediaPlayer(MediaPlayer mMediaPlayer) {
+    public synchronized void setMediaPlayer(MediaPlayer mediaPlayer) {
         this.mMediaPlayer = mMediaPlayer;
+    }
+
+    public boolean isDbChangeTimeBefor() {
+        return mDbChangeTimeBefor;
+    }
+
+    public void setDbChangeTimeBefor(boolean mDbChangeTimeBefor) {
+        this.mDbChangeTimeBefor = mDbChangeTimeBefor;
+    }
+
+    public boolean isDbReceiverTimeBefor() {
+        return mDbReceiverTimeBefor;
+    }
+
+    public void setDbReceiverTimeBefor(boolean mDbReceiverTimeBefor) {
+        this.mDbReceiverTimeBefor = mDbReceiverTimeBefor;
+    }
+
+    public boolean isIsExecuteLocate() {
+        return mIsExecuteLocate;
+    }
+
+    public void setIsExecuteLocate(boolean mIsExecuteLocate) {
+        this.mIsExecuteLocate = mIsExecuteLocate;
+    }
+
+    public boolean isIsExecuteSecur() {
+        return mIsExecuteSecur;
+    }
+
+    public void setIsExecuteSecur(boolean mIsExecuteSecur) {
+        this.mIsExecuteSecur = mIsExecuteSecur;
+    }
+
+    public boolean isStopAlert() {
+        return mStopAlert;
+    }
+
+    public void setStopAlert(boolean mStopAlert) {
+        this.mStopAlert = mStopAlert;
     }
 
     /*手机防盗功能,短信广播处理*/
     public void securityPhoneReceiverHandler(final SmsMessage message) {
-        if (!mDbReceiverTimeBefor) {
-            mDbReceiverTimeBefor = true;
+        if (!isDbReceiverTimeBefor()) {
+            setDbReceiverTimeBefor(true);
             ThreadManager.executeOnAsyncThread(new Runnable() {
                 @Override
                 public void run() {
                     try {
-                        mIsExecuteSecur = true;
+                        setIsExecuteSecur(true);
                         final LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                          /*手机防盗是否开启*/
                         boolean isOpenSecurit = mgr.isUsePhoneSecurity();
@@ -84,7 +124,7 @@ public class PhoneSecurityManager {
                                 /*手机防盗号码*/
                                 String phoneNumber = mgr.getPhoneSecurityNumber();
                                 if (Utilities.isEmpty(phoneNumber)) {
-                                    mDbReceiverTimeBefor = false;
+                                    setDbReceiverTimeBefor(false);
                                     return;
                                 }
                                 LeoLog.i(TAG, "securityPhoneReceiverHandler");
@@ -120,7 +160,7 @@ public class PhoneSecurityManager {
                                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_use_lock");
                                             boolean result = mgr.executeLockPhone(false, null, false);
                                         } else if (SecurityInstructSet.OFFALERT.equals(body)) {
-                                            PhoneSecurityManager.getInstance(mContext).mStopAlert = true;
+                                            PhoneSecurityManager.getInstance(mContext).setStopAlert(true);
                                             mgr.executeStopAlert(true);
                                         }
                                         /*上传手机数据*/
@@ -136,7 +176,8 @@ public class PhoneSecurityManager {
                     } catch (Exception e) {
                         e.printStackTrace();
                     } finally {
-                        mDbReceiverTimeBefor = false;
+                        setDbReceiverTimeBefor(false);
+
                     }
                 }
             });
@@ -146,10 +187,10 @@ public class PhoneSecurityManager {
 
     /*手机防盗功能,短信内容观察处理*/
     public void securityPhoneOberserHandler() {
-        if (!mDbChangeTimeBefor) {
-            boolean isExecuteSecu = mIsExecuteSecur;
+        if (!isDbChangeTimeBefor()) {
+            boolean isExecuteSecu = isIsExecuteSecur();
             if (!isExecuteSecu) {
-                mDbChangeTimeBefor = true;
+                setDbChangeTimeBefor(true);
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
@@ -164,7 +205,7 @@ public class PhoneSecurityManager {
                                     /*手机防盗号码*/
                                     String phoneNumber = mgr.getPhoneSecurityNumber();
                                     if (Utilities.isEmpty(phoneNumber)) {
-                                        mDbChangeTimeBefor = false;
+                                        setDbChangeTimeBefor(false);
                                         return;
                                     }
                                     LeoLog.i(TAG, "securityPhoneOberserHandler");
@@ -291,7 +332,7 @@ public class PhoneSecurityManager {
                                                             SDKWrapper.addEvent(mContext, SDKWrapper.P1, "theft_use", "theft_use_alarmoff_$" + protectTime[0] + "d" + protectTime[1] + "h");
                                                         }
                                                     });
-                                                    PhoneSecurityManager.getInstance(mContext).mStopAlert = true;
+                                                    PhoneSecurityManager.getInstance(mContext).setStopAlert(true);
                                                     mgr.executeStopAlert(true);
                                                 }
                                             }
@@ -305,7 +346,7 @@ public class PhoneSecurityManager {
                         } catch (Exception e) {
 
                         }
-                        mDbChangeTimeBefor = false;
+                        setDbChangeTimeBefor(false);
                     }
                 });
             }
@@ -447,8 +488,10 @@ public class PhoneSecurityManager {
 
     /*执行位置指令*/
     public synchronized void executeLockLocateposition(String number, boolean isExecute) {
-        if (!PhoneSecurityManager.getInstance(mContext).mIsExecuteLocate) {
-            PhoneSecurityManager.getInstance(mContext).mIsExecuteLocate = true;
+        PhoneSecurityManager psm=PhoneSecurityManager.getInstance(mContext);
+        boolean isExeLoca=psm.isIsExecuteLocate();
+        if (!isExeLoca) {
+            psm.setIsExecuteLocate(true);
             LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
             manager.executeLockLocateposition(number, isExecute);
         }
