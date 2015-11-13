@@ -8,7 +8,7 @@
         android:id="@+id/top_area"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/toolbar_background_color" >
+        android:background="@color/cb" >
 
          <TextView 
              android:layout_toLeftOf="@+id/rl_switch"

@@ -14,7 +14,7 @@
             android:id="@+id/hotapp_title_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/commonbar_background" />
+            android:background="@color/cb" />
 
         <RelativeLayout
             android:id="@+id/trffic_setting_iv"
@@ -36,7 +36,7 @@
         android:id="@+id/home_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/commonbar_background"
+        android:background="@color/cb"
         android:orientation="vertical" >
 
         <RelativeLayout

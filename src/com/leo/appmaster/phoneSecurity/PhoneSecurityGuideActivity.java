@@ -67,7 +67,7 @@ public class PhoneSecurityGuideActivity extends Activity implements View.OnClick
                 .create();
         mCommonBar = (CommonToolbar) findViewById(R.id.phone_security_guide_commonbar);
         mCommonBar.setToolbarTitle(R.string.home_tab_lost);
-        mCommonBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mCommonBar.setToolbarColorResource(R.color.cb);
         mCommonBar.setOptionMenuVisible(false);
         mSecurityOpenNumberText = (TextView) findViewById(R.id.security_guide_open_number_TV);
         int useNumber = ((LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY)).getUsePhoneSecurityCount();

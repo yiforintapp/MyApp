@@ -42,7 +42,7 @@
                 android:ellipsize="end"
                 android:includeFontPadding="false"
                 android:singleLine="true"
-                android:textColor="@color/pri_pro_item_title"
+                android:textColor="@color/c2"
                 android:textSize="17dp" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="7dp"
-                android:textColor="@color/pri_pro_item_summay"
+                android:textColor="@color/cb2"
                 android:textSize="@dimen/pri_folder_summary" />
         </LinearLayout>
 
@@ -69,6 +69,6 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:background="@color/divider_1" />
+        android:background="@color/c4" />
 
 </RelativeLayout>

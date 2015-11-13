@@ -208,15 +208,15 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mCheckStatus = mCheckBox.isChecked();
         mAdvanProCheckStatus = mAdvanChekBox.isChecked();
         float textSize = getResources().getDimension(R.dimen.secur_bottom_text_size);
-        mBottonNumberView1.setView(mBottomNumber[0], textSize, getResources().getColor(R.color.toolbar_background_color), getResources().getColor(R.color.white));
-        mBottonNumberView2.setView(mBottomNumber[1], textSize, getResources().getColor(R.color.divider_2), getResources().getColor(R.color.white));
+        mBottonNumberView1.setView(mBottomNumber[0], textSize, getResources().getColor(R.color.cb), getResources().getColor(R.color.white));
+        mBottonNumberView2.setView(mBottomNumber[1], textSize, getResources().getColor(R.color.c5), getResources().getColor(R.color.white));
     }
 
     /*初始化UI*/
     private void initUI() {
         mCommonBar = (CommonToolbar) findViewById(R.id.phone_security_commonbar);
         mCommonBar.setToolbarTitle(R.string.phone_security_open);
-        mCommonBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mCommonBar.setToolbarColorResource(R.color.cb);
         mCommonBar.setOptionMenuVisible(true);
         mCommonBar.setOptionImageResource(R.drawable.help_icon_n);
         mHelpIcon = mCommonBar.getOptionImageView();
@@ -741,7 +741,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         } else {
             loadNoOpenInstructData(false);
         }
-        mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.toolbar_background_color));
+        mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.cb));
         mCurrentProcNumber = "3";
         setSecurShowUI(false, false, false, false, false, false, true, false);
         mOperFinish.setImageResource(R.drawable.theft_step);
@@ -805,7 +805,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                 toSecurFinish();
             } else {
                 mOperTwoPoint.setImageResource(R.drawable.theft_step_point);
-                mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.toolbar_background_color));
+                mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.cb));
                 setSecurShowUI(false, true, false, false, false, false, false, false);
                 isShowAdvProtectUi = true;
                 mCurrentProcNumber = "2";
@@ -880,7 +880,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private void returnToProcOne() {
         mCommonBar.setToolbarTitle(R.string.phone_security_open);
         mOperTwoPoint.setImageResource(R.drawable.theft_step_point_dis);
-        mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.divider_2));
+        mBottonNumberView2.setViewBackGroundColor(getResources().getColor(R.color.c5));
         LostSecurityManagerImpl securityManager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
                      /*是否添加了防盗号码*/
         String securNumber = securityManager.getPhoneSecurityNumber();

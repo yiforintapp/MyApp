@@ -8,7 +8,7 @@
         android:id="@+id/commonTitleBar1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/toolbar_background_color" >
+        android:background="@color/cb" >
     </com.leo.appmaster.ui.CommonToolbar>
 
     <TextView

@@ -46,7 +46,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
                     android:layout_toRightOf="@id/appName"
-                    android:textColor="@color/divider_1"
+                    android:textColor="@color/c4"
                     android:textSize="13dp" />
             </RelativeLayout>
 

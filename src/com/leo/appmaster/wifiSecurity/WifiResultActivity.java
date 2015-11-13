@@ -118,8 +118,8 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
             mColorPair = getColorPairByScore(UNSAFEPAGE);
         } else {
 
-            mTopViewBackground.setBackgroundColor(getResources().getColor(R.color.toolbar_background_color));
-            mTitleBar.setToolbarColorResource(R.color.toolbar_background_color);
+            mTopViewBackground.setBackgroundColor(getResources().getColor(R.color.cb));
+            mTitleBar.setToolbarColorResource(R.color.cb);
 
             bigText.setText(getString(R.string.wifi_scan_result_safe));
             bigViewIcon.setImageResource(R.drawable.wifisafety);

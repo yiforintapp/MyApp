@@ -56,7 +56,7 @@ public class UninstallActivity extends BaseActivity implements View.OnClickListe
 
         mTitleBar = (CommonToolbar) findViewById(R.id.uninstall_title_bar);
         mTitleBar.setToolbarTitle(R.string.home_app_manager_apps_delete);
-        mTitleBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitleBar.setToolbarColorResource(R.color.cb);
         mTitleBar.setOptionMenuVisible(false);
 
         mListview = (ListView) findViewById(R.id.list_uninstall);

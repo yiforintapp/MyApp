@@ -3,7 +3,7 @@
 
     <item android:id="@android:id/background">
         <shape>
-            <solid android:color="@color/app_background" />
+            <solid android:color="@color/cb" />
 
             <corners
                 android:bottomLeftRadius="0dp"
@@ -20,7 +20,7 @@
                     android:centerX="0"
                     android:centerY="0"
                     android:endColor="@color/progress_bar_show"
-                    android:startColor="@color/commonbar_background" />
+                    android:startColor="@color/cb" />
 
                 <corners
                     android:bottomLeftRadius="0dp"

@@ -9,7 +9,7 @@
         android:id="@+id/layout_title_bar_video"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <com.leo.appmaster.ui.LeoPictureViewPager
         android:id="@+id/picture_view_pager"

@@ -269,7 +269,7 @@ public class LockOptionActivity extends BasePreferenceActivity implements
 
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.lock_setting);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
 //        mTtileBar.setTitle(R.string.lock_setting);
 //        mTtileBar.openBackView();

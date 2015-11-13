@@ -30,7 +30,7 @@
         android:lineSpacingExtra="4dp"
         android:includeFontPadding="false"
         android:text="@string/scan_notify_label"
-        android:textColor="@color/divider_1"
+        android:textColor="@color/c4"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -41,7 +41,7 @@
         android:layout_below="@id/pri_opt_label"
         android:layout_margin="16dp"
         android:background="@color/white"
-        android:divider="@color/divider_2"
+        android:divider="@color/c5"
         android:overScrollMode="never"
         android:dividerHeight="1px"
         android:listSelector="@null"

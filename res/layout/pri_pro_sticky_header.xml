@@ -31,13 +31,13 @@
         android:includeFontPadding="false"
         android:singleLine="true"
         android:text="@string/pri_pro_new_app"
-        android:textColor="@color/pri_pro_new_lable"
+        android:textColor="@color/c3"
         android:textSize="@dimen/pri_pro_new_label" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
-        android:background="@color/divider_1" />
+        android:background="@color/c4" />
 
 </RelativeLayout>

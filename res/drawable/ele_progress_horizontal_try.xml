@@ -16,10 +16,10 @@
         <clip>
             <shape>
                 <gradient
-                    android:centerColor="@color/app_background"
+                    android:centerColor="@color/cb"
                     android:centerX="0"
                     android:centerY="0"
-                    android:endColor="@color/commonbar_background"
+                    android:endColor="@color/cb"
                     android:startColor="@color/progress_bar_show" />
 
                 <corners

@@ -69,7 +69,7 @@
                 android:includeFontPadding="false"
                 android:paddingLeft="@dimen/scan_count_padding"
                 android:paddingRight="@dimen/scan_count_padding"
-                android:textColor="@color/scan_count_bg"
+                android:textColor="@color/cb2"
                 android:textSize="@dimen/scan_count_size"
                 android:visibility="gone" />
 
@@ -128,7 +128,7 @@
                 android:includeFontPadding="false"
                 android:paddingLeft="@dimen/scan_count_padding"
                 android:paddingRight="@dimen/scan_count_padding"
-                android:textColor="@color/scan_count_bg"
+                android:textColor="@color/cb2"
                 android:textSize="@dimen/scan_count_size"
                 android:visibility="gone" />
 
@@ -187,7 +187,7 @@
                 android:includeFontPadding="false"
                 android:paddingLeft="@dimen/scan_count_padding"
                 android:paddingRight="@dimen/scan_count_padding"
-                android:textColor="@color/scan_count_bg"
+                android:textColor="@color/cb2"
                 android:textSize="@dimen/scan_count_size"
                 android:visibility="gone" />
 

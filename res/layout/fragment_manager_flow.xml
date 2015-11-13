@@ -106,7 +106,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="@dimen/app_manager_headview_two_text_margin_top"
                                 android:text="@string/today_triffic"
-                                android:textColor="@color/flow_item_total_new"
+                                android:textColor="@color/c3"
                                 android:textSize="10dp" />
                         </RelativeLayout>
 
@@ -131,7 +131,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="@dimen/app_manager_headview_two_text_margin_top"
                                 android:text="@string/month_remainder_triffic"
-                                android:textColor="@color/flow_item_total_new"
+                                android:textColor="@color/c3"
                                 android:textSize="10dp" />
                         </RelativeLayout>
 
@@ -156,7 +156,7 @@
                                 android:layout_centerHorizontal="true"
                                 android:layout_marginTop="@dimen/app_manager_headview_two_text_margin_top"
                                 android:text="@string/month_triffic"
-                                android:textColor="@color/flow_item_total_new"
+                                android:textColor="@color/c3"
                                 android:textSize="10dp" />
                         </RelativeLayout>
                     </LinearLayout>
@@ -214,7 +214,7 @@
                     android:background="@color/white"
                     android:gravity="center"
                     android:text="@string/flow_charts_this_month"
-                    android:textColor="@color/flow_item_total_new"
+                    android:textColor="@color/c3"
                     android:textSize="12dp" />
             </LinearLayout>
         </RelativeLayout>

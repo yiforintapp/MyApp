@@ -8,7 +8,7 @@
         android:id="@+id/privacy_call_log_item_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -105,7 +105,7 @@
             android:id="@+id/call_log_item_top_bottom_line"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/divider_2" />
+            android:background="@color/c5" />
 
         <ListView
             android:id="@+id/contactLV"

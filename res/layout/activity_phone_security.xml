@@ -44,7 +44,7 @@
                         android:layout_marginLeft="12dp"
                         android:layout_marginTop="@dimen/ph_sec_add_nb_tv_tp"
                         android:text="@string/phone_security_no_add_number_text"
-                        android:textColor="@color/secur_tip_text_color"
+                        android:textColor="@color/c3"
                         android:textSize="@dimen/phone_security_add_number_TV_size" />
 
                     <RelativeLayout
@@ -68,7 +68,7 @@
                             android:drawableLeft="@drawable/theft_add_number"
                             android:drawablePadding="9dp"
                             android:text="@string/phone_security_no_add_number_bt_text"
-                            android:textColor="@color/toolbar_background_color"
+                            android:textColor="@color/cb"
                             android:textSize="16dp" />
 
                         <ImageView
@@ -231,7 +231,7 @@
                     android:id="@+id/secur_open_suc_top_RL"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/toolbar_background_color"
+                    android:background="@color/cb"
                     android:gravity="center">
 
                     <RelativeLayout
@@ -453,7 +453,7 @@
                 android:id="@+id/phone_security_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/divider_1" />
+                android:background="@color/c4" />
 
             <ListView
                 android:id="@+id/secur_instr_LV"
@@ -489,7 +489,7 @@
                 android:id="@+id/open_adv_suc_TV"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/op_adv_suc_tv"
-                android:background="@color/toolbar_background_color"
+                android:background="@color/cb"
                 android:gravity="center"
                 android:orientation="vertical">
 
@@ -544,7 +544,7 @@
                 android:layout_height="1px"
                 android:layout_below="@id/open_suc_LV"
                 android:layout_marginTop="@dimen/sec_did_v_tp"
-                android:background="@color/divider_2"
+                android:background="@color/c5"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"></View>
             <!--未开启的防盗条目-->
@@ -592,7 +592,7 @@
                 android:id="@+id/secur_finish_top_RL"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/toolbar_background_color">
+                android:background="@color/cb">
 
                 <ImageView
                     android:id="@+id/secur_finish_IV"
@@ -658,7 +658,7 @@
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_above="@+id/phone_security_bottom_button_RL"
-        android:background="@color/divider_1" />
+        android:background="@color/c4" />
 
     <RelativeLayout
         android:id="@+id/phone_security_bottom_button_RL"
@@ -712,7 +712,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_below="@id/security_number_LT"
-            android:background="@color/divider_1" />
+            android:background="@color/c4" />
 
         <RelativeLayout
             android:id="@+id/secur_bt_RT"
@@ -802,7 +802,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/divider_1" />
+                android:background="@color/c4" />
 
             <RelativeLayout
                 android:layout_width="wrap_content"
@@ -855,7 +855,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/divider_1" />
+                android:background="@color/c4" />
 
             <TextView
                 android:id="@+id/secur_know_msm_content"

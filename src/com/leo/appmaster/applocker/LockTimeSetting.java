@@ -62,7 +62,7 @@ public class LockTimeSetting extends BasePreferenceActivity implements OnPrefere
     private void initUI() {
         mTitle = (CommonToolbar) findViewById(R.id.layout_lock_time_title_bar);
         mTitle.setToolbarTitle(R.string.lock_help_lock_setting_button);
-        mTitle.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitle.setToolbarColorResource(R.color.cb);
         mTitle.setOptionMenuVisible(false);
 //        mTitle.setTitle(R.string.lock_help_lock_setting_button);
 //        mTitle.openBackView();

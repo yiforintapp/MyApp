@@ -18,7 +18,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/dialog_content_area_bg"
+            android:background="@color/c1"
             android:maxHeight="247dp"
             android:minHeight="60dp"
             android:paddingBottom="22dp"

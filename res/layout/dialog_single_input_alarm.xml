@@ -21,7 +21,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/dlg_title"
-        android:background="@color/dialog_content_area_bg"
+        android:background="@color/c1"
         android:paddingBottom="22dp"
         android:paddingLeft="12dp"
         android:paddingRight="12dp"

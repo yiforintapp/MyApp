@@ -168,7 +168,7 @@
         <item name="android:textSize">16dp</item>
         <item name="android:background">@drawable/selector_dialog_white_button</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@color/text_black_1</item>
+        <item name="android:textColor">@color/c2</item>
         <item name="android:layout_height">@dimen/dialog_btn_height</item>
     </style>
 
@@ -456,7 +456,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14dp</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:textColor">@color/home_tab_text</item>
+        <item name="android:textColor">@color/c2</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:layout_marginTop">12dp</item>
     </style>
@@ -466,7 +466,7 @@
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textSize">14dp</item>
         <item name="android:gravity">center_horizontal</item>
-        <item name="android:textColor">@color/home_tab_text</item>
+        <item name="android:textColor">@color/c2</item>
         <item name="android:includeFontPadding">false</item>
         <item name="android:layout_marginTop">12dp</item>
     </style>
@@ -486,7 +486,7 @@
     </style>
 
     <style name="priAppItem">
-        <item name="android:background">@color/divider_2</item>
+        <item name="android:background">@color/c5</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1px</item>
         <item name="android:layout_marginLeft">12dp</item>
@@ -533,7 +533,7 @@
         <item name="android:layout_gravity">center_vertical</item>
         <item name="android:textSize">16dp</item>
         <item name="android:layout_marginLeft">10dp</item>
-        <item name="android:textColor">@color/pri_pro_item_title</item>
+        <item name="android:textColor">@color/c2</item>
     </style>
     
     <style name="ItemAdTitle" parent="ItemTitle">
@@ -550,7 +550,7 @@
         <item name="android:textSize">14dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:layout_gravity">center_vertical</item>
-        <item name="android:textColor">@color/pri_pro_item_title</item>
+        <item name="android:textColor">@color/c2</item>
     </style>
 
     <style name="ItemLabel">
@@ -577,7 +577,7 @@
         <item name="android:layout_height">46dp</item>
         <item name="android:gravity">center</item>
         <item name="android:clickable">true</item>
-        <item name="android:textColor">@color/process_btn_text</item>
+        <item name="android:textColor">@color/cgn</item>
     </style>
 
     <style name="ItemBtn">
@@ -586,7 +586,7 @@
         <item name="android:layout_height">38dp</item>
         <item name="android:gravity">center</item>
         <item name="android:clickable">true</item>
-        <item name="android:textColor">@color/process_btn_text</item>
+        <item name="android:textColor">@color/cgn</item>
     </style>
 
     <style name="ItemBtnText">
@@ -595,6 +595,6 @@
         <item name="android:layout_centerInParent">true</item>
         <item name="android:gravity">center</item>
         <item name="android:textSize">16dp</item>
-        <item name="android:textColor">@color/process_btn_text</item>
+        <item name="android:textColor">@color/cgn</item>
     </style>
 </resources>

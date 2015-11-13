@@ -37,14 +37,14 @@
                 android:paddingLeft="14dp"
                 android:paddingRight="14dp"
                 android:text="@string/pri_pro_summary_not_confirm"
-                android:textColor="@color/pri_pro_new_lable"
+                android:textColor="@color/c3"
                 android:textSize="16dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:layout_alignParentBottom="true"
-                android:background="@color/divider_1" />
+                android:background="@color/c4" />
 
             <LinearLayout
                 android:id="@+id/list_parent_layout"

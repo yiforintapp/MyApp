@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="155dp"
         android:layout_below="@id/wifi_result_title_bar"
-        android:background="@color/toolbar_background_color"
+        android:background="@color/cb"
         android:gravity="center">
 
         <ImageView
@@ -83,7 +83,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_toRightOf="@id/blue_tiao"
                 android:text="@string/hp_device_gprs"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
         </RelativeLayout>
 
@@ -93,7 +93,7 @@
             android:layout_height="1dp"
             android:layout_below="@id/wifi_result_top_content"
             android:layout_marginTop="5dp"
-            android:background="@color/divider_1" />
+            android:background="@color/c4" />
 
         <RelativeLayout
             android:id="@+id/low_bottom_content"
@@ -116,7 +116,7 @@
                 android:layout_marginLeft="9dp"
                 android:layout_toRightOf="@id/low_icon"
                 android:text="@string/wifi_scan_result_traffic_text"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="14dp" />
         </RelativeLayout>
 
@@ -166,7 +166,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/wifi_result_one"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
 
             <ImageView
@@ -192,7 +192,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/wifi_result_two"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
 
             <ImageView
@@ -218,7 +218,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/wifi_result_three"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
 
             <ImageView
@@ -244,7 +244,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/wifi_result_four"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
 
             <ImageView

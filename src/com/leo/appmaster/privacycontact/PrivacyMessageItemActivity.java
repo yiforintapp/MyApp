@@ -65,7 +65,7 @@ public class PrivacyMessageItemActivity extends BaseActivity implements OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_privacy_message_item_list);
         mTtileBar = (CommonToolbar) findViewById(R.id.message_item_layout_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
         mMessages = new ArrayList<MessageBean>();
         mShowDates = new ArrayList<String>();
         mContactCallLog = (ListView) findViewById(R.id.contactLV);

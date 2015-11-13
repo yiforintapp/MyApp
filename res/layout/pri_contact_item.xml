@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:text="Hahaha"
-            android:textColor="@color/pri_pro_item_title"
+            android:textColor="@color/c2"
             android:textSize="16dp" />
 
         <TextView
@@ -61,7 +61,7 @@
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:text="12"
-                android:textColor="@color/pri_pro_item_title"
+                android:textColor="@color/c2"
                 android:textSize="12dp" />
 
             <ImageView
@@ -80,7 +80,7 @@
                 android:gravity="center_vertical"
                 android:includeFontPadding="false"
                 android:text="12"
-                android:textColor="@color/pri_pro_item_title"
+                android:textColor="@color/c2"
                 android:textSize="12dp" />
 
         </LinearLayout>
@@ -103,7 +103,7 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:text="@string/pri_contact_added"
-        android:textColor="@color/pri_pro_item_summay"
+        android:textColor="@color/cb2"
         android:textSize="14dp"
         android:visibility="gone" />
 

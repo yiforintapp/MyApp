@@ -25,7 +25,7 @@
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/pri_pro_video_mask" />
+            android:background="@color/cm" />
 
         <ImageView
             android:layout_width="wrap_content"
@@ -55,7 +55,7 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:singleLine="true"
-        android:textColor="@color/pri_pro_item_title"
+        android:textColor="@color/c2"
         android:textSize="17dp" />
 
     <View style="@style/priAppItem" />

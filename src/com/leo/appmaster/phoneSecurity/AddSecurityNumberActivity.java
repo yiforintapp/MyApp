@@ -88,7 +88,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         setContentView(R.layout.activity_add_security_number);
         mDefaultText = (LinearLayout) findViewById(R.id.add_contact_default_tv);
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
         mTtileBar.setToolbarTitle(R.string.secur_add_number_title);
         mPhoneContact = new ArrayList<ContactBean>();
@@ -134,7 +134,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
             mAddButton.setBackgroundResource(R.drawable.grey_btn_selector);
             mAddButton.setClickable(false);
             mInputEdit.setClickable(false);
-            mAddButton.setTextColor(getResources().getColor(R.color.divider_2));
+            mAddButton.setTextColor(getResources().getColor(R.color.c5));
             mAddRip.setClickable(false);
         }
 
@@ -184,7 +184,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
                     mAddButton.setClickable(false);
                     mAddButton.setBackgroundResource(R.drawable.grey_btn_selector);
                     mInputEdit.setClickable(false);
-                    mAddButton.setTextColor(getResources().getColor(R.color.divider_2));
+                    mAddButton.setTextColor(getResources().getColor(R.color.c5));
                     mAddRip.setClickable(false);
                 } else {
                     mAddButton.setClickable(true);

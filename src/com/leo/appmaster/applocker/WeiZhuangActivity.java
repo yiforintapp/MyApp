@@ -68,7 +68,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 
         mTtileBar = (CommonToolbar) findViewById(R.id.weizhuang_title_bar);
         mTtileBar.setToolbarTitle(R.string.title_bar_weizhuang);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
 //        mTtileBar.openBackView();
 //        mTtileBar.setOptionImageResource(R.drawable.help_icon_n);
         mTtileBar.setOptionMenuVisible(true);

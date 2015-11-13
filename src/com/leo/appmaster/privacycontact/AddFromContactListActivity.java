@@ -83,7 +83,7 @@ public class AddFromContactListActivity extends BaseActivity implements OnItemCl
             }
         });
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(true);
         mTtileBar.setOptionImageResource(R.drawable.mode_done);
         mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_from_contact);

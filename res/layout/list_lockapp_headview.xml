@@ -116,7 +116,7 @@
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_gravity="bottom"
-            android:background="@color/divider_1" />
+            android:background="@color/c4" />
     </LinearLayout>
 
 

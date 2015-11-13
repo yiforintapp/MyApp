@@ -53,7 +53,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="5dp"
                     android:singleLine="true"
-                    android:textColor="@color/divider_1"
+                    android:textColor="@color/c4"
                     android:textSize="13dp" />
             </LinearLayout>
 

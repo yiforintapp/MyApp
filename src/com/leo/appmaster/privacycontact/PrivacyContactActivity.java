@@ -97,7 +97,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
     private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.privacy_contact_title_bar);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setNavigationClickListener(new OnClickListener() {
             @Override
             public void onClick(View arg0) {

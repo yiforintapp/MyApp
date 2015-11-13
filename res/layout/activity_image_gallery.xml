@@ -9,7 +9,7 @@
         android:id="@+id/layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/toolbar_background_color" />
+        android:background="@color/cb" />
 
     <ProgressBar
         android:id="@+id/pb_loading_hide_pic"

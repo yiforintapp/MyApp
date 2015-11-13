@@ -8,7 +8,7 @@
         android:id="@+id/message_item_layout_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <RelativeLayout
         android:layout_width="match_parent"

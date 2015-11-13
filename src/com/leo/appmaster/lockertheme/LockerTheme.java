@@ -536,7 +536,7 @@ public class LockerTheme extends BaseActivity implements OnClickListener, ThemeC
         LayoutInflater inflater = LayoutInflater.from(this);
         CommonToolbar title = (CommonToolbar) findViewById(R.id.layout_title_bar);
         title.setToolbarTitle(R.string.lockerTheme);
-        title.setToolbarColorResource(R.color.toolbar_background_color);
+        title.setToolbarColorResource(R.color.cb);
         title.setOptionMenuVisible(false);
 //        title.setTitle(R.string.lockerTheme);
 //        title.setBackViewListener(this);

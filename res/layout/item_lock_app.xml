@@ -41,7 +41,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:text="@string/app_name"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="@dimen/applock_text_title_size" />
 
             <TextView
@@ -50,7 +50,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
                 android:singleLine="true"
-                android:textColor="@color/divider_1"
+                android:textColor="@color/c4"
                 android:textSize="@dimen/applock_text_desc_size" />
         </LinearLayout>
 

@@ -51,7 +51,7 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.traffic_title_bar);
         mTitleBar.setToolbarTitle(R.string.app_flow_elec);
-        mTitleBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitleBar.setToolbarColorResource(R.color.cb);
         mTitleBar.setOptionClickListener(this);
         mTitleBar.setNavigationClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.setup_icon);
@@ -66,7 +66,7 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.traffic_app_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);
-        mPagerTab.setBackgroundResource(R.color.toolbar_background_color);
+        mPagerTab.setBackgroundResource(R.color.cb);
         mViewPager = (ViewPager) findViewById(R.id.traffic_app_viewpager);
         initFragment();
 

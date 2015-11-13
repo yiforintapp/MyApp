@@ -73,7 +73,7 @@ public class TrafficSetting extends BaseActivity implements OnClickListener {
 
         mTitleBar = (CommonToolbar) findViewById(R.id.flow_set_title_bar);
         mTitleBar.setToolbarTitle(R.string.flow_settting_name);
-        mTitleBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitleBar.setToolbarColorResource(R.color.cb);
         mTitleBar.setOptionMenuVisible(false);
 
 //        mTtileBar = (CommonTitleBar) findViewById(R.id.flow_set__title_bar);

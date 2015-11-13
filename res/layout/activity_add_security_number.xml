@@ -10,7 +10,7 @@
         android:id="@+id/add_privacy_contact_title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/toolbar_background_color" />
+        android:background="@color/cb" />
 
     <LinearLayout
         android:id="@+id/security_input_number_LT"

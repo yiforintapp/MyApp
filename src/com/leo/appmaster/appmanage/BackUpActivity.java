@@ -61,7 +61,7 @@ public class BackUpActivity extends BaseFragmentActivity implements OnClickListe
     private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.backup_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_backup_back);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.backup_app_tab_indicator);

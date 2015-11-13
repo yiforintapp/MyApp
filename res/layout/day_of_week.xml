@@ -7,7 +7,7 @@
         android:id="@+id/day1"
         android:layout_width="@dimen/day_view_width"
         android:layout_height="24dp"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <com.leo.appmaster.applocker.DayView
         android:id="@+id/day2"
@@ -16,7 +16,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="22dp"
         android:layout_toRightOf="@+id/day1"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <com.leo.appmaster.applocker.DayView
         android:id="@+id/day3"
@@ -25,7 +25,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="22dp"
         android:layout_toRightOf="@+id/day2"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <com.leo.appmaster.applocker.DayView
         android:id="@+id/day4"
@@ -34,7 +34,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="22dp"
         android:layout_toRightOf="@+id/day3"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <com.leo.appmaster.applocker.DayView
         android:id="@+id/day5"
@@ -43,7 +43,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/day2"
         android:layout_marginTop="18dp"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <com.leo.appmaster.applocker.DayView
         android:id="@+id/day6"
@@ -51,7 +51,7 @@
         android:layout_height="24dp"
         android:layout_alignLeft="@+id/day2"
         android:layout_alignTop="@+id/day5"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
     <com.leo.appmaster.applocker.DayView
         android:id="@+id/day7"
@@ -59,6 +59,6 @@
         android:layout_height="24dp"
         android:layout_alignLeft="@+id/day3"
         android:layout_alignTop="@+id/day6"
-        android:background="@color/app_background" />
+        android:background="@color/cb" />
 
 </RelativeLayout>

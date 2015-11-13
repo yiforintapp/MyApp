@@ -87,7 +87,7 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 .create();
         mComBar = (CommonToolbar) findViewById(R.id.add_privacy_call_log_title_bar);
         mComBar.setToolbarTitle(R.string.privacy_contact_popumenus_from_call_log);
-        mComBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mComBar.setToolbarColorResource(R.color.cb);
         mListCallLog = (ListView) findViewById(R.id.add_privacy_call_logLV);
         mProgressBar = (ProgressBar) findViewById(R.id.progressbar_loading);
         mComBar.setOptionMenuVisible(true);

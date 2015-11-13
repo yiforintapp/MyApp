@@ -25,7 +25,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/wifi_result_one"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
 
             <com.leo.appmaster.ui.LoadingView
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/wifi_result_two"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
 
             <com.leo.appmaster.ui.LoadingView
@@ -95,7 +95,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/wifi_result_three"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
 
             <com.leo.appmaster.ui.LoadingView
@@ -130,7 +130,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:text="@string/wifi_result_four"
-                android:textColor="@color/cool_black"
+                android:textColor="@color/c2"
                 android:textSize="15dp" />
 
             <com.leo.appmaster.ui.LoadingView

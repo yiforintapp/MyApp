@@ -62,7 +62,7 @@ public class PrivacyCallLogListActivity extends BaseActivity implements OnClickL
         setContentView(R.layout.activity_privacy_call_log_item);
         mContactCallLogs = new ArrayList<ContactCallLog>();
         mComTitle = (CommonToolbar) findViewById(R.id.privacy_call_log_item_title_bar);
-        mComTitle.setToolbarColorResource(R.color.toolbar_background_color);
+        mComTitle.setToolbarColorResource(R.color.cb);
         mComTitle.setToolbarTitle(R.string.privacy_contact_calllog);
         mComTitle.setOptionMenuVisible(false);
         mContactImage = (CircleImageView) findViewById(R.id.contactIV);

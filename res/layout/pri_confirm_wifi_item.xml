@@ -156,7 +156,7 @@
             android:layout_marginRight="19dp"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/divider_1" />
+            android:background="@color/c4" />
 
         <com.leo.appmaster.ui.RippleView
             android:id="@+id/item_btn_rv"

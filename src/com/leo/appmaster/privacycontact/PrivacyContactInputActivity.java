@@ -217,7 +217,7 @@ public class PrivacyContactInputActivity extends BaseActivity {
     private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.title_bar);
         mTtileBar.setOptionMenuVisible(true);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setToolbarTitle(R.string.privacy_contact_popumenus_add_new_privacy_contact);
         mTtileBar.setOptionImageResource(R.drawable.mode_done);
         mNameEt = (EditText) findViewById(R.id.privacy_input_nameET);

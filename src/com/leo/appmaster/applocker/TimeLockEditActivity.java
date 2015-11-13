@@ -90,7 +90,7 @@ public class TimeLockEditActivity extends BaseActivity implements
     private void initUI() {
         mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTitleBar.setToolbarTitle(R.string.lock_mode_time);
-        mTitleBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTitleBar.setToolbarColorResource(R.color.cb);
         mTitleBar.setOptionMenuVisible(true);
         mTitleBar.setOptionClickListener(this);
         mTitleBar.setOptionImageResource(R.drawable.mode_done);

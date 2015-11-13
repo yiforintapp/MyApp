@@ -42,7 +42,7 @@
             android:ellipsize="end"
             android:includeFontPadding="false"
             android:singleLine="true"
-            android:textColor="@color/pri_pro_item_title"
+            android:textColor="@color/c2"
             android:textSize="17dp" />
 
         <TextView
@@ -53,7 +53,7 @@
             android:ellipsize="end"
             android:includeFontPadding="false"
             android:singleLine="true"
-            android:textColor="@color/divider_1"
+            android:textColor="@color/c4"
             android:textSize="13dp"
             android:visibility="gone" />
     </LinearLayout>

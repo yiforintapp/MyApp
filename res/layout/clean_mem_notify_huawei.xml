@@ -54,7 +54,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
                 android:text="@string/clean_mem_notify_small"
-                android:textColor="@color/quick_close_text_color"
+                android:textColor="@color/c3"
                 android:textSize="12dp" />
         </LinearLayout>
 

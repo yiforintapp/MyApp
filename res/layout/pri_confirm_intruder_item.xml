@@ -83,7 +83,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:includeFontPadding="false"
-                android:textColor="@color/pri_pro_item_summay"
+                android:textColor="@color/cb2"
                 android:textSize="20dp" />
         </LinearLayout>
 
@@ -102,7 +102,7 @@
             android:layout_marginRight="19dp"
             android:layout_width="match_parent"
             android:layout_height="1px"
-            android:background="@color/divider_1" />
+            android:background="@color/c4" />
 
         <com.leo.appmaster.ui.RippleView
             android:id="@+id/item_btn_rv"

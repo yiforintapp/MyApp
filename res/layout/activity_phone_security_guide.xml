@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/phone_security_guide_commonbar"
-        android:background="@color/toolbar_background_color"
+        android:background="@color/cb"
         android:gravity="center_horizontal">
 
         <ImageView
@@ -151,7 +151,7 @@
         android:layout_height="1px"
         android:layout_above="@+id/security_guide_RV"
         android:layout_marginBottom="11.5dp"
-        android:background="@color/divider_2"></View>
+        android:background="@color/c5"></View>
 
     <com.leo.appmaster.ui.RippleView
         android:id="@+id/security_guide_RV"

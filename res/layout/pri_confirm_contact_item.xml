@@ -44,7 +44,7 @@
                 android:layout_marginTop="14dp"
                 android:includeFontPadding="false"
                 android:text="@string/pri_pro_contact_summary"
-                android:textColor="@color/pri_pro_new_lable"
+                android:textColor="@color/c3"
                 android:textSize="14dp" />
 
             <CheckBox
@@ -78,7 +78,7 @@
                 android:layout_height="1px"
                 android:layout_marginLeft="19dp"
                 android:layout_marginRight="19dp"
-                android:background="@color/divider_1" />
+                android:background="@color/c4" />
 
             <com.leo.appmaster.ui.RippleView
                 android:id="@+id/item_btn_rv"
@@ -99,7 +99,7 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="@string/privacy_contact_progress_dialog_content"
-                android:textColor="@color/divider_2"
+                android:textColor="@color/c5"
                 android:textSize="16dp"
                 android:visibility="gone" />
         </LinearLayout>

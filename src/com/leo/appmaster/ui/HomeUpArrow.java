@@ -53,7 +53,7 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
         mPaint.setAntiAlias(true);
         mPaint.setColor(FULL_COLOR);
 
-        mDividerColor = context.getResources().getColor(R.color.divider_2);
+        mDividerColor = context.getResources().getColor(R.color.c5);
         mUpIcon = (BitmapDrawable) context.getResources().getDrawable(R.drawable.ic_up_arrow);
         mRedTip = context.getResources().getDrawable(R.drawable.red_dot);
 

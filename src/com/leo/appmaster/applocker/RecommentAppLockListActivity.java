@@ -63,7 +63,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
     private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.recomment_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_lock);
-        mTtileBar.setToolbarColorResource(R.color.toolbar_background_color);
+        mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
 
         lockTV = (RippleView) findViewById(R.id.recomment_lock);
