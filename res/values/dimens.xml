@@ -323,4 +323,12 @@
 
     <dimen name="pp_process_rv_width">210dp</dimen>
     <dimen name="add_priv_cont_pad">7dp</dimen>
+
+    <!-- 3.0标准字体规范 -->
+    <dimen name="f1">20dp</dimen>
+    <dimen name="f2">17dp</dimen>
+    <dimen name="f3">16dp</dimen>
+    <dimen name="f4">14dp</dimen>
+    <dimen name="f5">13dp</dimen>
+    <dimen name="f6">11dp</dimen>
 </resources>
