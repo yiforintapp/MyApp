@@ -1,5 +1,6 @@
 package com.leo.appmaster.home;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.content.ComponentName;
 import android.content.Context;
@@ -15,6 +16,7 @@ import android.widget.ListView;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.appmanage.BackUpActivity;
 import com.leo.appmaster.appmanage.EleActivity;
 import com.leo.appmaster.appmanage.FlowActivity;
@@ -30,7 +32,6 @@ import com.leo.appmaster.privacycontact.PrivacyContactActivity;
 import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.quickgestures.ISwipUpdateRequestManager;
 import com.leo.appmaster.quickgestures.IswipUpdateTipDialog;
-import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.HomeUpArrow;
 import com.leo.appmaster.ui.SlidingUpPanelLayout;
@@ -231,77 +232,79 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int itemId = (int) mAdapter.getItemId(position);
-
-        Intent intent = null;
-        switch (itemId) {
-            case R.string.hp_hide_img:
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidpic");
-                intent = new Intent(getActivity(), ImageHideMainActivity.class);
-                getActivity().startActivity(intent);
-                // 隐藏图片
-                break;
-            case R.string.hp_hide_video:
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "hidvideo");
-                intent = new Intent(getActivity(), VideoHideMainActivity.class);
-                getActivity().startActivity(intent);
-                // 隐藏视频
-                break;
-            case R.string.hp_contact_call:
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "pricall");
-                intent = new Intent(getActivity(), PrivacyContactActivity.class);
-                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
-                        PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
-                getActivity().startActivity(intent);
-                // 隐私通话
-                break;
-            case R.string.hp_contact_sms:
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "primesg");
-                intent = new Intent(getActivity(), PrivacyContactActivity.class);
-                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
-                        PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
-                LeoLog.i(TAG, "scan uri: " + intent.toURI());
-                getActivity().startActivity(intent);
-                // 隐私短信
-                break;
-            case R.string.hp_app_manage_del:
-                // 应用卸载
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "newuninstall");
-                intent = new Intent(getActivity(), UninstallActivity.class);
-                startActivity(intent);
-                break;
-            case R.string.hp_app_manage_back:
-                // 应用备份
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "backup");
-                intent = new Intent(getActivity(), BackUpActivity.class);
-                startActivity(intent);
-                break;
-            case R.string.hp_device_gprs:
-                // 流量监控
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "data");
-                intent = new Intent(getActivity(), FlowActivity.class);
-                startActivity(intent);
-                break;
-            case R.string.hp_device_power:
-                // 电量管理
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "boost", "battery");
-                Intent dlIntent = new Intent(getActivity(), EleActivity.class);
-                startActivity(dlIntent);
-                break;
-            case R.string.hp_helper_shot:
-                // 快捷小助手
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "boost", "home_shortcutsAssistant");
-                Intent qhintent = new Intent(getActivity(), QuickHelperActivity.class);
-                startActivity(qhintent);
-                break;
-            case R.string.hp_helper_iswipe:
-                // iswipe
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "boost", "home_swifty");
-                boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(getActivity());
-                // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
-                startISwipHandlerForInstallIS(installISwipe);
-                break;
-        }
+        Activity activity = getActivity();
+       if(activity != null) {
+           int itemId = (int) mAdapter.getItemId(position);
+           Intent intent = null;
+           switch (itemId) {
+               case R.string.hp_hide_img:
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidpic");
+                   intent = new Intent(activity, ImageHideMainActivity.class);
+                   activity.startActivity(intent);
+                   // 隐藏图片
+                   break;
+               case R.string.hp_hide_video:
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "hidvideo");
+                   intent = new Intent(activity, VideoHideMainActivity.class);
+                   activity.startActivity(intent);
+                   // 隐藏视频
+                   break;
+               case R.string.hp_contact_call:
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "pricall");
+                   intent = new Intent(activity, PrivacyContactActivity.class);
+                   intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                           PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+                   activity.startActivity(intent);
+                   // 隐私通话
+                   break;
+               case R.string.hp_contact_sms:
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "primesg");
+                   intent = new Intent(activity, PrivacyContactActivity.class);
+                   intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+                           PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+                   LeoLog.i(TAG, "scan uri: " + intent.toURI());
+                   activity.startActivity(intent);
+                   // 隐私短信
+                   break;
+               case R.string.hp_app_manage_del:
+                   // 应用卸载
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "newuninstall");
+                   intent = new Intent(activity, UninstallActivity.class);
+                   startActivity(intent);
+                   break;
+               case R.string.hp_app_manage_back:
+                   // 应用备份
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "backup");
+                   intent = new Intent(activity, BackUpActivity.class);
+                   startActivity(intent);
+                   break;
+               case R.string.hp_device_gprs:
+                   // 流量监控
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "data");
+                   intent = new Intent(activity, FlowActivity.class);
+                   startActivity(intent);
+                   break;
+               case R.string.hp_device_power:
+                   // 电量管理
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "battery");
+                   Intent dlIntent = new Intent(activity, EleActivity.class);
+                   startActivity(dlIntent);
+                   break;
+               case R.string.hp_helper_shot:
+                   // 快捷小助手
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "home_shortcutsAssistant");
+                   Intent qhintent = new Intent(activity, QuickHelperActivity.class);
+                   startActivity(qhintent);
+                   break;
+               case R.string.hp_helper_iswipe:
+                   // iswipe
+                   SDKWrapper.addEvent(activity, SDKWrapper.P1, "boost", "home_swifty");
+                   boolean installISwipe = ISwipUpdateRequestManager.isInstallIsiwpe(activity);
+                   // Log.e(Constants.RUN_TAG, "是否安装ISwipe：" + installISwipe);
+                   startISwipHandlerForInstallIS(installISwipe);
+                   break;
+           }
+       }
     }
 
     private void startISwipHandlerForInstallIS(boolean flag) {

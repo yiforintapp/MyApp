@@ -558,7 +558,11 @@ public class TaskDetectService extends Service {
             sNotification = new Notification();
             sNotification.icon = R.drawable.ic_launcher;
             sNotification.flags |= Notification.FLAG_ONGOING_EVENT;
-            String title = context.getString(R.string.app_name);
+            String title = "";
+            try {
+                title = context.getString(R.string.app_name);
+            } catch (Exception e) {
+            }
             sNotification.setLatestEventInfo(context, title, title, pi);
         }
         return sNotification;
