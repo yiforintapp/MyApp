@@ -3,8 +3,10 @@ package com.leo.appmaster.phoneSecurity;
 import android.app.Activity;
 import android.app.Service;
 import android.content.Context;
+import android.location.Criteria;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Environment;
 import android.os.Message;
 import android.os.StatFs;
@@ -312,5 +314,20 @@ public class PhoneSecurityUtils {
             e.printStackTrace();
         }
         return locate;
+    }
+    public static String getLocateProvider(LocationManager locateManager){
+        Criteria criteria = new Criteria();
+        /*设置为最大精度*/
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        /*不要求海拔信息*/
+        criteria.setAltitudeRequired(false);
+        /*不要求方位信息*/
+        criteria.setBearingRequired(false);
+        /*是否允许付费*/
+        criteria.setCostAllowed(true);
+        /*对电量的要求*/
+        criteria.setPowerRequirement(Criteria.POWER_LOW);
+        String provider = locateManager.getBestProvider(criteria, true);
+        return provider;
     }
 }

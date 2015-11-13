@@ -53,21 +53,17 @@ import java.util.TimerTask;
 public class LostSecurityManagerImpl extends LostSecurityManager {
     public static final Boolean DBG = false;
     public static final String TAG = "LostSecurityManagerImpl";
-    /*位置精度，1米检测*/
-    public static final int LOCATION_MIN_DISTANCE = 1;
-    /*时间精度,1秒检测*/
-    public static final int LOCATION_MIN_TIME = 1000;
+
     private static final int MAX_SCORE = 6;
     private static final int ADD_SECUR_NUMBER_FAIL = 0;
     private static final int ADD_SECUR_NUMBER_SELT = 1;
     private static final int ADD_SECUR_NUMBER_SUCESS = 2;
+
     private static boolean mIsLocation;
     private static boolean mIsOnkey;
     private static boolean mIsFormate;
     private static boolean mIsLock;
     private static boolean mIsAlert;
-    private LocationManager mLocationManager;
-    private SecurLocateListener mLocationListener;
 
     @Override
     public void onDestory() {
@@ -187,57 +183,22 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     @Override
     public Location getLocation() {
         /*可根据设备状况动态选择location provider*/
-        if (mLocationManager == null) {
-            mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+        PhoneSecurityManager psm = PhoneSecurityManager.getInstance(mContext);
+        LocationManager locationManager = psm.getLocationManager();
+        if (locationManager == null) {
+            locationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
+            psm.setLocationManager(locationManager);
         }
         Location location = null;
-        Criteria criteria = new Criteria();
-        /*设置为最大精度*/
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        /*不要求海拔信息*/
-        criteria.setAltitudeRequired(false);
-        /*不要求方位信息*/
-        criteria.setBearingRequired(false);
-        /*是否允许付费*/
-        criteria.setCostAllowed(true);
-        /*对电量的要求*/
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        String provider = mLocationManager.getBestProvider(criteria, true);
-        if (provider == null) {
-            provider = LocationManager.NETWORK_PROVIDER;
-        }
+        String provider = PhoneSecurityUtils.getLocateProvider(locationManager);
         LeoLog.i(TAG, "provider=" + provider);
-        if (mLocationManager
-                .isProviderEnabled(provider)) {
-            location = mLocationManager.getLastKnownLocation(provider);
+        if (locationManager.isProviderEnabled(provider)) {
+            location = locationManager.getLastKnownLocation(provider);
         }
         if (location == null) {
             LeoLog.i(TAG, "location为空");
         } else {
             LeoLog.i(TAG, "location不为空");
-        }
-        if (location == null) {
-            if (mLocationListener == null) {
-                mLocationListener = new SecurLocateListener(mLocationManager);
-            }
-            if (mLocationManager == null) {
-                mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-            }
-            mLocationManager.requestLocationUpdates(provider, LOCATION_MIN_TIME, LOCATION_MIN_DISTANCE, mLocationListener, mContext.getMainLooper());
-            ThreadManager.executeOnAsyncThreadDelay(new Runnable() {
-                @Override
-                public void run() {
-                    if (mLocationListener != null) {
-                        if (mLocationManager != null) {
-                            mLocationManager.removeUpdates(mLocationListener);
-                            mLocationListener = null;
-                            PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, true);
-                            LeoLog.i(TAG, "Task移除位置监听");
-                            mLocationManager = null;
-                        }
-                    }
-                }
-            }, PhoneSecurityConstants.DELAY_REMOVE_LOCATION_TIME);
         }
         return location;
     }
@@ -332,7 +293,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             String googleMapUri = null;
             String locatePositionMsm = null;
             if (!isExecuNoMsm) {
-                googleMapUri = PhoneSecurityUtils.getGoogleMapLocationUri();
+                googleMapUri = PhoneSecurityManager.getInstance(mContext).securLocateHandler();
             }
             if (!Utilities.isEmpty(googleMapUri)) {
                 locatePositionMsm = mContext.getResources().getString(R.string.secur_location_msm, googleMapUri);
@@ -649,56 +610,5 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     @Override
     public boolean getIsExistSim() {
         return SimDetecter.isSimReady(mContext);
-    }
-
-    private class SecurLocateListener implements LocationListener {
-        private LocationManager locationManager;
-
-        public SecurLocateListener(LocationManager locationManager) {
-            this.locationManager = locationManager;
-        }
-
-        @Override
-        public void onLocationChanged(Location location) {
-//            Toast.makeText(mContext, "onLocationChanged", Toast.LENGTH_SHORT).show();
-            updateToNewLocation(location, locationManager);
-        }
-
-
-        @Override
-        public void onProviderDisabled(String provider) {
-//            Toast.makeText(mContext, "onProviderDisabled", Toast.LENGTH_SHORT).show();
-            updateToNewLocation(null, null);
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-//            Toast.makeText(mContext, "onProviderEnabled", Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-//            Toast.makeText(mContext, "onStatusChanged", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /*通过location获取当前设备的具体位置*/
-    private void updateToNewLocation(Location location, LocationManager locateManager) {
-        if (location != null) {
-            double lat = location.getLatitude();
-            double lng = location.getLongitude();
-            LeoLog.i(TAG, "经度：" + lng + "纬度：" + lat);
-            if (locateManager != null
-                    && mLocationListener != null) {
-                locateManager.removeUpdates(mLocationListener);
-                LeoLog.i(TAG, "updateToNewLocation移除位置监听");
-                mLocationListener = null;
-                mLocationManager = null;
-            } else {
-                mLocationListener = null;
-                mLocationManager = null;
-            }
-            PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, false);
-        }
     }
 }
