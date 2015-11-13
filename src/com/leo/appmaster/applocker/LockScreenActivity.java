@@ -761,11 +761,11 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             // change background
             if (!ThemeUtils.checkThemeNeed(this)
                     && (mLockMode == LockManager.LOCK_MODE_FULL)) {
-                BitmapDrawable bd = (BitmapDrawable) AppUtil.getAppIcon(
+                Drawable bd = AppUtil.getAppIcon(
                         getPackageManager(),
                         mLockedPackage);
                 if (bd == null) {
-                    bd = (BitmapDrawable) AppUtil.getAppIcon(
+                    bd = AppUtil.getAppIcon(
                             getPackageManager(),
                             getPackageName());
                 }
@@ -856,7 +856,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         if (!ThemeUtils.checkThemeNeed(this)
                 && (mLockMode == LockManager.LOCK_MODE_FULL)) {
-            BitmapDrawable bd = (BitmapDrawable) AppUtil.getAppIcon(
+            Drawable bd = AppUtil.getAppIcon(
                     getPackageManager(), mLockedPackage);
             setAppInfoBackground(bd);
         }

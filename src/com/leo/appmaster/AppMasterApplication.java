@@ -56,7 +56,7 @@ public class AppMasterApplication extends Application {
         if (PhoneInfo.getAndroidVersion() < 20) {
             try {
                 System.loadLibrary("leo_service");
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
@@ -96,7 +96,7 @@ public class AppMasterApplication extends Application {
         if (PhoneInfo.getAndroidVersion() < 20) {
             try {
                 restartApplocker(PhoneInfo.getAndroidVersion(), getUserSerial());
-            } catch (Exception e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }

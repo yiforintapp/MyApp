@@ -1,4 +1,3 @@
-
 package com.leo.appmaster.imagehide;
 
 import java.io.File;

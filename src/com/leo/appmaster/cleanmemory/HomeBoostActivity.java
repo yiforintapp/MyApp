@@ -24,7 +24,6 @@ import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.mgr.LockManager;
@@ -93,7 +92,7 @@ public class HomeBoostActivity extends Activity {
 
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                if (code == MobvistaEngine.ERR_OK) {
+                if (code == MobvistaEngine.ERR_OK && mRlResultWithAD != null && campaign != null) {
                     mIsADLoaded = true;
                     LeoLog.e("poha", "loaded!");
                     long currentTime = System.currentTimeMillis();
@@ -109,14 +108,20 @@ public class HomeBoostActivity extends Activity {
                             (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg));
 
                     TextView appname = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appname);
-                    appname.setText(campaign.getAppName());
+                    if(appname != null) {
+                        appname.setText(campaign.getAppName());
+                    }
 
                     TextView appdesc = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appdesc);
-                    appdesc.setText(campaign.getAppDesc());
+                    if(appdesc != null) {
+                        appdesc.setText(campaign.getAppDesc());
+                    }
 
                     Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ad_appcall);
-                    call.setText(campaign.getAdCall());
-                    mAdEngine.registerView(Constants.UNIT_ID_62, call);
+                    if(call != null) {
+                        call.setText(campaign.getAdCall());
+                        mAdEngine.registerView(Constants.UNIT_ID_62, call);
+                    }
                 }
             }
 

@@ -423,10 +423,15 @@ public class HomePrivacyFragment extends Fragment {
      * 开始盾牌上移、外环框隐藏动画
      */
     public void startProcessing(int stepCount) {
+        if (isRemoving() || isDetached() || getActivity() == null
+                || mHomeAnimView == null
+                || mHomeAnimView.getShieldLayer() == null) {
+            return;
+        }
+
         showScanningPercent(-1);
 
         mHomeAnimView.setTotalStepCount(stepCount);
-//        int offsetY = getResources().getDimensionPixelSize(R.dimen.scan_shield_offset);
         int offsetY = mHomeAnimView.getShieldLayer().getMaxOffsetY();
         ObjectAnimator shieldOffsetYAnim = ObjectAnimator.ofInt(mHomeAnimView, "shieldOffsetY", 0, offsetY);
         int duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);

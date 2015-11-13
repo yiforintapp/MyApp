@@ -11,10 +11,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
-import com.leo.analytics.LeoAgent;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.AppLockListActivity;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
@@ -26,9 +24,6 @@ import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityManager;
-import com.leo.appmaster.phoneSecurity.PhoneSecurityUtils;
-import com.leo.appmaster.privacycontact.PrivacyContactUtils;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.utils.LeoLog;
@@ -103,7 +98,10 @@ public class HomeTabFragment extends Fragment implements RippleView.OnRippleComp
     }
 
     public void dismissTab() {
-        if (mRootView.getVisibility() == View.GONE) return;
+        if (isRemoving() || isDetached() || getActivity() == null
+                || mRootView.getVisibility() == View.GONE) {
+            return;
+        }
 
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_up_to_down);
         animation.setAnimationListener(new Animation.AnimationListener() {
@@ -132,7 +130,10 @@ public class HomeTabFragment extends Fragment implements RippleView.OnRippleComp
     }
 
     public void showTab() {
-        if (mRootView.getVisibility() == View.VISIBLE) return;
+        if (isRemoving() || isDetached() || getActivity() == null
+                || mRootView.getVisibility() == View.VISIBLE) {
+            return;
+        }
 
         Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.anim_down_to_up);
         animation.setAnimationListener(new Animation.AnimationListener() {

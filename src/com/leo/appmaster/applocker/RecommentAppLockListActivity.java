@@ -87,7 +87,11 @@ public class RecommentAppLockListActivity extends BaseActivity implements
 //        List<String> defaultLockList = getDefaultLockList();
         List<String> defaultLockList = AppLoadEngine.getInstance(this).getRecommendLockList();
         if (mInstallPackageName != null && !mInstallPackageName.equals("")) {
-            defaultLockList.add(0, mInstallPackageName);
+            try {
+                defaultLockList.add(0, mInstallPackageName);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         AppInfo installPackage = null;
         ProcessDetector detector = new ProcessDetector();
@@ -110,11 +114,19 @@ public class RecommentAppLockListActivity extends BaseActivity implements
                 if (localApp.packageName.equals(mInstallPackageName)) {
                     installPackage = localApp;
                 } else {
-                    mLockList.add(localApp);
+                    try {
+                        mLockList.add(localApp);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             } else {
                 localApp.isLocked = false;
-                mUnLockList.add(localApp);
+                try {
+                    mUnLockList.add(localApp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -128,7 +140,11 @@ public class RecommentAppLockListActivity extends BaseActivity implements
 //        Collections.sort(mLockList, new LockedAppComparator(mLockList));
         Collections.sort(mLockList, new DefalutAppComparator());
         if (installPackage != null) {
-            mLockList.add(0, installPackage);
+            try {
+                mLockList.add(0, installPackage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         Collections.sort(mUnLockList, new DefalutAppComparator());
         resault = new ArrayList<AppInfo>(mLockList);

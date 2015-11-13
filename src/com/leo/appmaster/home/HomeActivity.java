@@ -12,11 +12,14 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.admin.DevicePolicyManager;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -78,6 +81,7 @@ import com.leo.appmaster.utils.RootChecker;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.videohide.VideoItemBean;
 import com.leo.imageloader.ImageLoader;
+import com.leo.push.BootupReceiver;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
         AdapterView.OnItemClickListener, IPrivacyNewActivity {
@@ -127,6 +131,20 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private int mScoreBeforeProcess;
 
+    private BroadcastReceiver mLocaleReceiver = new BootupReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            super.onReceive(context, intent);
+            if (intent == null) return;
+
+            String action = intent.getAction();
+            LeoLog.i(TAG, "locale change, action: " + action);
+            if (Intent.ACTION_LOCALE_CHANGED.equals(action)) {
+                finish();
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -150,6 +168,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         /*手机防盗开启人数，在用户没有打开手机防盗时没此进入主页拉取一次*/
         PhoneSecurityFetchJob.startImmediately();
+        registerLocaleChange();
     }
 
     @Override
@@ -180,6 +199,12 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
+    public void registerLocaleChange() {
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_LOCALE_CHANGED);
+        registerReceiver(mLocaleReceiver, filter);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -196,6 +221,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         // 重置隐私等级减少的分数
         PrivacyHelper.getInstance(this).resetDecScore();
         ImageLoader.getInstance().clearMemoryCache();
+        unregisterReceiver(mLocaleReceiver);
     }
 
     public void onEventMainThread(BackupEvent event) {
@@ -275,10 +301,17 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
                 ft.addToBackStack(null);
                 ft.replace(R.id.pri_pro_content, mScanningFragment);
+                boolean commited = false;
                 try {
                     ft.commit();
+                    commited = true;
                 } catch (Exception e) {
-                    ft.commitAllowingStateLoss();
+                }
+                if (!commited) {
+                    try {
+                        ft.commitAllowingStateLoss();
+                    } catch (Exception e) {
+                    }
                 }
             }
         }
