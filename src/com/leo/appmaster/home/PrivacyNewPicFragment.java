@@ -3,11 +3,10 @@ package com.leo.appmaster.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -45,15 +44,15 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
         Fragment fragment = null;
         if (list.size() > 60) {
             if (DataUtils.differentDirPic(list)) {
-                fragment = PrivacyPicFolderFragment.newInstance();
+                fragment = FolderPicFragment.newInstance();
             } else {
                 fragment = PrivacyNewPicFragment.newInstance();
             }
         } else {
             fragment = PrivacyNewPicFragment.newInstance();
         }
-        if (fragment instanceof PrivacyPicFolderFragment) {
-            ((PrivacyPicFolderFragment) fragment).setData(list);
+        if (fragment instanceof FolderPicFragment) {
+            ((FolderPicFragment) fragment).setData(list);
         } else if (fragment instanceof PrivacyNewPicFragment) {
             ((PrivacyNewPicFragment) fragment).setData(list);
         }

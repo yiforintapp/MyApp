@@ -1,16 +1,11 @@
 package com.leo.appmaster.home;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.admin.DevicePolicyManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -19,7 +14,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.net.Uri;
@@ -27,6 +21,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.text.Html;
 import android.util.AttributeSet;
@@ -84,7 +81,7 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.push.BootupReceiver;
 
 public class HomeActivity extends BaseFragmentActivity implements View.OnClickListener,
-        AdapterView.OnItemClickListener, IPrivacyNewActivity {
+        AdapterView.OnItemClickListener {
     private static final String TAG = "HomeActivity";
 
     private DrawerLayout mDrawerLayout;
@@ -298,7 +295,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 startProcess();
             } else {
                 mScanningFragment = new HomeScanningFragment();
-                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                 ft.addToBackStack(null);
                 ft.replace(R.id.pri_pro_content, mScanningFragment);
                 boolean commited = false;
@@ -329,7 +326,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     public void onExitScanning() {
         if (mTabFragment.isTabDismiss() && !mTabFragment.isAnimating()) {
-            getFragmentManager().popBackStack();
+            getSupportFragmentManager().popBackStack();
             mTabFragment.showTab();
             mMoreFragment.setEnable(true);
             mPrivacyFragment.reset();
@@ -385,9 +382,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     public void jumpToNextFragment() {
         mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_NONE);
 
-        getFragmentManager().popBackStack();
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        ft.setCustomAnimations(R.anim.fragment_down_to_up, 0, 0, R.anim.fragment_up_to_down);
+        FragmentManager fm = getSupportFragmentManager();
+        fm.popBackStack();
+        FragmentTransaction ft = fm.beginTransaction();
+        ft.setCustomAnimations(R.anim.anim_down_to_up, 0, 0, R.anim.anim_up_to_down);
         if (mAppList != null && mAppList.size() > 0) {
             PrivacyNewFragment fragment = PrivacyNewAppFragment.newInstance();
             ft.replace(R.id.pri_pro_content, fragment);
@@ -411,9 +409,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
     }
 
     private void initUI() {
-        mMoreFragment = (HomeMoreFragment) getFragmentManager().findFragmentById(R.id.home_more_ft);
-        mPrivacyFragment = (HomePrivacyFragment) getFragmentManager().findFragmentById(R.id.home_anim_ft);
-        mTabFragment = (HomeTabFragment) getFragmentManager().findFragmentById(R.id.home_tab_ft);
+        mMoreFragment = (HomeMoreFragment) getSupportFragmentManager().findFragmentById(R.id.home_more_ft);
+        mPrivacyFragment = (HomePrivacyFragment) getSupportFragmentManager().findFragmentById(R.id.home_anim_ft);
+        mTabFragment = (HomeTabFragment) getSupportFragmentManager().findFragmentById(R.id.home_tab_ft);
 
         mHeaderHeight = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
         mToolbarHeight = getResources().getDimensionPixelSize(R.dimen.toolbar_height);
@@ -526,7 +524,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     private void removeFragments() {
         long start = SystemClock.elapsedRealtime();
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         try {
             Field field = fm.getClass().getDeclaredField("mActive");
@@ -1058,7 +1056,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         return false;
     }
 
-    @Override
     public void onListScroll(int scrollHeight) {
         int stickyMaxScrollHeight = mHeaderHeight - mToolbarHeight;
         if (scrollHeight > stickyMaxScrollHeight) {
@@ -1070,7 +1067,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         }
     }
 
-    @Override
     public void onProcessClick(Fragment fragment) {
         mScoreBeforeProcess = mPrivacyHelper.getSecurityScore();
         // 分数上涨，标题栏背景异常，非变现，加保护
@@ -1078,14 +1074,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         mCommonToolbar.setBackgroundColor(getResources().getColor(R.color.transparent));
         mProcessedMgr = null;
         mProcessAlreadyTimeout = false;
-        getFragmentManager().beginTransaction().remove(fragment).commit();
+        getSupportFragmentManager().beginTransaction().remove(fragment).commit();
         if (fragment instanceof PrivacyNewAppFragment) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
         } else if ((fragment instanceof PrivacyNewPicFragment)
-                || (fragment instanceof PrivacyPicFolderFragment)) {
+                || (fragment instanceof FolderFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_PIC);
         } else if ((fragment instanceof PrivacyNewVideoFragment)
-                || (fragment instanceof PrivacyNewVidFolderFragment)) {
+                || (fragment instanceof FolderVidFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_VID);
         }
         ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {

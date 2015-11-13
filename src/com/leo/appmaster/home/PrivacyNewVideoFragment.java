@@ -3,9 +3,9 @@ package com.leo.appmaster.home;
 import java.util.ArrayList;
 import java.util.List;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,8 +47,8 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment {
             ((PrivacyNewVideoFragment) fragment).setData(list);
         } else {
             if (DataUtils.differentDirVid(list)) {
-                fragment = PrivacyNewVidFolderFragment.newInstance();
-                ((PrivacyNewVidFolderFragment) fragment).setData(list);
+                fragment = FolderVidFragment.newInstance();
+                ((FolderVidFragment) fragment).setData(list);
             } else {
                 fragment = PrivacyNewVideoFragment.newInstance();
                 ((PrivacyNewVideoFragment) fragment).setData(list);
