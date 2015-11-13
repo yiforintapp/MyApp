@@ -19,6 +19,7 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.provider.CallLog;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
@@ -499,5 +500,120 @@ public class PrivacyContactManager {
             privacyContactSendReceiverToSwipe(null, 1, null);
         }
     }
+    /*快捷隐私通话处理*/
+    public void noReadCallPrivacyCallTipForQuickGesture() {
+        AppMasterPreference mPreference = AppMasterPreference.getInstance(mContext);
+        // AppMasterPreference.getInstance(mContext).setQuickGestureCallLogTip(true);
+        if (mPreference.getSwitchOpenPrivacyContactMessageTip()
+                && mPreference.getQuickGestureCallLogTip()) {
+            if (PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag) {
+                PrivacyContactManager.getInstance(mContext).deleteCallLogDatebaseFlag = false;
+            }
+        }
+    }
+    /**快捷手势未读通话处理*/
+    public void noReadCallForQuickGesture(final ContactBean call) {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
 
+            @Override
+            public void run() {
+                if (AppMasterPreference.getInstance(mContext).getSwitchOpenRecentlyContact()) {
+                    String selection = CallLog.Calls.TYPE + "=? and " + CallLog.Calls.NEW + "=?";
+                    String[] selectionArgs = new String[]{
+                            String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1)
+                    };
+                    ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
+                            .getSysCallLog(mContext, selection,
+                                    selectionArgs, false, false);
+                    ArrayList<ContactCallLog> cloneCallLog = (ArrayList<ContactCallLog>) callLogs
+                            .clone();
+                    if (cloneCallLog != null && cloneCallLog.size() > 0) {
+                        if (call != null && !Utilities.isEmpty(call
+                                .getContactNumber())) {
+                            for (ContactCallLog contactCallLog : cloneCallLog) {
+                                String formateLastCall = PrivacyContactUtils
+                                        .formatePhoneNumber(call
+                                                .getContactNumber());
+                                String contactCallFromate = PrivacyContactUtils
+                                        .formatePhoneNumber(contactCallLog.getCallLogNumber());
+                                if (formateLastCall.equals(contactCallFromate)) {
+                                    callLogs.remove(contactCallLog);
+                                }
+                            }
+                        }
+                        /**
+                         * 用于解决系统无法接收系统来电广播恢复isCallLogRead的默认值，用此来恢复 目前解决方法
+                         * ：每次去记录上次未读数量，用当前未读数量与上次相比如果大于则有新的未读，如果小于则读取了一些未读
+                         * ，如果等于则没有未读被读
+                         */
+                        restoreRedTipValueForCall();
+                    }
+                }
+            }
+        });
+    }
+    /**快捷手势未读短信处理*/
+    public void noReadMsmTipForQuickGesture() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                ContentResolver cr=mContext.getContentResolver();
+                if (AppMasterPreference.getInstance(mContext).getSwitchOpenNoReadMessageTip()) {
+                    ArrayList<MessageBean> messages = (ArrayList<MessageBean>) PrivacyContactUtils
+                            .getSysMessage(mContext, "read=0 AND type=1", null, false, false);
+                    ArrayList<MessageBean> cloneMessage = (ArrayList<MessageBean>) messages.clone();
+                    if (cloneMessage != null && cloneMessage.size() > 0) {
+                        ContactBean contact = PrivacyContactManager.getInstance(mContext)
+                                .getLastMessageContact();
+                        if (contact != null
+                                && !Utilities.isEmpty(contact.getContactNumber())) {
+                            for (MessageBean message : cloneMessage) {
+                                String formateLastMessage = PrivacyContactUtils
+                                        .formatePhoneNumber(contact.getContactNumber());
+                                String contactMessageFromate = PrivacyContactUtils
+                                        .formatePhoneNumber(message.getPhoneNumber());
+                                if (formateLastMessage.equals(contactMessageFromate)) {
+                                    /* 过略掉隐私联系人，留下非隐私联系人 */
+                                    messages.remove(message);
+                                }
+                            }
+                        }
+                        /**
+                         * 用于解决系统无法接收系统短信广播恢复isMessageReadRedTip的默认值，用此来恢复
+                         * 目前解决方法
+                         * ：每次去记录上次未读数量，用当前未读数量与上次相比如果大于则有新的未读，如果小于则读取了一些未读
+                         * ，如果等于则没有未读被读
+                         */
+                        restoreRedTipValueForMsm();
+                    }
+                }
+            }
+
+            private void restoreRedTipValueForMsm() {
+                if (PrivacyContactManager.getInstance(mContext).checkPhoneModelForRestoreRedTip()) {
+                    List<MessageBean> messageList = PrivacyContactUtils
+                            .getSysMessage(mContext, "read=0 AND type=1", null, true, false);
+                    if (messageList != null) {
+                        int currentCount = messageList.size();
+                        PrivacyContactManager.getInstance(mContext).messageSize = currentCount;
+                    }
+                }
+            }
+        });
+    }
+    /**快捷手势未读通话红点恢复处理*/
+    private void restoreRedTipValueForCall() {
+        if (PrivacyContactManager.getInstance(mContext).checkPhoneModelForCallRestoreRedTip()) {
+            String selection = CallLog.Calls.TYPE + "=? and " + CallLog.Calls.NEW + "=?";
+            String[] selectionArgs = new String[]{
+                    String.valueOf(CallLog.Calls.MISSED_TYPE), String.valueOf(1)
+            };
+            ArrayList<ContactCallLog> callLogs = (ArrayList<ContactCallLog>) PrivacyContactUtils
+                    .getSysCallLog(mContext, selection, selectionArgs, true, true);
+            if (callLogs != null) {
+                int currentCount = callLogs.size();
+                PrivacyContactManager.getInstance(mContext).mUnCalls = currentCount;
+            }
+        }
+    }
 }

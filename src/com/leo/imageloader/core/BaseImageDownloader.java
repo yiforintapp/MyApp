@@ -242,7 +242,6 @@ public class BaseImageDownloader implements ImageDownloader {
      * 
      * @param filePath
      * @return
-     * @author lilongfei
      */
     private InputStream getVideoThumbnailStream(String filePath) throws IOException {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {

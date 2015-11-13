@@ -98,7 +98,6 @@ public class PhoneSecurityGuideActivity extends Activity implements View.OnClick
                     String noSimText = getResources().getString(R.string.no_sim_tip);
                     Toast.makeText(PhoneSecurityGuideActivity.this, noSimText, Toast.LENGTH_SHORT).show();
                 }
-                PhoneSecurityUtils.getScreenPix(this);
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_enable");
                 break;
             case R.id.secur_know_msm_click:
@@ -132,15 +131,6 @@ public class PhoneSecurityGuideActivity extends Activity implements View.OnClick
         }
         if (isKnowMsmPerModel) {
             /*有短信权限可以点击,反之则*/
-//            if (mIsReadMsm) {
-//                mOpenBt.setClickable(true);
-//                mOpenBt.setOnClickListener(this);
-//                mOpenBt.setBackgroundResource(R.drawable.app_texts_btn);
-//            } else {
-//                mOpenBt.setBackgroundResource(R.color.divider_2);
-//                mOpenBt.setClickable(false);
-//                mOpenBt.setOnClickListener(null);
-//            }
             mKnowModelRt.setVisibility(View.VISIBLE);
             mNoKnowMsmModelTip.setVisibility(View.GONE);
             String content = new MsmPermisGuideList().getModelString();

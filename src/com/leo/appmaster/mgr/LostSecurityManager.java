@@ -58,12 +58,6 @@ public abstract class LostSecurityManager extends Manager {
     public abstract List<String> getPhoneSecurityInstructionSets();
 
     /**
-     * 是否勾选了”把防盗指令通过短信备份给亲友号码“
-     * @return
-     */
-    public abstract boolean isSelectInstructionBackupFromMsm();
-
-    /**
      * 是否开启了高级保护(设备管理器)
      * @return
      */
@@ -71,18 +65,12 @@ public abstract class LostSecurityManager extends Manager {
 
     /**
      * 获取手机防盗已经保护的时间
-     * 0:天数
-     * 1：小时
+     * int[0]:天数
+     * int[1]：小时
      * 存在数据库操作
      * @return
      */
     public abstract int[] getPhoneProtectTime();
-
-    /**
-     *是否发送了”备份远程控制指令“
-     * @return
-     */
-    public abstract boolean isSendInstructionBackupMsm();
 
     /**
      * 设置打开手机防盗的时间
@@ -97,12 +85,15 @@ public abstract class LostSecurityManager extends Manager {
      * @return
      */
     public abstract Location getLocation() throws InterruptedException;
-    /**
+
+    /***
      * 执行追踪手机位置操作
      * 如果不指定手机号，默认给防盗号码发送位置信息
+     * @param number 电话号码
+     * @param isExecuNoMsm 是否发送无法获取获取位置信息
      * @return
      */
-    public abstract  boolean executeLockLocateposition(String number,boolean isExecute);
+    public abstract  boolean executeLockLocateposition(String number,boolean isExecuNoMsm);
 
     /**
      *执行擦除数据此操作
@@ -136,12 +127,6 @@ public abstract class LostSecurityManager extends Manager {
      */
     public abstract  boolean executeLockPhone(boolean isLockListener,String packageName,boolean isClearAllLockList);
 
-    /**
-     * 是否是添加的防盗号码
-     * @param number
-     * @return
-     */
-    public abstract boolean isSecurityNumber(String number);
 
     /**
      * 获取本机的电话号码

@@ -242,6 +242,7 @@ public class AddSecurityNumberActivity extends BaseActivity implements OnItemCli
         int result = mgr.addPhoneSecurityNumber(contact);
         if (result == 1) {
             //输入的为本机号码
+            Toast.makeText(this, getResources().getString(R.string.secur_add_self_number_tip), Toast.LENGTH_SHORT).show();
         } else if (result == 2) {
             //添加成功
             AddSecurityNumberActivity.this.finish();

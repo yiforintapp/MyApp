@@ -35,6 +35,7 @@ import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.mgr.impl.PrivacyContactManagerImpl;
+import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
@@ -49,7 +50,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PhoneSecurityActivity extends Activity implements OnClickListener, CompoundButton.OnCheckedChangeListener {
+public class PhoneSecurityActivity extends BaseActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "PhoneSecurityActivity";
     /*底部进度数字*/
     public String[] mBottomNumber = new String[]{"1", "2", "3"};
@@ -96,7 +97,6 @@ public class PhoneSecurityActivity extends Activity implements OnClickListener, 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_phone_security);
         initUI();
-
         initData();
     }
 
@@ -574,11 +574,11 @@ public class PhoneSecurityActivity extends Activity implements OnClickListener, 
                 if (!isOpenSecurBt) {
                     String securNumber = lostMgr.getPhoneSecurityNumber();
                     if (mBottomNumber[0].equals(mCurrentProcNumber)) {
-                        /*第一步*/
+                        /**第一步*/
                         SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_frt_next");
                         toProcTwo();
                     } else if (mBottomNumber[1].equals(mCurrentProcNumber)) {
-                       /*第二步*/
+                        /**第二步*/
                         boolean isOpenProtect = lostMgr.isOpenAdvanceProtect();
                         if (mAdvanProCheckStatus && !isOpenProtect) {
                             startDeviceItent(true);
@@ -592,7 +592,7 @@ public class PhoneSecurityActivity extends Activity implements OnClickListener, 
                             SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_snd_noProtect");
                         }
                     } else if (mBottomNumber[2].equals(mCurrentProcNumber)) {
-                        /*第三步*/
+                        /**第三步*/
                         boolean isOpenAdv = lostMgr.isOpenAdvanceProtect();
                         if (!isOpenAdv) {
                             loadInstructListData(true);
@@ -677,7 +677,7 @@ public class PhoneSecurityActivity extends Activity implements OnClickListener, 
                 break;
             case R.id.secur_know_msm_click:
                 SDKWrapper.addEvent(this, SDKWrapper.P1, "theft", "theft_authoriz_clk");
-                //点击立即授权
+                /*点击立即授权*/
                 new MsmPermisGuideList().executeGuide();
                 break;
             default:
@@ -736,7 +736,6 @@ public class PhoneSecurityActivity extends Activity implements OnClickListener, 
     private void toSecurFinish() {
         LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         boolean isOpenAdvan = lostMgr.isOpenAdvanceProtect();
-        LeoLog.i(TAG, "执行" + isOpenAdvan);
         if (isOpenAdvan) {
             loadCompOpenInstructs();
         } else {
@@ -911,6 +910,7 @@ public class PhoneSecurityActivity extends Activity implements OnClickListener, 
         mAdvanChekBox.setVisibility(View.GONE);
     }
 
+    /*未填写防盗号码，摇晃动画*/
     private void shakeAddSecurButton(View view) {
 
         if (mAddSecurNumberAnim == null) {

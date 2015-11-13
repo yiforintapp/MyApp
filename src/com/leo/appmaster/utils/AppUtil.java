@@ -8,12 +8,15 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.TrafficStats;
 import android.net.Uri;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
@@ -22,6 +25,7 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 
 public class AppUtil {
+    private static final String TAG="AppUtil";
     public static boolean isSystemApp(ApplicationInfo info) {
         // 有些系统应用是可以更新的，如果用户自己下载了一个系统的应用来更新了原来的，
         // 它就不是系统应用，这个就是判断这种情况的
@@ -228,5 +232,52 @@ public class AppUtil {
         KeyguardManager mKeyguardManager = (KeyguardManager) mContext
                 .getSystemService(mContext.KEYGUARD_SERVICE);
         return mKeyguardManager.inKeyguardRestrictedInputMode();
+    }
+    /**
+     * 处理图片bitmap size （处理Out Of Memory 内存溢出）
+     */
+    public static  int computeSampleSize(BitmapFactory.Options options,
+                                  int minSideLength, int maxNumOfPixels) {
+        int initialSize = computeInitialSampleSize(options, minSideLength,
+                maxNumOfPixels);
+        int roundedSize;
+        if (initialSize <= 8) {
+            roundedSize = 1;
+            while (roundedSize < initialSize) {
+                roundedSize <<= 1;
+            }
+        } else {
+            roundedSize = (initialSize + 7) / 8 * 8;
+        }
+        return roundedSize;
+    }
+    private static int computeInitialSampleSize(BitmapFactory.Options options,
+                                                int minSideLength, int maxNumOfPixels) {
+        double w = options.outWidth;
+        double h = options.outHeight;
+        int lowerBound = (maxNumOfPixels == -1) ? 1 : (int) Math.ceil(Math
+                .sqrt(w * h / maxNumOfPixels));
+        int upperBound = (minSideLength == -1) ? 128 : (int) Math.min(
+                Math.floor(w / minSideLength), Math.floor(h / minSideLength));
+        if (upperBound < lowerBound) {
+            return lowerBound;
+        }
+        if ((maxNumOfPixels == -1) && (minSideLength == -1)) {
+            return 1;
+        } else if (minSideLength == -1) {
+            return lowerBound;
+        } else {
+            return upperBound;
+        }
+    }
+    public static int getScreenPix(Context context) {
+        context = context.getApplicationContext();
+        DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(mDisplayMetrics);
+        int width = mDisplayMetrics.widthPixels;
+        int height = mDisplayMetrics.heightPixels;
+        LeoLog.i(TAG, "分辨率：" + (width + "*" + height));
+        return width*height;
     }
 }

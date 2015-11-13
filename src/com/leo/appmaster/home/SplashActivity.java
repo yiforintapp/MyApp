@@ -48,6 +48,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.ui.WebViewActivity;
 import com.leo.appmaster.ui.CirclePageIndicator;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NinePatchChunk;
@@ -219,17 +220,23 @@ public class SplashActivity extends BaseActivity {
         LeoLog.i(TAG, "使用后台配置闪屏!");
         if (path != null && !"".equals(path)) {
             BitmapFactory.Options option = new BitmapFactory.Options();
-            option.inDensity = 480;
-            option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
-            // scale for hdpi, mdpi and ldpi
-            if (option.inTargetDensity < 125) {
-                option.inTargetDensity = option.inTargetDensity - 40;
-            } else if (option.inTargetDensity < 165) {
-                option.inTargetDensity = option.inTargetDensity - 40;
-            } else if (option.inTargetDensity < 245) {
-                option.inTargetDensity = option.inTargetDensity - 40;
-            }
-            option.inScaled = true;
+//            option.inDensity = 480;
+//            option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
+//            // scale for hdpi, mdpi and ldpi
+//            if (option.inTargetDensity < 125) {
+//                option.inTargetDens ity = option.inTargetDensity - 40;
+//            } else if (option.inTargetDensity < 165) {
+//                option.inTargetDensity = option.inTargetDensity - 40;
+//            } else if (option.inTargetDensity < 245) {
+//                option.inTargetDensity = option.inTargetDensity - 40;
+//            }
+//            option.inScaled = true;
+            option.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
+
+            option.inSampleSize = AppUtil.computeSampleSize(option, -1, AppUtil.getScreenPix(this));
+            option.inJustDecodeBounds = false;
+
             try {
                 splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
             } catch (Throwable e) {
@@ -264,7 +271,7 @@ public class SplashActivity extends BaseActivity {
         mSkipToPgButton.setOnClickListener(null);
         mSplashRL.setOnClickListener(null);
     }
-    
+
 
     public void finishForSkip(boolean finish) {
         if (finish) {

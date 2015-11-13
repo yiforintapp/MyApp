@@ -55,6 +55,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     /*时间精度,1秒检测*/
     public static final int LOCATION_MIN_TIME = 1000;
     private static final int MAX_SCORE = 6;
+    private static final int ADD_SECUR_NUMBER_FAIL = 0;
+    private static final int ADD_SECUR_NUMBER_SELT = 1;
+    private static final int ADD_SECUR_NUMBER_SUCESS = 2;
     private static boolean mIsLocation;
     private static boolean mIsOnkey;
     private static boolean mIsFormate;
@@ -98,9 +101,6 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public boolean isUsePhoneSecurity() {
-        if (DBG) {
-            return true;
-        }
         return PreferenceTable.getInstance().getBoolean(PrefConst.KEY_PHONE_SECURITY_STATE, false);
     }
 
@@ -125,14 +125,14 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         try {
             if (contact == null) {
                 PreferenceTable.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, "");
-                return 0;
+                return ADD_SECUR_NUMBER_FAIL;
             }
             String selfNumber = getSelfPhoneNumnber();
             if (!Utilities.isEmpty(selfNumber)) {
                 String formateSelfNumber = PrivacyContactUtils.formatePhoneNumber(selfNumber);
                 /*查询加入的手机防盗号码是否为本机号码*/
                 if (contact.getContactNumber().contains(formateSelfNumber)) {
-                    return 1;
+                    return ADD_SECUR_NUMBER_SELT;
                 }
             }
             String name = contact.getContactName();
@@ -141,11 +141,11 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             phone.append(":");
             phone.append(contact.getContactNumber());
             PreferenceTable.getInstance().putString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER, phone.toString());
-            return 2;
+            return ADD_SECUR_NUMBER_SUCESS;
         } catch (Exception e) {
 
         }
-        return -1;
+        return ADD_SECUR_NUMBER_FAIL;
     }
 
     @Override
@@ -200,23 +200,13 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
         /*对电量的要求*/
         criteria.setPowerRequirement(Criteria.POWER_LOW);
         String provider = mLocationManager.getBestProvider(criteria, true);
-        if(provider==null){
-            provider =LocationManager.NETWORK_PROVIDER;
+        if (provider == null) {
+            provider = LocationManager.NETWORK_PROVIDER;
         }
         LeoLog.i(TAG, "provider=" + provider);
         if (mLocationManager
-                .isProviderEnabled(LocationManager.GPS_PROVIDER)) {
-            location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        }
-
-        if (location == null && mLocationManager
-                .isProviderEnabled(LocationManager.PASSIVE_PROVIDER)) {
-            location = mLocationManager.getLastKnownLocation(LocationManager.PASSIVE_PROVIDER);
-        }
-
-        if (location == null && mLocationManager
-                .isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
-            location = mLocationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+                .isProviderEnabled(provider)) {
+            location = mLocationManager.getLastKnownLocation(provider);
         }
         if (location == null) {
             LeoLog.i(TAG, "location为空");
@@ -224,7 +214,9 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             LeoLog.i(TAG, "location不为空");
         }
         if (location == null) {
-            mLocationListener = new SecurLocateListener(mLocationManager);
+            if (mLocationListener == null) {
+                mLocationListener = new SecurLocateListener(mLocationManager);
+            }
             if (mLocationManager == null) {
                 mLocationManager = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
             }
@@ -238,17 +230,13 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                             mLocationListener = null;
                             PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, true);
                             LeoLog.i(TAG, "Task移除位置监听");
+                            mLocationManager = null;
                         }
                     }
                 }
             }, PhoneSecurityConstants.DELAY_REMOVE_LOCATION_TIME);
         }
         return location;
-    }
-
-    @Override
-    public boolean isSelectInstructionBackupFromMsm() {
-        return false;
     }
 
     @Override
@@ -299,14 +287,8 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             /*0天0小时*/
             securityTime[0] = 0;
             securityTime[1] = 0;
-
         }
         return securityTime;
-    }
-
-    @Override
-    public boolean isSendInstructionBackupMsm() {
-        return false;
     }
 
     @Override
@@ -322,7 +304,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     }
 
     @Override
-    public boolean executeLockLocateposition(String number, boolean isExecute) {
+    public boolean executeLockLocateposition(String number, boolean isExecuNoMsm) {
         PhoneSecurityManager.getInstance(mContext).mIsExecuteLocate = false;
         if (!mIsLocation) {
             LeoLog.i(TAG, "执行位置追踪指令");
@@ -344,7 +326,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
             }
             String googleMapUri = null;
             String locatePositionMsm = null;
-            if (!isExecute) {
+            if (!isExecuNoMsm) {
                 googleMapUri = PhoneSecurityUtils.getGoogleMapLocationUri();
             }
             if (!Utilities.isEmpty(googleMapUri)) {
@@ -358,7 +340,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                 } catch (Exception e) {
                 }
             } else {
-                if (isExecute) {
+                if (isExecuNoMsm) {
                     String noLocation = mContext.getResources().getString(R.string.secur_send_msm_no_location);
                     locatePositionMsm = noLocation;
                     try {
@@ -579,11 +561,6 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     }
 
     @Override
-    public boolean isSecurityNumber(String number) {
-        return false;
-    }
-
-    @Override
     public String getPhoneSecurityNumber() {
         String number = PreferenceTable.getInstance().getString(PrefConst.KEY_PHONE_SECURITY_TELPHONE_NUMBER);
         return number;
@@ -612,7 +589,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
     @Override
     public boolean getIsSimChange() {
         if (isUsePhoneSecurity()) {
-            //判断sim卡是否发生了变化
+            /*判断sim卡是否发生了变化*/
             TelephonyManager teleManger = (TelephonyManager) mContext.getSystemService(Context.TELEPHONY_SERVICE);
             String currentSimIMEI = teleManger.getSimSerialNumber();
             String imei = PreferenceTable.getInstance().getString(PrefConst.KEY_SIM_IMEI);
@@ -665,19 +642,7 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
 
     @Override
     public boolean getIsExistSim() {
-        /*判断是否为飞行模式*/
-        int arplaneMode = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.AIRPLANE_MODE_ON, 0);
-        boolean isAirplaneMode = false;
-
-        if (arplaneMode == 1) {
-            /*为飞行模式*/
-            isAirplaneMode = true;
-        } else {
-            /*不为为飞行模式*/
-            isAirplaneMode = false;
-        }
-        return new SimDetecter(mContext).isSimReady();
+        return SimDetecter.isSimReady(mContext);
     }
 
     private class SecurLocateListener implements LocationListener {
@@ -721,10 +686,11 @@ public class LostSecurityManagerImpl extends LostSecurityManager {
                 if (mLocationListener != null) {
                     locateManager.removeUpdates(mLocationListener);
                     LeoLog.i(TAG, "updateToNewLocation移除位置监听");
+                    mLocationListener = null;
+                    mLocationManager = null;
                 }
             }
-                PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, false);
+            PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, false);
         }
     }
-
 }

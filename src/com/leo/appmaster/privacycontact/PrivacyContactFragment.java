@@ -462,7 +462,6 @@ public class PrivacyContactFragment extends BaseFragment {
                             if (mIsChecked) {
                                 if (mRestorMessages.size() > 0 && mRestorMessages != null) {
                                     mRestorMessagesFlag = true;
-                                    // TODO no read message count
                                     int noReadCount = PrivacyContactUtils.getNoReadMessage(
                                             mContext,
                                             contact.getContactNumber());
@@ -536,7 +535,6 @@ public class PrivacyContactFragment extends BaseFragment {
                                     }
                                 }
                                 if (mRestorCallLogs != null && mRestorCallLogs.size() > 0) {
-                                    // TODO no read call log count
                                     int noReadCallLogCount = PrivacyContactUtils
                                             .getNoReadCallLogCount(mContext,
                                                     contact.getContactNumber());
