@@ -166,4 +166,7 @@
     <color name="fl">#f0f3f7</color>
     <!--分栏描边-->
     <color name="flb">#d9dfe6</color>
+    <color name="cgn_40">#6615c937</color>
+    <color name="cb_40">#662674f6</color>
+    <color name="cgy_40">#66cbcbcb</color>
 </resources>
