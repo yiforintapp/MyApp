@@ -925,8 +925,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        mBannerContainer.setVisibility(View.GONE);
-        if(mLockFragment != null) {
+        if (mBannerContainer != null) {
+            mBannerContainer.setVisibility(View.GONE);
+        }
+        if (mLockFragment != null) {
             mLockFragment.onActivityStop();
         }
     }
