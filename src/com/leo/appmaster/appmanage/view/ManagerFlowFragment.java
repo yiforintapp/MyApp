@@ -271,7 +271,6 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
             Message message = handler.obtainMessage();
             message.what = CHANGE_LIST;
             handler.sendMessage(message);
-
         }
     }
 

@@ -73,7 +73,6 @@ public class ManagerFlowListFragment extends BaseFragment {
             Message message = handler.obtainMessage();
             message.what = CHANGE_LIST;
             handler.sendMessage(message);
-
         }
 
     }
@@ -140,6 +139,16 @@ public class ManagerFlowListFragment extends BaseFragment {
 
             return view;
         }
+    }
+
+    @Override
+    public void onDestroy() {
+
+        if (handler != null) {
+            handler.removeMessages(CHANGE_LIST);
+            handler = null;
+        }
+        super.onDestroy();
     }
 
     class ViewHolderTraffic {
