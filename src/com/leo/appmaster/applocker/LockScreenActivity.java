@@ -278,7 +278,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         initUI();
-        mobvistaCheck();
+        ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mobvistaCheck();
+            }
+        }, 1500);
         checkCleanMem();
         LeoEventBus.getDefaultBus().register(this);
         checkOutcount();
@@ -504,7 +509,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if (AppMasterPreference.getInstance(this).getLockBannerADShowProbability() > 0
                 && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mBannerContainer != null
                 && mLockMode == LockManager.LOCK_MODE_FULL && getWindowWidth() > 240) {
-            loadAD();
+            ThreadManager.executeOnAsyncThread(new Runnable() {
+                @Override
+                public void run() {
+                    loadAD();
+                }
+            });
         } else if (AppMasterPreference.getInstance(this).getADShowType() == 3
                 && NetWorkUtil.isNetworkAvailable(getApplicationContext()) && mADAnimalEntry != null) {
             mADAnimalEntry.setVisibility(View.VISIBLE);
