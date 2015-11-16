@@ -33,6 +33,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -48,8 +49,10 @@ import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 
-public class ImageHideMainActivity extends BaseActivity implements OnClickListener {
+public class ImageHideMainActivity extends BaseActivity implements OnItemClickListener {
 
+    public final static int INIT_UI_DONE = 20;
+    public final static int LOAD_DATA_DONE = 21;
     private List<PhotoAibum> mAlbumList = null;
     private GridView mGridView;
     private DisplayImageOptions mOptions;
@@ -57,42 +60,80 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private CommonToolbar mTtileBar;
     private TextView mAddButton;
     private RelativeLayout mNoHidePictureHint;
-    private LoaderHideImageFolderTask mLoadTask;
     private RippleView mRvAdd;
     private ProgressBar loadingBar;
 
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
 
-    String[] STORE_HIDEIMAGES = new String[]{
-            MediaStore.Files.FileColumns.DISPLAY_NAME,
-            MediaStore.Files.FileColumns.DATA,
-            MediaStore.Files.FileColumns._ID, //
+    public static final int REQUEST_CODE_OPTION = 1001;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case INIT_UI_DONE:
+                    asyncLoad();
+                    break;
+                case LOAD_DATA_DONE:
+                    loadDone();
+                    break;
+            }
+        }
     };
 
-    public static final int REQUEST_CODE_LOCK = 1000;
-    public static final int REQUEST_CODE_OPTION = 1001;
+    private void loadDone() {
+        if (mAlbumList != null) {
+            if (mAlbumList.size() > 0) {
+                mNoHidePictureHint.setVisibility(View.GONE);
+                loadingBar.setVisibility(View.GONE);
+                mGridView.setVisibility(View.VISIBLE);
+            } else {
+                mNoHidePictureHint.setVisibility(View.VISIBLE);
+                loadingBar.setVisibility(View.GONE);
+                mGridView.setVisibility(View.GONE);
+            }
+            mHideAlbumAdapt.setDataList(mAlbumList);
+            mHideAlbumAdapt.notifyDataSetChanged();
+        }
+    }
+
+    private void asyncLoad() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
+                        getHidePicAlbum("");
+                mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        initImageLoder();
         setContentView(R.layout.activity_image_hide);
-        
-        if(getIntent().getBooleanExtra("from_quickhelper", false)){
+        initImageLoder();
+        handleIntent();
+        initUI();
+    }
+
+    private void handleIntent() {
+        if (getIntent().getBooleanExtra("from_quickhelper", false)) {
             SDKWrapper.addEvent(ImageHideMainActivity.this, SDKWrapper.P1,
                     "assistant", "hidepic_cnts");
         }
-        
+    }
+
+    private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_image_hide);
         mTtileBar.setOptionMenuVisible(false);
+
+        loadingBar = (ProgressBar) findViewById(R.id.pb_loading_pic);
         mGridView = (GridView) findViewById(R.id.Image_hide_folder);
+        mGridView.setOnItemClickListener(this);
         mGridView.setAdapter(mHideAlbumAdapt);
         mRvAdd = (RippleView) findViewById(R.id.rv_add);
         mAddButton = (TextView) findViewById(R.id.add_hide_image);
-        ViewParent parent = mAddButton.getParent();
-        mRvAdd.setOnClickListener(this);
         mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
             @Override
@@ -101,10 +142,8 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
             }
         });
-        
-        
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
-        loadingBar = (ProgressBar) findViewById(R.id.pb_loading_pic);
+
     }
 
     private void initImageLoder() {
@@ -125,9 +164,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (mLoadTask != null) {
-            mLoadTask.cancel(true);
-        }
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
@@ -136,11 +172,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
     @Override
     protected void onResume() {
-        if (mLoadTask != null) {
-            mLoadTask.cancel(false);
-        }
-        mLoadTask = new LoaderHideImageFolderTask(this);
-        mLoadTask.execute();
+        mHandler.sendEmptyMessage(INIT_UI_DONE);
         super.onResume();
     }
 
@@ -151,87 +183,29 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
     @Override
     protected void onRestart() {
-        // TODO Auto-generated method stub
         super.onRestart();
     }
 
     @Override
     public void finish() {
         super.finish();
-        if (mLoadTask != null) {
-            mLoadTask.cancel(false);
-        }
+
         if (mImageLoader != null) {
             mImageLoader.stop();
         }
+
     }
 
     @Override
-    public void onClick(View view) {
-//        Intent intent;
-        switch (view.getId()) {
-            case R.id.rv_add:
-//                intent = new Intent(this, ImageGalleryActivity.class);
-//                startActivityForResult(intent, REQUEST_CODE_OPTION);
-                break;
-            // case R.id.tv_option_image:
-            // intent = new Intent(this, LockOptionActivity.class);
-            // intent.putExtra(LockOptionActivity.TAG_COME_FROM,
-            // LockOptionActivity.FROM_IMAGEHIDE);
-            // startActivityForResult(intent, REQUEST_CODE_OPTION);
-            // break;
-            default:
-                break;
-        }
-
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        Intent intent = new Intent(ImageHideMainActivity.this,
+                ImageGridActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("data", mAlbumList.get(position));
+        intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
+        intent.putExtras(bundle);
+        startActivityForResult(intent, REQUEST_CODE_OPTION);
     }
-
-    /*
-     * get image folder list
-     */
-//    private List<PhotoAibum> getHidePhotoAlbum(Context context) {
-//        List<PhotoAibum> aibumList = new ArrayList<PhotoAibum>();
-//        Uri uri = Files.getContentUri("external");
-//        String selection = MediaColumns.DATA + " LIKE '%.leotmp'" + " or " + MediaColumns.DATA
-//                + " LIKE '%.leotmi'";
-//
-//        Cursor cursor = getContentResolver().query(uri, STORE_HIDEIMAGES, selection, null,
-//                MediaColumns.DATE_ADDED + " desc");
-//        if (cursor != null) {
-//            try {
-//                Map<String, PhotoAibum> countMap = new HashMap<String, PhotoAibum>();
-//                PhotoAibum pa = null;
-//                while (cursor.moveToNext()) {
-//                    String path = cursor.getString(1);
-//                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-//                    String dirPath = FileOperationUtil.getDirPathFromFilepath(path);
-//                    if (!countMap.containsKey(dirPath)) {
-//                        pa = new PhotoAibum();
-//                        pa.setName(dirName);
-//                        pa.setCount("1");
-//                        pa.setDirPath(dirPath);
-//                        pa.getBitList().add(new PhotoItem(path));
-//                        countMap.put(dirPath, pa);
-//                    } else {
-//                        pa = countMap.get(dirPath);
-//                        pa.setCount(String.valueOf(Integer.parseInt(pa.getCount()) + 1));
-//                        pa.getBitList().add(new PhotoItem(path));
-//                    }
-//                }
-//                Iterable<String> it = countMap.keySet();
-//                for (String key : it) {
-//                    aibumList.add(countMap.get(key));
-//                }
-//                Collections.sort(aibumList, FileOperationUtil.mFolderCamparator);
-//            } catch (Exception e) {
-//
-//            } finally {
-//                cursor.close();
-//            }
-//        }
-//
-//        return aibumList;
-//    }
 
     class HideAlbumAdapt extends BaseAdapter {
         Context context;
@@ -248,25 +222,21 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
 
         @Override
         public int getCount() {
-            // TODO Auto-generated method stub
             return list.size();
         }
 
         @Override
         public Object getItem(int position) {
-            // TODO Auto-generated method stub
             return position;
         }
 
         @Override
         public long getItemId(int position) {
-            // TODO Auto-generated method stub
             return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
             ViewHolder viewHolder;
             String path;
             if (convertView == null) {
@@ -292,59 +262,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnClickListen
     private static class ViewHolder {
         private ImageView img;
         private TextView txt;
-    }
-
-    private class LoaderHideImageFolderTask extends AsyncTask<Void, Integer, Integer> {
-        private Context context;
-
-        LoaderHideImageFolderTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-
-        }
-
-        @Override
-        protected Integer doInBackground(Void... params) {
-            mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
-                    getHidePicAlbum("");
-//            mAlbumList = getHidePhotoAlbum(context);
-            return 0;
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-            if (mAlbumList != null) {
-                if (mAlbumList.size() > 0) {
-                    mNoHidePictureHint.setVisibility(View.GONE);
-                    loadingBar.setVisibility(View.GONE);
-                    mGridView.setVisibility(View.VISIBLE);
-                } else {
-                    mNoHidePictureHint.setVisibility(View.VISIBLE);
-                    loadingBar.setVisibility(View.GONE);
-                    mGridView.setVisibility(View.GONE);
-                }
-                mHideAlbumAdapt.setDataList(mAlbumList);
-                mHideAlbumAdapt.notifyDataSetChanged();
-
-                mGridView.setOnItemClickListener(new OnItemClickListener() {
-
-                    @Override
-                    public void onItemClick(AdapterView<?> arg0, View arg1,
-                                            int position, long arg3) {
-                        Intent intent = new Intent(ImageHideMainActivity.this,
-                                ImageGridActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("data", mAlbumList.get(position));
-                        intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
-                        intent.putExtras(bundle);
-                        startActivityForResult(intent, REQUEST_CODE_OPTION);
-                    }
-                });
-            }
-        }
     }
 
 }
