@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white" 
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical" >
 
     <com.leo.appmaster.ui.CommonToolbar
@@ -18,6 +18,7 @@
         android:scrollbars="none" >
 
         <RelativeLayout
+            android:paddingBottom="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
@@ -28,13 +29,13 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginTop="20dp"
                 android:text="@string/feedback_category_guide"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f3" />
 
             <FrameLayout
                 android:id="@+id/feedback_category_layout"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="40dp"
                 android:layout_below="@+id/feedback_category_guide"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -70,15 +71,15 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/feedback_category_layout"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/feedback_email_guide"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f3" />
 
-            <FrameLayout
+     <FrameLayout
                 android:id="@+id/feedback_email_layout"
                 android:layout_width="match_parent"
-                android:layout_height="44dp"
+                android:layout_height="40dp"
                 android:layout_below="@+id/feedback_email_guide"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -88,7 +89,7 @@
                 <EditText
                     android:id="@+id/feedback_email"
                     android:layout_width="match_parent"
-                    android:layout_height="38dp"
+                    android:layout_height="34dp"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="2dp"
                     android:layout_marginRight="32dp"
@@ -117,10 +118,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/feedback_email_layout"
                 android:layout_marginLeft="20dp"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/feedback_content_guide"
-                android:textColor="@color/black"
-                android:textSize="14dp" />
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f3" />
 
             <EditText
                 android:id="@+id/feedback_content"
@@ -136,6 +137,101 @@
                 android:paddingTop="12dp"
                 android:textColor="@color/black"
                 android:textSize="14dp" />
+
+            <TextView
+                android:id="@+id/feedback_call_us"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feedback_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="20dp"
+                android:text="@string/feedback_tell_us_title"
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f3" />
+
+            <TextView
+                android:id="@+id/feedback_call_us_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feedback_call_us"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="9dp"
+                android:text="@string/feedback_tell_us_content"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f4" />
+
+            <TextView
+                android:id="@+id/feedback_call_us_contact_type_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feedback_call_us_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="15dp"
+                android:text="@string/feedback_tell_us_contact_type_title"
+                android:textColor="@color/c2"
+                android:textSize="@dimen/f3" />
+
+            <TextView
+                android:id="@+id/feedback_call_us_contact_type_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feedback_call_us_contact_type_title"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/feedback_tell_us_contact_type_1"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f4" />
+
+            <TextView
+                android:id="@+id/feedback_call_us_contact_type_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feedback_call_us_contact_type_1"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/feedback_tell_us_contact_type_2"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f4" />
+
+            <TextView
+                android:id="@+id/feedback_call_us_contact_type_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feedback_call_us_contact_type_2"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/feedback_tell_us_contact_type_3"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f4" />
+
+            <TextView
+                android:id="@+id/feedback_call_us_contact_type_4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feedback_call_us_contact_type_3"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/feedback_tell_us_contact_type_4"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f4" />
+
+            <TextView
+                android:id="@+id/feedback_call_us_contact_type_5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/feedback_call_us_contact_type_4"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginTop="14dp"
+                android:text="@string/feedback_tell_us_contact_type_5"
+                android:textColor="@color/c4"
+                android:textSize="@dimen/f4" />
         </RelativeLayout>
     </ScrollView>
 
