@@ -49,7 +49,8 @@ public class SelfDurationToast {
     public static String wifiName;
     private static Context mContext;
     private static View contentView, loadingView;
-    private static ImageView mArrow, iconView;
+    private static ImageView mArrow;
+    private static View mIconView;
 
     private static android.os.Handler handler = new android.os.Handler() {
         public void handleMessage(android.os.Message msg) {
@@ -81,18 +82,20 @@ public class SelfDurationToast {
     };
 
     private static void showAnimation() {
+        circleMissingAnimation();
+        mIconView.setVisibility(View.VISIBLE);
         contentView.setVisibility(View.VISIBLE);
+
         Animation animation = AnimationUtils.loadAnimation(mContext, R.anim.anim_left_to_right);
         animation.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                circleMissingAnimation();
-                showResult();
+
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-
+                showResult();
             }
 
             @Override
@@ -101,33 +104,15 @@ public class SelfDurationToast {
             }
         });
         contentView.startAnimation(animation);
+
     }
 
     private static void circleMissingAnimation() {
         realLoading.clearAnimation();
-
-        ObjectAnimator animAlpha = ObjectAnimator.ofFloat(loadingView,
-                "alpha", 1f, 0f);
-        animAlpha.addListener(new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animation) {
-                super.onAnimationStart(animation);
-
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animation) {
-                super.onAnimationEnd(animation);
-                loadingView.setVisibility(View.GONE);
-            }
-        });
-        animAlpha.setDuration(600);
-        animAlpha.start();
+        loadingView.setVisibility(View.GONE);
     }
 
     private static void showResult() {
-        ObjectAnimator animAlpha = ObjectAnimator.ofFloat(iconView,
-                "alpha", 0f, 1f);
         ObjectAnimator animAlpha1 = ObjectAnimator.ofFloat(mArrow,
                 "alpha", 0f, 1f);
         ObjectAnimator animAlpha2 = ObjectAnimator.ofFloat(tv_clean_rocket,
@@ -142,20 +127,17 @@ public class SelfDurationToast {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                iconView.setVisibility(View.VISIBLE);
                 mArrow.setVisibility(View.VISIBLE);
                 tv_clean_rocket.setVisibility(View.VISIBLE);
             }
         });
-        set.setDuration(800);
-        set.play(animAlpha).with(animAlpha1);
+        set.setDuration(250);
         set.play(animAlpha1).with(animAlpha2);
         set.start();
     }
 
     public static SelfDurationToast makeText(final Context context, String text, int duration, final int wifiState) {
         SelfDurationToast result = new SelfDurationToast(context);
-
 
         SDKWrapper.addEvent(context,
                 SDKWrapper.P1, "wifi_scan", "wifi_cnts_toast");
@@ -165,20 +147,19 @@ public class SelfDurationToast {
         View view = inflater.inflate(R.layout.wifi_change_toast, null);
         view.setBackgroundResource(R.color.transparent);
         mArrow = (ImageView) view.findViewById(R.id.iv_arrow);
-        iconView = (ImageView) view.findViewById(R.id.iv_icon);
         realLoading = (ImageView) view.findViewById(R.id.loding_iv);
         realLoading.setImageResource(R.drawable.real_loading);
         Animation loadingAnimation = AnimationUtils.
                 loadAnimation(context, R.anim.loading_animation);
         realLoading.setAnimation(loadingAnimation);
 
+        mIconView = view.findViewById(R.id.wifi_result_icon);
         final int sendWifiState = wifiState;
         contentView = view.findViewById(R.id.wifi_result_content);
         contentView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 LockManager mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-//                mLockManager.filterSelfOneMinites();
                 mLockManager.filterPackage(mContext.getPackageName(), 1000);
                 Intent wifiIntent = new Intent(mContext, WifiSecurityActivity.class);
                 wifiIntent.putExtra("from", "toast");
@@ -209,7 +190,7 @@ public class SelfDurationToast {
                 Message msg = new Message();
                 msg.what = SHOWNAME;
                 msg.obj = wifiState;
-                handler.sendMessageDelayed(msg, 2000);
+                handler.sendMessageDelayed(msg, 2500);
             }
         });
     }
