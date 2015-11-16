@@ -87,7 +87,9 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
             public void run() {
                 mAlbumList = ((PrivacyDataManager) MgrContext.
                         getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile();
-                mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+                }
             }
         });
     }
@@ -115,6 +117,10 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
@@ -235,5 +241,4 @@ public class ImageGalleryActivity extends BaseActivity implements OnItemClickLis
         private ImageView img;
         private TextView txt;
     }
-
 }

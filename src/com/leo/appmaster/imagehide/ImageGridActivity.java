@@ -30,6 +30,7 @@ import android.widget.ProgressBar;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -48,7 +49,10 @@ import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 
-public class ImageGridActivity extends BaseActivity implements OnClickListener {
+public class ImageGridActivity extends BaseActivity implements OnClickListener, OnItemClickListener {
+    public final static int INIT_UI_DONE = 24;
+    public final static int LOAD_DATA_DONE = 25;
+
     public final static int CANCEL_HIDE_MODE = 0;
     public final static int SELECT_HIDE_MODE = 1;
     private int mActicityMode = SELECT_HIDE_MODE;
@@ -77,6 +81,51 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     private ProgressBar mLoadingBar;
     private Boolean mIsFromIntruderMore = false;
 
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case INIT_UI_DONE:
+                    asyncLoad();
+                    break;
+                case LOAD_DATA_DONE:
+                    loadDone();
+                    break;
+            }
+        }
+    };
+
+    private void loadDone() {
+        mLoadingBar.setVisibility(View.GONE);
+        mGridView.setVisibility(View.VISIBLE);
+        if (mPhotoAibum != null) {
+            mPicturesList = ((PrivacyDataManager) MgrContext.
+                    getManager(MgrContext.MGR_PRIVACY_DATA)).getHidePicFile(mPhotoAibum);
+            mTtileBar.setToolbarTitle(mPhotoAibum.getName());
+            for (PhotoItem item : mPicturesList) {
+                mAllListPath.add(item.getPath());
+            }
+        }
+
+        mImageAdapter = new ImageAdapter();
+        mGridView.setAdapter(mImageAdapter);
+        mSelectAll.setEnabled(true);
+    }
+
+    private void asyncLoad() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                mPhotoAibum = ((PrivacyDataManager) MgrContext.
+                        getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile().get(
+                        mPhotoAibumPos);
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+                }
+            }
+        });
+
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,57 +140,10 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         mTtileBar.setToolbarTitle("");
 
         mLoadingBar = (ProgressBar) findViewById(R.id.pb_loading_pic);
-//        mTtileBar.openBackView();
         onInit();
         initImageLoder();
         loadImageList();
-        mGridView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> arg0, View conView,
-                                    int position, long arg3) {
-                if (mActicityMode == CANCEL_HIDE_MODE && !mIsEditmode
-                        && mAllListPath.size() > 0) {
-                    Intent intent = new Intent(ImageGridActivity.this,
-                            PictureViewPager.class);
-                    if (mIsFromIntruderMore) {
-                        intent.putExtra("fromIntruderMore", true);
-                    }
-                    intent.putStringArrayListExtra("list", mAllListPath);
-                    intent.putExtra("pos", position);
-
-                    startActivityForResult(intent, 0);
-                    SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1,
-                            "hide_pic_operation",
-                            "pic_viw_cnts");
-                } else {
-                    ImageView cView = (ImageView) conView
-                            .findViewById(R.id.photo_select);
-                    if (!mClickList.contains(mPicturesList.get(position))) {
-                        cView.setImageResource(R.drawable.ic_check_checked);
-                        mClickList.add(mPicturesList.get(position));
-                        mClickPosList.add((Integer) position);
-                    } else {
-                        cView.setImageResource(R.drawable.ic_check_normal_n);//pic_choose_normal
-                        mClickList.remove(mPicturesList.get(position));
-                        mClickPosList.remove((Integer) position);
-                    }
-                    if (mClickList.size() < mPicturesList.size()) {
-                        mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
-                                getResources().getDrawable(R.drawable.select_all_selector), null,
-                                null);
-                        mSelectAll.setText(R.string.app_select_all);
-                    } else {
-                        mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
-                                getResources().getDrawable(R.drawable.no_select_all_selector),
-                                null,
-                                null);
-                        mSelectAll.setText(R.string.app_select_none);
-                    }
-                    updateRightButton();
-                }
-            }
-        });
-
+        mGridView.setOnItemClickListener(this);
         mSelectAll.setOnClickListener(this);
         mHidePicture.setOnClickListener(this);
     }
@@ -278,6 +280,10 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
@@ -290,6 +296,50 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
         super.finish();
         if (mImageLoader != null) {
             mImageLoader.stop();
+        }
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View conView, int position, long l) {
+        if (mActicityMode == CANCEL_HIDE_MODE && !mIsEditmode
+                && mAllListPath.size() > 0) {
+            Intent intent = new Intent(ImageGridActivity.this,
+                    PictureViewPager.class);
+            if (mIsFromIntruderMore) {
+                intent.putExtra("fromIntruderMore", true);
+            }
+            intent.putStringArrayListExtra("list", mAllListPath);
+            intent.putExtra("pos", position);
+
+            startActivityForResult(intent, 0);
+            SDKWrapper.addEvent(ImageGridActivity.this, SDKWrapper.P1,
+                    "hide_pic_operation",
+                    "pic_viw_cnts");
+        } else {
+            ImageView cView = (ImageView) conView
+                    .findViewById(R.id.photo_select);
+            if (!mClickList.contains(mPicturesList.get(position))) {
+                cView.setImageResource(R.drawable.ic_check_checked);
+                mClickList.add(mPicturesList.get(position));
+                mClickPosList.add((Integer) position);
+            } else {
+                cView.setImageResource(R.drawable.ic_check_normal_n);//pic_choose_normal
+                mClickList.remove(mPicturesList.get(position));
+                mClickPosList.remove((Integer) position);
+            }
+            if (mClickList.size() < mPicturesList.size()) {
+                mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                        getResources().getDrawable(R.drawable.select_all_selector), null,
+                        null);
+                mSelectAll.setText(R.string.app_select_all);
+            } else {
+                mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                        getResources().getDrawable(R.drawable.no_select_all_selector),
+                        null,
+                        null);
+                mSelectAll.setText(R.string.app_select_none);
+            }
+            updateRightButton();
         }
     }
 
@@ -529,7 +579,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
                     pdm.notifySecurityChange();
                 }
             } catch (Exception e) {
-                // TODO: handle exception
             }
             return isSuccess;
         }
@@ -737,53 +786,12 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener {
 
     private void loadImageList() {
         if (mPhotoAibum == null) {
-            LoaderImageListTask task = new LoaderImageListTask(this);
-            task.execute();
+            mLoadingBar.setVisibility(View.VISIBLE);
+            mGridView.setVisibility(View.GONE);
+            mHandler.sendEmptyMessage(INIT_UI_DONE);
         } else {
             mLoadingBar.setVisibility(View.GONE);
             mGridView.setVisibility(View.VISIBLE);
-            mImageAdapter = new ImageAdapter();
-            mGridView.setAdapter(mImageAdapter);
-            mSelectAll.setEnabled(true);
-        }
-    }
-
-    private class LoaderImageListTask extends AsyncTask<Void, Integer, Integer> {
-        private Context context;
-
-        LoaderImageListTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            mLoadingBar.setVisibility(View.VISIBLE);
-            mGridView.setVisibility(View.GONE);
-        }
-
-        @Override
-        protected Integer doInBackground(Void... params) {
-
-            mPhotoAibum = ((PrivacyDataManager) MgrContext.
-                    getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile().get(
-                    mPhotoAibumPos);
-
-            return 0;
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-            mLoadingBar.setVisibility(View.GONE);
-            mGridView.setVisibility(View.VISIBLE);
-            if (mPhotoAibum != null) {
-                mPicturesList = ((PrivacyDataManager) MgrContext.
-                        getManager(MgrContext.MGR_PRIVACY_DATA)).getHidePicFile(mPhotoAibum);
-                mTtileBar.setToolbarTitle(mPhotoAibum.getName());
-                for (PhotoItem item : mPicturesList) {
-                    mAllListPath.add(item.getPath());
-                }
-            }
-
             mImageAdapter = new ImageAdapter();
             mGridView.setAdapter(mImageAdapter);
             mSelectAll.setEnabled(true);

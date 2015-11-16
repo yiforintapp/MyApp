@@ -102,7 +102,9 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             public void run() {
                 mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
                         getHidePicAlbum("");
-                mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+                }
             }
         });
     }
@@ -163,6 +165,10 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();

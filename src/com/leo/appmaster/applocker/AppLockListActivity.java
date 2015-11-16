@@ -305,7 +305,9 @@ public class AppLockListActivity extends BaseActivity implements
         long part3 = SystemClock.elapsedRealtime();
         LeoLog.i("TsCost", "loadData part3: " + (part3 - part2));
 
-        mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+        if(mHandler != null){
+            mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+        }
     }
 
     private int fixPosEqules(AppInfo info) {
@@ -768,6 +770,10 @@ public class AppLockListActivity extends BaseActivity implements
 
     @Override
     protected void onDestroy() {
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
         if (toast != null) {
             toast.cancel();
         }
