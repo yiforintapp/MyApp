@@ -81,7 +81,6 @@ public class ListAppLockAdapter extends BaseAdapter {
     }
 
     public static String makePosRight(AppInfo info) {
-//        int topPos = fixPosEqules(info);
         int topPos = info.topPos;
         String tops;
         if (topPos > 0 && topPos < 5000) {
@@ -148,7 +147,6 @@ public class ListAppLockAdapter extends BaseAdapter {
 
     public void setData(ArrayList<AppInfo> resault) {
         mList = resault;
-
         notifyDataSetChanged();
     }
 

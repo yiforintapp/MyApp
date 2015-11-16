@@ -10,6 +10,7 @@ import java.util.List;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Message;
 import android.os.SystemClock;
 import android.provider.Settings;
 import android.util.Log;
@@ -23,6 +24,7 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,6 +32,7 @@ import android.widget.Toast;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetectorUsageStats;
 import com.leo.appmaster.applocker.service.TaskDetectService;
@@ -56,17 +59,15 @@ import com.leo.appmaster.utils.LeoLog;
  */
 public class AppLockListActivity extends BaseActivity implements
         AppChangeListener, OnClickListener, OnItemClickListener, RippleView.OnRippleCompleteListener {
-    public static final int DEFAULT_SORT = 0;
-    public static final int NAME_SORT = 1;
-    public static final int INSTALL_TIME_SORT = 2;
-    private int mCurSortType = DEFAULT_SORT;
-    private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
+    public final static int INIT_UI_DONE = 111;
+    public final static int LOAD_DATA_DONE = 112;
+    public final static int DEFAULT_SORT = 0;
+    private final static String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
     private View mHeadView;
     private RippleView mLockModeView, mWeiZhuangView, mLockThemeView;
 
     private RippleView mBarView;
-    private ImageView mRedDot, mIvBack, mGuideHelpTipBt;
-    private TextView mTvModeName;
+    private ImageView mRedDot, mGuideHelpTipBt;
     private TextView mSecurityGuideBt, mAutoGuideBt, mBackageGroundBt;
     private Button mFinishBt;
     private RelativeLayout mSecurityRL, mAutoRL, mBackgroundRL;
@@ -76,22 +77,54 @@ public class AppLockListActivity extends BaseActivity implements
     private CommonToolbar mTtileBar;
     private ListAppLockAdapter mLockAdapter;
     private Toast toast = null;
-    private boolean mClickOrder = false;
 
     private List<AppInfo> mLockedList;
     private List<AppInfo> mUnlockList;
-
     private List<AppInfo> mUnlockRecommendList;
     private List<AppInfo> mUnlockNormalList;
-
     private List<String> mDefaultLockList;
 
     private static final boolean DBG = false;
     private static String LOCK_AUTO_START_GUIDE_PUSH = "lock_auto_start_guide_push";
     private int mWhiteMode = -1;
     private boolean mIsLenovo;
-
+    private ProgressBar mProgressBar;
+    private ArrayList<AppInfo> mResaultList;
     private int goCnotR = 0;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case INIT_UI_DONE:
+                    LeoLog.i("loadSort", "INIT_UI_DONE");
+                    asyncLoad();
+                    break;
+                case LOAD_DATA_DONE:
+                    LeoLog.i("loadSort", "LOAD_DATA_DONE");
+                    loadDone();
+                    break;
+            }
+        }
+    };
+
+    private void loadDone() {
+        //Flag is Recomment list
+        mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
+        mLockAdapter.setData(mResaultList);
+
+        mProgressBar.setVisibility(View.GONE);
+        mLockList.setVisibility(View.VISIBLE);
+        updateHelpState();
+    }
+
+    private void asyncLoad() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                loadData();
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,8 +136,11 @@ public class AppLockListActivity extends BaseActivity implements
         LeoEventBus.getDefaultBus().register(this);
         handleIntent();
         initUI();
-        loadData();
         goCnotR = 1;
+        LeoLog.i("loadSort", "oncread");
+        mHandler.sendEmptyMessage(INIT_UI_DONE);
+
+
         LeoLog.i("TsCost", "AppLockListActivity-onCreate: " + (SystemClock.elapsedRealtime() - start));
     }
 
@@ -149,6 +185,7 @@ public class AppLockListActivity extends BaseActivity implements
         mLockThemeView = (RippleView) mHeadView.findViewById(R.id.lock_theme_type);
         mLockThemeView.setOnRippleCompleteListener(this);
         mRedDot = (ImageView) mHeadView.findViewById(R.id.theme_red_dot);
+        mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_lockapp);
 
         mLockList = (ListView) findViewById(R.id.lock_app_list);
         mLockList.setOnItemClickListener(this);
@@ -209,6 +246,7 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private void loadData() {
+        LeoLog.i("loadSort", "loadData");
         long start = SystemClock.elapsedRealtime();
 
         mUnlockRecommendList.clear();
@@ -225,8 +263,9 @@ public class AppLockListActivity extends BaseActivity implements
         LeoLog.i("TsCost", "loadData part1: " + (part1 - start));
 
         for (AppItemInfo appDetailInfo : list) {
-            if (mLockManager.inFilterList(appDetailInfo.packageName))
+            if (mLockManager.inFilterList(appDetailInfo.packageName)) {
                 continue;
+            }
             if (lockList.contains(appDetailInfo.packageName)) {
                 appDetailInfo.topPos = fixPosEqules(appDetailInfo);
                 appDetailInfo.isLocked = true;
@@ -261,15 +300,14 @@ public class AppLockListActivity extends BaseActivity implements
         mUnlockList = resaultUnlock;
 
         //the final list
-        ArrayList<AppInfo> resault = new ArrayList<AppInfo>(mLockedList);
-        resault.addAll(mUnlockList);
+        mResaultList = new ArrayList<AppInfo>(mLockedList);
+        mResaultList.addAll(mUnlockList);
 
-        //Flag is Recomment list
-        mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
-        mLockAdapter.setData(resault);
 
         long part3 = SystemClock.elapsedRealtime();
         LeoLog.i("TsCost", "loadData part3: " + (part3 - part2));
+
+        mHandler.sendEmptyMessage(LOAD_DATA_DONE);
     }
 
     private int fixPosEqules(AppInfo info) {
@@ -424,7 +462,6 @@ public class AppLockListActivity extends BaseActivity implements
 
             List<String> list = new LinkedList<String>();
             list.add(info.packageName);
-//            addPkg2Mode(list);
             mLockManager.addPkg2Mode(list, mLockManager.getCurLockMode());
 
             long d = System.currentTimeMillis();
@@ -566,26 +603,6 @@ public class AppLockListActivity extends BaseActivity implements
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-//            case R.id.ct_option_1_rl:
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "locksetting");
-//                enterLockSetting();
-//                break;
-            case R.id.lock_setting:
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "locksetting");
-//                enterLockSetting();
-                break;
-            case R.id.lock_mode_type:
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "modes");
-//                enterLockMode();
-                break;
-            case R.id.weizhuang_type:
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "appcover");
-//                enterWeiZhuang();
-                break;
-            case R.id.lock_theme_type:
-//                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "theme");
-//                enterLockTheme();
-                break;
             case R.id.security_guide_button:
                 /* Android5.01+ */
                 ProcessDetectorUsageStats usageStats = new ProcessDetectorUsageStats();
@@ -698,7 +715,6 @@ public class AppLockListActivity extends BaseActivity implements
         } else {
             mAutoRL.setVisibility(View.GONE);
             mBackgroundRL.setVisibility(View.GONE);
-//            mGuideTip.setVisibility(View.GONE);
         }
     }
 
@@ -766,7 +782,6 @@ public class AppLockListActivity extends BaseActivity implements
     @Override
     protected void onResume() {
         long start = SystemClock.elapsedRealtime();
-        updateHelpState();
         if (goCnotR == 0) {
             loadData();
         }
@@ -782,13 +797,7 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     public void onEventMainThread(LockModeEvent event) {
-        loadData();
-        //lock num and loadData again
-//        LockMode lockMode = mLockManager.getCurLockMode();
-//        loadData();
-//        if (lockMode != null) {
-//            mTvModeName.setText(lockMode.modeName);
-//        }
+        asyncLoad();
     }
 
     private void checkNewTheme() {

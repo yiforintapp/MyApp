@@ -40,7 +40,6 @@
             android:background="@drawable/title_bar_option_selector"
             android:padding="16dp"
             android:src="@drawable/help_icon_n" />
-
     </RelativeLayout>
 
     <ListView
@@ -51,10 +50,11 @@
         android:background="@color/white"
         android:divider="#00000000"
         android:overScrollMode="never"
-        android:scrollbars="none" />
+        android:scrollbars="none"
+        android:visibility="gone" />
+
 
     <!-- 引导提示 -->
-
     <RelativeLayout
         android:id="@+id/guide_tip_layout"
         android:layout_width="match_parent"
@@ -290,5 +290,12 @@
             </LinearLayout>
         </ScrollView>
     </RelativeLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_loading_lockapp"
+        style="@style/ProgressBarCricle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
 </RelativeLayout>
