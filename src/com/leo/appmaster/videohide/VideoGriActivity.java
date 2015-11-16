@@ -14,7 +14,6 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -22,9 +21,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.os.RemoteException;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Files;
-import android.provider.MediaStore.MediaColumns;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -65,9 +61,6 @@ import com.leo.tools.animator.ObjectAnimator;
 
 @SuppressLint("NewApi")
 public class VideoGriActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
-    private static final String TAG = "VideoGriActivity";
-    private static final int FROM_VIDEOHIDEMAIN_ACTIVITY = 1;
-    private static final int FROM_VIDEOHIDEGALLER_ACTIVITY = 2;
     private GridView mHideVideo;
     private List<VideoItemBean> mVideoItems;
     private CommonToolbar mCommonTtileBar;
@@ -85,8 +78,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private List<Integer> mClickPosList;
     private ArrayList<String> mAllPath;
     private static final int REQUEST_CODE = 0;
-    public static final int REQUEST_CODE_LOCK = 1000;
-    public static final int REQUEST_CODE_OPTION = 1001;
     public List<VideoItemBean> mUnhide;
     private ArrayList<String> mUnhidePath;
     private DisplayImageOptions mOptions;
@@ -96,65 +87,23 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
     private ServiceConnection mConnection;
     private int mCbVersionCode = -1;
     private boolean isCbHere = false;
-    private int mFromWhere = 0;
     private boolean isServiceDo = false;
     private boolean isBindServiceOK = false;
     private boolean isHaveServiceToBind = false;
     private String mOneName, mTwoName;
+    private VideoBean mVideoBean;
 
-    private void init() {
-        mSelectAll = (Button) findViewById(R.id.select_all);
-        mBottomBar = (LinearLayout) findViewById(R.id.bottom_bar);
-        mHideButton = (Button) findViewById(R.id.hide_image);
-        mCommonTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
-        mCommonTtileBar.setOptionMenuVisible(false);
-        mHideVideo = (GridView) findViewById(R.id.Image_hide_folder);
-//        mCommonTtileBar.openBackView();
-        Intent intent = getIntent();
-        mActivityMode = intent.getIntExtra("mode", Constants.SELECT_HIDE_MODE);
-        mFromWhere = intent.getIntExtra("fromwhere", 0);
-        VideoBean video = (VideoBean) intent.getExtras().getSerializable("data");
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_video_gridview);
+        initImageLoder();
+        init();
+        initUI();
 
-        mVideoItems = ((PrivacyDataManager) MgrContext.
-                getManager(MgrContext.MGR_PRIVACY_DATA)).getHideVidFile(video);
-//        mVideoItems = video.getBitList();
-
-        getVideoPath();
-        if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-            mCommonTtileBar.setOptionMenuVisible(true);
-            mCommonTtileBar.setOptionClickListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
-                        mIsEditmode = !mIsEditmode;
-                        if (!mIsEditmode) {
-                            cancelEditMode();
-                        } else {
-                            mBottomBar.setVisibility(View.VISIBLE);
-                            mHideButton.setText(R.string.app_cancel_hide_image);
-                            Drawable topDrawable = getResources().getDrawable(
-                                    R.drawable.unhide_picture_selector);
-                            topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(),
-                                    topDrawable.getMinimumHeight());
-                            mHideButton.setCompoundDrawables(null, topDrawable, null, null);
-
-
-                            mCommonTtileBar.setOptionImageResource(R.drawable.mode_done);
-                        }
-                        mHideVideoAdapter.notifyDataSetChanged();
-                    }
-                }
-            });
-            mCommonTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
-            mBottomBar.setVisibility(View.GONE);
-        } else if (mActivityMode == Constants.SELECT_HIDE_MODE) {
-
-        }
-        if (mVideoItems != null && mVideoItems.size() != 0) {
-            mHideVideoAdapter = new HideVideoAdapter(this, mVideoItems);
-            mHideVideo.setAdapter(mHideVideoAdapter);
-        }
-        mCommonTtileBar.setToolbarTitle(video.getName());
+        getResultValue();
+        // coolbrowser aidl
+        gotoBindService();
     }
 
     private void initImageLoder() {
@@ -173,30 +122,73 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
         mImageLoader.init(ImageLoaderConfiguration.createDefault(this));
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_gridview);
+    private void init() {
         mClickList = new ArrayList<VideoItemBean>();
         mClickPosList = new ArrayList<Integer>();
         mAllPath = new ArrayList<String>();
         mUnhide = new ArrayList<VideoItemBean>();
         mUnhidePath = new ArrayList<String>();
-        init();
+    }
+
+    private void initUI() {
+        mSelectAll = (Button) findViewById(R.id.select_all);
+        mBottomBar = (LinearLayout) findViewById(R.id.bottom_bar);
+        mHideButton = (Button) findViewById(R.id.hide_image);
+        mCommonTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
+        mCommonTtileBar.setOptionMenuVisible(false);
+        mHideVideo = (GridView) findViewById(R.id.Image_hide_folder);
+        handleIntent();
+
         mHideVideo.setOnItemClickListener(this);
         mSelectAll.setOnClickListener(this);
         mHideButton.setOnClickListener(this);
-        getResultValue();
-        initImageLoder();
-        // coolbrowser aidl
-        gotoBindService();
+    }
+
+    private void handleIntent() {
+        Intent intent = getIntent();
+        mActivityMode = intent.getIntExtra("mode", Constants.SELECT_HIDE_MODE);
+        mVideoBean = (VideoBean) intent.getExtras().getSerializable("data");
+
+        mVideoItems = ((PrivacyDataManager) MgrContext.
+                getManager(MgrContext.MGR_PRIVACY_DATA)).getHideVidFile(mVideoBean);
+        getVideoPath();
+
+        if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
+            mCommonTtileBar.setOptionMenuVisible(true);
+            mCommonTtileBar.setOptionClickListener(new OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (mActivityMode == Constants.CANCLE_HIDE_MODE) {
+                        mIsEditmode = !mIsEditmode;
+                        if (!mIsEditmode) {
+                            cancelEditMode();
+                        } else {
+                            mBottomBar.setVisibility(View.VISIBLE);
+                            mHideButton.setText(R.string.app_cancel_hide_image);
+                            Drawable topDrawable = getResources().getDrawable(
+                                    R.drawable.unhide_picture_selector);
+                            topDrawable.setBounds(0, 0, topDrawable.getMinimumWidth(),
+                                    topDrawable.getMinimumHeight());
+                            mHideButton.setCompoundDrawables(null, topDrawable, null, null);
+                            mCommonTtileBar.setOptionImageResource(R.drawable.mode_done);
+                        }
+                        mHideVideoAdapter.notifyDataSetChanged();
+                    }
+                }
+            });
+            mCommonTtileBar.setOptionImageResource(R.drawable.edit_mode_name);
+            mBottomBar.setVisibility(View.GONE);
+        }
+        mCommonTtileBar.setToolbarTitle(mVideoBean.getName());
+        if (mVideoItems != null && mVideoItems.size() != 0) {
+            mHideVideoAdapter = new HideVideoAdapter(this, mVideoItems);
+            mHideVideo.setAdapter(mHideVideoAdapter);
+        }
     }
 
     private void gotoBindService() {
         mConnection = new AdditionServiceConnection();
-        // Bundle args = new Bundle();
         Intent intent = new Intent("com.appmater.aidl.service");
-        // intent.putExtras(args);
         LeoLog.d("testBindService", "bindService");
         bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
@@ -327,62 +319,12 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                 }
                 String name = FileOperationUtil.getNoExtNameFromHideFilepath(path);
                 viewHolder.text.setText(name);
-                // final ImageView imageView = viewHolder.imageView;
-                // imageView.setTag(path);
                 viewHolder.imageView.setBackgroundDrawable(context.getResources()
                         .getDrawable(R.drawable.video_loading));
-                // Drawable drawableCache = asyncLoadImage.loadImage(imageView,
-                // path,
-                // new ImageCallback() {
-                // @SuppressWarnings("deprecation")
-                // @Override
-                // public void imageLoader(Drawable drawable) {
-                // if (imageView != null
-                // && imageView.getTag().equals(path) && drawable != null) {
-                // imageView.setBackgroundDrawable(drawable);
-                // }
-                // }
-                // });
-                // if (drawableCache != null) {
-                // viewHolder.imageView.setBackgroundDrawable(drawableCache);
-                // }
                 String filePath = "voidefile://" + path;
                 mImageLoader.displayImage(filePath, viewHolder.imageView, mOptions);
             }
             return convertView;
-        }
-
-    }
-
-    /**
-     * getVideoInfo
-     */
-    public void getVideoInfo(String dirPath) {
-        Uri uri = Files.getContentUri("external");
-        String selection = Constants.VIDEO_FORMAT;
-        Cursor mCursor = null;
-        try {
-            mCursor = getContentResolver().query(uri, null, selection, null,
-                    MediaColumns.DATE_MODIFIED + " desc");
-
-            if (mCursor != null) {
-                List<VideoItemBean> countMap = new ArrayList<VideoItemBean>();
-                while (mCursor.moveToNext()) {
-                    VideoItemBean video = new VideoItemBean();
-                    String path = mCursor.getString(mCursor
-                            .getColumnIndexOrThrow(MediaStore.Files.FileColumns.DATA));
-                    String dirName = FileOperationUtil.getDirNameFromFilepath(path);
-                    FileOperationUtil.getDirPathFromFilepath(path);
-                    video.setPath(path);
-                    video.setName(dirName);
-                    countMap.add(video);
-                }
-            }
-        } catch (Exception e) {
-        } finally {
-            if (mCursor != null) {
-                mCursor.close();
-            }
         }
 
     }
