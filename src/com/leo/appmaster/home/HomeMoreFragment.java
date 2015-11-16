@@ -250,11 +250,11 @@ public class HomeMoreFragment extends Fragment implements View.OnClickListener, 
                    activity.startActivity(intent);
                    // 隐藏视频
                    break;
-               case R.string.hp_contact_call:
+               case R.string.privacy_contacts:
                    SDKWrapper.addEvent(activity, SDKWrapper.P1, "home", "pricall");
                    intent = new Intent(activity, PrivacyContactActivity.class);
-                   intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
-                           PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+//                   intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,
+//                           PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
                    activity.startActivity(intent);
                    // 隐私通话
                    break;

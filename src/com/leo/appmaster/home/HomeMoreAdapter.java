@@ -35,6 +35,11 @@ public class HomeMoreAdapter extends BaseAdapter {
             R.string.hp_hide_video
     };
 
+    private static final int[] ARRAY_CONTACT_SINGLE = new int[]{
+            R.string.hp_contact_lable,
+            R.string.privacy_contacts
+    };
+
     private static final int[] ARRAY_CONTACT = new int[]{
             R.string.hp_contact_lable,
             R.string.hp_contact_call,
@@ -91,20 +96,21 @@ public class HomeMoreAdapter extends BaseAdapter {
 
         List<int[]> arrayList = new ArrayList<int[]>();
         arrayList.add(ARRAY_MEDIA);
-        arrayList.add(ARRAY_CONTACT);
+        arrayList.add(ARRAY_CONTACT_SINGLE);
         arrayList.add(ARRAY_APP);
-        if (Build.VERSION.SDK_INT >= 21) {
-            // 版本号高于（含）5.1.1，不显示电量
-            arrayList.add(ARRAY_DEVICE_51);
-        } else {
+//        if (Build.VERSION.SDK_INT >= 21) {
+//            // 版本号高于（含）5.1.1，不显示电量
+//            arrayList.add(ARRAY_DEVICE_51);
+//        } else {
             arrayList.add(ARRAY_DEVICE);
-        }
+//        }
         arrayList.add(ARRAY_HELPER);
 
         mDrawableArray.put(R.string.hp_hide_img, ID_RES_HIDE_IMG);
         mDrawableArray.put(R.string.hp_hide_video, ID_RES_HIDE_VIDEO);
-        mDrawableArray.put(R.string.hp_contact_call, ID_RES_CONTACT_CALL);
-        mDrawableArray.put(R.string.hp_contact_sms, ID_RES_CONTACT_SMS);
+//        mDrawableArray.put(R.string.hp_contact_call, ID_RES_CONTACT_CALL);
+        mDrawableArray.put(R.string.privacy_contacts, ID_RES_CONTACT_CALL);
+//        mDrawableArray.put(R.string.hp_contact_sms, ID_RES_CONTACT_SMS);
         mDrawableArray.put(R.string.hp_app_manage_del, ID_RES_APP_DEL);
         mDrawableArray.put(R.string.hp_app_manage_back, ID_RES_APP_BACK);
         mDrawableArray.put(R.string.hp_device_gprs, ID_RES_DEVICE_GPRS);
