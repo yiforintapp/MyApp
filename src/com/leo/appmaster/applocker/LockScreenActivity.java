@@ -919,7 +919,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         if(mAdEngine!=null) {
             mAdEngine.release(Constants.UNIT_ID_59);
         }
-        mBannerContainer.setVisibility(View.GONE);
+        if(mBannerContainer != null) {
+            mBannerContainer.setVisibility(View.GONE);
+        }
     }
 
     @Override
