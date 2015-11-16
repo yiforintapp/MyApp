@@ -315,8 +315,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                     LeoLog.i("poha", "has taken!!!");
                     mCanTakePhoto = false;
                     LeoLog.i("poha", "pic taken!!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+mHasTakePic+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
-//                    mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
-//                    LeoLog.i("poha", "set delay false");
                     mISManager.setCatchTimes(mISManager.getCatchTimes() + 1);
                     ThreadManager.executeOnAsyncThread(new Runnable() {
                         @Override
@@ -325,15 +323,18 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             Bitmap bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length).copy( Config.RGB_565, true);
                             Matrix m = new Matrix();
                             m.setRotate(-90, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
-                            Bitmap bitmap = Bitmap.createBitmap(bitmapt, 0, 0,bitmapt.getWidth() , bitmapt.getHeight() , m, true);
+                            bitmapt = Bitmap.createBitmap(bitmapt, 0, 0,bitmapt.getWidth() , bitmapt.getHeight() , m, true);
+//                            bitmapt.recycle();
+//                            System.gc();
                             String timeStamp = new SimpleDateFormat( Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT) .format(new Date());
-                            Bitmap finalBitmap = WaterMarkUtils.createIntruderPhoto(bitmap, timeStamp,packagename, ama);
+                            bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp,packagename, ama);
 //                            bitmapt.recycle();
 //                            bitmap.recycle();
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                            //TODO 查看window的旋转
                             int rotation = getWindowManager().getDefaultDisplay().getRotation();
                             LeoLog.i("poha", "Window Rotation = "+rotation);
-                            finalBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                            bitmapt.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 //                            finalBitmap.recycle();
                             byte[] finalBytes = baos.toByteArray();
                             File photoSavePath = getPhotoSavePath();
@@ -378,7 +379,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 mIsPicSaved = false;
                                 LeoLog.i("poha", "delay!! has enter catch !!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
                             }
-                          bitmap.recycle();
+                            bitmapt.recycle();
                         }
                     });
                     if(mLockFragment != null) {
@@ -2061,7 +2062,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     
     @Override
     public void onDrageRelease(View releasedChild, float xvel, float yvel, int leftDest) {
-        // TODO Auto-generated method stub
         if (leftDest + releasedChild.getWidth() > mBannerContainer.getWidth()) {
             mShowAlignRight = true;
 //            mAdEngine.registerView(Constants.UNIT_ID_59, mInstallButton);

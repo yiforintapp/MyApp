@@ -138,6 +138,7 @@ public class WaterMarkUtils {
             // appIcon.draw(canvas);
             pgiconBitmap.recycle();
             iconBitmap.recycle();
+            System.gc();
         }
         return photoBitmap;
     }
