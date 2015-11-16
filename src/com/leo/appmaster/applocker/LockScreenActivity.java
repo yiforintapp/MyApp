@@ -327,7 +327,9 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             AppMasterApplication ama = AppMasterApplication.getInstance();
                             Bitmap bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length).copy( Config.RGB_565, true);
                             Matrix m = new Matrix();
-                            m.setRotate(-90, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
+                            int orientation = mPt.getInt(PrefConst.KEY_ORIENTATION_OF_CAMERA_FACING_FRONT, 270);
+                            LeoLog.i("poha", "got orientation = "+orientation);
+                            m.setRotate(180-orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
                             bitmapt = Bitmap.createBitmap(bitmapt, 0, 0,bitmapt.getWidth() , bitmapt.getHeight() , m, true);
 //                            bitmapt.recycle();
 //                            System.gc();
@@ -336,9 +338,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 //                            bitmapt.recycle();
 //                            bitmap.recycle();
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            //TODO 查看window的旋转
-                            int rotation = getWindowManager().getDefaultDisplay().getRotation();
-                            LeoLog.i("poha", "Window Rotation = "+rotation);
                             bitmapt.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 //                            finalBitmap.recycle();
                             byte[] finalBytes = baos.toByteArray();

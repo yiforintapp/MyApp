@@ -14,6 +14,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.db.IntruderPhotoTable;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.intruderprotection.CameraUtils;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -192,5 +193,15 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
     @Override
     public int getMaxScore() {
         return VALUE_SCORE;
+    }
+
+    @Override
+    public boolean getIsIntruderSecurityAvailable() {
+        int checkCameraFacing = CameraUtils.checkCameraFacing();
+        if ((checkCameraFacing == CameraUtils.FRONT_AND_BACK)
+                || (checkCameraFacing == CameraUtils.FRONT_FACING_ONLY)){
+            return true;
+        }
+        return false;
     }
 }

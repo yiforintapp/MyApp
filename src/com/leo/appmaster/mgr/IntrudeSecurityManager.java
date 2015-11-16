@@ -19,8 +19,12 @@ public abstract class IntrudeSecurityManager extends Manager {
      * 获取入侵者照片信息的列表
      * @return
      */
-    
     public abstract ArrayList getPhotoInfoList();
+    
+    /**
+     * 获取入侵者防护功能是否可用（是否有前置摄像头）
+     */
+    public abstract boolean getIsIntruderSecurityAvailable();
     /**
      * 清除所有入侵者照片信息和照片
      * @return

@@ -15,7 +15,9 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.PrefConst;
 
 public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
@@ -23,7 +25,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
     private boolean mIsinited = false;
     private Camera mCamera;
     private boolean mCanTake = true;
-    
+    private PreferenceTable mPt = PreferenceTable.getInstance();
     private PictureCallback mPendingCallback;
 
     public CameraSurfacePreview(Context context) {
@@ -53,9 +55,11 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
         if ((checkCameraFacing == CameraUtils.FRONT_AND_BACK)
                 || (checkCameraFacing == CameraUtils.FRONT_FACING_ONLY)) {
             mCamera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
-        } else if (checkCameraFacing == CameraUtils.BACK_FACING_ONLY) {
-            mCamera = Camera.open(CameraInfo.CAMERA_FACING_BACK);
-        } else {
+        } 
+//        else if (checkCameraFacing == CameraUtils.BACK_FACING_ONLY) {
+//            mCamera = Camera.open(CameraInfo.CAMERA_FACING_BACK);
+//        }
+        else {
             return;
         }
         try {
@@ -68,6 +72,10 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
             mCamera.setParameters(parameters);
             Size pictureSize = parameters.getPictureSize();
             LeoLog.i("poha", "照相机实际的分辨率： " + "height :" + pictureSize.height + "  width : "+ pictureSize.width);
+            CameraInfo info = new CameraInfo();
+            Camera.getCameraInfo(CameraInfo.CAMERA_FACING_FRONT, info);
+            mPt.putInt(PrefConst.KEY_ORIENTATION_OF_CAMERA_FACING_FRONT, info.orientation);
+            LeoLog.i("poha", "前置照相机  orientation = "+info.orientation);
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();
             mIsinited = true;
@@ -114,12 +122,13 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
             mPendingCallback = imageCallback;
             return;
         }
-        try {
-            LeoLog.i("poha", "real take pic!!!!!") ;
+//        try {
+//            LeoLog.i("poha", "real take pic!!!!!") ;
             mCamera.takePicture(null, null, imageCallback);
-        } catch (Throwable e) {
-            LeoLog.i("poha", "Fail to takePic  :"+e.getMessage());
-        }
+//        } 
+//    catch (Throwable e) {
+//            LeoLog.i("poha", "Fail to takePic  :"+e.getMessage());
+//        }
     }
 
     public void release() {
