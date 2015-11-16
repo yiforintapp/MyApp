@@ -20,10 +20,8 @@ import java.util.HashMap;
 public class PrivacyNewVideoAdapter extends PrivacyNewAdaper<VideoItemBean> {
     private ImageLoader mImageLoader;
 
-    private HashMap<View, VideoItemBean> mItemViews;
     public PrivacyNewVideoAdapter() {
         mImageLoader = ImageLoader.getInstance();
-        mItemViews = new HashMap<View, VideoItemBean>();
     }
 
     @Override
@@ -62,7 +60,7 @@ public class PrivacyNewVideoAdapter extends PrivacyNewAdaper<VideoItemBean> {
                 toggle(info);
             }
         });
-        mItemViews.put(convertView, info);
+        mItemsView.put(convertView, info);
         return convertView;
     }
 

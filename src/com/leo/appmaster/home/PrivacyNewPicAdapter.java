@@ -55,6 +55,7 @@ public class PrivacyNewPicAdapter extends PrivacyNewAdaper<PhotoItem> {
                 toggle(item);
             }
         });
+        mItemsView.put(convertView, item);
         return convertView;
     }
 

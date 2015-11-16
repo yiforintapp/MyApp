@@ -62,6 +62,7 @@ public class HomePrivacyFragment extends Fragment {
     private AnimatorSet mFinalAnim;
     private boolean mProgressAnimating = true;
     private Runnable mScoreChangeRunnable;
+    private ObjectAnimator mCircleRotateAnim;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -194,11 +195,11 @@ public class HomePrivacyFragment extends Fragment {
         animators.add(inCircleScaleAnim);
 
         // 内环、外环旋转
-        ObjectAnimator outCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
-        outCircleRotateAnim.setDuration(3500);
-        outCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
-        outCircleRotateAnim.setInterpolator(new LinearInterpolator());
-        animators.add(outCircleRotateAnim);
+        mCircleRotateAnim = ObjectAnimator.ofFloat(mHomeAnimView, "circleRotateRatio", 0f, 360f);
+        mCircleRotateAnim.setDuration(3500);
+        mCircleRotateAnim.setRepeatCount(ValueAnimator.INFINITE);
+        mCircleRotateAnim.setInterpolator(new LinearInterpolator());
+        animators.add(mCircleRotateAnim);
 
         // 盾牌缩小
         ObjectAnimator shieldScaleAnim = ObjectAnimator.ofFloat(mHomeAnimView, "shieldScaleRatio",
@@ -437,6 +438,13 @@ public class HomePrivacyFragment extends Fragment {
         int duration = getActivity().getResources().getInteger(android.R.integer.config_mediumAnimTime);
         shieldOffsetYAnim.setDuration(duration);
         shieldOffsetYAnim.setInterpolator(new LinearInterpolator());
+        shieldOffsetYAnim.addListener(new SimpleAnimatorListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                mCircleRotateAnim.cancel();
+            }
+        });
         shieldOffsetYAnim.start();
     }
 
@@ -531,6 +539,8 @@ public class HomePrivacyFragment extends Fragment {
         mHomeAnimView.setShieldOffsetY(0);
         mHomeAnimView.getShieldLayer().setFinalShieldRatio(0);
         mHomeAnimView.getShieldLayer().setFinalTextRatio(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
+
+        mCircleRotateAnim.start();
     }
 
     public int getToolbarColor() {

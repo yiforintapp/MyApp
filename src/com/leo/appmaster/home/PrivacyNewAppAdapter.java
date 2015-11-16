@@ -83,6 +83,7 @@ public class PrivacyNewAppAdapter extends PrivacyNewAdaper<AppItemInfo> {
                 toggle(info);
             }
         });
+        mItemsView.put(convertView, info);
         return convertView;
     }
 

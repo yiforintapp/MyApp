@@ -27,7 +27,6 @@ public class HomeAnimView extends View {
     private HomeAnimLoadingLayer mLoadingLayer;
     private HomeAnimStepLayer mStepLayer;
 
-    private int mShieldTopMargin;
     private boolean mLayouted;
 
     private Runnable mRunnable;
@@ -62,7 +61,6 @@ public class HomeAnimView extends View {
         mLoadingLayer = new HomeAnimLoadingLayer(this);
         mStepLayer = new HomeAnimStepLayer(0, this);
 
-        mShieldTopMargin = getContext().getResources().getDimensionPixelSize(R.dimen.home_shield_top_margin);
         mPrivacyHelper = PrivacyHelper.getInstance(getContext());
     }
 
@@ -100,10 +98,8 @@ public class HomeAnimView extends View {
 
         int stepW = getResources().getDimensionPixelSize(R.dimen.home_step_width);
         int stepH = getResources().getDimensionPixelSize(R.dimen.home_step_height);
-        int topM = getResources().getDimensionPixelSize(R.dimen.home_step_top_margin);
         int sDiff = (w - stepW) / 2;
         int stepL = getLeft() + sDiff;
-//        int stepT = mShieldLayer.getBottom() + topM;
         int stepT = mBackLayer.centerY();
         mStepLayer.setBounds(stepL, stepT, stepL + stepW, stepT + stepH);
         int marginTop = getResources().getDimensionPixelSize(R.dimen.pri_pro_header);
@@ -190,7 +186,6 @@ public class HomeAnimView extends View {
      */
     public void setOutCircleScaleRatio(float outCircleScaleRatio) {
         mShieldLayer.setOutCircleScaleRatio(outCircleScaleRatio);
-//        invalidate();
     }
 
     /**
@@ -199,7 +194,6 @@ public class HomeAnimView extends View {
      */
     public void setInCircleScaleRatio(float inCircleScaleRatio) {
         mShieldLayer.setInCircleScaleRatio(inCircleScaleRatio);
-//        invalidate();
     }
 
     /**
@@ -217,7 +211,6 @@ public class HomeAnimView extends View {
      */
     public void setCircleAlpha(int circleAlpha) {
         mShieldLayer.setCircleAlpha(circleAlpha);
-//        invalidate();
     }
 
     /**
@@ -233,28 +226,23 @@ public class HomeAnimView extends View {
 
     public void setProgress(int progress) {
         mBackLayer.setProgress(progress);
-//        invalidate();
     }
 
     public void setFastProgress(int fastProgress) {
         mBackLayer.setFastProgress(fastProgress);
-//        invalidate();
     }
 
     public void setShowColorProgress(boolean showProgress) {
         mBackLayer.setShowColorProgress(showProgress);
-//        invalidate();
     }
 
     public void setScanningPercent(int scanningPercent) {
         mScanningPercent = scanningPercent;
         mShieldLayer.setScanningPercent(scanningPercent);
-//        invalidate();
     }
 
     public void setShieldOffsetY(int shieldOffsetY) {
         mShieldLayer.setShieldOffsetY(shieldOffsetY);
-//        invalidate();
     }
 
     public void setShowProcessLoading(boolean show, int loadType) {
