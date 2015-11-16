@@ -15,10 +15,12 @@ import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.applocker.model.ProcessDetector;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -36,10 +38,12 @@ import com.leo.appmaster.ui.RippleView;
 public class RecommentAppLockListActivity extends BaseActivity implements
         AppLoadEngine.AppChangeListener, OnItemClickListener, OnClickListener
         , RippleView.OnRippleCompleteListener {
-    private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "recomment_activity";
-    public static final String RECOMMEND_FROM_LOCK = "new_app_install_lock";
-    public static final String RECOMMEND_FROM_LOCK_MORE = "new_app_install_lock_more";
-    public static final String RECOMMEND_FROM_VISITED_MODE = "first_in_from_visit_mode";
+    public final static String FROM_DEFAULT_RECOMMENT_ACTIVITY = "recomment_activity";
+    public final static String RECOMMEND_FROM_LOCK = "new_app_install_lock";
+    public final static String RECOMMEND_FROM_LOCK_MORE = "new_app_install_lock_more";
+    public final static String RECOMMEND_FROM_VISITED_MODE = "first_in_from_visit_mode";
+    public final static int INIT_UI_DONE = 10;
+    public final static int LOAD_DATA_DONE = 11;
 
     private ListView mLockListView;
     private CommonToolbar mTtileBar;
@@ -47,9 +51,41 @@ public class RecommentAppLockListActivity extends BaseActivity implements
     private ListAppLockAdapter mLockAdapter;
     private List<AppInfo> mLockList;
     private List<AppInfo> mUnLockList;
-    private ArrayList<AppInfo> resault;
+    private ArrayList<AppInfo> mResaultList;
     private String mFrom;
     private String mInstallPackageName;
+    private ProgressBar mProgressBar;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case INIT_UI_DONE:
+                    asyncLoad();
+                    break;
+                case LOAD_DATA_DONE:
+                    loadDone();
+                    break;
+            }
+        }
+    };
+
+    private void loadDone() {
+        mProgressBar.setVisibility(View.GONE);
+        mLockListView.setVisibility(View.VISIBLE);
+        mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
+        if (mResaultList != null) {
+            mLockAdapter.setData(mResaultList);
+        }
+    }
+
+    private void asyncLoad() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                loadData();
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +93,8 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         setContentView(R.layout.activity_list_recomment_lockapp);
         getIntentFrom();
         initUI();
-        loadData();
+        mHandler.sendEmptyMessage(INIT_UI_DONE);
+//        loadData();
     }
 
     private void initUI() {
@@ -72,6 +109,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View headView = layoutInflater.inflate(R.layout.recom_ac_head, null);
 
+        mProgressBar = (ProgressBar) findViewById(R.id.pb_loading_recomment);
         mLockListView = (ListView) findViewById(R.id.recomment_app_list);
         mLockListView.setOnItemClickListener(this);
         mLockListView.addHeaderView(headView);
@@ -84,7 +122,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements
 
     private void loadData() {
         ArrayList<AppItemInfo> localAppList = AppLoadEngine.getInstance(this).getAllPkgInfo();
-//        List<String> defaultLockList = getDefaultLockList();
         List<String> defaultLockList = AppLoadEngine.getInstance(this).getRecommendLockList();
         if (mInstallPackageName != null && !mInstallPackageName.equals("")) {
             try {
@@ -137,7 +174,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements
             return;
         }
 
-//        Collections.sort(mLockList, new LockedAppComparator(mLockList));
         Collections.sort(mLockList, new DefalutAppComparator());
         if (installPackage != null) {
             try {
@@ -147,11 +183,10 @@ public class RecommentAppLockListActivity extends BaseActivity implements
             }
         }
         Collections.sort(mUnLockList, new DefalutAppComparator());
-        resault = new ArrayList<AppInfo>(mLockList);
-        resault.addAll(mUnLockList);
+        mResaultList = new ArrayList<AppInfo>(mLockList);
+        mResaultList.addAll(mUnLockList);
 
-        mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
-        mLockAdapter.setData(resault);
+        mHandler.sendEmptyMessage(LOAD_DATA_DONE);
     }
 
     private int fixPosEqules(AppInfo info) {
@@ -206,7 +241,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements
                     intent.putExtra("target", getIntent().getIntExtra("target", 9));
                 } else {
                     intent.putExtra("target", getIntent().getIntExtra("target", 0));
-//                        intent.putExtra("isFromHomeToLockMode", true);
                 }
 
                 startActivity(intent);
@@ -343,8 +377,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements
             }
             mUnLockList.remove(info);
             mLockList.add(info);
-            // to set view lock
-//            ListLockItem lockImageView = (ListLockItem) view;
             lockImageView.setDefaultRecommendApp(true);
             SDKWrapper.addEvent(this, SDKWrapper.P1, "app", "lock_" + curMode.modeName + "_" + selectApp.packageName);
         }

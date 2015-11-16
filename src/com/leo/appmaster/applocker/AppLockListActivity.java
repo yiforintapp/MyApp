@@ -62,7 +62,7 @@ public class AppLockListActivity extends BaseActivity implements
     public final static int INIT_UI_DONE = 111;
     public final static int LOAD_DATA_DONE = 112;
     public final static int DEFAULT_SORT = 0;
-    private final static String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
+    public final static String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
     private View mHeadView;
     private RippleView mLockModeView, mWeiZhuangView, mLockThemeView;
 
@@ -96,11 +96,9 @@ public class AppLockListActivity extends BaseActivity implements
         public void handleMessage(android.os.Message msg) {
             switch (msg.what) {
                 case INIT_UI_DONE:
-                    LeoLog.i("loadSort", "INIT_UI_DONE");
                     asyncLoad();
                     break;
                 case LOAD_DATA_DONE:
-                    LeoLog.i("loadSort", "LOAD_DATA_DONE");
                     loadDone();
                     break;
             }
@@ -110,7 +108,9 @@ public class AppLockListActivity extends BaseActivity implements
     private void loadDone() {
         //Flag is Recomment list
         mLockAdapter.setFlag(FROM_DEFAULT_RECOMMENT_ACTIVITY);
-        mLockAdapter.setData(mResaultList);
+        if (mResaultList != null) {
+            mLockAdapter.setData(mResaultList);
+        }
 
         mProgressBar.setVisibility(View.GONE);
         mLockList.setVisibility(View.VISIBLE);
@@ -137,7 +137,6 @@ public class AppLockListActivity extends BaseActivity implements
         handleIntent();
         initUI();
         goCnotR = 1;
-        LeoLog.i("loadSort", "oncread");
         mHandler.sendEmptyMessage(INIT_UI_DONE);
 
 
@@ -246,7 +245,6 @@ public class AppLockListActivity extends BaseActivity implements
     }
 
     private void loadData() {
-        LeoLog.i("loadSort", "loadData");
         long start = SystemClock.elapsedRealtime();
 
         mUnlockRecommendList.clear();

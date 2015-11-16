@@ -17,7 +17,6 @@
         android:layout_marginBottom="64dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
-
         <ListView
             android:id="@+id/recomment_app_list"
             android:layout_width="match_parent"
@@ -26,9 +25,16 @@
             android:background="@color/white"
             android:divider="#00000000"
             android:overScrollMode="never"
-            android:scrollbars="none" />
-
+            android:scrollbars="none"
+            android:visibility="gone" />
     </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/pb_loading_recomment"
+        style="@style/ProgressBarCricle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
 
     <RelativeLayout
         android:id="@+id/below_view_recomment"
@@ -51,15 +57,15 @@
             android:gravity="center">
 
             <!--<TextView-->
-                <!--android:id="@+id/recomment_lock"-->
-                <!--android:layout_width="210dp"-->
-                <!--android:layout_height="40dp"-->
-                <!--android:layout_centerHorizontal="true"-->
-                <!--android:background="@color/green_button_backcolor"-->
-                <!--android:gravity="center"-->
-                <!--android:text="@string/lock"-->
-                <!--android:textColor="@color/white"-->
-                <!--android:textSize="16dp" />-->
+            <!--android:id="@+id/recomment_lock"-->
+            <!--android:layout_width="210dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_centerHorizontal="true"-->
+            <!--android:background="@color/green_button_backcolor"-->
+            <!--android:gravity="center"-->
+            <!--android:text="@string/lock"-->
+            <!--android:textColor="@color/white"-->
+            <!--android:textSize="16dp" />-->
 
             <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/recomment_lock"
@@ -74,8 +80,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
+                    android:background="@drawable/green_radius_btn_shape"
                     android:text="@string/lock"
-                     android:background="@drawable/green_radius_btn_shape"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
             </com.leo.appmaster.ui.RippleView>
