@@ -14,7 +14,12 @@ import android.view.View;
 import android.view.animation.LinearInterpolator;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.HomePrivacyFragment;
+import com.leo.appmaster.home.SimpleAnimatorListener;
+import com.leo.appmaster.utils.LeoLog;
+import com.leo.tools.animator.Animator;
+import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.leo.tools.animator.ValueAnimator;
 
@@ -22,7 +27,7 @@ import com.leo.tools.animator.ValueAnimator;
  * Created by Jasper on 2015/10/26.
  */
 public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFunction {
-    private static final float RATIO_REVERSE = 2f;
+    private static final String TAG ="HomeUpArrow";
 
     public static final int FULL_COLOR = Color.parseColor("#f8f8f8");
 
@@ -32,19 +37,18 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
     private int mDividerColor;
     private int mBgAlpha = 0;
 
-    // 0.5 ~ 1
-    private float mAnimRatio;
     private Drawable mRedTip;
 
-    private ObjectAnimator mUpAnim;
+    private AnimatorSet mUpAnim;
     private boolean mShowRedTip = true;
     private boolean mReversed;
 
-    private GestureDetector mGesture;
-    private boolean mHitRect;
-
     private int mTapWidth;
-    private Rect mTapRect;
+
+    private int mArrowAlpha;
+    private int mTranslateY;
+    private int mMaxTranslateY;
+    private boolean mCanceled;
 
     public HomeUpArrow(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -58,18 +62,7 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
         mRedTip = context.getResources().getDrawable(R.drawable.red_dot);
 
         mTapWidth = context.getResources().getDimensionPixelSize(R.dimen.home_more_arrow_width);
-        mGesture = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
-            @Override
-            public boolean onSingleTapUp(MotionEvent e) {
-//                int x = (int) e.getX();
-//                int y = (int) e.getY();
-//                if (mTapRect.contains(x, y)) {
-//                    return true;
-//                }
-                return super.onSingleTapUp(e);
-            }
-
-        });
+        mMaxTranslateY = context.getResources().getDimensionPixelSize(R.dimen.arrow_translate);
     }
 
     @Override
@@ -90,65 +83,35 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
         int rl = rect.right - rw / 2;
         int rt = rect.top;
         mRedTip.setBounds(rl, rt, rl + rw, rt + rh);
-
-        int left = (getWidth() - mTapWidth) / 2;
-        int right = left + mTapWidth;
-
-        mTapRect = new Rect(left, getTop(), right, getBottom());
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
-//        super.onDraw(canvas);
         mPaint.setColor(FULL_COLOR);
         mPaint.setAlpha(mBgAlpha);
         canvas.drawRect(getLeft(), getTop(), getRight(), getBottom(), mPaint);
 
         mPaint.setColor(mDividerColor);
         canvas.drawLine(getLeft(), getBottom(), getRight(), getBottom(), mPaint);
-
         canvas.save();
-        Rect bounds = mUpIcon.getBounds();
         if (mReversed) {
+            Rect bounds = mUpIcon.getBounds();
             canvas.rotate(180, bounds.centerX(), bounds.centerY());
-        } else if (mAnimRatio < 1) {
-            float ratio = mAnimRatio;
-            canvas.scale(ratio, ratio, bounds.centerX(), bounds.centerY());
-
-            int alpha = (int) (255f * ratio);
-            mUpIcon.getPaint().setAlpha(alpha);
+            mUpIcon.getPaint().setAlpha(255);
+        } else {
+            canvas.translate(0, -mTranslateY);
+            if (mTranslateY < mMaxTranslateY) {
+                mUpIcon.getPaint().setAlpha(255);
+            } else {
+                mUpIcon.getPaint().setAlpha(mArrowAlpha);
+            }
         }
         mUpIcon.draw(canvas);
-        canvas.restore();
-
-        canvas.save();
-        canvas.translate(0, bounds.height());
-
-        if (mReversed) {
-            canvas.rotate(180, bounds.centerX(), bounds.centerY());
-        } else if (mAnimRatio < 1) {
-            float ratio = 1.5f - mAnimRatio;
-            canvas.scale(ratio, ratio, bounds.centerX(), bounds.centerY());
-
-            int alpha = (int) (255f * ratio);
-            mUpIcon.getPaint().setAlpha(alpha);
-        }
-        mUpIcon.draw(canvas);
-        canvas.restore();
-
         if (mShowRedTip) {
             mRedTip.draw(canvas);
         }
-    }
+        canvas.restore();
 
-//    @Override
-//    public boolean onTouchEvent(MotionEvent event) {
-//        return mGesture.onTouchEvent(event);
-//    }
-
-    public void setAnimRatio(float animRatio) {
-        mAnimRatio = animRatio;
-        invalidate();
     }
 
     public void startUpAnimation() {
@@ -156,18 +119,34 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
             mUpAnim.cancel();
         }
 
-        mUpAnim = ObjectAnimator.ofFloat(this, "animRatio", 0.5f, 1f);
-        mUpAnim.setDuration(500);
-        mUpAnim.setInterpolator(new LinearInterpolator());
-        mUpAnim.setRepeatCount(ValueAnimator.INFINITE);
-        mUpAnim.setRepeatMode(ValueAnimator.REVERSE);
+        ObjectAnimator tranAnim = ObjectAnimator.ofInt(this, "translateY", 0, mMaxTranslateY);
+        tranAnim.setDuration(600);
+
+        ObjectAnimator alphaAnim = ObjectAnimator.ofInt(this, "arrowAlpha", 255, 0);
+        alphaAnim.setDuration(400);
+        alphaAnim.addListener(new SimpleAnimatorListener() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                if (mCanceled) return;
+
+                LeoLog.i(TAG, "alpha anim end.");
+                ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startUpAnimation();
+                    }
+                }, 400);
+            }
+        });
+        mUpAnim = new AnimatorSet();
+        mUpAnim.playSequentially(tranAnim, alphaAnim);
         mUpAnim.start();
     }
 
     public void release() {
         if (mUpAnim != null) {
             try {
-                mUpAnim.end();
                 mUpAnim.cancel();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -180,7 +159,9 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
         if (mUpAnim != null) {
             mUpAnim.cancel();
         }
-        mAnimRatio = 1f;
+        mArrowAlpha = 255;
+        mTranslateY = 0;
+        mCanceled = true;
         invalidate();
     }
 
@@ -191,6 +172,7 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
     }
 
     public void reset() {
+        cancelUpAnimation();
         mReversed = false;
         invalidate();
     }
@@ -202,6 +184,16 @@ public class HomeUpArrow extends View implements SlidingUpPanelLayout.TapRectFun
 
     public void showRedTip(boolean show) {
         mShowRedTip = show;
+        invalidate();
+    }
+
+    public void setTranslateY(int translateY) {
+        mTranslateY = translateY;
+        invalidate();
+    }
+
+    public void setArrowAlpha(int arrowAlpha) {
+        mArrowAlpha = arrowAlpha;
         invalidate();
     }
 
