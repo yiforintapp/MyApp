@@ -105,13 +105,11 @@ public class EleActivity extends BaseFragmentActivity {
                     if (EleActivity.this.isFinishing())
                         return;
                     pb_loading_ele.setVisibility(View.GONE);
-                    listview_ele.setVisibility(View.VISIBLE);
+                    if (mList != null && mList.size() > 0) {
 
-                    // for(BatteryComsuption bif : mList){
-                    // LeoLog.d("testfuckele", bif.getDefaultPackageName());
-                    // }
-
-                    adapter.setData(mList);
+                        listview_ele.setVisibility(View.VISIBLE);
+                        adapter.setData(mList);
+                    }
                     break;
             }
         }

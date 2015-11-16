@@ -81,6 +81,11 @@
                     android:id="@+id/wifi_security"
                     layout="@layout/pri_confirm_wifi_item" />
 
+                <!-- Swifty -->
+                <include
+                    android:id="@+id/swifty_security"
+                    layout="@layout/pri_confirm_swifty_item" />
+
             </LinearLayout>
 
 

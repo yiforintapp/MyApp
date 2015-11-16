@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:leo="http://schemas.android.com/apk/res-auto"
+    style="@style/ConfirmItem"
+    android:layout_marginBottom="8dp">
+
+    <LinearLayout
+        android:id="@+id/item_header_ll"
+        style="@style/SecurityItemHeader">
+
+        <View
+            android:id="@+id/lost_item_label"
+            style="@style/ItemLabelLost"
+            android:background="@color/security_lost" />
+
+        <TextView
+            android:id="@+id/item_title"
+            style="@style/ItemTitle"
+            android:text="@string/home_tab_lost" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/swifty_img"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:background="@drawable/ic_launcher"
+        android:layout_below="@+id/item_header_ll"
+        android:layout_marginLeft="19dp"
+        android:layout_marginRight="19dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        />
+
+    <TextView
+        android:id="@+id/swifty_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/swifty_img"
+        android:layout_alignRight="@+id/swifty_img"
+        android:layout_below="@+id/swifty_img"
+        android:text="Swifty测试语句"/>
+
+
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_below="@id/swifty_content"
+        >
+
+        <View
+            android:id="@+id/item_btn_divider"
+            android:layout_marginLeft="19dp"
+            android:layout_marginRight="19dp"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/c4" />
+
+        <com.leo.appmaster.ui.RippleView
+            android:id="@+id/item_btn_rv"
+            style="@style/SecurityItemBtn"
+            leo:rv_color="@color/home_tab_pressed" >
+
+            <TextView
+                android:id="@+id/item_btn_tv"
+                android:drawablePadding="7dp"
+                android:drawableRight="@drawable/arrow_button_right"
+                style="@style/ItemBtnText" />
+        </com.leo.appmaster.ui.RippleView>
+    </LinearLayout>
+
+</RelativeLayout>

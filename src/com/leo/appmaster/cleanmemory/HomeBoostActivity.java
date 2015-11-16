@@ -77,8 +77,8 @@ public class HomeBoostActivity extends Activity {
         long lastBoostWithADTime = amp.getLastBoostWithADTime();
         LeoLog.e("poha", "currentTime - lastBoostWithADTime="+(currentTime - lastBoostWithADTime)+"=====24小时=8640000=====开关值="+amp.getADChanceAfterAccelerating());
         
-        if ((currentTime - lastBoostWithADTime) > 1000 * 60 * 60 * 24
-                && amp.getADChanceAfterAccelerating()==1)
+        if (/*(currentTime - lastBoostWithADTime) > 1000 * 60 * 60 * 24
+                && */amp.getADChanceAfterAccelerating()==1)
         {
             LeoLog.e("poha", "to load");
             loadAD();

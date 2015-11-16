@@ -21,6 +21,7 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -36,6 +37,7 @@ import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class ManagerFlowFragment extends BaseFragment implements OnClickListener, RippleView.OnRippleCompleteListener {
     private static final int CHANGE_TEXT = 0;
+    private static final int CHANGE_LIST = 1;
     private ProgressBar pb_loading;
     private int progress = 0;
     private int bili = 0;
@@ -49,7 +51,6 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     private MonthDaySetting mTrafficSettingDialog;
     private String month = "";
     private int days = 0;
-    private FlowAsyncTask flowAsyncTask;
     private AppMasterPreference preferences;
 
     private ArrayList<String> test;
@@ -64,6 +65,11 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
                 tv_from_donghua.setText(mProgress + "%");
                 roundProgressBar.setProgress(mProgress);
                 updateProgress();
+            } else if (msg.what == CHANGE_LIST) {
+                pb_loading.setVisibility(View.INVISIBLE);
+                flow_all_content.setVisibility(View.VISIBLE);
+                show_donghua();
+                initflowchart();
             }
         }
     };
@@ -103,17 +109,20 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         dataList = new ArrayList<Integer>();
         dataLists = new ArrayList<ArrayList<Integer>>();
 
-        flowAsyncTask = new FlowAsyncTask();
-        flowAsyncTask.execute("");
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                initDate(); // 采用异步线程获取数据
+            }
+        });
     }
 
     @Override
     public void onDestroy() {
-        if (flowAsyncTask != null) {
-            flowAsyncTask.cancel(false);
-        }
+
         if (handler != null) {
             handler.removeMessages(CHANGE_TEXT);
+            handler.removeMessages(CHANGE_LIST);
             handler = null;
         }
         super.onDestroy();
@@ -123,29 +132,6 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     public void onRippleComplete(RippleView rippleView) {
         if (flow_setting == rippleView) {
             showTrafficSetting();
-        }
-    }
-
-    class FlowAsyncTask extends AsyncTask {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Object doInBackground(Object... params) {
-            initDate();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object result) {
-            super.onPostExecute(result);
-            pb_loading.setVisibility(View.INVISIBLE);
-            flow_all_content.setVisibility(View.VISIBLE);
-            show_donghua();
-            initflowchart();
         }
     }
 
@@ -280,6 +266,13 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
 //            }
 //        }
         dataLists.add(dataList);
+
+        if (handler != null) {
+            Message message = handler.obtainMessage();
+            message.what = CHANGE_LIST;
+            handler.sendMessage(message);
+
+        }
     }
 
     public void initflowchart() {
