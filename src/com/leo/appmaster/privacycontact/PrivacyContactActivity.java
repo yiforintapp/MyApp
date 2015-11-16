@@ -4,6 +4,7 @@ package com.leo.appmaster.privacycontact;
 import java.util.List;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -38,10 +39,27 @@ import com.leo.appmaster.utils.Utilities;
 public class PrivacyContactActivity extends BaseFragmentActivity implements OnClickListener {
     private static final String TAG = "PrivacyContactActivity";
 
+    private static final int INDEX_CALL_LOG;
+    private static final int INDEX_MESSAGE;
+    private static final int INDEX_CONTACTS;
+
+    static {
+        // 4.4及其以上不显示短信tab
+        if (Build.VERSION.SDK_INT < 19) {
+            INDEX_MESSAGE = 0;
+            INDEX_CALL_LOG = 1;
+            INDEX_CONTACTS = 2;
+        } else {
+            INDEX_MESSAGE = -1;
+            INDEX_CALL_LOG = 0;
+            INDEX_CONTACTS = 1;
+        }
+    }
+
     private CommonToolbar mTtileBar;
     private LeoPagerTab mPrivacyContactPagerTab;
     private ViewPager mPrivacyContactViewPager;
-    private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[3];
+    private HomeFragmentHoler[] mFragmentHolders = new HomeFragmentHoler[INDEX_CONTACTS + 1];
     private boolean mIsEditModel = false;
     private int pagerPosition;
     private AddPrivacyContactDialog mAddPrivacyContact;
@@ -130,24 +148,24 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
             @Override
             public void onPageSelected(int position) {
                 pagerPosition = position;
-                if (position == 0) {
+                if (position == INDEX_MESSAGE) {
                     mTtileBar.setOptionMenuVisible(false);
                     if (AppMasterPreference.getInstance(PrivacyContactActivity.this)
                             .getMessageNoReadCount() <= 0) {
-                        mFragmentHolders[0].redTip = false;
+                        mFragmentHolders[INDEX_MESSAGE].redTip = false;
                         mPrivacyContactPagerTab.notifyDataSetChanged();
                     }
                 }
-                if (position == 1) {
+                if (position == INDEX_CALL_LOG) {
                     mTtileBar.setOptionMenuVisible(false);
                     if (AppMasterPreference.getInstance(PrivacyContactActivity.this)
                             .getCallLogNoReadCount() <= 0) {
                         mCallLogTip = false;
-                        mFragmentHolders[1].redTip = false;
+                        mFragmentHolders[INDEX_CALL_LOG].redTip = false;
                         mPrivacyContactPagerTab.notifyDataSetChanged();
                     }
                 }
-                if (position == 2) {
+                if (position == INDEX_CONTACTS) {
                     updateTitle();
                 }
             }
@@ -393,7 +411,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         if (PrivacyContactUtils.PRIVACY_RECEIVER_CALL_LOG_NOTIFICATION
                 .equals(event.editModel)) {
             // if (pagerPosition != 1) {
-            mFragmentHolders[1].redTip = true;
+            mFragmentHolders[INDEX_CALL_LOG].redTip = true;
             mPrivacyContactPagerTab.notifyDataSetChanged();
             mCallLogTip = true;
             // }
@@ -401,21 +419,21 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 .equals(event.editModel)) {
             // if (pagerPosition != 0) {
             if (AppMasterPreference.getInstance(this).getMessageNoReadCount() > 0) {
-                mFragmentHolders[0].redTip = true;
+                mFragmentHolders[INDEX_MESSAGE].redTip = true;
                 mPrivacyContactPagerTab.notifyDataSetChanged();
             }
         } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CANCEL_RED_TIP_EVENT
                 .equals(event.editModel)) {
             int msmNoReadCount = AppMasterPreference.getInstance(PrivacyContactActivity.this).getMessageNoReadCount();
             if (msmNoReadCount <= 0) {
-                mFragmentHolders[0].redTip = false;
+                mFragmentHolders[INDEX_MESSAGE].redTip = false;
                 mPrivacyContactPagerTab.notifyDataSetChanged();
             }
         } else if (PrivacyContactUtils.PRIVACY_CONTACT_ACTIVITY_CALL_LOG_CANCEL_RED_TIP_EVENT
                 .equals(event.editModel)) {
             int callNoReadCount = AppMasterPreference.getInstance(PrivacyContactActivity.this).getCallLogNoReadCount();
             if (callNoReadCount <= 0) {
-                mFragmentHolders[1].redTip = false;
+                mFragmentHolders[INDEX_CALL_LOG].redTip = false;
                 mPrivacyContactPagerTab.notifyDataSetChanged();
             }
         }
@@ -456,17 +474,22 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
     }
 
     private void initFragment() {
-        /**
-         * Message
-         */
-        HomeFragmentHoler holder = new HomeFragmentHoler();
-        holder.title = this.getString(R.string.privacy_contact_message);
-        PrivacyMessageFragment messageFragment = new PrivacyMessageFragment();
-        // messageFragment.setContent(holder.title);
-        holder.fragment = messageFragment;
-        mFragmentHolders[0] = holder;
-        if (AppMasterPreference.getInstance(this).getMessageNoReadCount() > 0) {
-            mFragmentHolders[0].redTip = true;
+        int index = 0;
+        HomeFragmentHoler holder = null;
+        if (Build.VERSION.SDK_INT < 19) {
+            /**
+             * Message
+             */
+            holder = new HomeFragmentHoler();
+            holder.title = this.getString(R.string.privacy_contact_message);
+            PrivacyMessageFragment messageFragment = new PrivacyMessageFragment();
+            // messageFragment.setContent(holder.title);
+            holder.fragment = messageFragment;
+            mFragmentHolders[index] = holder;
+            if (AppMasterPreference.getInstance(this).getMessageNoReadCount() > 0) {
+                mFragmentHolders[index].redTip = true;
+            }
+            index++;
         }
         /**
          * CallLog
@@ -476,10 +499,12 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
         PrivacyCalllogFragment pravicyCalllogFragment = new PrivacyCalllogFragment();
         // pravicyCalllogFragment.setContent(holder.title);
         holder.fragment = pravicyCalllogFragment;
-        mFragmentHolders[1] = holder;
+        mFragmentHolders[index] = holder;
         if (AppMasterPreference.getInstance(this).getCallLogNoReadCount() > 0) {
-            mFragmentHolders[1].redTip = true;
+            mFragmentHolders[index].redTip = true;
         }
+        index++;
+
         /**
          * Contact
          */
@@ -489,7 +514,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
                 PrivacyContactFragment();
         // appManagerFragment.setContent(holder.title);
         holder.fragment = appManagerFragment;
-        mFragmentHolders[2] = holder;
+        mFragmentHolders[index] = holder;
 
         FragmentManager fm = getSupportFragmentManager();
         try {
