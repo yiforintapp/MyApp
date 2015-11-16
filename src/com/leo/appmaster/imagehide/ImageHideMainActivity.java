@@ -143,7 +143,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
             }
         });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
-
     }
 
     private void initImageLoder() {

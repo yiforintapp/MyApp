@@ -24,6 +24,7 @@ import android.widget.TextView;
 
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
@@ -38,8 +39,9 @@ import com.leo.imageloader.core.FadeInBitmapDisplayer;
 /**
  * @author linxiongzhou
  */
-public class ImageGalleryActivity extends BaseActivity {
-
+public class ImageGalleryActivity extends BaseActivity implements OnItemClickListener {
+    public final static int INIT_UI_DONE = 22;
+    public final static int LOAD_DATA_DONE = 23;
     private List<PhotoAibum> mAlbumList = null;
     private GridView mGridView;
     private DisplayImageOptions mOptions;
@@ -48,26 +50,63 @@ public class ImageGalleryActivity extends BaseActivity {
     private RelativeLayout mNoPictureHint;
     private AlbumAdapt mAlbumAdapt = new AlbumAdapt(this);
 
-//    private VideoHideDialog mImageDialog;
     private ProgressBar loadingBar;
+
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case INIT_UI_DONE:
+                    asyncLoad();
+                    break;
+                case LOAD_DATA_DONE:
+                    loadDone();
+                    break;
+            }
+        }
+    };
+
+    private void loadDone() {
+        if (mAlbumList != null) {
+            if (mAlbumList.size() > 0) {
+                mNoPictureHint.setVisibility(View.GONE);
+                loadingBar.setVisibility(View.GONE);
+                mGridView.setVisibility(View.VISIBLE);
+                mAlbumAdapt.setDataList(mAlbumList);
+                mAlbumAdapt.notifyDataSetChanged();
+            } else {
+                mNoPictureHint.setVisibility(View.VISIBLE);
+                loadingBar.setVisibility(View.GONE);
+                mGridView.setVisibility(View.GONE);
+            }
+        }
+    }
+
+    private void asyncLoad() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                mAlbumList = ((PrivacyDataManager) MgrContext.
+                        getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile();
+                mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+            }
+        });
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // TODO Auto-generated method stub
         super.onCreate(savedInstanceState);
-        initImageLoder();
+
         setContentView(R.layout.activity_image_gallery);
-//        mImageDialog = new VideoHideDialog(this);
-//        Window window = mImageDialog.getWindow();
-//        WindowManager.LayoutParams layoutParams = window.getAttributes();
-//        layoutParams.alpha = 0.5f;
-//        layoutParams.dimAmount = 0.0f;
-//        window.setAttributes(layoutParams);
+        initImageLoder();
+        initUI();
+    }
+
+    private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_image_gallery);
         mTtileBar.setOptionMenuVisible(false);
-//        mTtileBar.openBackView();
         mGridView = (GridView) findViewById(R.id.image_gallery_folder);
+        mGridView.setOnItemClickListener(this);
         mGridView.setAdapter(mAlbumAdapt);
         mNoPictureHint = (RelativeLayout) findViewById(R.id.no_picture);
         loadingBar = (ProgressBar) findViewById(R.id.pb_loading_hide_pic);
@@ -76,24 +115,16 @@ public class ImageGalleryActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        cancelDialog();
         if (mImageLoader != null) {
             mImageLoader.stop();
             mImageLoader.clearMemoryCache();
         }
     }
 
-    private void cancelDialog() {
-//        if (mImageDialog != null) {
-//            mImageDialog.dismiss();
-//            mImageDialog = null;
-//        }
-    }
 
     @Override
     public void finish() {
         super.finish();
-        cancelDialog();
         if (mImageLoader != null) {
             mImageLoader.stop();
         }
@@ -107,15 +138,12 @@ public class ImageGalleryActivity extends BaseActivity {
 
     @Override
     protected void onResume() {
-        LoaderImageFolderTask task = new LoaderImageFolderTask(this);
-        task.execute();
+        mHandler.sendEmptyMessage(INIT_UI_DONE);
         super.onResume();
     }
 
     @Override
     protected void onPause() {
-        if (mGridView != null && mGridView.getCount() > 0) {
-        }
         super.onPause();
     }
 
@@ -134,6 +162,23 @@ public class ImageGalleryActivity extends BaseActivity {
         mImageLoader = ImageLoader.getInstance();
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        if (position < mAlbumList.size()) {
+            Intent intent = new Intent(ImageGalleryActivity.this,
+                    ImageGridActivity.class);
+            Bundle bundle = new Bundle();
+            PhotoAibum photoAibum = mAlbumList.get(position);
+            if (photoAibum.getBitList().size() < 1000) {
+                bundle.putSerializable("data", mAlbumList.get(position));
+            }
+            intent.putExtra("pos", position);
+            intent.putExtra("mode", ImageGridActivity.SELECT_HIDE_MODE);
+            intent.putExtras(bundle);
+            startActivityForResult(intent, 1001);
+        }
+    }
+
     class AlbumAdapt extends BaseAdapter {
         Context context;
         List<PhotoAibum> list = new ArrayList<PhotoAibum>();
@@ -149,25 +194,21 @@ public class ImageGalleryActivity extends BaseActivity {
 
         @Override
         public int getCount() {
-            // TODO Auto-generated method stub
             return list.size();
         }
 
         @Override
         public Object getItem(int position) {
-            // TODO Auto-generated method stub
             return position;
         }
 
         @Override
         public long getItemId(int position) {
-            // TODO Auto-generated method stub
             return position;
         }
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            // TODO Auto-generated method stub
             ViewHolder viewHolder;
             String path;
             if (convertView == null) {
@@ -193,70 +234,6 @@ public class ImageGalleryActivity extends BaseActivity {
     private static class ViewHolder {
         private ImageView img;
         private TextView txt;
-    }
-
-    private class LoaderImageFolderTask extends AsyncTask<Void, Integer, Integer> {
-        private Context context;
-
-        LoaderImageFolderTask(Context context) {
-            this.context = context;
-        }
-
-        @Override
-        protected void onPreExecute() {
-//            if (mImageDialog != null) {
-//                mImageDialog.show();
-//            }
-        }
-
-        @Override
-        protected Integer doInBackground(Void... params) {
-//            mAlbumList = FileOperationUtil.getPhotoAlbum(context);
-            mAlbumList = ((PrivacyDataManager) MgrContext.
-                    getManager(MgrContext.MGR_PRIVACY_DATA)).getAllPicFile();
-            return 0;
-        }
-
-        @Override
-        protected void onPostExecute(Integer integer) {
-//            if (mImageDialog != null) {
-//                mImageDialog.dismiss();
-//            }
-            if (mAlbumList != null) {
-                if (mAlbumList.size() > 0) {
-                    mNoPictureHint.setVisibility(View.GONE);
-                    loadingBar.setVisibility(View.GONE);
-                    mGridView.setVisibility(View.VISIBLE);
-                    mAlbumAdapt.setDataList(mAlbumList);
-                    mAlbumAdapt.notifyDataSetChanged();
-                    mGridView.setOnItemClickListener(new OnItemClickListener() {
-
-                        @Override
-                        public void onItemClick(AdapterView<?> arg0, View arg1,
-                                                int position, long arg3) {
-                            if (position < mAlbumList.size()) {
-                                Intent intent = new Intent(ImageGalleryActivity.this,
-                                        ImageGridActivity.class);
-                                Bundle bundle = new Bundle();
-                                PhotoAibum photoAibum = mAlbumList.get(position);
-                                if (photoAibum.getBitList().size() < 1000) {
-                                    bundle.putSerializable("data", mAlbumList.get(position));
-                                }
-                                intent.putExtra("pos", position);
-                                intent.putExtra("mode", ImageGridActivity.SELECT_HIDE_MODE);
-                                intent.putExtras(bundle);
-                                startActivityForResult(intent, 1001);
-                            }
-                        }
-                    });
-                } else {
-                    mNoPictureHint.setVisibility(View.VISIBLE);
-                    loadingBar.setVisibility(View.GONE);
-                    mGridView.setVisibility(View.GONE);
-                }
-
-            }
-        }
     }
 
 }
