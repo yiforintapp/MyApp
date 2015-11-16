@@ -3,13 +3,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/all_backgroud" >
+    android:background="#333333" >
     
     <ImageView 
         android:id="@+id/iv_IGitem_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scaleType="fitXY"
+        android:scaleType="fitCenter"
         />
 
 </LinearLayout>
