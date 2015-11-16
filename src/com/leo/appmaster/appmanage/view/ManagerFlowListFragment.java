@@ -6,6 +6,8 @@ import java.util.List;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Handler;
+import android.os.Message;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -16,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -25,11 +28,26 @@ import com.leo.appmaster.utils.ManagerFlowUtils;
 
 public class ManagerFlowListFragment extends BaseFragment {
 
+    private static final int CHANGE_LIST = 0;
     private ListView lv_flow_list;
     private View content_listview, content_show_nothing;
     private List<TrafficsInfo> appTrafficInfo;
-    private FlowListAsyncTask flowAsyncTask;
     private ProgressBar pb_loading;
+
+    private Handler handler = new Handler() {
+        public void handleMessage(android.os.Message msg) {
+            if (msg.what == CHANGE_LIST) {
+                if (appTrafficInfo.size() > 0) {
+                    content_listview.setVisibility(View.VISIBLE);
+                } else {
+                    content_show_nothing.setVisibility(View.VISIBLE);
+                }
+                pb_loading.setVisibility(View.GONE);
+                MyFlowAdapter myAdater = new MyFlowAdapter(mActivity, appTrafficInfo);
+                lv_flow_list.setAdapter(myAdater);
+            }
+        }
+    };
 
     @Override
     protected int layoutResourceId() {
@@ -39,13 +57,24 @@ public class ManagerFlowListFragment extends BaseFragment {
     @Override
     protected void onInitUI() {
         init();
-        flowAsyncTask = new FlowListAsyncTask();
-        flowAsyncTask.execute("");
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                fillData();
+            }
+        });
     }
 
     private void fillData() {
         appTrafficInfo = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
                 getAppRange();
+
+        if (handler != null) {
+            Message message = handler.obtainMessage();
+            message.what = CHANGE_LIST;
+            handler.sendMessage(message);
+
+        }
 
     }
 
@@ -56,33 +85,6 @@ public class ManagerFlowListFragment extends BaseFragment {
         pb_loading = (ProgressBar) findViewById(R.id.pb_loading);
 
         appTrafficInfo = new ArrayList<TrafficsInfo>();
-    }
-
-    class FlowListAsyncTask extends AsyncTask {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected Object doInBackground(Object... params) {
-            fillData();
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Object result) {
-            super.onPostExecute(result);
-            if (appTrafficInfo.size() > 0) {
-                content_listview.setVisibility(View.VISIBLE);
-            } else {
-                content_show_nothing.setVisibility(View.VISIBLE);
-            }
-            pb_loading.setVisibility(View.GONE);
-            MyFlowAdapter myAdater = new MyFlowAdapter(mActivity, appTrafficInfo);
-            lv_flow_list.setAdapter(myAdater);
-        }
     }
 
     public class MyFlowAdapter extends BaseAdapter {
