@@ -1,52 +1,34 @@
 
 package com.leo.appmaster.videohide;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Files;
-import android.provider.MediaStore.MediaColumns;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
-import com.leo.appmaster.imagehide.ImageHideMainActivity;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.utils.FileOperationUtil;
@@ -58,17 +40,16 @@ import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.imageloader.core.ImageScaleType;
 
 @SuppressLint("NewApi")
-public class VideoHideMainActivity extends BaseActivity implements
-        OnClickListener, OnItemClickListener {
+public class VideoHideMainActivity extends BaseActivity implements OnItemClickListener {
+    public final static int INIT_UI_DONE = 26;
+    public final static int LOAD_DATA_DONE = 27;
     private GridView mGridView;
     private CommonToolbar mTtileBar;
-    private TextView mAddButton;
     private RippleView mRvAdd;
     private RelativeLayout mNoHidePictureHint;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
     private HideVideoAdapter adapter;
-    public static final int REQUEST_CODE_LOCK = 1000;
     public static final int REQUEST_CODE_OPTION = 1001;
     public static String CB_PACKAGENAME = "com.cool.coolbrowser";
     public static String URL_CB = "http://m.coobrowser.com/";
@@ -81,38 +62,20 @@ public class VideoHideMainActivity extends BaseActivity implements
     private AppMasterPreference mSpSaveDir;
     private ProgressBar loadingBar;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_video_hide_main);
-        if(getIntent().getBooleanExtra("from_quickhelper", false)){
-            SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1,
-                    "assistant", "hidevid_cnts");
+    private android.os.Handler mHandler = new android.os.Handler() {
+        public void handleMessage(android.os.Message msg) {
+            switch (msg.what) {
+                case INIT_UI_DONE:
+                    asyncLoad();
+                    break;
+                case LOAD_DATA_DONE:
+                    loadDone();
+                    break;
+            }
         }
-        
-        initUI();
-        initImageLoder();
-        getDirFromSp();
-        handleIntent();
-    }
+    };
 
-    private void getDirFromSp() {
-        mSpSaveDir = AppMasterPreference.getInstance(this);
-        LAST_CATALOG = mSpSaveDir.getLastDir();
-        SECOND_CATALOG = mSpSaveDir.getSecondDir();
-        LeoLog.d("testIntent", "getFromSp Last  is : " + LAST_CATALOG);
-        LeoLog.d("testIntent", "getFromSp Second is : " + SECOND_CATALOG);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        hideVideos = ((PrivacyDataManager) MgrContext.
-                getManager(MgrContext.MGR_PRIVACY_DATA)).getHideVidAlbum("");
-
-        // checkCbAndVersion();
-        makeCbFloderFirst();
+    private void loadDone() {
         adapter = new HideVideoAdapter(this, hideVideos);
         mGridView.setAdapter(adapter);
         if (hideVideos != null) {
@@ -129,14 +92,58 @@ public class VideoHideMainActivity extends BaseActivity implements
         }
     }
 
+    private void asyncLoad() {
+        ThreadManager.executeOnAsyncThread(new Runnable() {
+            @Override
+            public void run() {
+                hideVideos = ((PrivacyDataManager) MgrContext.
+                        getManager(MgrContext.MGR_PRIVACY_DATA)).getHideVidAlbum("");
+                makeCbFloderFirst();
+                if (mHandler != null) {
+                    mHandler.sendEmptyMessage(LOAD_DATA_DONE);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_video_hide_main);
+        initImageLoder();
+        initUI();
+
+        getDirFromSp();
+        handleIntent();
+    }
+
+    private void getDirFromSp() {
+        mSpSaveDir = AppMasterPreference.getInstance(this);
+        LAST_CATALOG = mSpSaveDir.getLastDir();
+        SECOND_CATALOG = mSpSaveDir.getSecondDir();
+        LeoLog.d("testIntent", "getFromSp Last  is : " + LAST_CATALOG);
+        LeoLog.d("testIntent", "getFromSp Second is : " + SECOND_CATALOG);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        mHandler.sendEmptyMessage(INIT_UI_DONE);
+    }
+
     private void handleIntent() {
         Intent intent = this.getIntent();
+        if (intent.getBooleanExtra("from_quickhelper", false)) {
+            SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1,
+                    "assistant", "hidevid_cnts");
+        }
+
         String mPath = intent.getStringExtra("cb_download_path");
         if (mPath != null) {
             SDKWrapper.addEvent(VideoHideMainActivity.this, SDKWrapper.P1, "hidevd_cb",
                     "hide");
         }
-
         LeoLog.d("testIntent", "mPath : " + mPath);
         if (LAST_CATALOG.isEmpty() || SECOND_CATALOG.isEmpty()) {
             if (mPath == null) {
@@ -203,9 +210,7 @@ public class VideoHideMainActivity extends BaseActivity implements
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_video_hide);
         mTtileBar.setOptionMenuVisible(false);
-        mAddButton = (TextView) findViewById(R.id.add_hide_image);
         mRvAdd = (RippleView) findViewById(R.id.rv_add);
-        
         mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
             @Override
             public void onRippleComplete(RippleView rippleView) {
@@ -214,9 +219,7 @@ public class VideoHideMainActivity extends BaseActivity implements
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
             }
         });
-        
-        
-        mAddButton.setOnClickListener(this);
+
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
         mNohideVideo = (TextView) findViewById(R.id.nohideTV);
         mGridView = (GridView) findViewById(R.id.Video_hide_folder);
@@ -227,24 +230,16 @@ public class VideoHideMainActivity extends BaseActivity implements
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
         hideVideos.clear();
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
     }
 
-    @Override
-    public void onClick(View arg0) {
-        switch (arg0.getId()) {
-            case R.id.add_hide_image:
-//                Intent intent = new Intent(VideoHideMainActivity.this,
-//                        VideoHideGalleryActivity.class);
-//                VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
-                break;
-            default:
-                break;
-        }
-    }
 
     /**
      * HideVideoAdapter
@@ -298,12 +293,9 @@ public class VideoHideMainActivity extends BaseActivity implements
                 viewHolder = (ViewHolder) convertView.getTag();
             }
             VideoBean video = videos.get(position);
-            // final String path = video.getPath();
             String path = video.getPath();
             String name = video.getName();
             String secondName = FileOperationUtil.getSecondDirNameFromFilepath(path);
-            // final ImageView imageView = viewHolder.imageView;
-            // imageView.setTag(path);
             viewHolder.text.setText(name + "(" + video.getCount()
                     + ")");
             viewHolder.imageView.setBackgroundDrawable(context.getResources()
@@ -322,7 +314,6 @@ public class VideoHideMainActivity extends BaseActivity implements
 
     }
 
-//    };
 
     /**
      * GrideView onItemClick

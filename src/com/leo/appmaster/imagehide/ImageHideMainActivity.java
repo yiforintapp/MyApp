@@ -58,7 +58,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private DisplayImageOptions mOptions;
     private ImageLoader mImageLoader;
     private CommonToolbar mTtileBar;
-    private TextView mAddButton;
     private RelativeLayout mNoHidePictureHint;
     private RippleView mRvAdd;
     private ProgressBar loadingBar;
@@ -135,7 +134,6 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         mGridView.setOnItemClickListener(this);
         mGridView.setAdapter(mHideAlbumAdapt);
         mRvAdd = (RippleView) findViewById(R.id.rv_add);
-        mAddButton = (TextView) findViewById(R.id.add_hide_image);
         mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
 
             @Override
