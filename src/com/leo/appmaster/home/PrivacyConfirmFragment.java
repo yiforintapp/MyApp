@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -36,11 +37,15 @@ import com.leo.appmaster.privacycontact.MessageCallLogBean;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -184,6 +189,45 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         MobvistaEngine.getInstance(mActivity).release(Constants.UNIT_ID_67);
     }
 
+    /**
+     * 新需求：当广告大图加载完成之后再展示广告
+     */
+    public static class AdPreviewLoaderListener implements ImageLoadingListener {
+        WeakReference<PrivacyConfirmFragment> mFragment;
+        Campaign mCampaign;
+
+        public AdPreviewLoaderListener (PrivacyConfirmFragment fragment, final Campaign campaign) {
+            mFragment = new WeakReference<PrivacyConfirmFragment>(fragment);
+            mCampaign = campaign;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            PrivacyConfirmFragment fragment = mFragment.get();
+            if (loadedImage != null && fragment != null) {
+                LeoLog.d("MobvistaEngine", "[PrivacyConfirmFragment] onLoadingComplete -> " + imageUri);
+                fragment.initAdLayout(mCampaign, fragment.mRootView, Constants.UNIT_ID_67, loadedImage);
+                SDKWrapper.addEvent(fragment.mActivity, SDKWrapper.P1, "ad_act", "adv_shws_scanRST");
+            }
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+
+        }
+    }
+    private static AdPreviewLoaderListener sAdImageListener;
+
     private void loadAd(final View view) {
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         if (amp.getIsADAfterPrivacyProtectionOpen() == 1) {
@@ -191,10 +235,10 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                    if (code != MobvistaEngine.ERR_OK) return;
-                    initAdLayout(campaign, view, Constants.UNIT_ID_67);
-
-                    SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "adv_shws_scanRST");
+                    if (code == MobvistaEngine.ERR_OK) {
+                        sAdImageListener = new AdPreviewLoaderListener(PrivacyConfirmFragment.this, campaign);
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
+                    }
                 }
 
                 @Override
@@ -468,7 +512,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         }
     }
 
-    private void initAdLayout(Campaign campaign, View view, String unitId) {
+    private void initAdLayout(Campaign campaign, View view, String unitId, Bitmap previewBitmap) {
         if (view != null) {
             View include = view.findViewById(R.id.advertise_security);
             TextView title = (TextView) include.findViewById(R.id.item_title);
@@ -477,7 +521,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             btnCTA.setText(campaign.getAdCall());
             ImageView preview = (ImageView) include.findViewById(R.id.item_ad_preview);
             preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            displayImage(preview, campaign.getImageUrl());
+            preview.setImageBitmap(previewBitmap);
             TextView tvSummary = (TextView) include.findViewById(R.id.item_summary);
             tvSummary.setText(campaign.getAppDesc());
             include.setVisibility(View.VISIBLE);

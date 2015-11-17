@@ -111,12 +111,15 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
         loadAd(mRootView);
     }
 
+    /**
+     * 新需求：当广告大图加载完成之后再展示广告
+     */
     public static class AdPreviewLoaderListener implements ImageLoadingListener {
         WeakReference<WifiResultFrangment> mFragment;
         Campaign mCampaign;
 
-        public AdPreviewLoaderListener (WifiResultFrangment frangment, final Campaign campaign) {
-            mFragment = new WeakReference<WifiResultFrangment>(frangment);
+        public AdPreviewLoaderListener (WifiResultFrangment fragment, final Campaign campaign) {
+            mFragment = new WeakReference<WifiResultFrangment>(fragment);
             mCampaign = campaign;
         }
 
@@ -132,11 +135,11 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
 
         @Override
         public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-            if (loadedImage != null) {
+            WifiResultFrangment fragment = mFragment.get();
+            if (loadedImage != null && fragment != null) {
                 LeoLog.d("MobvistaEngine", "onLoadingComplete -> " + imageUri);
-                WifiResultFrangment frangment = mFragment.get();
-                frangment.initAdLayout(frangment.mRootView, mCampaign, Constants.UNIT_ID_60, loadedImage);
-                SDKWrapper.addEvent(frangment.mActivity, SDKWrapper.P1, "ad_act", "adv_shws_wifi");
+                fragment.initAdLayout(fragment.mRootView, mCampaign, Constants.UNIT_ID_60, loadedImage);
+                SDKWrapper.addEvent(fragment.mActivity, SDKWrapper.P1, "ad_act", "adv_shws_wifi");
             }
         }
 
