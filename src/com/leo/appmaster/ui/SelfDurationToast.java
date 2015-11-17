@@ -1,18 +1,12 @@
 package com.leo.appmaster.ui;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.animation.AnimationListenerAdapter;
-import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
-import com.leo.appmaster.utils.FileOperationUtil;
-import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
@@ -21,12 +15,10 @@ import com.leo.tools.animator.ObjectAnimator;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.Settings;
 import android.text.Html;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -35,17 +27,14 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
 
 
 public class SelfDurationToast {
     public static final int SHOWNAME = 1;
     private static final int API_LEVEL_19 = 19;
     public static ImageView realLoading;
-    public static TextView tv_clean_rocket;
+    public static TextView mTextOne, mTextTwo;
     public static String wifiName;
     private static Context mContext;
     private static View contentView, loadingView;
@@ -65,12 +54,16 @@ public class SelfDurationToast {
                         showAnimation();
                         int wifiSate = (Integer) msg.obj;
                         if (wifiSate == 2) {
-                            String a1 = mContext.getString(R.string.over_traffic_toast_unsafe, wifiName);
-                            tv_clean_rocket.setText(Html.fromHtml(a1));
+                            String a1 = mContext.getString(R.string.change_wifi_toast_title, wifiName);
+                            String b1 = mContext.getString(R.string.change_wifi_toast_unsafe);
+                            mTextOne.setText(a1);
+                            mTextTwo.setText(Html.fromHtml(b1));
                             mArrow.setImageResource(R.drawable.wifi_toast_redarrow);
                         } else {
-                            String a2 = mContext.getString(R.string.over_traffic_toast_safe, wifiName);
-                            tv_clean_rocket.setText(Html.fromHtml(a2));
+                            String a2 = mContext.getString(R.string.change_wifi_toast_title, wifiName);
+                            String b2 = mContext.getString(R.string.change_wifi_toast_safe);
+                            mTextOne.setText(a2);
+                            mTextTwo.setText(Html.fromHtml(b2));
                             mArrow.setImageResource(R.drawable.wifi_toast_bluearrow);
                         }
                     } else {
@@ -113,9 +106,15 @@ public class SelfDurationToast {
     }
 
     private static void showResult() {
+        ObjectAnimator animX = ObjectAnimator.ofFloat(mIconView,
+                "scaleX", 1f, 0.9f);
+        ObjectAnimator animY = ObjectAnimator.ofFloat(mIconView,
+                "scaleY", 1f, 0.9f);
         ObjectAnimator animAlpha1 = ObjectAnimator.ofFloat(mArrow,
                 "alpha", 0f, 1f);
-        ObjectAnimator animAlpha2 = ObjectAnimator.ofFloat(tv_clean_rocket,
+        ObjectAnimator animAlpha2 = ObjectAnimator.ofFloat(mTextOne,
+                "alpha", 0f, 1f);
+        ObjectAnimator animAlpha3 = ObjectAnimator.ofFloat(mTextTwo,
                 "alpha", 0f, 1f);
         AnimatorSet set = new AnimatorSet();
         set.addListener(new AnimatorListenerAdapter() {
@@ -127,12 +126,17 @@ public class SelfDurationToast {
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
+                mIconView.setBackgroundColor(mContext.getResources().getColor(R.color.transparent));
                 mArrow.setVisibility(View.VISIBLE);
-                tv_clean_rocket.setVisibility(View.VISIBLE);
+                mTextOne.setVisibility(View.VISIBLE);
+                mTextTwo.setVisibility(View.VISIBLE);
             }
         });
         set.setDuration(250);
         set.play(animAlpha1).with(animAlpha2);
+        set.play(animAlpha2).with(animX);
+        set.play(animX).with(animY);
+        set.play(animY).with(animAlpha3);
         set.start();
     }
 
@@ -174,7 +178,8 @@ public class SelfDurationToast {
         });
 
         loadingView = view.findViewById(R.id.loading_content);
-        tv_clean_rocket = (TextView) view.findViewById(R.id.tv_clean_rocket);
+        mTextOne = (TextView) view.findViewById(R.id.tv_clean_rocket);
+        mTextTwo = (TextView) view.findViewById(R.id.tv_clean_rocket_two);
         result.mNextView = view;
         result.mDuration = duration;
 
