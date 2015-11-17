@@ -57,12 +57,6 @@ public class FlowActivity extends BaseFragmentActivity implements OnClickListene
         mTitleBar.setOptionImageResource(R.drawable.setup_icon);
         mTitleBar.setOptionMenuVisible(true);
 
-//        mTtileBar.setTitle(R.string.app_flow_elec);
-//        mTtileBar.openBackView();
-
-//        trffic_setting_iv = findViewById(R.id.trffic_setting_iv);
-//        trffic_setting_iv.setVisibility(View.VISIBLE);
-//        trffic_setting_iv.setOnClickListener(this);
 
         mPagerTab = (LeoPagerTab) findViewById(R.id.traffic_app_tab_indicator);
         mPagerTab.setOnPageChangeListener(this);

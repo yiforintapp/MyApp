@@ -38,7 +38,7 @@
                 android:layout_width="@dimen/privacy_default_image_width"
                 android:layout_height="@dimen/privacy_default_image_height"
                 android:layout_gravity="center"
-                android:src="@drawable/video_default" />
+                android:src="@drawable/privacy_video_default" />
 
             <TextView
                 android:id="@+id/nohideTV"

@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/ctb_at_intruder"
@@ -13,71 +13,68 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <ListView
             android:id="@+id/lv_main_instruderP"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:divider="@null" >
-        </ListView>
+            android:divider="@null"></ListView>
 
-    <RelativeLayout 
-        android:id="@+id/rl_nopic"
-        android:visibility="invisible"
-        android:layout_alignParentBottom="true"
-    android:layout_width="match_parent"
-    android:layout_height="250dp" >
-    
-        <View
-            android:visibility="invisible"
-            android:id="@+id/v_timebar"
-            android:layout_width="1px"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
-            android:background="#999999" />
-
-        <ImageView 
-            
-            android:id="@+id/iv_dot"
-            android:layout_width="14dp"
-            android:layout_height="14dp"
-            android:scaleType="fitXY"
-            android:layout_marginLeft="14dp"
-            android:layout_marginTop="13dp"
-            android:src="@drawable/point_timestamp"
-           android:visibility="invisible"  />
-        
-        <TextView
-            android:id="@+id/tv_timestamp_nopic"
-            android:layout_width="wrap_content"
-            android:layout_height="20dp"
-            android:layout_marginLeft="28dp"
-            android:background="@drawable/bg_timestamp"
-            android:gravity="center"
-            android:layout_marginTop="10dp"
-            android:textColor="#ffffff"
-            android:textSize="13dp"
-            android:visibility="invisible" />
-
-        <TextView 
-            android:layout_below="@+id/iv_nopic"
-            android:gravity="center"
-            android:text="@string/intruder_nobody_tips"
+        <RelativeLayout
+            android:id="@+id/rl_nopic"
             android:layout_width="match_parent"
-            android:textSize="12dp"
-            android:textColor="#cbcbcb"
-            android:layout_height="30dp"
-            />
-        
-    <ImageView 
-        android:id="@+id/iv_nopic"
-        android:layout_centerInParent="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/intruder_nopic"
-        />
-</RelativeLayout>
+            android:layout_height="250dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="invisible">
+
+            <View
+                android:id="@+id/v_timebar"
+                android:layout_width="1px"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:background="#999999"
+                android:visibility="invisible" />
+
+            <ImageView
+
+                android:id="@+id/iv_dot"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginTop="13dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/point_timestamp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/tv_timestamp_nopic"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="28dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/bg_timestamp"
+                android:gravity="center"
+                android:textColor="#ffffff"
+                android:textSize="13dp"
+                android:visibility="invisible" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_below="@+id/iv_nopic"
+                android:gravity="center"
+                android:text="@string/intruder_nobody_tips"
+                android:textColor="#cbcbcb"
+                android:textSize="12dp" />
+
+            <ImageView
+                android:id="@+id/iv_nopic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/intruder_nopic" />
+        </RelativeLayout>
     </RelativeLayout>
 
 </LinearLayout>
