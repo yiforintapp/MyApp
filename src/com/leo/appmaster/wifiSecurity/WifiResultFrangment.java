@@ -1,11 +1,13 @@
 package com.leo.appmaster.wifiSecurity;
 
+import java.lang.ref.WeakReference;
 import java.util.Dictionary;
 import java.util.Hashtable;
 
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.LayoutInflater;
@@ -28,8 +30,11 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 /**
@@ -106,17 +111,52 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
         loadAd(mRootView);
     }
 
+    public static class AdPreviewLoaderListener implements ImageLoadingListener {
+        WeakReference<WifiResultFrangment> mFragment;
+        Campaign mCampaign;
+
+        public AdPreviewLoaderListener (WifiResultFrangment frangment, final Campaign campaign) {
+            mFragment = new WeakReference<WifiResultFrangment>(frangment);
+            mCampaign = campaign;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            if (loadedImage != null) {
+                LeoLog.d("MobvistaEngine", "onLoadingComplete -> " + imageUri);
+                WifiResultFrangment frangment = mFragment.get();
+                frangment.initAdLayout(frangment.mRootView, mCampaign, Constants.UNIT_ID_60, loadedImage);
+                SDKWrapper.addEvent(frangment.mActivity, SDKWrapper.P1, "ad_act", "adv_shws_wifi");
+            }
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+
+        }
+    }
+    private static AdPreviewLoaderListener sAdImageListener;
+
     private void loadAd(final View rootView) {
         AppMasterPreference amp = AppMasterPreference.getInstance(mActivity);
         if (amp.getADWifiScan() == 1) {
             MobvistaEngine.getInstance(mActivity).loadMobvista(Constants.UNIT_ID_60, new MobvistaListener() {
 
                 @Override
-                public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
-                        initAdLayout(rootView, campaign, Constants.UNIT_ID_60);
-
-                        SDKWrapper.addEvent(mActivity, SDKWrapper.P1, "ad_act", "adv_shws_wifi");
+                        sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaign);
+                        ImageLoader.getInstance().loadImage(campaign.getIconUrl(), sAdImageListener);
                     }
                 }
 
@@ -132,7 +172,7 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
     }
 
 
-    private void initAdLayout(View rootView, Campaign campaign, String unitId) {
+    private void initAdLayout(View rootView, Campaign campaign, String unitId, Bitmap previewImage) {
         View adView = rootView.findViewById(R.id.ad_content);
         TextView tvTitle = (TextView) adView.findViewById(R.id.item_title);
         tvTitle.setText(campaign.getAppName());
@@ -142,7 +182,7 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
         Button btnCTA = (Button) adView.findViewById(R.id.ad_result_cta);
         btnCTA.setText(campaign.getAdCall());
         preview.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        displayImage(preview, campaign.getImageUrl());
+        preview.setImageBitmap(previewImage);
         adView.setVisibility(View.VISIBLE);
         MobvistaEngine.getInstance(mActivity).registerView(Constants.UNIT_ID_60, adView);
     }

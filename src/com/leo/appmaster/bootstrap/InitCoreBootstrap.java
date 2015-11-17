@@ -30,6 +30,7 @@ import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockScreenActivity;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.receiver.LockReceiver;
 import com.leo.appmaster.appmanage.business.AppBusinessManager;
@@ -93,6 +94,11 @@ public class InitCoreBootstrap extends Bootstrap {
         SDKWrapper.iniSDK(mApp);
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
+
+        start = SystemClock.elapsedRealtime();
+        MobvistaEngine.getInstance(mApp).preloadMobvistaAds();
+        end = SystemClock.elapsedRealtime();
+        LeoLog.i(TAG, "cost, preload Mobvista Ads: " + (end - start));
 
         start = SystemClock.elapsedRealtime();
         AppBusinessManager.getInstance(mApp).init();

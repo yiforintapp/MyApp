@@ -1,7 +1,11 @@
 package com.leo.appmaster.applocker.manager;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +24,8 @@ import com.mobvista.sdk.m.core.MobvistaAd;
 import com.mobvista.sdk.m.core.MobvistaAdNative;
 import com.mobvista.sdk.m.core.MobvistaAdWall;
 import com.mobvista.sdk.m.core.entity.Campaign;
+
+import org.w3c.dom.ls.LSException;
 
 /**
  * 广告相关引擎
@@ -82,7 +88,6 @@ public class MobvistaEngine {
         Context context = AppMasterApplication.getInstance();
         try {
             MobvistaAd.init(context, Constants.MOBVISTA_APPID, Constants.MOBVISTA_APPKEY);
-            MobvistaEngine.getInstance(context).preloadMobvistaAds();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -132,10 +137,8 @@ public class MobvistaEngine {
     
     /**
      * 程序启动，获取所有广告位的数据作为缓存
-     * @param context 
-     * @param 
      * */
-    private void preloadMobvistaAds(){
+    public void preloadMobvistaAds(){
         LeoLog.i(TAG, "loadMobvistaAds() called done");
         for(String unitId: mUnitIdToPlacementIdMap.keySet()){
             loadSingleMobAd(unitId);
@@ -177,7 +180,7 @@ public class MobvistaEngine {
     
     /**
      * 获取广告内容
-     * @param activity
+     * @param unitId
      * @param listener
      */
     public void loadMobvista(String unitId, MobvistaListener listener) {
@@ -379,7 +382,7 @@ public class MobvistaEngine {
 
         @Override
         public void onAdLoaded(Campaign campaign) {
-            LeoLog.i(TAG, "onAdLoaded ["+mUnitId+"]: " + campaign.getAppName());
+            LeoLog.i(TAG, "onAdLoaded ["+mUnitId+"]: " + campaign.getAppName() + "; imageURL="+campaign.getImageUrl());
             MobvistaAdData mobvista = new MobvistaAdData();
             // 将load成功的 MobvistaAdNative 对象移动到 MobvistaAdData 中
             mobvista.nativeAd = mMobvistaNative.remove(mUnitId);
@@ -402,7 +405,7 @@ public class MobvistaEngine {
             if (listener != null) {
                 listener.onMobvistaFinished(ERR_MOBVISTA_FAIL, null, s);
             }
-            
+
             mMobvistaNative.remove(mUnitId);
         }
 
@@ -423,6 +426,35 @@ public class MobvistaEngine {
             LeoLog.i(TAG, "reload the clicked Ad");
             loadSingleMobAd(mUnitId);
         }
+    }
+
+    /**
+     * Get available ad unit ids for lock screen
+     * @return
+     */
+    public List<String> getMultiAds(){
+        String[] ids = {
+                Constants.UNIT_ID_59,
+                Constants.UNIT_ID_60,
+                Constants.UNIT_ID_61,
+        };
+
+//        IdentityHashMap<String, String> imageUnitIdMap = new IdentityHashMap<String, String>();
+        HashMap<String, String> imageUnitIdMap = new HashMap<String, String>();
+        for (String id:ids) {
+            MobvistaAdData mobvista = mMobvistaMap.get(id);
+            if (!isOutOfDate(mobvista)) {
+                LeoLog.d(TAG, "ad found: " + mobvista.campaign.getImageUrl() + "[" + id + "]");
+                imageUnitIdMap.put(mobvista.campaign.getImageUrl(), id);
+            } else {
+                loadSingleMobAd(id);
+            }
+        }
+
+        List<String> list = new ArrayList<String>();
+        list.addAll(imageUnitIdMap.values());
+        LeoLog.d(TAG, "at last, list size = " + list.size());
+        return list;
     }
     
     private static class MobvistaAdData {
