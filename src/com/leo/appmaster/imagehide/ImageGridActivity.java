@@ -513,7 +513,6 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
                                     // mPicturesList.remove(item);
                                     // mAllListPath.remove(item.getPath());
                                     deleteList.add(item);
-
                                 }
                             } else {
                                 isSuccess = 2;
@@ -808,7 +807,14 @@ public class ImageGridActivity extends BaseActivity implements OnClickListener, 
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 if (which == 1) {
+
+                    mIsBackgoundRunning = false;
                     mSelectAll.setText(R.string.app_select_all);
+                    mSelectAll.setCompoundDrawablesWithIntrinsicBounds(null,
+                            getResources().getDrawable(R.drawable.select_all_selector), null,
+                            null);
+
+//                    mSelectAll.setText(R.string.app_select_all);
                     if (mPicturesList.size() <= 0) {
                         finish();
                     }
