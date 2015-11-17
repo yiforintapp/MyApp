@@ -238,12 +238,23 @@ public class MobvistaEngine {
         }
         return MobvistaAd.newAdWallController(activity, unitId, placementId);
     }
-    
+
     /**
      * 注册广告点击事件
+     * @param unitId
      * @param view
      */
     public void registerView(String unitId, View view) {
+        registerView(unitId, view, null);
+    }
+
+    /**
+     * 注册广告点击事件
+     * @param unitId
+     * @param view
+     * @param listener 用新listener替换旧的
+     */
+    public void registerView(String unitId, View view, MobvistaListener listener) {
         MobvistaAdData adObject = mMobvistaMap.get(unitId);
         if(adObject == null){
             return;
@@ -253,6 +264,12 @@ public class MobvistaEngine {
             LeoLog.i(TAG, "havnt register activity before.");
             return;
         }
+
+        // replace the listener
+        if (listener != null) {
+            mMobvistaListeners.put(unitId, listener);
+        }
+
         LeoLog.i(TAG, "registerView");
         adNative.registerView(view, new AdTrackingListener() {
 
@@ -300,7 +317,7 @@ public class MobvistaEngine {
             @Override
             public void onDismissLoading(Campaign arg0) {
                 // TODO Auto-generated method stub
-                
+
             }
 
             @Override
@@ -432,14 +449,13 @@ public class MobvistaEngine {
      * Get available ad unit ids for lock screen
      * @return
      */
-    public List<String> getMultiAds(){
+    public HashMap<String, Campaign> getMultiAds(){
         String[] ids = {
                 Constants.UNIT_ID_59,
-                Constants.UNIT_ID_60,
-                Constants.UNIT_ID_61,
+                Constants.UNIT_ID_62,
+                Constants.UNIT_ID_67,
         };
 
-//        IdentityHashMap<String, String> imageUnitIdMap = new IdentityHashMap<String, String>();
         HashMap<String, String> imageUnitIdMap = new HashMap<String, String>();
         for (String id:ids) {
             MobvistaAdData mobvista = mMobvistaMap.get(id);
@@ -451,10 +467,13 @@ public class MobvistaEngine {
             }
         }
 
-        List<String> list = new ArrayList<String>();
-        list.addAll(imageUnitIdMap.values());
-        LeoLog.d(TAG, "at last, list size = " + list.size());
-        return list;
+        HashMap<String, Campaign> result = new HashMap<String, Campaign>();
+        for (String id:imageUnitIdMap.values()) {
+            MobvistaAdData mobvista = mMobvistaMap.get(id);
+            result.put(id, mobvista.campaign);
+        }
+        LeoLog.d(TAG, "at last, map size = " + result.size());
+        return result;
     }
     
     private static class MobvistaAdData {
