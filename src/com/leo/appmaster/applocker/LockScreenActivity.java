@@ -1084,15 +1084,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void loadAD() {
-
-        // stone test - begin
-        List<String> adList = MobvistaEngine.getInstance(this).getMultiAds();
-        for (String id:adList) {
-            LeoLog.d(TAG, "found [" +id+ "] avaliable!");
-        }
-        // stone test - end
-
-
+        
         LeoLog.e("poha","loading ad...");
         mAdEngine = MobvistaEngine.getInstance(this);
         mAdEngine.loadMobvista(Constants.UNIT_ID_59, new MobvistaListener() {
