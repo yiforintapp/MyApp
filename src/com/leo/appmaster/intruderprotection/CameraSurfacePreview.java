@@ -19,14 +19,15 @@ import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
+@SuppressWarnings("deprecation")
 public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.Callback {
     private SurfaceHolder mHolder;
 //    private boolean mIsActive = false;
     private boolean mIsinited = false;
     private Camera mCamera;
     private boolean mCanTake = true;
-    private PreferenceTable mPt = PreferenceTable.getInstance();
     private PictureCallback mPendingCallback;
+    private int mCameraOrientation;
 
     public CameraSurfacePreview(Context context) {
         super(context);
@@ -45,6 +46,10 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
         }
     }
 
+    public int getCameraOrientation() {
+        return mCameraOrientation;
+    }
+    
     @SuppressWarnings("deprecation")
     public void init() {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD) {
@@ -56,9 +61,6 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
                 || (checkCameraFacing == CameraUtils.FRONT_FACING_ONLY)) {
             mCamera = Camera.open(CameraInfo.CAMERA_FACING_FRONT);
         } 
-//        else if (checkCameraFacing == CameraUtils.BACK_FACING_ONLY) {
-//            mCamera = Camera.open(CameraInfo.CAMERA_FACING_BACK);
-//        }
         else {
             return;
         }
@@ -77,7 +79,7 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
             LeoLog.i("poha", "照相机实际的分辨率： " + "height :" + pictureSize.height + "  width : "+ pictureSize.width);
             CameraInfo info = new CameraInfo();
             Camera.getCameraInfo(CameraInfo.CAMERA_FACING_FRONT, info);
-            mPt.putInt(PrefConst.KEY_ORIENTATION_OF_CAMERA_FACING_FRONT, info.orientation);
+            mCameraOrientation = info.orientation;
             LeoLog.i("poha", "前置照相机  orientation = "+info.orientation);
             mCamera.setPreviewDisplay(mHolder);
             mCamera.startPreview();

@@ -334,10 +334,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             }
                             //旋转原始bitmap到正确的方向
                             Matrix m = new Matrix();
-                            int orientation = mPt.getInt(PrefConst.KEY_ORIENTATION_OF_CAMERA_FACING_FRONT, 270);
+                            int orientation = view.getCameraOrientation();
                             LeoLog.i("poha", "got orientation = "+orientation);
-                            m.setRotate(180-orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
-                            bitmapt = Bitmap.createBitmap(bitmapt, 0, 0,bitmapt.getWidth() , bitmapt.getHeight() , m, true);
+                            m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
+                            bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth() , bitmapt.getHeight() , m, true);
                             String timeStamp = new SimpleDateFormat( Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT) .format(new Date());
                             //添加水印
                             bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp,packagename, ama);
@@ -386,7 +386,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 LeoLog.i("poha", "delay!! has enter catch !!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
                             }
                             bitmapt.recycle();
-                            System.gc();
                         }
                     });
                     if(mLockFragment != null) {
