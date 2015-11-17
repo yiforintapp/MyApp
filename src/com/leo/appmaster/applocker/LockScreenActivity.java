@@ -913,21 +913,25 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             mAppBaseInfoLayoutbg.recycle();
             mAppBaseInfoLayoutbg = null;
         }
-        // 这部分注释掉，担心影响到MobvistaEngine里的逻辑，因为init调用只有一次, by lishuai
-        // try {
-        // MobvistaAd.release();
-        // } catch (Exception e) {
-        // }
-        if (wallAd != null) {
-            wallAd.release();
-            wallAd = null;
+
+        try {
+            if (wallAd != null) {
+                wallAd.release();
+                wallAd = null;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         LeoLog.d("LockScreenActivity", "onDestroy");
         LeoEventBus.getDefaultBus().unregister(this);
         mLockFragment.setShowText(false);
-        
-        if(mAdEngine!=null) {
-            mAdEngine.release(Constants.UNIT_ID_59);
+
+        try {
+            if(mAdEngine!=null) {
+                mAdEngine.release(Constants.UNIT_ID_59);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         if(mBannerContainer != null) {
             mBannerContainer.setVisibility(View.GONE);
