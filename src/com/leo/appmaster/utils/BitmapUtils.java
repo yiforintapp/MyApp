@@ -204,12 +204,12 @@ public class BitmapUtils {
         float minScale = Math.max(scaleW, scaleH);
         LeoLog.i("test1", "window W = "+windowW);
         LeoLog.i("test1", "window H = "+windowH+"scaleW = "+scaleW+"...scaleH = "+scaleH+" minScale = "+minScale);
+        option.inJustDecodeBounds = false;
         if (minScale > 1) {
             option.inSampleSize = (int) minScale;
             LeoLog.i("test1", "final inSampleSize = " + option.inSampleSize);
         }
-        option.inJustDecodeBounds = false;
-        bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length).copy( Config.RGB_565, true);
+        bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length, option).copy( Config.RGB_565, true);
         LeoLog.i("test1", "final decode !! ");
         return bitmapt;
     }
