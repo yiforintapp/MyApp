@@ -81,6 +81,16 @@
                     android:id="@+id/wifi_security"
                     layout="@layout/pri_confirm_wifi_item" />
 
+                <!-- 五星好评 -->
+                <include
+                    android:id="@+id/grade_security"
+                    layout="@layout/pri_confirm_grade_item" />
+
+                <!-- 跳转Facebook -->
+                <include
+                    android:id="@+id/fb_security"
+                    layout="@layout/pri_confirm_fb_item" />
+
                 <!-- Swifty -->
                 <include
                     android:id="@+id/swifty_security"

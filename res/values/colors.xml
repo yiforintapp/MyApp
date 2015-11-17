@@ -104,6 +104,7 @@
 
     <color name="wifi_result_blue">#2c80f2</color>
 
+    <color name="security_grade">#91bbff</color>
     <color name="security_swifty">#2674f6</color>
     <color name="security_lost">#fa6060</color>
     <color name="security_intruder">#19d2c4</color>
