@@ -870,5 +870,4 @@
     <string name="swifty_item_btn">去开启</string>
     <string name="change_wifi_toast_unsafe">存在风险</string>
     <string name="change_wifi_toast_safe">安全</string>
->>>>>>> optimized lockscreen icon
 </resources>
