@@ -16,7 +16,7 @@
         <TextView
             android:id="@+id/item_title"
             style="@style/ItemTitle"
-            android:text="Swifty" />
+            android:text="@string/Swifty_item_title" />
     </LinearLayout>
 
     <ImageView
@@ -39,8 +39,7 @@
         android:textSize="14dp"
         android:layout_alignLeft="@+id/swifty_img"
         android:layout_alignRight="@+id/swifty_img"
-        android:layout_below="@+id/swifty_img"
-        android:text="Swifty测试语句"/>
+        android:layout_below="@+id/swifty_img"/>
 
 
 
@@ -67,7 +66,7 @@
             <TextView
                 android:id="@+id/item_btn_tv"
                 style="@style/ItemBtnText"
-                android:text="去开启"/>
+                android:text="@string/swifty_item_btn"/>
         </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 

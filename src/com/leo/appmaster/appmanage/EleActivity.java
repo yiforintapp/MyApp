@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
@@ -35,6 +36,7 @@ public class EleActivity extends BaseFragmentActivity {
     //    private BatteryInfoProvider info;
     private List<BatteryComsuption> mList;
     private ProgressBar pb_loading_ele;
+    private RelativeLayout mEmptyBg;
     private static final String Tag = "testCase";
     private ActivityManager am;
     private static final String SCHEME = "package";
@@ -54,6 +56,7 @@ public class EleActivity extends BaseFragmentActivity {
 //        mTtileBar.openBackView();
         mTtileBar.setOptionMenuVisible(false);
 
+        mEmptyBg = (RelativeLayout) findViewById(R.id.content_show_nothing);
         pb_loading_ele = (ProgressBar) findViewById(R.id.pb_loading_ele);
         listview_ele = (ListView) findViewById(R.id.listview_ele);
         adapter = new customAdapter();
@@ -109,6 +112,8 @@ public class EleActivity extends BaseFragmentActivity {
 
                         listview_ele.setVisibility(View.VISIBLE);
                         adapter.setData(mList);
+                    } else {
+                        mEmptyBg.setVisibility(View.VISIBLE);
                     }
                     break;
             }

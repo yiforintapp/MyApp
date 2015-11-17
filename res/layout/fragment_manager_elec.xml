@@ -41,6 +41,32 @@
                     android:dividerHeight="1dp" -->
         <!-- android:divider="@drawable/app_data_usage_list_line" -->
 
+        <RelativeLayout
+            android:id="@+id/content_show_nothing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/just_nothing_show_iv"
+                android:layout_width="@dimen/kongbaiye_width_height"
+                android:layout_height="@dimen/kongbaiye_width_height"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/elect_empty" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/just_nothing_show_iv"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="18dp"
+                android:gravity="center"
+                android:text="@string/elect_empty_content"
+                android:textColor="@color/nothing_show_text"
+                android:textSize="@dimen/kongbaiye_text_size" />
+        </RelativeLayout>
+
         <ProgressBar
             android:id="@+id/pb_loading_ele"
             style="@style/ProgressBarCricle"
