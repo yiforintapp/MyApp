@@ -67,7 +67,10 @@ public class CameraSurfacePreview extends SurfaceView implements SurfaceHolder.C
             mCamera.setDisplayOrientation(90);          //预览时的角度
             Parameters parameters = mCamera.getParameters();
             List<Size> Sizes = parameters.getSupportedPictureSizes();
-            int normalQualityLevel = Sizes.size() /2;
+            for(int i = 0; i < Sizes.size(); i++) {
+                LeoLog.i("poha", "照相机支持的分辨率： " + "height :" + Sizes.get(i).height + "  width : "+ Sizes.get(i).width);
+            }
+            int normalQualityLevel = Sizes.size() / 2;
             parameters.setPictureSize(Sizes.get(normalQualityLevel).width,Sizes.get(normalQualityLevel).height);  // 使用中等档次的照相品质
             mCamera.setParameters(parameters);
             Size pictureSize = parameters.getPictureSize();

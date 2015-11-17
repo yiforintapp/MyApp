@@ -24,6 +24,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -112,6 +113,7 @@ import com.leo.appmaster.ui.dialog.LEOThreeButtonDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog;
 import com.leo.appmaster.ui.dialog.LeoDoubleLinesInputDialog.OnDiaogClickListener;
 import com.leo.appmaster.utils.AppUtil;
+import com.leo.appmaster.utils.BitmapUtils;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.FastBlur;
@@ -325,21 +327,23 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                         @Override
                         public void run() {
                             AppMasterApplication ama = AppMasterApplication.getInstance();
-                            Bitmap bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length).copy( Config.RGB_565, true);
+                            Bitmap bitmapt = null; 
+                            try {
+                                bitmapt = BitmapUtils.bytes2BimapWithScale(data, LockScreenActivity.this);
+                            } catch (Throwable e) {
+                            }
+                            //旋转原始bitmap到正确的方向
                             Matrix m = new Matrix();
                             int orientation = mPt.getInt(PrefConst.KEY_ORIENTATION_OF_CAMERA_FACING_FRONT, 270);
                             LeoLog.i("poha", "got orientation = "+orientation);
                             m.setRotate(180-orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
                             bitmapt = Bitmap.createBitmap(bitmapt, 0, 0,bitmapt.getWidth() , bitmapt.getHeight() , m, true);
-//                            bitmapt.recycle();
-//                            System.gc();
                             String timeStamp = new SimpleDateFormat( Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT) .format(new Date());
+                            //添加水印
                             bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp,packagename, ama);
-//                            bitmapt.recycle();
-//                            bitmap.recycle();
+                            //将bitmap压缩并保存
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                            bitmapt.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-//                            finalBitmap.recycle();
+                            bitmapt.compress(Bitmap.CompressFormat.PNG, 100, baos);
                             byte[] finalBytes = baos.toByteArray();
                             File photoSavePath = getPhotoSavePath();
                             if (photoSavePath == null) {
@@ -359,10 +363,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 FileOperationUtil.saveFileMediaEntry(finalPicPath, ama);
                                 FileOperationUtil.deleteImageMediaEntry(photoSavePath.getPath(), ama);
                                 mIsPicSaved = true;
-                                //refresh by itself
                                 PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
                                 pdm.notifySecurityChange();
-                                
                             } catch (Exception e) {
                                 LeoLog.i("poha", "exception!!   ..." + e.toString());
                                 return;
@@ -384,6 +386,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 LeoLog.i("poha", "delay!! has enter catch !!  mCanTakePhoto :"+mCanTakePhoto+"mHasTakePic :"+"delay? :"+mPt.getBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH,false));
                             }
                             bitmapt.recycle();
+                            System.gc();
                         }
                     });
                     if(mLockFragment != null) {

@@ -5,8 +5,10 @@ import java.io.ByteArrayOutputStream;
 
 import com.leo.appmaster.AppMasterApplication;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.Config;
+import android.graphics.BitmapFactory.Options;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -21,6 +23,7 @@ import android.graphics.RectF;
 import android.graphics.Shader.TileMode;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.view.WindowManager;
 
 public class BitmapUtils {
 
@@ -183,5 +186,31 @@ public class BitmapUtils {
         Bitmap newbmp = Bitmap.createBitmap(oldbmp, 0, 0, width, height,
                 matrix, true);
         return new BitmapDrawable(newbmp);
+    }
+    
+    public static Bitmap bytes2BimapWithScale(byte[] data, Context context) {
+        BitmapFactory.Options option = new Options();
+        option.inJustDecodeBounds = true;
+        Bitmap bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length,option);
+        int outHeight = option.outHeight;
+        int outWidth = option.outWidth;
+        LeoLog.i("test1", "outHeight = "+outHeight);
+        LeoLog.i("test1", "outWidth = "+outWidth);
+        WindowManager wm = (WindowManager) context .getSystemService(Context.WINDOW_SERVICE);
+        int windowW = wm.getDefaultDisplay().getWidth();
+        int windowH = wm.getDefaultDisplay().getHeight();
+        float scaleW = (float)outWidth / (float)windowW;
+        float scaleH = (float)outHeight / (float)windowH;
+        float minScale = Math.max(scaleW, scaleH);
+        LeoLog.i("test1", "window W = "+windowW);
+        LeoLog.i("test1", "window H = "+windowH+"scaleW = "+scaleW+"...scaleH = "+scaleH+" minScale = "+minScale);
+        if (minScale > 1) {
+            option.inSampleSize = (int) minScale;
+            LeoLog.i("test1", "final inSampleSize = " + option.inSampleSize);
+        }
+        option.inJustDecodeBounds = false;
+        bitmapt = BitmapFactory.decodeByteArray(data, 0, data.length).copy( Config.RGB_565, true);
+        LeoLog.i("test1", "final decode !! ");
+        return bitmapt;
     }
 }
