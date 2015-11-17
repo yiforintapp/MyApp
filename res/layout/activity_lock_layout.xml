@@ -22,73 +22,12 @@
             android:layout_marginTop="@dimen/fragment_lock_margin_top"
             android:layout_below="@id/layout_title_bar"/>
 
-        <com.leo.appmaster.ui.HorizontalDragLayout
+        <com.leo.appmaster.ui.EcoGallery
             android:id="@+id/large_adbanner_container"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" 
+            android:layout_height="@dimen/fragment_lock_large_banner_out_height"
             android:layout_below="@id/layout_title_bar"
-            android:visibility="gone">
-            <RelativeLayout
-                android:id="@+id/adbanner_show_area"
-                android:layout_height="@dimen/fragment_lock_large_banner_out_height"
-                android:layout_width="@dimen/fragment_lock_large_banner_out_width"
-                android:layout_centerInParent="true"
-                android:background="@drawable/ad_large_banner_bg">
-                <ImageView 
-                    android:id="@+id/ad_image"
-                    android:layout_height="@dimen/fragment_lock_large_banner_image_height"
-                    android:layout_width="@dimen/fragment_lock_large_banner_image_width"
-                    android:layout_marginTop="@dimen/fragment_lock_large_banner_image_top"
-                    android:scaleType="centerCrop"
-                    android:layout_centerHorizontal="true"
-                    android:src="@drawable/ad_def_pic"/>
-               <TextView 
-                    android:id="@+id/ad_install_button"
-                    android:layout_height="@dimen/fragment_lock_large_banner_button_height"
-                    android:layout_width="@dimen/fragment_lock_large_banner_button_width"
-                    android:textSize="@dimen/fragment_lock_large_banner_button_text_size"
-                    android:layout_below="@id/ad_image"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="@dimen/fragment_lock_large_banner_button_top"
-                    android:layout_marginRight="@dimen/fragment_lock_large_banner_image_top"
-                    android:textColor="@color/white"
-                    android:gravity="center"
-                    android:background="@drawable/ad_install_bg"/>
-                <TextView 
-                    android:id="@+id/ad_title"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textSize="@dimen/fragment_lock_large_banner_title_size"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:layout_below="@id/ad_image"
-                    android:layout_marginTop="4dp"
-                    android:layout_alignLeft="@id/ad_image"
-                    android:layout_toLeftOf="@id/ad_install_button"
-                    android:textColor="@color/black"/>
-               <TextView 
-                    android:id="@+id/ad_details"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
-                    android:textSize="@dimen/fragment_lock_large_banner_msg_size"
-                    android:singleLine="true"
-                    android:ellipsize="end"
-                    android:layout_below="@id/ad_title"
-                    android:layout_marginTop="0dp"
-                    android:layout_marginRight="4dp"
-                    android:layout_alignLeft="@id/ad_title"
-                    android:layout_toLeftOf="@id/ad_install_button"
-                    android:textColor="@color/black"/>
-               <ImageView 
-                   android:layout_height="wrap_content"
-                   android:layout_width="wrap_content"
-                   android:src="@drawable/ad_icon"
-                   android:layout_alignTop="@id/ad_image"
-                   android:layout_alignRight="@id/ad_image"
-                   android:layout_marginTop="6dp"
-                   android:layout_marginRight="6dp"/>
-            </RelativeLayout>
-        </com.leo.appmaster.ui.HorizontalDragLayout>
+            android:visibility="gone"/>
         
         <RelativeLayout
             android:id="@+id/lockerGuide"

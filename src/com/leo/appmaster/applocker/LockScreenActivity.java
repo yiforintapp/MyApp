@@ -47,6 +47,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.WindowManager;
@@ -56,6 +57,7 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -104,6 +106,7 @@ import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
+import com.leo.appmaster.ui.EcoGallery;
 import com.leo.appmaster.ui.HorizontalDragLayout;
 import com.leo.appmaster.ui.HorizontalDragLayout.IDrageRelease;
 import com.leo.appmaster.ui.LeoCircleView;
@@ -124,6 +127,7 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
+import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
@@ -135,7 +139,7 @@ import com.mobvista.sdk.m.core.WallIconCallback;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
-        OnClickListener, OnDiaogClickListener, IDrageRelease{
+        OnClickListener, OnDiaogClickListener, EcoGallery.IGalleryScroll {
 
     public static final String TAG = "LockScreenActivity";
 
@@ -170,15 +174,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     /**
      * 大banner
      */
-    private RelativeLayout mLargeAdBannerShowArea;
-    private HorizontalDragLayout mBannerContainer;
-    private ImageView mBannerImage;
-    private TextView mTilte, mDetail, mInstallButton;
-    private boolean mShowAlignRight = false; 
-    private int mLargeBannerCenterPos;
-    private int mLargeBannerRightPos;
-    private int mLargeBannerWidth;
+    public static final int AD_ITEM_COUNT = 4; //三个广告加一个空白页
+    private EcoGallery mBannerContainer;
     private DisplayImageOptions mImageOptions;
+    private int mBannerItemWidth;
 
     private boolean mNewTheme;
     private RelativeLayout mPretendLayout;
@@ -938,10 +937,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        if (mBannerContainer != null) {
-            mBannerContainer.setVisibility(View.GONE);
-        }
-        if (mLockFragment != null) {
+        if(mLockFragment != null) {
             mLockFragment.onActivityStop();
         }
     }
@@ -1064,15 +1060,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 初始化广告UI */
     private void initAD() {
-        mLargeBannerWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
-        mBannerContainer = (HorizontalDragLayout) findViewById(R.id.large_adbanner_container);
-        mBannerContainer.setListener(this);
-        mLargeAdBannerShowArea = (RelativeLayout) findViewById(R.id.adbanner_show_area);
-        mBannerImage = (ImageView) findViewById(R.id.ad_image);
-        mTilte = (TextView) findViewById(R.id.ad_title);
-        mTilte.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
-        mDetail = (TextView) findViewById(R.id.ad_details);
-        mInstallButton = (TextView) findViewById(R.id.ad_install_button);
+        mBannerItemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
+        mBannerContainer = (EcoGallery) findViewById(R.id.large_adbanner_container);
+        mBannerContainer.setUnselectedAlpha(1.0f);
+        mBannerContainer.setSpacing(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
+        mBannerContainer.setSelectedPositionInt(0);
+        mBannerContainer.setAdapter(new ADPagerAdapter(this));
+        mBannerContainer.setScrollListener(this);
 
         mImageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ad_def_pic)
@@ -1085,59 +1079,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
     private void loadAD() {
-        
-        LeoLog.e("poha","loading ad...");
-        mAdEngine = MobvistaEngine.getInstance(this);
-        mAdEngine.loadMobvista(Constants.UNIT_ID_59, new MobvistaListener() {
-            @Override
-            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                if (code == MobvistaEngine.ERR_OK && campaign!=null) {
-                    int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
-                    int h = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
-                    if ((int) (Math.random() * (10+1-1)+1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()) {
-                        mBannerContainer.setVisibility(View.VISIBLE);
-                        RelativeLayout.LayoutParams pl = new RelativeLayout.LayoutParams(w, h);
-                        pl.addRule(RelativeLayout.CENTER_IN_PARENT);
-                        mLargeAdBannerShowArea.setLayoutParams(pl);
-                        mShowAlignRight = false;
-                        largeBannerShowAnim();
-                        delayBannerHideAnim();
-                        
-                        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_picadA");
-                    } else {
-                        mBannerContainer.setVisibility(View.VISIBLE);
-                        RelativeLayout.LayoutParams pl = new RelativeLayout.LayoutParams(w, h);
-                        pl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                        pl.rightMargin = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right) - w;
-                        mLargeAdBannerShowArea.setLayoutParams(pl);
-                        mShowAlignRight = true;
-                        
-                        SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_act", "adv_shws_picadB");
-                    }
 
-                    ImageLoader.getInstance().displayImage(campaign.getImageUrl(),mBannerImage,mImageOptions);
-                    mTilte.setText(campaign.getAppName());
-                    mDetail.setText(campaign.getAppDesc());
-                    mInstallButton.setText(campaign.getAdCall());
-                    if (!mShowAlignRight) {
-                        mLargeAdBannerShowArea.setClickable(true);
-                        mAdEngine.registerView(Constants.UNIT_ID_59, mLargeAdBannerShowArea);
-                    } else {
-                        mLargeAdBannerShowArea.setClickable(false);
-                    }
-                    mLargeBannerCenterPos =  (getWindowWidth() - getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width)) / 2;
-                    mLargeBannerRightPos = getWindowWidth()  - getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right);
-                    
-                }
-            }
+        mBannerContainer.setVisibility(View.VISIBLE);
 
-            @Override
-            public void onMobvistaClick(Campaign campaign) {
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picadA");
-                AppMasterPreference.getInstance(LockScreenActivity.this).setAdEtClickTime(
-                        System.currentTimeMillis());
-            }
-        });
+        // stone test - begin
+        List<String> adList = MobvistaEngine.getInstance(this).getMultiAds();
+        for (String id:adList) {
+            LeoLog.d(TAG, "found [" +id+ "] avaliable!");
+        }
+        // stone test - end
+
     }
     
     private void largeBannerShowAnim() {
@@ -1163,12 +1114,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
     
     private void bannerHideAnim() {
-        if (!mShowAlignRight) {
+/*        if (!mShowAlignRight) {
             mShowAlignRight = true;
             mLargeAdBannerShowArea.setClickable(false);
-            int destX = /*mBannerContainer.getWidth()*/getWindowWidth() - getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right);
+            int destX = *//*mBannerContainer.getWidth()*//*getWindowWidth() - getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right);
             mBannerContainer.smoothSlideTo(destX);
-        }     
+        }  */
     }
     
     // handle pretend lock
@@ -2022,77 +1973,132 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         return mScreenWidth;
     }
 
-    @Override
-    public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-        if (mShowAlignRight) {
-            if (left == mLargeBannerRightPos) {
-                int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
-                int h = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
-                RelativeLayout.LayoutParams pl = new RelativeLayout.LayoutParams(w, h);
-                pl.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-                pl.rightMargin = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right) - w;
-                mLargeAdBannerShowArea.setLayoutParams(pl);
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picadA_draw");
-            }
-        } else {
-            if (left == mLargeBannerCenterPos) {
-                int w = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
-                int h = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_height);
-                RelativeLayout.LayoutParams pl = new RelativeLayout.LayoutParams(w, h);
-                pl.addRule(RelativeLayout.CENTER_IN_PARENT);
-                mLargeAdBannerShowArea.setLayoutParams(pl);
-                SDKWrapper.addEvent(LockScreenActivity.this, SDKWrapper.P1, "ad_cli", "adv_cnts_picadB_draw");
-            }
-        }
-        int center = mBannerContainer.getWidth() / 2;
-        if (left < center) {
-            float alpha = 1 - (float)(center - left) * 2 / mLargeBannerWidth;
-            if (alpha > 0) {
-                int type = AppMasterPreference.getInstance(this).getLockType();
-                if (type == LockFragment.LOCK_TYPE_PASSWD) {
-                    ((PasswdLockFragment)mLockFragment).getIconView().setAlpha(alpha);
-                    ((PasswdLockFragment)mLockFragment).getPasswdHint().setAlpha(alpha);
-                } else {
-                    ((GestureLockFragment)mLockFragment).getIconView().setAlpha(alpha);
-                }
-            }
-        } else {
-            int type = AppMasterPreference.getInstance(this).getLockType();
-            if (type == LockFragment.LOCK_TYPE_PASSWD) {
-                if (((PasswdLockFragment)mLockFragment).getIconView().getAlpha() < 1.0f) {
-                    ((PasswdLockFragment)mLockFragment).getIconView().setAlpha(1.0f);
-                    ((PasswdLockFragment)mLockFragment).getPasswdHint().setAlpha(1.0f);
+
+    public void onScrollOffsetToDis(int offset){
+        if (mBannerContainer != null && mBannerContainer.getSelectedItemPosition() % AD_ITEM_COUNT == 0) {
+                float alpha = 1 - (float)Math.abs(offset) * 2 / getWindowWidth();
+                if (alpha > 0) {
+                    int type = AppMasterPreference.getInstance(this).getLockType();
+                    if (type == LockFragment.LOCK_TYPE_PASSWD) {
+                        ((PasswdLockFragment)mLockFragment).getIconView().setAlpha(alpha);
+                        ((PasswdLockFragment)mLockFragment).getPasswdHint().setAlpha(alpha);
+                    } else {
+                        ((GestureLockFragment)mLockFragment).getIconView().setAlpha(alpha);
+                    }
                 }
             } else {
-                if (((GestureLockFragment)mLockFragment).getIconView().getAlpha() < 1.0f) {
-                    ((GestureLockFragment)mLockFragment).getIconView().setAlpha(1.0f);
+                int type = AppMasterPreference.getInstance(this).getLockType();
+                if (type == LockFragment.LOCK_TYPE_PASSWD) {
+                    if (((PasswdLockFragment)mLockFragment).getIconView().getAlpha() > 0.0f) {
+                        ((PasswdLockFragment)mLockFragment).getIconView().setAlpha(0.0f);
+                        ((PasswdLockFragment)mLockFragment).getPasswdHint().setAlpha(0.0f);
+                    }
+                } else {
+                    if (((GestureLockFragment)mLockFragment).getIconView().getAlpha() > 0.0f) {
+                        ((GestureLockFragment)mLockFragment).getIconView().setAlpha(0.0f);
+                    }
                 }
+        }
+
+    }
+
+    private class ADPagerAdapter extends BaseAdapter {
+
+        private Context context;
+        private List<String> imageIdList;
+        private List<String> linkUrlArray;
+        private List<String> urlTitlesList;
+        private int size;
+        private boolean isInfiniteLoop;
+
+        public ADPagerAdapter(Context context/*, List<String> imageIdList,
+                              List<String> urllist, List<String> urlTitlesList*/) {
+            this.context = context;
+//            this.imageIdList = imageIdList;
+            if (imageIdList != null) {
+                this.size = imageIdList.size();
             }
+//            this.linkUrlArray = urllist;
+//            this.urlTitlesList = urlTitlesList;
+            isInfiniteLoop = true;
         }
-    }
-    
-    @Override
-    public void onDrageRelease(View releasedChild, float xvel, float yvel, int leftDest) {
-        if (leftDest + releasedChild.getWidth() > mBannerContainer.getWidth()) {
-            mShowAlignRight = true;
-//            mAdEngine.registerView(Constants.UNIT_ID_59, mInstallButton);
-            mLargeAdBannerShowArea.setClickable(false);
-        } else {
-            mShowAlignRight = false;
-            mLargeAdBannerShowArea.setClickable(true);
-            mAdEngine.registerView(Constants.UNIT_ID_59, mLargeAdBannerShowArea);
+
+        @Override
+        public int getCount() {
+            // Infinite loop
+            return isInfiniteLoop ? Integer.MAX_VALUE : imageIdList.size();
         }
-        mHandler.removeMessages(LARGE_BANNER_HIDE);
+
+        /**
+         * get really position
+         *
+         * @param position
+         * @return
+         */
+        private int getPosition(int position) {
+            return isInfiniteLoop ? position % size : position;
+        }
+
+        @Override
+        public View getView(final int position, View converView, ViewGroup container) {
+            final ViewHolder holder;
+
+            if (converView == null) {
+                holder = new ViewHolder();
+                converView = getLayoutInflater().inflate(
+                        R.layout.lock_ad_item, container, false);
+                holder.imageView = (ImageView) converView.findViewById(R.id.ad_image);
+                holder.title = (TextView) converView.findViewById(R.id.ad_title);
+                holder.detailMsg = (TextView) converView.findViewById(R.id.ad_details);
+                holder.installButton = (TextView) converView.findViewById(R.id.ad_install_button);
+                converView.setTag(holder);
+            } else {
+                holder = (ViewHolder) converView.getTag();
+            }
+            if (position % AD_ITEM_COUNT != 0) {
+                converView.setVisibility(View.VISIBLE);
+            } else {
+                converView.setVisibility(View.INVISIBLE);
+            }
+
+
+            return converView;
+        }
+
+        /**
+         * @return the isInfiniteLoop
+         */
+        public boolean isInfiniteLoop() {
+            return isInfiniteLoop;
     }
 
-    @Override
-    public void onTouchMoveLeft() {
-        if (mShowAlignRight) {
-            mShowAlignRight = false;
-            mLargeAdBannerShowArea.setClickable(true);
-            mAdEngine.registerView(Constants.UNIT_ID_59, mLargeAdBannerShowArea);
+        /**
+         * @param isInfiniteLoop the isInfiniteLoop to set
+         */
+        public ADPagerAdapter setInfiniteLoop(boolean isInfiniteLoop) {
+            this.isInfiniteLoop = isInfiniteLoop;
+            return this;
+        }
+
+        @Override
+        public Object getItem(int arg0) {
+            // TODO Auto-generated method stub
+            return arg0;
+        }
+
+        @Override
+        public long getItemId(int arg0) {
+            // TODO Auto-generated method stub
+            return arg0;
+        }
+
+
+        private class ViewHolder {
+
+            ImageView imageView;
+            TextView title;
+            TextView detailMsg;
+            TextView installButton;
         }
     }
-
-
 }

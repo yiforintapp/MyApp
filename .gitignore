@@ -12,4 +12,5 @@
 *.iml
 /local.properties
 /build
+build.prop
 .DS_Store
