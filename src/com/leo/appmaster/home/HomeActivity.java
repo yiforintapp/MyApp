@@ -1078,7 +1078,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         if (fragment instanceof PrivacyNewAppFragment) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_APP_LOCK);
         } else if ((fragment instanceof PrivacyNewPicFragment)
-                || (fragment instanceof FolderFragment)) {
+                || (fragment instanceof FolderPicFragment)) {
             mPrivacyFragment.showProcessProgress(PrivacyHelper.PRIVACY_HIDE_PIC);
         } else if ((fragment instanceof PrivacyNewVideoFragment)
                 || (fragment instanceof FolderVidFragment)) {

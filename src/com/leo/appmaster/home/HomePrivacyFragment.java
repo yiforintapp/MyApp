@@ -442,7 +442,7 @@ public class HomePrivacyFragment extends Fragment {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mCircleRotateAnim.cancel();
+//                mCircleRotateAnim.cancel();
             }
         });
         shieldOffsetYAnim.start();
@@ -540,7 +540,7 @@ public class HomePrivacyFragment extends Fragment {
         mHomeAnimView.getShieldLayer().setFinalShieldRatio(0);
         mHomeAnimView.getShieldLayer().setFinalTextRatio(HomeAnimShieldLayer.MIN_SHIELD_SCALE_RATIO);
 
-        mCircleRotateAnim.start();
+//        mCircleRotateAnim.start();
     }
 
     public int getToolbarColor() {
