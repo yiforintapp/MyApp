@@ -136,7 +136,7 @@
      <!-- 2.7 end -->
 
     <!-- 3.0 -->
-    <dimen name="home_tab_height">260dp</dimen>
+    <dimen name="home_tab_height">244dp</dimen>
     <dimen name="home_scanning_padding_top">370dp</dimen>
     <!--手机防盗-->
     <dimen name="phone_security_add_number_TV_size">14dp</dimen>

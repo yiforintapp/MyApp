@@ -197,7 +197,7 @@
 
     <!-- 3.0 -->
     <dimen name="privacy_input_cb_pd_lf">29dp</dimen>
-    <dimen name="home_tab_height">220dp</dimen>
+    <dimen name="home_tab_height">244dp</dimen>
     <dimen name="home_scanning_padding_top">320dp</dimen>
     <dimen name="scan_shield_offset">52dp</dimen>
     <dimen name="privacy_contact_textview_margintop">25dp</dimen>

@@ -199,7 +199,7 @@
     <dimen name="toolbar_height">56dp</dimen>
     <dimen name="ic_toolbar_width">50dp</dimen>
     <dimen name="home_tab_ic_size">32dp</dimen>
-    <dimen name="home_tab_height">245dp</dimen>
+    <dimen name="home_tab_height">244dp</dimen>
     <dimen name="home_shield_top_margin">80dp</dimen>
     <dimen name="home_shield_bg_circle_margin">40dp</dimen>
     <dimen name="home_shield_score">47dp</dimen>

@@ -196,7 +196,7 @@
 
 
     <!-- 3.0 -->
-    <dimen name="home_tab_height">220dp</dimen>
+    <dimen name="home_tab_height">227dp</dimen>
     <dimen name="home_scanning_padding_top">320dp</dimen>
     <dimen name="scan_shield_offset">52dp</dimen>
     <dimen name="home_step_top_margin">-15dp</dimen>

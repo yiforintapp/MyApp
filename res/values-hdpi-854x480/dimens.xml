@@ -254,7 +254,7 @@
     <!-- 2.7 end -->
 
     <!-- 3.0 -->
-    <dimen name="home_tab_height">210dp</dimen>
+    <dimen name="home_tab_height">217dp</dimen>
     <dimen name="home_scanning_padding_top">300dp</dimen>
 
     <dimen name="wifi_acti_big_icon_width">165dp</dimen>
