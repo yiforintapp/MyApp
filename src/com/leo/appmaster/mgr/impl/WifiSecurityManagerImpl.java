@@ -50,7 +50,7 @@ import java.util.logging.LogRecord;
 
 
 public class WifiSecurityManagerImpl extends WifiSecurityManager {
-    private static final int TOAST_SHOW_TIME = 6000;
+    private static final int TOAST_SHOW_TIME = 5000;
     private static final int DONT_SHOW_PG_START = 33;
     private static final String ACTIVITYNAME = "WifiSecurityActivity";
     private static final String SCAN_WIFI_NAME = "scan_wifi_name";
@@ -353,7 +353,6 @@ public class WifiSecurityManagerImpl extends WifiSecurityManager {
         } else {
             LeoLog.d("testWifiPart", "NO WiFi!!!!!!");
         }
-
     }
 
     private boolean isScanAlready(String wifiName) {

@@ -37,6 +37,7 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="7dp"
             android:layout_toRightOf="@id/tv_clean_rocket"
+            android:textColor="#ffffff"
             android:textSize="12dp"
             android:visibility="invisible" />
 

@@ -57,13 +57,15 @@ public class SelfDurationToast {
                             String a1 = mContext.getString(R.string.change_wifi_toast_title, wifiName);
                             String b1 = mContext.getString(R.string.change_wifi_toast_unsafe);
                             mTextOne.setText(a1);
-                            mTextTwo.setText(Html.fromHtml(b1));
+                            mTextTwo.setText(b1);
+                            mTextTwo.setTextColor(mContext.getResources().getColor(R.color.wifi_loading_icon_unsafe));
                             mArrow.setImageResource(R.drawable.wifi_toast_redarrow);
                         } else {
                             String a2 = mContext.getString(R.string.change_wifi_toast_title, wifiName);
                             String b2 = mContext.getString(R.string.change_wifi_toast_safe);
                             mTextOne.setText(a2);
-                            mTextTwo.setText(Html.fromHtml(b2));
+                            mTextTwo.setText(b2);
+                            mTextTwo.setTextColor(mContext.getResources().getColor(R.color.wifi_loading_icon_safe));
                             mArrow.setImageResource(R.drawable.wifi_toast_bluearrow);
                         }
                     } else {

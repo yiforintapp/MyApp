@@ -865,9 +865,10 @@
     <string name="feedback_tell_us_contact_type_5">Facebook:LEO Privacy Guard/LEO Privacy Guard Q"&amp;"A </string>
 
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
-    <string name="change_wifi_toast_unsafe"><Data><![CDATA[<font color="#ff1200">存在风险</font>]]></Data></string>
-    <string name="change_wifi_toast_safe"><Data><![CDATA[<font color="#00a8ff">安全</font>]]></Data></string>
     <string name="elect_empty_content">抱歉，暂未获取到电池信息</string>
     <string name="Swifty_item_title">Swifty</string>
     <string name="swifty_item_btn">去开启</string>
+    <string name="change_wifi_toast_unsafe">存在风险</string>
+    <string name="change_wifi_toast_safe">安全</string>
+>>>>>>> optimized lockscreen icon
 </resources>
