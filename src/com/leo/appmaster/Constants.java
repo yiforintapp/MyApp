@@ -362,6 +362,9 @@ public class Constants {
     public static final String PKG_WHAT_EVER = "what ever.";
     public static final String PKG_LENOVO_SCREEN = "com.lenovo.coverapp.simpletime2";
 
+    public static final String PKG_FACEBOOK = "com.facebook.katana";
+    public static final String PKG_GOOLEPLAY = "com.android.vending";
+
     // 一些重用时间
     public final static long TIME_ONE_DAY = 24 * 60 * 60 * 1000; // 一天
 

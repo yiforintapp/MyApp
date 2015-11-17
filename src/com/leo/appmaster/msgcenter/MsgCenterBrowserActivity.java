@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Enumeration;
@@ -12,10 +13,12 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
 import android.app.Activity;
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.WebResourceResponse;
@@ -34,14 +37,6 @@ import com.leo.appmaster.utils.LeoLog;
 public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         View.OnClickListener {
     private static final String TAG = "MsgCenterBrowserActivity";
-    private static final String KEY_URL = "key_url";
-    private static final String KEY_TITLE = "key_title";
-    private static final String KEY_UPDATE = "key_update";
-
-    private static final String JSBRIDGE = "jsbridge";
-    private static final String HOST_MSGCENTER = "msgcenter";
-    private static final String PATH_WEBVIEW = "/webview";
-    private static final String PARAMS_URL = "url";
 
     private CommonToolbar mTitleBar;
 
@@ -53,6 +48,7 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
 
     /**
      * 启动消息中心二级页面
+     *
      * @param context
      * @param title
      * @param url
@@ -60,9 +56,9 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
      */
     public static void startMsgCenterWeb(Context context, String title, String url, boolean isUpdate) {
         Intent intent = new Intent(context, MsgCenterBrowserActivity.class);
-        intent.putExtra(KEY_URL, url);
-        intent.putExtra(KEY_TITLE, title);
-        intent.putExtra(KEY_UPDATE, isUpdate);
+        intent.putExtra(MsgConsts.KEY_URL, url);
+        intent.putExtra(MsgConsts.KEY_TITLE, title);
+        intent.putExtra(MsgConsts.KEY_UPDATE, isUpdate);
         if (!(context instanceof Activity)) {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
@@ -74,14 +70,14 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mc_browser);
 
-        mUrl = getIntent().getStringExtra(KEY_URL);
+        mUrl = getIntent().getStringExtra(MsgConsts.KEY_URL);
         if (TextUtils.isEmpty(mUrl)) {
             finish();
             return;
         }
-        mIsUpdate = getIntent().getBooleanExtra(KEY_UPDATE, false);
+        mIsUpdate = getIntent().getBooleanExtra(MsgConsts.KEY_UPDATE, false);
 
-        mTitle = getIntent().getStringExtra(KEY_TITLE);
+        mTitle = getIntent().getStringExtra(MsgConsts.KEY_TITLE);
         mTitleBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTitleBar.setToolbarTitle(mTitle);
         mTitleBar.setOptionMenuVisible(true);
@@ -153,18 +149,41 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
     public boolean shouldOverrideUrlLoading(WebView view, String url) {
         Uri uri = Uri.parse(url);
         String schema = uri.getScheme();
-        if (JSBRIDGE.equals(schema)) {
-            String host = uri.getHost();
-            String path = uri.getPath();
-            if (HOST_MSGCENTER.equals(host) && PATH_WEBVIEW.equals(path)) {
-                SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoJump_cnts", "act_" + mTitle);
-                String paramsUrl = uri.getQueryParameter(PARAMS_URL);
-                Intent intent = new Intent(this, WebViewActivity.class);
-                intent.putExtra(WebViewActivity.WEB_URL, paramsUrl);
-                startActivity(intent);
+        if (!MsgConsts.JSBRIDGE.equals(schema)) {
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+        String host = uri.getHost();
+        String path = uri.getPath();
+        if (MsgConsts.HOST_MSGCENTER.equals(host) && MsgConsts.PATH_WEBVIEW.equals(path)) {
+            SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoJump_cnts", "act_" + mTitle);
+            String paramsUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
+            Intent intent = new Intent(this, WebViewActivity.class);
+            intent.putExtra(WebViewActivity.WEB_URL, paramsUrl);
+            startActivity(intent);
 
-                return true;
+            return true;
+        } else if (MsgConsts.HOST_MSGCENTER.equals(host) &&
+                MsgConsts.PATH_DOWNLOAD.equals(path)) {
+            String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
+            LeoLog.i(TAG, "shouldOverrideUrlLoading, download url: " + pUrl);
+            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(pUrl));
+            request.allowScanningByMediaScanner();
+            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "download");
+            DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+            dm.enqueue(request);
+            return true;
+        } else if (MsgConsts.HOST_MSGCENTER.equals(host) &&
+                MsgConsts.PATH_NATIVE_APP.equals(path)) {
+            String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
+            LeoLog.i(TAG, "shouldOverrideUrlLoading, nativeapp url: " + pUrl);
+            try {
+                Intent intent = Intent.parseUri(pUrl, 0);
+                startActivity(intent);
+            } catch (URISyntaxException e) {
+                e.printStackTrace();
             }
+            return true;
         }
         return super.shouldOverrideUrlLoading(view, url);
     }
@@ -223,5 +242,5 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
 
         return super.shouldInterceptRequest(view, url);
     }
-    
+
 }

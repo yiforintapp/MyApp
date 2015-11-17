@@ -968,21 +968,18 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
                 } else if (position == 1) {
                     /* Facebook */
-                    /* sdk mark */
-                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu",
-                            "Facebook");
+                    SDKWrapper.addEvent(HomeActivity.this, SDKWrapper.P1, "menu", "Facebook");
                     Intent intentLikeUs = null;
                     mLockManager.filterSelfOneMinites();
-                    if (AppUtil.appInstalled(getApplicationContext(),
-                            "com.facebook.katana")) {
+                    if (AppUtil.appInstalled(getApplicationContext(), "com.facebook.katana")) {
                         intentLikeUs = new Intent(Intent.ACTION_VIEW);
-                        Uri uri = Uri
-                                .parse("fb://page/1709302419294051");
+                        Uri uri = Uri.parse("fb://page/1709302419294051");
                         intentLikeUs.setData(uri);
                         ComponentName cn = new ComponentName("com.facebook.katana",
                                 "com.facebook.katana.IntentUriHandler");
                         intentLikeUs.setComponent(cn);
                         intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        LeoLog.i(TAG, "facebook, url: " + intentLikeUs.toURI());
                         try {
                             startActivity(intentLikeUs);
                         } catch (Exception e) {
