@@ -3,7 +3,6 @@ package com.leo.appmaster.applocker;
 import java.util.Arrays;
 import java.util.List;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,30 +12,25 @@ import android.text.Spannable;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
+import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.R;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.dialog.LEOBaseDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 
 public class PasswdProtectActivity extends BaseActivity implements
@@ -46,12 +40,10 @@ public class PasswdProtectActivity extends BaseActivity implements
 
     private View mSpinnerQuestions;
     private EditText mQuestion, mAnwser;
-    private View mSave;
     private ScrollView mScrollView;
     private Handler mHandler = new Handler();
     private View mLayoutQues;
     private LEOChoiceDialog mQuesDialog;
-    private ListView mQuesList;
 
     private List<String> mCategories;
     private String mSelectQues;
@@ -76,7 +68,6 @@ public class PasswdProtectActivity extends BaseActivity implements
     private void initUI() {
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.passwd_protect);
-        mSave = mTtileBar.getOptionImageView();
         mTtileBar.setOptionImageResource(R.drawable.mode_done);
         mTtileBar.setOptionClickListener(new OnClickListener() {
             @Override
@@ -330,10 +321,6 @@ public class PasswdProtectActivity extends BaseActivity implements
 
     @Override
     public void onClick(View v) {
-        String qusetion = mQuestion.getText().toString();
-        String answer = mAnwser.getText().toString();
-        String passwdHint = AppMasterPreference.getInstance(this)
-                .getPasswdTip();
         if (v == mAnwser) {
             if (mAnwser.isFocused()) {
                 mHandler.postDelayed(new Runnable() {
@@ -352,8 +339,6 @@ public class PasswdProtectActivity extends BaseActivity implements
         hideIME();
         boolean toHome = getIntent().getBooleanExtra("to_home", false);
         boolean toLockList = getIntent().getBooleanExtra("to_lock_list", false);
-        boolean quickMode = getIntent().getBooleanExtra("quick_mode", false);
-        int quickModeId = getIntent().getIntExtra("mode_id", -1);
         if (toHome) {
             mLockManager.filterPackage(getPackageName(), 500);
             Intent intent = new Intent(this, HomeActivity.class);
@@ -368,7 +353,10 @@ public class PasswdProtectActivity extends BaseActivity implements
            * : modeList) { if (lockMode.modeId == quickModeId) {
            * showModeActiveTip(lockMode); break; } } }
            */
-        super.onBackPressed();
+        try {
+            super.onBackPressed();
+        } catch (Exception e) {
+        }
     }
 
     /**
