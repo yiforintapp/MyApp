@@ -118,6 +118,7 @@
     <color name="wifi_loading_icon_bg">#b3000000</color>
     <color name="wifi_loading_icon_unsafe">#ff1200</color>
     <color name="wifi_loading_icon_safe">#00a8ff</color>
+    <color name="pattern_draw_path_color">#cc00d2ff</color>
 
     <!-- 绿色按钮 -->
     <color name="button_blue">#2675f6</color>

@@ -298,8 +298,9 @@ public class LockPatternView extends ViewGroup {
 
         mPathPaint.setAntiAlias(true);
         mPathPaint.setDither(true);
-        mPathPaint.setColor(Color.WHITE); // TODO this should be from the style
-        mPathPaint.setAlpha(mStrokeAlpha);
+        mPathPaint.setColor(0xcc00d2ff);
+//        mPathPaint.setColor(Color.WHITE); // TODO this should be from the style
+//        mPathPaint.setAlpha(mStrokeAlpha);
         mPathPaint.setStyle(Paint.Style.STROKE);
         mPathPaint.setStrokeJoin(Paint.Join.ROUND);
         mPathPaint.setStrokeCap(Paint.Cap.ROUND);
@@ -1188,11 +1189,14 @@ public class LockPatternView extends ViewGroup {
                 currentPath.lineTo(mInProgressX, mInProgressY);
             }
             // chang the line color in different DisplayMode
-            if (mPatternDisplayMode == DisplayMode.Wrong)
+            if (mPatternDisplayMode == DisplayMode.Wrong) {
                 mPathPaint.setColor(0x7fbb0000);
-            else
-                mPathPaint.setColor(mColor);
-            // mPathPaint.setColor(R.color.black);
+            } else {
+//                mPathPaint.setColor(mColor);
+                //dadian
+                mPathPaint.setColor(0xcc00d2ff);
+            }
+
             canvas.drawPath(currentPath, mPathPaint);
             // 轨迹断裂bug
             invalidate();
