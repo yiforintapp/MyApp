@@ -729,7 +729,7 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                                 try {
                                     newFileName =
                                             FileOperationUtil.getNameFromFilepath(item.getPath());
-                                    newFileName = newFileName.substring(1,
+                                    newFileName = newFileName.substring(0,
                                             newFileName.indexOf(".leotmv"));
 
                                     boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
@@ -761,9 +761,6 @@ public class VideoGriActivity extends BaseActivity implements OnItemClickListene
                             newFileName =
                                     FileOperationUtil.getNameFromFilepath(item.getPath());
                             try {
-                                // if (VideoHideMainActivity.isLetPgFail) {
-                                // isSuccess = false;
-                                // } else {
                                 LeoLog.d("testVedio", "before newFileName: " + newFileName);
 //                                newFileName = newFileName.substring(1,
 //                                        newFileName.indexOf(".leotmv"));

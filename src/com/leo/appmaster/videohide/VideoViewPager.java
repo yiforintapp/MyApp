@@ -655,7 +655,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                     if (!isSuccess) {
                         newFileName = FileOperationUtil.getNameFromFilepath(path);
                         try {
-                            newFileName = newFileName.substring(1,
+                            newFileName = newFileName.substring(0,
                                     newFileName.indexOf(".leotmv"));
 
                             boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
@@ -686,8 +686,7 @@ public class VideoViewPager extends BaseActivity implements OnClickListener {
                 } else {
                     newFileName = FileOperationUtil.getNameFromFilepath(path);
                     try {
-
-                        newFileName = newFileName.substring(1,
+                        newFileName = newFileName.substring(0,
                                 newFileName.indexOf(".leotmv"));
 
                         boolean isUnHideSuccees = ((PrivacyDataManager) MgrContext.
