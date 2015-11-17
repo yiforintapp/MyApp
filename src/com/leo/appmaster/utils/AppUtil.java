@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -24,8 +25,12 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 
+import java.io.File;
+import java.util.List;
+
 public class AppUtil {
-    private static final String TAG="AppUtil";
+    private static final String TAG = "AppUtil";
+
     public static boolean isSystemApp(ApplicationInfo info) {
         // 有些系统应用是可以更新的，如果用户自己下载了一个系统的应用来更新了原来的，
         // 它就不是系统应用，这个就是判断这种情况的
@@ -129,17 +134,17 @@ public class AppUtil {
         }
         return d;
     }
-    
+
     public static String getAppLabel(PackageManager pm, String pkg) {
         String label = null;
         AppItemInfo app = AppLoadEngine.getInstance(AppMasterApplication.getInstance()).getAppInfo(pkg);
         if (app != null) {
             label = app.label;
         }
-        if(Utilities.isEmpty(label)) {
+        if (Utilities.isEmpty(label)) {
             try {
                 label = pm.getApplicationLabel(pm.getApplicationInfo(pkg, 0)).toString();
-            } catch (Exception e) {             
+            } catch (Exception e) {
                 label = "";
             }
         }
@@ -233,11 +238,12 @@ public class AppUtil {
                 .getSystemService(mContext.KEYGUARD_SERVICE);
         return mKeyguardManager.inKeyguardRestrictedInputMode();
     }
+
     /**
      * 处理图片bitmap size （处理Out Of Memory 内存溢出）
      */
-    public static  int computeSampleSize(BitmapFactory.Options options,
-                                  int minSideLength, int maxNumOfPixels) {
+    public static int computeSampleSize(BitmapFactory.Options options,
+                                        int minSideLength, int maxNumOfPixels) {
         int initialSize = computeInitialSampleSize(options, minSideLength,
                 maxNumOfPixels);
         int roundedSize;
@@ -251,6 +257,7 @@ public class AppUtil {
         }
         return roundedSize;
     }
+
     private static int computeInitialSampleSize(BitmapFactory.Options options,
                                                 int minSideLength, int maxNumOfPixels) {
         double w = options.outWidth;
@@ -270,6 +277,7 @@ public class AppUtil {
             return upperBound;
         }
     }
+
     public static int getScreenPix(Context context) {
         context = context.getApplicationContext();
         DisplayMetrics mDisplayMetrics = new DisplayMetrics();
@@ -278,6 +286,41 @@ public class AppUtil {
         int width = mDisplayMetrics.widthPixels;
         int height = mDisplayMetrics.heightPixels;
         LeoLog.i(TAG, "分辨率：" + (width + "*" + height));
-        return width*height;
+        return width * height;
     }
+
+    /**
+     * 分享图片
+     *
+     * @param photoUri
+     * @return 返回Intent 需要指定分享具体客户端的自己添加处理
+     */
+    public static Intent shareImageToApp(String photoUri) {
+        Intent shareIntent = new Intent(Intent.ACTION_SEND);
+        shareIntent.setType("image/*");
+        File file = new File(photoUri);
+        Uri uri = Uri.fromFile(file);
+        shareIntent.putExtra(Intent.EXTRA_STREAM, uri);
+        return shareIntent;
+    }
+
+    /**
+     * 判断是否安装指定应用，true：安装，false：未安装
+     *
+     * @param context
+     * @param packageName
+     * @return
+     */
+    public static boolean isInstallPkgName(Context context, String packageName) {
+        Context ctx = context.getApplicationContext();
+        Intent intent = new Intent(Intent.ACTION_MAIN);
+        intent.setPackage(packageName);
+        List<ResolveInfo> resolveInfo = ctx.getPackageManager().queryIntentActivities(
+                intent, 0);
+        if (resolveInfo.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
 }

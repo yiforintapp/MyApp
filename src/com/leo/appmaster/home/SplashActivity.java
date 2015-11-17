@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -54,7 +55,7 @@ import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.NinePatchChunk;
 import com.leo.appmaster.utils.Utilities;
 
-public class SplashActivity extends BaseActivity {
+public class SplashActivity extends BaseActivity implements OnClickListener {
 
     public static final int MSG_LAUNCH_HOME_ACTIVITY = 1000;
     public static final String SPLASH_TO_WEBVIEW = "splash_to_webview";
@@ -78,10 +79,11 @@ public class SplashActivity extends BaseActivity {
     private ImageView mSkipToPgButton;
     private boolean mShowSplashFlag;
     private TextView mSkipText;
+    private RelativeLayout mSplaFacRt;
+
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
     private static final boolean DBG = false;
-
     /* 是否显示更多引导 */
     private boolean mIsShowGuide;
 
@@ -106,15 +108,16 @@ public class SplashActivity extends BaseActivity {
         mSplashName = (ImageView) findViewById(R.id.iv_back);
         mSkipToPgButton = (ImageView) findViewById(R.id.skip_to_pg_bt);
         mIsEmptyForSplashUrl = checkSplashUrlIsEmpty();
+        mSplaFacRt = (RelativeLayout) findViewById(R.id.spl_fc_RT);
         long startShowSplashTime = pre.getSplashStartShowTime();
         long endShowSplashTime = pre.getSplashEndShowTime();
         long currentTime = System.currentTimeMillis();
         if (DBG) {
             SimpleDateFormat dateFormate = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Log.d(TAG, "当前系统时间：" + dateFormate.format(new Date(currentTime)));
-            Log.d(TAG, "闪屏开始时间：" + dateFormate.format(new Date(startShowSplashTime)));
-            Log.d(TAG, "闪屏结束时间：" + dateFormate.format(new Date(endShowSplashTime)));
-            Log.d(TAG, " 闪屏跳转模式：" + AppMasterPreference.getInstance(getApplicationContext())
+            LeoLog.i(TAG, "当前系统时间：" + dateFormate.format(new Date(currentTime)));
+            LeoLog.i(TAG, "闪屏开始时间：" + dateFormate.format(new Date(startShowSplashTime)));
+            LeoLog.i(TAG, "闪屏结束时间：" + dateFormate.format(new Date(endShowSplashTime)));
+            LeoLog.i(TAG, " 闪屏跳转模式：" + AppMasterPreference.getInstance(getApplicationContext())
                     .getSplashSkipMode());
         }
         /**
@@ -163,8 +166,8 @@ public class SplashActivity extends BaseActivity {
     private void showDefaultSplash() {
         /* 没有开始，没有结束时间，默认 */
         if (DBG) {
-            Log.i(TAG, "splash_end&start_time：No time!");
-            Log.i(TAG, "使用默认闪屏!");
+            LeoLog.i(TAG, "splash_end&start_time：No time!");
+            LeoLog.i(TAG, "使用默认闪屏!");
         }
         // clearSpSplashFlagDate();
         if (mSplashIcon.getVisibility() == View.INVISIBLE) {
@@ -176,6 +179,9 @@ public class SplashActivity extends BaseActivity {
         if (mSkipToPgButton.getVisibility() == View.VISIBLE) {
             mSkipToPgButton.setVisibility(View.GONE);
         }
+        if (mSplaFacRt.getVisibility() == View.VISIBLE) {
+            mSplaFacRt.setVisibility(View.GONE);
+        }
     }
 
     /* 如果url存在则设置点击跳转 */
@@ -186,6 +192,32 @@ public class SplashActivity extends BaseActivity {
         if (!mIsEmptyForSplashUrl) {
             mSplashRL.setOnClickListener(new SkipUrlOnClickListener());
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.spl_fc_RT:
+                StringBuilder sb = new StringBuilder(FileOperationUtil.getSplashPath());
+                sb.append(Constants.SPLASH_NAME);
+                /*facebook分享闪屏*/
+                Intent shareIntent = AppUtil.shareImageToApp(sb.toString());
+                shareIntent.setPackage(Constants.FACEBOOK_PKG_NAME);
+                shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                try {
+                    startHome();
+                    if (mEventHandler != null) {
+                        mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
+                    }
+                    startActivity(shareIntent);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                break;
+            default:
+                break;
+        }
+
     }
 
     /* 闪屏链接跳转按钮单击监听 */
@@ -251,7 +283,7 @@ public class SplashActivity extends BaseActivity {
             byte[] chunk = splash.getNinePatchChunk();
             if (chunk != null && NinePatch.isNinePatchChunk(chunk)) {
                 if (DBG) {
-                    Log.i(TAG, "使用后台配置闪屏");
+                    LeoLog.i(TAG, "使用后台配置闪屏");
                 }
                 mSplashIcon.setVisibility(View.INVISIBLE);
                 mSplashName.setVisibility(View.INVISIBLE);
@@ -261,7 +293,20 @@ public class SplashActivity extends BaseActivity {
                 mSkipToPgButton.setVisibility(View.VISIBLE);
                 mSkipToPgButton.setOnClickListener(new SkipUrlOnClickListener());
                 showSkipUrlButton();
+                showFacbkShareButton();
             }
+        }
+    }
+
+    /*活动闪屏facebook分享处理*/
+    private void showFacbkShareButton() {
+        boolean isInslFac = AppUtil.isInstallPkgName(this, Constants.FACEBOOK_PKG_NAME);
+        if (isInslFac) {
+            mSplaFacRt.setVisibility(View.VISIBLE);
+            mSplaFacRt.setOnClickListener(this);
+            LeoLog.i(TAG, "install facebook");
+        } else {
+            LeoLog.i(TAG, "no install facebook");
         }
     }
 

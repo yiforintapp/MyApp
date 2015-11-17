@@ -334,4 +334,5 @@
 
     <!-- 3.1 -->
     <dimen name="arrow_translate">7dp</dimen>
+    <dimen name="spl_fc_share_bt_size">46dp</dimen>
 </resources>

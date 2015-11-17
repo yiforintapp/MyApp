@@ -376,4 +376,6 @@ public class Constants {
 
     public static final String NEW_APP_NUM = "new_app_num";
 //    public static final String IS_CLICK_LOCK_TAB = "is_click_lock_tab";
+
+    public static final String FACEBOOK_PKG_NAME="com.facebook.katana";
 }
