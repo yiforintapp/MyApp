@@ -9,6 +9,7 @@
 /build.gradle
 /gradlew
 /gradlew.bat
-/appmaster.iml
+*.iml
 /local.properties
 /build
+.DS_Store
