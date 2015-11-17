@@ -180,7 +180,7 @@
                 android:layout_below="@id/feedback_call_us_contact_type_title"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/feedback_tell_us_contact_type_1"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/f4" />
@@ -192,7 +192,7 @@
                 android:layout_below="@id/feedback_call_us_contact_type_1"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/feedback_tell_us_contact_type_2"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/f4" />
@@ -204,7 +204,7 @@
                 android:layout_below="@id/feedback_call_us_contact_type_2"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/feedback_tell_us_contact_type_3"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/f4" />
@@ -216,7 +216,7 @@
                 android:layout_below="@id/feedback_call_us_contact_type_3"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/feedback_tell_us_contact_type_4"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/f4" />
@@ -228,7 +228,7 @@
                 android:layout_below="@id/feedback_call_us_contact_type_4"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
-                android:layout_marginTop="14dp"
+                android:layout_marginTop="8dp"
                 android:text="@string/feedback_tell_us_contact_type_5"
                 android:textColor="@color/c4"
                 android:textSize="@dimen/f4" />
