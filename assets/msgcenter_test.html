@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html;charset=utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+<meta content="telephone=no" name="format-detection" />
+<meta name="imagemode" content="force"/>
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="keywords" content="Privacy Guard" />
+<meta name="description" content="LEO Privacy Guard  protects over billions of mobile phone users all around the world" />
+<title>LEOMASTER</title>
+<style>
+html, body { color: #000; font-family: "DroidSansFallback", "Heiti SC", "sans-serif", "helvetica"; -webkit-tap-highlight-color: rgba(0,0,0,0); -webkit-font-smoothing: antialiased; background-color: #FFF; font-size: 14px; width: 100%; -webkit-text-size-adjust: none; -webkit-user-select: none; -webkit-touch-callout: none; background-color: #384E66 }
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, code, form, fieldset, legend, input, button, textarea, p, blockquote, th, td { margin: 0; padding: 0; border: 0; line-height: 100%; }
+a { text-decoration: none;background-color:transparent !important }
+a:focus { outline: none; }
+fieldset, img { border: 0; }
+ol,ul,li{list-style:none;}
+.test-style{display:block;height:50px;width:30%;border-radius:6px;background-color:#090;margin:50px auto;color:#FFF;text-align:center;line-height:50px;font-size:18px;cursor:pointer}
+.input-warp{width:30%;margin:50px auto;}
+.input-warp li{margin-bottom:30px;height:30px;}
+.input-warp span{line-height:30px;font-size:18px;color:#CCC;padding-right:10px;}
+.input-warp input{height:30px;width:200px;}
+</style>
+</head>
+<body>
+<span class="test-style" id="down">测试下载</span>
+<span class="test-style" id="native">测试跳转</span>
+<ul class="input-warp"><li><span>下载地址输入</span><input type="text" id="input1"></li><li><span>跳转地址输入</span><input type="text" id="input2"></li></ul>
+
+<iframe src="#" style="display:none;" id="down-iframe"></iframe>
+<iframe src="#" style="display:none;" id="native-app"></iframe>
+</body>
+<script type="text/javascript">
+var url1="jsbridge://msgcenter/download?url=";
+var url2="jsbridge://msgcenter/nativeapp?url=";
+setIframe("down","down-iframe",url1,"input1");
+setIframe("native","native-app",url2,"input2");
+
+
+//三个参数，第一个为按钮的id,第二个为对应的iframe的id,第三个为需要传的url
+function setIframe(buttomId,iframeId,url,inputId){
+	 var get_buttom=document.getElementById(buttomId);
+	 var get_iframe=document.getElementById(iframeId);
+	 var new_url=url;
+	 get_buttom.addEventListener("click",function(){
+		 new_url=url+encodeURIComponent(document.getElementById(inputId).value);
+		 get_iframe.setAttribute("src",new_url);
+		 },false);}
+   
+   
+</script>
+
+</html>

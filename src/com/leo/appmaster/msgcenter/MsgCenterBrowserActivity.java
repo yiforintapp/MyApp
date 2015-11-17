@@ -167,9 +167,12 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
             LeoLog.i(TAG, "shouldOverrideUrlLoading, download url: " + pUrl);
             DownloadManager.Request request = new DownloadManager.Request(Uri.parse(pUrl));
+            request.setVisibleInDownloadsUi(true);
+            String title = pUrl.substring(pUrl.lastIndexOf("/") + 1);
+            request.setTitle(title);
             request.allowScanningByMediaScanner();
             request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "download");
+            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, title);
             DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
             dm.enqueue(request);
             return true;
