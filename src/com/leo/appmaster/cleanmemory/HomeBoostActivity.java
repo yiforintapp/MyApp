@@ -42,6 +42,8 @@ import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
+import java.lang.ref.WeakReference;
+
 public class HomeBoostActivity extends Activity {
     private ImageView mIvRocket, mIvCloud;
     private View mStatusBar;
@@ -93,35 +95,11 @@ public class HomeBoostActivity extends Activity {
             @Override
             public void onMobvistaFinished(int code, Campaign campaign, String msg) {
                 if (code == MobvistaEngine.ERR_OK && mRlResultWithAD != null && campaign != null) {
-                    mIsADLoaded = true;
-                    LeoLog.e("poha", "loaded!");
-                    long currentTime = System.currentTimeMillis();
-                    AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);
-                    loadADPic(campaign.getIconUrl(),
-                            new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
-                                    DipPixelUtil
-                                            .dip2px(HomeBoostActivity.this, 48)),
-                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_icon));
-//                    ImageLoader.getInstance().displayImage(campaign.getImageUrl(), (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg));
-                    
-                    loadADPic(campaign.getImageUrl(),new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 262),DipPixelUtil.dip2px(HomeBoostActivity.this, 130)),
-                            (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg));
-
-                    TextView appname = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appname);
-                    if(appname != null) {
-                        appname.setText(campaign.getAppName());
-                    }
-
-                    TextView appdesc = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appdesc);
-                    if(appdesc != null) {
-                        appdesc.setText(campaign.getAppDesc());
-                    }
-
-                    Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ad_appcall);
-                    if(call != null) {
-                        call.setText(campaign.getAdCall());
-                        mAdEngine.registerView(Constants.UNIT_ID_62, call);
-                    }
+                    sAdImageListener = new AdPreviewLoaderListener(HomeBoostActivity.this, campaign);
+                    ImageLoader.getInstance().loadImage(campaign.getImageUrl(),
+                            new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 262),
+                                    DipPixelUtil.dip2px(HomeBoostActivity.this, 130)),
+                            sAdImageListener);
                 }
             }
 
@@ -133,6 +111,77 @@ public class HomeBoostActivity extends Activity {
                         "adv_cnts_bst");
             }
         });
+    }
+
+    /**
+     * 新需求：当广告大图加载完成之后再展示广告
+     */
+    public static class AdPreviewLoaderListener implements ImageLoadingListener {
+        WeakReference<HomeBoostActivity> mActivity;
+        Campaign mCampaign;
+
+        public AdPreviewLoaderListener (HomeBoostActivity activity, final Campaign campaign) {
+            mActivity = new WeakReference<HomeBoostActivity>(activity);
+            mCampaign = campaign;
+        }
+
+        @Override
+        public void onLoadingStarted(String imageUri, View view) {
+
+        }
+
+        @Override
+        public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+
+        }
+
+        @Override
+        public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+            HomeBoostActivity activity = mActivity.get();
+            if (loadedImage != null && activity != null) {
+                LeoLog.d("MobvistaEngine", "[HomeBoostActivity]onLoadingComplete -> " + imageUri);
+                activity.notifyAdLoadFinish(mCampaign, loadedImage);
+                SDKWrapper.addEvent(activity, SDKWrapper.P1, "ad_act",
+                        "adv_shws_bst");
+            }
+        }
+
+        @Override
+        public void onLoadingCancelled(String imageUri, View view) {
+
+        }
+    }
+    private static AdPreviewLoaderListener sAdImageListener;
+
+    private void notifyAdLoadFinish(Campaign campaign, Bitmap previewBitmap){
+        mIsADLoaded = true;
+        LeoLog.e("poha", "loaded!");
+        long currentTime = System.currentTimeMillis();
+        AppMasterPreference.getInstance(HomeBoostActivity.this).setLastBoostWithADTime(currentTime);
+        loadADPic(campaign.getIconUrl(),
+                new ImageSize(DipPixelUtil.dip2px(HomeBoostActivity.this, 48),
+                        DipPixelUtil
+                                .dip2px(HomeBoostActivity.this, 48)),
+                (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_icon));
+
+        ImageView previewImageView = (ImageView) mRlResultWithAD.findViewById(R.id.iv_ad_bg);
+        previewImageView.setImageBitmap(previewBitmap);
+
+        TextView appname = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appname);
+        if(appname != null) {
+            appname.setText(campaign.getAppName());
+        }
+
+        TextView appdesc = (TextView) mRlResultWithAD.findViewById(R.id.tv_ad_appdesc);
+        if(appdesc != null) {
+            appdesc.setText(campaign.getAppDesc());
+        }
+
+        Button call = (Button) mRlResultWithAD.findViewById(R.id.btn_ad_appcall);
+        if(call != null) {
+            call.setText(campaign.getAdCall());
+            mAdEngine.registerView(Constants.UNIT_ID_62, call);
+        }
     }
 
     private void loadADPic(String url, ImageSize size, final ImageView v) {
@@ -368,7 +417,7 @@ public class HomeBoostActivity extends Activity {
     protected void onDestroy() {
         super.onDestroy();
         if(mAdEngine!=null){
-        mAdEngine.release(Constants.UNIT_ID_62);
+            mAdEngine.release(Constants.UNIT_ID_62);
         }
     }
 
