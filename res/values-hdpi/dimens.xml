@@ -381,7 +381,7 @@
     <dimen name="op_adv_suc_tv">150dp</dimen>
     <dimen name="open_suc_tv_pd_tp">9dp</dimen>
     <dimen name="open_suc_tv_pd_bt">16dp</dimen>
-    <dimen name="secur_number_tp">9dp</dimen>
+    <dimen name="secur_number_tp">8dp</dimen>
     <dimen name="secur_number_name_size">16dp</dimen>
     <dimen name="secur_number_size">14dp</dimen>
     <dimen name="secur_fin_iv_wt">170dp</dimen>

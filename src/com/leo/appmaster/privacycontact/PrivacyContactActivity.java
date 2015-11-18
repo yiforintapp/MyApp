@@ -459,7 +459,7 @@ public class PrivacyContactActivity extends BaseFragmentActivity implements OnCl
 
     // 显示添加按钮
     private void updateTitle() {
-        if (pagerPosition == 2) {
+        if (pagerPosition == INDEX_CONTACTS) {
             mTtileBar.setOptionMenuVisible(true);
         }
         mTtileBar.setOptionImageResource(R.drawable.add_contacts_btn);
