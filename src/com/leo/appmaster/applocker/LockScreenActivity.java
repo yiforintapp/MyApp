@@ -180,7 +180,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private int mAdItemCount = 0; //三个广告加一个空白页
     private FrameLayout mBannerParent;
     private ViewPager mBannerContainer;
-    private AdapterCycle mAdapterCycle;
+    private AdBannerAdapter mAdapterCycle;
     private LinkedHashMap<String, Campaign> mAdMap = new LinkedHashMap<String, Campaign>();
     private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
     private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
@@ -1125,8 +1125,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             MobvistaEngine.getInstance(this).loadMobvista(unitId, new MobvistaListener() {
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                    LeoLog.i("asyncLoadAd","ad title = "+campaign.getAppName());
-                    if (campaign != null && deleteRedundant(unitId, campaign)) {
+
+                    if (code == MobvistaEngine.ERR_OK && campaign != null && deleteRedundant(unitId, campaign)) {
                         ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
                             @Override
                             public void onLoadingStarted(String imageUri, View view) {
@@ -1143,7 +1143,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 mAdBitmapMap.put(unitId, loadedImage);
                                 mAdUnitIdList.add(unitId);
                                 if (mAdapterCycle == null) {
-                                    mAdapterCycle = new AdapterCycle(LockScreenActivity.this, mBannerContainer, mAdUnitIdList);
+                                    mAdapterCycle = new AdBannerAdapter(LockScreenActivity.this, mBannerContainer, mAdUnitIdList);
                                     mBannerContainer.setAdapter(mAdapterCycle);
                                     if ((int) (Math.random() * (10)+1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()){
                                         mBannerContainer.setCurrentItem(1,false);
@@ -1180,6 +1180,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
      * @return 是否添加新的数据
      */
     private boolean deleteRedundant(String unitId, Campaign campaign) {
+        LeoLog.i("asyncLoadAd","ad title = "+campaign.getAppName());
         for (String key : mAdMap.keySet()) {
             Campaign data = mAdMap.get(key);
             if (data.getAppName().equals(campaign.getAppName())) {
@@ -2107,7 +2108,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }*/
 
 
-    public class AdapterCycle extends PagerAdapter
+    public class AdBannerAdapter extends PagerAdapter
             implements ViewPager.OnPageChangeListener{
         private Context mContext;
         private LayoutInflater mInflater; //
@@ -2115,7 +2116,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         private ArrayList<String> mList; //
         private ViewPager mViewPager; //页面
 
-        public AdapterCycle(Context context, ViewPager viewPager,
+        public AdBannerAdapter(Context context, ViewPager viewPager,
                             ArrayList<String> list) {
             mContext = context;
             mInflater = LayoutInflater.from(context);
