@@ -204,5 +204,5 @@
     <dimen name="home_step_top_margin">-15dp</dimen>
     <dimen name="fragment_lock_margin_top">58dp</dimen>
     <!--手机防盗-->
-    <dimen name="ph_sec_nu_bkup_cb_pd_left">24dp</dimen>
+    <dimen name="ph_sec_nu_bkup_cb_pd_left">20dp</dimen>
 </resources>

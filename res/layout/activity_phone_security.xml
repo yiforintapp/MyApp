@@ -208,22 +208,31 @@
                     android:text="@string/phone_security_number_sim_tip"
                     android:textColor="#999999"
                     android:textSize="12dp" />
-
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/secur_ckb_hgt"
+                android:layout_below="@id/phone_security_number_sim_tip_TV"
+                android:layout_marginTop="@dimen/ph_sec_nu_bkup_cb_top"
+                android:background="@color/white">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:background="@color/c5"/>
                 <CheckBox
                     android:id="@+id/phone_security_number_backup_CB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/phone_security_number_sim_tip_TV"
                     android:layout_marginLeft="12dp"
-                    android:layout_marginTop="@dimen/ph_sec_nu_bkup_cb_top"
                     android:button="@drawable/send_msm_selector"
                     android:checked="true"
+                    android:layout_centerVertical="true"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/ph_sec_nu_bkup_cb_pd_left"
                     android:text="@string/phone_security_number_backup_text"
                     android:textColor="@color/black"
                     android:textSize="@dimen/ph_sec_nu_bkup_cb" />
                 <!--                    android:paddingLeft="10dp"-->
+            </RelativeLayout>
             </RelativeLayout>
             <!--3-1手机防盗'打开'后顶部UI-->
             <RelativeLayout
@@ -451,14 +460,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/phone_security_top_RL"
-            android:layout_marginTop="@dimen/ph_sec_center_rt_tp"
             android:background="@color/white">
 
             <View
                 android:id="@+id/phone_security_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1px"
-                android:background="@color/c4" />
+                android:background="@color/c5" />
 
             <ListView
                 android:id="@+id/secur_instr_LV"
@@ -468,9 +476,10 @@
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
                 android:clickable="false"
-                android:divider="@drawable/secur_instr_list_divider"
+                android:divider="@null"
                 android:listSelector="#00000000"
                 android:overScrollMode="never"
+                android:paddingTop="8dp"
                 android:scrollbars="none"></ListView>
 
         </RelativeLayout>
@@ -671,7 +680,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:gravity="center">
+        android:gravity="center_horizontal">
 
         <LinearLayout
             android:id="@+id/security_number_LT"
@@ -681,6 +690,7 @@
             android:layout_alignParentTop="true"
             android:background="#f7f7f7"
             android:gravity="center"
+            android:paddingTop="14dp"
             android:orientation="horizontal">
 
             <com.leo.appmaster.phoneSecurity.SecurityNumberView
@@ -712,20 +722,12 @@
                 android:src="@drawable/theft_step_dis" />
 
         </LinearLayout>
-
-        <View
-            android:id="@+id/secur_botm_divider"
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:layout_below="@id/security_number_LT"
-            android:background="@color/c4" />
-
         <RelativeLayout
             android:id="@+id/secur_bt_RT"
             android:layout_width="match_parent"
             android:layout_height="@dimen/secur_bt_rt_hi"
-            android:layout_below="@id/secur_botm_divider"
-            android:background="@color/white"
+            android:layout_below="@id/security_number_LT"
+            android:background="#f7f7f7"
             android:gravity="center">
 
             <com.leo.appmaster.ui.RippleView

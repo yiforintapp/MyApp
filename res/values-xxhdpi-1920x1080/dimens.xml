@@ -161,12 +161,12 @@
     <dimen name="security_guide_title_size">18dp</dimen>
     <dimen name="security_guide_content_size">14dp</dimen>
     <dimen name="ph_sec_nu_bkup_cb">14dp</dimen>
-    <dimen name="ph_sec_nu_bkup_cb_top">12dp</dimen>
-    <dimen name="ph_sec_nu_bkup_cb_pd_left">6dp</dimen>
+    <dimen name="ph_sec_nu_bkup_cb_top">19dp</dimen>
+    <dimen name="ph_sec_nu_bkup_cb_pd_left">11dp</dimen>
     <dimen name="open_adv_cb">14dp</dimen>
     <dimen name="secur_bom_bt_hi">40dp</dimen>
     <dimen name="secur_bom_bt_wt">210dp</dimen>
-    <dimen name="secur_nb_lt_hi">40dp</dimen>
+    <dimen name="secur_nb_lt_hi">44dp</dimen>
     <dimen name="secur_bt_rt_hi">63dp</dimen>
     <dimen name="ph_sec_add_nb_tv_tp">16dp</dimen>
     <dimen name="ph_sec_center_rt_tp">5dp</dimen>
@@ -176,7 +176,7 @@
     <dimen name="ph_sec_nb_sim_tip_top">10dp</dimen>
     <dimen name="op_suc_iv_wt">102dp</dimen>
     <dimen name="op_sc_iv_hi">106dp</dimen>
-    <dimen name="op_ad_cb_btm">107.8dp</dimen>
+    <dimen name="op_ad_cb_btm">117.8dp</dimen>
     <dimen name="op_suc_lis_tv_tp">16dp</dimen>
     <dimen name="sec_did_v_tp">20dp</dimen>
     <dimen name="no_op_suc_tv">20dp</dimen>
@@ -200,7 +200,7 @@
     
     <dimen name="sec_op_suc_numb_lt">52dp</dimen>
     <dimen name="sec_num_name_tv_size">17dp</dimen>
-    <dimen name="sec_nub_tv">5dp</dimen>
+    <dimen name="sec_nub_tv">2dp</dimen>
     <dimen name="sec_nub_size">14dp</dimen>
     <dimen name="sec_suc_instr_tip_tp">9dp</dimen>
 </resources>

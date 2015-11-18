@@ -217,11 +217,11 @@
     <dimen name="phone_secur_add_bt_height">38dp</dimen>
     <dimen name="ph_sec_nu_bkup_cb">12dp</dimen>
     <dimen name="ph_sec_nu_bkup_cb_top">0dp</dimen>
-    <dimen name="ph_sec_nu_bkup_cb_pd_left">24dp</dimen>
+    <dimen name="ph_sec_nu_bkup_cb_pd_left">20dp</dimen>
     <dimen name="open_adv_cb">12dp</dimen>
     <dimen name="secur_bom_bt_hi">30dp</dimen>
     <dimen name="secur_bom_bt_wt">210dp</dimen>
-    <dimen name="secur_nb_lt_hi">30dp</dimen>
+    <dimen name="secur_nb_lt_hi">34dp</dimen>
     <dimen name="secur_bt_rt_hi">43dp</dimen>
     <dimen name="ph_sec_add_nb_tv_tp">6dp</dimen>
     <dimen name="ph_sec_center_rt_tp">0dp</dimen>
@@ -231,7 +231,7 @@
     <dimen name="ph_sec_nb_sim_tip_top">0dp</dimen>
     <dimen name="op_suc_iv_wt">82dp</dimen>
     <dimen name="op_sc_iv_hi">86dp</dimen>
-    <dimen name="op_ad_cb_btm">80dp</dimen>
+    <dimen name="op_ad_cb_btm">90dp</dimen>
     <dimen name="op_suc_lis_tv_tp">6dp</dimen>
     <dimen name="sec_did_v_tp">8dp</dimen>
     <dimen name="no_op_suc_tv">6dp</dimen>
@@ -256,7 +256,7 @@
 
     <dimen name="sec_op_suc_numb_lt">40dp</dimen>
     <dimen name="sec_num_name_tv_size">14dp</dimen>
-    <dimen name="sec_nub_tv">1dp</dimen>
+    <dimen name="sec_nub_tv">0dp</dimen>
     <dimen name="sec_nub_size">12dp</dimen>
     <dimen name="sec_suc_instr_tip_tp">2dp</dimen>
     <dimen name="secur_help_iv_margin_top">0dp</dimen>
