@@ -187,7 +187,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
     private DisplayImageOptions mImageOptions;
     private int mBannerItemWidth;
-    private String[] mBannerAdids = {Constants.UNIT_ID_59, Constants.UNIT_ID_62, Constants.UNIT_ID_67};
+    private String[] mBannerAdids = {Constants.UNIT_ID_59, Constants.UNIT_ID_178, Constants.UNIT_ID_179};
 
     private boolean mNewTheme;
     private RelativeLayout mPretendLayout;
