@@ -5,7 +5,7 @@
     app:rippleAlpha="1"
     app:rippleColor="@color/home_tab_pressed"
     app:rippleDelayClick="false"
-    app:rippleDuration="300"
+    app:rippleDuration="250"
     app:rippleHover="true"
     app:rippleInAdapter="true"
     app:rippleOverlay="false">

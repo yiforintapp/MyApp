@@ -22,8 +22,6 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
 
     private ImageView mIvBackArrow;
     private TextView mTvTitle;
-    //    private TextView mTvSpinner;
-//    private ImageView mImgSpinner;
     private TextView mTvOptionText;
     private View mTvOptionImageClick;
     private ImageView mTvOptionImage;
@@ -33,7 +31,7 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
     private RelativeLayout mHelpSettingParent;
     private View mLayoutBackView, mLayoutSpiner;
     private View viewOldLeft, viewNewLeft;
-    private RippleView mNewClickArea;
+    private View mNewClickArea;
     private TextView mNewText;
     private View newBackView;
     private OnClickListener mListener;
@@ -59,12 +57,12 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
         mLayoutBackView = findViewById(R.id.layout_title_back);
         mIvBackArrow = (ImageView) findViewById(R.id.iv_back_arrow);
         newBackView = findViewById(R.id.layout_title_back_arraow);
-
-        if (newBackView instanceof RippleView) {
-            ((RippleView) newBackView).setOnRippleCompleteListener(this);
-        } else {
-            newBackView.setOnClickListener(this);
-        }
+        newBackView.setOnClickListener(this);
+//        if (newBackView instanceof RippleView) {
+//            ((RippleView) newBackView).setOnRippleCompleteListener(this);
+//        } else {
+//            newBackView.setOnClickListener(this);
+//        }
 
 
         mTvTitle = (TextView) findViewById(R.id.tv_title);
@@ -83,12 +81,13 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
         viewOldLeft = findViewById(R.id.left_content);
         viewNewLeft = findViewById(R.id.new_style_content);
 
-        mNewClickArea = (RippleView) findViewById(R.id.ct_back_rl);
-        if (mNewClickArea instanceof RippleView) {
-            ((RippleView) mNewClickArea).setOnRippleCompleteListener(this);
-        } else {
-            mNewClickArea.setOnClickListener(this);
-        }
+        mNewClickArea = findViewById(R.id.ct_back_rl);
+        mNewClickArea.setOnClickListener(this);
+//        if (mNewClickArea instanceof RippleView) {
+//            ((RippleView) mNewClickArea).setOnRippleCompleteListener(this);
+//        } else {
+//            mNewClickArea.setOnClickListener(this);
+//        }
 
         mNewText = (TextView) findViewById(R.id.ct_title_tv);
 
@@ -108,12 +107,6 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
         mTvTitle.setText(resid);
     }
 
-    public void setTitlePaddingLeft(int paddingLeft) {
-        int paddingRight = mTvTitle.getPaddingRight();
-        int paddingTop = mTvTitle.getPaddingTop();
-        int paddingBottom = mTvTitle.getPaddingBottom();
-        mTvTitle.setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
-    }
 
     public void setOptionImagePadding(int padding) {
 //        mTvOptionImage.setPadding(padding, padding, padding, padding);
@@ -125,17 +118,6 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
         mTvOptionImageClick.setPadding(left, top, right, bottom);
     }
 
-//    public void setSpinerText(String text) {
-//        mTvSpinner.setText(text);
-//    }
-//
-//    public void setSpinerText(int resid) {
-//        mTvSpinner.setText(resid);
-//    }
-//
-//    public void setSpinerImage(int resid) {
-//        mImgSpinner.setImageResource(resid);
-//    }
 
     public void setSpinerListener(OnClickListener listener) {
         mLayoutSpiner.setOnClickListener(listener);
@@ -264,10 +246,6 @@ public class CommonTitleBar extends FrameLayout implements OnClickListener, Ripp
                 ((Activity) getContext()).finish();
                 break;
         }
-
-//        if (newBackView == v) {
-//            ((Activity) getContext()).finish();
-//        }
 
     }
 

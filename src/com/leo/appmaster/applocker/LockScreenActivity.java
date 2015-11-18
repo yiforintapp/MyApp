@@ -1559,7 +1559,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 mLeoPopMenu.setListViewDivider(null);
                 AppMasterPreference.getInstance(LockScreenActivity.this).setLockScreenMenuClicked(
                         true);
-                mTtileBar.setOptionImage(R.drawable.menu_item_btn);
+                mTtileBar.setOptionImage(R.drawable.ic_toolbar_more);
                 break;
             case R.id.layout_title_back:
                 onBackPressed();

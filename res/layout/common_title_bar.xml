@@ -1,6 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/app_manager_backup_head_back">
 
@@ -10,35 +8,36 @@
         android:layout_height="wrap_content"
         android:visibility="gone">
 
-        <!--<RelativeLayout-->
-        <!--android:id="@+id/ct_back_rl"-->
-        <!--style="@style/ToolbarIcon">-->
+        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/ct_back_rl0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:rippleColor="@color/menu_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
-        <com.leo.appmaster.ui.RippleView
-            android:id="@+id/ct_back_rl"
-            style="@style/ToolbarIcon"
-            ripple:rv_alpha="@integer/menu_ripple_alpha"
-            ripple:rv_color="@color/menu_ripple"
-            ripple:rv_rippleDuration="100">
+            <RelativeLayout
+                android:id="@+id/ct_back_rl"
+                style="@style/ToolbarIcon">
 
-            <ImageView
-                android:id="@+id/ct_back_arrow_iv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:clickable="true"
-                android:src="@drawable/ic_toolbar_back" />
-
-        </com.leo.appmaster.ui.RippleView>
-        <!--</RelativeLayout>-->
+                <ImageView
+                    android:id="@+id/ct_back_arrow_iv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:clickable="true"
+                    android:src="@drawable/ic_toolbar_back" />
+            </RelativeLayout>
+        </com.leo.appmaster.ui.MaterialRippleLayout>
 
         <TextView
             android:id="@+id/ct_title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/ct_back_rl"
+            android:layout_toRightOf="@id/ct_back_rl0"
             android:includeFontPadding="false"
             android:text="@string/app_name"
             android:textColor="@color/white"
@@ -59,36 +58,42 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical">
 
-            <com.leo.appmaster.ui.RippleView
-                android:id="@+id/layout_title_back_arraow"
-                style="@style/ToolbarIcon"
-                ripple:rv_alpha="@integer/menu_ripple_alpha"
-                ripple:rv_color="@color/menu_ripple"
-                ripple:rv_rippleDuration="100">
+            <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:rippleColor="@color/menu_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
 
-                <ImageView
-                    android:id="@+id/iv_back_arrow"
-                    android:layout_width="26dp"
-                    android:layout_height="18dp"
-                    android:layout_centerInParent="true"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="16dp"
-                    android:clickable="false"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_toolbar_back" />
+                <RelativeLayout
+                    android:id="@+id/layout_title_back_arraow"
+                    style="@style/ToolbarIcon">
 
-                <ImageView
-                    android:id="@+id/iv_logo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:paddingBottom="4dp"
-                    android:paddingLeft="16dp"
-                    android:paddingTop="6dp"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/logo"
-                    android:visibility="gone" />
-            </com.leo.appmaster.ui.RippleView>
+                    <ImageView
+                        android:id="@+id/iv_back_arrow"
+                        android:layout_width="26dp"
+                        android:layout_height="18dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:layout_marginLeft="16dp"
+                        android:clickable="false"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_toolbar_back" />
+
+                    <ImageView
+                        android:id="@+id/iv_logo"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:paddingBottom="4dp"
+                        android:paddingLeft="16dp"
+                        android:paddingTop="6dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/logo"
+                        android:visibility="gone" />
+                </RelativeLayout>
+            </com.leo.appmaster.ui.MaterialRippleLayout>
 
             <TextView
                 android:id="@+id/tv_title"
@@ -120,33 +125,37 @@
         android:textSize="16dp"
         android:visibility="gone" />
 
-
-    <com.leo.appmaster.ui.RippleView
-        android:id="@+id/tv_option_image_content"
-        style="@style/ToolbarIcon"
+    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/tv_option_image_content0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:rippleColor="@color/menu_ripple"
         android:layout_alignParentRight="true"
-        android:visibility="gone"
-        ripple:rv_alpha="@integer/menu_ripple_alpha"
-        ripple:rv_color="@color/menu_ripple"
-        ripple:rv_rippleDuration="100">
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
-        <ImageView
-            android:id="@+id/tv_option_image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:clickable="true" />
+        <RelativeLayout
+            android:id="@+id/tv_option_image_content"
+            style="@style/ToolbarIcon"
+            android:visibility="gone">
 
-    </com.leo.appmaster.ui.RippleView>
-
+            <ImageView
+                android:id="@+id/tv_option_image"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:clickable="true" />
+        </RelativeLayout>
+    </com.leo.appmaster.ui.MaterialRippleLayout>
 
     <LinearLayout
         android:id="@+id/layout_right"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/tv_option_image_content"
+        android:layout_toLeftOf="@id/tv_option_image_content0"
         android:gravity="center"
         android:orientation="horizontal"
         android:visibility="gone">
@@ -219,7 +228,7 @@
         android:layout_width="@dimen/help_icon_width_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/tv_option_image_content"
+        android:layout_toLeftOf="@id/tv_option_image_content0"
         android:background="@color/white"
         android:gravity="center"
         android:visibility="gone">

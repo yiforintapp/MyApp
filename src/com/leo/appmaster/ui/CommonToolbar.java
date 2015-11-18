@@ -2,6 +2,7 @@ package com.leo.appmaster.ui;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,30 +51,34 @@ public class CommonToolbar extends RelativeLayout implements View.OnClickListene
         super.onFinishInflate();
 
         LayoutInflater.from(getContext()).inflate(R.layout.common_toolbar, this, true);
-        mNavigationView = (View) findViewById(R.id.ct_back_rl);
-
-        if (mNavigationView instanceof RippleView) {
-            ((RippleView) mNavigationView).setOnRippleCompleteListener(this);
-        } else {
-            mNavigationView.setOnClickListener(this);
-        }
+        mNavigationView = findViewById(R.id.ct_back_rl);
+        mNavigationView.setOnClickListener(this);
+//        if (mNavigationView instanceof RippleView) {
+//            ((RippleView) mNavigationView).setOnRippleCompleteListener(this);
+//        } else {
+//            mNavigationView.setOnClickListener(this);
+//        }
 
         mBackArrow = (ImageView) findViewById(R.id.ct_back_arrow_iv);
 
         mOptionView = findViewById(R.id.ct_option_1_rl);
+        mOptionView.setOnClickListener(this);
+//        if (mOptionView instanceof RippleView) {
+//            ((RippleView) mOptionView).setOnRippleCompleteListener(this);
+//        } else {
+//            mOptionView.setOnClickListener(this);
+//        }
         mOptionImg = (ImageView) findViewById(R.id.ct_option_iv1);
-        if (mOptionView instanceof RippleView) {
-            ((RippleView) mOptionView).setOnRippleCompleteListener(this);
-        } else {
-            mOptionView.setOnClickListener(this);
-        }
+
         mTitle = (TextView) findViewById(R.id.ct_title_tv);
+
         mOption2View = findViewById(R.id.ct_option_2_rl);
-        if (mOption2View instanceof RippleView) {
-            ((RippleView) mOption2View).setOnRippleCompleteListener(this);
-        } else {
-            mOption2View.setOnClickListener(this);
-        }
+        mOption2View.setOnClickListener(this);
+//        if (mOption2View instanceof RippleView) {
+//            ((RippleView) mOption2View).setOnRippleCompleteListener(this);
+//        } else {
+//            mOption2View.setOnClickListener(this);
+//        }
         mOption2Img = (ImageView) findViewById(R.id.ct_option_iv2);
     }
 
