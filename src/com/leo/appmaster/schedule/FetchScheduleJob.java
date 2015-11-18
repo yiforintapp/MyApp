@@ -52,7 +52,8 @@ public abstract class FetchScheduleJob extends ScheduleJob {
     private static final String[] FETCH_JOBS = {
             "com.leo.appmaster.schedule.MsgCenterFetchJob",
             "com.leo.appmaster.schedule.ADFetchJob",
-            "com.leo.appmaster.schedule.LockRecommentFetchJob"
+            "com.leo.appmaster.schedule.LockRecommentFetchJob",
+            "com.leo.appmaster.schedule.SwiftyFetchJob"
     };
 
     public static void startFetchJobs() {

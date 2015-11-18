@@ -388,5 +388,12 @@ public class Constants {
     public static final String NEW_APP_NUM = "new_app_num";
 //    public static final String IS_CLICK_LOCK_TAB = "is_click_lock_tab";
 
+    /** FaceBook相关 */
     public static final String FACEBOOK_PKG_NAME="com.facebook.katana";
+    public static final String FACEBOOK_URL = "fb://page/1709302419294051";
+    public static final String FACEBOOK_CLASS = "com.facebook.katana.IntentUriHandler";
+    public static final String FACEBOOK_PG_URL = "https://www.facebook.com/pages/App-Master/1709302419294051";
+
+    /** Swifty卡片数据请求地址 */
+    public static final String SWIFTY_SECURITY_URL = "/appmaster/privacysuggest";
 }

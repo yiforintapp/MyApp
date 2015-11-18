@@ -2,8 +2,10 @@ package com.leo.appmaster.home;
 
 import android.animation.LayoutTransition;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -23,6 +25,8 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
+import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -34,9 +38,11 @@ import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
 import com.leo.appmaster.privacycontact.MessageCallLogBean;
+import com.leo.appmaster.sdk.BaseFragmentActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
@@ -106,6 +112,15 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private ImageView mFourStar;
     private ImageView mFiveStar;
     private ImageView mGradeGesture;
+    private RippleView mGradeBtnLt;
+
+    /**前往FaceBook*/
+    private RippleView mFbBtnLt;
+
+    /** Swifty */
+    private ImageView mSwiftyImg;
+    private TextView mSwiftyContent;
+    private RippleView mSwiftyBtnLt;
 
     private CheckBox mSelectAllCb;
     private List<View> mContactViews;
@@ -192,6 +207,8 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
         initContactLayout(view);
         initGradeLayout(view);
+        initFbLayout(view);
+        initSwiftyLayout(view);
 
         loadAd(view);
         mActivity.resetToolbarColor();
@@ -463,6 +480,42 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         } else if (mProcessBtn == rippleView) {
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
             mActivity.onBackPressed();
+        } else if (mGradeBtnLt == rippleView) { // 五星好评
+            mActivity.getLockManager().filterSelfOneMinites();
+            Utilities.goFiveStar(mActivity);
+        } else if (mFbBtnLt == rippleView) {  // FaceBook分享
+            mActivity.getLockManager().filterSelfOneMinites();
+            goFaceBook();
+        } else if (mSwiftyBtnLt == rippleView) {
+            mActivity.getLockManager().filterSelfOneMinites();
+        }
+    }
+
+    /** 前往FaceBook */
+    private void goFaceBook() {
+        Intent intentLikeUs = null;
+        if (AppUtil.appInstalled(mActivity.getApplicationContext(),
+                Constants.FACEBOOK_PKG_NAME)) {
+            intentLikeUs = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(Constants.FACEBOOK_URL);
+            intentLikeUs.setData(uri);
+            ComponentName cn = new ComponentName(Constants.FACEBOOK_PKG_NAME,
+                    Constants.FACEBOOK_CLASS);
+            intentLikeUs.setComponent(cn);
+            intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                startActivity(intentLikeUs);
+            } catch (Exception e) {
+            }
+        } else {
+            intentLikeUs = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(Constants.FACEBOOK_PG_URL);
+            intentLikeUs.setData(uri);
+            intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                startActivity(intentLikeUs);
+            } catch (Exception e) {
+            }
         }
     }
 
@@ -597,6 +650,23 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         mWifiBtnTv.setText(text);
     }
 
+    private void initSwiftyLayout(View view) {
+        View include = view.findViewById(R.id.swifty_security);
+        mSwiftyImg = (ImageView) include.findViewById(R.id.swifty_img);
+        mSwiftyContent = (TextView) include.findViewById(R.id.swifty_content);
+        mSwiftyBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+        mSwiftyBtnLt.setOnRippleCompleteListener(this);
+
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        mSwiftyContent.setText(preferenceTable.getString("content"));
+    }
+
+    private void initFbLayout(View view) {
+        View include = view.findViewById(R.id.fb_security);
+        mFbBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+        mFbBtnLt.setOnRippleCompleteListener(this);
+    }
+
     private void initGradeLayout(View view) {
         View include = view.findViewById(R.id.grade_security);
 
@@ -606,6 +676,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         mFourStar = (ImageView) include.findViewById(R.id.four_star);
         mFiveStar = (ImageView) include.findViewById(R.id.five_star);
         mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
+        mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+        mGradeBtnLt.setOnRippleCompleteListener(this);
+
     }
 
     /***

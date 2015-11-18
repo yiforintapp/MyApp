@@ -59,6 +59,7 @@ import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
@@ -647,6 +648,14 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             showDownLoadISwipDialog(this, "homeactivity");
         }
         amp.setFristSlidingTip(false);
+    }
+
+    /***
+     * 提供给swifty卡片使用
+     * @return LockManager
+     */
+    public LockManager getLockManager() {
+        return mLockManager;
     }
 
     private void showDownLoadISwipDialog(Context context, String flag) {
