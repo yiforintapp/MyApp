@@ -2753,7 +2753,8 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     }
 
     public int getIsADAfterPrivacyProtectionOpen() {
-        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION, 1);
+        return mPref.getInt(PREF_AD_AFTER_PRIVACY_PROTECTION,
+                AppMasterConfig.IS_FOR_MAINLAND_CHINA?0:1);
     }
 
     //主页出现钱钱的开关
