@@ -26,7 +26,7 @@ import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 
 public class PhoneSecurityGuideActivity extends Activity implements View.OnClickListener {
-    private static final boolean DBG = true;
+    private static final boolean DBG = false;
     private Button mOpenBt;
     private CommonToolbar mCommonBar;
     private TextView mSecurityOpenNumberText;
