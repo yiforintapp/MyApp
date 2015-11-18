@@ -155,17 +155,20 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
         }
         String host = uri.getHost();
         String path = uri.getPath();
-        if (MsgConsts.HOST_MSGCENTER.equals(host) && MsgConsts.PATH_WEBVIEW.equals(path)) {
+        if (!MsgConsts.HOST_MSGCENTER.equals(host)) {
+            return super.shouldOverrideUrlLoading(view, url);
+        }
+        String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
+        if (MsgConsts.PATH_WEBVIEW.equals(path)) {
+            // 打开webview
             SDKWrapper.addEvent(this, SDKWrapper.P1, "InfoJump_cnts", "act_" + mTitle);
-            String paramsUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
             Intent intent = new Intent(this, WebViewActivity.class);
-            intent.putExtra(WebViewActivity.WEB_URL, paramsUrl);
+            intent.putExtra(WebViewActivity.WEB_URL, pUrl);
             startActivity(intent);
 
             return true;
-        } else if (MsgConsts.HOST_MSGCENTER.equals(host) &&
-                MsgConsts.PATH_DOWNLOAD.equals(path)) {
-            String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
+        } else if (MsgConsts.PATH_DOWNLOAD.equals(path)) {
+            // 下载
             LeoLog.i(TAG, "shouldOverrideUrlLoading, download url: " + pUrl);
             try {
                 Intent intent = new Intent(Intent.ACTION_VIEW);
@@ -177,9 +180,8 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 e.printStackTrace();
             }
             return true;
-        } else if (MsgConsts.HOST_MSGCENTER.equals(host) &&
-                MsgConsts.PATH_NATIVE_APP.equals(path)) {
-            String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
+        } else if (MsgConsts.PATH_NATIVE_APP.equals(path)) {
+            // 通用页面
             LeoLog.i(TAG, "shouldOverrideUrlLoading, nativeapp url: " + pUrl);
             try {
                 Intent intent = Intent.parseUri(pUrl, 0);
@@ -190,6 +192,22 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 e.printStackTrace();
             }
             return true;
+        } else if (MsgConsts.PATH_FACEBOOK.equals(path)) {
+            // facebook
+            try {
+                MsgUtil.openFacebook(pUrl, this);
+                mLockManager.filterSelfOneMinites();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else if (MsgConsts.PATH_GOOGLEPLAY.equals(path)) {
+            // googleplay
+            try {
+                MsgUtil.openGooglePlay(pUrl, this);
+                mLockManager.filterSelfOneMinites();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         return super.shouldOverrideUrlLoading(view, url);
     }

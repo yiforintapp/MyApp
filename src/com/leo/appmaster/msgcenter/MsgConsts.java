@@ -16,5 +16,7 @@ public class MsgConsts {
     public static final String PATH_DOWNLOAD = "/download";
     // 打开本地app页面
     public static final String PATH_NATIVE_APP = "/nativeapp";
+    public static final String PATH_FACEBOOK = "/nativeapp/facebook";
+    public static final String PATH_GOOGLEPLAY = "/nativeapp/googleplay";
     public static final String PARAMS_URL = "url";
 }

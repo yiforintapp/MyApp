@@ -428,6 +428,7 @@ public final class Utilities {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             try {
                 context.startActivity(intent);
+                LeoLog.i("goFiveStar", "intent: " + intent.toURI());
             } catch (Exception e) {
                 goGpBrowser(context);
             }
@@ -445,6 +446,7 @@ public final class Utilities {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         try {
             context.startActivity(intent);
+            LeoLog.i("goFiveStar", "intent: " + intent.toURI());
         } catch (Exception e) {           
         }
     }

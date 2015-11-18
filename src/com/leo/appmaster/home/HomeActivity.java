@@ -991,7 +991,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                                 "com.facebook.katana.IntentUriHandler");
                         intentLikeUs.setComponent(cn);
                         intentLikeUs.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                        LeoLog.i(TAG, "facebook, url: " + intentLikeUs.toURI());
                         try {
                             startActivity(intentLikeUs);
                         } catch (Exception e) {
@@ -1006,6 +1005,9 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                             startActivity(intentLikeUs);
                         } catch (Exception e) {
                         }
+                    }
+                    if (intentLikeUs != null) {
+                        LeoLog.i(TAG, "facebook, url: " + intentLikeUs.toURI());
                     }
                 } else if (position == 0) {
                     /* google play */
