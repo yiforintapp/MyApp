@@ -31,6 +31,7 @@ import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.feedback.FeedbackActivity;
+import com.leo.appmaster.intruderprotection.UpdateScoreHelper;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
@@ -743,6 +744,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
 
     /*进入完成页面*/
     private void toSecurFinish() {
+        UpdateScoreHelper.showGetScoreToast(PhoneSecurityConstants.PHONE_SECURITY_SCORE,this);
         LostSecurityManagerImpl lostMgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
         boolean isOpenAdvan = lostMgr.isOpenAdvanceProtect();
         if (isOpenAdvan) {
