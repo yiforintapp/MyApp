@@ -64,6 +64,8 @@ public class ADShowTypeRequestManager {
     private static final String AD_WIFI_SCAN = "r";
     /* 3.1 国内渠道广告总开关 */
     private static final String AD_MAIN_SWITCHER = "main_switcher";
+    /* 3.1 拉取广告时间间隔 */
+    private static final String AD_FETCH_INTERVAL = "interval";
     /* 如果后台配置本地没有的广告形式时，默认广告类型 */
     public static final int DEFAULT_AD_SHOW_TYPE = 3;
     /* 关闭Lock页所有广告指令 */
@@ -170,6 +172,9 @@ public class ADShowTypeRequestManager {
                     } else {
                         LeoLog.i(TAG, "Global user, use normal switchers");
                     }
+
+                    sp.setADFetchInterval(getJSIntValue(response, AD_FETCH_INTERVAL,
+                            AppMasterPreference.DEFAULT_FETCH_INTERAL));
 
                     int adtype = response.getInt(AD_NEW_SHOW_TYPE);
                     int currentType = sp.getADShowType();

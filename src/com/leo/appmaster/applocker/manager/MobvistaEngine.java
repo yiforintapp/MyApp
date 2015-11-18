@@ -39,6 +39,7 @@ public class MobvistaEngine {
     private static final String TAG = "MobvistaEngine";
     
     private Context mAppContext;
+    private AppMasterPreference mPref;
     
     /**
      * 请求参数为null
@@ -74,7 +75,7 @@ public class MobvistaEngine {
     /**
      * 一分钟内，不要重复拉取广告
      * */
-    private static final int AD_LOAD_INTERVAL_THRES = 60 * 1000;
+    private static final int MILLIS_IN_MINUTE = 60 * 1000;
 
     private static MobvistaEngine sInstance;
     
@@ -135,6 +136,7 @@ public class MobvistaEngine {
     
     private MobvistaEngine(Context ctx) {
         mAppContext = ctx;
+        mPref = AppMasterPreference.getInstance(mAppContext);
         mMobvistaMap = new HashMap<String, MobvistaAdData>();
         mMobvistaListeners = new HashMap<String, MobvistaListener>();
         mMobvistaNative = new HashMap<String, MobvistaAdNative>();
@@ -369,7 +371,8 @@ public class MobvistaEngine {
        MobvistaAdData adData = mMobvistaMap.get(unitId);
 
         if(adData == null) return true;
-        if(System.currentTimeMillis()-adData.requestTimeMs > AD_LOAD_INTERVAL_THRES){
+        if(System.currentTimeMillis()-adData.requestTimeMs
+                > mPref.getADFetchInterval()*MILLIS_IN_MINUTE){
             return true;
         }
         

@@ -286,6 +286,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY = "ad_request_showtype_fail_times_current_day";
     public static final String PREF_AD_REQUEST_SHOWTYPE_NEXT_TIME_SPACING = "ad_request_showtype_next_time_spacing";
     public static final String PREF_AD_SHOW_TYPE = "ad_show_type";
+    public static final String PREF_AD_FETCH_INTERVAL = "ad_fetch_interval";
     public static final String PREF_LARGE_AD_SHOW_PROBABILITY = "ad_large_show_probability";
     public static final String PREF_AD_APPWAL_UPDATE = "ad_appwall_update";
     public static final String PREF_AD_LAST_LOAD_TIME = "ad_last_load_time";
@@ -314,6 +315,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     public static final String PREF_ADVANCE_PROTECT_OPEN_SUCCESSDIALOG_TIP = "advance_protect_open_success_dialog_tip";
     public static final int OPEN_FLAG = 1;
     public static final int CLOSE_FLAG = 0;
+    public static final int DEFAULT_FETCH_INTERAL = 10; // in minutes
     private List<String> mLockedAppList;
     private List<String> mRecommendList;
     private List<String> mRecommendNumList;
@@ -378,6 +380,7 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
     private boolean mShowWhiteDot;
 
     private int mADShowType = -1;
+    private int mADFetchInterval = -1;
     private int mLargeADShowProbability = -1;
     private int mADRequestFailTimes = -1;
     private long mADRequestInternal = -1;
@@ -2684,6 +2687,20 @@ public class AppMasterPreference implements OnSharedPreferenceChangeListener {
         mADRequestFailTimes = times;
         commitAsync(mPref.edit().putInt(PREF_AD_REQUEST_SHOWTYPE_FAIL_TIMES_CURRENT_DAY, times));
     }
+
+    // 广告两次拉取的最小时间间隔，单位为分钟
+    public void setADFetchInterval(int interval){
+        mADFetchInterval = interval;
+        commitAsync(mPref.edit().putInt(PREF_AD_FETCH_INTERVAL, interval));
+    }
+
+    public int getADFetchInterval(){
+        if (mADFetchInterval < 0) {
+            mADFetchInterval = mPref.getInt(PREF_AD_FETCH_INTERVAL, DEFAULT_FETCH_INTERAL);
+        }
+        return mADFetchInterval;
+    }
+
 
     // 广告展示的形式
     public void setADShowType(int type) {
