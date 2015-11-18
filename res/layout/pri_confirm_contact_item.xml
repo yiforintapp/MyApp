@@ -89,7 +89,8 @@
                     android:id="@+id/item_btn_tv"
                     style="@style/ItemBtnText"
                     android:drawablePadding="@dimen/add_priv_cont_pad"
-                    android:drawableRight="@drawable/arrow_button_right" />
+                    android:drawableRight="@drawable/arrow_button_right"
+                    android:textColor="@color/contact_no_select"/>
             </com.leo.appmaster.ui.RippleView>
 
             <TextView

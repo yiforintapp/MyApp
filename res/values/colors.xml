@@ -175,4 +175,6 @@
     <color name="cgn_40">#6615c937</color>
     <color name="cb_40">#662674f6</color>
     <color name="cgy_40">#66cbcbcb</color>
+
+    <color name="contact_no_select">#cbcbcb</color>
 </resources>

@@ -3,12 +3,14 @@ package com.leo.appmaster.home;
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.transition.ChangeBounds;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -421,6 +423,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
                             mSelectData.remove(cb);
                         }
                     }
+                    ChangeContactColor();
                 }
             });
             if (i == 0) {
@@ -438,6 +441,14 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         mContactBtnTv.setText(R.string.pri_pro_contact_btn);
         mImpTv = (TextView) include.findViewById(R.id.imp_item_btn_rv);
         mContactContainorDisable = (View) include.findViewById(R.id.contact_containor_disab);
+    }
+
+    private void ChangeContactColor() {
+        if (mSelectData.size() > 0) {
+            mContactBtnTv.setTextColor(mActivity.getResources().getColor(R.color.cgn));
+        } else {
+            mContactBtnTv.setTextColor(mActivity.getResources().getColor(R.color.contact_no_select));
+        }
     }
 
     @Nullable
@@ -477,6 +488,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             } else {
                 Toast.makeText(getActivity(), getActivity().getString(R.string.pri_contact_empty), Toast.LENGTH_SHORT).show();
             }
+            ChangeContactColor();
         } else if (mProcessBtn == rippleView) {
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
             mActivity.onBackPressed();
@@ -867,6 +879,12 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         mImportRecordDlg.setCanceledOnTouchOutside(false);
         mImportRecordDlg.setTitle(title);
         mImportRecordDlg.setContent(content);
+        mImportRecordDlg.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                ChangeContactColor();
+            }
+        });
         mImportRecordDlg.show();
     }
 }
