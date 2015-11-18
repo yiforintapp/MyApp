@@ -13,6 +13,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rippleColor="@color/menu_ripple"
+            app:rippleDelayClick="false"
             app:rippleDuration="250"
             app:rippleHover="true"
             app:rippleOverlay="true">
@@ -62,6 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:rippleColor="@color/menu_ripple"
+                app:rippleDelayClick="false"
                 app:rippleDuration="250"
                 app:rippleHover="true"
                 app:rippleOverlay="true">
@@ -129,8 +131,9 @@
         android:id="@+id/tv_option_image_content0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:rippleColor="@color/menu_ripple"
         android:layout_alignParentRight="true"
+        app:rippleColor="@color/menu_ripple"
+        app:rippleDelayClick="false"
         app:rippleDuration="250"
         app:rippleHover="true"
         app:rippleOverlay="true">

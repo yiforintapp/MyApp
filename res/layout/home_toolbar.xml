@@ -6,88 +6,113 @@
     android:background="@color/transparent"
     android:orientation="vertical">
 
-    <com.leo.appmaster.ui.RippleView
-        android:id="@+id/hm_tool_menu_rl"
-        style="@style/ToolbarIcon"
-        ripple:rv_alpha="@integer/menu_ripple_alpha"
-        ripple:rv_color="@color/menu_ripple"
-        ripple:rv_rippleDuration="100">
+    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/hm_tool_menu_rl0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:rippleColor="@color/menu_ripple"
+        app:rippleDelayClick="false"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
-        <ImageView
-            android:id="@+id/hm_tool_menu_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_toolbar_menu" />
+        <RelativeLayout
+            android:id="@+id/hm_tool_menu_rl"
+            style="@style/ToolbarIcon">
 
-        <ImageView
-            android:id="@+id/hm_tool_menu_red_tip_iv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="@dimen/home_left_iv_menu_margin_right"
-            android:layout_marginTop="@dimen/home_left_iv_menu_margin_top"
-            android:background="@drawable/red_dot"
-            android:visibility="gone" />
-    </com.leo.appmaster.ui.RippleView>
+            <ImageView
+                android:id="@+id/hm_tool_menu_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_toolbar_menu" />
+
+            <ImageView
+                android:id="@+id/hm_tool_menu_red_tip_iv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/home_left_iv_menu_margin_right"
+                android:layout_marginTop="@dimen/home_left_iv_menu_margin_top"
+                android:background="@drawable/red_dot"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </com.leo.appmaster.ui.MaterialRippleLayout>
 
     <TextView
         android:id="@+id/hm_tool_title_tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/hm_tool_menu_rl"
+        android:layout_toRightOf="@id/hm_tool_menu_rl0"
         android:includeFontPadding="false"
         android:text="@string/app_name"
         android:textColor="@color/white"
         android:textSize="20dp" />
 
-    <com.leo.appmaster.ui.RippleView
-        android:id="@+id/hm_tool_more_rl"
-        style="@style/ToolbarIcon"
+    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/hm_tool_more_rl0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        ripple:rv_alpha="@integer/menu_ripple_alpha"
-        ripple:rv_color="@color/menu_ripple"
-        ripple:rv_rippleDuration="100">
+        app:rippleColor="@color/menu_ripple"
+        app:rippleDelayClick="false"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_toolbar_more" />
-    </com.leo.appmaster.ui.RippleView>
+        <RelativeLayout
+            android:id="@+id/hm_tool_more_rl"
+            style="@style/ToolbarIcon">
 
-    <com.leo.appmaster.ui.RippleView
-        android:id="@+id/hm_tool_msgcenter_rl"
-        style="@style/ToolbarIcon"
-        android:layout_toLeftOf="@id/hm_tool_more_rl"
-        ripple:rv_alpha="@integer/menu_ripple_alpha"
-        ripple:rv_color="@color/menu_ripple"
-        ripple:rv_rippleDuration="100">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_toolbar_more" />
+        </RelativeLayout>
+    </com.leo.appmaster.ui.MaterialRippleLayout>
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:adjustViewBounds="true"
-            android:src="@drawable/ic_toolbar_msgcenter" />
 
-        <TextView
-            android:id="@+id/hm_tool_mc_unread_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="7dp"
-            android:layout_marginTop="12dp"
-            android:background="@drawable/ic_mc_unread_bg"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:paddingLeft="2dp"
-            android:paddingRight="2dp"
-            android:textColor="@color/white"
-            android:textSize="11dp"
-            android:visibility="gone" />
-    </com.leo.appmaster.ui.RippleView>
+    <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/hm_tool_msgcenter_rl0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/hm_tool_more_rl0"
+        app:rippleColor="@color/menu_ripple"
+        app:rippleDuration="250"
+        app:rippleDelayClick="false"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
+        <RelativeLayout
+            android:id="@+id/hm_tool_msgcenter_rl"
+            style="@style/ToolbarIcon">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:adjustViewBounds="true"
+                android:src="@drawable/ic_toolbar_msgcenter" />
+
+            <TextView
+                android:id="@+id/hm_tool_mc_unread_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="7dp"
+                android:layout_marginTop="12dp"
+                android:background="@drawable/ic_mc_unread_bg"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:textColor="@color/white"
+                android:textSize="11dp"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </com.leo.appmaster.ui.MaterialRippleLayout>
 </RelativeLayout>

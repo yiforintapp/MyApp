@@ -14,32 +14,66 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-        <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/lock_setting"
-            style="@style/ToolbarIcon"
+        <com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/lock_setting0"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            ripple:rv_alpha="@integer/menu_ripple_alpha"
-            ripple:rv_color="@color/menu_ripple"
-            ripple:rv_rippleDuration="100">
+            app:rippleColor="@color/menu_ripple"
+            app:rippleDelayClick="false"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
-            <ImageView
-                android:id="@+id/lock_setting_icon"
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:layout_centerInParent="true"
-                android:adjustViewBounds="true"
-                android:background="@drawable/setup_icon" />
-        </com.leo.appmaster.ui.RippleView>
+            <RelativeLayout
+                android:id="@+id/lock_setting"
+                style="@style/ToolbarIcon">
+
+                <ImageView
+                    android:id="@+id/lock_setting_icon"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:layout_centerInParent="true"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/setup_icon" />
+            </RelativeLayout>
+        </com.leo.appmaster.ui.MaterialRippleLayout>
 
         <ImageView
             android:id="@+id/tip_help"
             android:layout_width="wrap_content"
             android:layout_height="55dp"
             android:layout_centerVertical="true"
-            android:layout_toLeftOf="@+id/lock_setting"
+            android:layout_toLeftOf="@+id/lock_setting0"
             android:background="@drawable/title_bar_option_selector"
             android:padding="16dp"
             android:src="@drawable/help_icon_n" />
+
+        <!--<com.leo.appmaster.ui.MaterialRippleLayout xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--android:id="@+id/lock_tip_help0"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_toLeftOf="@+id/lock_setting0"-->
+        <!--app:rippleColor="@color/menu_ripple"-->
+        <!--app:rippleDelayClick="false"-->
+        <!--app:rippleDuration="250"-->
+        <!--app:rippleHover="true"-->
+        <!--app:rippleOverlay="true">-->
+
+        <!--<RelativeLayout-->
+        <!--android:id="@+id/lock_tip_help"-->
+        <!--style="@style/ToolbarIcon">-->
+
+        <!--<ImageView-->
+        <!--android:id="@+id/tip_help"-->
+        <!--android:layout_width="22dp"-->
+        <!--android:layout_height="22dp"-->
+        <!--android:layout_centerInParent="true"-->
+        <!--android:adjustViewBounds="true"-->
+        <!--android:background="@drawable/help_icon_n" />-->
+        <!--</RelativeLayout>-->
+        <!--</com.leo.appmaster.ui.MaterialRippleLayout>-->
+
     </RelativeLayout>
 
     <ListView

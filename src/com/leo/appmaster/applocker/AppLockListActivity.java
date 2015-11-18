@@ -65,8 +65,8 @@ public class AppLockListActivity extends BaseActivity implements
     public final static String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
     private View mHeadView;
     private RippleView mLockModeView, mWeiZhuangView, mLockThemeView;
-
-    private RippleView mBarView;
+    private View mBarView;
+    //    private View mClickView;
     private ImageView mRedDot, mGuideHelpTipBt;
     private TextView mSecurityGuideBt, mAutoGuideBt, mBackageGroundBt;
     private Button mFinishBt;
@@ -167,9 +167,9 @@ public class AppLockListActivity extends BaseActivity implements
         mTtileBar.setOptionMenuVisible(false);
         mTtileBar.setNavigationClickListener(this);
 
-        mBarView = (RippleView) findViewById(R.id.lock_setting);
+        mBarView = findViewById(R.id.lock_setting);
         mBarView.setVisibility(View.VISIBLE);
-        mBarView.setOnRippleCompleteListener(this);
+        mBarView.setOnClickListener(this);
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
 
@@ -209,8 +209,12 @@ public class AppLockListActivity extends BaseActivity implements
         mBackgroundRL = (RelativeLayout) findViewById(R.id.background_guide);
         mFinishBt = (Button) findViewById(R.id.finish);
         mFinishBt.setOnClickListener(this);
+
+//        mClickView = findViewById(R.id.lock_tip_help);
+//        mClickView.setOnClickListener(this);
         mGuideHelpTipBt = (ImageView) findViewById(R.id.tip_help);
         mGuideHelpTipBt.setOnClickListener(this);
+
         mSecurityText = (TextView) findViewById(R.id.security_guide_text);
         mAutoText = (TextView) findViewById(R.id.auto_guide_text);
         mBackGroudText = (TextView) findViewById(R.id.background_guide_text);
@@ -305,7 +309,7 @@ public class AppLockListActivity extends BaseActivity implements
         long part3 = SystemClock.elapsedRealtime();
         LeoLog.i("TsCost", "loadData part3: " + (part3 - part2));
 
-        if(mHandler != null){
+        if (mHandler != null) {
             mHandler.sendEmptyMessage(LOAD_DATA_DONE);
         }
     }
@@ -481,7 +485,6 @@ public class AppLockListActivity extends BaseActivity implements
         }
     }
 
-
     @Override
     public void onRippleComplete(RippleView rippleView) {
         if (mLockModeView == rippleView) {
@@ -497,11 +500,12 @@ public class AppLockListActivity extends BaseActivity implements
             SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "theme");
             SDKWrapper.addEvent(this, SDKWrapper.P1, "theme_enter", "home");
             enterLockTheme();
-        } else if (mBarView == rippleView) {
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "locksetting");
-            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "locksetting");
-            enterLockSetting();
         }
+//        else if (mBarView == rippleView) {
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "locksetting");
+//            SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "locksetting");
+//            enterLockSetting();
+//        }
     }
 
     private class LockedAppComparator implements Comparator<AppInfo> {
@@ -658,8 +662,21 @@ public class AppLockListActivity extends BaseActivity implements
                 }
                 AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
                 break;
+//            case R.id.lock_tip_help:
+//                if (mGuideTip.getVisibility() == View.GONE) {
+//                    openHelp(true, true);
+//                } else if (mGuideTip.getVisibility() == View.VISIBLE) {
+//                    openHelp(false, true);
+//                }
+//                AppMasterPreference.getInstance(this).setLockAndAutoStartGuide(true);
+//                break;
             case R.id.ct_back_rl:
                 onBackPressed();
+                break;
+            case R.id.lock_setting:
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "home", "locksetting");
+                SDKWrapper.addEvent(this, SDKWrapper.P1, "app_func", "locksetting");
+                enterLockSetting();
                 break;
         }
     }

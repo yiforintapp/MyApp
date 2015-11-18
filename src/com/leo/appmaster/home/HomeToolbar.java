@@ -34,9 +34,9 @@ import com.leo.appmaster.ui.RippleView;
  */
 public class HomeToolbar extends RelativeLayout implements View.OnClickListener, RippleView.OnRippleCompleteListener {
 
-    private RelativeLayout mMenuRl;
-    private RelativeLayout mMsgcenterRl;
-    private RelativeLayout mMoreRl;
+    private View mMenuRl;
+    private View mMsgcenterRl;
+    private View mMoreRl;
 
     private ImageView mMenuIv;
 
@@ -64,29 +64,35 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener,
         super.onFinishInflate();
         LayoutInflater.from(getContext()).inflate(R.layout.home_toolbar, this, true);
 
-        mMenuRl = (RelativeLayout) findViewById(R.id.hm_tool_menu_rl);
-        mMsgcenterRl = (RelativeLayout) findViewById(R.id.hm_tool_msgcenter_rl);
-        mMoreRl = (RelativeLayout) findViewById(R.id.hm_tool_more_rl);
+        mMenuRl = findViewById(R.id.hm_tool_menu_rl);
+        mMenuRl.setOnClickListener(this);
+//        if (mMenuRl instanceof RippleView) {
+//            ((RippleView) mMenuRl).setOnRippleCompleteListener(this);
+//        } else {
+//            mMenuRl.setOnClickListener(this);
+//        }
+
+        mMsgcenterRl = findViewById(R.id.hm_tool_msgcenter_rl);
+        mMsgcenterRl.setOnClickListener(this);
+//        if (mMsgcenterRl instanceof RippleView) {
+//            ((RippleView) mMsgcenterRl).setOnRippleCompleteListener(this);
+//        } else {
+//            mMsgcenterRl.setOnClickListener(this);
+//        }
+
+        mMoreRl = findViewById(R.id.hm_tool_more_rl);
+        mMoreRl.setOnClickListener(this);
+//        if (mMoreRl instanceof RippleView) {
+//            ((RippleView) mMoreRl).setOnRippleCompleteListener(this);
+//        } else {
+//            mMoreRl.setOnClickListener(this);
+//        }
 
         mMenuIv = (ImageView) findViewById(R.id.hm_tool_menu_iv);
         mMenuRedTipIv = (ImageView) findViewById(R.id.hm_tool_menu_red_tip_iv);
         mMsgCenterRedCount = (TextView) findViewById(R.id.hm_tool_mc_unread_tv);
 
-        if (mMenuRl instanceof RippleView) {
-            ((RippleView) mMenuRl).setOnRippleCompleteListener(this);
-        } else {
-            mMenuRl.setOnClickListener(this);
-        }
-        if (mMsgcenterRl instanceof RippleView) {
-            ((RippleView) mMsgcenterRl).setOnRippleCompleteListener(this);
-        } else {
-            mMsgcenterRl.setOnClickListener(this);
-        }
-        if (mMoreRl instanceof RippleView) {
-            ((RippleView) mMoreRl).setOnRippleCompleteListener(this);
-        } else {
-            mMoreRl.setOnClickListener(this);
-        }
+
     }
 
     public void setDrawerLayout(DrawerLayout layout) {
