@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/guide_image"
@@ -15,12 +15,12 @@
     <Button
         android:id="@+id/button_guide"
         android:layout_width="wrap_content"
-        android:minWidth="@dimen/guide_go_button_width"
         android:layout_height="@dimen/guide_go_button_height"
         android:layout_below="@id/guide_image"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="@dimen/guide_go_button_bottom"
         android:background="@drawable/letgo_bg"
+        android:minWidth="@dimen/guide_go_button_width"
         android:paddingRight="6dp"
         android:text="@string/guide_button_text"
         android:textColor="@color/guide_page4_background_color"
@@ -31,31 +31,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/button_guide"
-        android:background="@color/white" >
-
-        <TextView
-            android:id="@+id/guide_tv_content"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/guide_content_margin_buttom"
-            android:ellipsize="end"
-            android:gravity="center"
-            android:maxLines="2"
-            android:textColor="#acacac"
-            android:textSize="@dimen/guide_page_content_font_size" />
+        android:gravity="center_vertical"
+        android:background="@color/white">
 
         <TextView
             android:id="@+id/guide_tv_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_above="@id/guide_tv_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/guide_title_margin_buttom"
             android:gravity="center"
+            android:text="xcv"
             android:textColor="#595757"
             android:textSize="@dimen/guide_page_title_font_size" />
+
+        <TextView
+            android:id="@+id/guide_tv_content"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/guide_tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/guide_title_margin_buttom"
+            android:layout_marginBottom="@dimen/guide_title_margin_buttom"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:text="asdfa"
+            android:maxLines="2"
+            android:textColor="#acacac"
+            android:textSize="@dimen/guide_page_content_font_size" />
 
         <TextView
             android:id="@+id/more_func"

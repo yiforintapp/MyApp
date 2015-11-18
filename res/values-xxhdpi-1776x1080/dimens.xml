@@ -71,7 +71,7 @@
     <dimen name="guide_page_image_height">348dp</dimen>
     <dimen name="guide_page_title_font_size">22dp</dimen>
     <dimen name="guide_page_content_font_size">12dp</dimen>
-    <dimen name="guide_page_indicator_margin_buttom">30dp</dimen>
+    <dimen name="guide_page_indicator_margin_buttom">20dp</dimen>
     <dimen name="guide_title_margin_buttom">18dp</dimen>
     <dimen name="guide_content_margin_buttom">80dp</dimen>
     <dimen name="guide_go_button_height">38dp</dimen>

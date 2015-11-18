@@ -11,6 +11,7 @@ import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -19,6 +20,9 @@ import android.net.Uri;
 import android.util.DisplayMetrics;
 import android.view.WindowManager;
 
+import com.android.volley.ParseError;
+import com.android.volley.Response;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -26,10 +30,13 @@ import com.leo.appmaster.engine.AppLoadEngine;
 import com.leo.appmaster.model.AppItemInfo;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.util.List;
 
 public class AppUtil {
     private static final String TAG = "AppUtil";
+    public static final float SPL_SHARE_SCALE_X = 0.8f;
+    public static final float SPL_SHARE_SCALE_Y = 0.8f;
 
     public static boolean isSystemApp(ApplicationInfo info) {
         // 有些系统应用是可以更新的，如果用户自己下载了一个系统的应用来更新了原来的，
@@ -241,6 +248,7 @@ public class AppUtil {
 
     /**
      * 处理图片bitmap size （处理Out Of Memory 内存溢出）
+     * Android源码,系统提供
      */
     public static int computeSampleSize(BitmapFactory.Options options,
                                         int minSideLength, int maxNumOfPixels) {
@@ -323,4 +331,62 @@ public class AppUtil {
         return false;
     }
 
+    /**
+     * 分享闪屏图片拼接
+     *
+     * @param onePath
+     * @return
+     */
+    public static Bitmap add2Bitmap(String onePath, int id) {
+        /*图片1*/
+        BitmapFactory.Options optionOne = new BitmapFactory.Options();
+        optionOne.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(onePath, optionOne);
+        int oneWidth = optionOne.outWidth;
+        int oneHeight = optionOne.outHeight;
+        optionOne.inSampleSize = computeSampleSize(optionOne, -1, getScreenPix(AppMasterApplication.getInstance()));
+        optionOne.inJustDecodeBounds = false;
+        Bitmap oneImage = BitmapFactory.decodeFile(onePath, optionOne);
+        /*图片2*/
+        Bitmap twoImage = BitmapFactory.decodeResource(AppMasterApplication.getInstance().getResources(), id);
+
+        Matrix matrix = new Matrix();
+        float oneScaleY = SPL_SHARE_SCALE_Y;
+        float oneScaleX = SPL_SHARE_SCALE_X;
+        matrix.postScale(oneScaleX, oneScaleY);
+        /*缩放图1*/
+        oneImage = Bitmap.createBitmap(oneImage, 0, 0, oneWidth, oneHeight, matrix, true);
+         /*创建拼接Bitmap*/
+        int resultWidth = oneImage.getWidth();
+        int resultHeight = oneImage.getHeight() + oneImage.getWidth();
+        Bitmap result = Bitmap.createBitmap(resultWidth, resultHeight, Bitmap.Config.RGB_565);
+        Canvas canvas = new Canvas(result);
+        canvas.drawBitmap(oneImage, 0, 0, null);
+        /*缩放图2*/
+        twoImage = Bitmap.createScaledBitmap(twoImage, oneImage.getWidth(), oneImage.getWidth(), true);
+        canvas.drawBitmap(twoImage, 0, oneImage.getHeight(), null);
+        return result;
+    }
+
+    /*保存图片到指定路径*/
+    public static boolean outPutImage(String path, Bitmap bitmap) {
+        try {
+            File file = new File(path);
+            if (!file.exists()) {
+                File parentFile = file.getParentFile();
+                if (!parentFile.exists()) {
+                    parentFile.mkdirs();
+                }
+                file.createNewFile();
+            }
+            FileOutputStream fout = new FileOutputStream(path);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, fout);
+            fout.flush();
+            fout.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

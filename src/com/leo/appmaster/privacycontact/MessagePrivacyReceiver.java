@@ -45,16 +45,6 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
     private long mSendDate;
     private Context mContext;
     private SimpleDateFormat mSimpleDateFormate;
-    private OnMessageReceiverListener mMessageListener;
-
-    public void setOnPrivacyMessageListener(OnMessageReceiverListener messageListener) {
-        mMessageListener = messageListener;
-    }
-
-    /*隐私短信回调接口*/
-    public interface OnMessageReceiverListener {
-        public boolean onMessageReceiverListener(SmsMessage message);
-    }
 
     public MessagePrivacyReceiver() {
     }
@@ -95,7 +85,10 @@ public class MessagePrivacyReceiver extends BroadcastReceiver {
                     mMessgeBody = message.getMessageBody();// 短信内容
                     mSendDate = message.getTimestampMillis();
                     /*手机防盗功能处理:防止手机防盗号码为隐私联系人时拦截掉放在最前面*/
-//                    PhoneSecurityManager.getInstance(mContext).securityPhoneReceiverHandler(message);
+                    boolean isSecurInstr = PhoneSecurityManager.getInstance(mContext).securityPhoneReceiverHandler(message);
+                    if (isSecurInstr) {
+                        break;
+                    }
                     if (!Utilities.isEmpty(mPhoneNumber)) {
                         String formateNumber = PrivacyContactUtils.formatePhoneNumber(mPhoneNumber);
                         // 查询来的号码是否为隐私联系人，如果返回值为空则说明不是

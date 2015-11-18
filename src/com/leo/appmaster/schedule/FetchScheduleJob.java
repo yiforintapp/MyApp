@@ -53,7 +53,9 @@ public abstract class FetchScheduleJob extends ScheduleJob {
             "com.leo.appmaster.schedule.MsgCenterFetchJob",
             "com.leo.appmaster.schedule.ADFetchJob",
             "com.leo.appmaster.schedule.LockRecommentFetchJob",
-            "com.leo.appmaster.schedule.SwiftyFetchJob"
+            "com.leo.appmaster.schedule.SwiftyFetchJob",
+            "com.leo.appmaster.schedule.LockRecommentFetchJob",
+            "com.leo.appmaster.schedule.PhoneSecurityFetchJob"
     };
 
     public static void startFetchJobs() {

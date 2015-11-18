@@ -11,7 +11,9 @@ import java.util.TimerTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.graphics.Bitmap;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.Response.ErrorListener;
 import com.android.volley.Response.Listener;
@@ -20,17 +22,19 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
+import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.home.SplashActivity;
 import com.leo.appmaster.HttpRequestAgent;
 import com.leo.appmaster.HttpRequestAgent.RequestListener;
+import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.Utilities;
 
 /**
  * 闪屏相关初始化
- * 
+ *
  * @author Jasper
  */
 public class SplashBootstrap extends Bootstrap {
@@ -98,7 +102,7 @@ public class SplashBootstrap extends Bootstrap {
                     || pref.getSplashLoadFailNumber() < 0
                     || !failDate.equals(pref.getSplashLoadFailDate())
                     || (failDate.equals(pref.getSplashLoadFailDate()) && pref
-                            .getSplashLoadFailNumber() <= 2) || isFromPush) {
+                    .getSplashLoadFailNumber() <= 2) || isFromPush) {
                 /* 日期变化数据初始化 */
                 if (!failDate.equals(pref.getSplashLoadFailDate()) || isFromPush) {
                     if (pref.getSplashLoadFailNumber() != 0) {
@@ -141,7 +145,7 @@ public class SplashBootstrap extends Bootstrap {
         String failDate = dateFormate.format(currentDate);
 
         public SplashRequestListener(AppMasterApplication outerContext,
-                AppMasterPreference preference, SimpleDateFormat formate) {
+                                     AppMasterPreference preference, SimpleDateFormat formate) {
             super(outerContext);
             pref = preference;
             // dateFormate = formate;
@@ -180,7 +184,7 @@ public class SplashBootstrap extends Bootstrap {
 
                     /**
                      * 闪屏Button文案
-                     * 
+                     *
                      * @该字段目前未使用所以没有做保存只是打Log供测试测试用后续有使用的对该字段再作处理
                      */
                     String spalshBtText = response.getString(Constants.SPLASH_BUTTON_TEXT);
@@ -294,8 +298,8 @@ public class SplashBootstrap extends Bootstrap {
         }
 
         private StringBuilder constructionSplashFlag(String startDate, String imageUrl,
-                String endDate, String splashDelayTime, String splashSkipUrl,
-                String splashSkipFlag, String splashSkipToClient) {
+                                                     String endDate, String splashDelayTime, String splashSkipUrl,
+                                                     String splashSkipFlag, String splashSkipToClient) {
             StringBuilder stringBuilder = new StringBuilder();
             stringBuilder.append(imageUrl);
             stringBuilder.append(startDate);
@@ -339,7 +343,9 @@ public class SplashBootstrap extends Bootstrap {
 
     }
 
-    /** 对后台配置的过期闪屏数据初始化 */
+    /**
+     * 对后台配置的过期闪屏数据初始化
+     */
     private static void clearSpSplashFlagDate() {
         AppMasterApplication mApp = AppMasterApplication.getInstance();
         AppMasterPreference.getInstance(mApp).setSplashUriFlag(
@@ -363,6 +369,12 @@ public class SplashBootstrap extends Bootstrap {
             @Override
             public void onResponse(File response, boolean noMidify) {
                 pref.setLastLoadSplashTime(System.currentTimeMillis());
+                /*下载成功后生成二维码图保存*/
+                boolean isSaveShare = shareSplashImage();
+                /*如果保存失败尝试再次保存一次*/
+                if (!isSaveShare) {
+                    shareSplashImage();
+                }
             }
         }, new ErrorListener() {
             @Override
@@ -389,4 +401,18 @@ public class SplashBootstrap extends Bootstrap {
         });
     }
 
+    /*生成闪屏分享图片*/
+    private static boolean shareSplashImage() {
+        String path = FileOperationUtil.getSplashPath();
+        StringBuilder sb = new StringBuilder(path);
+        sb.append(Constants.SPLASH_NAME);
+        if (Utilities.isEmpty(sb.toString())) {
+            return false;
+        }
+        Bitmap result = AppUtil.add2Bitmap(sb.toString(), R.drawable.spl_share_qr);
+        StringBuilder sbShar = new StringBuilder(path);
+        sbShar.append(Constants.SPL_SHARE_QR_NAME);
+        boolean isOutPutSuc = AppUtil.outPutImage(sbShar.toString(), result);
+        return isOutPutSuc;
+    }
 }

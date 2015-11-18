@@ -34,11 +34,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
+import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.LockSettingActivity;
 import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.eventbus.LeoEventBus;
@@ -83,9 +85,11 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 
     private static final String TAG = "SplashActivity";
     /* 是否走测试模式：true--为测试模式，false--为正常模式 */
-    private static final boolean DBG = false;
+    private static final boolean DBG = true;
     /* 是否显示更多引导 */
     private boolean mIsShowGuide;
+    /*是否从闪屏跳出到facebook，标志*/
+    private boolean mIsToFacebk;
 
     /* Guide page stuff end */
     @Override
@@ -198,18 +202,24 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.spl_fc_RT:
-                StringBuilder sb = new StringBuilder(FileOperationUtil.getSplashPath());
-                sb.append(Constants.SPLASH_NAME);
+                String splashDir = FileOperationUtil.getSplashPath();
+                if (Utilities.isEmpty(splashDir)) {
+                    return;
+                }
+                StringBuilder sb = new StringBuilder(splashDir);
+                sb.append(Constants.SPL_SHARE_QR_NAME);
                 /*facebook分享闪屏*/
                 Intent shareIntent = AppUtil.shareImageToApp(sb.toString());
                 shareIntent.setPackage(Constants.FACEBOOK_PKG_NAME);
                 shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 try {
-                    startHome();
+//                    startHome();
                     if (mEventHandler != null) {
                         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
                     }
+//                    finish();
                     startActivity(shareIntent);
+                    mIsToFacebk =true;
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -256,13 +266,13 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
 //            option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
 //            // scale for hdpi, mdpi and ldpi
 //            if (option.inTargetDensity < 125) {
-//                option.inTargetDens ity = option.inTargetDensity - 40;
+//                option.inTargetDensity = option.inTargetDensity - 40;
 //            } else if (option.inTargetDensity < 165) {
 //                option.inTargetDensity = option.inTargetDensity - 40;
 //            } else if (option.inTargetDensity < 245) {
 //                option.inTargetDensity = option.inTargetDensity - 40;
 //            }
-//            option.inScaled = true;
+            option.inScaled = true;
             option.inJustDecodeBounds = true;
             BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
 
@@ -301,7 +311,12 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     /*活动闪屏facebook分享处理*/
     private void showFacbkShareButton() {
         boolean isInslFac = AppUtil.isInstallPkgName(this, Constants.FACEBOOK_PKG_NAME);
-        if (isInslFac) {
+        String path = FileOperationUtil.getSplashPath();
+        StringBuilder sb = new StringBuilder(path);
+        sb.append(Constants.SPL_SHARE_QR_NAME);
+        File file = new File(sb.toString());
+        boolean isExistShreFile = file.exists();
+        if (isInslFac && isExistShreFile) {
             mSplaFacRt.setVisibility(View.VISIBLE);
             mSplaFacRt.setOnClickListener(this);
             LeoLog.i(TAG, "install facebook");
@@ -335,15 +350,15 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         super.onDestroy();
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         mEventHandler = null;
+        mIsToFacebk = false;
     }
 
     @Override
     protected void onResume() {
+        super.onResume();
         mEventHandler.removeMessages(MSG_LAUNCH_HOME_ACTIVITY);
         splashDelayShow();
         mLockManager.clearFilterList();
-        super.onResume();
-
         long currentTs = SystemClock.elapsedRealtime();
         if (AppMasterApplication.sCheckTs) {
             LeoLog.i("TsCost", "App onCreate ~ Splash onResume: " +
@@ -355,6 +370,10 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
     }
 
     private void splashDelayShow() {
+        if(mIsToFacebk){
+            startHome();
+            return;
+        }
         if (mShowSplashFlag) {
             mEventHandler.sendEmptyMessageDelayed(MSG_LAUNCH_HOME_ACTIVITY,
                     SplashBootstrap.mSplashDelayTime);

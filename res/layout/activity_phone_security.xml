@@ -11,12 +11,17 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"></com.leo.appmaster.ui.CommonToolbar>
     <!--2-0-->
+    <ScrollView
+        android:id="@+id/secur_phone_nub_sc"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/phone_security_bottom_button_RL"
+        android:layout_below="@id/phone_security_commonbar"
+        android:overScrollMode="never">
     <LinearLayout
         android:id="@+id/security_phone_number_LT"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/phone_security_bottom_button_RL"
-        android:layout_below="@id/phone_security_commonbar"
         android:background="#f7f7f7"
         android:orientation="vertical">
         <!--3-0手机防盗顶部布局-->
@@ -458,7 +463,7 @@
             <ListView
                 android:id="@+id/secur_instr_LV"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/secur_list_height"
                 android:layout_below="@id/phone_security_divider"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"
@@ -470,6 +475,7 @@
 
         </RelativeLayout>
     </LinearLayout>
+    </ScrollView>
     <!--2-1高级功能-->
     <ScrollView
         android:id="@+id/advance_security_RL"

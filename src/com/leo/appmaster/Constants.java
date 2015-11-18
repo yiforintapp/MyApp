@@ -390,6 +390,10 @@ public class Constants {
 
     /** FaceBook相关 */
     public static final String FACEBOOK_PKG_NAME="com.facebook.katana";
+    /*pg分享闪屏，二维码图路径*/
+    public static final String SPL_SHARE_QR_NAME = "spl_share_qr.png";
+
+
     public static final String FACEBOOK_URL = "fb://page/1709302419294051";
     public static final String FACEBOOK_CLASS = "com.facebook.katana.IntentUriHandler";
     public static final String FACEBOOK_PG_URL = "https://www.facebook.com/pages/App-Master/1709302419294051";

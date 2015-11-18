@@ -52,8 +52,20 @@ import java.util.List;
 
 public class PhoneSecurityActivity extends BaseActivity implements OnClickListener, CompoundButton.OnCheckedChangeListener {
     private static final String TAG = "PhoneSecurityActivity";
+    private static final int SCROLL_X=0;
+    private static final int SCROLL_Y=0;
+
     /*底部进度数字*/
     public String[] mBottomNumber = new String[]{"1", "2", "3"};
+
+    /*当前开启进度号*/
+    private String mCurrentProcNumber = "1";
+    private boolean isShowAdvProtectUi;
+    /*是否为备份远程控制指令按钮*/
+    private boolean isOpenSecurBt;
+    /*当前开启进度号*/
+    private boolean mCheckStatus, mAdvanProCheckStatus;
+
     private CommonToolbar mCommonBar;
     private SecurityNumberView mBottonNumberView1, mBottonNumberView2;
     private ListView mInstructLV;
@@ -61,11 +73,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private List<InstructModel> mInstructs, mOpenInstrs, mNoOpenInstrs, mCompOpenInstrs;
     private InstructListAdapter mInstructAdapter;
     private Button mButton, mAddNumberBt, mModityNumberBt, mOpenSecurModifyBt;
-    /*当前开启进度号*/
-    private String mCurrentProcNumber = "1";
     private CheckBox mCheckBox, mAdvanChekBox;
-    /*当前开启进度号*/
-    private boolean mCheckStatus, mAdvanProCheckStatus;
     private LinearLayout mOpenSecurLT, mNoAddSecurNumber, mAddSecurNumber, mSecurAdvaTipOpenLt, mExistSecurName;
     private RelativeLayout mSecurNoOpenTopRT, mSecurOpenRT;
     private ScrollView mAdvOpenRT, mSecurFinishRT;
@@ -74,9 +82,6 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private ImageView mOperOnePoint, mOperTwoPoint, mOperFinish, mNoSecurNumTip;
     private LinearLayout mButPointLt;
     private TextView mDayTv, mHourTv, mFinishTipTv;
-    private boolean isShowAdvProtectUi;
-    /*是否为备份远程控制指令按钮*/
-    private boolean isOpenSecurBt;
     private LinearLayout mNoAdvFinishTimeLt;
     private Button mOpenSecurAdvBt;
     private LEOAlarmDialog mBackupInstrDialog;
@@ -91,6 +96,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
     private LinearLayout mKnowModelRt;
     private TextView mKnowMdContent;
     private TextView mKnowModelClick;
+    private ScrollView mSecurPhNumCv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -353,6 +359,8 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
         mKnowModelClick = (TextView) findViewById(R.id.secur_know_msm_click);
         mKnowModelClick.getPaint().setFlags(Paint.UNDERLINE_TEXT_FLAG);
         mKnowModelClick.setOnClickListener(this);
+        mSecurPhNumCv = (ScrollView) findViewById(R.id.secur_phone_nub_sc);
+        mSecurPhNumCv.smoothScrollTo(SCROLL_X,SCROLL_Y);
     }
 
     /*完全开启指令*/
@@ -593,6 +601,7 @@ public class PhoneSecurityActivity extends BaseActivity implements OnClickListen
                         }
                     } else if (mBottomNumber[2].equals(mCurrentProcNumber)) {
                         /**第三步*/
+                        mSecurPhNumCv.smoothScrollTo(SCROLL_X,SCROLL_Y);
                         boolean isOpenAdv = lostMgr.isOpenAdvanceProtect();
                         if (!isOpenAdv) {
                             loadInstructListData(true);

@@ -103,7 +103,7 @@
     <dimen name="guide_page_image_height">294dp</dimen>
     <dimen name="guide_page_title_font_size">22dp</dimen>
     <dimen name="guide_page_content_font_size">12dp</dimen>
-    <dimen name="guide_page_indicator_margin_buttom">30dp</dimen>
+    <dimen name="guide_page_indicator_margin_buttom">20dp</dimen>
     <dimen name="guide_title_margin_buttom">21dp</dimen>
     <dimen name="guide_content_margin_buttom">115dp</dimen>
     <dimen name="guide_go_button_height">36dp</dimen>
@@ -335,4 +335,5 @@
     <!-- 3.1 -->
     <dimen name="arrow_translate">7dp</dimen>
     <dimen name="spl_fc_share_bt_size">46dp</dimen>
+    <dimen name="secur_list_height">350dp</dimen>
 </resources>

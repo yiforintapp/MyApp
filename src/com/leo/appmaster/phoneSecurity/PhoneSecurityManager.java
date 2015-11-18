@@ -119,6 +119,34 @@ public class PhoneSecurityManager {
     }
 
     /**
+     * 手机防盗功能,短信广播中处理
+     */
+    public boolean securityPhoneReceiverHandler( SmsMessage message) {
+        if (!isDbReceiverTimeBefor()) {
+            setDbChangeTimeBefor(true);
+            LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            String number = message.getOriginatingAddress();
+            String body = message.getMessageBody();
+            String formate = PrivacyContactUtils.formatePhoneNumber(number);
+             /*手机防盗号码*/
+            String phoneNumber = mgr.getPhoneSecurityNumber();
+            if (phoneNumber.contains(formate)) {
+                /*去除字符串中所有的空格*/
+                body = body.replace(" ", "");
+                /*获取激活的防盗指令集*/
+                List<String> instructs = mgr.getActivateInstructs();
+                 /*查询是否触发为防盗指令*/
+                if (instructs.contains(body)) {
+                    setDbReceiverTimeBefor(false);
+                    return true;
+                }
+            }
+        }
+        setDbReceiverTimeBefor(false);
+        return false;
+    }
+
+    /**
      * 手机防盗功能,短信内容观察处理
      */
     public void securityPhoneOberserHandler() {
@@ -180,7 +208,7 @@ public class PhoneSecurityManager {
                         long beforeId = PreferenceTable.getInstance().getLong(PrefConst.KEY_INSTRU_MSM_ID, -1);
                         if (beforeId > 0) {
                             if (msmId <= beforeId) {
-                                                            /*执行完毕删除该信息*/
+                                /*执行完毕删除该信息*/
                                 String selection = "_id = ? ";
                                 String[] selectionArgs = new String[]{String.valueOf(msmId)};
                                 int resultCount = mContext.getContentResolver().delete(PrivacyContactUtils.SMS_INBOXS, selection, selectionArgs);
@@ -509,6 +537,7 @@ public class PhoneSecurityManager {
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
         }
+
     }
 
     /**
@@ -532,4 +561,21 @@ public class PhoneSecurityManager {
             PhoneSecurityManager.getInstance(mContext).executeLockLocateposition(null, false);
         }
     }
+
+    /**
+     * 是否为防盗号码
+     */
+    public boolean isSecurNumber(String number) {
+        String formateNumber = PrivacyContactUtils.formatePhoneNumber(number);
+        LostSecurityManagerImpl mgr = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+        String securNumber = mgr.getPhoneSecurityNumber();
+        /*防盗号码为空，传入号码为防盗号码*/
+        if (!Utilities.isEmpty(securNumber)
+                && securNumber.contains(formateNumber)) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
