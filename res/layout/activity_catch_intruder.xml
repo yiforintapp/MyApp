@@ -111,23 +111,23 @@
                 android:textSize="15dp" />
 
             <com.leo.appmaster.ui.RippleView
-                 android:minWidth="52dp"
-           	 android:maxWidth="90dp"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/rv_change_times"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"
+                android:maxWidth="90dp"
+                android:minWidth="52dp"
                 app:rv_alpha="255"
                 app:rv_color="@color/button_blue_stroke_ripple" >
 
                 <Button
-                     android:minWidth="52dp"
-           	 android:maxWidth="90dp"
                     android:id="@+id/bt_change_times"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:background="@drawable/while_bg_blue_line"
+                    android:maxWidth="90dp"
+                    android:minWidth="52dp"
                     android:text="@string/change_times_to_catch"
                     android:textColor="#2674f6" />
             </com.leo.appmaster.ui.RippleView>
@@ -238,7 +238,7 @@
         <RelativeLayout
             android:id="@+id/rl_ad_or_fivestars"
             android:layout_width="match_parent"
-            android:layout_height="242dp" >
+            android:layout_height="wrap_content" >
 
             <LinearLayout
                 android:id="@+id/ll_fivestars_layout"
@@ -261,9 +261,17 @@
                     android:text="@string/ask_like_app"
                     android:textColor="#333333" />
 
-                <RelativeLayout
+                <com.leo.appmaster.ui.FiveStarsLayout
+                    android:id="@+id/fsl_fivestars"
                     android:layout_width="match_parent"
-                    android:layout_height="110dp"
+                    android:layout_height="130dp"
+                    android:layout_marginTop="5dp" />
+                    
+                
+                <!-- <RelativeLayout
+                    android:id="@+id/rl_fivestars"
+                    android:layout_width="match_parent"
+                    android:layout_height="130dp"
                     android:layout_marginTop="5dp" >
 
                     <ImageView
@@ -271,38 +279,90 @@
                         android:layout_width="match_parent"
                         android:layout_height="130dp"
                         android:scaleType="fitXY"
-                        android:src="@drawable/fivestars_in_catch" />
+                        android:src="@drawable/grade_bg" />
 
-                    <TextView
-                        android:layout_width="match_parent"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentBottom="true"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginBottom="14dp"
-                        android:gravity="center_horizontal"
-                        android:text="@string/beg_five_star"
-                        android:textColor="#ffffff"
-                        android:textSize="14dp" />
+                        android:layout_centerInParent="true"
+                        android:orientation="horizontal" >
 
-                    <!--
-                     <com.leo.appmaster.ui.RippleView
-                    android:id="@+id/pp_process_rv"
+                        <ImageView
+                            android:id="@+id/star1"
+                            android:layout_width="37dp"
+                            android:layout_height="37dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+                            android:src="@drawable/star_empty"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/star2"
+                            android:layout_width="37dp"
+                            android:layout_height="37dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+                            android:src="@drawable/star_empty"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/star3"
+                            android:layout_width="37dp"
+                            android:layout_height="37dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+                            android:src="@drawable/star_empty"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/star4"
+                            android:layout_width="37dp"
+                            android:layout_height="37dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+                            android:src="@drawable/star_empty"
+                            android:visibility="visible" />
+
+                        <ImageView
+                            android:id="@+id/star5"
+                            android:layout_width="37dp"
+                            android:layout_height="37dp"
+                            android:layout_marginLeft="1dp"
+                            android:layout_marginRight="1dp"
+                            android:src="@drawable/star_empty"
+                            android:visibility="visible" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/grade_gesture"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentBottom="true"
+                        android:visibility="invisible"
+                        android:src="@drawable/grade_gesture" />
+                </RelativeLayout> -->
+<!--                         android:layout_marginBottom="20dp"
+                        android:layout_marginRight="25dp" -->
+
+                <TextView
+                    android:id="@+id/tv_grade"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/green_radius_shape_disable"
-                    android:clickable="true"
-                    ripple:rv_color="@color/green_button_ripple" >
-                    -->
-                    <!-- </com.leo.appmaster.ui.RippleView> -->
-                </RelativeLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/fsl_fivestars"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="14dp"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center_vertical|left"
+                    android:text="@string/beg_five_star"
+                    android:textColor="@color/c2"
+                    android:textSize="14dp" />
 
                 <com.leo.appmaster.ui.RippleView
                     xmlns:tools="http://schemas.android.com/tools"
                     android:id="@+id/rv_fivestars"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    android:layout_marginTop="10dp"
                     app:rv_alpha="255"
                     app:rv_color="@color/button_green_ripple" >
 

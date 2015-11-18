@@ -17,7 +17,7 @@ public class UpdateScoreHelper {
     public static void showGetScoreToast(int score ,Context context) {
         BaseSelfDurationToast toast = new BaseSelfDurationToast(context);
         toast.setDuration(2600);
-        toast.setGravity(Gravity.BOTTOM, 0, 0);
+        toast.setGravity(Gravity.BOTTOM, 0, 300);
         View view = View.inflate(context, R.layout.toast_get_score, null);
         toast.setView(view);
         final TextView tvScore = (TextView) view.findViewById(R.id.tv_score);

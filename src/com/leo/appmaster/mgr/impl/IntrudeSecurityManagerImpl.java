@@ -27,7 +27,6 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
     // private AppMasterPreference sp =
     // AppMasterPreference.getInstance(mContext);
     private PreferenceTable pt = PreferenceTable.getInstance();
-    private final static int VALUE_SCORE = 4;
 
     /**
      * 获取当前模块的安全得分

@@ -10,6 +10,7 @@ import com.leo.appmaster.applocker.IntruderPhotoInfo;
  * Created by Jasper on 2015/9/28.
  */
 public abstract class IntrudeSecurityManager extends Manager {
+    public final static int VALUE_SCORE = 4;
     
     @Override
     public String description() {
