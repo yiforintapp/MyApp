@@ -63,4 +63,7 @@ public class PrefConst {
 
     // 首页更多按钮上拉是否有拉出来过
     public static final String KEY_MORE_PULLED = "more_pulled";
+
+    // 入侵者防护不可用的情况下，分数时间已经增加
+    public static final String KEY_INTRUDER_ADDED = "intruder_score_added";
 }

@@ -273,7 +273,10 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         super.onResume();
 
         IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
-        if (ism.getIntruderMode()) {
+        if (!ism.getIsIntruderSecurityAvailable()) {
+            View include = mRootView.findViewById(R.id.intruder_security);
+            include.setVisibility(View.GONE);
+        } else if (ism.getIntruderMode()) {
             mIntruderBtnLt.setVisibility(View.GONE);
             mIntruderBtnDiv.setVisibility(View.GONE);
             mIntruderMiddleLt.setVisibility(View.GONE);
@@ -293,11 +296,6 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             mLostFixedTv.setText(getString(R.string.pri_pro_lost_fixed_pattern, times[0], times[1]));
         }
 
-//        if (ism.getIntruderMode() && lsm.isUsePhoneSecurity()) {
-//            mHeadView.setText(R.string.pri_pro_summary_confirm);
-//        } else {
-//            mHeadView.setText(R.string.pri_pro_summary_not_confirm);
-//        }
         if (PrivacyHelper.getInstance(getActivity()).getSecurityScore() == 100) {
             mHeadView.setText(R.string.pri_pro_summary_confirm);
         } else {
@@ -330,15 +328,10 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             } else {
                 mWifiFixedLt.setVisibility(View.GONE);
                 mWifiMiddleLt.setVisibility(View.VISIBLE);
-//                if (wsm.getWifiState() == WifiSecurityManager.SAFE_WIFI) {
-//                    mWifiSummaryImg.setImageResource(R.drawable.ic_pri_wifi_safety);
-//                    mWifiSubSummary.setText(R.string.pri_pro_wifi_safe);
-//                } else if (wsm.getWifiState() == WifiSecurityManager.NOT_SAFE) {
                 mWifiSubSummary.setText(R.string.pri_pro_wifi_warn);
                 mWifiFixedSummaryLt.setVisibility(View.GONE);
                 mWifiBtnLt.setVisibility(View.VISIBLE);
                 mWifiBtnDiv.setVisibility(View.VISIBLE);
-//                }
             }
         }
 
@@ -411,11 +404,6 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
                             mSelectData.remove(cb);
                         }
                     }
-                    /*if (mSelectData.size() + mAddedData.size() == mContactViews.size()) {
-                        mSelectAllCb.setChecked(true);
-                    } else {
-                        mSelectAllCb.setChecked(false);
-                    }*/
                 }
             });
             if (i == 0) {
@@ -463,9 +451,6 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
-//                        for (ContactBean contactBean : mSelectData) {
-//                            pcm.addPrivacyContact(contactBean);
-//                        }
                         mMessageCallBean = pcm.addPrivacyContact(mSelectData);
                         mAddedData.addAll(mSelectData);
                         mSelectData.clear();

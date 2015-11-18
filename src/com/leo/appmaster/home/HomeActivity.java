@@ -51,12 +51,15 @@ import com.leo.appmaster.applocker.model.ProcessDetectorCompat22;
 import com.leo.appmaster.applocker.receiver.DeviceReceiver;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.MsgCenterTable;
+import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.BackupEvent;
 import com.leo.appmaster.eventbus.event.MsgCenterEvent;
 import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.feedback.FeedbackHelper;
 import com.leo.appmaster.imagehide.PhotoItem;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
+import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.privacycontact.ContactBean;
@@ -1099,12 +1102,27 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
         int scoreAfterProcess = mPrivacyHelper.getSecurityScore();
         if (scoreAfterProcess - mScoreBeforeProcess == increaseScore) {
-            // 处理前后分数不一样了，说明处理过程中触发了1分钟的逻辑，所以不再加分
+            // 处理前后分数不一样，说明处理过程中触发了1分钟的逻辑，所以不再加分
             increaseScore = 0;
-        } else {
+        }
+
+        IntrudeSecurityManager ism = (IntrudeSecurityManager) MgrContext.getManager(
+                MgrContext.MGR_INTRUDE_SECURITY);
+        boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
+                PrefConst.KEY_INTRUDER_ADDED, false);
+        int intruderScore = 0;
+        if (!ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && !intruderAdded) {
+            // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
+            intruderScore = ism.getMaxScore();
+            mPrivacyHelper.increaseScore(MgrContext.MGR_INTRUDE_SECURITY, intruderScore);
+            PreferenceTable.getInstance().putBoolean(PrefConst.KEY_INTRUDER_ADDED, true);
+        }
+
+        if (increaseScore > 0) {
             mPrivacyHelper.increaseScore(mgr, increaseScore);
         }
         mProcessedMgr = mgr;
+        increaseScore += intruderScore;
         mProcessedScore = increaseScore;
         if (mProcessAlreadyTimeout) {
             startProcessFinishAnim(increaseScore);

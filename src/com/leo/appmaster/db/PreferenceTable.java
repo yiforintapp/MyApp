@@ -35,11 +35,14 @@ public class PreferenceTable extends BaseTable {
     private HashMap<String, String> mValues;
     private Executor mSerialExecutor;
 
+    private boolean mLoaded;
+
     public static PreferenceTable getInstance() {
         if (sInstance == null) {
             synchronized (LOCK) {
                 if (sInstance == null) {
                     sInstance = new PreferenceTable();
+                    sInstance.loadPreference();
                 }
             }
         }
@@ -52,6 +55,8 @@ public class PreferenceTable extends BaseTable {
     }
 
     public void loadPreference() {
+        if (mLoaded) return;
+
         if (BuildProperties.isApiLevel14()) {
             synchronized (LOCK) {
                 try {
@@ -86,6 +91,8 @@ public class PreferenceTable extends BaseTable {
                 IoUtils.closeSilently(cursor);
             }
         }
+
+        mLoaded = true;
     }
 
     @Override

@@ -24,6 +24,7 @@ import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.SecurityNotifyChangeEvent;
 import com.leo.appmaster.eventbus.event.SecurityScoreEvent;
 import com.leo.appmaster.home.HomeColor;
+import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.Manager;
 import com.leo.appmaster.mgr.MgrContext;
@@ -131,8 +132,12 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             @Override
             public void run() {
                 int totalScore = 0;
+                IntrudeSecurityManager ism = null;
                 for (String mgr : SCORE_MGR) {
                     Manager manager = MgrContext.getManager(mgr);
+                    if (mgr.equals(MgrContext.MGR_INTRUDE_SECURITY)) {
+                        ism = (IntrudeSecurityManager) manager;
+                    }
                     long start = 0;
                     if (manager != null) {
                         start = SystemClock.elapsedRealtime();
@@ -142,6 +147,14 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
                         mScoreMap.put(mgr, score);
                         totalScore += score;
                     }
+                }
+
+                boolean intruderAdded = PreferenceTable.getInstance().getBoolean(
+                        PrefConst.KEY_INTRUDER_ADDED, false);
+                if (!ism.getIntruderMode() && !ism.getIsIntruderSecurityAvailable() && intruderAdded) {
+                    // 1.入侵者未开启   2.入侵者不可用   3.入侵者的分数还未增加
+                    totalScore += ism.getMaxScore();
+                    mScoreMap.put(MgrContext.MGR_INTRUDE_SECURITY, ism.getMaxScore());
                 }
 
                 if (mSecurityScore != totalScore) {

@@ -143,17 +143,12 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment {
             @Override
             public void run() {
                 mActivity.onProcessFinish(incScore, MgrContext.MGR_APPLOCKER);
-//                mActivity.jumpToNextFragment(incScore, MgrContext.MGR_APPLOCKER);
             }
         });
     }
 
     @Override
     protected void onIgnoreClick() {
-//        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_APP, true);
-//        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-//        int increaseCore = lm.ignore();
-//        mActivity.jumpToNextFragment(increaseCore, MgrContext.MGR_APPLOCKER);
         mActivity.onIgnoreClick(0, MgrContext.MGR_APPLOCKER);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "app_skip_cnts");
     }
