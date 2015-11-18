@@ -84,15 +84,17 @@ public class MobvistaEngine {
 
     private Map<String, String> mUnitIdToPlacementIdMap;
     
-    static {
-        Context context = AppMasterApplication.getInstance();
-        try {
-            MobvistaAd.init(context, Constants.MOBVISTA_APPID, Constants.MOBVISTA_APPKEY);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        LeoLog.i(TAG, "static block run done");
-    }
+//    static {
+//        Context context = AppMasterApplication.getInstance();
+//        try {
+//            MobvistaAd.init(context, Constants.MOBVISTA_APPID, Constants.MOBVISTA_APPKEY);
+//            MobvistaEngine.getInstance(context).preloadMobvistaAds();
+//        } catch (Exception e) {
+//            LeoLog.e(TAG, "static block exception: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//        LeoLog.i(TAG, "static block run done");
+//    }
     
     public static interface MobvistaListener {
         /**
@@ -111,10 +113,24 @@ public class MobvistaEngine {
     
     public static synchronized MobvistaEngine getInstance(Context ctx) {
         if (sInstance == null) {
+            initMobvista();
             sInstance = new MobvistaEngine(ctx);
+            sInstance.preloadMobvistaAds();
         }
         
         return sInstance;
+    }
+
+    private static void initMobvista(){
+        Context context = AppMasterApplication.getInstance();
+        try {
+            MobvistaAd.init(context, Constants.MOBVISTA_APPID, Constants.MOBVISTA_APPKEY);
+            LeoLog.i(TAG, "initMobvista module done");
+        } catch (Exception e) {
+            LeoLog.e(TAG, "static block exception: " + e.getMessage());
+            e.printStackTrace();
+        }
+        LeoLog.i(TAG, "static block run done");
     }
     
     private MobvistaEngine(Context ctx) {

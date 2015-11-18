@@ -1,10 +1,13 @@
 
 package com.leo.appmaster.bootstrap;
 
+import android.os.SystemClock;
+
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.ThreadManager;
+import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.backup.AppBackupRestoreManager;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.engine.AppLoadEngine;
@@ -62,6 +65,7 @@ public class InitAsyncBootstrap extends Bootstrap {
         FetchScheduleJob.startFetchJobs();
         saveSimIMEI();
         PrivacyContactManager.getInstance(mApp).getPrivateContacts();
+
         return true;
     }
 

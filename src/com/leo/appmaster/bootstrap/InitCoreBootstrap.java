@@ -96,11 +96,6 @@ public class InitCoreBootstrap extends Bootstrap {
         LeoLog.i(TAG, "cost, iniSDK: " + (end - start));
 
         start = SystemClock.elapsedRealtime();
-        MobvistaEngine.getInstance(mApp).preloadMobvistaAds();
-        end = SystemClock.elapsedRealtime();
-        LeoLog.i(TAG, "cost, preload Mobvista Ads: " + (end - start));
-
-        start = SystemClock.elapsedRealtime();
         AppBusinessManager.getInstance(mApp).init();
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, AppBusinessManager.getInstance.init: " + (end - start));
