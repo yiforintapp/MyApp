@@ -19,7 +19,11 @@ public class Constants {
 
     // mobvista 对应的广告位id
     public static final String UNIT_ID_58 = "58";
+    // ids for lock screen - begin
     public static final String UNIT_ID_59 = "59";
+    public static final String UNIT_ID_178 = "178";
+    public static final String UNIT_ID_179 = "179";
+    // ids for lock screen - end
     public static final String UNIT_ID_60 = "60";
     public static final String UNIT_ID_61 = "61";
     public static final String UNIT_ID_62 = "62";
@@ -27,7 +31,11 @@ public class Constants {
     public static final String UNIT_ID_67 = "67";
 
     public static final String PLACEMENT_ID_58 = "1474823452846141_1475968499398303";
+    // placement ids for lock screen - begin
     public static final String PLACEMENT_ID_59 = "1474823452846141_1475969219398231";
+    public static final String PLACEMENT_ID_178 = "1474823452846141_1501677476827405";
+    public static final String PLACEMENT_ID_179 = "1474823452846141_1501677663494053";
+    // placement ids for lock screen - end
     public static final String PLACEMENT_ID_60 = "1474823452846141_1475969139398239";
     public static final String PLACEMENT_ID_61 = "1474823452846141_1475955509399602";
     public static final String PLACEMENT_ID_62 = "1474823452846141_1475966676065152";

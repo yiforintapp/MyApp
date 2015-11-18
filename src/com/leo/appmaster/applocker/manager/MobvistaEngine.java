@@ -144,6 +144,8 @@ public class MobvistaEngine {
         mUnitIdToPlacementIdMap = new HashMap<String, String>();
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_58, Constants.PLACEMENT_ID_58);
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_59, Constants.PLACEMENT_ID_59);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_178, Constants.PLACEMENT_ID_178);
+        mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_179, Constants.PLACEMENT_ID_179);
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_60, Constants.PLACEMENT_ID_60);
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_61, Constants.PLACEMENT_ID_61);
         mUnitIdToPlacementIdMap.put(Constants.UNIT_ID_62, Constants.PLACEMENT_ID_62);
@@ -462,37 +464,6 @@ public class MobvistaEngine {
             LeoLog.i(TAG, "reload the clicked Ad");
             loadSingleMobAd(mUnitId);
         }
-    }
-
-    /**
-     * Get available ad unit ids for lock screen
-     * @return
-     */
-    public HashMap<String, Campaign> getMultiAds(){
-        String[] ids = {
-                Constants.UNIT_ID_59,
-                Constants.UNIT_ID_62,
-                Constants.UNIT_ID_67,
-        };
-
-        HashMap<String, String> imageUnitIdMap = new HashMap<String, String>();
-        for (String id:ids) {
-            MobvistaAdData mobvista = mMobvistaMap.get(id);
-            if (!isOutOfDate(mobvista)) {
-                LeoLog.d(TAG, "ad found: " + mobvista.campaign.getImageUrl() + "[" + id + "]");
-                imageUnitIdMap.put(mobvista.campaign.getImageUrl(), id);
-            } else {
-                loadSingleMobAd(id);
-            }
-        }
-
-        HashMap<String, Campaign> result = new HashMap<String, Campaign>();
-        for (String id:imageUnitIdMap.values()) {
-            MobvistaAdData mobvista = mMobvistaMap.get(id);
-            result.put(id, mobvista.campaign);
-        }
-        LeoLog.d(TAG, "at last, map size = " + result.size());
-        return result;
     }
     
     private static class MobvistaAdData {
