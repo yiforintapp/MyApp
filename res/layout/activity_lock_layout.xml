@@ -29,7 +29,7 @@
             android:layout_below="@id/layout_title_bar"
             android:clipChildren="false"
             android:layerType="software"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <android.support.v4.view.ViewPager
                 android:id="@+id/large_adbanner_container"

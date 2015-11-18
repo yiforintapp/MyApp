@@ -934,8 +934,16 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
         try {
             if(mAdEngine!=null) {
-                mAdEngine.release(Constants.UNIT_ID_59);
+                for (String id : mBannerAdids) {
+                    mAdEngine.release(id);
+                }
             }
+            for (String key : mAdBitmapMap.keySet()) {
+                Bitmap image = mAdBitmapMap.get(key);
+                image.recycle();
+            }
+            mAdBitmapMap.clear();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -1076,15 +1084,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
         mBannerContainer.setOffscreenPageLimit(2);
         mBannerContainer.setClipChildren(false);
+        mBannerContainer.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mBannerParent.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return mBannerContainer.dispatchTouchEvent(event);
             }
         });
-//        mBannerContainer.setUnselectedAlpha(1.0f);
-//        mBannerContainer.setSpacing(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
-//        mBannerContainer.setScrollListener(this);
 
         mImageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ad_def_pic)
@@ -1102,6 +1108,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         mAdUnitIdList.clear();
         mMobvistaListenerList.clear();
         mAdMap.clear();
+        mAdBitmapMap.clear();
         if (mAdapterCycle != null) {
             mBannerContainer.removeAllViews();
             mAdapterCycle = null;
@@ -1118,7 +1125,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             MobvistaEngine.getInstance(this).loadMobvista(unitId, new MobvistaListener() {
                 @Override
                 public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-                    Log.i("XXXX","title0 = "+campaign.getAppName());
+                    LeoLog.i("asyncLoadAd","ad title = "+campaign.getAppName());
                     if (campaign != null && deleteRedundant(unitId, campaign)) {
                         ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
                             @Override
@@ -1138,6 +1145,12 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 if (mAdapterCycle == null) {
                                     mAdapterCycle = new AdapterCycle(LockScreenActivity.this, mBannerContainer, mAdUnitIdList);
                                     mBannerContainer.setAdapter(mAdapterCycle);
+                                    if ((int) (Math.random() * (10)+1) <= AppMasterPreference.getInstance(LockScreenActivity.this).getLockBannerADShowProbability()){
+                                        mBannerContainer.setCurrentItem(1,false);
+                                        delayBannerHideAnim();
+                                    } else {
+                                        mBannerContainer.setCurrentItem(0,false);
+                                    }
                                 } else {
                                     mAdapterCycle.addItem(unitId);
                                 }
@@ -1204,16 +1217,13 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     private void delayBannerHideAnim() {
         Message msg = Message.obtain();
         msg.what = LARGE_BANNER_HIDE;
-        mHandler.sendMessageDelayed(msg, 3000);
+        mHandler.sendMessageDelayed(msg, 6000);
     }
     
     private void bannerHideAnim() {
-/*        if (!mShowAlignRight) {
-            mShowAlignRight = true;
-            mLargeAdBannerShowArea.setClickable(false);
-            int destX = *//*mBannerContainer.getWidth()*//*getWindowWidth() - getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_image_right);
-            mBannerContainer.smoothSlideTo(destX);
-        }  */
+        if (mBannerContainer.getChildCount() > 2) {
+            mBannerContainer.setCurrentItem(0, true);
+        }
     }
     
     // handle pretend lock
@@ -2096,116 +2106,6 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     }*/
 
-    private class ADPagerAdapter extends BaseAdapter {
-
-        private Context context;
-        private List<String> imageIdList;
-        private List<String> linkUrlArray;
-        private List<String> urlTitlesList;
-        private int size;
-        private boolean isInfiniteLoop;
-
-        public ADPagerAdapter(Context context/*, List<String> imageIdList,
-                              List<String> urllist, List<String> urlTitlesList*/) {
-            this.context = context;
-//            this.imageIdList = imageIdList;
-            if (imageIdList != null) {
-                this.size = imageIdList.size();
-            }
-//            this.linkUrlArray = urllist;
-//            this.urlTitlesList = urlTitlesList;
-            isInfiniteLoop = true;
-        }
-
-        @Override
-        public int getCount() {
-            // Infinite loop
-            return isInfiniteLoop ? Integer.MAX_VALUE : imageIdList.size();
-        }
-
-        /**
-         * get really position
-         *
-         * @param position
-         * @return
-         */
-        private int getPosition(int position) {
-            return isInfiniteLoop ? position % size : position;
-        }
-
-        @Override
-        public View getView(final int position, View converView, ViewGroup container) {
-            final ViewHolder holder;
-
-            if (converView == null) {
-                holder = new ViewHolder();
-                converView = getLayoutInflater().inflate(
-                        R.layout.lock_ad_item, container, false);
-                holder.imageView = (ImageView) converView.findViewById(R.id.ad_image);
-                holder.title = (TextView) converView.findViewById(R.id.ad_title);
-                holder.detailMsg = (TextView) converView.findViewById(R.id.ad_details);
-                holder.installButton = (TextView) converView.findViewById(R.id.ad_install_button);
-                converView.setTag(holder);
-            } else {
-                holder = (ViewHolder) converView.getTag();
-            }
-            if (position % mAdItemCount != 0) {
-                converView.setVisibility(View.VISIBLE);
-                int dataIndex = (position % mAdItemCount) - 1;
-                String unitId = mAdUnitIdList.get(dataIndex);
-                Campaign campaign = mAdMap.get(unitId);
-                ImageLoader.getInstance().displayImage(campaign.getImageUrl(), holder.imageView);
-                holder.title.setText(campaign.getAppName());
-                holder.detailMsg.setText(campaign.getAppDesc());
-                holder.installButton.setText(campaign.getAdCall());
-                MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, converView, mMobvistaListenerList.get(dataIndex));
-
-            } else {
-                converView.setVisibility(View.INVISIBLE);
-            }
-
-
-            return converView;
-        }
-
-        /**
-         * @return the isInfiniteLoop
-         */
-        public boolean isInfiniteLoop() {
-            return isInfiniteLoop;
-    }
-
-        /**
-         * @param isInfiniteLoop the isInfiniteLoop to set
-         */
-        public ADPagerAdapter setInfiniteLoop(boolean isInfiniteLoop) {
-            this.isInfiniteLoop = isInfiniteLoop;
-            return this;
-        }
-
-        @Override
-        public Object getItem(int arg0) {
-            // TODO Auto-generated method stub
-            return arg0;
-        }
-
-        @Override
-        public long getItemId(int arg0) {
-            // TODO Auto-generated method stub
-            return arg0;
-        }
-
-
-        private class ViewHolder {
-
-            ImageView imageView;
-            TextView title;
-            TextView detailMsg;
-            TextView installButton;
-        }
-    }
-
-
 
     public class AdapterCycle extends PagerAdapter
             implements ViewPager.OnPageChangeListener{
@@ -2285,9 +2185,36 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         }
 
         @Override
-        public void onPageScrolled(int position, float positionOffset,
-                                   int positionOffsetPixels) {
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            if (position == 0) {
+                float alpha = 1 - positionOffset;
+                if (alpha > 0) {
+                    int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
+                    if (type == LockFragment.LOCK_TYPE_PASSWD) {
+                        ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(alpha);
+                        ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(alpha);
+                    } else {
+                        ((GestureLockFragment) mLockFragment).getIconView().setAlpha(alpha);
+                    }
+                } else {
+                    int type = AppMasterPreference.getInstance(LockScreenActivity.this).getLockType();
+                    if (type == LockFragment.LOCK_TYPE_PASSWD) {
+                        if (((PasswdLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
+                            ((PasswdLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+                            ((PasswdLockFragment) mLockFragment).getPasswdHint().setAlpha(0.0f);
+                        }
+                    } else {
+                        if (((GestureLockFragment) mLockFragment).getIconView().getAlpha() > 0.0f) {
+                            ((GestureLockFragment) mLockFragment).getIconView().setAlpha(0.0f);
+                        }
+                    }
+                }
+            }
 
+            //解决刷新不良的问题
+            if (mBannerParent != null) {
+                mBannerParent.invalidate();
+            }
         }
 
         @Override
