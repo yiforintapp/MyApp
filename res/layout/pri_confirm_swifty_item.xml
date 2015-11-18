@@ -23,7 +23,6 @@
         android:id="@+id/swifty_img"
         android:layout_width="match_parent"
         android:layout_height="100dp"
-        android:background="@drawable/ic_launcher"
         android:layout_below="@+id/item_header_ll"
         android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"

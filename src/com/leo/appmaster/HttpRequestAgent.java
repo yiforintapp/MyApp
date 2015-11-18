@@ -458,19 +458,23 @@ public class HttpRequestAgent {
         Context context = AppMasterApplication.getInstance();
         String language = getPostLanguage();
         String country = Utilities.getCountryID(context);
-        String versionName = mContext.getString(R.string.version_name);
+        String versionCodeString = "";
+        try {
+            int versionCode=mContext.getPackageManager().getPackageInfo(mContext.getPackageName(), 0).versionCode;
+            versionCodeString=String.valueOf(versionCode);
+        } catch (NameNotFoundException e) {
+        }
         String channelCode = mContext.getString(R.string.channel_code);
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(Utilities.getURL(Constants.SWIFTY_SECURITY_URL)).append("/")
                 .append(country).append("/")
                 .append(language).append("/")
-                .append(versionName).append("/")
+                .append(versionCodeString).append("/")
                 .append(channelCode)
                 .append(".html");
         String url = stringBuilder.toString();
         LeoLog.i("loadSwiftySecurity", "load url: " + url);
-        url = "http://api.leomaster.com/appmaster/privacysuggest/cn/en/58/0001a.html"; //测试url，发版删除
         JsonObjectRequest request = new JsonObjectRequest(Method.GET, url, object, listener,
                 errorListener);
         request.setShouldCache(true);

@@ -62,6 +62,11 @@
                     layout="@layout/pri_confirm_ad_item"
                     android:visibility="gone" />
 
+                <!-- 五星好评100分 -->
+                <include
+                    android:id="@+id/grade_high_security"
+                    layout="@layout/pri_confirm_grade_item" />
+
                 <!-- 手机防盗 -->
                 <include
                     android:id="@+id/lost_security"

@@ -38,8 +38,14 @@ public class SwiftyFetchJob extends FetchScheduleJob {
     @Override
     protected void onFetchSuccess(Object response, boolean noMidify) {
         super.onFetchSuccess(response, noMidify);
-        LeoLog.i("loadSwiftySecurity", "response: ");
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
         if (response == null) {
+            preferenceTable.putString(PrefConst.KEY_SWIFTY_CONTENT, "");
+            preferenceTable.putString(PrefConst.KEY_SWIFTY_GP_URL, "");
+            preferenceTable.putString(PrefConst.KEY_SWIFTY_IMG_URL, "");
+            preferenceTable.putString(PrefConst.KEY_SWIFTY_TITLE, "");
+            preferenceTable.putString(PrefConst.KEY_SWIFTY_TYPE, "");
+            preferenceTable.putString(PrefConst.KEY_SWIFTY_URL, "");
 
             return;
         }
@@ -48,18 +54,17 @@ public class SwiftyFetchJob extends FetchScheduleJob {
 
         JSONObject object = (JSONObject) response;
 
-        PreferenceTable preferenceTable = PreferenceTable.getInstance();
         try {
             if (object.getString("content") != null && object.getString("content").length() > 0) {
                 String content = object.getString("content");
                 preferenceTable.putString(PrefConst.KEY_SWIFTY_CONTENT, content);
             }
-            LeoLog.i("loadSwiftySecurity", "content: " + object.getString("content"));
+
             if (object.getString("gp_url") != null && object.getString("gp_url").length() > 0) {
                 String gpUrl = object.getString("gp_url");
                 preferenceTable.putString(PrefConst.KEY_SWIFTY_GP_URL, gpUrl);
             }
-            LeoLog.i("loadSwiftySecurity", "gp_url: " + object.getString("gp_url"));
+
             if (object.getString("img_url") != null && object.getString("img_url").length() > 0) {
                 String imgUrl = object.getString("img_url");
                 preferenceTable.putString(PrefConst.KEY_SWIFTY_IMG_URL, imgUrl);

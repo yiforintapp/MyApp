@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 import android.animation.LayoutTransition;
 import android.app.Activity;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.AppMasterPreference;
 import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
@@ -47,12 +49,15 @@ import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.utils.NetWorkUtil;
+import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.Utilities;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
+import com.leo.imageloader.core.ImageScaleType;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -108,6 +113,15 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private ImageView mContactArrowIv;
 
     /** 评分星星 */
+
+    private ImageView mHighOneStar;
+    private ImageView mHighTwoStar;
+    private ImageView mHighThreeStar;
+    private ImageView mHighFourStar;
+    private ImageView mHighFiveStar;
+    private ImageView mHighGradeGesture;
+    private RippleView mHighGradeBtnLt;
+
     private ImageView mOneStar;
     private ImageView mTwoStar;
     private ImageView mThreeStar;
@@ -214,7 +228,6 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
         loadAd(view);
         mActivity.resetToolbarColor();
-        showStarAnimation();
     }
 
 
@@ -459,6 +472,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
     @Override
     public void onRippleComplete(RippleView rippleView) {
+        LockManager lockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         if (rippleView == mLostBtnLt) {
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "theft_enable");
             Intent intent = new Intent(getActivity(), PhoneSecurityGuideActivity.class);
@@ -493,13 +507,87 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "proposals", "finish");
             mActivity.onBackPressed();
         } else if (mGradeBtnLt == rippleView) { // 五星好评
-            mActivity.getLockManager().filterSelfOneMinites();
+            lockManager.filterSelfOneMinites();
             Utilities.goFiveStar(mActivity);
         } else if (mFbBtnLt == rippleView) {  // FaceBook分享
-            mActivity.getLockManager().filterSelfOneMinites();
+            lockManager.filterSelfOneMinites();
             goFaceBook();
         } else if (mSwiftyBtnLt == rippleView) {
-            mActivity.getLockManager().filterSelfOneMinites();
+            lockManager.filterSelfOneMinites();
+            gotoGpOrBrowser();
+        }
+    }
+
+    /** 前往Gp或亚马逊云 */
+    private void gotoGpOrBrowser() {
+        PreferenceTable preferenceTable = PreferenceTable.getInstance();
+        String gpUrl;
+        String browserUrl;
+        if ("1".equals(preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE))) { // 使用浏览器
+            if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
+                    preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
+
+                browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
+                gotoBrowser(browserUrl);
+            }
+        } else {  // 使用gp
+            if (preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL) != null &&
+                    preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL).length() > 0) {
+                gpUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_GP_URL);
+
+                if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
+                        preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
+
+                    browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
+                } else {
+                    browserUrl = "";
+                }
+                gotoGp(gpUrl, browserUrl);
+            } else {
+                if (preferenceTable.getString(PrefConst.KEY_SWIFTY_URL) != null &&
+                        preferenceTable.getString(PrefConst.KEY_SWIFTY_URL).length() > 0) {
+
+                    browserUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_URL);
+                    gotoBrowser(browserUrl);
+                }
+            }
+        }
+    }
+
+    /** 使用Gp,没有Gp用浏览器 */
+    private void gotoGp(String gpUrl, String browserUrl) {
+        Intent intent = null;
+        if (AppUtil.appInstalled(mActivity,
+                "com.android.vending")) {
+            intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = Uri.parse(gpUrl);
+            intent.setData(uri);
+            intent.setPackage("com.android.vending");
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            try {
+                mActivity.startActivity(intent);
+            } catch (Exception e) {
+                if (!"".equals(browserUrl)) {
+                    gotoBrowser(browserUrl);
+                }
+            }
+        } else {
+            if (!"".equals(browserUrl)) {
+                gotoBrowser(browserUrl);
+            }
+        }
+    }
+
+    /**是使用浏览器 */
+    private void gotoBrowser(String url) {
+        Intent intent;
+        intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(url);
+        intent.setData(uri);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        try {
+            mActivity.startActivity(intent);
+        } catch (Exception e) {
         }
     }
 
@@ -670,7 +758,39 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         mSwiftyBtnLt.setOnRippleCompleteListener(this);
 
         PreferenceTable preferenceTable = PreferenceTable.getInstance();
-        mSwiftyContent.setText(preferenceTable.getString("content"));
+
+        if ((preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT) != null &&
+                preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT).length() > 0) &&
+                (preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL) != null &&
+                        preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL).length() > 0) &&
+                (preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE) != null &&
+                        preferenceTable.getString(PrefConst.KEY_SWIFTY_TYPE).length() > 0) &&
+                NetWorkUtil.isNetworkAvailable(AppMasterApplication.getInstance())) {
+
+            mSwiftyContent.setText(preferenceTable.getString(PrefConst.KEY_SWIFTY_CONTENT));
+            String imgUrl = preferenceTable.getString(PrefConst.KEY_SWIFTY_IMG_URL);
+            mImageLoader.displayImage(imgUrl, mSwiftyImg, getSwiftyOptions());
+            include.setVisibility(View.VISIBLE);
+
+        } else {
+            include.setVisibility(View.GONE);
+        }
+
+    }
+
+    public DisplayImageOptions getSwiftyOptions() {  //需要提供默认图
+        DisplayImageOptions options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.ic_launcher)
+                .showImageForEmptyUri(R.drawable.ic_launcher)
+                .showImageOnFail(R.drawable.ic_launcher)
+                .cacheInMemory(true)
+                .cacheOnDisk(true)
+                .considerExifParams(true)
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .imageScaleType(ImageScaleType.EXACTLY_STRETCHED)
+                .build();
+
+        return options;
     }
 
     private void initFbLayout(View view) {
@@ -680,44 +800,74 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     }
 
     private void initGradeLayout(View view) {
+        int score = PrivacyHelper.getInstance(mActivity).getSecurityScore();
+        LeoLog.i("loadSwiftySecurity", "score："+ score);
+        View highInclude = view.findViewById(R.id.grade_high_security);
         View include = view.findViewById(R.id.grade_security);
+        if (score == 100) {  // 等于100分
 
-        mOneStar = (ImageView) include.findViewById(R.id.one_star);
-        mTwoStar = (ImageView) include.findViewById(R.id.two_star);
-        mThreeStar = (ImageView) include.findViewById(R.id.three_star);
-        mFourStar = (ImageView) include.findViewById(R.id.four_star);
-        mFiveStar = (ImageView) include.findViewById(R.id.five_star);
-        mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
-        mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
-        mGradeBtnLt.setOnRippleCompleteListener(this);
+            mHighOneStar = (ImageView) highInclude.findViewById(R.id.one_star);
+            mTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
+            mThreeStar = (ImageView) highInclude.findViewById(R.id.three_star);
+            mFourStar = (ImageView) highInclude.findViewById(R.id.four_star);
+            mFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
+            mGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
+            mGradeBtnLt = (RippleView) highInclude.findViewById(R.id.item_btn_rv);
+            mGradeBtnLt.setOnRippleCompleteListener(this);
+
+            highInclude.setVisibility(View.VISIBLE);
+            include.setVisibility(View.GONE);
+
+            showStarAnimation(mHighOneStar, mHighTwoStar, mHighThreeStar,
+                              mHighFourStar, mHighFiveStar, mHighGradeGesture);
+
+        } else {
+
+            mOneStar = (ImageView) include.findViewById(R.id.one_star);
+            mTwoStar = (ImageView) include.findViewById(R.id.two_star);
+            mThreeStar = (ImageView) include.findViewById(R.id.three_star);
+            mFourStar = (ImageView) include.findViewById(R.id.four_star);
+            mFiveStar = (ImageView) include.findViewById(R.id.five_star);
+            mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
+            mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
+            mGradeBtnLt.setOnRippleCompleteListener(this);
+
+            highInclude.setVisibility(View.GONE);
+            include.setVisibility(View.VISIBLE);
+
+            showStarAnimation(mOneStar, mTwoStar, mThreeStar, mFourStar, mFiveStar, mGradeGesture);
+        }
 
     }
+
+
 
     /***
      * 开始动画
      */
-    private void showStarAnimation() {
-        ObjectAnimator oneStar = getObjectAnimator(mOneStar);
-        ObjectAnimator twoStar = getObjectAnimator(mTwoStar);
-        ObjectAnimator threeStar = getObjectAnimator(mThreeStar);
-        ObjectAnimator fourStar = getObjectAnimator(mFourStar);
-        ObjectAnimator fiveStar = getObjectAnimator(mFiveStar);
+    private void showStarAnimation(ImageView theOne, ImageView theTwo, ImageView theThree,
+                         ImageView theFour, ImageView theFive, final ImageView gradeGesture) {
+        ObjectAnimator oneStar = getObjectAnimator(theOne);
+        ObjectAnimator twoStar = getObjectAnimator(theTwo);
+        ObjectAnimator threeStar = getObjectAnimator(theThree);
+        ObjectAnimator fourStar = getObjectAnimator(theFour);
+        ObjectAnimator fiveStar = getObjectAnimator(theFive);
 
-        float currentY = mGradeGesture.getTop();
-        ObjectAnimator gestureMoveIn = ObjectAnimator.ofFloat(mGradeGesture,
+        float currentY = gradeGesture.getTop();
+        ObjectAnimator gestureMoveIn = ObjectAnimator.ofFloat(gradeGesture,
                 "translationY", currentY + DipPixelUtil.dip2px(mActivity, 16), currentY);
         gestureMoveIn.setDuration(2000);
 
-        ObjectAnimator gestureMoveOut =  ObjectAnimator.ofFloat(mGradeGesture,
+        ObjectAnimator gestureMoveOut =  ObjectAnimator.ofFloat(gradeGesture,
                 "translationY",currentY , currentY + DipPixelUtil.dip2px(mActivity, 16));
 
-        ObjectAnimator gestureHide = ObjectAnimator.ofFloat(mGradeGesture, "alpha", 1f, 0f);
+        ObjectAnimator gestureHide = ObjectAnimator.ofFloat(gradeGesture, "alpha", 1f, 0f);
 
         gestureMoveOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mGradeGesture.setVisibility(View.INVISIBLE);
+                gradeGesture.setVisibility(View.INVISIBLE);
             }
         });
 
@@ -730,7 +880,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         AnimatorSet starAnimator = new AnimatorSet();
         starAnimator.playSequentially(oneStar, twoStar, threeStar, fourStar, fiveStar);
 
-        ObjectAnimator emptyObjectAnimator = ObjectAnimator.ofFloat(mFiveStar, "alpha", 1f, 1f);
+        ObjectAnimator emptyObjectAnimator = ObjectAnimator.ofFloat(theFive, "alpha", 1f, 1f);
         emptyObjectAnimator.setDuration(1000);
 
         final AnimatorSet animatorSet = new AnimatorSet();
@@ -743,7 +893,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             @Override
             public void onAnimationStart(Animator animation) {
                 super.onAnimationStart(animation);
-                mGradeGesture.setVisibility(View.VISIBLE);
+                gradeGesture.setVisibility(View.VISIBLE);
             }
 
             @Override
