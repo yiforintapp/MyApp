@@ -8,6 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +30,6 @@ import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
-import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -40,11 +41,14 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -59,6 +63,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -106,9 +111,6 @@ import com.leo.appmaster.sdk.push.ui.PushUIHelper;
 import com.leo.appmaster.sdk.update.UIHelper;
 import com.leo.appmaster.theme.ThemeUtils;
 import com.leo.appmaster.ui.CommonTitleBar;
-import com.leo.appmaster.ui.EcoGallery;
-import com.leo.appmaster.ui.HorizontalDragLayout;
-import com.leo.appmaster.ui.HorizontalDragLayout.IDrageRelease;
 import com.leo.appmaster.ui.LeoCircleView;
 import com.leo.appmaster.ui.LeoHomePopMenu;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
@@ -127,8 +129,9 @@ import com.leo.appmaster.utils.PrefConst;
 import com.leo.appmaster.utils.ProcessUtils;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
-import com.leo.imageloader.ImageLoaderConfiguration;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
+import com.leo.imageloader.core.FailReason;
+import com.leo.imageloader.core.ImageLoadingListener;
 import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
@@ -139,7 +142,7 @@ import com.mobvista.sdk.m.core.WallIconCallback;
 import com.mobvista.sdk.m.core.entity.Campaign;
 
 public class LockScreenActivity extends BaseFragmentActivity implements
-        OnClickListener, OnDiaogClickListener, EcoGallery.IGalleryScroll {
+        OnClickListener, OnDiaogClickListener/*, EcoGallery.IGalleryScroll */{
 
     public static final String TAG = "LockScreenActivity";
 
@@ -174,10 +177,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     /**
      * 大banner
      */
-    public static final int AD_ITEM_COUNT = 4; //三个广告加一个空白页
-    private EcoGallery mBannerContainer;
+    private int mAdItemCount = 0; //三个广告加一个空白页
+    private FrameLayout mBannerParent;
+    private ViewPager mBannerContainer;
+    private AdapterCycle mAdapterCycle;
+    private LinkedHashMap<String, Campaign> mAdMap = new LinkedHashMap<String, Campaign>();
+    private LinkedHashMap<String, Bitmap> mAdBitmapMap = new LinkedHashMap<String, Bitmap>();
+    private ArrayList<String> mAdUnitIdList = new ArrayList<String>();
+    private ArrayList<MobvistaListener> mMobvistaListenerList = new ArrayList<MobvistaListener>();
     private DisplayImageOptions mImageOptions;
     private int mBannerItemWidth;
+    private String[] mBannerAdids = {Constants.UNIT_ID_59, Constants.UNIT_ID_62, Constants.UNIT_ID_67};
 
     private boolean mNewTheme;
     private RelativeLayout mPretendLayout;
@@ -1060,13 +1070,21 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     /* 初始化广告UI */
     private void initAD() {
+        mBannerParent = (FrameLayout)findViewById(R.id.large_adbanner_parent);
         mBannerItemWidth = getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_out_width);
-        mBannerContainer = (EcoGallery) findViewById(R.id.large_adbanner_container);
-        mBannerContainer.setUnselectedAlpha(1.0f);
-        mBannerContainer.setSpacing(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
-        mBannerContainer.setSelectedPositionInt(0);
-        mBannerContainer.setAdapter(new ADPagerAdapter(this));
-        mBannerContainer.setScrollListener(this);
+        mBannerContainer = (ViewPager) findViewById(R.id.large_adbanner_container);
+        mBannerContainer.setPageMargin(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
+        mBannerContainer.setOffscreenPageLimit(2);
+        mBannerContainer.setClipChildren(false);
+        mBannerParent.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return mBannerContainer.dispatchTouchEvent(event);
+            }
+        });
+//        mBannerContainer.setUnselectedAlpha(1.0f);
+//        mBannerContainer.setSpacing(getResources().getDimensionPixelSize(R.dimen.fragment_lock_large_banner_spacing));
+//        mBannerContainer.setScrollListener(this);
 
         mImageOptions = new DisplayImageOptions.Builder()
                 .showImageOnLoading(R.drawable.ad_def_pic)
@@ -1080,17 +1098,93 @@ public class LockScreenActivity extends BaseFragmentActivity implements
 
     private void loadAD() {
 
-        mBannerContainer.setVisibility(View.VISIBLE);
-
-        // stone test - begin
-        List<String> adList = MobvistaEngine.getInstance(this).getMultiAds();
-        for (String id:adList) {
-            LeoLog.d(TAG, "found [" +id+ "] avaliable!");
+        mBannerParent.setVisibility(View.VISIBLE);
+        mAdUnitIdList.clear();
+        mMobvistaListenerList.clear();
+        mAdMap.clear();
+        if (mAdapterCycle != null) {
+            mBannerContainer.removeAllViews();
+            mAdapterCycle = null;
         }
-        // stone test - end
+        asyncLoadAd();
+    }
+
+    /**
+     * 异步加载广告，等到图片loading结束后才显示处理
+     */
+    private void asyncLoadAd() {
+        for (int i = 0; i < mBannerAdids.length; i++) {
+            final String unitId = mBannerAdids[i];
+            MobvistaEngine.getInstance(this).loadMobvista(unitId, new MobvistaListener() {
+                @Override
+                public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+                    Log.i("XXXX","title0 = "+campaign.getAppName());
+                    if (campaign != null && deleteRedundant(unitId, campaign)) {
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), new ImageLoadingListener() {
+                            @Override
+                            public void onLoadingStarted(String imageUri, View view) {
+
+                            }
+
+                            @Override
+                            public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
+                                mAdMap.remove(unitId);
+                            }
+
+                            @Override
+                            public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                                mAdBitmapMap.put(unitId, loadedImage);
+                                mAdUnitIdList.add(unitId);
+                                if (mAdapterCycle == null) {
+                                    mAdapterCycle = new AdapterCycle(LockScreenActivity.this, mBannerContainer, mAdUnitIdList);
+                                    mBannerContainer.setAdapter(mAdapterCycle);
+                                } else {
+                                    mAdapterCycle.addItem(unitId);
+                                }
+                            }
+
+                            @Override
+                            public void onLoadingCancelled(String imageUri, View view) {
+                                mAdMap.remove(unitId);
+                            }
+                        });
+                    }
+                }
+
+                @Override
+                public void onMobvistaClick(Campaign campaign) {
+
+                }
+            });
+        }
 
     }
-    
+
+    /**
+     * 去重添加
+     * @param unitId
+     * @param campaign
+     * @return 是否添加新的数据
+     */
+    private boolean deleteRedundant(String unitId, Campaign campaign) {
+        for (String key : mAdMap.keySet()) {
+            Campaign data = mAdMap.get(key);
+            if (data.getAppName().equals(campaign.getAppName())) {
+                return false;
+            }
+        }
+        mAdMap.put(unitId, campaign);
+        return true;
+    }
+
+
+    private void resistViewAllAd(LinkedHashMap<String, Campaign> adMap) {
+
+        for (String key : adMap.keySet()) {
+        }
+    }
+
+
     private void largeBannerShowAnim() {
         AlphaAnimation anim = new AlphaAnimation(0.0f, 1.0f);
         anim.setDuration(200);
@@ -1974,8 +2068,8 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
 
 
-    public void onScrollOffsetToDis(int offset){
-        if (mBannerContainer != null && mBannerContainer.getSelectedItemPosition() % AD_ITEM_COUNT == 0) {
+/*    public void onScrollOffsetToDis(int offset){
+        if (mBannerContainer != null && mBannerContainer.getSelectedItemPosition() % mAdItemCount == 0) {
                 float alpha = 1 - (float)Math.abs(offset) * 2 / getWindowWidth();
                 if (alpha > 0) {
                     int type = AppMasterPreference.getInstance(this).getLockType();
@@ -2000,7 +2094,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                 }
         }
 
-    }
+    }*/
 
     private class ADPagerAdapter extends BaseAdapter {
 
@@ -2055,8 +2149,17 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             } else {
                 holder = (ViewHolder) converView.getTag();
             }
-            if (position % AD_ITEM_COUNT != 0) {
+            if (position % mAdItemCount != 0) {
                 converView.setVisibility(View.VISIBLE);
+                int dataIndex = (position % mAdItemCount) - 1;
+                String unitId = mAdUnitIdList.get(dataIndex);
+                Campaign campaign = mAdMap.get(unitId);
+                ImageLoader.getInstance().displayImage(campaign.getImageUrl(), holder.imageView);
+                holder.title.setText(campaign.getAppName());
+                holder.detailMsg.setText(campaign.getAppDesc());
+                holder.installButton.setText(campaign.getAdCall());
+                MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, converView, mMobvistaListenerList.get(dataIndex));
+
             } else {
                 converView.setVisibility(View.INVISIBLE);
             }
@@ -2101,4 +2204,104 @@ public class LockScreenActivity extends BaseFragmentActivity implements
             TextView installButton;
         }
     }
+
+
+
+    public class AdapterCycle extends PagerAdapter
+            implements ViewPager.OnPageChangeListener{
+        private Context mContext;
+        private LayoutInflater mInflater; //
+        private LinkedList<View> mViews; //
+        private ArrayList<String> mList; //
+        private ViewPager mViewPager; //页面
+
+        public AdapterCycle(Context context, ViewPager viewPager,
+                            ArrayList<String> list) {
+            mContext = context;
+            mInflater = LayoutInflater.from(context);
+            mViewPager = viewPager;
+            mList = list;
+            mViewPager.setOnPageChangeListener(this);
+            if (list != null) {
+                mViews = new LinkedList<View>();
+                RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
+                mViews.add(view);
+                view.setVisibility(View.INVISIBLE);
+
+                    for (String unitId : mList) {
+                        view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
+                        setItemViewContent(view, unitId);
+                        mViews.add(view);
+                    }
+
+            }
+        }
+
+        @Override
+        public int getItemPosition(Object item) {
+            for (int i = 0; i < mViews.size(); i++) {
+                if (((View)item).equals(mViews.get(i))) {
+                    return i;
+                }
+            }
+            return POSITION_NONE;
+        }
+
+        @Override
+        public int getCount() {
+            return mViews.size();
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object object) {
+            return view == object;
+        }
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object object) {
+            ((ViewPager) container).removeView(mViews.get(position));
+        }
+
+        @Override
+        public Object instantiateItem(ViewGroup container, int position) {
+            View view = mViews.get(position);
+            container.addView(view);
+            return view;
+        }
+
+        private void setItemViewContent(RelativeLayout view, String unitId) {
+            Campaign campaign = mAdMap.get(unitId);
+            ((ImageView)view.findViewById(R.id.ad_image)).setImageBitmap(mAdBitmapMap.get(unitId));
+            ((TextView)view.findViewById(R.id.ad_title)).setText(campaign.getAppName());
+            ((TextView)view.findViewById(R.id.ad_details)).setText(campaign.getAppDesc());
+            ((TextView)view.findViewById(R.id.ad_install_button)).setText(campaign.getAdCall());
+            MobvistaEngine.getInstance(LockScreenActivity.this).registerView(unitId, view/*, mMobvistaListenerList.get(dataIndex)*/);
+        }
+
+        // 实现ViewPager.OnPageChangeListener接口
+        @Override
+        public void onPageSelected(int position) {
+
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset,
+                                   int positionOffsetPixels) {
+
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+        }
+
+        public void addItem(String unitId) {
+            mList.add(unitId);
+            RelativeLayout view = (RelativeLayout) mInflater.inflate(R.layout.lock_ad_item, null);
+            setItemViewContent(view, unitId);
+            mViews.add(view);
+            notifyDataSetChanged();
+        }
+
+    }
+
 }

@@ -22,12 +22,23 @@
             android:layout_marginTop="@dimen/fragment_lock_margin_top"
             android:layout_below="@id/layout_title_bar"/>
 
-        <com.leo.appmaster.ui.EcoGallery
-            android:id="@+id/large_adbanner_container"
+        <FrameLayout
+            android:id="@+id/large_adbanner_parent"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/fragment_lock_large_banner_out_height"
+            android:layout_height="wrap_content"
             android:layout_below="@id/layout_title_bar"
-            android:visibility="gone"/>
+            android:clipChildren="false"
+            android:layerType="software"
+            android:visibility="visible">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/large_adbanner_container"
+                android:layout_width="@dimen/fragment_lock_large_banner_out_width"
+                android:layout_height="@dimen/fragment_lock_large_banner_out_height"
+                android:clipChildren="false"
+                android:layout_gravity="center_horizontal|center_vertical"
+                />
+        </FrameLayout>
         
         <RelativeLayout
             android:id="@+id/lockerGuide"

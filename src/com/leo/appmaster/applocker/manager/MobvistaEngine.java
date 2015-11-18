@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -465,7 +466,7 @@ public class MobvistaEngine {
             loadSingleMobAd(mUnitId);
         }
     }
-    
+
     private static class MobvistaAdData {
         public Campaign campaign;
         public MobvistaAdNative nativeAd;
