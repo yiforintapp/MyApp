@@ -26,6 +26,7 @@ import android.webkit.WebView;
 import android.widget.ProgressBar;
 
 import com.leo.appmaster.R;
+import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.schedule.MsgCenterFetchJob;
 import com.leo.appmaster.sdk.BaseBrowserActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -166,15 +167,15 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
                 MsgConsts.PATH_DOWNLOAD.equals(path)) {
             String pUrl = uri.getQueryParameter(MsgConsts.PARAMS_URL);
             LeoLog.i(TAG, "shouldOverrideUrlLoading, download url: " + pUrl);
-            DownloadManager.Request request = new DownloadManager.Request(Uri.parse(pUrl));
-            request.setVisibleInDownloadsUi(true);
-            String title = pUrl.substring(pUrl.lastIndexOf("/") + 1);
-            request.setTitle(title);
-            request.allowScanningByMediaScanner();
-            request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-            request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, title);
-            DownloadManager dm = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-            dm.enqueue(request);
+            try {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(pUrl));
+                startActivity(intent);
+
+                mLockManager.filterSelfOneMinites();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             return true;
         } else if (MsgConsts.HOST_MSGCENTER.equals(host) &&
                 MsgConsts.PATH_NATIVE_APP.equals(path)) {
@@ -183,6 +184,8 @@ public class MsgCenterBrowserActivity extends BaseBrowserActivity implements
             try {
                 Intent intent = Intent.parseUri(pUrl, 0);
                 startActivity(intent);
+
+                mLockManager.filterSelfOneMinites();
             } catch (URISyntaxException e) {
                 e.printStackTrace();
             }

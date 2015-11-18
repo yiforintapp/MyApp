@@ -100,7 +100,6 @@ public class MsgCenterAdapter extends BaseAdapter {
         });
         if (list == null || list.isEmpty()) return;
         LeoLog.d(TAG, "onQueryResult, list size: " + list.size());
-        list.add(addTestData());
 
         ThreadManager.getUiThreadHandler().post(new Runnable() {
             @Override
@@ -111,20 +110,6 @@ public class MsgCenterAdapter extends BaseAdapter {
                 notifyDataSetChanged();
             }
         });
-    }
-
-    private Message addTestData() {
-        Message message = new Message();
-        message.categoryCode = Message.CATEGORY_FAQ;
-        message.categoryName = "实用小技巧";
-        message.description = "测试消息中心跳转及下载相关功能";
-        message.imageUrl = "http://192.168.1.229/activity/images/实用技巧banner_7gcYwdw.png";
-        message.jumpUrl = "file:///android_asset/msgcenter_test.html";
-        message.offlineTime = "2015-12-31 00:00:00";
-        message.time = "2015-09-21 20:47:00";
-        message.title = "下载/跳转测试";
-
-        return message;
     }
 
     @Override
