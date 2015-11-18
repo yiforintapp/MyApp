@@ -47,7 +47,7 @@ import com.leo.appmaster.utils.LeoLog;
  * Created by root on 15-10-11.
  */
 public class LockModeEditActivity extends BaseActivity implements
-        AppChangeListener, OnClickListener, OnItemClickListener, RippleView.OnRippleCompleteListener {
+        AppChangeListener, OnClickListener, OnItemClickListener {
     private static final String FROM_DEFAULT_RECOMMENT_ACTIVITY = "applocklist_activity";
     private static final String SHOW_NOW = "mode changed_show_now";
     private static final String START_FROM_ADD = "startFromadd";
@@ -72,7 +72,7 @@ public class LockModeEditActivity extends BaseActivity implements
     private ListAppLockAdapter mListAdapter;
     private ListView mLockListView;
     private ImageView mIvNameEdit;
-    private RippleView mIvBack, mIvDone;
+    private View mIvBack, mIvDone;
     private TextView mTvName;
 
     @Override
@@ -86,12 +86,11 @@ public class LockModeEditActivity extends BaseActivity implements
     }
 
     private void initUI() {
-        mIvBack = (RippleView) findViewById(R.id.iv_back);
-
+        mIvBack = findViewById(R.id.iv_back);
+        mIvBack.setOnClickListener(this);
         mIvNameEdit = (ImageView) findViewById(R.id.iv_edit_mode_name);
 
-        mIvDone = (RippleView) findViewById(R.id.iv_edit_finish);
-
+        mIvDone = findViewById(R.id.iv_edit_finish);
         mTvName = (TextView) findViewById(R.id.mode_name_tv);
         mTvName.setText(mEditMode.modeName);
 
@@ -99,11 +98,8 @@ public class LockModeEditActivity extends BaseActivity implements
             mIvNameEdit.setVisibility(View.INVISIBLE);
         }
 
-//        mIvBack.setOnClickListener(this);
-        mIvBack.setOnRippleCompleteListener(this);
         mIvNameEdit.setOnClickListener(this);
-//        mIvDone.setOnClickListener(this);
-        mIvDone.setOnRippleCompleteListener(this);
+        mIvDone.setOnClickListener(this);
 
         mLockListView = (ListView) findViewById(R.id.edit_app_list);
         mLockListView.setOnItemClickListener(this);
@@ -260,11 +256,10 @@ public class LockModeEditActivity extends BaseActivity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                // TODO
-//                onBackPressed();
+                onBackPressed();
                 break;
             case R.id.iv_edit_finish:
-//                saveMode();
+                saveMode();
                 break;
             case R.id.iv_edit_mode_name:
                 
@@ -478,18 +473,18 @@ public class LockModeEditActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        try {
-            if (mIvBack == rippleView) {
-                onBackPressed();
-            } else if (mIvDone == rippleView) {
-                saveMode();
-            }
-        } catch (Exception e) {
-            
-        }
-    }
+//    @Override
+//    public void onRippleComplete(RippleView rippleView) {
+//        try {
+//            if (mIvBack == rippleView) {
+//                onBackPressed();
+//            } else if (mIvDone == rippleView) {
+//                saveMode();
+//            }
+//        } catch (Exception e) {
+//
+//        }
+//    }
 
     private class LockedAppComparator implements Comparator<AppInfo> {
         List<String> sortBase;
