@@ -63,9 +63,9 @@ public class ADShowTypeRequestManager {
     /* 3.0广告开关 */
     private static final String AD_WIFI_SCAN = "r";
     /* 3.1 国内渠道广告总开关 */
-    private static final String AD_MAIN_SWITCHER = "main_switcher";
+    private static final String AD_MAIN_SWITCHER = "s";
     /* 3.1 拉取广告时间间隔 */
-    private static final String AD_FETCH_INTERVAL = "interval";
+    private static final String AD_FETCH_INTERVAL = "t";
     /* 如果后台配置本地没有的广告形式时，默认广告类型 */
     public static final int DEFAULT_AD_SHOW_TYPE = 3;
     /* 关闭Lock页所有广告指令 */
