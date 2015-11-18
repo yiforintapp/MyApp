@@ -18,15 +18,13 @@ import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.applocker.model.LockMode;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.LockManager;
-import com.leo.appmaster.mgr.LostSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.impl.LostSecurityManagerImpl;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityActivity;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityConstants;
 import com.leo.appmaster.phoneSecurity.PhoneSecurityGuideActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
 
 /**
@@ -34,15 +32,15 @@ import com.leo.appmaster.wifiSecurity.WifiSecurityActivity;
  *
  * @author Jasper
  */
-public class HomeTabFragment extends Fragment implements RippleView.OnRippleCompleteListener {
+public class HomeTabFragment extends Fragment implements View.OnClickListener {
     private static final String TAG = "HomeTabFragment";
 
     private ImageView mRedDot;
     // 首页4个tab
-    private RippleView mAppLockView;
-    private RippleView mIntruderView;
-    private RippleView mWifiSecurityView;
-    private RippleView mLostSecurityView;
+    private View mAppLockView;
+    private View mIntruderView;
+    private View mWifiSecurityView;
+    private View mLostSecurityView;
 
     private View mRootView;
     private HomeActivity mActivity;
@@ -80,20 +78,41 @@ public class HomeTabFragment extends Fragment implements RippleView.OnRippleComp
 
         mRootView = view;
 
-        mAppLockView = (RippleView) view.findViewById(R.id.home_app_lock_tv);
-        mAppLockView.setOnRippleCompleteListener(this);
+        mAppLockView = view.findViewById(R.id.home_app_lock_tv);
+        MaterialRippleLayout.on(mAppLockView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleDuration(250)
+                .rippleHover(true)
+                .create();
+        mAppLockView.setOnClickListener(this);
 
-        mIntruderView = (RippleView) view.findViewById(R.id.home_intruder_tv);
-        mIntruderView.setOnRippleCompleteListener(this);
+        mIntruderView = view.findViewById(R.id.home_intruder_tv);
+        MaterialRippleLayout.on(mIntruderView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleDuration(250)
+                .rippleHover(true)
+                .create();
+        mIntruderView.setOnClickListener(this);
 
-        mWifiSecurityView = (RippleView) view.findViewById(R.id.home_wifi_tab);
-        mWifiSecurityView.setOnRippleCompleteListener(this);
+        mWifiSecurityView = view.findViewById(R.id.home_wifi_tab);
+        MaterialRippleLayout.on(mWifiSecurityView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleDuration(250)
+                .rippleHover(true)
+                .create();
+        mWifiSecurityView.setOnClickListener(this);
 
-        LeoLog.d("testString", "wifi tab is : " + this.getString(R.string.home_tab_wifi));
-
-        mLostSecurityView = (RippleView) view.findViewById(R.id.home_lost_tab);
-        mLostSecurityView.setOnRippleCompleteListener(this);
-
+        mLostSecurityView = view.findViewById(R.id.home_lost_tab);
+        MaterialRippleLayout.on(mLostSecurityView)
+                .rippleColor(getResources().getColor(R.color.home_tab_pressed))
+                .rippleAlpha(1f)
+                .rippleDuration(250)
+                .rippleHover(true)
+                .create();
+        mLostSecurityView.setOnClickListener(this);
         mRedDot = (ImageView) view.findViewById(R.id.have_theme_red_dot);
     }
 
@@ -161,43 +180,6 @@ public class HomeTabFragment extends Fragment implements RippleView.OnRippleComp
         return mRootView.getVisibility() == View.GONE;
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        switch (rippleView.getId()) {
-            case R.id.home_app_lock_tv:
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");
-                LockManager mLockManager = (LockManager) MgrContext.
-                        getManager(MgrContext.MGR_APPLOCKER);
-                LockMode curMode = mLockManager.getCurLockMode();
-                if (curMode != null && curMode.defaultFlag == 1 &&
-                        !curMode.haveEverOpened) {
-                    startRcommendLock(0);
-                    curMode.haveEverOpened = true;
-                    mLockManager.updateMode(curMode);
-                } else {
-                    Intent intent = new Intent(getActivity(), AppLockListActivity.class);
-                    startActivity(intent);
-                }
-                break;
-            case R.id.home_intruder_tv:
-                // 入侵者防护
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
-                Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.home_wifi_tab:
-                // wifi安全
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
-                Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
-                startActivity(mIntent);
-                break;
-            case R.id.home_lost_tab:
-                // 手机防盗
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
-                startPhoneSecurity();
-                break;
-        }
-    }
 
     /*进入手机防盗*/
     private void startPhoneSecurity() {
@@ -239,4 +221,41 @@ public class HomeTabFragment extends Fragment implements RippleView.OnRippleComp
         }
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.home_app_lock_tv:
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");
+                LockManager mLockManager = (LockManager) MgrContext.
+                        getManager(MgrContext.MGR_APPLOCKER);
+                LockMode curMode = mLockManager.getCurLockMode();
+                if (curMode != null && curMode.defaultFlag == 1 &&
+                        !curMode.haveEverOpened) {
+                    startRcommendLock(0);
+                    curMode.haveEverOpened = true;
+                    mLockManager.updateMode(curMode);
+                } else {
+                    Intent intent = new Intent(getActivity(), AppLockListActivity.class);
+                    startActivity(intent);
+                }
+                break;
+            case R.id.home_intruder_tv:
+                // 入侵者防护
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
+                Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.home_wifi_tab:
+                // wifi安全
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
+                Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
+                startActivity(mIntent);
+                break;
+            case R.id.home_lost_tab:
+                // 手机防盗
+                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
+                startPhoneSecurity();
+                break;
+        }
+    }
 }

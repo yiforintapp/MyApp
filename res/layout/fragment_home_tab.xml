@@ -12,80 +12,86 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.leo.appmaster.ui.RippleView
+        <RelativeLayout
             android:id="@+id/home_app_lock_tv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/home_tab_selector"
-            leo:rv_color="@color/white_list_item_ripple"
-            leo:rv_rippleDuration="@integer/ripple_btn_duration">
+            android:layout_weight="1">
 
             <RelativeLayout
-                android:id="@+id/content_app_lock"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:gravity="center">
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/new_list_selecter">
 
                 <RelativeLayout
-                    android:id="@+id/content_app_lock_red"
+                    android:id="@+id/content_app_lock"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerInParent="true"
                     android:gravity="center">
 
+                    <RelativeLayout
+                        android:id="@+id/content_app_lock_red"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:gravity="center">
+
+                        <ImageView
+                            android:id="@+id/home_ic_applcok_img"
+                            android:layout_width="@dimen/home_tab_ic_size"
+                            android:layout_height="@dimen/home_tab_ic_size"
+                            android:layout_centerHorizontal="true"
+                            android:src="@drawable/ic_home_tab_applock" />
+
+                        <TextView
+                            style="@style/LockListTabText"
+                            android:layout_below="@id/home_ic_applcok_img"
+                            android:text="@string/home_tab_app_lock" />
+                    </RelativeLayout>
+
                     <ImageView
-                        android:id="@+id/home_ic_applcok_img"
-                        android:layout_width="@dimen/home_tab_ic_size"
-                        android:layout_height="@dimen/home_tab_ic_size"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/ic_home_tab_applock" />
-
-                    <TextView
-                        style="@style/LockListTabText"
-                        android:layout_below="@id/home_ic_applcok_img"
-                        android:text="@string/home_tab_app_lock" />
+                        android:id="@+id/have_theme_red_dot"
+                        android:layout_width="15dp"
+                        android:layout_height="15dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_toRightOf="@id/content_app_lock_red"
+                        android:src="@drawable/red_dot" />
                 </RelativeLayout>
-
-                <ImageView
-                    android:id="@+id/have_theme_red_dot"
-                    android:layout_width="15dp"
-                    android:layout_height="15dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_toRightOf="@id/content_app_lock_red"
-                    android:src="@drawable/red_dot" />
             </RelativeLayout>
-
-        </com.leo.appmaster.ui.RippleView>
+        </RelativeLayout>
 
         <TextView
             android:layout_width="2px"
             android:layout_height="match_parent"
             android:background="@color/home_tab_divider" />
 
-        <com.leo.appmaster.ui.RippleView
+        <RelativeLayout
             android:id="@+id/home_wifi_tab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/home_tab_selector"
-            android:gravity="center"
-            leo:rv_color="@color/white_list_item_ripple"
-            leo:rv_rippleDuration="@integer/ripple_btn_duration">
+            android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/home_ic_wifi_img"
-                android:layout_width="@dimen/home_tab_ic_size"
-                android:layout_height="@dimen/home_tab_ic_size"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_home_tab_wifi" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@drawable/new_list_selecter"
+                android:gravity="center">
 
-            <TextView
-                style="@style/HomeTabText"
-                android:layout_below="@id/home_ic_wifi_img"
-                android:text="@string/home_tab_wifi" />
-        </com.leo.appmaster.ui.RippleView>
+                <ImageView
+                    android:id="@+id/home_ic_wifi_img"
+                    android:layout_width="@dimen/home_tab_ic_size"
+                    android:layout_height="@dimen/home_tab_ic_size"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_home_tab_wifi" />
+
+                <TextView
+                    style="@style/HomeTabText"
+                    android:layout_below="@id/home_ic_wifi_img"
+                    android:text="@string/home_tab_wifi" />
+            </RelativeLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
@@ -99,56 +105,64 @@
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <com.leo.appmaster.ui.RippleView
+        <RelativeLayout
             android:id="@+id/home_lost_tab"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/home_tab_selector"
-            android:gravity="center"
-            leo:rv_color="@color/white_list_item_ripple"
-            leo:rv_rippleDuration="@integer/ripple_btn_duration">
+            android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/home_ic_lost_img"
-                android:layout_width="@dimen/home_tab_ic_size"
-                android:layout_height="@dimen/home_tab_ic_size"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_home_tab_lost" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@drawable/new_list_selecter"
+                android:gravity="center">
 
-            <TextView
-                style="@style/HomeTabText"
-                android:layout_below="@id/home_ic_lost_img"
-                android:text="@string/home_tab_lost" />
-        </com.leo.appmaster.ui.RippleView>
+                <ImageView
+                    android:id="@+id/home_ic_lost_img"
+                    android:layout_width="@dimen/home_tab_ic_size"
+                    android:layout_height="@dimen/home_tab_ic_size"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_home_tab_lost" />
+
+                <TextView
+                    style="@style/HomeTabText"
+                    android:layout_below="@id/home_ic_lost_img"
+                    android:text="@string/home_tab_lost" />
+            </RelativeLayout>
+        </RelativeLayout>
 
         <TextView
             android:layout_width="2px"
             android:layout_height="match_parent"
             android:background="@drawable/home_area_divider" />
 
-        <com.leo.appmaster.ui.RippleView
+        <RelativeLayout
             android:id="@+id/home_intruder_tv"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@drawable/home_tab_selector"
-            android:gravity="center"
-            leo:rv_color="@color/white_list_item_ripple"
-            leo:rv_rippleDuration="@integer/ripple_btn_duration">
+            android:layout_weight="1">
 
-            <ImageView
-                android:id="@+id/home_ic_intruder_img"
-                android:layout_width="@dimen/home_tab_ic_size"
-                android:layout_height="@dimen/home_tab_ic_size"
-                android:layout_centerHorizontal="true"
-                android:src="@drawable/ic_home_tab_intuder" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_centerInParent="true"
+                android:background="@drawable/new_list_selecter"
+                android:gravity="center">
 
-            <TextView
-                style="@style/HomeTabText"
-                android:layout_below="@id/home_ic_intruder_img"
-                android:text="@string/home_tab_instruder" />
-        </com.leo.appmaster.ui.RippleView>
+                <ImageView
+                    android:id="@+id/home_ic_intruder_img"
+                    android:layout_width="@dimen/home_tab_ic_size"
+                    android:layout_height="@dimen/home_tab_ic_size"
+                    android:layout_centerHorizontal="true"
+                    android:src="@drawable/ic_home_tab_intuder" />
+
+                <TextView
+                    style="@style/HomeTabText"
+                    android:layout_below="@id/home_ic_intruder_img"
+                    android:text="@string/home_tab_instruder" />
+            </RelativeLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
