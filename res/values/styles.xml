@@ -60,6 +60,11 @@
         </item>
     </style>
 
+    <style name="toast_getscore">  
+        <item name="@android:windowEnterAnimation">@anim/toast_get_score_show</item>  
+        <item name="@android:windowExitAnimation">@anim/toast_get_score_hide</item>  
+    </style>  
+    
     <style name="Theme" parent="@style/activity_theme">
         <item name="android:alertDialogTheme">@style/SingleChoiceDialog</item>
     </style>

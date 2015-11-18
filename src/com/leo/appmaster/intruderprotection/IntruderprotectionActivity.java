@@ -694,8 +694,9 @@ public class IntruderprotectionActivity extends Activity {
                     needle.startAnimation(animation);       
                 } else {
                     mImanager.switchIntruderMode(true);
-                    Toast.makeText(IntruderprotectionActivity.this,
-                            getString(R.string.intruder_open), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(IntruderprotectionActivity.this,
+//                            getString(R.string.intruder_open), Toast.LENGTH_SHORT).show();
+                    UpdateScoreHelper.showGetScoreToast(4, IntruderprotectionActivity.this);
                     final RotateAnimation animation = new RotateAnimation(0f, 180f,
                             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                     animation.setDuration(300);
