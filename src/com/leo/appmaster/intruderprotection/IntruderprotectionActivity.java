@@ -41,6 +41,7 @@ import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
+import com.leo.appmaster.mgr.impl.IntrudeSecurityManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
@@ -696,7 +697,7 @@ public class IntruderprotectionActivity extends Activity {
                     mImanager.switchIntruderMode(true);
 //                    Toast.makeText(IntruderprotectionActivity.this,
 //                            getString(R.string.intruder_open), Toast.LENGTH_SHORT).show();
-                    UpdateScoreHelper.showGetScoreToast(4, IntruderprotectionActivity.this);
+                    UpdateScoreHelper.showGetScoreToast(IntrudeSecurityManager.VALUE_SCORE, IntruderprotectionActivity.this);
                     final RotateAnimation animation = new RotateAnimation(0f, 180f,
                             Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
                     animation.setDuration(300);

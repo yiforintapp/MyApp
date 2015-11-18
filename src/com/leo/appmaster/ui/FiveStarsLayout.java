@@ -65,40 +65,29 @@ public class FiveStarsLayout extends FrameLayout{
         ObjectAnimator fourStar = getObjectAnimator(mFourStar);
         ObjectAnimator fiveStar = getObjectAnimator(mFiveStar);
 
-        mGradeGesture.setVisibility(View.VISIBLE);
-        float currentY = mGradeGesture.getY();
-        LeoLog.i("anim22", "currentY = "+mGradeGesture.getY());
+        float currentY = mGradeGesture.getTop();
         ObjectAnimator gestureMoveIn = ObjectAnimator.ofFloat(mGradeGesture,
-                "y", currentY, currentY - DipPixelUtil.dip2px(mContext, 16), currentY);
+                "translationY", currentY + DipPixelUtil.dip2px(mContext, 16), currentY);
         gestureMoveIn.setDuration(2000);
-        gestureMoveIn.addUpdateListener(new AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                LeoLog.i("anim22", "Y = "+mGradeGesture.getY());
-            }
-        });
 
         ObjectAnimator gestureMoveOut =  ObjectAnimator.ofFloat(mGradeGesture,
-                "y",currentY - DipPixelUtil.dip2px(mContext, 16), currentY , currentY );
-        gestureMoveOut.addUpdateListener(new AnimatorUpdateListener() {
-            
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-            }
-        });
-        ObjectAnimator gestureHide = ObjectAnimator.ofFloat(mGradeGesture, "alpha", 1f, 1f);
+                "translationY",currentY , currentY + DipPixelUtil.dip2px(mContext, 16));
 
-        gestureHide.addListener(new AnimatorListenerAdapter() {
+        ObjectAnimator gestureHide = ObjectAnimator.ofFloat(mGradeGesture, "alpha", 1f, 0f);
+
+        gestureMoveOut.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                mGradeGesture.setVisibility(View.VISIBLE);
+                mGradeGesture.setVisibility(View.INVISIBLE);
             }
         });
 
-        AnimatorSet gestureDismissAnimator = new AnimatorSet();
-        gestureDismissAnimator.playTogether(gestureMoveOut, gestureHide);
-        gestureDismissAnimator.setDuration(1000);
+        AnimatorSet gestureAnimator = new AnimatorSet();
+        gestureAnimator.playTogether(gestureMoveOut, gestureHide);
+        gestureAnimator.setDuration(1000);
+
+
 
         AnimatorSet starAnimator = new AnimatorSet();
         starAnimator.playSequentially(oneStar, twoStar, threeStar, fourStar, fiveStar);
@@ -108,8 +97,9 @@ public class FiveStarsLayout extends FrameLayout{
 
         final AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.play(gestureMoveIn).before(starAnimator);
-        animatorSet.play(starAnimator).with(gestureDismissAnimator);
+        animatorSet.play(starAnimator).with(gestureAnimator);
         animatorSet.play(emptyObjectAnimator).after(starAnimator);
+
         animatorSet.addListener(new AnimatorListenerAdapter() {
 
             @Override

@@ -1,7 +1,6 @@
 
 package com.leo.appmaster.intruderprotection;
 
-
 import java.io.File;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,6 +9,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -48,6 +51,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.ui.FiveStarsLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
@@ -81,16 +85,16 @@ public class IntruderCatchedActivity extends BaseActivity {
     private Button mChangeTimes;
     private TextView mTvTotalTimes;
     private ImageView mClose;
-    private MobvistaEngine mAdEngine;
-    private RelativeLayout mADLayout;
-    private LinearLayout mLlFiveStars;
     private RelativeLayout mRlNopic;
+    private RelativeLayout mRlFiveStars;
     private RippleView mRvClose;
     private TextView mTvOthers;
     private LEOChoiceDialog mDialog;
     private RelativeLayout mRvHeader;
     private RippleView mRvRating;
-    private int[] mTimes = {1 , 2 , 3 , 5};
+    private int[] mTimes = {
+            1, 2, 3, 5
+    };
     private List<Bitmap> mBitmaps = new ArrayList<Bitmap>();
     private DisplayImageOptions mImageOptions;
     private RippleView mRvChange;
@@ -101,33 +105,33 @@ public class IntruderCatchedActivity extends BaseActivity {
     private static final int TIMES_TO_CATCH_2 = 2;
     private static final int TIMES_TO_CATCH_3 = 3;
     private static final int TIMES_TO_CATCH_4 = 5;
-    
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_catch_intruder);
         Intent intent = getIntent();
         mPt = PreferenceTable.getInstance();
-        mISManager = (IntrudeSecurityManager) MgrContext.getManager(MgrContext.MGR_INTRUDE_SECURITY);
+        mISManager = (IntrudeSecurityManager) MgrContext
+                .getManager(MgrContext.MGR_INTRUDE_SECURITY);
         mPkgName = intent.getStringExtra("pkgname");
         mLockManager.filterPackage(mPkgName, 5000);
         init();
     }
-    
+
     @Override
     protected void onResume() {
         super.onResume();
         SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                 "intruder", "intruder_capture");
-        mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH , false);
+        mPt.putBoolean(PrefConst.KEY_IS_DELAY_TO_SHOW_CATCH, false);
         updateData();// 重新查询数据库，做与数据相关的UI更新
         updateAll();// 更新与数据库无关的UI
     }
-    
+
     @Override
     public void onBackPressed() {
-        if(getPackageName().equals(mPkgName)) {
+        if (getPackageName().equals(mPkgName)) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
@@ -141,16 +145,60 @@ public class IntruderCatchedActivity extends BaseActivity {
      * 每次onResume进入界面需要重新刷新的操作(与数据库无关)
      */
     private void updateAll() {
-        //更新总的抓拍次数
+        // 更新总的抓拍次数
         updateCatchTimes();
-        //更新抓拍所需的解锁失败次数
+        // 更新抓拍所需的解锁失败次数
         updateTimesToCatch();
+
+        showFiveStarsAnim();
     }
-    
+
+    private void showFiveStarsAnim() {
+//        final ImageView v1 = (ImageView) mRlFiveStars.findViewById(R.id.star1);
+//        final ImageView v2 = (ImageView) mRlFiveStars.findViewById(R.id.star2);
+//        final ImageView v3 = (ImageView) mRlFiveStars.findViewById(R.id.star3);
+//        final ImageView v4 = (ImageView) mRlFiveStars.findViewById(R.id.star4);
+//        final ImageView v5 = (ImageView) mRlFiveStars.findViewById(R.id.star5);
+//
+//        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0.2f, 0.4f, 0.6f, 0.8f, 1.0f);
+//        PropertyValuesHolder translateX = PropertyValuesHolder.ofFloat("alpha", 0.2f, 0.4f, 0.6f, 0.8f, 1.0f);
+//        
+//        PropertyValuesHolder holder = PropertyValuesHolder.ofInt("text11", 1, 2, 3, 4, 5);
+//        final ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mRlFiveStars, holder);
+//        animator.setDuration(2500);
+//        animator.addUpdateListener(new AnimatorUpdateListener() {
+//            @Override
+//            public void onAnimationUpdate(ValueAnimator arg0) {
+//                int animatedValue = (Integer) arg0.getAnimatedValue();
+//                switch (animatedValue) {
+//                    case 1:
+//                        v1.setImageResource(R.drawable.star_full);
+//                        break;
+//                    case 2:
+//                        v2.setImageResource(R.drawable.star_full);
+//                        break;
+//                    case 3:
+//                        v3.setImageResource(R.drawable.star_full);
+//                        break;
+//                    case 4:
+//                        v4.setImageResource(R.drawable.star_full);
+//                        break;
+//                    case 5:
+//                        v5.setImageResource(R.drawable.star_full_last);
+//                        break;
+//                    default:
+//                        break;
+//                }
+//            }
+//        });
+        FiveStarsLayout fsl = (FiveStarsLayout) findViewById(R.id.fsl_fivestars);
+        fsl.showStarAnimation();
+    }
+
     /**
      * 更新总的抓拍次数
      */
-    private void updateCatchTimes(){
+    private void updateCatchTimes() {
         String times1 = getString(R.string.intruder_times_of_catch);
         String times2 = String.format(times1, mISManager.getCatchTimes());
         mTvTotalTimes.setText(Html.fromHtml(times2));
@@ -173,37 +221,38 @@ public class IntruderCatchedActivity extends BaseActivity {
             }
         });
     }
-    
 
-//   先别删 如果以后需要广告 直接打开注释就可以了
-//    private void loadAD() {
-//        LeoLog.e("poha", "loading ad...");
-//        mAdEngine = MobvistaEngine.getInstance(this);
-//        mAdEngine.loadMobvista(Constants.UNIT_ID_58, new MobvistaListener() {
-//            @Override
-//            public void onMobvistaFinished(int code, Campaign campaign, String msg) {
-//                if (code == MobvistaEngine.ERR_OK && campaign != null) {
-//                    ImageView admain = (ImageView) mADLayout.findViewById(R.id.iv_ad_mainpic);
-//                    mImageLoader.displayImage(campaign.getImageUrl(), admain);
-//                    ImageView adicon = (ImageView) mADLayout.findViewById(R.id.iv_ad_iconpic);
-//                    mImageLoader.displayImage(campaign.getIconUrl(), adicon);
-//                    TextView appname = (TextView) mADLayout.findViewById(R.id.tv_appname);
-//                    appname.setText(campaign.getAppName());
-//                    TextView appdesc = (TextView) mADLayout.findViewById(R.id.tv_appdesc);
-//                    appdesc.setText(campaign.getAppDesc());
-//                    TextView appcall = (TextView) mADLayout.findViewById(R.id.tv_ad_call);
-//                    appcall.setText(campaign.getAdCall());
-//                    mAdEngine.registerView(Constants.UNIT_ID_58, appcall);
-//                    mLlFiveStars.setVisibility(View.GONE);
-//                    mADLayout.setVisibility(View.VISIBLE);
-//                }
-//            }
-//            @Override
-//            public void onMobvistaClick(Campaign campaign) {
-//            }
-//        });
-//    }.
-    private String timeStampToAMPM(String timeStamp){
+    // 先别删 如果以后需要广告 直接打开注释就可以了
+    // private void loadAD() {
+    // LeoLog.e("poha", "loading ad...");
+    // mAdEngine = MobvistaEngine.getInstance(this);
+    // mAdEngine.loadMobvista(Constants.UNIT_ID_58, new MobvistaListener() {
+    // @Override
+    // public void onMobvistaFinished(int code, Campaign campaign, String msg) {
+    // if (code == MobvistaEngine.ERR_OK && campaign != null) {
+    // ImageView admain = (ImageView)
+    // mADLayout.findViewById(R.id.iv_ad_mainpic);
+    // mImageLoader.displayImage(campaign.getImageUrl(), admain);
+    // ImageView adicon = (ImageView)
+    // mADLayout.findViewById(R.id.iv_ad_iconpic);
+    // mImageLoader.displayImage(campaign.getIconUrl(), adicon);
+    // TextView appname = (TextView) mADLayout.findViewById(R.id.tv_appname);
+    // appname.setText(campaign.getAppName());
+    // TextView appdesc = (TextView) mADLayout.findViewById(R.id.tv_appdesc);
+    // appdesc.setText(campaign.getAppDesc());
+    // TextView appcall = (TextView) mADLayout.findViewById(R.id.tv_ad_call);
+    // appcall.setText(campaign.getAdCall());
+    // mAdEngine.registerView(Constants.UNIT_ID_58, appcall);
+    // mLlFiveStars.setVisibility(View.GONE);
+    // mADLayout.setVisibility(View.VISIBLE);
+    // }
+    // }
+    // @Override
+    // public void onMobvistaClick(Campaign campaign) {
+    // }
+    // });
+    // }.
+    private String timeStampToAMPM(String timeStamp) {
         SimpleDateFormat sdf = new SimpleDateFormat(
                 Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT);
         Calendar ci = Calendar.getInstance();
@@ -215,30 +264,30 @@ public class IntruderCatchedActivity extends BaseActivity {
             date = sdf.parse(timeStamp);
             ci.setTime(date);
             hour = ci.get(Calendar.HOUR);
-            ampm= ci.get(Calendar.AM_PM);
+            ampm = ci.get(Calendar.AM_PM);
             minute = ci.get(Calendar.MINUTE);
         } catch (ParseException e1) {
             return timeStamp;
         }
         String strHour = "";
         String strMinute = "";
-        if(hour<10){
-            strHour = "0"+hour;
-        }else{
-            strHour = hour+"";
+        if (hour < 10) {
+            strHour = "0" + hour;
+        } else {
+            strHour = hour + "";
         }
-        if(minute<10){
-            strMinute = "0"+minute;
-        }else{
-            strMinute = minute+"";
+        if (minute < 10) {
+            strMinute = "0" + minute;
+        } else {
+            strMinute = minute + "";
         }
         String fts;
-        if(ampm==Calendar.AM){
-            fts = strHour+":"+strMinute+"AM";
-        }else if(ampm==Calendar.PM){
-            fts = strHour+":"+strMinute+"PM";
-        }else{
-            fts = strHour+":"+strMinute;
+        if (ampm == Calendar.AM) {
+            fts = strHour + ":" + strMinute + "AM";
+        } else if (ampm == Calendar.PM) {
+            fts = strHour + ":" + strMinute + "PM";
+        } else {
+            fts = strHour + ":" + strMinute;
         }
         return fts;
     }
@@ -254,8 +303,9 @@ public class IntruderCatchedActivity extends BaseActivity {
         mRvRating = (RippleView) findViewById(R.id.rv_fivestars);
         mRlNewest = (RelativeLayout) findViewById(R.id.rl_newest);
         mTvOthers = (TextView) findViewById(R.id.tv_others);
-        mLlFiveStars = (LinearLayout) findViewById(R.id.ll_fivestars_layout);
-        mADLayout = (RelativeLayout) findViewById(R.id.rl_ad_layout);
+        // mLlFiveStars = (LinearLayout) findViewById(R.id.ll_fivestars_layout);
+        // mADLayout = (RelativeLayout) findViewById(R.id.rl_ad_layout);
+//        mRlFiveStars = (RelativeLayout) findViewById(R.id.rl_fivestars);
         mClose = (ImageView) findViewById(R.id.iv_close);
         mRvClose = (RippleView) findViewById(R.id.rv_close);
         mRvClose.setOnRippleCompleteListener(new OnRippleCompleteListener() {
@@ -286,13 +336,13 @@ public class IntruderCatchedActivity extends BaseActivity {
                 Utilities.goFiveStar(IntruderCatchedActivity.this);
             }
         });
-        //初始化imageloader，需要时可以设置option
+        // 初始化imageloader，需要时可以设置option
         mImageLoader = ImageLoader.getInstance();
         mImageOptions = new DisplayImageOptions.Builder()
-        .bitmapConfig(Bitmap.Config.RGB_565)
-        .cacheInMemory(true)
-        .build();
-        
+                .bitmapConfig(Bitmap.Config.RGB_565)
+                .cacheInMemory(true)
+                .build();
+
         mIvAppIntruded = (ImageView) findViewById(R.id.iv_app_intruded);
         mTvNewestCatchTip = (TextView) findViewById(R.id.newest_catch_tip);
         mIvNewestPhoto = (BottomCropImage) findViewById(R.id.iv_newest_photo);
@@ -302,15 +352,15 @@ public class IntruderCatchedActivity extends BaseActivity {
     }
 
     private void showChangeTimesDialog() {
-        if(mDialog == null){
+        if (mDialog == null) {
             mDialog = new LEOChoiceDialog(IntruderCatchedActivity.this);
         }
         String times = getResources().getString(R.string.times_choose);
         List<String> timesArray = new ArrayList<String>();
-        for(int i = 0 ; i < mTimes.length; i++){
+        for (int i = 0; i < mTimes.length; i++) {
             timesArray.add(String.format(times, mTimes[i]));
         }
-        
+
         int currentTimes = mISManager.getTimesForTakePhoto();
         int currentIndex = -1;
         switch (currentTimes) {
@@ -375,11 +425,11 @@ public class IntruderCatchedActivity extends BaseActivity {
      * 查询完数据库后执行的操作
      */
     private void onQueryFinished() {
-        //排序数据库的结果，按照时间排序
+        // 排序数据库的结果，按照时间排序
         sortInfos();
         final PackageManager pm = getPackageManager();
-        if (mInfosSorted!=null && mInfosSorted.size() != 0 ) {
-            //如果记录有效，显示第一张大图
+        if (mInfosSorted != null && mInfosSorted.size() != 0) {
+            // 如果记录有效，显示第一张大图
             mRlNewest.setVisibility(View.VISIBLE);
             mRlNopic.setVisibility(View.INVISIBLE);
             ThreadManager.getUiThreadHandler().post(new Runnable() {
@@ -390,10 +440,12 @@ public class IntruderCatchedActivity extends BaseActivity {
                                 @Override
                                 public void onLoadingStarted(String imageUri, View view) {
                                 }
+
                                 @Override
                                 public void onLoadingFailed(String imageUri, View view,
                                         FailReason failReason) {
                                 }
+
                                 @Override
                                 public void onLoadingComplete(String imageUri, View view,
                                         Bitmap loadedImage) {
@@ -401,83 +453,92 @@ public class IntruderCatchedActivity extends BaseActivity {
                                     mIvNewestPhoto.setOnClickListener(new OnClickListener() {
                                         @Override
                                         public void onClick(View v) {
-                                            //点击后进入大图浏览
-                                            Intent intent = new Intent(IntruderCatchedActivity.this,
+                                            // 点击后进入大图浏览
+                                            Intent intent = new Intent(
+                                                    IntruderCatchedActivity.this,
                                                     IntruderGalleryActivity.class);
                                             intent.putExtra("current_position", 0);
-                                            SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                                            SDKWrapper.addEvent(IntruderCatchedActivity.this,
+                                                    SDKWrapper.P1,
                                                     "intruder", "intruder_view_capture");
                                             startActivity(intent);
                                         }
                                     });
-                                    //大图上面的遮盖蒙层，图标和时间
+                                    // 大图上面的遮盖蒙层，图标和时间
                                     mLlMainMask.setVisibility(view.VISIBLE);
-                                    ImageView mainIcon = (ImageView) mLlMainMask.findViewById(R.id.iv_appicon);
-                                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted.get(0).getFromAppPackage());
-                                    if(applicationIcon != null){
+                                    ImageView mainIcon = (ImageView) mLlMainMask
+                                            .findViewById(R.id.iv_appicon);
+                                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
+                                            .get(0).getFromAppPackage());
+                                    if (applicationIcon != null) {
                                         mainIcon.setImageDrawable(applicationIcon);
                                     }
-                                    TextView mainTimestamp = (TextView) mLlMainMask.findViewById(R.id.tv_timestamp);
-                                    String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(0).getTimeStamp());
+                                    TextView mainTimestamp = (TextView) mLlMainMask
+                                            .findViewById(R.id.tv_timestamp);
+                                    String timeStampToAMPM = timeStampToAMPM(mInfosSorted.get(0)
+                                            .getTimeStamp());
                                     mainTimestamp.setText(timeStampToAMPM);
                                 }
+
                                 @Override
                                 public void onLoadingCancelled(String imageUri, View view) {
                                 }
                             });
                 }
             });
-         // XX想偷看XXX的文案
+            // XX想偷看XXX的文案
             updateFirstPhotoTips();
-        }else{
-            //如果没有记录，下方就现实没有图片的默认图
+        } else {
+            // 如果没有记录，下方就现实没有图片的默认图
             mRlNewest.setVisibility(View.INVISIBLE);
             mRlNopic.setVisibility(View.VISIBLE);
         }
-        //如果记录不止一条，将显示下方的其他照片部分
+        // 如果记录不止一条，将显示下方的其他照片部分
         if (mInfosSorted.size() >= 2) {
             showOtherPhotos();
-        }else{
-        //记录只有一条，下方没有照片显示，布局的visibility改为gone
+        } else {
+            // 记录只有一条，下方没有照片显示，布局的visibility改为gone
             mLvMain.setVisibility(View.GONE);
             mTvOthers.setVisibility(View.GONE);
         }
-        //设置listView的高度
+        // 设置listView的高度
         ListAdapter listAdapter = mLvMain.getAdapter();
         if (listAdapter == null) {
             return;
         }
-        int totalHeight = DipPixelUtil.dip2px(IntruderCatchedActivity.this, 140)*listAdapter.getCount();
+        int totalHeight = DipPixelUtil.dip2px(IntruderCatchedActivity.this, 140)
+                * listAdapter.getCount();
         ViewGroup.LayoutParams params = mLvMain.getLayoutParams();
         int count = listAdapter.getCount() - 1;
-        params.height = totalHeight + (mLvMain.getDividerHeight() * count); 
+        params.height = totalHeight + (mLvMain.getDividerHeight() * count);
         mLvMain.setLayoutParams(params);
 
-        //如果记录的数量大于4,显示“更多”的按钮
+        // 如果记录的数量大于4,显示“更多”的按钮
         if (mInfosSorted.size() > 4) {
             LeoLog.i("poha", "gone or visiable ? mInfosSorted.size = " + mInfosSorted.size());
             mRvMore.setVisibility(View.VISIBLE);
             mRvMore.setOnRippleCompleteListener(new OnRippleCompleteListener() {
                 @Override
                 public void onRippleComplete(RippleView v) {
-                    //“更多”按钮点击后，将进入图片隐藏功能中的的对应相册
+                    // “更多”按钮点击后，将进入图片隐藏功能中的的对应相册
                     SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
                             "intruder", "intruder_capture_more");
                     long cc1 = System.currentTimeMillis();
                     File file = new File(mInfosSorted.get(0).getFilePath());
                     String parent = file.getParent();
                     int index = 0;
-                    mAlbumList = ((PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA)).
+                    mAlbumList = ((PrivacyDataManager) MgrContext
+                            .getManager(MgrContext.MGR_PRIVACY_DATA)).
                             getHidePicAlbum("");
-                    for(int i = 0 ; i<mAlbumList.size() ; i++){
+                    for (int i = 0; i < mAlbumList.size(); i++) {
                         String dirPath = mAlbumList.get(i).getDirPath();
-                        if(parent.equals(dirPath)){
+                        if (parent.equals(dirPath)) {
                             index = i;
                             break;
                         }
                     }
                     long cc2 = System.currentTimeMillis();
-                    LeoLog.i("catch_poha", "cc2 -cc1 :"+(cc2-cc1));
+                    LeoLog.i("catch_poha", "cc2 -cc1 :" + (cc2 - cc1));
                     try {
                         Intent intent = new Intent(IntruderCatchedActivity.this,
                                 ImageGridActivity.class);
@@ -487,20 +548,20 @@ public class IntruderCatchedActivity extends BaseActivity {
                         intent.putExtra("fromIntruderMore", true);
                         intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
                         startActivity(intent);
-//                        IntruderCatchedActivity.this.finish();
-                        LeoLog.i("catch_poha", "cc3 -cc2 :"+(System.currentTimeMillis()-cc2));
+                        // IntruderCatchedActivity.this.finish();
+                        LeoLog.i("catch_poha", "cc3 -cc2 :" + (System.currentTimeMillis() - cc2));
                     } catch (Throwable t) {
                         Intent intent = new Intent(IntruderCatchedActivity.this,
-                               ImageHideMainActivity .class);
+                                ImageHideMainActivity.class);
                         startActivity(intent);
                     }
                 }
             });
-        }else{
-            //如果没有超过4条记录，不显示“更多”按钮
+        } else {
+            // 如果没有超过4条记录，不显示“更多”按钮
             mRvMore.setVisibility(View.GONE);
         }
-        //这里让头布局获得焦点，使得每次进入界面时显示界面的上部分，解决一进入界面就聚焦在下方listview部分的问题
+        // 这里让头布局获得焦点，使得每次进入界面时显示界面的上部分，解决一进入界面就聚焦在下方listview部分的问题
         mRvHeader.setFocusable(true);
         mRvHeader.setFocusableInTouchMode(true);
         mRvHeader.requestFocus();
@@ -516,13 +577,14 @@ public class IntruderCatchedActivity extends BaseActivity {
             @Override
             public View getView(final int position, View convertView, ViewGroup parent) {
                 View view = convertView;
-                if(convertView == null) {
+                if (convertView == null) {
                     view = View.inflate(IntruderCatchedActivity.this,
                             R.layout.item_photo_in_catch, null);
                 }
                 final LinearLayout llMask = (LinearLayout) view.findViewById(R.id.ll_mask);
-                final BottomCropImage ivv = (BottomCropImage) view.findViewById(R.id.iv_intruder_more);
-                final String filePath = mInfosSorted.get(position+1).getFilePath();
+                final BottomCropImage ivv = (BottomCropImage) view
+                        .findViewById(R.id.iv_intruder_more);
+                final String filePath = mInfosSorted.get(position + 1).getFilePath();
                 ThreadManager.executeOnAsyncThread(new Runnable() {
                     @Override
                     public void run() {
@@ -538,8 +600,9 @@ public class IntruderCatchedActivity extends BaseActivity {
                                     public void onClick(View v) {
                                         Intent intent = new Intent(IntruderCatchedActivity.this,
                                                 IntruderGalleryActivity.class);
-                                        intent.putExtra("current_position", position+1);
-                                        SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                                        intent.putExtra("current_position", position + 1);
+                                        SDKWrapper.addEvent(IntruderCatchedActivity.this,
+                                                SDKWrapper.P1,
                                                 "intruder", "intruder_view_capture");
                                         startActivity(intent);
                                     }
@@ -548,14 +611,16 @@ public class IntruderCatchedActivity extends BaseActivity {
                         });
                     }
                 });
-                
+
                 PackageManager pm = getPackageManager();
                 try {
-                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted.get(position+1).getFromAppPackage());
+                    Drawable applicationIcon = AppUtil.getAppIcon(pm, mInfosSorted
+                            .get(position + 1).getFromAppPackage());
                     ImageView iv2 = (ImageView) (llMask.findViewById(R.id.iv_appicon));
                     iv2.setImageDrawable(applicationIcon);
-//                    TextView tv2 = (TextView) (llMask.findViewById(R.id.tv_timestamp));
-//                    tv2.setText(mInfosSorted.get(position+1).getTimeStamp());
+                    // TextView tv2 = (TextView)
+                    // (llMask.findViewById(R.id.tv_timestamp));
+                    // tv2.setText(mInfosSorted.get(position+1).getTimeStamp());
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -601,7 +666,7 @@ public class IntruderCatchedActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(mImageLoader != null) {
+        if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
         }
     }
