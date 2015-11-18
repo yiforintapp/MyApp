@@ -8,8 +8,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:rippleColor="@color/menu_ripple"
-        app:rippleDelayClick="false"
-        app:rippleDuration="250"
+        app:rippleDuration="150"
         app:rippleHover="true"
         app:rippleOverlay="true">
 
@@ -52,8 +51,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rippleColor="@color/menu_ripple"
-            app:rippleDelayClick="false"
-            app:rippleDuration="250"
+            app:rippleDuration="150"
             app:rippleHover="true"
             app:rippleOverlay="true">
 
@@ -76,8 +74,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:rippleColor="@color/menu_ripple"
-            app:rippleDuration="250"
-            app:rippleDelayClick="false"
+            app:rippleDuration="150"
             app:rippleHover="true"
             app:rippleOverlay="true">
 

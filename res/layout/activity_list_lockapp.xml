@@ -20,8 +20,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             app:rippleColor="@color/menu_ripple"
-            app:rippleDelayClick="false"
-            app:rippleDuration="250"
+            app:rippleDuration="150"
             app:rippleHover="true"
             app:rippleOverlay="true">
 
