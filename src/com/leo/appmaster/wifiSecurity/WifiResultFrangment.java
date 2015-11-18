@@ -159,7 +159,7 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
                 public void onMobvistaFinished(int code, final Campaign campaign, String msg) {
                     if (code == MobvistaEngine.ERR_OK) {
                         sAdImageListener = new AdPreviewLoaderListener(WifiResultFrangment.this, campaign);
-                        ImageLoader.getInstance().loadImage(campaign.getIconUrl(), sAdImageListener);
+                        ImageLoader.getInstance().loadImage(campaign.getImageUrl(), sAdImageListener);
                     }
                 }
 
