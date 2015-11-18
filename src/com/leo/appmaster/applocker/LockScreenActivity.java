@@ -1221,7 +1221,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
     }
     
     private void bannerHideAnim() {
-        if (mBannerContainer.getChildCount() > 2) {
+        if (mBannerContainer.getChildCount() >= 2) {
             mBannerContainer.setCurrentItem(0, true);
         }
     }
@@ -2181,7 +2181,10 @@ public class LockScreenActivity extends BaseFragmentActivity implements
         // 实现ViewPager.OnPageChangeListener接口
         @Override
         public void onPageSelected(int position) {
-
+            LeoLog.i("onPageSelected","position="+position);
+            if (position == 0) {
+                mHandler.removeMessages(LARGE_BANNER_HIDE);
+            }
         }
 
         @Override
