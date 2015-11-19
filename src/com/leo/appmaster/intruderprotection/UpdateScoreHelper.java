@@ -10,6 +10,8 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.TextView;
 
 
@@ -29,6 +31,7 @@ public class UpdateScoreHelper {
         PropertyValuesHolder holder = PropertyValuesHolder.ofInt("text11",scores);
         final ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(tvScore, holder);
         animator.setDuration(600);
+        animator.setInterpolator(new DecelerateInterpolator());
         animator.addUpdateListener(new AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator arg0) {

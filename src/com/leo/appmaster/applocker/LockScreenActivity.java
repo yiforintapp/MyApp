@@ -24,9 +24,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.Config;
-import android.graphics.BitmapFactory;
-import android.graphics.BitmapFactory.Options;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
@@ -61,7 +58,6 @@ import android.view.animation.Animation.AnimationListener;
 import android.view.animation.RotateAnimation;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -342,7 +338,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             //旋转原始bitmap到正确的方向
                             Matrix m = new Matrix();
                             int orientation = view.getCameraOrientation();
-                            LeoLog.i("poha", "got orientation = "+orientation);
+                            LeoLog.i("poha", "got orientation = " + orientation);
                             m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
                             bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth() , bitmapt.getHeight() , m, true);
                             String timeStamp = new SimpleDateFormat( Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT) .format(new Date());
