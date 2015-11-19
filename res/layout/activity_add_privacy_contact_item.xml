@@ -1,10 +1,20 @@
-<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<com.leo.appmaster.ui.RippleView1 xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/messageRT"
     android:layout_width="match_parent"
-    android:background="@drawable/home_tab_selector"
     android:layout_height="68dp"
-    android:gravity="center_vertical">
+    android:gravity="center_vertical"
+    app:rippleAlpha="1"
+    app:rippleColor="@color/home_tab_pressed"
+    app:rippleDuration="250"
+    app:rippleHover="true"
+    app:rippleInAdapter="true"
+    app:rippleOverlay="false">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/new_list_selecter">
 
     <TextView
         android:id="@+id/add_from_contact_sort_letter"
@@ -30,7 +40,7 @@
         android:layout_below="@id/add_from_contact_sort_letter"
         android:layout_centerVertical="true"
         android:layout_marginLeft="15dp"
-        android:layout_toRightOf="@id/contactIV" >
+        android:layout_toRightOf="@id/contactIV">
 
         <LinearLayout
             android:id="@+id/contact_itemLT"
@@ -38,17 +48,17 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginRight="40dp"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/contact_item_nameTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17dp"
-                android:singleLine="true"
                 android:ellipsize="end"
+                android:singleLine="true"
                 android:text="理奥网络"
-                android:textColor="#333333" />
+                android:textColor="#333333"
+                android:textSize="17dp" />
 
             <TextView
                 android:id="@+id/contact_item_numberTV"
@@ -58,8 +68,8 @@
                 android:ellipsize="end"
                 android:singleLine="true"
                 android:text="2014/09/01"
-                android:textSize="13dp"
-                android:textColor="#9b9b9b" />
+                android:textColor="#9b9b9b"
+                android:textSize="13dp" />
         </LinearLayout>
 
         <ImageView
@@ -70,12 +80,13 @@
             android:layout_centerVertical="true"
             android:layout_marginLeft="29dp"
             android:layout_marginRight="12dp"
-            android:src="@drawable/unselect" >
-        </ImageView>
+            android:src="@drawable/unselect"/>
     </RelativeLayout>
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@id/cantact_content"
         android:background="@color/c5" />
-</com.leo.appmaster.ui.RippleView>
+    </RelativeLayout>
+</com.leo.appmaster.ui.RippleView1>
