@@ -111,7 +111,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_gravity="right|bottom"
-        android:layout_marginRight="37dp"
+        android:layout_marginRight="47dp"
         android:src="@drawable/grade_gesture" />
 
 </FrameLayout>

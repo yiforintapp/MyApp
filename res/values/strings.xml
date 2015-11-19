@@ -864,6 +864,7 @@
     <string name="feedback_tell_us_contact_type_3">Wechat:+86 15915881391</string>
     <string name="feedback_tell_us_contact_type_4">Skype:cmenglan</string>
     <string name="feedback_tell_us_contact_type_5">Facebook:LEO Privacy Guard/LEO Privacy Guard Q"&amp;"A </string>
+    <string name="dialog_fivestars_content_text">觉得还不错？请给我们5星吧！</string>
 
     <string name="change_wifi_toast_title">WiFi:%1$s</string>
     <string name="elect_empty_content">抱歉，暂未获取到电池信息</string>

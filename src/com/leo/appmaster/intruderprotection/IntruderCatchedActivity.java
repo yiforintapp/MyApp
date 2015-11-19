@@ -152,51 +152,8 @@ public class IntruderCatchedActivity extends BaseActivity {
         updateCatchTimes();
         // 更新抓拍所需的解锁失败次数
         updateTimesToCatch();
-
-        showFiveStarsAnim();
     }
 
-    private void showFiveStarsAnim() {
-//        final ImageView v1 = (ImageView) mRlFiveStars.findViewById(R.id.star1);
-//        final ImageView v2 = (ImageView) mRlFiveStars.findViewById(R.id.star2);
-//        final ImageView v3 = (ImageView) mRlFiveStars.findViewById(R.id.star3);
-//        final ImageView v4 = (ImageView) mRlFiveStars.findViewById(R.id.star4);
-//        final ImageView v5 = (ImageView) mRlFiveStars.findViewById(R.id.star5);
-//
-//        PropertyValuesHolder alpha = PropertyValuesHolder.ofFloat("alpha", 0.2f, 0.4f, 0.6f, 0.8f, 1.0f);
-//        PropertyValuesHolder translateX = PropertyValuesHolder.ofFloat("alpha", 0.2f, 0.4f, 0.6f, 0.8f, 1.0f);
-//        
-//        PropertyValuesHolder holder = PropertyValuesHolder.ofInt("text11", 1, 2, 3, 4, 5);
-//        final ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(mRlFiveStars, holder);
-//        animator.setDuration(2500);
-//        animator.addUpdateListener(new AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator arg0) {
-//                int animatedValue = (Integer) arg0.getAnimatedValue();
-//                switch (animatedValue) {
-//                    case 1:
-//                        v1.setImageResource(R.drawable.star_full);
-//                        break;
-//                    case 2:
-//                        v2.setImageResource(R.drawable.star_full);
-//                        break;
-//                    case 3:
-//                        v3.setImageResource(R.drawable.star_full);
-//                        break;
-//                    case 4:
-//                        v4.setImageResource(R.drawable.star_full);
-//                        break;
-//                    case 5:
-//                        v5.setImageResource(R.drawable.star_full_last);
-//                        break;
-//                    default:
-//                        break;
-//                }
-//            }
-//        });
-        FiveStarsLayout fsl = (FiveStarsLayout) findViewById(R.id.fsl_fivestars);
-        fsl.showStarAnimation();
-    }
 
     /**
      * 更新总的抓拍次数

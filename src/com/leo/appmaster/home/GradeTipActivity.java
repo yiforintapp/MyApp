@@ -30,7 +30,6 @@ public class GradeTipActivity extends BaseActivity implements OnClickListener {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.layout_show_googleplay_tip);
         FiveStarsLayout fivestars = (FiveStarsLayout) findViewById(R.id.fsl_fivestars);
-        fivestars.showStarAnimation();
         mTvMakeSure = (TextView) findViewById(R.id.tv_make);
         mFeedbackSure = (TextView) findViewById(R.id.tv_feedback);
         mFeedbackSure.setOnClickListener(this);
