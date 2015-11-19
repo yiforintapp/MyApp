@@ -71,7 +71,6 @@ public class RippleView1 extends RelativeLayout {
 
     private AdapterView parentAdapter;
     private View childView;
-
     private AnimatorSet rippleAnimator;
     private ObjectAnimator hoverAnimator;
 
@@ -93,14 +92,17 @@ public class RippleView1 extends RelativeLayout {
 
     public RippleView1(Context context) {
         this(context, null, 0);
+        childView = this;
     }
 
     public RippleView1(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
+        childView = this;
     }
 
     public RippleView1(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        childView = this;
 
         setWillNotDraw(false);
         gestureDetector = new GestureDetector(context, longClickListener);
@@ -142,10 +144,10 @@ public class RippleView1 extends RelativeLayout {
     }
 
 
-    @SuppressWarnings("unchecked")
-    public <T extends View> T getChildView() {
-        return (T) childView;
-    }
+//    @SuppressWarnings("unchecked")
+//    public <T extends View> T getChildView() {
+//        return (T) childView;
+//    }
 
     @Override
     public final void addView(View child, int index, ViewGroup.LayoutParams params) {
@@ -157,13 +159,16 @@ public class RippleView1 extends RelativeLayout {
         super.addView(child, index, params);
     }
 
+    OnClickListener listener;
+
     @Override
     public void setOnClickListener(OnClickListener onClickListener) {
 //        if (childView == null) {
 //            throw new IllegalStateException("MaterialRippleLayout must have a child view to handle clicks");
 //        }
-        childView.setOnClickListener(onClickListener);
+//        childView.setOnClickListener(onClickListener);
 //        super.setOnClickListener(onClickListener);
+        listener = onClickListener;
     }
 
 
@@ -211,7 +216,7 @@ public class RippleView1 extends RelativeLayout {
                         setRadius(0);
                     }
                     if (!rippleDelayClick && isEventInBounds) {
-                        LeoLog.d("testclick","is click right now");
+                        LeoLog.d("testclick", "is click right now");
                         pendingClickEvent.run();
                     }
                     cancelPressedEvent();
@@ -313,7 +318,7 @@ public class RippleView1 extends RelativeLayout {
                     setRippleAlpha(rippleAlpha);
                 }
                 if (animationEndRunnable != null && rippleDelayClick) {
-                    LeoLog.d("testclick","startRipple click");
+                    LeoLog.d("testclick", "startRipple click");
                     animationEndRunnable.run();
                 }
                 childView.setPressed(false);
@@ -567,7 +572,8 @@ public class RippleView1 extends RelativeLayout {
                 clickAdapterView(findParentAdapterView());
             } else {
                 // otherwise, just perform click on child
-                childView.performClick();
+//                childView.performClick();
+                listener.onClick(RippleView1.this);
             }
         }
 
