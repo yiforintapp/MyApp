@@ -286,16 +286,16 @@ public class AppUtil {
         }
     }
 
-    public static int getScreenPix(Context context) {
-        context = context.getApplicationContext();
-        DisplayMetrics mDisplayMetrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(mDisplayMetrics);
-        int width = mDisplayMetrics.widthPixels;
-        int height = mDisplayMetrics.heightPixels;
-        LeoLog.i(TAG, "分辨率：" + (width + "*" + height));
-        return width * height;
-    }
+//    public static int getScreenPix(Context context) {
+//        context = context.getApplicationContext();
+//        DisplayMetrics mDisplayMetrics = new DisplayMetrics();
+//        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+//        windowManager.getDefaultDisplay().getMetrics(mDisplayMetrics);
+//        int width = mDisplayMetrics.widthPixels;
+//        int height = mDisplayMetrics.heightPixels;
+//        LeoLog.i(TAG, "分辨率：" + (width + "*" + height));
+//        return width * height;
+//    }
 
     /**
      * 分享图片
@@ -337,12 +337,16 @@ public class AppUtil {
      * @param onePath
      * @return
      */
-    public static Bitmap add2Bitmap(String onePath, int id) {
+    public static Bitmap add2Bitmap(Context context,String onePath, int id) {
         /*图片1*/
         BitmapFactory.Options optionOne = new BitmapFactory.Options();
         optionOne.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(onePath, optionOne);
-        optionOne.inSampleSize = computeSampleSize(optionOne, -1, getScreenPix(AppMasterApplication.getInstance()));
+//        optionOne.inSampleSize = computeSampleSize(optionOne, -1, getScreenPix(AppMasterApplication.getInstance()));
+        int[] pix = AppUtil.getScreenPix(context);
+        int width = pix[0];
+        int height = pix[1];
+        optionOne.inSampleSize = AppUtil.calculateInSampleSize(optionOne, width, height);
         optionOne.inJustDecodeBounds = false;
         Bitmap oneImage = BitmapFactory.decodeFile(onePath, optionOne);
         /*图片2*/
@@ -353,6 +357,7 @@ public class AppUtil {
         float oneScaleX = SPL_SHARE_SCALE_X;
         matrix.postScale(oneScaleX, oneScaleY);
         /*缩放图1*/
+        //x + width must be <= bitmap.width()
         oneImage = Bitmap.createBitmap(oneImage, 0, 0, oneImage.getWidth(), oneImage.getHeight(), matrix, true);
          /*创建拼接Bitmap*/
         int resultWidth = oneImage.getWidth();
@@ -386,5 +391,34 @@ public class AppUtil {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /*计算InSampleSize*/
+    public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+            while ((halfHeight / inSampleSize) > reqHeight
+                    && (halfWidth / inSampleSize) > reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
+    }
+    /*屏幕宽,高*/
+    public static int[] getScreenPix(Context context) {
+        int[] pix = new int[2];
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        pix[0] = width;
+        int height = displayMetrics.heightPixels;
+        pix[1] = height;
+        return pix;
     }
 }

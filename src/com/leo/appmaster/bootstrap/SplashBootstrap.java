@@ -11,6 +11,7 @@ import java.util.TimerTask;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
@@ -370,10 +371,10 @@ public class SplashBootstrap extends Bootstrap {
             public void onResponse(File response, boolean noMidify) {
                 pref.setLastLoadSplashTime(System.currentTimeMillis());
                 /*下载成功后生成二维码图保存*/
-                boolean isSaveShare = shareSplashImage();
+                boolean isSaveShare = shareSplashImage(AppMasterApplication.getInstance());
                 /*如果保存失败尝试再次保存一次*/
                 if (!isSaveShare) {
-                    shareSplashImage();
+                    shareSplashImage(AppMasterApplication.getInstance());
                 }
             }
         }, new ErrorListener() {
@@ -402,14 +403,14 @@ public class SplashBootstrap extends Bootstrap {
     }
 
     /*生成闪屏分享图片*/
-    private static boolean shareSplashImage() {
+    private static boolean shareSplashImage(Context context) {
         String path = FileOperationUtil.getSplashPath();
         StringBuilder sb = new StringBuilder(path);
         sb.append(Constants.SPLASH_NAME);
         if (Utilities.isEmpty(sb.toString())) {
             return false;
         }
-        Bitmap result = AppUtil.add2Bitmap(sb.toString(), R.drawable.spl_share_qr);
+        Bitmap result = AppUtil.add2Bitmap(context,sb.toString(), R.drawable.spl_share_qr);
         StringBuilder sbShar = new StringBuilder(path);
         sbShar.append(Constants.SPL_SHARE_QR_NAME);
         boolean isOutPutSuc = AppUtil.outPutImage(sbShar.toString(), result);

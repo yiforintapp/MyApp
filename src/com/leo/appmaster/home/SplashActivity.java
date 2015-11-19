@@ -10,6 +10,7 @@ import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,11 +25,13 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
 import android.support.v4.widget.EdgeEffectCompat;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -46,6 +49,7 @@ import com.leo.appmaster.bootstrap.SplashBootstrap;
 import com.leo.appmaster.eventbus.LeoEventBus;
 import com.leo.appmaster.eventbus.event.AppUnlockEvent;
 import com.leo.appmaster.mgr.LockManager;
+import com.leo.appmaster.phoneSecurity.PhoneSecurityUtils;
 import com.leo.appmaster.privacy.PrivacyHelper;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -277,14 +281,17 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
             option.inInputShareable = true;
             BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
             // scale for hdpi, mdpi and ldpi
-            if (option.inTargetDensity < 125) {
-                option.inTargetDensity = option.inTargetDensity - 40;
-            } else if (option.inTargetDensity < 165) {
-                option.inTargetDensity = option.inTargetDensity - 40;
-            } else if (option.inTargetDensity < 245) {
-                option.inTargetDensity = option.inTargetDensity - 40;
-            }
-
+//            if (option.inTargetDensity < 125) {
+//                option.inTargetDensity = option.inTargetDensity - 40;
+//            } else if (option.inTargetDensity < 165) {
+//                option.inTargetDensity = option.inTargetDensity - 40;
+//            } else if (option.inTargetDensity < 245) {
+//                option.inTargetDensity = option.inTargetDensity - 40;
+//            }
+            int[] pix = AppUtil.getScreenPix(this);
+            int width = pix[0];
+            int height = pix[1];
+            option.inSampleSize = AppUtil.calculateInSampleSize(option, width, height);
             option.inJustDecodeBounds = false;
             try {
                 splash = BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
