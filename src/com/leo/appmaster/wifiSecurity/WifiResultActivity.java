@@ -14,13 +14,13 @@ import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.home.HomeColor;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.OneButtonDialog;
 
 /**
  * Created by qili on 15-10-21.
  */
-public class WifiResultActivity extends BaseActivity implements View.OnClickListener, RippleView.OnRippleCompleteListener {
+public class WifiResultActivity extends BaseActivity implements View.OnClickListener {
     private static final int UNSAFEPAGE = 1;
     private static final int SAFEPAGE = 2;
     private Shader mBgShader;
@@ -32,7 +32,7 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
     private ImageView mOneLoad, mTwoLoad, mThreeLoad, mFourLoad;
     private OneButtonDialog selectWifiDialog;
     private Pair<Integer, Integer> mColorPair;
-    private RippleView mProcessBtn, mOtherWifiBtn;
+    private RippleView1 mProcessBtn, mOtherWifiBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,10 +129,10 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
         }
 
 
-        mProcessBtn = (RippleView) findViewById(R.id.wifi_resulte_sure);
-        mProcessBtn.setOnRippleCompleteListener(this);
-        mOtherWifiBtn = (RippleView) findViewById(R.id.wifi_resulte_other_wifi);
-        mOtherWifiBtn.setOnRippleCompleteListener(this);
+        mProcessBtn = (RippleView1) findViewById(R.id.wifi_resulte_sure);
+        mProcessBtn.setOnClickListener(this);
+        mOtherWifiBtn = (RippleView1) findViewById(R.id.wifi_resulte_other_wifi);
+        mOtherWifiBtn.setOnClickListener(this);
     }
 
     public Pair<Integer, Integer> getColorPairByScore(int score) {
@@ -174,29 +174,18 @@ public class WifiResultActivity extends BaseActivity implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.wifi_result_sure_text:
-//                Intent intent = new Intent(WifiResultActivity.this, FlowActivity.class);
-//                WifiResultActivity.this.startActivity(intent);
+                mLockManager.filterSelfOneMinites();
+                Intent intent = new Intent(WifiResultActivity.this, FlowActivity.class);
+                WifiResultActivity.this.startActivity(intent);
                 break;
             case R.id.wifi_recomment_lock:
-//                Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-//                startActivity(wifiIntent);
+                mLockManager.filterSelfOneMinites();
+                Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                try {
+                    startActivity(wifiIntent);
+                } catch (Exception e) {
+                }
                 break;
-        }
-    }
-
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        if (mProcessBtn == rippleView) {
-            mLockManager.filterSelfOneMinites();
-            Intent intent = new Intent(WifiResultActivity.this, FlowActivity.class);
-            WifiResultActivity.this.startActivity(intent);
-        } else if (mOtherWifiBtn == rippleView) {
-            mLockManager.filterSelfOneMinites();
-            Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-            try {
-                startActivity(wifiIntent);
-            } catch (Exception e) {
-            }
         }
     }
 }

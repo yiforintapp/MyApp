@@ -170,7 +170,7 @@
                             android:textSize="14dp" />
                     </RelativeLayout>
 
-                    <com.leo.appmaster.ui.RippleView
+                    <com.leo.appmaster.ui.RippleView1
                         android:id="@+id/wifi_resulte_sure"
                         android:layout_width="300dp"
                         android:layout_height="40dp"
@@ -179,7 +179,10 @@
                         android:layout_marginTop="15dp"
                         android:background="@drawable/green_radius_btn_shape"
                         android:clickable="true"
-                        ripple:rv_color="@color/green_button_ripple">
+                        ripple:rippleColor="@color/green_button_ripple"
+                        ripple:rippleDuration="250"
+                        ripple:rippleHover="true"
+                        ripple:rippleOverlay="true">
 
                         <TextView
                             android:id="@+id/wifi_result_sure_text"
@@ -189,7 +192,7 @@
                             android:text="@string/wifi_scan_result_use_now"
                             android:textColor="@color/white"
                             android:textSize="16dp" />
-                    </com.leo.appmaster.ui.RippleView>
+                    </com.leo.appmaster.ui.RippleView1>
                 </RelativeLayout>
                 <!-- safe content-->
 
@@ -374,14 +377,17 @@
             android:layout_below="@id/view_line"
             android:gravity="center">
 
-            <com.leo.appmaster.ui.RippleView
+            <com.leo.appmaster.ui.RippleView1
                 android:id="@+id/wifi_resulte_other_wifi"
                 android:layout_width="210dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/green_radius_btn_shape"
                 android:clickable="true"
-                ripple:rv_color="@color/green_button_ripple">
+                ripple:rippleColor="@color/green_button_ripple"
+                ripple:rippleDuration="250"
+                ripple:rippleHover="true"
+                ripple:rippleOverlay="true">
 
                 <TextView
                     android:id="@+id/wifi_recomment_lock"
@@ -391,7 +397,7 @@
                     android:text="@string/select_other_wifi"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
-            </com.leo.appmaster.ui.RippleView>
+            </com.leo.appmaster.ui.RippleView1>
         </RelativeLayout>
     </RelativeLayout>
     <!-- un safe bottomcontent-->

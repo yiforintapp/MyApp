@@ -573,7 +573,9 @@ public class RippleView1 extends RelativeLayout {
             } else {
                 // otherwise, just perform click on child
 //                childView.performClick();
-                listener.onClick(RippleView1.this);
+                if (listener != null) {
+                    listener.onClick(RippleView1.this);
+                }
             }
         }
 

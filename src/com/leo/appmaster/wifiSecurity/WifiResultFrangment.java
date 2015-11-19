@@ -27,9 +27,8 @@ import com.leo.appmaster.applocker.manager.MobvistaEngine.MobvistaListener;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.WifiSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
@@ -40,13 +39,13 @@ import com.mobvista.sdk.m.core.entity.Campaign;
 /**
  * Created by qili on 15-10-27.
  */
-public class WifiResultFrangment extends Fragment implements RippleView.OnRippleCompleteListener {
+public class WifiResultFrangment extends Fragment implements View.OnClickListener {
     private Dictionary<Integer, Integer> listViewItemHeights = new Hashtable<Integer, Integer>();
     private WifiSecurityActivity mActivity;
     private View mRootView, mSafeView, mUnsafeView, mBottomView;
     private View mPingView;
     private View mUnsafeViewBottom;
-    private RippleView mTrafficBtn, mOtherWifiBtn;
+    private RippleView1 mTrafficBtn, mOtherWifiBtn;
     protected LockManager mLockManager;
     private boolean mZeroLoadState, mOneLoadState, mTwoLoadState, mThridLoadState, mFourLoadState;
     private ImageView mOneImg, mTwoImg, mThreeImg, mFourImg;
@@ -97,10 +96,10 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
 
         mBottomView = mRootView.findViewById(R.id.wifi_below_view_recomment);
 
-        mTrafficBtn = (RippleView) mRootView.findViewById(R.id.wifi_resulte_sure);
-        mTrafficBtn.setOnRippleCompleteListener(this);
-        mOtherWifiBtn = (RippleView) mRootView.findViewById(R.id.wifi_resulte_other_wifi);
-        mOtherWifiBtn.setOnRippleCompleteListener(this);
+        mTrafficBtn = (RippleView1) mRootView.findViewById(R.id.wifi_resulte_sure);
+        mTrafficBtn.setOnClickListener(this);
+        mOtherWifiBtn = (RippleView1) mRootView.findViewById(R.id.wifi_resulte_other_wifi);
+        mOtherWifiBtn.setOnClickListener(this);
 
         mPingView = mUnsafeView.findViewById(R.id.unsafe_ping_result);
         mOneImg = (ImageView) mUnsafeView.findViewById(R.id.unsafe_wifi_is_connect_icon);
@@ -111,6 +110,28 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
         loadAd(mRootView);
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.wifi_resulte_sure:
+                Intent intent = new Intent(mActivity, FlowActivity.class);
+                mActivity.startActivity(intent);
+                SDKWrapper.addEvent(mActivity,
+                        SDKWrapper.P1, "wifi_rst", "wifi_rst_safe_dataflow");
+                break;
+            case R.id.wifi_resulte_other_wifi:
+                mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+                Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+                try {
+                    startActivity(wifiIntent);
+                } catch (Exception e) {
+                }
+                SDKWrapper.addEvent(mActivity,
+                        SDKWrapper.P1, "wifi_rst", "wifi_rst_risk_other");
+                break;
+        }
+    }
+
     /**
      * 新需求：当广告大图加载完成之后再展示广告
      */
@@ -118,7 +139,7 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
         WeakReference<WifiResultFrangment> mFragment;
         Campaign mCampaign;
 
-        public AdPreviewLoaderListener (WifiResultFrangment fragment, final Campaign campaign) {
+        public AdPreviewLoaderListener(WifiResultFrangment fragment, final Campaign campaign) {
             mFragment = new WeakReference<WifiResultFrangment>(fragment);
             mCampaign = campaign;
         }
@@ -148,6 +169,7 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
 
         }
     }
+
     private static AdPreviewLoaderListener sAdImageListener;
 
     private void loadAd(final View rootView) {
@@ -258,22 +280,22 @@ public class WifiResultFrangment extends Fragment implements RippleView.OnRipple
         }
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        if (mTrafficBtn == rippleView) {
-//            mLockManager.filterPackage(mActivity.getPackageName(), 1000);
-            Intent intent = new Intent(mActivity, FlowActivity.class);
-            mActivity.startActivity(intent);
-            SDKWrapper.addEvent(mActivity,
-                    SDKWrapper.P1, "wifi_rst", "wifi_rst_safe_dataflow");
-        } else if (mOtherWifiBtn == rippleView) {
-            Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
-            try {
-                startActivity(wifiIntent);
-            } catch (Exception e) {
-            }
-            SDKWrapper.addEvent(mActivity,
-                    SDKWrapper.P1, "wifi_rst", "wifi_rst_risk_other");
-        }
-    }
+//    @Override
+//    public void onRippleComplete(RippleView rippleView) {
+//        if (mTrafficBtn == rippleView) {
+////            mLockManager.filterPackage(mActivity.getPackageName(), 1000);
+//            Intent intent = new Intent(mActivity, FlowActivity.class);
+//            mActivity.startActivity(intent);
+//            SDKWrapper.addEvent(mActivity,
+//                    SDKWrapper.P1, "wifi_rst", "wifi_rst_safe_dataflow");
+//        } else if (mOtherWifiBtn == rippleView) {
+//            Intent wifiIntent = new Intent(Settings.ACTION_WIFI_SETTINGS);
+//            try {
+//                startActivity(wifiIntent);
+//            } catch (Exception e) {
+//            }
+//            SDKWrapper.addEvent(mActivity,
+//                    SDKWrapper.P1, "wifi_rst", "wifi_rst_risk_other");
+//        }
+//    }
 }
