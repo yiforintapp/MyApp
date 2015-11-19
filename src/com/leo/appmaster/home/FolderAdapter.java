@@ -165,33 +165,8 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         return super.getGroupType(groupPosition);
     }
 
-    public Object getFirstVisibleGroup(int firstVisibleItem) {
-        int index = 0;
-        for (int i = 0; i < getGroupCount(); i++) {
-            int rowCount = getChildrenCount(i) / 3;
-            rowCount += getChildrenCount(i) % 3 != 0 ? 1 : 0;
-            index += rowCount + 1;
-            if (firstVisibleItem <= index) {
-                return getGroup(i);
-            }
-        }
-
-        return null;
-    }
-
-    public int getFirstVisibleGroupPosition(int firstVisibleItem) {
-        int index = 0;
-        for (int i = 0; i < getGroupCount(); i++) {
-            int rowCount = getChildrenCount(i) / 3;
-            rowCount += getChildrenCount(i) % 3 != 0 ? 1 : 0;
-            index += rowCount + 1;
-            if (firstVisibleItem <= index) {
-                return i;
-            }
-        }
-
-        return 0;
-    }
+    public abstract Object getFirstVisibleGroup(int firstVisibleItem);
+    public abstract int getFirstVisibleGroupPosition(int firstVisibleItem);
 
     public int getGroupPosition(T data) {
         for (int i = 0; i <= getGroupCount(); i++) {

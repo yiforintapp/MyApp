@@ -18,7 +18,14 @@
         android:layout_marginTop="@dimen/pri_pro_header"
         android:background="@color/white" />
 
-    <com.leo.appmaster.ui.FloatingExpandableListView
+    <View
+        android:id="@+id/pri_offset_bg"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/pri_pro_header"
+        android:background="@color/white" />
+
+    <ExpandableListView
         android:id="@+id/floating_video_lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

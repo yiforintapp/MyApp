@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ui.ExpandableGridView;
+import com.leo.appmaster.ui.FloatingExpandableListView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.utils.LeoLog;
@@ -76,7 +77,7 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mListView = (ExpandableGridView) view.findViewById(getListViewId());
+        mListView = (ExpandableListView) view.findViewById(getListViewId());
         mListView.addHeaderView(getEmptyHeader());
         mListView.setAdapter(mAdapter);
         mAdapter.setList(mDataList);
@@ -117,10 +118,6 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         View c = view.getChildAt(0); //this is the first visible row
         if (c == null) return;
 
-        int listHeight = view.getHeight();
-        int listTop = view.getTop();
-        LeoLog.i(TAG, "onScroll, listHeight: " + listHeight + " | listTop: " + listTop +
-                " | viewTop: " + c.getTop());
         int scrollY = -c.getTop();
         mItemHeights.put(view.getFirstVisiblePosition(), c.getHeight());
         for (int i = 0; i < view.getFirstVisiblePosition(); ++i) {

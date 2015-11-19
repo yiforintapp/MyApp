@@ -174,4 +174,32 @@ public class FolderVidAdapter extends FolderAdapter<VideoItemBean> {
         return false;
     }
 
+    @Override
+    public Object getFirstVisibleGroup(int firstVisibleItem) {
+        int index = 0;
+        for (int i = 0; i < getGroupCount(); i++) {
+            int rowCount = getChildrenCount(i) / 3;
+            rowCount += getChildrenCount(i) % 3 != 0 ? 1 : 0;
+            index += rowCount + 1;
+            if (firstVisibleItem <= index) {
+                return getGroup(i);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public int getFirstVisibleGroupPosition(int firstVisibleItem) {
+        int index = 0;
+        for (int i = 0; i < getGroupCount(); i++) {
+            int rowCount = getChildrenCount(i);
+            index += rowCount + 1;
+            if (firstVisibleItem <= index) {
+                return i;
+            }
+        }
+
+        return 0;
+    }
 }
