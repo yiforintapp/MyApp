@@ -28,6 +28,7 @@ import android.widget.RemoteViews;
 
 import com.leo.appmaster.AppMasterConfig;
 import com.leo.appmaster.AppMasterPreference;
+import com.leo.appmaster.Constants;
 import com.leo.appmaster.PhoneInfo;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -444,7 +445,7 @@ public class TaskDetectService extends Service {
                         if (pkgList != null && pkgList.length > 0) {
                             int index = 0;
                             pkgName = pkgList[index];
-                            if (SYSTEMUI_PKG.equals(pkgName)) {
+                            if (SYSTEMUI_PKG.equals(pkgName) || Constants.ISWIPE_PACKAGE.equals(pkgName)) {
                                 continue;
                             }
                             if (HTC_USAGE.equals(pkgName)) {
@@ -517,7 +518,7 @@ public class TaskDetectService extends Service {
                                 String pkgList[] = pi.pkgList;
                                 if (pkgList != null && pkgList.length > 0) {
                                     pkgName = pkgList[0];
-                                    if (SYSTEMUI_PKG.equals(pkgName)) {
+                                    if (SYSTEMUI_PKG.equals(pkgName)  || Constants.ISWIPE_PACKAGE.equals(pkgName)) {
                                         continue;
                                     }
                                     if (Utilities.isEmpty(activityName)) {

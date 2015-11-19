@@ -37,6 +37,7 @@ public class DetectThreadCompat extends Thread {
     private static final int WAIT_DOUBLE_CHECK_TIMEOUT = 200;
     private static final int WAIT_NOT_FOUND_TIMEOUT = 100;
     private static final int MAX_DOUBLE_CHECK_COUNT = 10;
+    private static final int WAIT_IGNORE_PKG = 200;
     
     private static final int MAX_NOT_FOUND_COUNT = 5;
     public static final boolean DBG = true;
@@ -113,6 +114,18 @@ public class DetectThreadCompat extends Thread {
 
             // 加锁app列表里是否包含oom_adj为0的app
             ProcessAdj needToListenAdj = findNeedToLockAndListenApp(detector);
+            if (needToListenAdj != null && Constants.ISWIPE_PACKAGE.equals(needToListenAdj.pkg)) {
+                synchronized (this) {
+                    try {
+                        wait(WAIT_IGNORE_PKG);
+                    } catch (InterruptedException e) {
+                        // 收到一个interrupt
+                        break;
+                    }
+                }
+                // 如果是iswipe，忽略此次检查
+                continue;
+            }
             mForegroundAdj = needToListenAdj;
             
             if (needToListenAdj != null) {

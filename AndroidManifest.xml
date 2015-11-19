@@ -785,6 +785,16 @@
                 <action android:name="com.leo.appmaster.action.SCHEDULE" />
             </intent-filter>
         </receiver>
+        <!-- 打开swifty接收的广播，暂时注释，有用时再打开 -->
+        <!--<receiver
+            android:name=".applocker.gesture.OpenSwityReceiver"
+            android:enabled="true"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="com.leo.iswipe.openiswipe" />
+            </intent-filter>
+        </receiver>-->
+
 
         <service
             android:name=".mgr.service.IpcRequestService"
