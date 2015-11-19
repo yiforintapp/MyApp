@@ -186,7 +186,7 @@
         android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/layout_right"
         android:gravity="center"
-        android:visibility="visible">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/icon_ad_layout"
