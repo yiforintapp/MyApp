@@ -22,10 +22,12 @@
     <ImageView
         android:id="@+id/swifty_img"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="133dp"
         android:layout_below="@+id/item_header_ll"
         android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"
+        android:src="@drawable/swifty_banner"
+        android:scaleType="centerCrop"
         />
 
     <TextView
@@ -38,7 +40,8 @@
         android:textSize="14dp"
         android:layout_alignLeft="@+id/swifty_img"
         android:layout_alignRight="@+id/swifty_img"
-        android:layout_below="@+id/swifty_img"/>
+        android:layout_below="@+id/swifty_img"
+        android:text="@string/first_open_quick_gesture_dialog_tip_cotent"/>
 
 
 

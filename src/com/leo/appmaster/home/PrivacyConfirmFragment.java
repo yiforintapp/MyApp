@@ -17,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -121,6 +122,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private ImageView mHighFiveStar;
     private ImageView mHighGradeGesture;
     private RippleView mHighGradeBtnLt;
+    private FrameLayout mHighGrageFrame;
 
     private ImageView mOneStar;
     private ImageView mTwoStar;
@@ -129,6 +131,7 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
     private ImageView mFiveStar;
     private ImageView mGradeGesture;
     private RippleView mGradeBtnLt;
+    private FrameLayout mGrageFrame;
 
     /**前往FaceBook*/
     private RippleView mFbBtnLt;
@@ -780,9 +783,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
     public DisplayImageOptions getSwiftyOptions() {  //需要提供默认图
         DisplayImageOptions options = new DisplayImageOptions.Builder()
-                .showImageOnLoading(R.drawable.ic_launcher)
-                .showImageForEmptyUri(R.drawable.ic_launcher)
-                .showImageOnFail(R.drawable.ic_launcher)
+                .showImageOnLoading(R.drawable.swifty_banner)
+                .showImageForEmptyUri(R.drawable.swifty_banner)
+                .showImageOnFail(R.drawable.swifty_banner)
                 .cacheInMemory(true)
                 .cacheOnDisk(true)
                 .considerExifParams(true)
@@ -807,13 +810,19 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         if (score == 100) {  // 等于100分
 
             mHighOneStar = (ImageView) highInclude.findViewById(R.id.one_star);
-            mTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
-            mThreeStar = (ImageView) highInclude.findViewById(R.id.three_star);
-            mFourStar = (ImageView) highInclude.findViewById(R.id.four_star);
-            mFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
-            mGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
-            mGradeBtnLt = (RippleView) highInclude.findViewById(R.id.item_btn_rv);
-            mGradeBtnLt.setOnRippleCompleteListener(this);
+            mHighTwoStar = (ImageView) highInclude.findViewById(R.id.two_star);
+            mHighThreeStar = (ImageView) highInclude.findViewById(R.id.three_star);
+            mHighFourStar = (ImageView) highInclude.findViewById(R.id.four_star);
+            mHighFiveStar = (ImageView) highInclude.findViewById(R.id.five_star);
+            mHighGradeGesture = (ImageView) highInclude.findViewById(R.id.grade_gesture);
+            mHighGrageFrame = (FrameLayout) highInclude.findViewById(R.id.grade_frame);
+            mHighGradeBtnLt = (RippleView) highInclude.findViewById(R.id.item_btn_rv);
+            mHighGradeBtnLt.setOnRippleCompleteListener(this);
+
+//            FrameLayout.LayoutParams highFrameParams =
+//                    (FrameLayout.LayoutParams)mHighGrageFrame.getLayoutParams();
+//
+//            highFrameParams.height = (int)getLayoutHeight();
 
             highInclude.setVisibility(View.VISIBLE);
             include.setVisibility(View.GONE);
@@ -829,8 +838,14 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             mFourStar = (ImageView) include.findViewById(R.id.four_star);
             mFiveStar = (ImageView) include.findViewById(R.id.five_star);
             mGradeGesture = (ImageView) include.findViewById(R.id.grade_gesture);
+            mGrageFrame = (FrameLayout) include.findViewById(R.id.grade_frame);
             mGradeBtnLt = (RippleView) include.findViewById(R.id.item_btn_rv);
             mGradeBtnLt.setOnRippleCompleteListener(this);
+
+//            FrameLayout.LayoutParams frameParams =
+//                    (FrameLayout.LayoutParams)mGrageFrame.getLayoutParams();
+//
+//            frameParams.height = (int)getLayoutHeight();
 
             highInclude.setVisibility(View.GONE);
             include.setVisibility(View.VISIBLE);
@@ -840,13 +855,23 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
 
     }
 
+    private double getLayoutHeight() {
+        double height  = (Utilities.getScreenSize(mActivity)[0] -
+                            DipPixelUtil.dip2px(mActivity, 38)) / 0.52 ;
+        LeoLog.i("loadSwiftySecurity", "setLayoutHeight:" + height);
+        return height;
+
+
+    }
+
 
 
     /***
      * 开始动画
      */
-    private void showStarAnimation(ImageView theOne, ImageView theTwo, ImageView theThree,
-                         ImageView theFour, ImageView theFive, final ImageView gradeGesture) {
+    private void showStarAnimation(final ImageView theOne, final ImageView theTwo,
+                                   final ImageView theThree, final ImageView theFour,
+                                   final ImageView theFive, final ImageView gradeGesture) {
         ObjectAnimator oneStar = getObjectAnimator(theOne);
         ObjectAnimator twoStar = getObjectAnimator(theTwo);
         ObjectAnimator threeStar = getObjectAnimator(theThree);
@@ -899,7 +924,11 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
             @Override
             public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
-                changeStarInvisible();
+                theOne.setVisibility(View.INVISIBLE);
+                theTwo.setVisibility(View.INVISIBLE);
+                theThree.setVisibility(View.INVISIBLE);
+                theFour.setVisibility(View.INVISIBLE);
+                theFive.setVisibility(View.INVISIBLE);
                 animatorSet.start();
             }
         });
@@ -922,16 +951,6 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         }
     }
 
-    /***
-     * 设置所有星星不可见
-     */
-    private void changeStarInvisible() {
-        mOneStar.setVisibility(View.INVISIBLE);
-        mTwoStar.setVisibility(View.INVISIBLE);
-        mThreeStar.setVisibility(View.INVISIBLE);
-        mFourStar.setVisibility(View.INVISIBLE);
-        mFiveStar.setVisibility(View.INVISIBLE);
-    }
 
     private ObjectAnimator getObjectAnimator(ImageView img) {
 

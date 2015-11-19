@@ -21,24 +21,14 @@
     <ImageView
         android:id="@+id/fb_img"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:background="@drawable/ic_launcher"
+        android:layout_height="133dp"
+        android:src="@drawable/fb_banner"
+        android:scaleType="centerCrop"
         android:layout_below="@+id/item_header_ll"
         android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"
         />
 
-    <TextView
-        android:id="@+id/fb_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/c2"
-        android:textSize="14dp"
-        android:layout_alignLeft="@+id/fb_img"
-        android:layout_alignRight="@+id/fb_img"
-        android:layout_below="@+id/fb_img"/>
 
 
 
@@ -46,7 +36,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@id/fb_content"
+        android:layout_below="@id/fb_img"
         >
 
         <View
