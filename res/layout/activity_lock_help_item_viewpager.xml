@@ -1,16 +1,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"  
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activity_lock_help_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal" >
+    android:gravity="center_horizontal">
 
     <RelativeLayout
         android:layout_width="@dimen/lock_help_item_pager_card_width"
         android:layout_height="@dimen/lock_help_item_pager_card_height"
-        android:background="@drawable/card_bg"
-        android:orientation="vertical" >
+        android:background="@drawable/card_bg">
 
         <TextView
             android:id="@+id/lock_help_title"
@@ -41,14 +39,14 @@
             android:layout_height="@dimen/lock_help_item_pager_bottom_height"
             android:layout_alignParentBottom="true"
             android:background="@drawable/bottom"
-            android:gravity="center" >
+            android:gravity="center">
 
             <com.leo.appmaster.ui.RippleView
                 android:id="@+id/rv_lock_help_bt"
                 android:layout_width="@dimen/lock_help_item_pager_button_width"
                 android:layout_height="@dimen/lock_help_item_pager_button_height"
                 app:rv_alpha="255"
-                app:rv_color="#0453d6" >
+                app:rv_color="#0453d6">
 
                 <TextView
                     android:id="@+id/lock_help_bt"
@@ -56,13 +54,13 @@
                     android:layout_height="@dimen/lock_help_item_pager_button_height"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="#2675f6" 
+                    android:background="#2675f6"
                     android:gravity="center"
                     android:text="@string/setting"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
             </com.leo.appmaster.ui.RippleView>
-<!--                     android:background="@drawable/mycheck_button_selecter" -->
+            <!--                     android:background="@drawable/mycheck_button_selecter" -->
         </RelativeLayout>
     </RelativeLayout>
 

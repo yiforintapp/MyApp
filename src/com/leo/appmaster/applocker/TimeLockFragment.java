@@ -36,9 +36,10 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 
 public class TimeLockFragment extends BaseFragment implements OnClickListener, OnItemClickListener,
-        OnItemLongClickListener, Editable, RippleView.OnRippleCompleteListener {
+        OnItemLongClickListener, Editable {
 
     private ListView mLockListView;
     private View mListHeader;
@@ -47,7 +48,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
     private View mLockGuideView;
     private ImageView mLockGuideIcon;
     private TextView mLockGuideText;
-    private RippleView mUserKnowBtn;
+    private RippleView1 mUserKnowBtn;
     private Animation mGuidAnimation;
     private boolean mGuideOpen = false;
 
@@ -78,8 +79,7 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockGuideIcon = (ImageView) mLockGuideView.findViewById(R.id.lock_guide_icon);
         mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
 
-        mUserKnowBtn = (RippleView) mLockGuideView.findViewById(R.id.mode_user_know_button);
-
+        mUserKnowBtn = (RippleView1) mLockGuideView.findViewById(R.id.mode_user_know_button);
 
         mTitleBar = ((LockModeActivity) mActivity).getActivityCommonTitleBar();
 
@@ -182,19 +182,19 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
                 mTimeLockAdapter.notifyDataSetChanged();
                 break;
             case R.id.mode_user_know_button:
-//                AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
-//                removeGuidePage();
-//                /** set the help tip action **/
-//                mTitleBar.setOptionImage(R.drawable.tips_icon);
-//                mTitleBar.setOptionImageVisibility(View.VISIBLE);
-//                Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
-//                mTitleBar.setOptionAnimation(animation);
-//                mTitleBar.setOptionListener(new OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//                        lockGuide();
-//                    }
-//                });
+                AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
+                removeGuidePage();
+                /** set the help tip action **/
+                mTitleBar.setOptionImage(R.drawable.tips_icon);
+                mTitleBar.setOptionImageVisibility(View.VISIBLE);
+                Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+                mTitleBar.setOptionAnimation(animation);
+                mTitleBar.setOptionListener(new OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        lockGuide();
+                    }
+                });
                 break;
             case R.id.head_content:
                 addTimeLock();
@@ -233,24 +233,24 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         startActivity(intent);
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        if (mUserKnowBtn == rippleView) {
-            AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
-            removeGuidePage();
-            /** set the help tip action **/
-            mTitleBar.setOptionImage(R.drawable.tips_icon);
-            mTitleBar.setOptionImageVisibility(View.VISIBLE);
-            Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
-            mTitleBar.setOptionAnimation(animation);
-            mTitleBar.setOptionListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    lockGuide();
-                }
-            });
-        }
-    }
+//    @Override
+//    public void onRippleComplete(RippleView rippleView) {
+//        if (mUserKnowBtn == rippleView) {
+//            AppMasterPreference.getInstance(mActivity).setTimeLockModeGuideClicked(true);
+//            removeGuidePage();
+//            /** set the help tip action **/
+//            mTitleBar.setOptionImage(R.drawable.tips_icon);
+//            mTitleBar.setOptionImageVisibility(View.VISIBLE);
+//            Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+//            mTitleBar.setOptionAnimation(animation);
+//            mTitleBar.setOptionListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    lockGuide();
+//                }
+//            });
+//        }
+//    }
 
     class TimeLockAdapter extends BaseAdapter {
 
@@ -396,8 +396,8 @@ public class TimeLockFragment extends BaseFragment implements OnClickListener, O
         mLockGuideView.setVisibility(View.VISIBLE);
         mLockGuideIcon.setImageResource(R.drawable.modes_tips_time);
         mLockGuideText.setText(R.string.time_lock_mode_guide_content);
-//        mUserKnowBtn.setOnClickListener(this);
-        mUserKnowBtn.setOnRippleCompleteListener(this);
+        mUserKnowBtn.setOnClickListener(this);
+//        mUserKnowBtn.setOnRippleCompleteListener(this);
 
         /**
          * if ever pack up guide page then next time guide page should

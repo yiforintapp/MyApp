@@ -35,10 +35,10 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 
 public class LocationLockFragment extends BaseFragment implements OnClickListener,
-        OnItemClickListener, OnItemLongClickListener, Editable, RippleView.OnRippleCompleteListener {
+        OnItemClickListener, OnItemLongClickListener, Editable{
 
     private ListView mLockListView;
     private View mListHeader;
@@ -50,7 +50,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
     private View mLockGuideView;
     private ImageView mLockGuideIcon;
     private TextView mLockGuideText;
-    private RippleView mUserKnowBtn;
+    private RippleView1 mUserKnowBtn;
     private Animation mGuidAnimation;
     private boolean mGuideOpen = false;
     private int mSelectCount = 0;
@@ -81,7 +81,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLockGuideIcon = (ImageView) mLockGuideView.findViewById(R.id.lock_guide_icon);
         mLockGuideText = (TextView) mLockGuideView.findViewById(R.id.lock_guide_text);
 
-        mUserKnowBtn = (RippleView) mLockGuideView.findViewById(R.id.mode_user_know_button);
+        mUserKnowBtn = (RippleView1) mLockGuideView.findViewById(R.id.mode_user_know_button);
 
         mTitleBar = ((LockModeActivity) mActivity).getActivityCommonTitleBar();
 
@@ -226,24 +226,24 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         startActivity(intent);
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        if (mUserKnowBtn == rippleView) {
-            AppMasterPreference.getInstance(mActivity).setLocationLockModeGuideClicked(true);
-            removeGuidePage();
-            /** set the help tip action **/
-            mTitleBar.setOptionImage(R.drawable.tips_icon);
-            mTitleBar.setOptionImageVisibility(View.VISIBLE);
-            Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
-            mTitleBar.setOptionAnimation(animation);
-            mTitleBar.setOptionListener(new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    lockGuide();
-                }
-            });
-        }
-    }
+//    @Override
+//    public void onRippleComplete(RippleView rippleView) {
+//        if (mUserKnowBtn == rippleView) {
+//            AppMasterPreference.getInstance(mActivity).setLocationLockModeGuideClicked(true);
+//            removeGuidePage();
+//            /** set the help tip action **/
+//            mTitleBar.setOptionImage(R.drawable.tips_icon);
+//            mTitleBar.setOptionImageVisibility(View.VISIBLE);
+//            Animation animation = AnimationUtils.loadAnimation(mActivity, R.anim.help_tip_show);
+//            mTitleBar.setOptionAnimation(animation);
+//            mTitleBar.setOptionListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    lockGuide();
+//                }
+//            });
+//        }
+//    }
 
     class LocationLockAdapter extends BaseAdapter {
 
@@ -382,8 +382,7 @@ public class LocationLockFragment extends BaseFragment implements OnClickListene
         mLockListView.setVisibility(View.INVISIBLE);
         mLockGuideIcon.setImageResource(R.drawable.modes_tips_position);
         mLockGuideText.setText(R.string.location_lock_mode_guide_content);
-//        mUserKnowBtn.setOnClickListener(this);
-        mUserKnowBtn.setOnRippleCompleteListener(this);
+        mUserKnowBtn.setOnClickListener(this);
         // if ever pack up guide page then next time guide page should
         // appearance as animation
         if (AppMasterPreference.getInstance(mActivity).getLocationLockModeGuideClicked()) {
