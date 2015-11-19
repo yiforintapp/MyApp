@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -183,19 +184,22 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 
     /*进入手机防盗*/
     private void startPhoneSecurity() {
-        LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
-        boolean flag = manager.isUsePhoneSecurity();
-        Intent intent = null;
-        if (!flag) {
-            intent = new Intent(getActivity(), PhoneSecurityGuideActivity.class);
-            intent.putExtra(PhoneSecurityConstants.KEY_FORM_HOME_SECUR, true);
-        } else {
-            intent = new Intent(getActivity(), PhoneSecurityActivity.class);
-        }
-        try {
-            startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
+        FragmentActivity activity = getActivity();
+        if(activity != null) {
+            LostSecurityManagerImpl manager = (LostSecurityManagerImpl) MgrContext.getManager(MgrContext.MGR_LOST_SECURITY);
+            boolean flag = manager.isUsePhoneSecurity();
+            Intent intent = null;
+            if (!flag) {
+                intent = new Intent(activity, PhoneSecurityGuideActivity.class);
+                intent.putExtra(PhoneSecurityConstants.KEY_FORM_HOME_SECUR, true);
+            } else {
+                intent = new Intent(activity, PhoneSecurityActivity.class);
+            }
+            try {
+                startActivity(intent);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -223,39 +227,42 @@ public class HomeTabFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()) {
-            case R.id.home_app_lock_tv:
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");
-                LockManager mLockManager = (LockManager) MgrContext.
-                        getManager(MgrContext.MGR_APPLOCKER);
-                LockMode curMode = mLockManager.getCurLockMode();
-                if (curMode != null && curMode.defaultFlag == 1 &&
-                        !curMode.haveEverOpened) {
-                    startRcommendLock(0);
-                    curMode.haveEverOpened = true;
-                    mLockManager.updateMode(curMode);
-                } else {
-                    Intent intent = new Intent(getActivity(), AppLockListActivity.class);
+        FragmentActivity activity = getActivity();
+        if(activity != null) {
+            switch (view.getId()) {
+                case R.id.home_app_lock_tv:
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "lock");
+                    LockManager mLockManager = (LockManager) MgrContext.
+                            getManager(MgrContext.MGR_APPLOCKER);
+                    LockMode curMode = mLockManager.getCurLockMode();
+                    if (curMode != null && curMode.defaultFlag == 1 &&
+                            !curMode.haveEverOpened) {
+                        startRcommendLock(0);
+                        curMode.haveEverOpened = true;
+                        mLockManager.updateMode(curMode);
+                    } else {
+                        Intent intent = new Intent(getActivity(), AppLockListActivity.class);
+                        startActivity(intent);
+                    }
+                    break;
+                case R.id.home_intruder_tv:
+                    // 入侵者防护
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
+                    Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
                     startActivity(intent);
-                }
-                break;
-            case R.id.home_intruder_tv:
-                // 入侵者防护
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_intruder");
-                Intent intent = new Intent(getActivity(), IntruderprotectionActivity.class);
-                startActivity(intent);
-                break;
-            case R.id.home_wifi_tab:
-                // wifi安全
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
-                Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
-                startActivity(mIntent);
-                break;
-            case R.id.home_lost_tab:
-                // 手机防盗
-                SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
-                startPhoneSecurity();
-                break;
+                    break;
+                case R.id.home_wifi_tab:
+                    // wifi安全
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_wifi");
+                    Intent mIntent = new Intent(getActivity(), WifiSecurityActivity.class);
+                    startActivity(mIntent);
+                    break;
+                case R.id.home_lost_tab:
+                    // 手机防盗
+                    SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "home", "home_theft");
+                    startPhoneSecurity();
+                    break;
+            }
         }
     }
 }
