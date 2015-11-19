@@ -52,6 +52,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
         public int top;
         public int bottom;
+
         private Level(int top, int bottom) {
             this.top = top;
             this.bottom = bottom;
@@ -112,6 +113,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
     /**
      * 进程启动后是否已经完成了扫描
+     *
      * @return
      */
     public boolean isScanFinish() {
@@ -124,6 +126,51 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     public void resetDecScore() {
         for (String s : mDecScoreMap.keySet()) {
             mDecScoreMap.put(s, 0);
+        }
+    }
+
+    /**
+     * 开启定时扫描逻辑
+     *
+     * @param initialDelay
+     */
+    public void startIntervalScanner(long initialDelay) {
+        LeoLog.i(TAG, "startIntervalScanner......initialDelay: " + initialDelay);
+        if (mCheckScoreFuture != null) {
+            mCheckScoreFuture.cancel(false);
+        }
+        mCheckScoreTask = new ScoreTimerTask();
+        mCheckScoreFuture = ThreadManager.getAsyncExecutor().scheduleAtFixedRate(
+                mCheckScoreTask, initialDelay, CHECK_TIME, TimeUnit.MILLISECONDS);
+    }
+
+    /**
+     * 停止定时扫描逻辑
+     */
+    public void stopIntervalScanner() {
+        LeoLog.i(TAG, "stopIntervalScanner......");
+        if (mCheckScoreFuture != null) {
+            mCheckScoreFuture.cancel(false);
+            mCheckScoreFuture = null;
+            mCheckScoreTask = null;
+        }
+    }
+
+    /**
+     * 执行一次扫描
+     */
+    public void scanOneTime() {
+        LeoLog.i(TAG, "scanOneTime......");
+        long lastScanTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_LAST_SCAN, 0);
+        long currentTs = System.currentTimeMillis();
+        if (currentTs - lastScanTs > CHECK_TIME || currentTs < lastScanTs) {
+            // 1分钟之后，或者时间往前调整，需要扫描
+            if (mCheckScoreTask == null) {
+                mCheckScoreTask = new ScoreTimerTask();
+            }
+            ThreadManager.executeOnAsyncThread(mCheckScoreTask);
+        } else {
+            LeoLog.i(TAG, "scanOneTime, interval not hit, so donot scan......");
         }
     }
 
@@ -166,9 +213,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
             }
         });
-        mCheckScoreTask = new ScoreTimerTask();
-        mCheckScoreFuture = ThreadManager.getAsyncExecutor().scheduleAtFixedRate(
-                mCheckScoreTask, CHECK_TIME, CHECK_TIME, TimeUnit.MILLISECONDS);
+        startIntervalScanner(CHECK_TIME);
         ScreenOnOffListener listener = new ScreenOnOffListener() {
             @Override
             public void onScreenChanged(Intent intent) {
@@ -181,18 +226,9 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
     private void handleScreenIntent(Intent intent) {
         if (Intent.ACTION_SCREEN_OFF.equals(intent.getAction())) {
-            if (mCheckScoreFuture != null) {
-                mCheckScoreFuture.cancel(false);
-                mCheckScoreFuture = null;
-                mCheckScoreTask = null;
-            }
+            stopIntervalScanner();
         } else if (Intent.ACTION_SCREEN_ON.equals(intent.getAction())) {
-            if (mCheckScoreFuture != null) {
-                mCheckScoreFuture.cancel(false);
-            }
-            mCheckScoreTask = new ScoreTimerTask();
-            mCheckScoreFuture = ThreadManager.getAsyncExecutor().scheduleAtFixedRate(
-                    mCheckScoreTask, 0, CHECK_TIME, TimeUnit.MILLISECONDS);
+            startIntervalScanner(0);
         }
     }
 
@@ -215,6 +251,8 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         @Override
         public void run() {
             LeoLog.i(TAG, "ScoreTimerTask, start to check.");
+            long currentTs = System.currentTimeMillis();
+            PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_SCAN, currentTs);
             for (String mgr : SCORE_MGR) {
                 Manager manager = MgrContext.getManager(mgr);
                 if (manager != null) {

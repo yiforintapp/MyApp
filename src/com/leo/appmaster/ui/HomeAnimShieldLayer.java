@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
@@ -56,6 +57,10 @@ public class HomeAnimShieldLayer extends AnimLayer {
     private float mOutCircleScaleRatio = MAX_OUT_CIRCLE_SCALE_RATIO;
     // 内环缩放比例
     private float mInCircleScaleRatio = MAX_IN_CIRCLE_SCALE_RATIO;
+
+    private static final int SHADOW_COLOR = 0x19000000;
+    private static final int SHADOW_Y = 10;
+    private static final int SHADOW_RADIUS = 5;
 
     private int mCircleAlpha = 0;
     private int mSecurityScore = 100;
@@ -401,6 +406,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
             mScoreMatrix.setScale(finalTextRatio, finalTextRatio, mShieldPx, mShieldPy);
             mScoreMatrix.postTranslate(0, -shieldOffsetY);
             canvas.setMatrix(mScoreMatrix);
+            mTextPaint.setShadowLayer(SHADOW_RADIUS, 0, SHADOW_Y, SHADOW_COLOR);
         }
         float[] pointer = null;
         if (score < 10) {

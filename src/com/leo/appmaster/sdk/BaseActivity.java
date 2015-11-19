@@ -13,51 +13,60 @@ import android.os.Bundle;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.mgr.WifiSecurityManager;
-import com.leo.appmaster.utils.LeoLog;
 
 public class BaseActivity extends Activity {
     protected LockManager mLockManager;
     protected WifiSecurityManager mWifiManager;
 
+    private ActivityLifeCircle mLifeCircle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppMasterApplication.getInstance().addActivity(this);
         super.onCreate(savedInstanceState);
 
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
         mWifiManager = (WifiSecurityManager) MgrContext.getManager(MgrContext.MGR_WIFI_SECURITY);
+
+        mLifeCircle = new ActivityLifeCircle(this);
+        mLifeCircle.onCreate();
     }
 
     @Override
     protected void onDestroy() {
-        AppMasterApplication.getInstance().removeActivity(this);
         super.onDestroy();
+
+        mLifeCircle.onDestroy();
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        AppMasterApplication.getInstance().resumeActivity(this);
+
+        mLifeCircle.onStart();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        AppMasterApplication.getInstance().pauseActivity(this);
+
+        mLifeCircle.onStop();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         SDKWrapper.onResume(this);
+
+        mLifeCircle.onResume();
     }
 
     @Override
     protected void onPause() {
         SDKWrapper.onPause(this);
         super.onPause();
+
+        mLifeCircle.onPause();
     }
 
     @Override

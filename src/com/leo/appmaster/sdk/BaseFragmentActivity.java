@@ -15,16 +15,19 @@ import com.leo.appmaster.mgr.MgrContext;
 
 public class BaseFragmentActivity extends FragmentActivity {
     protected LockManager mLockManager;
+    private ActivityLifeCircle mLifeCircle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppMasterApplication.getInstance().addActivity(this);
         try {
             super.onCreate(savedInstanceState);
         } catch (Exception e) {          
         } catch (Error error) {            
         }
         mLockManager = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
+
+        mLifeCircle = new ActivityLifeCircle(this);
+        mLifeCircle.onCreate();
     }
     
     @Override
@@ -34,31 +37,38 @@ public class BaseFragmentActivity extends FragmentActivity {
         } catch (Exception e) {            
         } catch (Error error) {            
         }
-        AppMasterApplication.getInstance().resumeActivity(this);
+
+        mLifeCircle.onStart();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        AppMasterApplication.getInstance().pauseActivity(this);
+
+        mLifeCircle.onStop();
     }
 
     @Override
     protected void onDestroy() {
-        AppMasterApplication.getInstance().removeActivity(this);
         super.onDestroy();
+
+        mLifeCircle.onDestroy();
     }
 
     @Override
 	protected void onResume() {
 		super.onResume();
 		SDKWrapper.onResume(this);
+
+        mLifeCircle.onResume();
 	}
 
     @Override
     protected void onPause() {
         SDKWrapper.onPause(this);
         super.onPause();
+
+        mLifeCircle.onPause();
     }
     
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
