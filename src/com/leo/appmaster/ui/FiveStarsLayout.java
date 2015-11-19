@@ -62,7 +62,8 @@ public class FiveStarsLayout extends FrameLayout{
         ObjectAnimator threeStar = getObjectAnimator(mThreeStar);
         ObjectAnimator fourStar = getObjectAnimator(mFourStar);
         ObjectAnimator fiveStar = getObjectAnimator(mFiveStar);
-
+        LeoLog.i("test222", "Y = "+mGradeGesture.getY()+".....TranslationY = "+mGradeGesture.getTranslationY()+"....Top = "+mGradeGesture.getTop());
+        
         float currentY = mGradeGesture.getTop();
         ObjectAnimator gestureMoveIn = ObjectAnimator.ofFloat(mGradeGesture,
                 "translationY", currentY + DipPixelUtil.dip2px(mContext, 160), currentY);

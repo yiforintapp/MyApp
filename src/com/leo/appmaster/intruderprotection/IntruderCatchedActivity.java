@@ -118,8 +118,8 @@ public class IntruderCatchedActivity extends BaseActivity {
         mPkgName = intent.getStringExtra("pkgname");
         mLockManager.filterPackage(mPkgName, 5000);
         init();
-        Intent i = new Intent(this, GradeTipActivity.class);
-        startActivity(i);
+//        Intent i = new Intent(this, GradeTipActivity.class);
+//        startActivity(i);
     }
 
     @Override
