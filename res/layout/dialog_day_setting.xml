@@ -6,11 +6,11 @@
     android:layout_gravity="center"
     android:background="@drawable/bg"
     android:gravity="center"
-    android:paddingBottom="12dp" >
+    android:paddingBottom="12dp">
 
     <RelativeLayout
         android:layout_width="@dimen/dialog_list_width"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/dlg_title"
@@ -47,17 +47,17 @@
             android:paddingLeft="16dp"
             android:scrollbars="none" />
 
-        <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
+        <com.leo.appmaster.ui.RippleView1
             android:id="@+id/rv_blue"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dialog_list_btn_height"
             android:layout_below="@+id/daytraffic_lv"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="12dp"
-            app:rv_alpha="255"
-            app:rv_color="@color/button_blue_ripple"
-            app:rv_rippleDuration="@integer/ripple_btn_duration" >
+            app:rippleColor="@color/button_blue_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
             <TextView
                 android:id="@+id/cancel_button"
@@ -66,7 +66,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/cancel" />
-        </com.leo.appmaster.ui.RippleView>
+        </com.leo.appmaster.ui.RippleView1>
     </RelativeLayout>
 
 </LinearLayout>

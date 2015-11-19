@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 
 public class LEODoubleChoicesDialog extends LEOBaseDialog {
     public static final String TAG = "Dialogggg";
@@ -23,12 +23,12 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
     private TextView mContent;
     private TextView mLeftBtn;
     private TextView mRightBtn;
-   
+
     private CheckBox mCBFromCorner;
     private CheckBox mCBWhiteDot;
 
-    private RippleView mRvRight;
-    private RippleView mRvLeft;
+    private RippleView1 mRvRight;
+    private RippleView1 mRvLeft;
 
     public LEODoubleChoicesDialog(Context context) {
         super(context, R.style.bt_dialog);
@@ -36,7 +36,6 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
         initUI();
     }
 
- 
 
     public void setTitle(String titleStr) {
         if (titleStr != null) {
@@ -127,14 +126,14 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
 
         mLeftBtn = (TextView) dlgView.findViewById(R.id.dlg_left_btn);
-        
-        mRvRight = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
-        mRvLeft = (RippleView) dlgView.findViewById(R.id.rv_dialog_white_button);
-        
+
+        mRvRight = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvLeft = (RippleView1) dlgView.findViewById(R.id.rv_dialog_white_button);
+
         mRightBtn = (TextView) dlgView.findViewById(R.id.dlg_right_btn);
-        mCBFromCorner=(CheckBox) dlgView.findViewById(R.id.cb_dialog_area);
-        mCBWhiteDot=(CheckBox) dlgView.findViewById(R.id.cb_dialog_whitedot);
-      
+        mCBFromCorner = (CheckBox) dlgView.findViewById(R.id.cb_dialog_area);
+        mCBWhiteDot = (CheckBox) dlgView.findViewById(R.id.cb_dialog_whitedot);
+
         setContentView(dlgView);
         setCanceledOnTouchOutside(true);
     }
@@ -148,7 +147,7 @@ public class LEODoubleChoicesDialog extends LEOBaseDialog {
             mRightBtn.setText(mText);
         }
     }
-    
+
     public void setLeftBtnVisibility(boolean flag) {
         if (!flag) {
             mLeftBtn.setVisibility(View.GONE);

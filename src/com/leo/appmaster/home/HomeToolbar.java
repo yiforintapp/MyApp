@@ -27,12 +27,11 @@ import com.leo.appmaster.applocker.PasswdTipActivity;
 import com.leo.appmaster.msgcenter.MsgCenterActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoHomePopMenu;
-import com.leo.appmaster.ui.RippleView;
 
 /**
  * Created by Jasper on 2015/10/11.
  */
-public class HomeToolbar extends RelativeLayout implements View.OnClickListener, RippleView.OnRippleCompleteListener {
+public class HomeToolbar extends RelativeLayout implements View.OnClickListener {
 
     private View mMenuRl;
     private View mMsgcenterRl;
@@ -66,27 +65,12 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener,
 
         mMenuRl = findViewById(R.id.hm_tool_menu_rl);
         mMenuRl.setOnClickListener(this);
-//        if (mMenuRl instanceof RippleView) {
-//            ((RippleView) mMenuRl).setOnRippleCompleteListener(this);
-//        } else {
-//            mMenuRl.setOnClickListener(this);
-//        }
 
         mMsgcenterRl = findViewById(R.id.hm_tool_msgcenter_rl);
         mMsgcenterRl.setOnClickListener(this);
-//        if (mMsgcenterRl instanceof RippleView) {
-//            ((RippleView) mMsgcenterRl).setOnRippleCompleteListener(this);
-//        } else {
-//            mMsgcenterRl.setOnClickListener(this);
-//        }
 
         mMoreRl = findViewById(R.id.hm_tool_more_rl);
         mMoreRl.setOnClickListener(this);
-//        if (mMoreRl instanceof RippleView) {
-//            ((RippleView) mMoreRl).setOnRippleCompleteListener(this);
-//        } else {
-//            mMoreRl.setOnClickListener(this);
-//        }
 
         mMenuIv = (ImageView) findViewById(R.id.hm_tool_menu_iv);
         mMenuRedTipIv = (ImageView) findViewById(R.id.hm_tool_menu_red_tip_iv);
@@ -228,8 +212,4 @@ public class HomeToolbar extends RelativeLayout implements View.OnClickListener,
         return icons;
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        onClick(rippleView);
-    }
 }

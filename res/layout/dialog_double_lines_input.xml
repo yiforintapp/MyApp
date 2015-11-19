@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/common_dialog_bg"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/content"
@@ -18,14 +18,14 @@
         android:background="@color/white"
         android:orientation="vertical"
         android:paddingBottom="3dp"
-        android:paddingTop="3dp" >
+        android:paddingTop="3dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="15dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_first_head"
@@ -46,15 +46,14 @@
                 android:enabled="false"
                 android:singleLine="true"
                 android:textColor="#666666"
-                android:textSize="14dp" >
-            </EditText>
+                android:textSize="14dp"></EditText>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_second_head"
@@ -75,7 +74,7 @@
                 android:singleLine="true"
                 android:textColor="#666666"
                 android:textCursorDrawable="@null"
-                android:textSize="14dp" >
+                android:textSize="14dp">
 
                 <requestFocus android:layout_width="match_parent" />
             </EditText>
@@ -91,19 +90,19 @@
         android:layout_marginRight="6dp"
         android:layout_marginTop="14dp"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
-        <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
+        <com.leo.appmaster.ui.RippleView1
             android:id="@+id/rv_white"
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            app:rv_rippleDuration="@integer/ripple_btn_duration" 
             android:layout_weight="1"
-            app:rv_alpha="255"
-            app:rv_color="@color/button_gray_ripple" >
+            app:rippleColor="@color/button_gray_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
             <TextView
                 android:id="@+id/dlg_left_btn"
@@ -112,19 +111,19 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/cancel" />
-        </com.leo.appmaster.ui.RippleView>
+        </com.leo.appmaster.ui.RippleView1>
 
-        <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
+        <com.leo.appmaster.ui.RippleView1
             android:id="@+id/rv_blue"
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
-            app:rv_rippleDuration="@integer/ripple_btn_duration" 
             android:layout_weight="1"
-            app:rv_alpha="255"
-            app:rv_color="@color/button_blue_ripple" >
+            app:rippleColor="@color/button_blue_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
             <TextView
                 android:id="@+id/dlg_right_btn"
@@ -133,7 +132,7 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/makesure" />
-        </com.leo.appmaster.ui.RippleView>
+        </com.leo.appmaster.ui.RippleView1>
     </LinearLayout>
 
 </LinearLayout>
