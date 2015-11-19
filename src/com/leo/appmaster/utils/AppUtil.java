@@ -342,8 +342,6 @@ public class AppUtil {
         BitmapFactory.Options optionOne = new BitmapFactory.Options();
         optionOne.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(onePath, optionOne);
-        int oneWidth = optionOne.outWidth;
-        int oneHeight = optionOne.outHeight;
         optionOne.inSampleSize = computeSampleSize(optionOne, -1, getScreenPix(AppMasterApplication.getInstance()));
         optionOne.inJustDecodeBounds = false;
         Bitmap oneImage = BitmapFactory.decodeFile(onePath, optionOne);
@@ -355,7 +353,7 @@ public class AppUtil {
         float oneScaleX = SPL_SHARE_SCALE_X;
         matrix.postScale(oneScaleX, oneScaleY);
         /*缩放图1*/
-        oneImage = Bitmap.createBitmap(oneImage, 0, 0, oneWidth, oneHeight, matrix, true);
+        oneImage = Bitmap.createBitmap(oneImage, 0, 0, oneImage.getWidth(), oneImage.getHeight(), matrix, true);
          /*创建拼接Bitmap*/
         int resultWidth = oneImage.getWidth();
         int resultHeight = oneImage.getHeight() + oneImage.getWidth();
