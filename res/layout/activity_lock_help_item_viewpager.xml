@@ -41,12 +41,14 @@
             android:background="@drawable/bottom"
             android:gravity="center">
 
-            <com.leo.appmaster.ui.RippleView
+            <com.leo.appmaster.ui.RippleView1
                 android:id="@+id/rv_lock_help_bt"
                 android:layout_width="@dimen/lock_help_item_pager_button_width"
                 android:layout_height="@dimen/lock_help_item_pager_button_height"
-                app:rv_alpha="255"
-                app:rv_color="#0453d6">
+                app:rippleColor="@color/button_blue_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
 
                 <TextView
                     android:id="@+id/lock_help_bt"
@@ -59,8 +61,7 @@
                     android:text="@string/setting"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
-            </com.leo.appmaster.ui.RippleView>
-            <!--                     android:background="@drawable/mycheck_button_selecter" -->
+            </com.leo.appmaster.ui.RippleView1>
         </RelativeLayout>
     </RelativeLayout>
 

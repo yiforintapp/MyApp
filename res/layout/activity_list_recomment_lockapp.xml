@@ -17,6 +17,7 @@
         android:layout_marginBottom="64dp"
         android:gravity="center_horizontal"
         android:orientation="vertical">
+
         <ListView
             android:id="@+id/recomment_app_list"
             android:layout_width="match_parent"
@@ -67,14 +68,17 @@
             <!--android:textColor="@color/white"-->
             <!--android:textSize="16dp" />-->
 
-            <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
+            <com.leo.appmaster.ui.RippleView1 xmlns:ripple="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/recomment_lock"
                 android:layout_width="210dp"
                 android:layout_height="40dp"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/green_radius_btn_shape"
                 android:clickable="true"
-                ripple:rv_color="@color/green_button_ripple">
+                ripple:rippleColor="@color/green_button_ripple"
+                ripple:rippleDuration="250"
+                ripple:rippleHover="true"
+                ripple:rippleOverlay="true">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -84,7 +88,7 @@
                     android:text="@string/lock"
                     android:textColor="@color/white"
                     android:textSize="16dp" />
-            </com.leo.appmaster.ui.RippleView>
+            </com.leo.appmaster.ui.RippleView1>
             <!--android:background="@drawable/mycheck_button_selecter"-->
             <!--android:textColor="@drawable/manager_backup_text_selecter"-->
         </RelativeLayout>

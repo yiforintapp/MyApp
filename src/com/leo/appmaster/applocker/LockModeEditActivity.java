@@ -38,7 +38,6 @@ import com.leo.appmaster.model.AppInfo;
 import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LeoSingleLinesInputDialog;
 import com.leo.appmaster.utils.LeoLog;
@@ -472,19 +471,6 @@ public class LockModeEditActivity extends BaseActivity implements
 
         }
     }
-
-//    @Override
-//    public void onRippleComplete(RippleView rippleView) {
-//        try {
-//            if (mIvBack == rippleView) {
-//                onBackPressed();
-//            } else if (mIvDone == rippleView) {
-//                saveMode();
-//            }
-//        } catch (Exception e) {
-//
-//        }
-//    }
 
     private class LockedAppComparator implements Comparator<AppInfo> {
         List<String> sortBase;

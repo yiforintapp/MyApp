@@ -30,8 +30,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.LeoPictureViewPager;
 import com.leo.appmaster.ui.LeoPictureViewPager.OnPageChangeListener;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.LeoLog;
 
 public class LockHelpSettingTip extends BaseActivity {
@@ -48,7 +47,7 @@ public class LockHelpSettingTip extends BaseActivity {
     public static final int CURRENT_FLAG_CODE = 10000;
 
     private LockManager mLockManager;
-    
+
     private Handler mHandler = new Handler();
 
     @Override
@@ -251,15 +250,14 @@ public class LockHelpSettingTip extends BaseActivity {
             TextView titleTV = (TextView) view.findViewById(R.id.lock_help_title);
             TextView contentTV = (TextView) view.findViewById(R.id.lock_help_content);
             TextView buttonTV = (TextView) view.findViewById(R.id.lock_help_bt);
-            RippleView rv = (RippleView) view.findViewById(R.id.rv_lock_help_bt);
+            RippleView1 rv = (RippleView1) view.findViewById(R.id.rv_lock_help_bt);
             titleTV.setText(title);
             contentTV.setText(content);
             buttonTV.setText(button);
             container.addView(view);
-            rv.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-
+            rv.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onRippleComplete(RippleView rippleView) {
+                public void onClick(View view) {
                     String buttonText = lockHelpPager.getButton();
                     if (buttonText.equals(getString(R.string.lock_help_password_setting_button))) {
                         /* SDK Event Mark */
@@ -295,6 +293,45 @@ public class LockHelpSettingTip extends BaseActivity {
                     }
                 }
             });
+//            rv.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+//
+//                @Override
+//                public void onRippleComplete(RippleView rippleView) {
+//                    String buttonText = lockHelpPager.getButton();
+//                    if (buttonText.equals(getString(R.string.lock_help_password_setting_button))) {
+//                        /* SDK Event Mark */
+//                        SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
+//                                "password");
+//                        changePasswd();
+//                    } else if (buttonText.equals(getString(R.string.lock_help_lock_setting_button))) {
+//                        /* SDK Event Mark */
+//                        SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
+//                                "setting");
+//                        enterLockSettingPage();
+//                        // Intent intent = new Intent(LockHelpSettingTip.this,
+//                        // LockTimeSetting.class);
+//                        // intent.putExtra("help_setting_current", 1);
+//                        // intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                        // try {
+//                        // startActivityForResult(intent, 1);
+//                        // } catch (Exception e) {
+//                        // }
+//                    } else if (buttonText
+//                            .equals(getString(R.string.lock_help_lock_theme_setting_button))) {
+//                        /* SDK Event Mark */
+//                        SDKWrapper.addEvent(LockHelpSettingTip.this, SDKWrapper.P1, "help_press",
+//                                "theme");
+//                        Intent intent = new Intent(LockHelpSettingTip.this, LockerTheme.class);
+//                        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+//                        intent.putExtra("to_online_theme", true);
+//                        intent.putExtra("help_setting_current", 2);
+//                        try {
+//                            startActivityForResult(intent, 1);
+//                        } catch (Exception e) {
+//                        }
+//                    }
+//                }
+//            });
             return view;
         }
 
@@ -323,18 +360,18 @@ public class LockHelpSettingTip extends BaseActivity {
                     @Override
                     public void onUnlocked() {
                         AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(null);
-                        if(AppMasterApplication.sIsSplashActioned) {
-                            mHandler.postDelayed(new Runnable() {                  
+                        if (AppMasterApplication.sIsSplashActioned) {
+                            mHandler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
-                                    Intent  intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
+                                    Intent intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
                                     intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
                                     startActivity(intent);
                                 }
                             }, 200);
                             AppMasterApplication.sIsSplashActioned = false;
                         } else {
-                            Intent  intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
+                            Intent intent = new Intent(LockHelpSettingTip.this, LockSettingActivity.class);
                             intent.putExtra(LockSettingActivity.RESET_PASSWD_FLAG, true);
                             startActivity(intent);
                         }
@@ -359,8 +396,8 @@ public class LockHelpSettingTip extends BaseActivity {
                     @Override
                     public void onUnlocked() {
                         AppMasterPreference.getInstance(getApplicationContext()).setDoubleCheck(null);
-                        if(AppMasterApplication.sIsSplashActioned) {
-                            mHandler.postDelayed(new Runnable() {                  
+                        if (AppMasterApplication.sIsSplashActioned) {
+                            mHandler.postDelayed(new Runnable() {
                                 @Override
                                 public void run() {
                                     Intent intent = new Intent(LockHelpSettingTip.this, LockTimeSetting.class);

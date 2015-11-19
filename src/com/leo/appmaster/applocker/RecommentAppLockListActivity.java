@@ -30,14 +30,13 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 
 /**
  * Created by qili on 15-10-11.
  */
 public class RecommentAppLockListActivity extends BaseActivity implements
-        AppLoadEngine.AppChangeListener, OnItemClickListener, OnClickListener
-        , RippleView.OnRippleCompleteListener {
+        AppLoadEngine.AppChangeListener, OnItemClickListener, OnClickListener {
     public final static String FROM_DEFAULT_RECOMMENT_ACTIVITY = "recomment_activity";
     public final static String RECOMMEND_FROM_LOCK = "new_app_install_lock";
     public final static String RECOMMEND_FROM_LOCK_MORE = "new_app_install_lock_more";
@@ -47,7 +46,7 @@ public class RecommentAppLockListActivity extends BaseActivity implements
 
     private ListView mLockListView;
     private CommonToolbar mTtileBar;
-    private RippleView lockTV;
+    private RippleView1 lockTV;
     private ListAppLockAdapter mLockAdapter;
     private List<AppInfo> mLockList;
     private List<AppInfo> mUnLockList;
@@ -103,8 +102,9 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionMenuVisible(false);
 
-        lockTV = (RippleView) findViewById(R.id.recomment_lock);
-        lockTV.setOnRippleCompleteListener(this);
+        lockTV = (RippleView1) findViewById(R.id.recomment_lock);
+        lockTV.setOnClickListener(this);
+//        lockTV.setOnRippleCompleteListener(this);
 
         LayoutInflater layoutInflater = LayoutInflater.from(this);
         View headView = layoutInflater.inflate(R.layout.recom_ac_head, null);
@@ -222,32 +222,6 @@ public class RecommentAppLockListActivity extends BaseActivity implements
         }
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        if (lockTV == rippleView) {
-            if (mLockList == null || mLockList.isEmpty()) {
-                Intent intent = new Intent(this, AppLockListActivity.class);
-                startActivity(intent);
-                finish();
-            } else {
-                saveLockList();
-
-                Intent intent = new Intent(this, SuccessAppLockListActivity.class);
-                if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK)) {
-                    intent.putExtra("target", getIntent().getIntExtra("target", 1));
-                } else if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK_MORE)) {
-                    intent.putExtra("target", getIntent().getIntExtra("target", 2));
-                } else if (TextUtils.equals(mFrom, RECOMMEND_FROM_VISITED_MODE)) {
-                    intent.putExtra("target", getIntent().getIntExtra("target", 9));
-                } else {
-                    intent.putExtra("target", getIntent().getIntExtra("target", 0));
-                }
-
-                startActivity(intent);
-                finish();
-            }
-        }
-    }
 
     public static class NameComparator implements Comparator<AppInfo> {
 
@@ -386,6 +360,27 @@ public class RecommentAppLockListActivity extends BaseActivity implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.recomment_lock:
+                if (mLockList == null || mLockList.isEmpty()) {
+                    Intent intent = new Intent(this, AppLockListActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    saveLockList();
+
+                    Intent intent = new Intent(this, SuccessAppLockListActivity.class);
+                    if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK)) {
+                        intent.putExtra("target", getIntent().getIntExtra("target", 1));
+                    } else if (TextUtils.equals(mFrom, RECOMMEND_FROM_LOCK_MORE)) {
+                        intent.putExtra("target", getIntent().getIntExtra("target", 2));
+                    } else if (TextUtils.equals(mFrom, RECOMMEND_FROM_VISITED_MODE)) {
+                        intent.putExtra("target", getIntent().getIntExtra("target", 9));
+                    } else {
+                        intent.putExtra("target", getIntent().getIntExtra("target", 0));
+                    }
+
+                    startActivity(intent);
+                    finish();
+                }
                 break;
         }
     }
