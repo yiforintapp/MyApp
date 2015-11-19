@@ -451,7 +451,7 @@
 
     <!-- version 2.4 start -->
     <!-- quick gesture -->
-    <string name="first_open_quick_gesture_dialog_tip_cotent">ติดตั้ง Swifty เพื่อให้โทรศัพท์ของคุณเจ๋งแบบ Apple Watch</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty เครื่องมือยอดนิยมที่สุดบน Google Play เพียงสัมผัสเดียว ปุ่มลัด แอพสุดโปรด ข้อความในควบคุมของคุณ</string>
     <string name="grade_tip_feedback">เสนอแนะ</string>
     <string name="quick_first_tip_dialog_right_bt">เปิดทท.</string>
     <string name="quick_first_tip_dialog_left_bt">ภายหลัง</string>

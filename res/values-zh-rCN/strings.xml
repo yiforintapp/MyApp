@@ -451,7 +451,7 @@
 
     <!-- version 2.4 begin -->
     <!-- quick gesture -->
-    <string name="first_open_quick_gesture_dialog_tip_cotent">滑一滑，一手掌控快捷开关及应用，立即安装Swifty体验单手操作神器！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty，谷歌市场最热门工具。轻轻一点，快捷开关、常用应用、好友消息一手掌握。</string>
     <string name="grade_tip_feedback">我要吐槽</string>
     <string name="quick_first_tip_dialog_right_bt">开启</string>
     <string name="quick_first_tip_dialog_left_bt">稍后</string>

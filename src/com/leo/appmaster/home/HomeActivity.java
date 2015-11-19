@@ -651,15 +651,6 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         amp.setFristSlidingTip(false);
     }
 
-    /***
-     * 提供给swifty卡片使用
-     *
-     * @return LockManager
-     */
-    public LockManager getLockManager() {
-        return mLockManager;
-    }
-
     private void showDownLoadISwipDialog(Context context, String flag) {
         if (mIswipDialog == null) {
             mIswipDialog = new IswipUpdateTipDialog(context);

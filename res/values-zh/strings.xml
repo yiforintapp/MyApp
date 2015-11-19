@@ -454,7 +454,7 @@
 
     <!-- version 2.4 begin -->
     <!-- quick gesture -->
-    <string name="first_open_quick_gesture_dialog_tip_cotent">安裝Swifty，體驗和apple watch一樣的快捷開關管理吧，讓你成為朋友中最cool的人！</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty，谷歌市場最熱門工具。輕輕壹點，快捷開關、常用應用、好友消息壹手掌握。</string>
     <string name="grade_tip_feedback">我要吐槽</string>
     <string name="quick_first_tip_dialog_right_bt">開启</string>
     <string name="quick_first_tip_dialog_left_bt">稍後</string>

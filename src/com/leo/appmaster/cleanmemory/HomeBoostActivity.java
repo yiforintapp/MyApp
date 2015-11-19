@@ -59,6 +59,11 @@ public class HomeBoostActivity extends Activity {
     private boolean mIsADLoaded = false;
     private RelativeLayout mRlResultWithAD;
     private CountDownTimer mCdt;
+
+    private View mParent;
+    private ImageView mFire;
+    private ImageView mLine;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -248,6 +253,10 @@ public class HomeBoostActivity extends Activity {
         mIvRocket = (ImageView) findViewById(R.id.iv_rocket);
         mIvCloud = (ImageView) findViewById(R.id.iv_cloud);
 
+        mParent = (View) findViewById(R.id.parent);
+        mFire = (ImageView) findViewById(R.id.iv_rocket_fire);
+        mLine = (ImageView) findViewById(R.id.iv_line);
+
         tryTransStatusbar();
     }
 
@@ -259,48 +268,63 @@ public class HomeBoostActivity extends Activity {
                 cleanMemory();
             }
         });
+
+        ObjectAnimator BgAlphaAnimator = ObjectAnimator.ofFloat(mParent, "alpha", 0f, 0.5f);
+        BgAlphaAnimator.setDuration(400);
+
         mRocketHeight = mIvRocket.getMeasuredHeight();
         ObjectAnimator rocketAnimator1 = ObjectAnimator.ofFloat(mIvRocket, "translationY",
-                mRocketHeight, mRocketHeight * 0.18f, mRocketHeight * 0.26f, mRocketHeight * 0.30f);
-        rocketAnimator1.setDuration(800);
+                mRocketHeight, mRocketHeight * 0.10f, mRocketHeight * 0.18f, mRocketHeight * 0.22f);
+        rocketAnimator1.setDuration(400);
+
+        AnimatorSet rocketShowAnimator = new AnimatorSet();
+        rocketShowAnimator.playTogether(BgAlphaAnimator, rocketAnimator1);
+
         ObjectAnimator rocketAnimator2 = ObjectAnimator.ofFloat(mIvRocket,
                 "translationY",
-                mRocketHeight * 0.30f, -mScreenH);
-        rocketAnimator2.setDuration(800);
+                mRocketHeight * 0.22f, -mScreenH);
+        rocketAnimator2.setDuration(720);
 
-        rocketAnimator2.addListener(new AnimatorListenerAdapter() {
+
+        /** 烟雾动画 */
+        ObjectAnimator cloudAlphaShow = ObjectAnimator.ofFloat(mIvCloud, "alpha", 0f, 1f);
+        cloudAlphaShow.setDuration(120);
+        ObjectAnimator cloudScaleToThirty = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0f, 0.3f);
+        cloudScaleToThirty.setDuration(120);
+        cloudAlphaShow.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
+                super.onAnimationStart(animation);
                 mIvCloud.setVisibility(View.VISIBLE);
-                ObjectAnimator cloudAlphaAnimator1 = ObjectAnimator.ofFloat(mIvCloud,
-                        "alpha", 0f,
-                        1f);
-                cloudAlphaAnimator1.setDuration(300);
-                ObjectAnimator cloudScaleXAnimator = ObjectAnimator.ofFloat(mIvCloud,
-                        "scaleX", 1f,
-                        1.2f);
-                ObjectAnimator cloudAlphaAnimator2 = ObjectAnimator.ofFloat(mIvCloud,
-                        "alpha", 1f,
-                        0f);
-                cloudScaleXAnimator.setDuration(1200);
-                cloudAlphaAnimator2.setDuration(1200);
-                cloudAlphaAnimator2.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        if(!mIsADLoaded){
-                            HomeBoostActivity.this.finish();
-                        }
-                    }
-                });
-                AnimatorSet cloudAnimatorSet = new AnimatorSet();
-                cloudAnimatorSet.play(cloudScaleXAnimator).with(cloudAlphaAnimator2)
-                        .after(cloudAlphaAnimator1);
-                cloudAnimatorSet.start();
             }
-
         });
+        ObjectAnimator cloudScaleToHundred = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 0.3f, 1f);
+        cloudScaleToHundred.setDuration(480);
+        ObjectAnimator cloudAlphaHide = ObjectAnimator.ofFloat(mIvCloud, "alpha", 1f, 0f);
+        cloudAlphaHide.setDuration(200);
+        ObjectAnimator cloudScaleToLarge = ObjectAnimator.ofFloat(mIvCloud, "scaleX", 1f, 1.1f);
+        cloudScaleToLarge.setDuration(200);
+
+        AnimatorSet cloudStartAnimator = new AnimatorSet();
+        cloudStartAnimator.playTogether(cloudAlphaShow, cloudScaleToThirty);
+
+        AnimatorSet cloudFinishAnimator = new AnimatorSet();
+        cloudFinishAnimator.playTogether(cloudAlphaHide, cloudScaleToLarge);
+
+        AnimatorSet cloudAnimator =  new AnimatorSet();
+        cloudAnimator.playSequentially(cloudStartAnimator, cloudScaleToHundred, cloudFinishAnimator);
+
+        /** 尾部火动画 */
+        ObjectAnimator fireAnimator = ObjectAnimator.ofFloat(mFire, "scaleY", 0f, 1f);
+
+
+        /** 背景线条动画 */
+        ObjectAnimator lineMoveIn = ObjectAnimator.ofFloat(mLine,
+                "translationY", -mScreenH, mLine.getMeasuredHeight());
+
+
         AnimatorSet as = new AnimatorSet();
-        as.play(rocketAnimator2).after(300).after(rocketAnimator1);
+        as.play(cloudAnimator).after(200).after(rocketShowAnimator);
         as.start();
         as.setInterpolator(new LinearInterpolator());
         as.addListener(new AnimatorListenerAdapter() {
@@ -309,6 +333,48 @@ public class HomeBoostActivity extends Activity {
                 showCleanResault();
             }
         });
+
+//        rocketAnimator2.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                mIvCloud.setVisibility(View.VISIBLE);
+//                ObjectAnimator cloudAlphaAnimator1 = ObjectAnimator.ofFloat(mIvCloud,
+//                        "alpha", 0f,
+//                        1f);
+//                cloudAlphaAnimator1.setDuration(300);
+//                ObjectAnimator cloudScaleXAnimator = ObjectAnimator.ofFloat(mIvCloud,
+//                        "scaleX", 1f,
+//                        1.2f);
+//                ObjectAnimator cloudAlphaAnimator2 = ObjectAnimator.ofFloat(mIvCloud,
+//                        "alpha", 1f,
+//                        0f);
+//                cloudScaleXAnimator.setDuration(1200);
+//                cloudAlphaAnimator2.setDuration(1200);
+//                cloudAlphaAnimator2.addListener(new AnimatorListenerAdapter() {
+//                    @Override
+//                    public void onAnimationEnd(Animator animation) {
+//                        if(!mIsADLoaded){
+//                            HomeBoostActivity.this.finish();
+//                        }
+//                    }
+//                });
+//                AnimatorSet cloudAnimatorSet = new AnimatorSet();
+//                cloudAnimatorSet.play(cloudScaleXAnimator).with(cloudAlphaAnimator2)
+//                        .after(cloudAlphaAnimator1);
+//                cloudAnimatorSet.start();
+//            }
+//
+//        });
+//        AnimatorSet as = new AnimatorSet();
+//        as.play(rocketAnimator2).after(300).after(rocketShowAnimator);
+//        as.start();
+//        as.setInterpolator(new LinearInterpolator());
+//        as.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                showCleanResault();
+//            }
+//        });
     }
 
     private void cleanMemory() {

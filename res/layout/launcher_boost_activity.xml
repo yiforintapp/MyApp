@@ -1,7 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/parent"
+        android:background="#000000"/>
 
     <View
         android:id="@+id/bg_statusbar"
@@ -146,6 +152,15 @@
                 android:layout_marginTop="10dp"
                 android:src="@drawable/accelerate_result_dial" />
         </RelativeLayout>
+        
+        <ImageView
+            android:id="@+id/iv_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/speed_bg_line"
+            android:layout_centerInParent="true"
+            android:visibility="invisible"/>
+
 
         <ImageView
             android:id="@+id/iv_cloud"
@@ -153,8 +168,18 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/rocket_cloud"
+            android:src="@drawable/speed_smoke"
             android:visibility="invisible" />
+        
+        <ImageView
+            android:id="@+id/iv_rocket_fire"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/speed_rocket_fire"
+            android:layout_marginBottom="31dp"
+            android:visibility="invisible"/>
 
         <ImageView
             android:id="@+id/iv_rocket"
@@ -162,7 +187,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:src="@drawable/gesture_rocket" />
+            android:src="@drawable/speed_rocket" />
     </RelativeLayout>
 
 </RelativeLayout>

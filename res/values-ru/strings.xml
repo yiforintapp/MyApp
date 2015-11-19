@@ -432,7 +432,7 @@
 
 
     <!-- version 2.4 start -->
-    <string name="first_open_quick_gesture_dialog_tip_cotent">Установите Swifty и сделайте ваш телефон таким, как Apple Watch</string>
+    <string name="first_open_quick_gesture_dialog_tip_cotent">Swifty наиб.попул. инстр.на Google рынке,касание,ярлык,люб. прил. сообщ. под рукой.</string>
     <string name="grade_tip_feedback">Проблемы</string>
     <string name="quick_first_tip_dialog_right_bt">включить</string>
     <string name="quick_first_tip_dialog_left_bt">позже</string>
