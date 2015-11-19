@@ -151,7 +151,7 @@ public class LockPatternView extends ViewGroup {
     };
     private int mNormalViewRes = 0;
     private int mGestureLineColorRes = 0;
-    private int mColor = 0xafffffff;
+    private int mColor = 0xcc00d2ff;
 
     private Cell mLastParten;
     private Cell mCurrParten;
@@ -1192,9 +1192,9 @@ public class LockPatternView extends ViewGroup {
             if (mPatternDisplayMode == DisplayMode.Wrong) {
                 mPathPaint.setColor(0x7fbb0000);
             } else {
-//                mPathPaint.setColor(mColor);
+                mPathPaint.setColor(mColor);
                 //dadian
-                mPathPaint.setColor(0xcc00d2ff);
+//                mPathPaint.setColor(0xcc00d2ff);
             }
 
             canvas.drawPath(currentPath, mPathPaint);
