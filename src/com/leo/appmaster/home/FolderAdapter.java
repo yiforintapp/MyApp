@@ -3,6 +3,7 @@ package com.leo.appmaster.home;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.text.Html;
+import android.util.SparseIntArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.BaseExpandableListAdapter;
@@ -41,7 +42,7 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
     protected OnFolderClickListener mListener;
 
     private List<T> mSrcList;
-    private List<ItemsWrapper> mDataList;
+    protected List<ItemsWrapper> mDataList;
     private List<T> mSelectData;
 
     protected LayoutInflater mInflater;
@@ -50,6 +51,9 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
     protected ImageLoader mImageLoader;
     protected HashMap<View, ItemsWrapper> mWrapperViews;
     protected HashMap<View, T> mItemViews;
+
+    // group -- > allIndex，分组号对应当前分组在所有item中的位置
+    protected SparseIntArray mGroupIndexArray;
 
     protected boolean mExpanded;
 
@@ -64,6 +68,8 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
 
         mWrapperViews = new HashMap<View, ItemsWrapper>();
         mItemViews = new HashMap<View, T>();
+
+        mGroupIndexArray = new SparseIntArray();
     }
 
     public void setOnFolderClickListener(OnFolderClickListener l) {
@@ -90,8 +96,19 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
                     }
                 }
                 notifyDataSetChanged();
+                initGroupIndexArray();
             }
         });
+    }
+
+    protected void initGroupIndexArray() {
+        mGroupIndexArray.clear();
+        int index = 0;
+        for (int i = 0; i < mDataList.size(); i++) {
+            ItemsWrapper wrapper = mDataList.get(i);
+            mGroupIndexArray.put(i, index);
+            index += wrapper.items.size() + 1;
+        }
     }
 
     public List<T> getSelectData() {
@@ -342,6 +359,16 @@ public abstract class FolderAdapter<T> extends BaseExpandableListAdapter {
         }
 
         return result;
+    }
+
+    public int getNextPositionOfAllDatas(int groupPostion) {
+        groupPostion++;
+        try {
+            return mGroupIndexArray.get(groupPostion);
+        } catch (Exception e) {
+        }
+
+        return -1;
     }
 
     public static class ItemsWrapper<T> {

@@ -23,6 +23,19 @@ public class FolderPicAdapter extends FolderAdapter<PhotoItem> {
     }
 
     @Override
+    protected void initGroupIndexArray() {
+        mGroupIndexArray.clear();
+        int index = 0;
+        for (int i = 0; i < mDataList.size(); i++) {
+            ItemsWrapper wrapper = mDataList.get(i);
+            mGroupIndexArray.put(i, index);
+
+            int remind = wrapper.items.size() % 3;
+            index += wrapper.items.size() / 3 + (remind > 0 ? 1 : 0) + 1;
+        }
+    }
+
+    @Override
     public View getGroupView(final int groupPosition, final boolean isExpanded, View convertView, ViewGroup parent) {
         mExpanded = isExpanded;
         FoldHolder holder = null;

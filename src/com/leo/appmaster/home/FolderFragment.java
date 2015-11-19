@@ -16,6 +16,7 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.ui.ExpandableGridView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
+import com.leo.appmaster.utils.LeoLog;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -28,6 +29,7 @@ import java.util.List;
 public abstract class FolderFragment<T> extends Fragment implements AbsListView.OnScrollListener,
         ExpandableListView.OnGroupClickListener, FolderAdapter.OnFolderClickListener, RippleView.OnRippleCompleteListener ,
         View.OnClickListener {
+    private static final String TAG = "FolderFragment";
     private Dictionary<Integer, Integer> mItemHeights = new Hashtable<Integer, Integer>();
 
     protected FolderAdapter<T> mAdapter;
@@ -115,6 +117,10 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         View c = view.getChildAt(0); //this is the first visible row
         if (c == null) return;
 
+        int listHeight = view.getHeight();
+        int listTop = view.getTop();
+        LeoLog.i(TAG, "onScroll, listHeight: " + listHeight + " | listTop: " + listTop +
+                " | viewTop: " + c.getTop());
         int scrollY = -c.getTop();
         mItemHeights.put(view.getFirstVisiblePosition(), c.getHeight());
         for (int i = 0; i < view.getFirstVisiblePosition(); ++i) {
@@ -139,6 +145,21 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
             if (mCurrentGroup != mLastGroup) {
                 mAdapter.setLableContent(mFloatingTv, wrapper.parentName, wrapper.items.size());
                 mFloatingCb.setChecked(mAdapter.isGroupChecked(wrapper));
+                mFloatingView.setTranslationY(0);
+            } else if (mLastGroup != -1) {
+                int nextPosition = mAdapter.getNextPositionOfAllDatas(mCurrentGroup);
+                nextPosition += mListView.getHeaderViewsCount();
+                if (nextPosition != -1 && nextPosition > firstVisibleItem
+                        && nextPosition < (firstVisibleItem + visibleItemCount)) {
+                    View nextChild = view.getChildAt(nextPosition - firstVisibleItem);
+                    int nextTop = nextChild.getTop();
+                    int floatingH = mFloatingView.getHeight();
+                    if (nextTop < floatingH) {
+                        mFloatingView.setTranslationY(-(floatingH - nextTop));
+                    } else {
+                        mFloatingView.setTranslationY(0);
+                    }
+                }
             }
 
             mLastGroup = mCurrentGroup;
