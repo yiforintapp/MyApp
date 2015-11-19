@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
@@ -16,7 +15,7 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.sdk.push.PushInvoke;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.imageloader.ImageLoader;
 
 /**
@@ -25,13 +24,12 @@ import com.leo.imageloader.ImageLoader;
  */
 public class MsgCenterActivity extends BaseActivity implements
         View.OnClickListener,
-        AdapterView.OnItemClickListener,
-        RippleView.OnRippleCompleteListener {
+        AdapterView.OnItemClickListener{
     private CommonToolbar mToolbar;
 
     private ListView mMessageLv;
     private View mEmptyView;
-    private RippleView mFeedbackTv;
+    private RippleView1 mFeedbackTv;
     private MsgCenterAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,8 +45,8 @@ public class MsgCenterActivity extends BaseActivity implements
 
         mEmptyView = findViewById(R.id.msg_center_empty_ll);
 
-        mFeedbackTv = (RippleView) findViewById(R.id.msg_center_feedback_tv);
-        mFeedbackTv.setOnRippleCompleteListener(this);
+        mFeedbackTv = (RippleView1) findViewById(R.id.msg_center_feedback_tv);
+        mFeedbackTv.setOnClickListener(this);
 
         mAdapter = new MsgCenterAdapter(mMessageLv, mEmptyView);
         mMessageLv.setAdapter(mAdapter);
@@ -133,8 +131,4 @@ public class MsgCenterActivity extends BaseActivity implements
         ImageLoader.getInstance().clearMemoryCache();
     }
 
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        onClick(rippleView);
-    }
 }

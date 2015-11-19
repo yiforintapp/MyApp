@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res/com.leo.appmaster"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" xmlns:app="http://schemas.android.com/apk/res/com.leo.appmaster">
+    android:orientation="vertical">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:background="@color/cb" >
+        android:background="@color/cb">
 
         <com.leo.appmaster.ui.CommonToolbar
             android:id="@+id/about_title_bar"
@@ -65,29 +66,28 @@
         android:gravity="center"
         android:orientation="vertical"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp" >
+        android:paddingTop="10dp">
 
-        <com.leo.appmaster.ui.RippleView 
-             xmlns:tools="http://schemas.android.com/tools"
+        <com.leo.appmaster.ui.RippleView1
             android:id="@+id/rv_check_update_button"
-             android:background="@drawable/blue_radius_btn_shape"
             android:layout_width="289dp"
             android:layout_height="46dp"
-            app:rv_color="@color/button_blue_ripple"
-            app:rv_alpha="255"
-            >
-<!--             android:background="@drawable/mycheck_button_selecter" -->
-          <!--   android:textColor="@drawable/manager_backup_text_selecter" -->
-        <Button
-            android:id="@+id/check_update_button"
-            android:layout_width="match_parent"
             android:background="@drawable/blue_radius_btn_shape"
-            android:layout_height="match_parent"
-            android:text="@string/protocolBar"
-            android:textColor="#ffffff"
-            android:textSize="18dp" />
-        </com.leo.appmaster.ui.RippleView>
-        
+            app:rippleColor="@color/button_blue_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <Button
+                android:id="@+id/check_update_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/blue_radius_btn_shape"
+                android:text="@string/protocolBar"
+                android:textColor="#ffffff"
+                android:textSize="18dp" />
+        </com.leo.appmaster.ui.RippleView1>
+
     </LinearLayout>
 
 </LinearLayout>

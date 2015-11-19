@@ -23,7 +23,6 @@ import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.appmanage.FlowActivity;
 import com.leo.appmaster.appmanage.UninstallActivity;
 import com.leo.appmaster.cleanmemory.HomeBoostActivity;
-import com.leo.appmaster.home.DeskAdActivity;
 import com.leo.appmaster.home.DeskProxyActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
@@ -34,17 +33,17 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.utils.LeoLog;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.QuickHelperUtils;
 import com.leo.appmaster.videohide.VideoHideMainActivity;
 
 public class QuickHelperActivity extends BaseActivity {
     private static int[] mHelperResourceIDs;
-    
+
     private static int[] mHelperNames;
-    
+
     private static int[] mHelperDescs;
-    
+
     private CommonToolbar mCtb;
     private ListView mLvQuickHelperList;
     private LayoutInflater mInflater;
@@ -52,12 +51,12 @@ public class QuickHelperActivity extends BaseActivity {
     private static final int FIRST_CLASS_LAST_ONE_POSITION;
     private static final int SECOND_CLASS_LAST_ONE_POSITION;
     private static final int THIRD_CLASS_LAST_ONE_POSITION;
-    
+
     private static final int FIRST_CLASS_FIRST_ONE_POSITION;
     private static final int SECOND_CLASS_FIRST_ONE_POSITION;
     private static final int THIRD_CLASS_FIRST_ONE_POSITION;
-    
-    private static final int POSITION_BOOST ;
+
+    private static final int POSITION_BOOST;
     private static final int POSITION_IMAGE_HIDE;
     private static final int POSITION_VIDEO_HIEDE;
     private static final int POSITION_APP_UNSTALL;
@@ -69,10 +68,10 @@ public class QuickHelperActivity extends BaseActivity {
     private static final int POSITION_SECRET_CALL;
     private static final int POSITION_SECRET_MSG;
     private static final int POSITION_APPJOY;
-    
+
     static {
         if (Build.VERSION.SDK_INT > 21) {
-            mHelperResourceIDs = new int[] {
+            mHelperResourceIDs = new int[]{
                     R.drawable.qh_image_icon, R.drawable.qh_video_icon,
                     R.drawable.qh_intruder_icon,
                     R.drawable.qh_call_icon, R.drawable.qh_sms_icon, R.drawable.qh_wifi_icon,
@@ -82,24 +81,24 @@ public class QuickHelperActivity extends BaseActivity {
                     R.drawable.qh_appjoy_icon
             };
             mHelperNames = new int[]
-            {
-                    R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
-                    R.string.quick_helper_intruder, R.string.quick_helper_privacy_call,
-                    R.string.quick_helper_privacy_msg, R.string.quick_helper_wifi_safety,
-                    R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
-                    R.string.quick_helper_flow_manage, 
-                    R.string.accelerate, R.string.desk_ad_name
-            };
+                    {
+                            R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
+                            R.string.quick_helper_intruder, R.string.quick_helper_privacy_call,
+                            R.string.quick_helper_privacy_msg, R.string.quick_helper_wifi_safety,
+                            R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
+                            R.string.quick_helper_flow_manage,
+                            R.string.accelerate, R.string.desk_ad_name
+                    };
 
             mHelperDescs = new int[]
-            {
-                    R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
-                    R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_call,
-                    R.string.quick_helper_desc_msg, R.string.quick_helper_desc_wifi,
-                    R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
-                    R.string.quick_helper_desc_flow, 
-                    R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
-            };
+                    {
+                            R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
+                            R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_call,
+                            R.string.quick_helper_desc_msg, R.string.quick_helper_desc_wifi,
+                            R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
+                            R.string.quick_helper_desc_flow,
+                            R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
+                    };
 
             FIRST_CLASS_LAST_ONE_POSITION = 5;
             SECOND_CLASS_LAST_ONE_POSITION = 9;
@@ -122,7 +121,7 @@ public class QuickHelperActivity extends BaseActivity {
             POSITION_SECRET_MSG = 4;
             POSITION_APPJOY = 10;
         } else {
-            mHelperResourceIDs = new int[] {
+            mHelperResourceIDs = new int[]{
                     R.drawable.qh_image_icon, R.drawable.qh_video_icon,
                     R.drawable.qh_intruder_icon,
                     R.drawable.qh_call_icon, R.drawable.qh_sms_icon, R.drawable.qh_wifi_icon,
@@ -133,24 +132,24 @@ public class QuickHelperActivity extends BaseActivity {
             };
 
             mHelperNames = new int[]
-            {
-                    R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
-                    R.string.quick_helper_intruder, R.string.quick_helper_privacy_call,
-                    R.string.quick_helper_privacy_msg, R.string.quick_helper_wifi_safety,
-                    R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
-                    R.string.quick_helper_flow_manage, R.string.quick_helper_elec_manage,
-                    R.string.accelerate, R.string.desk_ad_name
-            };
+                    {
+                            R.string.quick_helper_pic_hide, R.string.quick_helper_video_hide,
+                            R.string.quick_helper_intruder, R.string.quick_helper_privacy_call,
+                            R.string.quick_helper_privacy_msg, R.string.quick_helper_wifi_safety,
+                            R.string.quick_helper_app_uninstall, R.string.quick_helper_app_backup,
+                            R.string.quick_helper_flow_manage, R.string.quick_helper_elec_manage,
+                            R.string.accelerate, R.string.desk_ad_name
+                    };
 
             mHelperDescs = new int[]
-            {
-                    R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
-                    R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_call,
-                    R.string.quick_helper_desc_msg, R.string.quick_helper_desc_wifi,
-                    R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
-                    R.string.quick_helper_desc_flow, R.string.quick_helper_desc_elec,
-                    R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
-            };
+                    {
+                            R.string.quick_helper_desc_pic_hide, R.string.quick_helper_desc_video_hide,
+                            R.string.quick_helper_desc_intruder, R.string.quick_helper_desc_call,
+                            R.string.quick_helper_desc_msg, R.string.quick_helper_desc_wifi,
+                            R.string.quick_helper_desc_uninstall, R.string.quick_helper_desc_backup,
+                            R.string.quick_helper_desc_flow, R.string.quick_helper_desc_elec,
+                            R.string.quick_helper_desc_boost, R.string.quick_helper_desc_appjoy
+                    };
 
             FIRST_CLASS_LAST_ONE_POSITION = 5;
             SECOND_CLASS_LAST_ONE_POSITION = 10;
@@ -174,7 +173,7 @@ public class QuickHelperActivity extends BaseActivity {
             POSITION_APPJOY = 11;
         }
     }
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -198,7 +197,7 @@ public class QuickHelperActivity extends BaseActivity {
                 View view = mInflater.inflate(R.layout.item_quick_helper_list, null);
                 TextView tvClass = (TextView) view.findViewById(R.id.tv_class);
                 LinearLayout llClass = (LinearLayout) view.findViewById(R.id.ll_class);
-                RippleView rvAdd = (RippleView) view.findViewById(R.id.rv_add);
+                RippleView1 rvAdd = (RippleView1) view.findViewById(R.id.rv_add);
                 ImageView ivIcon = (ImageView) view.findViewById(R.id.iv_icon);
                 TextView tvName = (TextView) view.findViewById(R.id.tv_name);
                 TextView tvDesc = (TextView) view.findViewById(R.id.tv_desc);
@@ -216,8 +215,8 @@ public class QuickHelperActivity extends BaseActivity {
                     llClass.setVisibility(View.GONE);
                 }
                 ivIcon.setBackgroundResource(mHelperResourceIDs[position]);
-                tvName.setText( getResources().getString(  mHelperNames[position]));
-                tvDesc.setText( getResources().getString(mHelperDescs[position]));
+                tvName.setText(getResources().getString(mHelperNames[position]));
+                tvDesc.setText(getResources().getString(mHelperDescs[position]));
                 rvAdd.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -226,16 +225,16 @@ public class QuickHelperActivity extends BaseActivity {
                         Intent.ShortcutIconResource appwallIconRes;
                         int id = (int) getItemId(position);
                         switch (id) {
-                        // 桌面加速 (免密码)
+                            // 桌面加速 (免密码)
                             case R.drawable.qh_speedup_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
-                                      "assistant", "assistant_accelerate");
+                                        "assistant", "assistant_accelerate");
                                 boolean isInstalllIswipe = ISwipUpdateRequestManager
                                         .isInstallIsiwpe(AppMasterApplication.getInstance());
                                 if (!isInstalllIswipe) {
-                                    intent = new Intent(AppMasterApplication.getInstance(),HomeBoostActivity.class);
+                                    intent = new Intent(AppMasterApplication.getInstance(), HomeBoostActivity.class);
                                     intent.putExtra("from_quickhelper", true);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                     QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_BOOST]), mHelperResourceIDs[POSITION_BOOST], intent, QuickHelperActivity.this);
                                 }
                                 break;
@@ -243,106 +242,106 @@ public class QuickHelperActivity extends BaseActivity {
                             case R.drawable.qh_image_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_hidepic");
-                                intent = new Intent(AppMasterApplication.getInstance(),ImageHideMainActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), ImageHideMainActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_IMAGE_HIDE]), mHelperResourceIDs[POSITION_IMAGE_HIDE], intent, QuickHelperActivity.this);
                                 break;
                             // 视频隐藏
                             case R.drawable.qh_video_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_hidevid");
-                                intent = new Intent(AppMasterApplication.getInstance(),VideoHideMainActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), VideoHideMainActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_VIDEO_HIEDE]), mHelperResourceIDs[POSITION_VIDEO_HIEDE], intent, QuickHelperActivity.this);
                                 break;
                             // 应用卸载
-                              case R.drawable.qh_uninstall_icon:
-                                  SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
-                                          "assistant", "assistant_uninstall");
-                                    intent = new Intent(AppMasterApplication.getInstance(),UninstallActivity.class);
-                                    intent.putExtra("from_quickhelper", true);
-                                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                                    QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APP_UNSTALL]), mHelperResourceIDs[POSITION_APP_UNSTALL], intent, QuickHelperActivity.this);
+                            case R.drawable.qh_uninstall_icon:
+                                SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
+                                        "assistant", "assistant_uninstall");
+                                intent = new Intent(AppMasterApplication.getInstance(), UninstallActivity.class);
+                                intent.putExtra("from_quickhelper", true);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APP_UNSTALL]), mHelperResourceIDs[POSITION_APP_UNSTALL], intent, QuickHelperActivity.this);
                                 break;
                             // 应用备份 (免密码)
                             case R.drawable.qh_backup_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_backup");
-                                intent = new Intent(AppMasterApplication.getInstance(),DeskProxyActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mBackup);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APP_BACKUP]), mHelperResourceIDs[POSITION_APP_BACKUP], intent, QuickHelperActivity.this);
                                 break;
                             // 流量管理 (免密码)
                             case R.drawable.qh_flow_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_dataflow");
-                                intent = new Intent(AppMasterApplication.getInstance(),DeskProxyActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mFlow);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_FLOW]), mHelperResourceIDs[POSITION_FLOW], intent, QuickHelperActivity.this);
                                 break;
                             // 电量管理 (免密码)
                             case R.drawable.qh_battery_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_power");
-                                intent = new Intent(AppMasterApplication.getInstance(),DeskProxyActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mElec);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_ELEC]), mHelperResourceIDs[POSITION_ELEC], intent, QuickHelperActivity.this);
                                 break;
                             // WIFI安全 (免密码)
                             case R.drawable.qh_wifi_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_wifi");
-                                intent = new Intent(AppMasterApplication.getInstance(),DeskProxyActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mWifi);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_WIFI]), mHelperResourceIDs[POSITION_WIFI], intent, QuickHelperActivity.this);
                                 break;
                             // 入侵者防护
                             case R.drawable.qh_intruder_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_intruder");
-                                intent = new Intent(AppMasterApplication.getInstance(),IntruderprotectionActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), IntruderprotectionActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_INTRUDER]), mHelperResourceIDs[POSITION_INTRUDER], intent, QuickHelperActivity.this);
                                 break;
                             // 隐私通话
                             case R.drawable.qh_call_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_call");
-                                intent = new Intent(AppMasterApplication.getInstance(),PrivacyContactActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), PrivacyContactActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT, PrivacyContactUtils.TO_PRIVACY_CALL_FLAG);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_SECRET_CALL]), mHelperResourceIDs[POSITION_SECRET_CALL], intent, QuickHelperActivity.this);
                                 break;
                             // 隐私短信
                             case R.drawable.qh_sms_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_sms");
-                                intent = new Intent(AppMasterApplication.getInstance(),PrivacyContactActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), PrivacyContactActivity.class);
                                 intent.putExtra("from_quickhelper", true);
-                                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT,PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.putExtra(PrivacyContactUtils.TO_PRIVACY_CONTACT, PrivacyContactUtils.TO_PRIVACY_MESSAGE_FLAG);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_SECRET_MSG]), mHelperResourceIDs[POSITION_SECRET_MSG], intent, QuickHelperActivity.this);
                                 break;
                             // 欢乐APP (免密码)
                             case R.drawable.qh_appjoy_icon:
                                 SDKWrapper.addEvent(QuickHelperActivity.this, SDKWrapper.P1,
                                         "assistant", "assistant_appjoy");
-                                intent = new Intent(AppMasterApplication.getInstance(),DeskProxyActivity.class);
+                                intent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                                 intent.putExtra("from_quickhelper", true);
                                 intent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mAd);
-                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                                 QuickHelperUtils.createQuickHelper(getResources().getString(mHelperNames[POSITION_APPJOY]), mHelperResourceIDs[POSITION_APPJOY], intent, QuickHelperActivity.this);
                                 break;
                             default:

@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="@dimen/locker_theme_guide_width"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:orientation="vertical"
-    android:background="@drawable/bg" 
-    >
+    android:background="@drawable/bg"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/lockerThemeGuideLT"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/guideImageIV"
@@ -21,41 +20,43 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/locker_theme_guide_guideImageIV_marginTop"
             android:src="@drawable/online_theme_tutorails_image" />
-        
+
         <TextView
             android:id="@+id/guideTitleTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/locker_theme_guide_guideTitleTV_marginTop"
             android:layout_marginBottom="20dp"
+            android:layout_marginTop="@dimen/locker_theme_guide_guideTitleTV_marginTop"
+            android:gravity="center"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
             android:text="@string/locker_theme_guide"
-            android:gravity="center"
             android:textColor="#545454"
             android:textSize="@dimen/locker_theme_guide_guideTitleTV_textsize" />
     </LinearLayout>
 
 
-    <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
-                android:layout_height="46dp"
-                android:id="@+id/rv_save"
-                android:layout_width="match_parent"
-             android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginBottom="12dp"
-            app:rv_alpha="255"
-            app:rv_color="#0453d6" >
+    <com.leo.appmaster.ui.RippleView1
+        android:id="@+id/rv_save"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:layout_marginBottom="12dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginRight="12dp"
+        app:rippleColor="#0453d6"
+        app:rippleDuration="250"
+        app:rippleHover="true"
+        app:rippleOverlay="true">
+
         <TextView
             android:id="@+id/tv_save"
+            style="@style/dlg_right_button_txt"
             android:layout_width="match_parent"
             android:layout_height="46dp"
-             style="@style/dlg_right_button_txt"
             android:clickable="true"
             android:gravity="center"
             android:text="@string/makesure"
             android:textColor="#ffffff"
             android:textSize="16dp" />
-</com.leo.appmaster.ui.RippleView>
+    </com.leo.appmaster.ui.RippleView1>
 </LinearLayout>

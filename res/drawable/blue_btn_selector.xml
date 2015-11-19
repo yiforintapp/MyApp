@@ -2,8 +2,6 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/white_bg_blue_line_pres" android:state_pressed="true"></item>
     <item android:drawable="@drawable/while_bg_blue_line">
-
-
     </item>
 </selector> 
 
