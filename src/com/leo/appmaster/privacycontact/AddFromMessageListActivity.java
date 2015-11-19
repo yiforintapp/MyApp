@@ -44,6 +44,8 @@ import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
@@ -66,14 +68,15 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
     private boolean mLogFlag = false;
     private LinearLayout mDefaultText;
     private Button mAutoDddBtn;
+    private RippleView1 rippleView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_message);
         mDefaultText = (LinearLayout) findViewById(R.id.add_message_default_tv);
-        mAutoDddBtn = (Button)mDefaultText.findViewById(R.id.moto_add_btn);
-        mAutoDddBtn.setOnClickListener(new OnClickListener() {
+        rippleView = (RippleView1) mDefaultText.findViewById(R.id.moto_add_btn_ripp);
+        rippleView.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 /* SDK */
@@ -85,6 +88,19 @@ public class AddFromMessageListActivity extends BaseActivity implements OnItemCl
                 startActivity(intent);
             }
         });
+        mAutoDddBtn = (Button)mDefaultText.findViewById(R.id.moto_add_btn);
+//        mAutoDddBtn.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                /* SDK */
+//                SDKWrapper.addEvent(AddFromMessageListActivity.this, SDKWrapper.P1, "contactsadd",
+//                        "smsemptyadd");
+//                Intent intent = new Intent(AddFromMessageListActivity.this,
+//                        PrivacyContactInputActivity.class);
+//                intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
+//                startActivity(intent);
+//            }
+//        });
         mTtileBar = (CommonToolbar) findViewById(R.id.add_privacy_contact_title_bar);
         mTtileBar.setToolbarColorResource(R.color.cb);
         mTtileBar.setOptionImageResource(R.drawable.mode_done);

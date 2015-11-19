@@ -40,6 +40,8 @@ import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
+import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOProgressDialog;
@@ -61,14 +63,15 @@ public class AddFromCallLogListActivity extends BaseActivity {
     private ProgressBar mProgressBar;
     private LinearLayout mDefaultText;
     private Button mAutoDddBtn;
+    private RippleView1 moto_add_btn_ripp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_privacy_call_log);
         mDefaultText = (LinearLayout) findViewById(R.id.add_call_log_default_tv);
-        mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
-        mAutoDddBtn.setOnClickListener(new OnClickListener() {
+        moto_add_btn_ripp = (RippleView1) mDefaultText.findViewById(R.id.moto_add_btn_ripp);
+        moto_add_btn_ripp.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 /* SDK */
@@ -80,11 +83,24 @@ public class AddFromCallLogListActivity extends BaseActivity {
                 startActivity(intent);
             }
         });
-        MaterialRippleLayout.on(mAutoDddBtn)
-                .rippleColor(getResources().getColor(R.color.blue_button_click))
-                .rippleAlpha(0.8f)
-                .rippleHover(true)
-                .create();
+        mAutoDddBtn = (Button) mDefaultText.findViewById(R.id.moto_add_btn);
+//        mAutoDddBtn.setOnClickListener(new OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                /* SDK */
+//                SDKWrapper.addEvent(AddFromCallLogListActivity.this, SDKWrapper.P1, "contactsadd",
+//                        "callsemptyadd");
+//                Intent intent = new Intent(AddFromCallLogListActivity.this,
+//                        PrivacyContactInputActivity.class);
+//                intent.putExtra(PrivacyContactInputActivity.TO_CONTACT_LIST, true);
+//                startActivity(intent);
+//            }
+//        });
+//        MaterialRippleLayout.on(mAutoDddBtn)
+//                .rippleColor(getResources().getColor(R.color.blue_button_click))
+//                .rippleAlpha(0.8f)
+//                .rippleHover(true)
+//                .create();
         mComBar = (CommonToolbar) findViewById(R.id.add_privacy_call_log_title_bar);
         mComBar.setToolbarTitle(R.string.privacy_contact_popumenus_from_call_log);
         mComBar.setToolbarColorResource(R.color.cb);
@@ -348,9 +364,9 @@ public class AddFromCallLogListActivity extends BaseActivity {
                             if (mAddPrivacyCallLog.size() == 1 && mAddPrivacyCallLog != null) {
                                 LeoEventBus
                                         .getDefaultBus()
-                                        .post(new  PrivacyMessageEvent(
-                                                        EventId.EVENT_PRIVACY_EDIT_MODEL,
-                                                        PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT));
+                                        .post(new PrivacyMessageEvent(
+                                                EventId.EVENT_PRIVACY_EDIT_MODEL,
+                                                PrivacyContactUtils.ADD_CONTACT_FROM_CONTACT_NO_REPEAT_EVENT));
                                 isOtherLogs = false;
                             }
                         }

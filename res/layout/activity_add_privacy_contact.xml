@@ -1,9 +1,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:ripple="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white" >
+    android:background="@color/white">
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/add_privacy_contact_title_bar"
@@ -14,26 +13,24 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/add_privacy_contact_title_bar" >
+        android:layout_below="@id/add_privacy_contact_title_bar">
 
         <ListView
             android:id="@+id/add_contactLV"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:overScrollMode="never"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
             android:divider="@null"
-            android:scrollbars="none"
-            />
+            android:overScrollMode="never"
+            android:scrollbars="none" />
 
         <com.leo.appmaster.privacycontact.ContactSideBar
             android:id="@+id/contact_sidrbar"
             android:layout_width="25dp"
             android:layout_height="fill_parent"
             android:layout_gravity="right|center"
-            android:visibility="gone" >
-        </com.leo.appmaster.privacycontact.ContactSideBar>
+            android:visibility="gone"/>
     </FrameLayout>
 
     <ProgressBar
@@ -64,8 +61,7 @@
         android:layout_centerInParent="true"
         android:gravity="center"
         android:orientation="vertical"
-        android:visibility="gone"
-        >
+        android:visibility="gone">
 
         <ImageView
             android:layout_width="@dimen/privacy_default_image_width"
@@ -79,21 +75,26 @@
             android:textColor="#d3d3d4"
             android:textSize="18dp" />
 
-        <com.leo.appmaster.ui.RippleView
+        <com.leo.appmaster.ui.RippleView1
+            android:id="@+id/moto_add_btn_ripp"
             android:layout_width="120dp"
             android:layout_height="38dp"
-            ripple:rv_color="@color/blue_button_click"
+            android:layout_marginTop="@dimen/privacy_auto_add_btn_margin_top"
             android:background="@drawable/button_selector"
-            android:layout_marginTop="@dimen/privacy_auto_add_btn_margin_top">
+            ripple:rippleColor="@color/blue_button_click"
+            ripple:rippleDuration="250"
+            ripple:rippleHover="true"
+            ripple:rippleOverlay="true">
+
             <Button
                 android:id="@+id/moto_add_btn"
                 android:layout_width="120dp"
                 android:layout_height="38dp"
                 android:background="@drawable/app_done_btn"
+                android:text="@string/privacy_auto_add_text"
                 android:textColor="@color/white"
-                android:textSize="17dp"
-                android:text="@string/privacy_auto_add_text" />
-        </com.leo.appmaster.ui.RippleView>
+                android:textSize="17dp" />
+        </com.leo.appmaster.ui.RippleView1>
     </LinearLayout>
 
 </RelativeLayout>
