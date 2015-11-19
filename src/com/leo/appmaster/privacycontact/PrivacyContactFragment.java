@@ -40,8 +40,6 @@ import com.leo.appmaster.eventbus.event.PrivacyEditFloatEvent;
 import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
 import com.leo.appmaster.utils.LeoLog;
 
@@ -317,7 +315,7 @@ public class PrivacyContactFragment extends BaseFragment {
             @Override
             public void onClick(View arg0) {
                 mPCDialog.cancel();
-                String[] bundleData = new String[] {
+                String[] bundleData = new String[]{
                         contact.getContactName(), contact.getContactNumber(),
                         String.valueOf(contact.getAnswerType())
                 };
@@ -344,14 +342,14 @@ public class PrivacyContactFragment extends BaseFragment {
                 /* 查询该号码的隐私通话记录 */
                 PrivacyContactUtils.queryLogFromMySelg(
                         mContext.getContentResolver(), Constants.PRIVACY_CALL_LOG_URI,
-                        Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " LIKE ?", new String[] {
-                            "%" + contact.getContactNumber()
+                        Constants.COLUMN_CALL_LOG_PHONE_NUMBER + " LIKE ?", new String[]{
+                                "%" + contact.getContactNumber()
                         });
                 /* 查询该号码的隐私短信 */
                 PrivacyContactUtils.queryLogFromMySelg(
                         mContext.getContentResolver(), Constants.PRIVACY_MESSAGE_URI,
-                        Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ?", new String[] {
-                            "%" + contact.getContactNumber()
+                        Constants.COLUMN_MESSAGE_PHONE_NUMBER + " LIKE ?", new String[]{
+                                "%" + contact.getContactNumber()
                         });
                 // if (messageNumber > 0 || callLogNumber > 0) {
                 showContactDialog(
@@ -366,10 +364,9 @@ public class PrivacyContactFragment extends BaseFragment {
             }
         });
         // 发短信按钮
-        mPCDialog.setLeftBtnListener(new OnRippleCompleteListener() {
-
+        mPCDialog.setLeftBtnListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView arg0) {
+            public void onClick(View view) {
                 mPCDialog.cancel();
                 String[] bundleData = new String[] {
                         contact.getContactName(), contact.getContactNumber()
@@ -386,12 +383,32 @@ public class PrivacyContactFragment extends BaseFragment {
                 }
             }
         });
-        // 打电话按钮
-        mPCDialog.setRightBtnListener(new OnRippleCompleteListener() {
+//        mPCDialog.setLeftBtnListener(new OnRippleCompleteListener() {
+//
+//            @Override
+//            public void onRippleComplete(RippleView arg0) {
+//                mPCDialog.cancel();
+//                String[] bundleData = new String[] {
+//                        contact.getContactName(), contact.getContactNumber()
+//                };
+//                Bundle bundle = new Bundle();
+//                bundle.putStringArray(Constants.LOCK_MESSAGE_THREAD_ID, bundleData);
+//                Intent intentSendMessage = new Intent(mContext, PrivacyMessageItemActivity.class);
+//                intentSendMessage.putExtras(bundle);
+//                try {
+//                    startActivity(intentSendMessage);
+//                    /* SDK */
+//                    SDKWrapper.addEvent(mContext, SDKWrapper.P1, "sendmesg", "sendmesg  contact");
+//                } catch (Exception e) {
+//                }
+//            }
+//        });
 
+        // 打电话按钮
+        mPCDialog.setRightBtnListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView arg0) {
-                /* SDK */
+            public void onClick(View view) {
+                                /* SDK */
                 SDKWrapper.addEvent(mContext, SDKWrapper.P1, "call", "contact");
                 mPCDialog.cancel();
                 // 查询该号码是否为隐私联系人
@@ -412,6 +429,31 @@ public class PrivacyContactFragment extends BaseFragment {
                 }
             }
         });
+//        mPCDialog.setRightBtnListener(new OnRippleCompleteListener() {
+//
+//            @Override
+//            public void onRippleComplete(RippleView arg0) {
+//                /* SDK */
+//                SDKWrapper.addEvent(mContext, SDKWrapper.P1, "call", "contact");
+//                mPCDialog.cancel();
+//                // 查询该号码是否为隐私联系人
+//                String formateNumber = PrivacyContactUtils.formatePhoneNumber(contact
+//                        .getContactNumber());
+//                ContactBean privacyConatact = MessagePrivacyReceiver.getPrivateMessage(
+//                        formateNumber, mContext);
+//                PrivacyContactManager.getInstance(mContext).setLastCall(
+//                        privacyConatact);
+//                Uri uri = Uri.parse("tel:" + contact.getContactNumber());
+//                // Intent intent = new Intent(Intent.ACTION_CALL, uri);
+//                Intent intent = new Intent(Intent.ACTION_DIAL,
+//                        uri);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                try {
+//                    startActivity(intent);
+//                } catch (Exception e) {
+//                }
+//            }
+//        });
         mPCDialog.setCanceledOnTouchOutside(true);
         mPCDialog.show();
     }

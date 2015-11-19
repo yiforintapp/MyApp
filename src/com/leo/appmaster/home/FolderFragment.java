@@ -13,17 +13,9 @@ import android.widget.TextView;
 
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.imagehide.PhotoItem;
-import com.leo.appmaster.mgr.MgrContext;
-import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.ExpandableGridView;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
-import com.leo.appmaster.utils.LeoLog;
-import com.leo.appmaster.utils.PrefConst;
 
 import java.util.ArrayList;
 import java.util.Dictionary;
@@ -52,7 +44,6 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
     private View mFloatingView;
     private TextView mFloatingTv;
     protected CheckBox mFloatingCb;
-    private ImageView mFloatingArrow;
     private RippleView mFloatingRv;
 
     private RippleView mProcessBtn;
@@ -268,6 +259,7 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
         mIgnoreDlg = new LEOAlarmDialog(getActivity());
         String content = getString(R.string.pri_pro_ignore_dialog);
         mIgnoreDlg.setContent(content);
+
         mIgnoreDlg.setLeftBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -275,6 +267,7 @@ public abstract class FolderFragment<T> extends Fragment implements AbsListView.
                 mIgnoreDlg.dismiss();
             }
         });
+
         mIgnoreDlg.setRightBtnListener(new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
