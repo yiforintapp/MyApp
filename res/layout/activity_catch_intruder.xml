@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ebebed"
-    android:scrollbars="none" >
+    android:scrollbars="none">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:background="#ebebed"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/rl_header"
             android:layout_width="match_parent"
             android:layout_height="168dp"
-            android:background="#2675f6" >
+            android:background="#2675f6">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -25,7 +25,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="17dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal" >
+                android:orientation="horizontal">
 
                 <ImageView
                     android:layout_width="22dp"
@@ -40,22 +40,23 @@
                     android:textColor="#ffffff" />
             </LinearLayout>
 
-            <com.leo.appmaster.ui.RippleView
-                xmlns:tools="http://schemas.android.com/tools"
+            <com.leo.appmaster.ui.RippleView1
                 android:id="@+id/rv_close"
                 android:layout_width="21dp"
                 android:layout_height="21dp"
                 android:layout_marginLeft="27dp"
                 android:layout_marginTop="18dp"
-                app:rv_alpha="255"
-                app:rv_color="@color/button_blue_ripple" >
+                app:rippleColor="@color/button_blue_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
 
                 <ImageView
                     android:id="@+id/iv_close"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:src="@drawable/close_in_catch" />
-            </com.leo.appmaster.ui.RippleView>
+            </com.leo.appmaster.ui.RippleView1>
 
             <TextView
                 android:id="@+id/tv_times_of_catch"
@@ -97,7 +98,7 @@
             android:layout_height="52dp"
             android:background="@color/white"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_times_to_catch"
@@ -110,16 +111,17 @@
                 android:textColor="#333333"
                 android:textSize="15dp" />
 
-            <com.leo.appmaster.ui.RippleView
-                xmlns:tools="http://schemas.android.com/tools"
+            <com.leo.appmaster.ui.RippleView1
                 android:id="@+id/rv_change_times"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="12dp"
                 android:maxWidth="90dp"
                 android:minWidth="52dp"
-                app:rv_alpha="255"
-                app:rv_color="@color/button_blue_stroke_ripple" >
+                app:rippleColor="@color/button_blue_stroke_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
 
                 <Button
                     android:id="@+id/bt_change_times"
@@ -130,7 +132,7 @@
                     android:minWidth="52dp"
                     android:text="@string/change_times_to_catch"
                     android:textColor="#2674f6" />
-            </com.leo.appmaster.ui.RippleView>
+            </com.leo.appmaster.ui.RippleView1>
         </LinearLayout>
 
         <!-- 切换有图片和无图片 -->
@@ -142,7 +144,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
-            android:background="#ffffff" >
+            android:background="#ffffff">
 
             <RelativeLayout
                 android:id="@+id/rl_newest"
@@ -151,7 +153,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginTop="8dp"
-                android:background="#ffffff" >
+                android:background="#ffffff">
 
                 <ImageView
                     android:id="@+id/iv_app_intruded"
@@ -177,7 +179,7 @@
                     android:layout_marginBottom="12dp"
                     android:layout_marginLeft="12dp"
                     android:layout_marginRight="12dp"
-                    android:layout_marginTop="40dp" >
+                    android:layout_marginTop="40dp">
 
                     <com.leo.appmaster.intruderprotection.BottomCropImage
                         android:id="@+id/iv_newest_photo"
@@ -191,7 +193,7 @@
                         android:background="#00000000"
                         android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:visibility="visible" >
+                        android:visibility="visible">
 
                         <ImageView
                             android:id="@+id/iv_appicon"
@@ -215,7 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="#ffffff"
-                android:visibility="invisible" >
+                android:visibility="invisible">
 
                 <ImageView
                     android:id="@+id/iv_nopic"
@@ -238,7 +240,7 @@
         <RelativeLayout
             android:id="@+id/rl_ad_or_fivestars"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:id="@+id/ll_fivestars_layout"
@@ -252,7 +254,7 @@
                 android:paddingBottom="10dp"
                 android:paddingLeft="12dp"
                 android:paddingRight="12dp"
-                android:visibility="visible" >
+                android:visibility="visible">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -266,8 +268,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="130dp"
                     android:layout_marginTop="5dp" />
-                    
-                
+
+
                 <!-- <RelativeLayout
                     android:id="@+id/rl_fivestars"
                     android:layout_width="match_parent"
@@ -342,8 +344,8 @@
                         android:visibility="invisible"
                         android:src="@drawable/grade_gesture" />
                 </RelativeLayout> -->
-<!--                         android:layout_marginBottom="20dp"
-                        android:layout_marginRight="25dp" -->
+                <!--                         android:layout_marginBottom="20dp"
+                                        android:layout_marginRight="25dp" -->
 
                 <TextView
                     android:id="@+id/tv_grade"
@@ -358,13 +360,14 @@
                     android:textColor="@color/c2"
                     android:textSize="14dp" />
 
-                <com.leo.appmaster.ui.RippleView
-                    xmlns:tools="http://schemas.android.com/tools"
+                <com.leo.appmaster.ui.RippleView1
                     android:id="@+id/rv_fivestars"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
-                    app:rv_alpha="255"
-                    app:rv_color="@color/button_green_ripple" >
+                    app:rippleColor="@color/button_green_ripple"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="true">
 
                     <Button
                         android:id="@+id/bt_beg_fivestars"
@@ -374,7 +377,7 @@
                         android:text="@string/grade"
                         android:textColor="#ffffff"
                         android:textSize="16dp" />
-                </com.leo.appmaster.ui.RippleView>
+                </com.leo.appmaster.ui.RippleView1>
             </LinearLayout>
 
             <!-- AD -->
@@ -388,13 +391,13 @@
                 android:layout_marginTop="10dp"
                 android:background="#ffffff"
                 android:padding="12dp"
-                android:visibility="gone" >
+                android:visibility="gone">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="53dp"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/white_bg_gray_line" >
+                    android:background="@drawable/white_bg_gray_line">
 
                     <ImageView
                         android:id="@+id/iv_ad_iconpic"
@@ -414,7 +417,7 @@
                         android:layout_marginLeft="52dp"
                         android:layout_marginRight="82dp"
                         android:layout_marginTop="5dp"
-                        android:orientation="vertical" >
+                        android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_appname"
@@ -450,7 +453,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="157dp" >
+                    android:layout_height="157dp">
 
                     <ImageView
                         android:id="@+id/iv_ad_mainpic"
@@ -478,7 +481,7 @@
             android:background="#ffffff"
             android:orientation="vertical"
             android:paddingLeft="12dp"
-            android:paddingRight="12dp" >
+            android:paddingRight="12dp">
 
             <TextView
                 android:id="@+id/tv_others"
@@ -497,18 +500,18 @@
                 android:layout_weight="1"
                 android:divider="#ffffff"
                 android:dividerHeight="8dp"
-                android:scrollbars="none" >
-            </ListView>
+                android:scrollbars="none" />
 
-            <com.leo.appmaster.ui.RippleView
-                xmlns:tools="http://schemas.android.com/tools"
+            <com.leo.appmaster.ui.RippleView1
                 android:id="@+id/rv_more"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_marginBottom="12dp"
                 android:visibility="gone"
-                app:rv_alpha="255"
-                app:rv_color="@color/button_blue_ripple" >
+                app:rippleColor="@color/button_blue_ripple"
+                app:rippleDuration="250"
+                app:rippleHover="true"
+                app:rippleOverlay="true">
 
                 <Button
                     android:id="@+id/bt_more"
@@ -517,7 +520,7 @@
                     android:background="#2675f6"
                     android:text="@string/intruder_pic_more"
                     android:textColor="#ffffff" />
-            </com.leo.appmaster.ui.RippleView>
+            </com.leo.appmaster.ui.RippleView1>
         </LinearLayout>
     </LinearLayout>
 

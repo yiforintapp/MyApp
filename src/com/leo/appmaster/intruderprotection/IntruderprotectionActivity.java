@@ -44,8 +44,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
@@ -520,15 +519,23 @@ public class IntruderprotectionActivity extends Activity {
         // 拍照所需的解锁失败次数的文本提示
         updateTimesToCatch();
         // 更改拍照所需的解锁失败次数
-        RippleView btChangeTimes = (RippleView) mHeader.findViewById(R.id.rv_change_times);
-        btChangeTimes.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+        RippleView1 btChangeTimes = (RippleView1) mHeader.findViewById(R.id.rv_change_times);
+        btChangeTimes.setOnClickListener(new OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View view) {
                 SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
                         "intruder", "intruder_modify");
                 showChangeTimesDialog();
             }
         });
+//        btChangeTimes.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+//            @Override
+//            public void onRippleComplete(RippleView rippleView) {
+//                SDKWrapper.addEvent(IntruderprotectionActivity.this, SDKWrapper.P1,
+//                        "intruder", "intruder_modify");
+//                showChangeTimesDialog();
+//            }
+//        });
     }
     
     //显示改变失败XX次拍照的对话框

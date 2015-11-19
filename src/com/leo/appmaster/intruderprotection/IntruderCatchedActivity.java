@@ -9,10 +9,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import android.animation.ObjectAnimator;
-import android.animation.PropertyValuesHolder;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -39,10 +35,7 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
-import com.leo.appmaster.applocker.LockScreenActivity;
-import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.home.GradeTipActivity;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageGridActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -53,8 +46,7 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.FiveStarsLayout;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.DipPixelUtil;
@@ -66,7 +58,7 @@ import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FailReason;
 import com.leo.imageloader.core.ImageLoadingListener;
 
-public class IntruderCatchedActivity extends BaseActivity {
+public class IntruderCatchedActivity extends BaseActivity implements View.OnClickListener {
     private List<PhotoAibum> mAlbumList = null;
     private Button mBtFiveStars;
     private ImageLoader mImageLoader;
@@ -88,18 +80,18 @@ public class IntruderCatchedActivity extends BaseActivity {
     private ImageView mClose;
     private RelativeLayout mRlNopic;
     private RelativeLayout mRlFiveStars;
-    private RippleView mRvClose;
+    private RippleView1 mRvClose;
     private TextView mTvOthers;
     private LEOChoiceDialog mDialog;
     private RelativeLayout mRvHeader;
-    private RippleView mRvRating;
+    private RippleView1 mRvRating;
     private int[] mTimes = {
             1, 2, 3, 5
     };
     private List<Bitmap> mBitmaps = new ArrayList<Bitmap>();
     private DisplayImageOptions mImageOptions;
-    private RippleView mRvChange;
-    private RippleView mRvMore;
+    private RippleView1 mRvChange;
+    private RippleView1 mRvMore;
     private RelativeLayout mRlNewest;
     private PreferenceTable mPt;
     private static final int TIMES_TO_CATCH_1 = 1;
@@ -260,42 +252,22 @@ public class IntruderCatchedActivity extends BaseActivity {
         mSvMain = (ScrollView) findViewById(R.id.sv_intrudercatch_main);
         mRlNopic = (RelativeLayout) findViewById(R.id.rl_nopic);
         mLlMainMask = (LinearLayout) findViewById(R.id.ll_main_mask);
-        mRvRating = (RippleView) findViewById(R.id.rv_fivestars);
+        mRvRating = (RippleView1) findViewById(R.id.rv_fivestars);
+        mRvRating.setOnClickListener(this);
         mRlNewest = (RelativeLayout) findViewById(R.id.rl_newest);
         mTvOthers = (TextView) findViewById(R.id.tv_others);
-        // mLlFiveStars = (LinearLayout) findViewById(R.id.ll_fivestars_layout);
-        // mADLayout = (RelativeLayout) findViewById(R.id.rl_ad_layout);
-//        mRlFiveStars = (RelativeLayout) findViewById(R.id.rl_fivestars);
         mClose = (ImageView) findViewById(R.id.iv_close);
-        mRvClose = (RippleView) findViewById(R.id.rv_close);
-        mRvClose.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            @Override
-            public void onRippleComplete(RippleView rippleView) {
-                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
-                        "intruder", "intruder_capture_quit");
-                onBackPressed();
-            }
-        });
+        mRvClose = (RippleView1) findViewById(R.id.rv_close);
+        mRvClose.setOnClickListener(this);
         mTvTotalTimes = (TextView) findViewById(R.id.tv_times_of_catch);
         mChangeTimes = (Button) findViewById(R.id.bt_change_times);
-        mRvChange = (RippleView) findViewById(R.id.rv_change_times);
-        mRvChange.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                showChangeTimesDialog();
-            }
-        });
+
+        mRvChange = (RippleView1) findViewById(R.id.rv_change_times);
+        mRvChange.setOnClickListener(this);
+
         mTvTimesToCatch = (TextView) findViewById(R.id.tv_times_to_catch);
         mBtFiveStars = (Button) findViewById(R.id.bt_beg_fivestars);
-        mRvRating.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            @Override
-            public void onRippleComplete(RippleView v) {
-                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
-                        "intruder", "intruder_capture_rank");
-                mLockManager.filterSelfOneMinites();
-                Utilities.goFiveStar(IntruderCatchedActivity.this);
-            }
-        });
+
         // 初始化imageloader，需要时可以设置option
         mImageLoader = ImageLoader.getInstance();
         mImageOptions = new DisplayImageOptions.Builder()
@@ -307,7 +279,8 @@ public class IntruderCatchedActivity extends BaseActivity {
         mTvNewestCatchTip = (TextView) findViewById(R.id.newest_catch_tip);
         mIvNewestPhoto = (BottomCropImage) findViewById(R.id.iv_newest_photo);
         mBtMore = (Button) findViewById(R.id.bt_more);
-        mRvMore = (RippleView) findViewById(R.id.rv_more);
+        mRvMore = (RippleView1) findViewById(R.id.rv_more);
+        mRvMore.setOnClickListener(this);
         mLvMain = (ListView) findViewById(R.id.lv_mainlist);
     }
 
@@ -403,12 +376,12 @@ public class IntruderCatchedActivity extends BaseActivity {
 
                                 @Override
                                 public void onLoadingFailed(String imageUri, View view,
-                                        FailReason failReason) {
+                                                            FailReason failReason) {
                                 }
 
                                 @Override
                                 public void onLoadingComplete(String imageUri, View view,
-                                        Bitmap loadedImage) {
+                                                              Bitmap loadedImage) {
                                     mIvNewestPhoto.setImageBitmap(loadedImage);
                                     mIvNewestPhoto.setOnClickListener(new OnClickListener() {
                                         @Override
@@ -477,46 +450,6 @@ public class IntruderCatchedActivity extends BaseActivity {
         if (mInfosSorted.size() > 4) {
             LeoLog.i("poha", "gone or visiable ? mInfosSorted.size = " + mInfosSorted.size());
             mRvMore.setVisibility(View.VISIBLE);
-            mRvMore.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-                @Override
-                public void onRippleComplete(RippleView v) {
-                    // “更多”按钮点击后，将进入图片隐藏功能中的的对应相册
-                    SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
-                            "intruder", "intruder_capture_more");
-                    long cc1 = System.currentTimeMillis();
-                    File file = new File(mInfosSorted.get(0).getFilePath());
-                    String parent = file.getParent();
-                    int index = 0;
-                    mAlbumList = ((PrivacyDataManager) MgrContext
-                            .getManager(MgrContext.MGR_PRIVACY_DATA)).
-                            getHidePicAlbum("");
-                    for (int i = 0; i < mAlbumList.size(); i++) {
-                        String dirPath = mAlbumList.get(i).getDirPath();
-                        if (parent.equals(dirPath)) {
-                            index = i;
-                            break;
-                        }
-                    }
-                    long cc2 = System.currentTimeMillis();
-                    LeoLog.i("catch_poha", "cc2 -cc1 :" + (cc2 - cc1));
-                    try {
-                        Intent intent = new Intent(IntruderCatchedActivity.this,
-                                ImageGridActivity.class);
-                        Bundle bundle = new Bundle();
-                        bundle.putSerializable("data", mAlbumList.get(index));
-                        intent.putExtras(bundle);
-                        intent.putExtra("fromIntruderMore", true);
-                        intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
-                        startActivity(intent);
-                        // IntruderCatchedActivity.this.finish();
-                        LeoLog.i("catch_poha", "cc3 -cc2 :" + (System.currentTimeMillis() - cc2));
-                    } catch (Throwable t) {
-                        Intent intent = new Intent(IntruderCatchedActivity.this,
-                                ImageHideMainActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            });
         } else {
             // 如果没有超过4条记录，不显示“更多”按钮
             mRvMore.setVisibility(View.GONE);
@@ -628,6 +561,63 @@ public class IntruderCatchedActivity extends BaseActivity {
         super.onDestroy();
         if (mImageLoader != null) {
             mImageLoader.clearMemoryCache();
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.rv_close:
+                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                        "intruder", "intruder_capture_quit");
+                onBackPressed();
+                break;
+            case R.id.rv_change_times:
+                showChangeTimesDialog();
+                break;
+            case R.id.rv_fivestars:
+                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                        "intruder", "intruder_capture_rank");
+                mLockManager.filterSelfOneMinites();
+                Utilities.goFiveStar(IntruderCatchedActivity.this);
+                break;
+            case R.id.rv_more:
+                // “更多”按钮点击后，将进入图片隐藏功能中的的对应相册
+                SDKWrapper.addEvent(IntruderCatchedActivity.this, SDKWrapper.P1,
+                        "intruder", "intruder_capture_more");
+                long cc1 = System.currentTimeMillis();
+                File file = new File(mInfosSorted.get(0).getFilePath());
+                String parent = file.getParent();
+                int index = 0;
+                mAlbumList = ((PrivacyDataManager) MgrContext
+                        .getManager(MgrContext.MGR_PRIVACY_DATA)).
+                        getHidePicAlbum("");
+                for (int i = 0; i < mAlbumList.size(); i++) {
+                    String dirPath = mAlbumList.get(i).getDirPath();
+                    if (parent.equals(dirPath)) {
+                        index = i;
+                        break;
+                    }
+                }
+                long cc2 = System.currentTimeMillis();
+                LeoLog.i("catch_poha", "cc2 -cc1 :" + (cc2 - cc1));
+                try {
+                    Intent intent = new Intent(IntruderCatchedActivity.this,
+                            ImageGridActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable("data", mAlbumList.get(index));
+                    intent.putExtras(bundle);
+                    intent.putExtra("fromIntruderMore", true);
+                    intent.putExtra("mode", ImageGridActivity.CANCEL_HIDE_MODE);
+                    startActivity(intent);
+                    // IntruderCatchedActivity.this.finish();
+                    LeoLog.i("catch_poha", "cc3 -cc2 :" + (System.currentTimeMillis() - cc2));
+                } catch (Throwable t) {
+                    Intent intent = new Intent(IntruderCatchedActivity.this,
+                            ImageHideMainActivity.class);
+                    startActivity(intent);
+                }
+                break;
         }
     }
 }
