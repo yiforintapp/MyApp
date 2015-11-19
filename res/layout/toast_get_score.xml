@@ -11,15 +11,16 @@
     android:paddingLeft="4dp" >
 
     <RelativeLayout
-        android:layout_width="26dp"
-        android:layout_height="26dp"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
         android:background="@drawable/green_circle" >
 
         <TextView
             android:id="@+id/tv_plus"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="1dp"
             android:gravity="center_vertical"
             android:text="+"
             android:textColor="@color/c1"
@@ -31,13 +32,13 @@
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/tv_plus"
             android:gravity="center_vertical"
-            android:textStyle="bold"
             android:textColor="@color/c1"
             android:textSize="18sp" />
     </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_score_tip"
+        android:layout_marginLeft="5dp"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:gravity="center_vertical"
