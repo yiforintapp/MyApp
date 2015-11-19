@@ -23,7 +23,7 @@ public abstract class IntrudeSecurityManager extends Manager {
     public abstract ArrayList getPhotoInfoList();
     
     /**
-     * 获取入侵者防护功能是否可用（是否有前置摄像头）
+     * 获取入侵者防护功能是否可用
      */
     public abstract boolean getIsIntruderSecurityAvailable();
     /**

@@ -876,4 +876,6 @@
     <string name="change_wifi_toast_safe">安全</string>
     <string name="fb_item_title">Follow Us on Facebook</string>
     <string name="fb_item_content">follow</string>
+    
+    <string name= "intruderprotection_forbit_content">由于系统限制，入侵者防护功能无法正常使用</string>
 </resources>

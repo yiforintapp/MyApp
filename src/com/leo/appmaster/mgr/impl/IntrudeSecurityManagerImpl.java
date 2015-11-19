@@ -18,6 +18,7 @@ import com.leo.appmaster.intruderprotection.CameraUtils;
 import com.leo.appmaster.intruderprotection.IntruderprotectionActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.sdk.SDKWrapper;
+import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.appmaster.utils.PrefConst;
 
@@ -117,7 +118,12 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
     @Override
     public boolean getIntruderMode() {
         // return sp.getIntruderProtectionOpen();
-        return pt.getBoolean(PrefConst.KEY_SWITCH_FOR_INTRUDER_PROTECTION, false);
+        boolean isIntruderSecurityAvailable = getIsIntruderSecurityAvailable();
+        if(isIntruderSecurityAvailable) {
+            return pt.getBoolean(PrefConst.KEY_SWITCH_FOR_INTRUDER_PROTECTION, true);
+        } else {
+            return pt.getBoolean(PrefConst.KEY_SWITCH_FOR_INTRUDER_PROTECTION, false);
+        }
     }
 
     @Override
@@ -197,8 +203,7 @@ public class IntrudeSecurityManagerImpl extends IntrudeSecurityManager {
     @Override
     public boolean getIsIntruderSecurityAvailable() {
         int checkCameraFacing = CameraUtils.checkCameraFacing();
-        if ((checkCameraFacing == CameraUtils.FRONT_AND_BACK)
-                || (checkCameraFacing == CameraUtils.FRONT_FACING_ONLY)){
+        if (((checkCameraFacing == CameraUtils.FRONT_AND_BACK)  || (checkCameraFacing == CameraUtils.FRONT_FACING_ONLY)) && (!BuildProperties.isApiLevel14())){
             return true;
         }
         return false;

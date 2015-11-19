@@ -38,10 +38,10 @@ import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.IntruderPhotoInfo;
+import com.leo.appmaster.feedback.FeedbackActivity;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
-import com.leo.appmaster.mgr.impl.IntrudeSecurityManagerImpl;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.RippleView;
@@ -49,7 +49,6 @@ import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOChoiceDialog;
 import com.leo.appmaster.utils.AppUtil;
-import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
@@ -66,6 +65,7 @@ public class IntruderprotectionActivity extends Activity {
     private ArrayList<IntruderPhotoInfo> mInfosSorted;
     private IntrudeSecurityManager mImanager;
     private List<Integer> mCurrentDayFirstPhotoIndex;
+    private LEOAlarmDialog mOpenForbinDialog;
     private boolean mHasAddHeader = false;
     private View mHeader;
     private TextView mTvTimes;
@@ -664,8 +664,9 @@ public class IntruderprotectionActivity extends Activity {
         button.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(BuildProperties.isApiLevel14()){
-                    Toast.makeText(IntruderprotectionActivity.this, getResources().getString(R.string.unavailable), Toast.LENGTH_SHORT).show();
+                if( mImanager.getIsIntruderSecurityAvailable()){
+                    showForbitDialog();
+//                    Toast.makeText(IntruderprotectionActivity.this, getResources().getString(R.string.unavailable), Toast.LENGTH_SHORT).show();
                     return;
                 }
                 if (mImanager.getIntruderMode()) {
@@ -724,5 +725,25 @@ public class IntruderprotectionActivity extends Activity {
                 }
             }
         });
+    }
+
+    protected void showForbitDialog() {
+        if(mOpenForbinDialog == null) {
+            mOpenForbinDialog = new LEOAlarmDialog(this);
+        }
+        mOpenForbinDialog.setContent(getResources().getString(R.string.intruderprotection_forbit_content));
+        mOpenForbinDialog.setRightBtnStr(getResources().getString(R.string.secur_help_feedback_tip_button));
+        mOpenForbinDialog.setLeftBtnStr(getResources().getString(R.string.no_image_hide_dialog_button));
+        mOpenForbinDialog.setRightBtnListener(new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(IntruderprotectionActivity.this, FeedbackActivity.class);
+                intent.putExtra("isFromIntruderProtectionForbiden", true);
+                startActivity(intent);
+                mOpenForbinDialog.dismiss();
+            }
+        });
+        mOpenForbinDialog.show();
     }
 }
