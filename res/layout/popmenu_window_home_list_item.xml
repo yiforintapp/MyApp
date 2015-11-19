@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--<com.leo.appmaster.ui.RippleView xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:ripple="http://schemas.android.com/apk/res-auto"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--ripple:rv_color="@color/white_list_item_ripple"--><!--ripple:rv_rippleDuration="@integer/ripple_btn_duration"--><!--android:padding="10dp" >-->
+<?xml version="1.0" encoding="utf-8"?>
 <com.leo.appmaster.ui.MaterialRippleLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
@@ -38,4 +38,4 @@
             android:textColor="#333333"
             android:textSize="12dp" />
     </RelativeLayout>
-</com.leo.appmaster.ui.MaterialRippleLayout><!--</com.leo.appmaster.ui.RippleView>-->
+</com.leo.appmaster.ui.MaterialRippleLayout>
