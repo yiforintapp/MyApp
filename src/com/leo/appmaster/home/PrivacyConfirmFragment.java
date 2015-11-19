@@ -518,6 +518,9 @@ public class PrivacyConfirmFragment extends Fragment implements RippleView.OnRip
         } else if (mSwiftyBtnLt == rippleView) {
             lockManager.filterSelfOneMinites();
             gotoGpOrBrowser();
+        } else if (mHighGradeBtnLt == rippleView) {
+            lockManager.filterSelfOneMinites();
+            Utilities.goFiveStar(mActivity);
         }
     }
 
