@@ -276,7 +276,7 @@ public class RippleView1 extends RelativeLayout {
                     }
                     break;
             }
-            return true;
+            return superOnTouchEvent;
         }
     }
 

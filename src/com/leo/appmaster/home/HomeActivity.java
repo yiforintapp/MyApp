@@ -73,6 +73,7 @@ import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
 import com.leo.appmaster.ui.DrawerArrowDrawable;
 import com.leo.appmaster.ui.LinearRippleView;
+import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.utils.AppUtil;
 import com.leo.appmaster.utils.BuildProperties;
 import com.leo.appmaster.utils.LanguageUtils;
@@ -98,7 +99,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
 //    private ImageView mAdIcon;
 
-//    private MobvistaAdWall mWallAd;
+    //    private MobvistaAdWall mWallAd;
     private Handler mHandler = new Handler();
 
     public static int mHomeAdSwitchOpen = -1;
@@ -613,7 +614,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         judgeShowGradeTip();
 
         // tryIsFromLockMore();
-        
+
         showIswipDialog();
         SDKWrapper.addEvent(this, SDKWrapper.P1, "tdau", "home");
 
@@ -648,6 +649,15 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
             showDownLoadISwipDialog(this, "homeactivity");
         }
         amp.setFristSlidingTip(false);
+    }
+
+    /***
+     * 提供给swifty卡片使用
+     *
+     * @return LockManager
+     */
+    public LockManager getLockManager() {
+        return mLockManager;
     }
 
     private void showDownLoadISwipDialog(Context context, String flag) {
@@ -858,10 +868,10 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
                 boolean isInstall = AppMasterPreference.getInstance(HomeActivity.this).getAdDeskIcon();
                 if (!isInstall) {
-                    Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(),DeskProxyActivity.class);
+                    Intent appWallShortIntent = new Intent(AppMasterApplication.getInstance(), DeskProxyActivity.class);
                     appWallShortIntent.putExtra("from_quickhelper", true);
                     appWallShortIntent.putExtra(StatusBarEventService.EXTRA_EVENT_TYPE, DeskProxyActivity.mAd);
-                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK| Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    appWallShortIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     Intent appWallShortcut = new Intent(
                             "com.android.launcher.action.INSTALL_SHORTCUT");
                     appWallShortcut.putExtra(Intent.EXTRA_SHORTCUT_NAME,
@@ -1135,6 +1145,7 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
 
     /**
      * 开始处理完之后的动画
+     *
      * @param increaseScore
      */
     private void startProcessFinishAnim(int increaseScore) {
@@ -1190,7 +1201,8 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
         @SuppressLint("ViewHolder")
         @Override
         public View getView(int arg0, View arg1, ViewGroup arg2) {
-            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
+//            LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
+            MaterialRippleLayout layout = (MaterialRippleLayout) inflater.inflate(R.layout.home_menu_item, arg2, false);
             TextView tv = (TextView) layout.findViewById(R.id.menu_item_tv);
             ImageView redTip = (ImageView) layout.findViewById(R.id.update_red_tip);
             /* some item not HTML styled text, such as "check update" item */
@@ -1211,14 +1223,16 @@ public class HomeActivity extends BaseFragmentActivity implements View.OnClickLi
                 tv.setCompoundDrawablesWithIntrinsicBounds(
                         getResources().getDrawable(items.get(arg0).iconId), null, null, null);
             }
-            if (layout instanceof LinearRippleView) {
-                ((LinearRippleView) layout).setOnRippleCompleteListener(new LinearRippleView.OnRippleCompleteListener() {
-                    @Override
-                    public void onRippleComplete(LinearRippleView rippleView) {
 
-                    }
-                });
-            }
+//            if (layout instanceof LinearRippleView) {
+//                ((LinearRippleView) layout).setOnRippleCompleteListener(new LinearRippleView.OnRippleCompleteListener() {
+//                    @Override
+//                    public void onRippleComplete(LinearRippleView rippleView) {
+//
+//                    }
+//                });
+
+//            }
             return layout;
         }
 
