@@ -2,24 +2,17 @@
 package com.leo.appmaster.appmanage.view;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
-import android.database.Cursor;
-import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterPreference;
-import com.leo.appmaster.Constants;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.fragment.BaseFragment;
@@ -28,14 +21,15 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.ui.LineView;
 import com.leo.appmaster.ui.LineView.BackUpCallBack;
 import com.leo.appmaster.ui.MulticolorRoundProgressBar;
-import com.leo.appmaster.ui.RippleView;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.MonthDaySetting;
 import com.leo.appmaster.ui.dialog.MonthDaySetting.OnTrafficDialogClickListener;
 import com.leo.appmaster.utils.AppwallHttpUtil;
 import com.leo.appmaster.utils.LeoLog;
+import android.view.View.OnClickListener;
 import com.leo.appmaster.utils.ManagerFlowUtils;
 
-public class ManagerFlowFragment extends BaseFragment implements OnClickListener, RippleView.OnRippleCompleteListener {
+public class ManagerFlowFragment extends BaseFragment {
     private static final int CHANGE_TEXT = 0;
     private static final int CHANGE_LIST = 1;
     private ProgressBar pb_loading;
@@ -47,7 +41,7 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
     private ImageView mProgressBg;
     private LineView lineView;
     private View flow_all_content;
-    private RippleView flow_setting;
+    private RippleView1 flow_setting;
     private MonthDaySetting mTrafficSettingDialog;
     private String month = "";
     private int days = 0;
@@ -90,8 +84,14 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         roundProgressBar = (MulticolorRoundProgressBar) findViewById(R.id.roundProgressBar);
         flow_all_content = findViewById(R.id.flow_all_content);
 
-        flow_setting = (RippleView) findViewById(R.id.flow_setting);
-        flow_setting.setOnRippleCompleteListener(this);
+        flow_setting = (RippleView1) findViewById(R.id.flow_setting);
+        flow_setting.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showTrafficSetting();
+            }
+        });
+//        flow_setting.setOnRippleCompleteListener(this);
 
         pb_loading = (ProgressBar) findViewById(R.id.pb_loading);
         lineView = (LineView) findViewById(R.id.line_view);
@@ -126,13 +126,6 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
             handler = null;
         }
         super.onDestroy();
-    }
-
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        if (flow_setting == rippleView) {
-            showTrafficSetting();
-        }
     }
 
     @Override
@@ -344,14 +337,14 @@ public class ManagerFlowFragment extends BaseFragment implements OnClickListener
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.flow_setting:
-                showTrafficSetting();
-                break;
-        }
-    }
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.flow_setting:
+//                showTrafficSetting();
+//                break;
+//        }
+//    }
 
     private void showTrafficSetting() {
         mTrafficSettingDialog = new MonthDaySetting(mActivity);

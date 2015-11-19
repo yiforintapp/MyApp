@@ -8,9 +8,9 @@
 
     <com.leo.appmaster.ui.CommonToolbar
         android:id="@+id/layout_title_bar"
-        android:background="@color/cb"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:background="@color/cb" />
 
     <ProgressBar
         android:id="@+id/pb_loading_vid"
@@ -71,25 +71,28 @@
         android:layout_width="match_parent"
         android:layout_height="66dp"
         android:background="@drawable/bottom_button">
-        
-        <com.leo.appmaster.ui.RippleView
+
+        <com.leo.appmaster.ui.RippleView1
             android:id="@+id/rv_add"
             android:layout_width="210dp"
             android:layout_height="40dp"
             android:layout_centerInParent="true"
             android:background="@drawable/green_radius_btn_shape"
-            ripple:rv_color="@color/green_button_ripple">
+            ripple:rippleColor="@color/button_green_ripple"
+            ripple:rippleDuration="250"
+            ripple:rippleHover="true"
+            ripple:rippleOverlay="true">
 
-        <TextView
-            android:id="@+id/add_hide_image"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/green_radius_btn_shape"
-            android:gravity="center"
-            android:text="@string/app_add_hide_image"
-            android:textColor="@color/white"
-            android:textSize="16dp" />
-        </com.leo.appmaster.ui.RippleView>
+            <TextView
+                android:id="@+id/add_hide_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/green_radius_btn_shape"
+                android:gravity="center"
+                android:text="@string/app_add_hide_image"
+                android:textColor="@color/white"
+                android:textSize="16dp" />
+        </com.leo.appmaster.ui.RippleView1>
     </RelativeLayout>
 
 </LinearLayout>

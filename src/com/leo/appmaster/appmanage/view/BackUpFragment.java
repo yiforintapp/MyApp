@@ -32,6 +32,7 @@ import com.leo.appmaster.model.AppItemInfo;
 import com.leo.appmaster.ui.MaterialRippleLayout;
 import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOMessageDialog;
@@ -53,7 +54,7 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
     private LEORoundProgressDialog mProgressDialog;
     private LEOAlarmDialog mAlarmDialog;
     private LEOMessageDialog mMessageDialog;
-    private RippleView mRvBackup;
+    private RippleView1 mRvBackup;
     private AppItemInfo mPendingDelApp;
     private boolean isAllCheck = false;
 
@@ -69,11 +70,10 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
         tv_button_backup = (TextView) findViewById(R.id.tv_button_backup);
         iv_check_backup = findViewById(R.id.iv_check_backup);
         iv_check_backup.setOnClickListener(this);
-        mRvBackup = (RippleView) findViewById(R.id.rv_button_backup);
-        mRvBackup.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-            
+        mRvBackup = (RippleView1) findViewById(R.id.rv_button_backup);
+        mRvBackup.setOnClickListener(new OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View view) {
                 if (isAdded()) { // 判断fragment是否已经加入activity
                     ArrayList<AppItemInfo> items = mBackupAdapter.getSelectedItems();
                     int size = items.size();
@@ -88,6 +88,24 @@ public class BackUpFragment extends BaseFragment implements AppBackupDataListene
                 }
             }
         });
+//        mRvBackup.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+//
+//            @Override
+//            public void onRippleComplete(RippleView1 rippleView) {
+//                if (isAdded()) { // 判断fragment是否已经加入activity
+//                    ArrayList<AppItemInfo> items = mBackupAdapter.getSelectedItems();
+//                    int size = items.size();
+//                    if (size > 0) {
+//                        showProgressDialog(AppMasterApplication.getInstance().getString(R.string.button_backup), "", size,
+//                                false, true);
+//                        mBackupManager.backupApps(items);
+//                    } else {
+//                        Toast.makeText(getActivity(), R.string.no_application_selected,
+//                                Toast.LENGTH_SHORT).show();
+//                    }
+//                }
+//            }
+//        });
         pb_loading = (ProgressBar) findViewById(R.id.pb_loading);
 
         mBackupManager = AppBackupRestoreManager.getInstance(mActivity);

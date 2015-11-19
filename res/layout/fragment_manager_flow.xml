@@ -1,9 +1,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:android_custom="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res/com.leo.appmaster"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
-    android:paddingTop="10dp" xmlns:app="http://schemas.android.com/apk/res/com.leo.appmaster">
+    android:paddingTop="10dp">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -162,17 +163,18 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <com.leo.appmaster.ui.RippleView xmlns:ripple="http://schemas.android.com/apk/res-auto"
+                <com.leo.appmaster.ui.RippleView1 xmlns:ripple="http://schemas.android.com/apk/res-auto"
                     android:id="@+id/flow_setting"
                     android:layout_width="@dimen/app_manager_flowactivity_usage_set_flow_button_width"
                     android:layout_height="@dimen/app_manager_flowactivity_usage_set_flow_button_height"
                     android:layout_below="@id/content_three"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/app_manager_headview_three_text_margin_top"
-					app:rv_rippleDuration="@integer/ripple_btn_duration"
                     android:background="@drawable/green_radius_btn_shape"
-                    android:clickable="true"
-                    ripple:rv_color="@color/green_button_ripple">
+                    app:rippleColor="@color/button_green_ripple"
+                    app:rippleDuration="250"
+                    app:rippleHover="true"
+                    app:rippleOverlay="true">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -181,7 +183,7 @@
                         android:text="@string/traff_first_page_small_set"
                         android:textColor="@color/white"
                         android:textSize="16dp" />
-                </com.leo.appmaster.ui.RippleView>
+                </com.leo.appmaster.ui.RippleView1>
 
             </RelativeLayout>
 

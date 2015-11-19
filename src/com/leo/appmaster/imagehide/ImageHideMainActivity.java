@@ -9,42 +9,28 @@ import java.util.Map;
 
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.MediaStore.Files;
-import android.provider.MediaStore.MediaColumns;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.activity.QuickHelperActivity;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
-import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
-import com.leo.appmaster.utils.FileOperationUtil;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.imageloader.DisplayImageOptions;
 import com.leo.imageloader.ImageLoader;
 import com.leo.imageloader.core.FadeInBitmapDisplayer;
@@ -59,7 +45,7 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
     private ImageLoader mImageLoader;
     private CommonToolbar mTtileBar;
     private RelativeLayout mNoHidePictureHint;
-    private RippleView mRvAdd;
+    private RippleView1 mRvAdd;
     private ProgressBar loadingBar;
 
     private HideAlbumAdapt mHideAlbumAdapt = new HideAlbumAdapt(this);
@@ -133,15 +119,22 @@ public class ImageHideMainActivity extends BaseActivity implements OnItemClickLi
         mGridView = (GridView) findViewById(R.id.Image_hide_folder);
         mGridView.setOnItemClickListener(this);
         mGridView.setAdapter(mHideAlbumAdapt);
-        mRvAdd = (RippleView) findViewById(R.id.rv_add);
-        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-
+        mRvAdd = (RippleView1) findViewById(R.id.rv_add);
+        mRvAdd.setOnClickListener(new OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View view) {
                 Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
                 startActivityForResult(intent, REQUEST_CODE_OPTION);
             }
         });
+//        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+//
+//            @Override
+//            public void onRippleComplete(RippleView rippleView) {
+//                Intent intent = new Intent(ImageHideMainActivity.this, ImageGalleryActivity.class);
+//                startActivityForResult(intent, REQUEST_CODE_OPTION);
+//            }
+//        });
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
     }
 

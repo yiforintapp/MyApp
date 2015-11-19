@@ -29,8 +29,7 @@ import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.FileOperationUtil;
 import com.leo.appmaster.utils.LeoLog;
 import com.leo.imageloader.DisplayImageOptions;
@@ -45,7 +44,7 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
     public final static int LOAD_DATA_DONE = 27;
     private GridView mGridView;
     private CommonToolbar mTtileBar;
-    private RippleView mRvAdd;
+    private RippleView1 mRvAdd;
     private RelativeLayout mNoHidePictureHint;
     private List<VideoBean> hideVideos;
     private TextView mNohideVideo;
@@ -210,15 +209,23 @@ public class VideoHideMainActivity extends BaseActivity implements OnItemClickLi
         mTtileBar = (CommonToolbar) findViewById(R.id.layout_title_bar);
         mTtileBar.setToolbarTitle(R.string.app_video_hide);
         mTtileBar.setOptionMenuVisible(false);
-        mRvAdd = (RippleView) findViewById(R.id.rv_add);
-        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+        mRvAdd = (RippleView1) findViewById(R.id.rv_add);
+        mRvAdd.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView rippleView) {
+            public void onClick(View view) {
                 Intent intent = new Intent(VideoHideMainActivity.this,
                         VideoHideGalleryActivity.class);
                 VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
             }
         });
+//        mRvAdd.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+//            @Override
+//            public void onRippleComplete(RippleView rippleView) {
+//                Intent intent = new Intent(VideoHideMainActivity.this,
+//                        VideoHideGalleryActivity.class);
+//                VideoHideMainActivity.this.startActivityForResult(intent, REQUEST_CODE_OPTION);
+//            }
+//        });
 
         mNoHidePictureHint = (RelativeLayout) findViewById(R.id.no_hide);
         mNohideVideo = (TextView) findViewById(R.id.nohideTV);
