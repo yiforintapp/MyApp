@@ -29,6 +29,18 @@
         android:layout_marginRight="19dp"
         />
 
+    <TextView
+        android:id="@+id/fb_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/c2"
+        android:textSize="14dp"
+        android:layout_alignLeft="@+id/fb_img"
+        android:layout_alignRight="@+id/fb_img"
+        android:layout_below="@+id/fb_img"
+        android:text="@string/fb_item_content"/>
 
 
 
@@ -36,7 +48,7 @@
         android:orientation="vertical"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_below="@id/fb_img"
+        android:layout_below="@id/fb_content"
         >
 
         <View
@@ -55,7 +67,7 @@
             <TextView
                 android:id="@+id/item_btn_tv"
                 style="@style/ItemBtnText"
-                android:text="@string/fb_item_content"/>
+                android:text="@string/fb_item_btn"/>
         </com.leo.appmaster.ui.RippleView>
     </LinearLayout>
 
