@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/common_dialog_bg"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
@@ -15,33 +15,32 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:gravity="center"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/content_seek_text"
             android:layout_width="wrap_content"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp" >
+            android:layout_marginTop="24dp">
 
             <TextView
                 android:id="@+id/seekbar_text_progress"
-                android:layout_width="30dp" 
+                android:layout_width="30dp"
                 android:layout_height="35dp"
                 android:background="@drawable/lock_settings_icon"
                 android:gravity="center"
-                android:textSize="12dp"
-                android:textColor="@color/white"
                 android:text="50"
-                />
-            
+                android:textColor="@color/white"
+                android:textSize="12dp" />
+
             <com.leo.appmaster.ui.LeoSeekBar
                 android:id="@+id/mSeekBar"
                 style="@style/Widget.SeekBar.Normal"
                 android:layout_width="@dimen/app_manager_hotactivity_list_item_text_des_width"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/seekbar_text_progress"
-                 android:layout_marginTop="5dp"
+                android:layout_marginTop="5dp"
                 android:max="100" />
 
             <!-- <TextView
@@ -85,30 +84,29 @@
         android:orientation="horizontal"
         android:paddingBottom="12dp"
         android:paddingLeft="6dp"
-        android:paddingRight="6dp"
-         >
-        
-         <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
+        android:paddingRight="6dp">
+
+        <com.leo.appmaster.ui.RippleView1
             android:id="@+id/rv_dialog_blue_button"
             android:layout_width="0dp"
             android:layout_height="42dp"
             android:layout_marginLeft="6dp"
             android:layout_marginRight="6dp"
             android:layout_weight="1"
-            app:rv_rippleDuration="@integer/ripple_btn_duration" 
-            app:rv_alpha="255"
-            app:rv_color="@color/button_blue_ripple" >
-    
-    <TextView
-        android:id="@+id/sure_button"
-        style="@style/dlg_right_button_txt"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="@string/makesure" />
-    </com.leo.appmaster.ui.RippleView>
-    
+            app:rippleColor="@color/button_blue_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/sure_button"
+                style="@style/dlg_right_button_txt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/makesure" />
+        </com.leo.appmaster.ui.RippleView1>
+
     </LinearLayout>
 
 </LinearLayout>

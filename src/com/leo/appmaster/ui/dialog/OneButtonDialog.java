@@ -10,14 +10,13 @@ import android.widget.TextView;
 
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 
 public class OneButtonDialog extends LEOBaseDialog {
     private Context mContext;
     private OnWifiDiaogClickListener mListener;
     private TextView mNoWifi, mSelectOther,mTitle;
-    private RippleView mRvBlue;
+    private RippleView1 mRvBlue;
     
     public interface OnWifiDiaogClickListener {
         public void onClick();
@@ -37,7 +36,7 @@ public class OneButtonDialog extends LEOBaseDialog {
         mSelectOther = (TextView) dlgView.findViewById(R.id.dlg_bottom_btn);
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mSelectOther.setText(resources.getString(R.string.select_other_wifi));
-        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
         OnClickListener listener = new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int arg1) {
@@ -67,9 +66,9 @@ public class OneButtonDialog extends LEOBaseDialog {
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
         mRvBlue.setTag(rListener);
-        mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+        mRvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView arg0) {
+            public void onClick(View view) {
                 DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
                         .getTag();
                 try {
@@ -78,6 +77,17 @@ public class OneButtonDialog extends LEOBaseDialog {
                 }
             }
         });
+//        mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+//            @Override
+//            public void onRippleComplete(RippleView arg0) {
+//                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
+//                        .getTag();
+//                try {
+//                    lListener.onClick(OneButtonDialog.this, 1);
+//                } catch (Exception e) {
+//                }
+//            }
+//        });
     }
 
     public void setOnClickListener(OnWifiDiaogClickListener listener) {

@@ -10,20 +10,18 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.leo.appmaster.R;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 
 public class LEOMessageDialog extends LEOBaseDialog {
     public static final String TAG = "XLOneButtonDialog";
 
     private Context mContext;
-//    private ImageView mLeftIcon;
     private TextView mTitle;
     private TextView mContent;
     private TextView mBottomBtn;
     private ImageView mIcon;
     private DialogInterface.OnClickListener mBottomBtnListener = null;
-    private RippleView mRvBlue;
+    private RippleView1 mRvBlue;
 
     public LEOMessageDialog(Context context) {
         super(context, R.style.bt_dialog);
@@ -50,27 +48,26 @@ public class LEOMessageDialog extends LEOBaseDialog {
             mBottomBtn.setText(bottomStr);
     }
 
-    public void setDialogIcon(int resID){
-           mIcon.setImageResource(resID);
+    public void setDialogIcon(int resID) {
+        mIcon.setImageResource(resID);
     }
-    
-    public void setDialogIconLayout(LayoutParams params){
+
+    public void setDialogIconLayout(LayoutParams params) {
         mIcon.setLayoutParams(params);
     }
-    
-    public LayoutParams getDialogIcomLayout(){
-        return  mIcon.getLayoutParams();
+
+    public LayoutParams getDialogIcomLayout() {
+        return mIcon.getLayoutParams();
     }
-    
+
     public void setBottomBtnListener(DialogInterface.OnClickListener bListener) {
         if (bListener != null) {
             mBottomBtnListener = bListener;
             mRvBlue.setTag(bListener);
-            mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-
+            mRvBlue.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onRippleComplete(RippleView arg0) {
-                    DialogInterface.OnClickListener listener = (DialogInterface.OnClickListener) arg0
+                public void onClick(View view) {
+                    DialogInterface.OnClickListener listener = (DialogInterface.OnClickListener) view
                             .getTag();
                     try {
                         listener.onClick(LEOMessageDialog.this, 0);
@@ -78,6 +75,18 @@ public class LEOMessageDialog extends LEOBaseDialog {
                     }
                 }
             });
+//            mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+//
+//                @Override
+//                public void onRippleComplete(RippleView arg0) {
+//                    DialogInterface.OnClickListener listener = (DialogInterface.OnClickListener) arg0
+//                            .getTag();
+//                    try {
+//                        listener.onClick(LEOMessageDialog.this, 0);
+//                    } catch (Exception e) {
+//                    }
+//                }
+//            });
         }
     }
 
@@ -100,7 +109,7 @@ public class LEOMessageDialog extends LEOBaseDialog {
         mTitle = (TextView) dlgView.findViewById(R.id.dlg_title);
         mContent = (TextView) dlgView.findViewById(R.id.dlg_content);
         mIcon = (ImageView) dlgView.findViewById(R.id.dlg_icon);
-        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_blue);
+        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_blue);
         mBottomBtn = (TextView) dlgView.findViewById(R.id.dlg_bottom_btn);
         mBottomBtn.setVisibility(View.VISIBLE);
         if (mBottomBtnListener == null) {

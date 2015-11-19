@@ -20,8 +20,7 @@ import com.leo.appmaster.mgr.DeviceManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.LeoSeekBar;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.DipPixelUtil;
 import com.leo.appmaster.utils.LanguageUtils;
 
@@ -33,9 +32,9 @@ public class MonthTrafficSetting extends LEOBaseDialog {
     private int progressInt;
     private int progressTextWidth, progressTextHeight;
     private OnDiaogClickListener mListener;
-    private RippleView mRvBlue;
-    
-    
+    private RippleView1 mRvBlue;
+
+
     public interface OnDiaogClickListener {
         public void onClick(int progress);
     }
@@ -53,7 +52,7 @@ public class MonthTrafficSetting extends LEOBaseDialog {
         Resources resources = AppMasterApplication.getInstance().getResources();
         seekbar_text = (TextView) dlgView.findViewById(R.id.seekbar_text);
         seekbar_text.setText(resources.getString(R.string.flow_settting_dialog_remain));
-        mRvBlue = (RippleView) dlgView.findViewById(R.id.rv_dialog_blue_button);
+        mRvBlue = (RippleView1) dlgView.findViewById(R.id.rv_dialog_blue_button);
         seekbar_text_progress = (TextView) dlgView.findViewById(R.id.seekbar_text_progress);
         progressInt = ((DeviceManager) MgrContext.getManager(MgrContext.MGR_DEVICE)).
                 getOverDataInvokePercent();
@@ -114,9 +113,9 @@ public class MonthTrafficSetting extends LEOBaseDialog {
             public void onStopTrackingTouch(SeekBar seekBar) {
                 if (!LanguageUtils.isRightToLeftLanguage(null)) {
                     progressInt = seekBar.getProgress();
-                }else{
+                } else {
                     // 系统语言为从右到左显示的语言
-                progressInt = AppBusinessManager.mRtToLtSeeBarMax - (seekBar.getProgress());
+                    progressInt = AppBusinessManager.mRtToLtSeeBarMax - (seekBar.getProgress());
                 }
             }
         });
@@ -154,10 +153,9 @@ public class MonthTrafficSetting extends LEOBaseDialog {
 
     public void setRightBtnListener(DialogInterface.OnClickListener rListener) {
         mRvBlue.setTag(rListener);
-        mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
-
+        mRvBlue.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onRippleComplete(RippleView arg0) {
+            public void onClick(View view) {
                 DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
                         .getTag();
                 try {
@@ -166,11 +164,23 @@ public class MonthTrafficSetting extends LEOBaseDialog {
                 }
             }
         });
+//        mRvBlue.setOnRippleCompleteListener(new OnRippleCompleteListener() {
+//
+//            @Override
+//            public void onRippleComplete(RippleView arg0) {
+//                DialogInterface.OnClickListener lListener = (DialogInterface.OnClickListener) mRvBlue
+//                        .getTag();
+//                try {
+//                    lListener.onClick(MonthTrafficSetting.this, 1);
+//                } catch (Exception e) {
+//                }
+//            }
+//        });
     }
 
     /**
      * reset the posotion of seekbar_text_progress
-     * 
+     *
      * @param seekBarCenterX
      */
     private void resetSeekbarTextMargin(int seekBarCenterX) {

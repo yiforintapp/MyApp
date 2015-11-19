@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:background="@drawable/bg"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/dlg_title_layout"
@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/dlg_title"
@@ -33,39 +33,39 @@
             android:layout_marginTop="8dp"
             android:background="@drawable/message_item_text_box_selecter"
             android:ems="10"
-            android:paddingRight="12dp"
             android:gravity="right|center_vertical"
+            android:hint="@string/please_input_mode_name"
+            android:paddingRight="12dp"
             android:singleLine="true"
-            android:textSize="14dp" 
             android:textColor="#dd1f1f1f"
             android:textCursorDrawable="@null"
-             android:hint="@string/please_input_mode_name"
-           />
-            <requestFocus />
+            android:textSize="14dp" />
+
+        <requestFocus />
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/dlg_2btn_layout"
         android:layout_width="match_parent"
         android:layout_height="42dp"
+        android:layout_marginBottom="12dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"
         android:layout_marginTop="24dp"
-        android:layout_marginBottom="12dp"
         android:gravity="center"
-        android:orientation="horizontal" >
+        android:orientation="horizontal">
 
-        <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
-			android:id="@+id/rv_white"
+        <com.leo.appmaster.ui.RippleView1
+            android:id="@+id/rv_white"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginLeft="6dp"
-            app:rv_rippleDuration="@integer/ripple_btn_duration" 
             android:layout_marginRight="6dp"
-            app:rv_alpha="255"
-            app:rv_color="@color/button_gray_ripple" >
+            android:layout_weight="1"
+            app:rippleColor="@color/button_gray_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
 
             <TextView
                 android:id="@+id/dlg_left_btn"
@@ -74,28 +74,28 @@
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="@string/cancel" />
-        </com.leo.appmaster.ui.RippleView>
+        </com.leo.appmaster.ui.RippleView1>
 
-        <com.leo.appmaster.ui.RippleView
-            xmlns:tools="http://schemas.android.com/tools"
+        <com.leo.appmaster.ui.RippleView1
+            android:id="@+id/rv_blue"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_weight="1"
             android:layout_marginLeft="6dp"
-            android:id="@+id/rv_blue"
-            app:rv_rippleDuration="@integer/ripple_btn_duration" 
             android:layout_marginRight="6dp"
-            app:rv_alpha="255"
-            app:rv_color="@color/button_blue_ripple" >
-        
-        <TextView
-            android:id="@+id/dlg_right_btn"
-            style="@style/dlg_right_button_txt"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="@string/makesure" />
-        </com.leo.appmaster.ui.RippleView>
+            android:layout_weight="1"
+            app:rippleColor="@color/button_blue_ripple"
+            app:rippleDuration="250"
+            app:rippleHover="true"
+            app:rippleOverlay="true">
+
+            <TextView
+                android:id="@+id/dlg_right_btn"
+                style="@style/dlg_right_button_txt"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/makesure" />
+        </com.leo.appmaster.ui.RippleView1>
     </LinearLayout>
 
 </LinearLayout>
