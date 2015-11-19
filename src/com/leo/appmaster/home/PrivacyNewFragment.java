@@ -122,8 +122,12 @@ public abstract class PrivacyNewFragment extends Fragment implements AbsListView
         mActivity.onIgnoreClick(0, null);
     }
 
-    public void setProcessContent(int stringId) {
+    protected void setProcessContent(int stringId) {
         mProcessTv.setText(stringId);
+    }
+
+    protected void setProcessContent(String string) {
+        mProcessTv.setText(string);
     }
 
     protected View getEmptyHeader() {

@@ -193,9 +193,6 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
                 for (PhotoItem photoItem : list) {
                     photos.add(photoItem.getPath());
                 }
-//                int incScore = pdm.onHideAllPic(photos);
-//                pdm.haveCheckedPic();
-//                onProcessFinish(incScore);
                 final int incScore = pdm.haveCheckedPic();
                 hideAllPicBackground(photos, incScore);
                 ThreadManager.getUiThreadHandler().postDelayed(new Runnable() {
@@ -229,10 +226,6 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
 
     @Override
     protected void onIgnoreClick() {
-//        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_PIC, true);
-//        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-//        int incScore = pdm.haveCheckedPic();
-//        mActivity.jumpToNextFragment(incScore, MgrContext.MGR_PRIVACY_DATA);
         mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "pic_skip_cnts");
     }
@@ -251,5 +244,15 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
         PhotoItem item = (PhotoItem) mAdaper.getItem(position);
         mAdaper.toggle(item);
 
+    }
+
+    @Override
+    public void onSelectionChange(boolean selectAll, int selectedCount) {
+        super.onSelectionChange(selectAll, selectedCount);
+        String str = mActivity.getString(R.string.pri_pro_hide_pic);
+        if (selectedCount > 0) {
+            str += " (" + selectedCount + ")";
+        }
+        setProcessContent(str);
     }
 }

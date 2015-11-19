@@ -196,7 +196,6 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment {
         }
         String content = AppMasterApplication.getInstance().getString(stringId, mDataList.size());
         mNewLabelTv.setText(Html.fromHtml(content));
-//        setNewLableContent(content, mDataList.size(), processed);
         setProcessContent(R.string.pri_pro_lock_app);
     }
 
@@ -212,4 +211,13 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment {
         mNewLabelTv.setText(Html.fromHtml(content));
     }
 
+    @Override
+    public void onSelectionChange(boolean selectAll, int selectedCount) {
+        super.onSelectionChange(selectAll, selectedCount);
+        String str = mActivity.getString(R.string.pri_pro_lock_app);
+        if (selectedCount > 0) {
+            str += " (" + selectedCount + ")";
+        }
+        setProcessContent(str);
+    }
 }

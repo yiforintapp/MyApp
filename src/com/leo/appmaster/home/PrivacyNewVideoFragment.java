@@ -209,10 +209,6 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment {
 
     @Override
     protected void onIgnoreClick() {
-//        PreferenceTable.getInstance().putBoolean(PrefConst.KEY_SCANNED_VID, true);
-//        PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-//        int incScore = pdm.haveCheckedVid();
-//        mActivity.jumpToNextFragment(incScore, MgrContext.MGR_PRIVACY_DATA);
         mActivity.onIgnoreClick(0, MgrContext.MGR_PRIVACY_DATA);
         SDKWrapper.addEvent(getActivity(), SDKWrapper.P1, "process", "vid_skip_cnts");
     }
@@ -236,4 +232,13 @@ public class PrivacyNewVideoFragment extends PrivacyNewFragment {
         setProcessContent(R.string.pri_pro_hide_vid);
     }
 
+    @Override
+    public void onSelectionChange(boolean selectAll, int selectedCount) {
+        super.onSelectionChange(selectAll, selectedCount);
+        String str = mActivity.getString(R.string.pri_pro_hide_vid);
+        if (selectedCount > 0) {
+            str += " (" + selectedCount + ")";
+        }
+        setProcessContent(str);
+    }
 }

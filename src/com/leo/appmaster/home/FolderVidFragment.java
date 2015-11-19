@@ -172,5 +172,13 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> {
         }
     }
 
-
+    @Override
+    public void onSelectionChange(boolean selectAll, int selectedCount) {
+        super.onSelectionChange(selectAll, selectedCount);
+        String str = mActivity.getString(R.string.pri_pro_hide_vid);
+        if (selectedCount > 0) {
+            str += " (" + selectedCount + ")";
+        }
+        mProcessTv.setText(str);
+    }
 }

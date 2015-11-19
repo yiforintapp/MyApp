@@ -171,4 +171,14 @@ public class FolderPicFragment extends FolderFragment<PhotoItem> {
             mAdapter.deselectAll(groupPos);
         }
     }
+
+    @Override
+    public void onSelectionChange(boolean selectAll, int selectedCount) {
+        super.onSelectionChange(selectAll, selectedCount);
+        String str = mActivity.getString(R.string.pri_pro_hide_pic);
+        if (selectedCount > 0) {
+            str += " (" + selectedCount + ")";
+        }
+        mProcessTv.setText(str);
+    }
 }

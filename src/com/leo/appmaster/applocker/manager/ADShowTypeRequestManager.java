@@ -106,35 +106,11 @@ public class ADShowTypeRequestManager {
 
     public void requestADShowType() {
         LeoLog.i(TAG, "start requestADShowType....");
-        AppMasterPreference sp = AppMasterPreference.getInstance(mContext);
-        // 当前时间（ms）
-        // long currentTime = System.currentTimeMillis();
-        // long lastRequestTime = sp.getADRequestShowTypeLastTime();
-        // String currentDate = mDateFormate.format(new Date(currentTime));
-        // String lastRequestDate = mDateFormate.format(new
-        // Date(lastRequestTime));
-        // LeoLog.e("poha", "当前时间：" + currentTime + "，上次请求时间：" + lastRequestTime
-        // + ",间隔是（s）："
-        // + (currentTime - lastRequestTime) / 1000);
-        // LeoLog.e("poha", "当前日期：" + currentDate + "，上次请求日期：" +
-        // lastRequestDate);
-        // // LeoLog.e("poha", "上次记录的到下次请求的间隔时间（12h/2h）：" +
-        // sp.getADRequestShowTypeNextTimeSpacing() / 1000
-        // / 60 / 60 + "，当天的请求失败次数："
-        // + sp.getADRequestShowtypeFailTimesCurrentDay());
-        // if (((currentTime - lastRequestTime) >
-        // sp.getADRequestShowTypeNextTimeSpacing()
-        // && sp.getADRequestShowtypeFailTimesCurrentDay() < 3) ||
-        // mIsPushRequestADShowType)
-        // {
-        // mIsPushRequestADShowType = false;
-        // LeoLog.e("poha", "满足发起请求的条件，正在发起请求");
         UpdateADShowTypeRequestListener listenerr = new UpdateADShowTypeRequestListener(
                 AppMasterApplication.getInstance());
         HttpRequestAgent.getInstance(AppMasterApplication.getInstance()).loadADShowType(
                 listenerr,
                 listenerr);
-        // }
 
     }
 
