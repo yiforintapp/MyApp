@@ -42,6 +42,7 @@ import com.leo.appmaster.applocker.IntruderPhotoInfo;
 import com.leo.appmaster.applocker.LockScreenActivity;
 import com.leo.appmaster.applocker.manager.MobvistaEngine;
 import com.leo.appmaster.db.PreferenceTable;
+import com.leo.appmaster.home.GradeTipActivity;
 import com.leo.appmaster.home.HomeActivity;
 import com.leo.appmaster.imagehide.ImageGridActivity;
 import com.leo.appmaster.imagehide.ImageHideMainActivity;
@@ -117,6 +118,8 @@ public class IntruderCatchedActivity extends BaseActivity {
         mPkgName = intent.getStringExtra("pkgname");
         mLockManager.filterPackage(mPkgName, 5000);
         init();
+        Intent i = new Intent(this, GradeTipActivity.class);
+        startActivity(i);
     }
 
     @Override

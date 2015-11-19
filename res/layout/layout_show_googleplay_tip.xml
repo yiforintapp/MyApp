@@ -9,12 +9,19 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="288dp"
+        android:layout_height="280dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:layout_margin="20dp"
-        android:background="@drawable/dialog_box_install"
-        android:orientation="vertical" >
+        android:orientation="vertical" 
+        android:background="@color/white">
+<!--         android:background="@drawable/dialog_box_install" -->
+
+	<com.leo.appmaster.ui.FiveStarsLayout
+                    android:id="@+id/fsl_fivestars"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                     />
 
         <LinearLayout
             android:id="@+id/grade_bt"
@@ -70,28 +77,33 @@
         </LinearLayout>
 
         <TextView
+            android:layout_below="@id/fsl_fivestars"
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/grade_bt"
             android:layout_centerHorizontal="true"
             android:gravity="center"
-            android:paddingBottom="12dp"
-            android:layout_marginBottom="12dp"
+            android:layout_marginTop="20dp"
             android:paddingLeft="34dp"
             android:paddingRight="34dp"
             android:text="@string/grade_tip"
-            android:textColor="#585858"
-            android:textSize="16dp" />
-
-        <ImageView
-            android:id="@+id/iv_back"
-            android:layout_width="79dp"
-            android:layout_height="79dp"
-            android:layout_above="@id/textView2"
+            android:textColor="#333333"
+            android:textStyle="bold"
+            android:textSize="17dp" />
+        <TextView
+            android:layout_below="@id/textView2"
+            android:id="@+id/textView3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="12dp"
-            android:src="@drawable/ic_launcher" />
+            android:maxLines="2"
+            android:gravity="center"
+            android:paddingLeft="34dp"
+            android:paddingRight="34dp"
+            android:text="@string/grade_tip"
+            android:textColor="#666666"
+            android:textSize="14dp" />
     </RelativeLayout>
 
 </RelativeLayout>

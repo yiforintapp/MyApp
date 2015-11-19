@@ -7,8 +7,6 @@ import com.leo.tools.animator.Animator;
 import com.leo.tools.animator.AnimatorListenerAdapter;
 import com.leo.tools.animator.AnimatorSet;
 import com.leo.tools.animator.ObjectAnimator;
-import com.leo.tools.animator.ValueAnimator;
-import com.leo.tools.animator.ValueAnimator.AnimatorUpdateListener;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -67,11 +65,11 @@ public class FiveStarsLayout extends FrameLayout{
 
         float currentY = mGradeGesture.getTop();
         ObjectAnimator gestureMoveIn = ObjectAnimator.ofFloat(mGradeGesture,
-                "translationY", currentY + DipPixelUtil.dip2px(mContext, 16), currentY);
+                "translationY", currentY + DipPixelUtil.dip2px(mContext, 160), currentY);
         gestureMoveIn.setDuration(2000);
 
         ObjectAnimator gestureMoveOut =  ObjectAnimator.ofFloat(mGradeGesture,
-                "translationY",currentY , currentY + DipPixelUtil.dip2px(mContext, 16));
+                "translationY",currentY , currentY + DipPixelUtil.dip2px(mContext, 160));
 
         ObjectAnimator gestureHide = ObjectAnimator.ofFloat(mGradeGesture, "alpha", 1f, 0f);
 
