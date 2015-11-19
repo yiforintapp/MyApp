@@ -26,7 +26,6 @@
         android:layout_below="@+id/item_header_ll"
         android:layout_marginLeft="19dp"
         android:layout_marginRight="19dp"
-        android:src="@drawable/swifty_banner"
         android:scaleType="centerCrop"
         />
 
