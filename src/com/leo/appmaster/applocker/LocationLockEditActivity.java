@@ -41,6 +41,7 @@ import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
 import com.leo.appmaster.ui.dialog.LEOBaseDialog;
@@ -419,12 +420,19 @@ public class LocationLockEditActivity extends BaseActivity implements
             mModeList = (ListView) container.findViewById(R.id.mode_list);
             mNoWifiTv = (TextView) container.findViewById(R.id.no_wifi);
             View cancel = mWifiListDialog.findViewById(R.id.dlg_bottom_btn);
-            cancel.setOnClickListener(new OnClickListener() {
+            RippleView1 rippView = (RippleView1) mWifiListDialog.findViewById(R.id.dlg_bottom_btn_ripp);
+            rippView.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     mWifiListDialog.dismiss();
                 }
             });
+//            cancel.setOnClickListener(new OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    mWifiListDialog.dismiss();
+//                }
+//            });
         }
         TextView mTitle = (TextView) mWifiListDialog.findViewById(R.id.dlg_title);
         mTitle.setText(getResources().getString(R.string.select_wifi_mode));

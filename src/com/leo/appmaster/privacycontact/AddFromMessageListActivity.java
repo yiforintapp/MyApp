@@ -44,13 +44,10 @@ import com.leo.appmaster.eventbus.event.PrivacyMessageEvent;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog;
 import com.leo.appmaster.ui.dialog.LEOAlarmDialog.OnDiaogClickListener;
-import com.leo.appmaster.ui.dialog.LEOProgressDialog;
 import com.leo.appmaster.ui.dialog.LEORoundProgressDialog;
-import com.leo.appmaster.utils.BuildProperties;
 
 public class AddFromMessageListActivity extends BaseActivity implements OnItemClickListener {
     private ListView mListMessage;
