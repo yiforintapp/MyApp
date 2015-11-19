@@ -338,19 +338,19 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                             //旋转原始bitmap到正确的方向
                             Matrix m = new Matrix();
                             int orientation = view.getCameraOrientation();
-                            LeoLog.i("poha", "got orientation = " + orientation);
                             m.setRotate(180 - orientation, (float) bitmapt.getWidth() / 2 , (float) bitmapt.getHeight() / 2);
                             bitmapt = Bitmap.createBitmap(bitmapt, 0, 0, bitmapt.getWidth() , bitmapt.getHeight() , m, true);
-                            String timeStamp = new SimpleDateFormat( Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT) .format(new Date());
+                            String timeStamp = new SimpleDateFormat(Constants.INTRUDER_PHOTO_TIMESTAMP_FORMAT) .format(new Date());
+                            
                             //添加水印
                             bitmapt = WaterMarkUtils.createIntruderPhoto(bitmapt, timeStamp,packagename, ama);
+                            
                             //将bitmap压缩并保存
                             ByteArrayOutputStream baos = new ByteArrayOutputStream();
                             bitmapt.compress(Bitmap.CompressFormat.PNG, 100, baos);
                             byte[] finalBytes = baos.toByteArray();
                             File photoSavePath = getPhotoSavePath();
                             if (photoSavePath == null) {
-                                LeoLog.i("poha", "path not exist!");
                                 return;
                             }
                             String finalPicPath = "";
@@ -360,9 +360,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 fos.write(finalBytes);
                                 fos.close();
                                 // 隐藏图片
-                                LeoLog.i("picpath", photoSavePath.toString());
                                 finalPicPath = mPDManager.onHidePic(photoSavePath.getPath() , null);
-                                LeoLog.i("picpath", finalPicPath);
                                 FileOperationUtil.saveFileMediaEntry(finalPicPath, ama);
                                 FileOperationUtil.deleteImageMediaEntry(photoSavePath.getPath(), ama);
                                 mIsPicSaved = true;
@@ -372,6 +370,7 @@ public class LockScreenActivity extends BaseFragmentActivity implements
                                 LeoLog.i("poha", "exception!!   ..." + e.toString());
                                 return;
                             }
+                            
                             IntruderPhotoInfo info = new IntruderPhotoInfo(finalPicPath,packagename, timeStamp);
                             mISManager.insertInfo(info);
                             mIsPicSaved = true;
