@@ -35,7 +35,6 @@ import com.leo.appmaster.fragment.BaseFragment;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonTitleBar;
 import com.leo.appmaster.ui.MaterialRippleLayout;
-import com.leo.appmaster.ui.RippleView;
 import com.leo.appmaster.ui.RippleView1;
 
 public class TimeLockFragment extends BaseFragment implements OnClickListener, OnItemClickListener,

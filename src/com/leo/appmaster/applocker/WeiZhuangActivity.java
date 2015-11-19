@@ -28,11 +28,10 @@ import com.leo.appmaster.model.WeiZhuangInfo;
 import com.leo.appmaster.sdk.BaseActivity;
 import com.leo.appmaster.sdk.SDKWrapper;
 import com.leo.appmaster.ui.CommonToolbar;
-import com.leo.appmaster.ui.RippleView;
-import com.leo.appmaster.ui.RippleView.OnRippleCompleteListener;
+import com.leo.appmaster.ui.RippleView1;
 import com.leo.appmaster.utils.LeoLog;
 
-public class WeiZhuangActivity extends BaseActivity implements OnItemClickListener, OnClickListener, OnRippleCompleteListener {
+public class WeiZhuangActivity extends BaseActivity implements OnItemClickListener, OnClickListener {
     private final static int noMode = 0;
     private Drawable[] mIcon = new Drawable[5];
     private String[] mName;
@@ -44,7 +43,7 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
     private AppMasterPreference sp_weizhuang;
     private int selected = 0;
     private ImageView weizhuang_ask;
-    private RippleView mRvKnow;
+    private RippleView1 mRvKnow;
     //    private View trffic_setting_iv;
     private LinearLayout mWeizhuangHelp;
     private TextView mKnowBt;
@@ -69,18 +68,11 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         mTtileBar = (CommonToolbar) findViewById(R.id.weizhuang_title_bar);
         mTtileBar.setToolbarTitle(R.string.title_bar_weizhuang);
         mTtileBar.setToolbarColorResource(R.color.cb);
-//        mTtileBar.openBackView();
-//        mTtileBar.setOptionImageResource(R.drawable.help_icon_n);
         mTtileBar.setOptionMenuVisible(true);
         mTtileBar.setOptionClickListener(this);
         mTtileBar.setOptionImageResource(R.drawable.help_icon_n);
 
         weizhuang_ask = mTtileBar.getOptionImageView();
-//        weizhuang_ask = (ImageView) findViewById(R.id.weizhuang_ask_iv);
-//        weizhuang_ask.setVisibility(View.VISIBLE);
-//        trffic_setting_iv = (View) findViewById(R.id.trffic_setting_iv);
-//        trffic_setting_iv.setVisibility(View.VISIBLE);
-//        trffic_setting_iv.setOnClickListener(this);
 
         mGridView = (GridView) findViewById(R.id.gv_weizhuang);
 
@@ -91,13 +83,8 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
         mWeizhuangHelp = (LinearLayout) findViewById(R.id.activity_weizhuang_firstin);
         mKnowBt = (TextView) mWeizhuangHelp.findViewById(R.id.bt_go);
 //        mKnowBt.setOnClickListener(this);
-        mRvKnow = (RippleView) mWeizhuangHelp.findViewById(R.id.rv_know_button);
-        mRvKnow.setOnRippleCompleteListener(this);
-//        MaterialRippleLayout.on(mKnowBt)
-//                .rippleColor(getResources().getColor(R.color.blue_button_click))
-//                .rippleAlpha(0.8f)
-//                .rippleHover(true)
-//                .create();
+        mRvKnow = (RippleView1) mWeizhuangHelp.findViewById(R.id.rv_know_button);
+        mRvKnow.setOnClickListener(this);
         if (sp_weizhuang.getWeiZhuang()) {
             mWeizhuangHelp.setVisibility(View.VISIBLE);
             mGridView.setVisibility(View.GONE);
@@ -407,20 +394,8 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
 //                    sp_weizhuang.setWeiZhuang(false);
 //                }
                 break;
-//            case R.id.bt_go:
-//              
-//                break;
-            default:
-                break;
-        }
-    }
-
-    @Override
-    public void onRippleComplete(RippleView rippleView) {
-        
-        switch (rippleView.getId()) {
             case R.id.rv_know_button:
-                if(mIsOpenHelp) {
+                if (mIsOpenHelp) {
                     mWeizhuangHelp.setVisibility(View.GONE);
                     mGridView.setVisibility(View.VISIBLE);
                     mGuidAnimation = AnimationUtils
@@ -436,11 +411,9 @@ public class WeiZhuangActivity extends BaseActivity implements OnItemClickListen
                 }
                 mIsOpenHelp = false;
                 break;
-
             default:
                 break;
         }
-        
-        
     }
+
 }
