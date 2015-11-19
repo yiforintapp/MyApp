@@ -267,27 +267,8 @@ public class SplashActivity extends BaseActivity implements OnClickListener {
         LeoLog.i(TAG, "使用后台配置闪屏!");
         if (path != null && !"".equals(path)) {
             BitmapFactory.Options option = new BitmapFactory.Options();
-
-            /*优化内存操作*/
-            option.inDensity = 480;
-            option.inTargetDensity = getResources().getDisplayMetrics().densityDpi;
-            option.inScaled = true;
             option.inJustDecodeBounds = true;
-            /*不进行图片抖动处理*/
-            option.inDither = false;
-            /*设置让解码器以最佳方式解码*/
-            option.inPreferredConfig = null;
-            option.inPurgeable = true;
-            option.inInputShareable = true;
             BitmapFactory.decodeFile(path + Constants.SPLASH_NAME, option);
-            // scale for hdpi, mdpi and ldpi
-//            if (option.inTargetDensity < 125) {
-//                option.inTargetDensity = option.inTargetDensity - 40;
-//            } else if (option.inTargetDensity < 165) {
-//                option.inTargetDensity = option.inTargetDensity - 40;
-//            } else if (option.inTargetDensity < 245) {
-//                option.inTargetDensity = option.inTargetDensity - 40;
-//            }
             int[] pix = AppUtil.getScreenPix(this);
             int width = pix[0];
             int height = pix[1];

@@ -35,8 +35,8 @@ import java.util.List;
 
 public class AppUtil {
     private static final String TAG = "AppUtil";
-    public static final float SPL_SHARE_SCALE_X = 0.8f;
-    public static final float SPL_SHARE_SCALE_Y = 0.8f;
+    public static final float SPL_SHARE_SCALE_X = 1.0f;
+    public static final float SPL_SHARE_SCALE_Y = 1.0f;
 
     public static boolean isSystemApp(ApplicationInfo info) {
         // 有些系统应用是可以更新的，如果用户自己下载了一个系统的应用来更新了原来的，
@@ -247,57 +247,6 @@ public class AppUtil {
     }
 
     /**
-     * 处理图片bitmap size （处理Out Of Memory 内存溢出）
-     * Android源码,系统提供
-     */
-    public static int computeSampleSize(BitmapFactory.Options options,
-                                        int minSideLength, int maxNumOfPixels) {
-        int initialSize = computeInitialSampleSize(options, minSideLength,
-                maxNumOfPixels);
-        int roundedSize;
-        if (initialSize <= 8) {
-            roundedSize = 1;
-            while (roundedSize < initialSize) {
-                roundedSize <<= 1;
-            }
-        } else {
-            roundedSize = (initialSize + 7) / 8 * 8;
-        }
-        return roundedSize;
-    }
-
-    private static int computeInitialSampleSize(BitmapFactory.Options options,
-                                                int minSideLength, int maxNumOfPixels) {
-        double w = options.outWidth;
-        double h = options.outHeight;
-        int lowerBound = (maxNumOfPixels == -1) ? 1 : (int) Math.ceil(Math
-                .sqrt(w * h / maxNumOfPixels));
-        int upperBound = (minSideLength == -1) ? 128 : (int) Math.min(
-                Math.floor(w / minSideLength), Math.floor(h / minSideLength));
-        if (upperBound < lowerBound) {
-            return lowerBound;
-        }
-        if ((maxNumOfPixels == -1) && (minSideLength == -1)) {
-            return 1;
-        } else if (minSideLength == -1) {
-            return lowerBound;
-        } else {
-            return upperBound;
-        }
-    }
-
-//    public static int getScreenPix(Context context) {
-//        context = context.getApplicationContext();
-//        DisplayMetrics mDisplayMetrics = new DisplayMetrics();
-//        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-//        windowManager.getDefaultDisplay().getMetrics(mDisplayMetrics);
-//        int width = mDisplayMetrics.widthPixels;
-//        int height = mDisplayMetrics.heightPixels;
-//        LeoLog.i(TAG, "分辨率：" + (width + "*" + height));
-//        return width * height;
-//    }
-
-    /**
      * 分享图片
      *
      * @param photoUri
@@ -337,16 +286,12 @@ public class AppUtil {
      * @param onePath
      * @return
      */
-    public static Bitmap add2Bitmap(Context context,String onePath, int id) {
+    public static Bitmap add2Bitmap(String onePath, int id) {
         /*图片1*/
         BitmapFactory.Options optionOne = new BitmapFactory.Options();
         optionOne.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(onePath, optionOne);
-//        optionOne.inSampleSize = computeSampleSize(optionOne, -1, getScreenPix(AppMasterApplication.getInstance()));
-        int[] pix = AppUtil.getScreenPix(context);
-        int width = pix[0];
-        int height = pix[1];
-        optionOne.inSampleSize = AppUtil.calculateInSampleSize(optionOne, width, height);
+        optionOne.inSampleSize = 3;
         optionOne.inJustDecodeBounds = false;
         Bitmap oneImage = BitmapFactory.decodeFile(onePath, optionOne);
         /*图片2*/
@@ -368,6 +313,8 @@ public class AppUtil {
         /*缩放图2*/
         twoImage = Bitmap.createScaledBitmap(twoImage, oneImage.getWidth(), oneImage.getWidth(), true);
         canvas.drawBitmap(twoImage, 0, oneImage.getHeight(), null);
+        oneImage.recycle();
+        twoImage.recycle();
         return result;
     }
 
@@ -395,20 +342,21 @@ public class AppUtil {
 
     /*计算InSampleSize*/
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        /*源图片的高度和宽度*/
         final int height = options.outHeight;
         final int width = options.outWidth;
         int inSampleSize = 1;
-
-        if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-            while ((halfHeight / inSampleSize) > reqHeight
-                    && (halfWidth / inSampleSize) > reqWidth) {
-                inSampleSize *= 2;
-            }
+        if ((height > reqHeight && height / reqHeight >= 2) || (width > reqWidth && width / reqWidth >= 2)) {
+            /*计算出实际宽高和目标宽高的比率*/
+            final int heightRatio = Math.round((float) height / (float) reqHeight);
+            final int widthRatio = Math.round((float) width / (float) reqWidth);
+            /*选择宽和高中最小的比率作为inSampleSize的值，这样可以保证最终图片的宽和高 一定都会大于等于目标的宽和高。*/
+            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
         }
         return inSampleSize;
     }
+
+
     /*屏幕宽,高*/
     public static int[] getScreenPix(Context context) {
         int[] pix = new int[2];
