@@ -30,28 +30,16 @@ public class MsgUtil {
             return;
         }
 
-//        boolean hasFb = AppUtil.isInstallPkgName(context, Constants.PKG_FACEBOOK);
+        boolean hasFb = AppUtil.isInstallPkgName(context, Constants.PKG_FACEBOOK);
         Intent intent = new Intent();
-        if (schema.equals("fb")) {
-            if (AppUtil.isInstallPkgName(context, Constants.PKG_FACEBOOK)) {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setData(uri);
-                ComponentName cn = new ComponentName(Constants.PKG_FACEBOOK,
-                        "com.facebook.katana.IntentUriHandler");
-                intent.setComponent(cn);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            } else {
-                String id = url.substring(url.lastIndexOf("/") + 1);
-                uri = Uri.parse("https://www.facebook.com/pages/App-Master/" + id);
-                intent.setData(uri);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            }
-        } else if (schema.equals("https") || schema.equals("http")) {
-            intent.setData(uri);
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (hasFb) {
+            ComponentName cn = new ComponentName(Constants.PKG_FACEBOOK,
+                    "com.facebook.katana.IntentUriHandler");
+            intent.setComponent(cn);
         }
+        intent.setData(uri);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         try {
             context.startActivity(intent);
@@ -74,25 +62,15 @@ public class MsgUtil {
             return;
         }
 
+        boolean hasGp = AppUtil.isInstallPkgName(context, Constants.PKG_GOOLEPLAY);
         Intent intent = new Intent();
-        if (schema.equals("market")) {
-            if (AppUtil.isInstallPkgName(context, Constants.PKG_GOOLEPLAY)) {
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.setPackage(Constants.PKG_GOOLEPLAY);
-                intent.setData(uri);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            } else {
-                String suffix = url.substring(url.indexOf("?id=") + 1);
-                uri = Uri.parse("https://play.google.com/store/apps/details?" + suffix);
-                intent.setData(uri);
-                intent.setAction(Intent.ACTION_VIEW);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            }
-        } else if (schema.equals("https") || schema.equals("http")) {
-            intent.setData(uri);
-            intent.setAction(Intent.ACTION_VIEW);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (hasGp) {
+            intent.setPackage(Constants.PKG_GOOLEPLAY);
         }
+        intent.setData(uri);
+        intent.setAction(Intent.ACTION_VIEW);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         try {
             context.startActivity(intent);
         } catch (Exception e) {
