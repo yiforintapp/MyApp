@@ -15,8 +15,6 @@ import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.SecurityNotifyChangeEvent;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
@@ -85,15 +83,6 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
 
         mAdaper = new PrivacyNewPicAdapter();
         mAdaper.setList(mDataList);
-
-        LeoEventBus.getDefaultBus().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-
-        LeoEventBus.getDefaultBus().unregister(this);
     }
 
     @Override
@@ -114,31 +103,6 @@ public class PrivacyNewPicFragment extends PrivacyNewFragment implements Adapter
     @Override
     protected String getFolderFullDesc() {
         return "pic_full_cnts";
-    }
-
-    public void onEventMainThread(SecurityNotifyChangeEvent event) {
-        if (!MgrContext.MGR_PRIVACY_DATA.equals(event.mgr)) return;
-
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                List<PhotoItem> list = pdm.getAddPic();
-                if (list == null) return;
-
-                if (list.size() != mDataList.size()) {
-                    mDataList.clear();
-                    mDataList.addAll(list);
-                    mAdaper.setList(list);
-                    ThreadManager.getUiThreadHandler().post(new Runnable() {
-                        @Override
-                        public void run() {
-                            setLabelCount(mDataList.size());
-                        }
-                    });
-                }
-            }
-        });
     }
 
     @Override

@@ -9,8 +9,6 @@ import android.view.ViewGroup;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.SecurityNotifyChangeEvent;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.mgr.PrivacyDataManager;
 import com.leo.appmaster.sdk.SDKWrapper;
@@ -35,32 +33,6 @@ public class FolderVidFragment extends FolderFragment<VideoItemBean> {
         super.onCreate(savedInstanceState);
 
         mAdapter = new FolderVidAdapter();
-        LeoEventBus.getDefaultBus().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LeoEventBus.getDefaultBus().unregister(this);
-    }
-
-    public void onEventMainThread(SecurityNotifyChangeEvent event) {
-        if (!MgrContext.MGR_PRIVACY_DATA.equals(event.mgr)) return;
-
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                List<VideoItemBean> list = pdm.getAddVid();
-                if (list == null) return;
-
-                if (list.size() != mDataList.size()) {
-                    mDataList.clear();
-                    mDataList.addAll(list);
-                    mAdapter.setList(list);
-                }
-            }
-        });
     }
 
     @Nullable

@@ -60,7 +60,7 @@ public class HomeAnimShieldLayer extends AnimLayer {
 
     private static final int SHADOW_COLOR = 0x19000000;
     private static final int SHADOW_Y = 10;
-    private static final int SHADOW_RADIUS = 5;
+    private static final int SHADOW_RADIUS = 4;
 
     private int mCircleAlpha = 0;
     private int mSecurityScore = 100;
@@ -407,6 +407,8 @@ public class HomeAnimShieldLayer extends AnimLayer {
             mScoreMatrix.postTranslate(0, -shieldOffsetY);
             canvas.setMatrix(mScoreMatrix);
             mTextPaint.setShadowLayer(SHADOW_RADIUS, 0, SHADOW_Y, SHADOW_COLOR);
+        } else {
+            mTextPaint.setShadowLayer(0, 0, 0, SHADOW_COLOR);
         }
         float[] pointer = null;
         if (score < 10) {

@@ -3,7 +3,6 @@ package com.leo.appmaster.privacy;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -21,7 +20,6 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.service.StatusBarEventService;
 import com.leo.appmaster.db.PreferenceTable;
 import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.SecurityNotifyChangeEvent;
 import com.leo.appmaster.eventbus.event.SecurityScoreEvent;
 import com.leo.appmaster.home.HomeColor;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
@@ -82,13 +80,13 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
     private HashMap<String, Integer> mScoreMap;
     private HashMap<String, Integer> mDecScoreMap;
 
-    private boolean mScanFinish;
-
     private Runnable mCheckScoreTask;
     private Future mCheckScoreFuture;
 
     private Future mDalayNotifyFuture;
     private Runnable mDelayNotifyTask;
+
+    private long mLastScanTs;
 
     private PrivacyHelper(Context context) {
         mContext = context.getApplicationContext();
@@ -109,15 +107,6 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
             sInstance = new PrivacyHelper(context);
         }
         return sInstance;
-    }
-
-    /**
-     * 进程启动后是否已经完成了扫描
-     *
-     * @return
-     */
-    public boolean isScanFinish() {
-        return mScanFinish;
     }
 
     /**
@@ -161,7 +150,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
      */
     public void scanOneTime() {
         LeoLog.i(TAG, "scanOneTime......");
-        long lastScanTs = PreferenceTable.getInstance().getLong(PrefConst.KEY_LAST_SCAN, 0);
+        long lastScanTs = mLastScanTs;
         long currentTs = System.currentTimeMillis();
         if (currentTs - lastScanTs > CHECK_TIME || currentTs < lastScanTs) {
             // 1分钟之后，或者时间往前调整，需要扫描
@@ -209,8 +198,6 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
                     logScore();
                     LeoEventBus.getDefaultBus().post(new SecurityScoreEvent(totalScore));
                 }
-                mScanFinish = true;
-
             }
         });
         startIntervalScanner(CHECK_TIME);
@@ -244,7 +231,6 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
 
             LeoEventBus.getDefaultBus().post(new SecurityScoreEvent(mSecurityScore));
         }
-        LeoEventBus.getDefaultBus().post(new SecurityNotifyChangeEvent(description));
     }
 
     private class ScoreTimerTask implements Runnable {
@@ -252,7 +238,7 @@ public class PrivacyHelper implements Manager.SecurityChangeListener {
         public void run() {
             LeoLog.i(TAG, "ScoreTimerTask, start to check.");
             long currentTs = System.currentTimeMillis();
-            PreferenceTable.getInstance().putLong(PrefConst.KEY_LAST_SCAN, currentTs);
+            mLastScanTs = currentTs;
             for (String mgr : SCORE_MGR) {
                 Manager manager = MgrContext.getManager(mgr);
                 if (manager != null) {

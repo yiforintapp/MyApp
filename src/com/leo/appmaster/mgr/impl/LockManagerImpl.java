@@ -66,7 +66,7 @@ import com.leo.appmater.globalbroadcast.LeoGlobalBroadcast;
 import com.leo.appmater.globalbroadcast.NetworkStateListener;
 import com.leo.appmater.globalbroadcast.ScreenOnOffListener;
 
-public class LockManagerImpl extends LockManager implements AppLoadEngine.AppChangeListener {
+public class LockManagerImpl extends LockManager {
     private static final String TAG = "LockManager";
 
 
@@ -193,8 +193,6 @@ public class LockManagerImpl extends LockManager implements AppLoadEngine.AppCha
                 });
         end = SystemClock.elapsedRealtime();
         LeoLog.i(TAG, "cost, registerContentObserver: " + (end - start));
-
-        AppLoadEngine.getInstance(mContext).registerAppChangeListener(this);
     }
 
     private void tryLoadLockMode() {
@@ -1700,38 +1698,6 @@ public class LockManagerImpl extends LockManager implements AppLoadEngine.AppCha
             }
         }
     }
-
-    @Override
-    public void onAppChanged(ArrayList<AppItemInfo> changes, int type) {
-        if (changes == null) {
-            return;
-        }
-
-        List<String> unignoreChangeList = new ArrayList<String>();
-        if (type == AppLoadEngine.AppChangeListener.TYPE_ADD
-                || type == AppLoadEngine.AppChangeListener.TYPE_AVAILABLE) {
-            List<String> ignoreList = InstalledAppTable.getInstance().getIgnoredList();
-            for (AppItemInfo info : changes) {
-                if (ignoreList.contains(info.packageName)) continue;
-
-                unignoreChangeList.add(info.packageName);
-            }
-        }
-        if (unignoreChangeList.isEmpty()) return;
-
-        int score = mCachedScore == NO_CACHE ? 0 : mCachedScore;
-        score -= SPA * unignoreChangeList.size();
-
-//        score = score < 0 ? 0 : score;
-        LeoLog.i(TAG, "onAppChanged, oldScore: " + mCachedScore + " | newScore: " + score);
-        if (score != mCachedScore) {
-            mCachedScore = score;
-        }
-        notifySecurityChange();
-
-//        InstalledAppTable.getInstance().insertPackageList(unignoreChangeList);
-    }
-
 
     public class TimeLockOperation implements Runnable {
         long timeLockId;

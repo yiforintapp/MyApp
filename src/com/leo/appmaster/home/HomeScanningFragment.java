@@ -18,8 +18,6 @@ import android.widget.TextView;
 import com.leo.appmaster.AppMasterApplication;
 import com.leo.appmaster.R;
 import com.leo.appmaster.ThreadManager;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.SecurityNotifyChangeEvent;
 import com.leo.appmaster.imagehide.PhotoItem;
 import com.leo.appmaster.mgr.IntrudeSecurityManager;
 import com.leo.appmaster.mgr.LockManager;
@@ -144,68 +142,6 @@ public class HomeScanningFragment extends Fragment implements RippleView.OnRippl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_home_scanning, container, false);
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        LeoEventBus.getDefaultBus().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LeoEventBus.getDefaultBus().unregister(this);
-    }
-
-    public void onEventMainThread(SecurityNotifyChangeEvent event) {
-        if (mScanning || isDetached() || isRemoving() || getActivity() == null) return;
-
-        if (MgrContext.MGR_PRIVACY_DATA.equals(event.mgr)) {
-            ThreadManager.executeOnAsyncThread(new Runnable() {
-                @Override
-                public void run() {
-                    PrivacyDataManager pdm = (PrivacyDataManager) MgrContext.getManager(MgrContext.MGR_PRIVACY_DATA);
-                    if (mPhotoAnimator != null && !mPhotoAnimator.isRunning()) {
-                        mPhotoList = pdm.getAddPic();
-                        ThreadManager.getUiThreadHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                updatePhotoList();
-                            }
-                        });
-                    }
-
-                    if (mVideoAnimator != null && !mVideoAnimator.isRunning()) {
-                        mVideoList = pdm.getAddVid();
-                        ThreadManager.getUiThreadHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateVideoList();
-                            }
-                        });
-                    }
-                    onScannigFinish(mAppList, mPhotoList, mVideoList);
-                }
-            });
-        } else if (MgrContext.MGR_APPLOCKER.equals(event.mgr)) {
-            ThreadManager.executeOnAsyncThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (mAppAnimator != null && !mAppAnimator.isRunning()) {
-                        LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                        mAppList = lm.getNewAppList();
-                        onScannigFinish(mAppList, mPhotoList, mVideoList);
-                        ThreadManager.getUiThreadHandler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                updateAppList();
-                            }
-                        });
-                    }
-                }
-            });
-        }
     }
 
     @Override

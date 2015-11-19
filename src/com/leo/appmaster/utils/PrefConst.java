@@ -66,9 +66,7 @@ public class PrefConst {
 
     // 入侵者防护不可用的情况下，分数时间已经增加
     public static final String KEY_INTRUDER_ADDED = "intruder_score_added";
-    // 上一次执行后台扫描的时间
-    public static final String KEY_LAST_SCAN = "last_scan";
-   
+
       //swifty卡片数据
     public static final String KEY_SWIFTY_CONTENT = "swifty_content";
     public static final String KEY_SWIFTY_GP_URL = "swifty_gp_url";

@@ -18,8 +18,6 @@ import com.leo.appmaster.ThreadManager;
 import com.leo.appmaster.applocker.ListAppLockAdapter;
 import com.leo.appmaster.applocker.RecommentAppLockListActivity;
 import com.leo.appmaster.db.PreferenceTable;
-import com.leo.appmaster.eventbus.LeoEventBus;
-import com.leo.appmaster.eventbus.event.SecurityNotifyChangeEvent;
 import com.leo.appmaster.mgr.LockManager;
 import com.leo.appmaster.mgr.MgrContext;
 import com.leo.appmaster.model.AppItemInfo;
@@ -81,39 +79,6 @@ public class PrivacyNewAppFragment extends PrivacyNewFragment {
 
         mAdaper = new PrivacyNewAppAdapter();
         mAdaper.setList(mDataList);
-
-        LeoEventBus.getDefaultBus().register(this);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        LeoEventBus.getDefaultBus().unregister(this);
-    }
-
-    public void onEventMainThread(SecurityNotifyChangeEvent event) {
-        if (!MgrContext.MGR_APPLOCKER.equals(event.mgr)) return;
-
-        ThreadManager.executeOnAsyncThread(new Runnable() {
-            @Override
-            public void run() {
-                LockManager lm = (LockManager) MgrContext.getManager(MgrContext.MGR_APPLOCKER);
-                List<AppItemInfo> list = lm.getNewAppList();
-                mDataList.clear();
-                mDataList.addAll(list);
-                Collections.sort(mDataList, new RecommentAppLockListActivity.DefalutAppComparator());
-
-                if (mAdaper != null) {
-                    mAdaper.setList(mDataList);
-                }
-                ThreadManager.getUiThreadHandler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        setLabelCount(mDataList.size());
-                    }
-                });
-            }
-        });
     }
 
     @Override
